@@ -12,10 +12,15 @@ jobs:
         with:
           python-version: '3.11'
 
-      # install the ADAS extras from the nested requirements file
+      # Install core project dependencies (optional but keeps job self-contained)
+      - run: pip install -r requirements.txt
+
+      # Install ADAS-specific extras (nested file)
       - run: pip install -r alpha_factory_v1/requirements-adas.txt
 
-      # run a 1-iteration meta-search as a smoke test
-      - env:
+      # Run a 1-iteration meta-search; silently skips if no API key
+      - name: Run ADAS smoke test (skips if no key)
+        env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python alpha_factory_v1/adas_bridge/alpha_search.py --max_iters 1
