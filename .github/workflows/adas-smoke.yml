@@ -1,0 +1,21 @@
+name: ADAS smoke test
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # install the ADAS extras from the nested requirements file
+      - run: pip install -r alpha_factory_v1/requirements-adas.txt
+
+      # run a 1-iteration meta-search as a smoke test
+      - env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python alpha_factory_v1/adas_bridge/alpha_search.py --max_iters 1
