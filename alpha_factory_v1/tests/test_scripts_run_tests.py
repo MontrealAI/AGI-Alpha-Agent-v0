@@ -36,6 +36,15 @@ class RunTestsScriptTest(unittest.TestCase):
                     call.assert_called_once()
                     self.assertIn('unittest', call.call_args[0][0])
 
+    def test_defaults_to_tests_directory(self):
+        with mock.patch('importlib.util.find_spec', return_value=object()):
+            with mock.patch('subprocess.call', return_value=0) as call:
+                with mock.patch.object(sys, 'argv', ['run_tests.py']):
+                    with self.assertRaises(SystemExit):
+                        run_tests.main()
+                call.assert_called_once()
+                self.assertTrue(str(call.call_args[0][0][-1]).endswith('tests'))
+
 
 if __name__ == '__main__':
     unittest.main()
