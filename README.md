@@ -25,7 +25,7 @@ Built atop **OpenAI Agents SDK**, **Google ADK**, **A2A protocol**, and Ant
 1. [System Topology 🗺️](#1-system-topology)  
 2. [World‑Model & Planner 🌌](#2-world-model--planner)  
 3. [Agent Gallery 🖼️ (12 agents)](#3-agent-gallery)  
-4. [Demo Showcase 🎬 (12 demos)](#4-demo-showcase)  
+4. [Demo Showcase 🎬 (13 demos)](#4-demo-showcase)
 5. [Memory & Knowledge Fabric 🧠](#5-memory--knowledge-fabric)
 6. [5‑Minute Quick‑Start 🚀](#6-5-minute-quick-start)
 6.1. [Running Tests 🧪](#61-running-tests)
@@ -260,6 +260,7 @@ sequenceDiagram
 |10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
 |11|`muzero_planning`|♟️|MuZero plans synthetic markets → optimal execution curves.|Validates world‑model planning in noisy domains.|`docker compose -f demos/docker-compose.muzero.yml up`|
 |12|`self_healing_repo`|🩹|CI fails → agent crafts patch ⇒ PR green again.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
+|13|`solving_agi_governance`|⚖️|Token‑staked Prisoner's Dilemma yielding cooperative equilibrium.|Validates minimal safe incentives.|`governance-sim --agents 100 --rounds 1000`|
 
 > **Colab?** Each folder ships an `*.ipynb` that mirrors the Docker flow with free GPUs.
 
@@ -351,10 +352,12 @@ docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
 # The `alpha-factory` CLI also works when the package is installed:
 #   pip install -e .
 #   alpha-factory --list-agents
+#   governance-sim --help
 #
 # Or install directly from GitHub for a quick test:
 #   pip install git+https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 #   alpha-factory --list-agents
+#   governance-sim --agents 500 --rounds 2000
 ```
 
 No GPU → falls back to GGML Llama‑3‑8B‑Q4.
