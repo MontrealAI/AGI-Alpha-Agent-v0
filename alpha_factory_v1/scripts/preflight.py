@@ -6,6 +6,7 @@ import tempfile
 from pathlib import Path
 
 MIN_PY = (3, 9)
+MAX_PY = (3, 12)
 MEM_DIR = Path(os.getenv("AF_MEMORY_DIR", f"{tempfile.gettempdir()}/alphafactory"))
 
 COLORS = {
@@ -22,8 +23,11 @@ def banner(msg: str, color: str = 'GREEN') -> None:
 
 
 def check_python() -> bool:
-    if sys.version_info < MIN_PY:
-        banner(f"Python {MIN_PY[0]}.{MIN_PY[1]}+ required", 'RED')
+    if sys.version_info < MIN_PY or sys.version_info >= MAX_PY:
+        banner(
+            f"Python {MIN_PY[0]}.{MIN_PY[1]}+ and <{MAX_PY[0]}.{MAX_PY[1]} required",
+            'RED',
+        )
         return False
     banner(f"Python {sys.version.split()[0]} detected", 'GREEN')
     return True

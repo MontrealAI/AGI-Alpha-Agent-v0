@@ -44,9 +44,10 @@ header
 # check python version
 python3 - <<'PY'
 import sys
-req = (3,9)
-if sys.version_info < req:
-    sys.exit(f"Python {req[0]}.{req[1]}+ required")
+req = (3, 9)
+max_py = (3, 12)
+if sys.version_info < req or sys.version_info >= max_py:
+    sys.exit(f"Python {req[0]}.{req[1]}+ and <{max_py[0]}.{max_py[1]} required")
 PY
 
 VENV_DIR=".venv"

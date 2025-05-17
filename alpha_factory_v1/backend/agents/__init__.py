@@ -67,10 +67,11 @@ try:                                         # Kafka telemetry
 except ModuleNotFoundError:                  # pragma: no cover
     KafkaProducer = None                     # type: ignore
 
-try:                                         # Prometheus counter
-    from prometheus_client import Counter    # type: ignore
-except ModuleNotFoundError:                  # pragma: no cover
-    Counter = None                           # type: ignore
+try:  # Prometheus counter
+    from prometheus_client import Counter, REGISTRY  # type: ignore
+except ModuleNotFoundError:  # pragma: no cover
+    Counter = None  # type: ignore
+    REGISTRY = None  # type: ignore
 
 try:                                         # Google Agent Development Kit
     import adk                               # type: ignore
@@ -168,11 +169,15 @@ CAPABILITY_GRAPH:  CapabilityGraph          = CapabilityGraph()
 _HEALTH_Q:         "queue.Queue[tuple[str,float,bool]]" = queue.Queue()
 
 if Counter is not None:
-    _err_counter = Counter(
-        "af_agent_exceptions_total",
-        "Exceptions raised by agents",
-        ["agent"],
-    )
+    name = "af_agent_exceptions_total"
+    if REGISTRY and name in getattr(REGISTRY, "_names_to_collectors", {}):
+        _err_counter = REGISTRY._names_to_collectors[name]  # type: ignore[attr-defined]
+    else:
+        _err_counter = Counter(
+            name,
+            "Exceptions raised by agents",
+            ["agent"],
+        )
 
 ##############################################################################
 #                          helper — Kafka producer                           #
