@@ -86,7 +86,7 @@ cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_agi
 # 2️⃣ Environment (CPU‑only default)
 micromamba create -n metaagi python=3.11 -y
 micromamba activate metaagi
-pip install -r requirements.txt        # ≤ 40 MiB wheels
+pip install -r ../../requirements.txt        # ≤ 40 MiB wheels
 
 # 3️⃣ Run – zero‑API mode (pulls a gguf via Ollama)
 python meta_agentic_agi_demo.py --provider mistral:7b-instruct.gguf
