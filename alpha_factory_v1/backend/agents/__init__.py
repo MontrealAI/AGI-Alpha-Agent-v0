@@ -167,12 +167,19 @@ AGENT_REGISTRY:    Dict[str, AgentMetadata] = {}
 CAPABILITY_GRAPH:  CapabilityGraph          = CapabilityGraph()
 _HEALTH_Q:         "queue.Queue[tuple[str,float,bool]]" = queue.Queue()
 
+_err_counter = None
 if Counter is not None:
-    _err_counter = Counter(
-        "af_agent_exceptions_total",
-        "Exceptions raised by agents",
-        ["agent"],
-    )
+    try:  # avoid duplicate metrics when tests import this module repeatedly
+        _err_counter = Counter(
+            "af_agent_exceptions_total",
+            "Exceptions raised by agents",
+            ["agent"],
+        )
+    except ValueError:  # metric already registered
+        from prometheus_client import REGISTRY  # type: ignore
+
+        existing = REGISTRY._names_to_collectors.get("af_agent_exceptions_total")
+        _err_counter = existing if isinstance(existing, Counter) else None
 
 ##############################################################################
 #                          helper — Kafka producer                           #
