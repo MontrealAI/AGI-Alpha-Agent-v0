@@ -400,8 +400,9 @@ python alpha_factory_v1/scripts/run_tests.py
 ```
 
 The helper validates the target directory, prefers `pytest` when
-available and otherwise falls back to `unittest`. Ensure all tests pass
-before deploying changes.
+available and otherwise falls back to `unittest`. Tests live under
+`alpha_factory_v1/tests` and the project root `tests/` directory.
+Ensure all tests pass before deploying changes.
 
 <a name="62-marketplace-demo-example"></a>
 ### 6.2 · Marketplace Demo Example 🛒
