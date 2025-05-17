@@ -22,6 +22,7 @@ Built atop **OpenAI Agents SDK**, **Google ADK**, **A2A protocol**, and Ant
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0
+# Requires Python 3.9–3.11 (<3.12)
 ./quickstart.sh
 open http://localhost:8000/docs 2>/dev/null || xdg-open http://localhost:8000/docs || start http://localhost:8000/docs
 ```
