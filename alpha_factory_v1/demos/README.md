@@ -44,7 +44,7 @@ Opens **http://localhost:7860** with a Gradio portal to every demo. Works on ma
 |8|`era_of_experience`|🏛️|Streams of life events build autobiographical memory‑graph tutor.|Transforms tacit SME knowledge into tradable signals.|`docker compose -f demos/docker-compose.era.yml up`|
 |9|`finance_alpha`|💹|Live momentum + risk‑parity bot on Binance test‑net.|Generates real P&L; stress‑tested against CVaR.|`docker compose -f demos/docker-compose.finance.yml up`|
 |10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
-|11|`muzero_planning`|♟️|MuZero plans synthetic markets → optimal execution curves.|Validates world‑model planning in noisy domains.|`docker compose -f demos/docker-compose.muzero.yml up`|
+|11|`muzero_planning`|♟|MuZero plans synthetic markets → optimal execution curves.|Validates world-model planning in noisy domains.|`docker compose -f alpha_factory_v1/demos/muzero_planning/docker-compose.muzero.yml up`|
 |12|`self_healing_repo`|🩹|CI fails → agent crafts patch ⇒ PR green again.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
 
 > **Colab?** Each folder ships an `*.ipynb` that mirrors the Docker flow with free GPUs.

@@ -22,9 +22,8 @@ and **stabilise CartPole** — all inside your browser. No GPU, no PhD required
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/muzero_planning
-chmod +x run_muzero_demo.sh
-./run_muzero_demo.sh
+cd AGI-Alpha-Agent-v0
+bash alpha_factory_v1/demos/muzero_planning/run_muzero_demo.sh
 ```
 
 1. **Docker Desktop** compiles the container (≈ 45 s cold start).  
