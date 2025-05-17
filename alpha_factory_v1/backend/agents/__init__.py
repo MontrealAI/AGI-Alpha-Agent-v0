@@ -168,11 +168,16 @@ CAPABILITY_GRAPH:  CapabilityGraph          = CapabilityGraph()
 _HEALTH_Q:         "queue.Queue[tuple[str,float,bool]]" = queue.Queue()
 
 if Counter is not None:
-    _err_counter = Counter(
-        "af_agent_exceptions_total",
-        "Exceptions raised by agents",
-        ["agent"],
-    )
+    from prometheus_client import REGISTRY
+
+    if "af_agent_exceptions_total" in getattr(REGISTRY, "_names_to_collectors", {}):
+        _err_counter = REGISTRY._names_to_collectors["af_agent_exceptions_total"]
+    else:
+        _err_counter = Counter(
+            "af_agent_exceptions_total",
+            "Exceptions raised by agents",
+            ["agent"],
+        )
 
 ##############################################################################
 #                          helper — Kafka producer                           #
