@@ -86,7 +86,7 @@ cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_agi
 # 2️⃣ Environment (CPU‑only default)
 micromamba create -n metaagi python=3.11 -y
 micromamba activate metaagi
-pip install -r requirements.txt        # ≤ 40 MiB wheels
+pip install -r ../../requirements.txt        # ≤ 40 MiB wheels
 
 # 3️⃣ Run – zero‑API mode (pulls a gguf via Ollama)
 python meta_agentic_agi_demo.py --provider mistral:7b-instruct.gguf
@@ -96,6 +96,7 @@ OPENAI_API_KEY=sk‑… python meta_agentic_agi_demo.py --provider openai:gpt-4o
 
 # 4️⃣ Launch the lineage UI
 streamlit run ui/lineage_app.py
+open http://localhost:8501 2>/dev/null || xdg-open http://localhost:8501 || start http://localhost:8501
 ```
 *No GPU?* llama‑cpp‑python auto‑selects 4‑bit quantisation < 6 GB RAM.
 
