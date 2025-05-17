@@ -267,7 +267,7 @@ sequenceDiagram
 |8|`era_of_experience`|🏛️|Streams of life events build autobiographical memory‑graph tutor.|Transforms tacit SME knowledge into tradable signals.|`docker compose -f demos/docker-compose.era.yml up`|
 |9|`finance_alpha`|💹|Live momentum + risk‑parity bot on Binance test‑net.|Generates real P&L; stress‑tested against CVaR.|`docker compose -f demos/docker-compose.finance.yml up`|
 |10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
-|11|`muzero_planning`|♟️|MuZero plans synthetic markets → optimal execution curves.|Validates world‑model planning in noisy domains.|`docker compose -f demos/docker-compose.muzero.yml up`|
+|11|`muzero_planning`|♟|MuZero plans synthetic markets and optimal execution curves.|Validates world-model planning in noisy domains.|`docker compose -f demos/docker-compose.muzero.yml up`|
 |12|`self_healing_repo`|🩹|CI fails → agent crafts patch ⇒ PR green again.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
 
 > **Colab?** Each folder ships an `*.ipynb` that mirrors the Docker flow with free GPUs.
@@ -423,6 +423,13 @@ PY
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/cross_industry_alpha_factory
 ./deploy_alpha_factory_cross_industry_demo.sh
+```
+
+### 6.3 · MuZero Planning Demo Quick‑Start ♟
+```bash
+git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
+cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/muzero_planning
+./run_muzero_demo.sh
 ```
 
 ---
