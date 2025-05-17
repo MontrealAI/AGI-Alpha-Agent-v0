@@ -110,7 +110,7 @@ cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_agi_v3
 # 2️⃣ Environment
 micromamba create -n alpha_factory python=3.11 -y
 micromamba activate alpha_factory
-pip install -r requirements.txt      # ≤ 60 MiB wheels
+pip install -r ../../requirements.txt      # ≤ 60 MiB wheels
 
 # 3️⃣ Run – open‑weights default (no API key)
 python src/main.py --provider mistral:7b-instruct.gguf --curriculum azr

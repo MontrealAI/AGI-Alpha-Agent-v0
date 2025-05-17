@@ -11,7 +11,7 @@ A *single* entry-point that can launch as:
 
 (Model provider & curriculum engine are runtime-selectable).
 
-Dependencies (auto-install via `pip install -r requirements.txt`):
+Dependencies (auto-install via `pip install -r ../../requirements.txt`):
 
     openai>=1.0.0
     anthropic>=0.25
