@@ -407,8 +407,15 @@ The helper validates the target directory, prefers `pytest` when
 available and otherwise falls back to `unittest`. Ensure all tests pass
 before deploying changes.
 
+### 6.2 · Continuous Integration ⚙️
+
+Every push and pull request automatically triggers the **CI pipeline** via
+[GitHub Actions](.github/workflows/ci.yml). The workflow runs the unit tests
+across multiple Python versions and uploads coverage reports as build
+artifacts.  No additional configuration is required.
+
 <a name="62-marketplace-demo-example"></a>
-### 6.2 · Marketplace Demo Example 🛒
+### 6.3 · Marketplace Demo Example 🛒
 A minimal snippet queues the sample job once the orchestrator is running:
 
 ```bash
