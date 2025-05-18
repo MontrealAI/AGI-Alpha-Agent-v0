@@ -148,6 +148,12 @@ open http://localhost:7749           # Dashboard SPA
 ./scripts/post_job.sh examples/sample_job.json
 python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
     examples/sample_job.json
+
+# Optional: run a quick equity alpha scan
+python - <<'PY'
+from alpha_factory_v1.demos.alpha_agi_marketplace_v1 import scan_equity_alpha
+print(scan_equity_alpha(["AAPL", "MSFT", "NVDA"]))
+PY
 ```
 *Prefer a one-click experience?* Run the [colab_alpha_agi_marketplace_demo.ipynb](./colab_alpha_agi_marketplace_demo.ipynb) notebook on Google Colab.
 *No Docker?* `bash <(curl -sL get.alpha-factory.ai/demo.sh)` boots an ephemeral VM.

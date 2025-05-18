@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .marketplace import MarketplaceClient, load_job, submit_job, parse_args
+from .alpha_scan import scan_equity_alpha
 
 # Directory containing the demo resources
 DEMO_PATH = Path(__file__).resolve().parent
@@ -23,4 +24,5 @@ __all__ = [
     "load_job",
     "submit_job",
     "parse_args",
+    "scan_equity_alpha",
 ]
