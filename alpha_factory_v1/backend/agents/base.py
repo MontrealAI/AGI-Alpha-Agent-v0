@@ -86,16 +86,32 @@ if not _logger.handlers:
 # ───────────────────────────────────────────────────────────────────────────────
 # ░░░ 4. Internal helper factories ░░░
 # ───────────────────────────────────────────────────────────────────────────────
+_RUN_COUNTER = None
+_ERR_COUNTER = None
+_LAT_GAUGE = None
+
+
 def _prom_metrics(agent_name: str):
-    """Return (run_counter, err_counter, latency_gauge) for *agent_name* or
-    triple (None, …) if Prometheus is unavailable."""
+    """Return Prometheus metric handles scoped for ``agent_name``.
+
+    Metrics are instantiated lazily and reused across agent instances to avoid
+    ``CollectorRegistry`` duplication errors when multiple agents/tests create
+    new objects with the same metric names.
+    """
     if Counter is None:
         return None, None, None
 
-    run = Counter("af_agent_runs_total", "Total step() calls", ["agent"])
-    err = Counter("af_agent_errors_total", "Unhandled exceptions", ["agent"])
-    lat = Gauge("af_agent_latency_seconds", "Step latency", ["agent"])
-    return run.labels(agent_name), err.labels(agent_name), lat.labels(agent_name)
+    global _RUN_COUNTER, _ERR_COUNTER, _LAT_GAUGE
+    if _RUN_COUNTER is None:
+        _RUN_COUNTER = Counter("af_agent_runs_total", "Total step() calls", ["agent"])
+        _ERR_COUNTER = Counter("af_agent_errors_total", "Unhandled exceptions", ["agent"])
+        _LAT_GAUGE = Gauge("af_agent_latency_seconds", "Step latency", ["agent"])
+
+    return (
+        _RUN_COUNTER.labels(agent_name),
+        _ERR_COUNTER.labels(agent_name),
+        _LAT_GAUGE.labels(agent_name),
+    )
 
 
 def _kafka_producer() -> Optional[KafkaProducer]:
