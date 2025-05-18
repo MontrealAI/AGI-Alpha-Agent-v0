@@ -407,6 +407,11 @@ The helper validates the target directory, prefers `pytest` when
 available and otherwise falls back to `unittest`. Ensure all tests pass
 before deploying changes.
 
+Continuous integration runs the same suite on GitHub Actions across
+Python 3.10 and 3.11.  The workflow lives under
+`.github/workflows/ci.yml` and installs dependencies from
+`requirements.txt` before invoking `pytest`.
+
 <a name="62-marketplace-demo-example"></a>
 ### 6.2 · Marketplace Demo Example 🛒
 A minimal snippet queues the sample job once the orchestrator is running:
