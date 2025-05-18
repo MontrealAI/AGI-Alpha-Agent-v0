@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  orchestrator:
+    build:
+      context: ../..
+      dockerfile: ./Dockerfile
+    image: alpha_factory_marketplace:latest
+    env_file: ./config.env
+    command: python -m alpha_factory_v1.backend.orchestrator
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    tty: true
+    environment:
+      - OLLAMA_MODELS=mixtral:instruct
+    volumes:
+      - ollama_models:/root/.ollama
+
+volumes:
+  ollama_models:

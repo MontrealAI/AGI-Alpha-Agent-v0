@@ -141,10 +141,13 @@ All agents communicate via **A2A** (`protobuf`), can run on **OpenAI SDK** or *
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/alpha_agi_marketplace_v1
 
-# spin up full stack
-docker compose --profile full up -d
+# configure (optional)
+cp config.env.sample config.env   # edit to add your OPENAI_API_KEY (optional)
 
-open http://localhost:7749           # Dashboard SPA
+# launch orchestrator + Ollama
+docker compose up -d
+
+open http://localhost:8000/docs      # API docs
 ./scripts/post_job.sh examples/sample_job.json
 python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
     examples/sample_job.json
@@ -159,7 +162,7 @@ python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
 
 | Target | Command | Notes |
 |--------|---------|-------|
-| Laptop (single‑GPU) | `docker compose --profile full up -d` | RTX 3060 ⇒ ~200 FPS |
+| Laptop (single‑GPU) | `docker compose up -d` | RTX 3060 ⇒ ~200 FPS |
 | Kubernetes | `helm install marketplace oci://ghcr.io/montrealai/charts/agi-marketplace` | HPA scales by queue depth |
 | Air‑gapped | `singularity run alpha-agi-marketplace_offline.sif` | Includes 8‑B GGUF models |
 
