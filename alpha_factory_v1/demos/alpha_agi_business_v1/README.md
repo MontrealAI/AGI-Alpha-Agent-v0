@@ -2,6 +2,7 @@
 <h1 align="center">
  Large‑Scale α‑AGI Business 👁️✨ <sup><code>$AGIALPHA</code></sup>
 </h1>
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/colab_alpha_agi_business_v1_demo.ipynb)
 
 <p align="center">
  <b>Proof‑of‑Alpha 🚀 — an autonomous business entity that finds, exploits & compounds live market alpha<br/>
