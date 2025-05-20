@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 
-EXAMPLE_DIR = Path('alpha_factory_v1/demos/alpha_agi_business_v1/examples')
+EXAMPLE_DIR = Path(__file__).parent / 'alpha_factory_v1/demos/alpha_agi_business_v1/examples'
 SCRIPT = EXAMPLE_DIR / 'find_best_alpha.py'
 DATA_FILE = EXAMPLE_DIR / 'alpha_opportunities.json'
 
