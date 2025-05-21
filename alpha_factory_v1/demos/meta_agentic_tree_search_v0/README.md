@@ -119,6 +119,8 @@ python run_demo.py --config configs/default.yaml --episodes 500 --target 5 --see
 `run_demo.py` prints a per‑episode scoreboard.  Pass `--log-dir logs` to save a
 `scores.csv` file for further analysis. A ready‑to‑run Colab notebook is also
 provided as `colab_meta_agentic_tree_search.ipynb`.
+The underlying :func:`run` helper returns the best policy and score so the demo
+can be scripted from other tools.
 Add ``--enable-adk`` to the command above to start the optional ADK
 gateway for remote control via the A2A protocol.
 The default environment is a simple number‑line task defined in `mats/env.py` where each agent must approach a target integer. Pass `--target 7` (for example) to experiment with different goals.

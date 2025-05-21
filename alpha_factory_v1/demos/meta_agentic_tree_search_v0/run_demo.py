@@ -41,8 +41,8 @@ def run(
     target: int = 5,
     seed: Optional[int] = None,
     model: str | None = None,
-) -> None:
-    """Run a toy tree search for a small number of episodes.
+) -> tuple[list[int], float]:
+    """Run a toy tree search for a small number of episodes and return the best result.
 
     Parameters
     ----------
@@ -58,6 +58,11 @@ def run(
         Optional RNG seed for reproducible runs.
     model:
         Optional OpenAI model override used by :func:`openai_rewrite`.
+
+    Returns
+    -------
+    tuple[list[int], float]
+        The best policy discovered and its average score.
     """
     if seed is not None:
         random.seed(seed)
@@ -92,6 +97,7 @@ def run(
     if log_fh:
         log_fh.write(f"best,{best.agents},{score:.6f}\n")
         log_fh.close()
+    return best.agents, score
 
 
 def load_config(path: Path) -> dict:
