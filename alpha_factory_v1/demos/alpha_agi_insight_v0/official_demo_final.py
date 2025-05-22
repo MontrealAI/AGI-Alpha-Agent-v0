@@ -147,6 +147,8 @@ def main(argv: List[str] | None = None) -> None:
             args.rewriter,
             args.log_dir,
             args.sectors,
+            exploration=args.exploration,
+            seed=args.seed,
             adk_host=args.adk_host,
             adk_port=args.adk_port,
         )
