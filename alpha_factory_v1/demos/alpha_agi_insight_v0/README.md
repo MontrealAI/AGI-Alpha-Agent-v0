@@ -81,6 +81,9 @@ the ``alpha-agi-insight-final`` command:
 ```bash
 python official_demo_final.py --episodes 5
 ```
+Pass ``--enable-adk`` to expose the agent through the optional Google ADK
+gateway. Custom host and port may be specified with ``--adk-host`` and
+``--adk-port``.
 
 ## Usage
 
