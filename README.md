@@ -475,11 +475,13 @@ python check_env.py --auto-install  # verify & auto-install deps
 ./quickstart.sh               # creates venv, installs deps, launches
 # Use `--wheelhouse /path/to/wheels` to install offline packages when
 # the host has no internet access. `WHEELHOUSE` should point to a
-# directory containing pre-downloaded wheels. Running
-# `python check_env.py --auto-install --wheelhouse /path/to/wheels`
-# installs any missing optional packages. Example offline setup:
+# directory containing pre-downloaded wheels.
+# When offline, export it before running `check_env.py --auto-install`
+# or `./codex/setup.sh` so both tools install from the local wheelhouse.
+# Example offline setup:
 #   export WHEELHOUSE=/media/wheels
-#   python check_env.py --auto-install --wheelhouse $WHEELHOUSE
+#   python check_env.py --auto-install
+#   ./codex/setup.sh
 # open the docs in your browser
 open http://localhost:8000/docs 2>/dev/null || xdg-open http://localhost:8000/docs || start http://localhost:8000/docs
 # Alternatively, ``python alpha_factory_v1/quickstart.py`` provides the same

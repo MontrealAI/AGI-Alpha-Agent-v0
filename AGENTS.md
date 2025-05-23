@@ -6,9 +6,16 @@ The instructions below apply to all contributors and automated agents.
 ## Development Environment
 - Create and activate a **Python&nbsp;3.11 (3.11.x only; 3.12 not yet supported)** virtual environment before running the setup script.
 - Run `./codex/setup.sh` to install the project in editable mode along with minimal runtime dependencies.
-- When offline, run `WHEELHOUSE=/path/to/wheels ./codex/setup.sh`. The same path can be passed to `check_env.py --wheelhouse`.
-- After setup, validate with `python check_env.py --auto-install`.
-This installs any missing optional packages from the wheelhouse if provided.
+- When offline, export `WHEELHOUSE=/path/to/wheels` first so both
+  `check_env.py --auto-install` and `./codex/setup.sh` install from the
+  local wheelhouse:
+  
+  ```bash
+  export WHEELHOUSE=/path/to/wheels
+  ./codex/setup.sh
+  python check_env.py --auto-install
+  ```
+  This installs any missing optional packages from the wheelhouse if provided.
 - Execute `pytest -q` and ensure the entire suite passes. If failures remain, document them in the PR description.
 - Run `python alpha_factory_v1/scripts/preflight.py` or
   `./quickstart.sh --preflight` to verify Docker, git, and required
