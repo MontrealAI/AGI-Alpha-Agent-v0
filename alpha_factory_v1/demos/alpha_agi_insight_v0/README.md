@@ -180,6 +180,7 @@ python official_demo_final.py --offline --episodes 2
 ```
 Use ``--enable-adk`` to expose the agent via the optional Google ADK gateway.
 Pass ``--list-sectors`` to display the resolved sector list without running the search.
+Use ``--dashboard`` to launch the interactive Streamlit dashboard instead of the CLI.
 Use ``--no-banner`` or set ``ALPHA_AGI_NO_BANNER=true`` to suppress the startup banner when embedding the demo in automated scripts. The same flag also works with ``alpha-agi-insight-production``.
 ``--adk-host`` and ``--adk-port`` customise the gateway bind address.
 Use ``--version`` to print the installed package version and exit.
