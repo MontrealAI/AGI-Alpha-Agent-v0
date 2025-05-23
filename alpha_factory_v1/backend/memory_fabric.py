@@ -253,7 +253,7 @@ class _VectorStore:
             self._meta: List[Tuple[str, str, str]] = []  # agent, content, ts
             self._mode = "faiss"
             logger.info("VectorStore: FAISS in-memory index ready.")
-        elif os.getenv("VECTOR_STORE_USE_SQLITE", "true").lower() == "true":
+        elif os.getenv("VECTOR_STORE_USE_SQLITE", "false").lower() == "true":
             self._sql = sqlite3.connect(Path("vector_mem.db"))
             self._sql.execute(
                 "CREATE TABLE IF NOT EXISTS memories(hash TEXT PRIMARY KEY, agent TEXT, ts TEXT, vec BLOB, content TEXT)"

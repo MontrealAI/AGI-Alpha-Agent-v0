@@ -132,19 +132,34 @@ class PingAgent(AgentBase):
     async def setup(self) -> None:
         """Initialise metrics and announce readiness."""
         if _Prom.Counter and self._prom_ping_total is None:
-            self._prom_ping_total = _Prom.Counter(
-                "af_ping_total",
-                "Cumulative number of successful pings.",
-            )
-            self._prom_last_epoch = _Prom.Gauge(
-                "af_ping_last_epoch",
-                "Unix epoch of the most recent ping.",
-            )
-            self._prom_cycle_hist = _Prom.Histogram(
-                "af_ping_cycle_seconds",
-                "Time taken by ping step() execution.",
-                buckets=(0.05, 0.1, 0.25, 0.5, 1, 2, 5)
-            )
+            # Avoid metric duplication across multiple agent instances in the
+            # same process by checking the global Prometheus registry first.
+            from prometheus_client import REGISTRY as _REG  # local import
+
+            if _REG.get_sample_value("af_ping_total") is None:
+                self._prom_ping_total = _Prom.Counter(
+                    "af_ping_total",
+                    "Cumulative number of successful pings.",
+                )
+            else:
+                self._prom_ping_total = _REG._names_to_collectors["af_ping_total"]
+
+            if _REG.get_sample_value("af_ping_last_epoch") is None:
+                self._prom_last_epoch = _Prom.Gauge(
+                    "af_ping_last_epoch",
+                    "Unix epoch of the most recent ping.",
+                )
+            else:
+                self._prom_last_epoch = _REG._names_to_collectors["af_ping_last_epoch"]
+
+            if _REG.get_sample_value("af_ping_cycle_seconds") is None:
+                self._prom_cycle_hist = _Prom.Histogram(
+                    "af_ping_cycle_seconds",
+                    "Time taken by ping step() execution.",
+                    buckets=(0.05, 0.1, 0.25, 0.5, 1, 2, 5)
+                )
+            else:
+                self._prom_cycle_hist = _REG._names_to_collectors["af_ping_cycle_seconds"]
 
         _log.info(
             "PingAgent initialised – interval=%ss (Prometheus=%s OTEL=%s)",
