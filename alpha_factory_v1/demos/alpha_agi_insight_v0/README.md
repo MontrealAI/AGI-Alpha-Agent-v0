@@ -89,6 +89,8 @@ the ``alpha-agi-insight-final`` command:
 ```bash
 python official_demo_final.py --episodes 5
 ```
+All command line flags from `insight_demo.py` are supported, including
+`--exploration` and `--seed` for reproducible offline runs.
 For a quick offline run with minimal dependencies:
 
 ```bash
