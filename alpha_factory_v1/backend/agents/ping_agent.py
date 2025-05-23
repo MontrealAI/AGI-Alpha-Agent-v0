@@ -69,8 +69,13 @@ _Prom: SimpleNamespace = SimpleNamespace(Counter=None, Gauge=None, Histogram=Non
 _OTEL: SimpleNamespace = SimpleNamespace(tracer=None)
 
 try:
-    from prometheus_client import Counter, Gauge, Histogram  # type: ignore
+    from prometheus_client import Counter, Gauge, Histogram, REGISTRY  # type: ignore
     _Prom.Counter, _Prom.Gauge, _Prom.Histogram = Counter, Gauge, Histogram
+
+    def _get_metric(cls, name: str, desc: str):
+        if name in getattr(REGISTRY, "_names_to_collectors", {}):
+            return REGISTRY._names_to_collectors[name]
+        return cls(name, desc)
 except ModuleNotFoundError:
     pass  # Metrics disabled – agent still functions.
 
@@ -132,19 +137,23 @@ class PingAgent(AgentBase):
     async def setup(self) -> None:
         """Initialise metrics and announce readiness."""
         if _Prom.Counter and self._prom_ping_total is None:
-            self._prom_ping_total = _Prom.Counter(
+            self._prom_ping_total = _get_metric(
+                _Prom.Counter,
                 "af_ping_total",
                 "Cumulative number of successful pings.",
             )
-            self._prom_last_epoch = _Prom.Gauge(
+            self._prom_last_epoch = _get_metric(
+                _Prom.Gauge,
                 "af_ping_last_epoch",
                 "Unix epoch of the most recent ping.",
             )
-            self._prom_cycle_hist = _Prom.Histogram(
+            self._prom_cycle_hist = _get_metric(
+                _Prom.Histogram,
                 "af_ping_cycle_seconds",
                 "Time taken by ping step() execution.",
-                buckets=(0.05, 0.1, 0.25, 0.5, 1, 2, 5)
             )
+            if self._prom_cycle_hist:
+                self._prom_cycle_hist._buckets = (0.05, 0.1, 0.25, 0.5, 1, 2, 5)  # type: ignore[attr-defined]
 
         _log.info(
             "PingAgent initialised – interval=%ss (Prometheus=%s OTEL=%s)",
