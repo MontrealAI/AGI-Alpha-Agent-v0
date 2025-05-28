@@ -3,6 +3,7 @@ name: "🌩 Load Test"
 on:
   schedule:
     - cron: '0 5 * * *'
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -34,3 +35,24 @@ jobs:
           make loadtest API_TOKEN=test-token
       - name: Stop server
         run: kill $(cat server.pid)
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: loadtest-summary
+          path: tools/loadtest/summary.json
+      - name: Comment results
+        if: ${{ github.event.pull_request }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('tools/loadtest/summary.json', 'utf8'));
+            const p95 = data.metrics.http_req_duration['p(95)'];
+            const rps = data.metrics.http_reqs.rate;
+            const body = `Load test results\n- p95 latency: ${p95} ms\n- throughput: ${rps.toFixed(2)} req/s`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });
