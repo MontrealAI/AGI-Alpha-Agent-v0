@@ -2,10 +2,16 @@
 FROM python:3.11-slim
 
 # Install build tools for optional native extensions
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential nodejs npm \
-    && npm install -g pnpm \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl ca-certificates gnupg build-essential && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm && \
+    rm -rf /var/lib/apt/lists/*
+
+# Verify Node installation is >=20 (NodeSource script sets up latest LTS)
+RUN node --version
 
 WORKDIR /app
 
