@@ -123,3 +123,18 @@ test('add calls chat when api key set and stores impact score', async () => {
   const runs = await a.list();
   expect(runs[0].impactScore).toBeCloseTo(runs[0].score + 5);
 });
+
+test('prune continues when del throws DOMException', async () => {
+  const a = new Archive('jest');
+  await a.open();
+  await a.add(1, {}, [{ logic: 0, feasible: 0 }]);
+  await a.add(2, {}, [{ logic: 0, feasible: 0 }]);
+  const kv = require('../src/utils/keyval.ts');
+  const spy = jest
+    .spyOn(kv, 'del')
+    .mockImplementation(() => {
+      throw new DOMException('fail');
+    });
+  await expect(a.prune(1)).resolves.toBeUndefined();
+  spy.mockRestore();
+});

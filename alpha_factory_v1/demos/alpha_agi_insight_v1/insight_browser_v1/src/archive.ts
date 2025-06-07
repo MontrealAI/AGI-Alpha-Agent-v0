@@ -190,13 +190,31 @@ export class Archive {
     );
     const keep = runs.slice(0, max);
     const remove = runs.slice(max);
-    await Promise.all(remove.map((r) => del(r.id, this.runStore)));
+    await Promise.all(
+      remove.map((r) =>
+        del(r.id, this.runStore).catch((err: unknown) => {
+          if (err instanceof DOMException) {
+            console.warn('Failed to delete run', r.id, err);
+          } else {
+            throw err;
+          }
+        }),
+      ),
+    );
     const keepIds = new Set(keep.map((r) => r.evalId));
     const evals = (await values(this.evalStore)) as EvaluatorRecord[];
     await Promise.all(
       evals
         .filter((e) => !keepIds.has(e.id))
-        .map((e) => del(e.id, this.evalStore))
+        .map((e) =>
+          del(e.id, this.evalStore).catch((err: unknown) => {
+            if (err instanceof DOMException) {
+              console.warn('Failed to delete evaluator', e.id, err);
+            } else {
+              throw err;
+            }
+          }),
+        )
     );
   }
 
