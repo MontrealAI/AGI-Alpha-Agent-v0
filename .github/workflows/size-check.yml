@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-check:
-    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
+    if: (github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes') || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
