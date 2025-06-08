@@ -11,7 +11,8 @@ The AI‑GA Meta‑Evolution service is a conceptual research prototype. Referen
    - Verify all Python packages are available:
      Run the following command from the project root directory:
      ```bash
-    AUTO_INSTALL_MISSING=1 python check_env.py --auto-install
+     export WHEELHOUSE=/path/to/wheels  # offline
+     AUTO_INSTALL_MISSING=1 python check_env.py --auto-install
      ```
      This installs `openai-agents` (or the alternative `agents` package) and
      other requirements if they are missing. Offline environments can point the
