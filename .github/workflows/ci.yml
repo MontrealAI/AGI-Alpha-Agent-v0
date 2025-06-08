@@ -11,6 +11,13 @@ on:
     tags: ["v*"]
   pull_request:
 
+  workflow_dispatch:
+    inputs:
+      run_expensive_tests:
+        description: "Run costly tests"
+        required: false
+        default: "no"
+
 permissions:
   contents: read
   actions: read
@@ -26,6 +33,7 @@ env:
 
 jobs:
   lint-type:
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
     name: "🧹 Ruff + 🏷️ Mypy"
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
@@ -50,7 +58,7 @@ jobs:
   tests:
     name: "✅ Pytest"
     needs: lint-type
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
     runs-on: ubuntu-latest
     environment: ci-on-demand
     strategy:
@@ -143,7 +151,7 @@ PY
   docker:
     name: "🐳 Docker build"
     needs: tests
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
@@ -184,7 +192,7 @@ PY
 
   deploy:
     name: "📦 Deploy"
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes' && startsWith(github.ref, 'refs/tags/')
     needs: docker
     runs-on: ubuntu-latest
     steps:

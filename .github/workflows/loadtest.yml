@@ -4,10 +4,15 @@ on:
   schedule:
     - cron: '0 5 * * *'
   workflow_dispatch:
+    inputs:
+      run_expensive_tests:
+        description: "Run costly tests"
+        required: false
+        default: "no"
 
 jobs:
   load-test:
-    if: github.actor == github.repository_owner
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

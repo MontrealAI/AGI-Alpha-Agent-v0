@@ -2,13 +2,18 @@ name: "🔥 Smoke Test"
 
 on:
   workflow_dispatch:
+    inputs:
+      run_expensive_tests:
+        description: "Run costly tests"
+        required: false
+        default: "no"
 
 env:
   PYTHON_VERSION_MATRIX: "3.11,3.12"
 
 jobs:
   smoke:
-    if: github.actor == github.repository_owner
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'MontrealAI' && github.event.inputs.run_expensive_tests == 'yes'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
