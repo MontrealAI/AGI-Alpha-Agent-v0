@@ -255,6 +255,8 @@ pre-commit run --files <paths>   # before each commit
   - Hook `eslint-insight-browser` lints the Insight browser demo. It runs `npm ci`
     in `alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1` before
     invoking `eslint`.
+  - Hook `env-check` verifies Python packages are installed by running
+    `scripts/check_python_deps.py` and `check_env.py --auto-install`.
 
 #### Pre-commit in Air-Gapped Setups
 
