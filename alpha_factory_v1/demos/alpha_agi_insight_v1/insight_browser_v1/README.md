@@ -235,6 +235,9 @@ required. New users can review
 [dist/insight_browser_quickstart.pdf](dist/insight_browser_quickstart.pdf) after
 extraction for a brief walkthrough.
 
+Costly GitHub Actions workflows are disabled by default. **MontrealAI** must
+trigger them manually with `run_expensive_tests` set to `yes` to run.
+
 A dedicated GitHub Actions workflow
 [`size-check.yml`](../../../../.github/workflows/size-check.yml) rebuilds the
 archive when triggered manually by **MontrealAI** with the `run_expensive_tests`
