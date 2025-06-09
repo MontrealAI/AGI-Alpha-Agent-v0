@@ -80,6 +80,8 @@ def _set_seed(val: int) -> None:
     random.seed(val)
     np.random.seed(val)
     torch.manual_seed(val)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(val)
 
 
 # =============================================================================

@@ -20,6 +20,8 @@ All notable changes to this project are documented in this file.
   dashboard.
 - Documented `ALPHA_ASI_*` demo variables in README and AGENTS.md.
 - Removed outdated `alpha_asi_world_model_demo_v1.py` script.
+- `_set_seed` in `alpha_asi_world_model_demo.py` now sets CUDA seeds when
+  a GPU is available.
 
 ## [1.1.0] - 2025-07-15
 ### Added
