@@ -41,6 +41,29 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
             self.assertIsInstance(logged, list)
             self.assertEqual(len(logged), 2)
 
+    def test_nested_ledger_path(self) -> None:
+        """Ledger directory is created when missing."""
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = Path(tmp) / 'nested' / 'log.json'
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    STUB,
+                    '-n',
+                    '1',
+                    '--seed',
+                    '1',
+                    '--ledger',
+                    str(ledger),
+                    '--model',
+                    'gpt-4o-mini',
+                ],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(ledger.exists())
+            
     def test_accumulate_entries(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             ledger = Path(tmp) / 'log.json'

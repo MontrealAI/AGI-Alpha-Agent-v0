@@ -112,6 +112,7 @@ def discover_alpha(
         existing = []
 
     existing.extend(picks if num != 1 else [picks[0]])
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(existing, indent=2))
     return picks
 
