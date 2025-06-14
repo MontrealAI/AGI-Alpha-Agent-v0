@@ -38,7 +38,13 @@ except ModuleNotFoundError as exc:  # pragma: no cover - runtime check
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
-from openai_agents import Agent, OpenAIAgent, Tool
+
+try:
+    from openai_agents import Agent, OpenAIAgent, Tool
+except ModuleNotFoundError as exc:  # pragma: no cover - runtime check
+    raise SystemExit(
+        "Run 'python ../../check_env.py --demo macro_sentinel --auto-install' or" " 'pip install openai-agents'"
+    ) from exc
 from data_feeds import stream_macro_events
 from simulation_core import MonteCarloSimulator
 
