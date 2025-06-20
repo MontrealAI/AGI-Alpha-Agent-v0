@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import base64
+import os
 import subprocess
 import sys
 import tempfile
@@ -72,6 +73,21 @@ version = "0.0.1"
                 verify_wheel_sig.main()
             return ctx.exception.code  # type: ignore[no-any-return]
 
+    def _run_cli(self, wheel: Path) -> subprocess.CompletedProcess[str]:
+        env = os.environ.copy()
+        env["AGENT_WHEEL_PUBKEY"] = self.pub_b64
+        return subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "alpha_factory_v1.scripts.verify_wheel_sig",
+                str(wheel),
+            ],
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+
     def test_valid_signature(self) -> None:
         exit_code = self._run_main(self.wheel_path)
         self.assertEqual(exit_code, 0)
@@ -80,6 +96,15 @@ version = "0.0.1"
         self.wheel_path.write_bytes(self.wheel_path.read_bytes() + b"x")
         exit_code = self._run_main(self.wheel_path)
         self.assertEqual(exit_code, 2)
+
+    def test_cli_valid_signature(self) -> None:
+        result = self._run_cli(self.wheel_path)
+        assert result.returncode == 0, result.stdout + result.stderr
+
+    def test_cli_tampered_wheel_fails(self) -> None:
+        self.wheel_path.write_bytes(self.wheel_path.read_bytes() + b"x")
+        result = self._run_cli(self.wheel_path)
+        assert result.returncode == 2
 
 
 if __name__ == "__main__":  # pragma: no cover
