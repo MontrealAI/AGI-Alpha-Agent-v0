@@ -35,7 +35,7 @@ Execute the helper to compile the progressive web app and confirm the service wo
 ./scripts/build_insight_docs.sh
 ```
 When lineage logs are present this exports `tree.json`, refreshes
-`docs/gallery.html` via `scripts/generate_gallery_html.py` and ensures the
+`docs/index.html` via `scripts/generate_gallery_html.py` and ensures the
 **Meta‑Agentic Tree Search** plays back organically.
 
 ## 3. Generate the Demo Gallery
@@ -50,7 +50,7 @@ Serve the result to ensure animations load smoothly:
 ```bash
 python -m http.server --directory site 8000
 ```
-Browse to <http://localhost:8000/> and step through `gallery.html`. Confirm that every README displays preview media so viewers can follow along in real time.
+Browse to <http://localhost:8000/> and step through `index.html`. Confirm that every README displays preview media so viewers can follow along in real time.
 
 Verify offline support:
 ```bash

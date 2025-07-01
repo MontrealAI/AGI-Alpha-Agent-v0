@@ -31,8 +31,9 @@ Run the helper from the repository root:
 
 The script checks the environment, compiles the Insight browser bundle, refreshes
 `docs/alpha_agi_insight_v1` and builds the MkDocs site. It also calls
-`scripts/generate_gallery_html.py` so `docs/gallery.html` always lists the latest
-demos before publishing to the `gh-pages` branch.
+`scripts/generate_gallery_html.py` so `docs/index.html` always lists the latest
+demos and updates the `docs/gallery.html` redirect before publishing to the
+`gh-pages` branch.
 
 Preview locally:
 

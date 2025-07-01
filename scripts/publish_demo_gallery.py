@@ -50,7 +50,7 @@ def main() -> None:
     org, repo = repo_path.split("/", 1)
     url = f"https://{org}.github.io/{repo}/"
     print("Demo gallery deployed successfully.")
-    print(f"Browse to {url} and explore each demo under gallery.html.")
+    print(f"Browse to {url}index.html and explore each demo from there.")
 
 
 if __name__ == "__main__":

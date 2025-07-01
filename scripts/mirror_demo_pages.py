@@ -9,7 +9,7 @@ from pathlib import Path
 REPLACEMENTS = {
     "../assets/": "../../../assets/",
     "../README/": "../../README/",
-    "../gallery.html": "../../gallery.html",
+    "../gallery.html": "../../index.html",
 }
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

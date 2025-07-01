@@ -26,7 +26,7 @@ Execute the bundled helper:
 ./scripts/build_insight_docs.sh
 ```
 This compiles the Insight PWA, exports `tree.json` when logs are present,
-regenerates `docs/gallery.html` via `scripts/generate_gallery_html.py` and
+regenerates `docs/index.html` via `scripts/generate_gallery_html.py` and
 verifies the service worker hash.
 
 ## 3. Generate the Demo Gallery

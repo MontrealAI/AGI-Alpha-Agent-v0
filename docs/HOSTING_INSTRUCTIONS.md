@@ -122,7 +122,8 @@ To trigger a one-off deployment outside of CI run:
 
 This wrapper script rebuilds the browser bundle, regenerates the MkDocs site and
 runs [`scripts/generate_gallery_html.py`](../scripts/generate_gallery_html.py)
-so `docs/index.html` and `docs/gallery.html` include the latest demos.
+so `docs/index.html` includes the latest demos and updates the `docs/gallery.html`
+redirect.
 It then uses `mkdocs gh-deploy` to push the contents of `site/` to the `gh-pages` branch.
 Use it when testing changes locally or publishing from a personal fork.
 
