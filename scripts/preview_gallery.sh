@@ -18,7 +18,7 @@ sleep 2
 if command -v python >/dev/null 2>&1; then
     python - <<'PY'
 import webbrowser, pathlib
-webbrowser.open((pathlib.Path('site/gallery.html').resolve()).as_uri())
+webbrowser.open((pathlib.Path('site/index.html').resolve()).as_uri())
 PY
 fi
 

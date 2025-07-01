@@ -4,9 +4,10 @@
 """Generate the visual demo gallery HTML files.
 
 This helper reads the Markdown pages under ``docs/demos`` and extracts each
-page's title and preview image. It outputs ``docs/gallery.html`` and
+page's title and preview image. It outputs ``docs/index.html`` and
 ``docs/demos/index.html`` so the GitHub Pages site always lists every demo in a
-simple grid.
+simple grid. ``docs/gallery.html`` is written as a simple redirect for backward
+compatibility.
 """
 from __future__ import annotations
 
@@ -253,8 +254,17 @@ def main() -> None:
     index_html = build_html(entries, prefix="", home_link=False)
     INDEX_FILE.write_text(index_html, encoding="utf-8")
 
-    gallery_html = build_html(entries, prefix="")
-    GALLERY_FILE.write_text(gallery_html, encoding="utf-8")
+    gallery_redirect = (
+        "<!DOCTYPE html>\n"
+        "<html lang='en'>\n<head>\n"
+        "  <meta charset='UTF-8'>\n"
+        "  <meta http-equiv='refresh' content='0; url=index.html'>\n"
+        "  <title>Alpha‑Factory Demo Gallery</title>\n"
+        "</head>\n<body>\n"
+        "  <p>Redirecting to the <a href='index.html'>demo gallery</a>...</p>\n"
+        "</body>\n</html>\n"
+    )
+    GALLERY_FILE.write_text(gallery_redirect, encoding="utf-8")
 
     demos_html = build_html(entries, prefix="../")
     DEMOS_INDEX_FILE.write_text(demos_html, encoding="utf-8")

@@ -41,5 +41,5 @@ url="https://${org}.github.io/${repo}/"
 
 cat <<EOF
 Demo gallery deployed successfully.
-Browse to $url and explore each demo under gallery.html.
+Browse to ${url}index.html and explore each demo from there.
 EOF

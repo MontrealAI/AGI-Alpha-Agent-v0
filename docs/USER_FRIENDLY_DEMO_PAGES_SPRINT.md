@@ -26,7 +26,7 @@ Execute the bundled helper to compile the progressive web app and verify its ser
 ./scripts/build_insight_docs.sh
 ```
 This step exports `tree.json` when lineage logs exist, rebuilds
-`docs/gallery.html` via `scripts/generate_gallery_html.py` and ensures offline
+`docs/index.html` via `scripts/generate_gallery_html.py` and ensures offline
 support works as expected.
 
 ## 3. Generate the Demo Gallery
@@ -41,7 +41,7 @@ Serve the result to confirm animations play smoothly:
 ```bash
 python -m http.server --directory site 8000
 ```
-Open <http://localhost:8000/> and explore `gallery.html`. Each demo README should display its preview media so users can watch the scenarios unfold in real time.
+Open <http://localhost:8000/> and explore `index.html`. Each demo README should display its preview media so users can watch the scenarios unfold in real time.
 
 ## 5. Deploy to GitHub Pages
 Publish the gallery once satisfied:

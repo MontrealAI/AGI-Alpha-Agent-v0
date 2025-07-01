@@ -30,8 +30,8 @@ Execute the new helper from the repository root:
 ```
 
 The script fetches browser assets, compiles the Insight demo, regenerates documentation and runs integrity checks. If Playwright is available, it opens a local server and verifies the PWA works offline.
-`scripts/generate_gallery_html.py` runs as part of the helper so `docs/gallery.html`
-always lists the current demos.
+`scripts/generate_gallery_html.py` runs as part of the helper so `docs/index.html`
+always lists the current demos and updates the `docs/gallery.html` redirect.
 
 ## 3. Deploy
 

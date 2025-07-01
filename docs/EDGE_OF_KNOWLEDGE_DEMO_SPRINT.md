@@ -26,7 +26,7 @@ Execute the helper from the repository root:
 ./scripts/deploy_gallery_pages.sh
 ```
 This command fetches browser assets, compiles the Insight demo, refreshes all documentation, runs integrity checks and, when Playwright is available, validates offline functionality.
-The helper also invokes `scripts/generate_gallery_html.py` so `docs/gallery.html`
+The helper also invokes `scripts/generate_gallery_html.py` so `docs/index.html`
 tracks new demos automatically.
 
 ## 3. Preview Locally
@@ -34,7 +34,7 @@ Serve the site to ensure each page loads smoothly:
 ```bash
 python -m http.server --directory site 8000
 ```
-Browse to <http://localhost:8000/> and click through `gallery.html`. Confirm that every demo README displays its preview media and that `alpha_agi_insight_v1/` animates the meta‑agent tree search progressively.
+Browse to <http://localhost:8000/> and click through `index.html`. Confirm that every demo README displays its preview media and that `alpha_agi_insight_v1/` animates the meta‑agent tree search progressively.
 
 ## 4. Deploy to GitHub Pages
 Publish the gallery when satisfied:
