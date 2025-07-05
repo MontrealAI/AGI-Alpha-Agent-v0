@@ -213,7 +213,7 @@ def insert_after(path: str | Path, anchor: str, code: str) -> None:
         if anchor in line:
             _record_history(p)
             insert_lines = code.splitlines()
-            lines[idx + 1 : idx + 1] = insert_lines
+            lines[idx + 1 : idx + 1] = insert_lines  # noqa: E203
             p.write_text("\n".join(lines), encoding="utf-8")
             return
     raise ValueError(f"anchor '{anchor}' not found in {p}")

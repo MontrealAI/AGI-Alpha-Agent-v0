@@ -20,7 +20,8 @@ if [[ "${1:-}" =~ ^(-h|--help)$ ]]; then
 fi
 
 if [[ -z "${WHEELHOUSE:-}" && -d wheels ]]; then
-  export WHEELHOUSE="$(pwd)/wheels"
+  WHEELHOUSE="$(pwd)/wheels"
+  export WHEELHOUSE
 fi
 PIP_ARGS=()
 if [[ -n "${WHEELHOUSE:-}" ]]; then

@@ -25,4 +25,4 @@ def test_placeholders_stable() -> None:
     for _ in range(5):
         prompt = construct_prompt(parent, exemplars, TEMPLATE)
         assert prompt.startswith(prefix)
-        assert prompt[len(prefix) :] in TEMPLATE["tokens"]
+        assert prompt[len(prefix) :] in TEMPLATE["tokens"]  # noqa: E203
