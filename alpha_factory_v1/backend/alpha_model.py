@@ -64,13 +64,17 @@ def sma_crossover(prices: Sequence[float], fast: int = 20, slow: int = 50) -> in
         prices_arr = np.asarray(prices, dtype=float)
         fast_now = float(np.mean(prices_arr[-fast:]))
         slow_now = float(np.mean(prices_arr[-slow:]))
-        fast_prev = float(np.mean(prices_arr[-fast - 1 : -1]))  # noqa: E203
-        slow_prev = float(np.mean(prices_arr[-slow - 1 : -1]))  # noqa: E203
+        fast_slice_start = -fast - 1
+        slow_slice_start = -slow - 1
+        fast_prev = float(np.mean(prices_arr[fast_slice_start:-1]))
+        slow_prev = float(np.mean(prices_arr[slow_slice_start:-1]))
     else:  # fallback to pure Python
         fast_now = sum(prices[-fast:]) / fast
         slow_now = sum(prices[-slow:]) / slow
-        fast_prev = sum(prices[-fast - 1 : -1]) / fast  # noqa: E203
-        slow_prev = sum(prices[-slow - 1 : -1]) / slow  # noqa: E203
+        fast_slice_start = -fast - 1
+        slow_slice_start = -slow - 1
+        fast_prev = sum(prices[fast_slice_start:-1]) / fast
+        slow_prev = sum(prices[slow_slice_start:-1]) / slow
 
     if fast_prev <= slow_prev and fast_now > slow_now:
         return +1

@@ -61,7 +61,7 @@ fi
 docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
 
 echo "Starting container..."
-docker run -d $GPU_ARGS --name "$CONTAINER_NAME" \
+docker run -d "$GPU_ARGS" --name "$CONTAINER_NAME" \
   -p "$PORT:$PORT" \
   -v "$VOLUME_NAME:/var/alphafactory" \
   -e AF_MEMORY_DIR=/var/alphafactory \
