@@ -12,7 +12,7 @@ Non-technical users can try the project with zero setup. Simply visit
 browser. The [README](docs/README.md#α‑agi-insight-v1-demo) explains how this
 demo is built and deployed.
 
-See [Quick Deployment](docs/HOSTING_INSTRUCTIONS.md#quick-deployment) for build and deployment details. The [📚 Docs workflow](.github/workflows/docs.yml) runs automatically on every push to `main` and publishes the updated site to GitHub Pages.
+See [Quick Deployment](docs/HOSTING_INSTRUCTIONS.md#quick-deployment) for build and deployment details. The [📚 Docs workflow](.github/workflows/docs.yml) is dispatched manually by the repository owner to publish the updated site to GitHub Pages.
 
 Full documentation: [https://montrealai.github.io/AGI-Alpha-Agent-v0/](https://montrealai.github.io/AGI-Alpha-Agent-v0/) (use the **Docs** link in the navigation bar)
 
@@ -61,14 +61,9 @@ for additional details.
 
 [![Launch \u03b1\u2011AGI Insight](https://img.shields.io/badge/Launch-%CE%B1%E2%80%91AGI%20Insight-blue?style=for-the-badge)](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/)
 
-### Automatic Deployment
+### Manual Deployment
 
-Pushes to `main` trigger the [Docs workflow](.github/workflows/docs.yml), which
-runs [`scripts/edge_human_knowledge_pages_sprint.sh`](scripts/edge_human_knowledge_pages_sprint.sh) to rebuild
-the Insight demo and MkDocs site. The workflow publishes the result to GitHub
-Pages, so once it completes the live demo is available at
-<https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/> with no
-extra setup required.
+The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) from the GitHub Actions tab. It runs [`scripts/edge_human_knowledge_pages_sprint.sh`](scripts/edge_human_knowledge_pages_sprint.sh) to rebuild the Insight demo and MkDocs site, publishing the result to GitHub Pages. Once it finishes the live demo is available at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
 
 ### Publish Demo Gallery
 
@@ -109,7 +104,7 @@ python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
 Ensure **Python 3.11+**, **Node 20+** and `mkdocs` are installed. The
-script mirrors the [Docs workflow](.github/workflows/docs.yml) used for automatic
+script mirrors the [Docs workflow](.github/workflows/docs.yml) used for manual
 deployment.
 
 ## Quickstart
