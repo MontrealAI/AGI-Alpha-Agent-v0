@@ -20,9 +20,19 @@ from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
     sender=st.text(min_size=1, max_size=64_000),
     recipient=st.text(min_size=1, max_size=64_000),
     payload_text=st.text(min_size=1, max_size=65_000),
-    ts=st.floats(min_value=-1e308, max_value=1e308, allow_infinity=False, allow_nan=False),
+    ts=st.floats(
+        min_value=-1e308,
+        max_value=1e308,
+        allow_infinity=False,
+        allow_nan=False,
+    ),
 )
-def test_large_payloads_delivered_intact(sender: str, recipient: str, payload_text: str, ts: float) -> None:  # type: ignore[misc]
+def test_large_payloads_delivered_intact(
+    sender: str,
+    recipient: str,
+    payload_text: str,
+    ts: float,
+) -> None:  # type: ignore[misc]
     """Envelopes with huge strings should round-trip through the bus."""
 
     bus = messaging.A2ABus(config.Settings(bus_port=0))

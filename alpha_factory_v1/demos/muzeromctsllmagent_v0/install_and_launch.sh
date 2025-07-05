@@ -258,6 +258,7 @@ else
   if [ ! -d ".venv" ]; then
     python3 -m venv .venv
   fi
+  # shellcheck source=/dev/null
   source .venv/bin/activate
 
   cat <<'EOF' > requirements.txt

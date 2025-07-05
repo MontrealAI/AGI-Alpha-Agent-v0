@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+/* global indexedDB, fetch */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mineTaxonomy, pruneTaxonomy, proposeSectorNodes, loadTaxonomy } from '.../src/taxonomy.ts';

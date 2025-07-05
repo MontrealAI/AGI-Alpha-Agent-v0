@@ -235,9 +235,11 @@ if PROM_ENABLED and "Gauge" in globals():
 else:
 
     class _Dummy(float):
-        def observe(self, *a: Any, **kw: Any) -> None: ...
+        def observe(self, *a: Any, **kw: Any) -> None:
+            ...
 
-        def set(self, *a: Any, **kw: Any) -> None: ...
+        def set(self, *a: Any, **kw: Any) -> None:
+            ...
 
     PLAN_LAT = RISK_SCR = _Dummy()
 

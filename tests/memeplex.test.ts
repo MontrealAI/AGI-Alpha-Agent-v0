@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+/* global indexedDB */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mineMemes, saveMemes, loadMemes } from '../src/memeplex.ts';

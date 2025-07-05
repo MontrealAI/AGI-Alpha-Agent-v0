@@ -139,7 +139,7 @@ class RiskManager:
             return 0.05
 
         # compute daily log‑returns
-        eq = _np.array(self._equity_curve[-self.lookback :], dtype=float)
+        eq = _np.array(self._equity_curve[-self.lookback :], dtype=float)  # noqa: E203
         rets = _np.diff(_np.log(eq))
         if len(rets) < 10:  # not enough data
             return 0.05

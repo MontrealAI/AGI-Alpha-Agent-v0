@@ -122,9 +122,11 @@ except Exception:  # pragma: no cover
         def labels(self, *_a):  # noqa: D401
             return self
 
-        def inc(self, *_a): ...
+        def inc(self, *_a):
+            ...
 
-        def set(self, *_a): ...
+        def set(self, *_a):
+            ...
 
     _MET_ADD = _MET_QRY = _MET_SZ = _Noop()
 

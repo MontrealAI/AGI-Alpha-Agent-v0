@@ -95,12 +95,14 @@ def build_page(demo: Path) -> str:
     ]
     if launch_link:
         content.extend(["", launch_link, ""])
-    content.extend([
-        readme_text,
-        "",
-        f"[View README](../../alpha_factory_v1/demos/{demo.name}/README.md)",
-        "",
-    ])
+    content.extend(
+        [
+            readme_text,
+            "",
+            f"[View README](../../alpha_factory_v1/demos/{demo.name}/README.md)",
+            "",
+        ]
+    )
 
     return "\n".join(content)
 

@@ -29,9 +29,7 @@ def _probe(url: str) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Check orchestrator health")
-    parser.add_argument(
-        "--host", default="http://localhost:8000", help="Orchestrator base URL"
-    )
+    parser.add_argument("--host", default="http://localhost:8000", help="Orchestrator base URL")
     args = parser.parse_args()
     base = args.host.rstrip("/")
     ok = True

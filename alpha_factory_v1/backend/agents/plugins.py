@@ -28,9 +28,7 @@ def verify_wheel(path: Path) -> bool:
             return False
         pub_bytes = base64.b64decode(_WHEEL_PUBKEY)
         signature = base64.b64decode(sig_b64)
-        ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(
-            signature, path.read_bytes()
-        )
+        ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
         return True
     except InvalidSignature:
         logger.error("Invalid signature for %s", path.name)

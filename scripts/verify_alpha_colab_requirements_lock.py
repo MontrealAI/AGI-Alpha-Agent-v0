@@ -39,7 +39,8 @@ def main() -> int:
                 extra = f"--no-index --find-links {wheelhouse} "
             msg = (
                 "alpha_factory_v1/requirements-colab.lock is outdated. Run 'pip-compile "
-                f"{extra}--generate-hashes --quiet alpha_factory_v1/requirements-colab.txt -o alpha_factory_v1/requirements-colab.lock'\n"
+                f"{extra}--generate-hashes --quiet alpha_factory_v1/requirements-colab.txt -o "
+                "alpha_factory_v1/requirements-colab.lock'\n"
             )
             sys.stderr.write(msg)
             return 1

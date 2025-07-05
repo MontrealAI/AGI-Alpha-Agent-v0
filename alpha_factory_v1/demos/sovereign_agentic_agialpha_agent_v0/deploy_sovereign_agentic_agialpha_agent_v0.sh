@@ -163,6 +163,7 @@ function show_download_progress() {
 ###############################################################################
 function interactive_ollama_model_selection() {
   if [ -f "$OLLAMA_CONFIG_FILE" ]; then
+    # shellcheck source=/dev/null
     source "$OLLAMA_CONFIG_FILE" || true
     if [ -n "$OLLAMA_MODEL" ]; then
       echo "Using previously selected local Ollama model: \"$OLLAMA_MODEL\" (from $OLLAMA_CONFIG_FILE)."
@@ -289,7 +290,7 @@ if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
   PULL_OK=${PIPESTATUS[0]}
   set -e
 
-  if [ $PULL_OK -ne 0 ]; then
+  if [ "$PULL_OK" -ne 0 ]; then
     if echo "$PULL_OUT" | grep -q "412:"; then
       echo "Detected version mismatch. Attempting Ollama upgrade..."
       upgrade_ollama

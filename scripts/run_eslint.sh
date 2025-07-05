@@ -12,5 +12,5 @@ ESLINT_USE_FLAT_CONFIG=true npx --prefix "$BROWSER_DIR" eslint \
     patterns=$(grep -v '^\s*$' "$BROWSER_DIR/.eslintignore" \
         | sed 's/^/--ignore-pattern /' | tr '\n' ' ')
     ESLINT_USE_FLAT_CONFIG=true npx --prefix "$BROWSER_DIR" eslint \
-        --config "$BROWSER_DIR/eslint.config.js" $patterns "$@"
+        --config "$BROWSER_DIR/eslint.config.js" "$patterns" "$@"
 }
