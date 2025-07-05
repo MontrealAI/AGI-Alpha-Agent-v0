@@ -26,7 +26,7 @@ cd "$DIR"
 free_port(){ for p in $(seq "$1" "$2"); do
   ([[ $SCAN == *ss ]] && ss -ltn | grep -q ":$p ") ||
   ([[ $SCAN == *lsof ]] && lsof -i :"$p" -sTCP:LISTEN &>/dev/null) && continue
-  echo $p; return; done; echo 0; }
+  echo "$p"; return; done; echo 0; }
 
 BACKEND_PORT=$(free_port 8080 8090)
 PROXY_PORT=$(free_port 7000 7009)
@@ -55,16 +55,16 @@ if __name__ == "__main__":
                 host="0.0.0.0",
                 port=int(os.getenv("PORT", sys.argv[1] if len(sys.argv)>1 else 3000)))
 PY
-  [[ -f $dir/static/index.html ]] || echo "<h1>${dir} ✔</h1>" >$dir/static/index.html
+  [[ -f $dir/static/index.html ]] || echo "<h1>${dir} ✔</h1>" >"$dir"/static/index.html
   if [[ $dir == backend ]]; then
-    [[ -f $dir/tests/test_health.py ]] || cat >$dir/tests/test_health.py <<'PY'
+    [[ -f $dir/tests/test_health.py ]] || cat >"$dir"/tests/test_health.py <<'PY'
 import os, requests
 def test_health():
     port=os.getenv("PORT","8080")
     assert requests.get(f"http://localhost:{port}/").status_code==200
 PY
   fi
-  [[ -f $dir/Dockerfile ]] || cat >$dir/Dockerfile <<EOF
+  [[ -f $dir/Dockerfile ]] || cat >"$dir"/Dockerfile <<EOF
 FROM python:3.11-slim
 WORKDIR /app
 COPY . /app
@@ -75,9 +75,9 @@ EXPOSE ${port}
 CMD ["python","${entry}","${port}"]
 EOF
 }
-mk_service backend              orchestrator.py ${BACKEND_PORT}
-mk_service infra/agentsdk_proxy proxy.py        ${PROXY_PORT}
-mk_service infra/adk_mesh       mesh.py         ${MESH_PORT}
+mk_service backend              orchestrator.py "${BACKEND_PORT}"
+mk_service infra/agentsdk_proxy proxy.py        "${PROXY_PORT}"
+mk_service infra/adk_mesh       mesh.py         "${MESH_PORT}"
 mk_service ui                   server.py       3000   # UI stays on 3000 inside container
 
 # ── .env prompt ─────────────────────────────────────────────────
@@ -114,7 +114,7 @@ PROJECT=alpha_factory
 
 # ── build & up ──────────────────────────────────────────────────
 echo -e "\n🔨  Building images …"
-docker compose -p $PROJECT build $( [[ $NO_CACHE -eq 1 ]] && echo "--no-cache" )
+docker compose -p "$PROJECT" build "$( [[ $NO_CACHE -eq 1 ]] && echo "--no-cache" )"
 echo -e "\n🚀  Launching stack …"
 docker compose -p $PROJECT up -d
 
