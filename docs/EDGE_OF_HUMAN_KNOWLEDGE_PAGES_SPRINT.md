@@ -16,6 +16,8 @@ This sprint explains how Codex can publish the **Alpha-Factory** demo gallery to
   Export `IPFS_GATEWAY`, `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` beforehand to
   customize asset downloads if the defaults fail.
 3. Visit the printed URL in an incognito window and ensure `index.html` links to every demo with preview media.
+4. The repository owner must start the [`Docs` workflow](../.github/workflows/docs.yml)
+   manually from the **Actions** tab to publish the site to GitHub Pages.
 
 ## Maintenance
 - Re-run the wrapper whenever demo docs or assets change.
