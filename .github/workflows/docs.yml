@@ -82,6 +82,7 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key.outputs.key }}
+          restore-keys: assets-
       - name: Build and deploy gallery
         env:
           IPFS_GATEWAY: ${{ env.IPFS_GATEWAY }}
