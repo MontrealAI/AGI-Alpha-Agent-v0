@@ -31,6 +31,8 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
+      - name: Install Ruff
+        run: pip install ruff
       - name: Install project dependencies
         run: python check_env.py --auto-install
       - name: Build sandbox image
@@ -48,8 +50,6 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Install pre-commit
         run: pip install pre-commit
-      - name: Install Ruff
-        run: pip install ruff
       - name: Fetch browser assets
         run: python scripts/fetch_assets.py
       - name: Run pre-commit checks
