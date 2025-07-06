@@ -1207,7 +1207,7 @@ for instructions and example volume mounts.
 | `SANDBOX_MEM_MB` | `256` | Memory cap for sandboxed code in MB. |
 | `MAX_RESULTS` | `100` | Maximum stored simulation results. |
 | `MAX_SIM_TASKS` | `4` | Maximum concurrent simulation tasks. |
-| `IPFS_GATEWAY` | `https://ipfs.io/ipfs` | Base URL for fetching pinned Insight demo runs. |
+| `IPFS_GATEWAY` | `https://ipfs.io/ipfs` | Base URL for fetching pinned Insight demo runs. Not used for asset downloads. |
 | `HF_GPT2_BASE_URL` | `https://huggingface.co/openai-community/gpt2/resolve/main` | Base URL for the GPT‑2 checkpoints. |
 | `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.26.0/full` | Base URL for the Pyodide runtime files. |
 | `FETCH_ASSETS_ATTEMPTS` | `3` | Download retry count for `fetch_assets.py`. |
