@@ -84,7 +84,7 @@ internet connectivity or a wheelhouse available via `--wheelhouse <dir>`
 (or the `WHEELHOUSE` environment variable).
 The full suite exercises features that depend on optional packages such as
 `numpy`, `torch`, `pandas`, `prometheus_client`, `gymnasium`, `playwright`,
-`httpx`, `uvicorn`, `git` and `hypothesis`.
+`httpx`, `uvicorn`, `git`, `hypothesis` and `requests_mock`.
 
 Tests are skipped when `numpy` or `prometheus_client` are missing. The
 `tests/conftest.py` helper checks for `torch` with `importlib.util.find_spec`

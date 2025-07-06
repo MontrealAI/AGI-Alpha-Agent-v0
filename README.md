@@ -1286,7 +1286,7 @@ before running `pytest`. When offline, set `WHEELHOUSE` or pass
 repository ships with a `wheels/` directory that can be used as this cache.
 The full test suite relies on optional packages including `numpy`, `torch`,
 `pandas`, `prometheus_client`, `gymnasium`, `playwright`, `httpx`, `uvicorn`,
-`git` and `hypothesis`.
+`git`, `hypothesis` and `requests_mock`.
 
 #### Wheelhouse Setup
 
