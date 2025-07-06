@@ -74,8 +74,12 @@ repos:
         entry: scripts/run_eslint.sh
         language: system
         types: [javascript]
+        args: ["--env", "jest"]
         exclude: |
           (^docs/)|
+          (^dist/)|
           (^alpha_factory_v1/core/interface/web_client/dist/)|
           (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/(dist|lib|build|tests)/)|
-          (^alpha_factory_v1/ui/static/)
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/)|
+          (^alpha_factory_v1/ui/static/)|
+          (bundle\.esm\.min\.js$)|(insight\.bundle\.js$)
