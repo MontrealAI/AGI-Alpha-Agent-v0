@@ -3,10 +3,6 @@ name: "📚 Docs"
 
 on:
   workflow_dispatch:
-    inputs:
-      run_token:
-        description: 'Authorization token for maintainers'
-        required: false
 
 permissions:
   contents: write
@@ -24,13 +20,11 @@ jobs:
       # scripts/fetch_assets.py for details.
       # HF_GPT2_BASE_URL overrides the default Hugging Face mirror.
     steps:
-      - name: Check dispatch token
+      - name: Verify repository owner
         if: github.actor != github.repository_owner
         run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
+          echo "Only the repository owner can dispatch this workflow."
+          exit 1
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5

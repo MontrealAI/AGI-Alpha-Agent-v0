@@ -117,18 +117,11 @@ The "📚 Docs" workflow
 The repository owner manually triggers [`docs.yml`](../.github/workflows/docs.yml), which runs
 `scripts/edge_human_knowledge_pages_sprint.sh`, builds the site and pushes the result to the
 `gh-pages` branch. Open **Actions → 📚 Docs**, click **Run workflow**, leave the token field empty and confirm.
-The workflow validates the token automatically and stops early if it doesn't match the secret.
 The workflow restores a cache keyed by the Pyodide and GPT‑2 file checksums before
 running `npm run fetch-assets`. Once the assets pass verification the cache is
-saved so subsequent runs skip the downloads.
-
-Other contributors can dispatch the workflow by supplying a **run_token** matching the
-`DISPATCH_TOKEN` secret. Enter the token in the **Run workflow** form:
-
-1. Navigate to **Actions → 📚 Docs**.
-2. Click **Run workflow**.
-3. Paste the token into the **run_token** field.
-4. Click **Run workflow** again to start the job.
+saved so subsequent runs skip the downloads. Only the repository owner can
+dispatch the workflow from the **Actions → 📚 Docs** page by clicking
+**Run workflow**.
 
 ### Manual Publish
 
