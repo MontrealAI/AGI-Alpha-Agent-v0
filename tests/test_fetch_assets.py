@@ -28,27 +28,21 @@ def test_fetch_assets_failure(monkeypatch: pytest.MonkeyPatch, capsys: pytest.Ca
 
 def test_download_with_retry_fallback(tmp_path: Path, requests_mock: requests_mock.Mocker) -> None:
     path = tmp_path / "out"
-    monkeypatch = pytest.MonkeyPatch()
-    monkeypatch.setattr(fa, "FALLBACK_GATEWAYS", ["https://alt.gateway/ipfs"])
-    url_primary = f"{fa.GATEWAY}/CID"
-    url_alt = "https://alt.gateway/ipfs/CID"
-    requests_mock.get(url_primary, status_code=500)
-    requests_mock.get(url_alt, text="data")
-    try:
-        fa.download_with_retry("CID", path, attempts=1)
-    finally:
-        monkeypatch.undo()
+    url = "https://example.com/file"
+    requests_mock.get(url, [{"status_code": 500}, {"text": "data"}])
+    fa.download_with_retry(url, path, attempts=2, label="file")
     assert path.read_text() == "data"
+    assert len(requests_mock.request_history) == 2
 
 
 def test_download_with_retry_auth_message(
     tmp_path: Path, requests_mock: requests_mock.Mocker, capsys: pytest.CaptureFixture[str]
 ) -> None:
     path = tmp_path / "out"
-    url_primary = f"{fa.GATEWAY}/CID"
-    requests_mock.get(url_primary, status_code=401)
+    url = "https://example.com/CID"
+    requests_mock.get(url, status_code=401)
     with pytest.raises(RuntimeError) as exc:
-        fa.download_with_retry("CID", path, attempts=1, label="wasm_llm/pytorch_model.bin")
+        fa.download_with_retry(url, path, attempts=1, label="wasm_llm/pytorch_model.bin")
     out = capsys.readouterr().out
     assert "HF_GPT2_BASE_URL" in out
     msg = str(exc.value)
