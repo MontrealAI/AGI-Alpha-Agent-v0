@@ -17,6 +17,9 @@ except Exception:  # pragma: no cover - optional dependency
 
 from .file_ops import view, str_replace
 from . import alerts, tracing
+from alpha_factory_v1.common import utils as common_utils
+
+messaging = common_utils.messaging
 from .snark import (
     generate_proof,
     publish_proof,
@@ -38,4 +41,5 @@ __all__ = [
     "verify_aggregate_proof",
     "alerts",
     "tracing",
+    "messaging",
 ]
