@@ -41,6 +41,7 @@ export default [
             "docs/**",
             "../../../../docs/**",
             "*.min.js",
+            "wasm/**",
         ],
     },
     js.configs.recommended,
