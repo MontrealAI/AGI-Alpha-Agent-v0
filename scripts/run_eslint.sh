@@ -6,7 +6,7 @@ BROWSER_DIR="$ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v
 # Install npm dependencies deterministically
 # Install npm dependencies deterministically if missing
 if [ ! -d "$BROWSER_DIR/node_modules" ]; then
-    npm --prefix "$BROWSER_DIR" ci --ignore-scripts >/dev/null
+    npm --prefix "$BROWSER_DIR" ci >/dev/null
 fi
 cd "$BROWSER_DIR"
 args=()
