@@ -12,7 +12,7 @@ Non-technical users can try the project with zero setup. Simply visit
 browser. The [README](docs/README.md#α‑agi-insight-v1-demo) explains how this
 demo is built and deployed.
 
-See [Quick Deployment](docs/HOSTING_INSTRUCTIONS.md#quick-deployment) for build and deployment details. The [📚 Docs workflow](.github/workflows/docs.yml) is dispatched manually by the repository owner to publish the updated site to GitHub Pages.
+See [Quick Deployment](docs/HOSTING_INSTRUCTIONS.md#quick-deployment) for build and deployment details. The [📚 Docs workflow](.github/workflows/docs.yml) is dispatched manually by the repository owner to publish the updated site to GitHub Pages. Contributors can run it by providing a **run_token** that matches the `DISPATCH_TOKEN` secret.
 
 Full documentation: [https://montrealai.github.io/AGI-Alpha-Agent-v0/](https://montrealai.github.io/AGI-Alpha-Agent-v0/) (use the **Docs** link in the navigation bar)
 
@@ -62,6 +62,13 @@ for additional details.
 ### Manual Deployment
 
 The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) from the GitHub Actions tab. It runs [`scripts/edge_human_knowledge_pages_sprint.sh`](scripts/edge_human_knowledge_pages_sprint.sh) to rebuild the Insight demo and MkDocs site, publishing the result to GitHub Pages. Once it finishes the live demo is available at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
+
+Non‑owners must supply the **run_token** input when dispatching the workflow so it matches the `DISPATCH_TOKEN` secret. Enter the token in the **Run workflow** form:
+
+1. Open **Actions → 📚 Docs**.
+2. Click **Run workflow**.
+3. Paste your token into the **run_token** field.
+4. Click **Run workflow** again to start the build.
 
 ### Publish Demo Gallery
 
