@@ -24,11 +24,9 @@ offline functionality and then publishes the docs in one step.
 
 The `fetch-assets` command downloads the Pyodide runtime and GPT‑2 weights from
 official mirrors. Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change
-the sources. Remaining assets are fetched via IPFS and the command respects the
-`IPFS_GATEWAY` environment variable. Set `IPFS_GATEWAY=<url>` to override the
-primary gateway when running the command. If downloads fail the script
-automatically retries using `https://ipfs.io/ipfs`, `https://cloudflare-ipfs.com/ipfs`,
-`https://w3s.link/ipfs`, `https://cf-ipfs.com/ipfs` and `https://gateway.pinata.cloud/ipfs`.
+the sources. IPFS is no longer used for these assets, so failures should be
+diagnosed by checking your network connection or mirror URLs. `IPFS_GATEWAY`
+only affects loading pinned Insight demo runs.
 
 ## Prerequisites
 
