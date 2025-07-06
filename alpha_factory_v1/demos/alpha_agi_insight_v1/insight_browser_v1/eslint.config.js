@@ -14,6 +14,22 @@ const browserGlobals = {
     Event: "readonly",
     DOMException: "readonly",
     indexedDB: "readonly",
+    btoa: "readonly",
+    crypto: "readonly",
+    Blob: "readonly",
+    URL: "readonly",
+    importScripts: "readonly",
+    caches: "readonly",
+    console: "readonly",
+    workbox: "readonly",
+    d3: "readonly",
+    performance: "readonly",
+    requestAnimationFrame: "readonly",
+    clearTimeout: "readonly",
+    setTimeout: "readonly",
+    File: "readonly",
+    HashChangeEvent: "readonly",
+    MessageEvent: "readonly",
 };
 
 export default [

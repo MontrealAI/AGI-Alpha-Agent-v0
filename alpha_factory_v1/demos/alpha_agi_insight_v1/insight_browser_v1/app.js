@@ -95,7 +95,7 @@ function updateLegend(strats){
   }
 }
 
-function updateDepthLegend(max){
+function updateDepthLegend(){
   const dl=document.getElementById('depth-legend');
   dl.innerHTML='depth';
   const bar=document.createElement('div');
@@ -250,7 +250,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   telemetry = initTelemetry();
   archive = new Archive();
   if (typeof document.hasStorageAccess === 'function') {
-    try { await document.hasStorageAccess(); } catch {}
+    try { await document.hasStorageAccess(); } catch { /* noop */ }
   }
   await archive.open();
   evolutionPanel = initEvolutionPanel(archive);
@@ -312,7 +312,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
     if(!deferredPrompt)return;
     installBtn.hidden=true;
     deferredPrompt.prompt();
-    try{await deferredPrompt.userChoice;}catch{}
+    try{await deferredPrompt.userChoice;}catch{ /* noop */ }
     deferredPrompt=null;
   });
   window.addEventListener("appinstalled",()=>{
@@ -332,12 +332,12 @@ window.addEventListener('DOMContentLoaded',async()=>{
     }
     if (pinned && pinned.url) {
       if (navigator.clipboard) {
-        try { await navigator.clipboard.writeText(pinned.url); } catch {}
+        try { await navigator.clipboard.writeText(pinned.url); } catch { /* noop */ }
       }
       toast(`pinned ${pinned.cid}`);
     } else {
       if (navigator.clipboard) {
-        try { await navigator.clipboard.writeText(url); } catch {}
+        try { await navigator.clipboard.writeText(url); } catch { /* noop */ }
       }
       toast(t('link_copied'));
     }
