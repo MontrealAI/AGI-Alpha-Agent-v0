@@ -81,7 +81,7 @@ def gather_assets(docs_dir: Path) -> list[str]:
     allowed = {".js", ".css", ".svg", ".json", ".wasm", ".tar", ".cast"}
     pyodide_dir = base_assets / "pyodide"
     if pyodide_dir.is_dir():
-        order = ["pyodide.js", "pyodide.asm.wasm", "repodata.json"]
+        order = ["pyodide.js", "pyodide.asm.wasm", "pyodide-lock.json"]
         for name in order:
             file = pyodide_dir / name
             if file.is_file() and file.suffix in allowed:
