@@ -56,7 +56,7 @@ dotenv.config();
 try {
     validateEnv(process.env);
 } catch (err) {
-    console.error(err.message || err);
+    console.error(err && err.message ? err.message : err);
     process.exit(1);
 }
 
@@ -64,7 +64,7 @@ const verbose = process.argv.includes("--verbose");
 
 try {
     execSync("tsc --noEmit", { stdio: "inherit" });
-} catch (err) {
+} catch {
     process.exit(1);
 }
 

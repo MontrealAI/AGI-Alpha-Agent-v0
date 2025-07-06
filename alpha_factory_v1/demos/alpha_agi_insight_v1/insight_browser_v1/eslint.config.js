@@ -55,7 +55,7 @@ export default [
         rules: { ...tsPlugin.configs.recommended.rules },
     },
     {
-        files: ["tests/**/*.{js,ts}"],
+        files: ["tests/**/*.{js,ts,mjs}"],
         languageOptions: {
             globals: {
                 jest: "readonly",

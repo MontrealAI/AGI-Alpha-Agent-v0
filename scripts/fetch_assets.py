@@ -7,9 +7,9 @@ Environment variables:
     HF_GPT2_BASE_URL -- Override the Hugging Face base URL for the GPT‑2 model.
     PYODIDE_BASE_URL -- Override the base URL for Pyodide runtime files.
 
-Pyodide runtime files are fetched directly from the official CDN or the
-user-specified mirror. When a custom mirror fails, the script retries with
-the official CDN and then the GitHub release mirror.
+Pyodide runtime files are fetched directly from the official CDN or a user
+specified mirror. The script no longer attempts alternate gateways when a
+download fails.
 """
 
 from __future__ import annotations
@@ -31,13 +31,9 @@ HF_GPT2_BASE_URL = os.environ.get("HF_GPT2_BASE_URL", DEFAULT_HF_GPT2_BASE_URL).
 # Base URL for the Pyodide runtime
 # Updated to Pyodide 0.26.0
 DEFAULT_PYODIDE_BASE_URL = "https://cdn.jsdelivr.net/pyodide/v0.26.0/full"
-ALT_PYODIDE_BASE_URL = "https://pyodide-cdn2.iodide.io/v0.26.0/full"
-# GitHub publishes the same assets under the releases page.
-GITHUB_PYODIDE_BASE_URL = "https://github.com/pyodide/pyodide/releases/download/0.26.0"
 PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).rstrip("/")
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
-# Alternate gateways to try when the main download fails
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -80,7 +76,7 @@ def _session() -> requests.Session:
     return s
 
 
-def download(cid: str, path: Path, fallback: str | None = None, label: str | None = None) -> None:
+def download(cid: str, path: Path, label: str | None = None) -> None:
     url = cid
     path.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -88,11 +84,7 @@ def download(cid: str, path: Path, fallback: str | None = None, label: str | Non
             resp.raise_for_status()
             data = resp.content
     except Exception:
-        if not fallback:
-            raise
-        with _session().get(fallback, timeout=60) as resp:
-            resp.raise_for_status()
-            data = resp.content
+        raise
     path.write_bytes(data)
     key = label or path.name
     expected = CHECKSUMS.get(key) or CHECKSUMS.get(path.name)
@@ -110,7 +102,6 @@ def download(cid: str, path: Path, fallback: str | None = None, label: str | Non
 def download_with_retry(
     cid: str,
     path: Path,
-    fallback: str | list[str] | None = None,
     attempts: int = MAX_ATTEMPTS,
     label: str | None = None,
 ) -> None:
@@ -118,19 +109,11 @@ def download_with_retry(
     last_url = cid
     first_failure = True
     lbl = label or str(path)
-    alt_urls: list[str] = []
-    if fallback:
-        if isinstance(fallback, str):
-            alt_urls.append(fallback)
-        else:
-            alt_urls.extend(list(fallback))
-
-    success_url: str | None = None
     for i in range(1, attempts + 1):
         try:
             download(cid, path, label=lbl)
-            success_url = cid
-            break
+            print(f"Fetched {lbl} via primary mirror")
+            return
         except Exception as exc:  # noqa: PERF203
             last_exc = exc
             last_url = cid
@@ -142,29 +125,12 @@ def download_with_retry(
                         print(f"Download returned HTTP {status}. Set PYODIDE_BASE_URL to a reachable mirror")
                     else:
                         print(f"Download returned HTTP {status}. Set HF_GPT2_BASE_URL to a reachable mirror")
-            for alt in alt_urls:
-                try:
-                    download(alt, path, label=lbl)
-                    success_url = alt
-                    break
-                except Exception as exc_alt:
-                    last_exc = exc_alt
-                    last_url = alt
-                    continue
-            if success_url:
-                break
             if status in {401, 404}:
                 break
             if i < attempts:
                 print(f"Attempt {i} failed for {lbl}: {exc}, retrying...")
             else:
                 print(f"ERROR: could not fetch {lbl} from {last_url} after {attempts} attempts")
-    if success_url:
-        if success_url != cid:
-            print(f"Fetched {lbl} via {success_url}")
-        else:
-            print(f"Fetched {lbl} via primary gateway")
-        return
     if last_exc:
         url = getattr(getattr(last_exc, "response", None), "url", last_url)
         raise RuntimeError(f"failed to download {lbl} from {url}: {last_exc}. Some mirrors may require authentication")
@@ -230,20 +196,10 @@ def main() -> None:
                 print(f"Replacing placeholder {rel}...")
             else:
                 print(f"Fetching {rel} from {cid}...")
-            fallback: str | list[str] | None = None
             if rel in PYODIDE_ASSETS:
                 print(f"Resolved Pyodide URL: {cid}")
-                fb: list[str] = []
-                if PYODIDE_BASE_URL != DEFAULT_PYODIDE_BASE_URL:
-                    fb.append(f"{DEFAULT_PYODIDE_BASE_URL}/{dest.name}")
-                else:
-                    fb.append(f"{ALT_PYODIDE_BASE_URL}/{dest.name}")
-                fb.append(f"{GITHUB_PYODIDE_BASE_URL}/{dest.name}")
-                fallback = fb
-            if rel == "lib/bundle.esm.min.js":
-                fallback = None
             try:
-                download_with_retry(cid, dest, fallback, label=rel)
+                download_with_retry(cid, dest, label=rel)
             except Exception as exc:
                 print(f"Download failed for {rel}: {exc}")
                 dl_failures.append(rel)
