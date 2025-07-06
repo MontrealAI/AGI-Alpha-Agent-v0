@@ -22,8 +22,12 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - name: Check dispatch token
-        if: github.event.inputs.run_token != secrets.DISPATCH_TOKEN && github.actor != github.repository_owner
-        run: echo "Unauthorized" && exit 1
+        if: github.actor != github.repository_owner
+        run: |
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
