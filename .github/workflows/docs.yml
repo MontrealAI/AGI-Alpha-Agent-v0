@@ -48,6 +48,8 @@ jobs:
             alpha_factory_v1/core/interface/web_client/package-lock.json
       - name: Install pre-commit
         run: pip install pre-commit
+      - name: Fetch browser assets
+        run: python scripts/fetch_assets.py
       - name: Run pre-commit checks
         run: pre-commit run --all-files
       - name: Install docs dependencies
