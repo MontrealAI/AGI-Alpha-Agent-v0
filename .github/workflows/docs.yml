@@ -42,6 +42,10 @@ jobs:
           cache-dependency-path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
             alpha_factory_v1/core/interface/web_client/package-lock.json
+      - name: Install Insight Browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Install Web client dependencies
+        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Fetch browser assets
