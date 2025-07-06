@@ -6,11 +6,10 @@ BROWSER_DIR="$ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v
 LOCK_FILE="$BROWSER_DIR/package-lock.json"
 CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
 
-# Install npm dependencies deterministically when needed
-lock_hash="$(sha256sum "$LOCK_FILE" | awk '{print $1}')"
-if [ ! -d "$BROWSER_DIR/node_modules" ] || [ ! -f "$CHECK_FILE" ] || [ "$(cat "$CHECK_FILE" 2>/dev/null)" != "$lock_hash" ]; then
+# Only (re)install dependencies when node_modules or the checksum file is missing
+if [ ! -d "$BROWSER_DIR/node_modules" ] || [ ! -f "$CHECK_FILE" ]; then
     npm --prefix "$BROWSER_DIR" ci >/dev/null
-    echo "$lock_hash" > "$CHECK_FILE"
+    sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
 fi
 cd "$BROWSER_DIR"
 args=()
