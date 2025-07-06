@@ -1399,7 +1399,7 @@ cd alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client
 npm ci          # use the lock file for reproducible installs
 npm run dev       # http://localhost:5173
 # build production assets
-pnpm build
+npm run build
 python -m http.server --directory dist 9000
 ```
 Alternatively run inside Docker:

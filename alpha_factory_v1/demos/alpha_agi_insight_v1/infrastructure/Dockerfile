@@ -7,7 +7,6 @@ RUN apt-get update && \
         curl ca-certificates gnupg build-essential && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g pnpm && \
     rm -rf /var/lib/apt/lists/*
 
 # Verify Node installation is >=20 (NodeSource script sets up latest LTS)
@@ -21,8 +20,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements
 
 # Copy the project source
 COPY . /app
-RUN pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client install \
-    && pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
+RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client \
+    && npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
     && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
 
 # copy built assets

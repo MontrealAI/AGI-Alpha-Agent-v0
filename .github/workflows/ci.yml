@@ -89,9 +89,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'npm'
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
@@ -99,16 +97,16 @@ jobs:
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
-        run: pnpm --dir src/interface/web_client install
+        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Audit web dependencies
-        run: npm --prefix src/interface/web_client audit --production --audit-level=high
+        run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
-        run: pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Cypress E2E tests with Percy
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_TOKEN_E2E: ${{ secrets.PERCY_TOKEN }}
-        run: pnpm --dir src/interface/web_client run percy:cypress
+        run: npm --prefix alpha_factory_v1/core/interface/web_client run percy:cypress
       - name: Install Playwright browsers
         id: install-browsers
         run: |
@@ -199,8 +197,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-      - name: Install pnpm
-        run: npm install -g pnpm
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
@@ -208,14 +204,14 @@ jobs:
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Type check insight browser
-        run: pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Build web client
         run: |
           make build_web
-          test -f src/interface/web_client/dist/index.html
+          test -f alpha_factory_v1/core/interface/web_client/dist/index.html
       - name: Accessibility audit
         run: |
-          npx --yes @axe-core/cli src/interface/web_client/dist/index.html --score > axe.json
+          npx --yes @axe-core/cli alpha_factory_v1/core/interface/web_client/dist/index.html --score > axe.json
           score=$(jq '.score' axe.json)
           echo "a11y score: $score"
           if [ "$score" -lt 90 ]; then
@@ -265,17 +261,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'npm'
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Type check insight browser
-        run: pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Build web client
         run: make build_web
       - name: Pack release assets
-        run: tar -czf web-client.tar.gz -C src/interface/web_client/dist .
+        run: tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:

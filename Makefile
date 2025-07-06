@@ -3,8 +3,8 @@
         proto proto-verify benchmark
 
 build_web:
-	pnpm --dir src/interface/web_client install
-	pnpm --dir src/interface/web_client run build
+	npm ci --prefix alpha_factory_v1/core/interface/web_client
+	npm --prefix alpha_factory_v1/core/interface/web_client run build
 
 demo-setup:
 	bash scripts/demo_setup.sh
