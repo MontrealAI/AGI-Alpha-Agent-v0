@@ -37,11 +37,11 @@ export default [
         ignores: [
             "dist/**",
             "lib/**",
+            "wasm/**",
             "build/**",
             "docs/**",
             "../../../../docs/**",
             "*.min.js",
-            "wasm/**",
         ],
     },
     js.configs.recommended,
