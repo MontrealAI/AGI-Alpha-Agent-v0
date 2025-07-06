@@ -70,7 +70,7 @@ docker run -d "$GPU_ARGS" --name "$CONTAINER_NAME" \
   "$IMAGE"
 
 # --- verify startup -------------------------------------------------------
-for i in {1..15}; do
+for _ in {1..15}; do
   if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
     echo "Alpha Factory v2 running at http://localhost:${PORT}"
     exit 0

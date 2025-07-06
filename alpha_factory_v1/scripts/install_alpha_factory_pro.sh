@@ -89,7 +89,6 @@ if [[ $do_bootstrap == 1 && ! -d alpha_factory_v1 ]]; then
 fi
 
 cd alpha_factory_v1 2>/dev/null ||:
-ROOT="$(pwd)"
 
 # ─── build‑only path (original behaviour) ──────────────────────────────
 if [[ $do_deploy == 0 ]]; then

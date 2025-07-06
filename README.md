@@ -135,13 +135,6 @@ python scripts/download_gpt2_small.py models/
 
 As a last resort use `python scripts/download_openai_gpt2.py 124M`.
 
-`fetch_assets.py` honors the `IPFS_GATEWAY` environment variable for assets still hosted on IPFS. Set `IPFS_GATEWAY=<url>` to override the primary gateway when running the helper:
-
-```bash
-IPFS_GATEWAY=https://ipfs.io/ipfs npm run fetch-assets
-IPFS_GATEWAY=https://cloudflare-ipfs.com/ipfs npm run fetch-assets
-```
-
 Requires **Python 3.11 or 3.12** and **Docker Compose ≥2.5**.
 
 Alternatively, run the pre-built image directly:
@@ -1214,7 +1207,7 @@ for instructions and example volume mounts.
 | `SANDBOX_MEM_MB` | `256` | Memory cap for sandboxed code in MB. |
 | `MAX_RESULTS` | `100` | Maximum stored simulation results. |
 | `MAX_SIM_TASKS` | `4` | Maximum concurrent simulation tasks. |
-| `IPFS_GATEWAY` | `https://ipfs.io/ipfs` | Base URL for IPFS downloads used by `npm run fetch-assets`. Override with `IPFS_GATEWAY=<url> npm run fetch-assets`. |
+| `IPFS_GATEWAY` | `https://ipfs.io/ipfs` | Base URL for fetching pinned Insight demo runs. |
 | `HF_GPT2_BASE_URL` | `https://huggingface.co/openai-community/gpt2/resolve/main` | Base URL for the GPT‑2 checkpoints. |
 | `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.26.0/full` | Base URL for the Pyodide runtime files. |
 | `FETCH_ASSETS_ATTEMPTS` | `3` | Download retry count for `fetch_assets.py`. |
@@ -1223,27 +1216,6 @@ for instructions and example volume mounts.
 | `ALPHA_FACTORY_ADK_PORT` | `9000` | Port for the ADK gateway when enabled. |
 | `ALPHA_FACTORY_ADK_TOKEN` | _(empty)_ | Optional auth token for the ADK gateway. |
 
-#### IPFS Gateway
-
-`scripts/fetch_assets.py` uses the `IPFS_GATEWAY` environment variable to construct the
-primary download URL. The default is `https://ipfs.io/ipfs`, but any reachable mirror will work.
-Set `IPFS_GATEWAY=<url>` before running the helper to override the primary gateway.
-
-If no `IPFS_GATEWAY` is provided, the helper falls back to `https://ipfs.io/ipfs`,
-`https://cloudflare-ipfs.com/ipfs`, `https://w3s.link/ipfs`, `https://cf-ipfs.com/ipfs` and
-`https://gateway.pinata.cloud/ipfs`.
-
-The values above mirror `.env.sample`. When running the stack with Docker
-Compose, adjust the environment section of
-`infrastructure/docker-compose.yml` to override any variable—such as the gRPC
-bus port or ledger path. Sandbox limits are described in the
-[documentation](https://montrealai.github.io/AGI-Alpha-Agent-v0/).
-When the `firejail` binary is present, CodeGen snippets run inside `firejail --net=none --private` for stronger
-isolation.
-If asset downloads fail during `npm run fetch-assets`, specify an alternate gateway:
-`IPFS_GATEWAY=https://ipfs.io/ipfs npm run fetch-assets`
-`IPFS_GATEWAY=https://cloudflare-ipfs.com/ipfs npm run fetch-assets`
-Use whichever mirror is fastest in your region.
 
 #### Troubleshooting Asset Downloads
 

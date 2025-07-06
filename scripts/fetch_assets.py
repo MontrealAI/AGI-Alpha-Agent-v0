@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: Apache-2.0
 # See docs/DISCLAIMER_SNIPPET.md
-"""Download browser demo assets from IPFS or public mirrors.
+"""Download browser demo assets from official mirrors.
 
 Environment variables:
     HF_GPT2_BASE_URL -- Override the Hugging Face base URL for the GPT‑2 model.
@@ -9,9 +9,9 @@ Environment variables:
 
 Pyodide runtime files are fetched directly from the official CDN or the
 user-specified mirror. When a custom mirror fails, the script retries with
-the official CDN and then the GitHub release mirror instead of falling back
-to IPFS.
+the official CDN and then the GitHub release mirror.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -23,8 +23,6 @@ import sys
 import requests  # type: ignore
 from requests.adapters import HTTPAdapter, Retry  # type: ignore
 
-# Primary IPFS gateway for asset downloads
-GATEWAY = os.environ.get("IPFS_GATEWAY", "https://ipfs.io/ipfs").rstrip("/")
 
 # Base URL for the GPT-2 small weights
 DEFAULT_HF_GPT2_BASE_URL = "https://huggingface.co/openai-community/gpt2/resolve/main"
@@ -40,14 +38,6 @@ PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Alternate gateways to try when the main download fails
-FALLBACK_GATEWAYS = [
-    "https://ipfs.io/ipfs",
-    "https://cloudflare-ipfs.com/ipfs",
-    "https://w3s.link/ipfs",
-    # Additional public mirrors
-    "https://cf-ipfs.com/ipfs",
-    "https://gateway.pinata.cloud/ipfs",
-]
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -91,7 +81,7 @@ def _session() -> requests.Session:
 
 
 def download(cid: str, path: Path, fallback: str | None = None, label: str | None = None) -> None:
-    url = cid if cid.startswith("http") else f"{GATEWAY}/{cid}"
+    url = cid
     path.parent.mkdir(parents=True, exist_ok=True)
     try:
         with _session().get(url, timeout=60) as resp:
@@ -123,7 +113,6 @@ def download_with_retry(
     fallback: str | list[str] | None = None,
     attempts: int = MAX_ATTEMPTS,
     label: str | None = None,
-    disable_ipfs_fallback: bool = False,
 ) -> None:
     last_exc: Exception | None = None
     last_url = cid
@@ -136,20 +125,6 @@ def download_with_retry(
         else:
             alt_urls.extend(list(fallback))
 
-    ipfs_cid: str | None = None
-    if not disable_ipfs_fallback:
-        if cid.startswith("http"):
-            parts = cid.split("/ipfs/")
-            if len(parts) > 1:
-                ipfs_cid = parts[1].split("?")[0]
-        else:
-            ipfs_cid = cid
-
-    if ipfs_cid:
-        for gw in FALLBACK_GATEWAYS:
-            alt = f"{gw.rstrip('/')}/{ipfs_cid}"
-            if alt != cid and alt not in alt_urls and alt != fallback:
-                alt_urls.append(alt)
     success_url: str | None = None
     for i in range(1, attempts + 1):
         try:
@@ -164,9 +139,9 @@ def download_with_retry(
                 first_failure = False
                 if status in {401, 404}:
                     if lbl in PYODIDE_ASSETS:
-                        print("Download returned HTTP" f" {status}. Set PYODIDE_BASE_URL to a reachable mirror")
+                        print(f"Download returned HTTP {status}. Set PYODIDE_BASE_URL to a reachable mirror")
                     else:
-                        print("Download returned HTTP" f" {status}. Set HF_GPT2_BASE_URL to a reachable mirror")
+                        print(f"Download returned HTTP {status}. Set HF_GPT2_BASE_URL to a reachable mirror")
             for alt in alt_urls:
                 try:
                     download(alt, path, label=lbl)
@@ -192,9 +167,7 @@ def download_with_retry(
         return
     if last_exc:
         url = getattr(getattr(last_exc, "response", None), "url", last_url)
-        raise RuntimeError(
-            f"failed to download {lbl} from {url}: {last_exc}. " "Some mirrors may require authentication"
-        )
+        raise RuntimeError(f"failed to download {lbl} from {url}: {last_exc}. Some mirrors may require authentication")
 
 
 def verify_assets(base: Path) -> list[str]:
@@ -268,10 +241,9 @@ def main() -> None:
                 fb.append(f"{GITHUB_PYODIDE_BASE_URL}/{dest.name}")
                 fallback = fb
             if rel == "lib/bundle.esm.min.js":
-                fallback = "bafkreihgldx46iuks4lybdsc5qc6xom2y5fqdy5w3vvrxntlr42wc43u74"
-            disable_fallback = rel in PYODIDE_ASSETS
+                fallback = None
             try:
-                download_with_retry(cid, dest, fallback, label=rel, disable_ipfs_fallback=disable_fallback)
+                download_with_retry(cid, dest, fallback, label=rel)
             except Exception as exc:
                 print(f"Download failed for {rel}: {exc}")
                 dl_failures.append(rel)
@@ -282,8 +254,7 @@ def main() -> None:
         joined = ", ".join(dl_failures)
         print(
             f"\nERROR: Unable to retrieve {joined}.\n"
-            "Check your internet connection or set IPFS_GATEWAY to a reachable "
-            "gateway, or override the Hugging Face base URL via HF_GPT2_BASE_URL "
+            "Check your internet connection or override the Hugging Face base URL via HF_GPT2_BASE_URL "
             "or the Pyodide base URL via PYODIDE_BASE_URL."
         )
         sys.exit(1)

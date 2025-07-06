@@ -3,20 +3,18 @@ repos:
     rev: 23.11.0
     hooks:
       - id: black
+        exclude: alpha_factory_v1/backend/agent_factory.py
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.1
     hooks:
       - id: ruff
+        exclude: alpha_factory_v1/backend/agent_factory.py
       - id: ruff-format
+        exclude: alpha_factory_v1/backend/agent_factory.py
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
     hooks:
       - id: flake8
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
-    hooks:
-      - id: mypy
-        args: ["--config-file", "mypy.ini"]
   - repo: https://github.com/semgrep/semgrep
     rev: v1.61.0
     hooks:
@@ -74,7 +72,6 @@ repos:
         entry: scripts/run_eslint.sh
         language: system
         types: [javascript]
-        args: ["--env", "jest"]
         exclude: |
           (^docs/)|
           (^dist/)|

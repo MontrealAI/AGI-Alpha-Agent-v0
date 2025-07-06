@@ -17,14 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: ghcr.io/example/selfheal-sandbox:latest
-      IPFS_GATEWAY: https://cloudflare-ipfs.com/ipfs
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.26.0/full
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
       # Keep the asset mirrors pinned to official hosts.
-      # PYODIDE_BASE_URL and HF_GPT2_BASE_URL must remain exported
-      # so edge_human_knowledge_pages_sprint.sh downloads from
-      # these mirrors rather than IPFS.
       # Optional environment variables for asset downloads. See
       # scripts/fetch_assets.py for details.
       # HF_GPT2_BASE_URL overrides the default Hugging Face mirror.
@@ -87,7 +83,6 @@ jobs:
           restore-keys: assets-
       - name: Build and deploy gallery
         env:
-          IPFS_GATEWAY: ${{ env.IPFS_GATEWAY }}
           PYODIDE_BASE_URL: ${{ env.PYODIDE_BASE_URL }}
           HF_GPT2_BASE_URL: ${{ env.HF_GPT2_BASE_URL }}
         run: ./scripts/edge_human_knowledge_pages_sprint.sh
