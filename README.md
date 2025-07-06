@@ -31,9 +31,7 @@ checkout—or delete existing `wasm*/` files first—so placeholder files are
 replaced. After the download, verify checksums with
 `python scripts/fetch_assets.py --verify-only`. The helper retrieves the
 official Pyodide runtime from the jsDelivr CDN and the GPT‑2 small checkpoint
-directly from the Hugging Face CDN.
-If a custom `PYODIDE_BASE_URL` is set and fails, the script falls back to the
-official CDN automatically. The legacy `wasm-gpt2.tar` bundle is no longer used.
+directly from the Hugging Face CDN. The legacy `wasm-gpt2.tar` bundle is no longer used.
 Override `HF_GPT2_BASE_URL`
 to change the mirror, for example:
 
