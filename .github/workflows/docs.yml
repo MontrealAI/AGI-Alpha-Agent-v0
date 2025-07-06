@@ -14,12 +14,14 @@ permissions:
 jobs:
   build-deploy:
     # Allow maintainers to trigger with DISPATCH_TOKEN
+    if: github.actor == github.repository_owner || github.event.inputs.run_token == env.DISPATCH_TOKEN
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: ghcr.io/example/selfheal-sandbox:latest
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.26.0/full
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
+      DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
       # Keep the asset mirrors pinned to official hosts.
       # Optional environment variables for asset downloads. See
       # scripts/fetch_assets.py for details.
@@ -28,7 +30,7 @@ jobs:
       - name: Check dispatch token
         if: github.actor != github.repository_owner
         run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+          if [ "${{ github.event.inputs.run_token }}" != "${{ env.DISPATCH_TOKEN }}" ]; then
             echo "Unauthorized"
             exit 1
           fi
