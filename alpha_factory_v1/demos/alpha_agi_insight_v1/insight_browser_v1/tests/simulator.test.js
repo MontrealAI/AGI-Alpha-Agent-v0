@@ -19,7 +19,9 @@ test('500-generation run', async () => {
 test('memory usage stable', async () => {
   const start = process.memoryUsage().heapUsed;
   const sim = Simulator.run({ popSize: 5, generations: 100 });
-  for await (const _ of sim) {}
+  for await (const _unused of sim) {
+    void _unused;
+  }
   const end = process.memoryUsage().heapUsed;
   expect(end - start).toBeLessThan(10 * 1024 * 1024);
 });

@@ -40,7 +40,7 @@ test('service worker update reloads page', async () => {
     await page.waitForFunction('navigator.serviceWorker.ready');
     const initial = await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL);
 
-    const updated = original.replace(/CACHE_VERSION\s*=\s*['\"].*?['\"]/,'CACHE_VERSION="test"');
+    const updated = original.replace(/CACHE_VERSION\s*=\s*['"](?:.*?)['"]/,'CACHE_VERSION="test"');
     await fs.writeFile(swPath, updated);
 
     await page.evaluate('navigator.serviceWorker.getRegistration().then(r=>r.update())');

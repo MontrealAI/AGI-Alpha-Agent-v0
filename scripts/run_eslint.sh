@@ -4,11 +4,13 @@ set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 BROWSER_DIR="$ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 # Install npm dependencies deterministically
-# Install npm dependencies deterministically
-npm --prefix "$BROWSER_DIR" ci >/dev/null
+# Install npm dependencies deterministically if missing
+if [ ! -d "$BROWSER_DIR/node_modules" ]; then
+    npm --prefix "$BROWSER_DIR" ci >/dev/null
+fi
 cd "$BROWSER_DIR"
 args=()
 for f in "$@"; do
     args+=("$(realpath --relative-to=. "$ROOT/$f")")
 done
-ESLINT_USE_FLAT_CONFIG=true npx eslint --config eslint.config.js "${args[@]}"
+ESLINT_USE_FLAT_CONFIG=true npx eslint --no-warn-ignored --config eslint.config.js "${args[@]}"
