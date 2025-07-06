@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build-deploy:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (github.actor == github.repository_owner || github.event.inputs.run_token == secrets.DISPATCH_TOKEN) }}
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: ghcr.io/example/selfheal-sandbox:latest
