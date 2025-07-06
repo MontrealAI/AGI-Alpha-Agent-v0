@@ -37,6 +37,7 @@ export default [
         ignores: [
             "dist/**",
             "lib/**",
+            // Ignore external Pyodide runtime
             "wasm/**",
             "wasm_llm/**",
             "build/**",
