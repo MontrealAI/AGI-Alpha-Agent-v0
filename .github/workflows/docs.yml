@@ -53,6 +53,8 @@ jobs:
         run: pip install pre-commit
       - name: Fetch browser assets
         run: python scripts/fetch_assets.py
+      - name: Update build manifest
+        run: python scripts/generate_build_manifest.py
       - name: Run pre-commit checks
         run: pre-commit run --all-files
       - name: Install docs dependencies
