@@ -38,6 +38,7 @@ export default [
             "dist/**",
             "lib/**",
             "wasm/**",
+            "wasm_llm/**",
             "build/**",
             "docs/**",
             "../../../../docs/**",
