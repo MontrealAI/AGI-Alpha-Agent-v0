@@ -88,6 +88,7 @@ REQUIRED_BASE = [
     "yaml",
     "click",
     "requests",
+    "requests_mock",
     "pandas",
     "playwright.sync_api",
     "websockets",
