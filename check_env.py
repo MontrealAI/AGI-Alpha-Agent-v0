@@ -529,7 +529,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         print("WARNING: ETHERSCAN_API_KEY is unset; Etherscan collector disabled")
 
     if (shutil.which("pre-commit") or (Path(".git/hooks/pre-commit").exists())) and not shutil.which("ruff"):
-        print("WARNING: 'pre-commit' enabled but 'ruff' command not found")
+        if auto and (wheelhouse or network_ok):
+            cmd = [sys.executable, "-m", "pip", "install", "--quiet"]
+            if wheelhouse:
+                cmd += ["--no-index", "--find-links", wheelhouse]
+            cmd.append("ruff")
+            print(
+                f"Installing Ruff (timeout {pip_timeout}s):",
+                " ".join(cmd),
+                flush=True,
+            )
+            try:
+                subprocess.run(cmd, check=True, timeout=pip_timeout)
+            except subprocess.SubprocessError as exc:
+                print("Failed to install Ruff", getattr(exc, "returncode", ""))
+                return 1
+        else:
+            print("WARNING: 'pre-commit' enabled but 'ruff' command not found")
 
     if not missing_required:
         print("Environment OK")
