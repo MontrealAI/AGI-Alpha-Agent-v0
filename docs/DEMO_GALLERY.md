@@ -37,4 +37,6 @@ python scripts/build_service_worker.py
 ```
 
 The helper script `build_gallery_site.sh` automates this step, but rerun it
-whenever assets change to avoid stale caches.
+whenever assets change to avoid stale caches. If the Insight browser asset
+checksums change, also execute `python scripts/generate_build_manifest.py` to
+update `build_assets.json`.

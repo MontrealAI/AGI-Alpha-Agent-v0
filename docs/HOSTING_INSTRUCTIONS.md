@@ -84,7 +84,10 @@ Run it from the repository root to build the bundle, refresh
 
 Whenever demo assets change, rerun `python scripts/build_service_worker.py` to
 update `docs/assets/service-worker.js`. Otherwise visitors may see outdated
-files due to the service worker cache on GitHub Pages.
+files due to the service worker cache on GitHub Pages. If the checksum values in
+`scripts/fetch_assets.py` are updated, execute `python
+scripts/generate_build_manifest.py` so `build_assets.json` reflects the new
+hashes.
 
 
 ## Building the Site
