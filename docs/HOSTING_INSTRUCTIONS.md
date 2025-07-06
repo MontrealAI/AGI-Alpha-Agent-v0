@@ -116,7 +116,7 @@ GitHub Pages.
 The "📚 Docs" workflow
 The repository owner manually triggers [`docs.yml`](../.github/workflows/docs.yml), which runs
 `scripts/edge_human_knowledge_pages_sprint.sh`, builds the site and pushes the result to the
-`gh-pages` branch. Open **Actions → 📚 Docs**, click **Run workflow**, leave the token field empty and confirm.
+`gh-pages` branch. Open **Actions → 📚 Docs**, click **Run workflow** and confirm.
 The workflow restores a cache keyed by the Pyodide and GPT‑2 file checksums before
 running `npm run fetch-assets`. Once the assets pass verification the cache is
 saved so subsequent runs skip the downloads. Only the repository owner can
