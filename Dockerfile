@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 FROM python:3.11-slim
 
-# install build tools and pnpm for the React UI
+# install build tools and npm for the React UI
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates gnupg build-essential postgresql-client patch && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g pnpm && \
     rm -rf /var/lib/apt/lists/*
 
 # Verify Node installation is >=20 (NodeSource script sets up latest LTS)
@@ -27,8 +26,8 @@ COPY alpha_factory_v1/demos/__init__.py alpha_factory_v1/demos/__init__.py
 COPY alpha_factory_v1/demos/alpha_agi_insight_v1 alpha_factory_v1/demos/alpha_agi_insight_v1
 
 # build the React front-end
-RUN pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client install \
-    && pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
+RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client \
+    && npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
     && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
 
 # run as non-root user for demos

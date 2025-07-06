@@ -27,8 +27,8 @@
 The React dashboard sources live under `alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client`. Build the static assets before serving the API:
 
 ```bash
-pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client install
-pnpm --dir alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build
+npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client
+npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build
 ```
 
 The compiled files appear in `alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist` and are automatically served when running `uvicorn alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server:app` with `RUN_MODE=web`.

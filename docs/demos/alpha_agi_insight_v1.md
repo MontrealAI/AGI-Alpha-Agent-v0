@@ -222,7 +222,7 @@ graph TD
 
 > **Prerequisites**
 > • Python ≥ 3.11 • Git • Docker (only for container mode)
-> *(Optional)* Node ≥ 20 + pnpm if you plan to rebuild the React front-end.
+> *(Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
 
 Or try the hosted notebook: [colab_alpha_agi_insight_v1.ipynb](colab_alpha_agi_insight_v1.ipynb).
 
@@ -400,10 +400,12 @@ uvicorn src/interface/api_server:app --reload --port 8000
 python -m alpha_factory_v1.demos.alpha_agi_insight_v1 api-server
 # frontend
 cd alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client
-pnpm install
-pnpm dev            # http://localhost:5173
+# install dependencies and run the dev server
+npm ci
+npm run dev            # http://localhost:5173
 # build production assets
-pnpm build          # outputs to src/interface/web_client/dist/
+# outputs to src/interface/web_client/dist/
+npm run build
 # or run `make build_web` from the repo root
 # or use `npm install && npm run build`
 ```
@@ -438,19 +440,18 @@ Typical REST endpoints:
 
 ### 5.3 Rebuilding the React dashboard
 
-Install [Node.js](https://nodejs.org/) **≥ 20** and
-[pnpm](https://pnpm.io/installation) if you want to rebuild the front‑end.
+Install [Node.js](https://nodejs.org/) **≥ 20** if you want to rebuild the front‑end.
 From the repository root run:
 
 ```bash
 cd alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client
-pnpm install && pnpm build
+npm ci && npm run build
 ```
 
 If the API runs on a different host, set `VITE_API_BASE_URL` when building:
 
 ```bash
-VITE_API_BASE_URL=http://api.example.com pnpm build
+VITE_API_BASE_URL=http://api.example.com npm run build
 ```
 
 Launch the container stack afterwards or serve `dist/` with any static server,
@@ -467,8 +468,8 @@ Run the following commands under `src/interface/web_client` to compile the
 React dashboard:
 
 ```bash
-pnpm install
-pnpm build
+npm ci
+npm run build
 ```
 
 This installs dependencies and outputs static files in `dist/`. The provided

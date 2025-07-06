@@ -6,7 +6,7 @@ export default defineConfig({
     baseURL: 'http://localhost:5173',
   },
   webServer: {
-    command: 'pnpm dev',
+    command: 'npm run dev',
     port: 5173,
     reuseExistingServer: true,
   },

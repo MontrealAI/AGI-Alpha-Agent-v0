@@ -9,9 +9,9 @@ This directory contains a small React interface built with [Vite](https://vitejs
 
 ```bash
 cd src/interface/web_client
-pnpm install
-pnpm dev        # start the development server
-pnpm build      # build production assets in `dist/`
+npm ci
+npm run dev        # start the development server
+npm run build      # build production assets in `dist/`
 ```
 
 The build step uses Workbox to generate `service-worker.js` and precache the
@@ -22,14 +22,14 @@ embed the API bearer token at build time:
 
 ```bash
 # prepend '/api' to all requests and embed a token
-VITE_API_BASE_URL=/api VITE_API_TOKEN=test-token pnpm build
+VITE_API_BASE_URL=/api VITE_API_TOKEN=test-token npm run build
 ```
 
 The app expects the FastAPI server on `http://localhost:8000` by default. After
-running `pnpm build`, open `dist/index.html`, run `pnpm preview` or copy the
+running `npm run build`, open `dist/index.html`, run `npm run preview` or copy the
 `dist/` folder into your container image.
 
-When building the Docker image from the project root, ensure `pnpm --dir src/interface/web_client run build` completes so that `src/interface/web_client/dist/` exists. The `infrastructure/Dockerfile` copies this directory automatically.
+When building the Docker image from the project root, ensure `npm --prefix alpha_factory_v1/core/interface/web_client run build` completes so that `alpha_factory_v1/core/interface/web_client/dist/` exists. The `infrastructure/Dockerfile` copies this directory automatically.
 
 A basic smoke test simply runs `npm test`, which exits successfully if the project dependencies are installed.
 
@@ -48,24 +48,24 @@ services:
 
 Follow these steps to use the web client without internet access:
 
-- On a machine with network access, build the PNPM store and export it:
+- On a machine with network access, build the npm cache and export it:
 
 ```bash
 cd src/interface/web_client
-pnpm install
-pnpm store export > pnpm-store.tar
+npm ci
+tar -cf npm-cache.tar ~/.npm
 ```
 
-- Copy `pnpm-store.tar` to the offline host and import the cache:
+- Copy `npm-cache.tar` to the offline host and import the cache:
 
 ```bash
-pnpm store import pnpm-store.tar
+tar -xf npm-cache.tar -C ~/
 ```
 
-- Either set `PNPM_HOME` to the imported store path or run installation in offline mode:
+- Run installation in offline mode:
 
 ```bash
-PNPM_HOME=~/.local/share/pnpm pnpm install --offline
+npm ci --offline
 ```
 
 This installs packages from the local cache without contacting the registry.
