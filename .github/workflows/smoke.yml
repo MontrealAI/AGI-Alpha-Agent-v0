@@ -15,13 +15,15 @@ env:
 
 jobs:
   smoke:
-    if: ${{ github.event_name == 'workflow_dispatch' && (github.actor == github.repository_owner || github.event.inputs.run_token == secrets.DISPATCH_TOKEN) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
+      - name: Check dispatch token
+        if: github.event.inputs.run_token != secrets.DISPATCH_TOKEN && github.actor != github.repository_owner
+        run: echo "Unauthorized" && exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
