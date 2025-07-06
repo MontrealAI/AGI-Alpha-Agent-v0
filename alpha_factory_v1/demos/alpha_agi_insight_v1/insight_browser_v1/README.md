@@ -56,11 +56,7 @@ is missing the build scripts continue with default empty values:
   embed the key in the built HTML.** Store it in `localStorage` or enter it at
   runtime instead.
 - `IPFS_GATEWAY` – base URL of the IPFS gateway used to fetch pinned runs. Set
-  `IPFS_GATEWAY=<url>` to override the primary gateway. When assets fail to load
-  the build scripts automatically try `https://ipfs.io/ipfs`,
-  `https://cloudflare-ipfs.com/ipfs`, `https://w3s.link/ipfs`,
-  `https://cf-ipfs.com/ipfs` and `https://gateway.pinata.cloud/ipfs` as
-  fallbacks.
+  `IPFS_GATEWAY=<url>` to override the primary gateway.
 - `OTEL_ENDPOINT` – OTLP/HTTP endpoint for anonymous telemetry (leave blank to disable).
 - `WEB3_STORAGE_TOKEN` – build script token consumed by `npm run build`.
 - Browsers with WebGPU can accelerate the local model using the ONNX runtime.
