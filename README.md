@@ -61,7 +61,7 @@ for additional details.
 
 ### Manual Deployment
 
-The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) from the GitHub Actions tab. Simply click **Run workflow** and leave the token field blank to start the deployment. The job runs [`scripts/edge_human_knowledge_pages_sprint.sh`](scripts/edge_human_knowledge_pages_sprint.sh) to rebuild the Insight demo and MkDocs site, publishing the result to GitHub Pages. Once it finishes the live demo is available at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
+The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) from the GitHub Actions tab. Simply click **Run workflow** and leave the token field blank to start the deployment. The workflow automatically validates the token and only continues when the value matches the repository secret. The job runs [`scripts/edge_human_knowledge_pages_sprint.sh`](scripts/edge_human_knowledge_pages_sprint.sh) to rebuild the Insight demo and MkDocs site, publishing the result to GitHub Pages. Once it finishes the live demo is available at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
 
 Non‑owners must supply the **run_token** input when dispatching the workflow so it matches the `DISPATCH_TOKEN` secret. Enter the token in the **Run workflow** form:
 
