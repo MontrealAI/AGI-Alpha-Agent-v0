@@ -121,6 +121,14 @@ The workflow restores a cache keyed by the Pyodide and GPT‑2 file checksums be
 running `npm run fetch-assets`. Once the assets pass verification the cache is
 saved so subsequent runs skip the downloads.
 
+Other contributors can dispatch the workflow by supplying a **run_token** matching the
+`DISPATCH_TOKEN` secret. Enter the token in the **Run workflow** form:
+
+1. Navigate to **Actions → 📚 Docs**.
+2. Click **Run workflow**.
+3. Paste the token into the **run_token** field.
+4. Click **Run workflow** again to start the job.
+
 ### Manual Publish
 
 To trigger a one-off deployment outside of CI run:
