@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-const path = require('path');
-
 jest.mock('../src/evolve/mutate.ts', () => ({
   mutate: jest.fn(() => [])
 }));
