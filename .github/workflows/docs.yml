@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   build-deploy:
+    if: github.actor == github.repository_owner
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: ghcr.io/example/selfheal-sandbox:latest
@@ -20,11 +21,6 @@ jobs:
       # scripts/fetch_assets.py for details.
       # HF_GPT2_BASE_URL overrides the default Hugging Face mirror.
     steps:
-      - name: Verify repository owner
-        if: github.actor != github.repository_owner
-        run: |
-          echo "Only the repository owner can dispatch this workflow."
-          exit 1
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
