@@ -180,6 +180,40 @@ jobs:
       - name: Run smoke tests
         run: pytest -m smoke -q
 
+  docs-build:
+    name: "📚 Docs Build"
+    needs: tests
+    runs-on: ubuntu-latest
+    env:
+      PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.26.0/full
+      HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
+      FETCH_ASSETS_ATTEMPTS: '5'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            alpha_factory_v1/core/interface/web_client/package-lock.json
+      - name: Install base dependencies
+        run: python check_env.py --auto-install
+      - name: Install docs requirements
+        run: pip install -r requirements-docs.txt
+      - name: Install insight browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Install web client dependencies
+        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+      - name: Build gallery site
+        run: ./scripts/build_gallery_site.sh
+      - name: Verify downloaded assets
+        run: python scripts/fetch_assets.py --verify-only
+
   docker:
     name: "🐳 Docker build"
     needs: tests
