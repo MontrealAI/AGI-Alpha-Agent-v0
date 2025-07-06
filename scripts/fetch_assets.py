@@ -38,14 +38,14 @@ MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
     "wasm/pyodide.asm.wasm",
-    "wasm/repodata.json",
+    "wasm/pyodide-lock.json",
 }
 
 ASSETS = {
     # Pyodide 0.26.0 runtime files
     "wasm/pyodide.js": f"{PYODIDE_BASE_URL}/pyodide.js",
     "wasm/pyodide.asm.wasm": f"{PYODIDE_BASE_URL}/pyodide.asm.wasm",
-    "wasm/repodata.json": f"{PYODIDE_BASE_URL}/pyodide-lock.json",
+    "wasm/pyodide-lock.json": f"{PYODIDE_BASE_URL}/pyodide-lock.json",
     # GPT-2 small weights
     "wasm_llm/pytorch_model.bin": f"{HF_GPT2_BASE_URL}/pytorch_model.bin",
     "wasm_llm/vocab.json": f"{HF_GPT2_BASE_URL}/vocab.json",
@@ -62,7 +62,7 @@ CHECKSUMS = {
     "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",  # noqa: E501
     "pyodide.asm.wasm": "sha384-EUqmec0z8Sj94lyhfS28Q0rsvZxo0lEPa3Nz2MQJz3NizgBcfd69cC2EluBQcA51",
     "pyodide.js": "sha384-KQtL+EUxNlEbNm6gFVMiDz6Glmgq4QV4VZdSHIrcpw4tCRUGtjUeLJbuQAIfxFfM",
-    "repodata.json": "sha384-0jg1cSxhjdgM3qp6WXMysptCeRCzlYI2HhY0Nqy1AFzfp3GnDIFLDs7MTlaJz+Nz",
+    "pyodide-lock.json": "sha384-0jg1cSxhjdgM3qp6WXMysptCeRCzlYI2HhY0Nqy1AFzfp3GnDIFLDs7MTlaJz+Nz",
     "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
 }
 
