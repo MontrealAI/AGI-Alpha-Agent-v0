@@ -89,6 +89,11 @@ All steps are idempotent; re‑running the script is safe.
 The ``import_dashboard.py`` helper requires ``GRAFANA_TOKEN`` and verifies the
 given JSON file exists before uploading.
 
+Run ``python scripts/fetch_assets.py`` to download the Insight browser assets.
+When any checksum in ``scripts/fetch_assets.py`` changes, execute
+``python scripts/generate_build_manifest.py`` so
+``build_assets.json`` stays in sync.
+
 ---
 
 ## Offline Setup

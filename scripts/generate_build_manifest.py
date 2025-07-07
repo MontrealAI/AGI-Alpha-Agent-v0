@@ -13,9 +13,8 @@ def main() -> None:
     repo_root = Path(__file__).resolve().parent.parent
     manifest_path = repo_root / ("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build_assets.json")
     manifest = json.loads(manifest_path.read_text())
-    checksums = manifest.get("checksums", {})
-    checksums.update(fa.CHECKSUMS)
-    manifest["checksums"] = {k: checksums[k] for k in sorted(checksums)}
+    manifest.pop("checksums", None)
+    manifest["checksums"] = {k: fa.CHECKSUMS[k] for k in sorted(fa.CHECKSUMS)}
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"Updated {manifest_path}")
 
