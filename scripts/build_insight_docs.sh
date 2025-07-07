@@ -50,10 +50,10 @@ rm -rf "$DOCS_DIR"
 mkdir -p "$DOCS_DIR"
 unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
 # Ensure the service worker and PWA files exist in the docs directory
-unzip -q -j "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
-unzip -q -j "$BROWSER_DIR/insight_browser.zip" manifest.json -d "$DOCS_DIR" || true
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" manifest.json -d "$DOCS_DIR" || true
 mkdir -p "$DOCS_DIR/lib"
-unzip -q -j "$BROWSER_DIR/insight_browser.zip" lib/workbox-sw.js -d "$DOCS_DIR/lib" || true
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" lib/workbox-sw.js -d "$DOCS_DIR/lib" || true
 if [[ -n "$OLD_DOCS_TEMP" ]]; then
     while IFS= read -r -d '' file; do
         rel="${file#"$OLD_DOCS_TEMP"/}"
