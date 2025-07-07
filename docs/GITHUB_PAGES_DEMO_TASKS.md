@@ -69,3 +69,9 @@ python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
 Prerequisites: **Python 3.11+**, **Node.js 20+** and `mkdocs`. This script mirrors the [Docs workflow](../.github/workflows/docs.yml) which the repository owner triggers manually to deploy the site.
+
+When running inside CI, set `CI_SKIP_ENV_CHECK=1` to avoid repeating the environment installation step:
+
+```bash
+CI_SKIP_ENV_CHECK=1 ./scripts/edge_human_knowledge_pages_sprint.sh
+```
