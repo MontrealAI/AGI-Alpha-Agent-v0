@@ -18,6 +18,7 @@ import argparse
 import base64
 import hashlib
 import os
+import subprocess
 from pathlib import Path
 import sys
 import requests  # type: ignore
@@ -164,7 +165,16 @@ def verify_assets(base: Path) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verify-only", action="store_true", help="Verify asset checksums and exit")
+    parser.add_argument(
+        "--verify-only",
+        action="store_true",
+        help="Verify asset checksums and exit",
+    )
+    parser.add_argument(
+        "--update-manifest",
+        action="store_true",
+        help="Synchronize build_assets.json after verifying assets",
+    )
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
@@ -231,6 +241,10 @@ def main() -> None:
         joined = ", ".join(failures)
         sys.exit(f"verification failed for: {joined}")
     print("All assets verified successfully")
+    if args.update_manifest:
+        manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
+        if manifest_script.exists():
+            subprocess.run([sys.executable, str(manifest_script)], check=True)
 
 
 if __name__ == "__main__":
