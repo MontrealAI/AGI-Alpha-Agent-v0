@@ -38,8 +38,8 @@ export async function copyAssets(manifest, repoRoot, outDir) {
 
 export { injectEnv };
 export async function checkGzipSize(file, maxBytes = 2 * 1024 * 1024) {
-  const gzipSize = (await import('gzip-size')).default;
-  const size = await gzipSize.file(file);
+  const {gzipSizeFromFile} = await import('gzip-size');
+  const size = await gzipSizeFromFile(file);
   if (size > maxBytes) {
     throw new Error(`gzip size ${size} bytes exceeds limit`);
   }
@@ -56,7 +56,6 @@ export async function generateServiceWorker(outDir, manifest, version) {
     swSrc: swTemp,
     swDest,
     globDirectory: outDir,
-    importWorkboxFrom: 'disabled',
     globPatterns: manifest.precache,
     injectionPoint: 'self.__WB_MANIFEST',
   });
