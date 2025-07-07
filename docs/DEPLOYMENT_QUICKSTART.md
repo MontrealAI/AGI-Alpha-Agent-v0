@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # Deployment Quickstart
 

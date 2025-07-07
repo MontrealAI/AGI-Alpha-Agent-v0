@@ -1,8 +1,8 @@
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # Design Overview
 
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 This document outlines the architecture of the Alpha Factory demo included in this repository. It also explains the individual agent roles and the Meta-Agentic Tree Search (MATS) algorithm used for evolutionary optimisation.
 
