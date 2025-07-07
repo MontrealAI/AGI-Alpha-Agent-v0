@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # mypy: ignore-errors
-# [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+# [See docs/DISCLAIMER_SNIPPET.md](../../../DISCLAIMER_SNIPPET.md)
 # NOTE: This demo is a research prototype and does not implement real AGI.
 """OpenAI Agents SDK bridge for the cross-industry Alpha-Factory demo.
 
