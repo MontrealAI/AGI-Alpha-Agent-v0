@@ -16,7 +16,11 @@ BROWSER_DIR="alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 python alpha_factory_v1/scripts/preflight.py
 node "$BROWSER_DIR/build/version_check.js"
 python scripts/check_python_deps.py
-python check_env.py --auto-install
+if [[ "${CI_SKIP_ENV_CHECK:-0}" == "1" && "${CI:-}" == "true" ]]; then
+  echo "CI_SKIP_ENV_CHECK set – skipping check_env.py" >&2
+else
+  python check_env.py --auto-install
+fi
 # disclaimer snippet verification removed; rely on documentation updates
 python -m alpha_factory_v1.demos.validate_demos
 
