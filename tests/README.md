@@ -71,6 +71,11 @@ pytest -q
    ```bash
    python check_env.py --auto-install
    ```
+6. **Before running `pytest`, execute `python check_env.py --auto-install` again**
+   to ensure optional modules are installed. When working offline add
+   `--wheelhouse <dir>` (or set `WHEELHOUSE`) so packages install from the
+   local wheel cache. Skipping this step can lead to missing modules during
+   test collection.
 
 ### Quick health check
 
