@@ -92,11 +92,10 @@ def download(cid: str, path: Path, label: str | None = None) -> None:
         algo, ref = expected.split("-", 1)
         digest_bytes = getattr(hashlib, algo)(data).digest()
         calc_b64 = base64.b64encode(digest_bytes).decode()
-        if ref == calc_b64:
-            return
         calc_hex = digest_bytes.hex()
-        if ref.lower() != calc_hex:
-            raise RuntimeError(f"Checksum mismatch for {key}")
+        if ref == calc_b64 or ref.lower() == calc_hex:
+            return
+        raise RuntimeError(f"Checksum mismatch for {key}: expected {ref} got {calc_b64}")
 
 
 def download_with_retry(
@@ -151,12 +150,11 @@ def verify_assets(base: Path) -> list[str]:
             algo, ref = expected.split("-", 1)
             digest_bytes = getattr(hashlib, algo)(dest.read_bytes()).digest()
             calc_b64 = base64.b64encode(digest_bytes).decode()
-            if ref == calc_b64:
-                continue
             calc_hex = digest_bytes.hex()
-            if ref.lower() != calc_hex:
-                print(f"Checksum mismatch for {rel}")
-                failures.append(rel)
+            if ref == calc_b64 or ref.lower() == calc_hex:
+                continue
+            print(f"Checksum mismatch for {rel}: expected {ref} got {calc_b64}")
+            failures.append(rel)
     return failures
 
 
