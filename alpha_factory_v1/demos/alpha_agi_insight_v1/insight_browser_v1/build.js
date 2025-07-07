@@ -222,7 +222,9 @@ async function bundle() {
         const actual =
             "sha384-" + createHash("sha384").update(buf).digest("base64");
         if (actual !== expected) {
-            throw new Error(`Checksum mismatch for ${name}`);
+            throw new Error(
+                `Checksum mismatch for ${name}: expected ${expected} got ${actual}`,
+            );
         }
     }
 
