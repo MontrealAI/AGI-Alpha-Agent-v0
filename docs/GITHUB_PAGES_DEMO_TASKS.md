@@ -56,7 +56,9 @@ Verify the service worker caches assets for offline use and that the page includ
 - If adding new demos manually, run `python scripts/build_service_worker.py` to
   refresh `docs/assets/service-worker.js`.
 - Run `python scripts/generate_build_manifest.py` whenever the asset checksums in
-  `scripts/fetch_assets.py` change so `build_assets.json` stays in sync.
+  `scripts/fetch_assets.py` change so `build_assets.json` stays in sync. You can
+  also pass `--update-manifest` to `scripts/fetch_assets.py` to run this step
+  automatically after verifying downloads.
 - Test with `mkdocs build --strict` before deploying.
 - Keep `pre-commit` hooks green so the gallery builds reproducibly.
 
