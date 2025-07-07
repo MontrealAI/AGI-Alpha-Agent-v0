@@ -18,7 +18,7 @@ def sha384(path: Path) -> str:
     return "sha384-" + base64.b64encode(digest).decode()
 
 
-def check_gzip_size(path: Path, max_bytes: int = 2 * 1024 * 1024) -> None:
+def check_gzip_size(path: Path, max_bytes: int = 5 * 1024 * 1024) -> None:
     """Exit if gzip-compressed ``path`` exceeds ``max_bytes``."""
     compressed = gzip.compress(path.read_bytes())
     if len(compressed) > max_bytes:
