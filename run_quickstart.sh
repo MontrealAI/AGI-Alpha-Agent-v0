@@ -8,7 +8,7 @@ trap 'echo -e "\n\u274c Error on line $LINENO" >&2' ERR
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-cat "$SCRIPT_DIR/docs/DISCLAIMER_SNIPPET.md"
+cat "$SCRIPT_DIR/DISCLAIMER_SNIPPET.md"
 
 IMAGE="alpha-factory-quickstart"
 
