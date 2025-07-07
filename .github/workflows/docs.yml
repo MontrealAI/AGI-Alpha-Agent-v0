@@ -51,12 +51,6 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Install pre-commit
         run: pip install pre-commit
-      - name: Fetch browser assets
-        run: python scripts/fetch_assets.py
-      - name: Verify browser assets
-        run: python scripts/fetch_assets.py --verify-only
-      - name: Update build manifest
-        run: python scripts/generate_build_manifest.py
       - name: Run pre-commit checks
         run: pre-commit run --all-files
       - name: Install docs dependencies
@@ -92,6 +86,12 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key.outputs.key }}
           restore-keys: assets-
+      - name: Fetch browser assets
+        run: python scripts/fetch_assets.py
+      - name: Verify browser assets
+        run: python scripts/fetch_assets.py --verify-only
+      - name: Update build manifest
+        run: python scripts/generate_build_manifest.py
       - name: Build and deploy gallery
         env:
           PYODIDE_BASE_URL: ${{ env.PYODIDE_BASE_URL }}

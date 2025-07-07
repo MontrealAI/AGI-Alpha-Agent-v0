@@ -187,10 +187,19 @@ def main() -> None:
         dest = base / rel
         check_placeholder = rel in PLACEHOLDER_ASSETS
         placeholder = False
-        if dest.exists() and check_placeholder:
-            text = dest.read_text(errors="ignore")
-            content = text.strip()
-            placeholder = not content or content == "{}" or "placeholder" in content.lower()
+        if dest.exists():
+            if check_placeholder:
+                text = dest.read_text(errors="ignore")
+                content = text.strip()
+                placeholder = not content or content == "{}" or "placeholder" in content.lower()
+            expected = CHECKSUMS.get(rel) or CHECKSUMS.get(dest.name)
+            if expected and not placeholder:
+                algo, ref = expected.split("-", 1)
+                digest_bytes = getattr(hashlib, algo)(dest.read_bytes()).digest()
+                calc_b64 = base64.b64encode(digest_bytes).decode()
+                if ref != calc_b64 and ref.lower() != digest_bytes.hex():
+                    print(f"Checksum mismatch for {rel}, re-downloading")
+                    placeholder = True
         if not dest.exists() or placeholder:
             if placeholder:
                 print(f"Replacing placeholder {rel}...")
@@ -214,6 +223,12 @@ def main() -> None:
             "or the Pyodide base URL via PYODIDE_BASE_URL."
         )
         sys.exit(1)
+
+    failures = verify_assets(base)
+    if failures:
+        joined = ", ".join(failures)
+        sys.exit(f"verification failed for: {joined}")
+    print("All assets verified successfully")
 
 
 if __name__ == "__main__":
