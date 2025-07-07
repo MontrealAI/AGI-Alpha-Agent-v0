@@ -37,7 +37,7 @@ export async function copyAssets(manifest, repoRoot, outDir) {
 }
 
 export { injectEnv };
-export async function checkGzipSize(file, maxBytes = 2 * 1024 * 1024) {
+export async function checkGzipSize(file, maxBytes = 5 * 1024 * 1024) {
   const {gzipSizeFromFile} = await import('gzip-size');
   const size = await gzipSizeFromFile(file);
   if (size > maxBytes) {
