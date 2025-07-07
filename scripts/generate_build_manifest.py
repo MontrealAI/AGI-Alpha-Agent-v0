@@ -15,8 +15,12 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text())
     manifest.pop("checksums", None)
     manifest["checksums"] = {k: fa.CHECKSUMS[k] for k in sorted(fa.CHECKSUMS)}
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
-    print(f"Updated {manifest_path}")
+    new_content = json.dumps(manifest, indent=2) + "\n"
+    if manifest_path.read_text() != new_content:
+        manifest_path.write_text(new_content)
+        print(f"Updated {manifest_path}")
+    else:
+        print(f"{manifest_path} already up to date")
 
 
 if __name__ == "__main__":
