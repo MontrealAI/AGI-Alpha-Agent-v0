@@ -66,6 +66,10 @@ CHECKSUMS = {
     "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
 }
 
+# Remember to run `python scripts/generate_build_manifest.py` whenever
+# these checksum values change so the Insight Browser build manifest
+# stays consistent.
+
 
 def _session() -> requests.Session:
     retry = Retry(total=0)
