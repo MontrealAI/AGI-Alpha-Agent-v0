@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # Edge-of-Human-Knowledge Demo Tasks Sprint for Codex
 
@@ -87,7 +87,7 @@ Open the link in an incognito window and verify the service worker caches assets
 - Capture short GIFs or screenshots under `docs/<demo>/assets/` for a highly visual experience.
 - Test with `mkdocs build --strict` before deploying and ensure `pre-commit` hooks pass.
 - Run `pre-commit run --files <changed_files>` and `pytest -m 'not e2e'` to confirm formatting and basic tests before publishing.
-- Periodically verify every README still embeds the [disclaimer snippet](../docs/DISCLAIMER_SNIPPET.md).
+- Periodically verify every README still embeds the [disclaimer snippet](DISCLAIMER_SNIPPET.md).
 
 ## 7. Final Polish
 - Open the gallery in multiple browsers and confirm the layout feels professional and inspiring.

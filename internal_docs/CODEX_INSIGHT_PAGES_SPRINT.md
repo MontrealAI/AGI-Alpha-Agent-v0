@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # α‑AGI Insight v1 – GitHub Pages Sprint for Codex
 

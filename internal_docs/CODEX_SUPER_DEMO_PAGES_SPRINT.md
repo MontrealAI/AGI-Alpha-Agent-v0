@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # Alpha‑Factory – Complete Demo Pages Sprint for Codex
 
