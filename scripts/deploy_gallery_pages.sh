@@ -25,8 +25,6 @@ fi
 python -m alpha_factory_v1.demos.validate_demos
 
 # Build the Insight docs and gallery
-npm --prefix "$BROWSER_DIR" run fetch-assets
-npm --prefix "$BROWSER_DIR" ci
 "$SCRIPT_DIR/build_insight_docs.sh"
 python scripts/mirror_demo_pages.py
 python scripts/build_service_worker.py
