@@ -13,7 +13,11 @@ cd "$REPO_ROOT"
 python alpha_factory_v1/scripts/preflight.py
 node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js
 python scripts/check_python_deps.py
-python check_env.py --auto-install
+if [[ "${CI_SKIP_ENV_CHECK:-0}" == "1" && "${CI:-}" == "true" ]]; then
+  echo "CI_SKIP_ENV_CHECK set – skipping check_env.py" >&2
+else
+  python check_env.py --auto-install
+fi
 
 # Disclaimer snippet verification removed; rely on documentation updates
 
