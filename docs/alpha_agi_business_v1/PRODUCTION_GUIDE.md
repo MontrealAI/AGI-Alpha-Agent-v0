@@ -44,7 +44,7 @@ Run `pre-commit run --all-files` after the dependencies finish installing.
      ```
 
 3. **Run in Colab**
-   - Open [`colab_alpha_agi_business_v1_demo.ipynb`](colab_alpha_agi_business_v1_demo.ipynb).
+   - Open [`colab_alpha_agi_business_v1_demo.ipynb`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/colab_alpha_agi_business_v1_demo.ipynb).
    - Run the setup cell; dependencies are installed automatically.
    - The notebook exposes a Gradio dashboard and OpenAI Agents SDK bridge.
 
@@ -73,7 +73,9 @@ curl http://localhost:${ALPHA_FACTORY_ADK_PORT}/healthz
    - Docker: `./run_business_v1_demo.sh --stop`
    - Native Python: press `Ctrl+C`; the orchestrator shuts down gracefully.
 
-For advanced options see [`README.md`](README.md) in the same directory.
+For advanced options see
+[`README.md`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)
+in the same directory.
 
 ---
 

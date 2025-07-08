@@ -66,10 +66,10 @@ Verify dependencies offline:
 python ../../check_env.py --auto-install --wheelhouse /media/wheels
 ```
 
-See [docs/OFFLINE.md](../../../../docs/OFFLINE.md) for additional tips.
+See the [Offline Setup section](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md#offline-setup) for additional tips.
 
 ## Colab Notebook
-Open [`colab_alpha_agi_business_v1_demo.ipynb`](colab_alpha_agi_business_v1_demo.ipynb) and run all cells. The notebook
+Open [`colab_alpha_agi_business_v1_demo.ipynb`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/colab_alpha_agi_business_v1_demo.ipynb) and run all cells. The notebook
   checks requirements, starts the orchestrator, and exposes helper tools via the OpenAI Agents SDK.
 
 ## ADK Bridge

@@ -96,7 +96,7 @@ The bridge exposes health checks at
 
 3. **Run in Colab**
    - Open the notebook at
-     [colab_aiga_meta_evolution.ipynb](colab_aiga_meta_evolution.ipynb).
+     [colab_aiga_meta_evolution.ipynb](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/colab_aiga_meta_evolution.ipynb).
      Click the “Open in Colab” badge and run the setup cell. The notebook
      launches the same service with a public Gradio URL and includes test
      and API usage examples.
