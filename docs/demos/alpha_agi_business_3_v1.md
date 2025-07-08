@@ -19,7 +19,7 @@ Planck, Boltzmann, Nash and Basel III scales.  Every number is **back‑tested,
 formal‑verified** and hash‑anchored on‑chain.  You may safely ship it into a
 high‑stakes prod cluster right now.
 
-> **Definition**: An **α‑AGI Business** 👁️✨ (`<name>.a.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (`<name>.a.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
+> **Definition**: An **α‑AGI Business** 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.a.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.a.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
 
 ---
 
@@ -45,7 +45,7 @@ free‑energy** sources:
 
 Every opportunity is expressed as a **Boltzmann‑weighted path integral**; Ω‑Agents
 sample trajectories that minimise **instantaneous free‑energy**
-\(\mathcal F\) while satisfying **Basel‑III + EU AI‑Act** safety surfaces.
+\(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/\mathcal F\) while satisfying **Basel‑III + EU AI‑Act** safety surfaces.
 
 ---
 
@@ -57,12 +57,12 @@ over trajectories:
 
 \[
 \boxed{
-\mathcal S[\sigma(t)] \;=\;
+\mathcal S[\sigma(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t)] \;=\;
 \int_{t_0}^{t_1}
-\bigl(
+\bigl(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/
 \langle E_{\text{payoff}}\rangle_{\sigma(t)}
 -
-\beta^{-1}(t)\,H\!\bigl[\sigma(t)\bigr]
+\beta^{-1}(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t)\,H\!\bigl[\sigma(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t)\bigr]
 \bigr)\,dt
 }
 \]
@@ -70,7 +70,7 @@ over trajectories:
 Minimising **Σ e<sup>−𝒮</sup>** yields a *Feynman‑like propagator* guiding Ω‑Agents toward
 the lowest‑entropy cash‑flows.
 
-* **β(t)** — live market temperature from cross‑asset implied vol.  
+* **β(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t)** — live market temperature from cross‑asset implied vol.  
 * **H** — strategic entropy approximated by a **Rényi‑2** estimator for heavy tails.  
 * Path integral solved via **Stochastic Neural ODE**.
 
@@ -83,13 +83,13 @@ Brandenburger‑Nalebuff’s PART moves become **on‑chain opcodes**:
 
 | Lever | Opcode | Runtime Effect |
 |-------|--------|----------------|
-| **Players** | `ADD_PLAYER(addr, stake)` | Mints stake‑weighted micro‑state |
-| **Added‑Value** | `SET_PAYOFF(fn)` | Hot‑swaps payoff Hamiltonian |
-| **Rules** | `PATCH_RULE(hash)` | Versioned DAO proposal → auto‑audit |
-| **Tactics** | `TIMELOCK(sig,Δt)` | Cryptographic commitment, unlock after Δt |
+| **Players** | `ADD_PLAYER(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/addr, stake)` | Mints stake‑weighted micro‑state |
+| **Added‑Value** | `SET_PAYOFF(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/fn)` | Hot‑swaps payoff Hamiltonian |
+| **Rules** | `PATCH_RULE(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/hash)` | Versioned DAO proposal → auto‑audit |
+| **Tactics** | `TIMELOCK(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/sig,Δt)` | Cryptographic commitment, unlock after Δt |
 
 Ω‑Lattice demo triggers opcode flux whenever
-\(|Δ\beta| > 0.5\) per minute (extreme regime).
+\(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/|Δ\beta| > 0.5\) per minute (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/extreme regime).
 
 ---
 
@@ -99,13 +99,13 @@ Brandenburger‑Nalebuff’s PART moves become **on‑chain opcodes**:
 ```mermaid
 %% GitHub-compatible Mermaid
 flowchart LR
-    %% style definition (❌ no semicolon at EOL)
+    %% style definition (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/❌ no semicolon at EOL)
     classDef layer stroke-width:2px
 
     %% ── Market ─────────────────────────────────────────────
     subgraph Market["$AGIALPHA Marketplace"]
-        BIZ["α-AGI Business (.a.agi.eth)"]
-        AGT["α-AGI Agent (.a.agent.agi.eth)"]
+        BIZ["α-AGI Business (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.a.agi.eth)"]
+        AGT["α-AGI Agent (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.a.agent.agi.eth)"]
         class BIZ,AGT layer
     end
 
@@ -125,7 +125,7 @@ flowchart LR
 
     %% ── Edges ─────────────────────────────────────────────
     BIZ -- "α-jobs"      --> AGT
-    AGT -- "Proof(ΔG)"   --> BIZ
+    AGT -- "Proof(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/ΔG)"   --> BIZ
     BIZ --> LDB
     BIZ --> ORC
     AGT --> ORC
@@ -135,7 +135,7 @@ flowchart LR
 | Entity | Responsibility | Key Interface |
 |--------|----------------|---------------|
 | **Business** | Bundle α‑jobs, fund bounties | `POST /alpha_job` |
-| **Agent** | Solve jobs, post proofs | `tool()` (OpenAI Agents SDK) |
+| **Agent** | Solve jobs, post proofs | `tool()` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/OpenAI Agents SDK) |
 | **Orchestrator** | Route jobs, enforce β‑schedule | A2A + MCP |
 | **Ledger‑Bot** | Settle \$AGIALPHA mint/burn | Solana program |
 | **Safety Ω** | Runtime sandboxes, entropy caps | seccomp‑BPF |
@@ -166,12 +166,12 @@ flowchart TB
   classDef agent fill:#cffafe,stroke:#0369a1;
 ```
 
-Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harvest.
+Cells with \(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harvest.
 
 ---
 
 <a id="5"></a>
-## 5 · Ω‑Agents Catalogue (11 / 11)
+## 5 · Ω‑Agents Catalogue (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/11 / 11)
 
 | ENS | Core Novelty | Physics Role | Verified Scarcity Claim |
 |-----|--------------|-------------|-------------------------|
@@ -179,7 +179,7 @@ Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harves
 | `bio.a.agent.agi.eth` | KG‑RAG on UniProt | Reduces entropy via high‑info datapoints | 3 CRISPR patents neutralised |
 | `mat.a.agent.agi.eth` | Diffusion‑MCTS for material space | Lowers enthalpy of catalyst design | DOE grant pre‑empt |
 | `pol.a.agent.agi.eth` | Law QA + GAN red‑line | Captures policy phase‑lags | 37‑jurisdiction coverage |
-| `ene.a.agent.agi.eth` | Grid DR RL‑HF | Sets β(t) from load | Demoed 14 % bill cut |
+| `ene.a.agent.agi.eth` | Grid DR RL‑HF | Sets β(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t) from load | Demoed 14 % bill cut |
 | `mfg.a.agent.agi.eth` | CP‑SAT job‑shop | Converts ΔG to throughput | 6 % OEE lift |
 | `log.a.agent.agi.eth` | VRP‑RL for logistics | Entropy compression | 12 % route savings |
 | `res.a.agent.agi.eth` | Literature ablation design | Orthogonal signals | 0.78 MI F1 gain |
@@ -192,7 +192,7 @@ Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harves
 <a id="6"></a>
 ## 6 · 90 s Live Quantum‑Loop Demo
 
-| t (s) | Trigger | Agent(s) | Δ𝒮 drop | Outcome |
+| t (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/s) | Trigger | Agent(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/s) | Δ𝒮 drop | Outcome |
 |-------|---------|----------|---------|---------|
 | 0 | `docker run ghcr.io/montrealai/omega-lattice:latest` | Orchestrator | — | Dashboard online |
 | 9 | BTC‑vol spike | `fin`, `ene` | −2.3×10⁻² J/bit | β slashed; α‑job #1201 posted |
@@ -207,18 +207,18 @@ Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harves
 ## 7 · Algorithmic Anatomy — Zero‑Entropy Pipeline
 
 ```python
-# core outline (simplified)
+# core outline (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/simplified)
 bundle   = orchestrator.collect_signals()
-ΔH       = fin_agent.latent_work(bundle)
-ΔS       = res_agent.entropy(bundle)
+ΔH       = fin_agent.latent_work(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/bundle)
+ΔS       = res_agent.entropy(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/bundle)
 β        = ene_agent.market_temperature()
 ΔG       = ΔH - ΔS/β
 if ΔG < 0:
-    orchestrator.post_alpha_job(bundle.id, ΔG)
+    orchestrator.post_alpha_job(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/bundle.id, ΔG)
 
 # Gödel Looper self-proof
-if gdl_agent.provable(weight_update):
-    model.commit(weight_update)
+if gdl_agent.provable(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/weight_update):
+    model.commit(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/weight_update)
 ```
 
 Offline mode → `ene_agent` resorts to GARCH / Kalman to estimate β.
@@ -268,6 +268,7 @@ Offline mode activates automatically when `OPENAI_API_KEY` is unset.
 Use our interactive Google Colab to run the pipeline without local setup:
 
 ```
+https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/colab_alpha_agi_business_3_demo.ipynb
 ```
 
 
@@ -295,7 +296,7 @@ You can also run the Dockerised version:
 $ alpha-agi-business-3-v1 --cycles 1 --loglevel info
 2025-06-11 17:16:10 INFO     | ΔH=0.027 ΔS=0.008 β=1.04 → ΔG=0.019
 2025-06-11 17:16:10 INFO     | LLM: LLM offline
-2025-06-11 17:16:10 INFO     | [Model] New weights committed (Gödel-proof verified)
+2025-06-11 17:16:10 INFO     | [Model] New weights committed (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/Gödel-proof verified)
 ```
 
 #### Environment Setup
@@ -305,13 +306,13 @@ $ alpha-agi-business-3-v1 --cycles 1 --loglevel info
 - `LOCAL_LLM_URL` – optional. Base URL for the local fallback model.
   Defaults to `http://ollama:11434/v1`.
 - Each variable can also be passed via command-line flags
-  (`--openai-api-key`, `--local-llm-url`, `--adk-host`,
+  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`--openai-api-key`, `--local-llm-url`, `--adk-host`,
   `--a2a-port`, `--a2a-host`, `--llama-model-path`, `--llama-n-ctx`).
 - Python ≥3.11 with packages from `requirements.txt` installed. The
   `run_business_3_demo.sh` helper now builds a Docker image that includes
   `openai_agents` by default.
 - Copy `.env.example` in this folder to `.env` and adjust the values before running.
-- Before launching the demo, load the variables with `set -a; source .env; set +a` (use the PowerShell equivalent on Windows).
+- Before launching the demo, load the variables with `set -a; source .env; set +a` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/use the PowerShell equivalent on Windows).
 - Run `python check_env.py --auto-install` after sourcing so optional dependencies install correctly.
 - `ADK_HOST` – optional. URL of the ADK gateway to forward cycle summaries.
 - `A2A_PORT` – enable gRPC A2A messages when set to a port number.

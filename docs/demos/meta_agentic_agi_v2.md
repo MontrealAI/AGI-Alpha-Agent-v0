@@ -15,15 +15,15 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 Identical to **v1** plus a statistical-physics wrapper that logs and minimises **Gibbs / variational free-energy** for each candidate agent during the evolutionary search.
 
 *Metric toggle*: `configs/default.yml → physics_metric: free_energy`  
-Implementation: `core/physics/gibbs.py` (≈25 LoC) & 4-line hook in `scorer.py`.
+Implementation: `core/physics/gibbs.py` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/≈25 LoC) & 4-line hook in `scorer.py`.
 
-> **Official definition – Meta-Agentic (adj.)**  
+> **Official definition – Meta-Agentic (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/adj.)**  
 > *Describes an agent whose **primary role** is to **create, select, evaluate, or re‑configure other agents** and the rules governing their interactions, thereby exercising **second‑order agency** over a population of first‑order agents.*
 
 > *The term was **pioneered by Vincent Boucher, President of MONTREAL.AI**.*
 
 ```mermaid
-%% 𝗚𝗿𝗮𝗻𝗱 𝗦𝘆𝗻𝗮𝗽𝘀𝗲 𝗚𝗿𝗮𝗽𝗵 – Meta-Agentic α-AGI (v2 with variational free-energy)
+%% 𝗚𝗿𝗮𝗻𝗱 𝗦𝘆𝗻𝗮𝗽𝘀𝗲 𝗚𝗿𝗮𝗽𝗵 – Meta-Agentic α-AGI (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/v2 with variational free-energy)
 graph LR
   %% ─────────────────────  Class styles
   classDef meta      fill:#6425ff,stroke:#eee,color:#fff
@@ -94,19 +94,19 @@ graph LR
 
 > **Elevating Alpha‑Factory v1 into a self‑improving, cross‑industry “Alpha Factory” that systematically  
 > Out‑Learn · Out‑Think · Out‑Design · Out‑Strategize · Out‑Execute — without coupling to a single vendor or model.**  
-> Inspired by and extending the *Meta‑Agent Search* paradigm from Hu *et al.* (ICLR 2025).
+> Inspired by and extending the *Meta‑Agent Search* paradigm from Hu *et al.* (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/ICLR 2025).
 
 ---
 
 ## 📌 Purpose & Positioning
-This demo operationalises the **Automated Design of Agentic Systems (ADAS)** paradigm and layers:
+This demo operationalises the **Automated Design of Agentic Systems (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/ADAS)** paradigm and layers:
 
-* **True multi‑objective search** (accuracy, cost, latency, risk, carbon)
-* **Open‑weights or API‑based FM back‑ends** (OpenAI, Anthropic, Mistral .gguf …)
+* **True multi‑objective search** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/accuracy, cost, latency, risk, carbon)
+* **Open‑weights or API‑based FM back‑ends** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/OpenAI, Anthropic, Mistral .gguf …)
 * **Automated provenance & lineage visualisation**
 * **Antifragile, regulator‑ready safeguards**
 
-into the existing **Alpha‑Factory v1** (multi‑agent AGENTIC α‑AGI) pipeline.
+into the existing **Alpha‑Factory v1** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/multi‑agent AGENTIC α‑AGI) pipeline.
 
 ---
 
@@ -116,12 +116,12 @@ into the existing **Alpha‑Factory v1** (multi‑agent AGENTIC α‑AGI) pipe
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_agi_v2
 
-# 2️⃣ Environment (CPU‑only default)
+# 2️⃣ Environment (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/CPU‑only default)
 micromamba create -n metaagi python=3.11 -y
 micromamba activate metaagi
 pip install -r requirements.txt        # ≤ 40 MiB wheels
 
-# 3️⃣ Run – zero‑API mode (pulls a gguf via Ollama)
+# 3️⃣ Run – zero‑API mode (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/pulls a gguf via Ollama)
 python meta_agentic_agi_demo_v2.py --provider mock:echo       # offline demo
 #   …or real weights
 python meta_agentic_agi_demo_v2.py --provider mistral:7b-instruct.gguf
@@ -136,6 +136,7 @@ streamlit run ui/lineage_app.py
 
 ### 🎓 Colab notebook
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/colab_meta_agentic_agi_v2.ipynb)
 
 Spin up the demo end‑to‑end without installing anything. Works offline using open‑weights or with your API keys. The notebook now previews the latest lineage entries after the search loop so you can inspect results directly in Colab.
 
@@ -172,7 +173,7 @@ graph TD
     MGPT["Meta LLM Programmer"]
     Candidate["Candidate Agent<br/>Python fn"]
     Evaluator["Sandboxed Evaluator"]
-    Archive["Archive<br/>(Pareto + Novelty)"]
+    Archive["Archive<br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/Pareto + Novelty)"]
     MGPT -->|generates| Candidate
     Candidate --> Evaluator
     Evaluator -->|scores| Archive
@@ -186,7 +187,7 @@ lineage| Archive
 flowchart LR
   AFV1["Alpha‑Factory v1 Core"]
   MAA["Meta‑Agentic Layer"]
-  Providers["FM Providers<br/>(OpenAI / Anthropic / llama‑cpp)"]
+  Providers["FM Providers<br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/OpenAI / Anthropic / llama‑cpp)"]
   Dataset["Domain Datasets"]
   UI2["Lineage UI"]
   AFV1 --> MAA
@@ -198,7 +199,7 @@ flowchart LR
 ---
 
 ## 4 Provider Abstraction ➡️ open‑weights 🏋️‍♀️
-`configs/default.yml` (excerpt):
+`configs/default.yml` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/excerpt):
 ```yaml
 provider: mistral:7b-instruct.gguf   # any ollama / llama.cpp id
 context_length: 8192
@@ -221,13 +222,13 @@ Change **provider** to:
 
 * NSGA‑II elitist selection  
 * Behaviour descriptor = SHA‑256 of candidate AST  
-* Optional human‑in‑the‑loop thumbs up/down (UI)
+* Optional human‑in‑the‑loop thumbs up/down (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/UI)
 
 ---
 
 ## 6 Security & Antifragility 🛡
 * Firejail `--seccomp` + 512 MiB mem‑cgroup sandbox  
-* Static analysis (`bandit`) + dynamic taint tracking  
+* Static analysis (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/`bandit`) + dynamic taint tracking  
 * Live watchdog kills rogue processes > 30 s CPU  
 * Chaos‑tests inject tool failures; reward graceful degradation
 
@@ -236,21 +237,21 @@ Change **provider** to:
 ## 7 Extending 🛠
 1. **New dataset** – drop `my.pkl` into `data/`, flag `--dataset my`.  
 2. **New metric** – subclass `scorer.BaseMetric`, list in `configs/default.yml`.  
-3. **New tool** – add `core/tools/foo.py` exposing `__call__(self, query)`.
+3. **New tool** – add `core/tools/foo.py` exposing `__call__(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/self, query)`.
 
 ---
 
 ## 8 Roadmap 🗺
 * ☐ Hierarchical meta‑meta search  
-* ☐ GPU batch infer (Flash‑infer v3)  
+* ☐ GPU batch infer (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/Flash‑infer v3)  
 * ☐ Offline RL fine‑tune search policy with lineage replay
 
 ---
 
 ## 9 References 📚
 * S. Hu *et al.* “Automated Design of Agentic Systems” ICLR 2025  
-* OpenAI “A Practical Guide to Building Agents” (2024)  
-* Google ADK docs (2025)
+* OpenAI “A Practical Guide to Building Agents” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/2024)  
+* Google ADK docs (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v2/2025)
 
 ---
 

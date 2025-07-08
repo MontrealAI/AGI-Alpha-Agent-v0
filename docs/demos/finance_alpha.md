@@ -15,7 +15,7 @@ Welcome! These short demos let **anyone – even if you’ve never touched a
 terminal – spin up Alpha‑Factory, watch a live trade, and explore the
 planner trace‑graph in *under 2 minutes*.
 
-*(Runs with or without an `OPENAI_API_KEY`; the image auto‑falls back to
+*(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/Runs with or without an `OPENAI_API_KEY`; the image auto‑falls back to
 a local Φ‑2 model.)*
 
 > **⚠️ Disclaimer**: These demos and the included trading strategy are **for
@@ -36,7 +36,7 @@ curl -L https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/main/alp
 2. Container starts with the *BTC / GLD* momentum strategy.
 3. The script verifies the API port is free and waits for the health endpoint.
 4. The script prints JSON tables for **positions** and **P&L**.
-5. You get a link to the live **trace‑graph UI** (`http://localhost:${TRACE_WS_PORT}`).
+5. You get a link to the live **trace‑graph UI** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/`http:/localhost:${TRACE_WS_PORT}`).
 6. Container stops automatically when you close the terminal.
 
 _No installation beyond Docker, `curl`, and `jq`._
@@ -77,11 +77,12 @@ Any variable you omit falls back to these safe defaults when the demo starts.
 
 > Perfect for analysts who love Pandas or anyone on Google Colab.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/finance_alpha.ipynb)
 
 The first code cell checks for Docker and installs it automatically when running on Colab. Simply run each cell in order to launch Alpha‑Factory, view positions, and open the live trace‑graph.
 
 ### Notebook setup
-The notebook begins by verifying Docker. When missing (like on Colab) it installs
+The notebook begins by verifying Docker. When missing (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/like on Colab) it installs
 Docker with `apt-get` and starts the service. The same cell uses `pip install -q`
 and adjust `FINANCE_STRATEGY`, `PORT_API` or `TRACE_WS_PORT` to customise the demo.
 
@@ -90,6 +91,7 @@ An additional cell now embeds the trace‑graph UI directly inside the notebook 
 ```bash
 git clone --depth 1 https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1
+jupyter notebook demos/finance_alpha/finance_alpha.ipynb
 ```
 
 Run the cells to spin up Alpha‑Factory and render positions & P&L as
@@ -104,9 +106,9 @@ directly from Python:
 
 ```python
 from openai.agents import AgentRuntime
-rt = AgentRuntime(base_url="http://localhost:8000", api_key=None)
-fin = rt.get_agent("FinanceAgent")
-print("Alpha signals:", fin.alpha_signals())
+rt = AgentRuntime(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/base_url="http:/localhost:8000", api_key=None)
+fin = rt.get_agent(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/"FinanceAgent")
+print(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/"Alpha signals:", fin.alpha_signals())
 ```
 
 If the `openai-agents` package is missing the optional
@@ -130,7 +132,7 @@ cross‑agent discovery.
 
 ## 🔐 Security
 
-* No secrets leave your machine. `.env` (optional) is git‑ignored.  
+* No secrets leave your machine. `.env` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/optional) is git‑ignored.  
 * Image is **Cosign‑signed**; SBOM available in GitHub Releases.
 
 Enjoy exploring **α‑Factory** – and out‑think the future! 🚀

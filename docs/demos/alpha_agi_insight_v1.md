@@ -11,11 +11,12 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 
 <!--
   🎖️ α-AGI Insight 👁️✨ — Beyond Human Foresight
-  Version 1.1 (2025-07-15)
+  Version 1.1 (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/2025-07-15)
 © 2025 Montreal.AI — All rights reserved
 -->
 
 # α‑AGI Insight v1 — Beyond Human Foresight
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/colab_alpha_agi_insight_v1.ipynb)
 
 
 <p align="center">
@@ -42,10 +43,10 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 how Artificial General Intelligence will disrupt individual economic sectors**.
 It fuses
 
-* **Meta-Agentic Tree Search (MATS)** — an NSGA-II evolutionary loop that
+* **Meta-Agentic Tree Search (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/MATS)** — an NSGA-II evolutionary loop that
   self-improves a population of *agent-invented* innovations **from zero data**;
 * a **thermodynamic disruption trigger**  
-  \( \Gibbs_s(t)=U_s-T_{\text{AGI}}(t)\,S_s \) that detects
+  \(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/ \Gibbs_s(t)=U_s-T_{\text{AGI}}(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/t)\,S_s \) that detects
   capability-driven phase-transitions;
 * an interoperable **agent swarm** written with  
   **OpenAI Agents SDK ∙ Google ADK ∙ A2A protocol ∙ MCP tool calls**.
@@ -87,7 +88,7 @@ flowchart TD
     MCP["Anthropic MCP"]
   end
   SANDBOX["Isolated Runtime<br/><i>Docker / Firejail</i>"]
-  CHAIN["Public Blockchain<br/><i>Checkpoint (Solana testnet)</i>"]
+  CHAIN["Public Blockchain<br/><i>Checkpoint (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Solana testnet)</i>"]
 
   %% ---------- Edges ----------
   CLI -->|commands| ORCH
@@ -131,7 +132,7 @@ flowchart TD
 ```
 
 The demo ships with both a **command-line interface** *and* an
-optional **web dashboard** (Streamlit *or* FastAPI + React) so that analysts,
+optional **web dashboard** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Streamlit *or* FastAPI + React) so that analysts,
 executives, and researchers can explore “what-if” scenarios in minutes.
 
 > **Runs anywhere – with or without an `OPENAI_API_KEY`.**  
@@ -217,9 +218,10 @@ graph TD
 ## 2 Quick-start
 
 > **Prerequisites**
-> • Python ≥ 3.11 • Git • Docker (only for container mode)
-> *(Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
+> • Python ≥ 3.11 • Git • Docker (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/only for container mode)
+> *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
 
+Or try the hosted notebook: [colab_alpha_agi_insight_v1.ipynb](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/colab_alpha_agi_insight_v1.ipynb).
 
 #### Offline notebook usage
 
@@ -255,11 +257,11 @@ can resolve module paths correctly.
 
 ```bash
 docker run -it --rm -p 8501:8501   -e OPENAI_API_KEY=$OPENAI_API_KEY   ghcr.io/montrealai/alpha-agi-insight:latest
-# →  open http://localhost:8501  (Streamlit dashboard)
+# →  open http://localhost:8501  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Streamlit dashboard)
 ```
 
 For offline builds or the browser-based PWA, see
-[insight_browser_v1/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/README.md).
+[insight_browser_v1/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md).
 
 ## Environment Setup
 
@@ -273,7 +275,7 @@ python ../../../check_env.py --auto-install
 version `0.0.17`. Verify manually with:
 
 ```bash
-python -c "import openai_agents, pkgutil; print(openai_agents.__version__)"
+python -c "import openai_agents, pkgutil; print(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/openai_agents.__version__)"
 ```
 
 Set `WHEELHOUSE=/path/to/wheels` when offline to install from a local
@@ -293,14 +295,14 @@ for detailed steps.
 * **Macro-Sentinel / Orchestrator** – registers agents, routes **A2A** messages
   over a TLS gRPC bus, maintains a BLAKE3-hashed audit ledger whose Merkle root
   is checkpointed to the Solana test-net.
-* **Agent Swarm** – seven sandboxed micro-services (Planning, Research,
+* **Agent Swarm** – seven sandboxed micro-services (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Planning, Research,
   Strategy, Market, CodeGen, SafetyGuardian, Memory).  
   Each agent implements both an **OpenAI SDK** adapter *and* a **Google ADK**
   adapter and communicates through standard envelopes.
-* **Simulation kernel** – `mats.py` (zero-data evolution) + `forecast.py`
-  (thermodynamic trigger, baseline growth).
-* **Interfaces** – `cli.py`, `web_app.py` (Streamlit) or
-  `api_server.py` + `web_client/` (React) with live Pareto-front and
+* **Simulation kernel** – `mats.py` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/zero-data evolution) + `forecast.py`
+  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/thermodynamic trigger, baseline growth).
+* **Interfaces** – `cli.py`, `web_app.py` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Streamlit) or
+  `api_server.py` + `web_client/` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/React) with live Pareto-front and
   disruption-timeline charts.
 
 ---
@@ -311,7 +313,7 @@ for detailed steps.
 # Run ten-year forecast with default parameters
 python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate --horizon 10
 
-# Use a custom AGI growth curve (logistic) and fixed random seed
+# Use a custom AGI growth curve (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/logistic) and fixed random seed
 python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate --curve logistic --seed 42
 
 # Display last run in pretty table form
@@ -326,7 +328,7 @@ python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli replay -
 
 `replay` replays ledger events stored under `AGI_INSIGHT_LEDGER_PATH` so you can step through previous runs.
 
-Helpful flags: `--offline` (force local models), `--pop-size`, `--generations`,
+Helpful flags: `--offline` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/force local models), `--pop-size`, `--generations`,
 `--export csv|json`, `--verbose`.
 
 | Command | Description |
@@ -378,14 +380,14 @@ python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli self-imp
 
 Streamlit is for demo-mode only—**not recommended for production**.
 Use the **FastAPI + React** stack for production deployments.
-### 5.1 Streamlit (demo mode only)
+### 5.1 Streamlit (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/demo mode only)
 
 ```bash
 streamlit run src/interface/web_app.py
 # browse to http://localhost:8501
 ```
 
-### 5.2 FastAPI + React (production path)
+### 5.2 FastAPI + React (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/production path)
 
 ```bash
 # backend
@@ -451,9 +453,9 @@ Launch the container stack afterwards or serve `dist/` with any static server,
 e.g. `python -m http.server --directory dist 8080`.
 
 For advanced options see
-[src/interface/web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/core/interface/web_client/README.md).
+[src/interface/web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/index.md).
 
-For details see [docs/API.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/API.md).
+For details see [docs/API.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/docs/API.md).
 
 ### 5.4 Building the Web Dashboard
 
@@ -468,7 +470,7 @@ npm run build
 This installs dependencies and outputs static files in `dist/`. The provided
 `Dockerfile` already runs these steps, so manual builds are only needed for
 local development or customization. See the
-[web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/core/interface/web_client/README.md) for advanced usage.
+[web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/index.md) for advanced usage.
 
 ### 5.5 Exporting Visualization Data
 
@@ -496,16 +498,16 @@ Run this command after a simulation to refresh the highlighted path shown in the
 | `AGI_INSIGHT_BUS_KEY` | TLS private key path | _unset_ |
 | `AGI_INSIGHT_BUS_TOKEN` | Shared token for the gRPC bus | _unset_ |
 | `AGI_INSIGHT_BROKER_URL` | Kafka broker URL for mirroring | _unset_ |
-| `AGI_INSIGHT_ALLOW_INSECURE` | Allow non‑TLS bus (`1` to enable) | `0` |
+| `AGI_INSIGHT_ALLOW_INSECURE` | Allow non‑TLS bus (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/`1` to enable) | `0` |
 | `AGI_INSIGHT_LEDGER_PATH` | Audit DB path | `./ledger/audit.db` |
 | `AGI_INSIGHT_MEMORY_PATH` | Path used by `MemoryAgent` for persistent storage | _unset_ |
-| `AGI_INSIGHT_JSON_LOGS` | Emit JSON formatted console logs (`1` to enable) | `0` |
-| `AGI_INSIGHT_DB` | Ledger backend (`sqlite`, `duckdb` or `postgres`) | `sqlite` |
+| `AGI_INSIGHT_JSON_LOGS` | Emit JSON formatted console logs (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/`1` to enable) | `0` |
+| `AGI_INSIGHT_DB` | Ledger backend (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/`sqlite`, `duckdb` or `postgres`) | `sqlite` |
 | `AGI_INSIGHT_BROADCAST` | Enable blockchain broadcasting | `1` |
 | `AGI_INSIGHT_SOLANA_URL` | Solana RPC endpoint | `https://api.testnet.solana.com` |
-| `AGI_INSIGHT_SOLANA_WALLET` | Wallet private key (hex) | _unset_ |
+| `AGI_INSIGHT_SOLANA_WALLET` | Wallet private key (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/hex) | _unset_ |
 | `AGI_INSIGHT_SOLANA_WALLET_FILE` | Path to wallet key file | _unset_ |
-| `SIM_RESULTS_DIR` | Folder for simulation JSON results (created with mode `0700`) | `$ALPHA_DATA_DIR/simulations` |
+| `SIM_RESULTS_DIR` | Folder for simulation JSON results (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/created with mode `0700`) | `$ALPHA_DATA_DIR/simulations` |
 | `MAX_RESULTS` | Number of results to keep on disk | `100` |
 | `MAX_SIM_TASKS` | Maximum concurrent simulation tasks | `4` |
 | `BUSINESS_HOST` | Base orchestrator URL for bridges | `"http://localhost:8000"` |
@@ -526,7 +528,7 @@ default `changeme` placeholder.
 To secure the gRPC bus provide `AGI_INSIGHT_BUS_CERT`,
 `AGI_INSIGHT_BUS_KEY` and `AGI_INSIGHT_BUS_TOKEN`. When these are omitted set
 `AGI_INSIGHT_ALLOW_INSECURE=1` to run without TLS. See
-[docs/bus_tls.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/bus_tls.md) for detailed setup.
+[docs/bus_tls.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/docs/bus_tls.md) for detailed setup.
 
 Agents restart automatically when they fail or stop sending heartbeats.
 `AGENT_ERR_THRESHOLD` controls how many consecutive errors trigger a restart.
@@ -558,12 +560,12 @@ The directory is created with permissions `0700` when missing.
 
 | Target | Command | Notes |
 |--------|---------|-------|
-| **Docker (single)** | `docker run ghcr.io/montrealai/alpha-agi-insight` | Streamlit UI |
+| **Docker (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/single)** | `docker run ghcr.io/montrealai/alpha-agi-insight` | Streamlit UI |
 | **docker-compose** | `docker compose up` | Orchestrator + agents + UI |
 | **Kubernetes** | `helm install agi-insight ./infrastructure/helm-chart` | GKE/EKS-ready |
 | **Cloud Run** | `terraform apply -chdir=infrastructure/terraform` | GCP example |
 
-All containers are x86-64/arm64 multi-arch and GPU-aware (CUDA 12).
+All containers are x86-64/arm64 multi-arch and GPU-aware (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/CUDA 12).
 `infrastructure/helm-chart/values.example.yaml` shows typical overrides such as API tokens, service ports and replica counts.
 
 ---
@@ -572,16 +574,16 @@ All containers are x86-64/arm64 multi-arch and GPU-aware (CUDA 12).
 
 Running the suite directly from the repository root requires Python to locate
 the `alpha_factory_v1` package. Either install the project or export
-`PYTHONPATH=$(pwd)` before invoking `pytest`:
+`PYTHONPATH=$(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/pwd)` before invoking `pytest`:
 
 ```bash
-export PYTHONPATH=$(pwd)  # if running from the repo root without installation
+export PYTHONPATH=$(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/pwd)  # if running from the repo root without installation
 python check_env.py --auto-install  # verify optional packages
 pytest -q          # unit + integration suite
 pytest -m e2e      # full 5-year forecast smoke-test
 ```
 
-CI (GitHub Actions) runs lint, safety scan, and a headless simulation on every
+CI (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/GitHub Actions) runs lint, safety scan, and a headless simulation on every
 push; only green builds are released to GHCR.
 
 ### 8.1 Offline test setup
@@ -596,7 +598,7 @@ pip wheel -r requirements-dev.txt -w /media/wheels
 
 Ensure `pytest` and `prometheus_client` wheels are available. Refer to
 [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md#offline-setup) and
-[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for the full
+[docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_SETUP.md) for the full
 wheelhouse procedure.
 
 Set the wheelhouse before running the environment check and tests. This
@@ -609,7 +611,7 @@ WHEELHOUSE=/media/wheels pytest -q
 
 `playwright` and other heavy packages must exist in the wheelhouse for tests to
 pass offline.
-See [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a concise
+See [docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_SETUP.md) for a concise
 summary.
 
 ### Troubleshooting

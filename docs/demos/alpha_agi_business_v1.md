@@ -32,8 +32,8 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 ## ✨ Executive Summary
 * **Mission 🎯** Continuously harvest <code>alpha</code> across <kbd>equities • commodities • crypto • supply‑chains •
   life‑sciences</kbd> and convert it into compounding value — automatically, transparently, safely.
-* **Engine ⚙️** *Alpha‑Factory v1 👁️✨* → six specialised agents orchestrated via **A2A** message‑bus (see §4). 
-* **Vehicle 🏛️** A legally‑shielded **α‑AGI Business** (`x.a.agi.eth`) governed & financed by scarce utility token
+* **Engine ⚙️** *Alpha‑Factory v1 👁️✨* → six specialised agents orchestrated via **A2A** message‑bus (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/see §4). 
+* **Vehicle 🏛️** A legally‑shielded **α‑AGI Business** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`x.a.agi.eth`) governed & financed by scarce utility token
   **`$AGIALPHA`**.
 * **Result 📈** A self‑reinforcing fly‑wheel that **Out‑learn • Out‑think • Out‑design • Out‑strategise • Out‑execute**
   the market, round‑after‑round.
@@ -64,7 +64,7 @@ Open financial & industrial alpha is shrinking 📉 — yet trillions in ineffic
   at live, multi‑modal data it surfaces & arbitrages real‑world inefficiencies continuously.
 
 > **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨
-  (`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
+  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
 
 ---
 
@@ -73,14 +73,14 @@ Open financial & industrial alpha is shrinking 📉 — yet trillions in ineffic
 
 ```mermaid
 flowchart LR
-  subgraph "α‑AGI Business (x.a.agi.eth) 👁️✨"
+  subgraph "α‑AGI Business (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/x.a.agi.eth) 👁️✨"
     direction LR
-    P(PlanningAgent)
-    R(ResearchAgent)
-    S(StrategyAgent)
-    M(MarketAnalysisAgent)
-    T(MemoryAgent)
-    F(SafetyAgent)
+    P(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/PlanningAgent)
+    R(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/ResearchAgent)
+    S(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/StrategyAgent)
+    M(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/MarketAnalysisAgent)
+    T(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/MemoryAgent)
+    F(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/SafetyAgent)
     P --> S
     R --> S
     S --> M
@@ -93,8 +93,8 @@ flowchart LR
     E[Order Router]
   end
 
-  Client((Problem Owner))
-  Treasury(($AGIALPHA\nTreasury))
+  Client(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/(Problem Owner))
+  Treasury(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/($AGIALPHA\nTreasury))
 
   Client -. post α‑job .-> P
   S -->|Orders| E
@@ -116,7 +116,7 @@ flowchart LR
 
 **α‑AGI Agent**
 - ENS: `<sub>.a.agent.agi.eth`
-- Treasury: personal stake (reputation + escrow)
+- Treasury: personal stake (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/reputation + escrow)
 - Responsibilities: detect, plan & execute α‑jobs published by any Business
 - Value: earns **$AGIALPHA** rewards, boosts reputation, stores reusable templates
 
@@ -131,15 +131,15 @@ flowchart LR
 ## 4 Featured Alpha‑Factory Agents 🤖
 
 **Featured Alpha‑Factory Agents**
-- **PlanningAgent** – MuZero++ task graph search; decomposes jobs and allocates resources (`planning_agent.py`).
-- **ResearchAgent** – Tool-former LLM with web and DB taps (`research_agent.py`).
-- **StrategyAgent** – Game-theoretic optimiser; crafts risk-adjusted playbooks (`strategy_agent.py`).
-- **MarketAnalysisAgent** – 5M ticks/s ingest; benchmarks edge vs baseline (`market_analysis_agent.py`).
-- **MemoryAgent** – Retrieval-augmented vector store (`memory_agent.py`).
-- **SafetyAgent** – Constitutional-AI and seccomp sandbox (`safety_agent.py`).
-- **ExecutionAgent** – Order routing and trade settlement (`execution`).
-- **AlphaComplianceAgent** – Regulatory checklist (`alpha_agi_business_v1.py`).
-- **AlphaPortfolioAgent** – Portfolio snapshot (`alpha_agi_business_v1.py`).
+- **PlanningAgent** – MuZero++ task graph search; decomposes jobs and allocates resources (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`planning_agent.py`).
+- **ResearchAgent** – Tool-former LLM with web and DB taps (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`research_agent.py`).
+- **StrategyAgent** – Game-theoretic optimiser; crafts risk-adjusted playbooks (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`strategy_agent.py`).
+- **MarketAnalysisAgent** – 5M ticks/s ingest; benchmarks edge vs baseline (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`market_analysis_agent.py`).
+- **MemoryAgent** – Retrieval-augmented vector store (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`memory_agent.py`).
+- **SafetyAgent** – Constitutional-AI and seccomp sandbox (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`safety_agent.py`).
+- **ExecutionAgent** – Order routing and trade settlement (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`execution`).
+- **AlphaComplianceAgent** – Regulatory checklist (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`alpha_agi_business_v1.py`).
+- **AlphaPortfolioAgent** – Portfolio snapshot (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`alpha_agi_business_v1.py`).
 All agents speak **A2A protobuf**, run on **OpenAI Agents SDK** or **Google ADK**, auto‑fallback to offline GGUF models
   — *no API key required*.
 
@@ -151,12 +151,12 @@ All agents speak **A2A protobuf**, run on **OpenAI Agents SDK** or **Google ADK*
 1. **ResearchAgent** scrapes SEC 13‑F deltas, maritime AIS pings & macro calendars.
 2. **MarketAnalysisAgent** detects anomalous spread widening in copper vs renewable‑ETF flows.
 3. **PlanningAgent** forks tasks → **StrategyAgent** crafts hedged LME‑COMEX pair‑trade + FX overlay.
-4. **SafetyAgent** signs‑off compliance pack (Dodd‑Frank §716, EMIR RTS 6).
+4. **SafetyAgent** signs‑off compliance pack (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/Dodd‑Frank §716, EMIR RTS 6).
 5. **ExecutionAgent** routes orders to venues; fills + k‑sigs hashed on‑chain; escrow releases **$AGIALPHA**; live PnL
   feeds Grafana.
 6. **Best Alpha Example**
    *Using the bundled sample opportunities the top ranked item is “gene therapy patent undervalued by market”
-     (score 88). Launching the demo with `--submit-best` automatically queues this opportunity for execution.*
+     (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/score 88). Launching the demo with `--submit-best` automatically queues this opportunity for execution.*
 *Wall clock: 4 min 18 s on a CPU‑only laptop.*
 
 ---
@@ -177,7 +177,7 @@ python start_alpha_business.py
 # automatically queue the highest scoring demo opportunity
 python start_alpha_business.py --submit-best
 
-# Docker-based run (add --pull to use GHCR, --gpu for NVIDIA)
+# Docker-based run (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/add --pull to use GHCR, --gpu for NVIDIA)
 ./run_business_v1_demo.sh [--pull] [--gpu]
 # REST docs → http://localhost:8000/docs
 # or run directly without Docker
@@ -198,9 +198,9 @@ python scripts/setup_config.py
 #   - OPENAI_API_KEY
 #   - YFINANCE_SYMBOL
 #   - ALPHA_BEST_ONLY
-#   - API_TOKEN (REST auth token, defaults to "demo-token" — change for production)
-#   - MCP_ENDPOINT (optional Model Context Protocol URL)
-#   - MCP_TIMEOUT_SEC (optional timeout in seconds for MCP network requests)
+#   - API_TOKEN (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/REST auth token, defaults to "demo-token" — change for production)
+#   - MCP_ENDPOINT (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/optional Model Context Protocol URL)
+#   - MCP_TIMEOUT_SEC (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/optional timeout in seconds for MCP network requests)
 #   - AUTO_INSTALL_MISSING=1 to let `check_env.py` install any missing packages
 #   - WHEELHOUSE=/path/to/wheels for offline package installs
 # The launcher automatically picks up these settings.
@@ -215,9 +215,9 @@ Set the variable yourself to customise the agent list.
 # the demo starts several stub agents:
 #   • **IncorporatorAgent** registers the business
 #   • **AlphaDiscoveryAgent** generates a short opportunity via the LLM provider
-#     (logged via MCP when `MCP_ENDPOINT` is set)
+#     (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/logged via MCP when `MCP_ENDPOINT` is set)
 #   • **AlphaOpportunityAgent** emits market inefficiencies from `examples/alpha_opportunities.json`
-#     (override with `ALPHA_OPPS_FILE=/path/to/custom.json`)
+#     (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/override with `ALPHA_OPPS_FILE=/path/to/custom.json`)
 #     set `ALPHA_TOP_N=N` to broadcast the top-N entries or
 #     set `ALPHA_BEST_ONLY=1` to only emit the single highest-scoring one
 #     and optionally `YFINANCE_SYMBOL=SPY` to pull a live price via `yfinance`
@@ -241,18 +241,19 @@ open http://localhost:7860      # Dashboard SPA
 ./scripts/post_alpha_job.sh examples/job_execute_alpha.json
 ```
 
-If dependencies are missing, pass `--auto-install` (and optionally
+If dependencies are missing, pass `--auto-install` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/and optionally
 `--wheelhouse /path/to/wheels`) to the local launcher:
 
 ```bash
 python run_business_v1_local.py --auto-install --wheelhouse /path/to/wheels
 ```
 
+Or open `colab_alpha_agi_business_v1_demo.ipynb` to run everything in Colab.
 [Open in Colab][open-colab-link]
-The notebook now includes an optional **Gradio dashboard** (step 5b) so you can
+The notebook now includes an optional **Gradio dashboard** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/step 5b) so you can
 interact with the agents without writing any code.
 To drive the orchestrator via the OpenAI Agents SDK run `python openai_agents_bridge.py`
-(see step 5 in the notebook). Use `--host http://<host>:<port>` when the orchestrator
+(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/see step 5 in the notebook). Use `--host http://<host>:<port>` when the orchestrator
 is exposed elsewhere. If the script complains about a missing `openai_agents`
 package, install it with:
 ```bash
@@ -278,7 +279,7 @@ these local wheels. Use the same variable when running `pre-commit` or tests:
 python check_env.py --auto-install --wheelhouse /media/wheels
 ```
 For a concise reference see
-[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md).
+[docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_SETUP.md).
 
 ### 🎛️ Local Gradio Dashboard
 
@@ -293,17 +294,17 @@ python gradio_dashboard.py  # visits http://localhost:7860
 ```
 
 Set `GRADIO_PORT` to use a different port. The dashboard communicates with the
-orchestrator via its REST API (`BUSINESS_HOST` environment variable). Use
+orchestrator via its REST API (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/`BUSINESS_HOST` environment variable). Use
 `--token YOUR_TOKEN` or set `API_TOKEN` to authenticate requests.
 
 ### 🤖 OpenAI Agents bridge
 
-Expose the business demo via the OpenAI Agents SDK (specify `--host` if the orchestrator runs elsewhere
+Expose the business demo via the OpenAI Agents SDK (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/specify `--host` if the orchestrator runs elsewhere
 and `--port` to change the runtime port):
 
 ```bash
 # default port 5001; customise via `--port` or `AGENTS_RUNTIME_PORT`
-# wait up to 10s for the orchestrator (override with --wait-secs)
+# wait up to 10s for the orchestrator (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/override with --wait-secs)
 python openai_agents_bridge.py --host http://localhost:8000 --port 6001 --wait-secs 10
 # → http://localhost:6001/v1/agents
 ```
@@ -312,7 +313,7 @@ Pass `--open-ui` to automatically open the runtime URL in your browser. Use
 authentication.
 When the optional `google-adk` dependency is installed and `ALPHA_FACTORY_ENABLE_ADK=true` is set,
 the same helper agent is also exposed via an ADK gateway for A2A messaging.
-Visit `http://localhost:9000/docs` to explore the gateway when enabled (default port: 9000).
+Visit `http://localhost:9000/docs` to explore the gateway when enabled (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/default port: 9000).
 To use a custom port, set the `GATEWAY_PORT` environment variable accordingly.
 
 #### Air‑gapped setup
@@ -338,7 +339,7 @@ See [PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/
 - `list_agents`
 - `trigger_discovery`
 - `trigger_opportunity`
-- `trigger_best_alpha` (send the highest scoring demo opportunity)
+- `trigger_best_alpha` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/send the highest scoring demo opportunity)
 - `trigger_execution`
 - `trigger_risk`
 - `trigger_compliance`
@@ -349,17 +350,17 @@ See [PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/
 - `trigger_market_analysis`
 - `trigger_memory`
 - `trigger_safety`
-- `recent_alpha` (retrieve latest opportunities)
-- `search_memory` (search stored alpha by keyword;
-  parameters: `query` (string, required) and `limit` (integer, optional))
+- `recent_alpha` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/retrieve latest opportunities)
+- `search_memory` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/search stored alpha by keyword;
+  parameters: `query` (string, required) and `limit` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/integer, optional))
   Example usage:
   ```bash
   curl -X POST http://localhost:6001/v1/agents/search_memory \
        -H "Content-Type: application/json" \
        -d '{"query": "market trend", "limit": 5}'
-- `fetch_logs` (return recent orchestrator log lines)
-- `check_health` (orchestrator health status)
-- `submit_job` (to post a custom job payload to any orchestrator agent)
+- `fetch_logs` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/return recent orchestrator log lines)
+- `check_health` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/orchestrator health status)
+- `submit_job` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/to post a custom job payload to any orchestrator agent)
 
 For a programmatic example see `examples/openai_agent_client.py`:
 ```bash
@@ -367,7 +368,7 @@ python examples/openai_agent_client.py --action recent_alpha
 ```
 
 *No Docker?*
-`bash <(curl -sL https://get.alpha-factory.ai/business_demo.sh)` boots an ephemeral VM (CPU‑only mode).
+`bash <(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/curl -sL https:/get.alpha-factory.ai/business_demo.sh)` boots an ephemeral VM (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/CPU‑only mode).
 
 ---
 
@@ -376,7 +377,7 @@ python examples/openai_agent_client.py --action recent_alpha
 
 | Target | Command | Notes |
 |--------|---------|-------|
-| Laptop (single‑GPU) | `docker compose --profile business up -d` | ≈ 250 FPS on RTX 3060 |
+| Laptop (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/single‑GPU) | `docker compose --profile business up -d` | ≈ 250 FPS on RTX 3060 |
 | Kubernetes | `helm install business oci://ghcr.io/montrealai/charts/agi-business` | HPA on queue depth |
 | Air‑gapped | `singularity run alpha-agi-business_offline.sif` | Includes 8‑B GGUF models |
 
@@ -390,14 +391,14 @@ CI: GitHub Actions → Cosign‑signed OCI → SLSA‑3 attestation.
 | Layer | Defence |
 |-------|---------|
 | Smart Contracts | OpenZeppelin 5.x · 100 % branch tests · ToB audit scheduled |
-| Agent Sandbox | `minijail` seccomp‑bpf *(read/write/mmap/futex)* |
+| Agent Sandbox | `minijail` seccomp‑bpf *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/read/write/mmap/futex)* |
 | Sybil Guard | zk‑license proof + stake slashing |
 | Data Guard | Diff & ML filter vs PII/IP |
 | Chaos Suite | Latency spikes, reward flips, gradient nulls |
 | Audit Trail | BLAKE3 log → Solana testnet hourly |
 | Legal Shield | 2017 **Multi‑Agent AI DAO** prior‑art |
 
-Full checklist lives in `docs/compliance_checklist_v1.md` (17 items, pass‑rated).
+Full checklist lives in `docs/compliance_checklist_v1.md` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/17 items, pass‑rated).
 
 ---
 
@@ -410,7 +411,7 @@ Full checklist lives in `docs/compliance_checklist_v1.md` (17 items, pass‑rate
 | Burn | 1 % of each Business payout | Progressive deflation |
 | Safety Fund | 5 % of burns | Finances red‑team |
 | Min Bounty | 10 k tokens | Anti‑spam |
-| Governance | Quadratic vote (√‑stake) | Curb plutocracy |
+| Governance | Quadratic vote (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/√‑stake) | Curb plutocracy |
 
 Full econ model → `docs/tokenomics_business_v1.pdf`.
 
@@ -419,9 +420,9 @@ Full econ model → `docs/tokenomics_business_v1.pdf`.
 <a id="antifragility"></a>
 ## 10 Antifragility & Self‑Improvement 💪
 
-Alpha-Factory injects stochastic **stressors** (latency spikes, reward flips, gradient dropouts) at random intervals.
+Alpha-Factory injects stochastic **stressors** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/latency spikes, reward flips, gradient dropouts) at random intervals.
 The **SafetyAgent** & **PlanningAgent** collaborate to absorb shocks;
-metrics show ↑ robustness over time (see Grafana *Antifragility* panel).
+metrics show ↑ robustness over time (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/see Grafana *Antifragility* panel).
 
 *Outcome:* the Business *benefits* from volatility — the more chaos, the sharper its edge.
 
@@ -472,6 +473,7 @@ Apache 2.0 © 2025 **MONTREAL.AI**
 - [Best Alpha Workflow](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/BEST_ALPHA_WORKFLOW.md)
 [open-colab-link]:
   https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/
+  alpha_factory_v1/demos/alpha_agi_business_v1/colab_alpha_agi_business_v1_demo.ipynb
 [guide-pdf]: https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
 
 <a id="local-checks"></a>
