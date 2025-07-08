@@ -20,7 +20,7 @@ Run `./deploy_sovereign_agentic_agialpha_agent_v0.sh` to build and launch the co
 3. Phantom wallet gating requiring a configurable token balance.
 4. Integrated agent chat backed by a language model.
 5. Agentic tree search explorer for open-ended strategy discovery.
-6. Built-in arithmetic evaluator for the `Calculate` tool (supports +, -, *, /, and power).
+6. Built-in arithmetic evaluator for the `Calculate` tool (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/supports +, -, *, /, and power).
 
 ```bash
 ./deploy_sovereign_agentic_agialpha_agent_v0.sh

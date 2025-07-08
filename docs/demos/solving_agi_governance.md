@@ -39,7 +39,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ---
 
-### 3 · Core Theorems (proved & fuzz-checked)
+### 3 · Core Theorems (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/proved & fuzz-checked)
 
 1. **Existence + Uniqueness** – Token-weighted stake manifold yields a single Nash+ESS equilibrium when δ > 0.8.  
 2. **Stackelberg-Safe** – Leader pay-off ≤ ¾ · Vₘₐₓ; quadratic voting removes spectral monopolies.  
@@ -49,7 +49,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ### 4 · System Hamiltonian  
 \[
-\mathcal H=\sum_{i=1}^{N}\bigl[\dot{\mathbf x}_i^{\!\top}\mathbf P\,\dot{\mathbf x}_i-\lambda\,U_i(\mathbf x)\bigr]\!,
+\mathcal H=\sum_{i=1}^{N}\bigl[\dot{\mathbf x}_i^{\!\top}\mathbf P\,\dot{\mathbf x}_i-\lambda\,U_i(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/\mathbf x)\bigr]\!,
 \quad
 \nabla_{\mathbf x}\mathcal H=0\Longrightarrow\sum_i\nabla U_i=0
 \]
@@ -60,7 +60,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ### 5 · Empirical Benchmarks  
 
-| Scenario | Agents *N* | Convergence Rounds | σ (pay-off) |
+| Scenario | Agents *N* | Convergence Rounds | σ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/pay-off) |
 |----------|-----------:|-------------------:|------------:|
 | Symmetric pilot | 10 | < 80 | 0.03 |
 | Mid-scale | 10² | < 400 | 0.02 |
@@ -102,6 +102,7 @@ Open the Colab notebook for an end-to-end demo:
 open \
   https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/\
   main/alpha_factory_v1/demos/solving_agi_governance/\
+  colab_solving_agi_governance.ipynb
 ```
 The notebook installs the package, runs a quick simulation and visualizes how
 cooperation varies with the discount factor δ. It uses `numpy` and
@@ -112,7 +113,7 @@ Python standard library.
 ---
 
 ### Requirements
-* Python 3.11 or 3.12 (<3.13; see [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md))
+* Python 3.11 or 3.12 (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/<3.13; see [AGENTS.md](https:/github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md))
 * Install the optional runtime packages:
   ```bash
   pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
@@ -139,7 +140,7 @@ discount factor `δ` is at least 0.8. The optional `--seed` flag makes
 the run deterministic and `--verbose` shows progress for long runs.
 
 Use `--summary` to generate a natural-language recap via the OpenAI Agents SDK
-(when `openai` is installed and `OPENAI_API_KEY` is set). Without network
+(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/when `openai` is installed and `OPENAI_API_KEY` is set). Without network
 access, the script falls back to a local summary string.
 
 ```bash
@@ -205,7 +206,7 @@ The script registers a `GovernanceSimAgent` with the Agents runtime and, when
 `google-adk` is available, also exposes it over the A2A protocol. If either
 package is missing the bridge prints a warning and executes the local simulator
 instead. The offline fallback accepts the same parameters as `governance-sim`
-(`-N`, `-r`, `--delta`, `--stake`) so the demo remains fully offline capable.
+(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/`-N`, `-r`, `--delta`, `--stake`) so the demo remains fully offline capable.
 
 Specify a custom runtime port with `--port`:
 
@@ -217,6 +218,7 @@ governance-bridge --port 5005
 
 [colab-notebook]: https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/\
     blob/main/alpha_factory_v1/demos/solving_agi_governance/\
+    colab_solving_agi_governance.ipynb
 
 
 [View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/README.md)

@@ -11,7 +11,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 
 # MuZero MCTS LLM Agent Demo
 
-This folder contains a prototype integration of a Monte Carlo Tree Search (MCTS) agent with language model guidance. Run `install_and_launch.sh` to build the environment and start the demo in your browser.
+This folder contains a prototype integration of a Monte Carlo Tree Search (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzeromctsllmagent_v0/MCTS) agent with language model guidance. Run `install_and_launch.sh` to build the environment and start the demo in your browser.
 
 ## Quick Start
 1. Ensure Python 3.9+ is installed.
