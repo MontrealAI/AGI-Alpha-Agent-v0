@@ -100,9 +100,9 @@ fi
 
 # Copy static assets from other demos so MkDocs can serve them
 copy_assets() {
-    mkdir -p docs/aiga_meta_evolution
+    mkdir -p docs/aiga_meta_evolution/assets
     cp alpha_factory_v1/demos/aiga_meta_evolution/bridge_overview.svg \
-        docs/aiga_meta_evolution/bridge_overview.svg
+        docs/aiga_meta_evolution/assets/bridge_overview.svg
     for demo in meta_agentic_agi meta_agentic_agi_v2 meta_agentic_agi_v3; do
         src="alpha_factory_v1/demos/$demo/ui/assets"
         dest="docs/$demo/assets"
