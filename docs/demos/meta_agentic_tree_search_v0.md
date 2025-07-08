@@ -306,4 +306,4 @@ Apache 2.0 – see `LICENSE`.
 ---
 *This README belongs to the AGI‑Alpha‑Agent project.*
 
-[View README](../../alpha_factory_v1/demos/meta_agentic_tree_search_v0/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/README.md)

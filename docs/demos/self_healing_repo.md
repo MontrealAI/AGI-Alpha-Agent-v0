@@ -276,4 +276,4 @@ clone repo → [sandbox pytest] → error log
 
 > **Alpha‑Factory** — shipping code that ships itself.
 
-[View README](../../alpha_factory_v1/demos/self_healing_repo/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/README.md)

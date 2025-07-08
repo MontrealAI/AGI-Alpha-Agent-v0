@@ -437,4 +437,4 @@ Huge thanks to:
 
 > **Alpha‑Factory** — forging intelligence that *invents* intelligence.
 
-[View README](../../alpha_factory_v1/demos/aiga_meta_evolution/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/README.md)

@@ -711,4 +711,4 @@ This demo is released for **research & internal evaluation only**.
 ### ✨ See beyond human foresight. Build the future, today. ✨
 
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_insight_v1/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/README.md)

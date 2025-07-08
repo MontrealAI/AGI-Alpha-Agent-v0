@@ -284,4 +284,4 @@ Clune 2019 · Sutton & Silver 2024 · MuZero 2020
 
 © 2025 MONTREAL.AI — Apache‑2.0 License
 
-[View README](../../alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)

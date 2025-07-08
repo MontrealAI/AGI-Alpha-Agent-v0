@@ -71,7 +71,7 @@ python check_env.py --auto-install --wheelhouse "$WHEELHOUSE"
 
 Run `pytest -q` once the check succeeds.
 
-See [tests/README.md](../tests/README.md#offline-install) and [AGENTS.md](../AGENTS.md#offline-setup) for the full instructions.
+See the [tests README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/README.md#offline-install) and [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md#offline-setup) for the full instructions.
 
 ## Tested platforms
 

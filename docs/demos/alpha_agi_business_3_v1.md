@@ -420,4 +420,4 @@ Inherited **2017 Multi‑Agent AI DAO** prior‑art:
 *Forged by the MONTREAL.AI Agentic Ω‑Lattice team — bending entropy to will.*  
 Questions → **discord.gg/montrealai**
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_business_3_v1/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/README.md)

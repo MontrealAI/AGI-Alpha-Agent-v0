@@ -193,4 +193,4 @@ Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before commi
 
 > **Alpha‑Factory** — forging intelligence that **out‑learns, out‑thinks, out‑executes**.
 
-[View README](../../alpha_factory_v1/demos/muzero_planning/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/README.md)

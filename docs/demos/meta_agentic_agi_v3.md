@@ -256,4 +256,4 @@ The included `agents/alpha_finder.py` continuously scans news/API feeds and trig
 
 © 2025 MONTREAL.AI — Apache‑2.0
 
-[View README](../../alpha_factory_v1/demos/meta_agentic_agi_v3/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/README.md)
