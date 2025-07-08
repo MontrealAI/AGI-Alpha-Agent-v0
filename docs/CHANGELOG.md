@@ -52,6 +52,7 @@ Downstream users should consult this section when upgrading.
 - Added `FETCH_ASSETS_ATTEMPTS` environment variable to control download retries.
 - The browser bundle now defaults to the official Web3 Storage CDN. IPFS
   fallback has been removed.
+- Fixed internal documentation links so MkDocs builds without warnings.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
