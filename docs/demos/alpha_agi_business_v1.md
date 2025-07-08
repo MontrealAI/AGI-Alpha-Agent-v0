@@ -164,7 +164,7 @@ All agents speak **A2A protobuf**, run on **OpenAI Agents SDK** or **Google ADK*
 <a id="quick"></a>
 ## 6 Quick Start 🚀
 
-*For a concise walkthrough see [QUICK_START.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/QUICK_START.md).* 
+*For a concise walkthrough see [QUICK_START.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/QUICK_START.md).*
 For a deployment checklist aimed at production environments consult
 [PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/PRODUCTION_GUIDE.md).
 ```bash
@@ -469,7 +469,7 @@ Apache 2.0 © 2025 **MONTREAL.AI**
 - [Google Agent Development Kit docs](https://google.github.io/adk-docs/)
 - [Agent‑to‑Agent protocol](https://github.com/google/A2A)
 - [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol)
- - [Best Alpha Workflow](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/BEST_ALPHA_WORKFLOW.md)
+- [Best Alpha Workflow](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/BEST_ALPHA_WORKFLOW.md)
 [open-colab-link]:
   https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/
 [guide-pdf]: https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
