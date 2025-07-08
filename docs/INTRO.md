@@ -24,4 +24,4 @@ This short guide describes the quickest way to run the α‑AGI Insight demo.
    ```
    Set `AGI_INSIGHT_OFFLINE=1` to guarantee zero network access.
 
-See [docs/quickstart.md](quickstart.md) for more details and Docker instructions.
+See [quickstart.md](quickstart.md) for more details and Docker instructions.
