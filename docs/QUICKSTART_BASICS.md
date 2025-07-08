@@ -19,6 +19,6 @@
    ./quickstart.sh
    ```
 
-For advanced instructions see [README.md](../README.md).
+For advanced instructions see [README.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/README.md).
 If you run into Windows-specific issues, see
 [WINDOWS_SETUP.md](WINDOWS_SETUP.md).

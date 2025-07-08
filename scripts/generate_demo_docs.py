@@ -54,7 +54,7 @@ def build_page(demo: Path) -> str:
     launch_link = None
     demo_index = REPO_ROOT / "docs" / demo.name / "index.html"
     if demo_index.is_file():
-        launch_link = f"[Launch Demo](../{demo.name}/){{.md-button}}"
+        launch_link = f"[Launch Demo](../{demo.name}/index.html){{.md-button}}"
 
     readme_path = demo / "README.md"
     readme_lines = readme_path.read_text(encoding="utf-8").splitlines()
@@ -70,6 +70,20 @@ def build_page(demo: Path) -> str:
                 skip_section = False
             continue
         if "DISCLAIMER_SNIPPET.md" in stripped:
+            continue
+        if ".ipynb" in stripped:
+            continue
+        if "README.md" in stripped:
+            continue
+        if "plugins/" in stripped or "scripts/README.md" in stripped or "tests/README.md" in stripped:
+            continue
+        if ".env.sample" in stripped:
+            continue
+        if "CONCEPTUAL_FRAMEWORK.md" in stripped:
+            continue
+        if "adk_bridge.py" in stripped:
+            continue
+        if "(#" in stripped:
             continue
         if (
             "conceptual research prototype" in stripped

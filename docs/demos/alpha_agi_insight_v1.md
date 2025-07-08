@@ -4,7 +4,7 @@
 
 ![preview](../alpha_agi_insight_v1/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_insight_v1/){.md-button}
+[Launch Demo](../alpha_agi_insight_v1/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -16,7 +16,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 -->
 
 # α‑AGI Insight v1 — Beyond Human Foresight
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/colab_alpha_agi_insight_v1.ipynb)
 
 
 <p align="center">
@@ -145,7 +144,6 @@ executives, and researchers can explore “what-if” scenarios in minutes.
 graph TD
   ROOT["alpha_agi_insight_v1/"]
   subgraph Root
-    ROOT_README["README.md"]
     REQ["requirements.lock"]
     SRC["src/"]
     TEST["tests/"]
@@ -222,7 +220,6 @@ graph TD
 > • Python ≥ 3.11 • Git • Docker (only for container mode)
 > *(Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
 
-Or try the hosted notebook: [colab_alpha_agi_insight_v1.ipynb](colab_alpha_agi_insight_v1.ipynb).
 
 #### Offline notebook usage
 
@@ -262,7 +259,6 @@ docker run -it --rm -p 8501:8501   -e OPENAI_API_KEY=$OPENAI_API_KEY   ghcr.io/m
 ```
 
 For offline builds or the browser-based PWA, see
-[insight_browser_v1/README.md](insight_browser_v1/README.md).
 
 ## Environment Setup
 
@@ -287,7 +283,6 @@ pip wheel -r requirements.lock -w /path/to/wheels
 ```
 
 Then run `python ../../../check_env.py --auto-install` with `WHEELHOUSE`
-set. See [../../scripts/README.md#offline-setup](../../scripts/README.md#offline-setup)
 for detailed steps.
 
 ---
@@ -455,9 +450,8 @@ Launch the container stack afterwards or serve `dist/` with any static server,
 e.g. `python -m http.server --directory dist 8080`.
 
 For advanced options see
-[src/interface/web_client/README.md](src/interface/web_client/README.md).
 
-For details see [docs/API.md](docs/API.md).
+For details see [../API.md](../API.md).
 
 ### 5.4 Building the Web Dashboard
 
@@ -472,7 +466,6 @@ npm run build
 This installs dependencies and outputs static files in `dist/`. The provided
 `Dockerfile` already runs these steps, so manual builds are only needed for
 local development or customization. See the
-[web_client/README.md](src/interface/web_client/README.md) for advanced usage.
 
 ### 5.5 Exporting Visualization Data
 
@@ -504,7 +497,6 @@ Run this command after a simulation to refresh the highlighted path shown in the
 | `AGI_INSIGHT_LEDGER_PATH` | Audit DB path | `./ledger/audit.db` |
 | `AGI_INSIGHT_MEMORY_PATH` | Path used by `MemoryAgent` for persistent storage | _unset_ |
 | `AGI_INSIGHT_JSON_LOGS` | Emit JSON formatted console logs (`1` to enable) | `0` |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | Collector URL for traces/metrics | `http://tempo:4317` *(see `.env.sample`)* |
 | `AGI_INSIGHT_DB` | Ledger backend (`sqlite`, `duckdb` or `postgres`) | `sqlite` |
 | `AGI_INSIGHT_BROADCAST` | Enable blockchain broadcasting | `1` |
 | `AGI_INSIGHT_SOLANA_URL` | Solana RPC endpoint | `https://api.testnet.solana.com` |
@@ -531,7 +523,6 @@ default `changeme` placeholder.
 To secure the gRPC bus provide `AGI_INSIGHT_BUS_CERT`,
 `AGI_INSIGHT_BUS_KEY` and `AGI_INSIGHT_BUS_TOKEN`. When these are omitted set
 `AGI_INSIGHT_ALLOW_INSECURE=1` to run without TLS. See
-[docs/bus_tls.md](docs/bus_tls.md) for detailed setup.
 
 Agents restart automatically when they fail or stop sending heartbeats.
 `AGENT_ERR_THRESHOLD` controls how many consecutive errors trigger a restart.
@@ -551,7 +542,6 @@ Set these variables before starting the orchestrator. When provided,
 `docker-compose.yml` automatically mounts the `certs` directory so the
 containers can reference `/certs/bus.crt` and `/certs/bus.key`.
 
-Before running the demo, copy `.env.sample` to `.env` (or pass variables via `docker -e`). Store wallet keys outside of `.env` and
 use `AGI_INSIGHT_SOLANA_WALLET_FILE` to reference the file containing the
 hex-encoded private key.
 When `AGI_INSIGHT_MEMORY_PATH` is not set the MemoryAgent keeps records only in memory.
@@ -601,7 +591,7 @@ pip wheel -r requirements-dev.txt -w /media/wheels
 ```
 
 Ensure `pytest` and `prometheus_client` wheels are available. Refer to
-[AGENTS.md](../../../AGENTS.md#offline-setup) and
+[AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md#offline-setup) and
 [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for the full
 wheelhouse procedure.
 
@@ -646,7 +636,6 @@ python check_env.py --auto-install --wheelhouse "$WHEELHOUSE"
 
 ```text
 alpha_agi_insight_v1/
-├─ README.md                 # ← you are here
 ├─ requirements.lock
 ├─ src/
 │  ├─ orchestrator.py

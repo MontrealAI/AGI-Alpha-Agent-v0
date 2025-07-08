@@ -4,7 +4,7 @@
 
 ![preview](../solving_agi_governance/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../solving_agi_governance/){.md-button}
+[Launch Demo](../solving_agi_governance/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -102,7 +102,6 @@ Open the Colab notebook for an end-to-end demo:
 open \
   https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/\
   main/alpha_factory_v1/demos/solving_agi_governance/\
-  colab_solving_agi_governance.ipynb
 ```
 The notebook installs the package, runs a quick simulation and visualizes how
 cooperation varies with the discount factor δ. It uses `numpy` and
@@ -124,7 +123,6 @@ Python standard library.
   ```
   This installs optional packages like `openai>=1.82.0,<2.0` and
   `openai-agents>=0.0.17` used by the Agents bridge.
-  See [tests/README.md](../../../tests/README.md) for full instructions.
 
 ### 9 · Running the Demo
 The CLI simulator has **no third‑party dependencies**—use Python 3.11 or 3.12.
@@ -219,7 +217,6 @@ governance-bridge --port 5005
 
 [colab-notebook]: https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/\
     blob/main/alpha_factory_v1/demos/solving_agi_governance/\
-    colab_solving_agi_governance.ipynb
 
 
 [View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/README.md)

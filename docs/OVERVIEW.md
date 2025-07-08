@@ -32,6 +32,6 @@ Key capabilities include:
    ```
    Add API keys in `.env` to enable cloud features; otherwise the demo stays offline.
 
-For a deeper dive, read [docs/quickstart.md](docs/quickstart.md) and the other documents in this folder.
+For a deeper dive, read [quickstart.md](quickstart.md) and the other documents in this folder.
 The [Architecture Overview](ARCHITECTURE.md) page summarises how the orchestrator,
 agents and memory components interact.

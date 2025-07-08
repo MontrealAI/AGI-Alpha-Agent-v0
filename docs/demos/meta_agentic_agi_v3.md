@@ -4,7 +4,7 @@
 
 ![preview](../meta_agentic_agi_v3/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../meta_agentic_agi_v3/){.md-button}
+[Launch Demo](../meta_agentic_agi_v3/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -135,7 +135,6 @@ streamlit run ui/lineage_app.py      # provenance graph
 streamlit run ui/alpha_monitor.py     # live alpha dashboard
 ```
 
-For a **one‑click** experience, open [`colab_meta_agentic_agi_v3.ipynb`](colab_meta_agentic_agi_v3.ipynb) on Colab and run each cell in order.
 
 *Hardware:* CPU‑only works (llama‑cpp 4‑bit); GPU speeds things up. 8 GB RAM minimum.
 

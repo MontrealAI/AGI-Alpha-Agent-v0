@@ -4,7 +4,7 @@
 
 ![preview](../alpha_asi_world_model/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_asi_world_model/){.md-button}
+[Launch Demo](../alpha_asi_world_model/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -24,18 +24,6 @@ Last updated 2025-04-25   Maintainer → Montreal.AI Core AGI Team
 ---
 
 ## 0  Table of Contents  <!-- omit in toc -->
-1. [Why this demo matters](#1-why-this-demo-matters)
-2. [Quick-start 🥑](#2-quick-start-)
-   - [Offline setup](#offline-setup)
-3. [High-level architecture 🗺️](#3-high-level-architecture-️)
-4. [Meet the agents 🤖 (≥ 5)](#4-meet-the-agents-️-≥-5)
-5. [Runtime controls 🎮](#5-runtime-controls-)
-6. [Deployment recipes 🚀](#6-deployment-recipes-)
-7. [Safety, antifragility & governance 🛡️](#7-safety-antifragility--governance-)
-8. [Extending the demo 🧩](#8-extending-the-demo-)
-9. [Troubleshooting 🔧](#9-troubleshooting-)
-10. [Production checklist ✅](#10-production-checklist-)
-11. [License & citation](#11-license--citation)
 
 ---
 
@@ -90,9 +78,7 @@ helm install alpha-asi ./helm_chart
 
 # ░ Notebook
 python -m alpha_asi_world_model_demo --emit-notebook
-jupyter lab alpha_asi_world_model_demo.ipynb
 # ░ Colab
-Open `alpha_asi_world_model_colab.ipynb` in Google Colab for an end-to-end guided setup.
 Non‑technical users can run it step by step:
 1. Visit the notebook on GitHub and click **Open in Colab**.
 2. Wait for the environment to start then choose **Runtime → Run all** (or run each cell manually).

@@ -4,7 +4,7 @@
 
 ![preview](../self_healing_repo/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../self_healing_repo/){.md-button}
+[Launch Demo](../self_healing_repo/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -66,7 +66,6 @@ Browse **http://localhost:7863** → hit **“Heal Repository”**.
 * If the remote clone fails, the demo falls back to the bundled
   `sample_broken_calc` repository.
 
-> **Note:** `run_selfheal_demo.sh` copies `config.env.sample` to `config.env` on the
 > first run. Edit this file to configure OpenAI or your local model.
 > Key settings include:
 
@@ -218,7 +217,6 @@ Minimal setup:
 
 ## 🎓 Google Colab
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/colab_self_healing_repo.ipynb)
 
 Runs the same flow with a public Gradio link.
 The notebook sets `GRADIO_SHARE=1` so the dashboard URL appears automatically.

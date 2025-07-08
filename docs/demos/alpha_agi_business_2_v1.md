@@ -4,7 +4,7 @@
 
 ![preview](../alpha_agi_business_2_v1/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_business_2_v1/){.md-button}
+[Launch Demo](../alpha_agi_business_2_v1/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -28,7 +28,6 @@ A single command launches the **Orchestrator**, seven specialised **α‑AGI A
 Out‑of‑the‑box it **discovers, validates *and executes* live alpha** in any data‑rich domain.
 
 *Prefer a quick tour?* Run the self-contained
-[**Colab Notebook**](colab_alpha_agi_business_2_demo.ipynb)
 to launch the orchestrator and try a live API call in minutes.
 
 ---
@@ -195,8 +194,6 @@ alpha_factory_v1/
  │   └─ agents/            # PlanningAgent, ResearchAgent, ...
  └─ demos/
      └─ alpha_agi_business_2_v1/
-         ├─ colab_alpha_agi_business_2_demo.ipynb
-         └─ README.md      # ← YOU ARE HERE
 ```
 
 ---

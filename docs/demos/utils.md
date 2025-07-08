@@ -4,7 +4,7 @@
 
 ![preview](../utils/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../utils/){.md-button}
+[Launch Demo](../utils/index.html){.md-button}
 
 # Demo Utilities
 

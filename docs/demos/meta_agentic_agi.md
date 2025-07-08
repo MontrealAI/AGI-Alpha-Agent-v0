@@ -4,7 +4,7 @@
 
 ![preview](../meta_agentic_agi/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../meta_agentic_agi/){.md-button}
+[Launch Demo](../meta_agentic_agi/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -128,7 +128,6 @@ demo.  The path resolves automatically when running the scripts.
 
 ### 🎓 Colab notebook
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi/colab_meta_agentic_agi.ipynb)
 
 Spin up the demo end‑to‑end without installing anything. Works offline using open‑weights or with your API keys.
 The notebook now includes a quick smoke test cell to verify the demo setup.
@@ -143,7 +142,6 @@ python openai_agents_bridge.py
 ```
 
 For cross-process federation set `ALPHA_FACTORY_ENABLE_ADK=true` to auto-register
-agents with the bundled Google ADK gateway (`alpha_factory_v1/backend/adk_bridge.py`).
 
 ---
 
