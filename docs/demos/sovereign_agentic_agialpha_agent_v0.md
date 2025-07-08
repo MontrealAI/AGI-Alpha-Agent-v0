@@ -31,4 +31,4 @@ Run `./deploy_sovereign_agentic_agialpha_agent_v0.sh` to build and launch the co
 - The script will guide you through optional model configuration.
 - Press `Ctrl+C` to stop logs after deployment if desired.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/README.md)

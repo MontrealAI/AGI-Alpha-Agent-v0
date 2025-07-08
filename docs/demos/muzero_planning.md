@@ -27,11 +27,6 @@ one‑command experience**.
 You’ll see a MuZero‑style agent improvise physics, deploy Monte‑Carlo search,
 and **stabilise CartPole** — all inside your browser. No GPU, no PhD required.
 
-> **Disclaimer**
-> "superintelligence" describe aspirational goals and do not indicate the
-> presence of a real general intelligence. Use at your own risk.
-
----
 
 ## 🚀 Quick Start
 
@@ -181,7 +176,7 @@ Two extra cells let you tweak the Gym environment, port number and gracefully st
 
 ### Development notes
 
-Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before committing changes. This mirrors the workflow in [AGENTS.md](../../../AGENTS.md).
+Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before committing changes. This mirrors the workflow in [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md).
 
 ---
 
@@ -193,4 +188,4 @@ Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before commi
 
 > **Alpha‑Factory** — forging intelligence that **out‑learns, out‑thinks, out‑executes**.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/README.md)

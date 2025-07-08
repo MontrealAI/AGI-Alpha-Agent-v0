@@ -15,8 +15,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 > **Global markets seep *trillions* in latent opportunity** — *alpha* in the broadest sense: pricing dislocations • supply‑chain inefficiencies • novel drug targets • policy loopholes • unexplored material designs.  
 > **Alpha‑Factory v1** turns that raw potential into deployable breakthroughs, *autonomously*.
 
----
-
 ## ⚡ TL;DR  
 
 ```bash
@@ -213,4 +211,4 @@ Apache‑2.0 © 2025 MONTREAL.AI.
 _“Outlearn · Outthink · Outdesign · Outstrategise · Outexecute.”_  
 Welcome to the era of **Large‑Scale α‑AGI Businesses** 🌸 — where autonomous swarms turn friction into alpha at planetary scale. 🚀
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_2_v1/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_2_v1/README.md)

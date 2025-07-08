@@ -86,6 +86,20 @@ def build_page(demo: Path) -> str:
 
     readme_text = "\n".join(cleaned).lstrip("\n")
 
+    # Fix relative links that break once the README is moved under docs/demos.
+    github_base = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/"
+    readme_text = re.sub(r"\(\.\./\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
+    readme_text = re.sub(r"\(\.\./\.\./\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
+    readme_text = re.sub(r"\(\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
+    readme_text = re.sub(
+        r"\((?:\.\./)+AGENTS.md([#^)]+)?\)", lambda m: f"({github_base}AGENTS.md{m.group(1) or ''})", readme_text
+    )
+    readme_text = re.sub(
+        r"\((?:\.\./)+alpha_factory_v1/([^)]+)\)",
+        lambda m: f"({github_base}alpha_factory_v1/{m.group(1)})",
+        readme_text,
+    )
+
     content = [
         DISCLAIMER_LINK,
         "",
@@ -99,7 +113,7 @@ def build_page(demo: Path) -> str:
         [
             readme_text,
             "",
-            f"[View README](../../alpha_factory_v1/demos/{demo.name}/README.md)",
+            f"[View README on GitHub]({github_base}alpha_factory_v1/demos/{demo.name}/README.md)",
             "",
         ]
     )

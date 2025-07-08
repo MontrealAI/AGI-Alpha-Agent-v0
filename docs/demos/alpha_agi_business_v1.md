@@ -296,7 +296,7 @@ these local wheels. Use the same variable when running `pre-commit` or tests:
 python check_env.py --auto-install --wheelhouse /media/wheels
 ```
 For a concise reference see
-[docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md).
+[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md).
 
 ### 🎛️ Local Gradio Dashboard
 
@@ -505,4 +505,4 @@ pre-commit run --files <paths>             # format only the staged files
 pytest -q ../../../tests                   # execute the root test suite
 ```
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)

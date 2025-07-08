@@ -22,6 +22,7 @@ high‑stakes prod cluster right now.
 > **Definition**: An **α‑AGI Business** 👁️✨ (`<name>.a.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (`<name>.a.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
 
 ---
+
 ## 🛠 Requirements
 
 - **Python ≥3.11**
@@ -420,4 +421,4 @@ Inherited **2017 Multi‑Agent AI DAO** prior‑art:
 *Forged by the MONTREAL.AI Agentic Ω‑Lattice team — bending entropy to will.*  
 Questions → **discord.gg/montrealai**
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/README.md)

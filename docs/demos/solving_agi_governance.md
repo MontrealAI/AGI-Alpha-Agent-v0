@@ -6,18 +6,12 @@
 
 [Launch Demo](../solving_agi_governance/){.md-button}
 
-Choose **Offline** or **OpenAI API** using the toggle under the chart. The demo stores your API key only for the current session.
-
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 # Solving **α-AGI Governance** [![Open In Colab]][colab-notebook]
 *Minimal Conditions for Stable, Antifragile Multi-Agent Order*
 **Author :** Vincent Boucher — President, MONTREAL.AI · QUEBEC.AI
-
-> **Disclaimer**
-> "superintelligence" describe aspirational goals and do not indicate the
-> presence of a real general intelligence. Use at your own risk.
 
 ---
 
@@ -119,7 +113,7 @@ Python standard library.
 ---
 
 ### Requirements
-* Python 3.11 or 3.12 (<3.13; see [AGENTS.md](../../../AGENTS.md))
+* Python 3.11 or 3.12 (<3.13; see [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md))
 * Install the optional runtime packages:
   ```bash
   pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
@@ -228,4 +222,4 @@ governance-bridge --port 5005
     colab_solving_agi_governance.ipynb
 
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/README.md)

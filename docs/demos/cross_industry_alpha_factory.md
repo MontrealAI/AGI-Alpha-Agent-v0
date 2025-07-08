@@ -15,7 +15,6 @@ Current demo version: `1.0.0`.
 *Out-learn • Out-think • Out-design • Out-strategise • Out-execute*
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/colab_deploy_alpha_factory_cross_industry_demo.ipynb)
 
-"superintelligence" describe aspirational goals and do not indicate the presence
 of a real general intelligence. Use at your own risk.
 
 See [CONCEPTUAL_FRAMEWORK.md](CONCEPTUAL_FRAMEWORK.md) for an architecture overview.
@@ -90,7 +89,7 @@ AUTO_COMMIT=1
 python scripts/check_python_deps.py
 python check_env.py --auto-install  # add --wheelhouse <dir> when offline
 ```
-See [docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for wheelhouse
+See [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for wheelhouse
 instructions.
 
 #### Pre-download Mixtral weights
@@ -284,4 +283,4 @@ Clune 2019 · Sutton & Silver 2024 · MuZero 2020
 
 © 2025 MONTREAL.AI — Apache‑2.0 License
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)
