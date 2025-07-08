@@ -155,7 +155,7 @@ Follow these steps when working **air‑gapped**:
 
 See [alpha_factory_v1/scripts/README.md](../../scripts/README.md#offline-setup)
 for additional tips on creating and using a wheelhouse. Consult
-[docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for a brief overview.
+[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a brief overview.
 
 ### Installing the OpenAI Agents SDK
 
@@ -437,4 +437,4 @@ Huge thanks to:
 
 > **Alpha‑Factory** — forging intelligence that *invents* intelligence.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/README.md)

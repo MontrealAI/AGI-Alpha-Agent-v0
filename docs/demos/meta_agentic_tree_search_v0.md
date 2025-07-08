@@ -208,7 +208,7 @@ in the project root when present, so placing your pre-built wheels there
 also works. Set `WHEELHOUSE=/tmp/wheels` (or `$(pwd)/wheels`) before running
 `../../../check_env.py --auto-install` or `pytest` so the command installs from
 the local cache. See
-[docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for a summary.
+[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a summary.
 
 To regenerate the pinned lock file after editing `requirements.txt`, install
 [`pip-tools`](https://pypi.org/project/pip-tools/) and run:
@@ -306,4 +306,4 @@ Apache 2.0 – see `LICENSE`.
 ---
 *This README belongs to the AGI‑Alpha‑Agent project.*
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/README.md)

@@ -9,6 +9,7 @@
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
+
 # **Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**
 
 Identical to **v1** plus **two synergistic upgrades** 
@@ -256,4 +257,4 @@ The included `agents/alpha_finder.py` continuously scans news/API feeds and trig
 
 © 2025 MONTREAL.AI — Apache‑2.0
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/README.md)

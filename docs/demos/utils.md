@@ -10,4 +10,4 @@
 
 This directory holds helper utilities shared across demos, such as `disclaimer.py` which exposes the standard project disclaimer.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/utils/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/utils/README.md)

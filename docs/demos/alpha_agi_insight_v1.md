@@ -135,11 +135,9 @@ The demo ships with both a **command-line interface** *and* an
 optional **web dashboard** (Streamlit *or* FastAPI + React) so that analysts,
 executives, and researchers can explore “what-if” scenarios in minutes.
 
-> **Runs anywhere – with or without an `OPENAI_API_KEY`.**
+> **Runs anywhere – with or without an `OPENAI_API_KEY`.**  
 > When the key is absent, the system automatically switches to a local
-> open-weights model and offline toolset. The browser demo includes an
-> **Offline/API** selector that stores the key in `localStorage` and
-> falls back gracefully when missing.
+> open-weights model and offline toolset.
 
 ### Repository Layout
 
@@ -400,7 +398,6 @@ uvicorn src/interface/api_server:app --reload --port 8000
 python -m alpha_factory_v1.demos.alpha_agi_insight_v1 api-server
 # frontend
 cd alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client
-# install dependencies and run the dev server
 npm ci
 npm run dev            # http://localhost:5173
 # build production assets
@@ -605,7 +602,7 @@ pip wheel -r requirements-dev.txt -w /media/wheels
 
 Ensure `pytest` and `prometheus_client` wheels are available. Refer to
 [AGENTS.md](../../../AGENTS.md#offline-setup) and
-[docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for the full
+[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for the full
 wheelhouse procedure.
 
 Set the wheelhouse before running the environment check and tests. This
@@ -618,7 +615,7 @@ WHEELHOUSE=/media/wheels pytest -q
 
 `playwright` and other heavy packages must exist in the wheelhouse for tests to
 pass offline.
-See [docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for a concise
+See [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a concise
 summary.
 
 ### Troubleshooting
@@ -711,4 +708,4 @@ This demo is released for **research & internal evaluation only**.
 ### ✨ See beyond human foresight. Build the future, today. ✨
 
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/README.md)

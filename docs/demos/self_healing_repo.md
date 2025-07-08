@@ -6,8 +6,6 @@
 
 [Launch Demo](../self_healing_repo/){.md-button}
 
-Use the mode toggle in the demo to switch between the offline Pyodide simulation and OpenAI API mode. Any key entered is kept in memory only.
-
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
@@ -23,6 +21,8 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 Imagine a codebase that diagnoses its own wounds, stitches the bug, and walks
 back onto the production floor—all before coffee drips.  
 This demo turns that fantasy into a clickable reality inside **Alpha‑Factory v1**.
+
+incurred from using this software.
 
 ---
 
@@ -276,4 +276,4 @@ clone repo → [sandbox pytest] → error log
 
 > **Alpha‑Factory** — shipping code that ships itself.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/README.md)

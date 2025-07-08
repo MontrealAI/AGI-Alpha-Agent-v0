@@ -6,8 +6,6 @@
 
 [Launch Demo](../alpha_asi_world_model/){.md-button}
 
-Use the **Offline/OpenAI API** toggle below the chart to run locally or with your own API key. Keys never leave your browser.
-
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
@@ -24,10 +22,6 @@ Last updated 2025-04-25   Maintainer → Montreal.AI Core AGI Team
 </p>
 
 ---
-
-> **Disclaimer**
-> AGI capabilities. See the project's [Apache 2.0 license](../../../LICENSE) and
-> [security policy](../../../SECURITY.md) for details.
 
 ## 0  Table of Contents  <!-- omit in toc -->
 1. [Why this demo matters](#1-why-this-demo-matters)
@@ -133,7 +127,7 @@ WHEELHOUSE=/media/wheels AUTO_INSTALL_MISSING=1 ./codex/setup.sh
 WHEELHOUSE=/media/wheels AUTO_INSTALL_MISSING=1 \
   python check_env.py --auto-install --wheelhouse /media/wheels
 ```
-See [docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for a short
+See [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a short
 reference.
 
 Set `NO_LLM=1` to disable the planning agent when no API key is available. The
@@ -285,4 +279,4 @@ Please cite **Alpha-Factory v1 👁️✨ — Multi-Agent AGENTIC α-AGI**:
 > MONTREAL.AI (2025). *Fully-Agentic α-AGI: Foundation World Models for α-ASI.*  
 > GitHub https://github.com/MontrealAI/AGI-Alpha-Agent-v0
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_asi_world_model/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_asi_world_model/README.md)

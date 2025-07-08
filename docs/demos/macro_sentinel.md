@@ -19,7 +19,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 
 > **TL;DR**   Spin up a self‑healing stack that ingests macro telemetry, runs a Monte‑Carlo risk engine, sizes an ES hedge, and explains its reasoning—all behind a Gradio dashboard.
 
-
 ---
 
 ## ✨ Key capabilities
@@ -170,7 +169,7 @@ This mirrors the repository's offline setup instructions so the demo works
 without internet access.
 
 For a concise overview of the offline workflow see
-[the repository guide](../../../docs/OFFLINE_INSTALL.md).
+[the repository guide](../OFFLINE_INSTALL.md).
 
 ---
 
@@ -264,4 +263,4 @@ Apache‑2.0 © 2025 **MONTREAL.AI**
 
 Happy alpha‑hunting 🚀
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/README.md)

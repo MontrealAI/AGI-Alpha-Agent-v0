@@ -146,4 +146,4 @@ educational purposes only**. They operate on a simulated exchange by
 default and **should not be used with real funds**. Nothing here
 liability for losses incurred from using this software.
 
-[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/README.md)
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/README.md)
