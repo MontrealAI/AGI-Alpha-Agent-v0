@@ -47,7 +47,7 @@ cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/muzero_planning
 
 The script prints the local URL and, when possible, automatically opens it in
 your default browser. Automatic browser opening is currently supported only
-on Linux (using `xdg-open`) and macOS (using `open`).
+on Linux (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/using `xdg-open`) and macOS (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/using `open`).
 
 Alternatively run natively:
 
@@ -83,7 +83,7 @@ python -m alpha_factory_v1.demos.muzero_planning --env MountainCar-v0 \
 ```
 
 
-1. **Docker Desktop** builds the container (~45 s on first run).
+1. **Docker Desktop** builds the container (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/~45 s on first run).
 2. **Open <http://localhost:${HOST_PORT:-7861}>** and press **“▶ Run MuZero”**.
 3. Watch the live video feed, reward ticker and optional commentary.
 
@@ -129,11 +129,12 @@ cross‑process collaboration.
 
 ---
 
-## 🎓 Colab (two clicks)
+## 🎓 Colab (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/two clicks)
 
 [![Open In Colab][colab-badge]][colab-notebook]
 
 [colab-badge]: https://colab.research.google.com/assets/colab-badge.svg
+[colab-notebook]: https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/colab_muzero_planning.ipynb
 
 Colab spins up the same dashboard via an ngrok tunnel — handy when Docker isn’t.
 It installs the tiny MuZero package, runs a quick sanity test and opens a shareable link.
@@ -181,7 +182,7 @@ Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before commi
 
 ## 🤝 Credits
 
-* **DeepMind** for the research masterpiece (2020).  
+* **DeepMind** for the research masterpiece (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/2020).  
 * **Montreal.AI** for distilling it into an afternoon playground.  
 * The open‑source community powering every dependency.
 

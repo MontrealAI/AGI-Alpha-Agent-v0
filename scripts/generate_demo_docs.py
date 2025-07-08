@@ -121,6 +121,11 @@ def build_page(demo: Path) -> str:
             rel = target.relative_to(REPO_ROOT)
         except ValueError:
             return match.group(0)
+
+        if target.is_dir():
+            index_html = REPO_ROOT / "docs" / target.name / "index.html"
+            if index_html.exists():
+                return f"(../{target.name}/index.html{anchor})"
         return f"({github_base}{rel.as_posix()}{anchor})"
 
     readme_text = re.sub(r"\((?!https?://|mailto:|#)([^)#]+)(#[^)]+)?\)", _rewrite, readme_text)

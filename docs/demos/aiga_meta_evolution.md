@@ -23,8 +23,9 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 # 🌌 Algorithms That Invent Algorithms — <br>**AI‑GA Meta‑Evolution Demo**
 
 > *“Why hand‑craft intelligence when evolution can author it for you?”*
-> — Jeff Clune, *AI‑GAs: AI‑Generating Algorithms* (2019)
+> — Jeff Clune, *AI‑GAs: AI‑Generating Algorithms* (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/2019)
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/colab_aiga_meta_evolution.ipynb)
 
 A single‑command, browser‑based showcase of Clune’s **Three Pillars**:
 
@@ -47,13 +48,13 @@ Within **&lt; 60 s** you’ll watch neural nets **rewrite their own blueprin
 
 ---
 
-## 🚀 Quick‑start (Docker)
+## 🚀 Quick‑start (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/Docker)
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/aiga_meta_evolution
 
-# optional: --pull (signed image) --gpu (NVIDIA runtime)
+# optional: --pull (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/signed image) --gpu (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/NVIDIA runtime)
 ./run_aiga_demo.sh
 ```
 
@@ -66,11 +67,11 @@ so you can stop and restart the container without losing progress.
 | **FastAPI** docs | <http://localhost:8000/docs> | Programmatic control |
 | **Prometheus** | <http://localhost:8000/metrics> | `aiga_*` gauges & counters |
 
-> 🧊 **Cold build** ≈ 40 s (900 MB). Subsequent runs are instant (cache).
+> 🧊 **Cold build** ≈ 40 s (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/900 MB). Subsequent runs are instant (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/cache).
 
 Minimal host reqs → Docker 24, ≥ 4 GB RAM, **no GPU** needed.
 
-## 🚀 Quick‑start (Python)
+## 🚀 Quick‑start (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/Python)
 
 Prefer running natively? The service also launches directly from the
 repository without Docker. This path is handy for quick experiments or
@@ -140,11 +141,11 @@ Follow these steps when working **air‑gapped**:
    wheelhouse.
 
 for additional tips on creating and using a wheelhouse. Consult
-[docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a brief overview.
+[docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_SETUP.md) for a brief overview.
 
 ### Installing the OpenAI Agents SDK
 
-The meta-evolution service depends on the **OpenAI Agents SDK** (or the
+The meta-evolution service depends on the **OpenAI Agents SDK** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/or the
 newer `agents` package) for all LLM access, even when running offline.
 The optional bridge described below merely exposes the same tools over the
 OpenAI runtime.
@@ -180,13 +181,13 @@ to change the port:
 AGENTS_RUNTIME_PORT=6001 python openai_agents_bridge.py
 ```
 
-Requires the `openai-agents` or `agents` package (already installed above).
+Requires the `openai-agents` or `agents` package (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/already installed above).
 If both are missing the script exits with an error.
 
 The bridge registers an `aiga_evolver` agent exposing five tools:
-`evolve` (run N generations), `best_alpha` (return the champion),
-`checkpoint` (persist state), `reset` (fresh population), and
-`history` (past fitness scores).
+`evolve` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/run N generations), `best_alpha` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/return the champion),
+`checkpoint` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/persist state), `reset` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/fresh population), and
+`history` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/past fitness scores).
 It works offline by routing to the local Mixtral server when no API key
 is configured.
 
@@ -224,12 +225,12 @@ curl -X POST http://localhost:9000/v1/tasks \
 The optional ADK gateway integrates with the OpenAI Agents SDK bridge and
 underlying LLM providers as shown below.
 
-![Bridge overview](../aiga_meta_evolution/assets/bridge_overview.svg)
+![Bridge overview](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/bridge_overview.svg)
 
 ## 🔐 API authentication
 
 Export `AUTH_BEARER_TOKEN` to require a static token on every API request. For
-JWT-based auth, provide `JWT_PUBLIC_KEY` (PEM) and optional `JWT_ISSUER`.
+JWT-based auth, provide `JWT_PUBLIC_KEY` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/PEM) and optional `JWT_ISSUER`.
 The `/health` and `/metrics` endpoints remain public.
 
 ---
@@ -242,6 +243,7 @@ For step-by-step instructions on running the service in a production or workshop
 
 | | |
 | :-- | :-- |
+| <a href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/colab_aiga_meta_evolution.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a> | Launches the same dashboard with an automatic public URL. Ideal for workshops & quick demos. |
 
 The Colab notebook also explains how to **upload a wheelhouse archive** for offline installs. Follow that section to set `WHEELHOUSE` and run `check_env.py --auto-install --wheelhouse` when the runtime lacks internet access.
 
@@ -295,7 +297,7 @@ python alpha_factory_v1/demos/aiga_meta_evolution/workflow_demo.py
 
 The `alpha_workflow` agent lists opportunities in the chosen domain, selects the
 first suggestion and returns a short execution plan. When Google ADK is enabled
-(via `ALPHA_FACTORY_ENABLE_ADK=1` and successful import of the ADK module), the same
+(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/via `ALPHA_FACTORY_ENABLE_ADK=1` and successful import of the ADK module), the same
 agent is published over the A2A protocol for orchestration by external controllers.
 
 
@@ -305,17 +307,17 @@ agent is published over the A2A protocol for orchestration by external controlle
 
 ```text
 ┌── docker‑compose ─────────────┐
-│ orchestrator (FastAPI + UI) │◀─────────┐
-│ ollama (Mixtral fallback)  │     │ WebSocket
-│ prometheus (opt)       │     │
+│ orchestrator (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/FastAPI + UI) │◀─────────┐
+│ ollama (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/Mixtral fallback)  │     │ WebSocket
+│ prometheus (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/opt)       │     │
 └───────────────────────────────┘     │
     ▲ REST / Ray RPC          │
 ┌────────────────────────────────────────┐ │
 │ MetaEvolver    checkpoint.json  │ │
 │  ├─ Ray / mp evaluation workers   │ │
-│  └─ EvoNet(nn.Module) ──┐      │ │ obs/reward
+│  └─ EvoNet(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/nn.Module) ──┐      │ │ obs/reward
 │              ▼      │ │
-│ CurriculumEnv (Gymnasium)       │◀┘
+│ CurriculumEnv (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/Gymnasium)       │◀┘
 └────────────────────────────────────────┘
 ```
 
@@ -341,9 +343,9 @@ Enable profile `telemetry` to autopush → Prometheus → Grafana.
 
 ## 🧪 Tests & CI
 
-* **Coverage ≥ 90 %** in < 0.5 s (`pytest -q`)
+* **Coverage ≥ 90 %** in < 0.5 s (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/`pytest -q`)
 * GitHub Actions → lint → test → build → Cosign sign
-* **SBOM** via *Syft* (SPDX v3) per release
+* **SBOM** via *Syft* (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/SPDX v3) per release
 
 ---
 
@@ -376,10 +378,10 @@ spec:
 
 ## 🛡 SOC‑2 & supply‑chain
 
-* Cosign‑signed images (`cosign verify …`)
+* Cosign‑signed images (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/`cosign verify …`)
 * Runs **non‑root UID 1001**, read‑only code volume
-* Secrets via K8s / Docker *secrets* (never baked into layers)
-* Dependencies hashed (Poetry lock) & validated at runtime 
+* Secrets via K8s / Docker *secrets* (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/never baked into layers)
+* Dependencies hashed (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/Poetry lock) & validated at runtime 
 * SBOM exported; SLSA level 2 pipeline
 
 ---
@@ -406,7 +408,7 @@ spec:
 | Port collision 7862 | Edit host port in compose |
 | ARM Mac slow build | Enable **Rosetta** or `./run_aiga_demo.sh --pull` |
 | GPU unseen | `sudo apt install nvidia-container-toolkit` & restart Docker |
-| Colab URL missing | Re‑run launch cell (ngrok quirk) |
+| Colab URL missing | Re‑run launch cell (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/ngrok quirk) |
 
 ---
 
