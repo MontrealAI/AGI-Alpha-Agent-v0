@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = 'v558cc779';
+const CACHE = 'vf991d968';
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
@@ -10,6 +10,7 @@ self.addEventListener('install', (event) => {
           'assets/pyodide/pyodide.js',
           'assets/pyodide/pyodide.asm.wasm',
           'assets/pyodide/pyodide-lock.json',
+          '../aiga_meta_evolution/assets/bridge_overview.svg',
           '../aiga_meta_evolution/assets/logs.json',
           '../aiga_meta_evolution/assets/preview.svg',
           '../aiga_meta_evolution/assets/script.js',
@@ -42,6 +43,7 @@ self.addEventListener('install', (event) => {
           '../alpha_asi_world_model/assets/preview.svg',
           '../alpha_asi_world_model/assets/script.js',
           '../alpha_asi_world_model/assets/style.css',
+          '../alpha_super_planner_v1/assets/preview.svg',
           '../cross_industry_alpha_factory/assets/logs.json',
           '../cross_industry_alpha_factory/assets/preview.svg',
           '../cross_industry_alpha_factory/assets/script.js',
@@ -55,6 +57,7 @@ self.addEventListener('install', (event) => {
           '../finance_alpha/assets/preview.svg',
           '../finance_alpha/assets/script.js',
           '../finance_alpha/assets/style.css',
+          '../gpt2_small_cli/assets/preview.svg',
           '../macro_sentinel/assets/logs.json',
           '../macro_sentinel/assets/preview.svg',
           '../macro_sentinel/assets/script.js',
@@ -112,7 +115,6 @@ self.addEventListener('install', (event) => {
           '../utils/assets/preview.svg',
           '../utils/assets/script.js',
           '../utils/assets/style.css',
-          '../DISCLAIMER_SNIPPET/index.html',
           '../aiga_meta_evolution/index.html',
           '../alpha_agi_business_2_v1/index.html',
           '../alpha_agi_business_3_v1/index.html',
