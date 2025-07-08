@@ -4,7 +4,7 @@
 
 ![preview](../muzeromctsllmagent_v0/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../muzeromctsllmagent_v0/){.md-button}
+[Launch Demo](../muzeromctsllmagent_v0/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 

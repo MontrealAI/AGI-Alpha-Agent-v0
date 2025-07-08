@@ -4,7 +4,7 @@
 
 ![preview](../muzero_planning/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../muzero_planning/){.md-button}
+[Launch Demo](../muzero_planning/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -134,7 +134,6 @@ cross‑process collaboration.
 [![Open In Colab][colab-badge]][colab-notebook]
 
 [colab-badge]: https://colab.research.google.com/assets/colab-badge.svg
-[colab-notebook]: https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/colab_muzero_planning.ipynb
 
 Colab spins up the same dashboard via an ngrok tunnel — handy when Docker isn’t.
 It installs the tiny MuZero package, runs a quick sanity test and opens a shareable link.

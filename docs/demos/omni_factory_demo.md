@@ -4,14 +4,12 @@
 
 ![preview](../omni_factory_demo/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../omni_factory_demo/){.md-button}
+[Launch Demo](../omni_factory_demo/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 # OMNI-Factory: An Open-Ended Multi-Agent Simulation for Smart City Resilience (OMNI-EPIC + Alpha-Factory v1)
-[![Colab](https://img.shields.io/badge/Try-on-Colab-yellow?logo=googlecolab)](colab_omni_factory_demo.ipynb)
-Run the full demo interactively in [Google Colab](colab_omni_factory_demo.ipynb).
 
 To verify local prerequisites before launching the demo, run:
 ```bash
@@ -60,10 +58,8 @@ The script logs the selected opportunity (unless `--no-log` is used) to the spec
 ### Extending via Plugins
 
 You can augment the planner with custom heuristics without modifying the core
-code. Place Python files in the `plugins/` directory; each may define a
 `heuristic_policy(obs)` function. When the demo starts, it loads these modules
 and invokes their heuristics if the default planner yields no action. The
-provided [`plugins/example_agent_plugin.py`](plugins/example_agent_plugin.py)
 shows the minimal structure.
 
 
@@ -193,7 +189,6 @@ cd AGI-Alpha-Agent-v0
 
 # 2‒ Launch via Docker (recommended)
 cd alpha_factory_v1/demos/omni_factory_demo
-cp .env.sample .env  # optional – edit to customise
 chmod 600 .env
 docker compose up -d  # builds image on first run
 

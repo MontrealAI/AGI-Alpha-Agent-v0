@@ -59,7 +59,7 @@ run.
 
 A self-healing macro risk radar powered by multi-agent α‑AGI. The stack ingests
 macro telemetry, runs Monte-Carlo simulations and exposes a Gradio dashboard.
-See the [alpha_factory_v1/demos/macro_sentinel/README.md](../alpha_factory_v1/demos/macro_sentinel/README.md)
+See the [alpha_factory_v1/demos/macro_sentinel/README.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/README.md)
 for full instructions.
 
 ## α‑AGI Insight v1 Demo

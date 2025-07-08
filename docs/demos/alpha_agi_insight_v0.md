@@ -4,13 +4,12 @@
 
 ![preview](../alpha_agi_insight_v0/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_insight_v0/){.md-button}
+[Launch Demo](../alpha_agi_insight_v0/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 # α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (Zero Data)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/colab_alpha_agi_insight_demo.ipynb)
 
 
 The **α‑AGI Insight** demo predicts which industry sector is most likely to be
@@ -72,7 +71,6 @@ Highlights:
 
 ### Colab Notebook
 
-For an interactive walkthrough open `colab_alpha_agi_insight_demo.ipynb` directly in Google Colab. The badge at the top of this document links to the hosted version. The notebook mirrors the command line interface and is ideal for non‑technical users exploring the demo from a browser.
 
 For programmatic access launch the companion FastAPI server:
 

@@ -4,7 +4,7 @@
 
 ![preview](../era_of_experience/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../era_of_experience/){.md-button}
+[Launch Demo](../era_of_experience/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -81,7 +81,6 @@ snapshots are already included in the repository
 > **Offline/Private mode** — leave `OPENAI_API_KEY=` blank in <code>config.env</code>; the stack falls back to <strong>Ollama ✕ Mixtral‑8x7B</strong> and stays air‑gapped.
 
 Customize the dataset directory by exporting `SAMPLE_DATA_DIR` (see
-`config.env.sample`) before launching the script:
 
 ```bash
 SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
@@ -91,7 +90,6 @@ SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
 
 Run the self-contained Colab notebook to launch the experience demo without any local setup.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb)
 
 ## Offline Setup
 
@@ -134,7 +132,6 @@ Offline test workflow (after copying `/media/wheels`):
 1. Copy the sample environment file and tweak as desired:
 
    ```bash
-   cp config.env.sample config.env
    $EDITOR config.env      # set OPENAI_API_KEY, MODEL_NAME, PG_PASSWORD, LOGLEVEL, LIVE_FEED, etc.
    ```
 You may override the path for built-in offline samples by exporting
@@ -173,7 +170,6 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
    - `LLM_BASE_URL` changes the Ollama API base URL when `OPENAI_API_KEY` is unset.
    - `PG_PASSWORD` sets the TimescaleDB password for the live-feed logger.
 
-   These keys are documented in `config.env.sample` and can be exported on the
    command line:
 
    ```bash
@@ -206,7 +202,6 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
 
 | Notebook | Runtime | Launch |
 |----------|---------|--------|
-| `colab_era_of_experience.ipynb` | CPU / GPU | <a href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a> |
 
 The notebook installs a lean Python stack (&lt; 120 s), exposes Gradio via ngrok and lets you call tools directly from cells. It automatically verifies the runtime with `check_env.py` and runs the unit tests so you can confirm everything works. Example cells illustrate detecting "alpha" opportunities using the offline yield curve **and** a toy supply‑chain flow snapshot.
 
@@ -254,7 +249,6 @@ Result: an agent that <strong>evolves faster than you can refresh the page</stro
 | `reward_backends/` | 🍬 Drop‑in reward plug‑ins (auto‑discovery) |
 | `simulation/` | Tiny Gym‑like env stubs (ready to extend) |
 | `stub_agents.py` | Minimal agent classes for OpenAI SDK & ADK workflows |
-| `colab_era_of_experience.ipynb` | Cloud twin notebook |
 | `alpha_report.py` | CLI helper printing current offline alpha signals |
 
 Run it with local CSVs:

@@ -45,7 +45,6 @@ See [docs/OFFLINE_INSTALL.md](OFFLINE_INSTALL.md) for detailed steps.
 ## Running the Colab notebook
 
 Open
-[`colab_alpha_agi_insight_v1.ipynb`](../alpha_factory_v1/demos/alpha_agi_insight_v1/colab_alpha_agi_insight_v1.ipynb) in
 Google Colab and execute the following steps:
 
 1. Run the first cell to clone the repository and install dependencies.

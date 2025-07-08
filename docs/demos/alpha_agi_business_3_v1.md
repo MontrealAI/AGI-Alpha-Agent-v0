@@ -4,7 +4,7 @@
 
 ![preview](../alpha_agi_business_3_v1/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_business_3_v1/){.md-button}
+[Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -29,23 +29,8 @@ high‑stakes prod cluster right now.
 - [`openai-agents`](https://openai.github.io/openai-agents-python/) `==0.0.17` is mandatory for online mode.
 - [`llama-cpp-python`](https://pypi.org/project/llama-cpp-python/) and [`ctransformers`](https://pypi.org/project/ctransformers/) enable the offline fallback.
 - Run `python check_env.py --auto-install` to fetch missing packages, or supply `--wheelhouse <dir>` when installing offline.
-  See [alpha_factory_v1/scripts/README.md](../../scripts/README.md#offline-setup) for details on building and using a wheelhouse.
 
 ## 📚 Table of Contents
-0. [Executive Summary](#0)
-1. [From Path‑Integral Finance to Ω‑Lattice](#1)
-2. [Right‑Game 2.0 — Programmable Co‑opetition](#2)
-3. [Role Architecture 🏛️](#3)
-4. [Multi‑Scale Energy‑Landscape Diagram](#4)
-5. [Ω‑Agents Catalogue (11 / 11)](#5)
-6. [90 s Live Quantum‑Loop Demo](#6)
-7. [Algorithmic Anatomy — Zero‑Entropy Pipeline](#7)
-8. [Deployment Recipes](#8)  
-   8.1 [Docker One‑liner](#8.1) • 8.2 [Helm / K8s](#8.2) • 8.3 [Bare‑Metal Python](#8.3)
-9. [Safety, Audit & Governance Matrix](#9)
-10. [Self‑Improvement Gödel‑Looper](#10)
-11. [Legal & Conceptual Shield 🛡️](#11)
-12. [References & Further Reading](#12)
 
 ---
 
@@ -283,7 +268,6 @@ Offline mode activates automatically when `OPENAI_API_KEY` is unset.
 Use our interactive Google Colab to run the pipeline without local setup:
 
 ```
-https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/colab_alpha_agi_business_3_demo.ipynb
 ```
 
 

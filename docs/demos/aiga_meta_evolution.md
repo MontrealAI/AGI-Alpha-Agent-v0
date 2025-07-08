@@ -4,7 +4,7 @@
 
 ![preview](../aiga_meta_evolution/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../aiga_meta_evolution/){.md-button}
+[Launch Demo](../aiga_meta_evolution/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -25,7 +25,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 > *“Why hand‑craft intelligence when evolution can author it for you?”*
 > — Jeff Clune, *AI‑GAs: AI‑Generating Algorithms* (2019)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/colab_aiga_meta_evolution.ipynb)
 
 A single‑command, browser‑based showcase of Clune’s **Three Pillars**:
 
@@ -44,19 +43,6 @@ Within **&lt; 60 s** you’ll watch neural nets **rewrite their own blueprin
 <details open>
 <summary>📑 Table of contents — click to jump</summary>
 
-- [🚀 Quick‑start (Docker)](#-quick‑start-docker)
-- [🎓 Run in Colab](#-run-in-colab)
-- [🚀 Production deployment](#-production-deployment)
-- [🔑 Online vs offline LLMs](#-online-vs-offline-llms)
-- [🛠 Architecture deep‑dive](#-architecture-deep‑dive)
-- [📈 Observability & metrics](#-observability--metrics)
-- [🧪 Tests & CI](#-tests--ci)
-- [☁️ Kubernetes deploy](#-kubernetes-deploy)
-- [🛡 SOC‑2 & supply‑chain](#-soc‑2--supply‑chain)
-- [🧩 Tinker guide](#-tinker-guide)
-- [🆘 FAQ](#-faq)
-- [🤝 Contributing](#-contributing)
-- [⚖️ License & credits](#-license--credits)
 </details>
 
 ---
@@ -153,7 +139,6 @@ Follow these steps when working **air‑gapped**:
    execute the same command first to ensure all extras install from your
    wheelhouse.
 
-See [alpha_factory_v1/scripts/README.md](../../scripts/README.md#offline-setup)
 for additional tips on creating and using a wheelhouse. Consult
 [docs/OFFLINE_SETUP.md](../OFFLINE_SETUP.md) for a brief overview.
 
@@ -239,7 +224,7 @@ curl -X POST http://localhost:9000/v1/tasks \
 The optional ADK gateway integrates with the OpenAI Agents SDK bridge and
 underlying LLM providers as shown below.
 
-![Bridge overview](bridge_overview.svg)
+![Bridge overview](../aiga_meta_evolution/bridge_overview.svg)
 
 ## 🔐 API authentication
 
@@ -250,14 +235,12 @@ The `/health` and `/metrics` endpoints remain public.
 ---
 ## 🚀 Production deployment
 
-For step-by-step instructions on running the service in a production or workshop environment, see [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md).
 
 
 ## 🎓 Run in Colab
 
 | | |
 | :-- | :-- |
-| <a href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/colab_aiga_meta_evolution.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a> | Launches the same dashboard with an automatic public URL. Ideal for workshops & quick demos. |
 
 The Colab notebook also explains how to **upload a wheelhouse archive** for offline installs. Follow that section to set `WHEELHOUSE` and run `check_env.py --auto-install --wheelhouse` when the runtime lacks internet access.
 

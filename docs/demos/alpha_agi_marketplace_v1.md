@@ -4,12 +4,11 @@
 
 ![preview](../alpha_agi_marketplace_v1/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_marketplace_v1/){.md-button}
+[Launch Demo](../alpha_agi_marketplace_v1/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
-<!-- README.md — α‑AGI Marketplace Demo (v1.4‑production) -->
 
 <h1 align="center">
   Large‑Scale α‑AGI Marketplace 👁️✨ <sup><code>$AGIALPHA</code></sup>
@@ -39,21 +38,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 ---
 
 ## 🗺️ Table of Contents
-1. [Motivation](#motivation)
-2. [System Blueprint](#blueprint)
-3. [Role Architecture – Businesses & Agents](#role-arch)
-4. [Featured Alpha‑Factory Agents](#agents)
-5. [End‑to‑End Alpha Story](#alpha-story)
-6. [Quick Start](#quick-start)
-7. [Deployment Recipes](#deployment)
-8. [Tokenomics](#tokenomics)
-9. [Reputation & Governance](#reputation)
-10. [Security Stack](#security)
-11. [Compliance Checklist](#compliance)
-12. [Roadmap](#roadmap)
-13. [FAQ](#faq)
-14. [Terms & Conditions](#terms)
-15. [License](#license)
 
 ---
 
@@ -161,7 +145,6 @@ open http://localhost:7749           # Dashboard SPA
 python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
     examples/sample_job.json
 ```
-*Prefer a one-click experience?* Run the [colab_alpha_agi_marketplace_demo.ipynb](./colab_alpha_agi_marketplace_demo.ipynb) notebook on Google Colab.
 *No Docker?* `bash <(curl -sL get.alpha-factory.ai/demo.sh)` boots an ephemeral VM.
 
 ---
@@ -257,7 +240,6 @@ rac{reward_{success}}{reward_{total}}\)
 
 <a id="terms"></a>
 ## 14 Terms 🤝
-See [`TERMS & CONDITIONS.md`](./TERMS_AND_CONDITIONS.md).
 
 ---
 

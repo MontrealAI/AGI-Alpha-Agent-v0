@@ -4,7 +4,7 @@
 
 ![preview](../macro_sentinel/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../macro_sentinel/){.md-button}
+[Launch Demo](../macro_sentinel/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -13,8 +13,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 # 🌐 Macro‑Sentinel · Alpha‑Factory v1 👁️✨  
 *Cross‑asset macro risk radar powered by multi‑agent α‑AGI*
 
-[![Docker](https://img.shields.io/badge/Run‑with-Docker-blue?logo=docker)](#one‑command‑docker) 
-[![Colab](https://img.shields.io/badge/Try‑on‑Colab-yellow?logo=googlecolab)](#google‑colab) 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
 
 > **TL;DR**   Spin up a self‑healing stack that ingests macro telemetry, runs a Monte‑Carlo risk engine, sizes an ES hedge, and explains its reasoning—all behind a Gradio dashboard.
@@ -130,12 +128,10 @@ google-adk create-task --host http://localhost:9000 \
                        --token mysecret
 ```
 
-See [`../../backend/adk_bridge.py`](../../backend/adk_bridge.py) for advanced
 configuration options such as custom bind addresses.
 
 ### Google Colab
 
-[Open the notebook ▶](colab_macro_sentinel.ipynb)
 
 ### Bare‑metal (advanced)
 
@@ -232,7 +228,6 @@ macro_sentinel/
 ├── simulation_core.py          # Monte‑Carlo risk engine
 ├── run_macro_demo.sh           # Docker launcher
 ├── docker-compose.macro.yml    # Service graph
-├── colab_macro_sentinel.ipynb  # Cloud notebook
 └── offline_samples/            # CSV snapshots (auto‑synced)
 ```
 

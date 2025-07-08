@@ -4,12 +4,11 @@
 
 ![preview](../alpha_agi_business_v1/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../alpha_agi_business_v1/){.md-button}
+[Launch Demo](../alpha_agi_business_v1/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
-<!-- README.md — Large‑Scale α‑AGI Business Demo (v1.0‑production) -->
 
 <h1 align="center">
  Large‑Scale α‑AGI Business 👁️✨ <sup><code>$AGIALPHA</code></sup>
@@ -42,21 +41,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 ---
 
 ## 🗺️ Table of Contents
-1. [Why an α‑AGI Business?](#why)
-2. [System Blueprint](#blueprint)
-3. [Role Architecture](#roles)
-4. [Featured Alpha‑Factory Agents](#agents)
-5. [End‑to‑End Alpha Walk‑through](#story)
-6. [Quick Start](#quick)
-7. [Deployment Recipes](#deploy)
-8. [Security • Compliance • Legal Shield](#security)
-9. [Tokenomics](#tokenomics)
-10. [Antifragility & Self‑Improvement](#antifragility)
-11. [Roadmap](#roadmap)
-12. [FAQ](#faq)
-13. [License](#license)
-14. [Resources](#resources)
-15. [Local Checks](#local-checks)
 
 > **Quick Start**
 > ```bash
@@ -64,7 +48,6 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 > python openai_agents_bridge.py      # expose via OpenAI Agents
 > python gradio_dashboard.py          # interactive dashboard
 > ```
-> See the [Quick Start](#quick) and [Deployment Recipes](#deploy) sections for advanced options.
 
 ---
 
@@ -181,9 +164,9 @@ All agents speak **A2A protobuf**, run on **OpenAI Agents SDK** or **Google ADK*
 <a id="quick"></a>
 ## 6 Quick Start 🚀
 
-*For a concise walkthrough see [QUICK_START.md](QUICK_START.md).*
+*For a concise walkthrough see [QUICK_START.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/QUICK_START.md).*
 For a deployment checklist aimed at production environments consult
-[PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md).
+[PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/PRODUCTION_GUIDE.md).
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/alpha_agi_business_v1
@@ -265,7 +248,6 @@ If dependencies are missing, pass `--auto-install` (and optionally
 python run_business_v1_local.py --auto-install --wheelhouse /path/to/wheels
 ```
 
-Or open `colab_alpha_agi_business_v1_demo.ipynb` to run everything in Colab.
 [Open in Colab][open-colab-link]
 The notebook now includes an optional **Gradio dashboard** (step 5b) so you can
 interact with the agents without writing any code.
@@ -350,7 +332,7 @@ python check_env.py --auto-install --wheelhouse /media/wheels
 WHEELHOUSE=/media/wheels python openai_agents_bridge.py --host http://localhost:8000
 ```
 
-See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) for detailed deployment tips.
+See [PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/PRODUCTION_GUIDE.md) for detailed deployment tips.
 
 - The bridge exposes several helper tools:
 - `list_agents`
@@ -487,11 +469,9 @@ Apache 2.0 © 2025 **MONTREAL.AI**
 - [Google Agent Development Kit docs](https://google.github.io/adk-docs/)
 - [Agent‑to‑Agent protocol](https://github.com/google/A2A)
 - [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol)
-- [Conceptual Framework](CONCEPTUAL_FRAMEWORK.md)
-- [Best Alpha Workflow](BEST_ALPHA_WORKFLOW.md)
+- [Best Alpha Workflow](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/BEST_ALPHA_WORKFLOW.md)
 [open-colab-link]:
   https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/
-  alpha_factory_v1/demos/alpha_agi_business_v1/colab_alpha_agi_business_v1_demo.ipynb
 [guide-pdf]: https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
 
 <a id="local-checks"></a>

@@ -4,14 +4,13 @@
 
 ![preview](../meta_agentic_tree_search_v0/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../meta_agentic_tree_search_v0/){.md-button}
+[Launch Demo](../meta_agentic_tree_search_v0/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 # Meta‑Agentic Tree Search (MATS) Demo — v0
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/colab_meta_agentic_tree_search.ipynb)
 
 **Abstract:** We pioneer **Meta-Agentic Tree Search (MATS)**, a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through **recursive agent-to-agent interactions**. In this **second-order agentic** scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook.
 
@@ -186,7 +185,6 @@ mats-bridge --episodes 3
 ```
 `run_demo.py` prints a per‑episode scoreboard.  Pass `--log-dir logs` to save a
 `scores.csv` file for further analysis. A ready‑to‑run Colab notebook is also
-provided as `colab_meta_agentic_tree_search.ipynb`.
 
 ## Offline Setup
 When installing without network access, first build wheels on a
@@ -260,7 +258,6 @@ Use `--seed 42` to reproduce a specific search trajectory.
 ## 6 Repository layout
 ```
 meta_agentic_tree_search_v0/
-├── README.md                ← you are here
 ├── run_demo.py              ← entry‑point wrapper
 ├── mats/                    ← core library
 │   ├── tree.py

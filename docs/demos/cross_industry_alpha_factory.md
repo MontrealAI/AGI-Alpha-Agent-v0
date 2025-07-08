@@ -4,7 +4,7 @@
 
 ![preview](../cross_industry_alpha_factory/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../cross_industry_alpha_factory/){.md-button}
+[Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -13,11 +13,9 @@ Current demo version: `1.0.0`.
 
 # 👁️ Alpha-Factory v1 — Cross-Industry **AGENTIC α-AGI** Demo
 *Out-learn • Out-think • Out-design • Out-strategise • Out-execute*
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/colab_deploy_alpha_factory_cross_industry_demo.ipynb)
 
 of a real general intelligence. Use at your own risk.
 
-See [CONCEPTUAL_FRAMEWORK.md](CONCEPTUAL_FRAMEWORK.md) for an architecture overview.
 
 
 ---
@@ -48,7 +46,6 @@ MuZero-style model-based search to stay sample-efficient.
 | Path | Audience | Time | Hardware |
 |------|----------|------|----------|
 | **Docker script**<br>`deploy_alpha_factory_cross_industry_demo.sh` | dev-ops / prod | 8 min | any Ubuntu with Docker 24 |
-| **Colab notebook**<br>`colab_deploy_alpha_factory_cross_industry_demo.ipynb` | analysts / no install | 4 min | free Colab CPU |
 
 The notebook installs dependencies from `../requirements-colab.lock` for a quick setup.
 
@@ -105,7 +102,6 @@ access is required at runtime.
 #### Colab Quick Start
 Click the badge above or run:
 ```bash
-open https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/colab_deploy_alpha_factory_cross_industry_demo.ipynb
 ```
 
 ### Quick Alpha Discovery
@@ -158,7 +154,6 @@ Run the cross-industry discovery test to ensure the stub works:
 pytest tests/test_cross_alpha_discovery.py
 ```
 
-See [tests/README.md](../../../tests/README.md) for environment setup guidance.
 
 ### 🤖 OpenAI Agents bridge
 Expose the discovery helper via the OpenAI Agents SDK:

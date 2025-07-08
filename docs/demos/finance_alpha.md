@@ -4,7 +4,7 @@
 
 ![preview](../finance_alpha/assets/preview.svg){.demo-preview}
 
-[Launch Demo](../finance_alpha/){.md-button}
+[Launch Demo](../finance_alpha/index.html){.md-button}
 
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -47,7 +47,6 @@ runs a different momentum pair and exposes the trace‑graph on an alternate
 port.
 
 ### .env Setup
-Copy [.env.sample](.env.sample) to `.env` next to the script. The demo
 automatically sources this file before reading any environment variables so
 values defined inside are forwarded to the container.
 Each variable can still be overridden directly on the command line:
@@ -78,14 +77,12 @@ Any variable you omit falls back to these safe defaults when the demo starts.
 
 > Perfect for analysts who love Pandas or anyone on Google Colab.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/finance_alpha/finance_alpha.ipynb)
 
 The first code cell checks for Docker and installs it automatically when running on Colab. Simply run each cell in order to launch Alpha‑Factory, view positions, and open the live trace‑graph.
 
 ### Notebook setup
 The notebook begins by verifying Docker. When missing (like on Colab) it installs
 Docker with `apt-get` and starts the service. The same cell uses `pip install -q`
-to grab any packages not already present. Copy [.env.sample](.env.sample) to `.env`
 and adjust `FINANCE_STRATEGY`, `PORT_API` or `TRACE_WS_PORT` to customise the demo.
 
 An additional cell now embeds the trace‑graph UI directly inside the notebook so you can follow the planner's decisions without leaving Colab.
@@ -93,7 +90,6 @@ An additional cell now embeds the trace‑graph UI directly inside the notebook 
 ```bash
 git clone --depth 1 https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1
-jupyter notebook demos/finance_alpha/finance_alpha.ipynb
 ```
 
 Run the cells to spin up Alpha‑Factory and render positions & P&L as

@@ -117,7 +117,7 @@ access is unsupported due to the service worker; use a minimal HTTP server or
 GitHub Pages.
 
 The "📚 Docs" workflow
-The repository owner manually triggers [`docs.yml`](../.github/workflows/docs.yml), which runs
+The repository owner manually triggers [`docs.yml`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/docs.yml), which runs
 `scripts/edge_human_knowledge_pages_sprint.sh`, builds the site and pushes the result to the
 `gh-pages` branch. Open **Actions → 📚 Docs**, click **Run workflow** and confirm.
 The workflow restores a cache keyed by the Pyodide and GPT‑2 file checksums before
@@ -135,7 +135,7 @@ To trigger a one-off deployment outside of CI run:
 ```
 
 This wrapper script rebuilds the browser bundle, regenerates the MkDocs site and
-runs [`scripts/generate_gallery_html.py`](../scripts/generate_gallery_html.py)
+runs [`scripts/generate_gallery_html.py`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/scripts/generate_gallery_html.py)
 so `docs/index.html` includes the latest demos and updates the `docs/gallery.html`
 redirect.
 It then uses `mkdocs gh-deploy` to push the contents of `site/` to the `gh-pages` branch.
@@ -154,7 +154,7 @@ The standard [project disclaimer](DISCLAIMER_SNIPPET.md) applies.
 ## Verifying Deployment
 
 Confirm the workflow is enabled under **Actions** and that
-[`docs.yml`](../.github/workflows/docs.yml) specifies
+[`docs.yml`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/docs.yml) specifies
 `permissions: contents: write`. Run the "📚 Docs" workflow from the GitHub UI to trigger it. The initial run creates the `gh-pages` branch.
 After it finishes, browse to
 <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/> and
