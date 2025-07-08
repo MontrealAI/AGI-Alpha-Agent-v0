@@ -574,10 +574,10 @@ All containers are x86-64/arm64 multi-arch and GPU-aware (https://github.com/Mon
 
 Running the suite directly from the repository root requires Python to locate
 the `alpha_factory_v1` package. Either install the project or export
-`PYTHONPATH=$(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/pwd)` before invoking `pytest`:
+`PYTHONPATH=$(pwd)` before invoking `pytest`:
 
 ```bash
-export PYTHONPATH=$(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/pwd)  # if running from the repo root without installation
+export PYTHONPATH=$(pwd)  # if running from the repo root without installation
 python check_env.py --auto-install  # verify optional packages
 pytest -q          # unit + integration suite
 pytest -m e2e      # full 5-year forecast smoke-test
