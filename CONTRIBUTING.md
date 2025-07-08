@@ -68,3 +68,8 @@ pre-commit run --all-files
 ```
 
 Refer to [AGENTS.md](AGENTS.md#pre-commit-in-air-gapped-setups) for detailed steps.
+
+## Documentation Builds
+
+Run `mkdocs build --strict` before opening a pull request. The CI pipeline also
+executes this command and fails if any warnings are produced.

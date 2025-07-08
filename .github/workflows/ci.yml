@@ -180,6 +180,23 @@ jobs:
       - name: Run smoke tests
         run: pytest -m smoke -q
 
+  docs-check:
+    name: "\ud83d\udcdc MkDocs"
+    needs: lint-type
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install docs requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-docs.txt
+      - name: Build documentation
+        run: mkdocs build --strict
+
   docs-build:
     name: "📚 Docs Build"
     needs: tests
