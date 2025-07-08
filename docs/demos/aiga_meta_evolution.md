@@ -224,7 +224,7 @@ curl -X POST http://localhost:9000/v1/tasks \
 The optional ADK gateway integrates with the OpenAI Agents SDK bridge and
 underlying LLM providers as shown below.
 
-![Bridge overview](../aiga_meta_evolution/assets/bridge_overview.svg)
+![Bridge overview](../aiga_meta_evolution/bridge_overview.svg)
 
 ## 🔐 API authentication
 
@@ -235,6 +235,7 @@ The `/health` and `/metrics` endpoints remain public.
 ---
 ## 🚀 Production deployment
 
+For step-by-step instructions on running the service in a production or workshop environment, see [PRODUCTION_GUIDE.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/PRODUCTION_GUIDE.md).
 
 
 ## 🎓 Run in Colab
