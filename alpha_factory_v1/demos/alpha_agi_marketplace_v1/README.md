@@ -155,7 +155,7 @@ open http://localhost:7749           # Dashboard SPA
 python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
     examples/sample_job.json
 ```
-*Prefer a one-click experience?* Run the [colab_alpha_agi_marketplace_demo.ipynb](./colab_alpha_agi_marketplace_demo.ipynb) notebook on Google Colab.
+*Prefer a one-click experience?* Run the [colab_alpha_agi_marketplace_demo.ipynb](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/colab_alpha_agi_marketplace_demo.ipynb) notebook on Google Colab.
 *No Docker?* `bash <(curl -sL get.alpha-factory.ai/demo.sh)` boots an ephemeral VM.
 
 ---
