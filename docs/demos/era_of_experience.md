@@ -383,4 +383,4 @@ Apache 2.0. By using this repo you agree to cite **Montreal.AI Alpha‑Factory*
 
 **Contributor checklist** — run `pre-commit`, `python ../../../check_env.py --auto-install`, and `pytest -q` before submitting any changes. See [AGENTS.md](../../../AGENTS.md) for the full contributor guide.
 
-[View README](../../alpha_factory_v1/demos/era_of_experience/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/README.md)

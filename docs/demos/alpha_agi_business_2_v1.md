@@ -213,4 +213,4 @@ Apache‑2.0 © 2025 MONTREAL.AI.
 _“Outlearn · Outthink · Outdesign · Outstrategise · Outexecute.”_  
 Welcome to the era of **Large‑Scale α‑AGI Businesses** 🌸 — where autonomous swarms turn friction into alpha at planetary scale. 🚀
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_business_2_v1/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_2_v1/README.md)

@@ -287,4 +287,4 @@ In sum, the OMNI-Factory city simulator stands as a **proof-of-concept** of how 
 
 Ultimately, success will be measured by the conversations and ideas this demo sparks. By presenting a clear, well-structured integration of advanced AI components addressing real societal challenges, we aim to inspire confidence that **open-ended AI coupled with careful design can be a force-multiplier for human decision-making** – a message delivered vividly through this interactive simulation.
 
-[View README](../../alpha_factory_v1/demos/omni_factory_demo/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/omni_factory_demo/README.md)

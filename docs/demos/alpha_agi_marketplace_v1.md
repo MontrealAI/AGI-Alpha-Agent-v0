@@ -266,4 +266,4 @@ Apache 2.0 © 2025 **MONTREAL.AI**
 
 <p align="center"><sub>Made with ❤️, ☕ and <b>real</b> GPUs by the Alpha‑Factory core team.</sub></p>
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_marketplace_v1/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/README.md)

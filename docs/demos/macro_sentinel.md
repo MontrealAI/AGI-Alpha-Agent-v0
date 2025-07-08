@@ -264,4 +264,4 @@ Apache‑2.0 © 2025 **MONTREAL.AI**
 
 Happy alpha‑hunting 🚀
 
-[View README](../../alpha_factory_v1/demos/macro_sentinel/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/README.md)

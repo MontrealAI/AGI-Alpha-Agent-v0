@@ -285,4 +285,4 @@ Please cite **Alpha-Factory v1 👁️✨ — Multi-Agent AGENTIC α-AGI**:
 > MONTREAL.AI (2025). *Fully-Agentic α-AGI: Foundation World Models for α-ASI.*  
 > GitHub https://github.com/MontrealAI/AGI-Alpha-Agent-v0
 
-[View README](../../alpha_factory_v1/demos/alpha_asi_world_model/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_asi_world_model/README.md)

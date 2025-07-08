@@ -505,4 +505,4 @@ pre-commit run --files <paths>             # format only the staged files
 pytest -q ../../../tests                   # execute the root test suite
 ```
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_business_v1/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)

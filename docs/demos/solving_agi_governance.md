@@ -228,4 +228,4 @@ governance-bridge --port 5005
     colab_solving_agi_governance.ipynb
 
 
-[View README](../../alpha_factory_v1/demos/solving_agi_governance/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/README.md)

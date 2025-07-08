@@ -18,4 +18,4 @@ This is the shortest path to run the demo locally.
 3. **Open the web UI**
    Visit [http://localhost:8000](http://localhost:8000) in your browser.
 
-For more details see [README.md](../README.md).
+For more details see the [project README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/README.md).

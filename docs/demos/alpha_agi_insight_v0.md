@@ -349,4 +349,4 @@ This best-effort persistence operates transparently and never blocks the
 search loop.
 For additional command details, run `python official_demo_production.py --help`.
 
-[View README](../../alpha_factory_v1/demos/alpha_agi_insight_v0/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/README.md)

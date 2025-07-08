@@ -27,4 +27,4 @@ This folder contains a prototype integration of a Monte Carlo Tree Search (MCTS)
 - Requires approximately 2GB RAM and basic Docker support.
 - Provided for research purposes only; not a production trading system.
 
-[View README](../../alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md)
+[View README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md)
