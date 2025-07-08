@@ -71,8 +71,6 @@ def build_page(demo: Path) -> str:
             continue
         if "DISCLAIMER_SNIPPET.md" in stripped:
             continue
-        if ".ipynb" in stripped:
-            continue
         if "README.md" in stripped:
             continue
         if "plugins/" in stripped or "scripts/README.md" in stripped or "tests/README.md" in stripped:
@@ -113,6 +111,19 @@ def build_page(demo: Path) -> str:
         lambda m: f"({github_base}alpha_factory_v1/{m.group(1)})",
         readme_text,
     )
+
+    def _rewrite(match: re.Match[str]) -> str:
+        url, anchor = match.group(1), match.group(2) or ""
+        if url.startswith(("http://", "https://", "#", "mailto:")):
+            return match.group(0)
+        target = (demo / url).resolve()
+        try:
+            rel = target.relative_to(REPO_ROOT)
+        except ValueError:
+            return match.group(0)
+        return f"({github_base}{rel.as_posix()}{anchor})"
+
+    readme_text = re.sub(r"\((?!https?://|mailto:|#)([^)#]+)(#[^)]+)?\)", _rewrite, readme_text)
 
     content = [
         DISCLAIMER_LINK,
