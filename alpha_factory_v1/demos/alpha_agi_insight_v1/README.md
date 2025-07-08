@@ -256,7 +256,7 @@ docker run -it --rm -p 8501:8501   -e OPENAI_API_KEY=$OPENAI_API_KEY   ghcr.io/m
 ```
 
 For offline builds or the browser-based PWA, see
-[insight_browser_v1/README.md](insight_browser_v1/README.md).
+[insight_browser_v1/index.md](insight_browser_v1/index.md).
 
 ## Environment Setup
 
@@ -449,7 +449,7 @@ Launch the container stack afterwards or serve `dist/` with any static server,
 e.g. `python -m http.server --directory dist 8080`.
 
 For advanced options see
-[src/interface/web_client/README.md](src/interface/web_client/README.md).
+[src/interface/web_client/index.md](src/interface/web_client/index.md).
 
 For details see [docs/API.md](docs/API.md).
 
@@ -466,7 +466,7 @@ npm run build
 This installs dependencies and outputs static files in `dist/`. The provided
 `Dockerfile` already runs these steps, so manual builds are only needed for
 local development or customization. See the
-[web_client/README.md](src/interface/web_client/README.md) for advanced usage.
+[web_client/index.md](src/interface/web_client/index.md) for advanced usage.
 
 ### 5.5 Exporting Visualization Data
 

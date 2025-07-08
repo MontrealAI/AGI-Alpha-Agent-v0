@@ -54,7 +54,7 @@ curl -O https://huggingface.co/openai-community/gpt2/resolve/main/config.json
 The model weights have SHA‑256
 `7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421` for
 verification. See
-[insight_browser_v1/README.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/README.md)
+[insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md)
 for additional details.
 
 [![Launch \u03b1\u2011AGI Insight](https://img.shields.io/badge/Launch-%CE%B1%E2%80%91AGI%20Insight-blue?style=for-the-badge)](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/)
@@ -122,7 +122,7 @@ files with `python scripts/fetch_assets.py --verify-only`. The helper retrieves
 the official Pyodide runtime from the jsDelivr CDN and the GPT‑2 small
 checkpoint from Hugging Face.
 Override `HF_GPT2_BASE_URL` or `PYODIDE_BASE_URL` to use alternate mirrors. See
-[insight_browser_v1/README.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/README.md)
+[insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md)
 for a detailed guide. You can also run `python scripts/download_gpt2_small.py`
 to retrieve the model directly:
 
@@ -303,7 +303,7 @@ and [Docker Quickstart](#docker-quickstart) sections below.
 ### Running the Insight Demo
 
 For the browser-based version, see
-[insight_browser_v1/README.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/README.md).
+[insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md).
 It requires **Node.js ≥20**. Install the dependencies with
 `npm ci` and build the static assets with `npm run build` before launching.
 The repository includes a `.nvmrc` file so you can simply run `nvm use` to
