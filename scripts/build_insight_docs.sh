@@ -122,13 +122,8 @@ copy_assets
 python scripts/generate_demo_docs.py
 python scripts/generate_gallery_html.py
 
-# Build the MkDocs site. Skip --strict in CI to avoid aborting on
-# non-critical warnings that do not affect the generated pages.
-if [[ "${CI:-}" == "true" ]]; then
-  mkdocs build
-else
-  mkdocs build --strict
-fi
+# Build the MkDocs site in strict mode so any warnings fail the build.
+mkdocs build --strict
 
 # Verify the Workbox hash again in the generated site directory
 if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
