@@ -10,27 +10,27 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 
 
 
-# **Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**
+# **Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/Production‑Grade v0.3.0)**
 
 Identical to **v1** plus **two synergistic upgrades** 
 1. *Statistical‑physics wrapper* — logs & minimises **Gibbs / variational free‑energy** for every candidate agent. 
-2. *Absolute Zero Reasoner (AZR) self‑curriculum* — a **reinforced self‑play engine** that perpetually invents and solves its own tasks, unlocking *open‑ended* cross‑domain reasoning.
+2. *Absolute Zero Reasoner (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/AZR) self‑curriculum* — a **reinforced self‑play engine** that perpetually invents and solves its own tasks, unlocking *open‑ended* cross‑domain reasoning.
 
-> **Official definition — Meta‑Agentic (adj.)** 
+> **Official definition — Meta‑Agentic (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/adj.)** 
 > *Describes an agent whose **primary role** is to **create, select, evaluate, or re‑configure other agents** and the rules governing their interactions, thereby exercising **second‑order agency** over a population of first‑order agents.* 
 > *The term was **pioneered by Vincent Boucher, President of MONTREAL.AI**.*
 
 ---
 
 ## 🚀 Why AZR Matters
-`Absolute Zero Reasoner` (Zhao *et al.* 2025) discards the last human bottleneck: **task curation**. 
+`Absolute Zero Reasoner` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/Zhao *et al.* 2025) discards the last human bottleneck: **task curation**. 
 It **proposes**, **validates**, **solves**, and **learns from** its own code‑reasoning problems — then feeds the distilled knowledge back into the evolutionary loop. 
 *Result:* steeper learning curves, bolder exploration, and broad generalisation across math, code, and strategic planning — all while remaining vendor‑agnostic.
 
 ---
 
 ```mermaid
-%% GRAND OPERATIONAL SYNAPSE — Alpha‑Factory v1 (AZR + Free‑Energy + Meta‑Agency)
+%% GRAND OPERATIONAL SYNAPSE — Alpha‑Factory v1 (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/AZR + Free‑Energy + Meta‑Agency)
 flowchart TD
  %% -------- Meta‑Agency layer
  subgraph layer_meta["🧠 Meta‑Agency Layer"]
@@ -98,7 +98,7 @@ classDef val  fill:#1e88e5,color:#fff
 ---
 
 ## 📌 Purpose & Positioning
-This demo operationalises **Automated Design of Agentic Systems (ADAS)** and adds:
+This demo operationalises **Automated Design of Agentic Systems (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/ADAS)** and adds:
 
 * **AZR‑driven open‑ended learning** — tasks invented on‑the‑fly, tuned for maximal learning gain.
 * **True multi‑objective optimisation** — accuracy, cost, latency, risk, carbon **& free‑energy**.
@@ -124,7 +124,7 @@ micromamba create -n alpha_factory python=3.11 -y
 micromamba activate alpha_factory
 pip install -r requirements.txt   # ≤ 60 MiB wheels
 
-# 3️⃣ Run – open‑weights default (no API key)
+# 3️⃣ Run – open‑weights default (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/no API key)
 python src/main.py --provider mistral:7b-instruct.gguf --curriculum azr
 
 #  …or switch to GPT‑4o
@@ -135,8 +135,9 @@ streamlit run ui/lineage_app.py      # provenance graph
 streamlit run ui/alpha_monitor.py     # live alpha dashboard
 ```
 
+For a **one‑click** experience, open [`colab_meta_agentic_agi_v3.ipynb`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/colab_meta_agentic_agi_v3.ipynb) on Colab and run each cell in order.
 
-*Hardware:* CPU‑only works (llama‑cpp 4‑bit); GPU speeds things up. 8 GB RAM minimum.
+*Hardware:* CPU‑only works (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/llama‑cpp 4‑bit); GPU speeds things up. 8 GB RAM minimum.
 
 ---
 
@@ -152,7 +153,7 @@ meta_agentic_agi/
 ├── meta_agentic_search/ # evolutionary loop
 │  ├── archive.py    # stepping‑stone JSONL log
 │  ├── search.py    # NSGA‑II + Reflexion
-│  └── scorer.py    # multi‑objective metrics (+ free‑energy)
+│  └── scorer.py    # multi‑objective metrics (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/+ free‑energy)
 ├── agents/
 │  ├── agent_base.py  # runtime interface
 │  └── seeds.py     # bootstrap population
@@ -191,14 +192,14 @@ All chats stream via **MCP** & window‑slide for long contexts.
 ## 4 Multi‑Objective Evolution 🎯
 **Objective vector** = `[accuracy, cost, latency, hallu‑risk, carbon, free‑energy]` 
 * NSGA‑II elitist selection 
-* Behaviour descriptor = SHA‑256(AST) 
-* Human‑in‑the‑loop thumbs ↑/↓ (web UI) 
+* Behaviour descriptor = SHA‑256(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/AST) 
+* Human‑in‑the‑loop thumbs ↑/↓ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/web UI) 
 
 ---
 
 ## 5 Security & Antifragility 🛡
 * Firejail `--seccomp` + 512 MiB cgroup sandbox 
-* Static (`bandit`) + dynamic taint tracking 
+* Static (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/`bandit`) + dynamic taint tracking 
 * Live watchdog terminates rogue proc > 30 s CPU 
 * Chaos‑monkey fault injections each epoch 
 * Curriculum filter auto‑drops unsafe proposals 
@@ -215,15 +216,15 @@ OpenTelemetry exporters emit traces; Prometheus scrapes runtime metrics; Grafana
 1. **New dataset** — drop `foo.pkl` → auto‑RAG ingest. 
 2. **New metric** — subclass `evolution.metrics.BaseMetric`. 
 3. **Custom curriculum** — register engine in `curriculum/__init__.py`. 
-4. **Real exchange adapter** — implement `execution.broker.BaseBroker` (see IBKR stub). 
+4. **Real exchange adapter** — implement `execution.broker.BaseBroker` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/see IBKR stub). 
 
 ---
 
 ## 8 Roadmap 🗺
 - ☑ AZR integration & POET outer‑loop 
 - ☑ Free‑Energy minimisation 
-- ☑ Live alpha demo (NVDA earnings) 
-- ☐ Multimodal (image ↔ code ↔ math) AZR 
+- ☑ Live alpha demo (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/NVDA earnings) 
+- ☐ Multimodal (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/image ↔ code ↔ math) AZR 
 - ☐ Hierarchical meta‑meta search 
 - ☐ Flash‑Infer v3 GPU batched inference 
 - ☐ RL fine‑tune search policy w/ lineage replay 
@@ -231,22 +232,22 @@ OpenTelemetry exporters emit traces; Prometheus scrapes runtime metrics; Grafana
 ---
 
 ## 9 Key References 📚
-* Zhao *et al.* “Absolute Zero: Reinforced Self‑Play Reasoning with Zero Data” (2025)  
+* Zhao *et al.* “Absolute Zero: Reinforced Self‑Play Reasoning with Zero Data” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/2025)  
 * Hu *et al.* “Automated Design of Agentic Systems” ICLR 2025  
-* Clune “AI‑Generating Algorithms” (2020)  
-* Schrittwieser *et al.* “MuZero” (2020)  
-* Silver & Sutton “Era of Experience” (2025)  
+* Clune “AI‑Generating Algorithms” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/2020)  
+* Schrittwieser *et al.* “MuZero” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/2020)  
+* Silver & Sutton “Era of Experience” (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/2025)  
 
 ---
 
 ## 10 Live Alpha Demo 🚀
 
-**Signal:** Anticipated upside surprise in NVIDIA (NVDA) Q1‑FY2026 earnings on **28 May 2025**, driven by record data‑center demand and Blackwell GPU ramp. 
+**Signal:** Anticipated upside surprise in NVIDIA (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/NVDA) Q1‑FY2026 earnings on **28 May 2025**, driven by record data‑center demand and Blackwell GPU ramp. 
 *Evidence:* 78 % YoY revenue jump to \$39.3 B and guidance for \$43 B next quarter . Deloitte projects continued semiconductor boom via generative‑AI build‑outs .
 
 **Strategy:** 
 1. **Entry window**: T‑10 → T‑2 trading days before earnings. 
-2. **Position**: 40 % capital → 30‑delta call options (30 Jun expiry) + 60 % delta‑one shares. 
+2. **Position**: 40 % capital → 30‑delta call options (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/30 Jun expiry) + 60 % delta‑one shares. 
 3. **Risk**: Max 2 % account equity; stop‑loss at ATR‑2× below entry; risk manager enforces VaR<1 %. 
 4. **Exit**: 50 % gamma‑scalp on IV crush at T + 1; remainder trail‑stop @ EMA‑21. 
 

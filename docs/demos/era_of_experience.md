@@ -33,25 +33,25 @@ Within 60 seconds you will witness an agent <em>rewrite its own playbook</em> e
 ## 🛠 Requirements
 
 - **Docker 24+** with the Compose plugin
-- At least **4 CPU cores** (or a modest GPU) for smooth local runs
+- At least **4 CPU cores** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/or a modest GPU) for smooth local runs
 - **Python 3.11 or 3.12** available as `python3` for environment checks
 - Run `python3 ../../../check_env.py --demo era_experience --auto-install` and
   ensure it completes successfully before starting the Docker stack.
-- *(Optional)* `OPENAI_API_KEY` for cloud LLMs — leave blank to use the built‑in Mixtral via Ollama
+- *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/Optional)* `OPENAI_API_KEY` for cloud LLMs — leave blank to use the built‑in Mixtral via Ollama
 - If running without `run_experience_demo.sh`, install the
   dependencies from `requirements.txt` and ensure the **OpenAI Agents SDK** is pinned at version `0.0.17`:
   ```bash
   pip install -r requirements.txt
   pip install 'openai-agents==0.0.17'
   ```
-  `check_env.py` validates the SDK version (see also `alpha_factory_v1/scripts/preflight.py`).
+  `check_env.py` validates the SDK version (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/see also `alpha_factory_v1/scripts/preflight.py`).
   Then, you can run the script directly with a command like:
   ```bash
   SAMPLE_DATA_DIR=/path/to/csvs python agent_experience_entrypoint.py
 
 ---
 
-## 🚀 Quick‑start (macOS / Windows / Linux)
+## 🚀 Quick‑start (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/macOS / Windows / Linux)
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
@@ -63,7 +63,7 @@ chmod +x run_experience_demo.sh
 ```
 Ensure the environment check finishes successfully before starting the Docker stack.
 
-Add `--live` to pull in real sensor feeds (wearables, RSS, etc.):
+Add `--live` to pull in real sensor feeds (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/wearables, RSS, etc.):
 
 ```bash
 ./run_experience_demo.sh --live
@@ -74,13 +74,13 @@ Add `--live` to pull in real sensor feeds (wearables, RSS, etc.):
   * live trace‑graph 🪄
   * reward dashboards 📈
   * interactive chat / tool console 💬
-  * built‑in alpha detectors (yield curve & supply‑chain) 🔍 — they read from
+  * built‑in alpha detectors (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/yield curve & supply‑chain) 🔍 — they read from
     `alpha_factory_v1/demos/macro_sentinel/offline_samples/`, and the CSV
 snapshots are already included in the repository
 
 > **Offline/Private mode** — leave `OPENAI_API_KEY=` blank in <code>config.env</code>; the stack falls back to <strong>Ollama ✕ Mixtral‑8x7B</strong> and stays air‑gapped.
 
-Customize the dataset directory by exporting `SAMPLE_DATA_DIR` (see
+Customize the dataset directory by exporting `SAMPLE_DATA_DIR` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/see
 
 ```bash
 SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
@@ -90,6 +90,7 @@ SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
 
 Run the self-contained Colab notebook to launch the experience demo without any local setup.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb)
 
 ## Offline Setup
 
@@ -114,7 +115,7 @@ When running without internet access:
    SKIP_ENV_CHECK=1 ./run_experience_demo.sh
    ```
 
-Offline test workflow (after copying `/media/wheels`):
+Offline test workflow (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/after copying `/media/wheels`):
 
 - **Build** the wheel cache on a machine with internet access as shown above.
 - **Set** `WHEELHOUSE=/media/wheels` and run:
@@ -141,7 +142,7 @@ You may override the path for built-in offline samples by exporting
 SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
 ```
 
-Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
+Sample CSVs (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/`wearable_daily.csv`, `edu_progress.csv`) are shipped in
 `offline_samples/` so the demo also works without internet access.
 
 2. Enable real-time collectors and metrics with the `--live` flag:
@@ -150,7 +151,7 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
    ./run_experience_demo.sh --live
    ```
 
-   (equivalent to setting `LIVE_FEED=1` in `config.env`)
+   (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/equivalent to setting `LIVE_FEED=1` in `config.env`)
 
    The orchestrator automatically switches to offline mode whenever
    `OPENAI_API_KEY` is left empty.
@@ -163,7 +164,7 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
 
    Or set `COMPOSE_PROFILES=observability` when running
    `./run_experience_demo.sh`. The Grafana dashboard is available at
-   `http://localhost:3001` (password `experience`).
+   `http://localhost:3001` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/password `experience`).
 
 4. Override service endpoints when customizing deployments:
 
@@ -181,7 +182,7 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `OPENAI_API_KEY` | _(empty)_ | API key for hosted models. Offline mode is used when empty. |
+| `OPENAI_API_KEY` | _(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/empty)_ | API key for hosted models. Offline mode is used when empty. |
 | `MODEL_NAME` | `gpt-4o-mini` | Planner model name. |
 | `TEMPERATURE` | `0.40` | LLM sampling temperature. |
 | `MAX_TOKENS` | `4096` | Token limit for reasoning and tool calls. |
@@ -198,12 +199,13 @@ Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
 
 ---
 
-## 🎓 Run on Colab (zero install)
+## 🎓 Run on Colab (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/zero install)
 
 | Notebook | Runtime | Launch |
 |----------|---------|--------|
+| `colab_era_of_experience.ipynb` | CPU / GPU | <a href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a> |
 
-The notebook installs a lean Python stack (&lt; 120 s), exposes Gradio via ngrok and lets you call tools directly from cells. It automatically verifies the runtime with `check_env.py` and runs the unit tests so you can confirm everything works. Example cells illustrate detecting "alpha" opportunities using the offline yield curve **and** a toy supply‑chain flow snapshot.
+The notebook installs a lean Python stack (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/&lt; 120 s), exposes Gradio via ngrok and lets you call tools directly from cells. It automatically verifies the runtime with `check_env.py` and runs the unit tests so you can confirm everything works. Example cells illustrate detecting "alpha" opportunities using the offline yield curve **and** a toy supply‑chain flow snapshot.
 
 ---
 
@@ -212,8 +214,8 @@ The notebook installs a lean Python stack (&lt; 120 s), exposes Gradio via ng
 | Silver &amp; Sutton’s pillar | How we realise it |
 |---------------------------|--------------------|
 | **Streams of experience** | Infinite generator feeding month‑long synthetic logs |
-| **Sensor‑motor actions** | Tools (`web_search`, `plan_meal`, user chat) mutate state |
-| **Grounded rewards**   | Plug‑ins: <code>fitness_reward</code>, <code>education_reward</code>, <code>curiosity_reward</code>, … (hot‑reloaded) |
+| **Sensor‑motor actions** | Tools (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/`web_search`, `plan_meal`, user chat) mutate state |
+| **Grounded rewards**   | Plug‑ins: <code>fitness_reward</code>, <code>education_reward</code>, <code>curiosity_reward</code>, … (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/hot‑reloaded) |
 | **Non‑human reasoning**  | Monte‑Carlo Tree Search planner + vector memory — no CoT imitation |
 
 Result: an agent that <strong>evolves faster than you can refresh the page</strong>.
@@ -244,11 +246,12 @@ Result: an agent that <strong>evolves faster than you can refresh the page</stro
 | Path / file | What it does |
 |-------------|--------------|
 | `agent_experience_entrypoint.py` | boots orchestrator + Gradio |
-| `run_experience_demo.sh` | 1‑liner prod launcher (health‑gated) |
+| `run_experience_demo.sh` | 1‑liner prod launcher (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/health‑gated) |
 | `docker-compose.experience.yml` | orchestrator + Ollama services |
-| `reward_backends/` | 🍬 Drop‑in reward plug‑ins (auto‑discovery) |
-| `simulation/` | Tiny Gym‑like env stubs (ready to extend) |
+| `reward_backends/` | 🍬 Drop‑in reward plug‑ins (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/auto‑discovery) |
+| `simulation/` | Tiny Gym‑like env stubs (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/ready to extend) |
 | `stub_agents.py` | Minimal agent classes for OpenAI SDK & ADK workflows |
+| `colab_era_of_experience.ipynb` | Cloud twin notebook |
 | `alpha_report.py` | CLI helper printing current offline alpha signals |
 
 Run it with local CSVs:
@@ -273,20 +276,20 @@ $EDITOR reward_backends/my_reward.py   # implement reward()
 ```python
 from openai_agents import Tool
 
-@Tool(name="place_trade", description="Execute an equity order on Alpaca")
-async def place_trade(ticker:str, qty:int, side:str="BUY"): ...
+@Tool(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/name="place_trade", description="Execute an equity order on Alpaca")
+async def place_trade(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/ticker:str, qty:int, side:str="BUY"): ...
 ```
 
 This demo ships with a minimal example:
 
 ```python
-@Tool("detect_yield_curve_alpha", "Assess yield curve inversion using offline data.")
+@Tool(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/"detect_yield_curve_alpha", "Assess yield curve inversion using offline data.")
 async def detect_yield_curve_alpha_tool():
     return {"alpha": detect_yield_curve_alpha()}
 
-@Tool("detect_supply_chain_alpha", "Check for potential supply-chain disruptions using offline data.")
-async def detect_supply_chain_alpha_tool(threshold: float = 50.0):
-    return {"alpha": detect_supply_chain_alpha(threshold)}
+@Tool(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/"detect_supply_chain_alpha", "Check for potential supply-chain disruptions using offline data.")
+async def detect_supply_chain_alpha_tool(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/threshold: float = 50.0):
+    return {"alpha": detect_supply_chain_alpha(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/threshold)}
 ```
 
 * **Run in simulation**
@@ -299,15 +302,15 @@ from alpha_factory_v1.demos.era_of_experience.simulation import SimpleExperience
 
 env = SimpleExperienceEnv()
 state = env.reset()
-for _ in range(3):
-    state, reward, done, info = env.step("act")
-    print(state, reward)
+for _ in range(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/3):
+    state, reward, done, info = env.step(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/"act")
+    print(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/state, reward)
 ```
 
 * **Prototype a custom agent**
 
   `stub_agents.py` contains minimal classes
-  (`ExperienceAgent`, `FederatedExperienceAgent`) illustrating how to build
+  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/`ExperienceAgent`, `FederatedExperienceAgent`) illustrating how to build
   on the OpenAI SDK and Google ADK respectively.
 
 
@@ -331,7 +334,7 @@ Shared Redis memory + A2A = emergent cooperation.
 
 ---
 
-## 📈 Benchmarks (o3‑mini, 8×CPU vCPU)
+## 📈 Benchmarks (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/o3‑mini, 8×CPU vCPU)
 
 | Metric | 1‑agent | 4‑agent swarm |
 |--------|---------|---------------|
@@ -339,7 +342,7 @@ Shared Redis memory + A2A = emergent cooperation.
 | Avg reward | 0.43 | 0.57 |
 | Latency P50 | 520 ms | 730 ms |
 
-*(Synthetic workload; see `benchmarks/` for scripts)*
+*(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/Synthetic workload; see `benchmarks/` for scripts)*
 
 ---
 

@@ -113,14 +113,25 @@ def build_page(demo: Path) -> str:
     )
 
     def _rewrite(match: re.Match[str]) -> str:
+        """Rewrite relative links to GitHub or other demo pages."""
         url, anchor = match.group(1), match.group(2) or ""
         if url.startswith(("http://", "https://", "#", "mailto:")):
             return match.group(0)
+
         target = (demo / url).resolve()
         try:
             rel = target.relative_to(REPO_ROOT)
         except ValueError:
             return match.group(0)
+
+        # Links that point to a directory should jump to the generated
+        # demo page when available. This handles links like ``../demo_name/``
+        # which would otherwise break once moved under ``docs``.
+        if target.is_dir():
+            if target.parent == DEMOS_DIR and (DOCS_DIR / f"{target.name}.md").exists():
+                return f"({target.name}.md{anchor})"
+            return f"({github_base}{rel.as_posix()}{anchor})"
+
         return f"({github_base}{rel.as_posix()}{anchor})"
 
     readme_text = re.sub(r"\((?!https?://|mailto:|#)([^)#]+)(#[^)]+)?\)", _rewrite, readme_text)

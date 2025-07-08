@@ -30,14 +30,14 @@ incurred from using this software.
 
 The demo expects a few extra packages:
 
-- [`openai_agents`](https://openai.github.io/openai-agents-python/) (required unless you rely on the offline fallback)
+- [`openai_agents`](https://openai.github.io/openai-agents-python/) (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/required unless you rely on the offline fallback)
 - [`gradio`](https://gradio.app/)
 - [`pytest`](https://docs.pytest.org/)
-- Docker image `selfheal-sandbox:latest` built from `sandbox.Dockerfile` (includes GNU `patch`)
+- Docker image `selfheal-sandbox:latest` built from `sandbox.Dockerfile` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/includes GNU `patch`)
 
 `run_selfheal_demo.sh` verifies that `patch` is installed but does not check for `openai_agents`. The library is required for normal online usage. When the package is missing, the entrypoint automatically falls back to a minimal stub that calls the bundled offline model via `llm_client.call_local_model`.
 
-## 🚀 Quick start (Docker)
+## 🚀 Quick start (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/Docker)
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
@@ -56,7 +56,7 @@ Before launching the dashboard or running tests, run
 `python alpha_factory_v1/scripts/preflight.py` from the repository root.
 This installs any optional packages and validates your Python toolchain.
 Set `WHEELHOUSE=<dir>` and pass `--wheelhouse <dir>` to `check_env.py` when offline so packages install from a
-local wheelhouse (see **Build a wheelhouse & run offline**).
+local wheelhouse (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/see **Build a wheelhouse & run offline**).
 
 Browse **http://localhost:7863** → hit **“Heal Repository”**.
 
@@ -88,12 +88,12 @@ set `SANDBOX_IMAGE` to any custom image that bundles `patch`.
 
 When `OPENAI_API_KEY` is blank the agent falls back to the local model
 via Ollama. Set `USE_LOCAL_LLM=true` to force this behaviour even when
-a key is present. Set `OLLAMA_BASE_URL` to the base URL of your Ollama server (defaults to `http://ollama:11434/v1`) when the model runs on a remote host. The same file also lets you override `OPENAI_MODEL` and
+a key is present. Set `OLLAMA_BASE_URL` to the base URL of your Ollama server (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/defaults to `http:/ollama:11434/v1`) when the model runs on a remote host. The same file also lets you override `OPENAI_MODEL` and
 `TEMPERATURE` for custom tuning. **`OPENAI_MODEL` controls both the
 remote API model and the local one when `USE_LOCAL_LLM=true`.** Set
 `CLONE_DIR` if you want the repository clone to live elsewhere.
 
-### Windows (PowerShell)
+### Windows (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/PowerShell)
 Run the same container with PowerShell:
 
 ```powershell
@@ -103,9 +103,9 @@ docker compose -p alpha_selfheal -f docker-compose.selfheal.yml up -d --build
 # docker compose builds the `selfheal-sandbox` image
 ```
 
-Before launching the dashboard or running tests, run `python alpha_factory_v1/scripts/preflight.py` (or `python check_env.py --auto-install`) from the repository root to confirm all dependencies. Stop the stack with `docker compose -p alpha_selfheal down`.
+Before launching the dashboard or running tests, run `python alpha_factory_v1/scripts/preflight.py` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/or `python check_env.py --auto-install`) from the repository root to confirm all dependencies. Stop the stack with `docker compose -p alpha_selfheal down`.
 
-### Quick start (Python)
+### Quick start (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/Python)
 Prefer a local run without Docker?
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
@@ -116,8 +116,8 @@ python -m alpha_factory_v1.demos.self_healing_repo.agent_selfheal_entrypoint
 ```
 Then open **http://localhost:7863** and trigger **“Heal Repository”**.
 
-Set `GRADIO_SHARE=1` to expose a public link (useful on Colab).
-Set `TEMPERATURE=0.3` (0‑2) to tune patch creativity.
+Set `GRADIO_SHARE=1` to expose a public link (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/useful on Colab).
+Set `TEMPERATURE=0.3` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/0‑2) to tune patch creativity.
 
 ### Offline workflow
 
@@ -154,7 +154,7 @@ WHEELHOUSE=/media/wheels python -m alpha_factory_v1.demos.self_healing_repo.agen
 ```
 
 The dashboard behaves the same, but all code comes from the bundled repo.
-Run `python alpha_factory_v1/scripts/preflight.py` (or `python check_env.py --auto-install --wheelhouse /media/wheels`) from the repository root to confirm dependencies before each run.
+Run `python alpha_factory_v1/scripts/preflight.py` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/or `python check_env.py --auto-install --wheelhouse /media/wheels`) from the repository root to confirm dependencies before each run.
 
 ### Manual healing
 
@@ -197,7 +197,7 @@ Missing dependencies will cause tests to be skipped or fail.
 The directory includes `.github/workflows/self_heal.yml`—a workflow that
 monitors the main **CI** pipeline. When a `workflow_run` for **CI** on the
 `main` branch concludes with `failure`, GitHub downloads the test logs
-(saved as `pytest.log` in the CI workflow), checks out the failing commit
+(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/saved as `pytest.log` in the CI workflow), checks out the failing commit
 and runs:
 
 ```bash
@@ -217,6 +217,7 @@ Minimal setup:
 
 ## 🎓 Google Colab
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/colab_self_healing_repo.ipynb)
 
 Runs the same flow with a public Gradio link.
 The notebook sets `GRADIO_SHARE=1` so the dashboard URL appears automatically.
@@ -269,7 +270,7 @@ clone repo → [sandbox pytest] → error log
 
 ## 🤝 Credits
 
-* Inspired by the *Self‑Healing Software* vision (S. Brun et al., 2023).  
+* Inspired by the *Self‑Healing Software* vision (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/S. Brun et al., 2023).  
 * Built on **Agents SDK**, **A2A**, and the ever‑wise open‑source community.
 
 > **Alpha‑Factory** — shipping code that ships itself.

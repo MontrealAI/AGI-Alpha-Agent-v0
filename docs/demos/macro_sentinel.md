@@ -23,11 +23,11 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 | Capability | Detail |
 |------------|--------|
 | **Multi‑agent orchestration** | OpenAI Agents SDK + A2A protocol |
-| **LLM fail‑over** | GPT‑4o when `OPENAI_API_KEY` present, Mixtral‑8x7B (Ollama) otherwise |
+| **LLM fail‑over** | GPT‑4o when `OPENAI_API_KEY` present, Mixtral‑8x7B (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/Ollama) otherwise |
 | **Live + offline feeds** | FRED yield curve, Fed RSS speeches, Etherscan on‑chain flows |
-| **Risk engine** | 10 k × 30‑day 3‑factor Monte‑Carlo (< 20 ms CPU) |
-| **Seeded runs** | Use `MonteCarloSimulator(seed=42)` for reproducible results |
-| **Action layer** | Draft JSON orders for Micro‑ES futures (Alpaca stub) |
+| **Risk engine** | 10 k × 30‑day 3‑factor Monte‑Carlo (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/< 20 ms CPU) |
+| **Seeded runs** | Use `MonteCarloSimulator(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/seed=42)` for reproducible results |
+| **Action layer** | Draft JSON orders for Micro‑ES futures (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/Alpaca stub) |
 | **Observability** | TimescaleDB, Redis stream, Prometheus & Grafana dashboard |
 | **A2A gateway** | Optional Google ADK server via `ALPHA_FACTORY_ENABLE_ADK=1` |
 
@@ -40,7 +40,7 @@ flowchart LR
     subgraph Agents
         A[LLM Toolbox] -->|A2A| B[Orchestrator<br/>Agent]
     end
-    B --> C(Monte‑Carlo Simulator)
+    B --> C(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/Monte‑Carlo Simulator)
     B --> D[Gradio UI]
     B --> E[TimescaleDB]
     B --> F[Redis Bus]
@@ -55,17 +55,17 @@ flowchart LR
 
 ## 🚀 Quickstart
 
-### One‑command (Docker)
+### One‑command (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/Docker)
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/macro_sentinel
 python ../../check_env.py --demo macro_sentinel    # verify optional dependencies
 ./run_macro_demo.sh           # add --live for real‑time collectors
-                              # (--live exports LIVE_FEED=1)
+                              # (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/--live exports LIVE_FEED=1)
 ```
 
-Export `OPENAI_API_KEY` in your shell (or define it in `config.env`) before
+Export `OPENAI_API_KEY` in your shell (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/or define it in `config.env`) before
 launching. If the variable is absent, the script runs in offline mode. With the
 previous issue resolved, the launcher now reads `config.env` automatically when
 present.
@@ -94,8 +94,8 @@ set `OFFLINE_DATA_DIR=/path/to/csvs` in your shell or `config.env`.
 
 *Dashboard:* http://localhost:7864
 *Health:*    http://localhost:7864/healthz
-*Grafana:* http://localhost:3001 (admin/alpha)
-*ADK gateway:* http://localhost:9000 (when `ALPHA_FACTORY_ENABLE_ADK=1`)
+*Grafana:* http://localhost:3001 (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/admin/alpha)
+*ADK gateway:* http://localhost:9000 (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/when `ALPHA_FACTORY_ENABLE_ADK=1`)
 
 ### ADK gateway
 
@@ -132,8 +132,9 @@ configuration options such as custom bind addresses.
 
 ### Google Colab
 
+[Open the notebook ▶](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/colab_macro_sentinel.ipynb)
 
-### Bare‑metal (advanced)
+### Bare‑metal (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/advanced)
 
 ```bash
 pip install -r requirements.txt
@@ -165,7 +166,7 @@ This mirrors the repository's offline setup instructions so the demo works
 without internet access.
 
 For a concise overview of the offline workflow see
-[the repository guide](../OFFLINE_INSTALL.md).
+[the repository guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_INSTALL.md).
 
 ---
 
@@ -173,22 +174,22 @@ For a concise overview of the offline workflow see
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `OPENAI_API_KEY` | *(blank)* | Use GPT‑4o when provided; offline Mixtral otherwise |
+| `OPENAI_API_KEY` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Use GPT‑4o when provided; offline Mixtral otherwise |
 | `MODEL_NAME` | `gpt-4o-mini` | Any OpenAI completion model |
 | `TEMPERATURE` | `0.15` | LLM sampling temperature |
 | `OLLAMA_BASE_URL` | `http://ollama:11434/v1` | Offline LLM endpoint |
-| `FRED_API_KEY` | *(blank)* | Enables live yield‑curve collector |
-| `ETHERSCAN_API_KEY` | *(blank)* | Enables on‑chain stable‑flow collector |
+| `FRED_API_KEY` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Enables live yield‑curve collector |
+| `ETHERSCAN_API_KEY` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Enables on‑chain stable‑flow collector |
 | `STABLE_TOKEN` | `0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606e48` | ERC‑20 token used for stablecoin flow tracking |
-| `TW_BEARER_TOKEN` | *(blank)* | Twitter/X API bearer token for Fed speech stream |
+| `TW_BEARER_TOKEN` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Twitter/X API bearer token for Fed speech stream |
 | `PG_PASSWORD` | `alpha` | TimescaleDB superuser password |
-| `REDIS_PASSWORD` | *(blank)* | Optional password for the Redis cache |
+| `REDIS_PASSWORD` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Optional password for the Redis cache |
 | `LIVE_FEED` | `0` | 1 uses live FRED/Etherscan feeds |
-| `POLL_INTERVAL_SEC` | `15` | Seconds between macro event polls (1 offline) |
+| `POLL_INTERVAL_SEC` | `15` | Seconds between macro event polls (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/1 offline) |
 | `OFFLINE_DATA_DIR` | `offline_samples/` | Path for CSV snapshots |
 | `DEFAULT_PORTFOLIO_USD` | `2000000` | Portfolio USD notional for Monte‑Carlo hedge sizing |
 | `ALPHA_FACTORY_ENABLE_ADK` | `0` | 1 exposes ADK gateway on port 9000 |
-| `ALPHA_FACTORY_ADK_TOKEN` | *(blank)* | Require `x-alpha-factory-token` header when set |
+| `ALPHA_FACTORY_ADK_TOKEN` | *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/blank)* | Require `x-alpha-factory-token` header when set |
 | `PROMETHEUS_SCRAPE_INTERVAL` | `15s` | Metrics polling frequency |
 | `GRAFANA_ADMIN_PASSWORD` | `alpha` | Grafana admin password |
 
@@ -208,7 +209,7 @@ Pre‑provisioned at <http://localhost:3001>.
 ### Accessing Grafana
 
 Open your browser to `http://localhost:3001` and log in with user `admin` and
-`GRAFANA_ADMIN_PASSWORD` (default `alpha`). The `Macro Events` and `Risk Metrics`
+`GRAFANA_ADMIN_PASSWORD` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/default `alpha`). The `Macro Events` and `Risk Metrics`
 dashboards load automatically.
 
 ### Tuning Prometheus
@@ -228,7 +229,8 @@ macro_sentinel/
 ├── simulation_core.py          # Monte‑Carlo risk engine
 ├── run_macro_demo.sh           # Docker launcher
 ├── docker-compose.macro.yml    # Service graph
-└── offline_samples/            # CSV snapshots (auto‑synced)
+├── colab_macro_sentinel.ipynb  # Cloud notebook
+└── offline_samples/            # CSV snapshots (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/auto‑synced)
 ```
 
 ---
@@ -236,7 +238,7 @@ macro_sentinel/
 ## 🔐 Security notes
 * No secrets are baked into images.
 * All containers drop root and listen on  `0.0.0.0` only when behind Docker bridge.
-* Network egress is restricted to required endpoints (FRED, Etherscan, ollama).
+* Network egress is restricted to required endpoints (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/macro_sentinel/FRED, Etherscan, ollama).
 
 ---
 

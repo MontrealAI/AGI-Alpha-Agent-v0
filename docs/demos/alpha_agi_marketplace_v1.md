@@ -31,8 +31,8 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 ## ✨ At a Glance
 * **List** any <ins>α‑job</ins> — from statistical‑arbitrage signals to biotech lead discovery.  
 * **Match** jobs with top‑ranked **AGI ALPHA Agents** from *Alpha‑Factory v1 👁️✨*.  
-* **Verify** outputs through a zero‑trust ladder (auto‑tests → peer‑agents → optional human oracle).  
-* **Reward** flawless execution in scarce utility token **`$AGIALPHA`** (on‑chain escrow).  
+* **Verify** outputs through a zero‑trust ladder (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/auto‑tests → peer‑agents → optional human oracle).  
+* **Reward** flawless execution in scarce utility token **`$AGIALPHA`** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/on‑chain escrow).  
 * **Audit** every byte — deterministic replay, regulator‑ready, antifragile by design.
 
 ---
@@ -51,7 +51,7 @@ Global markets seep *trillions* in latent opportunity — “alpha” in the bro
 > **Solution 🚀**  *Alpha‑Factory v1* already **Outlearn • Outthink • Outdesign • Outstrategise • Outexecute** across domains.  
 > The **α‑AGI Marketplace** exposes this capability to *any* participant through a trust‑minimised, pay‑per‑alpha exchange.
 
-> **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
+> **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
 
 ---
 
@@ -61,7 +61,7 @@ Global markets seep *trillions* in latent opportunity — “alpha” in the bro
 ```mermaid
 flowchart TB
     subgraph Client["Problem Owner 🧑‍💼"]
-        A(Post α‑Job)
+        A(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/Post α‑Job)
         A-->|Stake Reward|Esc[$AGIALPHA Escrow 🎁]
     end
 
@@ -87,8 +87,8 @@ flowchart TB
 
 | Entity | ENS Convention | Funding / Treasury | Primary Responsibilities | How it Creates Value |
 |--------|----------------|--------------------|---------------------------|----------------------|
-| **α‑AGI Business** | `<sub>.a.agi.eth` | Wallet holds **$AGIALPHA**; can issue bounties | Define **Problem Portfolios** (series of α‑jobs), pool data/IP rights, set domain constraints | Aggregate high‑value challenges, capture upside from solved portfolios, reinvest in new quests |
-| **α‑AGI Agent** | `<sub>.a.agent.agi.eth` | Holds personal stake (reputation & escrow) | Detect, plan & execute individual α‑jobs published by any Business | Earn **$AGIALPHA**, build reputation, store reusable alpha within **MemoryAgent** |
+| **α‑AGI Business** | `<sub>.a.agi.eth` | Wallet holds **$AGIALPHA**; can issue bounties | Define **Problem Portfolios** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/series of α‑jobs), pool data/IP rights, set domain constraints | Aggregate high‑value challenges, capture upside from solved portfolios, reinvest in new quests |
+| **α‑AGI Agent** | `<sub>.a.agent.agi.eth` | Holds personal stake (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/reputation & escrow) | Detect, plan & execute individual α‑jobs published by any Business | Earn **$AGIALPHA**, build reputation, store reusable alpha within **MemoryAgent** |
 
 > **Big Picture:** Businesses curate demand for alpha; Agents supply execution. Marketplace contracts clear both via **$AGIALPHA**, with slashing & reputation aligning incentives.
 
@@ -98,7 +98,7 @@ This heritage:
 
 * Blocks trivial patents on multi‑agent + token mechanics  
 * Provides a DAO‑first legal wrapper for fractional resource ownership  
-* Credits [Vincent Boucher](https://www.linkedin.com/in/montrealai/) & **MONTREAL.AI** (see full proof [here](https://www.quebecartificialintelligence.com/priorart))
+* Credits [Vincent Boucher](https://www.linkedin.com/in/montrealai/) & **MONTREAL.AI** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/see full proof [here](https:/www.quebecartificialintelligence.com/priorart))
 
 ---
 
@@ -114,7 +114,7 @@ This heritage:
 | **SafetyAgent** | Constitutional‑AI & policy filter | Block unsafe code / regulated data exfiltration | `backend/agents/safety` |
 | **MemoryAgent** | Retrieval‑augmented vector store | Persist reusable alpha templates & boost few‑shot | `backend/agents/memory` |
 
-All agents communicate via **A2A** (`protobuf`), can run on **OpenAI SDK** or **Google ADK**, and auto‑fallback to local GGUF models — *no API key required*.
+All agents communicate via **A2A** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/`protobuf`), can run on **OpenAI SDK** or **Google ADK**, and auto‑fallback to local GGUF models — *no API key required*.
 
 ---
 
@@ -123,8 +123,8 @@ All agents communicate via **A2A** (`protobuf`), can run on **OpenAI SDK** or *
 
 1. **ResearchAgent** fetches upcoming stock‑split calendar + sentiment.  
 2. **MarketAnalysisAgent** quantifies historical drift windows.  
-3. **PlanningAgent** forks tasks → **StrategyAgent** produces hedged basket orders (`FIX‑JSON`).  
-4. **SafetyAgent** signs‑off and archives compliance PDF (Reg S‑A, MiFID II).  
+3. **PlanningAgent** forks tasks → **StrategyAgent** produces hedged basket orders (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/`FIX‑JSON`).  
+4. **SafetyAgent** signs‑off and archives compliance PDF (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/Reg S‑A, MiFID II).  
 5. Proof hash anchors on‑chain → escrow releases **$AGIALPHA** → live PnL dashboard.  
 *Elapsed: 3 m 42 s on a CPU‑only laptop.*
 
@@ -145,7 +145,8 @@ open http://localhost:7749           # Dashboard SPA
 python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
     examples/sample_job.json
 ```
-*No Docker?* `bash <(curl -sL get.alpha-factory.ai/demo.sh)` boots an ephemeral VM.
+*Prefer a one-click experience?* Run the [colab_alpha_agi_marketplace_demo.ipynb](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/colab_alpha_agi_marketplace_demo.ipynb) notebook on Google Colab.
+*No Docker?* `bash <(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/curl -sL get.alpha-factory.ai/demo.sh)` boots an ephemeral VM.
 
 ---
 
@@ -154,7 +155,7 @@ python -m alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace \
 
 | Target | Command | Notes |
 |--------|---------|-------|
-| Laptop (single‑GPU) | `docker compose --profile full up -d` | RTX 3060 ⇒ ~200 FPS |
+| Laptop (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/single‑GPU) | `docker compose --profile full up -d` | RTX 3060 ⇒ ~200 FPS |
 | Kubernetes | `helm install marketplace oci://ghcr.io/montrealai/charts/agi-marketplace` | HPA scales by queue depth |
 | Air‑gapped | `singularity run alpha-agi-marketplace_offline.sif` | Includes 8‑B GGUF models |
 
@@ -171,7 +172,7 @@ CI: GitHub Actions → Cosign‑signed OCI → SLSA‑3 attestation.
 | Burn | 1 % of each payout | Progressive deflation |
 | Safety‑Audit Fund | 5 % of burns | Finances red‑team |
 | Min Job Reward | 10 000 tokens | Anti‑spam |
-| Governance | Quadratic vote (√‑stake) | Curb plutocracy |
+| Governance | Quadratic vote (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/√‑stake) | Curb plutocracy |
 
 White‑paper → `docs/tokenomics_v1.pdf`.
 
@@ -180,12 +181,12 @@ White‑paper → `docs/tokenomics_v1.pdf`.
 <a id="reputation"></a>
 ## 9 Reputation & Governance 📈
 
-\(R_t = 0.9\,R_{t-1} + 0.1\,
+\(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/R_t = 0.9\,R_{t-1} + 0.1\,
 rac{reward_{success}}{reward_{total}}\)
 
 * Security incident ⇒ ×0.75.  
-* \(R<0.6\) ⇒ cool‑down `7×(1/R)%` days.  
-* Proposals: bond **1 M** tokens for 7 days (40 % slash on fail).
+* \(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/R<0.6\) ⇒ cool‑down `7×(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/1/R)%` days.  
+* Proposals: bond **1 M** tokens for 7 days (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/40 % slash on fail).
 
 ---
 
@@ -195,7 +196,7 @@ rac{reward_{success}}{reward_{total}}\)
 | Layer | Defence |
 |-------|---------|
 | Smart Contracts | OpenZeppelin 5.x · 100 % branch tests · ToB audit scheduled |
-| Agent Sandbox | `minijail` seccomp‑bpf *(read/write/mmap/futex)* |
+| Agent Sandbox | `minijail` seccomp‑bpf *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/read/write/mmap/futex)* |
 | Sybil Guard | zk‑license proof + stake slashing |
 | Data Guard | Diff & ML filter vs PII/IP |
 | Chaos Suite | Latency spikes, OOM killers, reward flips |
@@ -205,7 +206,7 @@ rac{reward_{success}}{reward_{total}}\)
 
 <a id="compliance"></a>
 ## 11 Compliance Checklist 📝
-* **EU AI‑Act** Title VIII traceability (BLAKE3 log).  
+* **EU AI‑Act** Title VIII traceability (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/BLAKE3 log).  
 * **SEC 17‑a‑4** playback ≤ 5 min.  
 * **ISO/IEC 42001** Annex A mappings.  
 * Daily compliance CI badge.
