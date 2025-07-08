@@ -34,7 +34,7 @@ Downstream users should consult this section when upgrading.
   current.
 - Documented `API_RATE_LIMIT`, `AGI_ISLAND_BACKENDS` and `ALERT_WEBHOOK_URL`
   environment variables.
-- Added [`alpha_factory_v1/core/tools/analyse_backtrack.py`](../alpha_factory_v1/core/tools/analyse_backtrack.py) for visualising archive backtracks.
+- Added [`alpha_factory_v1/core/tools/analyse_backtrack.py`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/core/tools/analyse_backtrack.py) for visualising archive backtracks.
 - Documented how to build a wheelhouse for offline installs and updated
   `tests/README.md` with the instructions.
 - Added `scripts/build_offline_wheels.sh` to gather wheels for all lock files.
@@ -83,7 +83,7 @@ Downstream users should consult this section when upgrading.
   `check_env.py` now errors if they are missing unless `--allow-basic-fallback`
   is provided.
 - Documented `ALPHA_ASI_*` demo variables in README and AGENTS.md.
-  and [README](../alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)
+  and [README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/README.md)
   (introduced in commit `d0e1e2ed`).
 
 ## [1.1.0] - 2025-07-15
