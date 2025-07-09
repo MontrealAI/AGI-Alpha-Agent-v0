@@ -114,7 +114,7 @@ Verify the downloads with:
 python ../../../../scripts/fetch_assets.py --verify-only
 ```
 
-See `.env.sample` for the full list of supported variables.
+See `.env.sample` for the full list of supported variables. Download the file from [GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/.env.sample).
 The compiled `dist/` directory is not version controlled. Run the build script
 to create it before launching the demo.
 
