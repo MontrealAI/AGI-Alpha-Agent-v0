@@ -27,9 +27,12 @@ except Exception:  # pragma: no cover - optional
     coloredlogs = None
 
 from . import messaging
-from alpha_factory_v1.core.utils.tracing import span
-from alpha_factory_v1.core.utils import a2a_pb2 as pb
 from google.protobuf import json_format
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover - type hints only
+    from alpha_factory_v1.core.utils.tracing import span
+    from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
 try:  # optional dependency
     from blake3 import blake3
@@ -188,6 +191,9 @@ class Ledger:
 
     def log(self, env: messaging.Envelope) -> None:
         """Hash ``env`` and append to the ledger."""
+        from alpha_factory_v1.core.utils.tracing import span
+        from alpha_factory_v1.core.utils import a2a_pb2 as pb
+
         with span("ledger.log"):
             assert self.conn is not None
             if dataclasses.is_dataclass(env) and not isinstance(env, type):

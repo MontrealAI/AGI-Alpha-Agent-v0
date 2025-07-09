@@ -8,7 +8,7 @@ import contextlib
 
 from alpha_factory_v1.core import orchestrator
 from alpha_factory_v1.core.utils import config
-from alpha_factory_v1.core.utils.messaging import A2ABus, Envelope
+from alpha_factory_v1.common.utils.messaging import A2ABus, Envelope
 from alpha_factory_v1.core.utils.logging import Ledger
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 

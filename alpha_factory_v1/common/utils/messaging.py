@@ -18,12 +18,16 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, Typ
 from cachetools import TTLCache
 
 from .config import Settings
-from alpha_factory_v1.core.utils.tracing import span, bus_messages_total
-from alpha_factory_v1.core.utils import a2a_pb2 as pb
 from google.protobuf import json_format
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:  # pragma: no cover - type hints only
+    from alpha_factory_v1.core.utils.tracing import span, bus_messages_total
+    from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-Envelope: TypeAlias = pb.Envelope
+    Envelope: TypeAlias = pb.Envelope
+else:  # pragma: no cover - runtime fallback
+    Envelope: TypeAlias = Any
 
 
 class EnvelopeLike(Protocol):
@@ -92,6 +96,9 @@ class A2ABus:
             self._subs.pop(topic, None)
 
     def publish(self, topic: str, env: EnvelopeLike) -> None:
+        from alpha_factory_v1.core.utils.tracing import span, bus_messages_total
+        from alpha_factory_v1.core.utils import a2a_pb2 as pb
+
         with span("bus.publish"):
             bus_messages_total.labels(topic).inc()
             if self._producer:
