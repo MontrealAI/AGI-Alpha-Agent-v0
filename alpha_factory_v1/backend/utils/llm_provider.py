@@ -516,8 +516,24 @@ if _ORDER_ENV:
     _log.info("Provider order via AF_LLM_PROVIDERS: %s", ", ".join(_PROVIDERS))
 
 if not _PROVIDERS:
-    _log.critical("‼️  No LLM back-end available – set OPENAI_API_KEY or install llama-cpp")
-    raise RuntimeError("No LLM provider available")
+    if os.getenv("AGI_INSIGHT_OFFLINE") == "1":
+        _log.warning("No LLM back-end available in offline mode – using stub provider")
+
+        class _Stub(_Provider):
+            name = "offline"
+
+            def _invoke(self, msgs, temperature, max_tokens, stream, stop):
+                answer = "[offline] " + msgs[-1]["content"][:400]
+                if stream:
+                    for tok in answer.split():
+                        yield tok + " "
+                else:
+                    return answer
+
+        _PROVIDERS["offline"] = _Stub()
+    else:
+        _log.critical("‼️  No LLM back-end available – set OPENAI_API_KEY or install llama-cpp")
+        raise RuntimeError("No LLM provider available")
 
 
 # ──────────────────────── facade class ─────────────────────
