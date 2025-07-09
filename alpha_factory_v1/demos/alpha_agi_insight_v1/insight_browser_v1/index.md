@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../../../docs/DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../../../DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 ### 🔬 Browser-only Insight demo
@@ -6,7 +6,7 @@ A zero-backend Pareto explorer lives in
 `demos/alpha_agi_insight_v1/insight_browser_v1/`. See the **Quick-Start** section below for a short walkthrough.
 
 ## Quick-Start
-Open [../../insight_browser_quickstart.pdf](../../insight_browser_quickstart.pdf)
+Open [../../../../insight_browser_quickstart.pdf](../../../../insight_browser_quickstart.pdf)
 for a concise overview of the build and launch steps.
 
 ## Prerequisites
@@ -188,7 +188,7 @@ Open `index.html` directly or pin the built `dist/` directory to IPFS
 (`ipfs add -r dist`) and share the CID.
 The URL fragment encodes parameters such as `#/s=42&p=120&g=80`.
 
-See [../../insight_browser_quickstart.pdf](../../insight_browser_quickstart.pdf) for a short walkthrough.
+See [../../../../insight_browser_quickstart.pdf](../../../../insight_browser_quickstart.pdf) for a short walkthrough.
 Running `npm run build` or `python manual_build.py` copies this file to
 `dist/insight_browser_quickstart.pdf` so the guide is available alongside
 `dist/index.html` when offline.
