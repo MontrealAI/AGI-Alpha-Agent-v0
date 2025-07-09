@@ -10,7 +10,7 @@ REPLACEMENTS = {
     "../assets/": "../../../assets/",
     "../README/": "../../README/",
     "../gallery.html": "../../index.html",
-    "../DISCLAIMER_SNIPPET/": "../../DISCLAIMER_SNIPPET/",
+    "../DISCLAIMER_SNIPPET/": "../../../DISCLAIMER_SNIPPET/",
 }
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

@@ -2,5 +2,5 @@
 /* eslint-env browser */
 /* global Chart */
 /* eslint-disable no-undef */
-import {replayChart} from '../../../../assets/replay_chart.js';
-replayChart({logsUrl: 'assets/logs.json', label: 'Demo Metric', color: 'blue'});
+import {replayChart} from '../../assets/replay_chart.js';
+replayChart({logsUrl: 'assets/logs.json', label: 'Muzeromctsllmagent V0 Metric', color: 'lime'});
