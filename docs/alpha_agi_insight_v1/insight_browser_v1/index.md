@@ -6,7 +6,7 @@ A zero-backend Pareto explorer lives in
 `demos/alpha_agi_insight_v1/insight_browser_v1/`. See the **Quick-Start** section below for a short walkthrough.
 
 ## Quick-Start
-Open [insight_browser_quickstart.pdf](../../insight_browser_quickstart.pdf)
+Open [docs/insight_browser_quickstart.pdf](docs/insight_browser_quickstart.pdf)
 for a concise overview of the build and launch steps.
 
 ## Prerequisites
@@ -48,7 +48,7 @@ npm start
 ```
 
 ## Environment Setup
-Copy [`.env.sample`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/.env.sample) to `.env` then review the variables. When `.env`
+Copy [`.env.sample`](.env.sample) to `.env` then review the variables. When `.env`
 is missing the build scripts continue with default empty values:
 
 - `PINNER_TOKEN` – Web3.Storage token used to pin results.
@@ -114,7 +114,7 @@ Verify the downloads with:
 python ../../../../scripts/fetch_assets.py --verify-only
 ```
 
-See [`.env.sample`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/.env.sample) for the full list of supported variables.
+See [`.env.sample`](.env.sample) for the full list of supported variables.
 The compiled `dist/` directory is not version controlled. Run the build script
 to create it before launching the demo.
 
@@ -188,7 +188,7 @@ Open `index.html` directly or pin the built `dist/` directory to IPFS
 (`ipfs add -r dist`) and share the CID.
 The URL fragment encodes parameters such as `#/s=42&p=120&g=80`.
 
-See [insight_browser_quickstart.pdf](../../insight_browser_quickstart.pdf) for a short walkthrough.
+See [docs/insight_browser_quickstart.pdf](docs/insight_browser_quickstart.pdf) for a short walkthrough.
 Running `npm run build` or `python manual_build.py` copies this file to
 `dist/insight_browser_quickstart.pdf` so the guide is available alongside
 `dist/index.html` when offline.
@@ -296,11 +296,11 @@ The archive bundles the production build along with the service worker and
 assets. It stays under **3&nbsp;MiB** so the entire demo can be shared easily.
 Extract the zip and open `index.html` directly—no additional dependencies are
 required. New users can review
-[insight_browser_quickstart.pdf](../../insight_browser_quickstart.pdf) after
+[dist/insight_browser_quickstart.pdf](dist/insight_browser_quickstart.pdf) after
 extraction for a brief walkthrough.
 
 A dedicated GitHub Actions workflow
-[`size-check.yml`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/size-check.yml) rebuilds the
+[`size-check.yml`](../../../../.github/workflows/size-check.yml) rebuilds the
 archive when triggered manually and fails if `insight_browser.zip` grows beyond
 **3&nbsp;MiB**.
 
@@ -394,9 +394,9 @@ the same set of keys.
 
 - Run `pre-commit run --all-files` to format and lint the code.
 - `npm test` builds the bundle then launches Playwright and Python tests.
-- See [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md) for full contributor guidelines.
+- See [../../../../AGENTS.md](../../../../AGENTS.md) for full contributor guidelines.
 
 ## License
 
 The Insight browser demo and its translation files are provided under the
-[Apache 2.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE) license.
+[Apache 2.0](../../../../LICENSE) license.

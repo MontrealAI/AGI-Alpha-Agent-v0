@@ -595,7 +595,7 @@ pip wheel -r requirements-dev.txt -w /media/wheels
 ```
 
 Ensure `pytest` and `prometheus_client` wheels are available. Refer to
-[AGENTS.md](../../../AGENTS.md#offline-setup) and
+[AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md#offline-setup) and
 [docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for the full
 wheelhouse procedure.
 
