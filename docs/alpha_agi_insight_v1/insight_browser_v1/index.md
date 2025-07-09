@@ -296,7 +296,7 @@ The archive bundles the production build along with the service worker and
 assets. It stays under **3&nbsp;MiB** so the entire demo can be shared easily.
 Extract the zip and open `index.html` directly—no additional dependencies are
 required. New users can review
-[dist/insight_browser_quickstart.pdf](dist/insight_browser_quickstart.pdf) after
+`dist/insight_browser_quickstart.pdf` after
 extraction for a brief walkthrough.
 
 A dedicated GitHub Actions workflow
