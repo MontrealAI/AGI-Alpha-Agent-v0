@@ -11,7 +11,7 @@
     "lint": "eslint --config eslint.config.js src --ext .js,.ts",
     "build": "node build.js",
     "fetch-assets": "node -e \"console.log('Using PYODIDE_BASE_URL:', process.env.PYODIDE_BASE_URL)\" && python ../../../../scripts/fetch_assets.py",
-    "build:dist": "npm run build && cd dist && cp sw.js service-worker.js && zip -r ../insight_browser.zip index.html insight.bundle.js service-worker.js lib/workbox-sw.js manifest.json style.css assets insight_browser_quickstart.pdf && rm service-worker.js",
+    "build:dist": "npm run build && cd dist && cp sw.js service-worker.js && zip -r ../insight_browser.zip index.html insight.bundle.js service-worker.js lib/workbox-sw.js manifest.json style.css insight_browser_quickstart.pdf && test -d assets && zip -r ../insight_browser.zip assets || true && rm service-worker.js",
     "size": "gzip-size-cli dist/insight.bundle.js --bytes",
     "start": "npx serve dist",
     "typecheck": "tsc --noEmit",
