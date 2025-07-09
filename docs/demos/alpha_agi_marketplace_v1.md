@@ -241,7 +241,7 @@ rac{reward_{success}}{reward_{total}}\)
 
 <a id="terms"></a>
 ## 14 Terms 🤝
-See [`TERMS & CONDITIONS.md`](./TERMS_AND_CONDITIONS.md).
+See [`TERMS & CONDITIONS.md`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/TERMS_AND_CONDITIONS.md).
 
 ---
 
