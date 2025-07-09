@@ -34,7 +34,6 @@ except Exception:  # pragma: no cover - optional
 from alpha_factory_v1.core import orchestrator
 from alpha_factory_v1.core.self_evolution import self_improver
 from alpha_factory_v1.core.archive.hash_archive import HashArchive
-from alpha_factory_v1.core import scheduler
 from alpha_factory_v1.core.simulation import forecast, sector, mats
 from alpha_factory_v1.core.utils.visual import plot_pareto
 from alpha_factory_v1.common.utils import config, logging
@@ -262,19 +261,18 @@ def simulate(
 
         dgm_import.import_logs(import_dgm)
 
-    cfg = config.CFG.model_dump()
+    settings = config.CFG.model_copy()
     if dry_run:
         offline = True
         no_broadcast = True
     if offline:
-        cfg["offline"] = True
+        settings.offline = True
     if model_name is not None:
-        cfg["model_name"] = model_name
+        settings.model_name = model_name
     if temperature is not None:
-        cfg["temperature"] = temperature
+        settings.temperature = temperature
     if context_window is not None:
-        cfg["context_window"] = context_window
-    settings = config.Settings(**cfg)
+        settings.context_window = context_window
     if no_broadcast:
         settings.broadcast = False
 
@@ -603,6 +601,8 @@ def self_improver_cmd(repo_url: str, patch_file: str, metric_file: str, log_file
 @click.option("--time-quota", type=click.IntRange(min=1), help="Maximum runtime in seconds (>=1)")
 def explore(jobs_file: str, token_quota: int | None, time_quota: int | None) -> None:
     """Run self-improvement jobs under quota limits."""
+
+    from alpha_factory_v1.core import scheduler
 
     data = json.loads(Path(jobs_file).read_text())
     jobs = [scheduler.Job(**item) for item in data]
