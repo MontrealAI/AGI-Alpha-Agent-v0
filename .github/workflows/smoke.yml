@@ -52,4 +52,10 @@ jobs:
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
-            --horizon 2 --sectors 1 --pop-size 1 --generations 1 --offline --no-broadcast
+            --horizon 2 --sectors 1 --pop-size 1 --generations 1 --offline --no-broadcast \
+            | tee sim.log
+          grep -qi "year" sim.log
+          test -f "$AGI_INSIGHT_LEDGER_PATH"
+        env:
+          AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
+
