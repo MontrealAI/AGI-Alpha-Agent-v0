@@ -261,7 +261,7 @@ docker run -it --rm -p 8501:8501   -e OPENAI_API_KEY=$OPENAI_API_KEY   ghcr.io/m
 ```
 
 For offline builds or the browser-based PWA, see
-[insight_browser_v1/index.md](../alpha_agi_insight_v1/insight_browser_v1/index.md).
+[insight_browser_v1/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md).
 
 ## Environment Setup
 
@@ -453,9 +453,9 @@ Launch the container stack afterwards or serve `dist/` with any static server,
 e.g. `python -m http.server --directory dist 8080`.
 
 For advanced options see
-[src/interface/web_client/index.md](../alpha_agi_insight_v1/src/interface/web_client/index.md).
+[src/interface/web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/index.md).
 
-For details see [docs/API.md](../alpha_agi_insight_v1/docs/API.md).
+For details see [docs/API.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/docs/API.md).
 
 ### 5.4 Building the Web Dashboard
 
@@ -470,7 +470,7 @@ npm run build
 This installs dependencies and outputs static files in `dist/`. The provided
 `Dockerfile` already runs these steps, so manual builds are only needed for
 local development or customization. See the
-[web_client/index.md](../alpha_agi_insight_v1/src/interface/web_client/index.md) for advanced usage.
+[web_client/index.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/index.md) for advanced usage.
 
 ### 5.5 Exporting Visualization Data
 
@@ -528,7 +528,7 @@ default `changeme` placeholder.
 To secure the gRPC bus provide `AGI_INSIGHT_BUS_CERT`,
 `AGI_INSIGHT_BUS_KEY` and `AGI_INSIGHT_BUS_TOKEN`. When these are omitted set
 `AGI_INSIGHT_ALLOW_INSECURE=1` to run without TLS. See
-[docs/bus_tls.md](../alpha_agi_insight_v1/docs/bus_tls.md) for detailed setup.
+[docs/bus_tls.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/docs/bus_tls.md) for detailed setup.
 
 Agents restart automatically when they fail or stop sending heartbeats.
 `AGENT_ERR_THRESHOLD` controls how many consecutive errors trigger a restart.
