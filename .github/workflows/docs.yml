@@ -56,6 +56,8 @@ jobs:
         run: pre-commit run --all-files
       - name: Install docs dependencies
         run: pip install -r requirements-docs.txt
+      - name: Install Playwright browsers
+        run: playwright install chromium
       - name: Make scripts executable
         run: chmod +x ./scripts/*.sh
       - name: Compute asset cache key
