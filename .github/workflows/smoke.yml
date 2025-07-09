@@ -58,4 +58,11 @@ jobs:
           test -f "$AGI_INSIGHT_LEDGER_PATH"
         env:
           AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
+          AGI_INSIGHT_OFFLINE: "1"
+          OPENAI_API_KEY: ""
+
+      - name: Verify ledger output
+        run: grep -qi year "$AGI_INSIGHT_LEDGER_PATH"
+        env:
+          AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
 
