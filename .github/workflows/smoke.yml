@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
@@ -49,6 +50,9 @@ jobs:
       - name: Run pre-commit checks
         if: matrix.python-version == '3.11'
         run: pre-commit run --all-files
+      - name: Run unit tests
+        if: matrix.python-version == '3.11'
+        run: pytest -q
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
