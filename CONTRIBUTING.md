@@ -73,3 +73,16 @@ Refer to [AGENTS.md](AGENTS.md#pre-commit-in-air-gapped-setups) for detailed ste
 
 Run `mkdocs build --strict` before opening a pull request. The CI pipeline also
 executes this command and fails if any warnings are produced.
+
+### 📚 Docs Workflow
+
+The **📚 Docs** workflow publishes the MkDocs site and demo gallery to GitHub
+Pages. Only the repository owner can dispatch it because the workflow checks
+that `github.actor` matches `github.repository_owner` before building the site.
+
+1. Open **Actions → 📚 Docs**.
+2. Click **Run workflow** to start the deployment.
+
+The job runs `scripts/edge_human_knowledge_pages_sprint.sh` to rebuild the site
+and then uses the [Lychee](https://github.com/lycheeverse/lychee) checker to
+verify all internal links. If any links fail validation, the workflow aborts.
