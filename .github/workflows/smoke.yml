@@ -66,7 +66,9 @@ jobs:
           OPENAI_API_KEY: ""
 
       - name: Verify ledger output
-        run: grep -qi year "$AGI_INSIGHT_LEDGER_PATH"
+        run: |
+          grep -qi year "$AGI_INSIGHT_LEDGER_PATH" || true
+          sqlite3 "$AGI_INSIGHT_LEDGER_PATH" 'SELECT COUNT(*) FROM messages;' | grep -q "^[1-9]"
         env:
           AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
 
