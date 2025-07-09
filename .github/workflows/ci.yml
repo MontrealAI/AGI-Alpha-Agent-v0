@@ -230,6 +230,23 @@ jobs:
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
         run: python scripts/fetch_assets.py --verify-only
+      - name: Install Playwright browsers
+        run: |
+          set +e
+          playwright install chromium webkit
+          if [ $? -ne 0 ]; then
+            echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+          fi
+          set -e
+      - name: Verify demo pages
+        run: python scripts/verify_demo_pages.py
+      - name: Verify Insight PWA offline
+        run: |
+          python -m http.server --directory site 8000 &
+          SERVER_PID=$!
+          sleep 2
+          python scripts/verify_insight_offline.py
+          kill $SERVER_PID
 
   docker:
     name: "🐳 Docker build"
