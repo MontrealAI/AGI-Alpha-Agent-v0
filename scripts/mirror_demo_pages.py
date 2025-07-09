@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
+import os
+import re
 
 REPLACEMENTS = {
     "../assets/": "../../../assets/",
@@ -42,10 +44,11 @@ def fix_paths(target: Path) -> None:
         txt = txt.replace("../assets/", "../../../assets/")
         script.write_text(txt)
 
-    for md in target.glob("*.md"):
+    snippet = DOCS_DIR / "DISCLAIMER_SNIPPET.md"
+    for md in target.rglob("*.md"):
         txt = md.read_text()
-        txt = txt.replace("../DISCLAIMER_SNIPPET.md", "../../../DISCLAIMER_SNIPPET.md")
-        txt = txt.replace("../../DISCLAIMER_SNIPPET.md", "../../../../DISCLAIMER_SNIPPET.md")
+        rel = os.path.relpath(snippet, md.parent)
+        txt = re.sub(r"\((?:\./|\.\./)+DISCLAIMER_SNIPPET\.md\)", f"({rel})", txt)
         md.write_text(txt)
 
 
