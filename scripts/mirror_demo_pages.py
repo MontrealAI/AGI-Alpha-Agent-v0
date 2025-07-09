@@ -41,6 +41,12 @@ def fix_paths(target: Path) -> None:
         txt = txt.replace("../assets/", "../../../assets/")
         script.write_text(txt)
 
+    for md in target.glob("*.md"):
+        txt = md.read_text()
+        txt = txt.replace("../DISCLAIMER_SNIPPET.md", "../../../DISCLAIMER_SNIPPET.md")
+        txt = txt.replace("../../DISCLAIMER_SNIPPET.md", "../../../../DISCLAIMER_SNIPPET.md")
+        md.write_text(txt)
+
 
 def main() -> None:
     SUBDIR_ROOT.mkdir(parents=True, exist_ok=True)
