@@ -35,10 +35,31 @@ jobs:
           cache: 'pip'
       - name: Install Ruff
         run: pip install ruff
+      - name: Install docs dependencies
+        run: pip install -r requirements-docs.txt
       - name: Install project dependencies
         run: python check_env.py --auto-install
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Cache sandbox layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-sandbox-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-sandbox-
       - name: Build sandbox image
-        run: docker build -t $SANDBOX_IMAGE -f sandbox.Dockerfile .
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: sandbox.Dockerfile
+          tags: $SANDBOX_IMAGE
+          load: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      - name: Update cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -56,8 +77,6 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit checks
         run: pre-commit run --all-files
-      - name: Install docs dependencies
-        run: pip install -r requirements-docs.txt
       - name: Install Playwright browsers
         uses: microsoft/playwright-github-action@v1
         with:
