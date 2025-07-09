@@ -34,6 +34,7 @@ from .discovery import (
     discover_entrypoints,
     discover_hot_dir,
     discover_adk,
+    run_discovery_once,
     _HOT_DIR,
     FAILED_AGENTS,
 )
@@ -41,10 +42,7 @@ from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
 
 # Perform initial discovery on import
-discover_local()
-discover_entrypoints()
-discover_hot_dir()
-discover_adk()
+run_discovery_once()
 
 logger.info(
     "\U0001f680 Agent registry ready \u2013 %3d agents, %3d distinct capabilities",

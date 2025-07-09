@@ -37,6 +37,9 @@ from .plugins import verify_wheel, install_wheel
 
 FAILED_AGENTS: dict[str, str] = {}
 
+# indicates whether discovery has already executed
+_DISCOVERY_DONE = False
+
 
 def _inspect_module(mod: ModuleType) -> Optional[AgentMetadata]:
     """Return metadata for an agent implementation."""
@@ -55,6 +58,8 @@ def _inspect_module(mod: ModuleType) -> Optional[AgentMetadata]:
 
 
 def discover_local() -> None:
+    if _DISCOVERY_DONE:
+        return
     pkg_root = Path(__file__).parent
     prefix = f"{__name__.rsplit('.', 1)[0]}."
     for _, mod_name, is_pkg in pkgutil.iter_modules([str(pkg_root)]):
@@ -74,6 +79,8 @@ def discover_local() -> None:
 
 
 def discover_entrypoints() -> None:
+    if _DISCOVERY_DONE:
+        return
     try:
         eps = imetadata.entry_points(group="alpha_factory.agents")  # type: ignore[arg-type]
     except Exception:  # noqa: BLE001
@@ -102,6 +109,8 @@ def discover_entrypoints() -> None:
 
 
 def discover_hot_dir() -> None:
+    if _DISCOVERY_DONE:
+        return
     if not _HOT_DIR.is_dir():
         return
     for wheel in _HOT_DIR.glob("*.whl"):
@@ -122,6 +131,8 @@ def discover_hot_dir() -> None:
 
 def discover_adk() -> None:
     """Pull remote agent wheels via Google ADK if ``$ADK_MESH`` is set."""
+    if _DISCOVERY_DONE:
+        return
     if adk is None or not os.getenv("ADK_MESH"):
         return
     try:
@@ -150,3 +161,15 @@ def discover_adk() -> None:
     except Exception as exc:  # noqa: BLE001
         logger.exception("ADK discovery failed")
         FAILED_AGENTS["adk"] = str(exc)
+
+
+def run_discovery_once() -> None:
+    """Run all discovery functions exactly once."""
+    global _DISCOVERY_DONE
+    if _DISCOVERY_DONE:
+        return
+    discover_local()
+    discover_entrypoints()
+    discover_hot_dir()
+    discover_adk()
+    _DISCOVERY_DONE = True
