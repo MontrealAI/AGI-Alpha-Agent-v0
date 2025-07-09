@@ -103,3 +103,8 @@ jobs:
           ./scripts/edge_human_knowledge_pages_sprint.sh
       - name: Verify downloaded assets
         run: python scripts/fetch_assets.py --verify-only
+      - name: Check internal links
+        uses: lycheeverse/lychee-action@v1.7.0
+        with:
+          args: --offline --base ./site ./site/**/*.html
+          fail: true
