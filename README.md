@@ -1612,7 +1612,7 @@ ultimate α‑signal engine.
 <a name="15-license"></a>
 ## 15 · License
 
-This project is distributed under the [Apache 2.0](LICENSE) license.
+This project is distributed under the [Apache 2.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE) license.
 All community members are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 Please report security issues via the process outlined in our [Security Policy](SECURITY.md).
 
@@ -1626,7 +1626,7 @@ Please report security issues via the process outlined in our [Security Policy](
 ## 16 · Final Note
 
 Please ensure all usage and contributions align with the project's
-[Apache 2.0 license](LICENSE).
+[Apache 2.0 license](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE).
 ---
 
 *Made with ❤️ by the Alpha‑Factory Agentic Core Team — forging the tools that forge tomorrow.*
