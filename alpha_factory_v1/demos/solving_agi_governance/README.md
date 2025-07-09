@@ -107,7 +107,7 @@ Python standard library.
 ---
 
 ### Requirements
-* Python 3.11 or 3.12 (<3.13; see [AGENTS.md](../../../AGENTS.md))
+* Python 3.11 or 3.12 (<3.13). See [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md)
 * Install the optional runtime packages:
   ```bash
   pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
