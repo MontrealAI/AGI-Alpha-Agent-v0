@@ -31,7 +31,7 @@ only affects loading pinned Insight demo runs.
 ## Prerequisites
 
 - **Python 3.11 or 3.12**
-- `mkdocs` and `mkdocs-material`
+- `mkdocs`, `mkdocs-material` and `playwright`
 - **Node.js 20+** *(optional, only for building the React dashboard)*
 - Run `node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js` to verify Node ≥20 before building
 - `unzip` to extract `insight_browser.zip`
@@ -39,7 +39,7 @@ only affects loading pinned Insight demo runs.
 Install MkDocs:
 
 ```bash
-pip install mkdocs mkdocs-material
+pip install mkdocs mkdocs-material playwright
 ```
 
 Before building the demo, ensure optional Python packages are available:

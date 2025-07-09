@@ -7,9 +7,9 @@ This short guide provides a step-by-step sprint for Codex to ensure the **α‑A
 ## 1. Environment Setup
 
 1. Install **Python 3.11+** and **Node.js 20+**.
-2. Install `mkdocs` and `mkdocs-material` via `pip`:
+2. Install `mkdocs`, `mkdocs-material` and `playwright` via `pip`:
    ```bash
-   pip install mkdocs mkdocs-material
+   pip install mkdocs mkdocs-material playwright
    ```
 3. Verify Node version:
    ```bash
