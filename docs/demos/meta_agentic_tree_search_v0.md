@@ -300,7 +300,7 @@ the search loop while keeping the demo runnable completely offline.
 * **Self‑Referential Improvement in RL**, Müller et al., arXiv 2025  
 
 ## 11 License
-Apache 2.0 – see `LICENSE`.
+Apache 2.0 – see [LICENSE](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE).
 
 ---
 *This README belongs to the AGI‑Alpha‑Agent project.*

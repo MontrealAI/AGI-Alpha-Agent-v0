@@ -399,4 +399,4 @@ the same set of keys.
 ## License
 
 The Insight browser demo and its translation files are provided under the
-[Apache 2.0](../../../../LICENSE) license.
+[Apache 2.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE) license.

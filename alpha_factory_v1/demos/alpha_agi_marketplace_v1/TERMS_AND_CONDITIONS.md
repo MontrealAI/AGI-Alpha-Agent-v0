@@ -9,4 +9,4 @@ This demonstration is provided for educational purposes only and comes with **no
 2. MONTREAL.AI and contributors accept no liability for damages arising from the use of this software.
 3. Usage must comply with all applicable laws and regulations in your jurisdiction.
 
-The project is distributed under the [Apache 2.0 license](../../../../LICENSE).
+The project is distributed under the [Apache 2.0 license](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE).
