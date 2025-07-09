@@ -29,13 +29,9 @@ python -m alpha_factory_v1.demos.validate_demos
 python scripts/mirror_demo_pages.py
 python scripts/build_service_worker.py
 
-# Compile and verify the MkDocs site. Skip --strict in CI to avoid aborting on
-# non-critical warnings that do not affect the generated pages.
-if [[ "${CI:-}" == "true" ]]; then
-  mkdocs build
-else
-  mkdocs build --strict
-fi
+# Compile and verify the MkDocs site. Strict mode is always enabled so
+# warnings fail the build in CI just like local runs.
+mkdocs build --strict
 python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1
 
 # Optional offline smoke test

@@ -353,6 +353,12 @@ The **Deploy — Kind** workflow provisions a local kind cluster, builds the Ins
 1. Navigate to "Actions → 🚀 Deploy — Kind".
 2. Click "Run workflow" to launch the deployment.
 
+### Documentation Workflow
+The **📚 Docs** workflow builds the demo gallery and publishes the MkDocs site to
+GitHub Pages. The underlying scripts now run `mkdocs build --strict` in all
+environments, so any warnings or broken links will fail the build. Fix these
+issues locally before dispatching the workflow.
+
 ### PR Message Guidelines
 - Keep the subject line concise and under 72 characters.
 - Optionally include a short body explaining the rationale.
