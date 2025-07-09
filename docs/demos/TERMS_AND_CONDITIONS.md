@@ -2,6 +2,7 @@
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 # Terms & Conditions
+
 ![preview](../TERMS_AND_CONDITIONS/assets/preview.svg){.demo-preview}
 
 This demonstration is provided for educational purposes only and comes with **no warranty**. By using any part of the Alpha‑Factory demo you agree that:
