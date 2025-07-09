@@ -25,7 +25,8 @@ from .agents import (
     adk_summariser_agent,
 )
 from alpha_factory_v1.core.agents.self_improver_agent import SelfImproverAgent
-from .utils import config, messaging, logging as insight_logging
+from .utils import config, logging as insight_logging
+from alpha_factory_v1.common.utils import messaging
 from alpha_factory_v1.common.utils.logging import Ledger
 from .utils import alerts
 from alpha_factory_v1.core.archive.service import ArchiveService

@@ -22,7 +22,8 @@ except Exception:  # pragma: no cover - optional
     HAVE_CRYPTO = False
 
 from alpha_factory_v1.core import orchestrator
-from alpha_factory_v1.core.utils import config, messaging
+from alpha_factory_v1.core.utils import config
+from alpha_factory_v1.common.utils import messaging
 
 
 def _free_port() -> int:
