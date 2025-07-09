@@ -7,11 +7,8 @@ import unittest
 from unittest import mock
 
 from alpha_factory_v1.core import orchestrator
-from alpha_factory_v1.core.utils import (
-    config,
-    messaging,
-    logging as insight_logging,
-)
+from alpha_factory_v1.core.utils import config
+from alpha_factory_v1.common.utils import messaging, logging as insight_logging
 
 
 class TestInsightOrchestrator(unittest.TestCase):
