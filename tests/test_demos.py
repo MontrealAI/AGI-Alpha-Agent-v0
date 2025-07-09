@@ -49,6 +49,9 @@ class TestDemos(unittest.TestCase):
         import sys
         import subprocess
 
+        # Ensure the module is executed fresh by ``python -m``.
+        sys.modules.pop("alpha_factory_v1.demos.validate_demos", None)
+
         result = subprocess.run(
             [
                 sys.executable,
