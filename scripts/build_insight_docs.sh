@@ -50,6 +50,11 @@ fi
 rm -rf "$DOCS_DIR"
 mkdir -p "$DOCS_DIR"
 unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
+# Copy the quickstart guide from the build output so the docs include it
+PDF_SRC="$BROWSER_DIR/dist/insight_browser_quickstart.pdf"
+if [[ -f "$PDF_SRC" ]]; then
+    cp -a "$PDF_SRC" "$DOCS_DIR/"
+fi
 # Ensure the service worker and PWA files exist in the docs directory
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" manifest.json -d "$DOCS_DIR" || true
