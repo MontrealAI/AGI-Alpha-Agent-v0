@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 
@@ -73,9 +73,7 @@ curl http://localhost:${ALPHA_FACTORY_ADK_PORT}/healthz
    - Docker: `./run_business_v1_demo.sh --stop`
    - Native Python: press `Ctrl+C`; the orchestrator shuts down gracefully.
 
-For advanced options see
-[`README.md`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)
-in the same directory.
+For advanced options see [`README.md`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md) in the same directory.
 
 ---
 
