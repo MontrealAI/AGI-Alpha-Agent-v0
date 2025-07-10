@@ -118,7 +118,8 @@ Insight archive stays below 3 MiB. Trigger it from the GitHub Actions tab and
 provide a valid `run_token` matching the `DISPATCH_TOKEN` secret to authorize
 the run. The workflow caches pip and npm dependencies with `actions/cache`,
 keyed by `requirements.lock` and the browser `package-lock.json`, so repeat
-runs skip redundant downloads.
+runs skip redundant downloads. It preinstalls `numpy`, `pandas`, `pytest`
+and `PyYAML` so the environment check passes without network hiccups.
 
 ## Quickstart
 
