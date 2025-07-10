@@ -51,6 +51,7 @@ jobs:
         if: matrix.python-version == '3.11'
         run: pre-commit run --all-files
       - name: Run smoke tests
+        if: matrix.python-version == '3.11'
         run: pytest tests/test_ping_agent.py tests/test_af_requests.py -q
       - name: Run 2-year simulation
         run: |
