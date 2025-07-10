@@ -25,6 +25,12 @@ The GitHub Pages site hosts the interactive demo under the `alpha_agi_insight_v1
 **Explore all demos:** <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_factory_v1/demos/> – run `./scripts/open_subdir_gallery.py` (or set `AF_GALLERY_URL` to your own mirror) for a local or online launch. Alternatively execute `make subdir-gallery-open` to build the gallery if needed and open it automatically.
 All browser demos include a **mode toggle**. Choose **Offline** to run a Pyodide simulation directly in your browser or switch to **OpenAI API** when you provide a key. The key is stored only in memory.
 
+### Smoke Test Workflow
+
+Trigger the **🔥 Smoke Test** job from the GitHub Actions tab to run linting,
+unit tests and a short 2‑year simulation in offline mode. The workflow verifies
+the ledger output and catches import errors or circular dependencies early.
+
 **Important:** Run `npm run fetch-assets` before `npm install` or executing
 `./setup.sh` to download the browser demo assets. Run this command in a fresh
 checkout—or delete existing `wasm*/` files first—so placeholder files are
