@@ -114,7 +114,13 @@ deployment.
 ### Browser Size Workflow
 
 The [📦 Browser Size](.github/workflows/size-check.yml) job ensures the
-Insight archive stays below 3 MiB. Trigger it from the GitHub Actions tab. The workflow verifies that the actor is the repository owner before running. The workflow caches pip and npm dependencies using `actions/setup-python` and `actions/setup-node`, keyed by `requirements.lock` and the browser `package-lock.json`, so repeat runs skip redundant downloads. It preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check passes without network hiccups.
+Insight archive stays below 3 MiB. Trigger it from the GitHub Actions tab. If you
+are not the repository owner, provide the `run_token` that matches the
+`DISPATCH_TOKEN` secret. The workflow caches pip and npm dependencies using
+`actions/setup-python` and `actions/setup-node`, keyed by `requirements.lock` and
+the browser `package-lock.json`, so repeat runs skip redundant downloads. It
+preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
+passes without network hiccups.
 
 ## Quickstart
 

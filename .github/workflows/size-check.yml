@@ -2,6 +2,10 @@ name: "📦 Browser Size"
 
 on:
   workflow_dispatch:
+    inputs:
+      run_token:
+        description: 'Authorization token for maintainers'
+        required: false
 
 permissions:
   contents: read
@@ -10,11 +14,13 @@ jobs:
   build-and-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure repository owner
+      - name: Check dispatch token
         if: github.actor != github.repository_owner
         run: |
-          echo "Unauthorized"
-          exit 1
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
