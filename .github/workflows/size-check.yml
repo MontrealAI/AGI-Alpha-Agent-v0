@@ -42,6 +42,27 @@ jobs:
         run: pre-commit run --all-files
       - name: Install dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Compute asset cache key
+        id: asset-key
+        run: |
+          key=$(python - <<'PY'
+import hashlib, json, scripts.fetch_assets as fa
+env_data = json.dumps({'PYODIDE_BASE_URL': fa.PYODIDE_BASE_URL, 'HF_GPT2_BASE_URL': fa.HF_GPT2_BASE_URL})
+data = json.dumps(fa.CHECKSUMS, sort_keys=True) + env_data
+print('sha256-' + hashlib.sha256(data.encode()).hexdigest())
+PY
+          )
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - name: Cache Pyodide and GPT-2 assets
+        uses: actions/cache@v3
+        with:
+          path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+          key: assets-${{ steps.asset-key.outputs.key }}
+          restore-keys: assets-
+      - name: Fetch Insight Browser assets
+        run: python scripts/fetch_assets.py
       - name: Update browserslist database
         run: npx update-browserslist-db@latest --agree-to-terms
       - name: Verify Insight Browser assets
