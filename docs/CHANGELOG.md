@@ -53,7 +53,8 @@ Downstream users should consult this section when upgrading.
 - The browser bundle now defaults to the official Web3 Storage CDN. IPFS
   fallback has been removed.
 - Fixed internal documentation links so MkDocs builds without warnings.
-- The **📦 Browser Size** workflow now caches pip and npm dependencies so
+- The **📦 Browser Size** workflow now caches pip and npm dependencies using
+  the built-in features of `actions/setup-python` and `actions/setup-node` so
   repeated runs skip redundant downloads.
 - The workflow preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` before
   running pre-commit so the environment check passes reliably.

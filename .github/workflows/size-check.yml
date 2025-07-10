@@ -22,21 +22,16 @@ jobs:
             exit 1
           fi
       - uses: actions/checkout@v4
-      - name: Cache pip
-        uses: actions/cache@v3
+      - uses: actions/setup-python@v5
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.lock') }}
-          restore-keys: ${{ runner.os }}-pip-
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'requirements.lock'
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-      - name: Cache npm
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-npm-
+          cache: 'npm'
+          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Install required Python packages
