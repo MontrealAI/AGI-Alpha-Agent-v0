@@ -44,6 +44,8 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database
         run: npx update-browserslist-db@latest --agree-to-terms
+      - name: Verify Insight Browser assets
+        run: python scripts/fetch_assets.py --verify-only
       - name: Build distribution zip
         run: npm run build:dist --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Check archive size
