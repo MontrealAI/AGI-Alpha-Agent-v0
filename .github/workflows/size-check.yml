@@ -46,11 +46,11 @@ jobs:
         id: asset-key
         run: |
           key=$(python - <<'PY'
-            import hashlib, json, scripts.fetch_assets as fa
-            env_data = json.dumps({'PYODIDE_BASE_URL': fa.PYODIDE_BASE_URL, 'HF_GPT2_BASE_URL': fa.HF_GPT2_BASE_URL})
-            data = json.dumps(fa.CHECKSUMS, sort_keys=True) + env_data
-            print('sha256-' + hashlib.sha256(data.encode()).hexdigest())
-          PY
+import hashlib, json, scripts.fetch_assets as fa
+env_data = json.dumps({'PYODIDE_BASE_URL': fa.PYODIDE_BASE_URL, 'HF_GPT2_BASE_URL': fa.HF_GPT2_BASE_URL})
+data = json.dumps(fa.CHECKSUMS, sort_keys=True) + env_data
+print('sha256-' + hashlib.sha256(data.encode()).hexdigest())
+PY
           )
           echo "key=$key" >> "$GITHUB_OUTPUT"
       - name: Cache Pyodide and GPT-2 assets
