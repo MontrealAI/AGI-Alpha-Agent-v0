@@ -63,7 +63,7 @@ CHECKSUMS = {
     "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",  # noqa: E501
     "pyodide.asm.wasm": "sha384-nmltu7flheCw5NzKFX44e8BEt8XM61Av/mLIbzbS4aOf2COxsQxE2u75buNoSrVg",
     "pyodide.js": "sha384-aD6ek5pFVnSSMGK0qubk9ZJdMYGjPs8F6jdJaDJiyZbTcH9jLWR4LJNJ7yY430qI",
-    "pyodide-lock.json": "sha384-2t7FpZqshEP49Av2AHAvKgiBBKi4lIjL2MqLocHFbE+bqa7/KYAhcqVPtO37bir1",
+    "pyodide-lock.json": "sha384-jS+ncNYTOJnrrmGA58l8PM5XwN3q/dOQ7u7J2yoPeJzSklZwj93t9kokVbuobdBn",
     "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
 }
 
