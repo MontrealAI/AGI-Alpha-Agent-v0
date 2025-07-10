@@ -277,7 +277,7 @@ If the default mirrors are blocked, set `PYODIDE_BASE_URL` or
 `HF_GPT2_BASE_URL` before running `npm run fetch-assets`:
 
 ```bash
-export PYODIDE_BASE_URL="https://cdn.jsdelivr.net/pyodide/v0.26.0/full"
+export PYODIDE_BASE_URL="https://cdn.jsdelivr.net/pyodide/v0.28.0/full"
 export HF_GPT2_BASE_URL="https://huggingface.co/openai-community/gpt2/resolve/main"
 npm run fetch-assets
 ```
@@ -1220,7 +1220,7 @@ for instructions and example volume mounts.
 | `MAX_SIM_TASKS` | `4` | Maximum concurrent simulation tasks. |
 | `IPFS_GATEWAY` | `https://ipfs.io/ipfs` | Base URL for fetching pinned Insight demo runs. Not used for asset downloads. |
 | `HF_GPT2_BASE_URL` | `https://huggingface.co/openai-community/gpt2/resolve/main` | Base URL for the GPT‑2 checkpoints. |
-| `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.26.0/full` | Base URL for the Pyodide runtime files. |
+| `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.28.0/full` | Base URL for the Pyodide runtime files. |
 | `FETCH_ASSETS_ATTEMPTS` | `3` | Download retry count for `fetch_assets.py`. |
 | `OTEL_ENDPOINT` | _(empty)_ | OTLP endpoint for anonymous telemetry. |
 | `ALPHA_FACTORY_ENABLE_ADK` | `false` | Set to `true` to start the Google ADK gateway. |
