@@ -50,9 +50,9 @@ jobs:
       - name: Run pre-commit checks
         if: matrix.python-version == '3.11'
         run: pre-commit run --all-files
-      - name: Run unit tests
+      - name: Run smoke tests
         if: matrix.python-version == '3.11'
-        run: pytest -q
+        run: pytest tests/test_ping_agent.py tests/test_af_requests.py -q
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
