@@ -34,6 +34,8 @@ jobs:
           cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
       - name: Install pre-commit
         run: pip install pre-commit
+      - name: Install required Python packages
+        run: pip install numpy pandas pytest pyyaml
       - name: Run environment check
         run: ./scripts/env_check.sh
       - name: Run pre-commit checks
