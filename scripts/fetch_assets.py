@@ -55,12 +55,12 @@ ASSETS = {
     # Web3.Storage bundle
     "lib/bundle.esm.min.js": "https://cdn.jsdelivr.net/npm/web3.storage/dist/bundle.esm.min.js",  # noqa: E501
     # Workbox runtime
-    "lib/workbox-sw.js": "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js",
+    "lib/workbox-sw.js": "https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js",
 }
 
 CHECKSUMS = {
     "lib/bundle.esm.min.js": "sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD",  # noqa: E501
-    "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",  # noqa: E501
+    "lib/workbox-sw.js": "sha384-/j5bxz2M6SWcn4kruDXVGz6kda+w6URjOoHS6d3lcJYM0iFuMkvwxQonG8IsK0Ec",  # noqa: E501
     "pyodide.asm.wasm": "sha384-kdvSehcoFMjX55sjg+o5JHaLhOx3HMkaLOwwMFmwH+bmmtvfeJ7zFEMWaqV9+wqo",
     "pyodide.js": "sha384-aD6ek5pFVnSSMGK0qubk9ZJdMYGjPs8F6jdJaDJiyZbTcH9jLWR4LJNJ7yY430qI",
     "pyodide-lock.json": "sha384-2t7FpZqshEP49Av2AHAvKgiBBKi4lIjL2MqLocHFbE+bqa7/KYAhcqVPtO37bir1",
