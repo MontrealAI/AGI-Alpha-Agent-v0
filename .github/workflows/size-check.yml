@@ -27,6 +27,8 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install pre-commit
         run: pip install pre-commit
+      - name: Install required Python packages
+        run: pip install numpy pandas pytest
       - name: Run pre-commit checks
         run: pre-commit run --all-files
       - name: Install dependencies
