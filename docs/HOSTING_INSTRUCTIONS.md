@@ -87,7 +87,9 @@ update `docs/assets/service-worker.js`. Otherwise visitors may see outdated
 files due to the service worker cache on GitHub Pages. If the checksum values in
 `scripts/fetch_assets.py` are updated, execute `python
 scripts/generate_build_manifest.py` so `build_assets.json` reflects the new
-hashes.
+hashes. When upgrading the Pyodide runtime run
+`python scripts/update_pyodide.py <version>` to refresh the checksums and
+regenerate the manifest automatically.
 
 
 ## Building the Site
