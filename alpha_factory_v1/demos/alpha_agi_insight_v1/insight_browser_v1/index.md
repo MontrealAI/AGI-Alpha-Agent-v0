@@ -149,7 +149,7 @@ phase and reloads the page so users always run the latest version.
 The unbuilt `index.html` falls back to `'self'` for the IPFS and telemetry
 origins, but running `npm run build` (or `python manual_build.py`) replaces
 these defaults with the real values from `.env`.
-Place the Pyodide 0.26.0 files in `wasm/` before building. The script copies them
+Place the Pyodide 0.28.0 files in `wasm/` before building. The script copies them
 to `dist/wasm` so the demo can run offline. When preparing the environment
 offline run:
 

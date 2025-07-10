@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env browser */
 /* eslint-disable no-undef */
-const CDN_BASE = 'https://cdn.jsdelivr.net/pyodide/v0.26.0/full/';
+const CDN_BASE = 'https://cdn.jsdelivr.net/pyodide/v0.28.0/full/';
 
 export async function loadRuntime() {
   const localBase = '../assets/pyodide/';
