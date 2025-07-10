@@ -56,9 +56,8 @@ Downstream users should consult this section when upgrading.
 - The **📦 Browser Size** workflow now caches pip and npm dependencies using
   the built-in features of `actions/setup-python` and `actions/setup-node` so
   repeated runs skip redundant downloads.
-- The workflow runs `scripts/env_check.sh` to install `numpy`, `pandas`, `pytest`
-  and `PyYAML` as needed before running pre-commit so the environment check
-  passes reliably.
+- The workflow preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the
+  environment check passes reliably before running pre-commit.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
