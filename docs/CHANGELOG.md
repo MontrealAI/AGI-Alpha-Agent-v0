@@ -53,6 +53,8 @@ Downstream users should consult this section when upgrading.
 - The browser bundle now defaults to the official Web3 Storage CDN. IPFS
   fallback has been removed.
 - Fixed internal documentation links so MkDocs builds without warnings.
+- The **📦 Browser Size** workflow now caches pip and npm dependencies so
+  repeated runs skip redundant downloads.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.

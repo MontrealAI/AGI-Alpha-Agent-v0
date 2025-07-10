@@ -111,6 +111,13 @@ Ensure **Python 3.11+**, **Node 20+** and `mkdocs` are installed. The
 script mirrors the [Docs workflow](.github/workflows/docs.yml) used for manual
 deployment.
 
+### Browser Size Workflow
+
+The [📦 Browser Size](.github/workflows/size-check.yml) job ensures the
+Insight archive stays below 3 MiB. It caches pip and npm dependencies with
+`actions/cache`, keyed by `requirements.lock` and the browser
+`package-lock.json`, so repeat runs skip redundant downloads.
+
 ## Quickstart
 
 ```bash
