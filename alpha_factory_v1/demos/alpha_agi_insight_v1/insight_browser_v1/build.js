@@ -163,6 +163,28 @@ function ensureAssets() {
 
 const OUT_DIR = "dist";
 
+async function relocateDistAssets() {
+    const assetDir = path.join(OUT_DIR, "assets");
+    await fs.mkdir(assetDir, { recursive: true });
+    const items = [
+        "wasm",
+        "wasm_llm",
+        "lib",
+        "data",
+        "src",
+        "d3.v7.min.js",
+        "favicon.svg",
+        "insight_browser_quickstart.pdf",
+        "manifest.json",
+    ];
+    for (const item of items) {
+        const srcPath = path.join(OUT_DIR, item);
+        if (fsSync.existsSync(srcPath)) {
+            await fs.rename(srcPath, path.join(assetDir, item));
+        }
+    }
+}
+
 async function bundle() {
     const html = await fs.readFile("index.html", "utf8");
     await ensureWeb3Bundle();
@@ -278,6 +300,10 @@ async function bundle() {
         /\/\/#[ \t]*sourceMappingURL=.*(?:\r?\n)?/g,
         "",
     );
+    bundleText = bundleText
+        .replace(/\.\/wasm\//g, "./assets/wasm/")
+        .replace(/\.\/wasm_llm\//g, "./assets/wasm_llm/")
+        .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
     await fs.writeFile(bundlePath, bundleText);
     outHtml = outHtml
         .replace(/<script[\s\S]*?d3\.v7\.min\.js[\s\S]*?<\/script>\s*/g, "")
@@ -286,12 +312,29 @@ async function bundle() {
             "",
         )
         .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
-        .replace("</body>", `${envScript}\n</body>`);
+        .replace("</body>", `${envScript}\n</body>`)
+        .replace('href="manifest.json"', 'href="assets/manifest.json"')
+        .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
     const devHtml = html.replace(scriptTag, sriTag);
     if (devHtml !== html) {
         await fs.writeFile("index.html", devHtml);
     }
+    await relocateDistAssets();
+    manifest.precache = manifest.precache.map((p) => {
+        if (
+            p.startsWith("wasm") ||
+            p.startsWith("wasm_llm") ||
+            p.startsWith("data/") ||
+            p.startsWith("src/") ||
+            p.startsWith("pyodide") ||
+            p === "d3.v7.min.js" ||
+            p === "insight_browser_quickstart.pdf"
+        ) {
+            return `assets/${p}`;
+        }
+        return p;
+    });
     const pkg = JSON.parse(fsSync.readFileSync("package.json", "utf8"));
     await generateServiceWorker(OUT_DIR, manifest, pkg.version);
     await fs.copyFile(
@@ -308,8 +351,8 @@ async function bundle() {
             [
                 'index.html',
                 'insight.bundle.js',
-                'd3.v7.min.js',
-                'bundle.esm.min.js',
+                'assets/d3.v7.min.js',
+                'assets/lib/bundle.esm.min.js',
             ].map(async (f) => new File([await fs.readFile(`${OUT_DIR}/${f}`)], f)),
         );
         const cid = await client.uploadDirectory(files);

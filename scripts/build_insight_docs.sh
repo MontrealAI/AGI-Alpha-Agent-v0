@@ -51,15 +51,15 @@ rm -rf "$DOCS_DIR"
 mkdir -p "$DOCS_DIR"
 unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
 # Copy the quickstart guide from the build output so the docs include it
-PDF_SRC="$BROWSER_DIR/dist/insight_browser_quickstart.pdf"
+PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
 if [[ -f "$PDF_SRC" ]]; then
     cp -a "$PDF_SRC" "$DOCS_DIR/"
 fi
 # Ensure the service worker and PWA files exist in the docs directory
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
-unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" manifest.json -d "$DOCS_DIR" || true
-mkdir -p "$DOCS_DIR/lib"
-unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" lib/workbox-sw.js -d "$DOCS_DIR/lib" || true
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_DIR" || true
+mkdir -p "$DOCS_DIR/assets/lib"
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_DIR/assets/lib" || true
 if [[ -n "$OLD_DOCS_TEMP" ]]; then
     while IFS= read -r -d '' file; do
         rel="${file#"$OLD_DOCS_TEMP"/}"
