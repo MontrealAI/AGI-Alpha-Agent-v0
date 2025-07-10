@@ -55,6 +55,8 @@ Downstream users should consult this section when upgrading.
 - Fixed internal documentation links so MkDocs builds without warnings.
 - The **📦 Browser Size** workflow now caches pip and npm dependencies so
   repeated runs skip redundant downloads.
+- The workflow preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` before
+  running pre-commit so the environment check passes reliably.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
