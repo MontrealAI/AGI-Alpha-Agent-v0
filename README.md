@@ -114,9 +114,11 @@ deployment.
 ### Browser Size Workflow
 
 The [📦 Browser Size](.github/workflows/size-check.yml) job ensures the
-Insight archive stays below 3 MiB. It caches pip and npm dependencies with
-`actions/cache`, keyed by `requirements.lock` and the browser
-`package-lock.json`, so repeat runs skip redundant downloads.
+Insight archive stays below 3 MiB. Trigger it from the GitHub Actions tab and
+provide a valid `run_token` matching the `DISPATCH_TOKEN` secret to authorize
+the run. The workflow caches pip and npm dependencies with `actions/cache`,
+keyed by `requirements.lock` and the browser `package-lock.json`, so repeat
+runs skip redundant downloads.
 
 ## Quickstart
 
