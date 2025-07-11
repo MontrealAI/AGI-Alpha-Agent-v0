@@ -274,6 +274,8 @@ jobs:
             exit 1
           fi
       - uses: actions/checkout@v4
+      - name: Compute repo_owner_lower
+        run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -320,6 +322,8 @@ jobs:
             exit 1
           fi
       - uses: actions/checkout@v4
+      - name: Compute repo_owner_lower
+        run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -327,17 +331,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull previous image
-        run: docker pull ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest || true
+        run: docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest || true
       - name: Tag previous
-        run: docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:previous || true
+        run: docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
       - name: Push previous tag
-        run: docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:previous || true
+        run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
       - name: Push new image
         run: |
-          docker tag $DOCKER_IMAGE:ci ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.ref_name }}
-          docker tag $DOCKER_IMAGE:ci ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
-          docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.ref_name }}
-          docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
+          docker tag $DOCKER_IMAGE:ci ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          docker tag $DOCKER_IMAGE:ci ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -358,6 +362,6 @@ jobs:
         if: failure()
         run: |
           echo "Rolling back to previous image"
-          docker pull ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:previous || exit 0
-          docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:previous ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
-          docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
+          docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || exit 0
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest

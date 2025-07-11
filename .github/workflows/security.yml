@@ -34,6 +34,9 @@ jobs:
           python-version: '3.11'
           cache: pip
 
+      - name: Compute repo_owner_lower
+        run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
       - name: Cache pre-commit
         uses: actions/cache@v4
         with:
@@ -60,7 +63,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+          docker build -t ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
 
       - name: Generate Python SBOM
         run: cyclonedx-py -r requirements.lock -o sbom-python.json
@@ -71,7 +74,7 @@ jobs:
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@v0.20.0
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+          image-ref: ghcr.io/${{ env.repo_owner_lower }}/$DOCKER_IMAGE:${{ github.sha }}
           format: table
           exit-code: 1
           severity: CRITICAL,HIGH
@@ -84,7 +87,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push image
-        run: docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+        run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.9.1
@@ -92,15 +95,15 @@ jobs:
           cosign-release: 'v2.2.4'
 
       - name: Sign container
-        run: cosign sign --yes ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+        run: cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Verify signature
-        run: cosign verify ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+        run: cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Generate provenance
         run: |
-          cosign generate --type slsaprovenance ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} > provenance.json
-          cosign attest --yes --predicate provenance.json --type slsaprovenance ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+          cosign generate --type slsaprovenance ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} > provenance.json
+          cosign attest --yes --predicate provenance.json --type slsaprovenance ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -110,8 +113,8 @@ jobs:
 
       - name: Push image to Docker Hub
         run: |
-          docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} $DOCKERHUB_REPO:${{ github.ref_name }}
-          docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} $DOCKERHUB_REPO:latest
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} $DOCKERHUB_REPO:${{ github.ref_name }}
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} $DOCKERHUB_REPO:latest
           docker push $DOCKERHUB_REPO:${{ github.ref_name }}
           docker push $DOCKERHUB_REPO:latest
 
