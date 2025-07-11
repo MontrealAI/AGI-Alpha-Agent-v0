@@ -1,4 +1,5 @@
 name: "🐳 Build & Test"
+# Runs only when manually dispatched by repository maintainers
 
 on:
   workflow_dispatch:
@@ -22,6 +23,10 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
+      - name: Prepare lowercase image name
+        # Docker image tags must be lowercase
+        run: echo "REPO_OWNER_LC=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
       - name: Check dispatch token
         if: github.actor != github.repository_owner
         run: |
@@ -67,13 +72,13 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
-            -t ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+            -t ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
 
       - name: Run pytest inside container
         run: |
           docker run --rm \
             -v "$PWD":/repo -w /repo \
-            ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }} \
             bash -c "python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse \"$WHEELHOUSE\"} && pytest --cov --cov-report=xml:/repo/coverage.xml --cov-fail-under=80"
 
       - name: Upload coverage
@@ -83,6 +88,7 @@ jobs:
           path: coverage.xml
 
       - name: Login to GHCR
+        if: matrix.python-version == '3.12'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -90,26 +96,32 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push image
+        if: matrix.python-version == '3.12'
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+          docker push ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Install cosign
+        if: matrix.python-version == '3.12'
         uses: sigstore/cosign-installer@v3.9.1
         with:
           cosign-release: 'v2.2.4'
 
       - name: Sign image
+        if: matrix.python-version == '3.12'
         run: |
-          cosign sign --yes ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+          cosign sign --yes ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Verify signature
+        if: matrix.python-version == '3.12'
         run: |
-          cosign verify ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+          cosign verify ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Tag latest image
+        if: matrix.python-version == '3.12'
         run: |
-          docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} \
-            ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
+          docker tag ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:latest
 
       - name: Push latest tag
-        run: docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
+        if: matrix.python-version == '3.12'
+        run: docker push ghcr.io/${{ env.REPO_OWNER_LC }}/$DOCKER_IMAGE:latest

@@ -30,6 +30,8 @@ python scripts/check_python_deps.py
 python check_env.py --auto-install  # add --wheelhouse <dir> when offline
 ```
 
+Docker repository and image names **must** be lowercase.
+
 The environment check installs any missing packages from PyPI (or from your
 wheelhouse when offline). Once it succeeds, execute the tests:
 
