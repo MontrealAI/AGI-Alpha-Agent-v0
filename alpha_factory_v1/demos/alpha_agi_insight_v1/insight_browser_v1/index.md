@@ -293,7 +293,7 @@ Run `node tests/run.mjs --offline` to confirm the build works without network ac
 ## Distribution
 Run `npm run build:dist` to generate `insight_browser.zip` in this directory.
 The archive bundles the production build along with the service worker and
-assets. It stays under **3&nbsp;MiB** so the entire demo can be shared easily.
+assets. it stays under **500&nbsp;MiB** (the hard cap is 750&nbsp;MiB) so the entire demo can be shared easily.
 Extract the zip and open `index.html` directly—no additional dependencies are
 required. New users can review
 [dist/insight_browser_quickstart.pdf](dist/insight_browser_quickstart.pdf) after
@@ -302,7 +302,7 @@ extraction for a brief walkthrough.
 A dedicated GitHub Actions workflow
 [`size-check.yml`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/size-check.yml) rebuilds the
 archive when triggered manually and fails if `insight_browser.zip` grows beyond
-**3&nbsp;MiB**.
+**500&nbsp;MiB**.
 
 ## Locale Support
 The interface automatically loads French, Spanish or Chinese translations based

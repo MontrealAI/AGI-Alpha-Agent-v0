@@ -114,7 +114,7 @@ deployment.
 ### Browser Size Workflow
 
 The [📦 Browser Size](.github/workflows/size-check.yml) job ensures the
-Insight archive stays below 3 MiB. Open **Actions → 📦 Browser Size** and click
+Insight archive stays under 500 MiB (with a 750 MiB hard cap). Open **Actions → 📦 Browser Size** and click
 **Run workflow** to start the check. Repository owners can leave `run_token`
 blank. Others must provide the `run_token` that matches the `DISPATCH_TOKEN`
 secret. The workflow caches pip and npm dependencies using
