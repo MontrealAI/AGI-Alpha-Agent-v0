@@ -28,7 +28,7 @@ Rego policies live under `policies/`. After editing any `.rego` file, run:
 ```bash
 pre-commit run --files policies/<file>.rego alpha_factory_v1/core/utils/opa_policy.py
 python check_env.py --auto-install
-pytest -q
+pytest --cov --cov-report=xml
 ```
 
 The hooks ensure pattern updates load correctly and unit tests exercise the new
@@ -66,7 +66,7 @@ retagging a fixed commit as `stable`.
 ## Promotion Checklist for Self‑Modifying Code
 
 1. `pre-commit run --all-files`
-2. `python check_env.py --auto-install` and `pytest -q`
+2. `python check_env.py --auto-install` and `pytest --cov --cov-report=xml`
 3. Confirm sandbox limits are set in `.env` or the deployment manifest
 4. Obtain approval from two maintainers
 5. Update `docs/CHANGELOG.md` and create a signed tag
