@@ -39,14 +39,26 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
       - name: Install lint tools
         run: |
           python -m pip install --upgrade pip
           pip install ruff mypy
       - name: Install pre-commit
         run: pip install pre-commit
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
         run: pre-commit run --all-files
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Ruff lint
         run: ruff check alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Mypy type-check

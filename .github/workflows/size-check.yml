@@ -27,6 +27,14 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
           cache-dependency-path: 'requirements.lock'
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -34,12 +42,16 @@ jobs:
           cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
       - name: Install pre-commit
         run: pip install pre-commit
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install required Python packages
         run: pip install numpy pandas pytest pyyaml
       - name: Run environment check
         run: ./scripts/env_check.sh
       - name: Run pre-commit checks
         run: pre-commit run --all-files
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Compute asset cache key
