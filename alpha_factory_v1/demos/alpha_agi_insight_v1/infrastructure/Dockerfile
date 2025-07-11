@@ -1,5 +1,6 @@
 # Demo container for α‑AGI Insight
-FROM python:3.11-slim
+ARG PYTHON_VERSION=3.11
+FROM python:${PYTHON_VERSION}-slim
 
 # Install build tools for optional native extensions
 RUN apt-get update && \

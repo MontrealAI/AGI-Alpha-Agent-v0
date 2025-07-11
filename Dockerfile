@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-FROM python:3.11-slim
+ARG PYTHON_VERSION=3.11
+FROM python:${PYTHON_VERSION}-slim
 
 # install build tools and npm for the React UI
 RUN apt-get update && \

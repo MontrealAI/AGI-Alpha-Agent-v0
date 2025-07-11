@@ -48,7 +48,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+          docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
+            -t ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
 
       - name: Run pytest inside container
         run: |
