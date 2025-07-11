@@ -484,7 +484,7 @@ Run the standard checks from this folder before committing:
 ```bash
 python ../../check_env.py --auto-install   # verify optional packages
 pre-commit run --files <paths>             # format only the staged files
-pytest -q ../../../tests                   # execute the root test suite
+pytest --cov --cov-report=xml ../../../tests  # execute the root test suite
 ```
 
 [View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_v1/README.md)

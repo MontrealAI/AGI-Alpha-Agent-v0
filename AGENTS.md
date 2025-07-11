@@ -133,9 +133,9 @@ Follow these steps when installing without internet access:
   missing packages before running `pytest`.
   Install `requirements-demo.txt` as well when running tests that depend on
   heavy extras such as `numpy` and `torch`.
-- Run a quick smoke check first to verify the install:
-  `pytest tests/test_ping_agent.py tests/test_af_requests.py -q`
-  - Execute `pytest -q` (or `python -m alpha_factory_v1.scripts.run_tests`) and ensure the entire suite passes.
+ - Run a quick smoke check first to verify the install:
+   `pytest tests/test_ping_agent.py tests/test_af_requests.py --cov --cov-report=xml`
+   - Execute `pytest --cov --cov-report=xml` (or `python -m alpha_factory_v1.scripts.run_tests`) and ensure the entire suite passes.
   If failures remain, document them in the PR description.
 - When running tests directly from the repository without installation, set `PYTHONPATH`
   as described in [`tests/README.md`](tests/README.md): `export PYTHONPATH=$(pwd)`.
@@ -316,9 +316,9 @@ install dependencies without internet access.
 - Keep commits focused and descriptive. Use meaningful commit messages.
 - Ensure `git status` shows a clean working tree before committing.
 - Remove stray build artifacts with `git clean -fd` if needed.
- - Run `python scripts/check_python_deps.py` followed by
-    `python check_env.py --auto-install` (use `--wheelhouse <path>` when offline)
-    and `pytest -q` before committing. Document any remaining test failures in
+   - Run `python scripts/check_python_deps.py` followed by
+      `python check_env.py --auto-install` (use `--wheelhouse <path>` when offline)
+      and `pytest --cov --cov-report=xml` before committing. Document any remaining test failures in
     the PR description.
 - See [tests/README.md](tests/README.md) for details on running the suite locally,
   including setting `PYTHONPATH` or installing in editable mode.

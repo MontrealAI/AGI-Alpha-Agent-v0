@@ -34,7 +34,7 @@ The environment check installs any missing packages from PyPI (or from your
 wheelhouse when offline). Once it succeeds, execute the tests:
 
 ```bash
-pytest -q
+pytest --cov --cov-report=xml
 ```
 
 ## Pre-commit Hooks
