@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-set -e
+set -euo pipefail
 MODE=${RUN_MODE:-web}
 if [ "$MODE" = "api" ]; then
   exec python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server
