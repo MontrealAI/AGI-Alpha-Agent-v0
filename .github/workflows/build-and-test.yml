@@ -32,6 +32,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
+      # Docker requires lowercase repository names. Convert the repository
+      # owner to lowercase so image tags remain valid even when the GitHub
+      # organization uses capital letters.
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
 
