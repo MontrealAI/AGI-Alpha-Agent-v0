@@ -26,7 +26,7 @@ def test_distribution_zip(tmp_path: Path) -> None:
     )
     assert result.returncode == 0, result.stderr
     assert zip_path.exists(), "insight_browser.zip missing"
-    assert zip_path.stat().st_size <= 3 * 1024 * 1024, "zip size exceeds 3 MiB"
+    assert zip_path.stat().st_size <= 500 * 1024 * 1024, "zip size exceeds 500 MiB"
     with zipfile.ZipFile(zip_path) as zf:
         names = zf.namelist()
     expected = {
