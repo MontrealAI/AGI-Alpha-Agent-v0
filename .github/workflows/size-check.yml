@@ -64,8 +64,15 @@ jobs:
       - name: Fetch Insight Browser assets
         run: python scripts/fetch_assets.py
       - name: Update browserslist database
+        id: browserslist
+        continue-on-error: true
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db@latest --agree-to-terms
+      - name: Ignore stale browserslist data
+        if: steps.browserslist.outcome == 'failure'
+        run: |
+          echo "::warning::Failed to update browserslist database"
+          echo "BROWSERSLIST_IGNORE_OLD_DATA=true" >> "$GITHUB_ENV"
       - name: Verify Insight Browser assets
         run: python scripts/fetch_assets.py --verify-only
       - name: Build distribution zip
