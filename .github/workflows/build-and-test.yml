@@ -94,12 +94,14 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@v3.9.1
         with:
           cosign-release: 'v2.2.4'
 
       - name: Sign image
-        env:
-          COSIGN_EXPERIMENTAL: "1"
         run: |
           cosign sign --yes ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+
+      - name: Verify signature
+        run: |
+          cosign verify ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
