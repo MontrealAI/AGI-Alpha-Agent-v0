@@ -2,10 +2,6 @@ name: "🐳 Build & Test"
 
 on:
   workflow_dispatch:
-    inputs:
-      run_token:
-        description: 'Authorization token for maintainers'
-        required: false
 
 permissions:
   contents: read
@@ -22,13 +18,11 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - name: Check dispatch token
+      - name: Ensure repository owner
         if: github.actor != github.repository_owner
         run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
+          echo "This workflow can only be run by the repository owner." >&2
+          exit 1
       - name: Checkout repository
         uses: actions/checkout@v4
 
