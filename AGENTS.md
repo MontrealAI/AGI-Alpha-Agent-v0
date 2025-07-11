@@ -349,6 +349,13 @@ You can manually trigger the CI run from the GitHub UI:
 
 The pipeline validates linting, type checks, tests and the Docker build.
 
+### Build & Test Workflow
+Repository owners may also launch the general build and unit test pipeline:
+
+1. Open **Actions → 🐳 Build & Test**.
+2. Click **Run workflow**. This job only executes when triggered by the
+   repository owner.
+
 ### Deploy to Kind
 The **Deploy — Kind** workflow provisions a local kind cluster, builds the Insight demo image, installs the Helm chart with default values, applies Terraform from `infrastructure/terraform` using the local backend and waits for pods to become ready. Repository settings mark this workflow as **required**.
 
