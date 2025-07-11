@@ -120,7 +120,9 @@ fi
 # 3. local model fallback
 if grep -q '^OPENAI_API_KEY=$' .env || ! grep -q '^OPENAI_API_KEY=' .env; then
   echo "→ no OpenAI key detected; pulling ollama/phi‑2"
-  docker pull ollama/phi-2:latest
+  if ! docker image inspect ollama/phi-2:latest >/dev/null 2>&1; then
+    docker pull --quiet ollama/phi-2:latest
+  fi
   grep -q '^LLM_PROVIDER=' .env || echo "LLM_PROVIDER=ollama" >> .env
 fi
 
