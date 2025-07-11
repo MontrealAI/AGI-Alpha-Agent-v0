@@ -87,18 +87,17 @@ jobs:
         run: docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@v3.9.1
         with:
           cosign-release: 'v2.2.4'
 
       - name: Sign container
-        env:
-          COSIGN_EXPERIMENTAL: "1"
         run: cosign sign --yes ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
 
+      - name: Verify signature
+        run: cosign verify ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+
       - name: Generate provenance
-        env:
-          COSIGN_EXPERIMENTAL: "1"
         run: |
           cosign generate --type slsaprovenance ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} > provenance.json
           cosign attest --yes --predicate provenance.json --type slsaprovenance ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
