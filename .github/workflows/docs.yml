@@ -82,7 +82,7 @@ jobs:
       - name: Update browserslist database
         run: npx update-browserslist-db@latest --agree-to-terms
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks

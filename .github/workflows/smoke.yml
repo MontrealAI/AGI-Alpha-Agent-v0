@@ -54,7 +54,7 @@ jobs:
           fi
       - name: Install pre-commit
         if: matrix.python-version == '3.11'
-        run: pip install pre-commit
+        run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
