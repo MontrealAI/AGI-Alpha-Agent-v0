@@ -163,6 +163,12 @@ Alternatively, run the pre-built image directly:
 docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
 ```
 
+Replace `latest` with a commit SHA to run that exact build:
+
+```bash
+docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:<commit>
+```
+
 Set `OPENAI_API_KEY` and other required secrets in your environment or `.env`
 before launching the container. The orchestrator prints the
 [project disclaimer](docs/DISCLAIMER_SNIPPET.md) when it starts.
@@ -1097,6 +1103,9 @@ pip install -r requirements.lock
 
 # Deploy instantly with Docker (prebuilt image)
 docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
+
+# Pull a specific build by commit SHA
+docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:<commit>
 
 # The `alpha-factory` CLI also works when the package is installed:
 # A short warning is printed before startup.
