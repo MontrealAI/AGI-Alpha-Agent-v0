@@ -128,6 +128,14 @@ generated assets target the latest browsers. When running offline or if the
 update fails, set `BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without
 refreshing the cache.
 
+### Build & Test Workflow
+
+The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
+tests and container builds. Open **Actions → 🐳 Build & Test** and click
+**Run workflow** to start the pipeline. Repository owners may leave `run_token`
+blank, while collaborators must supply the dispatch token stored in the
+`DISPATCH_TOKEN` secret.
+
 ## Quickstart
 
 ```bash

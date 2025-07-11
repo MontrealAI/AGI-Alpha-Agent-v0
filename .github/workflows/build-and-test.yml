@@ -93,6 +93,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push image
+        if: matrix.python-version == '3.12'
         run: |
           docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
@@ -102,17 +103,21 @@ jobs:
           cosign-release: 'v2.2.4'
 
       - name: Sign image
+        if: matrix.python-version == '3.12'
         run: |
           cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Verify signature
+        if: matrix.python-version == '3.12'
         run: |
           cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Tag latest image
+        if: matrix.python-version == '3.12'
         run: |
           docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} \
             ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
 
       - name: Push latest tag
+        if: matrix.python-version == '3.12'
         run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
