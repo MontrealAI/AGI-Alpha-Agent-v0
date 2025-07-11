@@ -33,6 +33,14 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
@@ -43,8 +51,12 @@ jobs:
           npm install -g @cyclonedx/bom
       - name: Install pre-commit
         run: pip install pre-commit
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
         run: pre-commit run --all-files
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
 
       - name: Build Docker image
         run: |

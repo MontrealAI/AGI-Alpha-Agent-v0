@@ -32,19 +32,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
 
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
+
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
       - name: Install pre-commit
         run: pip install pre-commit
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
         run: pre-commit run --all-files
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
 
       - name: Build Docker image
         run: |

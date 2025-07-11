@@ -24,10 +24,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
+
       - name: Install pre-commit
         run: pip install pre-commit
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
         run: pre-commit run --all-files
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
 
       - name: Set up Kind cluster
         uses: helm/kind-action@v1.7.0
