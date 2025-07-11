@@ -105,3 +105,11 @@ jobs:
       - name: Verify signature
         run: |
           cosign verify ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }}
+
+      - name: Tag latest image
+        run: |
+          docker tag ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
+
+      - name: Push latest tag
+        run: docker push ghcr.io/${{ github.repository_owner }}/$DOCKER_IMAGE:latest
