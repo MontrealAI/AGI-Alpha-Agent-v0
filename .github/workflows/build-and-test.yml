@@ -1,6 +1,9 @@
 name: "🐳 Build & Test"
 
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
     inputs:
       run_token:
