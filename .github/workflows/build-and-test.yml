@@ -32,6 +32,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+
+      - name: Install insight browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Run pre-commit checks
