@@ -114,17 +114,19 @@ deployment.
 ### Browser Size Workflow
 
 The [📦 Browser Size](.github/workflows/size-check.yml) job ensures the
-Insight archive stays below 3 MiB. Open **Actions → 📦 Browser Size** and click
+Insight archive stays below 3 MiB. Open **Actions → 📦 Browser Size** and click
 **Run workflow** to start the check. Repository owners can leave `run_token`
 blank. Others must provide the `run_token` that matches the `DISPATCH_TOKEN`
-secret. The workflow caches pip
-and npm dependencies using
+secret. The workflow caches pip and npm dependencies using
 `actions/setup-python` and `actions/setup-node`, keyed by `requirements.lock` and
 the browser `package-lock.json`, so repeat runs skip redundant downloads. It
 preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
-passes without network hiccups.
-If the browserslist update fails, the workflow warns and sets
-`BROWSERSLIST_IGNORE_OLD_DATA=true` to continue.
+passes without network hiccups. During the run it also updates the
+`browserslist` cache inside
+`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1` to ensure the
+generated assets target the latest browsers. When running offline or if the
+update fails, set `BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without
+refreshing the cache.
 
 ## Quickstart
 
