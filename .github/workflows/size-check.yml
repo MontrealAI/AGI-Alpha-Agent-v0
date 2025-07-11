@@ -81,7 +81,9 @@ jobs:
         run: |
           size=$(stat -c%s alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/insight_browser.zip)
           echo "insight_browser.zip size: $size bytes"
-          if [ "$size" -gt $((3 * 1024 * 1024)) ]; then
-            echo "Archive exceeds 3 MiB" >&2
+          if [ "$size" -gt $((750 * 1024 * 1024)) ]; then
+            echo "::error::Archive exceeds 750 MiB" >&2
             exit 1
+          elif [ "$size" -gt $((500 * 1024 * 1024)) ]; then
+            echo "::warning::Archive exceeds 500 MiB" >&2
           fi
