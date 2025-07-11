@@ -25,10 +25,12 @@ Please report security vulnerabilities as described in our [Security Policy](SEC
   `nvm use` before installing Node dependencies.
 - Keep `package-lock.json` under version control so `npm ci` reproduces the same
   dependency tree.
+- The project expects `pre-commit` **4.2.0**. CI installs the same version with
+  `pip install pre-commit==4.2.0`.
 - Run `python alpha_factory_v1/scripts/preflight.py` to validate these tools.
  - Run `./codex/setup.sh` to install project dependencies and set up the git
-   hooks. The script attempts to install `pre-commit` automatically. If
-   `pre-commit` isn't found, run `pip install pre-commit` and re-run the script.
+  hooks. The script attempts to install `pre-commit` automatically. If
+  `pre-commit` isn't found, run `pip install pre-commit==4.2.0` and re-run the script.
 - The first `pre-commit run` may take several minutes as it builds tool environments.
 - Install `pytest` and `prometheus_client` using
   `python check_env.py --auto-install` or `pip install pytest prometheus_client`.
@@ -386,7 +388,7 @@ issues locally before dispatching the workflow.
   consider bundling `numpy`, `pyyaml` and `pandas` so the smoke tests run without
   contacting PyPI.
 - If `pre-commit` reports "command not found", install it manually with
-  `pip install pre-commit` and run `pre-commit install` once.
+  `pip install pre-commit==4.2.0` and run `pre-commit install` once.
 - To reinstall the hooks, run `pip install -U pre-commit` and then
   `pre-commit install` again.
 

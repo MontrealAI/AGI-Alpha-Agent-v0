@@ -41,7 +41,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install required Python packages

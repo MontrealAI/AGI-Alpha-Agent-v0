@@ -50,7 +50,7 @@ jobs:
           python -m pip install --upgrade pip cyclonedx-bom
           npm install -g @cyclonedx/bom
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks

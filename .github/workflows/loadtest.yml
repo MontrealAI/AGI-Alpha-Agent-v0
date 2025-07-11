@@ -40,7 +40,7 @@ jobs:
           pip install -r requirements.lock
           pip install -r requirements-dev.txt
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
