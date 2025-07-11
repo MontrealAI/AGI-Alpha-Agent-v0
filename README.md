@@ -123,6 +123,8 @@ and npm dependencies using
 the browser `package-lock.json`, so repeat runs skip redundant downloads. It
 preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
 passes without network hiccups.
+If the browserslist update fails, the workflow warns and sets
+`BROWSERSLIST_IGNORE_OLD_DATA=true` to continue.
 
 ## Quickstart
 
