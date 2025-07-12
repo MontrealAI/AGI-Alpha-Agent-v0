@@ -16,17 +16,13 @@ env:
 
 jobs:
   build-test:
+    if: github.actor == github.repository_owner
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - name: Ensure repository owner
-        if: github.actor != github.repository_owner
-        run: |
-          echo "This workflow can only be run by the repository owner." >&2
-          exit 1
       - name: Checkout repository
         uses: actions/checkout@v4
 

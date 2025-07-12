@@ -133,7 +133,8 @@ refreshing the cache.
 The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
 tests and container builds. Open **Actions → 🐳 Build & Test** and click
 **Run workflow** to start the pipeline. Only the repository owner can run this
-workflow.
+workflow. The job checks `github.actor == github.repository_owner` before
+executing.
 
 Docker image tags must use all lowercase characters. The workflow automatically
 converts the repository owner to lowercase so tags like `ghcr.io/montrealai` are
