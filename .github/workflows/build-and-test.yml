@@ -75,7 +75,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
+          docker build --build-arg "PYTHON_VERSION=${{ matrix.python-version }}" \
             -t "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" -f Dockerfile .
       - name: Compute Python tag
         shell: bash
