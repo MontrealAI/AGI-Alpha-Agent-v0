@@ -39,7 +39,8 @@ jobs:
       # Docker requires lowercase repository names. Convert the repository
       # owner to lowercase so image tags remain valid even when the GitHub
       # organization uses capital letters.
-      - name: Compute REPO_OWNER_LC
+      - name: Prepare lowercase image name
+        id: prepare
         shell: bash
         run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
 

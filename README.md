@@ -136,9 +136,9 @@ tests and container builds. Open **Actions → 🐳 Build & Test** and click
 workflow. The job checks `github.actor == github.repository_owner` before
 executing.
 
-Docker image tags must use all lowercase characters. The workflow automatically
-sets `REPO_OWNER_LC` to the lowercased repository owner so tags like
-`ghcr.io/montrealai` are valid.
+Docker image tags must use all lowercase characters. The workflow's
+"Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
+repository owner so tags like `ghcr.io/montrealai` are valid.
 
 ## Quickstart
 
