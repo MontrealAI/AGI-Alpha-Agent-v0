@@ -128,6 +128,14 @@ generated assets target the latest browsers. When running offline or if the
 update fails, set `BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without
 refreshing the cache.
 
+### CI Workflow
+
+The [🚀 CI](.github/workflows/ci.yml) job verifies the Insight demo with
+linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI —
+Insight Demo** and click **Run workflow** to dispatch the pipeline. Only the
+repository owner can trigger the job directly. Others must provide the
+`run_token` that matches the `DISPATCH_TOKEN` secret when clicking the button.
+
 ### Build & Test Workflow
 
 The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
