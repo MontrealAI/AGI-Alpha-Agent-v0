@@ -598,34 +598,40 @@ if os.getenv("OPENAI_API_KEY") and not os.getenv("NO_LLM"):
 # 🔟  FastAPI UI / REST / Web‑Socket endpoint
 # =============================================================================
 from fastapi import FastAPI, WebSocket  # noqa: E402
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 import uvicorn  # noqa: E402
 
 app = FastAPI(title="Alpha‑ASI World Model")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 orch: Optional[Orchestrator] = None
 loop_thread: Optional[threading.Thread] = None
 
 
-@app.on_event("startup")
-async def _startup():
+@asynccontextmanager
+async def lifespan(_: FastAPI):
     global orch, loop_thread
     orch = Orchestrator()
     loop_thread = threading.Thread(target=orch.loop, daemon=True)
     loop_thread.start()
+    try:
+        yield
+    finally:
+        if orch:
+            orch.stop = True
+        if loop_thread:
+            loop_thread.join(timeout=1)
+        orch = None
+        loop_thread = None
 
 
-@app.on_event("shutdown")
-async def _shutdown() -> None:
-    """Stop the orchestrator loop and wait for the thread to exit."""
-    global orch, loop_thread
-    if orch:
-        orch.stop = True
-    if loop_thread:
-        loop_thread.join(timeout=1)
-    orch = None
-    loop_thread = None
+app.router.lifespan_context = lifespan
 
 
 @app.get("/agents")

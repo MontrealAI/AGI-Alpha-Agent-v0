@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from contextlib import asynccontextmanager
 from pydantic import BaseModel
 
 from alpha_factory_v1.core.simulation import mats
@@ -51,9 +52,13 @@ class MutationResponse(BaseModel):  # type: ignore[misc]
     child: List[float]
 
 
-@app.on_event("startup")  # type: ignore[misc]
-async def _prepare() -> None:
+@asynccontextmanager
+async def lifespan(_: FastAPI):
     STORAGE_PATH.mkdir(parents=True, exist_ok=True)
+    yield
+
+
+app.router.lifespan_context = lifespan
 
 
 @app.post("/mutate", response_model=MutationResponse)  # type: ignore[misc]

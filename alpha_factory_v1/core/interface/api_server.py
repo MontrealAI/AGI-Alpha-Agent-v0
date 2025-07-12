@@ -97,7 +97,8 @@ try:
     from fastapi.middleware.cors import CORSMiddleware
     from starlette.responses import Response, PlainTextResponse
     from fastapi.staticfiles import StaticFiles
-    from pydantic import BaseModel
+    from contextlib import asynccontextmanager
+    from pydantic import BaseModel, ConfigDict
     import uvicorn
     from .problem_json import problem_response
 except ModuleNotFoundError as exc:  # pragma: no cover - optional
@@ -249,8 +250,8 @@ if app is not None:
     app_f.state.orchestrator = None
     app_f.state.orch_task = None
 
-    @app.on_event("startup")
-    async def _start() -> None:
+    @asynccontextmanager
+    async def lifespan(app_f: FastAPI):
         _log.warning(DISCLAIMER)
         if API_TOKEN == "REPLACE_ME_TOKEN":
             _log.error("API_TOKEN is set to the default 'REPLACE_ME_TOKEN'. " "Edit .env to use a strong secret.")
@@ -260,16 +261,18 @@ if app is not None:
         app_f.state.orch_task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         _load_results()
         asyncio.create_task(_static_analysis_task())
+        try:
+            yield
+        finally:
+            task = getattr(app_f.state, "orch_task", None)
+            if task:
+                task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await task
+                app_f.state.orch_task = None
+            app_f.state.orchestrator = None
 
-    @app.on_event("shutdown")
-    async def _stop() -> None:
-        task = getattr(app_f.state, "orch_task", None)
-        if task:
-            task.cancel()
-            with contextlib.suppress(asyncio.CancelledError):
-                await task
-            app_f.state.orch_task = None
-        app_f.state.orchestrator = None
+    app_f.router.lifespan_context = lifespan
 
 
 _simulations: OrderedDict[str, ResultsResponse] = OrderedDict()
@@ -408,6 +411,17 @@ class SimRequest(BaseModel):
     k: float | None = None
     x0: float | None = None
     sectors: list[SectorSpec] | None = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "horizon": 5,
+                "pop_size": 6,
+                "generations": 3,
+                "curve": "logistic",
+            }
+        }
+    )
 
 
 class ForecastPoint(BaseModel):

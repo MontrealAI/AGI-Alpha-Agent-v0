@@ -54,7 +54,8 @@ import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple, Union, Final
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple, Union, Final, ClassVar
+from alpha_factory_v1.utils.config_common import SettingsConfigDict
 
 # ─────────────────────── dynamic soft-deps ░──────────────────
 try:
@@ -137,14 +138,15 @@ class _Settings(BaseSettings):
 
     # Memory policies
     MEM_TTL_SECONDS: int = 0  # 0 = infinite
-    MEM_MAX_PER_AGENT: PositiveInt = Field(100_000, env="MEM_MAX_PER_AGENT")
+    MEM_MAX_PER_AGENT: PositiveInt = Field(100_000, validation_alias="MEM_MAX_PER_AGENT")
 
     # Quotas / circuit breaker
     MEM_FAIL_GRACE_SEC: int = 20
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config: ClassVar[SettingsConfigDict] = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+    }
 
 
 CFG = _Settings()  # single instance
