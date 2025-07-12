@@ -41,7 +41,13 @@ from alpha_factory_v1.core.eval.foresight import evaluate as foresight_evaluate
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER
 
-__all__ = ["DISCLAIMER", "DisclaimerGroup"]
+__all__ = [
+    "DISCLAIMER",
+    "DisclaimerGroup",
+    "asyncio",
+    "orchestrator",
+    "self_improver",
+]
 
 
 class DisclaimerGroup(click.Group):
