@@ -175,6 +175,9 @@ Alternatively, run the pre-built image directly:
 docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
 ```
 
+The workflow publishes a separate image for each Python version, but only the
+Python **3.12** build updates the `latest` tag.
+
 Replace `latest` with a commit SHA to run that exact build:
 
 ```bash

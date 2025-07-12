@@ -83,6 +83,7 @@ jobs:
           path: coverage.xml
 
       - name: Login to GHCR
+        if: matrix.python-version == '3.12'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
