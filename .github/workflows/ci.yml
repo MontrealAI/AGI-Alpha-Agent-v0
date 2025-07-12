@@ -250,7 +250,7 @@ jobs:
           SERVER_PID=$!
           sleep 2
           python scripts/verify_insight_offline.py
-          kill $SERVER_PID
+          kill "$SERVER_PID"
 
   docker:
     if: ${{ github.actor == github.repository_owner }}
