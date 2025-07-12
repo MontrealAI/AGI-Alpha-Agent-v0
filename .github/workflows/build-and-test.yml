@@ -92,6 +92,7 @@ jobs:
             bash -c "python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse \"$WHEELHOUSE\"} && pytest --cov --cov-report=xml:/repo/coverage.xml --cov-fail-under=80"
 
       - name: Upload coverage
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: coverage-xml
