@@ -348,9 +348,8 @@ install dependencies without internet access.
 You can manually trigger the CI run from the GitHub UI:
 
 1. Navigate to "Actions → 🚀 CI — Insight Demo".
-2. Click "Run workflow". Repository owners can leave `run_token` blank. Others
-   must supply the `run_token` value that matches the `DISPATCH_TOKEN` secret.
-   Type `RUN` in the text box to confirm.
+2. Click **Run workflow** to dispatch the pipeline. Only the repository owner can
+   trigger this job.
 
 The pipeline validates linting, type checks, tests and the Docker build.
 
