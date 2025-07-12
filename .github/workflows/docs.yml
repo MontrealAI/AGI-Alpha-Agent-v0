@@ -50,7 +50,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Cache sandbox layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-sandbox-${{ github.sha }}
@@ -90,10 +90,7 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install Playwright browsers
-        uses: microsoft/playwright-github-action@v1
-        with:
-          install-deps: true
-          cache: true
+        run: npx playwright install --with-deps
       - name: Make scripts executable
         run: chmod +x ./scripts/*.sh
       - name: Compute asset cache key
@@ -118,7 +115,7 @@ jobs:
           echo "key=$key" >> "$GITHUB_OUTPUT"
       - name: Cache Pyodide and GPT-2 assets
         id: asset-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm

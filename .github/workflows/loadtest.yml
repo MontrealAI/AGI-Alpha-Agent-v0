@@ -51,7 +51,7 @@ jobs:
         run: |
           API_TOKEN=test-token python -m src.interface.api_server &
           pid=$!
-          for i in {1..50}; do
+          for _ in {1..50}; do
             curl -fs http://localhost:8000/healthz && break
             sleep 2
           done
@@ -62,4 +62,4 @@ jobs:
         run: |
           make loadtest API_TOKEN=test-token
       - name: Stop server
-        run: kill $(cat server.pid)
+        run: kill "$(cat server.pid)"
