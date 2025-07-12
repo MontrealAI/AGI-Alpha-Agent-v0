@@ -92,3 +92,16 @@ that `github.actor` matches `github.repository_owner` before building the site.
 The job runs `scripts/edge_human_knowledge_pages_sprint.sh` to rebuild the site
 and then uses the [Lychee](https://github.com/lycheeverse/lychee) checker to
 verify all internal links. If any links fail validation, the workflow aborts.
+
+### 🚀 CI Workflow
+
+The **🚀 CI** workflow verifies linting, type checks, unit tests and the Docker
+build. It does **not** run automatically from pull requests. Instead, the
+repository owner must trigger it manually from the GitHub Actions page:
+
+1. Open **Actions → 🚀 CI — Insight Demo**.
+2. Click **Run workflow** to start the pipeline.
+
+The job runs only when `github.actor` equals `github.repository_owner`, so other
+contributors cannot execute it unless the owner grants them explicit
+permissions or dispatches the workflow on their behalf.
