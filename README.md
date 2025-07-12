@@ -700,6 +700,12 @@ pre-commit run --files <paths>   # before each commit
 Run `pre-commit run --all-files` once after the setup script to confirm
 everything is formatted correctly. These commands mirror the steps in
 [AGENTS.md](AGENTS.md) and keep commits consistent.
+After editing `.github/workflows/ci.yml`, run:
+
+```bash
+pre-commit run --files .github/workflows/ci.yml
+```
+to validate the workflow with actionlint before committing.
 Before opening a pull request, run `pre-commit run --all-files` to ensure
 all hooks succeed.
 Run `python check_env.py --auto-install` before invoking these commands so
