@@ -7,10 +7,6 @@ name: "🚀 CI"
 
 on:
   workflow_dispatch:
-    inputs:
-      run_token:
-        description: 'Authorization token for maintainers'
-        required: false
 
 permissions:
   contents: read
@@ -27,6 +23,7 @@ env:
 
 jobs:
   lint-type:
+    if: ${{ github.actor == github.repository_owner }}
     name: "🧹 Ruff + 🏷️ Mypy"
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
@@ -34,13 +31,6 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -72,6 +62,7 @@ jobs:
         run: mypy alpha_factory_v1/demos/alpha_agi_insight_v1 --strict
 
   tests:
+    if: ${{ github.actor == github.repository_owner }}
     name: "✅ Pytest"
     needs: lint-type
     runs-on: ubuntu-latest
@@ -80,13 +71,6 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -177,17 +161,11 @@ jobs:
           path: coverage.xml
 
   windows-smoke:
+    if: ${{ github.actor == github.repository_owner }}
     name: "Windows Smoke"
     needs: lint-type
     runs-on: windows-latest
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -207,17 +185,11 @@ jobs:
         run: pytest -m smoke -q
 
   docs-check:
+    if: ${{ github.actor == github.repository_owner }}
     name: "📜 MkDocs"
     needs: lint-type
     runs-on: ubuntu-latest
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -231,6 +203,7 @@ jobs:
         run: mkdocs build --strict
 
   docs-build:
+    if: ${{ github.actor == github.repository_owner }}
     name: "📚 Docs Build"
     needs: tests
     runs-on: ubuntu-latest
@@ -239,13 +212,6 @@ jobs:
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -289,18 +255,12 @@ jobs:
           kill $SERVER_PID
 
   docker:
+    if: ${{ github.actor == github.repository_owner }}
     name: "🐳 Docker build"
     needs: tests
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
@@ -337,18 +297,11 @@ jobs:
           docker run --rm -e RUN_MODE=cli $DOCKER_IMAGE:ci simulate --horizon 1 --offline
 
   deploy:
+    if: github.actor == github.repository_owner && startsWith(github.ref, 'refs/tags/')
     name: "📦 Deploy"
-    if: startsWith(github.ref, 'refs/tags/')
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner
-        run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
-            exit 1
-          fi
       - uses: actions/checkout@v4
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
