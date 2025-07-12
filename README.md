@@ -133,8 +133,7 @@ refreshing the cache.
 The [🚀 CI](.github/workflows/ci.yml) job verifies the Insight demo with
 linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI —
 Insight Demo** and click **Run workflow** to dispatch the pipeline. Only the
-repository owner can trigger the job directly. Others must provide the
-`run_token` that matches the `DISPATCH_TOKEN` secret when clicking the button.
+repository owner can trigger the job directly.
 
 ### Build & Test Workflow
 

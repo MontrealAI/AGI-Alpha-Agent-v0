@@ -336,7 +336,7 @@ jobs:
       - name: Pack release assets
         run: tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
       - name: Upload release assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: web-client.tar.gz
       - name: Rollback on failure
