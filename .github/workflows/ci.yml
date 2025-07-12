@@ -316,6 +316,7 @@ jobs:
       - name: Push previous tag
         run: docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
       - name: Push new image
+        continue-on-error: true
         run: |
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
