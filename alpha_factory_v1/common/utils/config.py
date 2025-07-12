@@ -11,11 +11,12 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, ClassVar
 
 from alpha_factory_v1.utils.config_common import (
     _load_dotenv,
     _prefetch_vault,
+    SettingsConfigDict,
 )
 from pydantic_settings import BaseSettings
 
@@ -70,6 +71,13 @@ class Settings(BaseSettings):  # type: ignore[misc]
         default_factory=lambda: {"default": "gpt-4o"},
         alias="AGI_ISLAND_BACKENDS",
     )
+
+    model_config: ClassVar[SettingsConfigDict] = {
+        "env_file": ".env",
+        "extra": "ignore",
+        "populate_by_name": True,
+        "env_prefix": "",
+    }
 
     def __init__(self, **data: Any) -> None:  # pragma: no cover - exercised in tests
         super().__init__(**data)

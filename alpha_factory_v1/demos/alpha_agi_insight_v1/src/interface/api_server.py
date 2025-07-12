@@ -49,6 +49,7 @@ mats = importlib.import_module("alpha_factory_v1.core.simulation.mats")
 _IMPORT_ERROR: Exception | None
 try:
     from fastapi import FastAPI, HTTPException, WebSocket, Request, Depends
+    from contextlib import asynccontextmanager
     from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
     from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
     from starlette.responses import (
@@ -81,8 +82,8 @@ if app is not None:
     app_f.state.orchestrator = None
     app_f.state.task = None
 
-    @app.on_event("startup")
-    async def _start() -> None:
+    @asynccontextmanager
+    async def lifespan(_: FastAPI):
         orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
         app_f.state.orchestrator = orch_mod.Orchestrator()
         app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())
@@ -91,16 +92,18 @@ if app is not None:
             raise RuntimeError("API_TOKEN must be set to a strong value (not empty or 'changeme').")
         app_f.state.api_token = token
         _load_results()
+        try:
+            yield
+        finally:
+            task = getattr(app_f.state, "task", None)
+            if task:
+                task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await task
+                app_f.state.task = None
+            app_f.state.orchestrator = None
 
-    @app.on_event("shutdown")
-    async def _stop() -> None:
-        task = getattr(app_f.state, "task", None)
-        if task:
-            task.cancel()
-            with contextlib.suppress(asyncio.CancelledError):
-                await task
-            app_f.state.task = None
-        app_f.state.orchestrator = None
+    app_f.router.lifespan_context = lifespan
 
     security = HTTPBearer()
 

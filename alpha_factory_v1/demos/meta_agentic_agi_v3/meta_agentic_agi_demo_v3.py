@@ -498,6 +498,7 @@ def run_streamlit(args) -> None:
 def run_api(args, fm: BaseProvider, db: LineageDB) -> None:
     try:
         from fastapi import FastAPI
+        from contextlib import asynccontextmanager
         from fastapi.responses import JSONResponse
         import uvicorn
     except ImportError:
@@ -507,14 +508,17 @@ def run_api(args, fm: BaseProvider, db: LineageDB) -> None:
     app = FastAPI(title="Meta-Agentic α-AGI API")
     state: Dict[str, Any] = {"best": None}
 
-    @app.on_event("startup")
-    async def _bootstrap():
+    @asynccontextmanager
+    async def lifespan(_: FastAPI):
         state["best"] = await evolutionary_search(
             fm,
             db,
             generations=args.gens,
             pop_size=args.pop_size,
         )
+        yield
+
+    app.router.lifespan_context = lifespan
 
     @app.get("/status")
     def status() -> Dict[str, Any]:
