@@ -22,7 +22,6 @@ env:
 
 jobs:
   lint-type:
-    if: ${{ github.actor == github.repository_owner }}
     name: "🧹 Ruff + 🏷️ Mypy"
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
@@ -62,7 +61,6 @@ jobs:
         run: mypy --config-file mypy.ini
 
   tests:
-    if: ${{ github.actor == github.repository_owner }}
     name: "✅ Pytest"
     needs: lint-type
     runs-on: ubuntu-latest
@@ -160,7 +158,6 @@ jobs:
           path: coverage.xml
 
   windows-smoke:
-    if: ${{ github.actor == github.repository_owner }}
     name: "Windows Smoke"
     needs: lint-type
     runs-on: windows-latest
@@ -198,7 +195,6 @@ jobs:
         run: pytest -m smoke -q
 
   docs-check:
-    if: ${{ github.actor == github.repository_owner }}
     name: "📜 MkDocs"
     needs: lint-type
     runs-on: ubuntu-latest
@@ -216,7 +212,6 @@ jobs:
         run: mkdocs build --strict
 
   docs-build:
-    if: ${{ github.actor == github.repository_owner }}
     name: "📚 Docs Build"
     needs: tests
     runs-on: ubuntu-latest
@@ -267,7 +262,6 @@ jobs:
           kill "$SERVER_PID"
 
   docker:
-    if: ${{ github.actor == github.repository_owner }}
     name: "🐳 Docker build"
     needs: tests
     runs-on: ubuntu-latest
