@@ -76,6 +76,12 @@ jobs:
         run: |
           docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
             -t ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+      - name: Compute Python tag
+        shell: bash
+        run: |
+          tag=py${{ matrix.python-version }}
+          tag=${tag//./}
+          echo "PY_TAG=$tag" >> "$GITHUB_ENV"
 
       - name: Run pytest inside container
         run: |
@@ -91,17 +97,18 @@ jobs:
           path: coverage.xml
 
       - name: Login to GHCR
-        if: matrix.python-version == '3.12'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push image
-        if: matrix.python-version == '3.12'
+      - name: Tag and push image
         run: |
+          docker tag ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
           docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
+          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.9.1
@@ -109,21 +116,20 @@ jobs:
           cosign-release: 'v2.2.4'
 
       - name: Sign image
-        if: matrix.python-version == '3.12'
         run: |
           cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
+          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
 
       - name: Verify signature
-        if: matrix.python-version == '3.12'
         run: |
           cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
+          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
 
-      - name: Tag latest image
+      - name: Tag and push latest image
         if: matrix.python-version == '3.12'
         run: |
           docker tag ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
             ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
-
-      - name: Push latest tag
-        if: matrix.python-version == '3.12'
-        run: docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
+          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
+          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
+          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
