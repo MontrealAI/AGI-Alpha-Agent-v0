@@ -58,6 +58,9 @@ Downstream users should consult this section when upgrading.
   repeated runs skip redundant downloads.
 - The workflow preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the
   environment check passes reliably before running pre-commit.
+- Fixed the **Build & Test** GitHub Actions workflow so Docker tags always use
+  lowercase repository names. The job now runs only when triggered manually by
+  the repository owner.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
