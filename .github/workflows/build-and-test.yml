@@ -20,7 +20,9 @@ env:
 
 jobs:
   build-test:
-    if: github.actor == github.repository_owner
+    # Ensure this job only runs from the manual "Run workflow" button
+    # and only when triggered by the repository owner.
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
