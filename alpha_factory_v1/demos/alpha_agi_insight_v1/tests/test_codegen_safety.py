@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import asyncio
 
+import pytest
+
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import codegen_agent
 from alpha_factory_v1.common.utils import config, messaging
 from alpha_factory_v1.common.utils.logging import Ledger
@@ -32,7 +34,7 @@ class DummyLedger:
         pass
 
 
-def test_skip_unsafe_execution(monkeypatch) -> None:
+def test_skip_unsafe_execution(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = config.Settings(bus_port=0)
     bus = DummyBus(cfg)
     ledger = DummyLedger()

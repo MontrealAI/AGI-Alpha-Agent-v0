@@ -9,11 +9,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src import self_improver
 
-
 git = pytest.importorskip("git")
+from git import Repo
 
 
-def _init_repo(path: Path) -> git.Repo:
+def _init_repo(path: Path) -> Repo:
     repo = git.Repo.init(path)
     (path / "metric.txt").write_text("1\n")
     repo.git.add("metric.txt")

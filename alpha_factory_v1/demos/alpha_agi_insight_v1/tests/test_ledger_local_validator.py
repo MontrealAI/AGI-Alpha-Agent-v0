@@ -10,6 +10,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from typing import Iterator
 
 import asyncio
 import pytest
@@ -47,7 +48,7 @@ def _wait_rpc(url: str, timeout: int = 30) -> bool:
 
 
 @pytest.fixture(scope="module")
-def validator() -> str:
+def validator() -> Iterator[str]:
     port = _free_port()
     cid = (
         subprocess.check_output(
