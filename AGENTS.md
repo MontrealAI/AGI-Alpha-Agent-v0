@@ -355,6 +355,9 @@ Repository owners may also launch the general build and unit test pipeline:
 1. Open **Actions → 🐳 Build & Test**.
 2. Click **Run workflow**. This job only executes when triggered by the
    repository owner.
+   Docker repository and image names must be lowercase. The workflow
+   automatically lowercases `${{ github.repository_owner }}` to satisfy this
+   requirement.
 
 ### Deploy to Kind
 The **Deploy — Kind** workflow provisions a local kind cluster, builds the Insight demo image, installs the Helm chart with default values, applies Terraform from `infrastructure/terraform` using the local backend and waits for pods to become ready. Repository settings mark this workflow as **required**.
