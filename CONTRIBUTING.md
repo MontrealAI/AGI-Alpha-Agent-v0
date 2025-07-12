@@ -37,6 +37,12 @@ wheelhouse when offline). Once it succeeds, execute the tests:
 pytest --cov --cov-report=xml
 ```
 
+### Dockerfiles
+
+When modifying build dependencies or system packages in the project
+`Dockerfile`, update `alpha_factory_v1/Dockerfile` as well so both images
+remain consistent.
+
 ## Pre-commit Hooks
 
 Run `./codex/setup.sh` to install project dependencies. The script also
