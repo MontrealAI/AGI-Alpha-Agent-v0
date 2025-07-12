@@ -176,10 +176,24 @@ jobs:
           pip install -r requirements.lock
           pip install -r requirements-dev.txt
           pip install pytest
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: windows-npm-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            windows-npm-
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install
+      - name: Build web assets
+        run: |
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 build
       - name: Run smoke tests
         run: pytest -m smoke -q
 
