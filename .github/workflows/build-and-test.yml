@@ -39,9 +39,9 @@ jobs:
       # Docker requires lowercase repository names. Convert the repository
       # owner to lowercase so image tags remain valid even when the GitHub
       # organization uses capital letters.
-      - name: Compute repo_owner_lower
+      - name: Compute REPO_OWNER_LC
         shell: bash
-        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
@@ -72,13 +72,13 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
-            -t ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+            -t ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
 
       - name: Run pytest inside container
         run: |
           docker run --rm \
             -v "$PWD":/repo -w /repo \
-            ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
             bash -c "python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse \"$WHEELHOUSE\"} && pytest --cov --cov-report=xml:/repo/coverage.xml --cov-fail-under=80"
 
       - name: Upload coverage
@@ -98,7 +98,7 @@ jobs:
       - name: Push image
         if: matrix.python-version == '3.12'
         run: |
-          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.9.1
@@ -108,19 +108,19 @@ jobs:
       - name: Sign image
         if: matrix.python-version == '3.12'
         run: |
-          cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Verify signature
         if: matrix.python-version == '3.12'
         run: |
-          cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
 
       - name: Tag latest image
         if: matrix.python-version == '3.12'
         run: |
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} \
-            ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker tag ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
+            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
 
       - name: Push latest tag
         if: matrix.python-version == '3.12'
-        run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+        run: docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
