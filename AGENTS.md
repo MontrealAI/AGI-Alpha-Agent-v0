@@ -287,6 +287,9 @@ pre-commit run --files <paths>   # before each commit
     **CI enforces these checks.**
   - After editing `alpha_factory_v1/core/utils/a2a.proto`, run `pre-commit run --files alpha_factory_v1/core/utils/a2a.proto`
     to regenerate and verify protobuf sources.
+  - After modifying `.github/workflows/ci.yml`, run
+    `pre-commit run --files .github/workflows/ci.yml` to lint the workflow
+    with actionlint.
   - The configuration runs `black`, `ruff`, `flake8` and `mypy` using
     `mypy.ini`.
   - Semgrep scans Python files with the official `p/python` ruleset to enforce
