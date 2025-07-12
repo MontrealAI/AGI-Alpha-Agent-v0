@@ -76,7 +76,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
-            -t ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} -f Dockerfile .
+            -t "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" -f Dockerfile .
       - name: Compute Python tag
         shell: bash
         run: |
@@ -88,7 +88,7 @@ jobs:
         run: |
           docker run --rm \
             -v "$PWD":/repo -w /repo \
-            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
+            "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" \
             bash -c "python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse \"$WHEELHOUSE\"} && pytest --cov --cov-report=xml:/repo/coverage.xml --cov-fail-under=80"
 
       - name: Upload coverage
@@ -107,10 +107,10 @@ jobs:
 
       - name: Tag and push image
         run: |
-          docker tag ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
-            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
-          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
-          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
+          docker tag "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" \
+            "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
+          docker push "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}"
+          docker push "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.9.1
@@ -119,19 +119,19 @@ jobs:
 
       - name: Sign image
         run: |
-          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
-          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
+          cosign sign --yes "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}"
+          cosign sign --yes "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
 
       - name: Verify signature
         run: |
-          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}
-          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG
+          cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}"
+          cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
 
       - name: Tag and push latest image
         if: matrix.python-version == '3.12'
         run: |
-          docker tag ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }} \
-            ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
-          docker push ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
-          cosign sign --yes ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
-          cosign verify ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest
+          docker tag "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" \
+            "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest"
+          docker push "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest"
+          cosign sign --yes "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest"
+          cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest"
