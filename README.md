@@ -137,8 +137,8 @@ workflow. The job checks `github.actor == github.repository_owner` before
 executing.
 
 Docker image tags must use all lowercase characters. The workflow automatically
-converts the repository owner to lowercase so tags like `ghcr.io/montrealai` are
-valid.
+sets `REPO_OWNER_LC` to the lowercased repository owner so tags like
+`ghcr.io/montrealai` are valid.
 
 ## Quickstart
 
