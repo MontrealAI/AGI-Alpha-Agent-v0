@@ -5,11 +5,14 @@ FROM python:${PYTHON_VERSION}-slim
 # install build tools and npm for the React UI
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg build-essential \
+        curl ca-certificates gnupg build-essential git \
         rustc cargo postgresql-client patch && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
+
+# upgrade pip to avoid outdated versions
+RUN python -m pip install --upgrade pip setuptools wheel
 
 # Verify Node installation is >=20 (NodeSource script sets up latest LTS)
 RUN node --version
