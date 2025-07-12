@@ -40,7 +40,8 @@ jobs:
       # owner to lowercase so image tags remain valid even when the GitHub
       # organization uses capital letters.
       - name: Compute repo_owner_lower
-        run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+        shell: bash
+        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
