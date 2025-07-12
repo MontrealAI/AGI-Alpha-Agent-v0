@@ -58,7 +58,8 @@ jobs:
       - name: Ruff lint
         run: ruff check alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Mypy type-check
-        run: mypy alpha_factory_v1/demos/alpha_agi_insight_v1 --strict
+        # Use configuration defaults to restrict analysis to the src package
+        run: mypy --config-file mypy.ini
 
   tests:
     if: ${{ github.actor == github.repository_owner }}
