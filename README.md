@@ -135,6 +135,10 @@ tests and container builds. Open **Actions → 🐳 Build & Test** and click
 **Run workflow** to start the pipeline. Only the repository owner can run this
 workflow.
 
+Docker image tags must use all lowercase characters. The workflow automatically
+converts the repository owner to lowercase so tags like `ghcr.io/montrealai` are
+valid.
+
 ## Quickstart
 
 ```bash
