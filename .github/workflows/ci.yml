@@ -34,6 +34,13 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
+      - name: Check dispatch token
+        if: github.actor != github.repository_owner
+        run: |
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -174,6 +181,13 @@ jobs:
     needs: lint-type
     runs-on: windows-latest
     steps:
+      - name: Check dispatch token
+        if: github.actor != github.repository_owner
+        run: |
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -197,6 +211,13 @@ jobs:
     needs: lint-type
     runs-on: ubuntu-latest
     steps:
+      - name: Check dispatch token
+        if: github.actor != github.repository_owner
+        run: |
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -218,6 +239,13 @@ jobs:
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
+      - name: Check dispatch token
+        if: github.actor != github.repository_owner
+        run: |
+          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
+            echo "Unauthorized"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
