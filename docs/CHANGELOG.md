@@ -61,6 +61,11 @@ Downstream users should consult this section when upgrading.
 - Fixed the **Build & Test** GitHub Actions workflow so Docker tags always use
   lowercase repository names. The job now runs only when triggered manually by
   the repository owner.
+- Upgraded the Insight demo to **streamlit 1.46** so NumPy 2.x installs cleanly.
+- The Docker image now installs **rustc** and **cargo** to build crates like
+  `blake3` on Python 3.12.
+- The workflow pushes version-specific Docker tags `py311` and `py312` for each
+  build and signs both images with cosign.
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
