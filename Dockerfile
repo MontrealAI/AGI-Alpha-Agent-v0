@@ -5,7 +5,8 @@ FROM python:${PYTHON_VERSION}-slim
 # install build tools and npm for the React UI
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg build-essential postgresql-client patch && \
+        curl ca-certificates gnupg build-essential \
+        rustc cargo postgresql-client patch && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
