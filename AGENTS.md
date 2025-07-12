@@ -353,8 +353,8 @@ The pipeline validates linting, type checks, tests and the Docker build.
 Repository owners may also launch the general build and unit test pipeline:
 
 1. Open **Actions → 🐳 Build & Test**.
-2. Click **Run workflow**. This job only executes when triggered by the
-   repository owner.
+2. Click **Run workflow**. The job executes only when `github.actor` matches
+   `github.repository_owner`.
    Docker repository and image names must be lowercase. The workflow
    automatically lowercases `${{ github.repository_owner }}` to satisfy this
    requirement.
