@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 import sys
+from types import ModuleType
 from pathlib import Path
-import types
+from typing import Iterator
+
+import asyncio
 import httpx
 import pytest
-import asyncio
+from pytest_httpx import HTTPXMock
 
 pytest.importorskip("pytest_httpx")
 
@@ -15,8 +18,8 @@ from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import M
 
 
 @pytest.fixture()
-def stub_adk(monkeypatch: pytest.MonkeyPatch):
-    mod = types.ModuleType("adk")
+def stub_adk(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    mod = ModuleType("adk")
 
     class Client:
         def generate(self, prompt: str) -> str:
@@ -31,8 +34,8 @@ def stub_adk(monkeypatch: pytest.MonkeyPatch):
 
 
 @pytest.fixture()
-def stub_mcp(monkeypatch: pytest.MonkeyPatch):
-    mod = types.ModuleType("mcp")
+def stub_mcp(monkeypatch: pytest.MonkeyPatch) -> Iterator[ModuleType]:
+    mod = ModuleType("mcp")
 
     class ClientSessionGroup:
         async def call_tool(self, name: str, args: dict[str, object]):
@@ -46,28 +49,28 @@ def stub_mcp(monkeypatch: pytest.MonkeyPatch):
     yield mod
 
 
-def test_adk_generate_text_success(httpx_mock, stub_adk):
+def test_adk_generate_text_success(httpx_mock: HTTPXMock, stub_adk: ModuleType) -> None:
     httpx_mock.add_response(url="https://adk.example/generate", json={"text": "ok"})
     adapter = ADKAdapter()
     result = adapter.generate_text("hi")
     assert result == "ok"
 
 
-def test_adk_generate_text_unreachable(httpx_mock, stub_adk):
+def test_adk_generate_text_unreachable(httpx_mock: HTTPXMock, stub_adk: ModuleType) -> None:
     httpx_mock.add_exception(httpx.ConnectError("offline"), url="https://adk.example/generate")
     adapter = ADKAdapter()
     with pytest.raises(httpx.HTTPError):
         adapter.generate_text("hi")
 
 
-def test_mcp_invoke_tool_success(httpx_mock, stub_mcp):
+def test_mcp_invoke_tool_success(httpx_mock: HTTPXMock, stub_mcp: ModuleType) -> None:
     httpx_mock.add_response(url="https://mcp.example/foo", json={"ok": True})
     adapter = MCPAdapter()
     result = asyncio.run(adapter.invoke_tool("foo", {"a": 1}))
     assert result == {"ok": True}
 
 
-def test_mcp_invoke_tool_unreachable(httpx_mock, stub_mcp):
+def test_mcp_invoke_tool_unreachable(httpx_mock: HTTPXMock, stub_mcp: ModuleType) -> None:
     httpx_mock.add_exception(httpx.ConnectError("offline"), url="https://mcp.example/foo")
     adapter = MCPAdapter()
     with pytest.raises(httpx.HTTPError):
