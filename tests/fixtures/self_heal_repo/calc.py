@@ -2,5 +2,5 @@
 
 
 def add(a: int, b: int) -> int:
-    """Return the sum of a and b, intentionally broken."""
-    return a - b
+    """Return the sum of a and b."""
+    return a + b
