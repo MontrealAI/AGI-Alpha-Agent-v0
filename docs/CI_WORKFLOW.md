@@ -30,6 +30,12 @@ GitHub Release.
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
 the repository root. Each `setup-node` step lists these paths explicitly via
-`cache-dependency-path`.
-If the workflow ever reports missing lock files, double‑check those paths
-in `.github/workflows/ci.yml` and adjust them if new packages are added.
+`cache-dependency-path`:
+
+```
+alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+alpha_factory_v1/core/interface/web_client/package-lock.json
+```
+
+If the workflow ever reports missing lock files, double‑check these paths
+in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
