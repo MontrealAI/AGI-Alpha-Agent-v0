@@ -599,6 +599,7 @@ if os.getenv("OPENAI_API_KEY") and not os.getenv("NO_LLM"):
 # =============================================================================
 from fastapi import FastAPI, WebSocket  # noqa: E402
 from contextlib import asynccontextmanager
+from collections.abc import AsyncGenerator
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 import uvicorn  # noqa: E402
 
@@ -615,7 +616,7 @@ loop_thread: Optional[threading.Thread] = None
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
+async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     global orch, loop_thread
     orch = Orchestrator()
     loop_thread = threading.Thread(target=orch.loop, daemon=True)

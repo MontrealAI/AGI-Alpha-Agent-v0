@@ -499,6 +499,7 @@ def run_api(args, fm: BaseProvider, db: LineageDB) -> None:
     try:
         from fastapi import FastAPI
         from contextlib import asynccontextmanager
+        from collections.abc import AsyncGenerator
         from fastapi.responses import JSONResponse
         import uvicorn
     except ImportError:
@@ -509,7 +510,7 @@ def run_api(args, fm: BaseProvider, db: LineageDB) -> None:
     state: Dict[str, Any] = {"best": None}
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI):
+    async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
         state["best"] = await evolutionary_search(
             fm,
             db,
