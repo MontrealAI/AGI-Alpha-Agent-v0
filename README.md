@@ -149,6 +149,12 @@ requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is
 present for the cache version check.
 
+To publish a release, create a Git tag and run the same workflow on that
+tag. The Docker job pushes the `agi-insight-demo` image to GitHub Container
+Registry while the deploy stage attaches the built web client archive to a
+GitHub release. If any later step fails the workflow automatically restores
+the previous `latest` tag to avoid shipping a broken image.
+
 ### Build & Test Workflow
 
 The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
