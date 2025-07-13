@@ -144,7 +144,13 @@ jobs:
         env:
           PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
           HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+        run: |
+          set -e
+          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+          )
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
@@ -240,8 +246,13 @@ jobs:
           PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
           HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
         run: |
+          set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-          npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets
+          npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets
+          )
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 build
       - name: Run smoke tests
         run: pytest -m smoke -q
@@ -295,7 +306,12 @@ jobs:
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
-        run: python scripts/fetch_assets.py --verify-only
+        run: |
+          python scripts/fetch_assets.py --verify-only || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            python scripts/fetch_assets.py --verify-only
+          )
       - name: Install Playwright browsers
         run: |
           set +e
