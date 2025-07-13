@@ -21,7 +21,18 @@ env:
   DOCKER_IMAGE: agi-insight-demo
 
 jobs:
+  owner-check:
+    name: "Verify owner"
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
+            echo "This workflow may only be run by the repository owner."
+            exit 1
+          fi
+
   lint-type:
+    needs: owner-check
     name: "🧹 Ruff + 🏷️ Mypy"
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
@@ -61,8 +72,8 @@ jobs:
         run: mypy --config-file mypy.ini
 
   tests:
+    needs: [owner-check, lint-type]
     name: "✅ Pytest"
-    needs: lint-type
     runs-on: ubuntu-latest
     environment: ci-on-demand
     strategy:
@@ -159,7 +170,7 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
-    needs: lint-type
+    needs: [owner-check, lint-type]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -196,7 +207,7 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
-    needs: lint-type
+    needs: [owner-check, lint-type]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -213,7 +224,7 @@ jobs:
 
   docs-build:
     name: "📚 Docs Build"
-    needs: tests
+    needs: [owner-check, tests]
     runs-on: ubuntu-latest
     env:
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
@@ -263,7 +274,7 @@ jobs:
 
   docker:
     name: "🐳 Docker build"
-    needs: tests
+    needs: [owner-check, tests]
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
@@ -305,7 +316,7 @@ jobs:
   deploy:
     if: github.actor == github.repository_owner && startsWith(github.ref, 'refs/tags/')
     name: "📦 Deploy"
-    needs: docker
+    needs: [owner-check, docker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
