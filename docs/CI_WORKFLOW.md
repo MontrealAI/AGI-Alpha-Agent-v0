@@ -45,6 +45,12 @@ alpha_factory_v1/core/interface/web_client/package-lock.json
 If the workflow ever reports missing lock files, double‑check these paths
 in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
 
+The docs and test jobs fetch the Pyodide runtime and GPT‑2 model files from
+external mirrors. When these assets update upstream the checksum verification
+fails. The workflow automatically reruns `scripts/update_pyodide.py` to refresh
+the expected hashes and retries the download so CI keeps running even if the
+mirrored files change.
+
 Before submitting changes to the workflow run:
 
 ```bash
