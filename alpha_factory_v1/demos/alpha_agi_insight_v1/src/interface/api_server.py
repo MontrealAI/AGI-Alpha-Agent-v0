@@ -50,6 +50,7 @@ _IMPORT_ERROR: Exception | None
 try:
     from fastapi import FastAPI, HTTPException, WebSocket, Request, Depends
     from contextlib import asynccontextmanager
+    from collections.abc import AsyncGenerator
     from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
     from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
     from starlette.responses import (
@@ -83,7 +84,7 @@ if app is not None:
     app_f.state.task = None
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI):
+    async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
         orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
         app_f.state.orchestrator = orch_mod.Orchestrator()
         app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())

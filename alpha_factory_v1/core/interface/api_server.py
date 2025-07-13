@@ -98,6 +98,7 @@ try:
     from starlette.responses import Response, PlainTextResponse
     from fastapi.staticfiles import StaticFiles
     from contextlib import asynccontextmanager
+    from collections.abc import AsyncGenerator
     from pydantic import BaseModel, ConfigDict
     import uvicorn
     from .problem_json import problem_response
@@ -251,7 +252,7 @@ if app is not None:
     app_f.state.orch_task = None
 
     @asynccontextmanager
-    async def lifespan(app_f: FastAPI):
+    async def lifespan(app_f: FastAPI) -> AsyncGenerator[None, None]:
         _log.warning(DISCLAIMER)
         if API_TOKEN == "REPLACE_ME_TOKEN":
             _log.error("API_TOKEN is set to the default 'REPLACE_ME_TOKEN'. " "Edit .env to use a strong secret.")
