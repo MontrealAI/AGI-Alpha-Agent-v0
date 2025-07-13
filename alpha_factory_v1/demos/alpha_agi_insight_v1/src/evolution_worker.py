@@ -55,6 +55,7 @@ class MutationResponse(BaseModel):  # type: ignore[misc]
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
+    """Prepare runtime storage and clean up on shutdown."""
     STORAGE_PATH.mkdir(parents=True, exist_ok=True)
     yield
 
