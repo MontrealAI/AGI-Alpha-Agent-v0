@@ -141,9 +141,8 @@ manually from the GitHub UI.
 The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
 tests and container builds. Open **Actions → 🐳 Build & Test** and click
 **Run workflow** to start the pipeline. Only the repository owner can run this
-workflow. The job requires a manual dispatch and verifies both
-`github.event_name == 'workflow_dispatch'` and
-`github.actor == github.repository_owner` before executing.
+workflow. A small *owner-check* step at the start of the workflow exits early if
+someone else triggers it, keeping the rest of the jobs from being skipped.
 
 Docker image tags must use all lowercase characters. The workflow's
 "Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
