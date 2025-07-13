@@ -27,6 +27,9 @@ GitHub Release.
 - **🐳 Docker build** – builds and tests the demo image.
 - **📦 Deploy** – pushes the image and release assets on tags.
 
-Caching for Python and Node dependencies is enabled. If the workflow complains
-about missing lock files, verify the paths listed under `cache-dependency-path`
-match the location of each `package-lock.json`.
+Caching for Python and Node dependencies is enabled. The project stores
+`package-lock.json` files under the demo and web client folders rather than at
+the repository root. Each `setup-node` step lists these paths explicitly via
+`cache-dependency-path`.
+If the workflow ever reports missing lock files, double‑check those paths
+in `.github/workflows/ci.yml` and adjust them if new packages are added.
