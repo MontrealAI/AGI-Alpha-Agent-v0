@@ -25,4 +25,7 @@ if [[ -n "${WHEELHOUSE:-}" ]]; then
     env_opts=(--wheelhouse "$WHEELHOUSE")
 fi
 
-python check_env.py --auto-install "${env_opts[@]}"
+if ! python check_env.py --auto-install "${env_opts[@]}"; then
+    echo "Environment check failed. Run 'python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse \"$WHEELHOUSE\"}' and try again." >&2
+    exit 1
+fi

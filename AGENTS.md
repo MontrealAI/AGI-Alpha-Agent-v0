@@ -278,6 +278,7 @@ for modules, classes and functions.
 
 ```bash
 pre-commit install
+python check_env.py --auto-install   # add --wheelhouse <dir> when offline
 pre-commit run --all-files   # run once after installation
 pre-commit run --files <paths>   # before each commit
 ```
