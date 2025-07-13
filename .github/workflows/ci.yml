@@ -109,8 +109,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
+            ./alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            ./alpha_factory_v1/core/interface/web_client/package-lock.json
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
