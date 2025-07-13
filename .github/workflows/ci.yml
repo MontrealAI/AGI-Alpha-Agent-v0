@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
@@ -72,11 +73,12 @@ jobs:
         run: mypy --config-file mypy.ini
 
   tests:
-    needs: [owner-check, lint-type]
+    needs: owner-check
     name: "✅ Pytest"
     runs-on: ubuntu-latest
     environment: ci-on-demand
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
@@ -170,7 +172,7 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
-    needs: [owner-check, lint-type]
+    needs: owner-check
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -211,7 +213,7 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
-    needs: [owner-check, lint-type]
+    needs: owner-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
