@@ -14,7 +14,8 @@ import shutil
 import tarfile
 import tempfile
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
+from collections.abc import AsyncGenerator
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from contextlib import asynccontextmanager
@@ -53,7 +54,7 @@ class MutationResponse(BaseModel):  # type: ignore[misc]
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
+async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     STORAGE_PATH.mkdir(parents=True, exist_ok=True)
     yield
 
