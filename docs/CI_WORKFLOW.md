@@ -33,9 +33,9 @@ previous `latest` image so production always points at a working build.
 
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
- the repository root. Each `setup-node` step, including the test matrix,
- lists these paths explicitly via
-`cache-dependency-path`:
+ the repository root. The workflow defines these paths once in the
+`NODE_LOCKFILES` environment variable so each `setup-node` step
+passes the same list via `cache-dependency-path`:
 
 ```
 alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json

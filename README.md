@@ -123,8 +123,9 @@ to reference
 `alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json`
 and `alpha_factory_v1/core/interface/web_client/package-lock.json` so repeat runs
 skip redundant downloads and avoid the “Dependencies lock file is not found”
-warning. `ci.yml` applies the same paths for the tests, docs-build and Docker
-jobs. It
+warning. `ci.yml` stores these paths in the `NODE_LOCKFILES` environment
+variable so every `setup-node` step uses the same list. It
+applies the same paths for the tests, docs-build and Docker jobs. It
 preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
 passes without network hiccups. During the run it also updates the
 `browserslist` cache inside
