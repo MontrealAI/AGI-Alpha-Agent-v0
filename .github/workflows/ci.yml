@@ -42,14 +42,14 @@ jobs:
       matrix:
         python-version: ["3.11"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/setup-python@v5.1.0 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
       - name: Cache pre-commit
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -83,8 +83,8 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/setup-python@v5.1.0 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -101,7 +101,7 @@ jobs:
           python check_env.py --auto-install --demo macro_sentinel
       - name: Build sandbox image
         run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -150,7 +150,7 @@ jobs:
           cat tests/benchmarks/latest.json
       - name: Upload benchmark results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
         with:
           name: benchmark-results
           path: tests/benchmarks/latest.json
@@ -165,13 +165,13 @@ jobs:
           PY
       - name: Comment benchmark
         if: ${{ github.event.pull_request }}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v2 # 52423e01640425a022ef5fd42c6fb5f633a02728
         with:
           header: benchmark
           path: bench.txt
       - name: Upload coverage
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
         with:
           name: coverage-xml
           path: coverage.xml
@@ -181,8 +181,8 @@ jobs:
     needs: owner-check
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/setup-python@v5.1.0 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
         with:
           python-version: '3.11'
           cache: pip
@@ -192,7 +192,7 @@ jobs:
           pip install -r requirements.lock
           pip install -r requirements-dev.txt
           pip install pytest
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -217,8 +217,8 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/setup-python@v5.1.0 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
         with:
           python-version: '3.12'
           cache: pip
@@ -238,12 +238,12 @@ jobs:
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/setup-python@v5.1.0 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
         with:
           python-version: '3.12'
           cache: pip
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -285,10 +285,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -312,7 +312,7 @@ jobs:
         run: |
           tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
           sha256sum web-client.tar.gz > web-client.sha256
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
         if: startsWith(github.ref, 'refs/tags/')
         with:
           name: web-client
@@ -342,11 +342,11 @@ jobs:
     needs: [owner-check, docker]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v3.1.0 # e92390c5fb421da1463c202d546fed0ec5c39f20
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -363,7 +363,7 @@ jobs:
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.1.7 # 65a9edc5881444af0b9093a5e628f2fe47ea3b2e
         with:
           name: web-client
       - name: Verify web client artifact
@@ -371,7 +371,7 @@ jobs:
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
         with:
           files: web-client.tar.gz
       - name: Rollback on failure
