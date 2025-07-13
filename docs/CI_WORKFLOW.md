@@ -52,3 +52,12 @@ pre-commit run --files .github/workflows/ci.yml
 ```
 
 This lints the YAML and pins action versions so the pipeline stays reproducible.
+
+## Avoid skipped jobs
+
+Each job declares its dependencies via the `needs:` field. When the workflow runs
+the *owner-check* job completes first. All other jobs start in parallel as soon
+as their prerequisites succeed. A failure in linting or tests deliberately stops
+the Docker build and deploy stages. If a job unexpectedly shows as skipped, first
+check whether one of its dependencies failed earlier in the run. With the lock
+file paths fixed, all jobs should execute when tests pass.
