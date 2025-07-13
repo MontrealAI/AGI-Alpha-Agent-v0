@@ -114,6 +114,11 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
+      - name: Fetch insight browser assets
+        env:
+          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
+          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
