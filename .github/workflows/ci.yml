@@ -20,6 +20,9 @@ concurrency:
 
 env:
   DOCKER_IMAGE: agi-insight-demo
+  NODE_LOCKFILES: |
+    alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+    alpha_factory_v1/core/interface/web_client/package-lock.json
 
 jobs:
   owner-check:
@@ -109,9 +112,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
@@ -202,9 +203,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -259,9 +258,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - name: Install docs requirements
@@ -305,9 +302,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Audit insight browser dependencies
