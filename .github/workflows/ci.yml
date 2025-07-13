@@ -149,6 +149,7 @@ jobs:
           pytest tests/test_benchmark.py -q
           cat tests/benchmarks/latest.json
       - name: Upload benchmark results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
@@ -169,6 +170,7 @@ jobs:
           header: benchmark
           path: bench.txt
       - name: Upload coverage
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-xml
