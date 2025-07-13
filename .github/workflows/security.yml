@@ -33,6 +33,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+          cache-dependency-path: 'requirements.lock'
 
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
