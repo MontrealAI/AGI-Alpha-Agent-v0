@@ -138,6 +138,10 @@ manually from the GitHub UI. An initial *owner-check* step exits immediately if
 anyone else dispatches the job, ensuring the pipeline fails fast rather than
 skipping stages. This guarantees that when the owner runs the workflow every
 job executes.
+Dependency hashes are fully locked, including `setuptools`, so `pip install -r
+requirements.lock` succeeds across Python versions. The Windows smoke job now
+builds the Insight browser before running tests, ensuring the service worker is
+present for the cache version check.
 
 ### Build & Test Workflow
 
