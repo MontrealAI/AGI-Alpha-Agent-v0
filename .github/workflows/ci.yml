@@ -192,16 +192,11 @@ jobs:
           pip install -r requirements.lock
           pip install -r requirements-dev.txt
           pip install pytest
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: windows-npm-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
-          restore-keys: |
-            windows-npm-
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
