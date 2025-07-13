@@ -52,7 +52,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+          cache-dependency-path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            alpha_factory_v1/core/interface/web_client/package-lock.json
 
       - name: Cache pre-commit
         uses: actions/cache@v4

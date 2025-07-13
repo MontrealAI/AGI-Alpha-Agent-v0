@@ -39,7 +39,9 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
-          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+          cache-dependency-path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            alpha_factory_v1/core/interface/web_client/package-lock.json
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
         env:
