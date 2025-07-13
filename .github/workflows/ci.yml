@@ -104,6 +104,7 @@ jobs:
           python check_env.py --auto-install --demo macro_sentinel
       - name: Build sandbox image
         run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
+      # Install Node.js and cache dependencies using both lockfiles
       - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'
