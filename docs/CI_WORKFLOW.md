@@ -17,6 +17,10 @@ When invoked on a tagged commit the pipeline also builds and publishes a Docker
 image to GHCR and uploads the prebuilt web client bundle to the corresponding
 GitHub Release.
 
+The deploy step tags the new container with both the release tag and `latest`.
+If any command fails after pushing, the workflow rolls back by re-tagging the
+previous `latest` image so production always points at a working build.
+
 ## Job overview
 
 - **🧹 Ruff + 🏷️ Mypy** – lint and type checks.
