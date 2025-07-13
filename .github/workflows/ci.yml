@@ -303,6 +303,18 @@ jobs:
         run: |
           make build_web
           test -f alpha_factory_v1/core/interface/web_client/dist/index.html
+      - name: Archive web client dist
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
+          sha256sum web-client.tar.gz > web-client.sha256
+      - uses: actions/upload-artifact@v4
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: web-client
+          path: |
+            web-client.tar.gz
+            web-client.sha256
       - name: Accessibility audit
         run: |
           npx --yes @axe-core/cli alpha_factory_v1/core/interface/web_client/dist/index.html --score > axe.json
@@ -347,18 +359,13 @@ jobs:
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-      - name: Type check insight browser
-        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
-      - name: Build web client
-        run: make build_web
-      - name: Pack release assets
-        run: tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
+          name: web-client
+      - name: Verify web client artifact
+        run: sha256sum -c web-client.sha256
+      - name: Prepare release assets
+        run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
         with:
