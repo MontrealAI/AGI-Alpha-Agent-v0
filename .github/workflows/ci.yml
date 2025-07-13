@@ -47,6 +47,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+          cache-dependency-path: 'requirements.lock'
 
       - name: Cache pre-commit
         uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
@@ -89,6 +90,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+          cache-dependency-path: 'requirements.lock'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -188,6 +190,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+          cache-dependency-path: 'requirements.lock'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -227,6 +230,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: 'requirements.lock'
       - name: Install docs requirements
         run: |
           python -m pip install --upgrade pip
@@ -249,6 +253,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: 'requirements.lock'
       - uses: actions/setup-node@v4.0.2 # 60edb5dd545a775178f52524783378180af0d1f8
         with:
           node-version-file: '.nvmrc'

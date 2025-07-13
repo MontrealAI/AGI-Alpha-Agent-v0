@@ -38,6 +38,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
+          cache-dependency-path: 'requirements.lock'
 
       # Docker requires lowercase repository names. Convert the repository
       # owner to lowercase so image tags remain valid even when the GitHub
