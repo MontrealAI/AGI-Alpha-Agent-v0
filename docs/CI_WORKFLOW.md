@@ -29,7 +29,8 @@ GitHub Release.
 
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
-the repository root. Each `setup-node` step lists these paths explicitly via
+ the repository root. Each `setup-node` step, including the test matrix,
+ lists these paths explicitly via
 `cache-dependency-path`:
 
 ```
