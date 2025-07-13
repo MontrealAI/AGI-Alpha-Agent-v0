@@ -57,6 +57,7 @@ Install the git hooks once and run them before each commit:
 
 ```bash
 pre-commit install
+python check_env.py --auto-install  # add --wheelhouse <dir> when offline
 pre-commit run --all-files
 ```
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
