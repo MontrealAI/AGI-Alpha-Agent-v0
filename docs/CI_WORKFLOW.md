@@ -44,3 +44,11 @@ alpha_factory_v1/core/interface/web_client/package-lock.json
 
 If the workflow ever reports missing lock files, double‑check these paths
 in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
+
+Before submitting changes to the workflow run:
+
+```bash
+pre-commit run --files .github/workflows/ci.yml
+```
+
+This lints the YAML and pins action versions so the pipeline stays reproducible.
