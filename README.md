@@ -118,8 +118,13 @@ Insight archive stays under 500 MiB (with a 750 MiB hard cap). Open **Actions 
 **Run workflow** to start the check. Repository owners can leave `run_token`
 blank. Others must provide the `run_token` that matches the `DISPATCH_TOKEN`
 secret. The workflow caches pip and npm dependencies using
-`actions/setup-python` and `actions/setup-node`, keyed by `requirements.lock` and
-the browser `package-lock.json`, so repeat runs skip redundant downloads. It
+`actions/setup-python` and `actions/setup-node`. Node uses `cache-dependency-path`
+to reference
+`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json`
+and `alpha_factory_v1/core/interface/web_client/package-lock.json` so repeat runs
+skip redundant downloads and avoid the “Dependencies lock file is not found”
+warning. `ci.yml` applies the same paths for the tests, docs-build and Docker
+jobs. It
 preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
 passes without network hiccups. During the run it also updates the
 `browserslist` cache inside
