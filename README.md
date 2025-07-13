@@ -139,10 +139,10 @@ The [🚀 CI](.github/workflows/ci.yml) job verifies the Insight demo with
 linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI —
 Insight Demo** and click **Run workflow** to dispatch the pipeline. This
 workflow has no automatic triggers; only the repository owner can launch it
-manually from the GitHub UI. An initial *owner-check* step exits immediately if
-anyone else dispatches the job, ensuring the pipeline fails fast rather than
-skipping stages. This guarantees that when the owner runs the workflow every
-job executes.
+manually from the GitHub UI. An initial *owner-check* job prints a notice and
+exits successfully when someone else dispatches the workflow. All subsequent
+stages include the same condition so non‑owner runs finish quickly without
+executing the heavy jobs. When the owner launches the workflow every job runs.
 Dependency hashes are fully locked, including `setuptools`, so `pip install -r
 requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is
