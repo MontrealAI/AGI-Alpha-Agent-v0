@@ -26,16 +26,14 @@ env:
 
 jobs:
   owner-check:
-    name: "Verify owner"
+    name: "Verify repository owner"
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ github.actor != github.repository_owner }}
-        run: |
-          echo "Skipping because ${{ github.actor }} is not the repository owner."
-          exit 0
+      - name: Verify repository owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: echo "Only the repository owner can run this workflow." && exit 1
 
   lint-type:
-    if: ${{ github.actor == github.repository_owner }}
     needs: owner-check
     name: "🧹 Ruff + 🏷️ Mypy"
     runs-on: ubuntu-latest
@@ -78,7 +76,6 @@ jobs:
         run: mypy --config-file mypy.ini
 
   tests:
-    if: ${{ github.actor == github.repository_owner }}
     needs: owner-check
     name: "✅ Pytest"
     runs-on: ubuntu-latest
@@ -182,7 +179,6 @@ jobs:
           path: coverage.xml
 
   windows-smoke:
-    if: ${{ github.actor == github.repository_owner }}
     name: "Windows Smoke"
     needs: owner-check
     runs-on: windows-latest
@@ -220,7 +216,6 @@ jobs:
         run: pytest -m smoke -q
 
   docs-check:
-    if: ${{ github.actor == github.repository_owner }}
     name: "📜 MkDocs"
     needs: owner-check
     runs-on: ubuntu-latest
@@ -239,7 +234,6 @@ jobs:
         run: mkdocs build --strict
 
   docs-build:
-    if: ${{ github.actor == github.repository_owner }}
     name: "📚 Docs Build"
     needs: [owner-check, tests]
     runs-on: ubuntu-latest
@@ -289,7 +283,6 @@ jobs:
           kill "$SERVER_PID"
 
   docker:
-    if: ${{ github.actor == github.repository_owner }}
     name: "🐳 Docker build"
     needs: [owner-check, tests]
     runs-on: ubuntu-latest
@@ -345,7 +338,7 @@ jobs:
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
 
   deploy:
-    if: github.actor == github.repository_owner && startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/')
     name: "📦 Deploy"
     needs: [owner-check, docker]
     runs-on: ubuntu-latest
