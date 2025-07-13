@@ -149,9 +149,14 @@ requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is
 present for the cache version check. See
 [CI_WORKFLOW.md](docs/CI_WORKFLOW.md) for a detailed job overview.
-All Node.js steps pin the same lockfiles via
-`cache-dependency-path` so `actions/setup-node` caches npm packages correctly
-and avoids "Dependencies lock file is not found" warnings.
+All Node.js steps pin the same lockfiles via `cache-dependency-path` so
+`actions/setup-node` caches npm packages correctly and avoids "Dependencies lock
+file is not found" warnings. The paths are:
+
+```
+alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+alpha_factory_v1/core/interface/web_client/package-lock.json
+```
 
 To publish a release, create a Git tag and run the same workflow on that
 tag. The Docker job pushes the `agi-insight-demo` image to GitHub Container
