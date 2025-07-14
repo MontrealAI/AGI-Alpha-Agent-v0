@@ -135,17 +135,6 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
-      - name: Fetch insight browser assets
-        env:
-          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-        run: |
-          set -e
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          )
       - name: Update browserslist database
         run: npx update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
@@ -176,17 +165,6 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key.outputs.key }}
           restore-keys: assets-
-      - name: Fetch insight browser assets
-        env:
-          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-        run: |
-          set -e
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          )
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
