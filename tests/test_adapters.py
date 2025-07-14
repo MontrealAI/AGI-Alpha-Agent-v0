@@ -7,7 +7,7 @@ import importlib
 import pytest
 
 # Stub generated proto dependency if missing
-_stub_path = "alpha_factory_v1.common.utils.a2a_pb2"
+_stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
 if _stub_path not in sys.modules:
     stub = types.ModuleType("a2a_pb2")
 

@@ -27,7 +27,12 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 
     Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
-    Envelope: TypeAlias = Any
+    try:
+        from alpha_factory_v1.core.utils import a2a_pb2 as pb
+
+        Envelope: TypeAlias = pb.Envelope  # type: ignore
+    except Exception:  # pragma: no cover - optional proto
+        Envelope: TypeAlias = Any
 
 
 class EnvelopeLike(Protocol):
