@@ -109,6 +109,11 @@ repository owner must trigger it manually from the GitHub Actions page:
 1. Open **Actions → 🚀 CI — Insight Demo**.
 2. Click **Run workflow** to start the pipeline.
 
+Remember to lint workflow edits:
+```bash
+pre-commit run --files .github/workflows/ci.yml
+```
+
 The job runs only when `github.actor` equals `github.repository_owner`, so other
 contributors cannot execute it unless the owner grants them explicit
 permissions or dispatches the workflow on their behalf.
