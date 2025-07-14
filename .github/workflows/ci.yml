@@ -145,6 +145,8 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
           )
+      - name: Verify insight assets
+        run: python scripts/fetch_assets.py --verify-only
       - name: Update browserslist database
         run: npx update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
@@ -254,6 +256,7 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets
           )
+          python scripts/fetch_assets.py --verify-only
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 build
       - name: Run smoke tests
         run: pytest -m smoke -q
@@ -413,6 +416,8 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
           )
+      - name: Verify insight assets
+        run: python scripts/fetch_assets.py --verify-only
       - name: Detect Pyodide changes
         id: pyodide-diff-docker
         run: |
