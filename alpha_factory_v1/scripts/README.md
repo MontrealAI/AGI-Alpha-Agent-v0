@@ -94,6 +94,21 @@ When any checksum in ``scripts/fetch_assets.py`` changes, execute
 ``python scripts/generate_build_manifest.py`` so
 ``build_assets.json`` stays in sync.
 
+### Updating Browser Assets
+
+When upgrading the Pyodide runtime run the helper then verify the
+downloads:
+
+```bash
+python scripts/update_pyodide.py 0.28.0
+python scripts/fetch_assets.py --verify-only
+```
+
+This refreshes the checksum values in ``scripts/fetch_assets.py`` and
+regenerates ``build_assets.json``. Run ``pre-commit`` and commit the
+updated ``fetch_assets.py`` and manifest so the browser demo continues to
+build reproducibly.
+
 ---
 
 ## Offline Setup
