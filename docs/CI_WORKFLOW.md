@@ -10,8 +10,9 @@ repository owner triggers it from the GitHub Actions UI.
 
 1. Navigate to **Actions → 🚀 CI**.
 2. Choose the branch or tag in the drop‑down and click **Run workflow**.
-3. Ensure you are the repository owner; non‑owners exit immediately after the
-   initial *owner-check* job.
+3. Ensure you are the repository owner; each job begins by verifying that
+   `github.actor` matches `github.repository_owner` and exits early for
+   non‑owners.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
 image to GHCR and uploads the prebuilt web client bundle to the corresponding
@@ -61,9 +62,11 @@ This lints the YAML and pins action versions so the pipeline stays reproducible.
 
 ## Avoid skipped jobs
 
-Each job declares its dependencies via the `needs:` field. When the workflow runs
-the *owner-check* job completes first. All other jobs start in parallel as soon
-as their prerequisites succeed. A failure in linting or tests deliberately stops
-the Docker build and deploy stages. If a job unexpectedly shows as skipped, first
-check whether one of its dependencies failed earlier in the run. With the lock
-file paths fixed, all jobs should execute when tests pass.
+Each job declares its dependencies via the `needs:` field and begins with an
+owner verification step. Jobs exit immediately when `github.actor` does not
+match `github.repository_owner`, so there is no separate *owner-check* stage.
+Once prerequisites succeed the remaining jobs run in parallel. A failure in
+linting or tests deliberately stops the Docker build and deploy stages. If a
+job unexpectedly shows as skipped, first check whether one of its dependencies
+failed earlier in the run. With the lock file paths fixed, all jobs should
+execute when tests pass.

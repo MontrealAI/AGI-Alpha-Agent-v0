@@ -141,10 +141,9 @@ linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI 
 Insight Demo**, select the branch or tag to test in the drop‑down and click
 **Run workflow** to dispatch the pipeline. This
 workflow has no automatic triggers; only the repository owner can launch it
-manually from the GitHub UI. An initial *owner-check* job prints a notice and
-exits successfully when someone else dispatches the workflow. All subsequent
-stages include the same condition so non‑owner runs finish quickly without
-executing the heavy jobs. When the owner launches the workflow every job runs.
+manually from the GitHub UI. Each job begins by verifying the actor matches the
+repository owner, so non‑owners exit immediately before running the heavy
+steps. When the owner launches the workflow every job runs.
 Dependency hashes are fully locked, including `setuptools`, so `pip install -r
 requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is
@@ -170,8 +169,8 @@ the previous `latest` tag to avoid shipping a broken image.
 The [🐳 Build & Test](.github/workflows/build-and-test.yml) job runs linting,
 tests and container builds. Open **Actions → 🐳 Build & Test** and click
 **Run workflow** to start the pipeline. Only the repository owner can run this
-workflow. A small *owner-check* step at the start of the workflow exits early if
-someone else triggers it, keeping the rest of the jobs from being skipped.
+workflow. Each job verifies the actor first and exits immediately for
+non‑owners, keeping the rest of the jobs from being skipped.
 
 Docker image tags must use all lowercase characters. The workflow's
 "Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
