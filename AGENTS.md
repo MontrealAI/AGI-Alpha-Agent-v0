@@ -23,6 +23,8 @@ Please report security vulnerabilities as described in our [Security Policy](SEC
 - Git
 - Node.js 20 for the web client and browser demo. A `.nvmrc` is provided, so run
   `nvm use` before installing Node dependencies.
+- See [Updating Browser Assets](alpha_factory_v1/scripts/README.md#updating-browser-assets)
+  for instructions on refreshing the Pyodide runtime used by the Insight Browser demo.
 - Keep `package-lock.json` under version control so `npm ci` reproduces the same
   dependency tree.
 - The project expects `pre-commit` **4.2.0**. CI installs the same version with
