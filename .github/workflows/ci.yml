@@ -240,7 +240,7 @@ jobs:
           PY
       - name: Comment benchmark
         if: ${{ github.event.pull_request }}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v2 # 52423e01640425a022ef5fd42c6fb5f633a02728
         with:
           header: benchmark
           path: bench.txt
@@ -483,7 +483,7 @@ jobs:
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v3 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -508,7 +508,7 @@ jobs:
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
         with:
           files: web-client.tar.gz
       - name: Rollback on failure
