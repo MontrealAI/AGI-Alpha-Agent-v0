@@ -86,7 +86,7 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -112,6 +112,8 @@ jobs:
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Update browserslist database
+        run: npx update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Compute asset cache key
@@ -248,6 +250,7 @@ jobs:
         run: |
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npx update-browserslist-db@latest --agree-to-terms
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
@@ -263,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5 # 82c7e631bb3cdc910f68e0081d67478d79c6982d
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
@@ -345,6 +348,8 @@ jobs:
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Update browserslist database
+        run: npx update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Run insight browser tests
