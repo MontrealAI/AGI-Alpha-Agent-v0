@@ -217,6 +217,7 @@ jobs:
     name: "Windows Smoke"
     needs: [tests]
     runs-on: windows-latest
+    environment: ci-on-demand
     steps:
       - uses: ./.github/actions/ensure-owner
       - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
@@ -261,6 +262,7 @@ jobs:
     name: "📜 MkDocs"
     needs: [tests]
     runs-on: ubuntu-latest
+    environment: ci-on-demand
     steps:
       - uses: ./.github/actions/ensure-owner
       - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
