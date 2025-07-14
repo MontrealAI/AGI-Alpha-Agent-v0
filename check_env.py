@@ -464,7 +464,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 missing_optional.append(pkg)
             else:
                 missing_required.append(pkg)
-        elif pkg == "openai_agents":
+        elif pkg in {"openai_agents", "agents"}:
             openai_agents_found = True
     missing = missing_required + missing_optional
     if missing:
