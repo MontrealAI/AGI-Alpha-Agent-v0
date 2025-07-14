@@ -37,7 +37,7 @@ jobs:
       matrix:
         python-version: ["3.11"]
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -80,7 +80,7 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -189,7 +189,7 @@ jobs:
           cat tests/benchmarks/latest.json
       - name: Upload benchmark results
         if: always()
-        uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
+        uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: benchmark-results
           path: tests/benchmarks/latest.json
@@ -210,7 +210,7 @@ jobs:
           path: bench.txt
       - name: Upload coverage
         if: always()
-        uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
+        uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: coverage-xml
           path: coverage.xml
@@ -221,7 +221,7 @@ jobs:
     runs-on: windows-latest
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -267,7 +267,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -294,7 +294,7 @@ jobs:
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -366,7 +366,7 @@ jobs:
       pull-requests: write
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
@@ -450,7 +450,7 @@ jobs:
         run: |
           tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
           sha256sum web-client.tar.gz > web-client.sha256
-      - uses: actions/upload-artifact@v4.3.2 # 1746f4ab65b179e0ea60a494b83293b640dd5bba
+      - uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
         if: startsWith(github.ref, 'refs/tags/')
         with:
           name: web-client
@@ -481,7 +481,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
@@ -503,7 +503,7 @@ jobs:
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-      - uses: actions/download-artifact@v4.1.7 # 65a9edc5881444af0b9093a5e628f2fe47ea3b2e
+      - uses: actions/download-artifact@v4.3.0 # d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: web-client
       - name: Verify web client artifact
