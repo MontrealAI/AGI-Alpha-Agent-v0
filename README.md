@@ -171,6 +171,8 @@ tests and container builds. Open **Actions → 🐳 Build & Test** and click
 **Run workflow** to start the pipeline. Only the repository owner can run this
 workflow. Each job verifies the actor first and exits immediately for
 non‑owners, keeping the rest of the jobs from being skipped.
+See [ADMIN_ACTIONS.md](docs/ADMIN_ACTIONS.md) for details on the manual
+workflow restrictions and protected environments.
 
 Docker image tags must use all lowercase characters. The workflow's
 "Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
