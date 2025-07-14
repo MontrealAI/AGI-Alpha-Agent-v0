@@ -290,6 +290,8 @@ jobs:
     name: "📚 Docs Build"
     needs: [tests]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     environment: ci-on-demand
     env:
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
@@ -325,6 +327,23 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             python scripts/fetch_assets.py --verify-only
           )
+      - name: Detect Pyodide changes
+        id: pyodide-diff-docs
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Create Pyodide update PR
+        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update Pyodide asset hashes"
+          title: "chore: update Pyodide asset hashes"
+          branch: pyodide-update-${{ github.run_id }}
+          delete-branch: true
       - name: Install Playwright browsers
         run: |
           set +e
@@ -346,6 +365,8 @@ jobs:
     name: "🐳 Docker build"
     needs: [tests]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     environment: ci-on-demand
     steps:
       - uses: ./.github/actions/ensure-owner
@@ -398,6 +419,23 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
           )
+      - name: Detect Pyodide changes
+        id: pyodide-diff-docker
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Create Pyodide update PR
+        if: steps.pyodide-diff-docker.outputs.changed == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update Pyodide asset hashes"
+          title: "chore: update Pyodide asset hashes"
+          branch: pyodide-update-${{ github.run_id }}
+          delete-branch: true
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Run insight browser tests
