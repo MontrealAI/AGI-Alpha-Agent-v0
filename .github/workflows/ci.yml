@@ -70,6 +70,7 @@ jobs:
 
   tests:
     name: "✅ Pytest"
+    needs: [lint-type]
     runs-on: ubuntu-latest
     environment: ci-on-demand
     strategy:
@@ -212,10 +213,11 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
+    needs: [tests]
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
+      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.11'
@@ -255,10 +257,11 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
+      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
