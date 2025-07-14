@@ -474,6 +474,7 @@ jobs:
     name: "📦 Deploy"
     needs: [docker]
     runs-on: ubuntu-latest
+    environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
       - uses: ./.github/actions/ensure-owner
