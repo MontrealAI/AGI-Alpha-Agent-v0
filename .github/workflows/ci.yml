@@ -34,8 +34,12 @@ jobs:
     name: "Verify owner"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Ensure repository owner
+        run: |
+          if [ "$GITHUB_ACTOR" != "$GITHUB_REPOSITORY_OWNER" ]; then
+            echo "Only the repository owner can run this workflow."
+            exit 1
+          fi
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy"
