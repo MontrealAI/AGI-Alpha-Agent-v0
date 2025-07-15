@@ -30,21 +30,8 @@ env:
 
 jobs:
 
-  owner-check:
-    name: "Verify owner"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Ensure repository owner
-        run: |
-          if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
-            echo "Only the repository owner can run this workflow."
-            exit 1
-          fi
-
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy"
-    needs: owner-check
     runs-on: ubuntu-latest
     environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
     strategy:
@@ -53,6 +40,7 @@ jobs:
         python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
@@ -95,6 +83,7 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
@@ -242,6 +231,7 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.11'
@@ -311,6 +301,7 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -342,6 +333,7 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -417,6 +409,7 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: ./.github/actions/ensure-owner
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -539,6 +532,8 @@ jobs:
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
         run: echo "Deployment runs only on tags" && exit 0
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      - uses: ./.github/actions/ensure-owner
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
       - name: Compute repo_owner_lower
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
