@@ -77,7 +77,7 @@ jobs:
       - name: Install Web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database
-        run: npx update-browserslist-db@latest --update-db --yes
+        run: npx --yes update-browserslist-db@latest --update-db --yes
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
         env:
