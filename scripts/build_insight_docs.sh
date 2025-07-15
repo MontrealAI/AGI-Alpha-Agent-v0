@@ -37,7 +37,7 @@ fi
 # Fetch WASM assets then install Node dependencies and build the browser bundle
 npm --prefix "$BROWSER_DIR" run fetch-assets
 npm --prefix "$BROWSER_DIR" ci
-npx --prefix "$BROWSER_DIR" update-browserslist-db@latest --update-db --yes
+npx --prefix "$BROWSER_DIR" --yes update-browserslist-db@latest --update-db --yes
 npm --prefix "$BROWSER_DIR" run build:dist
 
 # Refresh docs directory with the new bundle while preserving all
