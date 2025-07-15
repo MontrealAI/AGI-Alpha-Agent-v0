@@ -154,10 +154,8 @@ jobs:
         run: python scripts/fetch_assets.py --verify-only
       - name: Update browserslist database
         run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 \
-            update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client \
-            update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Run insight browser tests
@@ -351,10 +349,8 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database
         run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 \
-            update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client \
-            update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
@@ -419,10 +415,8 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database
         run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 \
-            update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client 
-            update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
+          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Compute asset cache key
         id: asset-key-docker
         run: |
