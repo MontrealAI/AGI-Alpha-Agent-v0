@@ -67,6 +67,8 @@ pre-commit run --files .github/workflows/ci.yml
 
 This lints the YAML and pins action versions so the pipeline stays reproducible.
 
+The workflow uploads benchmark and coverage artifacts only when the files exist. This avoids noisy "file not found" warnings on failed runs.
+
 ## Avoid skipped jobs
 
 The workflow starts with a dedicated `owner-check` job that runs the
