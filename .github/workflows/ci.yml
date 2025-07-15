@@ -25,6 +25,8 @@ env:
     alpha_factory_v1/core/interface/web_client/package-lock.json
     alpha_factory_v1/core/interface/web_client/staking/package-lock.json
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
+  PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
+  HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
 
 jobs:
 
@@ -140,9 +142,6 @@ jobs:
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
       - name: Fetch insight browser assets
-        env:
-          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
         run: |
           set -e
           npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
@@ -276,9 +275,6 @@ jobs:
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
       - name: Build web assets
-        env:
-          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
         run: |
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
@@ -322,8 +318,6 @@ jobs:
       pull-requests: write
     environment: ci-on-demand
     env:
-      PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-      HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
@@ -438,9 +432,6 @@ jobs:
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
       - name: Fetch insight browser assets
-        env:
-          PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-          HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
         run: |
           set -e
           npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
