@@ -24,6 +24,7 @@ jobs:
     name: "Verify owner"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/ensure-owner
 
   build-test:
