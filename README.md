@@ -741,6 +741,7 @@ After editing `.github/workflows/ci.yml`, run:
 
 ```bash
 pre-commit run --files .github/workflows/ci.yml
+python tools/update_actions.py
 ```
 to validate the workflow with actionlint before committing.
 Before opening a pull request, run `pre-commit run --all-files` to ensure
