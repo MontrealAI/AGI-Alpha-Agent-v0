@@ -81,7 +81,7 @@ jobs:
         id: browserslist
         continue-on-error: true
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npx update-browserslist-db@latest --agree-to-terms
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Ignore stale browserslist data
         if: steps.browserslist.outcome == 'failure'
         run: |
