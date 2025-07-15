@@ -290,6 +290,8 @@ pre-commit run --files <paths>   # before each commit
     **CI enforces these checks.**
   - After editing `alpha_factory_v1/core/utils/a2a.proto`, run `pre-commit run --files alpha_factory_v1/core/utils/a2a.proto`
     to regenerate and verify protobuf sources.
+  - Run `python tools/update_actions.py` before committing workflow changes to
+    refresh action versions.
   - **Always run** `pre-commit run --files .github/workflows/ci.yml` after
     modifying the workflow to lint it with actionlint.
   - The configuration runs `black`, `ruff`, `flake8` and `mypy` using

@@ -63,8 +63,8 @@ pre-commit run --all-files
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
 images. Each page under `docs/demos/` must start with a preview image using
 `![preview](...)`.
-Run `pre-commit` on any workflow edits to ensure action versions are pinned and
-the YAML passes `actionlint`:
+Run `python tools/update_actions.py` before committing workflow changes to pull
+the latest action tags. Then run `pre-commit` so the YAML passes `actionlint`:
 
 ```bash
 pre-commit run --files .github/workflows/ci.yml
