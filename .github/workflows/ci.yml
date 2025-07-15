@@ -306,6 +306,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-docs.txt
+      - name: Verify downloaded assets
+        run: |
+          python scripts/fetch_assets.py --verify-only || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            python scripts/fetch_assets.py --verify-only
+          )
       - name: Build documentation
         run: mkdocs build --strict
 
