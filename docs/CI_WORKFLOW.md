@@ -71,11 +71,10 @@ The workflow uploads benchmark and coverage artifacts only when the files exist.
 
 ## Avoid skipped jobs
 
-The workflow starts with a dedicated `owner-check` job that runs the
-`ensure-owner` composite action. All other jobs declare `needs: owner-check`
-so they wait for that verification instead of performing owner checks
-themselves. Once prerequisites succeed the remaining jobs run in parallel. A failure in
-linting or tests deliberately stops the Docker build and deploy stages. If a
-job unexpectedly shows as skipped, first check whether one of its dependencies
-failed earlier in the run. With the lock file paths fixed, all jobs should
-execute when tests pass.
+Each job begins with the `ensure-owner` composite action. This step fails fast
+when the workflow is triggered by anyone other than the repository owner. Once
+the check passes, the rest of the job executes normally. Downstream jobs depend
+on the linting and test stages, so a failure early in the pipeline prevents the
+Docker build or deploy steps from running. If a job appears skipped, inspect its
+dependencies for earlier failures. With the lock file paths fixed, all jobs run
+whenever the owner dispatches the workflow and the tests succeed.
