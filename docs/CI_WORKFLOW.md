@@ -67,10 +67,10 @@ This lints the YAML and pins action versions so the pipeline stays reproducible.
 
 ## Avoid skipped jobs
 
-Each job declares its dependencies via the `needs:` field and begins with an
-owner verification step. Jobs exit immediately when `github.actor` does not
-match `github.repository_owner`, so there is no separate *owner-check* stage.
-Once prerequisites succeed the remaining jobs run in parallel. A failure in
+The workflow starts with a dedicated `owner-check` job that runs the
+`ensure-owner` composite action. All other jobs declare `needs: owner-check`
+so they wait for that verification instead of performing owner checks
+themselves. Once prerequisites succeed the remaining jobs run in parallel. A failure in
 linting or tests deliberately stops the Docker build and deploy stages. If a
 job unexpectedly shows as skipped, first check whether one of its dependencies
 failed earlier in the run. With the lock file paths fixed, all jobs should
