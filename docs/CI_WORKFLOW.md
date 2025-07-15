@@ -10,10 +10,9 @@ repository owner triggers it from the GitHub Actions UI.
 
 1. Navigate to **Actions → 🚀 CI**.
 2. Choose the branch or tag in the drop‑down and click **Run workflow**.
-3. Ensure you are the repository owner. The workflow starts with an
-   `owner-check` job using the `ensure-owner` composite action. If the
-   trigger user does not match `github.repository_owner` the pipeline exits
-   immediately.
+3. Only the repository owner can trigger this button. The workflow starts with
+   an `owner-check` job using the `ensure-owner` composite action. If the actor
+   does not match `github.repository_owner` the pipeline exits immediately.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
 image to GHCR and uploads the prebuilt web client bundle to the corresponding

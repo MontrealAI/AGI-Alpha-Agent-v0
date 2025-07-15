@@ -524,46 +524,59 @@ jobs:
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
 
   deploy:
-    if: startsWith(github.ref, 'refs/tags/')
     name: "📦 Deploy"
     needs: [docker]
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
+      - name: Check tag
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        run: echo "Deployment runs only on tags" && exit 0
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
       - name: Compute repo_owner_lower
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - name: Login to GHCR
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull previous image
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" || true
       - name: Tag previous
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
       - name: Push previous tag
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
       - name: Push new image
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
       - uses: actions/download-artifact@v4.3.0 # d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         with:
           name: web-client
       - name: Verify web client artifact
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: sha256sum -c web-client.sha256
       - name: Prepare release assets
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: softprops/action-gh-release@v2.3.2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
         with:
           files: web-client.tar.gz
       - name: Rollback on failure
-        if: failure()
+        if: ${{ failure() && startsWith(github.ref, 'refs/tags/') }}
         run: |
           echo "Rolling back to previous image"
           docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous"

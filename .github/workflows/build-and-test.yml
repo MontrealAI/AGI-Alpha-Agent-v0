@@ -20,10 +20,16 @@ env:
   DOCKER_IMAGE: alpha-factory
 
 jobs:
+  owner-check:
+    name: "Verify owner"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/ensure-owner
+
   build-test:
-    # Ensure this job only runs from the manual "Run workflow" button
-    # and only when triggered by the repository owner.
-    if: github.event_name == 'workflow_dispatch' 
+    needs: owner-check
+    # The workflow itself is dispatched manually so no additional
+    # event check is required here.
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
