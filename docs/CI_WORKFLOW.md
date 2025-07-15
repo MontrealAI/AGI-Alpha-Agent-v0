@@ -41,6 +41,8 @@ passes the same list via `cache-dependency-path`:
 ```
 alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
 alpha_factory_v1/core/interface/web_client/package-lock.json
+alpha_factory_v1/core/interface/web_client/staking/package-lock.json
+alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
 ```
 
 After `npm ci` the workflow updates the Browserslist database with
