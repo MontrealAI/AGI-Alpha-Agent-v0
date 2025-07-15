@@ -494,8 +494,13 @@ jobs:
         run: |
           tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
           sha256sum web-client.tar.gz > web-client.sha256
-      - uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
+      - name: Check web client artifact
         if: startsWith(github.ref, 'refs/tags/')
+        id: web-client-check
+        run: |
+          if [[ -f web-client.tar.gz ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: startsWith(github.ref, 'refs/tags/') && steps.web-client-check.outputs.found == 'true'
         with:
           name: web-client
           path: |
