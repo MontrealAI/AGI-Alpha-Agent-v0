@@ -158,7 +158,8 @@ jobs:
       - name: Verify insight assets
         run: python scripts/fetch_assets.py --verify-only
       - name: Update browserslist database (Insight demo)
-        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Run insight browser tests
@@ -166,7 +167,8 @@ jobs:
       - name: Install web dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
-        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/core/interface/web_client
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Audit web dependencies
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
@@ -292,8 +294,8 @@ jobs:
         run: |
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 \
-            update-browserslist-db@latest --update-db --yes
+          (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
+            npx update-browserslist-db@latest --update-db --yes)
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
@@ -361,9 +363,11 @@ jobs:
       - name: Install web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Insight demo)
-        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Update browserslist database (Web client)
-        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/core/interface/web_client
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
@@ -427,11 +431,13 @@ jobs:
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database (Insight demo)
-        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Install web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
-        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/core/interface/web_client
+        run: npx update-browserslist-db@latest --update-db --yes
       - name: Compute asset cache key
         id: asset-key-docker
         run: |
