@@ -66,6 +66,12 @@ repos:
         entry: python scripts/verify_html_disclaimer.py
         language: python
         pass_filenames: false
+      - id: verify-ci-docs
+        name: Verify CI docs match ci.yml
+        entry: python tools/verify_ci_docs.py
+        language: python
+        additional_dependencies: [PyYAML]
+        pass_filenames: false
       - id: py-compile
         name: Validate Python syntax with py_compile
         entry: python -m py_compile
