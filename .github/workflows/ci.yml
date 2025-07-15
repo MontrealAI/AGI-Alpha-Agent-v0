@@ -41,7 +41,11 @@ jobs:
     steps:
       # checkout required for local composite actions
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
@@ -84,7 +88,11 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python-version }}
@@ -232,7 +240,11 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.11'
@@ -302,7 +314,11 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -334,7 +350,11 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -410,7 +430,11 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -531,7 +555,11 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: ./.github/actions/ensure-owner
+      - name: Verify owner
+        if: ${{ github.actor != github.repository_owner }}
+        run: |
+          echo "Only the repository owner can run this workflow."
+          exit 1
       - name: Compute repo_owner_lower
         run: echo "repo_owner_lower=$(echo \"${{ github.repository_owner }}\" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
       - name: Login to GHCR
