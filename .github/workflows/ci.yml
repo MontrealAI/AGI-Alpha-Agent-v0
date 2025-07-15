@@ -152,16 +152,16 @@ jobs:
           )
       - name: Verify insight assets
         run: python scripts/fetch_assets.py --verify-only
-      - name: Update browserslist database
-        run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
+      - name: Update browserslist database (Insight demo)
+        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+      - name: Update browserslist database (Web client)
+        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Audit web dependencies
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
@@ -194,8 +194,12 @@ jobs:
         run: |
           pytest tests/test_benchmark.py -q
           cat tests/benchmarks/latest.json
+      - name: Check benchmark result
+        id: bench-check
+        run: |
+          if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload benchmark results
-        if: always()
+        if: steps.bench-check.outputs.found == 'true'
         uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: benchmark-results
@@ -215,8 +219,12 @@ jobs:
         with:
           header: benchmark
           path: bench.txt
+      - name: Check coverage report
+        id: coverage-check
+        run: |
+          if [[ -f coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload coverage
-        if: always()
+        if: steps.coverage-check.outputs.found == 'true'
         uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: coverage-xml
@@ -347,10 +355,10 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
-      - name: Update browserslist database
-        run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
+      - name: Update browserslist database (Insight demo)
+        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
+      - name: Update browserslist database (Web client)
+        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
@@ -413,10 +421,12 @@ jobs:
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-      - name: Update browserslist database
-        run: |
-          npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
-          npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
+      - name: Update browserslist database (Insight demo)
+        run: npx --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 update-browserslist-db@latest --agree-to-terms
+      - name: Install web client dependencies
+        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+      - name: Update browserslist database (Web client)
+        run: npx --prefix alpha_factory_v1/core/interface/web_client update-browserslist-db@latest --agree-to-terms
       - name: Compute asset cache key
         id: asset-key-docker
         run: |
