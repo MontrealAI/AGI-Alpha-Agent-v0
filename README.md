@@ -129,10 +129,10 @@ applies the same paths for the tests, docs-build and Docker jobs. It
 preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
 passes without network hiccups. During the run it also updates the
 `browserslist` cache inside
-`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1` to ensure the
-generated assets target the latest browsers. When running offline or if the
-update fails, set `BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without
-refreshing the cache.
+`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1` **and**
+`alpha_factory_v1/core/interface/web_client` to ensure the generated assets
+target the latest browsers. When running offline or if the update fails, set
+`BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without refreshing the cache.
 
 ### CI Workflow
 
