@@ -100,7 +100,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.lock
-          pip install -r requirements-dev.txt
+          pip install -r requirements-dev.lock
           pip install -r requirements-demo.lock
           pip install pytest pytest-cov pytest-benchmark mutmut
       - name: Verify environment
@@ -255,7 +255,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.lock
-          pip install -r requirements-dev.txt
+          pip install -r requirements-dev.lock
           pip install pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
