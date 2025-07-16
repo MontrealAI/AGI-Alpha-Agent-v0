@@ -23,7 +23,7 @@ function run(cmd, options = {}) {
 }
 
 run(['npm', 'run', 'build']);
-run(['node', '--import', 'ts-node/register', '--loader', 'ts-node/esm', '--test',
+run(['node', '--loader', 'ts-node/esm', '--test',
   'tests/entropy.test.js',
   'tests/replay_cid.test.js',
   'tests/iframe_worker_cleanup.test.js',
@@ -31,10 +31,7 @@ run(['node', '--import', 'ts-node/register', '--loader', 'ts-node/esm', '--test'
   'tests/error_boundary_limit.test.js',
   'tests/locale_parity.test.js',
   'tests/test_sw_update.js',
-  '../../../../tests/taxonomy.test.ts',
-  '../../../../tests/memeplex.test.ts'
-  ,'../../../../tests/webgl_perf.test.js'
-  ,'../../../../tests/gpu_flag.test.js'
+  // Node-based core tests reside in the browser demo
 ]);
 run([
   'pytest',
