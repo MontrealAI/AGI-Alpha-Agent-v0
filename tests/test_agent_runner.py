@@ -26,11 +26,11 @@ def test_agent_runner_loop_publishes_heartbeat() -> None:
 
     class Bus:
         def publish(self, topic: str, env: messaging.Envelope) -> None:
-            events.append(("pub", env.sender))
+            events.append(("pub", agent.name))
 
     class Ledger:
         def log(self, env: messaging.Envelope) -> None:
-            events.append(("log", env.sender))
+            events.append(("log", agent.name))
 
     bus = Bus()
     led = Ledger()

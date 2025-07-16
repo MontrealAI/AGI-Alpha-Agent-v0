@@ -75,7 +75,13 @@ def _run_main(monkeypatch: pytest.MonkeyPatch, openai_key: str | None, base_url:
     stub.Tool = Tool
     stub.memory = types.SimpleNamespace(LocalQdrantMemory=DummyMemory)
 
-    gr_stub = types.SimpleNamespace(Blocks=DummyBlocks, mount_gradio_app=mount_gradio_app)
+    gr_stub = types.SimpleNamespace(
+        Blocks=DummyBlocks,
+        Markdown=lambda *_a, **_k: None,
+        Dataframe=lambda *_a, **_k: None,
+        Button=lambda *_a, **_k: DummyButton(),
+        mount_gradio_app=mount_gradio_app,
+    )
 
     class DummyConfig:
         def __init__(self, *a, **k):
@@ -111,7 +117,10 @@ def _run_main(monkeypatch: pytest.MonkeyPatch, openai_key: str | None, base_url:
         yield {"id": 1, "t": "0", "user": "a", "kind": "health", "payload": {}}
 
     monkeypatch.setattr(mod, "experience_stream", one_event)
-    monkeypatch.setattr(mod.asyncio, "sleep", lambda *_a, **_kw: None)
+    async def _sleep(*_a: object, **_kw: object) -> None:
+        return None
+
+    monkeypatch.setattr(mod.asyncio, "sleep", _sleep)
     asyncio.run(mod.main())
     return recorded.get("base_url")
 
