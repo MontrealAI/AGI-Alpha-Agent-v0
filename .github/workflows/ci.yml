@@ -135,7 +135,7 @@ jobs:
           )
           echo "key=$key" >> "$GITHUB_OUTPUT"
       - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
@@ -161,7 +161,7 @@ jobs:
           )
           echo "key=$key" >> "$GITHUB_OUTPUT"
       - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
@@ -427,7 +427,7 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements.lock'
       - name: Compute asset cache key
-        id: asset-key-docs
+        id: asset-key-docs-build
         run: |
           key=$(python - <<'EOF'
           import hashlib, os, scripts.fetch_assets as fa
@@ -444,12 +444,12 @@ jobs:
           )
           echo "key=$key" >> "$GITHUB_OUTPUT"
       - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docs.outputs.key }}
+          key: assets-${{ steps.asset-key-docs-build.outputs.key }}
           restore-keys: assets-
       - name: Fetch insight browser assets
         run: |
@@ -464,13 +464,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-docs.txt
       - name: Verify downloaded assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+        id: verify-assets
+        continue-on-error: true
+        run: python scripts/fetch_assets.py --verify-only
+      - name: Update Pyodide
+        if: steps.verify-assets.outcome == 'failure'
+        run: python scripts/update_pyodide.py 0.28.0
+      - name: Fetch insight browser assets (update)
+        if: steps.verify-assets.outcome == 'failure'
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+      - name: Re-verify downloaded assets
+        if: steps.verify-assets.outcome == 'failure'
+        run: python scripts/fetch_assets.py --verify-only
       - name: Build documentation
         run: mkdocs build --strict
 
