@@ -101,6 +101,7 @@ downloads:
 
 ```bash
 python scripts/update_pyodide.py 0.28.0
+npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
 python scripts/fetch_assets.py --verify-only
 ```
 
