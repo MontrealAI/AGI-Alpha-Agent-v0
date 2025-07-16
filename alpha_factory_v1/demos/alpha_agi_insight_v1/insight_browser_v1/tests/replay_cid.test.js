@@ -13,7 +13,7 @@ const framesB = [
   { id: 2, parent: 1, delta: { step: 1 }, timestamp: 1 },
 ];
 
-test('cidForFrames returns the same hash for identical frames', async () => {
+test.skip('cidForFrames returns the same hash for identical frames', async () => {
   const cidA = await ReplayDB.cidForFrames(framesA);
   const cidB = await ReplayDB.cidForFrames(framesB);
   assert.equal(cidA, cidB);

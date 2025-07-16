@@ -22,7 +22,7 @@ test('uniform distribution entropy', () => {
 
 test('clustered distribution entropy', () => {
   const h = paretoEntropy(clustered, 10);
-  assert.equal(h, 0);
+  assert.ok(Math.abs(h) < 1e-9);
 });
 
 test('uniform entropy greater than clustered entropy', () => {

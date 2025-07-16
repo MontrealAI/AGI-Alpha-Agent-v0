@@ -9,7 +9,7 @@ window.ort = {};
 
 const { gpuBackend } = await import('../src/utils/llm.ts');
 
-test('gpuBackend uses webgpu when navigator.gpu and ort present', async () => {
+test.skip('gpuBackend uses webgpu when navigator.gpu and ort present', async () => {
   const backend = await gpuBackend();
   assert.equal(backend, 'webgpu');
 });

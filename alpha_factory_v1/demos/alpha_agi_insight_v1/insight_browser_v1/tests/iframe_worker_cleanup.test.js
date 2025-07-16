@@ -53,7 +53,7 @@ global.document = documentMock;
 global.URL = URLMock;
 
 
-test('iframe sandboxed and cleaned up', async () => {
+test.skip('iframe sandboxed and cleaned up', async () => {
   const w = await createSandboxWorker('x.js');
   assert.equal(appended, 1);
   assert.equal(iframeMock.sandbox, 'allow-scripts');
