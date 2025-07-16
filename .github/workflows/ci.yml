@@ -470,7 +470,7 @@ jobs:
       - name: Update Pyodide
         if: steps.verify-assets.outcome == 'failure'
         run: python scripts/update_pyodide.py 0.28.0
-      - name: Fetch insight browser assets (update)
+      - name: Fetch updated assets
         if: steps.verify-assets.outcome == 'failure'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
       - name: Re-verify downloaded assets
