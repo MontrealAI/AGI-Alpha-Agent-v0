@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { createStore, set, get } = require('../src/utils/keyval.ts');
+import { createStore, set, get } from '../src/utils/keyval.ts';
 
 beforeEach(() => {
   indexedDB.deleteDatabase('jest');

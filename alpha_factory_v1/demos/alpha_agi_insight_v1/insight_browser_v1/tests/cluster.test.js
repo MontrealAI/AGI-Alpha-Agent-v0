@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { detectColdZone } = require('../src/utils/cluster.ts');
+import { detectColdZone } from '../src/utils/cluster.ts';
 
 test('detect coldest cell', () => {
   const pts = [

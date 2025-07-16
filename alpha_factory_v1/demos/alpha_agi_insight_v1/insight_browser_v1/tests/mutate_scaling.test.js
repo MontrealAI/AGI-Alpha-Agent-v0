@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { mutate } = require('../src/evolve/mutate.ts');
+import { mutate } from '../src/evolve/mutate.ts';
 
 function fixed(v) {
   return () => v;

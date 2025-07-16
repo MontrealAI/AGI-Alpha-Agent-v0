@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { ReplayDB } = require('../src/replay.ts');
+import { ReplayDB } from '../src/replay.ts';
 
 beforeEach(() => {
   indexedDB.deleteDatabase('jest');

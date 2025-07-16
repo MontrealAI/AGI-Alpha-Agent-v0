@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-/* globals require */
-const path = require('path');
+/* eslint-env jest */
+
+import { mutate } from '../alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/evolve/mutate.ts';
 
 jest.mock('../alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/evolve/mutate.ts', () => ({
   mutate: jest.fn(() => [])
 }));
-
-const { mutate } = require('../alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/evolve/mutate.ts');
 
 function makeMsg(gen) {
   return { pop: [], rngState: 1, mutations: [], popSize: 1, critic: 'none', gen };

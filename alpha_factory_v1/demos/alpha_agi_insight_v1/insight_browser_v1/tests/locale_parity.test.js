@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const en = require('../src/i18n/en.json');
+import en from '../src/i18n/en.json' assert { type: 'json' };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dir = path.join(__dirname, '../src/i18n');
 
 test('all locale files share the same keys', () => {

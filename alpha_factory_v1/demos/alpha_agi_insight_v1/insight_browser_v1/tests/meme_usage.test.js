@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-const { Simulator } = require('../src/simulator.ts');
-const { mineMemes, saveMemes, loadMemes } = require('@insight-src/memeplex.ts');
+import { Simulator } from '../src/simulator.ts';
+import { mineMemes, saveMemes, loadMemes } from '@insight-src/memeplex.ts';
 
 beforeEach(() => {
   indexedDB.deleteDatabase('memeplex');

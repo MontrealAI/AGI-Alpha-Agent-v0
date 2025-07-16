@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-const { initControls } = require('../src/ui/ControlsPanel.ts');
-const { parseHash } = require('../src/config/params.ts');
+import { initControls } from '../src/ui/ControlsPanel.ts';
+import { parseHash } from '../src/config/params.ts';
 
 test('values above max are clamped', () => {
   document.body.innerHTML = '<div id="controls"></div>';

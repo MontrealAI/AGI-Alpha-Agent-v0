@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-const { mutateEvaluator } = require('../src/evaluator_genome.ts');
-const { lcg } = require('../src/utils/rng.ts');
+import { mutateEvaluator } from '../src/evaluator_genome.ts';
+import { lcg } from '../src/utils/rng.ts';
 
 test('mutateEvaluator changes weights and prompt', () => {
   const rand = lcg(1);
