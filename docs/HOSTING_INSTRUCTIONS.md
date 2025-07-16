@@ -89,7 +89,13 @@ files due to the service worker cache on GitHub Pages. If the checksum values in
 scripts/generate_build_manifest.py` so `build_assets.json` reflects the new
 hashes. When upgrading the Pyodide runtime run
 `python scripts/update_pyodide.py <version>` to refresh the checksums and
-regenerate the manifest automatically.
+regenerate the manifest automatically. Then download the updated assets and
+verify them:
+
+```yaml
+- run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+- run: python scripts/fetch_assets.py --verify-only
+```
 
 
 ## Building the Site
