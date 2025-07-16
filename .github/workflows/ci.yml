@@ -142,8 +142,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docs-build.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Compute asset cache key
         id: asset-key-docker
         run: |
@@ -168,8 +168,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Fetch insight browser assets
         run: |
           set -e
@@ -323,8 +323,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Build web assets
         shell: bash
         run: |
@@ -395,8 +395,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Build web assets
         shell: bash
         run: |
@@ -455,8 +455,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docs-build.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Fetch insight browser assets
         run: |
           set -e
@@ -630,8 +630,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Fetch insight browser assets
         run: |
           set -e
