@@ -28,7 +28,11 @@ previous `latest` image so production always points at a working build.
 - **✅ Pytest** – unit tests and front‑end checks.
 - **Windows Smoke** – lightweight sanity tests on Windows.
 - **📜 MkDocs** – basic documentation build.
-- **📚 Docs Build** – full docs site verification.
+- **📚 Docs Build** – full docs site verification. The job runs
+  `scripts/build_gallery_site.sh` which executes `preflight.py`. This
+  script requires `/usr/bin/patch` inside the sandbox container, so the
+  workflow builds `sandbox.Dockerfile` and sets `SANDBOX_IMAGE=selfheal-sandbox:latest`.
+  Ensure this image exists locally before building the docs.
 - **🐳 Docker build** – builds and tests the demo image.
 - **📦 Deploy** – pushes the image and release assets on tags.
 
