@@ -544,6 +544,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Create Pyodide update PR
+        # docs-build is the only job that should open this pull request
         if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
@@ -572,6 +573,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    # This job builds and pushes the image. It no longer creates the
+    # Pyodide update pull request.
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
