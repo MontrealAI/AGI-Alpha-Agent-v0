@@ -708,16 +708,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
+        if: ${{ needs.tests.result == 'success' }}
         run: |
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Install cosign
+        if: ${{ needs.tests.result == 'success' }}
         uses: sigstore/cosign-installer@v3.9.1 # 398d4b0eeef1380460a10c8013a76f728fb906ac
         with:
           cosign-release: 'v2.2.4'
       - name: Sign image
+        if: ${{ needs.tests.result == 'success' }}
         run: cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Verify image signature
+        if: ${{ needs.tests.result == 'success' }}
         run: cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
 
   deploy:
