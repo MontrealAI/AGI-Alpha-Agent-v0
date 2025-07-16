@@ -23,7 +23,7 @@ function run(cmd, options = {}) {
 }
 
 run(['npm', 'run', 'build']);
-run(['node', '--loader', 'ts-node/esm', '--test',
+run(['npx', 'tsx', '--test',
   'tests/entropy.test.js',
   'tests/iframe_worker_cleanup.test.js',
   'tests/locale_parity.test.js',
