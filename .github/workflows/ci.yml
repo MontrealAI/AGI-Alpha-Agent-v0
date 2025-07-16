@@ -116,11 +116,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Compute asset cache key
         id: asset-key-docker
-        shell: bash
         run: |
           key=$(python - <<'EOF'
           import hashlib, os
@@ -137,14 +134,24 @@ jobs:
           EOF
           )
           echo "key=$key" >> "$GITHUB_OUTPUT"
-      - name: Cache Insight assets
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+      - name: Restore Insight asset cache
+        uses: actions/cache@v4.2.3
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
+      - name: Fetch insight browser assets
+        run: |
+          set -e
+          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+          )
+      - name: Install insight browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Fetch insight browser assets
         run: |
           set -e
@@ -393,6 +400,39 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Compute asset cache key
+        id: asset-key-docs
+        run: |
+          key=$(python - <<'EOF'
+          import hashlib, os, scripts.fetch_assets as fa
+          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
+          data = (
+              fa.CHECKSUMS["pyodide.asm.wasm"]
+              + fa.CHECKSUMS["pyodide.js"]
+              + fa.CHECKSUMS["pyodide-lock.json"]
+              + fa.CHECKSUMS["pytorch_model.bin"]
+              + env_data
+          )
+          print(hashlib.sha256(data.encode()).hexdigest())
+          EOF
+          )
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - name: Restore Insight asset cache
+        uses: actions/cache@v4.2.3
+        with:
+          path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+          key: assets-${{ steps.asset-key-docs.outputs.key }}
+          restore-keys: assets-
+      - name: Fetch insight browser assets
+        run: |
+          set -e
+          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+          )
       - name: Install docs requirements
         run: |
           python -m pip install --upgrade pip
@@ -427,6 +467,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Build sandbox image
+        run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
