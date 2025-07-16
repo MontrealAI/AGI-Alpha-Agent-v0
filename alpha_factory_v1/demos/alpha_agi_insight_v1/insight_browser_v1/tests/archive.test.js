@@ -127,8 +127,9 @@ test('add calls chat when api key set and stores impact score', async () => {
 });
 
 test('prune logs warning when deletion fails', async () => {
-  const origDel = keyval.del;
-  keyval.del = jest.fn(() => { throw new DOMException('fail'); });
+  const delSpy = jest.spyOn(keyval, 'del').mockImplementation(() => {
+    throw new DOMException('fail');
+  });
   const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
   const a = new Archive('jest');
@@ -138,6 +139,6 @@ test('prune logs warning when deletion fails', async () => {
 
   expect(warn).toHaveBeenCalled();
 
-  keyval.del = origDel;
+  delSpy.mockRestore();
   warn.mockRestore();
 });
