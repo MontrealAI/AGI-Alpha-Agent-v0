@@ -366,6 +366,7 @@ jobs:
           key: assets-${{ steps.asset-key-docker.outputs.key }}
           restore-keys: assets-
       - name: Build web assets
+        shell: bash
         run: |
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
