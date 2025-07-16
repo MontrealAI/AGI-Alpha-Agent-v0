@@ -130,9 +130,13 @@ preinstalls `numpy`, `pandas`, `pytest` and `PyYAML` so the environment check
 passes without network hiccups. During the run it also updates the
 `browserslist` cache inside
 `alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1` **and**
-`alpha_factory_v1/core/interface/web_client` to ensure the generated assets
-target the latest browsers. When running offline or if the update fails, set
+`alpha_factory_v1/core/interface/web_client` using
+`update-browserslist-db@1.1.3` to ensure the generated assets target the latest
+browsers. When running offline or if the update fails, set
 `BROWSERSLIST_IGNORE_OLD_DATA=true` to continue without refreshing the cache.
+Update the version in `.github/workflows/ci.yml` and rerun
+`npx update-browserslist-db@1.1.3 --update-db --yes` whenever dependencies
+change.
 
 ### CI Workflow
 

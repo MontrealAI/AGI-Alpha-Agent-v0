@@ -46,9 +46,10 @@ alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-loc
 ```
 
 After `npm ci` the workflow updates the Browserslist database with
-`npx update-browserslist-db@latest --update-db --yes` to silence the
+`npx update-browserslist-db@1.1.3 --update-db --yes` to silence the
 "caniuse-lite is outdated" warning. Run the same command locally when
-dependencies change so the CI logs stay clean.
+dependencies change. Bump the version in `.github/workflows/ci.yml` and this
+documentation whenever a newer release is required so CI stays reproducible.
 
 If the workflow ever reports missing lock files, double‑check these paths
 in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
