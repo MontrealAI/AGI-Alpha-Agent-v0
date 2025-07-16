@@ -6,8 +6,6 @@ from alpha_factory_v1.backend import agent_manager as ag_mgr
 
 
 @pytest.mark.xfail(reason="manager patch issue", strict=False)
-
-
 def test_manager_starts_and_stops_bus_consumer(monkeypatch: pytest.MonkeyPatch) -> None:
     started = False
     stopped = False
@@ -47,13 +45,9 @@ def test_manager_starts_and_stops_bus_consumer(monkeypatch: pytest.MonkeyPatch) 
 
     monkeypatch.setattr("alpha_factory_v1.backend.agent_manager.EventBus", DummyBus)
     reload(ag_mgr)
-    monkeypatch.setattr(
-        "alpha_factory_v1.backend.agents.registry.list_agents", list_agents
-    )
+    monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.list_agents", list_agents)
     monkeypatch.setattr("backend.agents.registry.list_agents", list_agents)
-    monkeypatch.setattr(
-        "alpha_factory_v1.backend.agents.registry.get_agent", get_agent
-    )
+    monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.get_agent", get_agent)
     monkeypatch.setattr("backend.agents.registry.get_agent", get_agent)
     monkeypatch.setattr("backend.agents.health.start_background_tasks", start_background_tasks)
     monkeypatch.setattr("alpha_factory_v1.backend.agent_runner.get_agent", get_agent)

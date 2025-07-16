@@ -117,6 +117,7 @@ def _run_main(monkeypatch: pytest.MonkeyPatch, openai_key: str | None, base_url:
         yield {"id": 1, "t": "0", "user": "a", "kind": "health", "payload": {}}
 
     monkeypatch.setattr(mod, "experience_stream", one_event)
+
     async def _sleep(*_a: object, **_kw: object) -> None:
         return None
 

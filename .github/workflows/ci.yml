@@ -82,7 +82,8 @@ jobs:
 
   tests:
     name: "✅ Pytest"
-    needs: [owner-check, lint-type]
+    needs: owner-check
+    if: always()
     runs-on: ubuntu-latest
     environment: ci-on-demand
     strategy:
@@ -401,6 +402,7 @@ jobs:
           python scripts/fetch_assets.py --verify-only || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
             python scripts/fetch_assets.py --verify-only
           )
       - name: Build documentation
@@ -417,6 +419,7 @@ jobs:
     environment: ci-on-demand
     env:
       FETCH_ASSETS_ATTEMPTS: '5'
+      SANDBOX_IMAGE: selfheal-sandbox:latest
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -456,6 +459,7 @@ jobs:
           python scripts/fetch_assets.py --verify-only || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
             python scripts/fetch_assets.py --verify-only
           )
       - name: Detect Pyodide changes
