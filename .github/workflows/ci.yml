@@ -117,6 +117,32 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Compute asset cache key
+        id: asset-key-docs-build
+        run: |
+          key=$(python - <<'EOF'
+          import hashlib, os
+          import scripts.fetch_assets as fa
+          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
+          data = (
+              fa.CHECKSUMS["pyodide.asm.wasm"]
+              + fa.CHECKSUMS["pyodide.js"]
+              + fa.CHECKSUMS["pyodide-lock.json"]
+              + fa.CHECKSUMS["pytorch_model.bin"]
+              + env_data
+          )
+          print(hashlib.sha256(data.encode()).hexdigest())
+          EOF
+          )
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - name: Restore Insight asset cache
+        uses: actions/cache@v4.2.3
+        with:
+          path: |
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+          key: assets-${{ steps.asset-key-docs-build.outputs.key }}
+          restore-keys: assets-
+      - name: Compute asset cache key
         id: asset-key-docker
         run: |
           key=$(python - <<'EOF'
@@ -603,23 +629,6 @@ jobs:
           )
       - name: Verify insight assets
         run: python scripts/fetch_assets.py --verify-only
-      - name: Detect Pyodide changes
-        id: pyodide-diff-docker
-        run: |
-          if git diff --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Create Pyodide update PR
-        if: steps.pyodide-diff-docker.outputs.changed == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: update Pyodide asset hashes"
-          title: "chore: update Pyodide asset hashes"
-          branch: pyodide-update-${{ github.run_id }}
-          delete-branch: true
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
