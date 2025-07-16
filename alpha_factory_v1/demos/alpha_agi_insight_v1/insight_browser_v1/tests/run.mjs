@@ -23,7 +23,7 @@ function run(cmd, options = {}) {
 }
 
 run(['npm', 'run', 'build']);
-run(['node', '--import', 'ts-node/register', '--test',
+run(['node', '--loader', 'ts-node/esm', '--test',
   'tests/entropy.test.js',
   'tests/replay_cid.test.js',
   'tests/iframe_worker_cleanup.test.js',
