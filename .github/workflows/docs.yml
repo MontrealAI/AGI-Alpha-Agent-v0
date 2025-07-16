@@ -76,8 +76,12 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install Web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+      - name: Install update-browserslist-db
+        working-directory: alpha_factory_v1/core/interface/web_client
+        run: npm install --no-save update-browserslist-db@1.1.3
       - name: Update browserslist database
-        run: npx --yes update-browserslist-db@latest --update-db --yes
+        working-directory: alpha_factory_v1/core/interface/web_client
+        run: npm exec update-browserslist-db@1.1.3 -- --update-db --yes
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
         env:
