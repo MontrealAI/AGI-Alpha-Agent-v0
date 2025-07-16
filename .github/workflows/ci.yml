@@ -420,6 +420,8 @@ jobs:
     needs: [owner-check, tests]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      SANDBOX_IMAGE: selfheal-sandbox:latest
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
@@ -428,6 +430,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Build sandbox image
+        run: docker build -t "$SANDBOX_IMAGE" -f sandbox.Dockerfile .
       - name: Compute asset cache key
         id: asset-key-docs-build
         run: |
