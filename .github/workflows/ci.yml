@@ -86,6 +86,8 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     environment: ci-on-demand
+    env:
+      SANDBOX_IMAGE: selfheal-sandbox:latest
     strategy:
       fail-fast: false
       matrix:
