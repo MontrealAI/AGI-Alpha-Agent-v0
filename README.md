@@ -182,6 +182,16 @@ Docker image tags must use all lowercase characters. The workflow's
 "Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
 repository owner so tags like `ghcr.io/montrealai` are valid.
 
+### Verify Docker image signature
+
+The release workflow signs the container using [cosign](https://github.com/sigstore/cosign).
+Validate the signature before deploying a new version:
+
+```bash
+cosign verify ghcr.io/montrealai/agi-insight-demo:latest
+```
+Successful verification proves the image came from this repository's CI.
+
 ## Quickstart
 
 ```bash
