@@ -17,6 +17,8 @@ from playwright.sync_api import sync_playwright
 
 @pytest.mark.skipif(shutil.which("npm") is None, reason="npm not installed")  # type: ignore[misc]
 def test_tree_visualization(tmp_path: Path) -> None:
+    if os.getenv("SKIP_WEBKIT_TESTS"):
+        pytest.skip("WebKit unavailable")
     browser_dir = Path(__file__).resolve().parents[1]
     target = tmp_path / "browser"
     shutil.copytree(browser_dir, target)
@@ -34,8 +36,6 @@ def test_tree_visualization(tmp_path: Path) -> None:
 
     with sync_playwright() as p:
         browser_name = os.getenv("PLAYWRIGHT_BROWSER", "chromium")
-        if browser_name == "webkit" and os.getenv("SKIP_WEBKIT_TESTS"):
-            pytest.skip("WebKit unavailable")
 
         try:
             launcher = getattr(p, browser_name)

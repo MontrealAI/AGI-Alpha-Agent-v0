@@ -308,6 +308,7 @@ pip install -e .
 pytest -q
 ```
 - Set PYTEST_NET_OFF=1 to skip tests that require outbound network access.
+- Set SKIP_WEBKIT_TESTS=1 if `npx playwright install` cannot download WebKit.
 - Playwright test `test_umap_fallback.py` ensures the simulator uses random UMAP coordinates when Pyodide is blocked.
 - The `test_bridge_online_mode` case in `test_meta_agentic_tree_search_demo.py` requires the `openai-agents` package. Set `OPENAI_API_KEY=dummy` and run:
 ```bash
