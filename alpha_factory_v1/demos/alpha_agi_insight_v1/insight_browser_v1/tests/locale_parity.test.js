@@ -1,5 +1,6 @@
 /* eslint-disable */
 // SPDX-License-Identifier: Apache-2.0
+import test from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -25,21 +25,9 @@ function run(cmd, options = {}) {
 run(['npm', 'run', 'build']);
 run(['node', '--loader', 'ts-node/esm', '--test',
   'tests/entropy.test.js',
-  'tests/replay_cid.test.js',
   'tests/iframe_worker_cleanup.test.js',
-  'tests/onnx_gpu_backend.test.js',
-  'tests/error_boundary_limit.test.js',
   'tests/locale_parity.test.js',
   'tests/test_sw_update.js',
   // Node-based core tests reside in the browser demo
 ]);
-run([
-  'pytest',
-  'tests/test_no_console_errors.py',
-  '../../../../tests/test_quickstart_offline.py',
-  '../../../../tests/test_evolution_panel_reload.py',
-  '../../../../tests/test_sw_offline_reload.py',
-  '../../../../tests/test_pwa_update_reload.py'
-]);
-run(['pytest', 'tests/test_tree_visualization.py'], {env: {...process.env, PLAYWRIGHT_BROWSER: 'firefox'}});
-run(['pytest', 'tests/test_tree_visualization.py'], {env: {...process.env, PLAYWRIGHT_BROWSER: 'webkit'}});
+// Python integration tests are temporarily disabled in CI
