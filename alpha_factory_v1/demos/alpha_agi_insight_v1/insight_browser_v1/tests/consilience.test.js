@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { consilience, scoreGenome, LogicCritic, FeasibilityCritic, JudgmentDB } = require('../src/wasm/critics.ts');
+import { consilience, scoreGenome, LogicCritic, FeasibilityCritic, JudgmentDB } from '../src/wasm/critics.ts';
 
 beforeEach(() => {
   indexedDB.deleteDatabase('jest');

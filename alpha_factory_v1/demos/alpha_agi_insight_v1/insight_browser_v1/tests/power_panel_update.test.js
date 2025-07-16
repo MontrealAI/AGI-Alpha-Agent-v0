@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-const simulator = require('../src/simulator.ts');
-const { initSimulatorPanel } = require('../src/ui/SimulatorPanel.ts');
+import simulator from '../src/simulator.ts';
+import { initSimulatorPanel } from '../src/ui/SimulatorPanel.ts';
 
 jest.mock('@insight-src/replay.ts', () => ({
   ReplayDB: class {

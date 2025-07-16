@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-const { Archive } = require('../src/archive.ts');
-const { set } = require('../src/utils/keyval.ts');
+import { Archive } from '../src/archive.ts';
+import { set } from '../src/utils/keyval.ts';
+import * as keyval from '../src/utils/keyval.ts';
+import { chat } from '../src/utils/llm.ts';
 
 beforeEach(async () => {
   indexedDB.deleteDatabase('jest');
@@ -112,7 +114,7 @@ test('prune ranks by score and novelty', async () => {
 jest.mock('../src/utils/llm.ts', () => ({
   chat: jest.fn(() => Promise.resolve('5')),
 }));
-const { chat } = require('../src/utils/llm.ts');
+
 
 test('add calls chat when api key set and stores impact score', async () => {
   global.localStorage = { getItem: () => 'k' };
@@ -125,7 +127,6 @@ test('add calls chat when api key set and stores impact score', async () => {
 });
 
 test('prune logs warning when deletion fails', async () => {
-  const keyval = require('../src/utils/keyval.ts');
   const origDel = keyval.del;
   keyval.del = jest.fn(() => { throw new DOMException('fail'); });
   const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-const { initI18n, t } = require('../src/ui/i18n.ts');
+import { initI18n, t } from '../src/ui/i18n.ts';
 
 beforeEach(() => {
   global.fetch = jest.fn(() => Promise.reject(new Error('fail')));

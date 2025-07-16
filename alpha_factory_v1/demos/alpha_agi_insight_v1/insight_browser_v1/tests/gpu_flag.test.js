@@ -3,7 +3,7 @@ jest.mock('../src/evolve/mutate.ts', () => ({
   mutate: jest.fn(() => [])
 }));
 
-const { mutate } = require('../src/evolve/mutate.ts');
+import { mutate } from '../src/evolve/mutate.ts';
 
 function makeMsg(gen) {
   return { pop: [], rngState: 1, mutations: [], popSize: 1, critic: 'none', gen };
