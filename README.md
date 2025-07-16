@@ -1318,6 +1318,7 @@ for instructions and example volume mounts.
 | `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.28.0/full` | Base URL for the Pyodide runtime files. |
 | `FETCH_ASSETS_ATTEMPTS` | `3` | Download retry count for `fetch_assets.py`. |
 | `OTEL_ENDPOINT` | _(empty)_ | OTLP endpoint for anonymous telemetry. |
+| `SKIP_WEBKIT_TESTS` | _(empty)_ | Skip WebKit browser tests when set. |
 | `ALPHA_FACTORY_ENABLE_ADK` | `false` | Set to `true` to start the Google ADK gateway. |
 | `ALPHA_FACTORY_ADK_PORT` | `9000` | Port for the ADK gateway when enabled. |
 | `ALPHA_FACTORY_ADK_TOKEN` | _(empty)_ | Optional auth token for the ADK gateway. |
@@ -1418,6 +1419,8 @@ instead of falling back to PyPI.
 Run `./scripts/build_offline_wheels.sh` to populate a wheelhouse on a
 machine with internet access, then set `WHEELHOUSE=<path>` before executing
 the tests so dependencies install from this local cache.
+If `npx playwright install` fails to download WebKit, set `SKIP_WEBKIT_TESTS=1`
+so browser checks skip gracefully.
 
 #### Test Runtime
 
