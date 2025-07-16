@@ -119,6 +119,7 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Compute asset cache key
         id: asset-key-docker
+        shell: bash
         run: |
           key=$(python - <<'EOF'
           import hashlib, os
@@ -268,6 +269,7 @@ jobs:
           python check_env.py --auto-install
       - name: Compute asset cache key
         id: asset-key-docker
+        shell: bash
         run: |
           key=$(python - <<'EOF'
           import hashlib, os
