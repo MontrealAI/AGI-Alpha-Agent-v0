@@ -162,6 +162,8 @@ jobs:
         run: npm exec update-browserslist-db@1.1.3 -- --update-db --yes
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
+      - name: Install Playwright browsers
+        run: npx playwright install chromium webkit firefox
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
@@ -181,14 +183,6 @@ jobs:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_TOKEN_E2E: ${{ secrets.PERCY_TOKEN }}
         run: npm --prefix alpha_factory_v1/core/interface/web_client run percy:cypress
-      - name: Install Playwright browsers
-        id: install-browsers
-        run: |
-          set +e
-          if ! playwright install chromium webkit; then
-            echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
-          fi
-          set -e
       - name: Install proto compiler
         run: pip install grpcio-tools
       - name: Verify protobuf
@@ -478,12 +472,7 @@ jobs:
           branch: pyodide-update-${{ github.run_id }}
           delete-branch: true
       - name: Install Playwright browsers
-        run: |
-          set +e
-          if ! playwright install chromium webkit; then
-            echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
-          fi
-          set -e
+        run: npx playwright install chromium webkit firefox
       - name: Verify demo pages
         run: python scripts/verify_demo_pages.py
       - name: Verify Insight PWA offline
@@ -582,6 +571,8 @@ jobs:
           delete-branch: true
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
+      - name: Install Playwright browsers
+        run: npx playwright install chromium webkit firefox
       - name: Run insight browser tests
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Type check insight browser

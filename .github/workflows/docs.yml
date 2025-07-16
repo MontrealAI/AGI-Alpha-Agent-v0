@@ -91,7 +91,7 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium webkit firefox
       - name: Make scripts executable
         run: chmod +x ./scripts/*.sh
       - name: Compute asset cache key
