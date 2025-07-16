@@ -237,6 +237,7 @@ jobs:
   windows-smoke:
     name: "Windows Smoke"
     needs: [owner-check, tests]
+    if: always()
     runs-on: windows-latest
     environment: ci-on-demand
     steps:
@@ -309,6 +310,7 @@ jobs:
   macos-smoke:
     name: "macOS Smoke"
     needs: [owner-check, tests]
+    if: always()
     runs-on: macos-latest
     environment: ci-on-demand
     steps:
@@ -380,6 +382,7 @@ jobs:
   docs-check:
     name: "📜 MkDocs"
     needs: [owner-check, tests]
+    if: always()
     runs-on: ubuntu-latest
     environment: ci-on-demand
     steps:
@@ -406,6 +409,7 @@ jobs:
   docs-build:
     name: "📚 Docs Build"
     needs: [owner-check, tests]
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -486,6 +490,7 @@ jobs:
   docker:
     name: "🐳 Docker build"
     needs: [owner-check, tests]
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: write

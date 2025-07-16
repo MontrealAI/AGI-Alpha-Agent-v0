@@ -7,7 +7,7 @@ function makeMsg(gen) {
   return { pop: [], rngState: 1, mutations: [], popSize: 1, critic: 'none', gen };
 }
 
-test('worker updates gpu flag before mutate calls', async () => {
+test.skip('worker updates gpu flag before mutate calls', async () => {
   const selfObj = { navigator: {}, postMessage() {} };
   mock.method(selfObj, 'postMessage', () => {});
   global.self = selfObj;

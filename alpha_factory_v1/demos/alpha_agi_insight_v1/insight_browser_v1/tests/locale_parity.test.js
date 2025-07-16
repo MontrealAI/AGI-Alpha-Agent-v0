@@ -1,9 +1,13 @@
+/* eslint-disable */
 // SPDX-License-Identifier: Apache-2.0
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import assert from 'node:assert/strict';
 
-import en from '../src/i18n/en.json' assert { type: 'json' };
+const en = JSON.parse(
+  fs.readFileSync(new URL('../src/i18n/en.json', import.meta.url), 'utf8')
+);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dir = path.join(__dirname, '../src/i18n');
@@ -14,6 +18,6 @@ test('all locale files share the same keys', () => {
     if (file === 'en.json') continue;
     const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
     const keys = Object.keys(data).sort();
-    expect(keys).toEqual(baseKeys);
+    assert.deepEqual(keys, baseKeys);
   }
 });
