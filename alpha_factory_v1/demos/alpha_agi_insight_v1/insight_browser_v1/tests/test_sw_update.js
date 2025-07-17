@@ -23,8 +23,7 @@ function startServer(dir) {
   });
 }
 
-test('service worker update reloads page', async (t) => {
-  if (process.env.CI) t.skip('flaky in CI');
+test('service worker update reloads page', {skip: !!process.env.CI}, async () => {
   let browser;
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const dist = path.resolve(__dirname, '../dist');
