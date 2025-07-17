@@ -38,12 +38,6 @@ jobs:
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: |
             ${{ runner.os }}-precommit-
-      - name: Install Ruff
-        run: pip install ruff
-      - name: Install docs dependencies
-        run: pip install -r requirements-docs.txt
-      - name: Install project dependencies
-        run: python check_env.py --auto-install
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Cache sandbox layers
@@ -65,6 +59,12 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Install Ruff
+        run: pip install ruff
+      - name: Install docs dependencies
+        run: pip install -r requirements-docs.txt
+      - name: Install project dependencies
+        run: python check_env.py --auto-install
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
