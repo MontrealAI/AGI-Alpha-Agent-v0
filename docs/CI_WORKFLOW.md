@@ -35,7 +35,7 @@ previous `latest` image so production always points at a working build.
   Ensure this image exists locally before building the docs.
 - **🐳 Docker build** – builds and tests the demo image.
 - **📦 Deploy** – pushes the image and release assets on tags.
-- **♿ Accessibility audit** – runs `@axe-core/cli --format=json` on the built web client
+- **♿ Accessibility audit** – runs `@axe-core/cli --stdout` on the built web client
   and calculates a score via `scripts/axe_score.py`. The pipeline fails if the
   score is below the `a11y-threshold` input (default 90).
   Keep this threshold at least 90 to maintain baseline accessibility.

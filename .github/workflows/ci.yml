@@ -618,7 +618,7 @@ jobs:
             web-client.tar.gz.sig
       - name: Accessibility audit
         run: |
-          npx --yes @axe-core/cli alpha_factory_v1/core/interface/web_client/dist/index.html --format=json > axe.json
+          npx --yes @axe-core/cli alpha_factory_v1/core/interface/web_client/dist/index.html --stdout > axe.json
           score=$(python scripts/axe_score.py axe.json)
           echo "a11y score: $score (threshold $A11Y_THRESHOLD)"
           if [ "$score" -lt "$A11Y_THRESHOLD" ]; then
