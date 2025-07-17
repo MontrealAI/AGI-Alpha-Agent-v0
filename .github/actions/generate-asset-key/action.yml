@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Generate Asset Key
+description: Compute a cache key for Pyodide and GPT-2 assets.
+outputs:
+  key:
+    description: "Asset cache key"
+runs:
+  using: composite
+  steps:
+    - name: Generate key
+      id: generate
+      shell: bash
+      run: |
+        key=$(python - <<'PY'
+        import hashlib
+        import os
+        import scripts.fetch_assets as fa
+
+        env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
+        data = (
+            fa.CHECKSUMS["pyodide.asm.wasm"]
+            + fa.CHECKSUMS["pyodide.js"]
+            + fa.CHECKSUMS["pyodide-lock.json"]
+            + fa.CHECKSUMS["pytorch_model.bin"]
+            + env_data
+        )
+        print(hashlib.sha256(data.encode()).hexdigest())
+        PY
+        )
+        echo "key=$key" >> "$GITHUB_OUTPUT"
