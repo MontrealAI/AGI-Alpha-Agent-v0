@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/montrealai-agi-alpha-agent-v0-badge.png)](https://mseep.ai/app/montrealai-agi-alpha-agent-v0)
+
 
 # **META-AGENTIC** α‑AGI 👁️✨
 
