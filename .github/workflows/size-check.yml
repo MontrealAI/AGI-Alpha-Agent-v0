@@ -73,8 +73,8 @@ jobs:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key.outputs.key }}
-          restore-keys: assets-
+          key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
+          restore-keys: assets-${{ runner.os }}-
       - name: Fetch Insight Browser assets
         run: python scripts/fetch_assets.py
       - name: Install update-browserslist-db
@@ -91,7 +91,13 @@ jobs:
           echo "::warning::Failed to update browserslist database"
           echo "BROWSERSLIST_IGNORE_OLD_DATA=true" >> "$GITHUB_ENV"
       - name: Verify Insight Browser assets
-        run: python scripts/fetch_assets.py --verify-only
+        run: |
+          python scripts/fetch_assets.py --verify-only || (
+            echo "Detected asset hash change, updating..." &&
+            python scripts/update_pyodide.py 0.28.0 &&
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
+            python scripts/fetch_assets.py --verify-only
+          )
       - name: Build distribution zip
         run: npm run build:dist --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Check archive size

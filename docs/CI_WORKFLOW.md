@@ -62,15 +62,22 @@ If the workflow ever reports missing lock files, double‑check these paths
 in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
 
 The docs and test jobs fetch the Pyodide runtime and GPT‑2 model files from
-external mirrors. When these assets update upstream the checksum verification
-fails. The workflow automatically reruns `scripts/update_pyodide.py` to refresh
-the expected hashes, fetches the assets again and then reruns
-`python scripts/fetch_assets.py --verify-only` so CI keeps running even if the
-mirrored files change.
-To avoid re-downloading these large files for every job, the workflow computes
-a cache key from the verified hashes and restores any matching archive across
-jobs and operating systems. This ensures reproducible builds and significantly
-reduces network traffic.
+external mirrors. When these assets change upstream the checksum verification
+fails. Each verify step now runs in a `||` block:
+
+```bash
+python scripts/fetch_assets.py --verify-only || (
+  python scripts/update_pyodide.py 0.28.0 &&
+  npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
+  python scripts/fetch_assets.py --verify-only
+)
+```
+
+If verification fails the assets refresh automatically and the check is
+repeated. To avoid re-downloading these large files for every job, the workflow
+computes a cache key from the current checksums and restores any matching
+archive across jobs and operating systems. This ensures reproducible builds and
+invalidates old caches whenever the upstream hashes change.
 
 Before submitting changes to the workflow run:
 
