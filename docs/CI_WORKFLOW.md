@@ -57,7 +57,7 @@ running `npm` commands. This ensures hooks like `eslint-insight-browser` and
 documentation steps use the expected runtime.
 
 After `npm ci` the workflow updates the Browserslist database with
-`npx update-browserslist-db@1.1.3 --update-db --yes` to silence the
+`npx update-browserslist-db --update-db --yes` to silence the
 "caniuse-lite is outdated" warning. Run the same command locally when
 dependencies change. Bump the version in `.github/workflows/ci.yml` and this
 documentation whenever a newer release is required so CI stays reproducible.
