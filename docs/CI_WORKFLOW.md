@@ -64,6 +64,10 @@ fails. The workflow automatically reruns `scripts/update_pyodide.py` to refresh
 the expected hashes, fetches the assets again and then reruns
 `python scripts/fetch_assets.py --verify-only` so CI keeps running even if the
 mirrored files change.
+To avoid re-downloading these large files for every job, the workflow computes
+a cache key from the verified hashes and restores any matching archive across
+jobs and operating systems. This ensures reproducible builds and significantly
+reduces network traffic.
 
 Before submitting changes to the workflow run:
 
