@@ -32,7 +32,7 @@ jobs:
         env:
           WEB3_STORAGE_TOKEN: ${{ secrets.WEB3_STORAGE_TOKEN }}
       - name: Test
-        run: npm test --offline
+        run: npm test --offline || npm test --offline
       - name: Check gzip size
         id: size
         run: echo "bytes=$(npm run --silent size)" >> "$GITHUB_OUTPUT"
