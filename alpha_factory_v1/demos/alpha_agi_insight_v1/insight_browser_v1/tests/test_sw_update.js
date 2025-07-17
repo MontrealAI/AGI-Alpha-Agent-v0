@@ -36,7 +36,7 @@ test('service worker update reloads page', async () => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(url);
-    await page.waitForSelector('#controls');
+    await page.waitForSelector('#controls', { state: 'attached' });
     await page.waitForFunction('navigator.serviceWorker.ready');
     const initial = await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL);
 
