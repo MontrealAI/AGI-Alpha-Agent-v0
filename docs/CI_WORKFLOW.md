@@ -3,7 +3,7 @@
 # CI Workflow
 
 The repository's main continuous integration pipeline lives in
-[`.github/workflows/ci.yml`](../.github/workflows/ci.yml). It runs only when the
+[`.github/workflows/ci.yml`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/ci.yml). It runs only when the
 repository owner triggers it from the GitHub Actions UI.
 
 ## Running the workflow
