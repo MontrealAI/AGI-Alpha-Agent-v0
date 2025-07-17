@@ -52,6 +52,9 @@ alpha_factory_v1/core/interface/web_client/package-lock.json
 alpha_factory_v1/core/interface/web_client/staking/package-lock.json
 alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
 ```
+Each job installs Node.js 20 based on `.nvmrc` using `actions/setup-node` before
+running `npm` commands. This ensures hooks like `eslint-insight-browser` and
+documentation steps use the expected runtime.
 
 After `npm ci` the workflow updates the Browserslist database with
 `npx update-browserslist-db@1.1.3 --update-db --yes` to silence the
