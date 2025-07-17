@@ -151,7 +151,10 @@ steps. When the owner launches the workflow every job runs.
 Dependency hashes are fully locked, including `setuptools`, so `pip install -r
 requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is
-present for the cache version check. See
+present for the cache version check. Browser assets are cached across jobs using
+a deterministic hash derived from the expected checksums, so later stages reuse
+the same files. The docs and Docker jobs automatically fetch any missing assets
+and open a pull request when checksums drift. See
 [CI_WORKFLOW.md](docs/CI_WORKFLOW.md) for a detailed job overview.
 All Node.js steps pin the same lockfiles via `cache-dependency-path` so
 `actions/setup-node` caches npm packages correctly and avoids "Dependencies lock
