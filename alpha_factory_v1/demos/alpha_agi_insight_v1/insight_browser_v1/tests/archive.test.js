@@ -127,7 +127,6 @@ test('add calls chat when api key set and stores impact score', async () => {
 });
 
 test('prune logs warning when deletion fails', async () => {
-  // eslint-disable-next-line no-import-assign
   const delSpy = jest.spyOn(keyval, 'del').mockImplementation(() => {
     throw new DOMException('fail');
   });
@@ -140,7 +139,6 @@ test('prune logs warning when deletion fails', async () => {
 
   expect(warn).toHaveBeenCalled();
 
-  // eslint-disable-next-line no-import-assign
   delSpy.mockRestore();
   warn.mockRestore();
 });
