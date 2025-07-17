@@ -380,6 +380,10 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Install docs requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-docs.txt
       - id: asset-key-docs-build
         uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
@@ -398,10 +402,6 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
           )
-      - name: Install docs requirements
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-docs.txt
       - name: Verify downloaded assets
         id: verify-assets
         continue-on-error: true
