@@ -125,24 +125,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Compute asset cache key
-        id: asset-key-docs-build
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib, os
-          import scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docs-build
+        uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -151,24 +135,8 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}
           restore-keys: assets-${{ runner.os }}-
-      - name: Compute asset cache key
-        id: asset-key-docker
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib, os
-          import scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docker
+        uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -305,25 +273,8 @@ jobs:
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install
-      - name: Compute asset cache key
-        id: asset-key-docker
-        shell: bash
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib, os
-          import scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docker
+        uses: ./.github/actions/generate-asset-key
       - name: Cache Insight assets
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -378,24 +329,8 @@ jobs:
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install
-      - name: Compute asset cache key
-        id: asset-key-docker
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib, os
-          import scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docker
+        uses: ./.github/actions/generate-asset-key
       - name: Cache Insight assets
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -439,23 +374,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Compute asset cache key
-        id: asset-key-docs-build
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib, os, scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docs-build
+        uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -613,24 +533,8 @@ jobs:
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npm exec update-browserslist-db@1.1.3 -- --update-db --yes
-      - name: Compute asset cache key
-        id: asset-key-docker
-        run: |
-          key=$(python - <<'EOPY'
-          import hashlib, os
-          import scripts.fetch_assets as fa
-          env_data = f"{os.getenv('PYODIDE_BASE_URL','')}:{os.getenv('HF_GPT2_BASE_URL','')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOPY
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key-docker
+        uses: ./.github/actions/generate-asset-key
       - name: Cache Insight assets
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:

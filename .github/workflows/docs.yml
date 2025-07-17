@@ -94,26 +94,8 @@ jobs:
         run: npx playwright install chromium webkit firefox
       - name: Make scripts executable
         run: chmod +x ./scripts/*.sh
-      - name: Compute asset cache key
-        id: asset-key
-        run: |
-          key=$(python - <<'EOF'
-          import hashlib
-          import os
-          import scripts.fetch_assets as fa
-
-          env_data = f"{os.getenv('PYODIDE_BASE_URL', '')}:{os.getenv('HF_GPT2_BASE_URL', '')}"
-          data = (
-              fa.CHECKSUMS["pyodide.asm.wasm"]
-              + fa.CHECKSUMS["pyodide.js"]
-              + fa.CHECKSUMS["pyodide-lock.json"]
-              + fa.CHECKSUMS["pytorch_model.bin"]
-              + env_data
-          )
-          print(hashlib.sha256(data.encode()).hexdigest())
-          EOF
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
+      - id: asset-key
+        uses: ./.github/actions/generate-asset-key
       - name: Cache Pyodide and GPT-2 assets
         id: asset-cache
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
