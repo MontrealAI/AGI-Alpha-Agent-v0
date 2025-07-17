@@ -35,6 +35,9 @@ previous `latest` image so production always points at a working build.
   Ensure this image exists locally before building the docs.
 - **🐳 Docker build** – builds and tests the demo image.
 - **📦 Deploy** – pushes the image and release assets on tags.
+- **♿ Accessibility audit** – runs `@axe-core/cli` on the built web client. The
+  pipeline fails if the score is below the `a11y-threshold` input (default 90).
+  Keep this threshold at least 90 to maintain baseline accessibility.
 
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
