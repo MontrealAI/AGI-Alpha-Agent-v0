@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {promises as fs} from 'fs';
 import path from 'path';
+import {fileURLToPath} from 'url';
 import http from 'http';
 import {chromium} from 'playwright';
 
@@ -24,7 +25,8 @@ function startServer(dir) {
 
 test('service worker update reloads page', async () => {
   let browser;
-  const dist = path.resolve(new URL('../dist', import.meta.url).pathname);
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const dist = path.resolve(__dirname, '../dist');
   const server = await startServer(dist);
   const {port} = server.address();
   const url = `http://127.0.0.1:${port}/index.html`;
