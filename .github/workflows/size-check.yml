@@ -77,14 +77,11 @@ jobs:
           restore-keys: assets-${{ runner.os }}-
       - name: Fetch Insight Browser assets
         run: python scripts/fetch_assets.py
-      - name: Install update-browserslist-db
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npm install --no-save update-browserslist-db@1.1.3
       - name: Update browserslist database
         id: browserslist
         continue-on-error: true
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npm exec update-browserslist-db@1.1.3 -- --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Ignore stale browserslist data
         if: steps.browserslist.outcome == 'failure'
         run: |
