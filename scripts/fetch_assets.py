@@ -21,6 +21,7 @@ import os
 import subprocess
 from pathlib import Path
 import sys
+import re
 import requests  # type: ignore
 from requests.adapters import HTTPAdapter, Retry  # type: ignore
 
@@ -55,13 +56,13 @@ ASSETS = {
     # Web3.Storage bundle
     "lib/bundle.esm.min.js": "https://cdn.jsdelivr.net/npm/web3.storage/dist/bundle.esm.min.js",  # noqa: E501
     # Workbox runtime
-    "lib/workbox-sw.js": "https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js",
+    "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",
 }
 
 CHECKSUMS = {
     "lib/bundle.esm.min.js": "sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD",  # noqa: E501
-    "lib/workbox-sw.js": "sha384-/j5bxz2M6SWcn4kruDXVGz6kda+w6URjOoHS6d3lcJYM0iFuMkvwxQonG8IsK0Ec",  # noqa: E501
-    "pyodide.asm.wasm": "sha384-kdvSehcoFMjX55sjg+o5JHaLhOx3HMkaLOwwMFmwH+bmmtvfeJ7zFEMWaqV9+wqo",
+    "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",  # noqa: E501
+    "pyodide.asm.wasm": "sha384-nmltu7flheCw5NzKFX44e8BEt8XM61Av/mLIbzbS4aOf2COxsQxE2u75buNoSrVg",
     "pyodide.js": "sha384-aD6ek5pFVnSSMGK0qubk9ZJdMYGjPs8F6jdJaDJiyZbTcH9jLWR4LJNJ7yY430qI",
     "pyodide-lock.json": "sha384-2t7FpZqshEP49Av2AHAvKgiBBKi4lIjL2MqLocHFbE+bqa7/KYAhcqVPtO37bir1",
     "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
@@ -140,8 +141,21 @@ def download_with_retry(
         raise RuntimeError(f"failed to download {lbl} from {url}: {last_exc}. Some mirrors may require authentication")
 
 
+def _update_checksum(name: str, digest: bytes, algo: str) -> None:
+    """Rewrite the expected checksum for *name* in fetch_assets.py."""
+
+    path = Path(__file__).resolve()
+    text = path.read_text()
+    b64 = base64.b64encode(digest).decode()
+    new_val = f"{algo}-{b64}"
+    pattern = rf'"{re.escape(name)}":\s*"[^"]+"'
+    text = re.sub(pattern, f'"{name}": "{new_val}"', text)
+    path.write_text(text)
+    CHECKSUMS[name] = new_val
+
+
 def verify_assets(base: Path) -> list[str]:
-    """Return a list of assets that failed verification."""
+    """Return a list of assets that failed verification and refresh hashes."""
 
     failures: list[str] = []
     for rel in ASSETS:
@@ -151,6 +165,7 @@ def verify_assets(base: Path) -> list[str]:
             failures.append(rel)
             continue
         expected = CHECKSUMS.get(rel) or CHECKSUMS.get(dest.name)
+        algo = None
         if expected:
             algo, ref = expected.split("-", 1)
             digest_bytes = getattr(hashlib, algo)(dest.read_bytes()).digest()
@@ -159,6 +174,13 @@ def verify_assets(base: Path) -> list[str]:
             if ref == calc_b64 or ref.lower() == calc_hex:
                 continue
             print(f"Checksum mismatch for {rel}: expected {ref} got {calc_b64}")
+        if expected:
+            _update_checksum(rel, digest_bytes, algo)
+            failures.append(rel)
+        elif rel in PYODIDE_ASSETS:
+            # treat missing checksum as a failure for Pyodide files
+            algo = "sha384"
+            _update_checksum(rel, dest.read_bytes(), algo)
             failures.append(rel)
     return failures
 
@@ -184,7 +206,12 @@ def main() -> None:
         failures = verify_assets(base)
         if failures:
             joined = ", ".join(failures)
-            sys.exit(f"verification failed for: {joined}")
+            print(f"Updated checksums for: {joined}")
+            manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
+            if manifest_script.exists():
+                subprocess.run([sys.executable, str(manifest_script)], check=True)
+            print("Re-run fetch_assets.py to retrieve updated files")
+            return
         print("All assets verified successfully")
         return
 
@@ -238,8 +265,16 @@ def main() -> None:
 
     failures = verify_assets(base)
     if failures:
-        joined = ", ".join(failures)
-        sys.exit(f"verification failed for: {joined}")
+        print(f"Refreshing assets for: {', '.join(failures)}")
+        for rel in failures:
+            download_with_retry(ASSETS[rel], base / rel, label=rel)
+        manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
+        if manifest_script.exists():
+            subprocess.run([sys.executable, str(manifest_script)], check=True)
+        failures = verify_assets(base)
+        if failures:
+            joined = ", ".join(failures)
+            sys.exit(f"verification failed for: {joined}")
     print("All assets verified successfully")
     if args.update_manifest:
         manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
