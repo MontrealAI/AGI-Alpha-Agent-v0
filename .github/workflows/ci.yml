@@ -259,7 +259,7 @@ jobs:
           PY
       - name: Comment benchmark
         if: ${{ github.event.pull_request }}
-        uses: marocchino/sticky-pull-request-comment@v2.9.3 # d2ad0de260ae8b0235ce059e63f2949ba9e05943
+        uses: marocchino/sticky-pull-request-comment@v2.9.4 # 773744901bac0e8cbb5a0dc842800d45e9b2b405
         with:
           header: benchmark
           path: bench.txt
@@ -480,7 +480,7 @@ jobs:
       - name: Update Pyodide
         if: steps.verify-assets.outcome == 'failure'
         run: python scripts/update_pyodide.py 0.28.0
-      - name: Fetch updated assets
+      - name: Fetch insight browser assets after update
         if: steps.verify-assets.outcome == 'failure'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
       - name: Re-verify downloaded assets
