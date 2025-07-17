@@ -77,7 +77,10 @@ jobs:
       - name: Fail on uncommitted changes
         run: |
           git --no-pager diff
-          git diff --quiet
+          if ! git diff --quiet; then
+            echo "::error::Uncommitted changes detected. Run pre-commit locally."
+            exit 1
+          fi
       - name: Ruff lint
         run: ruff check alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Mypy type-check
