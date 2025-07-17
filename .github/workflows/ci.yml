@@ -107,6 +107,7 @@ jobs:
     environment: ci-on-demand
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
+      PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -198,10 +199,15 @@ jobs:
       - name: Type check insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Cypress E2E tests with Percy
+        if: env.PERCY_TOKEN != ''
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_TOKEN_E2E: ${{ secrets.PERCY_TOKEN }}
-        run: npm --prefix alpha_factory_v1/core/interface/web_client run percy:cypress
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run dev --prefix alpha_factory_v1/core/interface/web_client
+          wait-on: http://localhost:5173
+          command: npm --prefix alpha_factory_v1/core/interface/web_client run percy:cypress
       - name: Install proto compiler
         run: pip install grpcio-tools
       - name: Verify protobuf
