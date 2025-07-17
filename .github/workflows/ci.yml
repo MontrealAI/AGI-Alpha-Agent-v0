@@ -61,7 +61,7 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements.lock'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -420,6 +420,11 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
           key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}
           restore-keys: assets-${{ runner.os }}-
+      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Fetch insight browser assets
         run: |
           set -e
