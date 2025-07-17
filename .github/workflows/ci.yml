@@ -188,6 +188,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Run insight browser tests
+        env:
+          CI: 'true'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
@@ -583,6 +585,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Run insight browser tests
+        env:
+          CI: 'true'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Type check insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck

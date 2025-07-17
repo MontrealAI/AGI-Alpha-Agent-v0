@@ -23,7 +23,10 @@ function startServer(dir) {
   });
 }
 
-test('service worker update reloads page', {skip: !!process.env.CI}, async () => {
+if (process.env.CI) {
+  test.skip('service worker update reloads page', () => {});
+} else {
+  test('service worker update reloads page', async () => {
   let browser;
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const dist = path.resolve(__dirname, '../dist');
@@ -62,4 +65,5 @@ test('service worker update reloads page', {skip: !!process.env.CI}, async () =>
     server.close();
     await fs.writeFile(swPath, original);
   }
-});
+  });
+}
