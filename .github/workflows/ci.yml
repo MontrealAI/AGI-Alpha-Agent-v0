@@ -137,6 +137,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Upgrade Percy CLI
+        run: npm install -g @percy/cli@1.31.0
       - id: asset-key-docs-build
         uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
