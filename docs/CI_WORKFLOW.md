@@ -62,8 +62,10 @@ If the workflow ever reports missing lock files, double‑check these paths
 in `.github/workflows/ci.yml` and adjust them whenever new packages are added.
 
 The docs and test jobs fetch the Pyodide runtime and GPT‑2 model files from
-external mirrors. When these assets change upstream the checksum verification
-fails. Each verify step now runs in a `||` block:
+external mirrors. **Install the Python dependencies from `requirements.txt`
+before running `scripts/fetch_assets.py`; the helper uses the `requests`
+library to download these assets.** When the files change upstream the checksum
+verification fails. Each verify step now runs in a `||` block:
 
 ```bash
 python scripts/fetch_assets.py --verify-only || (
@@ -74,10 +76,14 @@ python scripts/fetch_assets.py --verify-only || (
 ```
 
 If verification fails the assets refresh automatically and the check is
-repeated. To avoid re-downloading these large files for every job, the workflow
-computes a cache key from the current checksums and restores any matching
-archive across jobs and operating systems. This ensures reproducible builds and
-invalidates old caches whenever the upstream hashes change.
+repeated. `scripts/update_pyodide.py` downloads the requested Pyodide
+runtime, computes new SHA‑384 digests for `pyodide.js` and
+`pyodide.asm.wasm`, and rewrites the checksum table in `scripts/fetch_assets.py`.
+The workflow then re-fetches the files using the updated values. To avoid
+re-downloading these large assets for every job, the workflow computes a cache
+key from the current checksums and restores any matching archive across jobs and
+operating systems. This ensures reproducible builds and invalidates old caches
+whenever the upstream hashes change.
 
 Before submitting changes to the workflow run:
 
