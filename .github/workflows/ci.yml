@@ -398,12 +398,12 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Install base dependencies
-        run: python check_env.py --auto-install
       - name: Install docs requirements
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-docs.txt
+      - name: Install base dependencies
+        run: python check_env.py --auto-install
       - id: asset-key-docs-build
         uses: ./.github/actions/generate-asset-key
       - name: Restore Insight asset cache
