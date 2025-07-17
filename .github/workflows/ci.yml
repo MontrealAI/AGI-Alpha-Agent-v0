@@ -179,7 +179,7 @@ jobs:
           )
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
@@ -192,7 +192,7 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Audit web dependencies
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
@@ -297,7 +297,7 @@ jobs:
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
-            npx --yes update-browserslist-db --update-db --yes)
+            npx update-browserslist-db --update-db --yes)
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
@@ -357,7 +357,7 @@ jobs:
           set -e
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
-            npx --yes update-browserslist-db --update-db --yes)
+            npx update-browserslist-db --update-db --yes)
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
             echo "Detected asset hash change, updating..." &&
             python scripts/update_pyodide.py 0.28.0 &&
@@ -466,10 +466,10 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
@@ -533,12 +533,12 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - name: Install web client dependencies
         run: npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
-        run: npx --yes update-browserslist-db --update-db --yes
+        run: npx update-browserslist-db --update-db --yes
       - id: asset-key-docker
         uses: ./.github/actions/generate-asset-key
       - name: Cache Insight assets
