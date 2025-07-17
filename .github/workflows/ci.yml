@@ -74,6 +74,10 @@ jobs:
         run: pre-commit run --all-files
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+      - name: Fail on uncommitted changes
+        run: |
+          git --no-pager diff
+          git diff --quiet
       - name: Ruff lint
         run: ruff check alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Mypy type-check
