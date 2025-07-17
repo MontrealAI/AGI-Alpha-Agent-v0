@@ -7,6 +7,11 @@ name: "🚀 CI"
 
 on:
   workflow_dispatch:
+    inputs:
+      a11y-threshold:
+        description: "Minimum Axe accessibility score"
+        required: false
+        default: "90"
 
 permissions:
   contents: read
@@ -27,6 +32,7 @@ env:
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
+  A11Y_THRESHOLD: ${{ inputs.a11y-threshold }}
 
 jobs:
 
@@ -598,8 +604,8 @@ jobs:
         run: |
           npx --yes @axe-core/cli alpha_factory_v1/core/interface/web_client/dist/index.html --score > axe.json
           score=$(jq '.score' axe.json)
-          echo "a11y score: $score"
-          if [ "$score" -lt 90 ]; then
+          echo "a11y score: $score (threshold $A11Y_THRESHOLD)"
+          if [ "$score" -lt "$A11Y_THRESHOLD" ]; then
             cat axe.json
             exit 1
           fi
