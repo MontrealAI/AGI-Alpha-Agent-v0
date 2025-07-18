@@ -4,11 +4,14 @@
 #
 #    pip-compile --allow-unsafe --output-file=requirements-dev.lock requirements-dev.txt
 #
+aiofiles==24.1.0
+    # via gradio
 aiohappyeyeballs==2.6.1
     # via aiohttp
 aiohttp==3.12.14
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r requirements-dev.txt
     #   litellm
     #   papermill
 aiosignal==1.4.0
@@ -24,12 +27,15 @@ anyio==4.9.0
     #   anthropic
     #   google-adk
     #   google-genai
+    #   gradio
     #   httpx
     #   mcp
     #   openai
     #   sse-starlette
     #   starlette
     #   watchfiles
+asttokens==3.0.0
+    # via stack-data
 attrs==25.3.0
     # via
     #   aiohttp
@@ -40,10 +46,16 @@ authlib==1.6.0
     # via google-adk
 backoff==2.2.1
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+beautifulsoup4==4.13.4
+    # via nbconvert
 better-profanity==0.7.0
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+bleach[css]==6.2.0
+    # via nbconvert
 blinker==1.9.0
     # via flask
+brotli==1.1.0
+    # via gradio
 cachetools==5.5.2
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
@@ -66,15 +78,26 @@ click==8.2.1
     #   google-adk
     #   litellm
     #   papermill
+    #   typer
     #   uvicorn
 cloudpickle==3.1.1
-    # via google-cloud-aiplatform
+    # via
+    #   google-cloud-aiplatform
+    #   gymnasium
 colorama==0.4.6
     # via griffe
+comm==0.2.2
+    # via ipykernel
 cryptography==45.0.5
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   authlib
+debugpy==1.8.15
+    # via ipykernel
+decorator==5.2.1
+    # via ipython
+defusedxml==0.7.1
+    # via nbconvert
 distlib==0.3.9
     # via virtualenv
 distro==1.9.0
@@ -85,12 +108,19 @@ docstring-parser==0.16
     # via google-cloud-aiplatform
 entrypoints==0.4
     # via papermill
+executing==2.2.0
+    # via stack-data
+farama-notifications==0.0.4
+    # via gymnasium
 fastapi==0.116.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   google-adk
+    #   gradio
 fastjsonschema==2.21.1
     # via nbformat
+ffmpy==0.6.0
+    # via gradio
 filelock==3.18.0
     # via
     #   huggingface-hub
@@ -102,7 +132,9 @@ frozenlist==1.7.0
     #   aiohttp
     #   aiosignal
 fsspec==2025.7.0
-    # via huggingface-hub
+    # via
+    #   gradio-client
+    #   huggingface-hub
 gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
@@ -189,6 +221,10 @@ googleapis-common-protos[grpc]==1.70.0
     #   google-cloud-audit-log
     #   grpc-google-iam-v1
     #   grpcio-status
+gradio==5.38.0
+    # via -r requirements-dev.txt
+gradio-client==1.11.0
+    # via gradio
 graphviz==0.21
     # via google-adk
 greenlet==3.2.3
@@ -197,6 +233,8 @@ greenlet==3.2.3
     #   sqlalchemy
 griffe==1.7.3
     # via openai-agents
+groovy==0.1.2
+    # via gradio
 grpc-google-iam-v1==0.14.2
     # via
     #   google-cloud-logging
@@ -210,6 +248,7 @@ grpcio==1.73.1
     #   grpc-google-iam-v1
     #   grpcio-status
     #   grpcio-tools
+    #   qdrant-client
 grpcio-status==1.73.1
     # via google-api-core
 grpcio-tools==1.73.1
@@ -218,12 +257,18 @@ grpcio-tools==1.73.1
     #   -r requirements-dev.txt
 gunicorn==21.2.0
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+gymnasium[classic-control]==1.2.0
+    # via -r requirements-dev.txt
 h11==0.16.0
     # via
     #   httpcore
     #   uvicorn
+h2==4.2.0
+    # via httpx
 hf-xet==1.1.5
     # via huggingface-hub
+hpack==4.1.0
+    # via h2
 httpcore==1.0.9
     # via httpx
 httplib2==0.22.0
@@ -232,19 +277,28 @@ httplib2==0.22.0
     #   google-auth-httplib2
 httptools==0.6.4
     # via uvicorn
-httpx==0.28.1
+httpx[http2]==0.28.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   anthropic
     #   google-genai
+    #   gradio
+    #   gradio-client
     #   litellm
     #   mcp
     #   openai
     #   pytest-httpx
+    #   qdrant-client
+    #   safehttpx
 httpx-sse==0.4.1
     # via mcp
 huggingface-hub==0.33.4
-    # via tokenizers
+    # via
+    #   gradio
+    #   gradio-client
+    #   tokenizers
+hyperframe==6.1.0
+    # via h2
 hypothesis==6.135.31
     # via -r requirements-dev.txt
 identify==2.6.12
@@ -261,12 +315,22 @@ importlib-metadata==8.7.0
     #   opentelemetry-api
 iniconfig==2.1.0
     # via pytest
+ipykernel==6.29.5
+    # via -r requirements-dev.txt
+ipython==9.4.0
+    # via ipykernel
+ipython-pygments-lexers==1.1.1
+    # via ipython
 itsdangerous==2.2.0
     # via flask
+jedi==0.19.2
+    # via ipython
 jinja2==3.1.6
     # via
     #   flask
+    #   gradio
     #   litellm
+    #   nbconvert
 jiter==0.10.0
     # via
     #   anthropic
@@ -279,12 +343,19 @@ jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
     # via jsonschema
 jupyter-client==8.6.3
-    # via nbclient
+    # via
+    #   ipykernel
+    #   nbclient
 jupyter-core==5.8.1
     # via
+    #   -r requirements-dev.txt
+    #   ipykernel
     #   jupyter-client
     #   nbclient
+    #   nbconvert
     #   nbformat
+jupyterlab-pygments==0.3.0
+    # via nbconvert
 litellm==1.74.3
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
 markdown-it-py==3.0.0
@@ -292,14 +363,22 @@ markdown-it-py==3.0.0
 markupsafe==3.0.2
     # via
     #   flask
+    #   gradio
     #   jinja2
+    #   nbconvert
     #   werkzeug
+matplotlib-inline==0.1.7
+    # via
+    #   ipykernel
+    #   ipython
 mcp==1.11.0
     # via
     #   google-adk
     #   openai-agents
 mdurl==0.1.2
     # via markdown-it-py
+mistune==3.1.3
+    # via nbconvert
 multidict==6.6.3
     # via
     #   aiohttp
@@ -309,17 +388,29 @@ mypy==1.17.0
 mypy-extensions==1.1.0
     # via mypy
 nbclient==0.10.2
-    # via papermill
+    # via
+    #   -r requirements-dev.txt
+    #   nbconvert
+    #   papermill
+nbconvert==7.16.6
+    # via -r requirements-dev.txt
 nbformat==5.10.4
     # via
+    #   -r requirements-dev.txt
     #   nbclient
+    #   nbconvert
     #   papermill
+nest-asyncio==1.6.0
+    # via ipykernel
 nodeenv==1.9.1
     # via pre-commit
 numpy==2.3.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   gradio
+    #   gymnasium
     #   pandas
+    #   qdrant-client
     #   shapely
 openai==1.96.1
     # via
@@ -353,20 +444,36 @@ opentelemetry-sdk==1.35.0
 opentelemetry-semantic-conventions==0.56b0
     # via opentelemetry-sdk
 orjson==3.11.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via
+    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   gradio
 packaging==25.0
     # via
     #   google-cloud-aiplatform
     #   google-cloud-bigquery
+    #   gradio
+    #   gradio-client
     #   gunicorn
     #   huggingface-hub
+    #   ipykernel
+    #   nbconvert
     #   pytest
 pandas==2.3.1
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via
+    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   gradio
+pandocfilters==1.5.1
+    # via nbconvert
 papermill==2.6.0
     # via -r requirements-dev.txt
+parso==0.8.4
+    # via jedi
 pathspec==0.12.1
     # via mypy
+pexpect==4.9.0
+    # via ipython
+pillow==11.3.0
+    # via gradio
 platformdirs==4.3.8
     # via
     #   jupyter-core
@@ -375,10 +482,14 @@ playwright==1.53.0
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
 pluggy==1.6.0
     # via pytest
+portalocker==3.2.0
+    # via qdrant-client
 pre-commit==4.2.0
     # via -r requirements-dev.txt
 prometheus-client==0.22.1
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+prompt-toolkit==3.0.51
+    # via ipython
 propcache==0.3.2
     # via
     #   aiohttp
@@ -410,6 +521,13 @@ protobuf==6.31.1
     #   grpcio-status
     #   grpcio-tools
     #   proto-plus
+    #   qdrant-client
+psutil==7.0.0
+    # via ipykernel
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.3
+    # via stack-data
 py-cpuinfo==9.0.0
     # via pytest-benchmark
 pyasn1==0.6.1
@@ -428,11 +546,13 @@ pydantic==2.11.7
     #   google-adk
     #   google-cloud-aiplatform
     #   google-genai
+    #   gradio
     #   litellm
     #   mcp
     #   openai
     #   openai-agents
     #   pydantic-settings
+    #   qdrant-client
     #   redbird
     #   rocketry
 pydantic-core==2.33.2
@@ -441,10 +561,17 @@ pydantic-settings==2.10.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   mcp
+pydub==0.25.1
+    # via gradio
 pyee==13.0.0
     # via playwright
+pygame==2.6.1
+    # via gymnasium
 pygments==2.19.2
     # via
+    #   ipython
+    #   ipython-pygments-lexers
+    #   nbconvert
     #   pytest
     #   rich
 pyparsing==3.2.3
@@ -473,19 +600,26 @@ python-dotenv==1.1.1
     #   pydantic-settings
     #   uvicorn
 python-multipart==0.0.20
-    # via mcp
+    # via
+    #   gradio
+    #   mcp
 pytz==2025.2
     # via pandas
 pyyaml==6.0.2
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   google-adk
+    #   gradio
     #   huggingface-hub
     #   papermill
     #   pre-commit
     #   uvicorn
 pyzmq==27.0.0
-    # via jupyter-client
+    # via
+    #   ipykernel
+    #   jupyter-client
+qdrant-client==1.15.0
+    # via -r requirements-dev.txt
 redbird==0.7.1
     # via rocketry
 referencing==0.36.2
@@ -511,7 +645,9 @@ requests==2.32.4
 requests-mock==1.12.1
     # via -r requirements-dev.txt
 rich==14.0.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via
+    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   typer
 rocketry==2.5.1
     # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
 rpds-py==0.26.0
@@ -521,9 +657,17 @@ rpds-py==0.26.0
 rsa==4.9.1
     # via google-auth
 ruff==0.12.3
-    # via -r requirements-dev.txt
+    # via
+    #   -r requirements-dev.txt
+    #   gradio
+safehttpx==0.1.6
+    # via gradio
+semantic-version==2.10.0
+    # via gradio
 shapely==2.1.1
     # via google-cloud-aiplatform
+shellingham==1.5.4
+    # via typer
 six==1.17.0
     # via python-dateutil
 smmap==5.0.2
@@ -535,14 +679,19 @@ sniffio==1.3.1
     #   openai
 sortedcontainers==2.4.0
     # via hypothesis
+soupsieve==2.7
+    # via beautifulsoup4
 sqlalchemy==2.0.41
     # via google-adk
 sse-starlette==2.4.1
     # via mcp
+stack-data==0.6.3
+    # via ipython
 starlette==0.47.1
     # via
     #   fastapi
     #   google-adk
+    #   gradio
     #   mcp
 tenacity==8.5.0
     # via
@@ -553,10 +702,16 @@ tiktoken==0.9.0
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   litellm
+tinycss2==1.4.0
+    # via bleach
 tokenizers==0.21.2
     # via litellm
+tomlkit==0.13.3
+    # via gradio
 tornado==6.5.1
-    # via jupyter-client
+    # via
+    #   ipykernel
+    #   jupyter-client
 tqdm==4.67.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
@@ -565,10 +720,17 @@ tqdm==4.67.1
     #   papermill
 traitlets==5.14.3
     # via
+    #   comm
+    #   ipykernel
+    #   ipython
     #   jupyter-client
     #   jupyter-core
+    #   matplotlib-inline
     #   nbclient
+    #   nbconvert
     #   nbformat
+typer==0.16.0
+    # via gradio
 types-pyyaml==6.0.12.20250516
     # via -r requirements-dev.txt
 types-requests==2.32.4.20250611
@@ -580,10 +742,14 @@ typing-extensions==4.14.1
     #   aiosignal
     #   anthropic
     #   anyio
+    #   beautifulsoup4
     #   fastapi
     #   google-adk
     #   google-cloud-aiplatform
     #   google-genai
+    #   gradio
+    #   gradio-client
+    #   gymnasium
     #   huggingface-hub
     #   mypy
     #   openai
@@ -599,6 +765,7 @@ typing-extensions==4.14.1
     #   referencing
     #   sqlalchemy
     #   starlette
+    #   typer
     #   typing-inspection
 typing-inspection==0.4.1
     # via
@@ -612,12 +779,14 @@ uritemplate==4.2.0
     # via google-api-python-client
 urllib3==2.5.0
     # via
+    #   qdrant-client
     #   requests
     #   types-requests
 uvicorn[standard]==0.35.0
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   google-adk
+    #   gradio
     #   mcp
 uvloop==0.21.0
     # via uvicorn
@@ -627,11 +796,18 @@ watchdog==6.0.0
     # via google-adk
 watchfiles==1.1.0
     # via uvicorn
+wcwidth==0.2.13
+    # via prompt-toolkit
+webencodings==0.5.1
+    # via
+    #   bleach
+    #   tinycss2
 websockets==15.0.1
     # via
     #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
     #   google-adk
     #   google-genai
+    #   gradio-client
     #   uvicorn
 werkzeug==3.1.3
     # via flask
