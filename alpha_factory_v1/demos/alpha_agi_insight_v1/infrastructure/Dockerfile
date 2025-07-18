@@ -25,12 +25,12 @@ RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/we
     && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
 
 # copy built assets
-COPY ../src/interface/web_client/dist/ \
+COPY alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/ \
     /app/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/
 
 # Add non-root user and entrypoint
 RUN adduser --disabled-password --gecos '' afuser && chown -R afuser /app
-COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
