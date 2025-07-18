@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && workbox injectManifest workbox.config.cjs",
+    "build": "vite build && workbox injectManifest workbox.config.cjs && cp dist/service-worker.js public/service-worker.js",
     "preview": "vite preview",
     "test": "echo \"Running smoke test\" && exit 0",
     "test:e2e": "playwright test",
