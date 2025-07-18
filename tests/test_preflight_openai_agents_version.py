@@ -50,6 +50,27 @@ class TestPreflightOpenAIAgentsVersion(unittest.TestCase):
             with self.subTest(module=name):
                 self.assertFalse(self._run_check(name, None))
 
+    def test_missing_spec_skips_check(self) -> None:
+        fake_mod = types.SimpleNamespace(__spec__=None)
+
+        def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return fake_mod
+            return importlib.import_module(name, *args, **kwargs)
+
+        def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return object()
+            if name == "agents":
+                return None
+            return importlib.util.find_spec(name, *args, **kwargs)
+
+        with (
+            mock.patch("importlib.import_module", side_effect=_fake_import),
+            mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
+        ):
+            self.assertTrue(preflight.check_openai_agents_version())
+
 
 if __name__ == "__main__":  # pragma: no cover - manual execution
     unittest.main()
