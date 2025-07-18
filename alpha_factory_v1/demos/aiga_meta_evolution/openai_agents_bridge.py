@@ -17,6 +17,7 @@ from __future__ import annotations
 try:  # optional dependency
     import openai_agents as _oa
     from openai_agents import Agent, Tool
+
     if not hasattr(_oa, "OpenAIAgent"):
         raise AttributeError
     OpenAIAgent = _oa.OpenAIAgent  # type: ignore[misc]
@@ -39,7 +40,9 @@ try:  # optional dependency
                     raise RuntimeError("No agent registered")
 
                 asyncio.run(self._runner.run(self._agent, ""))
+
 except Exception:  # pragma: no cover - fallback stub
+
     class Agent:  # type: ignore[misc]
         pass
 
@@ -65,6 +68,7 @@ except Exception:  # pragma: no cover - fallback stub
             return func
 
         return decorator
+
 
 try:
     from alpha_factory_v1.backend.adk_bridge import auto_register, maybe_launch
