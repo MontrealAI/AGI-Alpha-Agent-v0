@@ -20,17 +20,17 @@ RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements
 
 # Copy the project source
 COPY . /app
-RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client \
-    && npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
-    && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+RUN npm ci --prefix src/interface/web_client \
+    && npm --prefix src/interface/web_client run build \
+    && rm -rf src/interface/web_client/node_modules
 
 # copy built assets
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/ \
-    /app/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/
+COPY ./src/interface/web_client/dist/ \
+    /app/src/interface/web_client/dist/
 
 # Add non-root user and entrypoint
 RUN adduser --disabled-password --gecos '' afuser && chown -R afuser /app
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
