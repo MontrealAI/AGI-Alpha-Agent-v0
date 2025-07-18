@@ -486,11 +486,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     missing = missing_required + missing_optional
     if missing:
         print("WARNING: Missing packages:", ", ".join(missing))
-        if auto and (wheelhouse or network_ok):
+        if auto and missing_required and (wheelhouse or network_ok):
             cmd = [sys.executable, "-m", "pip", "install", "--quiet"]
             if wheelhouse:
                 cmd += ["--no-index", "--find-links", wheelhouse]
-            packages = [PIP_NAMES.get(pkg, pkg) for pkg in missing]
+            packages = [PIP_NAMES.get(pkg, pkg) for pkg in missing_required]
             cmd += packages
             print(
                 f"Attempting automatic install (timeout {pip_timeout}s):",
