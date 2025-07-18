@@ -193,10 +193,16 @@ def check_openai_agents_version(min_version: str = MIN_OPENAI_AGENTS_VERSION) ->
     import importlib
 
     module_name = "openai_agents"
-    spec = importlib.util.find_spec(module_name)
+    try:
+        spec = importlib.util.find_spec(module_name)
+    except ValueError:
+        spec = None
     if spec is None:
         module_name = "agents"
-        spec = importlib.util.find_spec(module_name)
+        try:
+            spec = importlib.util.find_spec(module_name)
+        except ValueError:
+            spec = None
         if spec is None:  # not installed
             return True
 
