@@ -25,8 +25,8 @@
       const el = document.getElementById('disclaimer');
       if (el) el.textContent = msg;
     </script>
-    <script>
-      if ('serviceWorker' in navigator) {
+    <script type="module">
+      if ('serviceWorker' in navigator && import.meta.env.PROD) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/service-worker.js');
         });
