@@ -53,6 +53,39 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
             with self.subTest(module=name):
                 self.assertNotEqual(self._run_check(name, None), 0)
 
+    def test_missing_spec_allowed_with_flag(self) -> None:
+        """Allow basic fallback when __spec__ is None."""
+        fake_mod = types.SimpleNamespace(
+            __version__="0.0.17",
+            __spec__=None,
+            OpenAIAgent=object,
+        )
+
+        def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return fake_mod
+            return importlib.import_module(name, *args, **kwargs)
+
+        def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return object()
+            if name == "agents":
+                return None
+            return importlib.util.find_spec(name, *args, **kwargs)
+
+        def _raise() -> bool:
+            raise AssertionError("check_openai_agents_version should not run")
+
+        with (
+            mock.patch("importlib.import_module", side_effect=_fake_import),
+            mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
+            mock.patch.object(check_env, "REQUIRED", []),
+            mock.patch.object(check_env, "OPTIONAL", ["openai_agents"]),
+            mock.patch.object(check_env, "warn_missing_core", lambda: []),
+            mock.patch.object(check_env, "check_openai_agents_version", _raise),
+        ):
+            self.assertEqual(check_env.main(["--allow-basic-fallback"]), 0)
+
 
 if __name__ == "__main__":  # pragma: no cover - manual execution
     unittest.main()
