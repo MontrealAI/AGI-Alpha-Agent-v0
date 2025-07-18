@@ -17,10 +17,17 @@ WEIGHTS = {
 }
 
 
-def compute_score(data: dict) -> int:
-    """Return a simplified Axe score (0-100)."""
+def compute_score(data: list | dict) -> int:
+    """Return a simplified Axe score (0-100) from Axe CLI JSON."""
+    violations: list[dict] = []
+    if isinstance(data, list):
+        for page in data:
+            violations.extend(page.get("violations", []))
+    else:
+        violations = data.get("violations", [])
+
     total = 0
-    for violation in data.get("violations", []):
+    for violation in violations:
         impact = violation.get("impact", "minor")
         total += WEIGHTS.get(impact, 1)
     score = max(0, 100 - total)
@@ -32,10 +39,7 @@ DEFAULT_THRESHOLD = int(os.environ.get("A11Y_THRESHOLD", "90"))
 
 def main(path: str, threshold: int = DEFAULT_THRESHOLD) -> int:
     data = json.loads(Path(path).read_text())
-    if isinstance(data, list):
-        data = data[0]
-    violations = data.get("violations", [])
-    score = compute_score({"violations": violations})
+    score = compute_score(data)
     print(score)
     if score < threshold:
         return 1
