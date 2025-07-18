@@ -7,6 +7,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 # Checks
 - [ ] I ran `pre-commit run --files <paths>`
+- [ ] I ran `pre-commit run --all-files`
 - [ ] I ran `python check_env.py --auto-install`
 - [ ] I ran `pytest --cov --cov-report=xml` and documented any failures below
 

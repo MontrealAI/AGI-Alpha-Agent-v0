@@ -60,6 +60,8 @@ pre-commit install
 python check_env.py --auto-install  # add --wheelhouse <dir> when offline
 pre-commit run --all-files
 ```
+Run `pre-commit run --all-files` again before opening a pull request to ensure
+repository-wide checks pass.
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
 images. Each page under `docs/demos/` must start with a preview image using
 `![preview](...)`.
