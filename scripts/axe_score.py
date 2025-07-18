@@ -28,7 +28,10 @@ def compute_score(data: dict) -> int:
 
 def main(path: str) -> int:
     data = json.loads(Path(path).read_text())
-    score = compute_score(data)
+    if isinstance(data, list):
+        data = data[0]
+    violations = data.get("violations", [])
+    score = compute_score({"violations": violations})
     print(score)
     return 0
 
