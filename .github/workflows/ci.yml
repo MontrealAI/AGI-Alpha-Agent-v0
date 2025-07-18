@@ -444,6 +444,8 @@ jobs:
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
             python scripts/fetch_assets.py --verify-only
           )
+      - name: Install pre-commit
+        run: pip install pre-commit==4.2.0
       - name: Build documentation
         run: mkdocs build --strict
 
@@ -487,6 +489,8 @@ jobs:
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
+      - name: Install pre-commit
+        run: pip install pre-commit==4.2.0
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
