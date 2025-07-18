@@ -205,9 +205,10 @@ jobs:
           PERCY_TOKEN_E2E: ${{ secrets.PERCY_TOKEN }}
         uses: cypress-io/github-action@v6.10.1 # 6c143abc292aa835d827652c2ea025d098311070
         with:
-          start: npm run dev --prefix alpha_factory_v1/core/interface/web_client
+          working-directory: alpha_factory_v1/core/interface/web_client
+          start: npm run dev
           wait-on: http://localhost:5173
-          command: npm --prefix alpha_factory_v1/core/interface/web_client run percy:cypress
+          command: npm run percy:cypress
       - name: Install proto compiler
         run: pip install grpcio-tools
       - name: Verify protobuf
