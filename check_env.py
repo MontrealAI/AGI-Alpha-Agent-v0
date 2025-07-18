@@ -541,8 +541,18 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if openai_agents_found and not openai_agents_attr_ok:
         print("WARNING: openai_agents package lacks required API; skipping auto-install")
-    elif openai_agents_found and not check_openai_agents_version():
-        return 1
+    elif openai_agents_found:
+        try:
+            mod = importlib.import_module("openai_agents")
+        except Exception:
+            try:
+                mod = importlib.import_module("agents")
+            except Exception:
+                mod = None
+        if allow_basic and getattr(mod, "__spec__", None) is None:
+            pass
+        elif not check_openai_agents_version():
+            return 1
 
     if demo == "macro_sentinel" and not os.getenv("ETHERSCAN_API_KEY"):
         print("WARNING: ETHERSCAN_API_KEY is unset; Etherscan collector disabled")
