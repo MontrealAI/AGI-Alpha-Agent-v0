@@ -15,7 +15,7 @@ RUN node --version
 WORKDIR /app
 
 # Install Python dependencies for the demo
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements.lock
+COPY ../requirements.lock /tmp/requirements.lock
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
 
 # Copy the project source
@@ -25,12 +25,12 @@ RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/we
     && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
 
 # copy built assets
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/ \
+COPY ../src/interface/web_client/dist/ \
     /app/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/
 
 # Add non-root user and entrypoint
 RUN adduser --disabled-password --gecos '' afuser && chown -R afuser /app
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
