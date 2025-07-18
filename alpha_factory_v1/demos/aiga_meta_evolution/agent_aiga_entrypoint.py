@@ -51,12 +51,18 @@ except ImportError:  # pragma: no cover
     A2ASocket = None  # type: ignore
 
 try:  # optional dependency
-    from openai_agents import OpenAIAgent, Tool
+    from openai_agents import OpenAIAgent, Tool  # type: ignore
 except Exception:
     try:
         from openai_agents import Agent as OpenAIAgent, Tool  # type: ignore
-    except Exception:  # pragma: no cover - missing package
-        from .openai_agents_bridge import OpenAIAgent, Tool
+    except Exception:
+        try:
+            from agents import OpenAIAgent, Tool  # type: ignore
+        except Exception:
+            try:
+                from agents import Agent as OpenAIAgent, Tool  # type: ignore
+            except Exception:  # pragma: no cover - missing package
+                from .openai_agents_bridge import OpenAIAgent, Tool
 try:
     from alpha_factory_v1.backend import adk_bridge
 except Exception:  # pragma: no cover - optional dependency

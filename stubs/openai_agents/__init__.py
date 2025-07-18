@@ -6,10 +6,6 @@ Provides basic classes so demos import without the real SDK."""
 __version__ = "0.0.0"
 
 
-class Agent:
-    pass
-
-
 class AgentRuntime:
     def __init__(self, *args, **kwargs):
         pass
@@ -26,10 +22,15 @@ class OpenAIAgent:
         return "ok"
 
 
+# Mirror new SDK naming
+Agent = OpenAIAgent
+
+
 def Tool(*_args, **_kwargs):
     def decorator(func):
         return func
 
     return decorator
+
 
 function_tool = Tool
