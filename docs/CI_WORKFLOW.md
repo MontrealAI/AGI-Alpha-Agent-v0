@@ -34,6 +34,9 @@ previous `latest` image so production always points at a working build.
   script requires `/usr/bin/patch` inside the sandbox container, so the
   workflow builds `sandbox.Dockerfile` and sets `SANDBOX_IMAGE=selfheal-sandbox:latest`.
   Ensure this image exists locally before building the docs.
+  Heavy demo assets can inflate the cache size. The MkDocs config
+  now lists these directories under `exclude:` to keep builds light:
+  `docs/alpha_agi_insight_v1/assets`, `docs/meta_agentic_agi*/assets`.
 - **🐳 Docker build** – builds and tests the demo image.
 - **📦 Deploy** – pushes the image and release assets on tags.
 - **♿ Accessibility audit** – runs `@axe-core/cli --stdout` on the built web client
