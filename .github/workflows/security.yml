@@ -27,7 +27,7 @@ jobs:
             echo "Unauthorized"
             exit 1
           fi
-      - uses: actions/checkout@v4.1.5 # 44c2b7a8a4ea60a981eaca3cf939b5f4305c123b
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
 
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -73,7 +73,7 @@ jobs:
         run: cyclonedx-bom -o sbom-node.json src/interface/web_client
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@v0.20.0
+        uses: aquasecurity/trivy-action@v0.0.10 # bceef37a45815d6c5cfea1861a414ec7dbc00242
         with:
           image-ref: ghcr.io/${{ env.repo_owner_lower }}/$DOCKER_IMAGE:${{ github.sha }}
           format: table
@@ -81,7 +81,7 @@ jobs:
           severity: CRITICAL,HIGH
 
       - name: Login to GHCR
-        uses: docker/login-action@v3 # 74a5d142397b4f367a81961eba4e8cd7edddf772
+        uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -91,7 +91,7 @@ jobs:
         run: docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.9.1
+        uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
         with:
           cosign-release: 'v2.2.4'
 
@@ -107,7 +107,7 @@ jobs:
           cosign attest --yes --predicate provenance.json --type slsaprovenance "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3 # 74a5d142397b4f367a81961eba4e8cd7edddf772
+        uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -121,7 +121,7 @@ jobs:
 
       - name: Upload artifacts to release
         if: ${{ github.event_name == 'release' }}
-        uses: softprops/action-gh-release@v2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
+        uses: softprops/action-gh-release@v2.3.2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
         with:
           files: |
             sbom-python.json
