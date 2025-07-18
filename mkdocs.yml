@@ -2,17 +2,11 @@ site_name: Alpha-Factory Docs
 site_url: https://montrealai.github.io/AGI-Alpha-Agent-v0/
 repo_url: https://github.com/MontrealAI/AGI-Alpha-Agent-v0
 docs_dir: docs
-exclude:
-  - '**/assets/**'
-  - '**/wasm_llm/**'
-  - '**/assets/README.md'
-  - '**/wasm_llm/README.md'
 plugins:
   - search
   - exclude:
       glob:
         - alpha_factory_v1/demos/**/*.md
-        - '**/assets/**'
         - '**/wasm_llm/**'
         - '**/assets/README.md'
         - '**/wasm_llm/README.md'
@@ -81,7 +75,3 @@ nav:
   - Insight Demo Bus TLS: alpha_agi_insight_v1/docs/bus_tls.md
   - CI Workflow: CI_WORKFLOW.md
   - GitHub Actions Access Notes: ADMIN_ACTIONS.md
-  exclude_docs: |
-    demos/TERMS_AND_CONDITIONS.md
-    alpha_factory_v1/demos/**/*.md
-    **/assets/**
