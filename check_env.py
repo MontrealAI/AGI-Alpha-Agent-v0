@@ -551,8 +551,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                 mod = None
         mod_spec = getattr(mod, "__spec__", None)
         if allow_basic:
-            if mod_spec and getattr(mod_spec, "loader", None) and not check_openai_agents_version():
-                return 1
+            if mod_spec is not None and getattr(mod_spec, "loader", None):
+                if not check_openai_agents_version():
+                    return 1
         else:
             if mod_spec is None or getattr(mod_spec, "loader", None) is None:
                 print("WARNING: openai_agents package lacks __spec__ metadata")
