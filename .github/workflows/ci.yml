@@ -642,7 +642,7 @@ jobs:
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
             -f alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/Dockerfile \
-            .
+            alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Smoke test image
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
