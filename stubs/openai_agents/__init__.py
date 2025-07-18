@@ -5,7 +5,9 @@ Provides basic classes so demos import without the real SDK."""
 
 import importlib.machinery
 
-__spec__ = importlib.machinery.ModuleSpec(__name__, None)
+__spec__ = importlib.machinery.ModuleSpec(
+    __name__, importlib.machinery.BuiltinImporter
+)
 
 __version__ = "0.0.0"
 
