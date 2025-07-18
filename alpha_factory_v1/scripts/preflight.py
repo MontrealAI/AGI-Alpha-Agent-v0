@@ -207,6 +207,13 @@ def check_openai_agents_version(min_version: str = MIN_OPENAI_AGENTS_VERSION) ->
             return True
 
     mod = importlib.import_module(module_name)
+    mod_spec = getattr(mod, "__spec__", None)
+    if mod_spec is None:
+        banner(
+            f"{module_name} missing __spec__; skipping version check",
+            "YELLOW",
+        )
+        return True
     if not hasattr(mod, "__version__"):
         banner(
             f"{module_name} missing __version__; >={min_version} required",
