@@ -15,9 +15,56 @@ instance started by ``run_aiga_demo.sh``.
 from __future__ import annotations
 
 try:  # optional dependency
-    from openai_agents import Agent, AgentRuntime, OpenAIAgent, Tool
-except ImportError:  # pragma: no cover - fallback for legacy package
-    from agents import Agent, AgentRuntime, OpenAIAgent, Tool
+    import openai_agents as _oa
+    from openai_agents import Agent, Tool
+    if not hasattr(_oa, "OpenAIAgent"):
+        raise AttributeError
+    OpenAIAgent = _oa.OpenAIAgent  # type: ignore[misc]
+    AgentRuntime = getattr(_oa, "AgentRuntime", None)
+    if AgentRuntime is None:
+        from agents.run import Runner
+
+        class AgentRuntime:  # type: ignore[misc]
+            def __init__(self, *_: object, **__: object) -> None:
+                self._runner = Runner()
+                self._agent: Agent | None = None
+
+            def register(self, agent: Agent) -> None:
+                self._agent = agent
+
+            def run(self) -> None:
+                import asyncio
+
+                if self._agent is None:
+                    raise RuntimeError("No agent registered")
+
+                asyncio.run(self._runner.run(self._agent, ""))
+except Exception:  # pragma: no cover - fallback stub
+    class Agent:  # type: ignore[misc]
+        pass
+
+    class AgentRuntime:  # type: ignore[misc]
+        def __init__(self, *_: object, **__: object) -> None:
+            pass
+
+        def register(self, *_: object, **__: object) -> None:
+            pass
+
+        def run(self) -> None:
+            print("OpenAI Agents bridge disabled.")
+
+    class OpenAIAgent:  # type: ignore[misc]
+        def __init__(self, *_: object, **__: object) -> None:
+            pass
+
+        async def __call__(self, _text: str) -> str:  # pragma: no cover - stub
+            return "ok"
+
+    def Tool(*_args: object, **_kwargs: object):  # type: ignore[misc]
+        def decorator(func):
+            return func
+
+        return decorator
 
 try:
     from alpha_factory_v1.backend.adk_bridge import auto_register, maybe_launch

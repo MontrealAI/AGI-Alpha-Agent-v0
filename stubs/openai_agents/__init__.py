@@ -31,3 +31,5 @@ def Tool(*_args, **_kwargs):
         return func
 
     return decorator
+
+function_tool = Tool
