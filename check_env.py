@@ -451,6 +451,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     missing_required: list[str] = []
     missing_optional: list[str] = []
     openai_agents_found = False
+    openai_agents_attr_ok = False
     for pkg in REQUIRED + extra_required + OPTIONAL:
         import_name = IMPORT_NAMES.get(pkg, pkg)
         try:
@@ -460,12 +461,28 @@ def main(argv: Optional[List[str]] = None) -> int:
             # or the root package itself is missing
             spec = None
         if spec is None:
+            if pkg == "openai_agents":
+                agents_spec = importlib.util.find_spec("agents")
+                if agents_spec is not None:
+                    try:
+                        mod = importlib.import_module("agents")
+                        openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
+                    except Exception:
+                        openai_agents_attr_ok = False
+                    openai_agents_found = True
+                    if openai_agents_attr_ok:
+                        continue
             if pkg in OPTIONAL:
                 missing_optional.append(pkg)
             else:
                 missing_required.append(pkg)
         elif pkg in {"openai_agents", "agents"}:
             openai_agents_found = True
+            try:
+                mod = importlib.import_module(import_name)
+                openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
+            except Exception:
+                openai_agents_attr_ok = False
     missing = missing_required + missing_optional
     if missing:
         print("WARNING: Missing packages:", ", ".join(missing))
@@ -522,7 +539,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                 hint = f"pip install --no-index --find-links {wheelhouse} " + " ".join(missing)
             print("Some features may be degraded. Install with:", hint)
 
-    if openai_agents_found and not check_openai_agents_version():
+    if openai_agents_found and not openai_agents_attr_ok:
+        print("WARNING: openai_agents package lacks required API; skipping auto-install")
+    elif openai_agents_found and not check_openai_agents_version():
         return 1
 
     if demo == "macro_sentinel" and not os.getenv("ETHERSCAN_API_KEY"):

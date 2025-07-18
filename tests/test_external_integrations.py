@@ -20,7 +20,8 @@ def test_build_llm_missing_api_key(monkeypatch):
         def __init__(self, *a, base_url=None, **kw):
             captured["base_url"] = base_url
 
-    monkeypatch.setattr(oa, "OpenAIAgent", DummyAgent)
+    monkeypatch.setattr(oa, "OpenAIAgent", DummyAgent, raising=False)
+    monkeypatch.setattr(oa, "Agent", DummyAgent, raising=False)
     monkeypatch.setenv("OPENAI_API_KEY", "")
     monkeypatch.setenv("OLLAMA_BASE_URL", "http://testserver")
 
