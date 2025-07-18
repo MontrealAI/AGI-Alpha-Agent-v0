@@ -6,11 +6,10 @@ BROWSER_DIR="$ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v
 LOCK_FILE="$BROWSER_DIR/package-lock.json"
 CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
 
-# Only (re)install dependencies when node_modules or the checksum file is missing
-if [ ! -d "$BROWSER_DIR/node_modules" ] || [ ! -f "$CHECK_FILE" ]; then
-    npm --prefix "$BROWSER_DIR" ci >/dev/null
-    sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
-fi
+# Always reinstall dependencies for a clean tree
+rm -rf "$BROWSER_DIR/node_modules"
+npm --prefix "$BROWSER_DIR" ci >/dev/null
+sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
 cd "$BROWSER_DIR"
 args=()
 for f in "$@"; do
