@@ -106,7 +106,6 @@ jobs:
   tests:
     name: "✅ Pytest"
     needs: owner-check
-    if: always()
     runs-on: ubuntu-latest
     environment: ci-on-demand
     env:
@@ -185,7 +184,7 @@ jobs:
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+        run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Run insight browser tests
         env:
           CI: 'true'
@@ -253,7 +252,6 @@ jobs:
   windows-smoke:
     name: "Windows Smoke"
     needs: [tests]
-    if: always()
     runs-on: windows-latest
     environment: ci-on-demand
     steps:
@@ -311,9 +309,8 @@ jobs:
   macos-smoke:
     name: "macOS Smoke"
     needs: [tests]
-    if: always()
-    runs-on: macos-latest
     environment: ci-on-demand
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -371,7 +368,6 @@ jobs:
   docs-check:
     name: "📜 MkDocs"
     needs: [tests]
-    if: always()
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
@@ -423,7 +419,7 @@ jobs:
             python scripts/fetch_assets.py --verify-only
           )
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+        run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
       - name: Build documentation
@@ -432,10 +428,8 @@ jobs:
   docs-build:
     name: "📚 Docs Build"
     needs: [tests]
-    if: always()
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       pull-requests: write
     environment: ci-on-demand
     env:
@@ -492,7 +486,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Install Playwright browsers
-        run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+        run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Verify demo pages
         run: python scripts/verify_demo_pages.py
       - name: Verify Insight PWA offline
@@ -506,11 +500,9 @@ jobs:
   docker:
     name: "🐳 Docker build"
     needs: [tests]
-    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     # This job builds and pushes the image.
     environment: ci-on-demand
     steps:
@@ -561,7 +553,7 @@ jobs:
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
-        run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+        run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Run insight browser tests
         env:
           CI: 'true'
