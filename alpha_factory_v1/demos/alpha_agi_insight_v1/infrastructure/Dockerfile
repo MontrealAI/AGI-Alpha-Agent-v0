@@ -15,8 +15,8 @@ RUN node --version
 WORKDIR /app
 
 # Install Python dependencies for the demo
-COPY requirements.lock /tmp/requirements.lock
-RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
+COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements.lock
+RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock && rm /tmp/requirements.lock
 
 # Copy the project source
 COPY . /app
