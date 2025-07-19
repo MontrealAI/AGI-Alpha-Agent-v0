@@ -185,7 +185,7 @@ jobs:
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
-        run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
+        run: npx playwright install --with-deps chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Run insight browser tests
         env:
           CI: 'true'
@@ -422,6 +422,8 @@ jobs:
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
             python scripts/fetch_assets.py --verify-only
           )
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
       - name: Build documentation
@@ -612,7 +614,7 @@ jobs:
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
             -f infrastructure/Dockerfile \
-            alpha_factory_v1/demos/alpha_agi_insight_v1
+            .
       - name: Smoke test image
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
