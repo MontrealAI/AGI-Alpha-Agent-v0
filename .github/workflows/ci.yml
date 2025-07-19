@@ -76,7 +76,7 @@ jobs:
             ${{ runner.os }}-precommit-py${{ matrix.python-version }}-
       - name: Install lint tools
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install ruff mypy
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
@@ -125,7 +125,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock
       - name: Verify environment
         run: |
@@ -286,7 +286,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install -r requirements-cpu.lock -r requirements-demo-cpu.lock pytest
       - name: Install macOS extras
         run: pip install appnope==0.1.4
@@ -346,7 +346,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install -r requirements-cpu.lock -r requirements-demo-cpu.lock pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -408,7 +408,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Install docs requirements
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install -r requirements-docs.lock
       - name: Install base dependencies
         run: python check_env.py --auto-install
@@ -478,7 +478,7 @@ jobs:
         run: python check_env.py --auto-install
       - name: Install docs requirements
         run: |
-          python -m pip install --upgrade "pip<25"
+          python -m pip install --upgrade pip
           pip install -r requirements-docs.lock
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
