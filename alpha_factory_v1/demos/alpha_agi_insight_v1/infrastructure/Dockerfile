@@ -24,10 +24,6 @@ RUN npm ci --prefix src/interface/web_client \
     && npm --prefix src/interface/web_client run build \
     && rm -rf src/interface/web_client/node_modules
 
-# copy built assets
-COPY ./src/interface/web_client/dist/ \
-    /app/src/interface/web_client/dist/
-
 # Add non-root user and entrypoint
 RUN adduser --disabled-password --gecos '' afuser && chown -R afuser /app
 COPY ./infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
