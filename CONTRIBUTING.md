@@ -72,6 +72,15 @@ the latest action tags. Then run `pre-commit` so the YAML passes `actionlint`:
 pre-commit run --files .github/workflows/ci.yml
 ```
 
+### Updating Lock Files
+
+Regenerate the lock files whenever you modify `requirements*.txt`:
+
+```bash
+pip-compile --upgrade --allow-unsafe --generate-hashes \
+  --output-file requirements.lock requirements.txt
+```
+
 ### Pre-commit in Air-Gapped Setups
 
 When offline, build the wheelhouse first and point `pre-commit` to it:
