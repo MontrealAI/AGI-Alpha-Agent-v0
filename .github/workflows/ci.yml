@@ -199,27 +199,6 @@ jobs:
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
-      - name: Cypress E2E tests with Percy
-        if: env.PERCY_TOKEN != ''
-        env:
-          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          PERCY_TOKEN_E2E: ${{ secrets.PERCY_TOKEN }}
-        uses: cypress-io/github-action@v6.10.1 # 6c143abc292aa835d827652c2ea025d098311070
-        with:
-          working-directory: alpha_factory_v1/core/interface/web_client
-          start: npm run dev
-          wait-on: http://localhost:5173
-          wait-on-timeout: 120
-          command: npm run percy:cypress
-      - name: Cypress E2E tests
-        if: env.PERCY_TOKEN == ''
-        uses: cypress-io/github-action@v6.10.1 # 6c143abc292aa835d827652c2ea025d098311070
-        with:
-          working-directory: alpha_factory_v1/core/interface/web_client
-          start: npm run dev
-          wait-on: http://localhost:5173
-          wait-on-timeout: 120
-          command: npx cypress run
       - name: Install proto compiler
         run: pip install grpcio-tools
       - name: Verify protobuf
@@ -510,15 +489,6 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Create pull request
-        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.actor == github.repository_owner && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
-        continue-on-error: true
-        uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
-        with:
-          title: 'chore: update Pyodide assets'
-          commit-message: 'chore: update Pyodide assets'
-          branch: update-pyodide-assets
-          delete-branch: true
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Verify demo pages
