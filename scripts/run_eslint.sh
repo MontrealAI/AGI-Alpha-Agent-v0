@@ -7,6 +7,7 @@ LOCK_FILE="$BROWSER_DIR/package-lock.json"
 CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
 
 # Always reinstall dependencies for a clean tree
+chmod -R u+w "$BROWSER_DIR/node_modules" 2>/dev/null || true
 rm -rf "$BROWSER_DIR/node_modules"
 npm --prefix "$BROWSER_DIR" cache clean --force >/dev/null
 npm --prefix "$BROWSER_DIR" ci >/dev/null
