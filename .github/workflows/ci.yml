@@ -126,10 +126,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -r requirements-dev.lock
-          pip install -r requirements-demo.lock
-          pip install pytest pytest-cov pytest-benchmark mutmut
+          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest pytest-cov pytest-benchmark mutmut
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -290,10 +287,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -r requirements-dev.lock
-          pip install -r requirements-demo.lock
-          pip install pytest
+          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -351,10 +345,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -r requirements-dev.lock
-          pip install -r requirements-demo.lock
-          pip install pytest
+          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
