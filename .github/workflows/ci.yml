@@ -510,8 +510,14 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      # Skip opening pull requests from CI to avoid permission issues. Run the
-      # Pyodide update script manually when asset hashes change.
+      - name: Create pull request
+        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.actor == github.repository_owner
+        uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
+        with:
+          title: 'chore: update Pyodide assets'
+          commit-message: 'chore: update Pyodide assets'
+          branch: update-pyodide-assets
+          delete-branch: true
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Verify demo pages
