@@ -105,9 +105,11 @@ def _read_logs(max_lines: int = 100) -> List[str]:
 # Maps token -> timestamp
 _api_buffer: Dict[str, float] = {}
 
+API_PREFIX = "/api"
+
 # ───────────────────────────── FastAPI branch ─────────────────────────────
 try:
-    from fastapi import FastAPI
+    from fastapi import FastAPI, APIRouter
 
     fast_app = FastAPI(
         title="Alpha-Factory API",
@@ -115,25 +117,29 @@ try:
         version="1.0.0",
     )
 
-    # .— /api/logs ————————————————————————————————————————————————.
-    @fast_app.get("/api/logs")
+    api_router = APIRouter(prefix=API_PREFIX)
+
+    # .— /logs ————————————————————————————————————————————————.
+    @api_router.get("/logs")
     async def api_logs() -> List[str]:
         """Return the most recent (≤100) log lines."""
         return _read_logs()
 
-    # .— /api/csrf ————————————————————————————————————————————————.
-    @fast_app.get("/api/csrf")
+    # .— /csrf ————————————————————————————————————————————————.
+    @api_router.get("/csrf")
     async def csrf_token() -> dict[str, str]:
         """Issue a one-time CSRF token for the /ws/trace handshake."""
         token = secrets.token_urlsafe(32)
         _api_buffer[token] = time.time()
         return {"token": token}
 
+    fast_app.include_router(api_router)
+
     # .— /ws/trace ————————————————————————————————————————————————.
     try:
         from .trace_ws import attach as _attach_trace_ws
 
-        _attach_trace_ws(fast_app)  # registers /ws/trace
+        _attach_trace_ws(fast_app, prefix=API_PREFIX)  # registers /ws/trace
     except Exception:  # pragma: no cover
         _LOG.debug("trace_ws not attached (optional component missing).")
 
@@ -141,7 +147,7 @@ try:
     try:
         from .agents.finance_agent import metrics_asgi_app
 
-        fast_app.mount("/metrics", metrics_asgi_app())
+        fast_app.mount(f"{API_PREFIX}/metrics", metrics_asgi_app())
     except Exception:  # pragma: no cover
         _LOG.debug("Prometheus metrics endpoint not active.")
 
@@ -162,7 +168,7 @@ except ModuleNotFoundError:  # pragma: no cover
 
         path = scope.get("path", "/")
 
-        if path == "/api/logs":
+        if path == f"{API_PREFIX}/logs":
             body = json.dumps(_read_logs()).encode()
             ctype = b"application/json"
         else:

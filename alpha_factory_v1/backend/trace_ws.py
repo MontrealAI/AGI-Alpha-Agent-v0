@@ -144,7 +144,7 @@ hub = TraceHub()
 # --------------------------------------------------------------------- #
 # FastAPI / Starlette integration                                       #
 # --------------------------------------------------------------------- #
-def attach(app) -> None:  # noqa: D401
+def attach(app, prefix: str = "") -> None:  # noqa: D401
     """
     Dynamically mount the ``/ws/trace`` WebSocket endpoint on *app*.
 
@@ -163,7 +163,7 @@ def attach(app) -> None:  # noqa: D401
     # Import the CSRF token buffer exposed by backend.__init__
     _api_buffer: dict[str, float] = import_module("backend")._api_buffer  # type: ignore[attr-defined]
 
-    router = APIRouter()
+    router = APIRouter(prefix=prefix)
 
     @router.websocket("/ws/trace")
     async def _trace_ws(websocket: WebSocket):

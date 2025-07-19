@@ -9,11 +9,11 @@ describe('responsive dashboard', () => {
   viewports.forEach(([w, h]) => {
     it(`renders at ${w}x${h}`, () => {
       cy.viewport(w, h);
-      cy.intercept('GET', '**/lineage', [
+      cy.intercept('GET', '**/api/lineage', [
         { id: 1, pass_rate: 1 },
         { id: 2, parent: 1, pass_rate: 1 },
       ]).as('lineage');
-      cy.intercept('GET', '**/memes', {}).as('memes');
+      cy.intercept('GET', '**/api/memes', {}).as('memes');
       cy.visit('/');
       cy.get('#lineage-tree', { timeout: 10000 });
       cy.get('#lineage-tree').should('be.visible');
@@ -21,11 +21,11 @@ describe('responsive dashboard', () => {
   });
 
   it('loads while offline after first visit', () => {
-    cy.intercept('GET', '**/lineage', [
+    cy.intercept('GET', '**/api/lineage', [
       { id: 1, pass_rate: 1 },
       { id: 2, parent: 1, pass_rate: 1 },
     ]).as('lineage');
-    cy.intercept('GET', '**/memes', {}).as('memes');
+    cy.intercept('GET', '**/api/memes', {}).as('memes');
     cy.visit('/');
     cy.get('#lineage-tree', { timeout: 10000 });
     cy.intercept('GET', '**/*', { forceNetworkError: true }).as('offline');
@@ -34,11 +34,11 @@ describe('responsive dashboard', () => {
   });
 
   it('copies share link', () => {
-    cy.intercept('GET', '**/lineage', [
+    cy.intercept('GET', '**/api/lineage', [
       { id: 1, pass_rate: 1 },
       { id: 2, parent: 1, pass_rate: 1 },
     ]).as('lineage');
-    cy.intercept('GET', '**/memes', {}).as('memes');
+    cy.intercept('GET', '**/api/memes', {}).as('memes');
     cy.visit('/');
     cy.get('button[type="submit"]', { timeout: 10000 });
     cy.window().then((win) => {

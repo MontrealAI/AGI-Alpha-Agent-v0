@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 describe('debate arena', () => {
   it('runs debate and updates ranking', () => {
-    cy.intercept('GET', '**/lineage', [
+    cy.intercept('GET', '**/api/lineage', [
       { id: 1, pass_rate: 1 },
       { id: 2, parent: 1, pass_rate: 1 },
     ]).as('lineage');
-    cy.intercept('GET', '**/memes', {}).as('memes');
+    cy.intercept('GET', '**/api/memes', {}).as('memes');
     cy.visit('/');
     cy.get('#start-debate', { timeout: 10000 });
     cy.get('#start-debate').click();

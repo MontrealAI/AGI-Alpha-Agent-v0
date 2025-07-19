@@ -40,7 +40,7 @@ export default function App() {
   const [data, setData] = useState<ForecastPoint[]>([]);
   const [population, setPopulation] = useState<PopulationMember[]>([]);
   const [runs, setRuns] = useState<string[]>([]);
-  const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+  const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/$/, '');
   const TOKEN = import.meta.env.VITE_API_TOKEN ?? '';
 
   useEffect(() => {
