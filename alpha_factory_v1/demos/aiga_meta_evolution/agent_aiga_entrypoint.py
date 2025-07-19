@@ -52,13 +52,13 @@ except ImportError:  # pragma: no cover
 
 try:  # optional dependency
     from openai_agents import OpenAIAgent, Tool  # type: ignore
-except Exception:
+except (ImportError, AttributeError):
     try:
         from openai_agents import Agent as OpenAIAgent, Tool  # type: ignore
-    except Exception:
+    except (ImportError, AttributeError):
         try:
             from agents import OpenAIAgent, Tool  # type: ignore
-        except Exception:
+        except (ImportError, AttributeError):
             try:
                 from agents import Agent as OpenAIAgent, Tool  # type: ignore
             except Exception:  # pragma: no cover - missing package
