@@ -15,7 +15,7 @@ RUN node --version
 WORKDIR /app
 
 # Install Python dependencies for the demo
-COPY ../requirements.lock /tmp/requirements.lock
+COPY requirements.lock /tmp/requirements.lock
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
 
 # Copy the project source
