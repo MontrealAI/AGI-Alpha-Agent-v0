@@ -407,7 +407,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Install Playwright browsers
-        run: playwright install
+        run: npx playwright install chromium webkit firefox
       - name: Fetch insight browser assets
         run: |
           set -e
@@ -462,7 +462,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-docs.lock
       - name: Install Playwright browsers
-        run: playwright install
+        run: npx playwright install chromium webkit firefox
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install web client dependencies
