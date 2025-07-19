@@ -12,7 +12,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.
 # copy project source
 COPY . /app
 # copy pre-built React bundle if available
-COPY src/interface/web_client/dist/ /app/src/interface/web_client/dist/
+COPY alpha_factory_v1/core/interface/web_client/dist/ \
+     /app/alpha_factory_v1/core/interface/web_client/dist/
 
 # add non-root user
 RUN adduser --disabled-password --gecos '' afuser && chown -R afuser /app
