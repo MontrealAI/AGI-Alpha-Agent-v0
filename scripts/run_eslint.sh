@@ -8,6 +8,7 @@ CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
 
 # Always reinstall dependencies for a clean tree
 rm -rf "$BROWSER_DIR/node_modules"
+npm --prefix "$BROWSER_DIR" cache clean --force >/dev/null
 npm --prefix "$BROWSER_DIR" ci >/dev/null
 sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
 cd "$BROWSER_DIR"
