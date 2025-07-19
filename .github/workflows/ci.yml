@@ -212,6 +212,7 @@ jobs:
           working-directory: alpha_factory_v1/core/interface/web_client
           start: npm run dev
           wait-on: http://localhost:5173
+          wait-on-timeout: 120
           command: npm run percy:cypress
       - name: Cypress E2E tests
         if: env.PERCY_TOKEN == ''
@@ -220,6 +221,7 @@ jobs:
           working-directory: alpha_factory_v1/core/interface/web_client
           start: npm run dev
           wait-on: http://localhost:5173
+          wait-on-timeout: 120
           command: npx cypress run
       - name: Install proto compiler
         run: pip install grpcio-tools
