@@ -287,7 +287,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade "pip<25"
-          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+            -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
       - name: Install macOS extras
         run: pip install appnope==0.1.4
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -347,7 +348,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade "pip<25"
-          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+            -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -510,16 +512,8 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Create Pyodide update PR
-        # docs-build is the only job that should open this pull request
-        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: update Pyodide asset hashes"
-          title: "chore: update Pyodide asset hashes"
-          branch: pyodide-update-${{ github.run_id }}
-          delete-branch: true
+      # Skip opening pull requests from CI to avoid permission issues. Run the
+      # Pyodide update script manually when asset hashes change.
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Verify demo pages
