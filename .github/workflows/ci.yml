@@ -82,6 +82,10 @@ jobs:
         run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+      - name: Clean insight browser node_modules
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
         run: pre-commit run --all-files
         env:
