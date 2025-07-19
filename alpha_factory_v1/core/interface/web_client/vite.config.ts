@@ -9,7 +9,16 @@ export default defineConfig({
   envPrefix: 'VITE_',
   appType: 'spa',
   server: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/index.html',
+      disableDotRule: true,
+    },
+  },
+  preview: {
+    historyApiFallback: {
+      index: '/index.html',
+      disableDotRule: true,
+    },
   },
   build: {
     outDir: 'dist',
