@@ -640,7 +640,7 @@ jobs:
       - name: Build image
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
-            -f alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/Dockerfile \
+            -f infrastructure/Dockerfile \
             alpha_factory_v1/demos/alpha_agi_insight_v1
       - name: Smoke test image
         run: |
