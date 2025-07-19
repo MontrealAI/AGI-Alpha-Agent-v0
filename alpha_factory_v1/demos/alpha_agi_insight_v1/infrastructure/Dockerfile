@@ -15,7 +15,8 @@ RUN node --version
 WORKDIR /app
 
 # Install Python dependencies for the demo
-COPY requirements.lock /tmp/requirements.lock
+# The build context is the demo directory so copy the lock file directly
+COPY ./requirements.lock /tmp/requirements.lock
 # Installing without `--require-hashes` avoids failures when platform specific
 # wheels are pulled in by pip. The lock file still pins exact versions.
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
