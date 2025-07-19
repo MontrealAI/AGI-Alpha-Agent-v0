@@ -287,7 +287,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade "pip<25"
-          pip install -r requirements-cpu.lock pytest
+          pip install -r requirements-cpu.lock -r requirements-demo-cpu.lock pytest
       - name: Install macOS extras
         run: pip install appnope==0.1.4
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -347,7 +347,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade "pip<25"
-          pip install -r requirements-cpu.lock pytest
+          pip install -r requirements-cpu.lock -r requirements-demo-cpu.lock pytest
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
