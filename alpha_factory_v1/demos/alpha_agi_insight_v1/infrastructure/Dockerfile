@@ -15,7 +15,7 @@ RUN node --version
 WORKDIR /app
 
 # Install Python dependencies for the demo
-COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements.lock
+COPY requirements.lock /tmp/requirements.lock
 # Installing without `--require-hashes` avoids failures when platform specific
 # wheels are pulled in by pip. The lock file still pins exact versions.
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
