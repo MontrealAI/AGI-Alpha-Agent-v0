@@ -511,7 +511,8 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Create pull request
-        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.actor == github.repository_owner
+        if: steps.pyodide-diff-docs.outputs.changed == 'true' && github.actor == github.repository_owner && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v7.0.8 # 271a8d0340265f705b14b6d32b9829c1cb33d45e
         with:
           title: 'chore: update Pyodide assets'
