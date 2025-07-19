@@ -7,6 +7,10 @@ export default defineConfig({
   plugins: [react(), vue()],
   root: '.',
   envPrefix: 'VITE_',
+  appType: 'spa',
+  server: {
+    historyApiFallback: true,
+  },
   build: {
     outDir: 'dist',
     rollupOptions: {
