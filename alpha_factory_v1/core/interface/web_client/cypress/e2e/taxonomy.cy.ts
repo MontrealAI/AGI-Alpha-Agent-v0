@@ -2,6 +2,11 @@
 
 describe('taxonomy persistence', () => {
   it('restores taxonomy tree after reload', () => {
+    cy.intercept('GET', '**/lineage', [
+      { id: 1, pass_rate: 1 },
+      { id: 2, parent: 1, pass_rate: 1 },
+    ]).as('lineage');
+    cy.intercept('GET', '**/memes', {}).as('memes');
     cy.visit('/', {
       onBeforeLoad(win) {
         const req = win.indexedDB.open('sectorTaxonomy', 1);
@@ -15,6 +20,7 @@ describe('taxonomy persistence', () => {
         };
       },
     });
+    cy.get('#taxonomy-tree', { timeout: 10000 });
     cy.get('#taxonomy-tree button').contains('foo');
     cy.reload();
     cy.get('#taxonomy-tree button').contains('foo');
