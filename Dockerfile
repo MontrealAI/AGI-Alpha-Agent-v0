@@ -23,7 +23,11 @@ WORKDIR /app
 # install Python dependencies
 # Install demo-specific Python dependencies
 COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements-demo.lock
-RUN pip install --no-cache-dir -r /tmp/requirements-demo.lock && rm /tmp/requirements-demo.lock
+RUN if [ -f /tmp/requirements-demo.lock ]; then \
+      pip install --no-cache-dir -r /tmp/requirements-demo.lock && rm /tmp/requirements-demo.lock; \
+    else \
+      echo "Missing demo requirements" && exit 1; \
+    fi
 RUN pip install --no-cache-dir "openai_agents>=0.0.17"
 
 # copy minimal package files for the Insight demo
