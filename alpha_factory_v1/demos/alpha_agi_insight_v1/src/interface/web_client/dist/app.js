@@ -4,7 +4,7 @@
   function App() {
     const [timeline, setTimeline] = useState([]);
     const [sectors, setSectors] = useState([]);
-    const API_BASE = '';
+    const API_BASE = '/api';
     const TOKEN = '';
     const HEADERS = TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {};
     useEffect(() => {

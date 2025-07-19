@@ -83,7 +83,7 @@ services:
       AWS_REGION: ${AWS_REGION:-}
       OPENAI_API_KEY_SECRET_ID: ${OPENAI_API_KEY_SECRET_ID:-}
       AGI_INSIGHT_OFFLINE: ${AGI_INSIGHT_OFFLINE:-0} # set 1 for local models
-      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
     ports:
       - "8501:8501"                           # host:container dashboard port
     depends_on:

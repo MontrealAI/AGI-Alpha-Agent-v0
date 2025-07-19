@@ -39,7 +39,7 @@ import { ref, onMounted } from 'vue';
 interface Agent { hash: string; parent: string | null; score: number; }
 interface TimelinePoint { tool: string; ts: number; }
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/$/, '');
 
 const agents = ref<Agent[]>([]);
 const diff = ref('');

@@ -21,8 +21,8 @@ npm run build      # build production assets in `dist/`
 The build step uses Workbox to generate `service-worker.js` and precache the
 site's assets so the demo can load offline.
 
-Set `VITE_API_BASE_URL` to change the API path prefix and `VITE_API_TOKEN` to
-embed the API bearer token at build time:
+`VITE_API_BASE_URL` defaults to `/api`. Override it and `VITE_API_TOKEN` to embed
+the API bearer token at build time:
 
 ```bash
 # prepend '/api' to all requests and embed a token

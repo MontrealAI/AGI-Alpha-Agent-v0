@@ -8,7 +8,7 @@
     const [data, setData] = useState([]);
     const [population, setPopulation] = useState([]);
     const [runs, setRuns] = useState([]);
-    const API_BASE = (window.API_BASE_URL || '').replace(/\/$/, '');
+    const API_BASE = (window.API_BASE_URL || '/api').replace(/\/$/, '');
     const TOKEN = window.API_TOKEN || '';
 
     async function fetchLatest(){
