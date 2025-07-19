@@ -13,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # upgrade pip to avoid outdated versions
-RUN python -m pip install --upgrade pip setuptools wheel
+RUN python -m pip install --upgrade "pip<25" setuptools wheel
 
 # Verify Node installation is >=20 (NodeSource script sets up latest LTS)
 RUN node --version
