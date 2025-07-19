@@ -126,7 +126,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade "pip<25"
-          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock pytest pytest-cov pytest-benchmark mutmut
+          pip install -r requirements.lock -r requirements-dev.lock -r requirements-demo.lock
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
