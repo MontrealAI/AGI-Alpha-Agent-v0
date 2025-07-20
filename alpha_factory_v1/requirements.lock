@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=alpha_factory_v1/requirements.lock alpha_factory_v1/requirements.txt
 #
-absl-py==2.3.0
+absl-py==2.3.1
     # via ortools
-accelerate==1.8.1
+accelerate==1.9.0
     # via -r alpha_factory_v1/requirements.txt
 aiodns==3.5.0
     # via ccxt
@@ -14,20 +14,21 @@ aiohappyeyeballs==2.6.1
     # via aiohttp
 aiohttp==3.12.14
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   ccxt
     #   litellm
-aiosignal==1.3.2
+aiosignal==1.4.0
     # via aiohttp
 altair==5.5.0
     # via streamlit
 annotated-types==0.7.0
     # via pydantic
-anthropic==0.52.1
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+anthropic==0.58.2
+    # via -r alpha_factory_v1/requirements-core.txt
 anyio==4.9.0
     # via
     #   anthropic
+    #   google-adk
     #   google-genai
     #   httpx
     #   mcp
@@ -40,18 +41,18 @@ attrs==25.3.0
     #   aiohttp
     #   jsonschema
     #   referencing
-authlib==1.6.0
+authlib==1.6.1
     # via google-adk
 backoff==2.2.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   posthog
 bcrypt==4.3.0
     # via chromadb
 beautifulsoup4==4.13.4
     # via yfinance
 better-profanity==0.7.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via -r alpha_factory_v1/requirements-core.txt
 blinker==1.9.0
     # via
     #   flask
@@ -60,12 +61,12 @@ build==1.2.2.post1
     # via chromadb
 cachetools==5.5.2
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   google-auth
     #   streamlit
-ccxt==4.4.91
+ccxt==4.4.95
     # via -r alpha_factory_v1/requirements.txt
-certifi==2025.4.26
+certifi==2025.7.14
     # via
     #   ccxt
     #   curl-cffi
@@ -80,11 +81,11 @@ cffi==1.17.1
     #   pycares
 charset-normalizer==3.4.2
     # via requests
-chromadb==1.0.13
+chromadb==1.0.15
     # via -r alpha_factory_v1/requirements.txt
 click==8.2.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   flask
     #   google-adk
     #   litellm
@@ -92,27 +93,24 @@ click==8.2.1
     #   typer
     #   uvicorn
 cloudpickle==3.1.1
-    # via gymnasium
+    # via
+    #   google-cloud-aiplatform
+    #   gymnasium
 colorama==0.4.6
     # via griffe
 coloredlogs==15.0.1
     # via onnxruntime
-cryptography==45.0.3
+cryptography==45.0.5
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   authlib
     #   ccxt
 ctransformers==0.2.27
     # via -r alpha_factory_v1/requirements.txt
-curl-cffi==0.11.4
+curl-cffi==0.12.0
     # via yfinance
 deap==1.4.3
     # via -r alpha_factory_v1/requirements.txt
-deprecated==1.2.18
-    # via
-    #   opentelemetry-api
-    #   opentelemetry-exporter-otlp-proto-grpc
-    #   opentelemetry-semantic-conventions
 diskcache==5.6.3
     # via llama-cpp-python
 distro==1.9.0
@@ -124,13 +122,13 @@ docstring-parser==0.16
     # via google-cloud-aiplatform
 durationpy==0.10
     # via kubernetes
-faiss-cpu==1.11.0
+faiss-cpu==1.11.0.post1
     # via -r alpha_factory_v1/requirements.txt
 farama-notifications==0.0.4
     # via gymnasium
-fastapi==0.115.12
+fastapi==0.116.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   google-adk
 feedparser==6.0.11
     # via -r alpha_factory_v1/requirements.txt
@@ -140,7 +138,7 @@ filelock==3.18.0
     #   torch
     #   transformers
 flask==3.1.1
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via -r alpha_factory_v1/requirements-core.txt
 flatbuffers==25.2.10
     # via onnxruntime
 frozendict==2.4.6
@@ -149,7 +147,7 @@ frozenlist==1.7.0
     # via
     #   aiohttp
     #   aiosignal
-fsspec==2025.5.1
+fsspec==2025.7.0
     # via
     #   huggingface-hub
     #   torch
@@ -157,32 +155,38 @@ gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   -r alpha_factory_v1/requirements.txt
     #   streamlit
-google-adk==1.1.1
-    # via -r alpha_factory_v1/requirements.txt
-google-api-core[grpc]==2.25.0rc1
+google-adk==1.7.0
+    # via
+    #   -r alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements.txt
+google-api-core[grpc]==2.25.1
     # via
     #   google-api-python-client
     #   google-cloud-aiplatform
+    #   google-cloud-appengine-logging
     #   google-cloud-bigquery
     #   google-cloud-core
+    #   google-cloud-logging
     #   google-cloud-resource-manager
     #   google-cloud-secret-manager
     #   google-cloud-speech
     #   google-cloud-storage
     #   google-cloud-trace
-google-api-python-client==2.170.0
+google-api-python-client==2.176.0
     # via google-adk
-google-auth==2.40.2
+google-auth==2.40.3
     # via
     #   google-api-core
     #   google-api-python-client
     #   google-auth-httplib2
     #   google-cloud-aiplatform
+    #   google-cloud-appengine-logging
     #   google-cloud-bigquery
     #   google-cloud-core
+    #   google-cloud-logging
     #   google-cloud-resource-manager
     #   google-cloud-secret-manager
     #   google-cloud-speech
@@ -192,31 +196,40 @@ google-auth==2.40.2
     #   kubernetes
 google-auth-httplib2==0.2.0
     # via google-api-python-client
-google-cloud-aiplatform==1.95.0
+google-cloud-aiplatform[agent-engines]==1.104.0
     # via google-adk
-google-cloud-bigquery==3.33.0
+google-cloud-appengine-logging==1.6.2
+    # via google-cloud-logging
+google-cloud-audit-log==0.3.2
+    # via google-cloud-logging
+google-cloud-bigquery==3.35.0
     # via google-cloud-aiplatform
 google-cloud-core==2.4.3
     # via
     #   google-cloud-bigquery
+    #   google-cloud-logging
     #   google-cloud-storage
+google-cloud-logging==3.12.1
+    # via google-cloud-aiplatform
 google-cloud-resource-manager==1.14.2
     # via google-cloud-aiplatform
-google-cloud-secret-manager==2.23.3
+google-cloud-secret-manager==2.24.0
     # via google-adk
-google-cloud-speech==2.32.0
+google-cloud-speech==2.33.0
     # via google-adk
 google-cloud-storage==2.19.0
     # via
     #   google-adk
     #   google-cloud-aiplatform
-google-cloud-trace==1.16.1
-    # via opentelemetry-exporter-gcp-trace
+google-cloud-trace==1.16.2
+    # via
+    #   google-cloud-aiplatform
+    #   opentelemetry-exporter-gcp-trace
 google-crc32c==1.7.1
     # via
     #   google-cloud-storage
     #   google-resumable-media
-google-genai==1.17.0
+google-genai==1.26.0
     # via
     #   google-adk
     #   google-cloud-aiplatform
@@ -227,12 +240,13 @@ google-resumable-media==2.7.2
 googleapis-common-protos[grpc]==1.70.0
     # via
     #   google-api-core
+    #   google-cloud-audit-log
     #   grpc-google-iam-v1
     #   grpcio-status
     #   opentelemetry-exporter-otlp-proto-grpc
-graphviz==0.20.3
+graphviz==0.21
     # via google-adk
-greenlet==3.2.2
+greenlet==3.2.3
     # via
     #   playwright
     #   sqlalchemy
@@ -240,11 +254,12 @@ griffe==1.7.3
     # via openai-agents
 grpc-google-iam-v1==0.14.2
     # via
+    #   google-cloud-logging
     #   google-cloud-resource-manager
     #   google-cloud-secret-manager
-grpcio==1.71.0
+grpcio==1.73.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   google-api-core
     #   googleapis-common-protos
@@ -252,12 +267,12 @@ grpcio==1.71.0
     #   grpcio-status
     #   grpcio-tools
     #   opentelemetry-exporter-otlp-proto-grpc
-grpcio-status==1.71.0
+grpcio-status==1.73.1
     # via google-api-core
-grpcio-tools==1.71.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+grpcio-tools==1.73.1
+    # via -r alpha_factory_v1/requirements-core.txt
 gunicorn==21.2.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via -r alpha_factory_v1/requirements-core.txt
 gymnasium[classic-control]==1.2.0
     # via -r alpha_factory_v1/requirements.txt
 h11==0.16.0
@@ -276,16 +291,16 @@ httptools==0.6.4
     # via uvicorn
 httpx==0.28.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   anthropic
     #   chromadb
     #   google-genai
     #   litellm
     #   mcp
     #   openai
-httpx-sse==0.4.0
+httpx-sse==0.4.1
     # via mcp
-huggingface-hub==0.33.1
+huggingface-hub==0.33.4
     # via
     #   accelerate
     #   ctransformers
@@ -302,7 +317,7 @@ idna==3.10
     #   yarl
 immutabledict==4.2.1
     # via ortools
-importlib-metadata==8.6.1
+importlib-metadata==8.7.0
     # via
     #   litellm
     #   opentelemetry-api
@@ -326,18 +341,19 @@ jiter==0.10.0
     #   openai
 joblib==1.5.1
     # via scikit-learn
-jsonschema==4.24.0
+jsonschema==4.25.0
     # via
     #   altair
     #   chromadb
     #   litellm
+    #   mcp
 jsonschema-specifications==2025.4.1
     # via jsonschema
 kubernetes==33.1.0
     # via chromadb
-litellm==1.73.6
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
-llama-cpp-python==0.3.9
+litellm==1.74.7
+    # via -r alpha_factory_v1/requirements-core.txt
+llama-cpp-python==0.3.14
     # via -r alpha_factory_v1/requirements.txt
 markdown-it-py==3.0.0
     # via rich
@@ -346,7 +362,7 @@ markupsafe==3.0.2
     #   flask
     #   jinja2
     #   werkzeug
-mcp==1.9.1
+mcp==1.12.0
     # via
     #   google-adk
     #   openai-agents
@@ -362,7 +378,7 @@ multidict==6.6.3
     #   yarl
 multitasking==0.0.11
     # via yfinance
-narwhals==1.44.0
+narwhals==1.47.1
     # via
     #   altair
     #   plotly
@@ -376,9 +392,9 @@ newsapi-python==0.2.7
     # via -r alpha_factory_v1/requirements.txt
 noaa-sdk==0.1.21
     # via -r alpha_factory_v1/requirements.txt
-numpy>=2.3,<2.4
+numpy==2.3.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   accelerate
     #   chromadb
     #   deap
@@ -436,52 +452,58 @@ oauthlib==3.3.1
     # via
     #   kubernetes
     #   requests-oauthlib
-onnxruntime==1.22.0
+onnxruntime==1.22.1
     # via chromadb
-openai==1.82.0
+openai==1.97.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   litellm
     #   openai-agents
 openai-agents==0.0.17
-    # via -r alpha_factory_v1/requirements.txt
-opentelemetry-api==1.33.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements.txt
+opentelemetry-api==1.35.0
+    # via
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   google-adk
+    #   google-cloud-logging
     #   opentelemetry-exporter-gcp-trace
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-resourcedetector-gcp
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
 opentelemetry-exporter-gcp-trace==1.9.0
-    # via google-adk
-opentelemetry-exporter-otlp-proto-common==1.33.1
+    # via
+    #   google-adk
+    #   google-cloud-aiplatform
+opentelemetry-exporter-otlp-proto-common==1.35.0
     # via opentelemetry-exporter-otlp-proto-grpc
-opentelemetry-exporter-otlp-proto-grpc==1.33.1
+opentelemetry-exporter-otlp-proto-grpc==1.35.0
     # via chromadb
-opentelemetry-proto==1.33.1
+opentelemetry-proto==1.35.0
     # via
     #   opentelemetry-exporter-otlp-proto-common
     #   opentelemetry-exporter-otlp-proto-grpc
 opentelemetry-resourcedetector-gcp==1.9.0a0
     # via opentelemetry-exporter-gcp-trace
-opentelemetry-sdk==1.33.1
+opentelemetry-sdk==1.35.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   google-adk
+    #   google-cloud-aiplatform
     #   opentelemetry-exporter-gcp-trace
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-resourcedetector-gcp
-opentelemetry-semantic-conventions==0.54b1
+opentelemetry-semantic-conventions==0.56b0
     # via opentelemetry-sdk
-orjson==3.10.18
+orjson==3.11.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
-ortools==9.12.4544
+ortools==9.14.6206
     # via -r alpha_factory_v1/requirements.txt
 overrides==7.7.0
     # via chromadb
@@ -500,30 +522,30 @@ packaging==25.0
     #   pytest
     #   streamlit
     #   transformers
-pandas>=2.3,<2.4
+pandas==2.3.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   ortools
     #   streamlit
     #   yfinance
-peewee==3.18.1
+peewee==3.18.2
     # via yfinance
-pillow==11.2.1
+pillow==11.3.0
     # via
     #   sentence-transformers
     #   streamlit
 platformdirs==4.3.8
     # via yfinance
 playwright==1.53.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    # via -r alpha_factory_v1/requirements-core.txt
 plotly==6.2.0
     # via -r alpha_factory_v1/requirements.txt
 pluggy==1.6.0
     # via pytest
-posthog==6.0.0
+posthog==5.4.0
     # via chromadb
-prometheus-client==0.22.0
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+prometheus-client==0.22.1
+    # via -r alpha_factory_v1/requirements-core.txt
 propcache==0.3.2
     # via
     #   aiohttp
@@ -532,15 +554,20 @@ proto-plus==1.26.1
     # via
     #   google-api-core
     #   google-cloud-aiplatform
+    #   google-cloud-appengine-logging
+    #   google-cloud-logging
     #   google-cloud-resource-manager
     #   google-cloud-secret-manager
     #   google-cloud-speech
     #   google-cloud-trace
-protobuf==5.29.5
+protobuf==6.31.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   google-api-core
     #   google-cloud-aiplatform
+    #   google-cloud-appengine-logging
+    #   google-cloud-audit-log
+    #   google-cloud-logging
     #   google-cloud-resource-manager
     #   google-cloud-secret-manager
     #   google-cloud-speech
@@ -561,7 +588,7 @@ psycopg2-binary==2.9.10
     # via -r alpha_factory_v1/requirements.txt
 py-cpuinfo==9.0.0
     # via ctransformers
-pyarrow==20.0.0
+pyarrow==21.0.0
     # via streamlit
 pyasn1==0.6.1
     # via
@@ -575,9 +602,9 @@ pycares==4.9.0
     # via aiodns
 pycparser==2.22
     # via cffi
-pydantic==2.11.5
+pydantic==2.11.7
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   anthropic
     #   chromadb
     #   fastapi
@@ -593,9 +620,9 @@ pydantic==2.11.5
     #   rocketry
 pydantic-core==2.33.2
     # via pydantic
-pydantic-settings==2.9.1
+pydantic-settings==2.10.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   mcp
 pydeck==0.9.1
     # via streamlit
@@ -604,25 +631,28 @@ pyee==13.0.0
 pygame==2.6.1
     # via gymnasium
 pygments==2.19.2
-    # via rich
+    # via
+    #   pytest
+    #   rich
 pyparsing==3.2.3
     # via httplib2
 pypika==0.48.9
     # via chromadb
 pyproject-hooks==1.2.0
     # via build
-pytest==8.3.5
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+pytest==8.4.1
+    # via -r alpha_factory_v1/requirements-core.txt
 python-dateutil==2.9.0.post0
     # via
+    #   google-adk
     #   google-cloud-bigquery
     #   kubernetes
     #   pandas
     #   posthog
     #   rocketry
-python-dotenv==1.1.0
+python-dotenv==1.1.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   google-adk
     #   litellm
     #   pydantic-settings
@@ -636,7 +666,7 @@ pytz==2025.2
     #   yfinance
 pyyaml==6.0.2
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   accelerate
     #   chromadb
     #   google-adk
@@ -654,10 +684,11 @@ regex==2024.11.6
     # via
     #   tiktoken
     #   transformers
-requests==2.32.3
+requests==2.32.4
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   ccxt
+    #   google-adk
     #   google-api-core
     #   google-cloud-bigquery
     #   google-cloud-storage
@@ -678,12 +709,12 @@ requests-oauthlib==2.0.0
     # via kubernetes
 rich==14.0.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   typer
 rocketry==2.5.1
-    # via -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
-rpds-py==0.25.1
+    # via -r alpha_factory_v1/requirements-core.txt
+rpds-py==0.26.0
     # via
     #   jsonschema
     #   referencing
@@ -693,14 +724,14 @@ safetensors==0.5.3
     # via
     #   accelerate
     #   transformers
-scikit-learn==1.7.0
+scikit-learn==1.7.1
     # via sentence-transformers
 scipy==1.16.0
     # via
     #   -r alpha_factory_v1/requirements.txt
     #   scikit-learn
     #   sentence-transformers
-sentence-transformers==4.1.0
+sentence-transformers==5.0.0
     # via -r alpha_factory_v1/requirements.txt
 sentencepiece==0.2.0
     # via -r alpha_factory_v1/requirements.txt
@@ -728,28 +759,30 @@ sqlalchemy==2.0.41
     # via
     #   -r alpha_factory_v1/requirements.txt
     #   google-adk
-sse-starlette==2.3.5
+sse-starlette==2.4.1
     # via mcp
-starlette==0.46.2
+starlette==0.47.1
     # via
     #   fastapi
+    #   google-adk
     #   mcp
-    #   sse-starlette
-streamlit==1.46.1
+streamlit==1.47.0
     # via -r alpha_factory_v1/requirements.txt
 sympy==1.14.0
     # via
     #   onnxruntime
     #   torch
-tenacity==9.1.2
+tenacity==8.5.0
     # via
     #   chromadb
+    #   google-adk
+    #   google-genai
     #   streamlit
 threadpoolctl==3.6.0
     # via scikit-learn
 tiktoken==0.9.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   litellm
 tokenizers==0.21.2
     # via
@@ -766,13 +799,13 @@ tornado==6.5.1
     # via streamlit
 tqdm==4.67.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   huggingface-hub
     #   openai
     #   sentence-transformers
     #   transformers
-transformers==4.53.0
+transformers==4.53.2
     # via
     #   -r alpha_factory_v1/requirements.txt
     #   sentence-transformers
@@ -780,10 +813,11 @@ triton==3.3.1
     # via torch
 typer==0.16.0
     # via chromadb
-types-requests==2.32.0.20250515
+types-requests==2.32.4.20250611
     # via openai-agents
-typing-extensions==4.13.2
+typing-extensions==4.14.1
     # via
+    #   aiosignal
     #   altair
     #   anthropic
     #   anyio
@@ -791,6 +825,7 @@ typing-extensions==4.13.2
     #   ccxt
     #   chromadb
     #   fastapi
+    #   google-adk
     #   google-cloud-aiplatform
     #   google-genai
     #   gymnasium
@@ -798,9 +833,12 @@ typing-extensions==4.13.2
     #   llama-cpp-python
     #   openai
     #   openai-agents
+    #   opentelemetry-api
+    #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-resourcedetector-gcp
     #   opentelemetry-sdk
-    #   posthog
+    #   opentelemetry-semantic-conventions
+    #   ortools
     #   pydantic
     #   pydantic-core
     #   pyee
@@ -808,6 +846,7 @@ typing-extensions==4.13.2
     #   referencing
     #   sentence-transformers
     #   sqlalchemy
+    #   starlette
     #   streamlit
     #   torch
     #   typer
@@ -820,44 +859,47 @@ tzdata==2025.2
     # via pandas
 tzlocal==5.3.1
     # via google-adk
-uritemplate==4.1.1
+uritemplate==4.2.0
     # via google-api-python-client
-urllib3==2.4.0
+urllib3==2.5.0
     # via
     #   kubernetes
     #   requests
     #   types-requests
-uvicorn[standard]==0.34.2
+uvicorn[standard]==0.35.0
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
     #   chromadb
     #   google-adk
     #   mcp
-uvloop==0.21.0
-    # via uvicorn
+uvloop==0.21.0 ; sys_platform != "win32" and sys_platform != "darwin"
+    # via
+    #   -r alpha_factory_v1/requirements-core.txt
+    #   uvicorn
 watchdog==6.0.0
-    # via streamlit
+    # via
+    #   google-adk
+    #   streamlit
 watchfiles==1.1.0
     # via uvicorn
 websocket-client==1.8.0
     # via kubernetes
 websockets==15.0.1
     # via
-    #   -r /workspace/AGI-Alpha-Agent-v0/alpha_factory_v1/requirements-core.txt
+    #   -r alpha_factory_v1/requirements-core.txt
+    #   google-adk
     #   google-genai
     #   uvicorn
     #   yfinance
 werkzeug==3.1.3
     # via flask
-wrapt==1.17.2
-    # via deprecated
 yarl==1.20.1
     # via
     #   aiohttp
     #   ccxt
-yfinance==0.2.64
+yfinance==0.2.65
     # via -r alpha_factory_v1/requirements.txt
-zipp==3.22.0
+zipp==3.23.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
