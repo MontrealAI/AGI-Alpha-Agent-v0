@@ -12,8 +12,9 @@ import time
 
 URL = "http://localhost:8000/alpha_agi_insight_v1/"
 
-# Allow the timeout to be overridden via PWA_TIMEOUT_MS for slow CI runners
-TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "120000"))
+# Allow the timeout to be overridden via PWA_TIMEOUT_MS for slow CI runners.
+# Default to three minutes to handle network latency on CI workers.
+TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "180000"))
 
 
 def _print_console(logs: list[str]) -> None:
