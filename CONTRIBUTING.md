@@ -43,6 +43,14 @@ When modifying build dependencies or system packages in the project
 `Dockerfile`, update `alpha_factory_v1/Dockerfile` as well so both images
 remain consistent.
 
+### Node Dependencies
+
+Node packages live under `alpha_factory_v1/core/interface/web_client` and the
+Insight browser demo. When you add or upgrade a package, run `npm install` (or
+`npm update`) in the corresponding directory and commit the updated
+`package-lock.json`. Rebuild the Docker image after changing these lock files so
+the container includes the new dependencies.
+
 ## Pre-commit Hooks
 
 Run `./codex/setup.sh` to install project dependencies. The script also
@@ -86,6 +94,30 @@ dependencies like `aiohttp` resolve to the same versions across the project:
 
 The script writes `requirements.lock`, `requirements-dev.lock`,
 `requirements-docs.lock`, `requirements-demo.lock`, `requirements-cpu.lock` and
+`requirements-demo-cpu.lock`.
+
+### Running `pip-compile`
+
+Invoke `pip-compile` directly when you only need to refresh a specific lock
+file:
+
+```bash
+pip-compile --upgrade --allow-unsafe --generate-hashes \
+  --output-file requirements.lock requirements.txt
+```
+
+For the CPU-only environment include all requirement files and specify the
+standard index URL:
+
+```bash
+pip-compile --upgrade --allow-unsafe --generate-hashes \
+  --index-url=https://pypi.org/simple \
+  requirements-demo.txt requirements-dev.txt requirements.txt \
+  -o requirements-cpu.new
+mv requirements-cpu.new requirements-cpu.lock
+```
+
+Run the same command with `requirements-demo.txt` as the sole input to update
 `requirements-demo-cpu.lock`.
 
 ### Pre-commit in Air-Gapped Setups
