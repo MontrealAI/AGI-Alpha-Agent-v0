@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements
 
 # copy project source
 COPY . /app
+# install project in editable mode
+RUN pip install --no-cache-dir -e /app
 # copy pre-built React bundle if available
 COPY alpha_factory_v1/core/interface/web_client/dist/ \
      /app/alpha_factory_v1/core/interface/web_client/dist/
