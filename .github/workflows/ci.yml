@@ -381,6 +381,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
+      PWA_TIMEOUT_MS: '120000'
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
