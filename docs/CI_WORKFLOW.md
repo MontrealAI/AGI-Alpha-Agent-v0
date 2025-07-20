@@ -13,6 +13,8 @@ repository owner triggers it from the GitHub Actions UI.
 3. Only the repository owner can trigger this button. The workflow starts with
    an `owner-check` job using the `ensure-owner` composite action. If the actor
    does not match `github.repository_owner` the pipeline exits immediately.
+4. Confirm **Python&nbsp;3.11 or 3.12** and **Node.js&nbsp;20** are installed.
+5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
 image to GHCR and uploads the prebuilt web client bundle to the corresponding
