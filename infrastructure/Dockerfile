@@ -7,7 +7,9 @@ WORKDIR /app
 
 # install Python dependencies using the pinned lock file
 COPY requirements.lock /tmp/requirements.lock
-RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
+COPY alpha_factory_v1/requirements-core.txt /tmp/requirements-core.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock \
+    && rm /tmp/requirements-core.txt
 
 # copy project source
 COPY . /app
