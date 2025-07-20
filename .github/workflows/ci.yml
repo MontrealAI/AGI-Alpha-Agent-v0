@@ -85,6 +85,7 @@ jobs:
       - name: Clean insight browser node_modules
         run: |
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm cache verify
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
         run: pre-commit run --all-files
