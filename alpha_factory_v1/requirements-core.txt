@@ -5,11 +5,12 @@
 
 # Core web runtimes
 fastapi>=0.111,<1.0
-uvicorn[standard]~=0.34
+uvicorn~=0.34
 flask~=3.0
 gunicorn~=21.2
 orjson~=3.9
 websockets~=15.0
+uvloop~=0.21 ; (sys_platform != "win32" and sys_platform != "darwin")
 
 # Utilities / config / governance
 python-dotenv~=1.0
