@@ -406,10 +406,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Install Playwright browsers
-        run: |
-          python -m playwright install chromium webkit firefox
-          npx playwright install
       - name: Fetch insight browser assets
         run: |
           set -e
