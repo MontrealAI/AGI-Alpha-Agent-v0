@@ -5,11 +5,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 
 WORKDIR /app
 
-# install Python dependencies
-# copy both requirement files so relative includes resolve during build
-COPY requirements.txt alpha_factory_v1/requirements-core.txt /tmp/
-RUN pip install --no-cache-dir -r /tmp/requirements.txt \
-    && rm /tmp/requirements.txt /tmp/requirements-core.txt
+# install Python dependencies using the pinned lock file
+COPY requirements.lock /tmp/requirements.lock
+RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock
 
 # copy project source
 COPY . /app

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from playwright.sync_api import Error as PlaywrightError, sync_playwright
 import time
@@ -11,7 +12,8 @@ import time
 
 URL = "http://localhost:8000/alpha_agi_insight_v1/"
 
-TIMEOUT_MS = 90_000
+# Allow the timeout to be overridden via PWA_TIMEOUT_MS for slow CI runners
+TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "90000"))
 
 
 def _print_console(logs: list[str]) -> None:
