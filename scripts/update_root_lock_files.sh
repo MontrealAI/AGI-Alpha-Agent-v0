@@ -20,9 +20,11 @@ $PIP_COMPILE "${opts[@]}" requirements-dev.txt -o requirements-dev.lock
 $PIP_COMPILE "${opts[@]}" requirements-docs.txt -o requirements-docs.lock
 $PIP_COMPILE "${opts[@]}" requirements-demo.txt -o requirements-demo.lock
 $PIP_COMPILE "${opts[@]}" --index-url=https://pypi.org/simple \
+    --extra-index-url=https://download.pytorch.org/whl/cpu \
     requirements-demo.txt requirements-dev.txt requirements.txt \
     -o requirements-cpu.new
 mv requirements-cpu.new requirements-cpu.lock
 $PIP_COMPILE "${opts[@]}" --index-url=https://pypi.org/simple \
+    --extra-index-url=https://download.pytorch.org/whl/cpu \
     requirements-demo.txt -o requirements-demo-cpu.new
 mv requirements-demo-cpu.new requirements-demo-cpu.lock
