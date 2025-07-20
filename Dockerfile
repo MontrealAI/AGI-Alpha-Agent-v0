@@ -35,6 +35,8 @@ RUN mkdir -p alpha_factory_v1/demos
 COPY alpha_factory_v1/__init__.py alpha_factory_v1/__init__.py
 COPY alpha_factory_v1/demos/__init__.py alpha_factory_v1/demos/__init__.py
 COPY alpha_factory_v1/demos/alpha_agi_insight_v1 alpha_factory_v1/demos/alpha_agi_insight_v1
+COPY alpha_factory_v1/demos/self_healing_repo alpha_factory_v1/demos/self_healing_repo
+COPY alpha_factory_v1/demos/self_healing_repo_cli.py alpha_factory_v1/demos/self_healing_repo_cli.py
 
 # build the React front-end
 RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client \
