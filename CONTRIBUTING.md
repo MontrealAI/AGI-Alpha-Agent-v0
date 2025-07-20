@@ -76,10 +76,17 @@ pre-commit run --files .github/workflows/ci.yml
 
 Regenerate the lock files whenever you modify `requirements*.txt`:
 
+Run `scripts/update_root_lock_files.sh` to regenerate all lock files in a single
+pass. The helper calls `pip-compile` for each requirements file so that shared
+dependencies like `aiohttp` resolve to the same versions across the project:
+
 ```bash
-pip-compile --upgrade --allow-unsafe --generate-hashes \
-  --output-file requirements.lock requirements.txt
+./scripts/update_root_lock_files.sh
 ```
+
+The script writes `requirements.lock`, `requirements-dev.lock`,
+`requirements-docs.lock`, `requirements-demo.lock`, `requirements-cpu.lock` and
+`requirements-demo-cpu.lock`.
 
 ### Pre-commit in Air-Gapped Setups
 
