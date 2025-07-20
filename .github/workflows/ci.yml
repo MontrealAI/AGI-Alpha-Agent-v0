@@ -33,6 +33,8 @@ env:
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
   A11Y_THRESHOLD: ${{ inputs.a11y-threshold }}
+  FETCH_ASSETS_ATTEMPTS: '5'
+  FETCH_ASSETS_BACKOFF: '2'
 
 jobs:
 
@@ -173,12 +175,16 @@ jobs:
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Verify insight assets
         run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+          set -eo pipefail
+          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+          if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "::error::Initial asset verification failed" >&2
+            cat verify.log
+            python scripts/update_pyodide.py 0.28.0
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+            python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+          fi
+          cat verify.log
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db --update-db --yes
@@ -557,12 +563,16 @@ jobs:
           )
       - name: Verify insight assets
         run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+          set -eo pipefail
+          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+          if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            echo "::error::Initial asset verification failed" >&2
+            cat verify.log
+            python scripts/update_pyodide.py 0.28.0
+            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+            python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+          fi
+          cat verify.log
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers

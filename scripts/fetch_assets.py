@@ -4,8 +4,10 @@
 """Download browser demo assets from official mirrors.
 
 Environment variables:
-    HF_GPT2_BASE_URL -- Override the Hugging Face base URL for the GPT‑2 model.
-    PYODIDE_BASE_URL -- Override the base URL for Pyodide runtime files.
+    HF_GPT2_BASE_URL   -- Override the Hugging Face base URL for the GPT‑2 model.
+    PYODIDE_BASE_URL   -- Override the base URL for Pyodide runtime files.
+    FETCH_ASSETS_ATTEMPTS -- Maximum attempts per file (default 3).
+    FETCH_ASSETS_BACKOFF -- Base delay in seconds between retries (default 1).
 
 Pyodide runtime files are fetched directly from the official CDN or a user
 specified mirror. The script no longer attempts alternate gateways when a
@@ -22,6 +24,7 @@ import subprocess
 from pathlib import Path
 import sys
 import re
+import time
 import requests  # type: ignore
 from requests.adapters import HTTPAdapter, Retry  # type: ignore
 
@@ -36,6 +39,8 @@ DEFAULT_PYODIDE_BASE_URL = "https://cdn.jsdelivr.net/pyodide/v0.28.0/full"
 PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).rstrip("/")
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
+# Base delay (seconds) for exponential backoff between attempts
+BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -133,7 +138,9 @@ def download_with_retry(
             if status in {401, 404}:
                 break
             if i < attempts:
-                print(f"Attempt {i} failed for {lbl}: {exc}, retrying...")
+                delay = BACKOFF * (2 ** (i - 1))
+                print(f"Attempt {i} failed for {lbl}: {exc}, retrying in {delay}s...")
+                time.sleep(delay)
             else:
                 print(f"ERROR: could not fetch {lbl} from {last_url} after {attempts} attempts")
     if last_exc:

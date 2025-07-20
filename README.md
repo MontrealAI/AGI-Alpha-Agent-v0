@@ -1319,6 +1319,7 @@ for instructions and example volume mounts.
 | `HF_GPT2_BASE_URL` | `https://huggingface.co/openai-community/gpt2/resolve/main` | Base URL for the GPT‑2 checkpoints. |
 | `PYODIDE_BASE_URL` | `https://cdn.jsdelivr.net/pyodide/v0.28.0/full` | Base URL for the Pyodide runtime files. |
 | `FETCH_ASSETS_ATTEMPTS` | `3` | Download retry count for `fetch_assets.py`. |
+| `FETCH_ASSETS_BACKOFF` | `1` | Base delay between retries in seconds. |
 | `OTEL_ENDPOINT` | _(empty)_ | OTLP endpoint for anonymous telemetry. |
 | `SKIP_WEBKIT_TESTS` | _(empty)_ | Skip WebKit browser tests when set. |
 | `ALPHA_FACTORY_ENABLE_ADK` | `false` | Set to `true` to start the Google ADK gateway. |
