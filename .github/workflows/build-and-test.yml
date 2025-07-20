@@ -83,6 +83,11 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
 
+      - name: Build web client
+        run: |
+          make build_web
+          test -f alpha_factory_v1/core/interface/web_client/dist/index.html
+
       - name: Build Docker image
         run: |
           docker build --build-arg "PYTHON_VERSION=${{ matrix.python-version }}" \
