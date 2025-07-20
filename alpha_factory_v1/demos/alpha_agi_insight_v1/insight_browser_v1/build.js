@@ -222,7 +222,7 @@ async function bundle() {
         "default-src 'self'; connect-src 'self' https://api.openai.com" +
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "") +
-        "; script-src 'self' 'wasm-unsafe-eval'";
+        "; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'";
     outHtml = outHtml.replace(
         /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
         `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
