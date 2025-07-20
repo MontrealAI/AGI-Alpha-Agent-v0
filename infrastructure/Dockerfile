@@ -6,8 +6,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 WORKDIR /app
 
 # install Python dependencies
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
+# copy both requirement files so relative includes resolve during build
+COPY requirements.txt alpha_factory_v1/requirements-core.txt /tmp/
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt /tmp/requirements-core.txt
 
 # copy project source
 COPY . /app
