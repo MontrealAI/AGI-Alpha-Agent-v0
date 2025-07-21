@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # When changing build dependencies here, mirror the updates in
 # alpha_factory_v1/Dockerfile to keep both images consistent.
-FROM python:3.12-slim@sha256:dbb5dcf990b15046d9953d26bda2a5e7fa04160b3cb959f6a950493da98dcda3
+FROM python:3.12-slim@sha256:4600f71648e110b005bf7bca92dbb335e549e6b27f2e83fceee5e11b3e1a4d01
 
 # install build tools and npm for the React UI
 RUN apt-get update && \
