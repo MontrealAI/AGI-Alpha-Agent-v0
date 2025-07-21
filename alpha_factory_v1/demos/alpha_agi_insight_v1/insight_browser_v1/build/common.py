@@ -79,7 +79,7 @@ injectManifest({{
     if inline_sri:
         text = re.sub(
             r"(script-src 'self' 'wasm-unsafe-eval')(?:\s+'(?:unsafe-inline|sha384-[^']+)')?",
-            rf"\1 '{inline_sri}'",
+            rf"\1 'unsafe-inline' '{inline_sri}'",
             text,
         )
     else:
