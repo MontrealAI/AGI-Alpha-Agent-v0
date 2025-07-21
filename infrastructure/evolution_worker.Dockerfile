@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11.13-slim
 WORKDIR /app
 COPY requirements.lock /tmp/requirements.lock
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock

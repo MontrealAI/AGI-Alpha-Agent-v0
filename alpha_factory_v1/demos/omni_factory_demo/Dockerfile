@@ -17,7 +17,7 @@
 ############################
 # 1️⃣  Build stage (light) #
 ############################
-FROM python:3.11-slim as base
+FROM python:3.11.13-slim as base
 
 ARG BUILD_DATE
 ARG VCS_REF
