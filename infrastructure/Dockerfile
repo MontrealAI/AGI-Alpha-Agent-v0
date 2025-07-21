@@ -1,7 +1,8 @@
-FROM python:3.12-slim@sha256:4600f71648e110b005bf7bca92dbb335e549e6b27f2e83fceee5e11b3e1a4d01
+FROM python:3.12.11-slim
 
 # install system deps
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential postgresql-client && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential postgresql-client git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -27,6 +28,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
 ENV PYTHONUNBUFFERED=1
+ENV GIT_PYTHON_REFRESH=quiet
 ARG VITE_API_BASE_URL=/api
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 

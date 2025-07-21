@@ -19,13 +19,13 @@
 #######################################################################
 #  Global ARGs must precede every FROM that references them           #
 #######################################################################
-ARG BASE_IMAGE=python:3.11-slim-bookworm
+ARG BASE_IMAGE=python:3.11.13-slim-bookworm
 ARG INSTALL_UI=1
 
 #######################################################################
 #  Stage 0 — (optional) Build static Trace‑graph front‑end            #
 #######################################################################
-FROM node:20-bookworm-slim AS ui-build
+FROM node:20.19.4-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
 WORKDIR /ui

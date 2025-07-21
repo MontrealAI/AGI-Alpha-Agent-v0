@@ -22,7 +22,7 @@
 ###############################################################################
 
 ########## 1️⃣ Base image #####################################################
-ARG BASE=python:3.11-slim-bullseye
+ARG BASE=python:3.11.13-slim-bullseye
 FROM ${BASE} as base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
