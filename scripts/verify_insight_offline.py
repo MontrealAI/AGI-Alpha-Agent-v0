@@ -36,12 +36,12 @@ def _attempt() -> bool:
             def on_console(msg: object) -> None:
                 entry = f"[{msg.type}] {msg.text}"
                 logs.append(entry)
-                print(entry, file=sys.stderr)
+                print(entry, file=sys.stderr, flush=True)
 
             def on_page_error(exc: Exception) -> None:
                 err = str(exc)
                 page_errors.append(err)
-                print(err, file=sys.stderr)
+                print(err, file=sys.stderr, flush=True)
 
             page.on("console", on_console)
             page.on("pageerror", on_page_error)

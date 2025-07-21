@@ -78,7 +78,7 @@ injectManifest({{
             break
     if inline_sri:
         text = re.sub(
-            r"(script-src 'self' 'wasm-unsafe-eval')[^;]*",
+            r"(script-src 'self' 'wasm-unsafe-eval')(?: 'unsafe-inline'|'sha384-[^']+')?",
             rf"\1 '{inline_sri}'",
             text,
         )
