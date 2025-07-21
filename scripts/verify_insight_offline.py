@@ -32,8 +32,19 @@ def _attempt() -> bool:
             browser = p.chromium.launch(args=["--disable-web-security"])
             context = browser.new_context()
             page = context.new_page()
-            page.on("console", lambda msg: logs.append(f"[{msg.type}] {msg.text}"))
-            page.on("pageerror", lambda exc: page_errors.append(str(exc)))
+
+            def on_console(msg: object) -> None:
+                entry = f"[{msg.type}] {msg.text}"
+                logs.append(entry)
+                print(entry, file=sys.stderr)
+
+            def on_page_error(exc: Exception) -> None:
+                err = str(exc)
+                page_errors.append(err)
+                print(err, file=sys.stderr)
+
+            page.on("console", on_console)
+            page.on("pageerror", on_page_error)
             page.goto(URL)
             page.wait_for_function("navigator.serviceWorker.ready", timeout=TIMEOUT_MS)
             page.wait_for_selector("body", timeout=TIMEOUT_MS)
