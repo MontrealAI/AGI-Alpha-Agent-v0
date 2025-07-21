@@ -28,7 +28,7 @@ def _attempt() -> bool:
     logs: list[str] = []
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(args=["--disable-web-security"])
             context = browser.new_context()
             page = context.new_page()
             page.on("console", lambda msg: logs.append(f"[{msg.type}] {msg.text}"))
