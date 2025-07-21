@@ -10,9 +10,11 @@ repository owner triggers it from the GitHub Actions UI.
 
 1. Navigate to **Actions → 🚀 CI**.
 2. Choose the branch or tag in the drop‑down and click **Run workflow**.
-3. Only the repository owner can trigger this button. The workflow starts with
-   an `owner-check` job using the `ensure-owner` composite action. If the actor
-   does not match `github.repository_owner` the pipeline exits immediately.
+3. Only the repository owner can trigger this button. The workflow begins with
+   a **Verify owner** job that runs the `ensure-owner` composite action. If the
+   actor does not match `github.repository_owner` the pipeline exits
+   immediately. Contributors will see a skipped run unless the repository owner
+   clicks **Run workflow**.
 4. Confirm **Python&nbsp;3.11 or 3.12** and **Node.js&nbsp;20** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
