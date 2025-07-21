@@ -1,5 +1,5 @@
 # Demo container for α‑AGI Insight
-FROM python:3.11.8-slim@sha256:90f8795536170fd08236d2ceb74fe7065dbf74f738d8b84bfbf263656654dc9b
+FROM python:3.11.13-slim
 
 # Install build tools for optional native extensions
 RUN apt-get update && \
