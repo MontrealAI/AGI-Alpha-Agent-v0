@@ -80,7 +80,7 @@ export async function generateServiceWorker(outDir, manifest, version) {
   }
   indexText = indexText.replace(
     /(script-src 'self' 'wasm-unsafe-eval')(?:\s+'(?:unsafe-inline|sha384-[^']+)')?/,
-    (_, p1) => (inlineHash ? `${p1} '${inlineHash}'` : p1)
+    (_, p1) => (inlineHash ? `${p1} 'unsafe-inline' '${inlineHash}'` : `${p1} 'unsafe-inline'`)
   );
   await fs.writeFile(indexPath, indexText);
   let swText = swData.toString('utf8');
