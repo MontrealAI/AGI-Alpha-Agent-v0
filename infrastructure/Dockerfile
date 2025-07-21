@@ -2,7 +2,9 @@ FROM python:3.12.11-slim
 
 # install system deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential postgresql-client git && rm -rf /var/lib/apt/lists/*
+    build-essential postgresql-client git \
+    && git --version \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -27,8 +29,10 @@ COPY infrastructure/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
+ENV PATH="/usr/bin:/usr/local/bin:$PATH"
 ENV PYTHONUNBUFFERED=1
 ENV GIT_PYTHON_REFRESH=quiet
+ENV GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
 ARG VITE_API_BASE_URL=/api
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
