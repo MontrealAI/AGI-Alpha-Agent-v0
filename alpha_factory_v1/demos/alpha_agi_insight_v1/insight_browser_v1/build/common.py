@@ -73,8 +73,8 @@ injectManifest({{
     for match in re.finditer(r"<script[^>]*>(.*?)</script>", text, flags=re.DOTALL):
         if "navigator.serviceWorker" in match.group(1):
             snippet = match.group(1).strip()
-            reg_hash = hashlib.sha256(snippet.encode()).digest()
-            sri = "sha256-" + base64.b64encode(reg_hash).decode()
+            reg_hash = hashlib.sha384(snippet.encode()).digest()
+            sri = "sha384-" + base64.b64encode(reg_hash).decode()
             break
     if sri:
         text = re.sub(
