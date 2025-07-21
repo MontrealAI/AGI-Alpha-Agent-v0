@@ -26,12 +26,14 @@ def _print_console(logs: list[str]) -> None:
 
 def _attempt() -> bool:
     logs: list[str] = []
+    page_errors: list[str] = []
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(args=["--disable-web-security"])
             context = browser.new_context()
             page = context.new_page()
             page.on("console", lambda msg: logs.append(f"[{msg.type}] {msg.text}"))
+            page.on("pageerror", lambda exc: page_errors.append(str(exc)))
             page.goto(URL)
             page.wait_for_function("navigator.serviceWorker.ready", timeout=TIMEOUT_MS)
             page.wait_for_selector("body", timeout=TIMEOUT_MS)
@@ -45,8 +47,11 @@ def _attempt() -> bool:
         print(f"Playwright error: {exc}", file=sys.stderr)
     except Exception as exc:  # noqa: BLE001
         print(f"Offline check failed: {exc}", file=sys.stderr)
-
     _print_console(logs)
+    if page_errors:
+        print("--- Page errors ---", file=sys.stderr)
+        for err in page_errors:
+            print(err, file=sys.stderr)
     return False
 
 
