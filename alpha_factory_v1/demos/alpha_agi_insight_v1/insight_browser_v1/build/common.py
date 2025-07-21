@@ -69,17 +69,17 @@ injectManifest({{
     text = index_path.read_text()
     text = text.replace(".register('sw.js')", ".register('service-worker.js')")
     text = text.replace("__SW_HASH__", sw_hash)
-    sri = None
+    inline_sri = None
     for match in re.finditer(r"<script[^>]*>(.*?)</script>", text, flags=re.DOTALL):
         if "navigator.serviceWorker" in match.group(1):
             snippet = match.group(1).strip()
             reg_hash = hashlib.sha384(snippet.encode()).digest()
-            sri = "sha384-" + base64.b64encode(reg_hash).decode()
+            inline_sri = "sha384-" + base64.b64encode(reg_hash).decode()
             break
-    if sri:
+    if inline_sri:
         text = re.sub(
             r"(script-src 'self' 'wasm-unsafe-eval')[^;]*",
-            rf"\1 '{sri}'",
+            rf"\1 '{inline_sri}'",
             text,
         )
     else:
