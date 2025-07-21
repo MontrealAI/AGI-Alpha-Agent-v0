@@ -76,7 +76,7 @@ export async function generateServiceWorker(outDir, manifest, version) {
   const scriptMatch = /<script[^>]*>([\s\S]*?navigator\.serviceWorker[\s\S]*?)<\/script>/.exec(indexText);
   if (scriptMatch) {
     const snippet = scriptMatch[1].trim();
-    inlineHash = 'sha256-' + createHash('sha256').update(snippet).digest('base64');
+    inlineHash = 'sha384-' + createHash('sha384').update(snippet).digest('base64');
   }
   indexText = indexText.replace(
     /(script-src 'self' 'wasm-unsafe-eval')[^;]*/,
