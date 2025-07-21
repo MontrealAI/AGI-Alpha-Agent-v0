@@ -1,125 +1,95 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Interactive forecast visualization of AGI-driven economic disruption" />
-  <meta property="og:title" content="α‑AGI Insight v1 — Beyond Human Foresight" />
-  <meta
-    property="og:description"
-    content="Where human foresight reaches its limits, α‑AGI Insight sees beyond. This demo highlights how rapidly increasing AGI capabilities can disrupt key economic sectors, unlocking opportunities estimated in the tens of thousands of trillions of USD." />
-  <meta
-    property="og:url"
-    content="https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/" />
-  <meta name="twitter:card" content="summary" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha256-aBJ3XqpUQqGPmfdiNcEKgrdHNk0H6Hmz+NmB6mVds5w='" />
-  <title>α‑AGI Insight v1 — Beyond Human Foresight</title>
-  <!-- Plotly.js (minified) -->
-  <script src="plotly.min.js" defer></script>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1><span aria-hidden="true">🎖️</span> α‑AGI Insight <span class="eye" aria-hidden="true">👁️</span><span aria-hidden="true">✨</span> — Beyond Human Foresight</h1>
-    <p class="tagline">
-      Where human foresight reaches its limits, <strong>α‑AGI Insight</strong> sees beyond. 
-      This demo highlights how rapidly increasing AGI capabilities can disrupt key economic sectors, 
-      unlocking opportunities estimated in the tens of thousands of trillions of USD.
-    </p>
-  </header>
-  <div id="mode-control">
-    <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-    <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
-  </div>
-
-  <main>
-    <!-- AGI Capability Curve Section -->
-    <section>
-      <h2>AGI Capability Growth Curve</h2>
-      <p>
-        This chart shows the projected <em>AGI capability index</em> (T<sub>AGI</sub>) over the next five years. 
-        As AGI evolves, its effective “intelligence temperature” rises. When this capability crosses certain thresholds, 
-        it triggers phase transitions in various industries. The curve below illustrates this accelerating growth, 
-        providing a timeline for when AGI is expected to reach disruptive levels.
-      </p>
-      <div id="capability-chart" class="chart"></div>
-    </section>
-
-    <!-- Sector Disruption Timeline Section -->
-    <section>
-      <h2>Sector Disruption Timeline</h2>
-      <p>
-        The following visualization tracks six critical sectors and highlights the moment each is disrupted by AGI-driven innovation. 
-        Each sector’s performance remains relatively stable until a sudden <strong>“jump”</strong> occurs (marked by a star ⭐ on the line), 
-        indicating an AGI-induced phase transition. These jump markers correspond to the points in time when 
-        <strong>T<sub>AGI</sub></strong> becomes high enough to overcome the sector’s resistance or entropy, 
-        fundamentally changing the sector’s trajectory. Decision-makers who anticipate these jumps can secure a major first-mover advantage.
-      </p>
-      <div id="timeline-chart" class="chart"></div>
-    </section>
-
-    <!-- Pareto Frontier Section -->
-    <section>
-      <h2>Pareto Frontier of Evolved Solutions</h2>
-      <p>
-        α‑AGI Insight employs a Meta-Agentic Tree Search (an NSGA-II evolutionary algorithm) that generates and evaluates numerous strategic scenarios. 
-        Each scenario (point in the plot) is assessed on multiple objectives – for example, <em>economic impact</em> (projected value creation) vs. <em>time to disruption</em>. 
-        The <strong>Pareto frontier</strong> (highlighted in the chart) represents the optimal trade-offs where no objective can improve without worsening another. 
-        In simpler terms, points on this frontier are the most efficient solutions balancing reward and risk (or speed), whereas interior points are suboptimal. 
-        By exploring this frontier, stakeholders can identify strategies that maximize returns while minimizing time or risk.
-      </p>
-      <div id="pareto-chart" class="chart"></div>
-    </section>
-
-    <!-- Meta-Agentic Tree Search Visualization -->
-    <section>
-      <h2>Meta-Agentic Tree Search Progress</h2>
-      <p>
-        The diagram below illustrates how the meta-agentic search explores and refines strategies over time.
-        Nodes appear as the tree expands, with the highlighted path showing the best-performing sequence so far.
-      </p>
-      <div id="tree-container" class="tree-chart" aria-label="Meta-Agentic Tree Search"></div>
-    </section>
-
-    <!-- Agent Logs Section (Optional) -->
-    <section>
-      <h2>Agent Orchestrator Logs <small>(Optional)</small></h2>
-      <p>
-        The log below captures a simplified sequence of actions from the meta-agent orchestrator and its team of specialized agents during the Insight simulation. 
-        It provides a narrative of how the forecast is constructed step-by-step – from initial planning to strategy formulation and validation. 
-        (You can hide or show the log as needed.)
-      </p>
-      <button id="toggle-logs" aria-controls="logs-panel" aria-expanded="false">Show/Hide Logs</button>
-      <div id="logs-panel" class="logs hidden"></div>
-    </section>
-  </main>
-
-  <footer>
-    <p>
-      &copy; 2025 Montreal.AI — α‑AGI Insight v1 Demo. <br/>
-      <small>For illustration purposes only; data is synthetic and for demonstration of concept.</small>
-    </p>
-      <section class="snippet">
-        <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
-        This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-      </section>
-      <p>
-        <a href="../README/">⬅ Back to Documentation</a>
-      </p>
-      <p>
-        <a href="../index.html">⬅️ Back to Gallery</a>
-      </p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d0e2e" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha256-/2W5mpr4rUvuirbekNE8m0+ynybQ5EyXMdQxix7eEQM='; style-src 'self' 'unsafe-inline'" />
+    <title>α-AGI Insight – in-browser Pareto explorer</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <!-- styles injected by insight.bundle.js -->
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="hero relative py-16">
+      <div class="parallax absolute inset-0 -z-10">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+      </div>
+      <div class="hero-content text-center">
+        <h1
+          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 \
+          bg-clip-text text-transparent animate-gradient"
+        >
+          α‑AGI Insight
+        </h1>
+      </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+      <aside id="controls" class="w-64 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" role="region" aria-label="Controls"></aside>
+      <main id="canvas" class="flex-1 relative overflow-hidden" role="main"></main>
+      <aside id="log" class="w-80 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" aria-label="Log" role="region"></aside>
+    </div>
+    <div id="toast" aria-live="polite" role="status"></div>
+    <div id="toolbar" role="toolbar" aria-label="App controls">
+      <button id="install-btn" hidden aria-label="Install application">Install</button>
+    </div>
+    <div id="legend" role="region" aria-label="Legend"></div>
+    <div id="depth-legend" role="region" aria-label="Depth Legend"></div>
+    <footer id="disclaimer" style="font-size: 0.8rem; margin: 1rem; text-align:center;">
+      This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
     </footer>
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(() => {
-        console.warn('Service worker registration failed');
-      });
-    }
-  </script>
-<script src="d3.v7.min.js"></script>
-<script type="module" src="script.js" integrity="sha384-IQVDA3d7IeSo++ggd8jpPmO0gYryzPoHheuwylqUjDVJSMYgrzYadyOK65+QWSe1" crossorigin="anonymous"></script>
+    <script>
+      const SW_URL = 'service-worker.js';
+      const SW_HASH = 'sha384-ITQvGaSQBg4EGhxnB0OuTBcb9mYff22hfLOPenTASEQMJ4eKhFZb/TJbdttP4tRh';
+      // Replaced with the SHA-384 digest of service-worker.js during
+      // `npm run build` (or `python manual_build.py`)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', async () => {
+          try {
+            const res = await fetch(SW_URL);
+            const buf = await res.arrayBuffer();
+            const digest = await crypto.subtle.digest('SHA-384', buf);
+            const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+            if (`sha384-${b64}` !== SW_HASH) {
+              throw new Error('Service worker hash mismatch');
+            }
+            navigator.serviceWorker
+              .register(SW_URL)
+              .then((registration) => {
+                navigator.serviceWorker.ready.then(() => {
+                  registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    if (!newWorker) return;
+                    newWorker.addEventListener('statechange', () => {
+                      if (
+                        newWorker.state === 'installed' &&
+                        navigator.serviceWorker.controller
+                      ) {
+                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                        toast('Update available. Refreshing…');
+                        navigator.serviceWorker.addEventListener(
+                          'controllerchange',
+                          () => location.reload(),
+                          { once: true },
+                        );
+                      }
+                    });
+                  });
+                });
+              })
+              .catch(() =>
+                toast('Service worker registration failed; offline mode disabled.'),
+              );
+          } catch {
+            toast('Service worker registration failed; offline mode disabled.');
+          }
+        });
+      }
+    </script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-KKPV3VcnYmdpDiGm+znqoQoONf5yziROEwV9kWuNOlT8/erUdCkW+SBkp5NIKZC/" crossorigin="anonymous"></script>
+  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
+<p><a href="../index.html">⬅️ Back to Gallery</a></p>
 </body>
 </html>

@@ -69,7 +69,21 @@ injectManifest({{
     text = index_path.read_text()
     text = text.replace(".register('sw.js')", ".register('service-worker.js')")
     text = text.replace("__SW_HASH__", sw_hash)
-    text = re.sub(r"(script-src 'self' 'wasm-unsafe-eval')", rf"\1 '{sw_hash}'", text)
+    sri = None
+    for match in re.finditer(r"<script[^>]*>(.*?)</script>", text, flags=re.DOTALL):
+        if "navigator.serviceWorker" in match.group(1):
+            snippet = match.group(1).strip()
+            reg_hash = hashlib.sha256(snippet.encode()).digest()
+            sri = "sha256-" + base64.b64encode(reg_hash).decode()
+            break
+    if sri:
+        text = re.sub(
+            r"(script-src 'self' 'wasm-unsafe-eval')[^;]*",
+            rf"\1 '{sri}'",
+            text,
+        )
+    else:
+        print("WARNING: service worker registration script not found", file=sys.stderr)
     index_path.write_text(text)
     sw_text = sw_dest.read_text()
     sw_text = sw_text.replace("__WORKBOX_SW_HASH__", wb_hash)

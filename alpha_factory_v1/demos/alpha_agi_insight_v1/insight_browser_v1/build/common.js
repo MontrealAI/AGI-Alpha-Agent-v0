@@ -72,9 +72,15 @@ export async function generateServiceWorker(outDir, manifest, version) {
   let indexText = await fs.readFile(indexPath, 'utf8');
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
   indexText = indexText.replace('__SW_HASH__', `sha384-${swHash}`);
+  let inlineHash;
+  const scriptMatch = /<script[^>]*>([\s\S]*?navigator\.serviceWorker[\s\S]*?)<\/script>/.exec(indexText);
+  if (scriptMatch) {
+    const snippet = scriptMatch[1].trim();
+    inlineHash = 'sha256-' + createHash('sha256').update(snippet).digest('base64');
+  }
   indexText = indexText.replace(
-    /(script-src 'self' 'wasm-unsafe-eval')/,
-    `$1 'sha384-${swHash}'`
+    /(script-src 'self' 'wasm-unsafe-eval')[^;]*/,
+    (_, p1) => `${p1}${inlineHash ? ` '${inlineHash}'` : ''}`
   );
   await fs.writeFile(indexPath, indexText);
   let swText = swData.toString('utf8');
