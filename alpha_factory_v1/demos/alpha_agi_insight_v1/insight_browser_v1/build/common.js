@@ -79,8 +79,8 @@ export async function generateServiceWorker(outDir, manifest, version) {
     inlineHash = 'sha384-' + createHash('sha384').update(snippet).digest('base64');
   }
   indexText = indexText.replace(
-    /(script-src 'self' 'wasm-unsafe-eval')[^;]*/,
-    (_, p1) => `${p1}${inlineHash ? ` '${inlineHash}'` : ''}`
+    /(script-src 'self' 'wasm-unsafe-eval')(?:\s+'(?:unsafe-inline|sha384-[^']+)')?/,
+    (_, p1) => (inlineHash ? `${p1} '${inlineHash}'` : p1)
   );
   await fs.writeFile(indexPath, indexText);
   let swText = swData.toString('utf8');

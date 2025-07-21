@@ -45,6 +45,8 @@ def _attempt() -> bool:
 
             page.on("console", on_console)
             page.on("pageerror", on_page_error)
+            context.on("console", on_console)
+            context.on("pageerror", on_page_error)
             page.goto(URL)
             page.wait_for_function("navigator.serviceWorker.ready", timeout=TIMEOUT_MS)
             page.wait_for_selector("body", timeout=TIMEOUT_MS)

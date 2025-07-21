@@ -9,8 +9,9 @@ from typing import Any
 from urllib.parse import urlparse
 import base64
 
-BUILD_DIR = Path(__file__).resolve().parent / "build"
-sys.path.insert(0, str(BUILD_DIR))
+BASE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE_DIR))
+sys.path.insert(0, str(BASE_DIR / "build"))
 from build.common import check_gzip_size, sha384, generate_service_worker  # noqa: E402
 
 
