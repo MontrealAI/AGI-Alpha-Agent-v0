@@ -70,12 +70,18 @@ def test_simulate_curve_subprocess() -> None:
         )
         assert r.status_code == 200
         sim_id = r.json()["id"]
-        for _ in range(400):
+        for _ in range(200):
+            if proc.poll() is not None:
+                output = proc.stdout.read() if proc.stdout else ""
+                raise AssertionError(f"server exited with {proc.returncode}:\n{output}")
             r = httpx.get(f"{url}/results/{sim_id}", headers=headers)
             if r.status_code == 200:
                 results = r.json()
                 break
             time.sleep(0.05)
+        else:
+            output = proc.stdout.read() if proc.stdout else ""
+            raise AssertionError(f"results not ready\n{output}")
         assert r.status_code == 200
 
         r_latest = httpx.get(f"{url}/results", headers=headers)
@@ -92,7 +98,7 @@ def test_simulate_curve_subprocess() -> None:
         proc.wait(timeout=5)
 
 
-def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Popen[bytes]:
+def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Popen[str]:
     cmd = [
         sys.executable,
         "-m",
@@ -104,10 +110,16 @@ def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Po
     ]
     env = env or os.environ.copy()
     env["PYTHONPATH"] = f"{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
-    return subprocess.Popen(cmd, env=env)
+    return subprocess.Popen(
+        cmd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
 
 
-def _start_demo_server(port: int, env: dict[str, str] | None = None) -> subprocess.Popen[bytes]:
+def _start_demo_server(port: int, env: dict[str, str] | None = None) -> subprocess.Popen[str]:
     cmd = [
         sys.executable,
         "-m",
@@ -119,18 +131,28 @@ def _start_demo_server(port: int, env: dict[str, str] | None = None) -> subproce
     ]
     env = env or os.environ.copy()
     env["PYTHONPATH"] = f"{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
-    return subprocess.Popen(cmd, env=env)
+    return subprocess.Popen(
+        cmd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
 
 
-def _wait_running(url: str, headers: dict[str, str]) -> None:
-    for _ in range(100):
+def _wait_running(url: str, headers: dict[str, str], proc: subprocess.Popen[str]) -> None:
+    for _ in range(60):
+        if proc.poll() is not None:
+            output = proc.stdout.read() if proc.stdout else ""
+            raise AssertionError(f"server exited with {proc.returncode}:\n{output}")
         try:
             r = httpx.get(f"{url}/runs", headers=headers)
             if r.status_code == 200:
                 return
         except Exception:
             time.sleep(0.1)
-    raise AssertionError("server did not start")
+    output = proc.stdout.read() if proc.stdout else ""
+    raise AssertionError(f"server did not start\n{output}")
 
 
 def test_results_requires_auth() -> None:
@@ -139,7 +161,7 @@ def test_results_requires_auth() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         r = httpx.get(f"{url}/results")
         assert r.status_code == 403
     finally:
@@ -155,7 +177,7 @@ def test_rate_limit_exceeded() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         assert httpx.get(f"{url}/runs", headers=headers).status_code == 200
         assert httpx.get(f"{url}/runs", headers=headers).status_code == 200
         r = httpx.get(f"{url}/runs", headers=headers)
@@ -173,7 +195,7 @@ def test_results_requires_auth_cors() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         r = httpx.get(f"{url}/results", headers={"Origin": "http://example.com"})
         assert r.status_code == 403
         assert r.headers.get("access-control-allow-origin") == "http://example.com"
@@ -188,7 +210,7 @@ def test_problem_json_subprocess() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         r = httpx.get(f"{url}/results/missing", headers=headers)
         assert r.status_code == 404
         assert r.headers.get("content-type", "").startswith("application/problem+json")
@@ -207,7 +229,7 @@ def test_ws_progress_token_param() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         ws_url = f"ws://127.0.0.1:{port}/ws/progress?token=test-token"
         with websockets.connect(ws_url):
             pass
@@ -222,7 +244,7 @@ def test_insight_endpoint_subprocess() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         r = httpx.post(
             f"{url}/simulate",
             json={
@@ -240,12 +262,18 @@ def test_insight_endpoint_subprocess() -> None:
         )
         assert r.status_code == 200
         sim_id = r.json()["id"]
-        for _ in range(400):
+        for _ in range(200):
+            if proc.poll() is not None:
+                output = proc.stdout.read() if proc.stdout else ""
+                raise AssertionError(f"server exited with {proc.returncode}:\n{output}")
             r = httpx.get(f"{url}/results/{sim_id}", headers=headers)
             if r.status_code == 200:
                 results = r.json()
                 break
             time.sleep(0.05)
+        else:
+            output = proc.stdout.read() if proc.stdout else ""
+            raise AssertionError(f"results not ready\n{output}")
         assert r.status_code == 200
 
         r_insight = httpx.post(
@@ -266,7 +294,7 @@ def test_invalid_sim_request_returns_422() -> None:
     url = f"http://127.0.0.1:{port}"
     headers = {"Authorization": "Bearer test-token"}
     try:
-        _wait_running(url, headers)
+        _wait_running(url, headers, proc)
         r = httpx.post(
             f"{url}/simulate",
             json={

@@ -906,7 +906,11 @@ def main(argv: List[str] | None = None) -> None:
     parser.add_argument("--host", default="0.0.0.0", help="Bind host")
     parser.add_argument("--port", type=int, default=8000, help="Bind port")
     args = parser.parse_args(argv)
-    uvicorn.run(cast(Any, app), host=args.host, port=args.port)
+    try:
+        uvicorn.run(cast(Any, app), host=args.host, port=args.port)
+    except Exception as exc:  # pragma: no cover - runtime failure
+        _log.exception("server failed: %s", exc)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
