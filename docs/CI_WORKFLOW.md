@@ -116,3 +116,14 @@ on the linting and test stages, so a failure early in the pipeline prevents the
 Docker build or deploy steps from running. If a job appears skipped, inspect its
 dependencies for earlier failures. With the lock file paths fixed, all jobs run
 whenever the owner dispatches the workflow and the tests succeed.
+
+## Local CI steps
+
+Run these commands before dispatching the workflow:
+
+```bash
+python scripts/check_python_deps.py
+python check_env.py --auto-install
+pre-commit run --all-files
+pytest --cov --cov-report=xml
+```
