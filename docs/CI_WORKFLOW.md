@@ -15,7 +15,7 @@ repository owner triggers it from the GitHub Actions UI.
    actor does not match `github.repository_owner` the pipeline exits
    immediately. Contributors will see a skipped run unless the repository owner
    clicks **Run workflow**.
-4. Confirm **Python&nbsp;3.11 or 3.12** and **Node.js&nbsp;20** are installed.
+4. Confirm **Python&nbsp;3.11 or 3.13** and **Node.js&nbsp;22** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
@@ -31,9 +31,9 @@ previous `latest` image so production always points at a working build.
 - **🧹 Ruff + 🏷️ Mypy** – lint and type checks.
 - **✅ Pytest** – unit tests and front‑end checks.
 - **🎯 Cypress** – end-to-end UI tests. Uses `cypress-io/github-action` to start the Vite dev server and run the suite. If `PERCY_TOKEN` is set the action uploads snapshots to Percy.
-- **Windows Smoke** – lightweight sanity tests on Windows.
+- **Windows/Mac Smoke** – lightweight sanity tests on Windows and macOS.
 - **📜 MkDocs** – basic documentation build.
-- **📚 Docs Build** – full docs site verification. The job runs
+- **📚 Docs Build** – full docs site verification with an offline check. The job runs
   `scripts/build_gallery_site.sh` which executes `preflight.py`. This
   script requires `/usr/bin/patch` inside the sandbox container, so the
   workflow builds `sandbox.Dockerfile` and sets `SANDBOX_IMAGE=selfheal-sandbox:latest`.
@@ -60,7 +60,7 @@ alpha_factory_v1/core/interface/web_client/package-lock.json
 alpha_factory_v1/core/interface/web_client/staking/package-lock.json
 alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
 ```
-Each job installs Node.js 20 based on `.nvmrc` using `actions/setup-node` before
+Each job installs Node.js 22 based on `.nvmrc` using `actions/setup-node` before
 running `npm` commands. This ensures hooks like `eslint-insight-browser` and
 documentation steps use the expected runtime.
 

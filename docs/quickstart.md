@@ -7,14 +7,14 @@ API credentials.
 
 ## Installing prerequisites
 
-1. Install **Python 3.11 or 3.12** and create a virtual environment:
+1. Install **Python 3.11 or 3.13** and create a virtual environment:
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    pip install -U pip pre-commit
    ```
 2. Install **Docker** and **Docker Compose** (Compose ≥2.5).
-3. Install **Node.js 20** for the web client. Run `nvm use` to activate the version from `.nvmrc`.
+3. Install **Node.js 22** for the web client. Run `nvm use` to activate the version from `.nvmrc`.
 4. Ensure `git` is available. Verify the tools:
    ```bash
    python --version

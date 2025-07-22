@@ -7,7 +7,7 @@ This guide summarizes how to publish the **α‑AGI Insight** demo using GitHub 
 ## Prerequisites
 
 - **Python ≥3.11** with `mkdocs` installed
-- **Node.js ≥20**
+- **Node.js ≥22**
 
 Verify Node:
 

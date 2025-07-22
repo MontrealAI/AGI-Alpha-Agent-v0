@@ -435,7 +435,7 @@ Typical REST endpoints:
 
 ### 5.3 Rebuilding the React dashboard
 
-Install [Node.js](https://nodejs.org/) **≥ 20** if you want to rebuild the front‑end.
+Install [Node.js](https://nodejs.org/) **≥ 22** if you want to rebuild the front‑end.
 From the repository root run:
 
 ```bash
