@@ -406,6 +406,28 @@ out_html = out_html.replace(
     "</body>",
     f"{offline_html}\n{env_script}\n</body>",
 )
+dist_index = dist_dir / "index.html"
+dist_index.write_text(out_html)
+index_html.write_text(
+    html.replace(
+        app_sri_placeholder,
+        (
+            '<script type="module" src="insight.bundle.js" '
+            f'integrity="{app_sri}" '
+            'crossorigin="anonymous"></script>'
+        ),
+    )
+)
+
+# generate service worker
+generate_service_worker(ROOT, dist_dir, manifest)
+(dist_dir / "service-worker.js").write_bytes((dist_dir / "sw.js").read_bytes())
+sw_actual = sha384(dist_dir / "service-worker.js")
+sw_expected = checksums.get("service-worker.js")
+if sw_expected and sw_expected != sw_actual:
+    sys.exit("Checksum mismatch for service-worker.js")
+
+out_html = dist_index.read_text()
 csp_hashes: list[str] = []
 for m in re.findall(r"<script(?![^>]*src)[^>]*>([\s\S]*?)</script>", out_html):
     digest = hashlib.sha384(m.encode()).digest()
@@ -442,24 +464,5 @@ if wasm_dir.exists():
         )  # noqa: E501
 else:
     wasm_sri = None
-(dist_dir / "index.html").write_text(out_html)
-index_html.write_text(
-    html.replace(
-        app_sri_placeholder,
-        (
-            '<script type="module" src="insight.bundle.js" '
-            f'integrity="{app_sri}" '
-            'crossorigin="anonymous"></script>'
-        ),
-    )
-)
-
-
-# generate service worker
-generate_service_worker(ROOT, dist_dir, manifest)
-(dist_dir / "service-worker.js").write_bytes((dist_dir / "sw.js").read_bytes())
-sw_actual = sha384(dist_dir / "service-worker.js")
-sw_expected = checksums.get("service-worker.js")
-if sw_expected and sw_expected != sw_actual:
-    sys.exit("Checksum mismatch for service-worker.js")
+dist_index.write_text(out_html)
 check_gzip_size(dist_dir / "insight.bundle.js")
