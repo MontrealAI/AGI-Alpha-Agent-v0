@@ -62,7 +62,7 @@ def pytest_runtest_setup(item: pytest.Item) -> None:
 def non_network(monkeypatch: pytest.MonkeyPatch) -> None:
     """Disable outbound networking for the duration of a test."""
 
-    def _blocked(*_a: Any, **_k: Any) -> None:
+    def _blocked(*_a: Any, **_kw: Any) -> None:
         raise OSError("network disabled")
 
     monkeypatch.setattr(socket.socket, "connect", _blocked)
