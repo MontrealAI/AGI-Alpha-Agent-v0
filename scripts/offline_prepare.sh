@@ -31,7 +31,7 @@ else
   PIP_COMPILE="python -m piptools compile"
 fi
 
-opts=(--generate-hashes --quiet)
+opts=(--generate-hashes --quiet --allow-unsafe)
 if [[ -n "${WHEELHOUSE:-}" ]]; then
   opts+=(--no-index --find-links "$WHEELHOUSE")
 fi
