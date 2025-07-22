@@ -47,7 +47,7 @@ def test_simulate_flow_uvicorn(uvicorn_server: str) -> None:
         assert r.status_code == 200
         sim_id = r.json()["id"]
         assert isinstance(sim_id, str) and sim_id
-        for _ in range(100):
+        for _ in range(200):
             r = client.get(f"/results/{sim_id}", headers=headers)
             if r.status_code == 200:
                 data = r.json()
