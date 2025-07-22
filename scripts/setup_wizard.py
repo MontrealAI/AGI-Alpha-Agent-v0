@@ -58,8 +58,8 @@ def check_node() -> bool:
         banner("failed to run node --version", "RED")
         return False
     banner(f"Node {out} detected", "GREEN")
-    if not out.lstrip("v").startswith("20"):
-        banner("Node 20 recommended", "YELLOW")
+    if not out.lstrip("v").startswith("22"):
+        banner("Node 22 recommended", "YELLOW")
     return True
 
 

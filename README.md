@@ -71,7 +71,7 @@ The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) fr
 
 ### Publish Demo Gallery
 
-Ensure **Python 3.11+** and **Node 20+** are installed, then deploy the gallery
+Ensure **Python 3.11+** and **Node 22+** are installed, then deploy the gallery
 and docs with a single command:
 
 ```bash
@@ -107,7 +107,7 @@ checks and offline validation. Use the shell or Python version:
 python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
-Ensure **Python 3.11+**, **Node 20+** and `mkdocs` are installed. The
+Ensure **Python 3.11+**, **Node 22+** and `mkdocs` are installed. The
 script mirrors the [Docs workflow](.github/workflows/docs.yml) used for manual
 deployment.
 
@@ -240,7 +240,7 @@ python scripts/download_gpt2_small.py models/
 
 As a last resort use `python scripts/download_openai_gpt2.py 124M`.
 
-Requires **Python 3.11 or 3.12** and **Docker Compose ≥2.5**.
+Requires **Python 3.11 or 3.13** and **Docker Compose ≥2.5**.
 
 Alternatively, run the pre-built image directly:
 ```bash
@@ -248,9 +248,9 @@ docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
 ```
 
 The workflow publishes a separate image for each Python version with tags
-`py311` and `py312`. Only the Python **3.12** build also updates the `latest`
+`py311` and `py313`. Only the Python **3.13** build also updates the `latest`
 tag so `ghcr.io/montrealai/alpha-factory:latest` always refers to the most
-recent Python 3.12 image.
+recent Python 3.13 image.
 
 Replace `latest` with a commit SHA to run that exact build:
 
@@ -715,7 +715,7 @@ source .venv/bin/activate
 pip install -r requirements.lock  # pinned versions for deterministic setup
 # Optional ADK/MCP integration
 pip install google-adk mcp
-# Requires Python 3.11–3.12 (<3.13)
+# Requires Python 3.11–3.13 (<3.14)
 ./quickstart.sh
 Run `pre-commit run --all-files` after the dependencies finish installing.
 # Open http://localhost:8000/docs in your browser
@@ -794,7 +794,7 @@ Install the Python dependencies with the helper script:
 ```bash
 scripts/setup_env.sh
 ```
-The script checks for Python 3.11–3.12 and installs `requirements.txt` and
+The script checks for Python 3.11–3.13 and installs `requirements.txt` and
 `requirements-dev.txt`.
 
 When preparing an offline environment, build a wheelhouse on a machine with

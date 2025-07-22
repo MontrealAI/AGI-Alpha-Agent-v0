@@ -82,6 +82,8 @@ pre-commit run --files .github/workflows/ci.yml
 
 ## Quick Checklist
 
+Ensure **Python 3.11 or 3.13** and **Node.js 22** are installed before running the tools.
+
 Before opening a pull request, verify the environment and run the tests:
 
 ```bash
@@ -112,7 +114,8 @@ The script writes `requirements.lock`, `requirements-dev.lock`,
 ### Running `pip-compile`
 
 Invoke `pip-compile` directly when you only need to refresh a specific lock
-file:
+file. The command now requires `--allow-unsafe` so build tools like
+`setuptools` remain pinned:
 
 ```bash
 pip-compile --upgrade --allow-unsafe --generate-hashes \
@@ -165,8 +168,9 @@ verify all internal links. If any links fail validation, the workflow aborts.
 
 ### 🚀 CI Workflow
 
-The **🚀 CI** workflow verifies linting, type checks, unit tests and the Docker
-build. It does **not** run automatically from pull requests. Instead, the
+The **🚀 CI** workflow runs linting, type checks, the full test matrices,
+Windows and macOS smoke tests, the offline docs build and the Docker
+image build. It does **not** run automatically from pull requests. Instead, the
 repository owner must trigger it manually from the GitHub Actions page:
 
 1. Open **Actions → 🚀 CI — Insight Demo**.
