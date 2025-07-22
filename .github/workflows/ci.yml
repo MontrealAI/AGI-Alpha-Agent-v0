@@ -658,7 +658,7 @@ jobs:
 
   deploy:
     name: "📦 Deploy"
-    if: ${{ always() && startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ success() && startsWith(github.ref, 'refs/tags/') }}
     needs: [tests, docker]
     runs-on: ubuntu-latest
     environment: ci-on-demand
