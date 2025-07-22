@@ -222,6 +222,12 @@ async function bundle() {
         "default-src 'self'; connect-src 'self' https://api.openai.com" +
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "");
+    const envScript = injectEnv(process.env);
+    const envHash =
+        'sha384-' +
+        createHash('sha384')
+            .update(envScript.replace(/^<script>|<\/script>$/g, ''))
+            .digest('base64');
     const csp =
         `${cspBase}; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' ${envHash}; style-src 'self' 'unsafe-inline'`;
     outHtml = outHtml.replace(
@@ -235,12 +241,6 @@ async function bundle() {
             path.join(OUT_DIR, "insight_browser_quickstart.pdf"),
         );
     }
-    const envScript = injectEnv(process.env);
-    const envHash =
-        'sha384-' +
-        createHash('sha384')
-            .update(envScript.replace(/^<script>|<\/script>$/g, ''))
-            .digest('base64');
 
     const checksums = manifest.checksums || {};
 
