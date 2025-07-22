@@ -80,6 +80,19 @@ the latest action tags. Then run `pre-commit` so the YAML passes `actionlint`:
 pre-commit run --files .github/workflows/ci.yml
 ```
 
+## Quick Checklist
+
+Before opening a pull request, verify the environment and run the tests:
+
+```bash
+python scripts/check_python_deps.py
+python check_env.py --auto-install
+pre-commit run --all-files
+pytest
+```
+
+See [AGENTS.md](AGENTS.md#pull-requests) for more details.
+
 ### Updating Lock Files
 
 Regenerate the lock files whenever you modify `requirements*.txt`:

@@ -325,10 +325,10 @@ install dependencies without internet access.
 - Keep commits focused and descriptive. Use meaningful commit messages.
 - Ensure `git status` shows a clean working tree before committing.
 - Remove stray build artifacts with `git clean -fd` if needed.
-   - Run `python scripts/check_python_deps.py` followed by
-      `python check_env.py --auto-install` (use `--wheelhouse <path>` when offline)
-      and `pytest --cov --cov-report=xml` before committing. Document any remaining test failures in
-    the PR description.
+  - Follow the [Quick Checklist](CONTRIBUTING.md#quick-checklist) before committing.
+    Run `python scripts/check_python_deps.py`, `python check_env.py --auto-install`,
+    `pre-commit run --all-files` and `pytest`. Document any remaining test failures
+    in the PR description.
 - See [tests/README.md](tests/README.md) for details on running the suite locally,
   including setting `PYTHONPATH` or installing in editable mode.
 - Summarize your changes and test results in the PR body.
