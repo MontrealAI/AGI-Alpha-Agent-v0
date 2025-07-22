@@ -8,9 +8,12 @@ subclasses :class:`~alpha_factory_v1.core.agents.base_agent.BaseAgent` and coope
 
 from .adk_adapter import ADKAdapter
 from .mcp_adapter import MCPAdapter
-from alpha_factory_v1.core.agents import base_agent as base_agent
 
-BaseAgent = base_agent.BaseAgent
+# Importing BaseAgent from the core package during module import triggers a
+# circular dependency because ``base_agent`` itself loads this package.  The
+# individual agents directly import :class:`~alpha_factory_v1.core.agents.base_agent.BaseAgent`,
+# so re-exporting here is unnecessary.  Avoid the early import to prevent a
+# partially initialised module during start-up.
 from .research_agent import ResearchAgent
 from .adk_summariser_agent import ADKSummariserAgent
 from .chaos_agent import ChaosAgent

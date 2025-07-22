@@ -218,11 +218,12 @@ async function bundle() {
         '<script type="module" src="insight.bundle.js" crossorigin="anonymous"></script>';
     const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
     let outHtml = html.replace(scriptTag, sriTag);
-    const csp =
+    const cspBase =
         "default-src 'self'; connect-src 'self' https://api.openai.com" +
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
-        (otelOrigin ? ` ${otelOrigin}` : "") +
-        "; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'";
+        (otelOrigin ? ` ${otelOrigin}` : "");
+    const csp =
+        `${cspBase}; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' ${envHash}; style-src 'self' 'unsafe-inline'`;
     outHtml = outHtml.replace(
         /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
         `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
@@ -235,6 +236,11 @@ async function bundle() {
         );
     }
     const envScript = injectEnv(process.env);
+    const envHash =
+        'sha384-' +
+        createHash('sha384')
+            .update(envScript.replace(/^<script>|<\/script>$/g, ''))
+            .digest('base64');
 
     const checksums = manifest.checksums || {};
 
