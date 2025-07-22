@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 import base64
+import hashlib
 
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
@@ -364,17 +365,11 @@ otel_origin = os.getenv("OTEL_ENDPOINT")
 if otel_origin:
     p = urlparse(otel_origin)
     otel_origin = f"{p.scheme}://{p.netloc}"
-csp = "default-src 'self'; connect-src 'self' https://api.openai.com"
+csp_base = "default-src 'self'; connect-src 'self' https://api.openai.com"
 if ipfs_origin:
-    csp += f" {ipfs_origin}"
+    csp_base += f" {ipfs_origin}"
 if otel_origin:
-    csp += f" {otel_origin}"
-csp += "; script-src 'self' 'wasm-unsafe-eval'"
-out_html = re.sub(
-    r'<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>',
-    f'<meta http-equiv="Content-Security-Policy" content="{csp}" />',
-    out_html,
-)
+    csp_base += f" {otel_origin}"
 
 copy_assets(manifest, repo_root, dist_dir)
 if quickstart_pdf.exists():
@@ -410,6 +405,16 @@ out_html = re.sub(
 out_html = out_html.replace(
     "</body>",
     f"{offline_html}\n{env_script}\n</body>",
+)
+csp_hashes: list[str] = []
+for m in re.findall(r"<script(?![^>]*src)[^>]*>([\s\S]*?)</script>", out_html):
+    digest = hashlib.sha384(m.encode()).digest()
+    csp_hashes.append("sha384-" + base64.b64encode(digest).decode())
+csp = f"{csp_base}; script-src 'self' 'wasm-unsafe-eval' {' '.join(csp_hashes)}; style-src 'self' 'unsafe-inline'"
+out_html = re.sub(
+    r'<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>',
+    f'<meta http-equiv="Content-Security-Policy" content="{csp}" />',
+    out_html,
 )
 
 wasm_dir = ROOT / manifest["dirs"]["wasm"]

@@ -65,7 +65,14 @@ def non_network(monkeypatch: pytest.MonkeyPatch) -> None:
     def _blocked(*_a: Any, **_kw: Any) -> None:
         raise OSError("network disabled")
 
+    monkeypatch.setattr(socket, "create_connection", _blocked)
     monkeypatch.setattr(socket.socket, "connect", _blocked)
+    try:
+        import requests
+
+        monkeypatch.setattr(requests.sessions.Session, "request", _blocked)
+    except Exception:
+        pass
     yield
 
 

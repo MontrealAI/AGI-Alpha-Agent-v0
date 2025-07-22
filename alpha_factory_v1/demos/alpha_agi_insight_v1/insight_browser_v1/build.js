@@ -223,17 +223,6 @@ async function bundle() {
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "");
     const envScript = injectEnv(process.env);
-    const envHash =
-        'sha384-' +
-        createHash('sha384')
-            .update(envScript.replace(/^<script>|<\/script>$/g, ''))
-            .digest('base64');
-    const csp =
-        `${cspBase}; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' ${envHash}; style-src 'self' 'unsafe-inline'`;
-    outHtml = outHtml.replace(
-        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
-        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
-    );
     await copyAssets(manifest, repoRoot, OUT_DIR);
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(
@@ -321,6 +310,16 @@ async function bundle() {
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
+    const hashes = [];
+    for (const m of outHtml.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)) {
+        const h = createHash('sha384').update(m[1]).digest('base64');
+        hashes.push(`'sha384-${h}'`);
+    }
+    const csp = `${cspBase}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
+    outHtml = outHtml.replace(
+        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
+        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+    );
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
     const devHtml = html.replace(scriptTag, sriTag);
     if (devHtml !== html) {
