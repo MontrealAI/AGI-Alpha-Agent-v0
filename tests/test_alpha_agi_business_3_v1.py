@@ -6,6 +6,8 @@ import asyncio
 import logging
 import os
 import subprocess
+import hashlib
+import json
 from typing import Any
 from unittest import mock
 import pytest
@@ -214,6 +216,7 @@ def test_main_stops_a2a(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert dummy.started
     assert dummy.stopped
+    assert mod._A2A is dummy
 
 
 def test_run_cycle_posts_job(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -260,6 +263,8 @@ def test_run_cycle_posts_job(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
     assert len(calls) == 1
+    expected_hash = hashlib.sha256(json.dumps({}, sort_keys=True).encode()).hexdigest()[:8]
+    assert calls[0] == (expected_hash, -1.0)
 
 
 def test_bundle_hash_stable(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -316,6 +321,12 @@ def test_cli_flags_override_env(monkeypatch: pytest.MonkeyPatch) -> None:
     class DummyADK:
         def __init__(self, host: str) -> None:  # pragma: no cover - init only
             captured["adk_host"] = host
+
+        async def __aexit__(self, *_a: object, **_kw: object) -> None:  # pragma: no cover - close only
+            pass
+
+        def close(self) -> None:  # pragma: no cover - close only
+            pass
 
     class DummySock:
         def __init__(self, host: str, port: int, app_id: str) -> None:
@@ -386,6 +397,9 @@ def test_cli_overrides_env(monkeypatch: pytest.MonkeyPatch) -> None:
     class DummyADK:
         def __init__(self, host: str) -> None:  # pragma: no cover - init only
             captured["adk_host"] = host
+
+        async def __aexit__(self, *_a: object, **_kw: object) -> None:  # pragma: no cover - close only
+            pass
 
     class DummySock:
         def __init__(self, host: str, port: int, app_id: str) -> None:
@@ -529,6 +543,7 @@ def test_main_closes_adk_client(monkeypatch: pytest.MonkeyPatch) -> None:
 
     asyncio.run(mod.main(["--cycles", "1", "--interval", "0"]))
 
+    assert mod._A2A is dummy_sock
     assert mod._A2A.stopped
     assert adk.closed
 
