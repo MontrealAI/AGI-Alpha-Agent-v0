@@ -82,8 +82,12 @@ class Orchestrator:
             "price_dislocation": random.gauss(0, 0.05),
         }
 
-    def post_alpha_job(self, bundle_id: str, delta_g: float) -> None:
+    def post_alpha_job(self, bundle_id: str | None, delta_g: float | None) -> None:
         """Broadcast a new job for agents when ``delta_g`` is favourable."""
+
+        if bundle_id is None or delta_g is None:
+            log.info("[Orchestrator] Ignoring job with missing data")
+            return
 
         log.info(
             "[Orchestrator] Posting alpha job for bundle %s with ΔG=%.6f",
@@ -164,8 +168,11 @@ class Model:
         log.info("[Model] New weights committed (Gödel-proof verified)")
 
 
-async def _close_adk_client(client: Any) -> None:
+async def _close_adk_client(client: Any | None) -> None:
     """Attempt to gracefully close an ADK client."""
+
+    if client is None:
+        return
 
     closer = getattr(client, "close", None)
     if closer is not None:
