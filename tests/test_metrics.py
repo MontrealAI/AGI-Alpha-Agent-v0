@@ -36,26 +36,58 @@ def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Po
         "--port",
         str(port),
     ]
-    return subprocess.Popen(cmd, env=env or os.environ.copy())
+    return subprocess.Popen(
+        cmd,
+        env=env or os.environ.copy(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
 
-def _wait_ready(url: str) -> None:
-    for _ in range(100):
+def _start_server_with_retry(
+    port: int, env: dict[str, str] | None = None, *, attempts: int = 3
+) -> subprocess.Popen[bytes]:
+    url = f"http://127.0.0.1:{port}"
+    last_err: AssertionError | None = None
+    for _ in range(attempts):
+        proc = _start_server(port, env)
+        try:
+            _wait_ready(proc, url)
+            return proc
+        except AssertionError as err:
+            last_err = err
+            proc.terminate()
+            proc.wait(timeout=5)
+    assert last_err is not None
+    raise last_err
+
+
+def _wait_ready(proc: subprocess.Popen[bytes], url: str, *, interval: float = 0.05, attempts: int = 100) -> None:
+    for _ in range(attempts):
+        if proc.poll() is not None:
+            stdout, stderr = proc.communicate()
+            raise AssertionError(
+                f"server exited with code {proc.returncode}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
+            )
         try:
             r = httpx.get(f"{url}/metrics")
             if r.status_code == 200:
                 return
         except Exception:
-            time.sleep(0.1)
-    raise AssertionError("server did not start")
+            pass
+        time.sleep(interval)
+    stdout, stderr = proc.communicate()
+    raise AssertionError(
+        f"server did not start within {attempts * interval:.1f}s\nexit code {proc.poll()}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
+    )
 
 
 def test_metrics_endpoint_subprocess() -> None:
     port = _free_port()
-    proc = _start_server(port)
+    proc = _start_server_with_retry(port)
     url = f"http://127.0.0.1:{port}"
     try:
-        _wait_ready(url)
+        _wait_ready(proc, url)
         resp = httpx.get(f"{url}/metrics")
         assert resp.status_code == 200
         text = resp.text
@@ -72,10 +104,10 @@ def test_metrics_endpoint_subprocess() -> None:
 
 def test_metrics_curl() -> None:
     port = _free_port()
-    proc = _start_server(port)
+    proc = _start_server_with_retry(port)
     url = f"http://127.0.0.1:{port}"
     try:
-        _wait_ready(url)
+        _wait_ready(proc, url)
         out = subprocess.check_output(["curl", "-sf", f"{url}/metrics"])
         text = out.decode()
         assert "api_requests_total" in text
