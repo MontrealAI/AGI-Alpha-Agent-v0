@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates gnupg build-essential git \
         rustc cargo postgresql-client patch && \
+    git --version && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
@@ -45,6 +46,10 @@ COPY alpha_factory_v1/demos/self_healing_repo_cli.py alpha_factory_v1/demos/self
 RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client \
     && npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client run build \
     && rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+
+# git executable path for GitPython
+ENV GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+ENV PATH="/usr/bin:$PATH"
 
 # run as non-root user for demos
 RUN useradd --uid 1001 --create-home appuser \

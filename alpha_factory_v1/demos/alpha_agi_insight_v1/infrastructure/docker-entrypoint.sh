@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Alpha-Factory Insight demo entrypoint
 set -Eeuo pipefail
+export PATH="/usr/bin:$PATH"
+export GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
 
 export PYTHONUNBUFFERED=1
 MODE="${RUN_MODE:-web}"

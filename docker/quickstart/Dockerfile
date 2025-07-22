@@ -2,7 +2,13 @@
 # Minimal runtime image for the quickstart script
 FROM python:3.11.13-slim
 
+# confirm git availability
+RUN apt-get update && apt-get install -y --no-install-recommends git && git --version && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
+
+ENV GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+ENV PATH="/usr/bin:$PATH"
 
 # Install Alpha-Factory with default extras
 COPY requirements.lock /tmp/requirements.lock

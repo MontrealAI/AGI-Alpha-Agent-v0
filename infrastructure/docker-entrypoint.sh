@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 set -euo pipefail
+export PATH="/usr/bin:$PATH"
+export GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
 MODE=${RUN_MODE:-web}
 if [ "$MODE" = "api" ]; then
   exec python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server

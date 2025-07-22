@@ -47,7 +47,9 @@ LABEL org.opencontainers.image.title="Alpha-Factory Runtime" \
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
-    PYTHONPATH=/app
+    PYTHONPATH=/app \
+    GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git \
+    PATH="/usr/bin:$PATH"
 
 #############################
 # 2) System packages         #
@@ -66,6 +68,7 @@ RUN apt-get update && \
         postgresql-client \
         patch \  # required by the self-healing demo
         curl ca-certificates && \
+    git --version && \
     rm -rf /var/lib/apt/lists/*
 
 #############################

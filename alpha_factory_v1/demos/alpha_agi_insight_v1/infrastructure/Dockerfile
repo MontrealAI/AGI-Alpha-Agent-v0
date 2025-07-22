@@ -4,8 +4,9 @@ FROM python:3.11.13-slim
 # Install build tools for optional native extensions
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg build-essential && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+        curl ca-certificates gnupg build-essential git && \
+    git --version && \
+        curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +35,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 USER afuser
 
 ENV PYTHONUNBUFFERED=1
+ENV GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+ENV PATH="/usr/bin:$PATH"
 EXPOSE 8000 8501 6006
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["web"]
