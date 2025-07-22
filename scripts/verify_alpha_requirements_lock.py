@@ -24,7 +24,7 @@ def main() -> int:
         else:
             cmd = [sys.executable, "-m", "piptools", "compile"]
         wheelhouse = os.getenv("WHEELHOUSE")
-        cmd += ["--generate-hashes", "--quiet"]
+        cmd += ["--generate-hashes", "--quiet", "--allow-unsafe"]
         if wheelhouse:
             cmd += ["--no-index", "--find-links", wheelhouse]
         cmd += [str(req_txt), "-o", str(out_path)]
