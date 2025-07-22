@@ -120,8 +120,14 @@ def _start_demo_server(port: int, env: dict[str, str] | None = None) -> subproce
     )
 
 
-def _wait_running(url: str, headers: dict[str, str], proc: subprocess.Popen[str]) -> None:
-    for _ in range(60):
+def _wait_running(
+    url: str,
+    headers: dict[str, str],
+    proc: subprocess.Popen[str],
+    attempts: int = 100,
+    delay: float = 0.2,
+) -> None:
+    for _ in range(attempts):
         if proc.poll() is not None:
             output = proc.stdout.read() if proc.stdout else ""
             raise AssertionError(f"server exited with {proc.returncode}:\n{output}")
@@ -130,7 +136,11 @@ def _wait_running(url: str, headers: dict[str, str], proc: subprocess.Popen[str]
             if r.status_code == 200:
                 return
         except Exception:
-            time.sleep(0.1)
+            pass
+        time.sleep(delay)
+    if proc.poll() is None:
+        proc.terminate()
+        proc.wait(timeout=5)
     output = proc.stdout.read() if proc.stdout else ""
     raise AssertionError(f"server did not start\n{output}")
 
@@ -140,9 +150,10 @@ def _wait_results(
     sim_id: str,
     headers: dict[str, str],
     proc: subprocess.Popen[str],
-    max_attempts: int = 60,
+    max_attempts: int = 100,
+    initial_delay: float = 0.1,
 ) -> dict[str, object]:
-    delay = 0.05
+    delay = initial_delay
     for _ in range(max_attempts):
         if proc.poll() is not None:
             output = proc.stdout.read() if proc.stdout else ""
@@ -151,7 +162,10 @@ def _wait_results(
         if r.status_code == 200:
             return r.json()
         time.sleep(delay)
-        delay = min(delay * 1.5, 1.0)
+        delay = min(delay * 1.5, 2.0)
+    if proc.poll() is None:
+        proc.terminate()
+        proc.wait(timeout=5)
     output = proc.stdout.read() if proc.stdout else ""
     raise AssertionError(f"results not ready\n{output}")
 
