@@ -310,16 +310,6 @@ async function bundle() {
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
-    const hashes = [];
-    for (const m of outHtml.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)) {
-        const h = createHash('sha384').update(m[1]).digest('base64');
-        hashes.push(`'sha384-${h}'`);
-    }
-    const csp = `${cspBase}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
-    outHtml = outHtml.replace(
-        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
-        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
-    );
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
     const devHtml = html.replace(scriptTag, sriTag);
     if (devHtml !== html) {
@@ -346,6 +336,18 @@ async function bundle() {
         path.join(OUT_DIR, "sw.js"),
         path.join(OUT_DIR, "service-worker.js"),
     );
+    let finalHtml = await fs.readFile(`${OUT_DIR}/index.html`, 'utf8');
+    const hashes = [];
+    for (const m of finalHtml.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)) {
+        const h = createHash('sha384').update(m[1]).digest('base64');
+        hashes.push(`'sha384-${h}'`);
+    }
+    const csp = `${cspBase}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
+    finalHtml = finalHtml.replace(
+        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
+        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+    );
+    await fs.writeFile(`${OUT_DIR}/index.html`, finalHtml);
     await checkGzipSize(`${OUT_DIR}/insight.bundle.js`);
     if (process.env.W3UP_EMAIL) {
         const client = await w3up.create();
