@@ -6,6 +6,8 @@ from __future__ import annotations
 import importlib
 import sys
 
+import pytest
+
 
 def test_bool_env_override(monkeypatch, non_network: None) -> None:
     """ALPHA_ASI_LOG_JSON=false should disable JSON logging."""
