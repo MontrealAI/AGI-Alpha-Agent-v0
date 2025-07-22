@@ -147,6 +147,10 @@ workflow has no automatic triggers; only the repository owner can launch it
 manually from the GitHub UI. Each job begins by verifying the actor matches the
 repository owner, so non‑owners exit immediately before running the heavy
 steps. When the owner launches the workflow every job runs.
+Jobs following the main test stage include `if: always()` so the Windows and
+macOS smoke tests, documentation build and Docker jobs execute even when the
+lint or unit tests fail. This behavior helps confirm that cross‑platform builds
+and docs generation succeed while debugging failures.
 Dependency hashes are fully locked, including `setuptools`, so `pip install -r
 requirements.lock` succeeds across Python versions. The Windows smoke job now
 builds the Insight browser before running tests, ensuring the service worker is

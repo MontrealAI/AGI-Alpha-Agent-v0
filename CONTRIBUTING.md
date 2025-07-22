@@ -179,4 +179,6 @@ pre-commit run --files .github/workflows/ci.yml
 
 The job runs only when `github.actor` equals `github.repository_owner`, so other
 contributors cannot execute it unless the owner grants them explicit
-permissions or dispatches the workflow on their behalf.
+permissions or dispatches the workflow on their behalf. Downstream jobs use
+`if: always()` so Windows and macOS smoke tests, docs and Docker steps still run
+whenever the owner triggers the workflow even if earlier stages fail.
