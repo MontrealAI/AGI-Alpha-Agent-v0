@@ -5,6 +5,8 @@ import pytest
 import sys
 import types
 import importlib.util
+import socket
+from typing import Any
 
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
@@ -54,6 +56,17 @@ def pytest_configure(config: pytest.Config) -> None:
 def pytest_runtest_setup(item: pytest.Item) -> None:
     if "requires_torch" in item.keywords and not _HAS_TORCH:
         pytest.skip("torch required", allow_module_level=True)
+
+
+@pytest.fixture
+def non_network(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Disable outbound networking for the duration of a test."""
+
+    def _blocked(*_a: Any, **_k: Any) -> None:
+        raise OSError("network disabled")
+
+    monkeypatch.setattr(socket.socket, "connect", _blocked)
+    yield
 
 
 try:  # skip all tests if the simulation module fails to import
