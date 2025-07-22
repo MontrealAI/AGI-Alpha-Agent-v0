@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Minimal runtime image for the quickstart script
-FROM python:3.11.13-slim
+FROM python:3.13.5-slim
 
 # confirm git availability
 RUN apt-get update && apt-get install -y --no-install-recommends git && git --version && rm -rf /var/lib/apt/lists/*
