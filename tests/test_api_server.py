@@ -39,7 +39,7 @@ def test_api_endpoints() -> None:
     sim_id = data.get("id")
     assert isinstance(sim_id, str) and sim_id
 
-    for _ in range(100):
+    for _ in range(200):
         r = client.get(f"/results/{sim_id}", headers=headers)
         if r.status_code == 200:
             results = r.json()

@@ -26,6 +26,32 @@ def _free_port() -> int:
         return int(s.getsockname()[1])
 
 
+def _wait_results(
+    url: str,
+    sim_id: str,
+    headers: dict[str, str],
+    proc: subprocess.Popen[str],
+    max_attempts: int = 60,
+) -> dict[str, object]:
+    delay = 0.05
+    for _ in range(max_attempts):
+        if proc.poll() is not None:
+            out, err = proc.communicate()
+            raise AssertionError(
+                f"server exited with {proc.returncode}:\n{out}{err}"
+                if err
+                else f"server exited with {proc.returncode}:\n{out}"
+            )
+        r = httpx.get(f"{url}/results/{sim_id}", headers=headers)
+        if r.status_code == 200:
+            data = r.json()
+            if data.get("population") is not None:
+                return data
+        time.sleep(delay)
+        delay = min(delay * 1.5, 1.0)
+    raise AssertionError("Timed out waiting for results")
+
+
 def test_docs_available() -> None:
     port = _free_port()
     env = os.environ.copy()
@@ -44,6 +70,13 @@ def test_docs_available() -> None:
     url = f"http://127.0.0.1:{port}"
     try:
         for _ in range(100):
+            if proc.poll() is not None:
+                out, err = proc.communicate()
+                raise AssertionError(
+                    f"server exited with {proc.returncode}:\n{out}{err}"
+                    if err
+                    else f"server exited with {proc.returncode}:\n{out}"
+                )
             try:
                 r = httpx.get(url + "/docs")
                 if r.status_code == 200:
@@ -81,6 +114,13 @@ def test_simulation_endpoints() -> None:
     headers = {"Authorization": "Bearer secret"}
     try:
         for _ in range(100):
+            if proc.poll() is not None:
+                out, err = proc.communicate()
+                raise AssertionError(
+                    f"server exited with {proc.returncode}:\n{out}{err}"
+                    if err
+                    else f"server exited with {proc.returncode}:\n{out}"
+                )
             try:
                 r = httpx.get(url + "/runs", headers=headers)
                 if r.status_code == 200:
@@ -115,16 +155,7 @@ def test_simulation_endpoints() -> None:
         )
         assert r.status_code == 200
         sim_id = r.json()["id"]
-
-        for _ in range(100):
-            r = httpx.get(f"{url}/results/{sim_id}", headers=headers)
-            if r.status_code == 200:
-                data = r.json()
-                if data.get("population") is not None:
-                    break
-            time.sleep(0.05)
-        else:
-            raise AssertionError("Timed out waiting for results")
+        data = _wait_results(url, sim_id, headers, proc)
 
         th.join(timeout=5)
         assert progress
