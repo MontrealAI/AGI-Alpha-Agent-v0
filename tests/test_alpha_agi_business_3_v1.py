@@ -8,7 +8,7 @@ import os
 import subprocess
 import hashlib
 import json
-from typing import Any
+from typing import Any, Iterator
 from unittest import mock
 import pytest
 from pathlib import Path
@@ -17,6 +17,14 @@ ROOT = Path(__file__).resolve().parents[1]
 STUB_DIR = ROOT / "tests" / "resources"
 
 MODULE = "alpha_factory_v1.demos.alpha_agi_business_3_v1.alpha_agi_business_3_v1"
+
+
+@pytest.fixture(autouse=True)
+def _reset_demo_globals() -> Iterator[None]:
+    """Reset global state altered by the demo."""
+    yield
+    if MODULE in sys.modules:
+        sys.modules[MODULE]._A2A = None
 
 
 def test_adk_client_import(monkeypatch: pytest.MonkeyPatch) -> None:
