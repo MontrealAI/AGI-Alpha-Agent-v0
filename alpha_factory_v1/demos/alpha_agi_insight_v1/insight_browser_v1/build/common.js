@@ -73,16 +73,19 @@ export async function generateServiceWorker(outDir, manifest, version) {
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
   indexText = indexText.replace('__SW_HASH__', `sha384-${swHash}`);
   const inlineHashes = [];
-  for (const m of indexText.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)) {
-    const snippet = m[1].trim();
-    if (snippet.includes('navigator.serviceWorker') || /(PINNER_TOKEN|OTEL_ENDPOINT|IPFS_GATEWAY)/.test(snippet)) {
+  for (const m of indexText.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
+    const attrs = m[1];
+    const snippet = m[2].trim();
+    if (!attrs.includes('src=') && snippet) {
       inlineHashes.push('sha384-' + createHash('sha384').update(snippet).digest('base64'));
     }
   }
-  indexText = indexText.replace(
-    /(script-src 'self' 'wasm-unsafe-eval')(?:\s+(?:'unsafe-inline'|'sha384-[^']+'))*/,
-    (_, p1) => `${p1} 'unsafe-inline' ${inlineHashes.map(h => `'${h}'`).join(' ')}`,
-  );
+  if (inlineHashes.length > 0) {
+    indexText = indexText.replace(
+      /(script-src 'self' 'wasm-unsafe-eval')(?:\s+(?:'unsafe-inline'|'sha384-[^']+'))*/,
+      (_, p1) => `${p1} 'unsafe-inline' ${inlineHashes.map(h => `'${h}'`).join(' ')}`,
+    );
+  }
   await fs.writeFile(indexPath, indexText);
   let swText = swData.toString('utf8');
   swText = swText.replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);

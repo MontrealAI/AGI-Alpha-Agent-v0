@@ -70,24 +70,20 @@ injectManifest({{
     text = text.replace(".register('sw.js')", ".register('service-worker.js')")
     text = text.replace("__SW_HASH__", sw_hash)
     inline_hashes: list[str] = []
-    reg_hash: str | None = None
-    for match in re.finditer(r"<script[^>]*>(.*?)</script>", text, flags=re.DOTALL):
-        snippet = match.group(1).strip()
-        if "navigator.serviceWorker" in snippet:
-            reg_hash = "sha384-" + base64.b64encode(hashlib.sha384(snippet.encode()).digest()).decode()
-            inline_hashes.append(reg_hash)
-        elif any(s in snippet for s in ("PINNER_TOKEN", "OTEL_ENDPOINT", "IPFS_GATEWAY")):
-            h = "sha384-" + base64.b64encode(hashlib.sha384(snippet.encode()).digest()).decode()
-            inline_hashes.append(h)
-    if reg_hash:
+    for match in re.finditer(r"<script([^>]*)>(.*?)</script>", text, flags=re.DOTALL):
+        attrs = match.group(1)
+        snippet = match.group(2).strip()
+        if "src=" in attrs or not snippet:
+            continue
+        h = "sha384-" + base64.b64encode(hashlib.sha384(snippet.encode()).digest()).decode()
+        inline_hashes.append(h)
+    if inline_hashes:
         hashes = " ".join(f"'{h}'" for h in inline_hashes)
         text = re.sub(
             r"(script-src 'self' 'wasm-unsafe-eval')(?:\s+(?:'unsafe-inline'|'sha384-[^']+'))*",
             rf"\1 'unsafe-inline' {hashes}",
             text,
         )
-    else:
-        print("WARNING: service worker registration script not found", file=sys.stderr)
     index_path.write_text(text)
     sw_text = sw_dest.read_text()
     sw_text = sw_text.replace("__WORKBOX_SW_HASH__", wb_hash)
