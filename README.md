@@ -184,6 +184,20 @@ Docker image tags must use all lowercase characters. The workflow's
 "Prepare lowercase image name" step sets `REPO_OWNER_LC` to the lowercased
 repository owner so tags like `ghcr.io/montrealai` are valid.
 
+### CI Quick Start
+
+To replicate the CI pipeline locally:
+
+```bash
+python scripts/check_python_deps.py
+python check_env.py --auto-install
+pytest --cov --cov-report=xml
+pre-commit run --all-files
+```
+
+Launch the CI workflow manually via **Actions → 🚀 CI — Insight Demo** and click
+**Run workflow** as described in [AGENTS.md](AGENTS.md#starting-the-ci-pipeline).
+
 ### Verify Docker image signature
 
 The release workflow signs the container using [cosign](https://github.com/sigstore/cosign).
