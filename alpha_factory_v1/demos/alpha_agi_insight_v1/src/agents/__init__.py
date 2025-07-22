@@ -18,10 +18,14 @@ from .research_agent import ResearchAgent
 from .adk_summariser_agent import ADKSummariserAgent
 from .chaos_agent import ChaosAgent
 
+# Re-export the base_agent module for convenience in tests
+from alpha_factory_v1.core.agents import base_agent
+
 __all__ = [
     "ADKAdapter",
     "MCPAdapter",
     "ResearchAgent",
     "ADKSummariserAgent",
     "ChaosAgent",
+    "base_agent",
 ]
