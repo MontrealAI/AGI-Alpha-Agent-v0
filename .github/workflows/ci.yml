@@ -531,7 +531,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Compute repo_owner_lower
-        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -638,7 +638,7 @@ jobs:
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Compute repo_owner_lower
-        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - name: Login to GHCR
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
@@ -647,16 +647,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
         run: |
-          docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
-          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
+          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
         with:
           cosign-release: 'v2.2.4'
       - name: Sign image
-        run: cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
+        run: cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Verify image signature
-        run: cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
+        run: cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
   deploy:
     name: "📦 Deploy"
@@ -667,7 +667,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Compute repo_owner_lower
-        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+        run: echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - name: Login to GHCR
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
@@ -679,25 +679,25 @@ jobs:
         with:
           cosign-release: 'v2.2.4'
       - name: Pull previous image
-        run: docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" || true
+        run: docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest || true
       - name: Tag previous
-        run: docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
+        run: docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
       - name: Push previous tag
-        run: docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
+        run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
       - name: Push new image
         run: |
-          docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
-          docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
-          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
       - name: Sign release images
         run: |
-          cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
-          cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
       - name: Verify release signatures
         run: |
-          cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
-          cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
       - uses: actions/download-artifact@v4.3.0 # d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: web-client
@@ -715,7 +715,7 @@ jobs:
         if: failure()
         run: |
           echo "Rolling back to previous image"
-          docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous"
-          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
           echo "Rollback succeeded"
