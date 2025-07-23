@@ -1,4 +1,4 @@
-FROM python:3.12.11-slim
+FROM python:3.12.12-slim
 
 # install system deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
