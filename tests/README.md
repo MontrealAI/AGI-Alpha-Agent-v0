@@ -164,7 +164,7 @@ They simply verify that the core package imports succeed.
    wheelhouse" message. Provide `--wheelhouse <dir>` (or set `WHEELHOUSE`) to run
    the tests offline. Preparing this directory via `scripts/build_offline_wheels.sh`
    is therefore a mandatory prerequisite when testing in air‑gapped setups.
-12. If `pre-commit` isn't found, install it with `pip install pre-commit` and run
+12. If `pre-commit` isn't found, install it with `pip install pre-commit==4.2.0` and run
    `pre-commit install` once to enable the git hooks referenced in
    [AGENTS.md](../AGENTS.md).
 13. Build the web assets so `dist/sw.js` exists:

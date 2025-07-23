@@ -56,7 +56,7 @@ the container includes the new dependencies.
 Run `./codex/setup.sh` to install project dependencies. The script also
 installs `pre-commit` and all lint tools before configuring the git hook.
 If you skip the setup script, manually install these tools with
-`pip install pre-commit -r requirements-dev.txt` and then run
+`pip install pre-commit==4.2.0 -r requirements-dev.txt` and then run
 `pre-commit install` once. Alternatively, execute
 `tools/setup_precommit.sh` to install `pre-commit` and configure the hook
 without the full environment setup.
