@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.13"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
@@ -143,7 +143,7 @@ jobs:
           cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
 
       - name: Tag and push latest image
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.13'
         run: |
           docker tag "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}" \
             "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:latest"

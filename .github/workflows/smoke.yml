@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  PYTHON_VERSION_MATRIX: "3.11,3.12"
+  PYTHON_VERSION_MATRIX: "3.11,3.13"
 
 jobs:
   smoke:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.13"]
     steps:
       - name: Check dispatch token
         if: github.actor != github.repository_owner
