@@ -110,6 +110,26 @@ def check_docker_compose() -> bool:
         return False
 
 
+def check_node() -> bool:
+    """Return True if Node.js is available and warn when outdated."""
+    if not shutil.which("node"):
+        banner("node missing", "RED")
+        return False
+    try:
+        out = subprocess.check_output(["node", "--version"], text=True).strip()
+    except Exception:
+        banner("failed to run node --version", "RED")
+        return False
+    banner(f"Node {out} detected", "GREEN")
+    try:
+        major = int(out.lstrip("v").split(".")[0])
+        if major < 22:
+            banner("Node 22 or newer recommended", "YELLOW")
+    except ValueError:
+        banner("Unable to parse Node version", "YELLOW")
+    return True
+
+
 def check_patch_in_sandbox(image: str = DEFAULT_SANDBOX_IMAGE) -> bool:
     """Return True if ``/usr/bin/patch`` exists inside ``image``."""
     try:
@@ -255,6 +275,7 @@ def main(argv: list[str] | None = None) -> None:
     ok &= check_python()
     ok &= check_cmd("docker")
     ok &= check_cmd("git")
+    ok &= check_node()
     has_precommit = check_cmd("pre-commit")
     if not has_precommit:
         banner("Install pre-commit and run 'pre-commit install' to enable git hooks", "YELLOW")
