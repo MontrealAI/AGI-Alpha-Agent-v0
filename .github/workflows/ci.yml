@@ -131,6 +131,7 @@ jobs:
           pip install -r requirements.lock
           pip install -r requirements-dev.lock
           pip install -r requirements-demo-cpu.lock
+          pip install -r alpha_factory_v1/backend/requirements-lock.txt
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -276,6 +277,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-cpu.lock -r requirements-demo-cpu.lock
+          pip install -r alpha_factory_v1/backend/requirements-lock.txt
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
