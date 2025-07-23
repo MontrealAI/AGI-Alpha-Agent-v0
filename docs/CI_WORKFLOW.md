@@ -15,7 +15,7 @@ repository owner triggers it from the GitHub Actions UI.
    actor does not match `github.repository_owner` the pipeline exits
    immediately. Contributors will see a skipped run unless the repository owner
    clicks **Run workflow**.
-4. Confirm **Python&nbsp;3.11 or 3.13** and **Node.js&nbsp;22** are installed.
+4. Confirm **Python&nbsp;3.11–3.14** and **Node.js&nbsp;22** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker

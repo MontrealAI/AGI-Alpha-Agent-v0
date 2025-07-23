@@ -30,7 +30,7 @@ only affects loading pinned Insight demo runs.
 
 ## Prerequisites
 
-- **Python 3.11 or 3.13**
+- **Python 3.11–3.14**
 - `mkdocs`, `mkdocs-material` and `playwright`
 - **Node.js 22+** *(optional, only for building the React dashboard)*
 - Run `node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js` to verify Node ≥22 before building
