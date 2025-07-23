@@ -79,10 +79,11 @@ Follow these steps when installing without internet access:
 
 - Generate a deterministic lock file with hashes:
   ```bash
-  pip-compile --generate-hashes --output-file requirements.lock requirements.txt
+  pip-compile --allow-unsafe --generate-hashes --output-file requirements.lock requirements.txt
   ```
   Run this command whenever you edit `requirements*.txt` so the lock file stays
   in sync.
+  See [CONTRIBUTING.md#running-pip-compile](CONTRIBUTING.md#running-pip-compile) for more details.
 
 - Install from the lock file to reproduce identical environments:
   ```bash
