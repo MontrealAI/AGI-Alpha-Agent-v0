@@ -10,10 +10,14 @@ import sys
 print(f"{sys.version_info.major}.{sys.version_info.minor}")
 PY
 )"
-if [[ "$version" != 3.11 && "$version" != 3.13 ]]; then
-  echo "Python 3.11 or 3.13 required; found $version" >&2
-  exit 1
-fi
+case "$version" in
+  3.11|3.12|3.13|3.14)
+    ;;
+  *)
+    echo "Python 3.11–3.14 required; found $version" >&2
+    exit 1
+    ;;
+esac
 $PYTHON -m pip install -U pip
 $PYTHON -m pip install -r requirements.txt -r requirements-dev.txt
 echo "Environment setup complete."
