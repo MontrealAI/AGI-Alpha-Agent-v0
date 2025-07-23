@@ -18,6 +18,10 @@ MODULES = [
 
 
 @pytest.mark.parametrize("present", ["openai_agents", "agents"])
+@pytest.mark.skipif(
+    importlib.util.find_spec("openai_agents") is not None,
+    reason="openai-agents installed",
+)
 def test_agents_import_fallback(monkeypatch, present):
     """Ensure modules import with either package name."""
     missing = "agents" if present == "openai_agents" else "openai_agents"
