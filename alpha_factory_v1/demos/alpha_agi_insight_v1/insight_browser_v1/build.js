@@ -221,6 +221,7 @@ async function bundle() {
         target: "es2020",
         outfile: `${OUT_DIR}/insight.bundle.js`,
         plugins: [aliasPlugin],
+        external: ["d3"],
     });
     execSync(`npx tailwindcss -i style.css -o ${OUT_DIR}/style.css --minify`, {
         stdio: "inherit",
@@ -281,7 +282,6 @@ async function bundle() {
     }
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;
     let bundleText = await fs.readFile(bundlePath, "utf8");
-    const d3Code = await fs.readFile("d3.v7.min.js", "utf8");
     let web3Code = await fs.readFile(
         path.join("lib", "bundle.esm.min.js"),
         "utf8",
@@ -303,7 +303,7 @@ async function bundle() {
         ortCode += "\nwindow.ort=ort;";
     }
     bundleText =
-        `${d3Code}\n${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
+        `${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
         bundleText;
     bundleText = bundleText.replace(
         /\/\/#[ \t]*sourceMappingURL=.*(?:\r?\n)?/g,
@@ -315,7 +315,6 @@ async function bundle() {
         .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
     await fs.writeFile(bundlePath, bundleText);
     outHtml = outHtml
-        .replace(/<script[\s\S]*?d3\.v7\.min\.js[\s\S]*?<\/script>\s*/g, "")
         .replace(
             /<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?<\/script>\s*/g,
             "",
