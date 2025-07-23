@@ -18,7 +18,7 @@ The instructions below apply to all contributors and automated agents.
 All contributors must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 Please report security vulnerabilities as described in our [Security Policy](SECURITY.md).
 ## Prerequisites
-- Python 3.11 or 3.13 (**Python ≥3.11 and <3.14**)
+- Python 3.11 or 3.12 (**Python ≥3.11 and <3.13**)
 - Docker and Docker Compose (Compose ≥2.5)
 - Git
 - Node.js 22 for the web client and browser demo. A `.nvmrc` is provided, so run
