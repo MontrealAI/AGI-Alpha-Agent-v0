@@ -6,7 +6,7 @@ This short guide distills the essential steps required to build and publish the 
 
 ## 1. Environment Preparation
 
-1. Install **Python 3.11+** and **Node.js 20+**.
+1. Install **Python 3.11+** and **Node.js 22+**.
 2. Install `mkdocs`, `mkdocs-material` and `playwright`:
    ```bash
    pip install mkdocs mkdocs-material playwright

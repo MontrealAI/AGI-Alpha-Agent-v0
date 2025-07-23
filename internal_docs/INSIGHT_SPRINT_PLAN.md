@@ -3,8 +3,7 @@
 
 This document outlines the minimal tasks required to publish the **α‑AGI Insight v1** demo to GitHub Pages so that users can experience the full browser-based simulation, including the animated meta‑agentic tree search.
 
-## 1. Prepare the Environment
-- Install **Python 3.11+**, **Node.js 20+**, `mkdocs`, `mkdocs-material` and `playwright`.
+- Install **Python 3.11+**, **Node.js 22+**, `mkdocs`, `mkdocs-material` and `playwright`.
 - Run `node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js` to confirm the Node version.
 - Execute `python scripts/check_python_deps.py` and `python check_env.py --auto-install` to install optional dependencies.
 

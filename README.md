@@ -422,7 +422,7 @@ and [Docker Quickstart](#docker-quickstart) sections below.
 
 For the browser-based version, see
 [insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md).
-It requires **Node.js ≥20**. Install the dependencies with
+It requires **Node.js ≥22**. Install the dependencies with
 `npm ci` and build the static assets with `npm run build` before launching.
 The repository includes a `.nvmrc` file so you can simply run `nvm use` to
 select the correct Node version.
