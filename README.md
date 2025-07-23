@@ -763,7 +763,7 @@ See [AGENTS.md](AGENTS.md) for the full contributor guide.
 After running `./codex/setup.sh`, install the hooks and run a full check:
 
 ```bash
-pip install pre-commit
+pip install pre-commit==4.2.0
 pre-commit install
 pre-commit run --all-files   # verify hooks after setup
 pre-commit run --files <paths>   # before each commit
@@ -783,7 +783,7 @@ all hooks succeed.
 Run `python check_env.py --auto-install` before invoking these commands so
 optional hook dependencies are installed. When working offline, pass
 `--wheelhouse <dir>` or set `WHEELHOUSE` to install from a local cache. If
-`pre-commit` isn't found, install it with `pip install pre-commit`.
+`pre-commit` isn't found, install it with `pip install pre-commit==4.2.0`.
 
 When editing the web UI, preserve existing ARIA labels so the interface
 remains accessible.

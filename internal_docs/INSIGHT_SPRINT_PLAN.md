@@ -5,7 +5,11 @@ This document outlines the minimal tasks required to publish the **α‑AGI Insi
 
 - Install **Python 3.11+**, **Node.js 22+**, `mkdocs`, `mkdocs-material` and `playwright`.
 - Run `node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js` to confirm the Node version.
-- Execute `python scripts/check_python_deps.py` and `python check_env.py --auto-install` to install optional dependencies.
+ - Execute `python scripts/check_python_deps.py` and `python check_env.py --auto-install` to install optional dependencies.
+ - Install `pre-commit` **4.2.0** so linting matches CI:
+   ```bash
+   pip install pre-commit==4.2.0
+   ```
 
 ## 2. Build the Static Demo
 - From the repository root, run `./scripts/edge_human_knowledge_pages_sprint.sh`.
