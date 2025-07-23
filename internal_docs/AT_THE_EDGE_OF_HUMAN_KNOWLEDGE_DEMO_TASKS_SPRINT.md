@@ -9,7 +9,7 @@ Run `./scripts/edge_of_knowledge_sprint.sh` from the repository root for an auto
 The steps below triple-verify environment integrity, rebuild all assets and deploy a consistently beautiful gallery. Revisit them whenever the demos or documentation change.
 
 ## 1. Validate the Environment
-1. Install **Python 3.11+** and **Node.js 20+**.
+1. Install **Python 3.11+** and **Node.js 22+**.
 2. Confirm the versions:
    ```bash
    python --version

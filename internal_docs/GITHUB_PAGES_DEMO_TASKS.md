@@ -5,7 +5,7 @@
 This short sprint guides Codex through publishing the entire **Alpha‑Factory v1** demo gallery to GitHub Pages. The goal is a polished subdirectory that showcases every demo in real time and remains effortless for non‑technical users to deploy.
 
 ## 1. Environment Checks
-1. Install **Python 3.11+** and **Node.js 20+**.
+1. Install **Python 3.11+** and **Node.js 22+**.
 2. Run the preflight script:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
@@ -70,7 +70,7 @@ Run the wrapper to rebuild and publish the entire site in one step:
 python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
-Prerequisites: **Python 3.11+**, **Node.js 20+** and `mkdocs`. This script mirrors the [Docs workflow](../.github/workflows/docs.yml) which the repository owner triggers manually to deploy the site.
+Prerequisites: **Python 3.11+**, **Node.js 22+** and `mkdocs`. This script mirrors the [Docs workflow](../.github/workflows/docs.yml) which the repository owner triggers manually to deploy the site.
 
 When running inside CI, set `CI_SKIP_ENV_CHECK=1` to avoid repeating the environment installation step:
 
