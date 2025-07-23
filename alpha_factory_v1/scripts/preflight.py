@@ -33,7 +33,7 @@ else:
 
 
 MIN_PY = (3, 11)
-MAX_PY = (3, 13)
+MAX_PY = (3, 14)
 MEM_DIR = Path(os.getenv("AF_MEMORY_DIR", f"{tempfile.gettempdir()}/alphafactory"))
 MIN_OPENAI_AGENTS_VERSION = "0.0.17"
 DEFAULT_SANDBOX_IMAGE = os.getenv("SANDBOX_IMAGE", "python:3.11-slim")
