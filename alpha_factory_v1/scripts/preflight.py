@@ -35,6 +35,7 @@ else:
 # Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive)
 MIN_PY = (3, 11)
 MAX_PY = (3, 15)
+PY_RANGE = f"{MIN_PY[0]}.{MIN_PY[1]}–{MAX_PY[0]}.{MAX_PY[1] - 1}"
 MEM_DIR = Path(os.getenv("AF_MEMORY_DIR", f"{tempfile.gettempdir()}/alphafactory"))
 MIN_OPENAI_AGENTS_VERSION = "0.0.17"
 # Use the latest stable Python base image for sandbox builds
@@ -269,11 +270,13 @@ OPTIONAL_DEPS = {
 def main(argv: list[str] | None = None) -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(description="Validate environment (Python >=3.11, <3.15)")
+    parser = argparse.ArgumentParser(
+        description=f"Validate environment (Python {PY_RANGE})"
+    )
     parser.add_argument("--offline", action="store_true", help="Skip network checks")
     args = parser.parse_args(argv)
 
-    banner("Alpha-Factory Preflight Check", "YELLOW")
+    banner(f"Alpha-Factory Preflight Check ({PY_RANGE})", "YELLOW")
     ok = True
     ok &= check_python()
     ok &= check_cmd("docker")
