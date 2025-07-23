@@ -214,7 +214,7 @@ graph TD
 
 > **Prerequisites**
 > • Python ≥ 3.11 • Git • Docker (only for container mode)
-> *(Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
+> *(Optional)* Node ≥ 22 if you plan to rebuild the React front-end.
 
 Or try the hosted notebook: [colab_alpha_agi_insight_v1.ipynb](colab_alpha_agi_insight_v1.ipynb).
 
@@ -431,7 +431,7 @@ Typical REST endpoints:
 
 ### 5.3 Rebuilding the React dashboard
 
-Install [Node.js](https://nodejs.org/) **≥ 20** if you want to rebuild the front‑end.
+Install [Node.js](https://nodejs.org/) **≥ 22** if you want to rebuild the front‑end.
 From the repository root run:
 
 ```bash

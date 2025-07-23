@@ -219,7 +219,7 @@ graph TD
 
 > **Prerequisites**
 > • Python ≥ 3.11 • Git • Docker (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/only for container mode)
-> *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Optional)* Node ≥ 20 if you plan to rebuild the React front-end.
+> *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/Optional)* Node ≥ 22 if you plan to rebuild the React front-end.
 
 Or try the hosted notebook: [colab_alpha_agi_insight_v1.ipynb](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v1/colab_alpha_agi_insight_v1.ipynb).
 
