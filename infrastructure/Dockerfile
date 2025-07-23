@@ -9,11 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # install Python dependencies using the pinned lock file
-COPY requirements.lock /tmp/requirements.lock
-COPY requirements.txt /tmp/requirements.txt
-COPY alpha_factory_v1/requirements-core.txt /tmp/requirements-core.txt
+COPY alpha_factory_v1/backend/requirements-lock.txt /tmp/requirements.lock
+COPY alpha_factory_v1/backend/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.lock && rm /tmp/requirements.lock \
-    && rm /tmp/requirements.txt /tmp/requirements-core.txt
+    && rm /tmp/requirements.txt
 
 # copy project source
 COPY . /app
