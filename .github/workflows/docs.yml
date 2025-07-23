@@ -21,11 +21,11 @@ jobs:
       # scripts/fetch_assets.py for details.
       # HF_GPT2_BASE_URL overrides the default Hugging Face mirror.
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Set up Python
-        uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@v5 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -65,7 +65,7 @@ jobs:
         run: pip install -r requirements-docs.txt
       - name: Install project dependencies
         run: python check_env.py --auto-install
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v4 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
