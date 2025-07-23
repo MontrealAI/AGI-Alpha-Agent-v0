@@ -136,6 +136,20 @@ mv requirements-cpu.new requirements-cpu.lock
 Run the same command with `requirements-demo.txt` as the sole input to update
 `requirements-demo-cpu.lock`.
 
+### Backend Lock File
+
+Refresh the backend lock file whenever `alpha_factory_v1/backend/requirements.txt`
+changes:
+
+```bash
+pip-compile --upgrade --allow-unsafe --generate-hashes \
+  --output-file alpha_factory_v1/backend/requirements-lock.txt \
+  alpha_factory_v1/backend/requirements.txt
+```
+
+All lock files must include hashes so the Docker images can verify packages at
+build time.
+
 ### Pre-commit in Air-Gapped Setups
 
 When offline, build the wheelhouse first and point `pre-commit` to it:
