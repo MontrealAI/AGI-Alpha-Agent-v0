@@ -60,6 +60,10 @@ def test_maybe_launch_starts_uvicorn(stub_adk, monkeypatch):
     assert called == {"app": module._ensure_router().app, "host": "1.2.3.4", "port": 1234}
 
 
+@pytest.mark.skipif(
+    importlib.util.find_spec("openai_agents") is not None,
+    reason="openai-agents installed",
+)
 def test_openai_agents_stub_call(monkeypatch):
     """Calling Agent from the shim should raise ModuleNotFoundError."""
     sys.modules.pop("openai_agents", None)
