@@ -16,6 +16,20 @@ sys.path.insert(0, str(BASE_DIR / "build"))
 from build.common import check_gzip_size, sha384, generate_service_worker  # noqa: E402
 
 
+def _apply_csp(html: str, base: str) -> str:
+    """Return ``html`` with an updated CSP meta tag using hashes for inline scripts."""
+    hashes: list[str] = []
+    for snippet in re.findall(r"<script(?![^>]*src)[^>]*>([\s\S]*?)</script>", html):
+        digest = hashlib.sha384(snippet.encode()).digest()
+        hashes.append("sha384-" + base64.b64encode(digest).decode())
+    csp = f"{base}; script-src 'self' 'wasm-unsafe-eval' {' '.join(hashes)}; style-src 'self' 'unsafe-inline'"
+    return re.sub(
+        r'<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>',
+        f'<meta http-equiv="Content-Security-Policy" content="{csp}" />',
+        html,
+    )
+
+
 def _require_python_311() -> None:
     major, minor = sys.version_info[:2]
     if (major, minor) < (3, 11):
@@ -421,23 +435,14 @@ index_html.write_text(
 
 # generate service worker
 generate_service_worker(ROOT, dist_dir, manifest)
+
 (dist_dir / "service-worker.js").write_bytes((dist_dir / "sw.js").read_bytes())
 sw_actual = sha384(dist_dir / "service-worker.js")
 sw_expected = checksums.get("service-worker.js")
 if sw_expected and sw_expected != sw_actual:
     sys.exit("Checksum mismatch for service-worker.js")
 
-out_html = dist_index.read_text()
-csp_hashes: list[str] = []
-for m in re.findall(r"<script(?![^>]*src)[^>]*>([\s\S]*?)</script>", out_html):
-    digest = hashlib.sha384(m.encode()).digest()
-    csp_hashes.append("sha384-" + base64.b64encode(digest).decode())
-csp = f"{csp_base}; script-src 'self' 'wasm-unsafe-eval' {' '.join(csp_hashes)}; style-src 'self' 'unsafe-inline'"
-out_html = re.sub(
-    r'<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>',
-    f'<meta http-equiv="Content-Security-Policy" content="{csp}" />',
-    out_html,
-)
+out_html = _apply_csp(dist_index.read_text(), csp_base)
 
 wasm_dir = ROOT / manifest["dirs"]["wasm"]
 if wasm_dir.exists():

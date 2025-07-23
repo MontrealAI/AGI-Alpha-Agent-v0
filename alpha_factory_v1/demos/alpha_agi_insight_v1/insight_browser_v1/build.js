@@ -25,6 +25,20 @@ const manifest = JSON.parse(
 
 requireNode20();
 
+function applyCsp(html, base) {
+    const hashes = [];
+    const regex = /<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g;
+    for (const m of html.matchAll(regex)) {
+        const h = createHash('sha384').update(m[1]).digest('base64');
+        hashes.push(`'sha384-${h}'`);
+    }
+    const csp = `${base}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
+    return html.replace(
+        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
+        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+    );
+}
+
 function ensureDevPackages() {
     const require = createRequire(import.meta.url);
     const packages = [
@@ -337,16 +351,7 @@ async function bundle() {
         path.join(OUT_DIR, "service-worker.js"),
     );
     let finalHtml = await fs.readFile(`${OUT_DIR}/index.html`, 'utf8');
-    const hashes = [];
-    for (const m of finalHtml.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)) {
-        const h = createHash('sha384').update(m[1]).digest('base64');
-        hashes.push(`'sha384-${h}'`);
-    }
-    const csp = `${cspBase}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
-    finalHtml = finalHtml.replace(
-        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
-        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
-    );
+    finalHtml = applyCsp(finalHtml, cspBase);
     await fs.writeFile(`${OUT_DIR}/index.html`, finalHtml);
     await checkGzipSize(`${OUT_DIR}/insight.bundle.js`);
     if (process.env.W3UP_EMAIL) {
