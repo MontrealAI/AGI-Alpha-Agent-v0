@@ -13,7 +13,7 @@ from pathlib import Path
 from alpha_factory_v1.utils.disclaimer import print_disclaimer
 
 MIN_PY = (3, 11)
-MAX_PY = (3, 13)
+MAX_PY = (3, 15)
 
 
 def banner(msg: str, color: str = "") -> None:
