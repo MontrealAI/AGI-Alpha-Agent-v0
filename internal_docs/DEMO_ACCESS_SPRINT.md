@@ -6,8 +6,9 @@ This short sprint distills how Codex can publish the **Alpha‑Factory v1** demo
 
 ## 1. Verify the Environment
 
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the preflight check:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the preflight check:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
    ```

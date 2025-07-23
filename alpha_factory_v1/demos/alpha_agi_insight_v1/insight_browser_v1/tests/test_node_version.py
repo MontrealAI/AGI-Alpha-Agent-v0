@@ -7,10 +7,10 @@ from unittest import mock
 import pytest
 
 
-def test_requires_node_20() -> None:
+def test_requires_node_22() -> None:
     browser_dir = Path(__file__).resolve().parents[1]
     script = browser_dir / "build.js"
-    node_code = "Object.defineProperty(process.versions,'node',{value:'19.0.0'});" f" import('./{script.name}')"
+    node_code = "Object.defineProperty(process.versions,'node',{value:'21.0.0'});" f" import('./{script.name}')"
     res = subprocess.run(
         ["node", "-e", node_code],
         cwd=browser_dir,
@@ -18,7 +18,7 @@ def test_requires_node_20() -> None:
         capture_output=True,
     )
     assert res.returncode == 1
-    assert "Node.js 20+ is required. Current version: 19.0.0" in res.stderr
+    assert "Node.js 22+ is required. Current version: 21.0.0" in res.stderr
 
 
 def test_allows_node_22() -> None:

@@ -7,8 +7,9 @@ This sprint condenses the steps required for Codex to expose every advanced demo
 Run `./scripts/edge_of_knowledge_sprint.sh` from the repository root for a one-command deployment.
 
 ## 1. Validate the Environment
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the preflight script:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the preflight script:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
 3. Verify the Node version:

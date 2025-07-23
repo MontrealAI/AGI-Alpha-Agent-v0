@@ -5,8 +5,9 @@
 This sprint explains how Codex can publish the **Alpha-Factory** demo gallery to GitHub Pages so each showcase plays back organically with a single command. Use the shell wrapper `scripts/edge_human_knowledge_pages_sprint.sh` or the cross‑platform Python version `scripts/edge_human_knowledge_pages_sprint.py` which call the full deployment workflow and print the final URL.
 
 ## Quick Start
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the wrapper:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the wrapper:
    ```bash
    ./scripts/edge_human_knowledge_pages_sprint.sh
    # or on systems without Bash

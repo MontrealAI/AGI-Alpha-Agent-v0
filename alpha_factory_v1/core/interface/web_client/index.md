@@ -7,7 +7,7 @@ This directory contains a small React interface built with [Vite](https://vitejs
 
 ## Setup
 
-This project requires **Node.js ≥20**. The Vite build depends on
+This project requires **Node.js 22**. The Vite build depends on
 `@vitejs/plugin-vue` 6 to support Vite 7.
 
 ```bash
