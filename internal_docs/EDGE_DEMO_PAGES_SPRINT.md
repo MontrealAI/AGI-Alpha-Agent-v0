@@ -6,8 +6,9 @@ This short guide details how Codex can expose every Alpha‑Factory demo via Git
 
 ## 1. Prepare the Environment
 
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the preflight script:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the preflight script:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
    ```

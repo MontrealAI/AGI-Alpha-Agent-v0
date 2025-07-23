@@ -6,8 +6,9 @@ This short guide outlines how Codex can publish the full Alpha‑Factory demo ga
 
 ## 1. Environment Setup
 
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Install `mkdocs`, `mkdocs-material` and `playwright` via `pip`:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Install `mkdocs`, `mkdocs-material` and `playwright` via `pip`:
    ```bash
    pip install mkdocs mkdocs-material playwright
    ```

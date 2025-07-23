@@ -6,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $scriptDir
 
-# Ensure Node.js 20+
+# Ensure Node.js 22+
 node build/version_check.js
 
 if (Test-Path 'node_modules') {

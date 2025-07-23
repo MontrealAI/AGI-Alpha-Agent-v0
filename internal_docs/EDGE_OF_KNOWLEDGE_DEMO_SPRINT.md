@@ -5,12 +5,14 @@
 This sprint distils how Codex can publish the entire **Alpha‑Factory v1** demo suite to GitHub Pages so that every showcase unfolds in real time and remains effortless for non‑technical users to explore.
 
 ## 1. Environment Validation
-1. Install **Python 3.11+** and **Node.js 20+**.
+1. Install **Python 3.11+** and **Node.js 22+**.
 2. Run the preflight script:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
    ```
 3. Verify the Node version:
+
+4. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
    ```bash
    node alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/version_check.js
    ```

@@ -10,8 +10,10 @@ Open [../../../../insight_browser_quickstart.pdf](../../../../insight_browser_qu
 for a concise overview of the build and launch steps.
 
 ## Prerequisites
-- **Node.js ≥20** is required for offline PWA support and by `manual_build.py`
+- **Node.js 22** is required for offline PWA support and by `manual_build.py`
   to generate the service worker.
+- Run `nvm use` to activate the version from `.nvmrc` before installing
+  dependencies.
 - **Python ≥3.11** is required when using `manual_build.py`.
 - `package-lock.json` must remain checked in so `npm ci` installs the exact
   versions specified.
@@ -23,12 +25,12 @@ Verify your Node.js version before running the build script:
 node build/version_check.js
 ```
 The output should be empty for a valid setup. Only run `manual_build.py` when
-this requirement is met. The `package.json` also enforces Node.js 20 or newer
+this requirement is met. The `package.json` also enforces Node.js 22 or newer
 via the `engines` field.
 
 ## Windows Setup
 
-Download and install [Node.js 20](https://nodejs.org/en/download) and
+Download and install [Node.js 22](https://nodejs.org/en/download) and
 [Python 3.11](https://www.python.org/downloads/) before running the build
 scripts. Open PowerShell in this directory and verify the versions:
 
@@ -204,7 +206,7 @@ Use `manual_build.py` for air‑gapped environments:
    the model directly from the official mirror.
    The build scripts verify these files no longer contain the word `"placeholder"`.
    Failing to replace placeholders will break offline mode.
-3. Run `node build/version_check.js` to ensure Node.js **v20** or newer is
+3. Run `node build/version_check.js` to ensure Node.js **v22** or newer is
    installed. `manual_build.py` exits if this check fails.
 4. `python manual_build.py` – or run `./manual_build.ps1` – bundles the app,
    generates `dist/sw.js` and embeds your `.env` settings.
@@ -281,7 +283,7 @@ gateway, verifying checksums to ensure each asset is intact.
 
 ### Offline Build Steps
 
-Requires **Node.js ≥20** and **Python ≥3.11**.
+Requires **Node.js 22** and **Python ≥3.11**.
 
 1. Copy `.env.sample` to `.env` and set the variables.
 2. Run `WEB3_STORAGE_TOKEN=<token> npm run fetch-assets` to download the WASM runtime and model files.
@@ -373,7 +375,7 @@ the local GPT‑2 critic.
 
 ## Running Browser Tests
 
-The demo includes a small Playwright and Pytest suite. **Node.js ≥20** is
+The demo includes a small Playwright and Pytest suite. **Node.js 22** is
 required. After fetching the WebAssembly assets run the tests with Playwright in
 offline mode:
 

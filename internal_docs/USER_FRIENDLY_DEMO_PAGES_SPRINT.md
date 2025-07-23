@@ -5,8 +5,9 @@
 This sprint ensures that every advanced demo in `alpha_factory_v1/demos/` unfolds visually and elegantly on GitHub Pages. The tasks combine the existing automation scripts with best practices so non‑technical users can deploy the gallery from a subdirectory with a single command.
 
 ## 1. Validate the Environment
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the preflight check:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the preflight check:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
    ```

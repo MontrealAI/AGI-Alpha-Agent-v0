@@ -5,8 +5,9 @@
 This sprint outlines a robust sequence to publish the **Alpha‑Factory** demo gallery on GitHub Pages. It builds upon the existing automation scripts so each showcase unfolds organically and remains trivial to deploy by non‑technical users.
 
 ## 1. Environment Validation
-1. Install **Python 3.11+** and **Node.js 20+**.
-2. Run the preflight check:
+1. Install **Python 3.11+** and **Node.js 22+**.
+2. Run `nvm use` to activate the version from `.nvmrc` before installing dependencies.
+3. Run the preflight check:
    ```bash
    python alpha_factory_v1/scripts/preflight.py
    ```

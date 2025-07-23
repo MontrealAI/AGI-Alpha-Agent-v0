@@ -6,11 +6,11 @@ $ErrorActionPreference = 'Stop'
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $scriptDir
 
-# Verify Node.js 20+
+# Verify Node.js 22+
 try {
     node build/version_check.js
 } catch {
-    Write-Error 'Node.js 20+ is required.'
+    Write-Error 'Node.js 22+ is required.'
     exit 1
 }
 

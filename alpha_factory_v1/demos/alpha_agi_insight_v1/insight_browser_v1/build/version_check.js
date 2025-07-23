@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { pathToFileURL } from 'url';
 
-export function requireNode20() {
+export function requireNode22() {
   const [major] = process.versions.node.split('.').map(Number);
-  if (major < 20) {
+  if (major < 22) {
     console.error(
-      `Node.js 20+ is required. Current version: ${process.versions.node}`
+      `Node.js 22+ is required. Current version: ${process.versions.node}`
     );
     process.exit(1);
   }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  requireNode20();
+  requireNode22();
 }

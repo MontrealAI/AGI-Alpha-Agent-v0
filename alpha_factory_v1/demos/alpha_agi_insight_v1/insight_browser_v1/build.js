@@ -13,7 +13,7 @@ import {
     generateServiceWorker,
 } from "./build/common.js";
 import { injectEnv } from "./build/env_inject.js";
-import { requireNode20 } from "./build/version_check.js";
+import { requireNode22 } from "./build/version_check.js";
 import { validateEnv } from "./build/env_validate.js";
 
 const manifest = JSON.parse(
@@ -23,7 +23,7 @@ const manifest = JSON.parse(
     ),
 );
 
-requireNode20();
+requireNode22();
 
 function applyCsp(html, base) {
     const hashes = [];

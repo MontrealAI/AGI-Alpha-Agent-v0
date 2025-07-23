@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Ensure Node.js 20+
+# Ensure Node.js 22+
 node build/version_check.js
 
 if [[ -d node_modules ]]; then

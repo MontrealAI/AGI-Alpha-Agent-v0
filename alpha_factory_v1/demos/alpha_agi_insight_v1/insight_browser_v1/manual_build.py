@@ -46,9 +46,9 @@ try:
         check=True,
     )
 except FileNotFoundError:
-    sys.exit("Node.js 20+ is required. Install Node.js and ensure 'node' is in your PATH.")  # noqa: E501
+    sys.exit("Node.js 22+ is required. Install Node.js and ensure 'node' is in your PATH.")  # noqa: E501
 except subprocess.CalledProcessError:
-    sys.exit("Node.js 20+ is required.")
+    sys.exit("Node.js 22+ is required.")
 
 # load environment variables
 env_file = Path(__file__).resolve().parent / ".env"

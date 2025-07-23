@@ -30,7 +30,7 @@ fi
 
 # Ensure the correct Node.js version before running npm
 if ! node "$BROWSER_DIR/build/version_check.js"; then
-    echo "ERROR: Node.js 20+ is required to build the Insight docs." >&2
+    echo "ERROR: Node.js 22+ is required to build the Insight docs." >&2
     exit 1
 fi
 
