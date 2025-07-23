@@ -157,7 +157,7 @@ governance-sim --agents 500 --summary
    pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
    ```
 
-2. **Install** the package in a fresh **Python 3.11 or 3.12** virtual environment:
+2. **Install** the package in a fresh **Python 3.11 or 3.13** virtual environment:
 
    ```bash
    python -m pip install -e .[tests]
@@ -178,7 +178,7 @@ governance-sim --agents 500 --summary
    python -m unittest discover -s alpha_factory_v1/tests -p 'test_governance_sim.py'
    ```
 
-If you encounter issues, ensure Python 3.11 or 3.12 is in your PATH and that
+If you encounter issues, ensure Python 3.11 or 3.13 is in your PATH and that
 no corporate firewall interferes with package installation. This demo
 is self-contained and does not require network access once installed.
 
