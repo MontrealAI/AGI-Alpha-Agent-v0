@@ -71,7 +71,7 @@ The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) fr
 
 ### Publish Demo Gallery
 
-Ensure **Python 3.11+** and **Node 22+** are installed, then deploy the gallery
+Ensure **Python 3.11–3.13** (<3.14) and **Node 22+** are installed, then deploy the gallery
 and docs with a single command:
 
 ```bash
@@ -107,7 +107,7 @@ checks and offline validation. Use the shell or Python version:
 python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
-Ensure **Python 3.11+**, **Node 22+** and `mkdocs` are installed. The
+Ensure **Python 3.11–3.13** (<3.14), **Node 22+** and `mkdocs` are installed. The
 script mirrors the [Docs workflow](.github/workflows/docs.yml) used for manual
 deployment.
 
@@ -240,7 +240,7 @@ python scripts/download_gpt2_small.py models/
 
 As a last resort use `python scripts/download_openai_gpt2.py 124M`.
 
-Requires **Python 3.11 or 3.13** and **Docker Compose ≥2.5**.
+Requires **Python 3.11–3.13** (<3.14) and **Docker Compose ≥2.5**.
 
 Alternatively, run the pre-built image directly:
 ```bash

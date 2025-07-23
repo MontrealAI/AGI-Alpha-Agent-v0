@@ -266,7 +266,7 @@ OPTIONAL_DEPS = {
 def main(argv: list[str] | None = None) -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(description="Validate environment")
+    parser = argparse.ArgumentParser(description="Validate environment (Python >=3.11, <3.14)")
     parser.add_argument("--offline", action="store_true", help="Skip network checks")
     args = parser.parse_args(argv)
 
