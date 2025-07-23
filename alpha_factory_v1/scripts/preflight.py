@@ -32,7 +32,7 @@ else:
         return bool(Version(a) < Version(b))
 
 
-# Supported Python versions: >=3.11 and <3.15 (3.11–3.14)
+# Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive)
 MIN_PY = (3, 11)
 MAX_PY = (3, 15)
 MEM_DIR = Path(os.getenv("AF_MEMORY_DIR", f"{tempfile.gettempdir()}/alphafactory"))
