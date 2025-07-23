@@ -78,7 +78,8 @@ def _wait_ready(proc: subprocess.Popen[bytes], url: str, *, interval: float = 0.
         time.sleep(interval)
     stdout, stderr = proc.communicate()
     raise AssertionError(
-        f"server did not start within {attempts * interval:.1f}s\nexit code {proc.poll()}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
+        f"server did not start within {attempts * interval:.1f}s\n"
+        f"exit code {proc.poll()}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
     )
 
 
