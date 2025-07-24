@@ -212,6 +212,8 @@ async function bundle() {
         ? new URL(process.env.OTEL_ENDPOINT).origin
         : "";
     await fs.mkdir(OUT_DIR, { recursive: true });
+    const scriptTag =
+        '<script type="module" src="insight.bundle.js" crossorigin="anonymous"></script>';
     await build({
         entryPoints: ["app.js"],
         bundle: true,
@@ -226,13 +228,7 @@ async function bundle() {
     execSync(`npx tailwindcss -i style.css -o ${OUT_DIR}/style.css --minify`, {
         stdio: "inherit",
     });
-    const data = await fs.readFile(`${OUT_DIR}/insight.bundle.js`);
-    const appSri =
-        "sha384-" + createHash("sha384").update(data).digest("base64");
-    const scriptTag =
-        '<script type="module" src="insight.bundle.js" crossorigin="anonymous"></script>';
-    const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
-    let outHtml = html.replace(scriptTag, sriTag);
+    let outHtml = html;
     const cspBase =
         "default-src 'self'; connect-src 'self' https://api.openai.com" +
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
@@ -314,7 +310,11 @@ async function bundle() {
         .replace(/\.\/wasm_llm\//g, "./assets/wasm_llm/")
         .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
     await fs.writeFile(bundlePath, bundleText);
-    outHtml = outHtml
+    const data = await fs.readFile(bundlePath);
+    const appSri =
+        "sha384-" + createHash("sha384").update(data).digest("base64");
+    const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
+    outHtml = outHtml.replace(scriptTag, sriTag)
         .replace(
             /<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?<\/script>\s*/g,
             "",
