@@ -32,16 +32,15 @@ else:
         return bool(Version(a) < Version(b))
 
 
-# Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive).
-# Updated to accept Python 3.13 and Python 3.14.
+# Supported Python versions: >=3.11 and <3.14 (3.11–3.13 inclusive).
 MIN_PY = (3, 11)
-MAX_PY = (3, 15)
+MAX_PY = (3, 14)
 PY_RANGE = f"{MIN_PY[0]}.{MIN_PY[1]}–{MAX_PY[0]}.{MAX_PY[1] - 1}"
 MEM_DIR = Path(os.getenv("AF_MEMORY_DIR", f"{tempfile.gettempdir()}/alphafactory"))
 MIN_OPENAI_AGENTS_VERSION = "0.0.17"
 # Use the latest stable Python base image for sandbox builds
 # Default sandbox uses the latest stable Python image
-DEFAULT_SANDBOX_IMAGE = os.getenv("SANDBOX_IMAGE", "python:3.14-slim")
+DEFAULT_SANDBOX_IMAGE = os.getenv("SANDBOX_IMAGE", "python:3.13-slim")
 
 COLORS = {
     "RED": "\033[31m",

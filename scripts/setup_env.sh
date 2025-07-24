@@ -11,10 +11,10 @@ print(f"{sys.version_info.major}.{sys.version_info.minor}")
 PY
 )"
 case "$version" in
-  3.11|3.12|3.13|3.14)
+  3.11|3.12|3.13)
     ;;
   *)
-    echo "Python 3.11–3.14 required; found $version" >&2
+    echo "Python 3.11–3.13 required; found $version" >&2
     exit 1
     ;;
 esac
