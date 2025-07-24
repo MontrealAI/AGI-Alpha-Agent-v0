@@ -7,7 +7,7 @@ API credentials.
 
 ## Installing prerequisites
 
-1. Install **Python 3.11–3.14** and create a virtual environment:
+1. Install **Python 3.11–3.13** and create a virtual environment:
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
@@ -76,7 +76,7 @@ docker run --rm -p 8000:8000 \
   -v $(pwd)/.env:/app/.env montrealai/alpha-factory:latest
 ```
 
-Only the Python **3.14** build updates the `latest` tag.
+Only the Python **3.13** build updates the `latest` tag.
 
 Copy `.env.sample` to `.env` and add your API keys to enable cloud features. Without keys, the program falls back to the
 local Meta‑Agentic Tree Search:

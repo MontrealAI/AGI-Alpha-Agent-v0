@@ -18,7 +18,7 @@ The instructions below apply to all contributors and automated agents.
 All contributors must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 Please report security vulnerabilities as described in our [Security Policy](SECURITY.md).
 ## Prerequisites
-- Python 3.11–3.14 (**Python ≥3.11, <3.15**)
+- Python 3.11–3.13 (**Python ≥3.11, <3.14**)
 - Docker and Docker Compose (Compose ≥2.5)
 - Git
 - Node.js 22 for the web client and browser demo. A `.nvmrc` is provided, so run
@@ -46,10 +46,10 @@ docker --version
 docker compose version
 git --version
 ```
-Python must report 3.11–3.14 and Docker Compose must be at least 2.5.
+Python must report 3.11–3.13 and Docker Compose must be at least 2.5.
 
 ## Development Environment
-- Create and activate a Python 3.11–3.14 (**Python ≥3.11, <3.15**) virtual
+- Create and activate a Python 3.11–3.13 (**Python ≥3.11, <3.14**) virtual
   environment before running the setup script. On Linux or macOS:
   ```bash
   python3 -m venv .venv
@@ -261,7 +261,7 @@ template). The sample file now lists every variable with its default value.
 | `CROSS_ALPHA_MODEL` | OpenAI model for the discovery tool when `OPENAI_API_KEY` is set | `gpt-4o-mini` |
 
 ## Coding Style
-- Use Python 3.11–3.14 (**Python ≥3.11, <3.15**) and include type hints for public APIs.
+- Use Python 3.11–3.13 (**Python ≥3.11, <3.14**) and include type hints for public APIs.
 - Indent with 4 spaces and keep lines under 120 characters.
 - `.editorconfig` enforces UTF-8 encoding, LF line endings and the 120-character limit for Python and Markdown files.
 - Provide concise [Google style](https://google.github.io/styleguide/pyguide.html#381-docstrings) docstrings
@@ -388,7 +388,7 @@ issues locally before dispatching the workflow.
 
 ### Troubleshooting
 - If the stack fails to start, verify Docker and Docker Compose are running.
-- Setup errors usually mean Python is older than 3.11. Use Python 3.11–3.14 (>=3.11,<3.15).
+- Setup errors usually mean Python is older than 3.11. Use Python 3.11–3.13 (>=3.11,<3.14).
 - When working offline, build the wheelhouse with `scripts/build_offline_wheels.sh` on a
   machine with internet access, copy the `wheels/` directory to the repository root and set
   `WHEELHOUSE=$(pwd)/wheels` before running `python check_env.py --auto-install` or the tests.

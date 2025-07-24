@@ -16,7 +16,7 @@ wsl --update
 Clone the repository inside your WSL home directory to avoid path translation issues.
 
 ## Recommended Python distribution
-Install Python 3.11–3.14 from [python.org](https://www.python.org/downloads/). The Microsoft Store version often restricts permissions.
+Install Python 3.11–3.13 from [python.org](https://www.python.org/downloads/). The Microsoft Store version often restricts permissions.
 Create the virtual environment from PowerShell or your WSL shell:
 
 ```powershell

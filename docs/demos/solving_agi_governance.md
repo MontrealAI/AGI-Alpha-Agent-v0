@@ -113,7 +113,7 @@ Python standard library.
 ---
 
 ### Requirements
-* Python 3.11–3.14 (<3.15). See [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md)
+* Python 3.11–3.13 (<3.14). See [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md)
 * Install the optional runtime packages:
   ```bash
   pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
@@ -126,7 +126,7 @@ Python standard library.
   `openai-agents>=0.0.17` used by the Agents bridge.
 
 ### 9 · Running the Demo
-The CLI simulator has **no third‑party dependencies**—use Python 3.11–3.14.
+The CLI simulator has **no third‑party dependencies**—use Python 3.11–3.13.
 
 Clone the repository and launch the Monte‑Carlo simulator:
 
@@ -157,7 +157,7 @@ governance-sim --agents 500 --summary
    pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
    ```
 
-2. **Install** the package in a fresh **Python 3.11–3.14** virtual environment:
+2. **Install** the package in a fresh **Python 3.11–3.13** virtual environment:
 
    ```bash
    python -m pip install -e .[tests]
@@ -178,7 +178,7 @@ governance-sim --agents 500 --summary
    python -m unittest discover -s alpha_factory_v1/tests -p 'test_governance_sim.py'
    ```
 
-If you encounter issues, ensure Python 3.11–3.14 is in your PATH and that
+If you encounter issues, ensure Python 3.11–3.13 is in your PATH and that
 no corporate firewall interferes with package installation. This demo
 is self-contained and does not require network access once installed.
 
