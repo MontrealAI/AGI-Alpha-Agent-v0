@@ -10,7 +10,7 @@
 #                                                                            #
 #  Build switches                                                            #
 #  ─────────────────────────────────────────────────────────────────────────  #
-#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.11).    #
+#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.13).    #
 #                        Pass  nvidia/cuda:12.4.0-runtime‑ubuntu22.04        #
 #                        for a GPU‑enabled variant.                          #
 #  INSTALL_UI           ‑ Set to "0" to skip the UI build stage.           #
@@ -19,7 +19,7 @@
 #######################################################################
 #  Global ARGs must precede every FROM that references them           #
 #######################################################################
-ARG BASE_IMAGE=python:3.11.13-slim-bookworm
+ARG BASE_IMAGE=python:3.13-slim
 ARG INSTALL_UI=1
 
 #######################################################################
@@ -84,7 +84,7 @@ COPY backend/requirements.txt /tmp/requirements.txt
 #  The lock file is preferred (if the project maintains one).  
 #  Fallback to plain requirements for dev checkouts.
 RUN if [ -f /tmp/requirements-lock.txt ]; then \
-        pip install --no-cache-dir -r /tmp/requirements-lock.txt; \
+        pip install --no-cache-dir --require-hashes -r /tmp/requirements-lock.txt; \
     else \
         pip install --no-cache-dir -r /tmp/requirements.txt; \
     fi && \
