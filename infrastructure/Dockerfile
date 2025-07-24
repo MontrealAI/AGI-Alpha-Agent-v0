@@ -1,4 +1,5 @@
 FROM python:3.13-slim
+# Base image must match the highest Python version used in CI (currently 3.13)
 
 # install system deps
 RUN apt-get update && apt-get install -y --no-install-recommends \

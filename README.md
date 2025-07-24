@@ -248,10 +248,15 @@ docker run --pull=always -p 8000:8000 ghcr.io/montrealai/alpha-factory:latest
 ```
 
 The workflow publishes a separate image for each Python version with tags
-`py311`, `py312`, `py313` and `py314`. Only the Python **3.14** build also
+`py311`, `py312` and `py313`. Only the Python **3.13** build also
 updates the `latest` tag so
 `ghcr.io/montrealai/alpha-factory:latest` always refers to the most recent
-Python 3.14 image.
+Python 3.13 image.
+
+> **Note**
+> The Dockerfiles in this repository pin the base image to Python 3.13.
+> Keep this in sync with the highest Python version listed in the CI
+> matrix when updating workflows.
 
 Replace `latest` with a commit SHA to run that exact build:
 
