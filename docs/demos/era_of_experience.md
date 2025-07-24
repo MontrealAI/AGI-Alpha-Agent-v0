@@ -34,7 +34,7 @@ Within 60 seconds you will witness an agent <em>rewrite its own playbook</em> e
 
 - **Docker 24+** with the Compose plugin
 - At least **4 CPU cores** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/or a modest GPU) for smooth local runs
-- **Python 3.11–3.14** available as `python3` for environment checks
+- **Python 3.11–3.13** available as `python3` for environment checks
 - Run `python3 ../../../check_env.py --demo era_experience --auto-install` and
   ensure it completes successfully before starting the Docker stack.
 - *(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/Optional)* `OPENAI_API_KEY` for cloud LLMs — leave blank to use the built‑in Mixtral via Ollama
