@@ -428,6 +428,8 @@ jobs:
             python scripts/update_pyodide.py 0.28.0 &&
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
           )
+      - name: Build insight browser
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Verify downloaded assets
         run: |
           python scripts/fetch_assets.py --verify-only || (
@@ -491,6 +493,8 @@ jobs:
         run: npx update-browserslist-db --update-db --yes
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
+      - name: Build insight browser
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
       - name: Verify downloaded assets
