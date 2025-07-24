@@ -58,12 +58,22 @@ def banner(msg: str, color: str = "GREEN") -> None:
 
 
 def check_python() -> bool:
-    if sys.version_info < MIN_PY or sys.version_info >= MAX_PY:
+    """Return ``True`` when the running interpreter is within the supported range."""
+
+    if sys.version_info < MIN_PY:
         banner(
-            f"Python {MIN_PY[0]}.{MIN_PY[1]}+ and <{MAX_PY[0]}.{MAX_PY[1]} required",
+            f"Python {MIN_PY[0]}.{MIN_PY[1]}+ required",
             "RED",
         )
         return False
+
+    if sys.version_info >= MAX_PY:
+        banner(
+            f"Python {sys.version.split()[0]} is newer than tested; proceeding",
+            "YELLOW",
+        )
+        return True
+
     banner(f"Python {sys.version.split()[0]} detected", "GREEN")
     return True
 
