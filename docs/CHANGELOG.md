@@ -65,8 +65,8 @@ Downstream users should consult this section when upgrading.
 - Upgraded the Insight demo to **streamlit 1.46** so NumPy 2.x installs cleanly.
  - The Docker image now installs **rustc** and **cargo** to build crates like
    `blake3` on Python 3.13.
- - The workflow pushes version-specific Docker tags `py311` and `py313` for each
-  build and signs both images with cosign.
+ - The workflow pushes version-specific Docker tags `py311`, `py312`, `py313` and
+   `py314` for each build and signs all images with cosign.
 - `ci.yml` now caches Node dependencies using `cache-dependency-path` so the
   "Dependencies lock file is not found" warning no longer appears.
 ## [0.1.0-alpha] - 2024-05-01
