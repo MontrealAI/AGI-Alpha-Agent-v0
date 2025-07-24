@@ -10,7 +10,7 @@
 #                                                                            #
 #  Build switches                                                            #
 #  ─────────────────────────────────────────────────────────────────────────  #
-#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.13).    #
+#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.14).    #
 #                        Pass  nvidia/cuda:12.4.0-runtime‑ubuntu22.04        #
 #                        for a GPU‑enabled variant.                          #
 #  INSTALL_UI           ‑ Set to "0" to skip the UI build stage.           #
@@ -19,13 +19,13 @@
 #######################################################################
 #  Global ARGs must precede every FROM that references them           #
 #######################################################################
-ARG BASE_IMAGE=python:3.13-slim
+ARG BASE_IMAGE=python:3.14-slim
 ARG INSTALL_UI=1
 
 #######################################################################
 #  Stage 0 — (optional) Build static Trace‑graph front‑end            #
 #######################################################################
-FROM node:20.19.4-bookworm-slim AS ui-build
+FROM node:22-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
 WORKDIR /ui

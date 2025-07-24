@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # When changing build dependencies here, mirror the updates in
 # alpha_factory_v1/Dockerfile to keep both images consistent.
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 # install build tools and npm for the React UI
 RUN apt-get update && \
@@ -9,14 +9,14 @@ RUN apt-get update && \
         curl ca-certificates gnupg build-essential git \
         rustc cargo postgresql-client patch && \
     git --version && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 # upgrade pip to avoid outdated versions
 RUN python -m pip install --upgrade "pip<25" setuptools wheel
 
-# Verify Node installation is >=20 (NodeSource script sets up latest LTS)
+# Verify Node installation is >=22 (NodeSource script sets up latest LTS)
 RUN node --version
 
 WORKDIR /app

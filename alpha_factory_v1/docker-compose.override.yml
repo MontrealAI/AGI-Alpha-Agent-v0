@@ -61,7 +61,7 @@ services:
   ui:
     <<: *restart_policy
     container_name: alphafactory-ui-dev
-    image: node:20-bookworm-slim
+    image: node:22-bookworm-slim
     working_dir: /ui
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
     ports:
