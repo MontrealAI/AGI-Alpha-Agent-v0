@@ -33,7 +33,7 @@ else:
 
 
 # Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive).
-# Updated to accept Python 3.13 and future-proof for 3.14.
+# Updated to accept Python 3.13 and Python 3.14.
 MIN_PY = (3, 11)
 MAX_PY = (3, 15)
 PY_RANGE = f"{MIN_PY[0]}.{MIN_PY[1]}–{MAX_PY[0]}.{MAX_PY[1] - 1}"
@@ -281,6 +281,11 @@ def main(argv: list[str] | None = None) -> None:
 
     parser = argparse.ArgumentParser(description=f"Validate environment (Python {PY_RANGE})")
     parser.add_argument("--offline", action="store_true", help="Skip network checks")
+    parser.add_argument(
+        "--skip-optional",
+        action="store_true",
+        help="Do not check optional package availability",
+    )
     args = parser.parse_args(argv)
 
     banner(f"Alpha-Factory Preflight Check ({PY_RANGE})", "YELLOW")
@@ -302,22 +307,23 @@ def main(argv: list[str] | None = None) -> None:
     ok &= check_pkg("prometheus_client")
 
     missing_optional: list[str] = []
-    for pkg in OPTIONAL_DEPS:
-        check_pkg(pkg, optional=True)
-        try:
-            import importlib.util
+    if not args.skip_optional:
+        for pkg in OPTIONAL_DEPS:
+            check_pkg(pkg, optional=True)
+            try:
+                import importlib.util
 
-            spec = importlib.util.find_spec(pkg)
-            if pkg == "openai_agents" and spec is None:
-                spec = importlib.util.find_spec("agents")
-            present = spec is not None
-        except Exception:  # pragma: no cover - unexpected
-            present = False
+                spec = importlib.util.find_spec(pkg)
+                if pkg == "openai_agents" and spec is None:
+                    spec = importlib.util.find_spec("agents")
+                present = spec is not None
+            except Exception:  # pragma: no cover - unexpected
+                present = False
 
-        if not present:
-            missing_optional.append(pkg)
-        elif pkg == "openai_agents":
-            ok &= check_openai_agents_version()
+            if not present:
+                missing_optional.append(pkg)
+            elif pkg == "openai_agents":
+                ok &= check_openai_agents_version()
 
     ensure_dir(MEM_DIR)
 
@@ -327,7 +333,7 @@ def main(argv: list[str] | None = None) -> None:
         else:
             banner(f"{key} not set", "YELLOW")
 
-    if missing_optional:
+    if missing_optional and not args.skip_optional:
         banner("Optional packages missing:", "YELLOW")
         for pkg in missing_optional:
             demos = ", ".join(OPTIONAL_DEPS[pkg])
