@@ -32,7 +32,8 @@ else:
         return bool(Version(a) < Version(b))
 
 
-# Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive)
+# Supported Python versions: >=3.11 and <3.15 (3.11–3.14 inclusive).
+# Updated to accept Python 3.13 and future-proof for 3.14.
 MIN_PY = (3, 11)
 MAX_PY = (3, 15)
 PY_RANGE = f"{MIN_PY[0]}.{MIN_PY[1]}–{MAX_PY[0]}.{MAX_PY[1] - 1}"
