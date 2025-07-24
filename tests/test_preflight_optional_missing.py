@@ -13,14 +13,13 @@ from alpha_factory_v1.scripts import preflight
 
 class TestPreflightOptionalMissing(unittest.TestCase):
     def test_missing_optional_packages_ok(self) -> None:
-        def fake_check_pkg(name: str) -> bool:
-            # Required packages are always present
-            if name in {"pytest", "prometheus_client"}:
-                return True
-            # Simulate all optional deps missing
-            if name in preflight.OPTIONAL_DEPS:
-                return False
+        def fake_check_pkg(name: str, optional: bool = False) -> bool:
             return True
+
+        def fake_find_spec(name: str):
+            if name in {"pytest", "prometheus_client"}:
+                return object()
+            return None
 
         patches = [
             mock.patch.object(preflight, "check_python", return_value=True),
@@ -30,6 +29,7 @@ class TestPreflightOptionalMissing(unittest.TestCase):
             mock.patch.object(preflight, "check_docker_compose", return_value=True),
             mock.patch.object(preflight, "check_patch_in_sandbox", return_value=True),
             mock.patch.object(preflight, "check_pkg", side_effect=fake_check_pkg),
+            mock.patch("importlib.util.find_spec", side_effect=fake_find_spec),
             mock.patch.object(preflight, "check_openai_agents_version", return_value=True),
             mock.patch.object(preflight, "ensure_dir", return_value=None),
         ]
