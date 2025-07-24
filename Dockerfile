@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # When changing build dependencies here, mirror the updates in
 # alpha_factory_v1/Dockerfile to keep both images consistent.
-FROM python:3.13.5-slim
+FROM python:3.13-slim
 
 # install build tools and npm for the React UI
 RUN apt-get update && \
@@ -28,7 +28,7 @@ RUN python -m pip install --upgrade pip
 # Install demo-specific Python dependencies
 COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements-demo.lock
 RUN if [ -f /tmp/requirements-demo.lock ]; then \
-      pip install --no-cache-dir -r /tmp/requirements-demo.lock && rm /tmp/requirements-demo.lock; \
+      pip install --no-cache-dir --require-hashes -r /tmp/requirements-demo.lock && rm /tmp/requirements-demo.lock; \
     else \
       echo "Missing demo requirements" && exit 1; \
     fi
