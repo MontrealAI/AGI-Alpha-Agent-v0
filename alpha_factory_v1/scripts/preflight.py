@@ -155,8 +155,12 @@ def check_patch_in_sandbox(image: str = DEFAULT_SANDBOX_IMAGE) -> bool:
     return False
 
 
-def check_pkg(pkg: str) -> bool:
-    """Return True if *pkg* or its fallback is importable."""
+def check_pkg(pkg: str, optional: bool = False) -> bool:
+    """Return True if *pkg* or its fallback is importable.
+
+    When ``optional`` is ``True`` and the package is missing, return ``True`` but
+    emit a warning instead of failing the check.
+    """
 
     try:
         import importlib.util
@@ -173,11 +177,15 @@ def check_pkg(pkg: str) -> bool:
         found = False
         module = pkg
 
-    banner(
-        f"{module if found else pkg} {'found' if found else 'missing'}",
-        "GREEN" if found else "RED",
-    )
-    return found
+    status = "found" if found else "missing"
+    if found:
+        banner(f"{module} {status}", "GREEN")
+        return True
+
+    color = "YELLOW" if optional else "RED"
+    suffix = " (optional)" if optional else ""
+    banner(f"{pkg} {status}{suffix}", color)
+    return optional
 
 
 def ensure_dir(path: Path) -> None:
@@ -270,9 +278,7 @@ OPTIONAL_DEPS = {
 def main(argv: list[str] | None = None) -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description=f"Validate environment (Python {PY_RANGE})"
-    )
+    parser = argparse.ArgumentParser(description=f"Validate environment (Python {PY_RANGE})")
     parser.add_argument("--offline", action="store_true", help="Skip network checks")
     args = parser.parse_args(argv)
 
@@ -296,8 +302,18 @@ def main(argv: list[str] | None = None) -> None:
 
     missing_optional: list[str] = []
     for pkg in OPTIONAL_DEPS:
-        found = check_pkg(pkg)
-        if not found:
+        check_pkg(pkg, optional=True)
+        try:
+            import importlib.util
+
+            spec = importlib.util.find_spec(pkg)
+            if pkg == "openai_agents" and spec is None:
+                spec = importlib.util.find_spec("agents")
+            present = spec is not None
+        except Exception:  # pragma: no cover - unexpected
+            present = False
+
+        if not present:
             missing_optional.append(pkg)
         elif pkg == "openai_agents":
             ok &= check_openai_agents_version()

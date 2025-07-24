@@ -77,7 +77,7 @@ class PreflightTest(unittest.TestCase):
             check_cmd=lambda cmd: True,
             check_docker_daemon=lambda: True,
             check_docker_compose=lambda: True,
-            check_pkg=lambda pkg: True,
+            check_pkg=lambda pkg, optional=False: True,
             ensure_dir=lambda p: None,
             banner=lambda *a, **k: None,
         ):
@@ -88,7 +88,7 @@ class PreflightTest(unittest.TestCase):
             check_cmd=lambda cmd: False,
             check_docker_daemon=lambda: False,
             check_docker_compose=lambda: False,
-            check_pkg=lambda pkg: False,
+            check_pkg=lambda pkg, optional=False: False,
             ensure_dir=lambda p: None,
             banner=lambda *a, **k: None,
             check_network=lambda: True,
@@ -103,7 +103,7 @@ class PreflightTest(unittest.TestCase):
             check_cmd=lambda cmd: True,
             check_docker_daemon=lambda: True,
             check_docker_compose=lambda: True,
-            check_pkg=lambda pkg: True,
+            check_pkg=lambda pkg, optional=False: True,
             ensure_dir=lambda p: None,
             banner=lambda *a, **k: None,
         ):
