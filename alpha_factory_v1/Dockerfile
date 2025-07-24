@@ -10,7 +10,7 @@
 #                                                                            #
 #  Build switches                                                            #
 #  ─────────────────────────────────────────────────────────────────────────  #
-#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.14).    #
+#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.13).    #
 #                        Pass  nvidia/cuda:12.4.0-runtime‑ubuntu22.04        #
 #                        for a GPU‑enabled variant.                          #
 #  INSTALL_UI           ‑ Set to "0" to skip the UI build stage.           #
