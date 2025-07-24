@@ -1,3 +1,5 @@
+# [See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
+
 # CI Sprint Plan
 
 This document proposes tasks to stabilize the `ci.yml` workflow so every job completes successfully.
@@ -21,5 +23,10 @@ This document proposes tasks to stabilize the `ci.yml` workflow so every job com
    - Keep the workflow configured for manual `workflow_dispatch` runs by the repository owner.
 6. **Monitor Asset Integrity**
    - Validate Pyodide and web client assets with `scripts/fetch_assets.py --verify-only`.
+7. **Fix Offline Checks**
+   - Rebuild the Insight bundle to update the service worker integrity hash.
+   - Ensure `scripts/verify_insight_offline.py` passes without console errors.
+8. **Cross‑platform Smoke Tests**
+   - Confirm `windows-smoke` and `macos-smoke` jobs install Node dependencies and run `pytest -m smoke` without failures.
 
 This sprint ensures that all jobs (`✅ Pytest`, Windows/Mac smoke tests, Docs build, Docker build, Deploy) execute without skipping and that the published artifacts are reproducible.
