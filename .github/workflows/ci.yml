@@ -72,6 +72,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
 
       - name: Cache pre-commit
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
@@ -148,6 +152,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - uses: ./.github/actions/setup-insight-assets
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
@@ -247,6 +255,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -288,6 +300,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -335,6 +351,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       # asset fetching handled by setup-insight-assets
@@ -371,6 +391,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - name: Install docs requirements
@@ -442,6 +466,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database (Insight demo)
