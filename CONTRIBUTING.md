@@ -82,7 +82,7 @@ pre-commit run --files .github/workflows/ci.yml
 
 ## Quick Checklist
 
-Ensure **Python 3.11–3.14** and **Node.js 22** are installed before running the tools.
+Ensure **Python 3.11–3.13** and **Node.js 22** are installed before running the tools.
 
 Before opening a pull request, verify the environment and run the tests:
 
