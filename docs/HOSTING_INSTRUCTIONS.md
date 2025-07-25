@@ -175,6 +175,12 @@ embedded in `service-worker.js`:
 python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1
 ```
 
+Verify the SRI hash for the Insight bundle:
+
+```bash
+python scripts/check_insight_sri.py site/alpha_agi_insight_v1
+```
+
 This step catches missing or corrupted assets after deployment.
 
 ## Capturing Demo Previews
