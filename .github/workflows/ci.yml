@@ -2,6 +2,8 @@
 #
 # Validates the demo with lint, type checks, unit tests and Docker build.
 # Runs only via manual dispatch by the repository owner using the "Run workflow" button.
+# Access is restricted through the owner-check job to ensure only the repository
+# owner can start this pipeline.
 # Tagged releases deploy a Docker image with rollback on failure.
 name: "🚀 CI"
 
