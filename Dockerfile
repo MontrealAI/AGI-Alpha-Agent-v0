@@ -25,6 +25,10 @@ WORKDIR /app
 # ensure latest pip before installing requirements
 RUN python -m pip install --upgrade pip
 
+# install backend dependencies using the lock file
+COPY alpha_factory_v1/backend/requirements-lock.txt /tmp/requirements.lock
+RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock && rm /tmp/requirements.lock
+
 # install Python dependencies
 # Install demo-specific Python dependencies
 COPY alpha_factory_v1/demos/alpha_agi_insight_v1/requirements.lock /tmp/requirements-demo.lock
