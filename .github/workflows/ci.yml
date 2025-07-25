@@ -144,39 +144,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - id: asset-key-docs-build
-        uses: ./.github/actions/generate-asset-key
-      - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}-py${{ matrix.python-version }}
-          restore-keys: |
-            assets-${{ runner.os }}-py${{ matrix.python-version }}-
-      - name: Fetch insight browser assets
-        run: |
-          set -e
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          )
+      - uses: ./.github/actions/setup-insight-assets
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-      - name: Verify insight assets
-        run: |
-          set -eo pipefail
-          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-          if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-            echo "::error::Initial asset verification failed" >&2
-            cat verify.log
-            python scripts/update_pyodide.py 0.28.0
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-            python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-          fi
-          cat verify.log
+      # asset verification handled by setup-insight-assets
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db --update-db --yes
@@ -276,16 +247,7 @@ jobs:
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install
-      - id: asset-key-docker
-        uses: ./.github/actions/generate-asset-key
-      - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
+      - uses: ./.github/actions/setup-insight-assets
       - name: Build web assets
         shell: bash
         run: |
@@ -293,17 +255,6 @@ jobs:
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
             npx update-browserslist-db --update-db --yes)
-          npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets
-          )
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 build
       - name: Run smoke tests
         run: pytest -m smoke -q
@@ -337,16 +288,7 @@ jobs:
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install
-      - id: asset-key-docker
-        uses: ./.github/actions/generate-asset-key
-      - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
+      - uses: ./.github/actions/setup-insight-assets
       - name: Build web assets
         shell: bash
         run: |
@@ -354,17 +296,6 @@ jobs:
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
             npx update-browserslist-db --update-db --yes)
-          npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets
-          )
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
           npm run --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 build
       - name: Run smoke tests
         run: pytest -m smoke -q
@@ -394,39 +325,15 @@ jobs:
           pip install requests
       - name: Install base dependencies
         run: python check_env.py --auto-install
-      - id: asset-key-docs-build
-        uses: ./.github/actions/generate-asset-key
-      - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
+      - uses: ./.github/actions/setup-insight-assets
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Fetch insight browser assets
-        run: |
-          set -e
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          )
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
-      - name: Verify downloaded assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+      # asset fetching handled by setup-insight-assets
       - name: Install Playwright browsers
         run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Install pre-commit
@@ -486,14 +393,7 @@ jobs:
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
-      - name: Verify downloaded assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+      - uses: ./.github/actions/setup-insight-assets
       - name: Check Insight SRI
         run: python scripts/check_insight_sri.py docs/alpha_agi_insight_v1
       - name: Detect Pyodide changes
@@ -547,36 +447,7 @@ jobs:
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
-      - id: asset-key-docker
-        uses: ./.github/actions/generate-asset-key
-      - name: Cache Insight assets
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
-      - name: Fetch insight browser assets
-        run: |
-          set -e
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          )
-      - name: Verify insight assets
-        run: |
-          set -eo pipefail
-          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-          if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-            echo "::error::Initial asset verification failed" >&2
-            cat verify.log
-            python scripts/update_pyodide.py 0.28.0
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-            python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-          fi
-          cat verify.log
+      - uses: ./.github/actions/setup-insight-assets
       - name: Audit insight browser dependencies
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
       - name: Install Playwright browsers
