@@ -155,17 +155,6 @@ jobs:
           key: assets-${{ steps.asset-key-docs-build.outputs.key }}-${{ runner.os }}-py${{ matrix.python-version }}
           restore-keys: |
             assets-${{ runner.os }}-py${{ matrix.python-version }}-
-      - id: asset-key-docker
-        uses: ./.github/actions/generate-asset-key
-      - name: Restore Insight asset cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key-docker.outputs.key }}-${{ runner.os }}-py${{ matrix.python-version }}
-          restore-keys: |
-            assets-${{ runner.os }}-py${{ matrix.python-version }}-
       - name: Fetch insight browser assets
         run: |
           set -e
