@@ -505,6 +505,8 @@ jobs:
             npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
             python scripts/fetch_assets.py --verify-only
           )
+      - name: Verify Insight SRI
+        run: python scripts/check_insight_sri.py
       - name: Detect Pyodide changes
         id: pyodide-diff-docs
         run: |
