@@ -2,7 +2,7 @@
 # When changing build dependencies here, mirror the updates in
 # alpha_factory_v1/Dockerfile to keep both images consistent.
 FROM python:3.13-slim
-# Base image must match the highest Python version used in CI (currently 3.13)
+# Base image matches the highest Python version used in CI (currently 3.13)
 
 # install build tools and npm for the React UI
 RUN apt-get update && \
