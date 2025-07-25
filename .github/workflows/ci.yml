@@ -5,6 +5,8 @@
 # Access is restricted through the owner-check job to ensure only the repository
 # owner can start this pipeline.
 # Tagged releases deploy a Docker image with rollback on failure.
+# Jobs use 'if: always()' to ensure later stages still run even when earlier
+# steps fail.
 name: "🚀 CI"
 
 on:
