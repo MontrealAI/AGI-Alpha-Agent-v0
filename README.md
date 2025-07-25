@@ -800,7 +800,7 @@ Install the Python dependencies with the helper script:
 ```bash
 scripts/setup_env.sh
 ```
-The script checks for Python 3.11–3.13 and installs `requirements.txt` and
+The script checks for Python 3.11–3.13 (<3.14) and installs `requirements.txt` and
 `requirements-dev.txt`.
 
 When preparing an offline environment, build a wheelhouse on a machine with
