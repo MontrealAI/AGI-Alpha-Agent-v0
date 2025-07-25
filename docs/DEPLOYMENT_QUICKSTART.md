@@ -46,3 +46,7 @@ after the workflow finishes.
   ```bash
   python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1
   ```
+- Validate that the SRI hash in `index.html` matches `insight.bundle.js`:
+  ```bash
+  python scripts/check_insight_sri.py site/alpha_agi_insight_v1
+  ```
