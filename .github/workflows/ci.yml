@@ -76,6 +76,7 @@ jobs:
         run: |
           python --version
           node --version
+          docker --version
 
       - name: Cache pre-commit
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
@@ -259,6 +260,7 @@ jobs:
         run: |
           python --version
           node --version
+          docker --version
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -304,6 +306,7 @@ jobs:
         run: |
           python --version
           node --version
+          docker --version
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -355,6 +358,7 @@ jobs:
         run: |
           python --version
           node --version
+          docker --version
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       # asset fetching handled by setup-insight-assets
@@ -395,6 +399,7 @@ jobs:
         run: |
           python --version
           node --version
+          docker --version
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - name: Install docs requirements
@@ -572,6 +577,11 @@ jobs:
         run: |
           repo_owner_lower=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
           echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_ENV"
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
+          docker --version
       - name: Login to GHCR
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
