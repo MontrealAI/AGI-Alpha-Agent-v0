@@ -23,6 +23,7 @@ This document proposes tasks to stabilize the `ci.yml` workflow so every job com
    - Keep the workflow configured for manual `workflow_dispatch` runs by the repository owner.
 6. **Monitor Asset Integrity**
    - Validate Pyodide and web client assets with `scripts/fetch_assets.py --verify-only`.
+   - Run `scripts/check_insight_sri.py docs/alpha_agi_insight_v1` to ensure the generated `insight.bundle.js` digest matches the `integrity` attribute in `index.html`.
 7. **Fix Offline Checks**
    - Rebuild the Insight bundle to update the service worker integrity hash.
    - Ensure `scripts/verify_insight_offline.py` passes without console errors.
