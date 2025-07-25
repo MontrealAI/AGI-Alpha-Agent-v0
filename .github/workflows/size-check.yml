@@ -56,27 +56,7 @@ jobs:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Install dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-      - name: Compute asset cache key
-        id: asset-key
-        run: |
-          key=$(python - <<'PY'
-          import hashlib, json, scripts.fetch_assets as fa
-          env_data = json.dumps({'PYODIDE_BASE_URL': fa.PYODIDE_BASE_URL, 'HF_GPT2_BASE_URL': fa.HF_GPT2_BASE_URL})
-          data = json.dumps(fa.CHECKSUMS, sort_keys=True) + env_data
-          print('sha256-' + hashlib.sha256(data.encode()).hexdigest())
-          PY
-          )
-          echo "key=$key" >> "$GITHUB_OUTPUT"
-      - name: Cache Pyodide and GPT-2 assets
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
-      - name: Fetch Insight Browser assets
-        run: python scripts/fetch_assets.py
+      - uses: ./.github/actions/setup-insight-assets
       - name: Update browserslist database
         id: browserslist
         continue-on-error: true
@@ -87,14 +67,7 @@ jobs:
         run: |
           echo "::warning::Failed to update browserslist database"
           echo "BROWSERSLIST_IGNORE_OLD_DATA=true" >> "$GITHUB_ENV"
-      - name: Verify Insight Browser assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+      - uses: ./.github/actions/setup-insight-assets
       - name: Build distribution zip
         run: npm run build:dist --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Check archive size

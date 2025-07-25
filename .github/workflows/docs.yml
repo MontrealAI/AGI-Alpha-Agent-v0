@@ -91,27 +91,7 @@ jobs:
         run: npx playwright install chromium webkit firefox
       - name: Make scripts executable
         run: chmod +x ./scripts/*.sh
-      - id: asset-key
-        uses: ./.github/actions/generate-asset-key
-      - name: Cache Pyodide and GPT-2 assets
-        id: asset-cache
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
-          key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
-          restore-keys: assets-${{ runner.os }}-
-      - name: Fetch browser assets
-        run: python scripts/fetch_assets.py
-      - name: Verify browser assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+      - uses: ./.github/actions/setup-insight-assets
       - name: Update build manifest
         run: python scripts/generate_build_manifest.py
       - name: Build and deploy gallery
@@ -122,14 +102,7 @@ jobs:
         run: |
           export CI=true
           ./scripts/edge_human_knowledge_pages_sprint.sh
-      - name: Verify downloaded assets
-        run: |
-          python scripts/fetch_assets.py --verify-only || (
-            echo "Detected asset hash change, updating..." &&
-            python scripts/update_pyodide.py 0.28.0 &&
-            npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets &&
-            python scripts/fetch_assets.py --verify-only
-          )
+      - uses: ./.github/actions/setup-insight-assets
       - name: Check internal links
         uses: lycheeverse/lychee-action@v2.4.1 # 82202e5e9c2f4ef1a55a3d02563e1cb6041e5332
         with:
