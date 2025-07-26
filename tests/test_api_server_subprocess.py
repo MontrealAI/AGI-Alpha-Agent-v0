@@ -29,11 +29,11 @@ def _free_port() -> int:
 def test_simulate_curve_subprocess() -> None:
     port = _free_port()
     env = os.environ.copy()
-    env["PYTHONPATH"] = f"{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
+    env["PYTHONPATH"] = f"{STUB_DIR}:{env.get('PYTHONPATH', '')}"
     cmd = [
         sys.executable,
         "-m",
-        "src.interface.api_server",
+        "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server",
         "--host",
         "127.0.0.1",
         "--port",
@@ -82,14 +82,14 @@ def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Po
     cmd = [
         sys.executable,
         "-m",
-        "src.interface.api_server",
+        "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server",
         "--host",
         "127.0.0.1",
         "--port",
         str(port),
     ]
     env = env or os.environ.copy()
-    env["PYTHONPATH"] = f"{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
+    env["PYTHONPATH"] = f"{STUB_DIR}:{env.get('PYTHONPATH', '')}"
     return subprocess.Popen(
         cmd,
         env=env,
@@ -110,7 +110,7 @@ def _start_demo_server(port: int, env: dict[str, str] | None = None) -> subproce
         str(port),
     ]
     env = env or os.environ.copy()
-    env["PYTHONPATH"] = f"{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
+    env["PYTHONPATH"] = f"{STUB_DIR}:{env.get('PYTHONPATH', '')}"
     return subprocess.Popen(
         cmd,
         env=env,

@@ -39,7 +39,7 @@ def test_build_tree(tmp_path: Path) -> None:
 
 
 def test_main_no_streamlit(monkeypatch: pytest.MonkeyPatch) -> None:
-    mod_name = "src.interface.lineage_dashboard"
+    mod_name = "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.lineage_dashboard"
     monkeypatch.setitem(sys.modules, "streamlit", None)
     monkeypatch.setitem(sys.modules, "streamlit_autorefresh", None)
     mod = importlib.reload(importlib.import_module(mod_name))
