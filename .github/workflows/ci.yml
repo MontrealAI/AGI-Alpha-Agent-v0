@@ -5,7 +5,7 @@
 # Access is restricted through the owner-check job to ensure only the repository
 # owner can start this pipeline.
 # Tagged releases deploy a Docker image with rollback on failure.
-# Jobs use `if: always()` so later stages still run even when earlier checks fail.
+# Later jobs use `if: always()` so they still run even when earlier checks fail.
 # The Python matrix covers versions **3.11–3.13** and the workflow includes
 # Windows and macOS smoke tests, full documentation builds and Docker deployment.
 name: "🚀 CI"
