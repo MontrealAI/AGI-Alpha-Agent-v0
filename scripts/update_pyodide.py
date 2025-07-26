@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: Apache-2.0
 # See docs/DISCLAIMER_SNIPPET.md
-"""Update Pyodide runtime checksums in fetch_assets.py."""
+"""Update Pyodide runtime checksums in fetch_assets.py.
+
+Usage:
+    python update_pyodide.py <version>
+"""
 
 from __future__ import annotations
 
@@ -14,7 +18,11 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-import requests  # type: ignore
+try:
+    import requests  # type: ignore
+except ImportError:  # pragma: no cover - handled at runtime
+    sys.stderr.write("Missing 'requests'. Install with 'pip install requests' or use requirements-dev.txt'.\n")
+    sys.exit(1)
 
 
 def fetch(url: str) -> bytes:
