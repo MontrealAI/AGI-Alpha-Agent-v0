@@ -20,6 +20,7 @@ from cachetools import TTLCache
 from .config import Settings
 from google.protobuf import json_format
 from typing import TYPE_CHECKING
+from alpha_factory_v1.core.utils import alerts
 
 if TYPE_CHECKING:  # pragma: no cover - type hints only
     from alpha_factory_v1.core.utils.tracing import span, bus_messages_total
@@ -86,6 +87,10 @@ class A2ABus:
     ) -> None:
         """Stop the bus when exiting an async context."""
         await self.stop()
+
+    def alert(self, message: str, url: str | None = None) -> None:
+        """Send an alert using :func:`alerts.send_alert`."""
+        alerts.send_alert(message, url or self.settings.alert_webhook_url)
 
     def subscribe(self, topic: str, handler: Callable[[EnvelopeLike], Awaitable[None] | None]) -> None:
         self._subs.setdefault(topic, []).append(handler)
