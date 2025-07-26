@@ -11,7 +11,7 @@ from alpha_factory_v1.scripts import preflight
 
 class TestPreflightOpenAIAgentsVersion(unittest.TestCase):
     def _run_check(self, module_name: str, version: str | None) -> bool:
-        fake_mod = types.SimpleNamespace()
+        fake_mod = types.SimpleNamespace(__spec__=object())
         if version is not None:
             fake_mod.__version__ = version
         orig_import_module = importlib.import_module
@@ -52,18 +52,20 @@ class TestPreflightOpenAIAgentsVersion(unittest.TestCase):
 
     def test_missing_spec_skips_check(self) -> None:
         fake_mod = types.SimpleNamespace(__spec__=None)
+        orig_import_module = importlib.import_module
+        orig_find_spec = importlib.util.find_spec
 
         def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return fake_mod
-            return importlib.import_module(name, *args, **kwargs)
+            return orig_import_module(name, *args, **kwargs)
 
         def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return object()
             if name == "agents":
                 return None
-            return importlib.util.find_spec(name, *args, **kwargs)
+            return orig_find_spec(name, *args, **kwargs)
 
         with (
             mock.patch("importlib.import_module", side_effect=_fake_import),

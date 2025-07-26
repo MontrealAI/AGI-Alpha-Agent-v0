@@ -265,10 +265,10 @@ def check_openai_agents_version(min_version: str = MIN_OPENAI_AGENTS_VERSION) ->
     version = mod.__version__
     if _version_lt(version, min_version):
         banner(
-            f"{module_name} {version} detected; >={min_version} recommended",
-            "YELLOW",
+            f"{module_name} {version} detected; >={min_version} required",
+            "RED",
         )
-        return True
+        return False
     banner(f"{module_name} {version} detected", "GREEN")
     return True
 
