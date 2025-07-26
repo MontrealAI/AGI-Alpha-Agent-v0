@@ -4,7 +4,7 @@ import builtins
 import importlib
 import sys
 import types
-import unittest
+import pytest
 
 MODULES = [
     "alpha_factory_v1.demos.aiga_meta_evolution.utils",
@@ -13,37 +13,41 @@ MODULES = [
 ]
 
 
-class TestAigaAgentsImport(unittest.TestCase):
-    def test_import_with_agents_only(self, monkeypatch):
-        stub = types.ModuleType("agents")
-        stub.Agent = object
-        stub.AgentRuntime = object
-        stub.OpenAIAgent = object
+def test_import_with_agents_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    stub = types.ModuleType("agents")
+    stub.Agent = object
+    stub.AgentRuntime = object
 
-        def _tool(*_a, **_k):
-            def _decorator(func):
-                return func
+    class DummyOpenAI:
+        def __init__(self, *args: object, **kwargs: object) -> None:
+            pass
 
-            return _decorator
+    stub.OpenAIAgent = DummyOpenAI
 
-        stub.Tool = _tool
+    def _tool(*_a: object, **_k: object) -> object:
+        def _decorator(func: object) -> object:
+            return func
 
-        monkeypatch.setitem(sys.modules, "agents", stub)
-        sys.modules.pop("openai_agents", None)
+        return _decorator
 
-        orig_import = builtins.__import__
+    stub.Tool = _tool
 
-        def fake_import(name, globals=None, locals=None, fromlist=(), level=0):
-            if name == "openai_agents":
-                raise ModuleNotFoundError(name)
-            return orig_import(name, globals, locals, fromlist, level)
+    monkeypatch.setitem(sys.modules, "agents", stub)
+    sys.modules.pop("openai_agents", None)
 
-        monkeypatch.setattr(builtins, "__import__", fake_import)
+    orig_import = builtins.__import__
 
-        for mod_name in MODULES:
-            mod = importlib.reload(importlib.import_module(mod_name))
-            self.assertIs(mod.OpenAIAgent, stub.OpenAIAgent)
+    def fake_import(name: str, globals=None, locals=None, fromlist=(), level=0):
+        if name == "openai_agents":
+            raise ModuleNotFoundError(name)
+        if name == "alpha_opportunity_stub":
+            return importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.alpha_opportunity_stub")
+        if name == "alpha_conversion_stub":
+            return importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.alpha_conversion_stub")
+        return orig_import(name, globals, locals, fromlist, level)
 
+    monkeypatch.setattr(builtins, "__import__", fake_import)
 
-if __name__ == "__main__":  # pragma: no cover
-    unittest.main()
+    for mod_name in MODULES:
+        mod = importlib.reload(importlib.import_module(mod_name))
+        assert mod.OpenAIAgent is stub.OpenAIAgent
