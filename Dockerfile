@@ -4,13 +4,13 @@
 FROM python:3.13-slim
 # Base image matches the highest Python version used in CI (currently 3.13)
 
-# install build tools and Node.js 22.7.0 for the React UI
+# install build tools and Node.js 22.17.1 for the React UI
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates gnupg build-essential git \
         rustc cargo postgresql-client patch && \
     git --version && \
-    export NODE_VERSION=22.7.0 NODE_DIST=node-v22.7.0-linux-x64.tar.xz && \
+    export NODE_VERSION=22.17.1 NODE_DIST=node-v22.17.1-linux-x64.tar.xz && \
     curl -fsSLO "https://nodejs.org/dist/v$NODE_VERSION/$NODE_DIST" && \
     curl -fsSLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt" && \
     grep " $NODE_DIST$" SHASUMS256.txt | sha256sum -c - && \
@@ -22,7 +22,7 @@ RUN apt-get update && \
 # upgrade pip to avoid outdated versions
 RUN python -m pip install --upgrade "pip<25" setuptools wheel
 
-# Verify Node installation is exactly 22.7.0
+# Verify Node installation is exactly 22.17.1
 RUN node --version
 
 WORKDIR /app

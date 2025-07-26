@@ -71,7 +71,7 @@ The repository owner triggers the [Docs workflow](.github/workflows/docs.yml) fr
 
 ### Publish Demo Gallery
 
-Ensure **Python 3.11–3.13** (<3.14) and **Node 22.7.0** are installed, then deploy the gallery
+Ensure **Python 3.11–3.13** (<3.14) and **Node 22.17.1** are installed, then deploy the gallery
 and docs with a single command:
 
 ```bash
@@ -107,7 +107,7 @@ checks and offline validation. Use the shell or Python version:
 python scripts/edge_human_knowledge_pages_sprint.py
 ```
 
-Ensure **Python 3.11–3.13** (<3.14), **Node 22.7.0** and `mkdocs` are installed. The
+Ensure **Python 3.11–3.13** (<3.14), **Node 22.17.1** and `mkdocs` are installed. The
 script mirrors the [Docs workflow](.github/workflows/docs.yml) used for manual
 deployment.
 
@@ -429,7 +429,7 @@ and [Docker Quickstart](#docker-quickstart) sections below.
 
 For the browser-based version, see
 [insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md).
-It requires **Node.js ≥22.7**. Install the dependencies with
+It requires **Node.js ≥22.17**. Install the dependencies with
 `npm ci` and build the static assets with `npm run build` before launching.
 The repository includes a `.nvmrc` file so you can simply run `nvm use` to
 select the correct Node version.

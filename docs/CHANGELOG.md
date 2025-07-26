@@ -92,7 +92,7 @@ Downstream users should consult this section when upgrading.
   mypy, the full Pytest matrix, Windows/macOS smoke tests, an offline docs
   build, the Docker build and pushes images on tags.
 - Lock files must be regenerated with `pip-compile --allow-unsafe`.
-- Requires **Python 3.11–3.13 (<3.14)** and **Node.js 22.7.0**.
+- Requires **Python 3.11–3.13 (<3.14)** and **Node.js 22.17.1**.
 
 
 ## [1.0.3] - 2025-07-10
