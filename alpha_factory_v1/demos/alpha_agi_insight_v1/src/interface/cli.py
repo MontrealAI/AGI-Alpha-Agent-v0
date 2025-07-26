@@ -53,12 +53,19 @@ __all__ = [
 class DisclaimerGroup(click.Group):
     """Group that prints a short disclaimer before any output."""
 
+    @staticmethod
+    def _enabled() -> bool:
+        if os.environ.get("NO_DISCLAIMER"):
+            return False
+        return sys.stdout.isatty()
+
     def get_help(self, ctx: click.Context) -> str:  # pragma: no cover - CLI
         help_text = super().get_help(ctx)
-        return f"{DISCLAIMER}\n\n{help_text}"
+        return f"{DISCLAIMER}\n\n{help_text}" if self._enabled() else help_text
 
     def invoke(self, ctx: click.Context) -> Any:  # pragma: no cover - CLI
-        click.echo(DISCLAIMER)
+        if self._enabled():
+            click.echo(DISCLAIMER)
         return super().invoke(ctx)
 
 
