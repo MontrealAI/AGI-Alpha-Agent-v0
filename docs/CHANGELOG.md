@@ -38,6 +38,7 @@ Downstream users should consult this section when upgrading.
 - Documented how to build a wheelhouse for offline installs and updated
   `tests/README.md` with the instructions.
 - Added `scripts/build_offline_wheels.sh` to gather wheels for all lock files.
+- Added `requests` to `requirements-dev.txt` for parity with other examples.
 - Updated `@vitejs/plugin-vue` to version 6 so the Docs workflow builds with Vite 7.
 - Removed outdated `OPENAI_CONTEXT_WINDOW` reference from the self-healing repo demo.
 - Documented how to add new policies in `POLICY_RUNBOOK.md`.
