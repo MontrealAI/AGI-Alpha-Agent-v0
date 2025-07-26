@@ -15,7 +15,7 @@ repository owner triggers it from the GitHub Actions UI.
    other jobs depend on this check and run only when the actor matches
    `github.repository_owner`. Contributors will see a skipped run unless the
    repository owner clicks **Run workflow**.
-4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.7.0** are installed.
+4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.17.1** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
@@ -60,7 +60,7 @@ alpha_factory_v1/core/interface/web_client/package-lock.json
 alpha_factory_v1/core/interface/web_client/staking/package-lock.json
 alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
 ```
-Each job installs Node.js 22.7.0 based on `.nvmrc` using `actions/setup-node` before
+Each job installs Node.js 22.17.1 based on `.nvmrc` using `actions/setup-node` before
 running `npm` commands. This ensures hooks like `eslint-insight-browser` and
 documentation steps use the expected runtime.
 

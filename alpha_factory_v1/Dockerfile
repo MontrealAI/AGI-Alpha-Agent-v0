@@ -25,7 +25,7 @@ ARG INSTALL_UI=1
 #######################################################################
 #  Stage 0 — (optional) Build static Trace‑graph front‑end            #
 #######################################################################
-FROM node:22.7.0-bookworm-slim AS ui-build
+FROM node:22.17.1-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
 WORKDIR /ui

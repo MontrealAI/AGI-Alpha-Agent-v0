@@ -21,7 +21,7 @@ Please report security vulnerabilities as described in our [Security Policy](SEC
 - Python 3.11–3.13 (**Python ≥3.11, <3.14**)
 - Docker and Docker Compose (Compose ≥2.5)
 - Git
-- Node.js 22.7.0 for the web client and browser demo. A `.nvmrc` is provided, so run
+- Node.js 22.17.1 for the web client and browser demo. A `.nvmrc` is provided, so run
   `nvm use` before installing Node dependencies.
 - See [Updating Browser Assets](alpha_factory_v1/scripts/README.md#updating-browser-assets)
   for instructions on refreshing the Pyodide runtime used by the Insight Browser demo.
