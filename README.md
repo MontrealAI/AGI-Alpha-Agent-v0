@@ -1417,6 +1417,8 @@ Install the project in editable mode so tests resolve imports:
 ```bash
 pip install -e .
 python check_env.py --auto-install  # times out after 10 minutes
+# Install heavier extras so tests needing torch or faiss work:
+ALPHA_FACTORY_FULL=1 python check_env.py --auto-install
 ```
 The `run_tests` helper automatically executes `python check_env.py --auto-install`
 before running `pytest`. When offline, set `WHEELHOUSE` or pass
@@ -1425,6 +1427,11 @@ repository ships with a `wheels/` directory that can be used as this cache.
 The full test suite relies on optional packages including `numpy`, `torch`,
 `pandas`, `prometheus_client`, `gymnasium`, `playwright`, `httpx`, `uvicorn`,
 `git`, `hypothesis` and `requests_mock`.
+
+Tests that depend on optional heavy packages skip automatically when those
+libraries are missing. Set environment variables like `SKIP_WEBKIT_TESTS=1`
+or `PYTEST_NET_OFF=1` to bypass browser or network tests if the necessary
+dependencies aren't installed.
 
 #### Wheelhouse Setup
 
