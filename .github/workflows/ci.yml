@@ -5,7 +5,8 @@
 # Access is restricted through the owner-check job to ensure only the repository
 # owner can start this pipeline.
 # Tagged releases deploy a Docker image with rollback on failure.
-# Later jobs use `if: always()` so they still run even when earlier checks fail.
+# Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
+# so they skip when owner verification fails.
 # The Python matrix covers versions **3.11–3.13** and the workflow includes
 # Windows and macOS smoke tests, full documentation builds and Docker deployment.
 name: "🚀 CI"
@@ -252,8 +253,8 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
-    if: always()
-    needs: [lint-type, tests]
+    if: ${{ needs.owner-check.result == 'success' }}
+    needs: [owner-check, lint-type, tests]
     runs-on: windows-latest
     timeout-minutes: 30
     environment: ci-on-demand
@@ -298,8 +299,8 @@ jobs:
 
   macos-smoke:
     name: "macOS Smoke"
-    if: always()
-    needs: [lint-type, tests]
+    if: ${{ needs.owner-check.result == 'success' }}
+    needs: [owner-check, lint-type, tests]
     environment: ci-on-demand
     runs-on: macos-latest
     timeout-minutes: 30
@@ -345,8 +346,8 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
-    if: always()
-    needs: [lint-type, tests]
+    if: ${{ needs.owner-check.result == 'success' }}
+    needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -403,8 +404,8 @@ jobs:
 
   docs-build:
     name: "📚 Docs Build"
-    if: always()
-    needs: [lint-type, tests]
+    if: ${{ needs.owner-check.result == 'success' }}
+    needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -497,8 +498,8 @@ jobs:
 
   docker:
     name: "🐳 Docker build"
-    if: always()
-    needs: [lint-type, tests]
+    if: ${{ needs.owner-check.result == 'success' }}
+    needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -617,8 +618,8 @@ jobs:
 
   deploy:
     name: "📦 Deploy"
-    if: ${{ always() && startsWith(github.ref, 'refs/tags/') }}
-    needs: [tests, docker]
+    if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
+    needs: [owner-check, tests, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: ci-on-demand
