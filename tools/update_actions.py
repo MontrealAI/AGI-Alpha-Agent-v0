@@ -13,7 +13,11 @@ import re
 import sys
 from pathlib import Path
 
-import requests
+try:
+    import requests
+except ImportError:  # pragma: no cover - handled at runtime
+    sys.stderr.write("The 'requests' package is required. Install it with 'pip install -r requirements-dev.txt'.\n")
+    sys.exit(1)
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "ci.yml"
 

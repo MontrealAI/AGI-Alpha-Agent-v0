@@ -73,11 +73,17 @@ repository-wide checks pass.
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
 images. Each page under `docs/demos/` must start with a preview image using
 `![preview](...)`.
-Run `python tools/update_actions.py` before committing workflow changes to pull
-the latest action tags. Then run `pre-commit` so the YAML passes `actionlint`:
+Workflow YAML files are linted by `pre-commit`. A local hook automatically
+runs `python tools/update_actions.py` whenever files in `.github/workflows/`
+change. You can also run it manually:
 
 ```bash
 pre-commit run --files .github/workflows/ci.yml
+
+If the hook reports that `requests` is missing, install it with:
+
+```bash
+pip install -r requirements-dev.txt
 ```
 
 ## Quick Checklist
