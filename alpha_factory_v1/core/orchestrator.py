@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Dict, List, cast
 
-from .agents import (
+from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import (
     planning_agent,
     research_agent,
     strategy_agent,

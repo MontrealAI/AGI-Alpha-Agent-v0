@@ -18,8 +18,9 @@ except Exception:  # pragma: no cover - optional
     LLMProvider = None
 
 from ...common.utils import messaging
-from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import ADKAdapter
-from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import MCPAdapter
+
+ADKAdapter = None
+MCPAdapter = None
 
 if TYPE_CHECKING:  # pragma: no cover - type hint only
     from ...common.utils.logging import Ledger
@@ -77,8 +78,27 @@ class BaseAgent:
                     )
                 except Exception:
                     self.llm = LLMProvider() if LLMProvider is not None else None
-        self.adk = ADKAdapter() if ADKAdapter.is_available() else None
-        self.mcp = MCPAdapter() if MCPAdapter.is_available() else None
+        global ADKAdapter, MCPAdapter
+        if ADKAdapter is None:
+            try:  # pragma: no cover - optional dependency
+                from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import (
+                    ADKAdapter as _ADKAdapter,
+                )
+
+                ADKAdapter = _ADKAdapter
+            except Exception:
+                ADKAdapter = None
+        if MCPAdapter is None:
+            try:  # pragma: no cover - optional dependency
+                from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import (
+                    MCPAdapter as _MCPAdapter,
+                )
+
+                MCPAdapter = _MCPAdapter
+            except Exception:
+                MCPAdapter = None
+        self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
+        self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
         self._handler = self._on_envelope
         self.bus.subscribe(self.name, self._handler)
 
