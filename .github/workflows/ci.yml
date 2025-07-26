@@ -378,6 +378,8 @@ jobs:
         run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
+      - name: Lint docs with pre-commit
+        run: pre-commit run --files docs
       - name: Build documentation
         run: mkdocs build --strict
 
@@ -435,6 +437,8 @@ jobs:
         run: npx update-browserslist-db --update-db --yes
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
+      - name: Lint docs with pre-commit
+        run: pre-commit run --files docs
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site
