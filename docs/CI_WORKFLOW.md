@@ -30,7 +30,7 @@ previous `latest` image so production always points at a working build.
 
 - **🧹 Ruff + 🏷️ Mypy** – lint and type checks.
 - **✅ Pytest** – unit tests and front‑end checks.
-- **🎯 Cypress** – end-to-end UI tests. Uses `cypress-io/github-action` to start the Vite dev server and run the suite. If `PERCY_TOKEN` is set the action uploads snapshots to Percy.
+- **🎯 Cypress (removed)** – the workflow no longer executes Cypress tests. End‑to‑end checks run via Playwright inside the **✅ Pytest** job.
 - **Windows/Mac Smoke** – lightweight sanity tests on Windows and macOS.
 - **📜 MkDocs** – basic documentation build.
 - **📚 Docs Build** – full docs site verification with an offline check. The job runs
