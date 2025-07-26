@@ -10,11 +10,11 @@ repository owner triggers it from the GitHub Actions UI.
 
 1. Navigate to **Actions → 🚀 CI**.
 2. Choose the branch or tag in the drop‑down and click **Run workflow**.
-3. Only the repository owner can trigger this button. The workflow begins with
-   a **Verify owner** job that runs the `ensure-owner` composite action. If the
-   actor does not match `github.repository_owner` the pipeline exits
-   immediately. Contributors will see a skipped run unless the repository owner
-   clicks **Run workflow**.
+3. Only the repository owner can trigger this button. The pipeline starts with
+   an **owner-check** job that runs the `ensure-owner` composite action. All
+   other jobs depend on this check and run only when the actor matches
+   `github.repository_owner`. Contributors will see a skipped run unless the
+   repository owner clicks **Run workflow**.
 4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.7.0** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
 
@@ -109,13 +109,13 @@ The workflow uploads benchmark and coverage artifacts only when the files exist.
 
 ## Avoid skipped jobs
 
-Each job begins with the `ensure-owner` composite action. This step fails fast
-when the workflow is triggered by anyone other than the repository owner. Once
-the check passes, the rest of the job executes normally. Downstream jobs depend
-on the linting and test stages, so a failure early in the pipeline prevents the
-Docker build or deploy steps from running. If a job appears skipped, inspect its
-dependencies for earlier failures. With the lock file paths fixed, all jobs run
-whenever the owner dispatches the workflow and the tests succeed.
+The workflow starts with an `owner-check` job that runs the `ensure-owner`
+composite action. This job fails fast when the workflow is triggered by anyone
+other than the repository owner. All remaining jobs list `owner-check` under
+`needs`, so they execute only after the ownership check passes. If a job appears
+skipped, inspect its dependencies for earlier failures. With the lock file paths
+fixed, all jobs run whenever the owner dispatches the workflow and the tests
+succeed.
 
 ## Local CI steps
 
