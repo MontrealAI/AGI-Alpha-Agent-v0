@@ -108,6 +108,27 @@ class Settings(SettingsBase):
     bus_port: int = Field(default=6006, alias="AGI_INSIGHT_BUS_PORT")
     ledger_path: str = Field(default="./ledger/audit.db", alias="AGI_INSIGHT_LEDGER_PATH")
     seed: Optional[int] = Field(default=None, alias="SEED")
+    memory_path: Optional[str] = Field(default=None, alias="AGI_INSIGHT_MEMORY_PATH")
+    broker_url: Optional[str] = Field(default=None, alias="AGI_INSIGHT_BROKER_URL")
+    bus_token: Optional[str] = Field(default=None, alias="AGI_INSIGHT_BUS_TOKEN")
+    bus_cert: Optional[str] = Field(default=None, alias="AGI_INSIGHT_BUS_CERT")
+    bus_key: Optional[str] = Field(default=None, alias="AGI_INSIGHT_BUS_KEY")
+    bus_fail_limit: int = Field(default=3, alias="AGI_INSIGHT_BUS_FAIL_LIMIT")
+    alert_webhook_url: Optional[str] = Field(default=None, alias="ALERT_WEBHOOK_URL")
+    allow_insecure: bool = Field(default=False, alias="AGI_INSIGHT_ALLOW_INSECURE")
+    broadcast: bool = Field(default=True, alias="AGI_INSIGHT_BROADCAST")
+    solana_rpc_url: str = Field(default="https://api.testnet.solana.com", alias="AGI_INSIGHT_SOLANA_URL")
+    solana_wallet: Optional[str] = Field(default=None, alias="AGI_INSIGHT_SOLANA_WALLET")
+    solana_wallet_file: Optional[str] = Field(default=None, alias="AGI_INSIGHT_SOLANA_WALLET_FILE")
+    model_name: str = Field(default="gpt-4o-mini", alias="AGI_MODEL_NAME")
+    temperature: float = Field(default=0.2, alias="AGI_TEMPERATURE")
+    context_window: int = Field(default=8192, alias="AGI_CONTEXT_WINDOW")
+    json_logs: bool = Field(default=False, alias="AGI_INSIGHT_JSON_LOGS")
+    db_type: str = Field(default="sqlite", alias="AGI_INSIGHT_DB")
+    island_backends: dict[str, str] = Field(
+        default_factory=lambda: {"default": "gpt-4o"},
+        alias="AGI_ISLAND_BACKENDS",
+    )
     self_improve_template: str = Field(
         default=str(Path(__file__).resolve().parents[1] / "prompts" / "self_improve.yaml"),
         alias="SELF_IMPROVE_TEMPLATE",
@@ -116,11 +137,32 @@ class Settings(SettingsBase):
 
     def __init__(self, **data: Any) -> None:  # pragma: no cover - exercised in tests
         super().__init__(**data)
+        raw = os.getenv("AGI_ISLAND_BACKENDS")
+        if raw and not data.get("island_backends"):
+            mapping = {}
+            for part in raw.split(","):
+                if "=" in part:
+                    k, v = part.split("=", 1)
+                    mapping[k.strip()] = v.strip()
+            if mapping:
+                self.island_backends = mapping
         if not self.openai_api_key:
             self.openai_api_key = get_secret("OPENAI_API_KEY")
         if not self.openai_api_key:
             _log.warning("OPENAI_API_KEY missing – offline mode enabled")
             self.offline = True
+        if self.offline:
+            self.broadcast = False
+        if not self.solana_wallet and self.solana_wallet_file:
+            try:
+                self.solana_wallet = Path(self.solana_wallet_file).read_text(encoding="utf-8").strip()
+            except Exception as exc:  # pragma: no cover - optional
+                _log.warning("Failed to load wallet file %s: %s", self.solana_wallet_file, exc)
+        if self.bus_cert and self.bus_key:
+            if not self.bus_token or self.bus_token == "change_this_token":
+                raise ValueError(
+                    "AGI_INSIGHT_BUS_TOKEN must be set and cannot be 'change_this_token' when TLS is enabled"
+                )
         try:
             raw = yaml.safe_load(Path(self.self_improve_template).read_text(encoding="utf-8"))
         except (OSError, yaml.YAMLError) as exc:
