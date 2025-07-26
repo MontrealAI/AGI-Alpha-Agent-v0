@@ -99,10 +99,14 @@ class TestAgentRegistryFunctions(unittest.TestCase):
 
     def test_get_agent_health_queue(self):
         from alpha_factory_v1.backend import agents as agents_mod
+        from alpha_factory_v1.backend.agents import registry as registry_mod
         from queue import Queue
 
-        saved_q = agents_mod._HEALTH_Q
-        agents_mod._HEALTH_Q = Queue()
+        saved_agents_q = agents_mod._HEALTH_Q
+        saved_registry_q = registry_mod._HEALTH_Q
+        tmp_q = Queue()
+        agents_mod._HEALTH_Q = tmp_q
+        registry_mod._HEALTH_Q = tmp_q
 
         class WrapAgent(AgentBase):
             NAME = "wrap"
@@ -122,7 +126,8 @@ class TestAgentRegistryFunctions(unittest.TestCase):
         self.assertTrue(ok)
         self.assertIsInstance(latency, float)
 
-        agents_mod._HEALTH_Q = saved_q
+        agents_mod._HEALTH_Q = saved_agents_q
+        registry_mod._HEALTH_Q = saved_registry_q
 
     def test_list_agents_detail(self):
         class DAgent(AgentBase):
