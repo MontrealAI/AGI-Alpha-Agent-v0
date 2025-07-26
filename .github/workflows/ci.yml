@@ -353,6 +353,11 @@ jobs:
           python-version: '3.13'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install docs requirements
         run: |
           python -m pip install --upgrade pip
@@ -378,8 +383,12 @@ jobs:
         run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Lint docs with pre-commit
         run: pre-commit run --files docs
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Build documentation
         run: mkdocs build --strict
 
@@ -405,6 +414,11 @@ jobs:
           python-version: '3.13'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: .cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -437,8 +451,12 @@ jobs:
         run: npx update-browserslist-db --update-db --yes
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Lint docs with pre-commit
         run: pre-commit run --files docs
+        env:
+          PRE_COMMIT_HOME: .cache/pre-commit
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site
