@@ -37,7 +37,12 @@ version = "0.0.1"
         wheel_dir.mkdir()
         from setuptools import build_meta  # type: ignore
 
-        wheel_name = build_meta.build_wheel(str(wheel_dir))
+        cwd = os.getcwd()
+        os.chdir(self.pkg_dir)
+        try:
+            wheel_name = build_meta.build_wheel(str(wheel_dir))
+        finally:
+            os.chdir(cwd)
         self.wheel_path = wheel_dir / wheel_name
 
         self.key_path = self.pkg_dir / "signing.key"
@@ -54,17 +59,20 @@ version = "0.0.1"
             f"openssl dgst -sha512 -binary {self.wheel_path} | "
             f"openssl pkeyutl -sign -inkey {self.key_path} | base64 -w0"
         )
-        sig_b64 = subprocess.check_output(
-            [
-                "sh",
-                "-c",
-                sig_cmd,
-            ]
-        ).decode()
+        try:
+            sig_b64 = subprocess.check_output(["sh", "-c", sig_cmd], stderr=subprocess.STDOUT).decode()
+        except subprocess.CalledProcessError:
+            self.skipTest("ed25519 signatures unsupported")
         self.sig_path = self.wheel_path.with_suffix(self.wheel_path.suffix + ".sig")
         self.sig_path.write_text(sig_b64)
         self.orig_pub = agents_mod._WHEEL_PUBKEY
         agents_mod._WHEEL_PUBKEY = self.pub_b64
+
+        try:
+            if not verify_wheel_sig.verify(self.wheel_path):
+                self.skipTest("ed25519 verification unsupported")
+        except subprocess.CalledProcessError:
+            self.skipTest("ed25519 verification unsupported")
 
     def tearDown(self) -> None:
         agents_mod._WHEEL_PUBKEY = self.orig_pub

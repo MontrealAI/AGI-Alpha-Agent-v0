@@ -8,6 +8,8 @@ import sys
 
 import pytest
 
+pytest.importorskip("torch")
+
 
 def test_bool_env_override(monkeypatch, non_network: None) -> None:
     """ALPHA_ASI_LOG_JSON=false should disable JSON logging."""
