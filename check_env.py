@@ -72,6 +72,7 @@ FULL_FEATURE = os.getenv("ALPHA_FACTORY_FULL", "0").lower() in {"1", "true", "ye
 
 REQUIRED_BASE = [
     "pytest",
+    "pytest_asyncio",
     "prometheus_client",
     "openai",
     "anthropic",
@@ -94,6 +95,7 @@ REQUIRED_BASE = [
     "websockets",
     "pytest_benchmark",
     "hypothesis",
+    "wheel",
 ]
 
 HEAVY_EXTRAS = [
