@@ -6,11 +6,16 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates gnupg build-essential git && \
     git --version && \
-        curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
+    export NODE_VERSION=22.7.0 NODE_DIST=node-v22.7.0-linux-x64.tar.xz && \
+    curl -fsSLO "https://nodejs.org/dist/v$NODE_VERSION/$NODE_DIST" && \
+    curl -fsSLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt" && \
+    grep " $NODE_DIST$" SHASUMS256.txt | sha256sum -c - && \
+    tar -xJf "$NODE_DIST" -C /usr/local --strip-components=1 && \
+    rm "$NODE_DIST" SHASUMS256.txt && \
+    ln -s /usr/local/bin/node /usr/local/bin/nodejs && \
     rm -rf /var/lib/apt/lists/*
 
-# Verify Node installation is >=22 (NodeSource script sets up latest LTS)
+# Verify Node installation is exactly 22.7.0
 RUN node --version
 
 WORKDIR /app
