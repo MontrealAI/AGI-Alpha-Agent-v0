@@ -30,7 +30,7 @@ def _start_server(port: int, env: dict[str, str] | None = None) -> subprocess.Po
     cmd = [
         sys.executable,
         "-m",
-        "src.interface.api_server",
+        "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.api_server",
         "--host",
         "127.0.0.1",
         "--port",
