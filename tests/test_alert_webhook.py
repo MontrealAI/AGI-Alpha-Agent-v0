@@ -18,7 +18,7 @@ class DummyLedger:
         self.events = []
 
     def log(self, env) -> None:  # type: ignore[override]
-        self.events.append(env.payload.get("event"))
+        self.events.append(env.payload["event"])
 
     def start_merkle_task(self, *_a, **_kw) -> None:  # pragma: no cover - test stub
         pass
