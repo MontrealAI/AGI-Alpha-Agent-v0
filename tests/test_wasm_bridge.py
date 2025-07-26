@@ -13,6 +13,8 @@ LIB = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/lib/p
 
 @pytest.mark.skipif(not shutil.which("node"), reason="node not available")
 def test_pyodide_load_failure(tmp_path: Path) -> None:
+    if not BRIDGE.exists():
+        pytest.skip("bridge.js not built")
     bridge_copy = tmp_path / "bridge.mjs"
     text = BRIDGE.read_text().replace("../lib/pyodide.js", LIB.resolve().as_posix())
     bridge_copy.write_text(text)
