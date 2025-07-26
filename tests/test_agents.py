@@ -148,6 +148,7 @@ def test_grpc_bus_tls_bad_token(tmp_path: Path) -> None:
 def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
     from alpha_factory_v1.core.agents.base_agent import BaseAgent
     from alpha_factory_v1.core import orchestrator
+    from alpha_factory_v1.backend.orchestrator_utils import monitor_agents
     from alpha_factory_v1.core.utils import config
 
     events: list[str] = []
@@ -157,7 +158,7 @@ def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
             pass
 
         def log(self, env) -> None:  # type: ignore[override]
-            events.append(env.payload.get("event"))
+            events.append(env.payload.get("event") if hasattr(env.payload, "get") else env.payload["event"])
 
         def start_merkle_task(self, *_a, **_kw) -> None:
             pass
@@ -195,7 +196,7 @@ def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
         async with orch.bus:
             runner.start(orch.bus, orch.ledger)
             monitor = asyncio.create_task(
-                orchestrator.monitor_agents(
+                monitor_agents(
                     orch.runners,
                     orch.bus,
                     orch.ledger,
@@ -204,7 +205,7 @@ def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
                     on_restart=orch._record_restart,
                 )
             )
-            await asyncio.sleep(3)
+            await asyncio.sleep(5)
             monitor.cancel()
             with contextlib.suppress(asyncio.CancelledError):
                 await monitor

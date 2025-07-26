@@ -15,8 +15,8 @@ from typing import Any
 import pytest
 
 _SKIP: Any = pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None,
-    reason="openai_agents not installed",
+    importlib.util.find_spec("openai_agents") is None or importlib.util.find_spec("gymnasium") is None,
+    reason="openai_agents or gymnasium not installed",
 )
 
 
