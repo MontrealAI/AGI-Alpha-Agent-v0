@@ -49,6 +49,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
+      - name: Show tool versions
+        run: |
+          python --version
+          node --version
+          docker --version
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy"
