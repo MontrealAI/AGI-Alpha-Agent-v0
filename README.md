@@ -118,10 +118,11 @@ Insight archive stays under 500 MiB (with a 750 MiB hard cap). Open **Actions 
 **Run workflow** to start the check. Repository owners can leave `run_token`
 blank. Others must provide the `run_token` that matches the `DISPATCH_TOKEN`
 secret. The workflow caches pip and npm dependencies using
-`actions/setup-python` and `actions/setup-node`. Node uses `cache-dependency-path`
-to reference
-`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json`
-and `alpha_factory_v1/core/interface/web_client/package-lock.json` so repeat runs
+`actions/setup-python` and `actions/setup-node`. Node uses `cache-dependency-path` to reference
+`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json`,
+`alpha_factory_v1/core/interface/web_client/package-lock.json`,
+`alpha_factory_v1/core/interface/web_client/staking/package-lock.json` and
+`alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json` so repeat runs
 skip redundant downloads and avoid the “Dependencies lock file is not found”
 warning. `ci.yml` stores these paths in the `NODE_LOCKFILES` environment
 variable so every `setup-node` step uses the same list. It
@@ -162,12 +163,12 @@ and open a pull request when checksums drift. See
 All Node.js steps pin the same lockfiles via `cache-dependency-path` so
 `actions/setup-node` caches npm packages correctly and avoids "Dependencies lock
 file is not found" warnings. The paths are:
-
 ```
 alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
 alpha_factory_v1/core/interface/web_client/package-lock.json
+alpha_factory_v1/core/interface/web_client/staking/package-lock.json
+alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
 ```
-
 To publish a release, create a Git tag and run the same workflow on that
 tag. The Docker job pushes the `agi-insight-demo` image to GitHub Container
 Registry while the deploy stage attaches the built web client archive to a
