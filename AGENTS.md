@@ -138,6 +138,8 @@ Follow these steps when installing without internet access:
   missing packages before running `pytest`.
   Install `requirements-demo.txt` as well when running tests that depend on
   heavy extras such as `numpy` and `torch`.
+  The dev requirements now include `requests` so tools like
+  `scripts/fetch_assets.py` work without extra installs.
  - Run a quick smoke check first to verify the install:
    `pytest tests/test_ping_agent.py tests/test_af_requests.py --cov --cov-report=xml`
    - Execute `pytest --cov --cov-report=xml` (or `python -m alpha_factory_v1.scripts.run_tests`) and ensure the entire suite passes.
