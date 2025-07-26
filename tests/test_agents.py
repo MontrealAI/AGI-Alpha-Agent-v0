@@ -23,8 +23,8 @@ except Exception:  # pragma: no cover - optional
     HAVE_CRYPTO = False
 
 from alpha_factory_v1.backend import agents
+from alpha_factory_v1.backend.agents import registry as agents_registry
 from alpha_factory_v1.backend.agents.base import AgentBase
-from alpha_factory_v1.core.agents.base_agent import BaseAgent
 
 
 class DummyHB(AgentBase):
@@ -44,7 +44,7 @@ def test_agent_registration_and_heartbeat() -> None:
         compliance_tags=[],
     )
     q: Queue = Queue()
-    with patch.object(agents, "_HEALTH_Q", q):
+    with patch.object(agents, "_HEALTH_Q", q), patch.object(agents_registry, "_HEALTH_Q", q):
         agents.register_agent(meta)
         agent = agents.get_agent("dummy_hb")
         asyncio.run(agent.step())
@@ -145,23 +145,8 @@ def test_grpc_bus_tls_bad_token(tmp_path: Path) -> None:
     asyncio.run(run())
 
 
-class FreezeAgent(BaseAgent):
-    """Agent whose run_cycle blocks."""
-
-    NAME = "freeze"
-    CYCLE_SECONDS = 0.1
-
-    def __init__(self, bus, ledger) -> None:  # type: ignore[override]
-        super().__init__("freeze", bus, ledger)
-
-    async def run_cycle(self) -> None:
-        await asyncio.sleep(999)
-
-    async def handle(self, _env) -> None:  # pragma: no cover - test helper
-        pass
-
-
 def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
+    from alpha_factory_v1.core.agents.base_agent import BaseAgent
     from alpha_factory_v1.core import orchestrator
     from alpha_factory_v1.core.utils import config
 
@@ -184,6 +169,21 @@ def test_monitor_restart_and_ledger_log(monkeypatch) -> None:
             pass
 
     settings = config.Settings(bus_port=0)
+
+    class FreezeAgent(BaseAgent):
+        """Agent whose run_cycle blocks."""
+
+        NAME = "freeze"
+        CYCLE_SECONDS = 0.1
+
+        def __init__(self, bus, ledger) -> None:  # type: ignore[override]
+            super().__init__("freeze", bus, ledger)
+
+        async def run_cycle(self) -> None:
+            await asyncio.sleep(999)
+
+        async def handle(self, _env) -> None:  # pragma: no cover - test helper
+            pass
 
     monkeypatch.setattr(orchestrator, "Ledger", DummyLedger)
     monkeypatch.setattr(orchestrator.Orchestrator, "_init_agents", lambda self: [FreezeAgent(self.bus, self.ledger)])
