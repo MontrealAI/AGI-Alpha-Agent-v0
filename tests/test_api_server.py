@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
+import sys
 import time
 import asyncio
 from pathlib import Path
@@ -12,14 +13,20 @@ from fastapi.testclient import TestClient  # noqa: E402
 os.environ.setdefault("API_TOKEN", "test-token")
 os.environ.setdefault("API_RATE_LIMIT", "1000")
 
+# Include lightweight stubs for heavy optional deps
+RESOURCE_DIR = Path(__file__).resolve().parent / "resources"
+sys.path.insert(0, str(RESOURCE_DIR))
+
 
 from typing import Any, cast
 import importlib
 
 
 def make_client() -> TestClient:
+    from alpha_factory_v1.core.evaluators import novelty
     from alpha_factory_v1.core.interface import api_server
 
+    importlib.reload(novelty)
     api_server = importlib.reload(api_server)
     return TestClient(cast(Any, api_server.app))
 
