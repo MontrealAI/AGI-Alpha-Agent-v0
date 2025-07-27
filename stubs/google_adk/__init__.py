@@ -43,4 +43,10 @@ else:
         def __init__(self, *args, **kwargs):
             pass
 
+    class JsonSchema(dict):
+        """Lightweight placeholder used when the real google_adk package is absent."""
+
+        pass
+
+
 __all__ = [k for k in globals().keys() if not k.startswith("_")]
