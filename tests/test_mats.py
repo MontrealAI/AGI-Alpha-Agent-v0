@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from alpha_factory_v1.core.simulation import mats
 from alpha_factory_v1.core.evaluators.novelty import NoveltyIndex
+import pytest
 
 
 def test_run_evolution_deterministic() -> None:
@@ -65,6 +66,8 @@ def test_pareto_front_after_five_generations() -> None:
 
 
 def test_novelty_divergence_for_elites() -> None:
+    pytest.importorskip("sentence_transformers")
+
     def fn(genome: list[float]) -> tuple[float, float]:
         x, y = genome
         return x**2, y**2
