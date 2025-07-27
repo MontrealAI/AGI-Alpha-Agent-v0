@@ -26,7 +26,8 @@ except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
 # Optional Google ADK ----------------------------------------------------------
 try:  # pragma: no cover - optional dependency
     import google_adk as adk  # type: ignore
-
+    if not hasattr(adk, "task"):
+        raise ModuleNotFoundError
     _HAVE_ADK = True
 except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
 
