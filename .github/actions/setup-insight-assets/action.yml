@@ -6,7 +6,7 @@ runs:
   steps:
     - name: Generate asset key
       id: asset-key
-      uses: ../generate-asset-key
+      uses: ./.github/actions/generate-asset-key
     - name: Cache Pyodide and GPT-2 assets
       id: asset-cache
       uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
