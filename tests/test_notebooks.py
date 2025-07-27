@@ -38,10 +38,9 @@ def test_macro_sentinel_notebook(tmp_path: Path) -> None:
                 "os.environ.setdefault('FRED_API_KEY', '')\n"
                 "os.environ.setdefault('TW_BEARER_TOKEN', '')\n"
                 "os.environ.setdefault('LIVE_FEED', '0')\n"
-                "os.environ['DEFAULT_PORTFOLIO_USD'] = '2000000'\n"(
-                    "print(json.dumps({k: os.getenv(k, '') for k in ['OPENAI_API_KEY',"
-                    " 'FRED_API_KEY','TW_BEARER_TOKEN','LIVE_FEED']}, indent=2))"
-                )
+                "os.environ['DEFAULT_PORTFOLIO_USD'] = '2000000'\n"
+                "print(json.dumps({k: os.getenv(k, '') for k in ['OPENAI_API_KEY',"
+                " 'FRED_API_KEY','TW_BEARER_TOKEN','LIVE_FEED']}, indent=2))"
             )
         if "agent_macro_entrypoint.py" in src:
             cell.source = (
