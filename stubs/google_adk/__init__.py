@@ -39,4 +39,8 @@ else:
     class AgentException(Exception):
         pass
 
+    class Agent:
+        def __init__(self, *args, **kwargs):
+            pass
+
 __all__ = [k for k in globals().keys() if not k.startswith("_")]

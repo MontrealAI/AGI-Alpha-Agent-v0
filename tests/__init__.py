@@ -16,7 +16,16 @@ if STUBS.is_dir():
     if find_spec("openai_agents") is None:
         sys.path.append(str(STUBS))
     import importlib
-    adk_spec = find_spec("google_adk") or find_spec("google.adk")
+    try:
+        adk_spec = find_spec("google_adk") or find_spec("google.adk")
+    except ModuleNotFoundError:
+        adk_spec = None
+    if adk_spec is None:
+        pass
+    else:
+        module = importlib.import_module(adk_spec.name)
+        if adk_spec.name == "google.adk" and find_spec("google_adk") is None:
+            sys.modules.setdefault("google_adk", module)
     if adk_spec is None or not hasattr(importlib.import_module(adk_spec.name), "task"):
         sys.path.insert(0, str(STUBS))
         importlib.invalidate_caches()
