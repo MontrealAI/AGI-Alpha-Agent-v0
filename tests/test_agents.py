@@ -278,7 +278,11 @@ def test_codegen_agent_sandbox_blocks_import(monkeypatch) -> None:
     agent = codegen_agent.CodeGenAgent(bus, ledger)
 
     agent.execute_in_sandbox("import os\nprint('hi')")
-    errs = [r.payload.get("stderr", "") for r in ledger.records if "stderr" in r.payload]
+    errs = [
+        r.payload.get("stderr", "") if hasattr(r.payload, "get") else r.payload["stderr"]
+        for r in ledger.records
+        if (hasattr(r.payload, "__contains__") and "stderr" in r.payload)
+    ]
     assert errs and "ImportError" in errs[-1]
 
 
