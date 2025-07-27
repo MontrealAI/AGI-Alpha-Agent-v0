@@ -227,7 +227,10 @@ class MetaEvolver:
         self.ckpt_dir = pathlib.Path(checkpoint_dir)
         self.ckpt_dir.mkdir(parents=True, exist_ok=True)
         self.llm = llm
-        self.rng = random.Random(int("A1GA", 16))
+        # Use a deterministic seed derived from ASCII bytes so the
+        # meta-evolution runs reproducibly regardless of Python version.
+        seed = int.from_bytes(b"A1GA", "big")
+        self.rng = random.Random(seed)
         self.gen = 0
         self.history: List[Tuple[int, float]] = []
         self._archive: List[np.ndarray] = []
