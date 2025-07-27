@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import importlib.util
 import os
 import shutil
 import subprocess
@@ -20,11 +19,9 @@ pytest.skip(
 
 pytestmark = [
     pytest.mark.skipif(shutil.which("patch") is None, reason="patch not installed"),
-    pytest.mark.skipif(
-        importlib.util.find_spec("openai_agents") is None,
-        reason="openai_agents not installed",
-    ),
 ]
+
+pytest.importorskip("openai_agents", minversion="0.0.17")
 
 
 def test_patcher_core_cli(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

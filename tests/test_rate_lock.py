@@ -15,11 +15,11 @@ try:
     import openai_agents
 except Exception:
     pass
-pytest.importorskip("gymnasium")
+pytest.importorskip("gymnasium", minversion="0.29")
 sys.path.insert(0, str(root))
 from alpha_factory_v1.demos.aiga_meta_evolution import agent_aiga_entrypoint as mod
 
-oa = pytest.importorskip("openai_agents")
+oa = pytest.importorskip("openai_agents", minversion="0.0.17")
 if not hasattr(oa, "OpenAIAgent"):
     pytest.skip("openai_agents missing OpenAIAgent", allow_module_level=True)
 

@@ -10,7 +10,7 @@ import types
 
 import pytest
 
-pytest.importorskip("gymnasium", reason="gymnasium required for environment")
+pytest.importorskip("gymnasium", minversion="0.29", reason="gymnasium required for environment")
 from fastapi.testclient import TestClient
 
 

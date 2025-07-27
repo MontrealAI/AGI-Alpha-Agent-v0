@@ -1,13 +1,45 @@
 # SPDX-License-Identifier: Apache-2.0
 import importlib
 import types
+from packaging.version import Version
 import pytest
 
-HAS_OAI = importlib.util.find_spec("openai_agents") or importlib.util.find_spec("agents")
-HAS_ADK = importlib.util.find_spec("google_adk") or importlib.util.find_spec("google.adk")
+
+def _oai_available() -> bool:
+    for name in ("openai_agents", "agents"):
+        try:
+            spec = importlib.util.find_spec(name)
+        except ValueError:
+            spec = None
+        if spec is None:
+            continue
+        mod = importlib.import_module(name)
+        if Version(getattr(mod, "__version__", "0")) >= Version("0.0.17"):
+            return True
+    return False
 
 
-@pytest.mark.skipif(not HAS_OAI, reason="openai_agents package not installed")
+HAS_OAI = _oai_available()
+
+
+def _adk_available() -> bool:
+    for name in ("google_adk", "google.adk"):
+        try:
+            spec = importlib.util.find_spec(name)
+        except ValueError:
+            spec = None
+        if spec is None:
+            continue
+        mod = importlib.import_module(name)
+        if hasattr(mod, "Router"):
+            return True
+    return False
+
+
+HAS_ADK = _adk_available()
+
+
+@pytest.mark.skipif(not HAS_OAI, reason="openai_agents >=0.0.17 required")
 def test_build_llm_missing_api_key(monkeypatch):
     if importlib.util.find_spec("openai_agents"):
         import openai_agents as oa

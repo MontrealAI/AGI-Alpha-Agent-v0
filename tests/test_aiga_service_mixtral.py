@@ -14,7 +14,7 @@ import requests
 import pytest
 
 pytest.importorskip("prometheus_client")
-pytest.importorskip("gymnasium")
+pytest.importorskip("gymnasium", minversion="0.29")
 pytest.importorskip("fastapi")
 
 ENTRYPOINT = "alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py"

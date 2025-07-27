@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import asyncio
 import importlib
-import importlib.util
 import subprocess
 import sys
 import time
@@ -14,13 +13,10 @@ from typing import Any
 
 import pytest
 
-_SKIP: Any = pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None or importlib.util.find_spec("gymnasium") is None,
-    reason="openai_agents or gymnasium not installed",
-)
+pytest.importorskip("openai_agents", minversion="0.0.17")
+pytest.importorskip("gymnasium", minversion="0.29")
 
 
-@_SKIP  # type: ignore[misc]
 def test_bridge_launch() -> None:
     """Start ``openai_agents_bridge.main`` and confirm registration."""
     proc = subprocess.Popen(
@@ -44,7 +40,6 @@ def test_bridge_launch() -> None:
     assert "EvolverAgent" in out
 
 
-@_SKIP  # type: ignore[misc]
 def test_evolve_tool() -> None:
     """Invoke ``evolve`` once and verify ``best_alpha`` output."""
     mod = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.openai_agents_bridge")
