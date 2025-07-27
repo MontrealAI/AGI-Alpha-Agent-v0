@@ -174,12 +174,12 @@ def main() -> None:
     runtime = AgentRuntime(api_key=None, port=AGENT_PORT)
     agent = EvolverAgent()
     runtime.register(agent)
-    print("Registered EvolverAgent with runtime")
+    print("Registered EvolverAgent with runtime", flush=True)
 
     if ADK_AVAILABLE:
         auto_register([agent])
         maybe_launch()
-        print("EvolverAgent exposed via ADK gateway")
+        print("EvolverAgent exposed via ADK gateway", flush=True)
 
     runtime.run()
 

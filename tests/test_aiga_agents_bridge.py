@@ -37,7 +37,8 @@ def test_bridge_launch() -> None:
         if proc.poll() is None:
             proc.kill()
             proc.wait(timeout=5)
-    assert "EvolverAgent" in out
+    assert "Registered EvolverAgent with runtime" in out
+    assert "EvolverAgent exposed via ADK gateway" in out
 
 
 def test_evolve_tool() -> None:
