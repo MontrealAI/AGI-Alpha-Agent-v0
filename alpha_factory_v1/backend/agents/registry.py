@@ -6,9 +6,9 @@ import asyncio
 import inspect
 import json
 import logging
+import os
 
 logger = logging.getLogger("alpha_factory.agents")
-import os
 import queue
 import threading
 import time
