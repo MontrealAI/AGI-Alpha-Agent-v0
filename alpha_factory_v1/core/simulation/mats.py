@@ -27,6 +27,7 @@ __all__ = [
 
 # Keep per-scenario populations for island-style evolution.
 ISLANDS: dict[str, "Population"] = {}
+ISLAND_SEEDS: dict[str, int | None] = {}
 
 
 @dataclass(slots=True)
@@ -207,9 +208,10 @@ def run_evolution(
     rng = random.Random(seed)
     islands = populations if populations is not None else ISLANDS
     key = scenario_hash or "default"
-    novelty = novelty_index or NoveltyIndex()
+    novelty = novelty_index
 
-    pop = islands.get(key)
+    pop = None if populations is None else islands.get(key)
+    ISLAND_SEEDS[key] = seed
     if pop is None:
         pop = [Individual([rng.uniform(-1, 1) for _ in range(genome_length)]) for _ in range(population_size)]
     islands[key] = pop
