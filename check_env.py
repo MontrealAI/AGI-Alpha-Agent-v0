@@ -146,7 +146,14 @@ DEMO_PACKAGES = {
 OPTIONAL = [
     "openai_agents",
     "google_adk",
+    "gymnasium",
 ]
+
+OPTIONAL_HINTS = {
+    "openai_agents": "OpenAI Agents SDK missing. Install with: pip install openai-agents",
+    "google_adk": "Google ADK not available. Install with: pip install google-adk",
+    "gymnasium": "gymnasium not installed. Install with: pip install gymnasium[classic-control]",
+}
 
 PIP_NAMES = {
     "openai_agents": "openai-agents",
@@ -489,6 +496,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     missing = missing_required + missing_optional
     if missing:
         print("WARNING: Missing packages:", ", ".join(missing))
+        for pkg in missing_optional:
+            hint = OPTIONAL_HINTS.get(pkg)
+            if hint:
+                print("  -", hint)
         if auto and missing_required and (wheelhouse or network_ok):
             cmd = [sys.executable, "-m", "pip", "install", "--quiet"]
             if wheelhouse:
@@ -541,6 +552,10 @@ def main(argv: Optional[List[str]] = None) -> int:
             if wheelhouse:
                 hint = f"pip install --no-index --find-links {wheelhouse} " + " ".join(missing)
             print("Some features may be degraded. Install with:", hint)
+            for pkg in missing_optional:
+                hint_msg = OPTIONAL_HINTS.get(pkg)
+                if hint_msg:
+                    print("  -", hint_msg)
 
     if openai_agents_found and not openai_agents_attr_ok:
         print("WARNING: openai_agents package lacks required API; skipping auto-install")
