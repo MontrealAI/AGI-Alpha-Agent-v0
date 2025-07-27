@@ -49,13 +49,15 @@ pytest -q
    ```bash
    pip install -r requirements-dev.txt
    ```
-2. Install the demo extras **required for the full suite**:
+2. Install the demo extras **required for the full suite** (these heavy
+   dependencies provide optional agents and environments):
    ```bash
    pip install -r requirements-demo.txt
    ```
    `requirements-demo.txt` pulls in `openai_agents>=0.0.17`, `gymnasium` and
    `google_adk` together with `openai>=1.82.0,<2.0`. These packages are required
-   for running **all** tests, not just the optional integration checks.
+   for running **all** tests, not just the optional integration checks. Make
+   sure these heavy extras are installed before running the full suite.
 3. Verify the core dependencies are present:
    ```bash
    python scripts/check_python_deps.py
@@ -79,6 +81,18 @@ pytest -q
    `--wheelhouse <dir>` (or set `WHEELHOUSE`) so packages install from the
    local wheel cache. Skipping this step can lead to missing modules during
    test collection.
+
+### Ensure heavy extras are installed
+
+To install the heavier optional packages such as `openai_agents`, `gymnasium`
+and `google_adk`, run:
+
+```bash
+ALPHA_FACTORY_FULL=1 python check_env.py --auto-install
+```
+
+Use `--wheelhouse <dir>` or set `WHEELHOUSE` when offline so the command
+installs from your local wheel cache.
 
 ### Quick health check
 
