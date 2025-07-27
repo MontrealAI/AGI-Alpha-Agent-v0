@@ -42,18 +42,22 @@ _TOKEN = os.getenv("ALPHA_FACTORY_ADK_TOKEN") or None  # optional auth
 _HOST = os.getenv("ALPHA_FACTORY_ADK_HOST", "0.0.0.0")
 _PORT = int(os.getenv("ALPHA_FACTORY_ADK_PORT", "9000"))
 
+adk = None
 try:  # runtime optional dependency
-    import google_adk as adk  # pip install google-adk
+    import google_adk as adk  # packaged as "google-adk"
+except ModuleNotFoundError:  # fallback to the namespaced import
+    try:
+        from google import adk  # type: ignore
+    except Exception:
+        adk = None
 
-    _ADK_OK = True
-except ModuleNotFoundError:  # graceful degradation
-    _ADK_OK = False
-    if _ENABLE:
-        logger.warning(
-            "ADK integration requested but google-adk package is missing. "
-            "Run  ➜  pip install google-adk   or disable ADK via "
-            "ALPHA_FACTORY_ENABLE_ADK=false."
-        )
+_ADK_OK = adk is not None
+if not _ADK_OK and _ENABLE:
+    logger.warning(
+        "ADK integration requested but google-adk package is missing. "
+        "Run  ➜  pip install google-adk   or disable ADK via "
+        "ALPHA_FACTORY_ENABLE_ADK=false."
+    )
 
 
 # Guard-function lets callers know whether ADK functionality is live
