@@ -1,16 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 """Ensure the governance-bridge CLI is available."""
 
-import importlib.util
 import subprocess
 
 import pytest
 
 
-@pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None,
-    reason="openai_agents not installed",
-)
+pytest.importorskip("openai_agents", minversion="0.0.17")
+
+
 def test_governance_bridge_help() -> None:
     """Verify the console script prints usage information."""
     result = subprocess.run(
@@ -23,10 +21,6 @@ def test_governance_bridge_help() -> None:
     assert "usage" in result.stdout.lower()
 
 
-@pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None,
-    reason="openai_agents not installed",
-)
 def test_governance_bridge_port_arg() -> None:
     """Verify the CLI accepts the --port option."""
     result = subprocess.run(

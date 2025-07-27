@@ -1,17 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import importlib.util
 import subprocess
 import time
 
 import pytest
 
 
-@pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None,
-    reason="openai_agents not installed",
-)
+pytest.importorskip("openai_agents", minversion="0.0.17")
+
+
 def test_governance_bridge_runtime() -> None:
     """Launch governance-bridge and verify agent registration."""
     proc = subprocess.Popen(

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import importlib.util
 import os
 import subprocess
 import time
@@ -10,10 +9,9 @@ from pathlib import Path
 import pytest
 
 
-@pytest.mark.skipif(
-    importlib.util.find_spec("openai_agents") is None,
-    reason="openai_agents not installed",
-)
+pytest.importorskip("openai_agents", minversion="0.0.17")
+
+
 def test_governance_bridge_adk_runtime(tmp_path: Path) -> None:
     """Launch governance-bridge with ADK enabled and verify logs."""
     stub = tmp_path / "google_adk.py"

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+from packaging.version import Version
 import os
 import unittest
 from unittest.mock import MagicMock, patch
@@ -13,15 +14,22 @@ import pytest
 
 
 # Skip entire module if optional packages are missing
-def _has_pkg(name: str) -> bool:
+def _has_pkg(name: str, min_version: str | None = None) -> bool:
     try:
-        return importlib.util.find_spec(name) is not None
+        spec = importlib.util.find_spec(name)
     except ValueError:
         return False
+    if spec is None:
+        return False
+    if min_version:
+        mod = importlib.import_module(name)
+        if Version(getattr(mod, "__version__", "0")) < Version(min_version):
+            return False
+    return True
 
 
-if not (_has_pkg("openai_agents") and _has_pkg("google_adk")):
-    pytest.skip("openai_agents or google_adk not installed", allow_module_level=True)
+if not (_has_pkg("openai_agents", "0.0.17") and _has_pkg("google_adk")):
+    pytest.skip("openai_agents>=0.0.17 and google_adk required", allow_module_level=True)
 
 
 class TestInspectorBridgeRuntime(unittest.TestCase):

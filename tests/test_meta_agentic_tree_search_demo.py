@@ -309,7 +309,7 @@ class TestMetaAgenticTreeSearchDemo(unittest.TestCase):
 
 
 def test_bridge_online_mode(monkeypatch: pytest.MonkeyPatch) -> None:
-    pytest.importorskip("openai_agents")
+    pytest.importorskip("openai_agents", minversion="0.0.17")
     monkeypatch.setenv("OPENAI_API_KEY", "dummy")
     result = subprocess.run(
         [
