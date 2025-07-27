@@ -7,6 +7,8 @@ import argparse
 import subprocess
 import time
 from pathlib import Path
+import shlex
+import sys
 
 from pyvirtualdisplay import Display
 
@@ -63,7 +65,24 @@ def main(argv: list[str] | None = None) -> int:
         ]
         # Start ffmpeg first so it captures the entire run
         ffmpeg_proc = subprocess.Popen(ffmpeg_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        demo_proc = subprocess.Popen(args.demo, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            demo_cmd = shlex.split(args.demo)
+        except ValueError as exc:
+            print(f"Failed to parse demo command: {exc}", file=sys.stderr)
+            ffmpeg_proc.terminate()
+            ffmpeg_proc.wait()
+            return 1
+        try:
+            demo_proc = subprocess.Popen(
+                demo_cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except FileNotFoundError as exc:
+            print(f"Failed to run demo: {exc}", file=sys.stderr)
+            ffmpeg_proc.terminate()
+            ffmpeg_proc.wait()
+            return 1
         try:
             time.sleep(args.duration)
         finally:
