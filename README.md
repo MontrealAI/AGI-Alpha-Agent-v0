@@ -1418,8 +1418,8 @@ Install the optional test dependencies with:
 
 ```bash
 pip install -r requirements-dev.txt
-pip install -r requirements-demo.txt  # adds numpy, torch and extras
-pip install -r requirements-demo-cpu.lock  # deterministic CPU setup
+pip install -r requirements.lock  # pinned versions for deterministic setup
+pip install -r alpha_factory_v1/backend/requirements-lock.txt  # includes RDKit
 ```
 
 Install the project in editable mode so tests resolve imports:
