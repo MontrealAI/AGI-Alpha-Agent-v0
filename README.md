@@ -1182,6 +1182,8 @@ git clone --branch v0.1.0-alpha https://github.com/MontrealAI/AGI-Alpha-Agent-v0
 cd AGI-Alpha-Agent-v0
 ./quickstart.sh --preflight   # optional environment check
 python check_env.py --auto-install  # verify & auto-install deps (10 min timeout)
+# Install heavy optional packages such as openai_agents and gymnasium:
+ALPHA_FACTORY_FULL=1 python check_env.py --auto-install
 # Install runtime dependencies
 pip install -r requirements.lock
 # (If this fails with a network error, create a wheelhouse and rerun
@@ -1400,6 +1402,10 @@ Unit tests can be executed with the bundled helper script:
 ```bash
 python -m alpha_factory_v1.scripts.run_tests
 ```
+
+Always run `python check_env.py --auto-install` beforehand so optional
+dependencies like `openai_agents` and `gymnasium` are present. Use
+`ALPHA_FACTORY_FULL=1` to install heavy extras.
 
 The helper validates the target directory, prefers `pytest` when
 available and otherwise falls back to `unittest`. Ensure all tests pass

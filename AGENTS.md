@@ -400,9 +400,11 @@ issues locally before dispatching the workflow.
   `python check_env.py --auto-install` (pass `--wheelhouse <path>` when offline)
   if required.
  - Always execute `python check_env.py --auto-install` before running the tests
-   or `pre-commit` so optional dependencies install correctly. When offline,
-  provide `--wheelhouse <dir>` or set `WHEELHOUSE` to your wheel cache. The
-  repository no longer ships a full wheelhouse because some wheels exceed
+   or `pre-commit` so optional dependencies like `openai_agents` and
+   `gymnasium` install correctly. Set `ALPHA_FACTORY_FULL=1` to pull in the
+   heavier extras. When offline, provide `--wheelhouse <dir>` or set
+   `WHEELHOUSE` to your wheel cache. The repository no longer ships a full
+   wheelhouse because some wheels exceed
   GitHub's 100 MB size limit. Build the wheelhouse with
   `scripts/build_offline_wheels.sh` on a machine with internet access and copy
   the resulting directory to `wheels/`. Set `WHEELHOUSE=$(pwd)/wheels` and

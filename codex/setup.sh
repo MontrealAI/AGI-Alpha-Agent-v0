@@ -75,6 +75,7 @@ elif [[ "${MINIMAL_INSTALL:-0}" == "1" ]]; then
     pytest-httpx
     numpy
     pandas
+    gymnasium[classic-control]
     playwright
     plotly
     websockets
@@ -121,6 +122,7 @@ else
     orjson
     ortools
     pandas
+    gymnasium[classic-control]
     playwright
     plotly
     prometheus-client
@@ -160,6 +162,9 @@ fi
 check_env_opts=()
 if [[ -n "${WHEELHOUSE:-}" ]]; then
   check_env_opts+=(--wheelhouse "$WHEELHOUSE")
+fi
+if [[ "${FULL_INSTALL:-0}" == "1" ]]; then
+  export ALPHA_FACTORY_FULL=1
 fi
 $PYTHON check_env.py --auto-install "${check_env_opts[@]}"
 
