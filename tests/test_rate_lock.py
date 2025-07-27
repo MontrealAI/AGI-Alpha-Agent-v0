@@ -17,11 +17,11 @@ except Exception:
     pass
 pytest.importorskip("gymnasium", minversion="0.29")
 sys.path.insert(0, str(root))
-from alpha_factory_v1.demos.aiga_meta_evolution import agent_aiga_entrypoint as mod
-
 oa = pytest.importorskip("openai_agents", minversion="0.0.17")
 if not hasattr(oa, "OpenAIAgent"):
     pytest.skip("openai_agents missing OpenAIAgent", allow_module_level=True)
+
+from alpha_factory_v1.demos.aiga_meta_evolution import agent_aiga_entrypoint as mod
 
 a2a_mod = sys.modules.setdefault("a2a", types.ModuleType("a2a"))
 a2a_mod.A2ASocket = lambda *a, **k: None  # type: ignore[attr-defined]

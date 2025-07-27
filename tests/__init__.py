@@ -12,5 +12,13 @@ if find_spec("alpha_factory_v1") is None:
         sys.path.append(str(ROOT))
 
 STUBS = Path(__file__).resolve().parents[1] / "stubs"
-if find_spec("openai_agents") is None and STUBS.is_dir():
-    sys.path.append(str(STUBS))
+if STUBS.is_dir():
+    if find_spec("openai_agents") is None:
+        sys.path.append(str(STUBS))
+    import importlib
+    adk_spec = find_spec("google_adk") or find_spec("google.adk")
+    if adk_spec is None or not hasattr(importlib.import_module(adk_spec.name), "task"):
+        sys.path.insert(0, str(STUBS))
+        importlib.invalidate_caches()
+        stub = importlib.import_module("google_adk")
+        sys.modules.setdefault("google.adk", stub)

@@ -189,6 +189,7 @@ PIP_NAMES = {
 
 IMPORT_NAMES = {
     "opentelemetry-api": "opentelemetry",
+    "google_adk": "google.adk",
 }
 
 
