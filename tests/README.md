@@ -53,8 +53,9 @@ pytest -q
    ```bash
    pip install -r requirements-demo.txt
    ```
-   This also installs `openai>=1.82.0,<2.0`, `openai-agents` and `google-adk` so
-   the optional integration tests can run.
+   `requirements-demo.txt` pulls in `openai_agents>=0.0.17`, `gymnasium` and
+   `google_adk` together with `openai>=1.82.0,<2.0`. These packages are required
+   for running **all** tests, not just the optional integration checks.
 3. Verify the core dependencies are present:
    ```bash
    python scripts/check_python_deps.py
@@ -71,6 +72,8 @@ pytest -q
    ```bash
    python check_env.py --auto-install
    ```
+   Run this command **after** installing the extras so `openai_agents`,
+   `gymnasium` and `google_adk` are available for the tests.
 6. **Before running `pytest`, execute `python check_env.py --auto-install` again**
    to ensure optional modules are installed. When working offline add
    `--wheelhouse <dir>` (or set `WHEELHOUSE`) so packages install from the
