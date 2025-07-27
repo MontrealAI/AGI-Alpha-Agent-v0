@@ -12,6 +12,9 @@ Production modules previously under `src/` now reside in
 `alpha_factory_v1.core`.
 Update imports accordingly.
 
+## [Unreleased]
+- Upgraded `rdkit` to version `2023.9.5` for Python 3.12 support.
+
 ## [0.1.0-alpha] - 2024-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
