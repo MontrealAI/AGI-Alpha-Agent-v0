@@ -95,8 +95,9 @@ Before opening a pull request, verify the environment and run the tests:
 ```bash
 python scripts/check_python_deps.py
 python check_env.py --auto-install
-pre-commit run --all-files
+pre-commit run --files <changed-files>  # ensure this passes before running tests
 pytest
+pre-commit run --all-files
 ```
 
 See [AGENTS.md](AGENTS.md#pull-requests) for more details.
