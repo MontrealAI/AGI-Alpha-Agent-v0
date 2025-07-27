@@ -15,11 +15,14 @@ Run the full demo interactively in [Google Colab](https://github.com/MontrealAI/
 
 To verify local prerequisites before launching the demo, run:
 ```bash
-python check_env.py
+python check_env.py --auto-install
 ```
-This checks for key optional packages like `pytest`, `prometheus_client`,
-`openai`, `openai_agents_sdk`, `google_adk` and `anthropic` so that
-tests, cloud integrations and metrics work smoothly.
+This installs any missing optional packages such as `pytest`,
+`prometheus_client`, `openai`, `openai_agents_sdk` and `anthropic`. The demo
+also looks for `google_adk`, which can be installed via `pip install
+google-adk`. When that package isn't available, the lightweight stub shipped in
+`stubs/google_adk` ensures imports still succeed, so the demo can run without
+the official ADK gateway.
 
 ### Offline Setup
 
