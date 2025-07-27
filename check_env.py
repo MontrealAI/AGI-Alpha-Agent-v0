@@ -462,6 +462,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     missing_optional: list[str] = []
     openai_agents_found = False
     openai_agents_attr_ok = False
+    google_adk_attr_ok = True
     for pkg in REQUIRED + extra_required + OPTIONAL:
         import_name = IMPORT_NAMES.get(pkg, pkg)
         try:
@@ -470,6 +471,16 @@ def main(argv: Optional[List[str]] = None) -> int:
             # handle cases where a namespace package left an invalid entry
             # or the root package itself is missing
             spec = None
+        if pkg == "google_adk":
+            if spec is None:
+                google_adk_attr_ok = False
+            else:
+                try:
+                    mod = importlib.import_module(import_name)
+                    google_adk_attr_ok = hasattr(mod, "JsonSchema")
+                except Exception:
+                    google_adk_attr_ok = False
+            continue
         if spec is None:
             if pkg == "openai_agents":
                 agents_spec = importlib.util.find_spec("agents")
@@ -493,11 +504,17 @@ def main(argv: Optional[List[str]] = None) -> int:
                 openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
             except Exception:
                 openai_agents_attr_ok = False
+    if not google_adk_attr_ok:
+        missing_required.append("google_adk")
     missing = missing_required + missing_optional
     if missing:
         print("WARNING: Missing packages:", ", ".join(missing))
         for pkg in missing_optional:
             hint = OPTIONAL_HINTS.get(pkg)
+            if hint:
+                print("  -", hint)
+        if not google_adk_attr_ok:
+            hint = OPTIONAL_HINTS.get("google_adk")
             if hint:
                 print("  -", hint)
         if auto and missing_required and (wheelhouse or network_ok):
