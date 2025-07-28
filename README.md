@@ -769,9 +769,11 @@ curl -X POST http://localhost:8000/simulate \
 See [AGENTS.md](AGENTS.md) for the full contributor guide.
 
 ### Pre‑commit Hooks
-After running `./codex/setup.sh`, install the hooks and run a full check:
+After running `./codex/setup.sh`, which installs `pre-commit==4.2.0`
+automatically when missing, install the hooks and run a full check:
 
 ```bash
+# Install the exact version if the setup script didn't already
 pip install pre-commit==4.2.0
 pre-commit install
 pre-commit run --all-files   # verify hooks after setup

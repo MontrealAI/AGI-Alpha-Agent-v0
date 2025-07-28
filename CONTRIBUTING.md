@@ -61,12 +61,14 @@ If you skip the setup script, manually install these tools with
 `tools/setup_precommit.sh` to install `pre-commit` and configure the hook
 without the full environment setup.
 
-Install the git hooks once and run them before each commit:
+Install the git hooks once and run them before each commit. Always
+execute `pre-commit run --files <changed-files>` prior to committing to
+catch lint errors early:
 
 ```bash
 pre-commit install
 python check_env.py --auto-install  # add --wheelhouse <dir> when offline
-pre-commit run --all-files
+pre-commit run --all-files   # first time to set up caches
 ```
 Run `pre-commit run --all-files` again before opening a pull request to ensure
 repository-wide checks pass.
@@ -89,6 +91,7 @@ pip install -r requirements-dev.txt
 ## Quick Checklist
 
 Ensure **Python 3.11–3.13** and **Node.js 22** are installed before running the tools.
+Before committing, run `pre-commit run --files <changed-files>` to lint only your modifications.
 
 Before opening a pull request, verify the environment and run the tests:
 

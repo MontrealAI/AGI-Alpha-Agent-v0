@@ -48,7 +48,7 @@ fi
 
 # Ensure pre-commit is available for git hooks
 if ! command -v pre-commit >/dev/null; then
-  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit
+  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit==4.2.0
 fi
 
 # Install package in editable mode

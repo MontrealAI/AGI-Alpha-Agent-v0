@@ -16,6 +16,7 @@ if STUBS.is_dir():
     if find_spec("openai_agents") is None:
         sys.path.append(str(STUBS))
     import importlib
+
     try:
         adk_spec = find_spec("google_adk") or find_spec("google.adk")
     except ModuleNotFoundError:

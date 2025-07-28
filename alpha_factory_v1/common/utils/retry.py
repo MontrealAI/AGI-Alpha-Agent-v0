@@ -18,11 +18,13 @@ T = TypeVar("T")
 
 
 @overload
-def with_retry(func: Callable[P, Awaitable[T]], *, max_tries: int = 3) -> Callable[P, Awaitable[T]]: ...
+def with_retry(func: Callable[P, Awaitable[T]], *, max_tries: int = 3) -> Callable[P, Awaitable[T]]:
+    ...
 
 
 @overload
-def with_retry(func: Callable[P, T], *, max_tries: int = 3) -> Callable[P, T]: ...
+def with_retry(func: Callable[P, T], *, max_tries: int = 3) -> Callable[P, T]:
+    ...
 
 
 def with_retry(func: Callable[P, Any], *, max_tries: int = 3) -> Callable[P, Any]:
