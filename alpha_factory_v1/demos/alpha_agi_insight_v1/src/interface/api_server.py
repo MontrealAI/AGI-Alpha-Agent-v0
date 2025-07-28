@@ -198,7 +198,7 @@ if app is not None:
 
     def _save_result(result: ResultsResponse) -> None:
         path = _results_dir / f"{result.id}.json"
-        path.write_text(result.json())
+        path.write_text(result.model_dump_json())
         _simulations[result.id] = result
         while len(_simulations) > _max_results:
             old_id, _ = _simulations.popitem(last=False)

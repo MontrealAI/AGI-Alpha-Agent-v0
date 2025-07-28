@@ -5,49 +5,53 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any, Callable, TypeVar
 
 # Optional OpenAI Agents SDK ---------------------------------------------------
 try:  # pragma: no cover - optional dependency
-    from agents import function_tool, RunContextWrapper  # type: ignore
+    from agents import function_tool, RunContextWrapper
 
     _HAVE_AGENTS = True
 except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
+    T = TypeVar("T", bound=Callable[..., Any])
 
-    def function_tool(*_dargs, **_dkwargs):
-        def _wrap(func):
+    def function_tool(*_dargs: Any, **_dkwargs: Any) -> Callable[[T], T]:
+        def _wrap(func: T) -> T:
             return func
 
         return _wrap
 
-    RunContextWrapper = dict  # type: ignore
+    RunContextWrapper = dict[str, Any]
     _HAVE_AGENTS = False
 
 # Optional Google ADK ----------------------------------------------------------
 try:  # pragma: no cover - optional dependency
-    import google_adk as adk  # type: ignore
+    import google_adk
+
+    adk = google_adk
     if not hasattr(adk, "task"):
         raise ModuleNotFoundError
     _HAVE_ADK = True
 except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
 
-    class _StubAgent:  # type: ignore
+    class _StubAgent:
         def __init__(self, name: str) -> None:
             self.name = name
 
-    class _StubDecor:  # type: ignore
-        def __call__(self, func):
+    class _StubDecor:
+        def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
             return func
 
-    class adk:  # type: ignore
+    class _Adk:
         Agent = _StubAgent
 
         @staticmethod
-        def task(**_kw):
+        def task(**_kw: Any) -> _StubDecor:
             return _StubDecor()
 
-        JsonSchema = dict
+        JsonSchema = dict[str, Any]
 
+    adk = _Adk()
     _HAVE_ADK = False
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -238,33 +242,35 @@ def undo_last_edit() -> bool:
 # ---------------------------------------------------------------------------
 
 
-def _view_tool(ctx: RunContextWrapper | dict, path: str, start: int = 0, end: Optional[int] = None) -> str:
+def _view_tool(ctx: RunContextWrapper | dict[str, Any], path: str, start: int = 0, end: Optional[int] = None) -> str:
     return view(path, start, end)
 
 
-def _edit_tool(ctx: RunContextWrapper | dict, path: str, start: int, end: Optional[int], new_code: str) -> str:
+def _edit_tool(
+    ctx: RunContextWrapper | dict[str, Any], path: str, start: int, end: Optional[int], new_code: str
+) -> str:
     edit(path, start, end, new_code)
     return "ok"
 
 
-def _replace_tool(ctx: RunContextWrapper | dict, path: str, pattern: str, repl: str) -> int:
+def _replace_tool(ctx: RunContextWrapper | dict[str, Any], path: str, pattern: str, repl: str) -> int:
     return replace(path, pattern, repl)
 
 
-def _view_lines_tool(ctx: RunContextWrapper | dict, path: str, start: int, end: Optional[int]) -> str:
+def _view_lines_tool(ctx: RunContextWrapper | dict[str, Any], path: str, start: int, end: Optional[int]) -> str:
     return view_lines(path, start, end)
 
 
-def _replace_str_tool(ctx: RunContextWrapper | dict, path: str, old: str, new: str) -> int:
+def _replace_str_tool(ctx: RunContextWrapper | dict[str, Any], path: str, old: str, new: str) -> int:
     return replace_str(path, old, new)
 
 
-def _insert_after_tool(ctx: RunContextWrapper | dict, path: str, anchor: str, code: str) -> str:
+def _insert_after_tool(ctx: RunContextWrapper | dict[str, Any], path: str, anchor: str, code: str) -> str:
     insert_after(path, anchor, code)
     return "ok"
 
 
-def _undo_tool(ctx: RunContextWrapper | dict) -> bool:
+def _undo_tool(ctx: RunContextWrapper | dict[str, Any]) -> bool:
     return undo_last_edit()
 
 
