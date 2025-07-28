@@ -14,13 +14,17 @@ from click.testing import CliRunner
 
 os.environ.setdefault("API_TOKEN", "test-token")
 os.environ.setdefault("API_RATE_LIMIT", "1000")
+os.environ.setdefault("AGI_INSIGHT_ALLOW_INSECURE", "1")
+os.environ.setdefault("AGI_INSIGHT_OFFLINE", "1")
 
 
 def _make_client() -> TestClient:
     from alpha_factory_v1.core.interface import api_server
 
     api_server = importlib.reload(api_server)
-    return TestClient(cast(Any, api_server.app))
+    client = TestClient(cast(Any, api_server.app))
+    client.__enter__()  # start lifespan
+    return client
 
 
 def test_status_endpoint() -> None:
@@ -31,6 +35,7 @@ def test_status_endpoint() -> None:
     data = resp.json()
     assert isinstance(data, dict)
     assert data.get("agents")
+    client.__exit__(None, None, None)
 
 
 def test_cli_agents_status_parses_mapping() -> None:
@@ -44,6 +49,6 @@ def test_cli_agents_status_parses_mapping() -> None:
         def json(self) -> dict:
             return payload
 
-    with patch.object(cli.requests, "get", return_value=Dummy()):
+    with patch.object(cli._insight_cli.requests, "get", return_value=Dummy()):
         result = CliRunner().invoke(cli.main, ["agents-status"])
     assert "agent1" in result.output
