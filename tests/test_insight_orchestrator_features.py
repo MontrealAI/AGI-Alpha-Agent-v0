@@ -43,7 +43,7 @@ class TestMessaging(unittest.TestCase):
             received.append(env)
 
         self.bus.subscribe("x", handler)
-        env = messaging.Envelope("a", "x", {"v": 1}, 0.0)
+        env = messaging.Envelope(sender="a", recipient="x", payload={"v": 1}, ts=0.0)
         self.bus.publish("x", env)
         asyncio.run(asyncio.sleep(0.01))
         self.assertEqual(received[0].payload["v"], 1)
@@ -56,6 +56,9 @@ class TestMessaging(unittest.TestCase):
             def abort(self, *_a, **_kw):
                 raise RuntimeError("denied")
 
+            def peer(self) -> str:
+                return ""
+
         payload = {
             "sender": "a",
             "recipient": "b",
@@ -63,7 +66,8 @@ class TestMessaging(unittest.TestCase):
             "ts": 0.0,
             "token": "s3cr3t",
         }
-        asyncio.run(bus._handle_rpc(json.dumps(payload).encode(), Ctx()))
+        with self.assertRaises(RuntimeError):
+            asyncio.run(bus._handle_rpc(json.dumps(payload).encode(), Ctx()))
 
 
 class TestLedger(unittest.TestCase):
@@ -74,8 +78,8 @@ class TestLedger(unittest.TestCase):
             rpc_url="http://rpc.test",
             broadcast=True,
         )
-        env1 = messaging.Envelope("a", "b", {"v": 1}, 0.0)
-        env2 = messaging.Envelope("b", "c", {"v": 2}, 0.0)
+        env1 = messaging.Envelope(sender="a", recipient="b", payload={"v": 1}, ts=0.0)
+        env2 = messaging.Envelope(sender="b", recipient="c", payload={"v": 2}, ts=0.0)
         led.log(env1)
         led.log(env2)
         root = led.compute_merkle_root()

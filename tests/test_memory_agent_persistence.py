@@ -10,7 +10,7 @@ def test_memory_agent_persists_records(tmp_path):
     bus = messaging.A2ABus(cfg)
     led = logging.Ledger(str(tmp_path / "ledger.db"))
     agent = memory_agent.MemoryAgent(bus, led, str(mem_file))
-    env = messaging.Envelope("a", "memory", {"v": 1}, 0.0)
+    env = messaging.Envelope(sender="a", recipient="memory", payload={"v": 1}, ts=0.0)
 
     async def run() -> None:
         async with bus, led:

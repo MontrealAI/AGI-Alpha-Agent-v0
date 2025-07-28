@@ -3,18 +3,19 @@
 import sys
 import types
 import asyncio
+import dataclasses
 
 # Stub generated proto dependency if missing
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
 if _stub_path not in sys.modules:
     stub = types.ModuleType("a2a_pb2")
 
+    @dataclasses.dataclass
     class Envelope:
-        def __init__(self, sender: str = "", recipient: str = "", payload: dict | None = None, ts: float = 0.0) -> None:
-            self.sender = sender
-            self.recipient = recipient
-            self.payload = payload or {}
-            self.ts = ts
+        sender: str = ""
+        recipient: str = ""
+        payload: dict | None = None
+        ts: float = 0.0
 
     stub.Envelope = Envelope
     sys.modules[_stub_path] = stub
@@ -76,7 +77,7 @@ def test_adk_summariser_runs(monkeypatch) -> None:
     bus = DummyBus(settings)
     agent = adk_summariser_agent.ADKSummariserAgent(bus, DummyLedger())
 
-    env = messaging.Envelope("research", "summariser", {"research": "r"}, 0.0)
+    env = messaging.Envelope(sender="research", recipient="summariser", payload={"research": "r"}, ts=0.0)
     asyncio.run(agent.handle(env))
     asyncio.run(agent.run_cycle())
 

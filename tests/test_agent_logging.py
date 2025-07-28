@@ -22,7 +22,7 @@ def test_market_agent_logs_exception():
     led = DummyLedger()
     agent = market_agent.MarketAgent(bus, led)
     agent.oai_ctx = DummyCtx()
-    env = messaging.Envelope("strategy", "market", {"strategy": "foo"}, 0.0)
+    env = messaging.Envelope(sender="strategy", recipient="market", payload={"strategy": "foo"}, ts=0.0)
     with mock.patch.object(market_agent.log, "warning") as warn:
         asyncio.run(agent.handle(env))
         warn.assert_called_once()
@@ -35,7 +35,7 @@ def test_strategy_agent_logs_exception(monkeypatch):
     agent = strategy_agent.StrategyAgent(bus, led)
 
     monkeypatch.setattr(local_llm, "chat", lambda *_: (_ for _ in ()).throw(RuntimeError("boom")))
-    env = messaging.Envelope("research", "strategy", {"research": "foo"}, 0.0)
+    env = messaging.Envelope(sender="research", recipient="strategy", payload={"research": "foo"}, ts=0.0)
     with mock.patch.object(strategy_agent.log, "warning") as warn:
         asyncio.run(agent.handle(env))
         warn.assert_called_once()
@@ -47,7 +47,7 @@ def test_research_agent_logs_exception():
     led = DummyLedger()
     agent = research_agent.ResearchAgent(bus, led)
     agent.oai_ctx = DummyCtx()
-    env = messaging.Envelope("planning", "research", {"plan": "bar"}, 0.0)
+    env = messaging.Envelope(sender="planning", recipient="research", payload={"plan": "bar"}, ts=0.0)
     with mock.patch.object(research_agent.log, "warning") as warn:
         asyncio.run(agent.handle(env))
         warn.assert_called_once()
