@@ -351,10 +351,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 try:
                     subprocess.run(cmd, check=True, timeout=pip_timeout)
                 except subprocess.SubprocessError as exc:
-                    print(
-                        f"Failed to install {pkg}{wheel_msg}",
-                        getattr(exc, "returncode", ""),
-                    )
+                    print(f"Failed to install {pkg}{wheel_msg} (code {getattr(exc, 'returncode', '')})")
                     return 1
 
     missing_core = warn_missing_core()
@@ -373,8 +370,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             subprocess.run(cmd, check=True, timeout=pip_timeout)
         except subprocess.SubprocessError as exc:
             print(
-                f"Failed to install core packages{wheel_msg}",
-                getattr(exc, "returncode", ""),
+                "Failed to install core packages "
+                f"{', '.join(missing_core)}{wheel_msg} "
+                f"(code {getattr(exc, 'returncode', '')})"
             )
             return 1
         missing_core = warn_missing_core()
@@ -416,10 +414,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             return 1
         except subprocess.CalledProcessError as exc:
             stderr = exc.stderr or ""
-            print(
-                f"Failed to install baseline requirements{wheel_msg}",
-                exc.returncode,
-            )
+            print(f"Failed to install baseline requirements from {req_file}{wheel_msg} (code {exc.returncode})")
             if any(kw in stderr.lower() for kw in ["connection", "temporary failure", "network", "resolve"]):
                 print("Network failure detected.\n" + NO_NETWORK_HINT)
             return exc.returncode
@@ -453,8 +448,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                 subprocess.run(cmd, check=True, timeout=pip_timeout)
             except subprocess.SubprocessError as exc:
                 print(
-                    f"Failed to install heavy extras{wheel_msg}",
-                    getattr(exc, "returncode", ""),
+                    "Failed to install heavy extras "
+                    f"{', '.join(heavy_missing)}{wheel_msg} "
+                    f"(code {getattr(exc, 'returncode', '')})"
                 )
                 return 1
 
@@ -481,29 +477,33 @@ def main(argv: Optional[List[str]] = None) -> int:
                 except Exception:
                     google_adk_attr_ok = False
             continue
-        if spec is None:
-            if pkg == "openai_agents":
+        if pkg == "openai_agents":
+            if spec is None:
                 agents_spec = importlib.util.find_spec("agents")
                 if agents_spec is not None:
+                    openai_agents_found = True
                     try:
                         mod = importlib.import_module("agents")
                         openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
                     except Exception:
                         openai_agents_attr_ok = False
-                    openai_agents_found = True
-                    if openai_agents_attr_ok:
-                        continue
+                else:
+                    openai_agents_attr_ok = False
+            else:
+                openai_agents_found = True
+                try:
+                    mod = importlib.import_module(import_name)
+                    openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
+                except Exception:
+                    openai_agents_attr_ok = False
+            if not openai_agents_attr_ok:
+                missing_optional.append("openai_agents")
+            continue
+        if spec is None:
             if pkg in OPTIONAL:
                 missing_optional.append(pkg)
             else:
                 missing_required.append(pkg)
-        elif pkg in {"openai_agents", "agents"}:
-            openai_agents_found = True
-            try:
-                mod = importlib.import_module(import_name)
-                openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
-            except Exception:
-                openai_agents_attr_ok = False
     if not google_adk_attr_ok:
         missing_required.append("google_adk")
     missing = missing_required + missing_optional
@@ -543,10 +543,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 return 1
             except subprocess.CalledProcessError as exc:
                 stderr = exc.stderr or ""
-                print(
-                    f"Automatic install failed with code{wheel_msg}",
-                    exc.returncode,
-                )
+                print(f"Automatic install failed for: {', '.join(packages)}{wheel_msg} (code {exc.returncode})")
                 if any(kw in stderr.lower() for kw in ["connection", "temporary failure", "network", "resolve"]):
                     print("Network failure detected.\n" + NO_NETWORK_HINT)
                 return 1
