@@ -19,6 +19,46 @@ except Exception:  # pragma: no cover - package absent
 
 if _mod is not None:
     globals().update(_mod.__dict__)
+
+    if "task" not in globals():
+
+        def task(*_a, **_kw):
+            def decorator(func):
+                return func
+
+            return decorator
+
+    if "Router" not in globals():
+
+        class Router:
+            def __init__(self) -> None:
+                self.app = type("app", (), {"middleware": lambda *_a, **_kw: lambda f: f})
+
+            def register_agent(self, _agent) -> None:  # pragma: no cover - stub
+                pass
+
+    if "AgentException" not in globals():
+
+        class AgentException(Exception):
+            pass
+
+    if "Agent" not in globals():
+
+        class Agent:
+            def __init__(self, *args, **kwargs):
+                pass
+
+    if "JsonSchema" not in globals():
+
+        class JsonSchema(dict):
+            """Lightweight placeholder used when the real google_adk package is absent."""
+
+            pass
+
+    # Ensure both module aliases refer to this shim
+    sys.modules[__name__] = sys.modules.get(__name__, sys.modules[__name__])
+    sys.modules["google.adk"] = sys.modules[__name__]
+
 else:
     __spec__ = importlib.machinery.ModuleSpec("google_adk", None)
     __version__ = "0.0.0"
