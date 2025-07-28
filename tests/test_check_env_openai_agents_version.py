@@ -73,18 +73,16 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
                 return None
             return importlib.util.find_spec(name, *args, **kwargs)
 
-        def _raise() -> bool:
-            raise AssertionError("check_openai_agents_version should not run")
-
         with (
             mock.patch("importlib.import_module", side_effect=_fake_import),
             mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
             mock.patch.object(check_env, "REQUIRED", []),
             mock.patch.object(check_env, "OPTIONAL", ["openai_agents"]),
             mock.patch.object(check_env, "warn_missing_core", lambda: []),
-            mock.patch.object(check_env, "check_openai_agents_version", _raise),
+            mock.patch.object(check_env, "check_openai_agents_version", return_value=True) as chk,
         ):
             self.assertEqual(check_env.main(["--allow-basic-fallback"]), 0)
+            chk.assert_called_once()
 
     def test_missing_spec_skips_check_without_flag(self) -> None:
         fake_mod = types.SimpleNamespace(
@@ -105,18 +103,16 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
                 return None
             return importlib.util.find_spec(name, *args, **kwargs)
 
-        def _raise() -> bool:
-            raise AssertionError("check_openai_agents_version should not run")
-
         with (
             mock.patch("importlib.import_module", side_effect=_fake_import),
             mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
             mock.patch.object(check_env, "REQUIRED", []),
             mock.patch.object(check_env, "OPTIONAL", ["openai_agents"]),
             mock.patch.object(check_env, "warn_missing_core", lambda: []),
-            mock.patch.object(check_env, "check_openai_agents_version", _raise),
+            mock.patch.object(check_env, "check_openai_agents_version", return_value=True) as chk,
         ):
             self.assertEqual(check_env.main([]), 0)
+            chk.assert_called_once()
 
 
 if __name__ == "__main__":  # pragma: no cover - manual execution

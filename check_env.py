@@ -585,16 +585,10 @@ def main(argv: Optional[List[str]] = None) -> int:
             except Exception:
                 mod = None
         mod_spec = getattr(mod, "__spec__", None)
-        if mod_spec is None:
-            print("WARNING: openai_agents package lacks __spec__ metadata; skipping version check")
-        elif allow_basic:
-            if getattr(mod_spec, "loader", None) and not check_openai_agents_version():
-                return 1
-        else:
-            if getattr(mod_spec, "loader", None) is None:
-                print("WARNING: openai_agents package lacks __spec__ metadata")
-            elif not check_openai_agents_version():
-                return 1
+        if mod_spec is None or getattr(mod_spec, "loader", None) is None:
+            print("WARNING: openai_agents package lacks __spec__ metadata")
+        if not check_openai_agents_version():
+            return 1
 
     if demo == "macro_sentinel" and not os.getenv("ETHERSCAN_API_KEY"):
         print("WARNING: ETHERSCAN_API_KEY is unset; Etherscan collector disabled")
