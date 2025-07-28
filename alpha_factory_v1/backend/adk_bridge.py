@@ -51,6 +51,22 @@ except ModuleNotFoundError:  # fallback to the namespaced import
     except Exception:
         adk = None
 
+if adk is not None and not hasattr(adk, "Router"):
+    from fastapi import FastAPI
+
+    class _ShimRouter:
+        def __init__(self) -> None:
+            self.app = FastAPI()
+
+        def register_agent(self, _agent) -> None:  # pragma: no cover - shim
+            pass
+
+    class _ShimAgentException(Exception):
+        pass
+
+    adk.Router = _ShimRouter  # type: ignore[attr-defined]
+    adk.AgentException = getattr(adk, "AgentException", _ShimAgentException)
+
 _ADK_OK = adk is not None
 if not _ADK_OK and _ENABLE:
     logger.warning(
