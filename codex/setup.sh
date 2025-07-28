@@ -39,6 +39,13 @@ $PYTHON -m pip install --quiet "${wheel_opts[@]}" --upgrade pip setuptools wheel
 # Install pip-compile (pip-tools) early so hooks can verify lock files
 $PYTHON -m pip install --quiet "${wheel_opts[@]}" pip-tools
 
+# Ensure Node.js 22+ is available for the Insight Browser demo
+node_major=$(node -v | sed 's/v\([0-9]*\).*/\1/')
+if (( node_major < 22 )); then
+  echo "ERROR: Node.js 22+ is required. Run 'nvm use' to switch versions." >&2
+  exit 1
+fi
+
 # Ensure pre-commit is available for git hooks
 if ! command -v pre-commit >/dev/null; then
   $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit
@@ -75,7 +82,7 @@ elif [[ "${MINIMAL_INSTALL:-0}" == "1" ]]; then
     pytest-httpx
     numpy
     pandas
-    gymnasium[classic-control]
+    "gymnasium[classic-control]"
     playwright
     plotly
     websockets
@@ -122,7 +129,7 @@ else
     orjson
     ortools
     pandas
-    gymnasium[classic-control]
+    "gymnasium[classic-control]"
     playwright
     plotly
     prometheus-client
