@@ -3,18 +3,19 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import numpy as np
 
 try:  # optional heavy deps
     from sentence_transformers import SentenceTransformer
 except Exception:  # pragma: no cover - offline
-    SentenceTransformer = None  # type: ignore
+    SentenceTransformer = None
 
 try:
-    import faiss  # type: ignore
+    import faiss
 except Exception:  # pragma: no cover - offline
-    faiss = None  # type: ignore
+    faiss = None
 
 _LOG = logging.getLogger(__name__)
 _MODEL: SentenceTransformer | None = None
@@ -34,22 +35,22 @@ def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
     model = _get_model()
     vec = model.encode([text], normalize_embeddings=True)
-    return np.asarray(vec, dtype="float32")
+    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:
     e = np.exp(x - float(np.max(x)))
-    return e / (e.sum() + 1e-12)
+    return e / (e.sum() + 1e-12)  # type: ignore[no-any-return]
 
 
 class NoveltyIndex:
     """In-memory FAISS index tracking the embedding mean."""
 
     def __init__(self) -> None:
-        self.dim = _DIM
-        self.index = faiss.IndexFlatIP(self.dim) if faiss else None
-        self.mean = np.zeros(self.dim, dtype="float32")
-        self.count = 0
+        self.dim: int = _DIM
+        self.index: faiss.IndexFlatIP | None = faiss.IndexFlatIP(self.dim) if faiss else None
+        self.mean: np.ndarray = np.zeros(self.dim, dtype="float32")
+        self.count: int = 0
 
     def add(self, text: str) -> None:
         """Index the embedding of ``text`` and update the mean vector."""
