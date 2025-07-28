@@ -119,6 +119,16 @@ ALPHA_FACTORY_FULL=1 python check_env.py --auto-install
 Use `--wheelhouse <dir>` or set `WHEELHOUSE` when offline so the command
 installs from your local wheel cache.
 
+### Minimal smoke test
+
+Run a single test to verify the environment:
+
+```bash
+pytest tests/test_ping_agent.py -q
+```
+
+If this passes, proceed to the quick health check below.
+
 ### Quick health check
 
 Run the smoke tests to confirm the core dependencies work:
