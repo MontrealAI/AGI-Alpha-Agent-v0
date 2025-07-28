@@ -13,6 +13,7 @@ import secrets
 import time
 import logging
 import shutil
+import random
 from collections import OrderedDict, deque
 from pathlib import Path
 from typing import Any, List, TYPE_CHECKING, cast, Set
@@ -416,6 +417,7 @@ class SimRequest(BaseModel):
     curve: str = "logistic"
     k: float | None = None
     x0: float | None = None
+    seed: int | None = None
     sectors: list[SectorSpec] | None = None
 
     model_config = ConfigDict(
@@ -425,6 +427,7 @@ class SimRequest(BaseModel):
                 "pop_size": 6,
                 "generations": 3,
                 "curve": "logistic",
+                "seed": 42,
             }
         }
     )
@@ -561,7 +564,7 @@ async def _background_run(sim_id: str, cfg: SimRequest) -> None:
                 sec.energy *= 1.0 + sec.growth
                 if forecast.thermodynamic_trigger(sec, cap):
                     sec.disrupted = True
-                    sec.energy += forecast._innovation_gain(cfg.pop_size, cfg.generations)
+                    sec.energy += forecast._innovation_gain(cfg.pop_size, cfg.generations, seed=cfg.seed)
         snapshot = [sector.Sector(s.name, s.energy, s.entropy, s.growth, s.disrupted) for s in secs]
         point = forecast.TrajectoryPoint(year, cap, snapshot)
         traj.append(point)
@@ -582,6 +585,7 @@ async def _background_run(sim_id: str, cfg: SimRequest) -> None:
         2,
         population_size=cfg.pop_size,
         generations=cfg.generations,
+        seed=cfg.seed,
     )
     metrics.dgm_children_total.inc(len(pop))
 
