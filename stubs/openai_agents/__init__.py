@@ -5,9 +5,10 @@ Provides basic classes so demos import without the real SDK."""
 
 import importlib.machinery
 
-__spec__ = importlib.machinery.ModuleSpec("openai_agents", None)
+_loader = importlib.machinery.SourceFileLoader(__name__, __file__)
+__spec__ = importlib.machinery.ModuleSpec(__name__, _loader, origin=__file__)
 
-__version__ = "0.0.0"
+__version__ = "0.0.17"
 
 
 class AgentRuntime:

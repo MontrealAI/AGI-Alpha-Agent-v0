@@ -6,7 +6,7 @@ Provides basic classes so demos import without the real SDK."""
 import importlib.machinery
 
 _loader = importlib.machinery.SourceFileLoader(__name__, __file__)
-__spec__ = importlib.machinery.ModuleSpec(__name__, _loader)
+__spec__ = importlib.machinery.ModuleSpec(__name__, _loader, origin=__file__)
 
 __version__ = "0.0.17"
 
