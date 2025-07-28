@@ -108,6 +108,24 @@ The full suite exercises features that depend on optional packages such as
 `numpy`, `torch`, `pandas`, `prometheus_client`, `gymnasium`, `playwright`,
 `httpx`, `uvicorn`, `git`, `hypothesis` and `requests_mock`.
 
+### Optional packages for the full test run
+
+Install these extras to enable every check:
+
+- `openai_agents>=0.0.17`
+- `google_adk`
+- `gymnasium`
+- `pytest_benchmark`
+- Node.js with `node`, `npm` and `tsc`
+
+```bash
+pip install openai_agents google_adk gymnasium pytest-benchmark
+```
+
+When working offline use `python check_env.py --auto-install --wheelhouse <dir>`
+to install from a local wheelhouse. Missing packages cause tests to skip or run
+with degraded coverage.
+
 Tests are skipped when `numpy` or `prometheus_client` are missing. The
 `tests/conftest.py` helper checks for `torch` with `importlib.util.find_spec`
 and registers a `requires_torch` marker. Tests using this marker are skipped
@@ -135,7 +153,10 @@ defaults to work with:
 export API_TOKEN=test-token
 export NEO4J_PASSWORD=test-password
 export DEV_MODE=true
+export API_RATE_LIMIT=1000
 ```
+
+Missing optional packages cause tests to skip or run with limited coverage.
 
 Docker **must** be available for the full suite. Some checks start containers
 using the Compose file under `infrastructure/`. Launch the stack when required:
