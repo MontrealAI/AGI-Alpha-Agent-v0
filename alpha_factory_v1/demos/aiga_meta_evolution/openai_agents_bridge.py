@@ -41,33 +41,10 @@ try:  # optional dependency
 
                 asyncio.run(self._runner.run(self._agent, ""))
 
-except Exception:  # pragma: no cover - fallback stub
-
-    class Agent:  # type: ignore[misc]
-        pass
-
-    class AgentRuntime:  # type: ignore[misc]
-        def __init__(self, *_: object, **__: object) -> None:
-            pass
-
-        def register(self, *_: object, **__: object) -> None:
-            pass
-
-        def run(self) -> None:
-            print("OpenAI Agents bridge disabled.")
-
-    class OpenAIAgent:  # type: ignore[misc]
-        def __init__(self, *_: object, **__: object) -> None:
-            pass
-
-        async def __call__(self, _text: str) -> str:  # pragma: no cover - stub
-            return "ok"
-
-    def Tool(*_args: object, **_kwargs: object):  # type: ignore[misc]
-        def decorator(func):
-            return func
-
-        return decorator
+except Exception as exc:  # pragma: no cover - fallback stub
+    raise ModuleNotFoundError(
+        "OpenAI Agents SDK is required to run the meta-evolution demo"
+    ) from exc
 
 
 try:
@@ -88,7 +65,11 @@ import os
 from typing import cast
 
 from .meta_evolver import MetaEvolver
-from .curriculum_env import CurriculumEnv
+try:
+    from .curriculum_env import CurriculumEnv
+except ModuleNotFoundError:  # gymnasium optional
+    class CurriculumEnv:  # type: ignore[misc]
+        pass
 from .utils import build_llm
 
 

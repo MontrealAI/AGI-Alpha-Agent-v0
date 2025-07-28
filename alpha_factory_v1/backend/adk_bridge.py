@@ -148,7 +148,9 @@ def maybe_launch(*, host: str | None = None, port: int | None = None, **uvicorn_
 
     # Inject optional auth-middleware exactly once
     if _TOKEN:
-        router.app.middleware("http")(_auth_middleware())
+        app = getattr(router, "app", None)
+        if app is not None and hasattr(app, "middleware"):
+            app.middleware("http")(_auth_middleware())
 
     def _serve() -> None:  # run inside daemon-thread
         import uvicorn
