@@ -92,6 +92,4 @@ class TestAgentAIGAEntry:
             None,
         )
         with pytest.raises(ModuleNotFoundError):
-            importlib.import_module(
-                "alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint"
-            )
+            importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint")

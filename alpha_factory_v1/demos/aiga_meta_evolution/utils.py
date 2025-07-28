@@ -17,6 +17,7 @@ except ImportError:
     try:  # pragma: no cover - fallback for legacy package
         from agents import OpenAIAgent
     except Exception as exc:  # pragma: no cover - optional dependency
+
         class OpenAIAgent:  # type: ignore[misc]
             def __init__(self, *a, **kw):
                 pass

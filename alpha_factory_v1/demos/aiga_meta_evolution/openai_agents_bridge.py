@@ -42,9 +42,7 @@ try:  # optional dependency
                 asyncio.run(self._runner.run(self._agent, ""))
 
 except Exception as exc:  # pragma: no cover - fallback stub
-    raise ModuleNotFoundError(
-        "OpenAI Agents SDK is required to run the meta-evolution demo"
-    ) from exc
+    raise ModuleNotFoundError("OpenAI Agents SDK is required to run the meta-evolution demo") from exc
 
 
 try:
@@ -65,11 +63,15 @@ import os
 from typing import cast
 
 from .meta_evolver import MetaEvolver
+
 try:
     from .curriculum_env import CurriculumEnv
 except ModuleNotFoundError:  # gymnasium optional
+
     class CurriculumEnv:  # type: ignore[misc]
         pass
+
+
 from .utils import build_llm
 
 

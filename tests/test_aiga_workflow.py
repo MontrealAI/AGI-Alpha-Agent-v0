@@ -96,9 +96,7 @@ class AgentRuntime:
     (directory / "alpha_opportunity_stub.py").write_text(
         "def identify_alpha(domain: str = 'finance'):\n    return 'stub-alpha'"
     )
-    (directory / "alpha_conversion_stub.py").write_text(
-        "def convert_alpha(alpha: str):\n    return {}"
-    )
+    (directory / "alpha_conversion_stub.py").write_text("def convert_alpha(alpha: str):\n    return {}")
 
 
 @pytest.mark.xfail(reason="workflow runtime unstable in CI")
