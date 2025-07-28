@@ -114,6 +114,35 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
             self.assertEqual(check_env.main([]), 0)
             chk.assert_called_once()
 
+    def test_missing_attributes_skips_version_check(self) -> None:
+        fake_mod = types.SimpleNamespace(__version__="0.0.17")
+
+        orig_import_module = importlib.import_module
+        orig_find_spec = importlib.util.find_spec
+
+        def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return fake_mod
+            return orig_import_module(name, *args, **kwargs)
+
+        def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
+            if name == "openai_agents":
+                return object()
+            if name == "agents":
+                return None
+            return orig_find_spec(name, *args, **kwargs)
+
+        with (
+            mock.patch("importlib.import_module", side_effect=_fake_import),
+            mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
+            mock.patch.object(check_env, "REQUIRED", []),
+            mock.patch.object(check_env, "OPTIONAL", ["openai_agents"]),
+            mock.patch.object(check_env, "warn_missing_core", lambda: []),
+            mock.patch.object(check_env, "check_openai_agents_version", return_value=True) as chk,
+        ):
+            self.assertEqual(check_env.main([]), 0)
+            chk.assert_not_called()
+
 
 if __name__ == "__main__":  # pragma: no cover - manual execution
     unittest.main()

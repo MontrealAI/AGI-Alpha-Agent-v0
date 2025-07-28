@@ -484,7 +484,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                     openai_agents_found = True
                     try:
                         mod = importlib.import_module("agents")
-                        openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
+                        openai_agents_attr_ok = all(hasattr(mod, a) for a in ("AgentRuntime", "Agent", "Tool"))
                     except Exception:
                         openai_agents_attr_ok = False
                 else:
@@ -493,7 +493,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 openai_agents_found = True
                 try:
                     mod = importlib.import_module(import_name)
-                    openai_agents_attr_ok = hasattr(mod, "OpenAIAgent") or hasattr(mod, "Agent")
+                    openai_agents_attr_ok = all(hasattr(mod, a) for a in ("AgentRuntime", "Agent", "Tool"))
                 except Exception:
                     openai_agents_attr_ok = False
             if not openai_agents_attr_ok:
@@ -572,7 +572,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                     print("  -", hint_msg)
 
     if openai_agents_found and not openai_agents_attr_ok:
-        print("WARNING: openai_agents package lacks required API; skipping auto-install")
+        print(
+            "WARNING: openai_agents package lacks expected attributes. "
+            "Install the real 'openai-agents' package with: pip install openai-agents"
+        )
     elif openai_agents_found:
         try:
             mod = importlib.import_module("openai_agents")
