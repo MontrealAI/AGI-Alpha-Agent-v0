@@ -6,6 +6,8 @@ import sys
 import types
 import importlib.util
 import socket
+import shutil
+from pathlib import Path
 from typing import Any
 
 # Ensure runtime dependencies are present before collecting tests
@@ -125,3 +127,12 @@ def scenario_2020_mrna() -> replay.Scenario:
 @pytest.fixture  # type: ignore[misc]
 def scenario(request: pytest.FixtureRequest) -> replay.Scenario:
     return request.getfixturevalue(request.param)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_ledger_dir() -> None:
+    """Remove the default ledger directory created during tests."""
+    yield
+    ledger = Path("ledger")
+    if ledger.exists():
+        shutil.rmtree(ledger, ignore_errors=True)
