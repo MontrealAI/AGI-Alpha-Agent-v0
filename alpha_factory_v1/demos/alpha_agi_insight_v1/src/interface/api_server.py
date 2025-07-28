@@ -79,6 +79,11 @@ API_TOKEN_DEFAULT = "changeme"
 app = FastAPI(title="α‑AGI Insight") if FastAPI is not None else None
 
 if app is not None:
+
+    async def _http_exception_handler(request: Request, exc: HTTPException) -> Response:
+        return problem_response(exc)
+
+    app.add_exception_handler(HTTPException, _http_exception_handler)
     app_f: FastAPI = app
     app_f.state.orchestrator = None
     app_f.state.task = None

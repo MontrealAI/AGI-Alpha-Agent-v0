@@ -139,6 +139,11 @@ if app is not None:
 
     security = HTTPBearer()
 
+    async def _http_exception_handler(request: Request, exc: HTTPException) -> Response:
+        return problem_response(exc)
+
+    app.add_exception_handler(HTTPException, _http_exception_handler)
+
     def _noop(*_a: Any, **_kw: Any) -> Any:
         class _N:
             def labels(self, *_a: Any, **_kw: Any) -> "_N":
