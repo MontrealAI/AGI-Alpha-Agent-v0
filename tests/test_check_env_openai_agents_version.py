@@ -14,6 +14,12 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
         fake_mod = types.SimpleNamespace()
         if version is not None:
             fake_mod.__version__ = version
+        # Provide required attributes so check_env performs the
+        # version validation path instead of skipping it.
+        fake_mod.AgentRuntime = object
+        fake_mod.Agent = object
+        fake_mod.Tool = object
+        fake_mod.__spec__ = types.SimpleNamespace(loader=object())
         orig_import_module = importlib.import_module
         orig_find_spec = importlib.util.find_spec
 
@@ -33,7 +39,7 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
             mock.patch("importlib.import_module", side_effect=_fake_import),
             mock.patch("importlib.util.find_spec", side_effect=_fake_find_spec),
             mock.patch.object(check_env, "REQUIRED", []),
-            mock.patch.object(check_env, "OPTIONAL", [module_name]),
+            mock.patch.object(check_env, "OPTIONAL", ["openai_agents", "agents"]),
             mock.patch.object(check_env, "warn_missing_core", lambda: []),
         ):
             return int(check_env.main([]))
@@ -59,19 +65,25 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
             __version__="0.0.17",
             __spec__=None,
             OpenAIAgent=object,
+            AgentRuntime=object,
+            Agent=object,
+            Tool=object,
         )
+
+        orig_import_module = importlib.import_module
+        orig_find_spec = importlib.util.find_spec
 
         def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return fake_mod
-            return importlib.import_module(name, *args, **kwargs)
+            return orig_import_module(name, *args, **kwargs)
 
         def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return object()
             if name == "agents":
                 return None
-            return importlib.util.find_spec(name, *args, **kwargs)
+            return orig_find_spec(name, *args, **kwargs)
 
         with (
             mock.patch("importlib.import_module", side_effect=_fake_import),
@@ -89,19 +101,25 @@ class TestCheckEnvOpenAIAgentsVersion(unittest.TestCase):
             __version__="0.0.17",
             __spec__=None,
             OpenAIAgent=object,
+            AgentRuntime=object,
+            Agent=object,
+            Tool=object,
         )
+
+        orig_import_module = importlib.import_module
+        orig_find_spec = importlib.util.find_spec
 
         def _fake_import(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return fake_mod
-            return importlib.import_module(name, *args, **kwargs)
+            return orig_import_module(name, *args, **kwargs)
 
         def _fake_find_spec(name: str, *args: Any, **kwargs: Any) -> object:
             if name == "openai_agents":
                 return object()
             if name == "agents":
                 return None
-            return importlib.util.find_spec(name, *args, **kwargs)
+            return orig_find_spec(name, *args, **kwargs)
 
         with (
             mock.patch("importlib.import_module", side_effect=_fake_import),
