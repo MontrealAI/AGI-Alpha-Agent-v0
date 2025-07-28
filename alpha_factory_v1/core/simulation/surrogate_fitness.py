@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Iterable, Sequence, cast
 
 import yaml
 
@@ -27,7 +27,7 @@ def load_weights(path: str | Path | None = None) -> dict[str, float | Sequence[f
 def _non_dominated_sort(values: Sequence[Sequence[float]]) -> tuple[list[int], list[list[int]]]:
     n = len(values)
     ranks = [0] * n
-    S = [set() for _ in range(n)]
+    S: list[set[int]] = [set() for _ in range(n)]
     dominated = [0] * n
     for i, a in enumerate(values):
         for j, b in enumerate(values):
@@ -87,8 +87,8 @@ def aggregate(
 ) -> list[float]:
     """Return scalar surrogate scores for ``values``."""
     cfg = weights if weights is not None else load_weights(weights_path)
-    rank_w = float(cfg.get("rank", 1.0))
-    crowd_w = float(cfg.get("crowd", 0.0))
+    rank_w = float(cast(float, cfg.get("rank", 1.0)))
+    crowd_w = float(cast(float, cfg.get("crowd", 0.0)))
     obj_w = cfg.get("objectives", [])
     if not isinstance(obj_w, Sequence):
         obj_w = []
