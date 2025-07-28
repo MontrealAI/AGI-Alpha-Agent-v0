@@ -19,7 +19,7 @@ def test_publish_to_async_subscriber() -> None:
         received.append(env)
 
     bus.subscribe("x", handler)
-    env = messaging.Envelope("a", "x", {"v": 42}, 0.0)
+    env = messaging.Envelope(sender="a", recipient="x", payload={"v": 42}, ts=0.0)
 
     async def run() -> None:
         bus.publish("x", env)

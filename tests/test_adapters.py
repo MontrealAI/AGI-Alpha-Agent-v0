@@ -101,7 +101,7 @@ def test_adk_generate_text_flow(monkeypatch) -> None:
     monkeypatch.setattr(type(agent), "handle", patched_handle)
     from alpha_factory_v1.common.utils import messaging
 
-    env = messaging.Envelope("planning", "research", {"plan": "p"}, 0.0)
+    env = messaging.Envelope(sender="planning", recipient="research", payload={"plan": "p"}, ts=0.0)
     asyncio.run(agent.handle(env))
 
     assert adk.called == ["p"]

@@ -54,7 +54,7 @@ class TestMerkleBroadcast(unittest.TestCase):
 
     def test_broadcast_success(self) -> None:
         led = self._ledger()
-        env = messaging.Envelope("a", "b", {"v": 1}, 0.0)
+        env = messaging.Envelope(sender="a", recipient="b", payload={"v": 1}, ts=0.0)
         led.log(env)
         root = led.compute_merkle_root()
         captured, DummyClient, DummyTx, DummyInstr, DummyPk = self._dummy_classes()
@@ -70,7 +70,7 @@ class TestMerkleBroadcast(unittest.TestCase):
 
     def test_broadcast_error(self) -> None:
         led = self._ledger()
-        env = messaging.Envelope("a", "b", {"v": 1}, 0.0)
+        env = messaging.Envelope(sender="a", recipient="b", payload={"v": 1}, ts=0.0)
         led.log(env)
         captured, DummyClient, DummyTx, DummyInstr, DummyPk = self._dummy_classes(True)
         with (

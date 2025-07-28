@@ -68,7 +68,7 @@ def test_ledger_postgres_persistence(pg_container):
         }
     )
     ledger = Ledger("/tmp/ignore.db", db="postgres", broadcast=False)
-    env = messaging.Envelope("a", "b", {"v": 1}, 0.0)
+    env = messaging.Envelope(sender="a", recipient="b", payload={"v": 1}, ts=0.0)
     ledger.log(env)
     ledger.close()
 

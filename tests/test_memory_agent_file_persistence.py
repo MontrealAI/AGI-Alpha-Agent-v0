@@ -15,7 +15,7 @@ def test_memory_agent_file_cap(tmp_path: Path) -> None:
     ledger = logging.Ledger(str(tmp_path / "ledger.db"))
     agent = memory_agent.MemoryAgent(bus, ledger, str(mem_file), memory_limit=2)
 
-    envs = [messaging.Envelope("a", "memory", {"v": i}, 0.0) for i in range(3)]
+    envs = [messaging.Envelope(sender="a", recipient="memory", payload={"v": i}, ts=0.0) for i in range(3)]
 
     async def _run() -> None:
         async with bus, ledger:
@@ -39,7 +39,7 @@ def test_memory_agent_env_var_cap(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
     ledger = logging.Ledger(str(tmp_path / "ledger.db"))
     agent = memory_agent.MemoryAgent(bus, ledger, str(mem_file))
 
-    envs = [messaging.Envelope("a", "memory", {"i": i}, 0.0) for i in range(3)]
+    envs = [messaging.Envelope(sender="a", recipient="memory", payload={"i": i}, ts=0.0) for i in range(3)]
 
     async def _run() -> None:
         async with bus, ledger:

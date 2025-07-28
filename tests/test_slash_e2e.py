@@ -13,7 +13,7 @@ def test_slash_on_forged_ledger(tmp_path, monkeypatch) -> None:
     orch = orchestrator.Orchestrator(settings)
     orch.registry.set_stake("A", 100)
     original_root = orch.ledger.compute_merkle_root()
-    env = messaging.Envelope("A", "b", {"v": 1}, 0.0)
+    env = messaging.Envelope(sender="A", recipient="b", payload={"v": 1}, ts=0.0)
     orch.ledger.log(env)
     orch.verify_merkle_root(original_root, "A")
     assert orch.registry.stakes["A"] == 90

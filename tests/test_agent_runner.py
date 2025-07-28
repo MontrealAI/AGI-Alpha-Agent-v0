@@ -83,12 +83,12 @@ def test_restart_unsubscribes_handler() -> None:
     runner = orchestrator.AgentRunner(agent)
 
     async def _run() -> tuple[int, int]:
-        bus.publish("dummy", messaging.Envelope("a", "dummy", {}, 0.0))
+        bus.publish("dummy", messaging.Envelope(sender="a", recipient="dummy", payload={}, ts=0.0))
         await asyncio.sleep(0)
         before = agent.count
         await runner.restart(bus, ledger)
         new_agent = runner.agent  # type: ignore[assignment]
-        bus.publish("dummy", messaging.Envelope("a", "dummy", {}, 0.0))
+        bus.publish("dummy", messaging.Envelope(sender="a", recipient="dummy", payload={}, ts=0.0))
         await asyncio.sleep(0)
         return before, getattr(new_agent, "count")
 

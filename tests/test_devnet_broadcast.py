@@ -34,7 +34,7 @@ async def test_broadcast_merkle_root_devnet() -> None:
         pytest.skip("network disabled or devnet unreachable")
     tmp = tempfile.TemporaryDirectory()
     ledger = Ledger(os.path.join(tmp.name, "l.db"), rpc_url="https://api.devnet.solana.com", broadcast=True)
-    env = messaging.Envelope("a", "b", {"v": 1}, 0.0)
+    env = messaging.Envelope(sender="a", recipient="b", payload={"v": 1}, ts=0.0)
     ledger.log(env)
     try:
         await ledger.broadcast_merkle_root()
