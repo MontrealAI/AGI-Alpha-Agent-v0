@@ -90,7 +90,7 @@ def convert_alpha(alpha: str, *, ledger: Path | None = None, model: str = "gpt-4
             plan = json.loads(resp.choices[0].message.content)
             if not isinstance(plan, dict):
                 plan = SAMPLE_PLAN
-        except openai.error.OpenAIError as e:
+        except openai.OpenAIError as e:
             logging.error(f"OpenAI API call failed: {e}. Falling back to SAMPLE_PLAN.")
             plan = SAMPLE_PLAN
         except json.JSONDecodeError as e:
