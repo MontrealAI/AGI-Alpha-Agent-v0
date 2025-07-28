@@ -18,13 +18,11 @@ T = TypeVar("T")
 
 
 @overload
-def with_retry(func: Callable[P, Awaitable[T]], *, max_tries: int = 3) -> Callable[P, Awaitable[T]]:
-    ...
+def with_retry(func: Callable[P, Awaitable[T]], *, max_tries: int = 3) -> Callable[P, Awaitable[T]]: ...
 
 
 @overload
-def with_retry(func: Callable[P, T], *, max_tries: int = 3) -> Callable[P, T]:
-    ...
+def with_retry(func: Callable[P, T], *, max_tries: int = 3) -> Callable[P, T]: ...
 
 
 def with_retry(func: Callable[P, Any], *, max_tries: int = 3) -> Callable[P, Any]:
@@ -72,7 +70,7 @@ def with_retry(func: Callable[P, Any], *, max_tries: int = 3) -> Callable[P, Any
                     await asyncio.sleep(2**attempt * 0.1)
             raise AssertionError("unreachable")
 
-        return cast(Callable[P, Any], wrapper_async)
+        return wrapper_async
 
     def wrapper_sync(*args: P.args, **kwargs: P.kwargs) -> Any:
         for attempt in range(max_tries):
@@ -91,4 +89,4 @@ def with_retry(func: Callable[P, Any], *, max_tries: int = 3) -> Callable[P, Any
                 time.sleep(2**attempt * 0.1)
         raise AssertionError("unreachable")
 
-    return cast(Callable[P, Any], wrapper_sync)
+    return wrapper_sync
