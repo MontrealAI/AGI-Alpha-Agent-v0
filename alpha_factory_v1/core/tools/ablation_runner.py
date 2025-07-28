@@ -11,7 +11,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict, List, cast
 
 try:  # graceful fallback when matplotlib is unavailable
     import matplotlib
@@ -21,8 +21,8 @@ try:  # graceful fallback when matplotlib is unavailable
     import numpy as np
 except Exception:  # pragma: no cover - optional dependency missing
     matplotlib = None
-    plt = None  # type: ignore[assignment]
-    np = None  # type: ignore[assignment]
+    plt = cast(Any, None)
+    np = cast(Any, None)
 
 from alpha_factory_v1.demos.self_healing_repo.patcher_core import apply_patch
 from alpha_factory_v1.core.eval.fitness import compute_fitness
@@ -56,8 +56,8 @@ def _run_bench(repo: Path, flags: Dict[str, bool]) -> float:
         check=True,
     )
     results = json.loads(proc.stdout)
-    metrics = compute_fitness(results)
-    score = metrics.get("swe_mini", {}).get("pass_rate", 0.0)
+    metrics = compute_fitness(cast(List[Dict[str, Any]], results))
+    score: float = metrics.get("swe_mini", {}).get("pass_rate", 0.0)
     # simple synthetic penalty when features disabled
     for enabled in flags.values():
         if not enabled:
