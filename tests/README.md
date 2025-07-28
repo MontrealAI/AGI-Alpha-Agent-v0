@@ -24,6 +24,31 @@ Copy the resulting `wheels/` directory to the offline host and set
 or `pytest`. The environment check in `tests/conftest.py` will abort when neither
 network access nor a wheelhouse is available.
 
+### Creating a wheelhouse
+
+1. Run the helper script on a machine with internet access:
+
+   ```bash
+   ./scripts/build_offline_wheels.sh
+   ```
+
+   This downloads wheels for all locked requirements. Ensure the
+   `wheels/` directory contains common packages such as `numpy`, `pandas`,
+   `openai_agents`, `gymnasium` and `google_adk`.
+2. Copy the directory to the target host and set `WHEELHOUSE`:
+
+   ```bash
+   export WHEELHOUSE=$(pwd)/wheels
+   ```
+
+3. Run the environment check using the wheel cache and execute the tests:
+
+   ```bash
+   python check_env.py --auto-install --wheelhouse "$WHEELHOUSE"
+   PYTHONPATH=$(pwd) WHEELHOUSE="$WHEELHOUSE" pytest -q
+   ```
+
+
 ## Running tests online vs. offline
 
 When internet connectivity is available run:
