@@ -15,6 +15,7 @@ _DEF_CFG = {
     "horizon": 1,
     "pop_size": 2,
     "generations": 1,
+    "seed": 42,
 }
 
 
