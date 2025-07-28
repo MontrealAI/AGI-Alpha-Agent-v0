@@ -67,7 +67,7 @@ class CodeGenAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Translate market insight into executable code."""
         with span("codegen.handle"):
-            analysis = env.payload.get("analysis", "")
+            analysis = env.payload["analysis"] if "analysis" in env.payload else ""
             code = "print('alpha')"
             if self.oai_ctx and not self.bus.settings.offline:
                 try:  # pragma: no cover

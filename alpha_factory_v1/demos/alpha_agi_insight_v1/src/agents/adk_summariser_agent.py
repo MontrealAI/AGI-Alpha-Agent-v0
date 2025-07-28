@@ -37,6 +37,6 @@ class ADKSummariserAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Store research payload for later summarisation."""
         with span("summariser.handle"):
-            val = env.payload.get("research")
+            val = env.payload["research"] if "research" in env.payload else None
             if val is not None:
                 self._records.append(str(val))

@@ -67,7 +67,7 @@ class ResearchAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Process planning requests and emit research results."""
         with span("research.handle"):
-            plan = env.payload.get("plan", "")
+            plan = env.payload["plan"] if "plan" in env.payload else ""
             cap = random.random()
             if self.oai_ctx and not self.bus.settings.offline:
                 try:  # pragma: no cover

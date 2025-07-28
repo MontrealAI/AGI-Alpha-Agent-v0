@@ -25,5 +25,5 @@ class ChaosAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Forward incoming code directly to the safety agent."""
         with span("chaos.handle"):
-            code = env.payload.get("code", "import os")
+            code = env.payload["code"] if "code" in env.payload else "import os"
             await self.emit("safety", {"code": code})
