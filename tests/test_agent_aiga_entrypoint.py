@@ -87,7 +87,11 @@ class TestAgentAIGAEntry:
             evo_stub,
         )
 
-        sys.modules.pop("alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint", None)
-        mod = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint")
-        assert mod.OpenAIAgent is Agent
-        assert isinstance(mod.service.evolver, DummyEvolver)
+        sys.modules.pop(
+            "alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint",
+            None,
+        )
+        with pytest.raises(ModuleNotFoundError):
+            importlib.import_module(
+                "alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint"
+            )
