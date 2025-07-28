@@ -39,7 +39,7 @@ class MarketAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Process strategy input and compute market impact."""
         with span("market.handle"):
-            strategy = env.payload.get("strategy")
+            strategy = env.payload["strategy"] if "strategy" in env.payload else None
             analysis = f"impact of {strategy}"
             if self.oai_ctx and not self.bus.settings.offline:
                 try:  # pragma: no cover

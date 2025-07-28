@@ -38,7 +38,7 @@ class StrategyAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Compose a strategy from research results."""
         with span("strategy.handle"):
-            val = env.payload.get("research")
+            val = env.payload["research"] if "research" in env.payload else None
             strat = {"action": f"monitor {val}"}
             if self.bus.settings.offline:
                 try:

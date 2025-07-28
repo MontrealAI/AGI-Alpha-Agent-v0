@@ -36,7 +36,7 @@ class SafetyGuardianAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Validate payload before persistence."""
         with span("safety.handle"):
-            code = str(env.payload.get("code", ""))
+            code = str(env.payload["code"] if "code" in env.payload else "")
             text_parts = [str(v) for v in env.payload.values() if isinstance(v, str)]
             text = " ".join(text_parts)
             status = "ok"
