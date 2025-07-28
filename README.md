@@ -1300,6 +1300,12 @@ start if `NEO4J_PASSWORD` remains `REPLACE_ME` or is missing.
 Set `API_TOKEN` to a strong secret so that the REST API can authenticate
 incoming requests. Clients must send `Authorization: Bearer <token>`.
 The server aborts if `API_TOKEN` equals `REPLACE_ME_TOKEN`.
+
+#### API Token Requirement
+
+Before starting the API server or running the test suite, ensure `API_TOKEN`
+is set to a non-default value. The examples in `tests/test_api_status.py` use
+`test-token` as a reference token for local runs.
 Use `API_RATE_LIMIT` to limit requests per minute per IP (default `60`).
 If more than 5% of requests return HTTP `429` within a minute, the server calls
 `utils.alerts.send_alert` to report excessive throttling.
