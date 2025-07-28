@@ -171,6 +171,7 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.bridge:
         host = os.getenv("BUSINESS_HOST", f"http://localhost:{args.port}")
+        os.environ["AGENTS_RUNTIME_PORT"] = str(args.runtime_port)
         _start_bridge(host, args.runtime_port)
 
     if args.open_ui:
