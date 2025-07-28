@@ -78,12 +78,17 @@ def test_download_small_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
     assert calls == ["hf", "openai"]
 
 
-@pytest.mark.skipif(os.getenv("PYTEST_NET_OFF") == "1", reason="network disabled")  # type: ignore[misc]
 def test_gpt2_link_head(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(
         "OPENAI_GPT2_BASE_URL",
         "https://huggingface.co/openai-community/gpt2/resolve/main",
     )
     url = os.environ["OPENAI_GPT2_BASE_URL"].rstrip("/") + "/config.json"
+
+    class FakeResponse:
+        status_code = 200
+
+    monkeypatch.setattr(requests, "head", lambda *_a, **_kw: FakeResponse())
+
     resp = requests.head(url, allow_redirects=True, timeout=10)
     assert resp.status_code == 200
