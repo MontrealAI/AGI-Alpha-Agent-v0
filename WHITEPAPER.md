@@ -1,4 +1,5 @@
 # META-AGENTIC α‑AGI 👁️✨ White Paper – v0.1.0‑alpha
+[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)
 
 **Disclaimer:** *This white paper was automatically generated from the official **AGI-Alpha-Agent v0.1.0-alpha** repository and related content. It is a preliminary draft provided for illustrative purposes only. All information is subject to change, and nothing herein constitutes financial advice or a commitment. Use of the \$AGIALPHA system implies agreement to the \$AGIALPHA Terms & Conditions. This is a pre-alpha concept under active development.*
 
