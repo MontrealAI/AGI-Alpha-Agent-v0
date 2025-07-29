@@ -33,8 +33,8 @@ warn() { color 33 "$1"; }
 
 prompt() {
   if [[ $WIZARD -eq 1 ]]; then
-    read -rp "$1 [Y/n] " ans
-    [[ ${ans:-Y} =~ ^[Yy]$ ]]
+    read -rp "$1 [Y/n] " answer
+    [[ ${answer:-Y} =~ ^[Yy]$ ]]
   else
     return 0
   fi
