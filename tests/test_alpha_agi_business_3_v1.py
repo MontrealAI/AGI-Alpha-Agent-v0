@@ -577,7 +577,9 @@ def test_run_cycle_uses_asyncio_run(monkeypatch: pytest.MonkeyPatch) -> None:
     mod.run_cycle(mod.Orchestrator(), mod.AgentFin(), mod.AgentRes(), mod.AgentEne(), mod.AgentGdl(), mod.Model())
 
     assert called.get("coro") is not None
-    assert getattr(called["coro"], "cr_code", None) is dummy_cycle.__code__
+    coro = called["coro"]
+    assert getattr(coro, "cr_code", None) is dummy_cycle.__code__
+    coro.close()
 
 
 def test_run_cycle_creates_task(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -604,3 +606,4 @@ def test_run_cycle_creates_task(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert dummy_loop.coro is not None
     assert getattr(dummy_loop.coro, "cr_code", None) is dummy_cycle.__code__
+    dummy_loop.coro.close()
