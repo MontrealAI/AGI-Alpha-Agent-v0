@@ -60,7 +60,7 @@ AgentBase = _agent_base()
 # ──────────────────────────────────────────────────────────────────────────────
 # Resilient, colourised logger (inherits project-wide JSON formatter)
 # ──────────────────────────────────────────────────────────────────────────────
-_log = logging.getLogger("alpha_factory.agent.ping")
+_log = logging.getLogger("alpha_factory.agent").getChild("ping")
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Optional integrations — imported lazily / wrapped in try-except
@@ -80,7 +80,10 @@ try:
     _Prom.Histogram = Histogram
     _Prom.get_metric = _get_metric
 except ModuleNotFoundError:
-    _log.warning("prometheus_client missing – metrics disabled")
+    _log.warning(
+        "prometheus_client missing – metrics disabled",
+        extra={"agent": "ping"},
+    )
 
 
 try:
@@ -88,7 +91,10 @@ try:
 
     _OTEL.tracer = trace.get_tracer(__name__)
 except ModuleNotFoundError:
-    _log.warning("opentelemetry not installed – tracing disabled")
+    _log.warning(
+        "opentelemetry not installed – tracing disabled",
+        extra={"agent": "ping"},
+    )
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Configuration helpers
@@ -245,7 +251,10 @@ def _standalone() -> None:
         stop_event = asyncio.Event()
 
         def _graceful(*_: Any) -> None:
-            _log.info("Received termination signal – shutting down PingAgent …")
+            _log.info(
+                "Received termination signal – shutting down PingAgent …",
+                extra={"agent": agent.NAME},
+            )
             stop_event.set()
 
         for sig in (signal.SIGINT, signal.SIGTERM):
