@@ -250,7 +250,7 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests]
     runs-on: windows-latest
     timeout-minutes: 30
@@ -296,7 +296,7 @@ jobs:
 
   macos-smoke:
     name: "macOS Smoke"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests]
     environment: ci-on-demand
     runs-on: macos-latest
@@ -344,7 +344,7 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -402,7 +402,7 @@ jobs:
 
   docs-build:
     name: "📚 Docs Build"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -496,7 +496,7 @@ jobs:
 
   docker:
     name: "🐳 Docker build"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests]
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -616,7 +616,7 @@ jobs:
 
   deploy:
     name: "📦 Deploy"
-    if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: [owner-check, tests, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
