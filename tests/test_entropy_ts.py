@@ -12,7 +12,6 @@ ENTROPY_TS = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
 def test_pareto_entropy(tmp_path: Path) -> None:
-    js_out = tmp_path / "entropy.js"
     subprocess.run(
         [
             "tsc",
@@ -21,11 +20,12 @@ def test_pareto_entropy(tmp_path: Path) -> None:
             "--module",
             "es2020",
             ENTROPY_TS,
-            "--outFile",
-            js_out,
+            "--outDir",
+            tmp_path,
         ],
         check=True,
     )
+    js_out = tmp_path / "entropy.js"
 
     script = tmp_path / "run.mjs"
     script.write_text(
