@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -26,9 +27,10 @@ def main() -> int:
         wheelhouse = os.getenv("WHEELHOUSE")
         cmd += ["--generate-hashes", "--quiet"]
         if wheelhouse:
-            cmd += ["--no-index", "--find-links", wheelhouse]
+            wheelhouse_path = str(Path(wheelhouse))
+            cmd += ["--no-index", "--find-links", wheelhouse_path]
         cmd += [str(req_txt), "-o", str(out_path)]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
         sys.stdout.write(result.stdout)
         sys.stderr.write(result.stderr)
         if result.returncode != 0:
@@ -36,7 +38,7 @@ def main() -> int:
         if out_path.read_bytes() != lock_file.read_bytes():
             extra = ""
             if wheelhouse:
-                extra = f"--no-index --find-links {wheelhouse} "
+                extra = f"--no-index --find-links {shlex.quote(wheelhouse_path)} "
             sys.stderr.write(
                 f"requirements.lock is outdated. Run 'pip-compile {extra}--generate-hashes --quiet "
                 "requirements.txt -o requirements.lock'\n"
