@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import asyncio
 from unittest import mock
+import pytest
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import (
     market_agent,
@@ -16,16 +17,21 @@ class DummyCtx:
         raise RuntimeError("boom")
 
 
-def test_market_agent_logs_exception():
+def test_market_agent_logs_exception(caplog: pytest.LogCaptureFixture) -> None:
     cfg = config.Settings(bus_port=0, openai_api_key="k")
     bus = DummyBus(cfg)
     led = DummyLedger()
     agent = market_agent.MarketAgent(bus, led)
     agent.oai_ctx = DummyCtx()
-    env = messaging.Envelope(sender="strategy", recipient="market", payload={"strategy": "foo"}, ts=0.0)
-    with mock.patch.object(market_agent.log, "warning") as warn:
+    env = messaging.Envelope(
+        sender="strategy",
+        recipient="market",
+        payload={"strategy": "foo"},
+        ts=0.0,
+    )
+    with caplog.at_level("WARNING"):
         asyncio.run(agent.handle(env))
-        warn.assert_called_once()
+    assert any("openai.run failed" in r.message for r in caplog.records)
 
 
 def test_strategy_agent_logs_exception(monkeypatch):
@@ -41,13 +47,18 @@ def test_strategy_agent_logs_exception(monkeypatch):
         warn.assert_called_once()
 
 
-def test_research_agent_logs_exception():
+def test_research_agent_logs_exception(caplog: pytest.LogCaptureFixture) -> None:
     cfg = config.Settings(bus_port=0, openai_api_key="k")
     bus = DummyBus(cfg)
     led = DummyLedger()
     agent = research_agent.ResearchAgent(bus, led)
     agent.oai_ctx = DummyCtx()
-    env = messaging.Envelope(sender="planning", recipient="research", payload={"plan": "bar"}, ts=0.0)
-    with mock.patch.object(research_agent.log, "warning") as warn:
+    env = messaging.Envelope(
+        sender="planning",
+        recipient="research",
+        payload={"plan": "bar"},
+        ts=0.0,
+    )
+    with caplog.at_level("WARNING"):
         asyncio.run(agent.handle(env))
-        warn.assert_called_once()
+    assert any("openai.run failed" in r.message for r in caplog.records)
