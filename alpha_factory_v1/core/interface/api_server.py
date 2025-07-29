@@ -253,6 +253,18 @@ if app is not None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    app_f.middleware_stack = app_f.build_middleware_stack()
+    stack = app_f.middleware_stack
+    limiter = None
+    metrics_mw = None
+    while hasattr(stack, "app"):
+        if isinstance(stack, SimpleRateLimiter):
+            limiter = stack
+        if isinstance(stack, MetricsMiddleware):
+            metrics_mw = stack
+        stack = stack.app
+    app_f.state.limiter = limiter
+    app_f.state.metrics = metrics_mw
     app_f.include_router(metrics_router)
     app_f.state.orchestrator = None
     app_f.state.orch_task = None

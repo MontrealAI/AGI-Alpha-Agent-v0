@@ -30,9 +30,8 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     client.get("/runs", headers=headers)
     client.get("/runs", headers=headers)
 
-    stack = api.app.middleware_stack
-    metrics = stack.app.app
-    limiter = metrics.app
+    metrics = api.app.state.metrics
+    limiter = api.app.state.limiter
     metrics.window_start = time.time() - 61
     limiter.counters["testclient"] = deque()
 
