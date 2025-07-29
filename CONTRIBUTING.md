@@ -72,6 +72,7 @@ pre-commit run --all-files   # first time to set up caches
 ```
 Run `pre-commit run --all-files` again before opening a pull request to ensure
 repository-wide checks pass.
+- Large bundle artifacts (`*.bundle.js` and `*.bundle.js.map`) are marked as generated in `.gitattributes`, so pre-commit and search tools ignore them.
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
 images. Each page under `docs/demos/` must start with a preview image using
 `![preview](...)`.
