@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
+"""Regression tests for the API server's static endpoints."""
+
 import importlib
 import os
 import time
-from typing import Any, cast
-from pathlib import Path
 from collections import deque
+from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
@@ -16,6 +18,7 @@ os.environ.setdefault("API_RATE_LIMIT", "1000")
 
 
 def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Trigger rate limit alert when the counter resets."""
     monkeypatch.setenv("API_RATE_LIMIT", "1")
     from alpha_factory_v1.core.interface import api_server as mod
 
@@ -44,6 +47,7 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_lineage_detail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Verify lineage details include the specified record."""
     monkeypatch.setenv("API_RATE_LIMIT", "1000")
     monkeypatch.setenv("ARCHIVE_PATH", str(tmp_path / "a.db"))
     from alpha_factory_v1.core.archive import Archive
