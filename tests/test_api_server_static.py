@@ -40,6 +40,8 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
 
     metrics = cast(MetricsMiddleware, api.app.state.metrics)
     limiter = cast(SimpleRateLimiter, api.app.state.limiter)
+    assert metrics is not None, "Metrics middleware missing"
+    assert limiter is not None, "Rate limiter missing"
     metrics.window_start = time.time() - 61
     limiter.counters["testclient"] = deque()
 
