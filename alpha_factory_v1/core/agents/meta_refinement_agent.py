@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Iterable, List, Mapping
+from typing import Iterable, List, Mapping, cast
 
 from alpha_factory_v1.core.governance.stake_registry import StakeRegistry
 from alpha_factory_v1.core.self_evolution import harness
@@ -55,7 +55,7 @@ class MetaRefinementAgent:
         max_delta = -1.0
         target: str | None = None
         for rec in entries:
-            ts = float(rec.get("ts", 0.0))
+            ts = float(cast(float, rec.get("ts", 0.0)))
             if prev_ts is not None:
                 delta = ts - prev_ts
                 if delta > max_delta:
@@ -79,10 +79,10 @@ class MetaRefinementAgent:
                 continue
             data = stats.setdefault(module, {"lat": 0.0, "count": 0.0, "err": 0.0})
             if "latency" in rec:
-                data["lat"] += float(rec["latency"])
+                data["lat"] += float(cast(float, rec["latency"]))
                 data["count"] += 1.0
             if "agent" in rec and "latency_ms" in rec:
-                cycle_latency.setdefault(str(rec["agent"]), []).append(float(rec["latency_ms"]))
+                cycle_latency.setdefault(str(rec["agent"]), []).append(float(cast(float, rec["latency_ms"])))
             if rec.get("level") == "error" or rec.get("error"):
                 data["err"] += 1.0
 
