@@ -6,7 +6,6 @@ from .registry import (
     AGENT_REGISTRY,
     CAPABILITY_GRAPH,
     AgentMetadata,
-    StubAgent,
     Counter,
     Gauge,
     Histogram,
