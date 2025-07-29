@@ -55,7 +55,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 ## 1 An α‑AGI Business? 🌐
 Open financial & industrial alpha is shrinking 📉 — yet trillions in inefficiencies remain:
 
-* Mis‑priced risk in frontier markets 
+* Mispriced risk in frontier markets
 * Latent capacity in global logistics 
 * Undiscovered IP in public patent corpora 
 * Cross‑asset statistical edges invisible to siloed desks 
