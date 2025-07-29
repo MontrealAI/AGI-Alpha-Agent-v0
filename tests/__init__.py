@@ -3,6 +3,7 @@
 
 from importlib.util import find_spec
 from pathlib import Path
+import os
 import sys
 
 # Allow tests to run from the repository without installing the package
@@ -17,10 +18,13 @@ if STUBS.is_dir():
         sys.path.append(str(STUBS))
     import importlib
 
-    try:
-        adk_spec = find_spec("google_adk") or find_spec("google.adk")
-    except ModuleNotFoundError:
+    if os.environ.get("SKIP_GOOGLE_ADK", "1") not in {"0", "false", "False"}:
         adk_spec = None
+    else:
+        try:
+            adk_spec = find_spec("google_adk") or find_spec("google.adk")
+        except ModuleNotFoundError:
+            adk_spec = None
     if adk_spec is None:
         pass
     else:
