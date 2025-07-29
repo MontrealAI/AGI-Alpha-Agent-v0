@@ -16,6 +16,11 @@ from fastapi.testclient import TestClient  # noqa: E402
 os.environ.setdefault("API_TOKEN", "test-token")
 os.environ.setdefault("API_RATE_LIMIT", "1000")
 
+from alpha_factory_v1.core.interface.api_server import (
+    MetricsMiddleware,
+    SimpleRateLimiter,
+)
+
 
 def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     """Trigger rate limit alert when the counter resets."""
@@ -33,8 +38,8 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     client.get("/runs", headers=headers)
     client.get("/runs", headers=headers)
 
-    metrics = api.app.state.metrics
-    limiter = api.app.state.limiter
+    metrics = cast(MetricsMiddleware, api.app.state.metrics)
+    limiter = cast(SimpleRateLimiter, api.app.state.limiter)
     metrics.window_start = time.time() - 61
     limiter.counters["testclient"] = deque()
 
