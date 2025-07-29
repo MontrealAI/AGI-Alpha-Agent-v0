@@ -60,7 +60,7 @@ class MetaRefinementAgent:
                 delta = ts - prev_ts
                 if delta > max_delta:
                     max_delta = delta
-                    target = str(rec.get("hash", ""))
+                    target = str(rec.get("module") or rec.get("agent") or rec.get("hash", ""))
             prev_ts = ts
         return target
 
