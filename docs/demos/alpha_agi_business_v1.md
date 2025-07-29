@@ -1,6 +1,6 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# Alpha Agi Business V1
+# Alpha AGI Business V1
 
 ![preview](../alpha_agi_business_v1/assets/preview.svg){.demo-preview}
 
