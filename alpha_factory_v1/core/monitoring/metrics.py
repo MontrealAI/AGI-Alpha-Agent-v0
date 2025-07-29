@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Optional
 
 try:
-    from prometheus_client import Counter, Gauge  # type: ignore
+    from prometheus_client import Counter, Gauge
 except Exception:  # pragma: no cover - optional
-    Counter = Gauge = None  # type: ignore
+    Counter = Gauge = None
+
+Counter: Optional[Any]
+Gauge: Optional[Any]
 
 from alpha_factory_v1.backend.metrics_registry import get_metric
 

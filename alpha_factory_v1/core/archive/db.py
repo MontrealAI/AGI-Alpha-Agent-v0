@@ -11,10 +11,11 @@ from pathlib import Path
 from typing import Iterator, Optional
 
 from sqlalchemy import Boolean, Column, Float, String, create_engine
-from sqlalchemy.orm import Session, declarative_base
+from sqlalchemy.orm import Session, DeclarativeBase
 
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
 @dataclass(slots=True)
