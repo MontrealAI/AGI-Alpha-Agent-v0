@@ -17,6 +17,14 @@ from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
 IMAGE = os.getenv("SELF_EVOLUTION_IMAGE", "python:3.11-slim")
 
+__all__ = [
+    "apply_patch",
+    "vote_and_merge",
+    "patcher_core",
+    "_run_tests",
+    "run_preflight",
+]
+
 
 def _run_tests(repo: Path) -> int:
     """Run the repository's test suite in a Docker container.
