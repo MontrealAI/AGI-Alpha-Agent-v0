@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Regression tests for the API server's static endpoints."""
 
+from __future__ import annotations
+
 import importlib
 import os
 import time
@@ -27,19 +29,19 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("API_RATE_LIMIT", "1")
     from alpha_factory_v1.core.interface import api_server as mod
 
-    api = importlib.reload(mod)
+    api_mod = importlib.reload(mod)
 
     sent: list[str] = []
-    monkeypatch.setattr(api.alerts, "send_alert", lambda msg, url=None: sent.append(msg))
+    monkeypatch.setattr(api_mod.alerts, "send_alert", lambda msg, url=None: sent.append(msg))
 
-    client = TestClient(cast(Any, api.app))
+    client = TestClient(cast(Any, api_mod.app))
     headers = {"Authorization": "Bearer test-token"}
 
     client.get("/runs", headers=headers)
     client.get("/runs", headers=headers)
 
-    metrics = cast(MetricsMiddleware, api.app.state.metrics)
-    limiter = cast(SimpleRateLimiter, api.app.state.limiter)
+    metrics = cast(MetricsMiddleware, api_mod.app.state.metrics)
+    limiter = cast(SimpleRateLimiter, api_mod.app.state.limiter)
     assert metrics is not None, "Metrics middleware missing"
     assert limiter is not None, "Rate limiter missing"
     metrics.window_start = time.time() - 61
@@ -50,7 +52,7 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     assert sent, "alert not triggered"
 
     monkeypatch.setenv("API_RATE_LIMIT", "1000")
-    importlib.reload(api)
+    importlib.reload(api_mod)
 
 
 def test_lineage_detail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -65,9 +67,9 @@ def test_lineage_detail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None
 
     from alpha_factory_v1.core.interface import api_server as mod
 
-    api = importlib.reload(mod)
+    api_mod = importlib.reload(mod)
 
-    client = TestClient(cast(Any, api.app))
+    client = TestClient(cast(Any, api_mod.app))
     headers = {"Authorization": "Bearer test-token"}
     resp = client.get("/lineage/2", headers=headers)
     assert resp.status_code == 200
