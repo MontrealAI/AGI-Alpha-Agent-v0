@@ -92,11 +92,11 @@ class MetaRefinementAgent:
                 if avg_ms > 5000:
                     metric = self.repo / "metric.txt"
                     goal = f"increase cycle to {int(avg_ms/1000)}s for {agent}"
-                    return propose_diff(str(metric), goal)
+                    return cast(str, propose_diff(str(metric), goal))
 
         if not stats:
             metric = self.repo / "metric.txt"
-            return propose_diff(str(metric), "optimise performance")
+            return cast(str, propose_diff(str(metric), "optimise performance"))
 
         def avg_latency(d: dict[str, float]) -> float:
             return d["lat"] / d["count"] if d["count"] else -1.0
@@ -109,7 +109,7 @@ class MetaRefinementAgent:
             path = self.repo / "metric.txt"
             goal = f"optimise around {target}"
 
-        return propose_diff(str(path), goal)
+        return cast(str, propose_diff(str(path), goal))
 
     # ------------------------------------------------------------------
     def refine(self) -> bool:
@@ -122,7 +122,7 @@ class MetaRefinementAgent:
         if not logs:
             return False
         diff = self._create_patch(logs)
-        accepted = harness.vote_and_merge(self.repo, diff, self.registry, agent_id="meta")
+        accepted: bool = bool(harness.vote_and_merge(self.repo, diff, self.registry, agent_id="meta"))
         if accepted:
             test_scribe.generate_test(self.repo, "True")
         return accepted
