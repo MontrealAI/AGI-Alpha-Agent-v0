@@ -4,6 +4,7 @@ import contextlib
 from unittest import mock
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src import orchestrator
+from alpha_factory_v1.backend import orchestrator_utils
 from alpha_factory_v1.common.utils import config
 
 
@@ -52,8 +53,18 @@ def test_error_threshold_restart(monkeypatch) -> None:
             pass
 
         def log(self, env) -> None:  # type: ignore[override]
-            if env.payload.get("event"):
-                events.append(env.payload["event"])
+            """Capture restart events without assuming ``dict`` payloads."""
+            event = None
+            payload = getattr(env, "payload", None)
+            if isinstance(payload, dict):
+                event = payload.get("event")
+            else:
+                try:
+                    event = payload["event"]
+                except Exception:
+                    event = None
+            if event:
+                events.append(event)
 
         def start_merkle_task(self, *_a, **_kw) -> None:
             pass
@@ -77,8 +88,17 @@ def test_error_threshold_restart(monkeypatch) -> None:
     async def run() -> None:
         async with orch.bus:
             runner.start(orch.bus, orch.ledger)
-            monitor = asyncio.create_task(orch._monitor())
-            await asyncio.sleep(3)
+            monitor = asyncio.create_task(
+                orchestrator_utils.monitor_agents(
+                    orch.runners,
+                    orch.bus,
+                    orch.ledger,
+                    err_threshold=orch._err_threshold,
+                    backoff_exp_after=orch._backoff_exp_after,
+                    on_restart=orch._record_restart,
+                )
+            )
+            await asyncio.sleep(5)
             monitor.cancel()
             with contextlib.suppress(asyncio.CancelledError):
                 await monitor
