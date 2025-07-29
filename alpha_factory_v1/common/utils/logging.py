@@ -199,7 +199,10 @@ class Ledger:
             if dataclasses.is_dataclass(env) and not isinstance(env, type):
                 record = dataclasses.asdict(env)
             elif isinstance(env, pb.Envelope):
-                record = json_format.MessageToDict(env, preserving_proto_field_name=True)
+                if hasattr(env, "DESCRIPTOR"):
+                    record = json_format.MessageToDict(env, preserving_proto_field_name=True)
+                else:
+                    record = dataclasses.asdict(env) if dataclasses.is_dataclass(env) else env.__dict__
             else:
                 record = env.__dict__
             data = json.dumps(record, sort_keys=True).encode()
