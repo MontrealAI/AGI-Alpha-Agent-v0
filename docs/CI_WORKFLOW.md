@@ -2,9 +2,10 @@
 
 # CI Workflow
 
-The repository's main continuous integration pipeline lives in
-[CI workflow file](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/ci.yml). It runs only when the
-repository owner triggers it from the GitHub Actions UI.
+The repository's main continuous integration pipeline lives in the
+[CI workflow file](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/ci.yml).
+It executes only when the repository owner triggers it from the GitHub
+Actions UI using **Run workflow**.
 
 ## Running the workflow
 
@@ -32,6 +33,9 @@ previous `latest` image so production always points at a working build.
 - **✅ Pytest** – unit tests and front‑end checks.
 - **🎯 Cypress (removed)** – the workflow no longer executes Cypress tests. End‑to‑end checks run via Playwright inside the **✅ Pytest** job.
 - **Windows/Mac Smoke** – lightweight sanity tests on Windows and macOS.
+- *Python matrix* – main jobs test against **Python 3.11** and
+  **Python 3.12** while the Windows and macOS smoke jobs use
+  **Python 3.13**.
 - **📜 MkDocs** – basic documentation build.
 - **📚 Docs Build** – full docs site verification with an offline check. The job runs
   `scripts/build_gallery_site.sh` which executes `preflight.py`. This
