@@ -1,3 +1,5 @@
+[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)
+
 Vincent Boucher
 
 **Early Life: Forged in Silence**
