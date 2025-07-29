@@ -38,11 +38,12 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import List, Sequence
+from typing import Any, List, Sequence, cast
 
-try:
+_np: Any
+try:  # pragma: no cover - optional dependency
     import numpy as _np
-except ModuleNotFoundError:  # pragma: no cover
+except ModuleNotFoundError:
     _np = None  # runtime fallback – we will skip MC VaR calc
 
 # ---------------------------------------------------------------------------
@@ -66,7 +67,8 @@ _LOG = logging.getLogger("alpha_factory.risk")
 def _load_equity_cache() -> List[float]:
     if _EQ_CACHE.exists():
         try:
-            return json.loads(_EQ_CACHE.read_text())
+            data = json.loads(_EQ_CACHE.read_text())
+            return cast(List[float], data)
         except Exception:  # pragma: no cover
             return []
     return []
@@ -147,9 +149,9 @@ class RiskManager:
         mu = rets.mean()
         sigma = rets.std(ddof=1)
         # parametric VaR (Gaussian) – 1‑day horizon
-        z = _np.abs(_np.quantile(rets, 1 - self.confidence))
+        z = float(_np.abs(_np.quantile(rets, 1 - self.confidence)))
         var = mu - z * sigma
-        return abs(var)
+        return abs(float(var))
 
     def drawdown_pct(self) -> float:
         """Latest draw‑down from peak, as %."""
