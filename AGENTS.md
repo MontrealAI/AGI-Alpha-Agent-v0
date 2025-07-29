@@ -328,6 +328,7 @@ install dependencies without internet access.
 - Keep commits focused and descriptive. Use meaningful commit messages.
 - Ensure `git status` shows a clean working tree before committing.
 - Remove stray build artifacts with `git clean -fd` if needed.
+- Large bundle artifacts (`*.bundle.js` and `*.bundle.js.map`) are marked as generated in `.gitattributes` so search tools skip them.
   - Follow the [Quick Checklist](CONTRIBUTING.md#quick-checklist) before committing.
     Run `python scripts/check_python_deps.py`, `python check_env.py --auto-install`,
     `pre-commit run --all-files` and `pytest`. Document any remaining test failures
