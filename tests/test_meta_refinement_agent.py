@@ -115,3 +115,31 @@ def test_refinement_proposes_cycle_adjustment(tmp_path: Path) -> None:
 
     called_diff = vote.call_args.args[1]
     assert "increase cycle" in called_diff
+
+
+def test_detect_bottleneck_selects_largest_gap(tmp_path: Path) -> None:
+    repo = _make_repo(tmp_path)
+    agent = MetaRefinementAgent(repo, tmp_path / "logs")
+    entries = [
+        {"module": "a", "ts": 0},
+        {"module": "b", "ts": 2},
+        {"module": "c", "ts": 8},
+    ]
+    assert agent._detect_bottleneck(entries) == "c"
+
+
+def test_create_patch_no_entries(tmp_path: Path) -> None:
+    repo = _make_repo(tmp_path)
+    agent = MetaRefinementAgent(repo, tmp_path / "logs")
+    patch = agent._create_patch([])
+    assert "optimise performance" in patch
+
+
+def test_init_sets_default_stake(tmp_path: Path) -> None:
+    repo = _make_repo(tmp_path)
+    logs = tmp_path / "logs"
+    logs.mkdir()
+    reg = StakeRegistry()
+    assert "meta" not in reg.stakes
+    MetaRefinementAgent(repo, logs, reg)
+    assert reg.stakes["meta"] == 1.0
