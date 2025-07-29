@@ -17,7 +17,7 @@ openai_agents = pytest.importorskip("openai_agents", minversion="0.0.17")
 import inspect
 
 if "Minimal stub" in inspect.getsource(openai_agents):
-    pytest.skip("openai_agents stub present")
+    pytest.skip("openai_agents stub present", allow_module_level=True)
 pytest.importorskip("gymnasium", minversion="0.29")
 pytest.importorskip("google_adk")
 
