@@ -1,0 +1,16 @@
+from typing import Any, Callable
+
+class Agent:
+    def __init__(self, name: str) -> None: ...
+
+class JsonSchema(dict[str, Any]): ...
+
+def task(*args: Any, **kwargs: Any) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
+
+class Router:
+    app: Any
+    def register_agent(self, agent: Agent) -> None: ...
+
+class AgentException(Exception): ...
+
+__all__: list[str]

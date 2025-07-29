@@ -51,7 +51,7 @@ except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
 
         JsonSchema = dict[str, Any]
 
-    adk = _Adk()
+    adk: Any = _Adk()
     _HAVE_ADK = False
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
