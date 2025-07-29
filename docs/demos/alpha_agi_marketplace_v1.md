@@ -1,6 +1,6 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# Alpha Agi Marketplace V1
+# Alpha AGI Marketplace V1
 
 ![preview](../alpha_agi_marketplace_v1/assets/preview.svg){.demo-preview}
 
