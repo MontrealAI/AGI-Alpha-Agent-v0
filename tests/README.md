@@ -139,6 +139,15 @@ pytest tests/test_ping_agent.py tests/test_af_requests.py -q
 These commands download packages from PyPI, so ensure you have either
 internet connectivity or a wheelhouse available via `--wheelhouse <dir>`
 (or the `WHEELHOUSE` environment variable).
+For a single lightweight check after installing just the core dependencies,
+run:
+
+```bash
+python check_env.py --auto-install
+pytest tests/test_meta_refinement_agent.py -q
+```
+The full suite requires `pip install -r requirements-dev.txt` and pulls in
+heavier extras, so expect a longer install time.
 The full suite exercises features that depend on optional packages such as
 `numpy`, `torch`, `pandas`, `prometheus_client`, `gymnasium`, `playwright`,
 `httpx`, `uvicorn`, `git`, `hypothesis` and `requests_mock`.
