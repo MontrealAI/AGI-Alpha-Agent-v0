@@ -228,7 +228,7 @@ bus liveness even on a clean clone.)*
    `POETGenerator.propose`.  
 2. **Swap learner** → Implement `.act/.remember/.train` in a new class;
    StrategyAgent can trigger hot-swap via `{"cmd":"swap_learner"}`.  
-3. **External micro-service** → Re-use `BaseAgent`; deploy as HTTP worker that
+3. **External micro-service** → Reuse `BaseAgent`; deploy as HTTP worker that
    bridges to A2A via WebSockets.
 
 ---

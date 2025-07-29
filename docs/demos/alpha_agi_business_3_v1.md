@@ -39,7 +39,7 @@ high‑stakes prod cluster right now.
 **Ω‑Lattice v0** upgrades the Alpha‑Factory paradigm to handle **all computable
 free‑energy** sources:
 
-* **Financial** — mis‑priced derivatives, basis trades, liquidity shocks.  
+* **Financial** — mispriced derivatives, basis trades, liquidity shocks.
 * **Physical** — grid load imbalance, material science design‑space.  
 * **Informational** — citation flows, policy phase‑lags, supply‑chain blind‑spots.
 

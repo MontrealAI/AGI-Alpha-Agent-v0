@@ -82,7 +82,7 @@ If no external key is detected it seamlessly switches to local Llama‑3 GGUF w
 | **PlanningAgent** | Goal‑decomposition & critical‑path search | Maps 12‑step route from raw SEC filings → trading strategy → executed orders |
 | **ResearchAgent** | Web / doc intelligence & summarisation | Surfaces obscure FDA ruling that shifts biotech valuations |
 | **StrategyAgent** | Game‑theoretic scenario planner | Monte‑Carlo sims to price carbon‑credit policy options |
-| **MarketAnalysisAgent** | Real‑time quantitative signal miner | Spots 42 bp ETH‑perp funding mis‑price |
+| **MarketAnalysisAgent** | Real‑time quantitative signal miner | Spots 42 bp ETH‑perp funding mispriced |
 | **CodeGenAgent** | Secure tool execution & infra scaffolding | Auto‑generates production‑ready ETL with tests |
 | **SafetyAgent** | Alignment, sandbox & red‑team | KL‑shield, seccomp jail, chaos‑testing |
 | **MemoryAgent** | Retrieval‑augmented long‑term store | Surfaces best alpha playbooks on demand |
