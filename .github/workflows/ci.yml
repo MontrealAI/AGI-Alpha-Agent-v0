@@ -157,6 +157,7 @@ jobs:
           pip install -r requirements-dev.lock
           pip install -r alpha_factory_v1/backend/requirements-lock.txt
       - name: Verify environment
+        shell: bash
         run: |
           python scripts/check_python_deps.py
           python check_env.py --auto-install --demo macro_sentinel
@@ -201,6 +202,7 @@ jobs:
       - name: Verify protobuf
         run: make proto-verify
       - name: Run tests with coverage
+        shell: bash
         run: |
           python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse "$WHEELHOUSE"}
           pytest --cov --cov-report=xml --cov-fail-under=80
