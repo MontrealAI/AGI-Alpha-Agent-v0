@@ -60,7 +60,7 @@ jobs:
           git --version
 
   lint-type:
-    name: "🧹 Ruff + 🏷️ Mypy"
+    name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -132,7 +132,7 @@ jobs:
         run: mypy --config-file mypy.ini
 
   tests:
-    name: "✅ Pytest"
+    name: "✅ Pytest (${{ matrix.python-version }})"
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 60
