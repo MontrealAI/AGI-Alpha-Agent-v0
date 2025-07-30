@@ -53,6 +53,7 @@ jobs:
     outputs:
       repo_owner_lower: ${{ steps.owner.outputs.repo_owner_lower }}
     steps:
+      - uses: actions/checkout@v4.2.2 # required for local actions
       - uses: ./.github/actions/ensure-owner
       - name: Compute repo_owner_lower
         id: owner
