@@ -52,7 +52,6 @@ jobs:
     outputs:
       repo_owner_lower: ${{ steps.owner.outputs.repo_owner_lower }}
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - name: Compute repo_owner_lower
         id: owner
