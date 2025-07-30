@@ -205,7 +205,7 @@ pre-commit run --all-files
 Launch the CI workflow manually via **Actions → 🚀 CI — Insight Demo** and click
 **Run workflow** as described in [AGENTS.md](AGENTS.md#starting-the-ci-pipeline).
 The workflow performs linting, type checks, the full unit test matrix on Python
-3.11 and 3.12, Windows and macOS smoke tests, documentation builds, Docker
+3.11, 3.12 and 3.13, Windows and macOS smoke tests, documentation builds, Docker
 builds and an optional deploy step for tagged releases.
 
 ### Verify Docker image signature
