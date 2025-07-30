@@ -48,9 +48,17 @@ jobs:
     name: "Verify owner"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      repo_owner_lower: ${{ steps.owner.outputs.repo_owner_lower }}
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
+      - name: Compute repo_owner_lower
+        id: owner
+        shell: bash
+        run: |
+          repo_owner_lower=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_OUTPUT"
       - name: Show tool versions
         run: |
           python --version
@@ -525,10 +533,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Compute repo_owner_lower
-        run: |
-          repo_owner_lower=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
-          echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_ENV"
+      - name: Export repo_owner_lower
+        run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -642,10 +648,8 @@ jobs:
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Compute repo_owner_lower
-        run: |
-          repo_owner_lower=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
-          echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_ENV"
+      - name: Export repo_owner_lower
+        run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
       - name: Show tool versions
         run: |
           python --version
