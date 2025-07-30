@@ -769,8 +769,8 @@ curl -X POST http://localhost:8000/simulate \
 See [AGENTS.md](AGENTS.md) for the full contributor guide.
 
 ### Pre‑commit Hooks
-After running `./codex/setup.sh`, which installs `pre-commit==4.2.0`
-automatically when missing, install the hooks and run a full check:
+After running `./codex/setup.sh`, which ensures `pre-commit==4.2.0`
+is installed, install the hooks and run a full check:
 
 ```bash
 # Install the exact version if the setup script didn't already
@@ -794,7 +794,8 @@ all hooks succeed.
 Run `python check_env.py --auto-install` before invoking these commands so
 optional hook dependencies are installed. When working offline, pass
 `--wheelhouse <dir>` or set `WHEELHOUSE` to install from a local cache. If
-`pre-commit` isn't found, install it with `pip install pre-commit==4.2.0`.
+`pre-commit` isn't found or the version differs, install it with
+`pip install pre-commit==4.2.0`.
 
 When editing the web UI, preserve existing ARIA labels so the interface
 remains accessible.
