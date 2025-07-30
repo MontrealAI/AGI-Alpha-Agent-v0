@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Setup CI Environment
+description: Build sandbox image, install Playwright browsers and show tool versions.
+runs:
+  using: composite
+  steps:
+    - name: Build sandbox image
+      shell: bash
+      run: docker build -t "$SANDBOX_IMAGE" -f sandbox.Dockerfile .
+    - name: Show tool versions
+      shell: bash
+      run: |
+        python --version
+        node --version
+        docker --version
+        docker compose version
+        git --version
+    - name: Install Playwright browsers
+      shell: bash
+      run: python -m playwright install chromium webkit firefox || echo "SKIP_WEBKIT_TESTS=1" >> "$GITHUB_ENV"
