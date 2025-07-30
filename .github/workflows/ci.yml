@@ -64,6 +64,7 @@ jobs:
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -157,6 +158,7 @@ jobs:
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 60
