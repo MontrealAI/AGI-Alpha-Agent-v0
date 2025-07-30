@@ -78,16 +78,11 @@ images. Each page under `docs/demos/` must start with a preview image using
 `![preview](...)`.
 Workflow YAML files are linted by `pre-commit`. A local hook automatically
 runs `python tools/update_actions.py` whenever files in `.github/workflows/`
-change. You can also run it manually:
+change. The script will install `requests` automatically if it's missing.
+You can also run it manually:
 
 ```bash
 pre-commit run --files .github/workflows/ci.yml
-
-If the hook reports that `requests` is missing, install it with:
-
-```bash
-pip install -r requirements-dev.txt
-```
 
 ## Quick Checklist
 
