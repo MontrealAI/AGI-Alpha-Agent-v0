@@ -58,7 +58,8 @@ jobs:
         id: owner
         shell: bash
         run: |
-          repo_owner_lower=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+          # Use parameter expansion to avoid spawning subshells
+          repo_owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
           echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_OUTPUT"
       - name: Show tool versions
         run: |
