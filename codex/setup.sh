@@ -46,9 +46,12 @@ if (( node_major < 22 )); then
   exit 1
 fi
 
-# Ensure pre-commit is available for git hooks
-if ! command -v pre-commit >/dev/null; then
-  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit==4.2.0
+# Ensure pre-commit 4.2.0 is available for git hooks
+required_pre_commit=4.2.0
+current_pre_commit=$(command -v pre-commit >/dev/null && pre-commit --version 2>/dev/null | awk '{print $2}')
+if [[ -z "$current_pre_commit" || "$current_pre_commit" != "$required_pre_commit" ]]; then
+  echo "Installing pre-commit==$required_pre_commit" >&2
+  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit=="$required_pre_commit"
 fi
 
 # Install package in editable mode
