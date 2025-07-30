@@ -10,14 +10,33 @@ that tag along with the corresponding commit SHA in a comment.
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
-try:
-    import requests
-except ImportError:  # pragma: no cover - handled at runtime
-    sys.stderr.write("The 'requests' package is required. Install it with 'pip install -r requirements-dev.txt'.\n")
-    sys.exit(1)
+
+_REQUESTS = None
+
+
+def _get_requests():
+    """Import ``requests`` or attempt to install it on demand."""
+    global _REQUESTS
+    if _REQUESTS is not None:
+        return _REQUESTS
+    try:  # pragma: no cover - handled at runtime
+        import requests as _req
+    except ImportError:
+        sys.stderr.write("Installing 'requests'...\n")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+            import requests as _req
+        except Exception:
+            sys.stderr.write(
+                "Failed to install 'requests'. Please run 'pip install -r requirements-dev.txt'.\n"
+            )
+            raise
+    _REQUESTS = _req
+    return _req
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "ci.yml"
 
@@ -26,6 +45,7 @@ PATTERN = re.compile(r"^(\s*-?\s*uses:\s*)([^@ ]+)@([^ ]+)(\s*#\s*[0-9a-fA-F]+)?
 
 def fetch_latest(owner_repo: str) -> tuple[str, str] | None:
     """Return the newest tag name and commit sha for a GitHub action."""
+    requests = _get_requests()
     url = f"https://api.github.com/repos/{owner_repo}/tags"
     try:
         resp = requests.get(url, timeout=60)
