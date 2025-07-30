@@ -7,7 +7,8 @@
 # Tagged releases deploy a Docker image with rollback on failure.
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
-# The Python matrix covers versions **3.11–3.13** and the workflow includes
+# The Python matrix targets stable versions 3.11 and 3.12 plus pre-release 3.13
+# for early compatibility testing. The workflow also includes
 # Windows and macOS smoke tests, full documentation builds and Docker deployment.
 name: "🚀 CI"
 
