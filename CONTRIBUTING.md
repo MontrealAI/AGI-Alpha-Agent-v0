@@ -98,6 +98,11 @@ pre-commit run --files <changed-files>  # ensure this passes before running test
 pytest
 pre-commit run --all-files
 ```
+The CI workflow automatically lints just the diff using
+`pre-commit run --from-ref ${{ github.event.before }} --to-ref ${{ github.sha }}`
+when triggered by a push or pull request. Manual or scheduled runs fall back to
+`pre-commit run --all-files`.
+```
 
 See [AGENTS.md](AGENTS.md#pull-requests) for more details.
 

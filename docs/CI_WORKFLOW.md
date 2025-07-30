@@ -18,6 +18,8 @@ Actions UI using **Run workflow**.
    repository owner clicks **Run workflow**.
 4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.17.1** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
+   The workflow lints only changed files when triggered by a push or pull
+   request.
 6. Ensure the `package-lock.json` files listed in `NODE_LOCKFILES` are up to date
    by running `npm ci` in each web client directory. Commit any changes before
    dispatching the workflow so dependency caching works correctly.
@@ -134,3 +136,6 @@ python check_env.py --auto-install
 pre-commit run --all-files
 pytest --cov --cov-report=xml
 ```
+The CI workflow lints only files changed between `$GITHUB_EVENT_BEFORE` and
+`$GITHUB_SHA` when triggered by a push or pull request. Manual or scheduled
+runs fall back to a full `pre-commit run --all-files`.
