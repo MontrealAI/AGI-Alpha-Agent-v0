@@ -6,8 +6,6 @@ import asyncio
 import importlib
 import socket
 import sys
-import threading
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import types
 import requests
 import pytest
@@ -25,17 +23,6 @@ def _free_port() -> int:
         return int(s.getsockname()[1])
 
 
-class _Handler(BaseHTTPRequestHandler):
-    def do_POST(self) -> None:  # noqa: D401
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self.end_headers()
-        self.wfile.write(b'{"choices":[{"message":{"content":"ok"}}]}')
-
-    def log_message(self, *_args: str) -> None:  # pragma: no cover - quiet
-        pass
-
-
 # ---------------------------------------------------------------------------
 # Test
 # ---------------------------------------------------------------------------
@@ -43,9 +30,6 @@ class _Handler(BaseHTTPRequestHandler):
 
 def test_aiga_openai_bridge_offline(monkeypatch: pytest.MonkeyPatch) -> None:
     port = _free_port()
-    server = HTTPServer(("127.0.0.1", port), _Handler)
-    thread = threading.Thread(target=server.serve_forever)
-    thread.start()
 
     stub = types.ModuleType("openai_agents")
 
@@ -92,6 +76,17 @@ def test_aiga_openai_bridge_offline(monkeypatch: pytest.MonkeyPatch) -> None:
     stub.OpenAIAgent = OpenAIAgent
     stub.Tool = Tool
     stub.last_runtime = last_runtime
+
+    class DummyResponse:
+        status_code = 200
+
+        def raise_for_status(self) -> None:
+            pass
+
+        def json(self) -> dict[str, object]:
+            return {"choices": [{"message": {"content": "ok"}}]}
+
+    monkeypatch.setattr(requests, "post", lambda *_a, **_k: DummyResponse())
 
     monkeypatch.setitem(sys.modules, "openai_agents", stub)
     sys.modules.pop("agents", None)
@@ -155,13 +150,9 @@ def test_aiga_openai_bridge_offline(monkeypatch: pytest.MonkeyPatch) -> None:
 
     mod.EVOLVER = DummyEvolver(llm=mod.LLM)
 
-    try:
-        mod.main()
-        runtime = stub.last_runtime["inst"]
-        assert runtime.port == port
-        assert any(isinstance(a, mod.EvolverAgent) for a in runtime.registered)
-        result = asyncio.run(mod.evolve(1))
-        assert result == "ok"
-    finally:
-        server.shutdown()
-        thread.join()
+    mod.main()
+    runtime = stub.last_runtime["inst"]
+    assert runtime.port == port
+    assert any(isinstance(a, mod.EvolverAgent) for a in runtime.registered)
+    result = asyncio.run(mod.evolve(1))
+    assert result == "ok"
