@@ -19,7 +19,10 @@ class DummyCtx:
         raise RuntimeError("boom")
 
 
-def test_market_agent_logs_exception(caplog: pytest.LogCaptureFixture) -> None:
+def test_market_agent_logs_exception(
+    caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("AGI_INSIGHT_OFFLINE", raising=False)
     cfg = config.Settings(bus_port=0, openai_api_key="k")
     bus = DummyBus(cfg)
     led = DummyLedger()
@@ -49,7 +52,10 @@ def test_strategy_agent_logs_exception(monkeypatch):
         warn.assert_called_once()
 
 
-def test_research_agent_logs_exception(caplog: pytest.LogCaptureFixture) -> None:
+def test_research_agent_logs_exception(
+    caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("AGI_INSIGHT_OFFLINE", raising=False)
     cfg = config.Settings(bus_port=0, openai_api_key="k")
     bus = DummyBus(cfg)
     led = DummyLedger()
