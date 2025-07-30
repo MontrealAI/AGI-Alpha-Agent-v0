@@ -36,9 +36,9 @@ previous `latest` image so production always points at a working build.
 - **✅ Pytest** – unit tests and front‑end checks.
 - **🎯 Cypress (removed)** – the workflow no longer executes Cypress tests. End‑to‑end checks run via Playwright inside the **✅ Pytest** job.
 - **Windows/Mac Smoke** – lightweight sanity tests on Windows and macOS.
-- *Python matrix* – main jobs test against **Python 3.11** and
-  **Python 3.12** while the Windows and macOS smoke jobs use
-  **Python 3.13**.
+- *Python matrix* – main jobs test against **Python 3.11** and
+  **Python 3.12** while the Windows and macOS smoke jobs use
+  **Python 3.12**.
 - **📜 MkDocs** – basic documentation build.
 - **📚 Docs Build** – full docs site verification with an offline check. The job runs
   `scripts/build_gallery_site.sh` which executes `preflight.py`. This
