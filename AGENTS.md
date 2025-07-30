@@ -349,8 +349,8 @@ install dependencies without internet access.
 - Issue reports should follow the templates under [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/).
 - Pull requests should follow [`pull_request_template.md`](.github/pull_request_template.md). Fill out
   all sections to confirm linting, type checks and tests pass.
-- Ensure `pre-commit` passes locally; the CI pipeline runs the same hooks and will fail if they do not.
-- CI jobs execute `pre-commit run --all-files`. Any failing hook stops the build.
+  - Ensure `pre-commit` passes locally; the CI pipeline runs the same hooks and will fail if they do not.
+  - CI jobs lint only changed files when triggered by a push or pull request using `pre-commit run --from-ref ${{ github.event.before }} --to-ref ${{ github.sha }}`. Manual or scheduled runs still execute `pre-commit run --all-files` and fail on any hook errors.
 
 ### Starting the CI Pipeline
 You can manually trigger the CI run from the GitHub UI:

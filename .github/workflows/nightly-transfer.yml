@@ -45,7 +45,13 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
-        run: pre-commit run --all-files
+        run: |
+          from_ref="${{ github.event.before }}"
+          if [ -n "$from_ref" ]; then
+            pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
+          else
+            pre-commit run --all-files
+          fi
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run transfer test
