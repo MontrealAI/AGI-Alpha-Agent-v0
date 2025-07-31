@@ -53,6 +53,7 @@ jobs:
     outputs:
       repo_owner_lower: ${{ steps.owner.outputs.repo_owner_lower }}
     steps:
+      # Checkout is mandatory before invoking local composite actions
       - uses: actions/checkout@v4.2.2 # required for local actions
         with:
           fetch-depth: 0
