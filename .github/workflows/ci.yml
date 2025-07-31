@@ -58,7 +58,15 @@ jobs:
         with:
           fetch-depth: 0
       - id: ensure
-        uses: ./.github/actions/ensure-owner
+        name: Verify repository owner
+        shell: bash
+        run: |
+          if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
+            echo "Only the repository owner can run this workflow."
+            exit 1
+          fi
+          repo_owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_OUTPUT"
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
