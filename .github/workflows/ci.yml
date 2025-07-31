@@ -58,7 +58,12 @@ jobs:
         with:
           fetch-depth: 0
       - name: Verify owner
-        uses: ./.github/actions/ensure-owner
+        shell: bash
+        run: |
+          if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
+            echo "Only the repository owner can run this workflow."
+            exit 1
+          fi
       - name: Compute repo_owner_lower
         id: owner
         shell: bash
