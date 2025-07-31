@@ -51,20 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
-      repo_owner_lower: ${{ steps.owner.outputs.repo_owner_lower }}
+      repo_owner_lower: ${{ steps.ensure.outputs.repo_owner_lower }}
     steps:
       # Checkout is mandatory before invoking local composite actions
       - uses: actions/checkout@v4.2.2 # required for local actions
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/ensure-owner
-      - name: Compute repo_owner_lower
-        id: owner
-        shell: bash
-        run: |
-          # Use parameter expansion to avoid spawning subshells
-          repo_owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
-          echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_OUTPUT"
+      - id: ensure
+        uses: ./.github/actions/ensure-owner
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"

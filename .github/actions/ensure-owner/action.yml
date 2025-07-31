@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 name: Ensure Repository Owner
 description: Fail if the workflow is triggered by someone other than the repository owner.
+outputs:
+  repo_owner_lower:
+    description: Lowercase repository owner
+    value: ${{ steps.set-owner.outputs.repo_owner_lower }}
 runs:
   using: composite
   steps:
@@ -11,3 +15,9 @@ runs:
           echo "Only the repository owner can run this workflow."
           exit 1
         fi
+    - name: Set owner output
+      id: set-owner
+      shell: bash
+      run: |
+        repo_owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
+        echo "repo_owner_lower=$repo_owner_lower" >> "$GITHUB_OUTPUT"
