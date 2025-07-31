@@ -59,7 +59,9 @@ jobs:
           fetch-depth: 0
       - id: ensure
         # Local composite action validates the workflow initiator
-        # Ensure checkout ran beforehand so action files are available
+        # Ensure checkout ran beforehand so action files are available.
+        # Without a prior checkout step GitHub Actions reports:
+        # "Can't find 'action.yml' or 'Dockerfile' under '.github/actions/ensure-owner'"
         uses: ./.github/actions/ensure-owner
 
   lint-type:
