@@ -150,6 +150,8 @@ workflow has no automatic triggers; only the repository owner can launch it
 manually from the GitHub UI. Each job begins by verifying the actor matches the
 repository owner, so non‑owners exit immediately before running the heavy
 steps. When the owner launches the workflow every job runs.
+Because the first job checks `${{ github.actor }}` against `${{ github.repository_owner }}`,
+you must own the repository to run the workflow successfully.
 Jobs following the main test stage include `if: always()` so the Windows and
 macOS smoke tests, documentation build and Docker jobs execute even when the
 lint or unit tests fail. This behavior helps confirm that cross‑platform builds
