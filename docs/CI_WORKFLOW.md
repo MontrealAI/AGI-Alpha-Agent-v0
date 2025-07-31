@@ -55,8 +55,8 @@ previous `latest` image so production always points at a working build.
 - **📦 Deploy** – pushes the image and release assets on tags.
 - **♿ Accessibility audit** – runs `@axe-core/cli --stdout` on the built web client
   and calculates a score via `scripts/axe_score.py`. The pipeline fails if the
-  score is below the `a11y-threshold` input (default 90).
-  Keep this threshold at least 90 to maintain baseline accessibility.
+  score is below the `a11y-threshold` input (default 95).
+  Keep this threshold at least 95 to maintain baseline accessibility.
 
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
