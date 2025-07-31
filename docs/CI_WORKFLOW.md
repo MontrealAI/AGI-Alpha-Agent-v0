@@ -12,10 +12,11 @@ Actions UI using **Run workflow**.
 1. Navigate to **Actions → 🚀 CI**.
 2. Choose the branch or tag in the drop‑down and click **Run workflow**.
 3. Only the repository owner can trigger this button. The pipeline starts with
-   an **owner-check** job that runs the `ensure-owner` composite action. All
-   other jobs depend on this check and run only when the actor matches
-   `github.repository_owner`. Contributors will see a skipped run unless the
-   repository owner clicks **Run workflow**.
+   an **owner-check** job that executes a short Bash script. The script
+   verifies `github.actor` equals `github.repository_owner` and writes a
+   `repo_owner_lower` output. All other jobs depend on this check and run only
+   when the actor matches the repository owner. Contributors will see a skipped
+   run unless the owner clicks **Run workflow**.
 4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.17.1** are installed.
 5. Run `pre-commit run --all-files` so the hooks pass before pushing.
    The workflow lints only changed files when triggered by a push or pull
@@ -118,9 +119,10 @@ The workflow uploads benchmark and coverage artifacts only when the files exist.
 
 ## Avoid skipped jobs
 
-The workflow starts with an `owner-check` job that runs the `ensure-owner`
-composite action. This job fails fast when the workflow is triggered by anyone
-other than the repository owner. All remaining jobs list `owner-check` under
+The workflow starts with an `owner-check` job that runs an inline Bash step to
+confirm the workflow was dispatched by the repository owner. The script exits
+with an error if `github.actor` differs from `github.repository_owner` and
+exports a `repo_owner_lower` output. All remaining jobs list `owner-check` under
 `needs`, so they execute only after the ownership check passes. If a job appears
 skipped, inspect its dependencies for earlier failures. With the lock file paths
 fixed, all jobs run whenever the owner dispatches the workflow and the tests
