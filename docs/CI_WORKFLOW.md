@@ -115,6 +115,10 @@ pre-commit run --files .github/workflows/ci.yml
 
 This lints the YAML and pins action versions so the pipeline stays reproducible.
 
+When adding local composite actions like `.github/actions/ensure-owner`, ensure
+`actions/checkout` executes first. GitHub skips checkout on manual dispatch
+without this step and later jobs fail with "Can't find 'action.yml'" errors.
+
 The workflow uploads benchmark and coverage artifacts only when the files exist. This avoids noisy "file not found" warnings on failed runs.
 
 ## Avoid skipped jobs
