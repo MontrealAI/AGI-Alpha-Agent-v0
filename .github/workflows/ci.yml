@@ -58,6 +58,8 @@ jobs:
         with:
           fetch-depth: 0
       - id: ensure
+        # Local composite action validates the workflow initiator
+        # Ensure checkout ran beforehand so action files are available
         uses: ./.github/actions/ensure-owner
 
   lint-type:
