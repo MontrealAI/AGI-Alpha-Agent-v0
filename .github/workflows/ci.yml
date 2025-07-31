@@ -515,6 +515,7 @@ jobs:
     timeout-minutes: 45
     permissions:
       contents: write
+      id-token: write
     # This job builds and pushes the image.
     environment: ci-on-demand
     steps:
@@ -631,6 +632,10 @@ jobs:
     needs: [owner-check, tests, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
     environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
