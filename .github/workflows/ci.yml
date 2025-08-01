@@ -62,6 +62,9 @@ jobs:
         # Ensure checkout ran beforehand so action files are available.
         # Without a prior checkout step GitHub Actions reports:
         # "Can't find 'action.yml' or 'Dockerfile' under '.github/actions/ensure-owner'"
+        # The ensure-owner action fails fast if someone other than the
+        # repository owner triggers the workflow. This protects subsequent
+        # jobs from running under untrusted contexts.
         uses: ./.github/actions/ensure-owner
 
   lint-type:
