@@ -57,6 +57,7 @@ jobs:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
+          path: .
       - id: ensure
         # Local composite action validates the workflow initiator
         # Ensure checkout ran beforehand so action files are available.
