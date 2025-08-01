@@ -253,7 +253,7 @@ Need help? Open an issue → **@MontrealAI/alpha-factory-core**.
 
 ## 10  Production checklist ✅
 
-- Ensure `python3 --version` returns 3.11–3.12.
+ - Ensure `python3 --version` returns 3.11–3.13.
 - Install dependencies: `pip install -r requirements.txt`.
 - Launch via `./deploy_alpha_asi_world_model_demo.sh` and visit `http://localhost:7860`.
 - The script sets `NO_LLM=1` automatically when `OPENAI_API_KEY` is unset.
