@@ -53,8 +53,8 @@ jobs:
     outputs:
       repo_owner_lower: ${{ steps.ensure.outputs.repo_owner_lower }}
     steps:
-      # Checkout is mandatory before invoking local composite actions
-      - uses: actions/checkout@v4.2.2 # required for local actions
+      # Checkout repository so the local ensure-owner action is available
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
       - id: ensure
