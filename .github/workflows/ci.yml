@@ -621,7 +621,7 @@ jobs:
 
   deploy:
     name: "📦 Deploy"
-    if: ${{ needs.owner-check.result == 'success' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') && needs.owner-check.result == 'success' }}
     needs: [owner-check, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
