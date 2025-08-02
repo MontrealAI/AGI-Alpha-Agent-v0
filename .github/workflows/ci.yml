@@ -659,10 +659,12 @@ jobs:
         run: docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
       - name: Push previous tag
         run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
-      - name: Push new image
+      - name: Pull release image
+        run: docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+      - name: Tag and push new image
         run: |
-          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
-          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
+          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
           docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
           docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
       - name: Sign release images
