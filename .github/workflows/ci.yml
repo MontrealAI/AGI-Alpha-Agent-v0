@@ -7,7 +7,7 @@
 # Deploys a Docker image with rollback on failure.
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
-# Verified 2025-08-02T14:27:13Z via `python tools/update_actions.py` and `pre-commit`.
+# Verified 2025-08-02T14:42:01Z via `python tools/update_actions.py` and `pre-commit`.
 # The Python matrix targets stable versions 3.11–3.13.
 # Matrix verifies long-term support versions 3.11–3.13.
 # Jobs cover linting, unit tests, Windows and macOS smoke tests,
@@ -74,6 +74,7 @@ jobs:
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -167,6 +168,7 @@ jobs:
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 60
