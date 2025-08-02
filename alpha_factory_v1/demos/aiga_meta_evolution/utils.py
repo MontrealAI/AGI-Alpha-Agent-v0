@@ -9,25 +9,33 @@ Shared helpers for the AI-GA Meta-Evolution demo. Compatible with either the
 """
 from __future__ import annotations
 
+import importlib
 import os
-
-try:
-    from openai_agents import OpenAIAgent
-except ImportError:
-    try:  # pragma: no cover - fallback for legacy package
-        from agents import OpenAIAgent
-    except Exception as exc:  # pragma: no cover - optional dependency
-
-        class OpenAIAgent:  # type: ignore[misc]
-            def __init__(self, *a, **kw):
-                pass
-
-            async def __call__(self, text: str) -> str:
-                return "ok"
+from types import SimpleNamespace
 
 
-def build_llm() -> OpenAIAgent:
+def _resolve_openai_agent() -> type:
+    """Return the ``OpenAIAgent`` class from the available package."""
+    try:  # prefer the official ``openai_agents`` package
+        return importlib.import_module("openai_agents").OpenAIAgent
+    except Exception:
+        try:  # pragma: no cover - fallback for legacy package
+            return importlib.import_module("agents").OpenAIAgent
+        except Exception:  # pragma: no cover - optional dependency
+
+            class _FallbackAgent:  # type: ignore[misc]
+                def __init__(self, *a, **kw) -> None:
+                    pass
+
+                async def __call__(self, text: str) -> str:
+                    return "ok"
+
+            return _FallbackAgent
+
+
+def build_llm() -> object:
     """Create the default ``OpenAIAgent`` instance."""
+    OpenAIAgent = _resolve_openai_agent()
     api_key = os.getenv("OPENAI_API_KEY")
     return OpenAIAgent(
         model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
