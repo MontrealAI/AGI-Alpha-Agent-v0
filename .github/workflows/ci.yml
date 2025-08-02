@@ -228,8 +228,6 @@ jobs:
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
       - name: Type check insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
-      - name: Install proto compiler
-        run: pip install grpcio-tools
       - name: Verify protobuf
         run: make proto-verify
       - name: Run tests with coverage
