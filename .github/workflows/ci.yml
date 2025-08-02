@@ -284,7 +284,7 @@ jobs:
   windows-smoke:
     name: "Windows Smoke"
     if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: [owner-check, lint-type, tests]
+    needs: owner-check
     runs-on: windows-latest
     timeout-minutes: 30
     environment: ci-on-demand
@@ -332,7 +332,7 @@ jobs:
   macos-smoke:
     name: "macOS Smoke"
     if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: [owner-check, lint-type, tests]
+    needs: owner-check
     environment: ci-on-demand
     runs-on: macos-latest
     timeout-minutes: 30
@@ -382,7 +382,7 @@ jobs:
   docs-check:
     name: "📜 MkDocs"
     if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: [owner-check, lint-type, tests]
+    needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -432,7 +432,7 @@ jobs:
   docs-build:
     name: "📚 Docs Build"
     if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: [owner-check, lint-type, tests]
+    needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -516,7 +516,7 @@ jobs:
   docker:
     name: "🐳 Docker build"
     if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: [owner-check, lint-type, tests]
+    needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
