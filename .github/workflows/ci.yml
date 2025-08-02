@@ -423,7 +423,7 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Lint docs with pre-commit
-        run: pre-commit run --files docs
+        run: pre-commit run --files $(git ls-files 'docs/**')
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Build documentation
@@ -483,7 +483,7 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Lint docs with pre-commit
-        run: pre-commit run --files docs
+        run: pre-commit run --files $(git ls-files 'docs/**')
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Build insight browser
