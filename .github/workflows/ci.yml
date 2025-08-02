@@ -25,7 +25,8 @@ on:
         required: false
         default: "95"
 
-permissions: read-all
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
