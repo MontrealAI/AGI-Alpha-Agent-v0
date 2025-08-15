@@ -7,6 +7,7 @@ import "./IdentityLib.sol";
 interface IStakeManager {
     function reward(address user, uint256 amount) external;
     function slash(address user, uint256 amount) external;
+    function stakes(address user) external view returns (uint256);
 }
 
 interface IReputationEngine {
@@ -16,6 +17,7 @@ interface IReputationEngine {
 
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
+    function validationResult(uint256 jobId) external view returns (bool);
 }
 
 contract ValidationModule is Ownable, IValidationModule {
@@ -36,14 +38,16 @@ contract ValidationModule is Ownable, IValidationModule {
 
     uint256 public commitWindow;
     uint256 public revealWindow;
-    uint256[] public validatorCountTiers;
-    uint256[] public slashingPercentages; // basis points
+    uint256 public validatorsPerJob;
     uint256 public selectionSeed;
+    uint256 public minStake;
+    uint256 public slashPercentage; // basis points
 
     bytes32 public clubRootNode;
     bytes32 public validatorMerkleRoot;
 
     mapping(address => bool) public additionalValidators;
+    address[] public validatorPool;
 
     IStakeManager public stakeManager;
     IReputationEngine public reputationEngine;
@@ -68,14 +72,39 @@ contract ValidationModule is Ownable, IValidationModule {
         require(r.commitEnd == 0, "exists");
         r.commitEnd = uint64(block.timestamp + commitWindow);
         r.revealEnd = uint64(block.timestamp + commitWindow + revealWindow);
-        uint256 count = validatorCountTiers.length > 0 ? validatorCountTiers[0] : 0;
-        r.validators = new address[](count);
-        for (uint256 i = 0; i < count; i++) {
-            address v = address(uint160(uint256(keccak256(abi.encode(blockhash(block.number - 1 - i), selectionSeed, jobId, i)))));
-            r.validators[i] = v;
-            emit ValidatorSelected(jobId, v);
-        }
+        _selectValidators(jobId);
         return true;
+    }
+
+    function _selectValidators(uint256 jobId) internal {
+        Round storage r = rounds[jobId];
+        uint256 count = validatorsPerJob;
+        require(count > 0, "no validators");
+        uint256 poolLen = validatorPool.length;
+        uint256 attempts;
+        while (r.validators.length < count && attempts < poolLen * 10) {
+            address candidate = validatorPool[
+                uint256(
+                    keccak256(
+                        abi.encode(blockhash(block.number - 1 - attempts), selectionSeed, jobId, attempts)
+                    )
+                ) % poolLen
+            ];
+            attempts++;
+            if (reputationEngine.isBlacklisted(candidate)) continue;
+            if (stakeManager.stakes(candidate) < minStake) continue;
+            bool exists;
+            for (uint256 i = 0; i < r.validators.length; i++) {
+                if (r.validators[i] == candidate) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) continue;
+            r.validators.push(candidate);
+            emit ValidatorSelected(jobId, candidate);
+        }
+        require(r.validators.length == count, "insufficient validators");
     }
 
     function commitVote(
@@ -128,7 +157,7 @@ contract ValidationModule is Ownable, IValidationModule {
         require(!r.tallied, "tallied");
         uint256 yes;
         uint256 no;
-        uint256 slashAmount = (reward * (slashingPercentages.length > 0 ? slashingPercentages[0] : 0)) / 10_000;
+        uint256 slashAmount = (reward * slashPercentage) / 10_000;
         for (uint256 i = 0; i < r.validators.length; i++) {
             address validator = r.validators[i];
             Vote storage v = r.votes[validator];
@@ -161,6 +190,12 @@ contract ValidationModule is Ownable, IValidationModule {
         emit Tallied(jobId, r.result);
     }
 
+    function validationResult(uint256 jobId) external view override returns (bool) {
+        Round storage r = rounds[jobId];
+        require(r.tallied, "not tallied");
+        return r.result;
+    }
+
     function isValidator(uint256 jobId, address user) public view returns (bool) {
         Round storage r = rounds[jobId];
         for (uint256 i = 0; i < r.validators.length; i++) {
@@ -171,24 +206,33 @@ contract ValidationModule is Ownable, IValidationModule {
         return false;
     }
 
-    function setWindows(uint256 commitWindow_, uint256 revealWindow_) external onlyOwner {
-        commitWindow = commitWindow_;
-        revealWindow = revealWindow_;
+    function setCommitWindow(uint256 window) external onlyOwner {
+        commitWindow = window;
         emit ParametersUpdated();
     }
 
-    function setValidatorCountTiers(uint256[] calldata counts) external onlyOwner {
-        validatorCountTiers = counts;
+    function setRevealWindow(uint256 window) external onlyOwner {
+        revealWindow = window;
         emit ParametersUpdated();
     }
 
-    function setSlashingPercentages(uint256[] calldata pcts) external onlyOwner {
-        slashingPercentages = pcts;
+    function setValidatorsPerJob(uint256 count) external onlyOwner {
+        validatorsPerJob = count;
         emit ParametersUpdated();
     }
 
     function setSelectionSeed(uint256 seed) external onlyOwner {
         selectionSeed = seed;
+        emit ParametersUpdated();
+    }
+
+    function setMinStake(uint256 amount) external onlyOwner {
+        minStake = amount;
+        emit ParametersUpdated();
+    }
+
+    function setSlashPercentage(uint256 pct) external onlyOwner {
+        slashPercentage = pct;
         emit ParametersUpdated();
     }
 
@@ -208,12 +252,24 @@ contract ValidationModule is Ownable, IValidationModule {
 
     /// @notice Adds a validator to the additional allowlist
     function addAdditionalValidator(address validator) external onlyOwner {
-        additionalValidators[validator] = true;
+        if (!additionalValidators[validator]) {
+            additionalValidators[validator] = true;
+            validatorPool.push(validator);
+        }
     }
 
     /// @notice Removes a validator from the additional allowlist
     function removeAdditionalValidator(address validator) external onlyOwner {
-        delete additionalValidators[validator];
+        if (additionalValidators[validator]) {
+            delete additionalValidators[validator];
+            for (uint256 i = 0; i < validatorPool.length; i++) {
+                if (validatorPool[i] == validator) {
+                    validatorPool[i] = validatorPool[validatorPool.length - 1];
+                    validatorPool.pop();
+                    break;
+                }
+            }
+        }
     }
 }
 

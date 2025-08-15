@@ -6,6 +6,7 @@ import "./IdentityLib.sol";
 
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
+    function validationResult(uint256 jobId) external view returns (bool);
 }
 
 interface IStakeManager {
@@ -241,6 +242,7 @@ contract JobRegistry is Ownable {
     function finalize(uint256 jobId) external onlyOwner {
         Job storage job = jobs[jobId];
         require(job.status == Status.Submitted, "invalid status");
+        require(validationModule.validationResult(jobId), "validation failed");
         stakeManager.release(job.worker, job.reward);
         reputationEngine.onFinalize(job.worker, true);
         if (address(disputeModule) != address(0)) {
