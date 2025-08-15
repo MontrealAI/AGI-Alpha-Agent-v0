@@ -6,8 +6,8 @@ import "./IdentityLib.sol";
 
 interface IStakeManager {
     function reward(address user, uint256 amount) external;
-    function slash(address user, uint256 amount) external;
-    function stakes(address user) external view returns (uint256);
+    function slash(address offender, address employer, uint256 amount, uint256 burnPctOverride) external;
+    function validatorStakes(address user) external view returns (uint256);
 }
 
 interface IReputationEngine {
@@ -92,7 +92,7 @@ contract ValidationModule is Ownable, IValidationModule {
             ];
             attempts++;
             if (reputationEngine.isBlacklisted(candidate)) continue;
-            if (stakeManager.stakes(candidate) < minStake) continue;
+            if (stakeManager.validatorStakes(candidate) < minStake) continue;
             bool exists;
             for (uint256 i = 0; i < r.validators.length; i++) {
                 if (r.validators[i] == candidate) {
@@ -168,7 +168,7 @@ contract ValidationModule is Ownable, IValidationModule {
                     no++;
                 }
             } else {
-                stakeManager.slash(validator, slashAmount);
+                stakeManager.slash(validator, address(0), slashAmount, 10_000);
                 reputationEngine.onValidate(validator, false);
             }
         }
@@ -182,7 +182,7 @@ contract ValidationModule is Ownable, IValidationModule {
                     stakeManager.reward(validator, reward);
                     reputationEngine.onValidate(validator, true);
                 } else {
-                    stakeManager.slash(validator, slashAmount);
+                    stakeManager.slash(validator, address(0), slashAmount, 10_000);
                     reputationEngine.onValidate(validator, false);
                 }
             }

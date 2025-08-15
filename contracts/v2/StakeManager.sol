@@ -3,6 +3,7 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 /// @title StakeManager
 /// @notice Handles staking and escrow of AGI tokens for jobs and validators
@@ -12,13 +13,27 @@ contract StakeManager is Ownable {
     address public jobRegistry;
     address public slasher;
 
-    // Total available stakes for each user
-    mapping(address => uint256) public stakes;
+    enum Role {
+        Agent,
+        Validator
+    }
 
-    event StakeDeposited(address indexed user, uint256 amount);
-    event StakeWithdrawn(address indexed user, uint256 amount);
+    mapping(address => uint256) public agentStakes;
+    mapping(address => uint256) public validatorStakes;
+
+    uint256 public minStakeAgent;
+    uint256 public minStakeValidator;
+
+    uint256 public feePct; // basis points
+    uint256 public burnPct; // basis points
+
+    mapping(address => uint256) public agiTypePayoutPct;
+    address[] public agiTypes;
+
+    event StakeDeposited(address indexed user, Role role, uint256 amount);
+    event StakeWithdrawn(address indexed user, Role role, uint256 amount);
     event FundsLocked(address indexed user, uint256 amount);
-    event FundsReleased(address indexed user, uint256 amount);
+    event FundsReleased(address indexed user, uint256 amount, uint256 fee, uint256 burn);
     event StakeSlashed(
         address indexed offender,
         address indexed employer,
@@ -54,22 +69,77 @@ contract StakeManager is Ownable {
         slasher = _slasher;
     }
 
-    /// @notice Deposits AGI tokens as stake
-    /// @param amount Amount of tokens to deposit
-    function depositStake(uint256 amount) external {
-        require(amount > 0, "amount 0");
-        agiToken.transferFrom(msg.sender, address(this), amount);
-        stakes[msg.sender] += amount;
-        emit StakeDeposited(msg.sender, amount);
+    /// @notice Sets minimum stake for agents
+    function setMinStakeAgent(uint256 amount) external onlyOwner {
+        minStakeAgent = amount;
     }
 
-    /// @notice Withdraws available stake
-    /// @param amount Amount of tokens to withdraw
-    function withdrawStake(uint256 amount) external {
-        require(stakes[msg.sender] >= amount, "insufficient");
-        stakes[msg.sender] -= amount;
+    /// @notice Sets minimum stake for validators
+    function setMinStakeValidator(uint256 amount) external onlyOwner {
+        minStakeValidator = amount;
+    }
+
+    /// @notice Sets protocol fee percentage in basis points
+    function setFeePct(uint256 pct) external onlyOwner {
+        require(pct <= 10_000, "pct too high");
+        feePct = pct;
+    }
+
+    /// @notice Sets burn percentage in basis points
+    function setBurnPct(uint256 pct) external onlyOwner {
+        require(pct <= 10_000, "pct too high");
+        burnPct = pct;
+    }
+
+    /// @notice Adds an AGI type NFT and its payout percentage
+    function addAGIType(address nft, uint256 payoutPct) external onlyOwner {
+        agiTypePayoutPct[nft] = payoutPct;
+        agiTypes.push(nft);
+    }
+
+    /// @notice Removes an AGI type NFT
+    function removeAGIType(address nft) external onlyOwner {
+        delete agiTypePayoutPct[nft];
+        for (uint256 i = 0; i < agiTypes.length; i++) {
+            if (agiTypes[i] == nft) {
+                agiTypes[i] = agiTypes[agiTypes.length - 1];
+                agiTypes.pop();
+                break;
+            }
+        }
+    }
+
+    /// @notice Deposits AGI tokens as stake for a specific role
+    function depositStake(Role role, uint256 amount) external {
+        require(amount > 0, "amount 0");
+        agiToken.transferFrom(msg.sender, address(this), amount);
+        if (role == Role.Agent) {
+            uint256 newStake = agentStakes[msg.sender] + amount;
+            require(newStake >= minStakeAgent, "below min");
+            agentStakes[msg.sender] = newStake;
+        } else {
+            uint256 newStake = validatorStakes[msg.sender] + amount;
+            require(newStake >= minStakeValidator, "below min");
+            validatorStakes[msg.sender] = newStake;
+        }
+        emit StakeDeposited(msg.sender, role, amount);
+    }
+
+    /// @notice Withdraws available stake for a specific role
+    function withdrawStake(Role role, uint256 amount) external {
+        if (role == Role.Agent) {
+            require(agentStakes[msg.sender] >= amount, "insufficient");
+            uint256 remaining = agentStakes[msg.sender] - amount;
+            require(remaining == 0 || remaining >= minStakeAgent, "below min");
+            agentStakes[msg.sender] = remaining;
+        } else {
+            require(validatorStakes[msg.sender] >= amount, "insufficient");
+            uint256 remaining = validatorStakes[msg.sender] - amount;
+            require(remaining == 0 || remaining >= minStakeValidator, "below min");
+            validatorStakes[msg.sender] = remaining;
+        }
         agiToken.transfer(msg.sender, amount);
-        emit StakeWithdrawn(msg.sender, amount);
+        emit StakeWithdrawn(msg.sender, role, amount);
     }
 
     modifier onlyJobRegistry() {
@@ -78,20 +148,29 @@ contract StakeManager is Ownable {
     }
 
     /// @notice Locks client funds for a job
-    /// @param user Address whose stake is locked
-    /// @param amount Amount to lock
-    function lockJobFunds(address user, uint256 amount) public onlyJobRegistry {
-        require(stakes[user] >= amount, "insufficient");
-        stakes[user] -= amount;
+    function lock(address user, uint256 amount) public onlyJobRegistry {
+        require(agentStakes[user] >= amount, "insufficient");
+        agentStakes[user] -= amount;
         emit FundsLocked(user, amount);
     }
 
-    /// @notice Releases locked funds to a worker
-    /// @param user Address receiving the funds
-    /// @param amount Amount to release
-    function releaseJobFunds(address user, uint256 amount) public onlyJobRegistry {
-        agiToken.transfer(user, amount);
-        emit FundsReleased(user, amount);
+    /// @notice Releases locked funds applying fees and burns
+    function release(address user, uint256 amount) public onlyJobRegistry {
+        uint256 fee = (amount * feePct) / 10_000;
+        uint256 burn = (amount * burnPct) / 10_000;
+        uint256 payout = amount - fee - burn;
+        uint256 pct = 10_000;
+        for (uint256 i = 0; i < agiTypes.length; i++) {
+            address nft = agiTypes[i];
+            if (agiTypePayoutPct[nft] > pct && IERC721(nft).balanceOf(user) > 0) {
+                pct = agiTypePayoutPct[nft];
+            }
+        }
+        payout = (payout * pct) / 10_000;
+        if (fee > 0) agiToken.transfer(treasury, fee);
+        if (burn > 0) agiToken.transfer(address(0), burn);
+        agiToken.transfer(user, payout);
+        emit FundsReleased(user, payout, fee, burn);
     }
 
     modifier onlySlasher() {
@@ -100,26 +179,27 @@ contract StakeManager is Ownable {
     }
 
     /// @notice Slashes a user's stake and compensates an employer
-    /// @param offender Address whose stake is slashed
-    /// @param employer Address receiving compensation
-    /// @param amount Total amount to slash
-    function slash(address offender, address employer, uint256 amount)
-        external
-        onlySlasher
-    {
-        require(stakes[offender] >= amount, "insufficient");
-        stakes[offender] -= amount;
-        uint256 compensation = amount / 2;
-        uint256 burnAmount = amount - compensation;
-        if (compensation > 0) {
+    function slash(
+        address offender,
+        address employer,
+        uint256 amount,
+        uint256 burnPctOverride
+    ) external onlySlasher {
+        uint256 available = validatorStakes[offender];
+        if (available >= amount) {
+            validatorStakes[offender] = available - amount;
+        } else {
+            require(agentStakes[offender] >= amount, "insufficient");
+            agentStakes[offender] -= amount;
+        }
+        uint256 pct = burnPctOverride > 0 ? burnPctOverride : burnPct;
+        uint256 burnAmount = (amount * pct) / 10_000;
+        uint256 compensation = amount - burnAmount;
+        if (compensation > 0 && employer != address(0)) {
             agiToken.transfer(employer, compensation);
         }
         if (burnAmount > 0) {
-            if (treasury == address(0)) {
-                agiToken.transfer(address(0), burnAmount);
-            } else {
-                agiToken.transfer(treasury, burnAmount);
-            }
+            agiToken.transfer(address(0), burnAmount);
         }
         emit StakeSlashed(offender, employer, amount, compensation, burnAmount);
     }
