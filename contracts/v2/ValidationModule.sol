@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./IdentityLib.sol";
 
 interface IStakeManager {
     function reward(address user, uint256 amount) external;
@@ -10,6 +11,7 @@ interface IStakeManager {
 
 interface IReputationEngine {
     function onValidate(address user, bool success) external;
+    function isBlacklisted(address user) external view returns (bool);
 }
 
 interface IValidationModule {
@@ -38,6 +40,11 @@ contract ValidationModule is Ownable, IValidationModule {
     uint256[] public slashingPercentages; // basis points
     uint256 public selectionSeed;
 
+    bytes32 public clubRootNode;
+    bytes32 public validatorMerkleRoot;
+
+    mapping(address => bool) public additionalValidators;
+
     IStakeManager public stakeManager;
     IReputationEngine public reputationEngine;
 
@@ -48,6 +55,8 @@ contract ValidationModule is Ownable, IValidationModule {
     event VoteRevealed(uint256 indexed jobId, address indexed validator, bool vote);
     event Tallied(uint256 indexed jobId, bool result);
     event ParametersUpdated();
+    event RootNodeUpdated(bytes32 newRootNode);
+    event MerkleRootUpdated(bytes32 newMerkleRoot);
 
     constructor(address _stakeManager, address _reputation) Ownable(msg.sender) {
         stakeManager = IStakeManager(_stakeManager);
@@ -69,19 +78,42 @@ contract ValidationModule is Ownable, IValidationModule {
         return true;
     }
 
-    function commitVote(uint256 jobId, bytes32 commitHash) external {
+    function commitVote(
+        uint256 jobId,
+        bytes32 commitHash,
+        string calldata subdomain,
+        bytes32[] calldata proof
+    ) external {
         Round storage r = rounds[jobId];
         require(block.timestamp <= r.commitEnd, "commit over");
         require(isValidator(jobId, msg.sender), "not validator");
+        require(
+            additionalValidators[msg.sender] ||
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
+            "identity"
+        );
+        require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
         Vote storage v = r.votes[msg.sender];
         require(v.commit == bytes32(0), "committed");
         v.commit = commitHash;
         emit VoteCommitted(jobId, msg.sender);
     }
 
-    function revealVote(uint256 jobId, bool vote, bytes32 salt) external {
+    function revealVote(
+        uint256 jobId,
+        bool vote,
+        bytes32 salt,
+        string calldata subdomain,
+        bytes32[] calldata proof
+    ) external {
         Round storage r = rounds[jobId];
         require(block.timestamp > r.commitEnd && block.timestamp <= r.revealEnd, "not reveal phase");
+        require(
+            additionalValidators[msg.sender] ||
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
+            "identity"
+        );
+        require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
         Vote storage v = r.votes[msg.sender];
         require(v.commit == keccak256(abi.encode(vote, salt)), "invalid reveal");
         require(!v.revealed, "revealed");
@@ -158,6 +190,30 @@ contract ValidationModule is Ownable, IValidationModule {
     function setSelectionSeed(uint256 seed) external onlyOwner {
         selectionSeed = seed;
         emit ParametersUpdated();
+    }
+
+    /// @notice Updates the root node for validator club identities
+    /// @param node ENS root node
+    function setClubRootNode(bytes32 node) external onlyOwner {
+        clubRootNode = node;
+        emit RootNodeUpdated(node);
+    }
+
+    /// @notice Updates the validator Merkle root
+    /// @param root Merkle root for validators
+    function setValidatorMerkleRoot(bytes32 root) external onlyOwner {
+        validatorMerkleRoot = root;
+        emit MerkleRootUpdated(root);
+    }
+
+    /// @notice Adds a validator to the additional allowlist
+    function addAdditionalValidator(address validator) external onlyOwner {
+        additionalValidators[validator] = true;
+    }
+
+    /// @notice Removes a validator from the additional allowlist
+    function removeAdditionalValidator(address validator) external onlyOwner {
+        delete additionalValidators[validator];
     }
 }
 
