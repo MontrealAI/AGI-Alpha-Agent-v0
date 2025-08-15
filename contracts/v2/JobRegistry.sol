@@ -21,6 +21,7 @@ interface IReputationEngine {
 
 interface IDisputeModule {
     function onFinalize(uint256 jobId) external;
+    function dispute(uint256 jobId) external;
 }
 
 interface ICertificateNFT {
@@ -61,9 +62,15 @@ contract JobRegistry is Ownable {
 
     mapping(address => bool) public additionalAgents;
 
+    uint96 public maxJobReward;
+    uint40 public maxJobDuration;
+
     event JobCreated(uint256 indexed jobId, address indexed client, uint96 reward, uint40 deadline);
     event JobApplied(uint256 indexed jobId, address indexed worker);
-    event JobSubmitted(uint256 indexed jobId, address indexed worker, bytes submission);
+    event JobSubmitted(uint256 indexed jobId, address indexed worker, bytes result);
+    event JobCancelled(uint256 indexed jobId);
+    event JobDelisted(uint256 indexed jobId);
+    event JobDisputed(uint256 indexed jobId);
     event JobFinalized(uint256 indexed jobId, address indexed worker);
     event ModulesUpdated(
         address validationModule,
@@ -130,11 +137,25 @@ contract JobRegistry is Ownable {
         delete additionalAgents[agent];
     }
 
+    /// @notice Sets the maximum job reward
+    /// @param amount Maximum reward allowed per job
+    function setMaxJobReward(uint96 amount) external onlyOwner {
+        maxJobReward = amount;
+    }
+
+    /// @notice Sets the maximum job duration in seconds
+    /// @param duration Maximum allowed duration from now
+    function setMaxJobDuration(uint40 duration) external onlyOwner {
+        maxJobDuration = duration;
+    }
+
     /// @notice Creates a new job and locks client stake
     /// @param reward Payment amount locked in the stake manager
     /// @param deadline Unix timestamp for job deadline
     /// @return jobId Identifier of the created job
     function createJob(uint96 reward, uint40 deadline) external returns (uint256 jobId) {
+        require(reward <= maxJobReward, "reward too high");
+        require(deadline != 0 && deadline <= block.timestamp + maxJobDuration, "invalid deadline");
         stakeManager.lock(msg.sender, reward);
         jobId = ++nextJobId;
         jobs[jobId] = Job({
@@ -171,23 +192,54 @@ contract JobRegistry is Ownable {
         emit JobApplied(jobId, msg.sender);
     }
 
+    /// @notice Cancels a job and refunds the client
+    /// @param jobId Identifier of the job
+    function cancelJob(uint256 jobId) external {
+        Job storage job = jobs[jobId];
+        require(job.client == msg.sender, "not client");
+        require(job.status == Status.Created, "invalid status");
+        stakeManager.release(job.client, job.reward);
+        delete jobs[jobId];
+        emit JobCancelled(jobId);
+    }
+
+    /// @notice Delists a job by the contract owner
+    /// @param jobId Identifier of the job
+    function delistJob(uint256 jobId) external onlyOwner {
+        Job storage job = jobs[jobId];
+        require(job.status == Status.Created, "invalid status");
+        stakeManager.release(job.client, job.reward);
+        delete jobs[jobId];
+        emit JobDelisted(jobId);
+    }
+
     /// @notice Submits work for a job, validated by validation module
     /// @param jobId Identifier of the job
-    /// @param data Submission payload
-    function submit(uint256 jobId, bytes calldata data) external {
+    /// @param result Submission payload
+    function submit(uint256 jobId, bytes calldata result) external {
         Job storage job = jobs[jobId];
         require(job.worker == msg.sender, "not worker");
         require(job.status == Status.Applied, "invalid status");
-        require(validationModule.validate(jobId, data), "validation failed");
+        require(block.timestamp <= job.deadline, "deadline passed");
+        require(validationModule.validate(jobId, result), "validation failed");
         job.status = Status.Submitted;
-        emit JobSubmitted(jobId, msg.sender, data);
+        emit JobSubmitted(jobId, msg.sender, result);
+    }
+
+    /// @notice Opens a dispute for a submitted job
+    /// @param jobId Identifier of the job
+    function dispute(uint256 jobId) external {
+        Job storage job = jobs[jobId];
+        require(job.status == Status.Submitted, "invalid status");
+        require(address(disputeModule) != address(0), "no module");
+        disputeModule.dispute(jobId);
+        emit JobDisputed(jobId);
     }
 
     /// @notice Finalizes a job and releases payment
     /// @param jobId Identifier of the job
-    function finalize(uint256 jobId) external {
+    function finalize(uint256 jobId) external onlyOwner {
         Job storage job = jobs[jobId];
-        require(job.client == msg.sender, "not client");
         require(job.status == Status.Submitted, "invalid status");
         stakeManager.release(job.worker, job.reward);
         reputationEngine.onFinalize(job.worker, true);
