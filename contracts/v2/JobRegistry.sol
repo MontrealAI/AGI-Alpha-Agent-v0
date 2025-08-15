@@ -21,8 +21,13 @@ interface IReputationEngine {
 }
 
 interface IDisputeModule {
-    function onFinalize(uint256 jobId) external;
-    function dispute(uint256 jobId) external;
+    function raiseDispute(
+        uint256 jobId,
+        address employer,
+        address worker,
+        uint256 reward
+    ) external;
+    function isDisputed(uint256 jobId) external view returns (bool);
 }
 
 interface ICertificateNFT {
@@ -232,8 +237,9 @@ contract JobRegistry is Ownable {
     function dispute(uint256 jobId) external {
         Job storage job = jobs[jobId];
         require(job.status == Status.Submitted, "invalid status");
+        require(job.worker == msg.sender || job.client == msg.sender, "not participant");
         require(address(disputeModule) != address(0), "no module");
-        disputeModule.dispute(jobId);
+        disputeModule.raiseDispute(jobId, job.client, job.worker, job.reward);
         emit JobDisputed(jobId);
     }
 
@@ -243,11 +249,11 @@ contract JobRegistry is Ownable {
         Job storage job = jobs[jobId];
         require(job.status == Status.Submitted, "invalid status");
         require(validationModule.validationResult(jobId), "validation failed");
+        if (address(disputeModule) != address(0)) {
+            require(!disputeModule.isDisputed(jobId), "disputed");
+        }
         stakeManager.release(job.worker, job.reward);
         reputationEngine.onFinalize(job.worker, true);
-        if (address(disputeModule) != address(0)) {
-            disputeModule.onFinalize(jobId);
-        }
         if (address(certificateNFT) != address(0)) {
             certificateNFT.mint(job.worker, jobId);
         }
