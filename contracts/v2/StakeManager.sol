@@ -127,6 +127,7 @@ contract StakeManager is Ownable {
 
     /// @notice Withdraws available stake for a specific role
     function withdrawStake(Role role, uint256 amount) external {
+        require(amount > 0, "amount 0");
         if (role == Role.Agent) {
             require(agentStakes[msg.sender] >= amount, "insufficient");
             uint256 remaining = agentStakes[msg.sender] - amount;
