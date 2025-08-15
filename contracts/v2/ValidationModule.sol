@@ -8,6 +8,7 @@ interface IStakeManager {
     function reward(address user, uint256 amount) external;
     function slash(address offender, address employer, uint256 amount, uint256 burnPctOverride) external;
     function validatorStakes(address user) external view returns (uint256);
+    function minStakeValidator() external view returns (uint256);
 }
 
 interface IReputationEngine {
@@ -40,7 +41,6 @@ contract ValidationModule is Ownable, IValidationModule {
     uint256 public revealWindow;
     uint256 public validatorsPerJob;
     uint256 public selectionSeed;
-    uint256 public minStake;
     uint256 public slashPercentage; // basis points
 
     bytes32 public clubRootNode;
@@ -92,7 +92,8 @@ contract ValidationModule is Ownable, IValidationModule {
             ];
             attempts++;
             if (reputationEngine.isBlacklisted(candidate)) continue;
-            if (stakeManager.validatorStakes(candidate) < minStake) continue;
+            if (!additionalValidators[candidate]) continue;
+            if (stakeManager.validatorStakes(candidate) < stakeManager.minStakeValidator()) continue;
             bool exists;
             for (uint256 i = 0; i < r.validators.length; i++) {
                 if (r.validators[i] == candidate) {
@@ -223,11 +224,6 @@ contract ValidationModule is Ownable, IValidationModule {
 
     function setSelectionSeed(uint256 seed) external onlyOwner {
         selectionSeed = seed;
-        emit ParametersUpdated();
-    }
-
-    function setMinStake(uint256 amount) external onlyOwner {
-        minStake = amount;
         emit ParametersUpdated();
     }
 
