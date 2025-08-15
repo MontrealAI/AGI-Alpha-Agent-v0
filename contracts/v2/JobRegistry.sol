@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./IdentityLib.sol";
 
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
@@ -15,6 +16,7 @@ interface IStakeManager {
 interface IReputationEngine {
     function onApply(address user) external;
     function onFinalize(address user, bool success) external;
+    function isBlacklisted(address user) external view returns (bool);
 }
 
 interface IDisputeModule {
@@ -52,6 +54,13 @@ contract JobRegistry is Ownable {
     IDisputeModule public disputeModule;
     ICertificateNFT public certificateNFT;
 
+    bytes32 public agentRootNode;
+    bytes32 public clubRootNode;
+    bytes32 public agentMerkleRoot;
+    bytes32 public validatorMerkleRoot;
+
+    mapping(address => bool) public additionalAgents;
+
     event JobCreated(uint256 indexed jobId, address indexed client, uint96 reward, uint40 deadline);
     event JobApplied(uint256 indexed jobId, address indexed worker);
     event JobSubmitted(uint256 indexed jobId, address indexed worker, bytes submission);
@@ -63,6 +72,8 @@ contract JobRegistry is Ownable {
         address disputeModule,
         address certificateNFT
     );
+    event RootNodeUpdated(bytes32 newRootNode);
+    event MerkleRootUpdated(bytes32 newMerkleRoot);
 
     constructor() Ownable(msg.sender) {}
 
@@ -87,6 +98,38 @@ contract JobRegistry is Ownable {
         emit ModulesUpdated(_validation, _stake, _reputation, _dispute, _certificate);
     }
 
+    /// @notice Updates the root nodes for agents and clubs
+    /// @param agentNode ENS root node for agents
+    /// @param clubNode ENS root node for clubs
+    function setRootNodes(bytes32 agentNode, bytes32 clubNode) external onlyOwner {
+        agentRootNode = agentNode;
+        clubRootNode = clubNode;
+        emit RootNodeUpdated(agentNode);
+        emit RootNodeUpdated(clubNode);
+    }
+
+    /// @notice Updates the Merkle roots for agents and validators
+    /// @param agentRoot Merkle root for agents
+    /// @param validatorRoot Merkle root for validators
+    function setMerkleRoots(bytes32 agentRoot, bytes32 validatorRoot) external onlyOwner {
+        agentMerkleRoot = agentRoot;
+        validatorMerkleRoot = validatorRoot;
+        emit MerkleRootUpdated(agentRoot);
+        emit MerkleRootUpdated(validatorRoot);
+    }
+
+    /// @notice Adds an address to the additional agents allowlist
+    /// @param agent Address to add
+    function addAdditionalAgent(address agent) external onlyOwner {
+        additionalAgents[agent] = true;
+    }
+
+    /// @notice Removes an address from the additional agents allowlist
+    /// @param agent Address to remove
+    function removeAdditionalAgent(address agent) external onlyOwner {
+        delete additionalAgents[agent];
+    }
+
     /// @notice Creates a new job and locks client stake
     /// @param reward Payment amount locked in the stake manager
     /// @param deadline Unix timestamp for job deadline
@@ -105,9 +148,21 @@ contract JobRegistry is Ownable {
         emit JobCreated(jobId, msg.sender, reward, deadline);
     }
 
-    /// @notice Applies for an open job
+    /// @notice Applies for an open job after identity verification
     /// @param jobId Identifier of the job
-    function apply(uint256 jobId) external {
+    /// @param subdomain ENS subdomain used for verification
+    /// @param proof Merkle proof validating agent ownership
+    function applyForJob(
+        uint256 jobId,
+        string calldata subdomain,
+        bytes32[] calldata proof
+    ) external {
+        require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
+        require(
+            additionalAgents[msg.sender] ||
+                IdentityLib.verify(msg.sender, subdomain, proof, agentRootNode),
+            "identity"
+        );
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
         reputationEngine.onApply(msg.sender);
