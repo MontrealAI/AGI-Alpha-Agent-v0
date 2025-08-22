@@ -7,11 +7,17 @@ import "./IdentityLib.sol";
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
     function validationResult(uint256 jobId) external view returns (bool);
+    function getWinningValidators(uint256 jobId) external view returns (address[] memory);
 }
 
 interface IStakeManager {
-    function lock(address user, uint256 amount) external;
-    function release(address user, uint256 amount) external;
+    function lock(uint256 jobId, address employer, uint256 amount) external;
+    function release(
+        uint256 jobId,
+        address recipient,
+        address[] calldata validators,
+        uint256 validatorPct
+    ) external;
 }
 
 interface IReputationEngine {
@@ -71,6 +77,7 @@ contract JobRegistry is Ownable {
 
     uint96 public maxJobReward;
     uint40 public maxJobDuration;
+    uint256 public validatorRewardPct;
 
     event JobCreated(uint256 indexed jobId, address indexed client, uint96 reward, uint40 deadline);
     event JobApplied(uint256 indexed jobId, address indexed worker);
@@ -89,6 +96,13 @@ contract JobRegistry is Ownable {
     );
     event RootNodeUpdated(bytes32 newRootNode);
     event MerkleRootUpdated(bytes32 newMerkleRoot);
+
+    /// @notice Updates validator reward percentage
+    /// @param pct Percentage of escrow sent to validators
+    function setValidatorRewardPct(uint256 pct) external onlyOwner {
+        require(pct <= 100, "pct too high");
+        validatorRewardPct = pct;
+    }
 
     constructor() Ownable(msg.sender) {}
 
@@ -181,8 +195,8 @@ contract JobRegistry is Ownable {
         require(taxPolicy.isAcknowledged(msg.sender), "tax");
         require(reward <= maxJobReward, "reward too high");
         require(deadline != 0 && deadline <= block.timestamp + maxJobDuration, "invalid deadline");
-        stakeManager.lock(msg.sender, reward);
         jobId = ++nextJobId;
+        stakeManager.lock(jobId, msg.sender, reward);
         jobs[jobId] = Job({
             client: msg.sender,
             reward: reward,
@@ -224,7 +238,7 @@ contract JobRegistry is Ownable {
         Job storage job = jobs[jobId];
         require(job.client == msg.sender, "not client");
         require(job.status == Status.Created, "invalid status");
-        stakeManager.release(job.client, job.reward);
+        stakeManager.release(jobId, job.client, new address[](0), 0);
         delete jobs[jobId];
         emit JobCancelled(jobId, job.client);
     }
@@ -234,7 +248,7 @@ contract JobRegistry is Ownable {
     function delistJob(uint256 jobId) external onlyOwner {
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
-        stakeManager.release(job.client, job.reward);
+        stakeManager.release(jobId, job.client, new address[](0), 0);
         delete jobs[jobId];
         emit JobDelisted(jobId, job.client);
     }
@@ -269,7 +283,8 @@ contract JobRegistry is Ownable {
         require(job.client == msg.sender, "not client");
         require(job.status == Status.Submitted, "invalid status");
         require(validationModule.validationResult(jobId), "validation failed");
-        stakeManager.release(job.worker, job.reward);
+        address[] memory winners = validationModule.getWinningValidators(jobId);
+        stakeManager.release(jobId, job.worker, winners, validatorRewardPct);
         reputationEngine.onFinalize(job.worker, true);
         if (address(disputeModule) != address(0)) {
             disputeModule.onFinalize(jobId);
