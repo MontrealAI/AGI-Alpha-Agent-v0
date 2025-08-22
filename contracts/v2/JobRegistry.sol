@@ -29,6 +29,10 @@ interface ICertificateNFT {
     function mint(address to, uint256 jobId) external;
 }
 
+interface ITaxPolicy {
+    function isAcknowledged(address user) external view returns (bool);
+}
+
 contract JobRegistry is Ownable {
     enum Status {
         None,
@@ -55,6 +59,7 @@ contract JobRegistry is Ownable {
     IReputationEngine public reputationEngine;
     IDisputeModule public disputeModule;
     ICertificateNFT public certificateNFT;
+    ITaxPolicy public taxPolicy;
 
     bytes32 public agentRootNode;
     bytes32 public clubRootNode;
@@ -62,23 +67,25 @@ contract JobRegistry is Ownable {
     bytes32 public validatorMerkleRoot;
 
     mapping(address => bool) public additionalAgents;
+    mapping(address => bool) public additionalValidators;
 
     uint96 public maxJobReward;
     uint40 public maxJobDuration;
 
     event JobCreated(uint256 indexed jobId, address indexed client, uint96 reward, uint40 deadline);
     event JobApplied(uint256 indexed jobId, address indexed worker);
-    event JobSubmitted(uint256 indexed jobId, address indexed worker, bytes result);
-    event JobCancelled(uint256 indexed jobId);
-    event JobDelisted(uint256 indexed jobId);
+    event JobSubmitted(uint256 indexed jobId, address indexed client, address indexed worker, bytes result);
+    event JobCancelled(uint256 indexed jobId, address indexed client);
+    event JobDelisted(uint256 indexed jobId, address indexed client);
     event JobDisputed(uint256 indexed jobId);
-    event JobFinalized(uint256 indexed jobId, address indexed worker);
+    event JobFinalized(uint256 indexed jobId, address indexed client, address indexed worker);
     event ModulesUpdated(
         address validationModule,
         address stakeManager,
         address reputationEngine,
         address disputeModule,
-        address certificateNFT
+        address certificateNFT,
+        address taxPolicy
     );
     event RootNodeUpdated(bytes32 newRootNode);
     event MerkleRootUpdated(bytes32 newMerkleRoot);
@@ -91,19 +98,22 @@ contract JobRegistry is Ownable {
     /// @param _reputation Address of reputation engine
     /// @param _dispute Address of dispute module
     /// @param _certificate Address of certificate NFT
+    /// @param _tax Address of tax policy module
     function setModules(
         address _validation,
         address _stake,
         address _reputation,
         address _dispute,
-        address _certificate
+        address _certificate,
+        address _tax
     ) external onlyOwner {
         validationModule = IValidationModule(_validation);
         stakeManager = IStakeManager(_stake);
         reputationEngine = IReputationEngine(_reputation);
         disputeModule = IDisputeModule(_dispute);
         certificateNFT = ICertificateNFT(_certificate);
-        emit ModulesUpdated(_validation, _stake, _reputation, _dispute, _certificate);
+        taxPolicy = ITaxPolicy(_tax);
+        emit ModulesUpdated(_validation, _stake, _reputation, _dispute, _certificate, _tax);
     }
 
     /// @notice Updates the root nodes for agents and clubs
@@ -138,6 +148,18 @@ contract JobRegistry is Ownable {
         delete additionalAgents[agent];
     }
 
+    /// @notice Adds an address to the additional validators allowlist
+    /// @param validator Address to add
+    function addAdditionalValidator(address validator) external onlyOwner {
+        additionalValidators[validator] = true;
+    }
+
+    /// @notice Removes an address from the additional validators allowlist
+    /// @param validator Address to remove
+    function removeAdditionalValidator(address validator) external onlyOwner {
+        delete additionalValidators[validator];
+    }
+
     /// @notice Sets the maximum job reward
     /// @param amount Maximum reward allowed per job
     function setMaxJobReward(uint96 amount) external onlyOwner {
@@ -155,6 +177,8 @@ contract JobRegistry is Ownable {
     /// @param deadline Unix timestamp for job deadline
     /// @return jobId Identifier of the created job
     function createJob(uint96 reward, uint40 deadline) external returns (uint256 jobId) {
+        require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
+        require(taxPolicy.isAcknowledged(msg.sender), "tax");
         require(reward <= maxJobReward, "reward too high");
         require(deadline != 0 && deadline <= block.timestamp + maxJobDuration, "invalid deadline");
         stakeManager.lock(msg.sender, reward);
@@ -180,6 +204,7 @@ contract JobRegistry is Ownable {
         bytes32[] calldata proof
     ) external {
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
+        require(taxPolicy.isAcknowledged(msg.sender), "tax");
         require(
             additionalAgents[msg.sender] ||
                 IdentityLib.verify(msg.sender, subdomain, proof, agentRootNode),
@@ -201,7 +226,7 @@ contract JobRegistry is Ownable {
         require(job.status == Status.Created, "invalid status");
         stakeManager.release(job.client, job.reward);
         delete jobs[jobId];
-        emit JobCancelled(jobId);
+        emit JobCancelled(jobId, job.client);
     }
 
     /// @notice Delists a job by the contract owner
@@ -211,7 +236,7 @@ contract JobRegistry is Ownable {
         require(job.status == Status.Created, "invalid status");
         stakeManager.release(job.client, job.reward);
         delete jobs[jobId];
-        emit JobDelisted(jobId);
+        emit JobDelisted(jobId, job.client);
     }
 
     /// @notice Submits work for a job, validated by validation module
@@ -224,7 +249,7 @@ contract JobRegistry is Ownable {
         require(block.timestamp <= job.deadline, "deadline passed");
         require(validationModule.validate(jobId, result), "validation failed");
         job.status = Status.Submitted;
-        emit JobSubmitted(jobId, msg.sender, result);
+        emit JobSubmitted(jobId, job.client, msg.sender, result);
     }
 
     /// @notice Opens a dispute for a submitted job
@@ -239,8 +264,9 @@ contract JobRegistry is Ownable {
 
     /// @notice Finalizes a job and releases payment
     /// @param jobId Identifier of the job
-    function finalize(uint256 jobId) external onlyOwner {
+    function finalize(uint256 jobId) external {
         Job storage job = jobs[jobId];
+        require(job.client == msg.sender, "not client");
         require(job.status == Status.Submitted, "invalid status");
         require(validationModule.validationResult(jobId), "validation failed");
         stakeManager.release(job.worker, job.reward);
@@ -252,7 +278,7 @@ contract JobRegistry is Ownable {
             certificateNFT.mint(job.worker, jobId);
         }
         job.status = Status.Finalized;
-        emit JobFinalized(jobId, job.worker);
+        emit JobFinalized(jobId, job.client, job.worker);
     }
 }
 
