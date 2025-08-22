@@ -21,9 +21,11 @@ interface IStakeManager {
 }
 
 interface IReputationEngine {
-    function onApply(address user) external;
-    function onFinalize(address user, bool success) external;
+    function onApply(address user, uint256 reward, uint256 duration) external;
+    function onFinalize(address user, uint256 reward, uint256 duration, bool success) external;
     function isBlacklisted(address user) external view returns (bool);
+    function reputationOf(address user) external view returns (uint256);
+    function meetsThreshold(address user) external view returns (bool);
 }
 
 interface IDisputeModule {
@@ -226,7 +228,8 @@ contract JobRegistry is Ownable {
         );
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
-        reputationEngine.onApply(msg.sender);
+        uint256 duration = job.deadline - job.createdAt;
+        reputationEngine.onApply(msg.sender, job.reward, duration);
         job.worker = msg.sender;
         job.status = Status.Applied;
         emit JobApplied(jobId, msg.sender);
@@ -285,7 +288,8 @@ contract JobRegistry is Ownable {
         require(validationModule.validationResult(jobId), "validation failed");
         address[] memory winners = validationModule.getWinningValidators(jobId);
         stakeManager.release(jobId, job.worker, winners, validatorRewardPct);
-        reputationEngine.onFinalize(job.worker, true);
+        uint256 duration = block.timestamp - job.createdAt;
+        reputationEngine.onFinalize(job.worker, job.reward, duration, true);
         if (address(disputeModule) != address(0)) {
             disputeModule.onFinalize(jobId);
         }

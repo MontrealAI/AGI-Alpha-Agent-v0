@@ -17,8 +17,9 @@ interface IStakeManager {
 }
 
 interface IReputationEngine {
-    function onValidate(address user, bool success) external;
+    function onValidate(address user, uint256 agentGain, bool success) external;
     function isBlacklisted(address user) external view returns (bool);
+    function calculateReputationPoints(uint256 reward, uint256 duration) external pure returns (uint256);
 }
 
 interface IJobRegistry {
@@ -204,13 +205,14 @@ contract ValidationModule is Ownable, IValidationModule {
         emit VoteRevealed(jobId, msg.sender, vote);
     }
 
-    function tally(uint256 jobId, uint256 reward) external {
+    function tally(uint256 jobId, uint256 reward, uint256 duration) external {
         Round storage r = rounds[jobId];
         require(block.timestamp > r.revealEnd, "reveal not over");
         require(!r.tallied, "tallied");
         uint256 yes;
         uint256 no;
         uint256 slashAmount = (reward * slashPercentage) / 10_000;
+        uint256 agentGain = reputationEngine.calculateReputationPoints(reward, duration);
         for (uint256 i = 0; i < r.validators.length; i++) {
             address validator = r.validators[i];
             Vote storage v = r.votes[validator];
@@ -222,7 +224,7 @@ contract ValidationModule is Ownable, IValidationModule {
                 }
             } else {
                 stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
-                reputationEngine.onValidate(validator, false);
+                reputationEngine.onValidate(validator, agentGain, false);
             }
         }
         r.result = yes >= no; // tie defaults to success
@@ -232,10 +234,10 @@ contract ValidationModule is Ownable, IValidationModule {
             Vote storage v = r.votes[validator];
             if (v.revealed) {
                 if (v.vote == r.result) {
-                    reputationEngine.onValidate(validator, true);
+                    reputationEngine.onValidate(validator, agentGain, true);
                 } else {
                     stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
-                    reputationEngine.onValidate(validator, false);
+                    reputationEngine.onValidate(validator, agentGain, false);
                 }
             }
         }
