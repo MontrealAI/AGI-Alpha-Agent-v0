@@ -5,8 +5,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IdentityLib.sol";
 
 interface IStakeManager {
-    function reward(address user, uint256 amount) external;
-    function slash(address offender, address employer, uint256 amount, uint256 burnPctOverride) external;
+    function slash(
+        address offender,
+        address employer,
+        uint256 amount,
+        uint256 burnPctOverride,
+        uint256 jobId
+    ) external;
     function validatorStakes(address user) external view returns (uint256);
     function minStakeValidator() external view returns (uint256);
 }
@@ -23,6 +28,7 @@ interface IJobRegistry {
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
     function validationResult(uint256 jobId) external view returns (bool);
+    function getWinningValidators(uint256 jobId) external view returns (address[] memory);
 }
 
 contract ValidationModule is Ownable, IValidationModule {
@@ -215,7 +221,7 @@ contract ValidationModule is Ownable, IValidationModule {
                     no++;
                 }
             } else {
-                stakeManager.slash(validator, address(0), slashAmount, 10_000);
+                stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
                 reputationEngine.onValidate(validator, false);
             }
         }
@@ -226,10 +232,9 @@ contract ValidationModule is Ownable, IValidationModule {
             Vote storage v = r.votes[validator];
             if (v.revealed) {
                 if (v.vote == r.result) {
-                    stakeManager.reward(validator, reward);
                     reputationEngine.onValidate(validator, true);
                 } else {
-                    stakeManager.slash(validator, address(0), slashAmount, 10_000);
+                    stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
                     reputationEngine.onValidate(validator, false);
                 }
             }
@@ -256,6 +261,28 @@ contract ValidationModule is Ownable, IValidationModule {
 
     function getValidators(uint256 jobId) external view returns (address[] memory) {
         return rounds[jobId].validators;
+    }
+
+    function getWinningValidators(uint256 jobId) external view override returns (address[] memory) {
+        Round storage r = rounds[jobId];
+        require(r.tallied, "not tallied");
+        uint256 count;
+        for (uint256 i = 0; i < r.validators.length; i++) {
+            Vote storage v = r.votes[r.validators[i]];
+            if (v.revealed && v.vote == r.result) {
+                count++;
+            }
+        }
+        address[] memory winners = new address[](count);
+        uint256 idx;
+        for (uint256 i = 0; i < r.validators.length; i++) {
+            address validator = r.validators[i];
+            Vote storage v = r.votes[validator];
+            if (v.revealed && v.vote == r.result) {
+                winners[idx++] = validator;
+            }
+        }
+        return winners;
     }
 
     function setCommitWindow(uint256 window) external onlyOwner {
