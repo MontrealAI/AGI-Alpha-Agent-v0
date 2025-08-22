@@ -2,16 +2,14 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/Math.sol";
 
 /// @title ReputationEngine
 /// @notice Tracks agent and validator reputation with diminishing returns
 contract ReputationEngine is Ownable {
-    using Math for uint256;
 
     uint256 public constant MAX_REPUTATION = 88_888;
 
-    mapping(address => uint256) public reputation;
+    mapping(address => uint256) private reputation;
     mapping(address => bool) public blacklist;
     mapping(address => bool) public callers;
 
@@ -52,64 +50,73 @@ contract ReputationEngine is Ownable {
         emit PremiumThresholdUpdated(threshold);
     }
 
+    /// @notice Returns the reputation score for a user
+    function reputationOf(address user) external view returns (uint256) {
+        return reputation[user];
+    }
+
+    /// @notice Checks whether a user meets the premium threshold
+    function meetsThreshold(address user) external view returns (bool) {
+        return reputation[user] >= premiumThreshold;
+    }
+
     /// @notice Called when an agent applies for a job
-    function onApply(address user) external onlyCaller {
+    function onApply(address user, uint256 reward, uint256 duration) external onlyCaller {
         _requireNotBlacklisted(user);
-        _increase(user, 100);
+        uint256 points = calculateReputationPoints(reward, duration);
+        enforceReputationGrowth(user, int256(points));
     }
 
     /// @notice Called when a job finalizes
-    function onFinalize(address user, bool success) external onlyCaller {
+    function onFinalize(
+        address user,
+        uint256 reward,
+        uint256 duration,
+        bool success
+    ) external onlyCaller {
         _requireNotBlacklisted(user);
-        if (success) {
-            _increase(user, 1000);
-        } else {
-            _decrease(user, 1000);
-        }
+        uint256 points = calculateReputationPoints(reward, duration);
+        enforceReputationGrowth(user, success ? int256(points) : -int256(points));
     }
 
     /// @notice Called when a validator participates
-    function onValidate(address user, bool success) external onlyCaller {
+    function onValidate(
+        address user,
+        uint256 agentGain,
+        bool success
+    ) external onlyCaller {
         _requireNotBlacklisted(user);
-        if (success) {
-            _increase(user, 200);
-        } else {
-            _decrease(user, 200);
-        }
+        uint256 points = calculateValidatorReputationPoints(agentGain);
+        enforceReputationGrowth(user, success ? int256(points) : -int256(points));
     }
 
     function _requireNotBlacklisted(address user) internal view {
         require(!blacklist[user], "blacklisted");
     }
 
-    function _increase(address user, uint256 base) internal {
+    function enforceReputationGrowth(address user, int256 change) internal {
         uint256 current = reputation[user];
-        uint256 delta = _calcPositiveDelta(current, base);
-        uint256 newRep = current + delta;
-        if (newRep > MAX_REPUTATION) newRep = MAX_REPUTATION;
+        uint256 newRep;
+        if (change >= 0) {
+            newRep = current + uint256(change);
+            if (newRep > MAX_REPUTATION) newRep = MAX_REPUTATION;
+        } else {
+            uint256 decrease = uint256(-change);
+            newRep = current > decrease ? current - decrease : 0;
+        }
         reputation[user] = newRep;
         emit ReputationUpdated(user, newRep);
     }
 
-    function _decrease(address user, uint256 base) internal {
-        uint256 current = reputation[user];
-        uint256 delta = _calcNegativeDelta(current, base);
-        uint256 newRep = current > delta ? current - delta : 0;
-        reputation[user] = newRep;
-        emit ReputationUpdated(user, newRep);
+    function calculateReputationPoints(uint256 reward, uint256 duration) public pure returns (uint256) {
+        if (duration == 0) return reward;
+        uint256 points = reward / duration;
+        return points == 0 && reward > 0 ? 1 : points;
     }
 
-    function _calcPositiveDelta(uint256 rep, uint256 base) internal pure returns (uint256) {
-        uint256 logTerm = Math.log2(rep + 2);
-        if (logTerm == 0) logTerm = 1;
-        uint256 delta = base / logTerm;
-        return delta == 0 ? 1 : delta;
-    }
-
-    function _calcNegativeDelta(uint256 rep, uint256 base) internal pure returns (uint256) {
-        uint256 logTerm = Math.log2(rep + 2);
-        if (logTerm == 0) logTerm = 1;
-        return base * logTerm;
+    function calculateValidatorReputationPoints(uint256 agentGain) public pure returns (uint256) {
+        uint256 points = agentGain / 10;
+        return points == 0 && agentGain > 0 ? 1 : points;
     }
 }
 
