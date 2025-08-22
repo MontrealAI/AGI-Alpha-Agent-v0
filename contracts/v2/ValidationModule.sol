@@ -16,6 +16,10 @@ interface IReputationEngine {
     function isBlacklisted(address user) external view returns (bool);
 }
 
+interface IJobRegistry {
+    function validationComplete(uint256 jobId, bool result) external;
+}
+
 interface IValidationModule {
     function validate(uint256 jobId, bytes calldata data) external returns (bool);
     function validationResult(uint256 jobId) external view returns (bool);
@@ -26,6 +30,8 @@ contract ValidationModule is Ownable, IValidationModule {
         bytes32 commit;
         bool revealed;
         bool vote;
+        uint64 commitTime;
+        uint64 revealTime;
     }
 
     struct Round {
@@ -48,9 +54,12 @@ contract ValidationModule is Ownable, IValidationModule {
 
     mapping(address => bool) public additionalValidators;
     address[] public validatorPool;
+    mapping(address => string) private validatorSubdomains;
+    mapping(address => bytes32[]) private validatorProofs;
 
     IStakeManager public stakeManager;
     IReputationEngine public reputationEngine;
+    IJobRegistry public jobRegistry;
 
     mapping(uint256 => Round) private rounds;
 
@@ -62,9 +71,10 @@ contract ValidationModule is Ownable, IValidationModule {
     event RootNodeUpdated(bytes32 newRootNode);
     event MerkleRootUpdated(bytes32 newMerkleRoot);
 
-    constructor(address _stakeManager, address _reputation) Ownable(msg.sender) {
+    constructor(address _stakeManager, address _reputation, address _jobRegistry) Ownable(msg.sender) {
         stakeManager = IStakeManager(_stakeManager);
         reputationEngine = IReputationEngine(_reputation);
+        jobRegistry = IJobRegistry(_jobRegistry);
     }
 
     function validate(uint256 jobId, bytes calldata) external override returns (bool) {
@@ -81,19 +91,53 @@ contract ValidationModule is Ownable, IValidationModule {
         uint256 count = validatorsPerJob;
         require(count > 0, "no validators");
         uint256 poolLen = validatorPool.length;
+        address[] memory candidates = new address[](poolLen);
+        uint256 candidateCount;
+
+        for (uint256 i = 0; i < poolLen; i++) {
+            address candidate = validatorPool[i];
+            if (reputationEngine.isBlacklisted(candidate)) continue;
+            bytes32[] storage storedProof = validatorProofs[candidate];
+            bytes32[] memory proof = new bytes32[](storedProof.length);
+            for (uint256 p = 0; p < storedProof.length; p++) {
+                proof[p] = storedProof[p];
+            }
+            if (
+                !IdentityLib.verify(
+                    candidate,
+                    validatorSubdomains[candidate],
+                    proof,
+                    clubRootNode,
+                    validatorMerkleRoot
+                )
+            ) continue;
+            if (stakeManager.validatorStakes(candidate) < stakeManager.minStakeValidator()) continue;
+            candidates[candidateCount++] = candidate;
+        }
+
+        for (uint256 i = 0; i < candidateCount; i++) {
+            for (uint256 j = i + 1; j < candidateCount; j++) {
+                if (
+                    stakeManager.validatorStakes(candidates[j]) >
+                    stakeManager.validatorStakes(candidates[i])
+                ) {
+                    address tmp = candidates[i];
+                    candidates[i] = candidates[j];
+                    candidates[j] = tmp;
+                }
+            }
+        }
+
         uint256 attempts;
-        while (r.validators.length < count && attempts < poolLen * 10) {
-            address candidate = validatorPool[
+        while (r.validators.length < count && attempts < candidateCount * 10) {
+            address candidate = candidates[
                 uint256(
                     keccak256(
                         abi.encode(blockhash(block.number - 1 - attempts), selectionSeed, jobId, attempts)
                     )
-                ) % poolLen
+                ) % candidateCount
             ];
             attempts++;
-            if (reputationEngine.isBlacklisted(candidate)) continue;
-            if (!additionalValidators[candidate]) continue;
-            if (stakeManager.validatorStakes(candidate) < stakeManager.minStakeValidator()) continue;
             bool exists;
             for (uint256 i = 0; i < r.validators.length; i++) {
                 if (r.validators[i] == candidate) {
@@ -119,13 +163,14 @@ contract ValidationModule is Ownable, IValidationModule {
         require(isValidator(jobId, msg.sender), "not validator");
         require(
             additionalValidators[msg.sender] ||
-                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode, validatorMerkleRoot),
             "identity"
         );
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
         Vote storage v = r.votes[msg.sender];
         require(v.commit == bytes32(0), "committed");
         v.commit = commitHash;
+        v.commitTime = uint64(block.timestamp);
         emit VoteCommitted(jobId, msg.sender);
     }
 
@@ -140,7 +185,7 @@ contract ValidationModule is Ownable, IValidationModule {
         require(block.timestamp > r.commitEnd && block.timestamp <= r.revealEnd, "not reveal phase");
         require(
             additionalValidators[msg.sender] ||
-                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode, validatorMerkleRoot),
             "identity"
         );
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
@@ -149,6 +194,7 @@ contract ValidationModule is Ownable, IValidationModule {
         require(!v.revealed, "revealed");
         v.revealed = true;
         v.vote = vote;
+        v.revealTime = uint64(block.timestamp);
         emit VoteRevealed(jobId, msg.sender, vote);
     }
 
@@ -188,6 +234,7 @@ contract ValidationModule is Ownable, IValidationModule {
                 }
             }
         }
+        jobRegistry.validationComplete(jobId, r.result);
         emit Tallied(jobId, r.result);
     }
 
@@ -205,6 +252,10 @@ contract ValidationModule is Ownable, IValidationModule {
             }
         }
         return false;
+    }
+
+    function getValidators(uint256 jobId) external view returns (address[] memory) {
+        return rounds[jobId].validators;
     }
 
     function setCommitWindow(uint256 window) external onlyOwner {
@@ -247,10 +298,20 @@ contract ValidationModule is Ownable, IValidationModule {
     }
 
     /// @notice Adds a validator to the additional allowlist
-    function addAdditionalValidator(address validator) external onlyOwner {
+    function addAdditionalValidator(
+        address validator,
+        string calldata subdomain,
+        bytes32[] calldata proof
+    ) external onlyOwner {
         if (!additionalValidators[validator]) {
             additionalValidators[validator] = true;
             validatorPool.push(validator);
+        }
+        validatorSubdomains[validator] = subdomain;
+        bytes32[] storage p = validatorProofs[validator];
+        delete p;
+        for (uint256 i = 0; i < proof.length; i++) {
+            p.push(proof[i]);
         }
     }
 
@@ -258,6 +319,8 @@ contract ValidationModule is Ownable, IValidationModule {
     function removeAdditionalValidator(address validator) external onlyOwner {
         if (additionalValidators[validator]) {
             delete additionalValidators[validator];
+            delete validatorSubdomains[validator];
+            delete validatorProofs[validator];
             for (uint256 i = 0; i < validatorPool.length; i++) {
                 if (validatorPool[i] == validator) {
                     validatorPool[i] = validatorPool[validatorPool.length - 1];

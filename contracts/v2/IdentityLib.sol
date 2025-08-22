@@ -65,6 +65,35 @@ library IdentityLib {
             );
     }
 
+    /// @notice Convenience overload that defaults the agent Merkle root and
+    /// ENS registry parameters. Used when only validator membership needs to
+    /// be proven.
+    /// @param claimant Address claiming ownership
+    /// @param subdomain ENS subdomain being proven
+    /// @param proof Merkle proof validating the claimant
+    /// @param rootNode ENS root node under which the subdomain lives
+    /// @param validatorMerkleRoot Merkle root covering registered validators
+    /// @return valid True if ownership verified or recovery initiated
+    function verify(
+        address claimant,
+        string memory subdomain,
+        bytes32[] memory proof,
+        bytes32 rootNode,
+        bytes32 validatorMerkleRoot
+    ) internal returns (bool valid) {
+        return
+            _verifyOwnership(
+                claimant,
+                subdomain,
+                proof,
+                rootNode,
+                bytes32(0),
+                validatorMerkleRoot,
+                IENS(address(0)),
+                INameWrapper(address(0))
+            );
+    }
+
     /// @notice Internal helper performing the actual verification logic
     function _verifyOwnership(
         address claimant,
