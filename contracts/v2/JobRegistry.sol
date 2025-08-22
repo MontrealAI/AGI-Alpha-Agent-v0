@@ -30,7 +30,7 @@ interface IReputationEngine {
 
 interface IDisputeModule {
     function onFinalize(uint256 jobId) external;
-    function dispute(uint256 jobId) external;
+    function dispute(uint256 jobId, address employer, address worker) external;
 }
 
 interface ICertificateNFT {
@@ -88,6 +88,7 @@ contract JobRegistry is Ownable {
     event JobDelisted(uint256 indexed jobId, address indexed client);
     event JobDisputed(uint256 indexed jobId);
     event JobFinalized(uint256 indexed jobId, address indexed client, address indexed worker);
+    event DisputeModuleUpdated(address disputeModule);
     event ModulesUpdated(
         address validationModule,
         address stakeManager,
@@ -130,6 +131,12 @@ contract JobRegistry is Ownable {
         certificateNFT = ICertificateNFT(_certificate);
         taxPolicy = ITaxPolicy(_tax);
         emit ModulesUpdated(_validation, _stake, _reputation, _dispute, _certificate, _tax);
+    }
+
+    /// @notice Updates the dispute module address
+    function setDisputeModule(address _dispute) external onlyOwner {
+        disputeModule = IDisputeModule(_dispute);
+        emit DisputeModuleUpdated(_dispute);
     }
 
     /// @notice Updates the root nodes for agents and clubs
@@ -273,10 +280,20 @@ contract JobRegistry is Ownable {
     /// @param jobId Identifier of the job
     function dispute(uint256 jobId) external {
         Job storage job = jobs[jobId];
+        require(job.client == msg.sender, "not client");
         require(job.status == Status.Submitted, "invalid status");
         require(address(disputeModule) != address(0), "no module");
-        disputeModule.dispute(jobId);
+        disputeModule.dispute(jobId, job.client, job.worker);
         emit JobDisputed(jobId);
+    }
+
+    /// @notice Called by dispute module to refund employer when they win a dispute
+    /// @param jobId Identifier of the job
+    function resolveDispute(uint256 jobId) external {
+        require(msg.sender == address(disputeModule), "not module");
+        Job storage job = jobs[jobId];
+        stakeManager.release(jobId, job.client, new address[](0), 0);
+        delete jobs[jobId];
     }
 
     /// @notice Finalizes a job and releases payment
