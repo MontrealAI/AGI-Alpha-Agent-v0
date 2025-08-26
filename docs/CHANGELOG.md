@@ -70,7 +70,7 @@ Downstream users should consult this section when upgrading.
    `py314` for each build and signs all images with cosign.
 - `ci.yml` now caches Node dependencies using `cache-dependency-path` so the
   "Dependencies lock file is not found" warning no longer appears.
-## [0.1.0-alpha] - 2024-05-01
+## [0.1.0-alpha] - 2025-05-01
 - Initial alpha release.
 - Git tag `v0.1.0-alpha`.
 - This tag points at commit `0ff79a4f`.
