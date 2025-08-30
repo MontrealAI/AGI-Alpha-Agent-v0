@@ -64,6 +64,16 @@ contract StakeManager is Ownable, ReentrancyGuard {
         uint256 compensation,
         uint256 burned
     );
+    event TreasuryUpdated(address indexed treasury);
+    event JobRegistryUpdated(address indexed jobRegistry);
+    event SlasherUpdated(address indexed slasher);
+    event MinStakeAgentUpdated(uint256 amount);
+    event MinStakeEmployerUpdated(uint256 amount);
+    event MinStakeValidatorUpdated(uint256 amount);
+    event FeePctUpdated(uint256 pct);
+    event BurnPctUpdated(uint256 pct);
+    event AGITypeAdded(address indexed nft, uint256 payoutPct);
+    event AGITypeRemoved(address indexed nft);
 
     constructor(address _agiToken, address _treasury) Ownable(msg.sender) {
         agiToken = IERC20(_agiToken);
@@ -78,49 +88,58 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @param _treasury New treasury address
     function setTreasury(address _treasury) external onlyOwner {
         treasury = _treasury;
+        emit TreasuryUpdated(_treasury);
     }
 
     /// @notice Sets the JobRegistry authorized to lock and release funds
     function setJobRegistry(address _registry) external onlyOwner {
         jobRegistry = _registry;
+        emit JobRegistryUpdated(_registry);
     }
 
     /// @notice Sets the contract allowed to slash stakes
     function setSlasher(address _slasher) external onlyOwner {
         slasher = _slasher;
+        emit SlasherUpdated(_slasher);
     }
 
     /// @notice Sets minimum stake for agents
     function setMinStakeAgent(uint256 amount) external onlyOwner {
         minStakeAgent = amount;
+        emit MinStakeAgentUpdated(amount);
     }
 
     /// @notice Sets minimum stake for employers
     function setMinStakeEmployer(uint256 amount) external onlyOwner {
         minStakeEmployer = amount;
+        emit MinStakeEmployerUpdated(amount);
     }
 
     /// @notice Sets minimum stake for validators
     function setMinStakeValidator(uint256 amount) external onlyOwner {
         minStakeValidator = amount;
+        emit MinStakeValidatorUpdated(amount);
     }
 
     /// @notice Sets protocol fee percentage in basis points
     function setFeePct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
         feePct = pct;
+        emit FeePctUpdated(pct);
     }
 
     /// @notice Sets burn percentage in basis points
     function setBurnPct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
         burnPct = pct;
+        emit BurnPctUpdated(pct);
     }
 
     /// @notice Adds an AGI type NFT and its payout percentage
     function addAGIType(address nft, uint256 payoutPct) external onlyOwner {
         agiTypePayoutPct[nft] = payoutPct;
         agiTypes.push(nft);
+        emit AGITypeAdded(nft, payoutPct);
     }
 
     /// @notice Removes an AGI type NFT
@@ -133,6 +152,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
                 break;
             }
         }
+        emit AGITypeRemoved(nft);
     }
 
     /// @notice Deposits AGI tokens as stake for a specific role
