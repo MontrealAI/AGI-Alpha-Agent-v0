@@ -50,6 +50,7 @@ from typing import Dict, List, Sequence
 import httpx
 from eth_account import Account  # type: ignore
 from web3 import HTTPProvider, Web3  # type: ignore
+from alpha_factory_v1.utils.token_utils import to_token_units
 
 # Alpha‑Factory primitives (import‑safe even when run standalone)
 try:
@@ -244,7 +245,8 @@ def _dispatch_payout(eur_amount: float, wallet: str):
         raise RuntimeError("RPC_URL not set; cannot dispatch on‑chain payout.")
     w3 = Web3(HTTPProvider(rpc))
     acct = Account.from_key(os.getenv("PRIVATE_KEY"))
-    wei_amt = int(eur_amount * 1e18 / 1.07)  # assume 1 $AGIALPHA ≈ €1.07
+    token_amt = eur_amount / 1.07  # assume 1 $AGIALPHA ≈ €1.07
+    wei_amt = to_token_units(token_amt)
     tx = {
         "to": wallet,
         "value": wei_amt,
