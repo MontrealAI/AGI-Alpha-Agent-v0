@@ -4,9 +4,12 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "./Constants.sol";
 
 /// @title CertificateNFT
-/// @notice ERC721 token representing job completion certificates with optional marketplace functionality
+/// @notice ERC721 token representing job completion certificates with optional
+/// marketplace functionality where payments are strictly in $AGIALPHA.
 contract CertificateNFT is ERC721, Ownable {
     IERC20 public agiAlpha;
     address public jobRegistry;
@@ -24,8 +27,12 @@ contract CertificateNFT is ERC721, Ownable {
     event NFTPurchased(uint256 indexed tokenId, address indexed buyer, uint256 price);
     event NFTDelisted(uint256 indexed tokenId);
 
-    constructor(address _agiAlpha) ERC721("CertificateNFT", "CERT") Ownable(msg.sender) {
-        agiAlpha = IERC20(_agiAlpha);
+    constructor() ERC721("CertificateNFT", "CERT") Ownable(msg.sender) {
+        agiAlpha = IERC20(Constants.AGIALPHA);
+        require(
+            IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
+            "wrong decimals"
+        );
     }
 
     /// @notice Sets the JobRegistry authorized to mint certificates
@@ -67,6 +74,7 @@ contract CertificateNFT is ERC721, Ownable {
     }
 
     /// @notice Purchases a listed certificate NFT using $AGIALPHA tokens
+    /// Only $AGIALPHA is accepted for marketplace payments
     function purchase(uint256 tokenId) external {
         Listing memory listing = listings[tokenId];
         require(listing.price > 0, "not listed");

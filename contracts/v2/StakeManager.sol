@@ -8,7 +8,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Constants.sol";
 
 /// @title StakeManager
-/// @notice Handles staking and escrow of AGI tokens for jobs and validators
+/// @notice Handles staking and escrow of $AGIALPHA for jobs and validators.
+/// All marketplace payments are strictly denominated in $AGIALPHA.
 contract StakeManager is Ownable {
     IERC20 public agiToken;
     address public treasury;
