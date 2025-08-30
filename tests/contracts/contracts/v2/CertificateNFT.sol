@@ -5,12 +5,16 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./Constants.sol";
 
 /// @title CertificateNFT
 /// @notice ERC721 token representing job completion certificates with optional
 /// marketplace functionality where payments are strictly in $AGIALPHA.
-contract CertificateNFT is ERC721, Ownable {
+contract CertificateNFT is ERC721, Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+
     IERC20 public agiAlpha;
     address public jobRegistry;
     string private baseTokenURI;
@@ -58,7 +62,7 @@ contract CertificateNFT is ERC721, Ownable {
     }
 
     /// @notice Lists a certificate NFT for sale
-    function list(uint256 tokenId, uint256 price) external {
+    function list(uint256 tokenId, uint256 price) external nonReentrant {
         require(ownerOf(tokenId) == msg.sender, "not owner");
         require(price > 0, "price 0");
         listings[tokenId] = Listing({seller: msg.sender, price: price});
@@ -66,7 +70,7 @@ contract CertificateNFT is ERC721, Ownable {
     }
 
     /// @notice Removes a certificate NFT from sale
-    function delist(uint256 tokenId) external {
+    function delist(uint256 tokenId) external nonReentrant {
         Listing memory listing = listings[tokenId];
         require(listing.seller == msg.sender, "not seller");
         delete listings[tokenId];
@@ -75,13 +79,13 @@ contract CertificateNFT is ERC721, Ownable {
 
     /// @notice Purchases a listed certificate NFT using $AGIALPHA tokens
     /// Only $AGIALPHA is accepted for marketplace payments
-    function purchase(uint256 tokenId) external {
+    function purchase(uint256 tokenId) external nonReentrant {
         Listing memory listing = listings[tokenId];
         require(listing.price > 0, "not listed");
         require(ownerOf(tokenId) == listing.seller, "not seller");
-        agiAlpha.transferFrom(msg.sender, listing.seller, listing.price);
         delete listings[tokenId];
         _transfer(listing.seller, msg.sender, tokenId);
+        agiAlpha.safeTransferFrom(msg.sender, listing.seller, listing.price);
         emit NFTPurchased(tokenId, msg.sender, listing.price);
     }
 }
