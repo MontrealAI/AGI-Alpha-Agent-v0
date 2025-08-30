@@ -3,6 +3,9 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 This chart deploys the α-AGI Insight demo.
 
+- **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
+
 Example usage:
 ```bash
 helm upgrade --install insight ./alpha_factory_v1/demos/alpha_agi_insight_v1/infrastructure/helm-chart \

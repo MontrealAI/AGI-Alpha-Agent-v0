@@ -4,6 +4,9 @@
 
 This guide summarizes how to publish the **α‑AGI Insight** demo using GitHub Pages.
 
+- **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
+
 ## Prerequisites
 
 - **Python ≥3.11** with `mkdocs` installed
