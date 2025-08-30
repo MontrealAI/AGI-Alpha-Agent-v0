@@ -27,10 +27,10 @@ contract CertificateNFT is ERC721, Ownable {
     event NFTPurchased(uint256 indexed tokenId, address indexed buyer, uint256 price);
     event NFTDelisted(uint256 indexed tokenId);
 
-    constructor() ERC721("CertificateNFT", "CERT") Ownable(msg.sender) {
-        agiAlpha = IERC20(Constants.AGIALPHA);
+    constructor(address _agiToken) ERC721("CertificateNFT", "CERT") Ownable(msg.sender) {
+        agiAlpha = IERC20(_agiToken);
         require(
-            IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
+            IERC20Metadata(_agiToken).decimals() == Constants.AGIALPHA_DECIMALS,
             "wrong decimals"
         );
     }

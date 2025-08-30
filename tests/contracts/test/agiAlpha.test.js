@@ -1,22 +1,18 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-const AGIALPHA = "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA";
-
-async function deployMock(decimals) {
+async function deployAGI(decimals) {
   const Mock = await ethers.getContractFactory(
     "contracts/v2/mocks/MockAGI.sol:MockAGI"
   );
-  const deployed = await Mock.deploy(decimals);
-  await deployed.waitForDeployment();
-  const code = await ethers.provider.getCode(await deployed.getAddress());
-  await ethers.provider.send("hardhat_setCode", [AGIALPHA, code]);
-  return Mock.attach(AGIALPHA);
+  const agi = await Mock.deploy(decimals);
+  await agi.waitForDeployment();
+  return agi;
 }
 
 describe("AGIALPHA integrations", function () {
   let owner, agent, employer, jobRegistry, seller, buyer, mismatch;
-  const amount = ethers.parseEther("1");
+  const amount = ethers.parseUnits("1", 18);
 
   beforeEach(async () => {
     await ethers.provider.send("hardhat_reset", []);
@@ -24,27 +20,32 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("StakeManager deploy fails if decimals != 18", async function () {
-    await deployMock(6);
+    const badToken = await deployAGI(6);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    await expect(StakeManager.deploy(owner.address)).to.be.revertedWith("wrong decimals");
+    await expect(
+      StakeManager.deploy(await badToken.getAddress(), owner.address)
+    ).to.be.revertedWith("wrong decimals");
   });
 
   it("CertificateNFT deploy fails if decimals != 18", async function () {
-    await deployMock(6);
+    const badToken = await deployAGI(6);
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"
     );
-    await expect(CertificateNFT.deploy()).to.be.revertedWith("wrong decimals");
+    await expect(
+      CertificateNFT.deploy(await badToken.getAddress())
+    ).to.be.revertedWith("wrong decimals");
   });
 
   it("staking and locking succeed with 1e18 and fail with mismatched token", async function () {
-    const agi = await deployMock(18);
+    const agi = await deployAGI(18);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    const stake = await StakeManager.deploy(owner.address);
+    const AGIALPHA = await agi.getAddress();
+    const stake = await StakeManager.deploy(AGIALPHA, owner.address);
     await stake.waitForDeployment();
     const stakeAddr = await stake.getAddress();
 
@@ -77,11 +78,12 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("certificate purchasing succeeds with AGI and fails with mismatched token", async function () {
-    const agi = await deployMock(18);
+    const agi = await deployAGI(18);
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"
     );
-    const cert = await CertificateNFT.deploy();
+    const AGIALPHA = await agi.getAddress();
+    const cert = await CertificateNFT.deploy(AGIALPHA);
     await cert.waitForDeployment();
     const certAddr = await cert.getAddress();
     await cert.setJobRegistry(owner.address);

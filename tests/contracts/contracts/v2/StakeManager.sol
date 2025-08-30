@@ -56,11 +56,11 @@ contract StakeManager is Ownable {
         uint256 burned
     );
 
-    constructor(address _treasury) Ownable(msg.sender) {
-        agiToken = IERC20(Constants.AGIALPHA); // uses $AGIALPHA (18 decimals)
+    constructor(address _agiToken, address _treasury) Ownable(msg.sender) {
+        agiToken = IERC20(_agiToken);
         treasury = _treasury;
         require(
-            IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
+            IERC20Metadata(_agiToken).decimals() == Constants.AGIALPHA_DECIMALS,
             "wrong decimals"
         );
     }
