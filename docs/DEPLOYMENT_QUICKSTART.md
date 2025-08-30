@@ -7,6 +7,24 @@ This guide summarizes how to publish the **α‑AGI Insight** demo using GitHub 
 - **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
 - **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
 
+## ERC‑20 Approvals for Staking and Escrow
+
+The `StakeManager` contract pulls `$AGIALPHA` via `transferFrom`. Before staking
+or locking job funds, approve the contract to move tokens on your behalf. The
+token uses 18 decimals, so `1e18` equals one token.
+
+```bash
+# Approve 100 AGIALPHA for staking
+cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+  "approve(address,uint256)" $STAKEMANAGER 100e18
+
+# Approve 50 AGIALPHA for job escrow
+cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+  "approve(address,uint256)" $STAKEMANAGER 50e18
+```
+
+Replace `$STAKEMANAGER` with the deployed contract address.
+
 ## Prerequisites
 
 - **Python ≥3.11** with `mkdocs` installed
