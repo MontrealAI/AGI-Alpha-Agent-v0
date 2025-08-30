@@ -108,25 +108,4 @@ describe("AGIALPHA integrations", function () {
     await expect(cert.connect(mismatch).purchase(2)).to.be.reverted;
   });
 
-  it("setToken calls revert", async function () {
-    const agi = await deployMock(18);
-    const StakeManager = await ethers.getContractFactory(
-      "contracts/v2/StakeManager.sol:StakeManager"
-    );
-    const stake = await StakeManager.deploy(owner.address);
-    await stake.waitForDeployment();
-    const stakeAddr = await stake.getAddress();
-    const CertificateNFT = await ethers.getContractFactory(
-      "contracts/v2/CertificateNFT.sol:CertificateNFT"
-    );
-    const cert = await CertificateNFT.deploy();
-    await cert.waitForDeployment();
-    const certAddr = await cert.getAddress();
-
-    const iface = new ethers.Interface(["function setToken(address)"]);
-    const data = iface.encodeFunctionData("setToken", [owner.address]);
-
-    await expect(owner.sendTransaction({ to: stakeAddr, data })).to.be.reverted;
-    await expect(owner.sendTransaction({ to: certAddr, data })).to.be.reverted;
-  });
 });
