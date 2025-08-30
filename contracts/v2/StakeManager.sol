@@ -3,7 +3,9 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "./Constants.sol";
 
 /// @title StakeManager
 /// @notice Handles staking and escrow of AGI tokens for jobs and validators
@@ -53,15 +55,13 @@ contract StakeManager is Ownable {
         uint256 burned
     );
 
-    constructor(address _token, address _treasury) Ownable(msg.sender) {
-        agiToken = IERC20(_token); // default $AGIALPHA (6 decimals)
+    constructor(address _treasury) Ownable(msg.sender) {
+        agiToken = IERC20(Constants.AGIALPHA); // uses $AGIALPHA (18 decimals)
         treasury = _treasury;
-    }
-
-    /// @notice Updates the AGI token address
-    /// @param _token New token address
-    function setToken(address _token) external onlyOwner {
-        agiToken = IERC20(_token);
+        require(
+            IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
+            "wrong decimals"
+        );
     }
 
     /// @notice Updates the treasury address
