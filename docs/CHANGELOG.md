@@ -23,6 +23,9 @@ Downstream users should consult this section when upgrading.
   - Removed `insight_browser_v1/dist/` from version control; run `npm run build` to regenerate the assets.
 ## [Unreleased]
 ### Breaking Changes
+- Adopted 18-decimal AGIALPHA token (`0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`).
+  Removed multi-token support and `setToken` functions. Existing deployments should
+  scale token amounts by `1e12` when migrating from the previous 6-decimal token.
 - Core modules previously under `src/` now live in `alpha_factory_v1.core`.
 - Update imports accordingly.
 - Monitoring, governance and archive helpers moved under `alpha_factory_v1.core`.
