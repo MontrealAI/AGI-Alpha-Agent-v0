@@ -4,6 +4,8 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Constants.sol";
 
@@ -15,7 +17,9 @@ interface IERC20Burnable {
 /// @notice Handles staking and escrow of $AGIALPHA for jobs and validators.
 /// All marketplace payments are strictly denominated in $AGIALPHA.
 /// @dev The $AGIALPHA token must expose `burn(uint256)` so tokens can be destroyed.
-contract StakeManager is Ownable {
+contract StakeManager is Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+
     IERC20 public agiToken;
     address public treasury;
     address public jobRegistry;
@@ -132,9 +136,8 @@ contract StakeManager is Ownable {
     }
 
     /// @notice Deposits AGI tokens as stake for a specific role
-    function depositStake(Role role, uint256 amount) external {
+    function depositStake(Role role, uint256 amount) external nonReentrant {
         require(amount > 0, "amount 0");
-        agiToken.transferFrom(msg.sender, address(this), amount);
         if (role == Role.Agent) {
             uint256 newStake = agentStakes[msg.sender] + amount;
             require(newStake >= minStakeAgent, "below min");
@@ -148,11 +151,12 @@ contract StakeManager is Ownable {
             require(newStake >= minStakeValidator, "below min");
             validatorStakes[msg.sender] = newStake;
         }
+        agiToken.safeTransferFrom(msg.sender, address(this), amount);
         emit StakeDeposited(msg.sender, role, amount);
     }
 
     /// @notice Withdraws available stake for a specific role
-    function withdrawStake(Role role, uint256 amount) external {
+    function withdrawStake(Role role, uint256 amount) external nonReentrant {
         require(amount > 0, "amount 0");
         if (role == Role.Agent) {
             require(agentStakes[msg.sender] >= amount, "insufficient");
@@ -170,7 +174,7 @@ contract StakeManager is Ownable {
             require(remaining == 0 || remaining >= minStakeValidator, "below min");
             validatorStakes[msg.sender] = remaining;
         }
-        agiToken.transfer(msg.sender, amount);
+        agiToken.safeTransfer(msg.sender, amount);
         emit StakeWithdrawn(msg.sender, role, amount);
     }
 
@@ -180,9 +184,9 @@ contract StakeManager is Ownable {
     }
 
     /// @notice Locks employer funds for a job
-    function lock(uint256 jobId, address employer, uint256 amount) public onlyJobRegistry {
+    function lock(uint256 jobId, address employer, uint256 amount) public onlyJobRegistry nonReentrant {
         require(jobEscrows[jobId] == 0, "escrow exists");
-        agiToken.transferFrom(employer, address(this), amount);
+        agiToken.safeTransferFrom(employer, address(this), amount);
         jobEscrows[jobId] = amount;
         emit FundsLocked(jobId, employer, amount);
     }
@@ -193,7 +197,7 @@ contract StakeManager is Ownable {
         address recipient,
         address[] calldata validators,
         uint256 validatorPct
-    ) public onlyJobRegistry {
+    ) public onlyJobRegistry nonReentrant {
         uint256 amount = jobEscrows[jobId];
         require(amount > 0, "no escrow");
         delete jobEscrows[jobId];
@@ -215,12 +219,12 @@ contract StakeManager is Ownable {
         }
         payout = (payout * pct) / 10_000;
 
-        if (fee > 0) agiToken.transfer(treasury, fee);
+        if (fee > 0) agiToken.safeTransfer(treasury, fee);
         if (burn > 0) IERC20Burnable(address(agiToken)).burn(burn);
         for (uint256 i = 0; i < validators.length; i++) {
-            if (perValidator > 0) agiToken.transfer(validators[i], perValidator);
+            if (perValidator > 0) agiToken.safeTransfer(validators[i], perValidator);
         }
-        agiToken.transfer(recipient, payout);
+        agiToken.safeTransfer(recipient, payout);
 
         emit FundsReleased(jobId, recipient, payout, fee, burn);
     }
@@ -237,7 +241,7 @@ contract StakeManager is Ownable {
         uint256 amount,
         uint256 burnPctOverride,
         uint256 jobId
-    ) external onlySlasher {
+    ) external onlySlasher nonReentrant {
         uint256 available = validatorStakes[offender];
         if (available >= amount) {
             validatorStakes[offender] = available - amount;
@@ -249,7 +253,7 @@ contract StakeManager is Ownable {
         uint256 burnAmount = (amount * pct) / 10_000;
         uint256 compensation = amount - burnAmount;
         if (compensation > 0 && employer != address(0)) {
-            agiToken.transfer(employer, compensation);
+            agiToken.safeTransfer(employer, compensation);
         }
         if (burnAmount > 0) {
             IERC20Burnable(address(agiToken)).burn(burnAmount);

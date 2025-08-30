@@ -137,4 +137,42 @@ describe("AGIALPHA integrations", function () {
     expect(await agi.totalSupply()).to.equal(initialSupply - burnAmount);
   });
 
+  it("prevents reentrancy attacks", async function () {
+    const Malicious = await ethers.getContractFactory(
+      "contracts/v2/mocks/MaliciousToken.sol:MaliciousToken"
+    );
+    const malicious = await Malicious.deploy();
+    await malicious.waitForDeployment();
+
+    const StakeManager = await ethers.getContractFactory(
+      "contracts/v2/StakeManager.sol:StakeManager"
+    );
+    const stake = await StakeManager.deploy(
+      await malicious.getAddress(),
+      owner.address
+    );
+    await stake.waitForDeployment();
+    const stakeAddr = await stake.getAddress();
+
+    await malicious.setStake(stakeAddr);
+
+    // attack during deposit
+    await malicious.mint(agent.address, amount);
+    await malicious.connect(agent).approve(stakeAddr, amount);
+    await malicious.setAttack(true);
+    await expect(
+      stake.connect(agent).depositStake(0, amount)
+    ).to.be.revertedWithCustomError(stake, "ReentrancyGuardReentrantCall");
+
+    // successful deposit
+    await malicious.setAttack(false);
+    await stake.connect(agent).depositStake(0, amount);
+
+    // attack during withdraw
+    await malicious.setAttack(true);
+    await expect(
+      stake.connect(agent).withdrawStake(0, amount)
+    ).to.be.revertedWithCustomError(stake, "ReentrancyGuardReentrantCall");
+  });
+
 });
