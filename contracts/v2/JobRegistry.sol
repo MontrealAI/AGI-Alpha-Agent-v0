@@ -99,12 +99,16 @@ contract JobRegistry is Ownable {
     );
     event RootNodeUpdated(bytes32 newRootNode);
     event MerkleRootUpdated(bytes32 newMerkleRoot);
+    event ValidatorRewardPctUpdated(uint256 pct);
+    event MaxJobRewardUpdated(uint96 amount);
+    event MaxJobDurationUpdated(uint40 duration);
 
     /// @notice Updates validator reward percentage
     /// @param pct Percentage of escrow sent to validators
     function setValidatorRewardPct(uint256 pct) external onlyOwner {
         require(pct <= 100, "pct too high");
         validatorRewardPct = pct;
+        emit ValidatorRewardPctUpdated(pct);
     }
 
     constructor() Ownable(msg.sender) {}
@@ -187,12 +191,14 @@ contract JobRegistry is Ownable {
     /// @param amount Maximum reward allowed per job
     function setMaxJobReward(uint96 amount) external onlyOwner {
         maxJobReward = amount;
+        emit MaxJobRewardUpdated(amount);
     }
 
     /// @notice Sets the maximum job duration in seconds
     /// @param duration Maximum allowed duration from now
     function setMaxJobDuration(uint40 duration) external onlyOwner {
         maxJobDuration = duration;
+        emit MaxJobDurationUpdated(duration);
     }
 
     /// @notice Creates a new job and locks client stake
