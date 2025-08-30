@@ -175,4 +175,37 @@ describe("AGIALPHA integrations", function () {
     ).to.be.revertedWithCustomError(stake, "ReentrancyGuardReentrantCall");
   });
 
+  it("prevents reentrancy attacks in certificate purchase", async function () {
+    const Malicious = await ethers.getContractFactory(
+      "contracts/v2/mocks/MaliciousCertToken.sol:MaliciousCertToken"
+    );
+    const malicious = await Malicious.deploy();
+    await malicious.waitForDeployment();
+
+    const CertificateNFT = await ethers.getContractFactory(
+      "contracts/v2/CertificateNFT.sol:CertificateNFT"
+    );
+    const cert = await CertificateNFT.deploy(await malicious.getAddress());
+    await cert.waitForDeployment();
+    const certAddr = await cert.getAddress();
+    await cert.setJobRegistry(owner.address);
+
+    await cert.mint(seller.address, 1);
+    await cert.connect(seller).list(1, amount);
+
+    await malicious.mint(buyer.address, amount);
+    await malicious.connect(buyer).approve(certAddr, amount);
+    await malicious.setCert(certAddr);
+    await malicious.setAttack(true, 1);
+
+    await expect(cert.connect(buyer).purchase(1)).to.be.revertedWithCustomError(
+      cert,
+      "ReentrancyGuardReentrantCall"
+    );
+
+    await malicious.setAttack(false, 1);
+    await cert.connect(buyer).purchase(1);
+    expect(await cert.ownerOf(1)).to.equal(buyer.address);
+  });
+
 });
