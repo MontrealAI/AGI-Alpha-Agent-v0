@@ -7,6 +7,10 @@ accept no liability for losses incurred from using this software.
 
 **Ready to explore? [Launch the α‑AGI Insight demo](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/) to see it in action.**
 
+### Security Note
+
+This project intentionally avoids reliance on Chainlink VRF or similar third-party subscription services. Randomness and related features are derived locally so the system remains self-contained and auditable.
+
 ### Quick Demo
 
 Non-technical users can try the project with zero setup. Simply visit

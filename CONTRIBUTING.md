@@ -8,6 +8,10 @@ All participants are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md
 
 Please read **AGENTS.md** carefully before opening issues or submitting pull requests.
 
+## Dependency Policy
+
+Avoid introducing third-party subscription services such as Chainlink VRF. New code and examples should remain self-contained without external subscription-based dependencies.
+
 ## Type Checking the Demo
 
 Run mypy only on the demo package while iterating:
