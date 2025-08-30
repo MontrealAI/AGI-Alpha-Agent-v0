@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-contract MockAGI is ERC20 {
+contract MockAGI is ERC20Burnable {
     uint8 private immutable _decimals;
 
     constructor(uint8 dec) ERC20("Mock AGI", "MAGI") {

@@ -110,4 +110,31 @@ describe("AGIALPHA integrations", function () {
     await expect(cert.connect(mismatch).purchase(2)).to.be.reverted;
   });
 
+  it("release burns the configured percentage", async function () {
+    const agi = await deployAGI(18);
+    const StakeManager = await ethers.getContractFactory(
+      "contracts/v2/StakeManager.sol:StakeManager"
+    );
+    const stake = await StakeManager.deploy(
+      await agi.getAddress(),
+      owner.address
+    );
+    await stake.waitForDeployment();
+    await stake.setJobRegistry(jobRegistry.address);
+    await stake.setBurnPct(1000); // 10%
+
+    const amount = ethers.parseUnits("1", 18);
+    await agi.mint(employer.address, amount);
+    await agi.connect(employer).approve(await stake.getAddress(), amount);
+    await stake.connect(jobRegistry).lock(1, employer.address, amount);
+
+    const initialSupply = await agi.totalSupply();
+    await stake
+      .connect(jobRegistry)
+      .release(1, agent.address, [], 0);
+
+    const burnAmount = (amount * 1000n) / 10000n;
+    expect(await agi.totalSupply()).to.equal(initialSupply - burnAmount);
+  });
+
 });

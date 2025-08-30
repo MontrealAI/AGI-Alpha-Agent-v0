@@ -7,9 +7,14 @@ import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Constants.sol";
 
+interface IERC20Burnable {
+    function burn(uint256 amount) external;
+}
+
 /// @title StakeManager
 /// @notice Handles staking and escrow of $AGIALPHA for jobs and validators.
 /// All marketplace payments are strictly denominated in $AGIALPHA.
+/// @dev The $AGIALPHA token must expose `burn(uint256)` so tokens can be destroyed.
 contract StakeManager is Ownable {
     IERC20 public agiToken;
     address public treasury;
@@ -211,7 +216,7 @@ contract StakeManager is Ownable {
         payout = (payout * pct) / 10_000;
 
         if (fee > 0) agiToken.transfer(treasury, fee);
-        if (burn > 0) agiToken.transfer(address(0), burn);
+        if (burn > 0) IERC20Burnable(address(agiToken)).burn(burn);
         for (uint256 i = 0; i < validators.length; i++) {
             if (perValidator > 0) agiToken.transfer(validators[i], perValidator);
         }
@@ -247,7 +252,7 @@ contract StakeManager is Ownable {
             agiToken.transfer(employer, compensation);
         }
         if (burnAmount > 0) {
-            agiToken.transfer(address(0), burnAmount);
+            IERC20Burnable(address(agiToken)).burn(burnAmount);
         }
         emit StakeSlashed(jobId, offender, employer, amount, compensation, burnAmount);
     }
