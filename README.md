@@ -1781,6 +1781,11 @@ in 2017.
 Our **AGI ALPHA AGENT**, fuelled by the strictly‑utility **$AGIALPHA** token, now taps that foundation to unleash the
 ultimate α‑signal engine.
 
+### AGIALPHA Token
+
+- **Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
+
 <a name="15-license"></a>
 ## 15 · License
 

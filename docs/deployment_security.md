@@ -4,6 +4,9 @@
 
 This guide explains how to protect Alpha-Factory in production.
 
+- **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
+
 ## TLS configuration
 
 Use TLS to encrypt both the REST API and the gRPC bus. Run `infrastructure/gen_bus_certs.sh` to generate a self-signed certificate or supply your own:
