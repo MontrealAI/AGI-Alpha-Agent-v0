@@ -4,13 +4,7 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 interface IStakeManager {
-    function slash(
-        address offender,
-        address employer,
-        uint256 amount,
-        uint256 burnPctOverride,
-        uint256 jobId
-    ) external;
+    function slash(address offender, address beneficiary, uint256 amount) external;
 }
 
 interface IJobRegistry {
@@ -109,7 +103,7 @@ contract DisputeModule is Ownable {
         if (employerWins) {
             ( , uint96 reward, , , , ) = IJobRegistry(jobRegistry).jobs(jobId);
             IJobRegistry(jobRegistry).resolveDispute(jobId);
-            stakeManager.slash(d.worker, d.employer, reward, 0, jobId);
+            stakeManager.slash(d.worker, d.employer, reward);
         }
         emit DisputeResolved(jobId, employerWins);
     }

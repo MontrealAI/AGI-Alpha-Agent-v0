@@ -41,6 +41,8 @@ contract StakeManager is Ownable, ReentrancyGuard {
 
     uint256 public feePct; // basis points
     uint256 public burnPct; // basis points
+    uint256 public employerSlashPct; // percentage (0-100)
+    uint256 public treasurySlashPct; // percentage (0-100)
 
     mapping(address => uint256) public agiTypePayoutPct;
     address[] public agiTypes;
@@ -57,12 +59,11 @@ contract StakeManager is Ownable, ReentrancyGuard {
         uint256 burn
     );
     event StakeSlashed(
-        uint256 indexed jobId,
         address indexed offender,
-        address indexed employer,
+        address indexed beneficiary,
         uint256 amount,
-        uint256 compensation,
-        uint256 burned
+        uint256 employerShare,
+        uint256 treasuryShare
     );
     event TreasuryUpdated(address indexed treasury);
     event JobRegistryUpdated(address indexed jobRegistry);
@@ -72,6 +73,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     event MinStakeValidatorUpdated(uint256 amount);
     event FeePctUpdated(uint256 pct);
     event BurnPctUpdated(uint256 pct);
+    event SlashPctsUpdated(uint256 employerPct, uint256 treasuryPct);
     event AGITypeAdded(address indexed nft, uint256 payoutPct);
     event AGITypeRemoved(address indexed nft);
 
@@ -82,6 +84,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
             IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
             "wrong decimals"
         );
+        _setSlashPercents(0, 100);
     }
 
     /// @notice Updates the treasury address
@@ -133,6 +136,25 @@ contract StakeManager is Ownable, ReentrancyGuard {
         require(pct <= 10_000, "pct too high");
         burnPct = pct;
         emit BurnPctUpdated(pct);
+    }
+
+    /// @notice Sets the employer slash percentage (treasury receives the remainder)
+    function setEmployerSlashPct(uint256 pct) external onlyOwner {
+        require(pct <= 100, "pct too high");
+        _setSlashPercents(pct, 100 - pct);
+    }
+
+    /// @notice Sets the treasury slash percentage (employer receives the remainder)
+    function setTreasurySlashPct(uint256 pct) external onlyOwner {
+        require(pct <= 100, "pct too high");
+        _setSlashPercents(100 - pct, pct);
+    }
+
+    function _setSlashPercents(uint256 employerPct, uint256 treasuryPct) internal {
+        require(employerPct + treasuryPct == 100, "pct mismatch");
+        employerSlashPct = employerPct;
+        treasurySlashPct = treasuryPct;
+        emit SlashPctsUpdated(employerPct, treasuryPct);
     }
 
     /// @notice Adds an AGI type NFT and its payout percentage
@@ -257,10 +279,8 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @notice Slashes a user's stake and compensates an employer
     function slash(
         address offender,
-        address employer,
-        uint256 amount,
-        uint256 burnPctOverride,
-        uint256 jobId
+        address beneficiary,
+        uint256 amount
     ) external onlySlasher nonReentrant {
         uint256 available = validatorStakes[offender];
         if (available >= amount) {
@@ -269,16 +289,15 @@ contract StakeManager is Ownable, ReentrancyGuard {
             require(agentStakes[offender] >= amount, "insufficient");
             agentStakes[offender] -= amount;
         }
-        uint256 pct = burnPctOverride > 0 ? burnPctOverride : burnPct;
-        uint256 burnAmount = (amount * pct) / 10_000;
-        uint256 compensation = amount - burnAmount;
-        if (compensation > 0 && employer != address(0)) {
-            agiToken.safeTransfer(employer, compensation);
+        uint256 employerShare = beneficiary != address(0) ? (amount * employerSlashPct) / 100 : 0;
+        uint256 treasuryShare = amount - employerShare;
+        if (employerShare > 0) {
+            agiToken.safeTransfer(beneficiary, employerShare);
         }
-        if (burnAmount > 0) {
-            IERC20Burnable(address(agiToken)).burn(burnAmount);
+        if (treasuryShare > 0) {
+            agiToken.safeTransfer(treasury, treasuryShare);
         }
-        emit StakeSlashed(jobId, offender, employer, amount, compensation, burnAmount);
+        emit StakeSlashed(offender, beneficiary, amount, employerShare, treasuryShare);
     }
 }
 
