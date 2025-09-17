@@ -89,6 +89,7 @@ contract JobRegistry is Ownable {
     event JobCancelled(uint256 indexed jobId, address indexed client);
     event JobDelisted(uint256 indexed jobId, address indexed client);
     event JobDisputed(uint256 indexed jobId);
+    event JobTimedOut(uint256 indexed jobId, address indexed client, address indexed worker);
     event JobFinalized(uint256 indexed jobId, address indexed client, address indexed worker);
     event DisputeModuleUpdated(address disputeModule);
     event ModulesUpdated(
@@ -296,6 +297,21 @@ contract JobRegistry is Ownable {
         require(address(disputeModule) != address(0), "no module");
         disputeModule.dispute(jobId, job.client, job.worker);
         emit JobDisputed(jobId);
+    }
+
+    /// @notice Allows an employer or contract owner to reclaim escrow when a job times out
+    /// @param jobId Identifier of the job
+    function claimTimeout(uint256 jobId) external {
+        Job storage job = jobs[jobId];
+        require(job.status == Status.Applied, "invalid status");
+        require(job.client == msg.sender || msg.sender == owner(), "not authorized");
+        require(block.timestamp > job.deadline, "deadline not passed");
+
+        address client = job.client;
+        address worker = job.worker;
+        stakeManager.release(jobId, client, new address[](0), 0);
+        delete jobs[jobId];
+        emit JobTimedOut(jobId, client, worker);
     }
 
     /// @notice Called by dispute module to refund employer when they win a dispute
