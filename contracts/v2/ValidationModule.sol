@@ -5,13 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IdentityLib.sol";
 
 interface IStakeManager {
-    function slash(
-        address offender,
-        address employer,
-        uint256 amount,
-        uint256 burnPctOverride,
-        uint256 jobId
-    ) external;
+    function slash(address offender, address beneficiary, uint256 amount) external;
     function validatorStakes(address user) external view returns (uint256);
     function minStakeValidator() external view returns (uint256);
 }
@@ -223,7 +217,7 @@ contract ValidationModule is Ownable, IValidationModule {
                     no++;
                 }
             } else {
-                stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
+                stakeManager.slash(validator, address(0), slashAmount);
                 reputationEngine.onValidate(validator, agentGain, false);
             }
         }
@@ -236,7 +230,7 @@ contract ValidationModule is Ownable, IValidationModule {
                 if (v.vote == r.result) {
                     reputationEngine.onValidate(validator, agentGain, true);
                 } else {
-                    stakeManager.slash(validator, address(0), slashAmount, 10_000, jobId);
+                    stakeManager.slash(validator, address(0), slashAmount);
                     reputationEngine.onValidate(validator, agentGain, false);
                 }
             }
