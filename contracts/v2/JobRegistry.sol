@@ -18,6 +18,8 @@ interface IStakeManager {
         address[] calldata validators,
         uint256 validatorPct
     ) external;
+    function agentStakes(address user) external view returns (uint256);
+    function minStakeAgent() external view returns (uint256);
 }
 
 interface IReputationEngine {
@@ -241,6 +243,9 @@ contract JobRegistry is Ownable {
         );
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
+        uint256 agentStake = stakeManager.agentStakes(msg.sender);
+        uint256 minStake = stakeManager.minStakeAgent();
+        require(agentStake >= minStake, "stake too low");
         uint256 duration = job.deadline - job.createdAt;
         reputationEngine.onApply(msg.sender, job.reward, duration);
         job.worker = msg.sender;
