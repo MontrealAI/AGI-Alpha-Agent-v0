@@ -113,8 +113,7 @@ contract ValidationModule is Ownable, IValidationModule {
                     candidate,
                     validatorSubdomains[candidate],
                     proof,
-                    clubRootNode,
-                    validatorMerkleRoot
+                    clubRootNode
                 )
             ) continue;
             if (stakeManager.validatorStakes(candidate) < stakeManager.minStakeValidator()) continue;
@@ -169,7 +168,7 @@ contract ValidationModule is Ownable, IValidationModule {
         require(isValidator(jobId, msg.sender), "not validator");
         require(
             additionalValidators[msg.sender] ||
-                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode, validatorMerkleRoot),
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
             "identity"
         );
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
@@ -191,7 +190,7 @@ contract ValidationModule is Ownable, IValidationModule {
         require(block.timestamp > r.commitEnd && block.timestamp <= r.revealEnd, "not reveal phase");
         require(
             additionalValidators[msg.sender] ||
-                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode, validatorMerkleRoot),
+                IdentityLib.verify(msg.sender, subdomain, proof, clubRootNode),
             "identity"
         );
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
@@ -337,7 +336,9 @@ contract ValidationModule is Ownable, IValidationModule {
         }
         validatorSubdomains[validator] = subdomain;
         bytes32[] storage p = validatorProofs[validator];
-        delete p;
+        while (p.length > 0) {
+            p.pop();
+        }
         for (uint256 i = 0; i < proof.length; i++) {
             p.push(proof[i]);
         }
