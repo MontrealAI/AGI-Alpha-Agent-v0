@@ -5,7 +5,7 @@
 This project uses [MkDocs](https://www.mkdocs.org/) to build the static documentation.
 The generated site is hosted at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
 
-- **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Token Address:** `0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`
 - **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
 
 ## Quick Deployment
