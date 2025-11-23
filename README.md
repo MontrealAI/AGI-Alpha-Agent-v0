@@ -14,8 +14,10 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 ### Continuous Integration
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
+[![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
+[![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
-The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. Mark the `PR CI / Lint (ruff)` and `PR CI / Smoke tests` checks as required branch protections so contributors see the results on every PR and the main branch remains green.
+The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. Mark **both** of its checks—`PR CI / Lint (ruff)` and `PR CI / Smoke tests`—as required branch protections so contributors see the results on every PR and the `main` branch stays green. Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. The full **🚀 CI — Insight Demo** pipeline stays visible via the badge above; trigger it from **Actions → 🚀 CI — Insight Demo** when you need the complete matrix and Docker build. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 
 ### Quick Demo
 

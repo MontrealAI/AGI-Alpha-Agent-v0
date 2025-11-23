@@ -10,6 +10,8 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 - [ ] I ran `pre-commit run --all-files`
 - [ ] I ran `python check_env.py --auto-install`
 - [ ] I ran `pytest --cov --cov-report=xml` and documented any failures below
+- [ ] `PR CI / Lint (ruff)` and `PR CI / Smoke tests` are green (or I explained
+      any expected failures in the Testing section)
 
 # Testing
 Describe the outcome of the checks and tests here.

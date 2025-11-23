@@ -25,6 +25,23 @@ Actions UI using **Run workflow**.
    by running `npm ci` in each web client directory. Commit any changes before
    dispatching the workflow so dependency caching works correctly.
 
+## Branch protection and required checks
+
+Keep the PR gates strict so every contributor and automation path sees the same
+CI surface:
+
+- In **Settings → Branches → Branch protection rules**, add `main` and enable
+  **Require status checks to pass before merging** with these required checks:
+  - `PR CI / Lint (ruff)`
+  - `PR CI / Smoke tests`
+- Keep **Require branches to be up to date before merging** switched on so
+  merges always include the latest CI results.
+- For owners, trigger **🚀 CI — Insight Demo** after large changes to validate
+  the full matrix and Docker build; the badge in the README keeps its status
+  visible.
+- If any new workflow or job name changes, update this list and the README
+  badges so the enforced checks stay accurate and visible.
+
 When invoked on a tagged commit the pipeline also builds and publishes a Docker
 image to GHCR and uploads the prebuilt web client bundle to the corresponding
 GitHub Release.
