@@ -1793,7 +1793,7 @@ ultimate α‑signal engine.
 
 ### AGIALPHA Token
 
-- **Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Address:** `0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`
 - **Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
 
 #### ERC‑20 Approvals
@@ -1804,11 +1804,11 @@ uses 18 decimals, meaning `1e18` represents one token.
 
 ```bash
 # Allow the StakeManager to move 100 AGIALPHA for your stake
-cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
   "approve(address,uint256)" $STAKEMANAGER 100e18
 
 # Authorize 50 AGIALPHA to be locked as job escrow
-cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
   "approve(address,uint256)" $STAKEMANAGER 50e18
 ```
 

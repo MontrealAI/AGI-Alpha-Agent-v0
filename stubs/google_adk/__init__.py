@@ -10,9 +10,14 @@ from __future__ import annotations
 
 import importlib
 import importlib.machinery
+import os
 import sys
 
+force_stub = os.environ.get("GOOGLE_ADK_FORCE_STUB")
+
 try:
+    if force_stub not in {None, "0", "false", "False"}:
+        raise ImportError("Forcing stub for google.adk")
     _mod = importlib.import_module("google.adk")
 except Exception:  # pragma: no cover - package absent
     _mod = None
