@@ -31,6 +31,12 @@ The GitHub Pages site hosts the interactive demo under the `alpha_agi_insight_v1
 **Explore all demos:** <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_factory_v1/demos/> – run `./scripts/open_subdir_gallery.py` (or set `AF_GALLERY_URL` to your own mirror) for a local or online launch. Alternatively execute `make subdir-gallery-open` to build the gallery if needed and open it automatically.
 All browser demos include a **mode toggle**. Choose **Offline** to run a Pyodide simulation directly in your browser or switch to **OpenAI API** when you provide a key. The key is stored only in memory.
 
+### Continuous Integration
+
+[![🚀 CI — Insight Demo](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
+
+Pushes to `main` and pull requests automatically run the full CI suite (lint, type checks, tests, docs, Docker build). Mark the `🚀 CI — Insight Demo` check as **required** for `main` and pull requests so every gate stays visible and enforced before merges.
+
 ### Smoke Test Workflow
 
 Trigger the **🔥 Smoke Test** job from the GitHub Actions tab to run linting,
