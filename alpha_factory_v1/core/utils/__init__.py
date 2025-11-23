@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Shared utilities and configuration."""
 
+from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, Iterable
@@ -55,6 +56,41 @@ def _optional_import(module: str) -> Any:
 
     try:
         return __import__(f"{__name__}.{module}", fromlist=[module])
+    except ModuleNotFoundError as exc:  # pragma: no cover - optional deps may be absent
+        _logger.warning("Optional utils.%s unavailable: %s", module, exc)
+
+        def _noop_metric(*_a: Any, **_kw: Any) -> Any:
+            class _N:
+                def labels(self, *_a: Any, **_kw: Any) -> "_N":
+                    return self
+
+                def observe(self, *_a: Any) -> None:
+                    ...
+
+                def inc(self, *_a: Any) -> None:
+                    ...
+
+            return _N()
+
+        if module == "alerts":
+            return SimpleNamespace(
+                __doc__="Optional module unavailable",
+                send_alert=lambda message, url=None: _logger.warning(
+                    "alert: %s", message
+                ),
+            )
+
+        if module == "tracing":
+            return SimpleNamespace(
+                __doc__="Optional module unavailable",
+                span=lambda *_a, **_kw: nullcontext(),
+                agent_cycle_seconds=_noop_metric(),
+                bus_messages_total=_noop_metric(),
+                api_request_seconds=_noop_metric(),
+                configure=lambda *_a, **_kw: None,
+            )
+
+        raise
     except Exception as exc:  # pragma: no cover - optional deps may be absent
         _logger.warning("Skipping optional utils.%s: %s", module, exc)
         _missing_exc = exc
