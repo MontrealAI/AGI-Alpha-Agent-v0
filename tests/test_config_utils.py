@@ -37,3 +37,12 @@ def test_settings_secret_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
     settings = cfg.Settings()
     assert settings.openai_api_key == "backend"
     assert not settings.offline
+
+
+def test_settings_respects_forced_offline(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "present")
+    monkeypatch.setenv("AGI_INSIGHT_OFFLINE", "1")
+    cfg.init_config()
+    settings = cfg.Settings()
+    assert settings.openai_api_key == "present"
+    assert settings.offline
