@@ -11,6 +11,12 @@ accept no liability for losses incurred from using this software.
 
 This project intentionally avoids reliance on Chainlink VRF or similar third-party subscription services. Randomness and related features are derived locally so the system remains self-contained and auditable.
 
+### Continuous Integration
+
+[![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
+
+The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. Mark the `PR CI / Lint (ruff)` and `PR CI / Smoke tests` checks as required branch protections so contributors see the results on every PR and the main branch remains green.
+
 ### Quick Demo
 
 Non-technical users can try the project with zero setup. Simply visit

@@ -148,6 +148,9 @@ class Settings(SettingsBase):
                 self.island_backends = mapping
         if not self.openai_api_key:
             self.openai_api_key = get_secret("OPENAI_API_KEY")
+        if self.openai_api_key and self.offline:
+            _log.info("OPENAI_API_KEY resolved from secret backend – disabling offline mode")
+            self.offline = False
         if not self.openai_api_key:
             _log.warning("OPENAI_API_KEY missing – offline mode enabled")
             self.offline = True
