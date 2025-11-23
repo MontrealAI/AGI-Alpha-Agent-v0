@@ -46,6 +46,7 @@ jobs:
 
   smoke:
     name: "Smoke tests"
+    if: ${{ always() }}
     needs: lint
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -62,6 +63,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.lock
+          pip install -r requirements-dev.lock
       - name: Run smoke tests
         run: |
           pytest -m smoke \
