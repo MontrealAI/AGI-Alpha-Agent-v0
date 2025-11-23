@@ -19,7 +19,7 @@ try:  # attempt to read the installed package version
 except Exception:  # pragma: no cover - fallback when not installed
     __version__ = "0.1.0-alpha"
 
-__all__ = ["backend", "demos", "ui", "run", "get_version"]
+__all__ = ["backend", "core", "demos", "ui", "run", "get_version"]
 
 
 def get_version() -> str:
@@ -35,7 +35,7 @@ def __getattr__(name: str) -> Any:  # pragma: no cover - thin wrapper
     dependencies until actually needed.
     """
 
-    if name in {"backend", "demos", "ui", "run"}:
+    if name in {"backend", "core", "demos", "ui", "run"}:
         return importlib.import_module(f".{name}", __name__)
     raise AttributeError(f"module {__name__!r} has no attribute {name}")
 
