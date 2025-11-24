@@ -34,6 +34,7 @@ The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull r
 - `🚀 CI — Insight Demo / 🐳 Docker build`
 
 Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
+CI jobs now run without any environment approval gates; ensure the `ci-on-demand` (or similarly named) environment does not require reviewers so checks start immediately on pushes and pull requests.
 
 See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for a step-by-step enforcement checklist that keeps required checks visible on PRs and ensures the badges above stay green.
 
