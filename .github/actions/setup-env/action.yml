@@ -24,8 +24,14 @@ runs:
     - name: Build sandbox image
       shell: bash
       env:
-        RESOLVED_SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
-      run: docker build -t "$RESOLVED_SANDBOX_IMAGE" -f sandbox.Dockerfile .
+        SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
+      run: |
+        if [[ -z "${SANDBOX_IMAGE}" ]]; then
+          echo "::error::Resolved SANDBOX_IMAGE is empty; aborting sandbox build."
+          exit 1
+        fi
+
+        docker build -t "${SANDBOX_IMAGE}" -f sandbox.Dockerfile .
     - name: Show tool versions
       shell: bash
       run: |
