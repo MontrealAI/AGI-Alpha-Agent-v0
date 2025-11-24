@@ -308,11 +308,11 @@ jobs:
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Install dependencies  # install from lock files (rdkit-pypi snapshot removed)
+      - name: Install dependencies  # install CPU-friendly lock files to avoid Linux-only wheels
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -r alpha_factory_v1/backend/requirements-lock.txt
+          pip install -r requirements-cpu.lock
+          pip install -r requirements-demo-cpu.lock
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -355,11 +355,11 @@ jobs:
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Install dependencies  # install from lock files (rdkit-pypi snapshot removed)
+      - name: Install dependencies  # install CPU-friendly lock files to avoid Linux-only wheels
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -r alpha_factory_v1/backend/requirements-lock.txt
+          pip install -r requirements-cpu.lock
+          pip install -r requirements-demo-cpu.lock
       - name: Install macOS extras
         run: pip install appnope==0.1.4
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
