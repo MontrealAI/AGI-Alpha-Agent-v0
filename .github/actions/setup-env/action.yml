@@ -1,21 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0
 name: Setup CI Environment
 description: Build sandbox image, install Playwright browsers and show tool versions.
+
+inputs:
+  sandbox-image:
+    description: Optional sandbox image tag override.
+    required: false
+    default: selfheal-sandbox:latest
+
 outputs:
   sandbox-image:
     description: Normalized sandbox image tag used for sandbox builds.
     value: ${{ steps.resolve-sandbox.outputs.resolved }}
+
 runs:
   using: composite
   steps:
     - name: Resolve sandbox image tag
       id: resolve-sandbox
       shell: bash
+      env:
+        INPUT_SANDBOX_IMAGE: ${{ inputs.sandbox-image }}
       run: |
         set -euo pipefail
 
         default_tag="selfheal-sandbox:latest"
-        raw_value="${SANDBOX_IMAGE:-$default_tag}"
+        raw_value="${INPUT_SANDBOX_IMAGE:-${SANDBOX_IMAGE:-$default_tag}}"
 
         # Strip whitespace and accidental wrapping quotes to avoid passing an empty
         # or invalid tag to Docker when the env var is defined as "" or contains

@@ -209,6 +209,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        with:
+          sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - uses: ./.github/actions/setup-insight-assets
@@ -417,6 +419,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        with:
+          sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Build insight browser
@@ -464,6 +468,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        with:
+          sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install base dependencies
@@ -545,6 +551,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        with:
+          sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install insight browser dependencies
