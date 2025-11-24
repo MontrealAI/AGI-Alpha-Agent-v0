@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 name: Setup CI Environment
 description: Build sandbox image, install Playwright browsers and show tool versions.
+outputs:
+  sandbox-image:
+    description: Normalized sandbox image tag used for sandbox builds.
+    value: ${{ steps.resolve-sandbox.outputs.resolved }}
 runs:
   using: composite
   steps:
@@ -24,14 +28,17 @@ runs:
     - name: Build sandbox image
       shell: bash
       env:
-        SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
+        RESOLVED_SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
       run: |
-        if [[ -z "${SANDBOX_IMAGE}" ]]; then
+        tag="${RESOLVED_SANDBOX_IMAGE:-${SANDBOX_IMAGE:-selfheal-sandbox:latest}}"
+        tag="${tag//[[:space:]]/}"
+
+        if [[ -z "${tag}" ]]; then
           echo "::error::Resolved SANDBOX_IMAGE is empty; aborting sandbox build."
           exit 1
         fi
 
-        docker build -t "${SANDBOX_IMAGE}" -f sandbox.Dockerfile .
+        docker build -t "${tag}" -f sandbox.Dockerfile .
     - name: Show tool versions
       shell: bash
       run: |
