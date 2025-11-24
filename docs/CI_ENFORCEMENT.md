@@ -5,10 +5,11 @@ Use this checklist to keep CI visible and required on both pull requests and the
 1. **Branch protection**
    - In **Settings → Branches → Branch protection rules**, edit the rule for `main` (or create one).
    - Enable **Require status checks to pass before merging** and **Require branches to be up to date**.
-   - Add these exact required checks so contributors see them on every PR:
+   - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
      - `✅ PR CI / Lint (ruff)`
      - `✅ PR CI / Smoke tests`
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
+   - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
 
 2. **Badges stay green**
    - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, and **🔥 Smoke Test**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline.
