@@ -51,9 +51,12 @@ runs:
         tag="${tag//\"/}"
         tag="${tag//\'/}"
 
+        # Fallback defensively if an upstream env override stripped the tag
+        # unexpectedly (e.g., SANDBOX_IMAGE=""), ensuring Docker never sees an
+        # empty repository name.
         if [[ -z "${tag}" ]]; then
-          echo "::error::Resolved SANDBOX_IMAGE is empty; aborting sandbox build."
-          exit 1
+          echo "::warning::SANDBOX_IMAGE resolved to an empty value; falling back to ${default_tag}."
+          tag="$default_tag"
         fi
 
         docker build -t "${tag}" -f sandbox.Dockerfile .
