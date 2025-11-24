@@ -93,8 +93,7 @@ jobs:
         uses: reviewdog/action-actionlint@437bbe918b0d29544cbf9e8b1d63fe6f4e7a881d # v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          actionlint_version: v1.7.9
-          fail_on_error: true
+          fail_level: error
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
@@ -667,8 +666,8 @@ jobs:
       - name: Push image
         if: github.event_name != 'pull_request'
         run: |
-          docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
-          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+          docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
+          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Install cosign
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
@@ -676,10 +675,10 @@ jobs:
           cosign-release: 'v2.5.3'
       - name: Sign image
         if: github.event_name != 'pull_request'
-        run: cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+        run: cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Verify image signature
         if: github.event_name != 'pull_request'
-        run: cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+        run: cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
 
   deploy:
     name: "📦 Deploy"
@@ -714,27 +713,27 @@ jobs:
         with:
           cosign-release: 'v2.5.3'
       - name: Pull previous image
-        run: docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest || true
+        run: docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" || true
       - name: Tag previous
-        run: docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
+        run: docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
       - name: Push previous tag
-        run: docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous || true
+        run: docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" || true
       - name: Pull release image
-        run: docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
+        run: docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Tag and push new image
         run: |
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
-          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
-          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
+          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
+          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
       - name: Sign release images
         run: |
-          cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
-          cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
+          cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
       - name: Verify release signatures
         run: |
-          cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}
-          cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
+          cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
       - uses: actions/download-artifact@v4.3.0 # d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: web-client
