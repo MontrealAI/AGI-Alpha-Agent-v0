@@ -39,6 +39,8 @@ concurrency:
 env:
   DOCKER_IMAGE: agi-insight-demo
   SANDBOX_IMAGE: selfheal-sandbox:latest
+  COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
+  COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
   NODE_LOCKFILES: |
     alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
     alpha_factory_v1/core/interface/web_client/package-lock.json
@@ -78,6 +80,21 @@ jobs:
         run: |
           owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
           echo "repo_owner_lower=${owner_lower}" >> "$GITHUB_OUTPUT"
+
+  workflow-lint:
+    name: "✅ Actionlint"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Lint workflows
+        uses: reviewdog/action-actionlint@437bbe918b0d29544cbf9e8b1d63fe6f4e7a881d # v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          actionlint_version: v1.7.9
+          fail_on_error: true
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
@@ -599,7 +616,12 @@ jobs:
             --bundle web-client.tar.gz.bundle \
             web-client.tar.gz
       - name: Verify web client signature
-        run: cosign verify-blob --signature web-client.tar.gz.sig --certificate web-client.tar.gz.pem web-client.tar.gz
+        run: cosign verify-blob \
+          --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
+          --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
+          --signature web-client.tar.gz.sig \
+          --certificate web-client.tar.gz.pem \
+          web-client.tar.gz
       - name: Check web client artifact
         id: web-client-check
         run: |
@@ -658,7 +680,7 @@ jobs:
   deploy:
     name: "📦 Deploy"
     if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
-    needs: [owner-check, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -715,7 +737,12 @@ jobs:
       - name: Verify web client artifact
         run: sha256sum -c web-client.sha256
       - name: Verify web client signature
-        run: cosign verify-blob --signature web-client.tar.gz.sig --certificate web-client.tar.gz.pem web-client.tar.gz
+        run: cosign verify-blob \
+          --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
+          --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
+          --signature web-client.tar.gz.sig \
+          --certificate web-client.tar.gz.pem \
+          web-client.tar.gz
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
