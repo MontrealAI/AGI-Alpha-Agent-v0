@@ -26,7 +26,7 @@ Use this checklist to keep CI visible and required on both pull requests and the
 2. **Badges stay green**
    - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, and **🔥 Smoke Test**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline. The `ci.yml` pipeline now triggers on pushes and pull requests, so badges will refresh automatically after merges.
    - When you need to rebuild the status bubble outside of normal events (for example, after temporarily disabling runners), dispatch **🚀 CI — Insight Demo** from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`).
-   - Run `python scripts/check_ci_status.py` (set `GITHUB_TOKEN` to avoid rate limits) to confirm the latest runs for `ci.yml`, `pr-ci.yml`, and `smoke.yml` all report `success`. The command exits non-zero and prints deep links when any workflow is pending or failed so you can jump straight to the culprit.
+   - Run `python scripts/check_ci_status.py --wait-minutes 20` (set `GITHUB_TOKEN` to avoid rate limits) to confirm the latest runs for `ci.yml`, `pr-ci.yml`, and `smoke.yml` all report `success`. The command polls queued or in-progress runs before failing, exits non-zero, and prints deep links when any workflow is pending or failed so you can jump straight to the culprit.
 
 3. **Visibility on PRs**
    - Ensure "Allow GitHub Actions to create and approve pull requests" remains enabled so status checks and summaries appear inline on PRs.
