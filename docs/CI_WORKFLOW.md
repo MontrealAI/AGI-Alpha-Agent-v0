@@ -4,26 +4,32 @@
 
 The repository's main continuous integration pipeline lives in the
 [CI workflow file](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/.github/workflows/ci.yml).
-It executes only when the repository owner triggers it from the GitHub
-Actions UI using **Run workflow**.
+It runs automatically on pushes and pull requests targeting `main`, and
+now also triggers on release tags (`v*` or `release-*`) so the
+publish/signing path stays green. Manual dispatch through **Run
+workflow** remains available for the repository owner when a fresh signal
+is needed outside normal events.
 
 ## Running the workflow
 
-1. Navigate to **Actions → 🚀 CI**.
-2. Choose the branch or tag in the drop‑down and click **Run workflow**.
-3. Only the repository owner can trigger this button. The pipeline starts with
-   an **owner-check** job that executes a short Bash script. The script
-   verifies `github.actor` equals `github.repository_owner` and writes a
-   `repo_owner_lower` output. All other jobs depend on this check and run only
-   when the actor matches the repository owner. Contributors will see a skipped
-   run unless the owner clicks **Run workflow**.
-4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.17.1** are installed.
-5. Run `pre-commit run --all-files` so the hooks pass before pushing.
-   The workflow lints only changed files when triggered by a push or pull
-   request.
-6. Ensure the `package-lock.json` files listed in `NODE_LOCKFILES` are up to date
-   by running `npm ci` in each web client directory. Commit any changes before
-   dispatching the workflow so dependency caching works correctly.
+The pipeline fires automatically; manual dispatch is needed only to rebuild a
+badge or force a re-run outside the normal hooks.
+
+1. Navigate to **Actions → 🚀 CI — Insight Demo** and click **Run workflow**.
+2. Choose the branch or tag. Use a signed tag (for example `v0.1.0`) to test
+   the deploy path; the updated trigger now responds to tags so the release
+   job runs.
+3. Manual dispatch is restricted to the repository owner via the
+   **owner-check** composite action. On push and pull_request events the job
+   simply records the repository owner and allows all downstream jobs to run,
+   so contributors still see the full matrix on PRs.
+4. Confirm **Python&nbsp;3.11–3.13** and **Node.js&nbsp;22.17.1** are installed locally
+   if you reproduce the pipeline.
+5. Run `pre-commit run --all-files` so the hooks pass before pushing. The
+   workflow lints only changed files when triggered by a push or pull request.
+6. Ensure the `package-lock.json` files listed in `NODE_LOCKFILES` are up to
+   date by running `npm ci` in each web client directory. Commit any changes
+   before dispatching the workflow so dependency caching works correctly.
 
 ## Branch protection and required checks
 
@@ -34,6 +40,17 @@ CI surface:
   **Require status checks to pass before merging** with these required checks:
   - `PR CI / Lint (ruff)`
   - `PR CI / Smoke tests`
+  - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
+  - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+  - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
+  - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
+  - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
+  - `🚀 CI — Insight Demo / ✅ Pytest (3.13)`
+  - `🚀 CI — Insight Demo / Windows Smoke`
+  - `🚀 CI — Insight Demo / macOS Smoke`
+  - `🚀 CI — Insight Demo / 📜 MkDocs`
+  - `🚀 CI — Insight Demo / 📚 Docs Build`
+  - `🚀 CI — Insight Demo / 🐳 Docker build`
 - Keep **Require branches to be up to date before merging** switched on so
   merges always include the latest CI results.
 - For owners, trigger **🚀 CI — Insight Demo** after large changes to validate
