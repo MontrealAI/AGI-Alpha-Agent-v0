@@ -592,9 +592,14 @@ jobs:
         with:
           cosign-release: 'v2.5.3'
       - name: Sign web client artifact
-        run: cosign sign-blob --yes --output-signature web-client.tar.gz.sig web-client.tar.gz
+        run: |
+          cosign sign-blob --yes \
+            --output-signature web-client.tar.gz.sig \
+            --output-certificate web-client.tar.gz.pem \
+            --bundle web-client.tar.gz.bundle \
+            web-client.tar.gz
       - name: Verify web client signature
-        run: cosign verify-blob --signature web-client.tar.gz.sig web-client.tar.gz
+        run: cosign verify-blob --signature web-client.tar.gz.sig --certificate web-client.tar.gz.pem web-client.tar.gz
       - name: Check web client artifact
         id: web-client-check
         run: |
@@ -607,6 +612,8 @@ jobs:
             web-client.tar.gz
             web-client.sha256
             web-client.tar.gz.sig
+            web-client.tar.gz.pem
+            web-client.tar.gz.bundle
       - name: Accessibility audit
         run: |
           npx --yes @axe-core/cli "file://${{ github.workspace }}/alpha_factory_v1/core/interface/web_client/dist/index.html" --stdout > axe.json
@@ -708,7 +715,7 @@ jobs:
       - name: Verify web client artifact
         run: sha256sum -c web-client.sha256
       - name: Verify web client signature
-        run: cosign verify-blob --signature web-client.tar.gz.sig web-client.tar.gz
+        run: cosign verify-blob --signature web-client.tar.gz.sig --certificate web-client.tar.gz.pem web-client.tar.gz
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
