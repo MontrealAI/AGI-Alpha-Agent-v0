@@ -4,6 +4,19 @@ description: Build sandbox image, install Playwright browsers and show tool vers
 runs:
   using: composite
   steps:
+    - name: Resolve sandbox image tag
+      shell: bash
+      run: |
+        resolved="${SANDBOX_IMAGE:-selfheal-sandbox:latest}"
+
+        if [[ -z "$resolved" ]]; then
+          echo "::error::SANDBOX_IMAGE is empty. Provide a tag or rely on the default selfheal-sandbox:latest."
+          exit 1
+        fi
+
+        echo "SANDBOX_IMAGE=$resolved" >> "$GITHUB_ENV"
+        echo "Using sandbox image tag: $resolved"
+
     - name: Build sandbox image
       shell: bash
       run: docker build -t "$SANDBOX_IMAGE" -f sandbox.Dockerfile .
