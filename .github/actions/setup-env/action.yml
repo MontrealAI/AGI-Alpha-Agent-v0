@@ -12,33 +12,41 @@ runs:
       id: resolve-sandbox
       shell: bash
       run: |
-        # Normalize and validate the sandbox tag so docker always receives a non-empty value.
-        resolved="${SANDBOX_IMAGE:-selfheal-sandbox:latest}"
-        # Strip whitespace and accidental wrapping quotes to avoid passing an
-        # empty or invalid tag to Docker when the env var is defined as "".
-        resolved="${resolved//[[:space:]]/}"
-        resolved="${resolved//\"/}"
-        resolved="${resolved//\'/}"
+        set -euo pipefail
 
-        if [[ -z "$resolved" ]]; then
-          resolved="selfheal-sandbox:latest"
+        default_tag="selfheal-sandbox:latest"
+        raw_value="${SANDBOX_IMAGE:-$default_tag}"
+
+        # Strip whitespace and accidental wrapping quotes to avoid passing an empty
+        # or invalid tag to Docker when the env var is defined as "" or contains
+        # only spaces.
+        sanitized="${raw_value//[[:space:]]/}"
+        sanitized="${sanitized//\"/}"
+        sanitized="${sanitized//\'/}"
+
+        # Fall back to the known-good default if the sanitized value disappears.
+        if [[ -z "$sanitized" ]]; then
+          sanitized="$default_tag"
         fi
 
-        if [[ -z "$resolved" ]]; then
+        if [[ -z "$sanitized" ]]; then
           echo "::error::SANDBOX_IMAGE is empty. Provide a tag or rely on the default selfheal-sandbox:latest."
           exit 1
         fi
 
-        echo "SANDBOX_IMAGE=$resolved" >> "$GITHUB_ENV"
-        echo "resolved=$resolved" >> "$GITHUB_OUTPUT"
-        echo "Using sandbox image tag: $resolved"
+        echo "SANDBOX_IMAGE=$sanitized" >> "$GITHUB_ENV"
+        echo "resolved=$sanitized" >> "$GITHUB_OUTPUT"
+        echo "Using sandbox image tag: $sanitized"
 
     - name: Build sandbox image
       shell: bash
       env:
         RESOLVED_SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
       run: |
-        tag="${RESOLVED_SANDBOX_IMAGE:-${SANDBOX_IMAGE:-selfheal-sandbox:latest}}"
+        set -euo pipefail
+
+        default_tag="selfheal-sandbox:latest"
+        tag="${RESOLVED_SANDBOX_IMAGE:-${SANDBOX_IMAGE:-$default_tag}}"
         tag="${tag//[[:space:]]/}"
         tag="${tag//\"/}"
         tag="${tag//\'/}"
