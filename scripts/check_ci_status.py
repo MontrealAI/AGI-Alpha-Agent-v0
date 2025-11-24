@@ -69,7 +69,14 @@ def verify_workflows(
             try:
                 run = _latest_run(repo, workflow, token)
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
-                failures.append(f"{workflow}: error fetching latest run: {exc}")
+                hint = ""
+                if isinstance(exc, urllib.error.HTTPError):
+                    status = exc.code
+                    if status == 403:
+                        hint = " (set GITHUB_TOKEN to raise the rate limit)"
+                    elif status == 401:
+                        hint = " (check that GITHUB_TOKEN is valid for the target repo)"
+                failures.append(f"{workflow}: error fetching latest run: {exc}{hint}")
                 break
 
             conclusion = run.get("conclusion")
