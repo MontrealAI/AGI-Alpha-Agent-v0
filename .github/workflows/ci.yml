@@ -209,6 +209,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        env:
+          SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - uses: ./.github/actions/setup-insight-assets
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
@@ -415,6 +417,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        env:
+          SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       # asset fetching handled by setup-insight-assets
@@ -460,6 +464,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        env:
+          SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - name: Install docs requirements
@@ -539,6 +545,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - uses: ./.github/actions/setup-env
+        env:
+          SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database (Insight demo)
