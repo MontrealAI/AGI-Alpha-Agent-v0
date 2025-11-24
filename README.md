@@ -15,9 +15,12 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
 [![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
+[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
-The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
+The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels stale pending runs, re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck.
+
+Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
 
 - `✅ PR CI / Lint (ruff)`
 - `✅ PR CI / Smoke tests`

@@ -1,0 +1,37 @@
+name: "🩺 CI Health"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci-health:
+    name: "CI watchdog"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Check CI health and remediate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/check_ci_status.py \
+            --wait-minutes 5 \
+            --pending-grace-minutes 45 \
+            --stale-minutes 240 \
+            --cancel-stale \
+            --dispatch-missing \
+            --poll-seconds 30 \
+            --ref "${{ github.event.workflow_run.head_branch || 'main' }}"
