@@ -8,11 +8,24 @@ Use this checklist to keep CI visible and required on both pull requests and the
    - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
      - `✅ PR CI / Lint (ruff)`
      - `✅ PR CI / Smoke tests`
+   - When preparing a release or tightening the gate, add the full **🚀 CI — Insight Demo** jobs as required checks as well (copy the names verbatim from the latest green run):
+     - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
+     - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+     - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
+     - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
+     - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
+     - `🚀 CI — Insight Demo / ✅ Pytest (3.13)`
+     - `🚀 CI — Insight Demo / Windows Smoke`
+     - `🚀 CI — Insight Demo / macOS Smoke`
+     - `🚀 CI — Insight Demo / 📜 MkDocs`
+     - `🚀 CI — Insight Demo / 📚 Docs Build`
+     - `🚀 CI — Insight Demo / 🐳 Docker build`
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
 
 2. **Badges stay green**
    - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, and **🔥 Smoke Test**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline.
+   - When the **🚀 CI — Insight Demo** badge is red, dispatch that workflow from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`) so its status bubbles populate every open PR.
 
 3. **Visibility on PRs**
    - Ensure "Allow GitHub Actions to create and approve pull requests" remains enabled so status checks and summaries appear inline on PRs.
