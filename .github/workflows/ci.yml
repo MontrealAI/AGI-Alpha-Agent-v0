@@ -1,9 +1,8 @@
 # 🌐 Alpha-AGI Insight CI — GitHub Actions Workflow
 #
 # Validates the demo with lint, type checks, unit tests and Docker build.
-# Runs only via manual dispatch by the repository owner using the "Run workflow" button.
-# Access is restricted through the owner-check job to ensure only the repository
-# owner can start this pipeline.
+# Runs on pushes and pull requests to `main`, plus optional manual dispatch.
+# Manual runs remain gated by the owner-check job to block untrusted triggers.
 # Deploys a Docker image with rollback on failure.
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
@@ -18,6 +17,10 @@
 name: "🚀 CI — Insight Demo"
 
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       a11y-threshold:
@@ -53,13 +56,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
-      repo_owner_lower: ${{ steps.ensure.outputs.repo_owner_lower }}
+      repo_owner_lower: ${{ steps.owner-manual.outputs.repo_owner_lower || steps.owner-auto.outputs.repo_owner_lower }}
     steps:
       # Checkout repository so the local ensure-owner action is available
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
-      - id: ensure
+      - id: owner-manual
+        if: github.event_name == 'workflow_dispatch'
         # Local composite action validates the workflow initiator
         # Ensure checkout ran beforehand so action files are available.
         # Without a prior checkout step GitHub Actions reports:
@@ -68,6 +72,11 @@ jobs:
         # repository owner triggers the workflow. This protects subsequent
         # jobs from running under untrusted contexts.
         uses: ./.github/actions/ensure-owner
+      - id: owner-auto
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "repo_owner_lower=${owner_lower}" >> "$GITHUB_OUTPUT"
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
