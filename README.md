@@ -19,6 +19,8 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. Mark **both** of its checks—`PR CI / Lint (ruff)` and `PR CI / Smoke tests`—as required branch protections so contributors see the results on every PR and the `main` branch stays green. Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. The full **🚀 CI — Insight Demo** pipeline stays visible via the badge above; trigger it from **Actions → 🚀 CI — Insight Demo** when you need the complete matrix and Docker build. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 
+When you need full gating for a release or hotfix, also mark the latest **🚀 CI — Insight Demo** jobs as required branch protections (for example, `🚀 CI — Insight Demo / lint-type`, `🚀 CI — Insight Demo / tests`, `🚀 CI — Insight Demo / docker`, and the docs + smoke jobs). Re-run that workflow if the badge ever turns red so its status bubbles stay visible on PRs alongside the lighter **PR CI** checks.
+
 See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for a step-by-step enforcement checklist that keeps required checks visible on PRs and ensures the badges above stay green.
 
 ### Quick Demo
