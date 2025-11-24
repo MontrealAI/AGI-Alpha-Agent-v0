@@ -620,12 +620,13 @@ jobs:
             --bundle web-client.tar.gz.bundle \
             web-client.tar.gz
       - name: Verify web client signature
-        run: cosign verify-blob \
-          --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
-          --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
-          --signature web-client.tar.gz.sig \
-          --certificate web-client.tar.gz.pem \
-          web-client.tar.gz
+        run: |
+          cosign verify-blob \
+            --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
+            --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
+            --signature web-client.tar.gz.sig \
+            --certificate web-client.tar.gz.pem \
+            web-client.tar.gz
       - name: Check web client artifact
         id: web-client-check
         run: |
@@ -741,12 +742,13 @@ jobs:
       - name: Verify web client artifact
         run: sha256sum -c web-client.sha256
       - name: Verify web client signature
-        run: cosign verify-blob \
-          --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
-          --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
-          --signature web-client.tar.gz.sig \
-          --certificate web-client.tar.gz.pem \
-          web-client.tar.gz
+        run: |
+          cosign verify-blob \
+            --certificate-identity-regexp "$COSIGN_CERT_IDENTITY_REGEX" \
+            --certificate-oidc-issuer "$COSIGN_CERT_ISSUER" \
+            --signature web-client.tar.gz.sig \
+            --certificate web-client.tar.gz.pem \
+            web-client.tar.gz
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
