@@ -84,7 +84,6 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    environment: ci-on-demand        # ⇦ optional: add reviewers in repo Settings → Environments
     strategy:
       fail-fast: false
       matrix:
@@ -182,7 +181,6 @@ jobs:
     timeout-minutes: 60
     permissions:
       pull-requests: write
-    environment: ci-on-demand
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
@@ -301,7 +299,6 @@ jobs:
     needs: owner-check
     runs-on: windows-latest
     timeout-minutes: 30
-    environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -347,7 +344,6 @@ jobs:
     name: "macOS Smoke"
     if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
-    environment: ci-on-demand
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
@@ -402,7 +398,6 @@ jobs:
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
-    environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -454,7 +449,6 @@ jobs:
     timeout-minutes: 45
     permissions:
       pull-requests: write
-    environment: ci-on-demand
     env:
       FETCH_ASSETS_ATTEMPTS: '5'
       SANDBOX_IMAGE: selfheal-sandbox:latest
@@ -544,7 +538,6 @@ jobs:
       packages: write
       id-token: write
     # This job builds and pushes the image.
-    environment: ci-on-demand
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
