@@ -5,9 +5,12 @@ runs:
   using: composite
   steps:
     - name: Resolve sandbox image tag
+      id: resolve-sandbox
       shell: bash
       run: |
+        # Normalize and validate the sandbox tag so docker always receives a non-empty value.
         resolved="${SANDBOX_IMAGE:-selfheal-sandbox:latest}"
+        resolved="${resolved//[[:space:]]/}"
 
         if [[ -z "$resolved" ]]; then
           echo "::error::SANDBOX_IMAGE is empty. Provide a tag or rely on the default selfheal-sandbox:latest."
@@ -15,11 +18,14 @@ runs:
         fi
 
         echo "SANDBOX_IMAGE=$resolved" >> "$GITHUB_ENV"
+        echo "resolved=$resolved" >> "$GITHUB_OUTPUT"
         echo "Using sandbox image tag: $resolved"
 
     - name: Build sandbox image
       shell: bash
-      run: docker build -t "$SANDBOX_IMAGE" -f sandbox.Dockerfile .
+      env:
+        RESOLVED_SANDBOX_IMAGE: ${{ steps.resolve-sandbox.outputs.resolved }}
+      run: docker build -t "$RESOLVED_SANDBOX_IMAGE" -f sandbox.Dockerfile .
     - name: Show tool versions
       shell: bash
       run: |
