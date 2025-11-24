@@ -45,7 +45,7 @@ env:
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-  A11Y_THRESHOLD: ${{ inputs.a11y-threshold }}
+  A11Y_THRESHOLD: ${{ inputs.a11y-threshold || '95' }}
   FETCH_ASSETS_ATTEMPTS: '5'
   FETCH_ASSETS_BACKOFF: '2'
 
@@ -629,22 +629,27 @@ jobs:
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
+        if: github.event_name != 'pull_request'
         run: |
           docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
           docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Install cosign
+        if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
         with:
           cosign-release: 'v2.5.3'
       - name: Sign image
+        if: github.event_name != 'pull_request'
         run: cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Verify image signature
+        if: github.event_name != 'pull_request'
         run: cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
   deploy:
