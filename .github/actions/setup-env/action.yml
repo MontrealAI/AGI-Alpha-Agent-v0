@@ -14,7 +14,15 @@ runs:
       run: |
         # Normalize and validate the sandbox tag so docker always receives a non-empty value.
         resolved="${SANDBOX_IMAGE:-selfheal-sandbox:latest}"
+        # Strip whitespace and accidental wrapping quotes to avoid passing an
+        # empty or invalid tag to Docker when the env var is defined as "".
         resolved="${resolved//[[:space:]]/}"
+        resolved="${resolved//\"/}"
+        resolved="${resolved//\'/}"
+
+        if [[ -z "$resolved" ]]; then
+          resolved="selfheal-sandbox:latest"
+        fi
 
         if [[ -z "$resolved" ]]; then
           echo "::error::SANDBOX_IMAGE is empty. Provide a tag or rely on the default selfheal-sandbox:latest."
@@ -32,6 +40,8 @@ runs:
       run: |
         tag="${RESOLVED_SANDBOX_IMAGE:-${SANDBOX_IMAGE:-selfheal-sandbox:latest}}"
         tag="${tag//[[:space:]]/}"
+        tag="${tag//\"/}"
+        tag="${tag//\'/}"
 
         if [[ -z "${tag}" ]]; then
           echo "::error::Resolved SANDBOX_IMAGE is empty; aborting sandbox build."
