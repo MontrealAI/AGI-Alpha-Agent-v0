@@ -27,6 +27,7 @@ Mark **all** of these checks as required branch protections so contributors see 
 - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
 - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
 - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
+- `🚀 CI — Insight Demo / ✅ Actionlint`
 - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
 - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
 - `🚀 CI — Insight Demo / ✅ Pytest (3.13)`
