@@ -17,9 +17,23 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 [![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
-The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. Mark **both** of its checks—`PR CI / Lint (ruff)` and `PR CI / Smoke tests`—as required branch protections so contributors see the results on every PR and the `main` branch stays green. Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. The full **🚀 CI — Insight Demo** pipeline stays visible via the badge above; trigger it from **Actions → 🚀 CI — Insight Demo** when you need the complete matrix and Docker build. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
+The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
 
-When you need full gating for a release or hotfix, also mark the latest **🚀 CI — Insight Demo** jobs as required branch protections (copy the names verbatim from the latest green run): `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`, `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`, `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`, `🚀 CI — Insight Demo / ✅ Pytest (3.11)`, `🚀 CI — Insight Demo / ✅ Pytest (3.12)`, `🚀 CI — Insight Demo / ✅ Pytest (3.13)`, `🚀 CI — Insight Demo / Windows Smoke`, `🚀 CI — Insight Demo / macOS Smoke`, `🚀 CI — Insight Demo / 📜 MkDocs`, `🚀 CI — Insight Demo / 📚 Docs Build`, and `🚀 CI — Insight Demo / 🐳 Docker build`. Re-run that workflow if the badge ever turns red so its status bubbles stay visible on PRs alongside the lighter **PR CI** checks.
+- `✅ PR CI / Lint (ruff)`
+- `✅ PR CI / Smoke tests`
+- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
+- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
+- `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
+- `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
+- `🚀 CI — Insight Demo / ✅ Pytest (3.13)`
+- `🚀 CI — Insight Demo / Windows Smoke`
+- `🚀 CI — Insight Demo / macOS Smoke`
+- `🚀 CI — Insight Demo / 📜 MkDocs`
+- `🚀 CI — Insight Demo / 📚 Docs Build`
+- `🚀 CI — Insight Demo / 🐳 Docker build`
+
+Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 
 See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for a step-by-step enforcement checklist that keeps required checks visible on PRs and ensures the badges above stay green.
 

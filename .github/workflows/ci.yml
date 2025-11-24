@@ -1,9 +1,8 @@
 # 🌐 Alpha-AGI Insight CI — GitHub Actions Workflow
 #
 # Validates the demo with lint, type checks, unit tests and Docker build.
-# Runs only via manual dispatch by the repository owner using the "Run workflow" button.
-# Access is restricted through the owner-check job to ensure only the repository
-# owner can start this pipeline.
+# Runs on pushes and pull requests to `main`, plus optional manual dispatch.
+# Manual runs remain gated by the owner-check job to block untrusted triggers.
 # Deploys a Docker image with rollback on failure.
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
@@ -18,6 +17,10 @@
 name: "🚀 CI — Insight Demo"
 
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       a11y-threshold:
@@ -42,7 +45,7 @@ env:
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-  A11Y_THRESHOLD: ${{ inputs.a11y-threshold }}
+  A11Y_THRESHOLD: ${{ inputs.a11y-threshold || '95' }}
   FETCH_ASSETS_ATTEMPTS: '5'
   FETCH_ASSETS_BACKOFF: '2'
 
@@ -53,13 +56,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
-      repo_owner_lower: ${{ steps.ensure.outputs.repo_owner_lower }}
+      repo_owner_lower: ${{ steps.owner-manual.outputs.repo_owner_lower || steps.owner-auto.outputs.repo_owner_lower }}
     steps:
       # Checkout repository so the local ensure-owner action is available
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
-      - id: ensure
+      - id: owner-manual
+        if: github.event_name == 'workflow_dispatch'
         # Local composite action validates the workflow initiator
         # Ensure checkout ran beforehand so action files are available.
         # Without a prior checkout step GitHub Actions reports:
@@ -68,6 +72,11 @@ jobs:
         # repository owner triggers the workflow. This protects subsequent
         # jobs from running under untrusted contexts.
         uses: ./.github/actions/ensure-owner
+      - id: owner-auto
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "repo_owner_lower=${owner_lower}" >> "$GITHUB_OUTPUT"
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
@@ -620,22 +629,27 @@ jobs:
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
+        if: github.event_name != 'pull_request'
         run: |
           docker tag "$DOCKER_IMAGE:ci" ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
           docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Install cosign
+        if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
         with:
           cosign-release: 'v2.5.3'
       - name: Sign image
+        if: github.event_name != 'pull_request'
         run: cosign sign --yes ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
       - name: Verify image signature
+        if: github.event_name != 'pull_request'
         run: cosign verify ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}
 
   deploy:

@@ -8,7 +8,6 @@ Use this checklist to keep CI visible and required on both pull requests and the
    - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
      - `✅ PR CI / Lint (ruff)`
      - `✅ PR CI / Smoke tests`
-   - When preparing a release or tightening the gate, add the full **🚀 CI — Insight Demo** jobs as required checks as well (copy the names verbatim from the latest green run):
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
@@ -24,12 +23,12 @@ Use this checklist to keep CI visible and required on both pull requests and the
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
 
 2. **Badges stay green**
-   - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, and **🔥 Smoke Test**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline.
-   - When the **🚀 CI — Insight Demo** badge is red, dispatch that workflow from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`) so its status bubbles populate every open PR.
+   - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, and **🔥 Smoke Test**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline. The `ci.yml` pipeline now triggers on pushes and pull requests, so badges will refresh automatically after merges.
+   - When you need to rebuild the status bubble outside of normal events (for example, after temporarily disabling runners), dispatch **🚀 CI — Insight Demo** from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`).
 
 3. **Visibility on PRs**
    - Ensure "Allow GitHub Actions to create and approve pull requests" remains enabled so status checks and summaries appear inline on PRs.
-   - Keep `pr-ci.yml` triggered on `pull_request` and `push` to `main` so checks always run on the latest commits.
+   - Keep both `pr-ci.yml` and `ci.yml` triggered on `pull_request` and `push` to `main` so checks always run on the latest commits and stay visible to reviewers.
 
 4. **Local preflight**
    - Before opening a PR, run `pip install -r requirements.lock -r requirements-dev.lock` once, then execute `pytest -m smoke tests/test_af_requests.py tests/test_cache_version.py tests/test_check_env_core.py tests/test_check_env_network.py tests/test_config_settings.py tests/test_config_utils.py tests/test_ping_agent.py -q` to mirror the PR CI smoke job.
