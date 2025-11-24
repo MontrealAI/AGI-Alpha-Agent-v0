@@ -4,6 +4,11 @@ description: Cache, fetch and verify Insight Browser assets.
 runs:
   using: composite
   steps:
+    - name: Install fetch-assets dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
