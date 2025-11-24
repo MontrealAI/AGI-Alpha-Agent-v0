@@ -48,7 +48,7 @@ env:
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-  A11Y_THRESHOLD: ${{ inputs.a11y-threshold || '95' }}
+  A11Y_THRESHOLD: ${{ inputs['a11y-threshold'] || '95' }}
   FETCH_ASSETS_ATTEMPTS: '5'
   FETCH_ASSETS_BACKOFF: '2'
 
