@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 from typing import Iterable, Mapping
@@ -51,21 +52,46 @@ def _format_failure(run: Mapping[str, object], workflow: str) -> str:
     )
 
 
-def verify_workflows(repo: str, workflows: Iterable[str], token: str | None) -> list[str]:
+def verify_workflows(
+    repo: str,
+    workflows: Iterable[str],
+    token: str | None,
+    *,
+    wait_seconds: float = 0,
+    poll_interval: float = 15,
+) -> list[str]:
     failures: list[str] = []
     for workflow in workflows:
-        try:
-            run = _latest_run(repo, workflow, token)
-        except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
-            failures.append(f"{workflow}: error fetching latest run: {exc}")
-            continue
+        start = time.monotonic()
+        remaining = wait_seconds
 
-        conclusion = run.get("conclusion")
-        status = run.get("status")
-        if conclusion != "success":
+        while True:
+            try:
+                run = _latest_run(repo, workflow, token)
+            except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
+                failures.append(f"{workflow}: error fetching latest run: {exc}")
+                break
+
+            conclusion = run.get("conclusion")
+            status = run.get("status")
+
+            if conclusion == "success":
+                print(f"✅ {workflow} → success ({status})")
+                break
+
+            if status in {"queued", "in_progress"} and remaining > 0:
+                sleep_for = min(poll_interval, remaining)
+                print(
+                    f"⏳ {workflow} → {status} (waiting up to {remaining:.0f}s more)",
+                    flush=True,
+                )
+                time.sleep(sleep_for)
+                elapsed = time.monotonic() - start
+                remaining = max(0.0, wait_seconds - elapsed)
+                continue
+
             failures.append(_format_failure(run, workflow))
-            continue
-        print(f"✅ {workflow} → success ({status})")
+            break
     return failures
 
 
@@ -84,12 +110,32 @@ def main(argv: list[str] | None = None) -> int:
         metavar="NAME",
         help="Workflow filename to validate (may be provided multiple times)",
     )
+    parser.add_argument(
+        "--wait-minutes",
+        type=float,
+        default=0,
+        help="Wait for queued/in-progress runs to settle for up to N minutes before failing",
+    )
+    parser.add_argument(
+        "--poll-seconds",
+        type=float,
+        default=15,
+        help="Polling interval when waiting for workflows to finish",
+    )
     args = parser.parse_args(argv)
 
     workflows = args.workflows or DEFAULT_WORKFLOWS
     token = os.environ.get("GITHUB_TOKEN")
+    wait_seconds = max(0.0, args.wait_minutes * 60)
+    poll_interval = max(1.0, args.poll_seconds)
 
-    failures = verify_workflows(args.repo, workflows, token)
+    failures = verify_workflows(
+        args.repo,
+        workflows,
+        token,
+        wait_seconds=wait_seconds,
+        poll_interval=poll_interval,
+    )
     if failures:
         print("\nFound non-green workflows:")
         for failure in failures:
