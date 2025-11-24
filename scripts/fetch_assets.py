@@ -25,8 +25,8 @@ from pathlib import Path
 import sys
 import re
 import time
-import requests  # type: ignore
-from requests.adapters import HTTPAdapter, Retry  # type: ignore
+from urllib.error import HTTPError
+from urllib.request import Request, urlopen
 
 
 # Base URL for the GPT-2 small weights
@@ -78,22 +78,30 @@ CHECKSUMS = {
 # stays consistent.
 
 
-def _session() -> requests.Session:
-    retry = Retry(total=0)
-    adapter = HTTPAdapter(max_retries=retry)
-    s = requests.Session()
-    s.mount("https://", adapter)
-    s.mount("http://", adapter)
-    return s
+def _status_code(exc: Exception) -> int | None:
+    """Best-effort HTTP status extraction for urllib and requests errors."""
+
+    if isinstance(exc, HTTPError):
+        return exc.code
+    return getattr(getattr(exc, "response", None), "status_code", None)
+
+
+def _response_url(exc: Exception) -> str | None:
+    if isinstance(exc, HTTPError):
+        return exc.url
+    return getattr(getattr(exc, "response", None), "url", None)
 
 
 def download(cid: str, path: Path, label: str | None = None) -> None:
     url = cid
     path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        with _session().get(url, timeout=60) as resp:
-            resp.raise_for_status()
-            data = resp.content
+        request = Request(url)
+        with urlopen(request, timeout=60) as resp:
+            status = getattr(resp, "status", getattr(resp, "code", None))
+            if status and status >= 400:
+                raise HTTPError(url, status, "HTTP error", hdrs=None, fp=None)
+            data = resp.read()
     except Exception:
         raise
     path.write_bytes(data)
@@ -127,7 +135,7 @@ def download_with_retry(
         except Exception as exc:  # noqa: PERF203
             last_exc = exc
             last_url = cid
-            status = getattr(getattr(exc, "response", None), "status_code", None)
+            status = _status_code(exc)
             if first_failure:
                 first_failure = False
                 if status in {401, 404}:
@@ -144,7 +152,7 @@ def download_with_retry(
             else:
                 print(f"ERROR: could not fetch {lbl} from {last_url} after {attempts} attempts")
     if last_exc:
-        url = getattr(getattr(last_exc, "response", None), "url", last_url)
+        url = _response_url(last_exc) or last_url
         raise RuntimeError(f"failed to download {lbl} from {url}: {last_exc}. Some mirrors may require authentication")
 
 
