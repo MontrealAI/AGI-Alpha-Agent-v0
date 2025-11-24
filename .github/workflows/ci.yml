@@ -18,6 +18,10 @@
 name: "🚀 CI — Insight Demo"
 
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       a11y-threshold:
@@ -55,11 +59,17 @@ jobs:
     outputs:
       repo_owner_lower: ${{ steps.ensure.outputs.repo_owner_lower }}
     steps:
-      # Checkout repository so the local ensure-owner action is available
+      - name: Set repository owner output
+        id: ensure
+        run: |
+          echo "repo_owner_lower=${GITHUB_REPOSITORY_OWNER@L}" >> "$GITHUB_OUTPUT"
+      # Checkout repository so the local ensure-owner action is available for manual runs
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+        if: github.event_name == 'workflow_dispatch'
         with:
           fetch-depth: 0
-      - id: ensure
+      - name: Enforce owner for manual dispatches
+        if: github.event_name == 'workflow_dispatch'
         # Local composite action validates the workflow initiator
         # Ensure checkout ran beforehand so action files are available.
         # Without a prior checkout step GitHub Actions reports:
