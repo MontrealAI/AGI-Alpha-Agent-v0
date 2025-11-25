@@ -50,7 +50,10 @@ env:
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-  A11Y_THRESHOLD: ${{ inputs['a11y-threshold'] || '95' }}
+  # Guard `inputs` usage so push/PR events (which do not populate the
+  # `inputs` context) still receive the default threshold instead of
+  # erroring during expression evaluation.
+  A11Y_THRESHOLD: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['a11y-threshold'] || '95' }}
   FETCH_ASSETS_ATTEMPTS: '5'
   FETCH_ASSETS_BACKOFF: '2'
 
