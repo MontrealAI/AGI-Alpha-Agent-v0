@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   actions: write
+  administration: read  # Required to read branch protection for enforcement checks
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
