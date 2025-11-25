@@ -20,6 +20,8 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels stale pending runs, re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck.
 
+Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — Insight Demo**, exercising the deploy and signing stages so production artifacts stay provably green.
+
 Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
 
 - `✅ PR CI / Lint (ruff)`
