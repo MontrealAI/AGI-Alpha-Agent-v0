@@ -119,6 +119,27 @@ jobs:
     steps:
       # checkout required for local composite actions
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           python-version: ${{ matrix.python-version }}
@@ -220,6 +241,27 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           python-version: ${{ matrix.python-version }}
@@ -331,6 +373,27 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           # Use 3.11 to align with available CPU-only PyTorch wheels on Windows
@@ -385,6 +448,27 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           # Use 3.11 to align with available CPU-only PyTorch wheels on macOS
@@ -444,6 +528,27 @@ jobs:
       PWA_TIMEOUT_MS: '120000'
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           # Stay on 3.12 until upstream publishes stable PyTorch wheels for 3.13
@@ -503,6 +608,27 @@ jobs:
       PWA_TIMEOUT_MS: '120000'
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           # Keep parity with supported test matrix (3.11–3.12) so doc builds do not
@@ -597,6 +723,27 @@ jobs:
     # This job builds and pushes the image.
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Ensure pip cache directory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          try:
+            cache_dir = subprocess.check_output(
+                [sys.executable, "-m", "pip", "cache", "dir"],
+                text=True,
+            ).strip()
+          except Exception:
+            cache_dir = None
+
+          Path(cache_dir or Path("~/.cache/pip").expanduser()).expanduser().mkdir(
+              parents=True,
+              exist_ok=True,
+          )
+          PY
       - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
         with:
           # Align build Python with supported runtime versions to keep dependency
