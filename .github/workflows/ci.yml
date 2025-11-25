@@ -545,6 +545,10 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Install Playwright system dependencies (Python)
+        run: python -m playwright install-deps chromium
+      - name: Install Playwright browsers (Python)
+        run: python -m playwright install chromium
       - name: Install Playwright browsers (Node)
         run: npx playwright install
       - name: Verify demo pages
