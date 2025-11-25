@@ -3,7 +3,7 @@ name: "🩺 CI Health"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 * * * *"
 
 permissions:
   contents: read
@@ -28,9 +28,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
-            --wait-minutes 5 \
-            --pending-grace-minutes 45 \
-            --stale-minutes 240 \
+            --wait-minutes 10 \
+            --pending-grace-minutes 15 \
+            --stale-minutes 180 \
             --cancel-stale \
             --dispatch-missing \
             --poll-seconds 30 \
