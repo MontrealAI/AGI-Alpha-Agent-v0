@@ -806,7 +806,7 @@ jobs:
         if: failure()
         run: |
           echo "Rolling back to previous image"
-          docker pull ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
-          docker push ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest
+          docker pull "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous"
+          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
+          docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           echo "Rollback succeeded"
