@@ -14,12 +14,15 @@ import os
 import sys
 
 force_stub = os.environ.get("GOOGLE_ADK_FORCE_STUB")
+use_real = os.environ.get("GOOGLE_ADK_USE_REAL")
 
 try:
     if force_stub not in {None, "0", "false", "False"}:
         raise ImportError("Forcing stub for google.adk")
+    if use_real not in {"1", "true", "True"}:
+        raise ImportError("Preferring lightweight stub for CI")
     _mod = importlib.import_module("google.adk")
-except Exception:  # pragma: no cover - package absent
+except Exception:  # pragma: no cover - package absent or intentionally skipped
     _mod = None
 
 if _mod is not None:

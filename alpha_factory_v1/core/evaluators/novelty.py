@@ -3,28 +3,36 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import numpy as np
 
 try:  # optional heavy deps
-    from sentence_transformers import SentenceTransformer
-except Exception:  # pragma: no cover - offline
-    SentenceTransformer = None
-
-try:
     import faiss
 except Exception:  # pragma: no cover - offline
     faiss = None
 
+if TYPE_CHECKING:  # pragma: no cover
+    from sentence_transformers import SentenceTransformer
+
 _LOG = logging.getLogger(__name__)
-_MODEL: SentenceTransformer | None = None
+_MODEL: "SentenceTransformer" | None = None
 _DIM = 384
 
 
-def _get_model() -> SentenceTransformer:
-    if SentenceTransformer is None:
-        raise ImportError("sentence-transformers missing")
+def _get_model() -> "SentenceTransformer":
+    """Lazily import and initialize the MiniLM encoder.
+
+    Importing ``sentence-transformers`` pulls in PyTorch, which can take several
+    seconds and may attempt to initialize hardware backends. Performing the
+    import only when embeddings are requested keeps lightweight test suites
+    (including CI smoke runs) fast and avoids unnecessary startup cost when the
+    novelty index is unused.
+    """
+    try:
+        from sentence_transformers import SentenceTransformer
+    except Exception as exc:  # pragma: no cover - offline
+        raise ImportError("sentence-transformers missing") from exc
     global _MODEL
     if _MODEL is None:
         _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
