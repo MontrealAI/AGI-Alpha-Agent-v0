@@ -334,10 +334,10 @@ jobs:
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Install dependencies  # use cross-platform lock file on Windows
+      - name: Install dependencies  # use CPU-only lock file on Windows
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-demo.lock
+          pip install -r requirements-demo-cpu.lock
           pip install -r requirements-dev.lock
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
@@ -382,10 +382,10 @@ jobs:
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Install dependencies  # use cross-platform lock file on macOS
+      - name: Install dependencies  # use CPU-only lock file on macOS
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-demo.lock
+          pip install -r requirements-demo-cpu.lock
           pip install -r requirements-dev.lock
       - name: Install macOS extras
         run: pip install appnope==0.1.4
