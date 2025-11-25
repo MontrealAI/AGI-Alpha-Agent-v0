@@ -641,9 +641,41 @@ jobs:
             web-client.tar.gz.sig
             web-client.tar.gz.pem
             web-client.tar.gz.bundle
+      - name: Ensure Chrome for Axe
+        run: |
+          set -euo pipefail
+          chrome_bin=""
+          if command -v google-chrome-stable >/dev/null 2>&1; then
+            chrome_bin=$(command -v google-chrome-stable)
+          elif command -v google-chrome >/dev/null 2>&1; then
+            chrome_bin=$(command -v google-chrome)
+          elif command -v chromium-browser >/dev/null 2>&1; then
+            chrome_bin=$(command -v chromium-browser)
+          else
+            export DEBIAN_FRONTEND=noninteractive
+            sudo apt-get update
+            sudo apt-get install -y chromium-browser chromium-chromedriver
+            chrome_bin=$(command -v chromium-browser)
+          fi
+
+          if [ -z "$chrome_bin" ]; then
+            echo "::error::Chrome binary not found for Axe audit"
+            exit 1
+          fi
+
+          echo "CHROME_BIN=$chrome_bin" >> "$GITHUB_ENV"
+          if command -v chromedriver >/dev/null 2>&1; then
+            echo "CHROMEDRIVER_PATH=$(command -v chromedriver)" >> "$GITHUB_ENV"
+          fi
       - name: Accessibility audit
         run: |
-          npx --yes @axe-core/cli "file://${{ github.workspace }}/alpha_factory_v1/core/interface/web_client/dist/index.html" --stdout > axe.json
+          set -euo pipefail
+          npx --yes @axe-core/cli \
+            --stdout \
+            --chrome-path "${CHROME_BIN:-google-chrome-stable}" \
+            ${CHROMEDRIVER_PATH:+--chromedriver-path "$CHROMEDRIVER_PATH"} \
+            "file://${{ github.workspace }}/alpha_factory_v1/core/interface/web_client/dist/index.html" \
+            > axe.json
           score=$(python scripts/axe_score.py axe.json)
           echo "a11y score: $score (threshold $A11Y_THRESHOLD)"
           if [ "$score" -lt "$A11Y_THRESHOLD" ]; then

@@ -90,7 +90,10 @@ previous `latest` image so production always points at a working build.
 - **♿ Accessibility audit** – runs `@axe-core/cli --stdout` on the built web client
   and calculates a score via `scripts/axe_score.py`. The pipeline fails if the
   score is below the `a11y-threshold` input (default 95).
-  Keep this threshold at least 95 to maintain baseline accessibility.
+  Keep this threshold at least 95 to maintain baseline accessibility. The
+  workflow now ensures a Chrome binary and Chromedriver are available (preferring
+  `google-chrome-stable`, falling back to `chromium-browser` via apt) and passes
+  their locations to Axe so the audit consistently succeeds on fresh runners.
 
 Caching for Python and Node dependencies is enabled. The project stores
 `package-lock.json` files under the demo and web client folders rather than at
