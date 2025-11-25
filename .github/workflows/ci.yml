@@ -329,8 +329,8 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
-          # triton wheels for PyTorch are unavailable on 3.13
-          python-version: '3.12'
+          # Use 3.11 to align with available CPU-only PyTorch wheels on Windows
+          python-version: '3.11'
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
@@ -345,12 +345,18 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Show tool versions
+        shell: bash
         run: |
+          set -euo pipefail
           python --version
           node --version
-          docker --version
-          docker compose version
           git --version
+          if command -v docker >/dev/null 2>&1; then
+            docker --version
+            docker compose version || docker-compose version
+          else
+            echo "::notice::Docker not available on windows-latest runner"
+          fi
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
@@ -377,8 +383,8 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
-          # triton wheels for PyTorch are unavailable on 3.13
-          python-version: '3.12'
+          # Use 3.11 to align with available CPU-only PyTorch wheels on macOS
+          python-version: '3.11'
           architecture: 'x64'
           cache: pip
           cache-dependency-path: 'requirements.lock'
@@ -395,12 +401,18 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Show tool versions
+        shell: bash
         run: |
+          set -euo pipefail
           python --version
           node --version
-          docker --version
-          docker compose version
           git --version
+          if command -v docker >/dev/null 2>&1; then
+            docker --version
+            docker compose version || docker-compose version
+          else
+            echo "::notice::Docker not available on macos-latest runner"
+          fi
       - name: Verify environment
         run: |
           python scripts/check_python_deps.py
