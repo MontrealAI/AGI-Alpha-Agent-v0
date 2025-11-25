@@ -573,6 +573,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
+      # `contents` enables checkout, `packages` allows GHCR pushes, and `id-token`
+      # is required for keyless cosign signatures.
+      contents: read
       packages: write
       id-token: write
     # This job builds and pushes the image.
