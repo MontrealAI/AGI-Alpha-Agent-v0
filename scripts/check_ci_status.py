@@ -198,6 +198,15 @@ def main(argv: list[str] | None = None) -> int:
         help="Wait for queued/in-progress runs to settle for up to N minutes before failing",
     )
     parser.add_argument(
+        "--once",
+        action="store_true",
+        help=(
+            "Check the latest runs once with zero grace period."
+            " Equivalent to --wait-minutes 0 --pending-grace-minutes 0 so pending"
+            " runs fail fast instead of waiting."
+        ),
+    )
+    parser.add_argument(
         "--poll-seconds",
         type=float,
         default=15,
@@ -238,6 +247,9 @@ def main(argv: list[str] | None = None) -> int:
     workflows = args.workflows or DEFAULT_WORKFLOWS
     token = os.environ.get("GITHUB_TOKEN")
     wait_seconds = max(0.0, args.wait_minutes * 60)
+    if args.once:
+        args.pending_grace_minutes = 0
+        wait_seconds = 0
     poll_interval = max(1.0, args.poll_seconds)
 
     failures, runs = verify_workflows(
