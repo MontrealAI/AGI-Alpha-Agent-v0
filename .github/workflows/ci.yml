@@ -7,8 +7,9 @@
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
 # Verified 2025-08-03T15:17:11Z via `python tools/update_actions.py` and `pre-commit`.
-# The Python matrix targets stable versions 3.11–3.13.
-# Matrix verifies long-term support versions 3.11–3.13.
+# The Python matrix targets stable versions 3.11–3.12 while upstream
+# PyTorch finalizes reliable 3.13 builds.
+# Matrix verifies long-term support versions 3.11–3.12.
 # Jobs cover linting, unit tests, Windows and macOS smoke tests,
 # full documentation builds, Docker image creation and deployment.
 # After editing this workflow run:
@@ -207,7 +208,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
+        # Retain 3.11–3.12 until upstream publishes stable PyTorch wheels for 3.13.
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
