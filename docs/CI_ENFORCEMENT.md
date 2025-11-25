@@ -12,11 +12,12 @@ Use this checklist to keep CI visible and required on both pull requests and the
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
      - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
      - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
-   - `🚀 CI — Insight Demo / Windows Smoke`
-   - `🚀 CI — Insight Demo / macOS Smoke`
-   - `🚀 CI — Insight Demo / 📜 MkDocs`
-   - `🚀 CI — Insight Demo / 📚 Docs Build`
-   - `🚀 CI — Insight Demo / 🐳 Docker build`
+     - `🚀 CI — Insight Demo / Windows Smoke`
+     - `🚀 CI — Insight Demo / macOS Smoke`
+     - `🚀 CI — Insight Demo / 📜 MkDocs`
+     - `🚀 CI — Insight Demo / 📚 Docs Build`
+     - `🚀 CI — Insight Demo / 🐳 Docker build`
+   - Export a token with **`administration` → `Read-only`** access (for classic PATs, include the `admin:repo_hook`/`repo` scopes) so branch protection metadata is visible to both the helper script and the **🩺 CI Health** workflow. GitHub's default `GITHUB_TOKEN` cannot read protection rules without this permission.
    - Run `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the rule includes every check above and still requires branches to be up to date. The **🩺 CI Health** workflow runs this helper automatically so regressions are caught quickly.
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
