@@ -11,7 +11,7 @@ import {ExpirationPlugin} from 'workbox-expiration';
 const CACHE_VERSION = '__CACHE_VERSION__';
 workbox.core.setCacheNameDetails({prefix: CACHE_VERSION});
 
-precacheAndRoute([{"revision":"e86bb9d7eba6e25530d170e1c6c224e6","url":"icon.svg"},{"revision":"07d6bb778195f3e64f2f7f31aa5b39bd","url":"index.html"},{"revision":"18c85b433c3d03e289f9db0552164f22","url":"manifest.webmanifest"},{"revision":"62b69abec756bb975cf16c3d6dfa6054","url":"workbox-sw.js"}]);
+precacheAndRoute([{"revision":"62b69abec756bb975cf16c3d6dfa6054","url":"workbox-sw.js"},{"revision":"18c85b433c3d03e289f9db0552164f22","url":"manifest.webmanifest"},{"revision":"572cb425467b4d6fe1939cbb1a4679e5","url":"index.html"},{"revision":"e86bb9d7eba6e25530d170e1c6c224e6","url":"icon.svg"}]);
 
 registerRoute(
   ({request, url}) =>
