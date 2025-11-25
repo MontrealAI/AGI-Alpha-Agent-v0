@@ -29,6 +29,12 @@ def main() -> int:
         return 0
     except PlaywrightError as exc:
         print(f"Playwright error: {exc}", file=sys.stderr)
+        if "Executable doesn't exist" in str(exc):
+            print(
+                "Browsers are missing. Run `python -m playwright install chromium` "
+                "(plus `python -m playwright install-deps` on Linux) to install them.",
+                file=sys.stderr,
+            )
         return 1
     except Exception as exc:  # noqa: BLE001
         print(f"Demo check failed: {exc}", file=sys.stderr)
