@@ -28,11 +28,18 @@ function Nav() {
 function App() {
   return (
     <BrowserRouter>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/archive" element={<Archive />} />
-      </Routes>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <header>
+        <Nav />
+      </header>
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/archive" element={<Archive />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }

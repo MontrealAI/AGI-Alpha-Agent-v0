@@ -75,9 +75,7 @@ def _optional_import(module: str) -> Any:
         if module == "alerts":
             return SimpleNamespace(
                 __doc__="Optional module unavailable",
-                send_alert=lambda message, url=None: _logger.warning(
-                    "alert: %s", message
-                ),
+                send_alert=lambda message, url=None: _logger.warning("alert: %s", message),
             )
 
         if module == "tracing":

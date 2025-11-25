@@ -8,6 +8,9 @@ export default defineConfig({
   root: '.',
   envPrefix: 'VITE_',
   appType: 'spa',
+  // Use a relative base so built assets resolve when served from file://
+  // during accessibility audits in CI.
+  base: './',
   server: {
     historyApiFallback: {
       index: '/index.html',

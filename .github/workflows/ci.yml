@@ -67,7 +67,7 @@ jobs:
       repo_owner_lower: ${{ steps.owner-manual.outputs.repo_owner_lower || steps.owner-auto.outputs.repo_owner_lower }}
     steps:
       # Checkout repository so the local ensure-owner action is available
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
         with:
           fetch-depth: 0
       - id: owner-manual
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
       - name: Lint workflows
         uses: reviewdog/action-actionlint@437bbe918b0d29544cbf9e8b1d63fe6f4e7a881d # v1
         with:
@@ -114,8 +114,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       # checkout required for local composite actions
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -124,13 +124,13 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
 
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache node_modules
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
@@ -142,7 +142,7 @@ jobs:
             node-modules-${{ runner.os }}-${{ hashFiles('.nvmrc') }}-
             node-modules-${{ runner.os }}-
       - name: Cache Playwright browsers
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles(env.NODE_LOCKFILES) }}-${{ hashFiles('.nvmrc') }}
@@ -158,7 +158,7 @@ jobs:
           git --version
 
       - name: Cache pre-commit
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-py${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -177,9 +177,10 @@ jobs:
       - name: Run pre-commit checks
         run: |
           from_ref="${{ github.event.before }}"
-          if [ -n "$from_ref" ]; then
+          if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then
             pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
           else
+            echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."
             pre-commit run --all-files
           fi
         env:
@@ -214,8 +215,8 @@ jobs:
         # Retain 3.11–3.12 until upstream publishes stable PyTorch wheels for 3.13.
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -235,7 +236,7 @@ jobs:
           python scripts/check_python_deps.py
           python check_env.py --auto-install --demo macro_sentinel
       # Install Node.js and cache dependencies using both lockfiles
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -288,7 +289,7 @@ jobs:
           if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload benchmark results
         if: steps.bench-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
           name: benchmark-results
           path: tests/benchmarks/latest.json
@@ -313,7 +314,7 @@ jobs:
           if [[ -f coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload coverage
         if: steps.coverage-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
           name: coverage-xml
           path: coverage.xml
@@ -325,8 +326,8 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           # triton wheels for PyTorch are unavailable on 3.13
           python-version: '3.12'
@@ -338,7 +339,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-demo.lock
           pip install -r requirements-dev.lock
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -373,8 +374,8 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           # triton wheels for PyTorch are unavailable on 3.13
           python-version: '3.12'
@@ -388,7 +389,7 @@ jobs:
           pip install -r requirements-dev.lock
       - name: Install macOS extras
         run: pip install appnope==0.1.4
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -426,8 +427,8 @@ jobs:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           # Stay on 3.12 until upstream publishes stable PyTorch wheels for 3.13
           # to avoid CI flakiness during docs builds.
@@ -435,7 +436,7 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements.lock'
       - name: Cache pre-commit
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -446,7 +447,7 @@ jobs:
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - uses: ./.github/actions/setup-insight-assets
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -485,8 +486,8 @@ jobs:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           # Keep parity with supported test matrix (3.11–3.12) so doc builds do not
           # pull unsupported wheels.
@@ -494,11 +495,11 @@ jobs:
           cache: pip
           cache-dependency-path: 'requirements.lock'
       - name: Cache pre-commit
-        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -576,8 +577,8 @@ jobs:
       id-token: write
     # This job builds and pushes the image.
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           # Align build Python with supported runtime versions to keep dependency
           # resolution stable while PyTorch finalizes 3.13 wheels.
@@ -586,7 +587,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Export repo_owner_lower
         run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -624,7 +625,7 @@ jobs:
           tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
           sha256sum web-client.tar.gz > web-client.sha256
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
+        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
         with:
           cosign-release: 'v2.5.3'
       - name: Sign web client artifact
@@ -646,7 +647,7 @@ jobs:
         id: web-client-check
         run: |
           if [[ -f web-client.tar.gz ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
-      - uses: actions/upload-artifact@v4.6.2 # ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
         if: steps.web-client-check.outputs.found == 'true'
         with:
           name: web-client
@@ -707,7 +708,7 @@ jobs:
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
+        uses: docker/login-action@v3.6.0 # 5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -719,7 +720,7 @@ jobs:
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
+        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
         with:
           cosign-release: 'v2.5.3'
       - name: Sign image
@@ -741,7 +742,7 @@ jobs:
       id-token: write
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
       - name: Export repo_owner_lower
         run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
       - name: Show tool versions
@@ -752,13 +753,13 @@ jobs:
           docker compose version
           git --version
       - name: Login to GHCR
-        uses: docker/login-action@v3.4.0 # 74a5d142397b4f367a81961eba4e8cd7edddf772
+        uses: docker/login-action@v3.6.0 # 5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.9.2 # d58896d6a1865668819e1d91763c7751a165e159
+        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
         with:
           cosign-release: 'v2.5.3'
       - name: Pull previous image
@@ -783,7 +784,7 @@ jobs:
         run: |
           cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-      - uses: actions/download-artifact@v4.3.0 # d3f86a106a0bac45b974a628896c90dbdf5c8093
+      - uses: actions/download-artifact@v6.0.0 # 018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
         with:
           name: web-client
       - name: Verify web client artifact
@@ -799,7 +800,7 @@ jobs:
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2.3.2 # 72f2c25fcb47643c292f7107632f7a47c1df5cd8
+        uses: softprops/action-gh-release@v2.4.2 # 5be0e66d93ac7ed76da52eca8bb058f665c3a5fe
         with:
           files: web-client.tar.gz
       - name: Rollback on failure

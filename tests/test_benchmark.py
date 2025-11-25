@@ -34,6 +34,7 @@ def _token_usage() -> int:
 @pytest.mark.benchmark(group="simulation")  # type: ignore[misc]
 def test_simulation_benchmark(tmp_path: Path, benchmark: Any) -> None:
     os.environ["SIM_RESULTS_DIR"] = str(tmp_path)
+    os.environ.setdefault("API_TOKEN", "test-token")
     from alpha_factory_v1.core.interface import api_server
 
     api = importlib.reload(api_server)
@@ -43,7 +44,8 @@ def test_simulation_benchmark(tmp_path: Path, benchmark: Any) -> None:
         asyncio.run(api._background_run("bench", cfg))
 
     result = benchmark(run)
-    p95 = quantiles(result.stats["data"], n=20)[18] if result.stats["data"] else 0.0
+    stats = getattr(result, "stats", None)
+    p95 = quantiles(stats["data"], n=20)[18] if stats and stats.get("data") else 0.0
     data = {"p95": p95, "tokens": _token_usage()}
     bench_dir = Path(__file__).parent / "benchmarks"
     bench_dir.mkdir(exist_ok=True)
