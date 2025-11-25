@@ -10,6 +10,7 @@ Use this checklist to keep CI visible and required on both pull requests and the
      - `✅ PR CI / Smoke tests`
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+     - `🚀 CI — Insight Demo / ✅ Actionlint`
      - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
      - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
    - `🚀 CI — Insight Demo / Windows Smoke`
@@ -24,7 +25,8 @@ Use this checklist to keep CI visible and required on both pull requests and the
 
 2. **Badges stay green**
    - Confirm the badges in `README.md` show green shields for **PR CI**, **🚀 CI — Insight Demo**, **🔥 Smoke Test**, and **🩺 CI Health**. If any badge is red, open the corresponding workflow run, fix the failure, and re-run the pipeline. The `ci.yml` pipeline now triggers on pushes and pull requests, so badges will refresh automatically after merges.
-  - When you need to rebuild the status bubble outside of normal events (for example, after temporarily disabling runners), dispatch **🚀 CI — Insight Demo** from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`). The **🩺 CI Health** workflow (scheduled hourly, auto-triggered after every CI/pr/smoke completion, and manually dispatchable) also re-runs `ci.yml`, `pr-ci.yml`, and `smoke.yml` when it detects stale pending runs (queued longer than ~10 minutes) and cancels stuck runs older than one hour.
+   - The primary **🚀 CI — Insight Demo** workflow lives at `https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml`. Keep it green by re-dispatching from the Actions tab after fixes so required checks and badges reflect the latest status.
+   - When you need to rebuild the status bubble outside of normal events (for example, after temporarily disabling runners), dispatch **🚀 CI — Insight Demo** from **Actions → 🚀 CI — Insight Demo** (or `gh workflow run ci.yml`). The **🩺 CI Health** workflow (scheduled hourly, auto-triggered after every CI/pr/smoke completion, and manually dispatchable) also re-runs `ci.yml`, `pr-ci.yml`, and `smoke.yml` when it detects stale pending runs (queued longer than ~10 minutes) and cancels stuck runs older than one hour.
   - Run `python scripts/check_ci_status.py --wait-minutes 20 --pending-grace-minutes 10 --stale-minutes 60 --cancel-stale --dispatch-missing --ref main` to confirm the latest runs for `ci.yml`, `pr-ci.yml`, and `smoke.yml` all report `success`. **Export `GITHUB_TOKEN` or `GH_TOKEN`** (a fine-grained or classic PAT) so the script can authenticate, raise rate limits, and automatically dispatch or cancel workflows when needed. The command polls queued or in-progress runs before failing, exits non-zero, and prints deep links when any workflow is pending or failed so you can jump straight to the culprit. If you see a `403` or `401` error, double-check the token scope and repository access. Add `--once` when you want an immediate status check with zero grace period; pending runs will cause a failure so you can unblock badges quickly.
 
 3. **Visibility on PRs**
