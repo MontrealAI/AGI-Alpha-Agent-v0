@@ -1,6 +1,7 @@
 # Extra packages required for demo-related tests
-# Keep versions loosely pinned so heavy wheels resolve quickly
-torch>=2.2
+# Torch 2.9.x currently publishes wheels only for Python 3.12+, so cap below 2.7
+# to keep Python 3.11 matrix jobs green while still allowing recent releases.
+torch>=2.2,<2.7
 gymnasium[classic-control]>=0.29
 gradio>=5.38.0
 audioop-lts==0.2.1; python_version >= "3.13"

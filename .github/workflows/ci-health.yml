@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
+  workflow_run:
+    workflows:
+      - "🚀 CI — Insight Demo"
+      - "✅ PR CI"
+      - "🔥 Smoke Test"
+    types:
+      - completed
 
 permissions:
   contents: read
