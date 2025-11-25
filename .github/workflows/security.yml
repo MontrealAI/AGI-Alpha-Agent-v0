@@ -121,8 +121,8 @@ jobs:
 
       - name: Push image to Docker Hub
         run: |
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} "$DOCKERHUB_REPO:${{ github.ref_name }}"
-          docker tag ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }} "$DOCKERHUB_REPO:latest"
+          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}" "$DOCKERHUB_REPO:${{ github.ref_name }}"
+          docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}" "$DOCKERHUB_REPO:latest"
           docker push "$DOCKERHUB_REPO:${{ github.ref_name }}"
           docker push "$DOCKERHUB_REPO:latest"
 
