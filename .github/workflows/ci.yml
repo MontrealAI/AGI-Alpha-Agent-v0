@@ -977,3 +977,33 @@ jobs:
           docker tag "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:previous" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           echo "Rollback succeeded"
+
+  branch-protection:
+    name: "🔒 Branch protection guardrails"
+    if: ${{ needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' && github.actor == github.repository_owner }}
+    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@v5.3.0 # 0b93645e9fea7318ecaed2b359559ac225c90a2b
+        with:
+          python-version: '3.12'
+      - name: Verify branch protection on main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/verify_branch_protection.py \
+            --branch main \
+            --required-check "✅ PR CI / Lint (ruff)" \
+            --required-check "✅ PR CI / Smoke tests" \
+            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
+            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)" \
+            --required-check "🚀 CI — Insight Demo / ✅ Actionlint" \
+            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.11)" \
+            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.12)" \
+            --required-check "🚀 CI — Insight Demo / Windows Smoke" \
+            --required-check "🚀 CI — Insight Demo / macOS Smoke" \
+            --required-check "🚀 CI — Insight Demo / 📜 MkDocs" \
+            --required-check "🚀 CI — Insight Demo / 📚 Docs Build" \
+            --required-check "🚀 CI — Insight Demo / 🐳 Docker build"
