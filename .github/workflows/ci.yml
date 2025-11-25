@@ -154,8 +154,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Cache node_modules
-        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        - name: Cache node_modules
+          uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
@@ -166,8 +166,8 @@ jobs:
           restore-keys: |
             node-modules-${{ runner.os }}-${{ hashFiles('.nvmrc') }}-
             node-modules-${{ runner.os }}-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        - name: Cache Playwright browsers
+          uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles(env.NODE_LOCKFILES) }}-${{ hashFiles('.nvmrc') }}
@@ -182,8 +182,8 @@ jobs:
           docker compose version
           git --version
 
-      - name: Cache pre-commit
-        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        - name: Cache pre-commit
+          uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-py${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -556,8 +556,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Cache pre-commit
-        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        - name: Cache pre-commit
+          uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -636,8 +636,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
-      - name: Cache pre-commit
-        uses: actions/cache@v4.0.2 # 0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        - name: Cache pre-commit
+          uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
