@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   actions: write
+  administration: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -42,3 +43,21 @@ jobs:
             --dispatch-missing \
             --poll-seconds 30 \
             --ref "${{ github.event.workflow_run.head_branch || 'main' }}"
+      - name: Verify branch protection on main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/verify_branch_protection.py \
+            --branch "${{ github.event.workflow_run.head_branch || 'main' }}" \
+            --required-check "✅ PR CI / Lint (ruff)" \
+            --required-check "✅ PR CI / Smoke tests" \
+            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
+            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)" \
+            --required-check "🚀 CI — Insight Demo / ✅ Actionlint" \
+            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.11)" \
+            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.12)" \
+            --required-check "🚀 CI — Insight Demo / Windows Smoke" \
+            --required-check "🚀 CI — Insight Demo / macOS Smoke" \
+            --required-check "🚀 CI — Insight Demo / 📜 MkDocs" \
+            --required-check "🚀 CI — Insight Demo / 📚 Docs Build" \
+            --required-check "🚀 CI — Insight Demo / 🐳 Docker build"
