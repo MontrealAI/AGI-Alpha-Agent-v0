@@ -67,7 +67,7 @@ def _run_age_seconds(run: Mapping[str, object], *, now: datetime | None = None) 
 
 def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
     if not token:
-        return False, "GITHUB_TOKEN is required to cancel runs"
+        return False, "GITHUB_TOKEN (or GH_TOKEN) is required to cancel runs"
     url = f"{API_ROOT}/repos/{repo}/actions/runs/{run_id}/cancel"
     request = urllib.request.Request(url, method="POST")
     request.add_header("Authorization", f"Bearer {token}")
@@ -83,7 +83,7 @@ def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
 
 def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) -> tuple[bool, str]:
     if not token:
-        return False, "GITHUB_TOKEN is required to dispatch workflows"
+        return False, "GITHUB_TOKEN (or GH_TOKEN) is required to dispatch workflows"
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/dispatches"
     request = urllib.request.Request(url, method="POST")
     request.add_header("Authorization", f"Bearer {token}")
@@ -195,6 +195,13 @@ def main(argv: list[str] | None = None) -> int:
         help="Wait for queued/in-progress runs to settle for up to N minutes before failing",
     )
     parser.add_argument(
+        "--token",
+        help=(
+            "Personal access token to raise rate limits and allow dispatch/cancel operations; "
+            "falls back to GITHUB_TOKEN or GH_TOKEN when omitted"
+        ),
+    )
+    parser.add_argument(
         "--once",
         action="store_true",
         help=(
@@ -242,7 +249,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     workflows = args.workflows or DEFAULT_WORKFLOWS
-    token = os.environ.get("GITHUB_TOKEN")
+    token = args.token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     wait_seconds = max(0.0, args.wait_minutes * 60)
     if args.once:
         args.pending_grace_minutes = 0
