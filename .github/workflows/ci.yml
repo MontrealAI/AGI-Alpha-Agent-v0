@@ -333,8 +333,8 @@ jobs:
       - name: Install dependencies  # install CPU-friendly lock files to avoid Linux-only wheels
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-cpu.lock
           pip install -r requirements-demo-cpu.lock
+          pip install -r requirements-dev.lock
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: '.nvmrc'
@@ -381,8 +381,8 @@ jobs:
       - name: Install dependencies  # install CPU-friendly lock files to avoid Linux-only wheels
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-cpu.lock
           pip install -r requirements-demo-cpu.lock
+          pip install -r requirements-dev.lock
       - name: Install macOS extras
         run: pip install appnope==0.1.4
       - uses: actions/setup-node@v4.4.0 # 49933ea5288caeca8642d1e84afbd3f7d6820020
