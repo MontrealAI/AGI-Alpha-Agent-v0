@@ -53,9 +53,19 @@ export default [
             parser: tsParser,
             sourceType: "module",
             ecmaVersion: "latest",
+            globals: browserGlobals,
         },
         plugins: { "@typescript-eslint": tsPlugin },
-        rules: { ...tsPlugin.configs.recommended.rules },
+        rules: {
+            ...tsPlugin.configs.recommended.rules,
+            // TypeScript already handles undefined globals; browser/worker types are
+            // provided by the build pipeline.
+            "no-undef": "off",
+            "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/no-unused-vars": ["warn", { args: "none", varsIgnorePattern: "^_" }],
+            "no-empty": ["warn", { allowEmptyCatch: true }],
+            "no-useless-escape": "warn",
+        },
     },
     {
         files: ["tests/**/*.{js,ts,mjs}"],

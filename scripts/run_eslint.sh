@@ -10,7 +10,9 @@ CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
 chmod -R u+w "$BROWSER_DIR/node_modules" 2>/dev/null || true
 rm -rf "$BROWSER_DIR/node_modules"
 npm --prefix "$BROWSER_DIR" cache clean --force >/dev/null
-npm --prefix "$BROWSER_DIR" ci >/dev/null
+# Skip postinstall scripts (e.g., esbuild binary downloads) to keep lint-only
+# installs lightweight and resilient in CI environments.
+npm --prefix "$BROWSER_DIR" ci --ignore-scripts >/dev/null
 sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
 cd "$BROWSER_DIR"
 args=()
