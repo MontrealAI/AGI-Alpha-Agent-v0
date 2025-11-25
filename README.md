@@ -40,7 +40,7 @@ Mark **all** of these checks as required branch protections so contributors see 
 Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 CI jobs now run without any environment approval gates; ensure the `ci-on-demand` (or similarly named) environment does not require reviewers so checks start immediately on pushes and pull requests.
 
-Run `python scripts/check_ci_status.py --wait-minutes 20` (set `GITHUB_TOKEN` to avoid rate limits) to poll until the latest `ci.yml`, `pr-ci.yml`, and `smoke.yml` runs finish. The script exits non-zero and links to any stuck run so you can retry it before merging.
+Run `python scripts/check_ci_status.py --wait-minutes 20` (set `GITHUB_TOKEN` to avoid rate limits) to poll until the latest `ci.yml`, `pr-ci.yml`, and `smoke.yml` runs finish. The script exits non-zero and links to any stuck run so you can retry it before merging. Use `--once` to fail fast with zero grace when you want an immediate red/green answer for a stalled badge.
 
 See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for a step-by-step enforcement checklist that keeps required checks visible on PRs and ensures the badges above stay green.
 
