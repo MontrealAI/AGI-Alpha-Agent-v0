@@ -18,7 +18,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 [![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
-The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels stale pending runs, re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck.
+The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels stale pending runs, re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck. Tests target Python 3.11 and 3.12 until PyTorch releases stable 3.13 wheels.
 
 Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — Insight Demo**, exercising the deploy and signing stages so production artifacts stay provably green.
 
@@ -28,11 +28,9 @@ Mark **all** of these checks as required branch protections so contributors see 
 - `✅ PR CI / Smoke tests`
 - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
 - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
-- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.13)`
 - `🚀 CI — Insight Demo / ✅ Actionlint`
 - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
 - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
-- `🚀 CI — Insight Demo / ✅ Pytest (3.13)`
 - `🚀 CI — Insight Demo / Windows Smoke`
 - `🚀 CI — Insight Demo / macOS Smoke`
 - `🚀 CI — Insight Demo / 📜 MkDocs`
