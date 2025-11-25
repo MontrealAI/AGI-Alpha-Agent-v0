@@ -53,9 +53,10 @@ jobs:
       - name: Run pre-commit checks
         run: |
           from_ref="${{ github.event.before }}"
-          if [ -n "$from_ref" ]; then
+          if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then
             pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
           else
+            echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."
             pre-commit run --all-files
           fi
         env:

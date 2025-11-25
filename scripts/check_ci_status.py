@@ -106,10 +106,7 @@ def _format_failure(run: Mapping[str, object], workflow: str, *, age_seconds: fl
     age_hint = ""
     if age_seconds is not None:
         age_hint = f" age={age_seconds/60:.1f}m"
-    return (
-        f"{workflow}: {conclusion}{age_hint} (branch={branch} sha={sha})\n"
-        f"  {html_url}"
-    )
+    return f"{workflow}: {conclusion}{age_hint} (branch={branch} sha={sha})\n" f"  {html_url}"
 
 
 def verify_workflows(

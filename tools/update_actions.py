@@ -31,12 +31,11 @@ def _get_requests():
             subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
             import requests as _req
         except Exception:
-            sys.stderr.write(
-                "Failed to install 'requests'. Please run 'pip install -r requirements-dev.txt'.\n"
-            )
+            sys.stderr.write("Failed to install 'requests'. Please run 'pip install -r requirements-dev.txt'.\n")
             raise
     _REQUESTS = _req
     return _req
+
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "ci.yml"
 
