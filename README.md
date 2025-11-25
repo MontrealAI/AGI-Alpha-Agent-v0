@@ -37,6 +37,8 @@ Mark **all** of these checks as required branch protections so contributors see 
 - `🚀 CI — Insight Demo / 📚 Docs Build`
 - `🚀 CI — Insight Demo / 🐳 Docker build`
 
+Use `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the protection rule enforces the list above and still requires branches to be up to date. The **🩺 CI Health** watchdog runs this verification automatically so drift is caught as soon as a workflow completes.
+
 Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 CI jobs now run without any environment approval gates; ensure the `ci-on-demand` (or similarly named) environment does not require reviewers so checks start immediately on pushes and pull requests.
 
