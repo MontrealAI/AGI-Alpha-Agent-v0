@@ -81,9 +81,7 @@ def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
         return False, f"network error: {exc.reason}"
 
 
-def _dispatch_workflow(
-    repo: str, workflow: str, ref: str, token: str | None
-) -> tuple[bool, str]:
+def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) -> tuple[bool, str]:
     if not token:
         return False, "GITHUB_TOKEN (or GH_TOKEN) is required to dispatch workflows"
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/dispatches"
