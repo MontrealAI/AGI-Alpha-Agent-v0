@@ -147,11 +147,15 @@ function collectFiles(dir) {
 
 function placeholderFiles() {
     const files = [];
-    for (const sub of ["lib"]) {
+    const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
+    for (const sub of ["lib", "wasm", "wasm_llm"]) {
         const root = path.join(path.dirname(scriptPath), sub);
         for (const f of collectFiles(root)) {
+            const { size } = fsSync.statSync(f);
+            if (size > MAX_SCAN_BYTES) continue;
             const data = fsSync.readFileSync(f, "utf8");
-            if (data.toLowerCase().includes("placeholder")) files.push(f);
+            const lowered = data.toLowerCase();
+            if (lowered.startsWith("placeholder")) files.push(f);
         }
     }
     return files;
@@ -167,6 +171,13 @@ function ensureAssets() {
     let placeholders = placeholderFiles();
     if (placeholders.length) {
         console.log("Detected placeholder assets, running fetch_assets.py...");
+        for (const f of placeholders) {
+            try {
+                fsSync.unlinkSync(f);
+            } catch (err) {
+                console.warn(`Failed to remove placeholder ${f}: ${err}`);
+            }
+        }
         runFetch();
         placeholders = placeholderFiles();
     }
@@ -194,7 +205,9 @@ async function relocateDistAssets() {
     for (const item of items) {
         const srcPath = path.join(OUT_DIR, item);
         if (fsSync.existsSync(srcPath)) {
-            await fs.rename(srcPath, path.join(assetDir, item));
+            const destPath = path.join(assetDir, item);
+            await fs.rm(destPath, { recursive: true, force: true });
+            await fs.rename(srcPath, destPath);
         }
     }
 }
