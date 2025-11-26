@@ -998,7 +998,16 @@ jobs:
 
   branch-protection:
     name: "🔒 Branch protection guardrails"
-    if: ${{ needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' && github.actor == github.repository_owner }}
+    if: ${{
+      needs.owner-check.result == 'success' &&
+      secrets.ADMIN_GITHUB_TOKEN != '' &&
+      (
+        (github.ref == 'refs/heads/main' && github.actor == github.repository_owner) ||
+        (github.event_name == 'pull_request' &&
+          github.event.pull_request.base.ref == 'main' &&
+          github.event.pull_request.head.repo.full_name == github.repository)
+      )
+    }}
     needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -1013,9 +1022,10 @@ jobs:
           # to branch protection settings. The default GITHUB_TOKEN lacks this
           # scope and will return 403s when querying protection rules.
           GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+          TARGET_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || 'main' }}
         run: |
           python scripts/verify_branch_protection.py \
-            --branch main \
+            --branch "${TARGET_BRANCH}" \
             --required-check "✅ PR CI / Lint (ruff)" \
             --required-check "✅ PR CI / Smoke tests" \
             --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
