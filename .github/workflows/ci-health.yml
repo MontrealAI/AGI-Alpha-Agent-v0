@@ -16,9 +16,7 @@ permissions:
   contents: read
   actions: write
   administration: read
-  # Keep permissions limited to supported keys. `administration: read` is
-  # required so the branch-protection verification step can query repository
-  # rules without failing with 403 errors.
+  # Keep permissions limited to supported keys recognized by GitHub Actions.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

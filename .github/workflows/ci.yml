@@ -35,8 +35,7 @@ permissions:
   actions: write
   administration: read
   # Note: GitHub rejects workflows with unsupported permission keys, so keep
-  # this list limited to scopes GitHub Actions recognizes. `administration: read`
-  # is required so the branch-protection guardrails can fetch protection rules.
+  # this list limited to scopes GitHub Actions recognizes.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
