@@ -47,7 +47,12 @@ jobs:
             --dispatch-missing \
             --poll-seconds 30 \
             --ref "${CI_TARGET_BRANCH}"
+      - name: Warn when admin token is unavailable
+        if: ${{ secrets.ADMIN_GITHUB_TOKEN == '' }}
+        run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."
+
       - name: Verify branch protection on main
+        if: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
         env:
           # Requires a fine-grained or classic PAT with administration access
           # to branch protection settings. The default GITHUB_TOKEN lacks this
