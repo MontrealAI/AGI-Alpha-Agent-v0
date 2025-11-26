@@ -24,10 +24,11 @@ Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — I
 
 #### Run CI locally
 
-1. Create and activate a Python 3.11–3.13 virtual environment:
+1. Create and activate a Python 3.11–3.13 virtual environment, then upgrade pip:
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
+   pip install -U pip
    ```
 2. Install required and optional Python dependencies (set `ALPHA_FACTORY_FULL=1` for heavier extras or `--wheelhouse <dir>` when offline):
    ```bash
@@ -41,9 +42,11 @@ Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — I
    ```bash
    pytest
    ```
-5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow**.
+5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow** (repository owners only).
 
-**Troubleshooting:** Missing optional packages (`openai_agents`, `gymnasium`, etc.) can fail tests—rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`. When offline or behind strict firewalls, set `WHEELHOUSE=$(pwd)/wheels` and pass `--wheelhouse "$WHEELHOUSE"` so installs use the bundled wheels instead of the network.
+**Troubleshooting:**
+- Missing optional packages (`openai_agents`, `gymnasium`, etc.) can fail tests—rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`.
+- When offline or behind strict firewalls, set `WHEELHOUSE=$(pwd)/wheels` and pass `--wheelhouse "$WHEELHOUSE"` so installs pull from the local wheel cache instead of PyPI.
 
 Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
 
