@@ -68,6 +68,8 @@ Pushes to `main` now also run a `🔒 Branch protection guardrails` job inside *
 
 Use `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the protection rule enforces the list above and still requires branches to be up to date. The **🩺 CI Health** watchdog runs this verification automatically so drift is caught as soon as a workflow completes.
 
+The branch-protection guardrails steps require the Actions token to include `administration:read` scope (alongside the existing `actions:write` for dispatch/cancel) so GitHub returns the protection settings instead of a 403/404. The workflow permissions now set this explicitly to keep the automated verification green.
+
 Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
 CI jobs now run without any environment approval gates; ensure the `ci-on-demand` (or similarly named) environment does not require reviewers so checks start immediately on pushes and pull requests.
 

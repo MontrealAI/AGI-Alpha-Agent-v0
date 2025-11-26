@@ -35,6 +35,9 @@ permissions:
   actions: write
   # Note: GitHub rejects workflows with unsupported permission keys, so keep
   # this list limited to scopes GitHub Actions recognizes.
+  # Allowed keys: actions, checks, contents, deployments, id-token, issues,
+  # discussions, packages, pages, pull-requests, repository-projects,
+  # security-events, statuses.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
