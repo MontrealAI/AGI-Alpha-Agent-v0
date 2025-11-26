@@ -15,9 +15,10 @@ on:
 permissions:
   contents: read
   actions: write
+  administration: read
   # Keep permissions limited to supported keys recognized by GitHub Actions.
-  # Allowed keys: actions, checks, contents, deployments, id-token, issues,
-  # discussions, packages, pages, pull-requests, repository-projects,
+  # Allowed keys: actions, administration, checks, contents, deployments, id-token,
+  # issues, discussions, packages, pages, pull-requests, repository-projects,
   # security-events, statuses.
 
 concurrency:
@@ -37,6 +38,7 @@ jobs:
       - name: Check CI health and remediate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
         run: |
           python scripts/check_ci_status.py \
             --wait-minutes 10 \
@@ -45,13 +47,14 @@ jobs:
             --cancel-stale \
             --dispatch-missing \
             --poll-seconds 30 \
-            --ref "${{ github.event.workflow_run.head_branch || 'main' }}"
+            --ref "${CI_TARGET_BRANCH}"
       - name: Verify branch protection on main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
         run: |
           python scripts/verify_branch_protection.py \
-            --branch "${{ github.event.workflow_run.head_branch || 'main' }}" \
+            --branch "${CI_TARGET_BRANCH}" \
             --required-check "✅ PR CI / Lint (ruff)" \
             --required-check "✅ PR CI / Smoke tests" \
             --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
