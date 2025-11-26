@@ -62,18 +62,36 @@ except ValueError:  # loaded stub with missing spec
     _spec = None
 
 _has_key = bool(os.getenv("OPENAI_API_KEY"))
-has_oai = _spec is not None and _has_key
+_has_runtime = False
+if _spec is not None:
+    try:
+        import openai_agents as _oa
+
+        _has_runtime = hasattr(getattr(_oa, "AgentRuntime", None), "run")
+    except Exception:  # pragma: no cover - optional dependency
+        _has_runtime = False
+
+has_oai = bool(_spec is not None and _has_key and _has_runtime)
 
 
 def refresh_runtime_availability() -> bool:
     """Recompute :data:`has_oai` after environment changes."""
-    global has_oai, _spec, _has_key
+    global has_oai, _spec, _has_key, _has_runtime
     try:
         _spec = importlib.util.find_spec("openai_agents")
     except ValueError:  # pragma: no cover - loaded stub without spec
         _spec = None
     _has_key = bool(os.getenv("OPENAI_API_KEY"))
-    has_oai = _spec is not None and _has_key
+    _has_runtime = False
+    if _spec is not None:
+        try:
+            import openai_agents as _oa
+
+            _has_runtime = hasattr(getattr(_oa, "AgentRuntime", None), "run")
+        except Exception:  # pragma: no cover - optional dependency
+            _has_runtime = False
+
+    has_oai = bool(_spec is not None and _has_key and _has_runtime)
     return has_oai
 
 
@@ -198,6 +216,49 @@ else:
             json_output=_truthy(json_output),
         )
         return f"{FALLBACK_MODE_PREFIX}{summary}"
+
+    def _run_runtime(
+        episodes: int,
+        target: int,
+        model: str | None = None,
+        rewriter: str | None = None,
+        log_dir: str | None = None,
+        sectors: str | None = None,
+        exploration: float | None = None,
+        seed: int | None = None,
+        json_output: bool | None = None,
+        *,
+        adk_host: str | None = None,
+        adk_port: int | None = None,
+    ) -> None:
+        """Execute the demo directly when the Agents runtime is unavailable."""
+        if model:
+            os.environ.setdefault("OPENAI_MODEL", model)
+        if rewriter:
+            os.environ.setdefault("MATS_REWRITER", rewriter)
+        if sectors:
+            os.environ.setdefault("ALPHA_AGI_SECTORS", sectors)
+        if exploration is not None:
+            os.environ.setdefault("ALPHA_AGI_EXPLORATION", str(exploration))
+        if seed is not None:
+            os.environ.setdefault("ALPHA_AGI_SEED", str(seed))
+
+        import asyncio
+
+        summary = asyncio.run(
+            run_insight_search(
+                episodes=episodes,
+                target=target,
+                model=model,
+                rewriter=rewriter,
+                sectors=sectors,
+                log_dir=log_dir,
+                exploration=exploration,
+                seed=seed,
+                json_output=json_output,
+            )
+        )
+        print(summary)
 
     def _run_runtime(
         episodes: int,

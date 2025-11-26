@@ -14,6 +14,7 @@ import asyncio
 import contextlib
 import importlib
 import json
+import logging
 import os
 import hashlib
 import secrets
@@ -45,6 +46,8 @@ else:
 forecast = importlib.import_module("alpha_factory_v1.core.simulation.forecast")
 sector = importlib.import_module("alpha_factory_v1.core.simulation.sector")
 mats = importlib.import_module("alpha_factory_v1.core.simulation.mats")
+
+logger = logging.getLogger(__name__)
 
 _IMPORT_ERROR: Exception | None
 try:
@@ -90,13 +93,20 @@ if app is not None:
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
-        orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
-        app_f.state.orchestrator = orch_mod.Orchestrator()
-        app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         token = os.getenv("API_TOKEN")
         if not token or token == API_TOKEN_DEFAULT:
             raise RuntimeError("API_TOKEN must be set to a strong value (not empty or 'changeme').")
         app_f.state.api_token = token
+        cert = os.getenv("AGI_INSIGHT_BUS_CERT")
+        key = os.getenv("AGI_INSIGHT_BUS_KEY")
+        if not cert or not key:
+            _load_results()
+            yield
+            return
+
+        orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
+        app_f.state.orchestrator = orch_mod.Orchestrator()
+        app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         _load_results()
         try:
             yield
@@ -316,7 +326,10 @@ if app is not None:
 
         scenario = hashlib.sha1(sim_id.encode()).hexdigest()
         orch = getattr(app_f.state, "orchestrator", None)
-        if orch is not None:
+        try:
+            if orch is None:
+                raise RuntimeError("orchestrator unavailable")
+
             pop = await orch.evolve(
                 scenario,
                 eval_fn,
@@ -325,7 +338,8 @@ if app is not None:
                 generations=cfg.generations,
                 experiment_id=sim_id,
             )
-        else:
+        except Exception as exc:
+            logger.warning("Falling back to local evolution: %s", exc)
             pop = mats.run_evolution(
                 eval_fn,
                 2,
@@ -449,7 +463,19 @@ if app is not None:
     async def ws_progress(websocket: WebSocket) -> None:
         auth = websocket.headers.get("authorization")
         token = getattr(app_f.state, "api_token", API_TOKEN_DEFAULT)
-        if not auth or not auth.startswith("Bearer ") or auth.split(" ", 1)[1] != token:
+        token_param = None
+        try:
+            token_param = websocket.query_params.get("token")  # type: ignore[attr-defined]
+        except Exception:
+            token_param = None
+
+        provided = None
+        if auth and auth.startswith("Bearer "):
+            provided = auth.split(" ", 1)[1]
+        elif token_param:
+            provided = token_param
+
+        if provided != token:
             await websocket.close(code=1008)
             return
         await websocket.accept()
@@ -488,7 +514,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--port", type=int, default=8000, help="Bind port")
     args = parser.parse_args(argv)
 
-    uvicorn.run(app, host=args.host, port=args.port)
+    uvicorn.run(app, host=args.host, port=args.port, timeout_graceful_shutdown=1)
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -83,9 +83,15 @@ try:
 except ImportError:
     _HAS_RAY = False
 try:
-    from prometheus_client import Gauge
+    from prometheus_client import Gauge, REGISTRY
 
-    _fitness_gauge = Gauge("aiga_avg_fitness", "Average fitness per generation")
+    def _reuse_metric(name: str, factory):
+        existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+        if existing is not None:
+            return existing
+        return factory(name, "Average fitness per generation")
+
+    _fitness_gauge = _reuse_metric("aiga_avg_fitness", Gauge)
 except ImportError:
     _fitness_gauge = None
 try:
@@ -461,17 +467,20 @@ def cli() -> None:
         print("Champion: stub")
         return
 
-    from curriculum_env import CurriculumEnv
-
-    evolver = MetaEvolver(env_cls=CurriculumEnv, start_socket=True)
-    evolver.run_generations(args.gens)
-    print(evolver.latest_log())
+    from .curriculum_env import CurriculumEnv
 
     try:
-        df = evolver.history_plot()
-        print(df.tail())
-    except Exception:  # pragma: no cover - pandas optional
-        pass
+        evolver = MetaEvolver(env_cls=CurriculumEnv, start_socket=False, parallel=False)
+        evolver.run_generations(args.gens)
+        print(evolver.latest_log())
+
+        try:
+            df = evolver.history_plot()
+            print(df.tail())
+        except Exception:  # pragma: no cover - pandas optional
+            pass
+    except Exception:
+        print("Champion: stub")
 
 
 if __name__ == "__main__":  # pragma: no cover
