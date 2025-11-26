@@ -16,6 +16,9 @@ permissions:
   contents: read
   actions: write
   # Keep permissions limited to supported keys recognized by GitHub Actions.
+  # Allowed keys: actions, checks, contents, deployments, id-token, issues,
+  # discussions, packages, pages, pull-requests, repository-projects,
+  # security-events, statuses.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
