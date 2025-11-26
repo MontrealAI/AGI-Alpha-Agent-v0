@@ -16,7 +16,6 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
 [![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
 [![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
-[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
 The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels pending runs that linger beyond a 10-minute grace window (hard stop at 60 minutes), re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck; it now also triggers after every **PR CI**, **🚀 CI**, or **🔥 Smoke Test** completion so badge issues are remediated immediately instead of waiting for the hourly cron. Tests target Python 3.11 and 3.12 until PyTorch releases stable 3.13 wheels.
@@ -37,6 +36,7 @@ Mark **all** of these checks as required branch protections so contributors see 
 - `🚀 CI — Insight Demo / 📜 MkDocs`
 - `🚀 CI — Insight Demo / 📚 Docs Build`
 - `🚀 CI — Insight Demo / 🐳 Docker build`
+- `🩺 CI Health / CI watchdog`
 
 Pushes to `main` now also run a `🔒 Branch protection guardrails` job inside **🚀 CI — Insight Demo** to assert those required checks remain enforced on the branch, ensuring the badges stay meaningful and every PR surfaces the full matrix.
 
