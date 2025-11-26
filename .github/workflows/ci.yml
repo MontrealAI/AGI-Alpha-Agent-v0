@@ -33,6 +33,8 @@ on:
 permissions:
   contents: read
   actions: write
+  # Note: GitHub ignores unknown permission keys (e.g., `administration`) and
+  # rejects the workflow, so keep this list limited to supported scopes.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
