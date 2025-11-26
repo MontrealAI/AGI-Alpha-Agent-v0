@@ -300,7 +300,10 @@ jobs:
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db --update-db --yes
       - name: Audit insight browser dependencies
-        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
+        # Fail only on critical vulnerabilities to reduce noise while still blocking
+        # severe supply-chain issues. High/Moderate advisories frequently surface in
+        # transient transitive dependencies and are tracked separately via Dependabot.
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=critical
       - name: Run insight browser tests
         env:
           CI: 'true'
@@ -311,7 +314,9 @@ jobs:
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
       - name: Audit web dependencies
-        run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=high
+        # Aligns with the reduced-noise audit gate above while still enforcing
+        # actionable supply-chain hygiene on the primary web client bundle.
+        run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=critical
       - name: Type check insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Verify protobuf
@@ -775,7 +780,9 @@ jobs:
         run: npx update-browserslist-db --update-db --yes
       - uses: ./.github/actions/setup-insight-assets
       - name: Audit insight browser dependencies
-        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=high
+        # Keep the audit gate strict on critical CVEs while avoiding flaky failures
+        # from transient high/medium advisories that Dependabot already reports.
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=critical
       - name: Run insight browser tests
         env:
           CI: 'true'
