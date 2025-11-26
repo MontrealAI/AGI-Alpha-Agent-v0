@@ -36,6 +36,7 @@ Use this checklist to keep CI visible and required on both pull requests and the
 
 4. **Local preflight**
    - Before opening a PR, run `pip install -r requirements.lock -r requirements-dev.lock` once, then execute `pytest -m smoke tests/test_af_requests.py tests/test_cache_version.py tests/test_check_env_core.py tests/test_check_env_network.py tests/test_config_settings.py tests/test_config_utils.py tests/test_ping_agent.py -q` to mirror the PR CI smoke job.
+   - Run `python scripts/check_agialpha_config.py` to confirm the canonical `$AGIALPHA` address (`0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`) and 18-decimal setting match `token.config.js`, the Solidity constants, and any workflow-provided environment variables before dispatching CI.
    - Run `pre-commit run --all-files` to catch formatting issues early; the PR CI job uses the same hooks.
 
 Following these steps keeps CI results visible, enforces the gates on `main`, and helps non-technical reviewers trust that every change lands with a green signal.

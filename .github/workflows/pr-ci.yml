@@ -21,6 +21,8 @@ defaults:
 env:
   PYTHON_VERSION: "3.12"
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  AGIALPHA_ADDRESS: "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA"
+  AGIALPHA_DECIMALS: 18
 
 jobs:
   lint:
@@ -36,6 +38,8 @@ jobs:
           cache-dependency-path: |
             requirements.lock
             requirements-dev.lock
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -59,6 +63,8 @@ jobs:
           cache-dependency-path: |
             requirements.lock
             requirements-dev.lock
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
