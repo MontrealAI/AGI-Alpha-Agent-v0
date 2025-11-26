@@ -22,7 +22,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json
+import os, asyncio, signal, logging, time, json, math
 from pathlib import Path
 from typing import Any, Dict
 
@@ -30,7 +30,14 @@ import uvicorn
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from prometheus_client import Counter, Gauge, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    Counter,
+    Gauge,
+    Histogram,
+    REGISTRY,
+    generate_latest,
+)
 
 # optional‑imports block keeps runtime lean
 try:
@@ -63,9 +70,12 @@ except (ImportError, AttributeError):
                 from agents import Agent as OpenAIAgent, Tool  # type: ignore
             except Exception:  # pragma: no cover - missing package
                 from .openai_agents_bridge import OpenAIAgent, Tool
-try:
-    from alpha_factory_v1.backend import adk_bridge
-except Exception:  # pragma: no cover - optional dependency
+if os.getenv("ENABLE_AIGA_ADK", "false").lower() == "true":
+    try:
+        from alpha_factory_v1.backend import adk_bridge
+    except Exception:  # pragma: no cover - optional dependency
+        adk_bridge = None
+else:
     adk_bridge = None
 if __package__ is None:
     import sys
@@ -78,7 +88,11 @@ from .openai_agents_bridge import EvolverAgent
 from .meta_evolver import MetaEvolver
 from .curriculum_env import CurriculumEnv
 from .utils import build_llm
-import gradio as gr
+
+try:
+    import gradio as gr
+except Exception:  # pragma: no cover - optional dependency
+    gr = None  # type: ignore[assignment]
 
 try:  # optional JWT auth
     import jwt  # type: ignore
@@ -121,13 +135,21 @@ if ENABLE_SENTRY and SENTRY_DSN:
     except ImportError:  # pragma: no cover - optional
         log.warning("Sentry requested but sentry_sdk missing")
 
+
 # ---------------------------------------------------------------------------
 # METRICS --------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-FITNESS_GAUGE = Gauge("aiga_best_fitness", "Best fitness achieved so far")
-GEN_COUNTER = Counter("aiga_generations_total", "Total generations processed")
-STEP_LATENCY = Histogram("aiga_step_seconds", "Seconds spent per evolution step")
-REQUEST_COUNTER = Counter("aiga_http_requests", "API requests", ["route"])
+def _reuse_or_create(name: str, factory, *args, **kwargs):
+    existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+    if existing is not None:
+        return existing
+    return factory(name, *args, **kwargs)
+
+
+FITNESS_GAUGE = _reuse_or_create("aiga_best_fitness", Gauge, "Best fitness achieved so far")
+GEN_COUNTER = _reuse_or_create("aiga_generations_total", Counter, "Total generations processed")
+STEP_LATENCY = _reuse_or_create("aiga_step_seconds", Histogram, "Seconds spent per evolution step")
+REQUEST_COUNTER = _reuse_or_create("aiga_http_requests", Counter, "API requests", ["route"])
 
 # rate-limit state
 _REQUEST_LOG: dict[str, list[float]] = {}
@@ -274,10 +296,13 @@ async def _count_requests(request, call_next):
 @app.get("/health")
 async def read_health():
     """Return service status and best fitness."""
+    best = service.evolver.best_fitness
+    if not math.isfinite(best):
+        best = 0.0
     return {
         "status": "ok",
         "generations": int(GEN_COUNTER._value.get()),
-        "best_fitness": service.evolver.best_fitness,
+        "best_fitness": best,
     }
 
 
@@ -320,6 +345,10 @@ async def best_alpha():
 # GRADIO DASHBOARD -----------------------------------------------------------
 # ---------------------------------------------------------------------------
 async def _launch_gradio() -> None:  # noqa: D401
+    if gr is None:
+        log.info("Gradio dashboard disabled (package not installed)")
+        return
+
     with gr.Blocks(title="AI‑GA Meta‑Evolution Demo") as ui:
         plot = gr.LinePlot(label="Fitness by Generation")
         log_md = gr.Markdown()
@@ -351,7 +380,10 @@ if __name__ == "__main__":
         loop.add_signal_handler(sig, lambda s=sig: asyncio.create_task(_graceful_exit(s)))
 
     # start Gradio dashboard asynchronously
-    loop.create_task(_launch_gradio())
+    if gr is not None:
+        loop.create_task(_launch_gradio())
+    else:
+        log.info("Skipping Gradio startup")
 
     # register with agent mesh (optional)
     if AgentRuntime:
@@ -362,4 +394,10 @@ if __name__ == "__main__":
         adk_bridge.maybe_launch()
 
     # run FastAPI (blocking)
-    uvicorn.run(app, host="0.0.0.0", port=API_PORT, log_level="info")
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=API_PORT,
+        log_level="info",
+        timeout_graceful_shutdown=1,
+    )

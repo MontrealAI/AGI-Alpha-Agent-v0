@@ -93,13 +93,20 @@ if app is not None:
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
-        orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
-        app_f.state.orchestrator = orch_mod.Orchestrator()
-        app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         token = os.getenv("API_TOKEN")
         if not token or token == API_TOKEN_DEFAULT:
             raise RuntimeError("API_TOKEN must be set to a strong value (not empty or 'changeme').")
         app_f.state.api_token = token
+        cert = os.getenv("AGI_INSIGHT_BUS_CERT")
+        key = os.getenv("AGI_INSIGHT_BUS_KEY")
+        if not cert or not key:
+            _load_results()
+            yield
+            return
+
+        orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
+        app_f.state.orchestrator = orch_mod.Orchestrator()
+        app_f.state.task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         _load_results()
         try:
             yield
@@ -507,7 +514,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--port", type=int, default=8000, help="Bind port")
     args = parser.parse_args(argv)
 
-    uvicorn.run(app, host=args.host, port=args.port)
+    uvicorn.run(app, host=args.host, port=args.port, timeout_graceful_shutdown=1)
 
 
 if __name__ == "__main__":  # pragma: no cover

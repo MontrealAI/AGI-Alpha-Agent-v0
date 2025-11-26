@@ -43,11 +43,15 @@ def build_llm() -> object:
     global OpenAIAgent
     OpenAIAgent = _resolve_openai_agent()
     api_key = os.getenv("OPENAI_API_KEY")
+    base_url = None if api_key else os.getenv("OLLAMA_BASE_URL", "http://ollama:11434/v1")
     try:
-        return OpenAIAgent(
+        llm = OpenAIAgent(
             model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
             api_key=api_key,
-            base_url=None if api_key else os.getenv("OLLAMA_BASE_URL", "http://ollama:11434/v1"),
+            base_url=base_url,
         )
+        if base_url:
+            print(f"Using ollama backend via {base_url}", flush=True)
+        return llm
     except TypeError:  # pragma: no cover - allow dummy classes in tests
         return _FallbackAgent()
