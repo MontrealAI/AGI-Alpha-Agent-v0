@@ -14,6 +14,7 @@ import asyncio
 import contextlib
 import importlib
 import json
+import logging
 import os
 import hashlib
 import secrets
@@ -45,6 +46,8 @@ else:
 forecast = importlib.import_module("alpha_factory_v1.core.simulation.forecast")
 sector = importlib.import_module("alpha_factory_v1.core.simulation.sector")
 mats = importlib.import_module("alpha_factory_v1.core.simulation.mats")
+
+logger = logging.getLogger(__name__)
 
 _IMPORT_ERROR: Exception | None
 try:
@@ -316,7 +319,10 @@ if app is not None:
 
         scenario = hashlib.sha1(sim_id.encode()).hexdigest()
         orch = getattr(app_f.state, "orchestrator", None)
-        if orch is not None:
+        try:
+            if orch is None:
+                raise RuntimeError("orchestrator unavailable")
+
             pop = await orch.evolve(
                 scenario,
                 eval_fn,
@@ -325,7 +331,8 @@ if app is not None:
                 generations=cfg.generations,
                 experiment_id=sim_id,
             )
-        else:
+        except Exception as exc:
+            logger.warning("Falling back to local evolution: %s", exc)
             pop = mats.run_evolution(
                 eval_fn,
                 2,
@@ -449,7 +456,19 @@ if app is not None:
     async def ws_progress(websocket: WebSocket) -> None:
         auth = websocket.headers.get("authorization")
         token = getattr(app_f.state, "api_token", API_TOKEN_DEFAULT)
-        if not auth or not auth.startswith("Bearer ") or auth.split(" ", 1)[1] != token:
+        token_param = None
+        try:
+            token_param = websocket.query_params.get("token")  # type: ignore[attr-defined]
+        except Exception:
+            token_param = None
+
+        provided = None
+        if auth and auth.startswith("Bearer "):
+            provided = auth.split(" ", 1)[1]
+        elif token_param:
+            provided = token_param
+
+        if provided != token:
             await websocket.close(code=1008)
             return
         await websocket.accept()

@@ -22,7 +22,7 @@ try:  # optional dependency
         raise AttributeError
     OpenAIAgent = _oa.OpenAIAgent  # type: ignore[misc]
     AgentRuntime = getattr(_oa, "AgentRuntime", None)
-    if AgentRuntime is None:
+    if AgentRuntime is None or not hasattr(AgentRuntime, "run"):
         from agents.run import Runner
 
         class AgentRuntime:  # type: ignore[misc]
@@ -42,7 +42,30 @@ try:  # optional dependency
                 asyncio.run(self._runner.run(self._agent, ""))
 
 except Exception as exc:  # pragma: no cover - fallback stub
-    raise ModuleNotFoundError("OpenAI Agents SDK is required to run the meta-evolution demo") from exc
+    try:
+        from agents import Agent, Tool, OpenAIAgent as _OpenAIAgent
+        from agents.run import Runner
+
+        OpenAIAgent = _OpenAIAgent  # type: ignore[misc]
+
+        class AgentRuntime:  # type: ignore[misc]
+            def __init__(self, *_: object, **__: object) -> None:
+                self._runner = Runner()
+                self._agent: Agent | None = None
+
+            def register(self, agent: Agent) -> None:
+                self._agent = agent
+
+            def run(self) -> None:
+                import asyncio
+
+                if self._agent is None:
+                    raise RuntimeError("No agent registered")
+
+                asyncio.run(self._runner.run(self._agent, ""))
+
+    except Exception as fallback_exc:
+        raise ModuleNotFoundError("OpenAI Agents SDK is required to run the meta-evolution demo") from fallback_exc
 
 
 try:
