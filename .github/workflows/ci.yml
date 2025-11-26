@@ -844,18 +844,34 @@ jobs:
       - name: Ensure Chrome for Axe
         run: |
           set -euo pipefail
-          chrome_bin=""
-          if command -v google-chrome-stable >/dev/null 2>&1; then
-            chrome_bin=$(command -v google-chrome-stable)
-          elif command -v google-chrome >/dev/null 2>&1; then
-            chrome_bin=$(command -v google-chrome)
-          elif command -v chromium-browser >/dev/null 2>&1; then
-            chrome_bin=$(command -v chromium-browser)
-          else
+
+          find_chrome() {
+            for candidate in \ \
+              google-chrome-stable \ \
+              google-chrome \ \
+              chromium-browser \ \
+              chromium \ \
+              /snap/bin/chromium; do
+              if command -v "$candidate" >/dev/null 2>&1; then
+                command -v "$candidate"
+                return
+              elif [ -x "$candidate" ]; then
+                echo "$candidate"
+                return
+              fi
+            done
+          }
+
+          chrome_bin=$(find_chrome || true)
+
+          if [ -z "$chrome_bin" ]; then
             export DEBIAN_FRONTEND=noninteractive
             sudo apt-get update
-            sudo apt-get install -y chromium-browser chromium-chromedriver
-            chrome_bin=$(command -v chromium-browser)
+            if ! sudo apt-get install -y chromium-browser chromium-chromedriver; then
+              echo "::warning::'chromium-browser' package unavailable; trying 'chromium'."
+              sudo apt-get install -y chromium chromium-driver || true
+            fi
+            chrome_bin=$(find_chrome || true)
           fi
 
           if [ -z "$chrome_bin" ]; then
