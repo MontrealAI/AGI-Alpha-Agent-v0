@@ -154,18 +154,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Cache node_modules
-        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
-        with:
-          path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
-            alpha_factory_v1/core/interface/web_client/node_modules
-            alpha_factory_v1/core/interface/web_client/staking/node_modules
-            alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles(env.NODE_LOCKFILES) }}-${{ hashFiles('.nvmrc') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ hashFiles('.nvmrc') }}-
-            node-modules-${{ runner.os }}-
       - name: Cache Playwright browsers
         uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
         with:
@@ -197,6 +185,12 @@ jobs:
         run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+      - name: Clean Node installs
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks

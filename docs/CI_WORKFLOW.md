@@ -37,11 +37,14 @@ Keep the PR gates strict so every contributor and automation path sees the same
 CI surface:
 
 - In **Settings → Branches → Branch protection rules**, add `main` and enable
-  **Require status checks to pass before merging** with these required checks:
-  - `PR CI / Lint (ruff)`
-  - `PR CI / Smoke tests`
+  **Require status checks to pass before merging** with these required checks
+  (copy the strings exactly so the protection rule attaches to the jobs shown
+  on PRs):
+  - `✅ PR CI / Lint (ruff)`
+  - `✅ PR CI / Smoke tests`
   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+  - `🚀 CI — Insight Demo / ✅ Actionlint`
   - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
   - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
   - `🚀 CI — Insight Demo / Windows Smoke`
@@ -51,6 +54,10 @@ CI surface:
   - `🚀 CI — Insight Demo / 🐳 Docker build`
 - Keep **Require branches to be up to date before merging** switched on so
   merges always include the latest CI results.
+- Run `python scripts/verify_branch_protection.py --branch main` (export
+  `GITHUB_TOKEN`) after editing workflows to confirm the rule still enforces
+  every check above; the **🩺 CI Health** watchdog executes the same command
+  automatically.
 - For owners, trigger **🚀 CI — Insight Demo** after large changes to validate
   the full matrix and Docker build; the badge in the README keeps its status
   visible.
