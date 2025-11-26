@@ -33,10 +33,9 @@ on:
 permissions:
   contents: read
   actions: write
-  administration: read
   # Note: GitHub rejects workflows with unsupported permission keys, so keep
   # this list limited to scopes GitHub Actions recognizes.
-  # Allowed keys: actions, administration, checks, contents, deployments,
+  # Allowed keys: actions, checks, contents, deployments,
   # id-token, issues, discussions, packages, pages, pull-requests,
   # repository-projects, security-events, statuses.
 
@@ -1010,7 +1009,10 @@ jobs:
           python-version: '3.12'
       - name: Verify branch protection on main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Requires a fine-grained or classic PAT with administration access
+          # to branch protection settings. The default GITHUB_TOKEN lacks this
+          # scope and will return 403s when querying protection rules.
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
         run: |
           python scripts/verify_branch_protection.py \
             --branch main \

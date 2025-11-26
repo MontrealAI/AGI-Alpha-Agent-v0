@@ -15,9 +15,8 @@ on:
 permissions:
   contents: read
   actions: write
-  administration: read
   # Keep permissions limited to supported keys recognized by GitHub Actions.
-  # Allowed keys: actions, administration, checks, contents, deployments, id-token,
+  # Allowed keys: actions, checks, contents, deployments, id-token,
   # issues, discussions, packages, pages, pull-requests, repository-projects,
   # security-events, statuses.
 
@@ -50,7 +49,10 @@ jobs:
             --ref "${CI_TARGET_BRANCH}"
       - name: Verify branch protection on main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Requires a fine-grained or classic PAT with administration access
+          # to branch protection settings. The default GITHUB_TOKEN lacks this
+          # scope and will return 403s when querying protection rules.
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
         run: |
           python scripts/verify_branch_protection.py \
