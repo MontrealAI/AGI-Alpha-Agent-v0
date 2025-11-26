@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { installToken, AGIALPHA_DECIMALS } = require("./utils/token");
 
 describe("JobRegistry timeout claims", function () {
   let owner;
@@ -11,27 +12,20 @@ describe("JobRegistry timeout claims", function () {
   let reputation;
   let taxPolicy;
   let agi;
-  const minStake = ethers.parseUnits("100", 18);
-  const reward = ethers.parseUnits("10", 18);
+  const minStake = ethers.parseUnits("100", AGIALPHA_DECIMALS);
+  const reward = ethers.parseUnits("10", AGIALPHA_DECIMALS);
   const maxDuration = 7 * 24 * 60 * 60;
 
   beforeEach(async function () {
     await ethers.provider.send("hardhat_reset", []);
     [owner, employer, agent, outsider] = await ethers.getSigners();
 
-    const MockAGI = await ethers.getContractFactory(
-      "contracts/v2/mocks/MockAGI.sol:MockAGI"
-    );
-    agi = await MockAGI.deploy(18);
-    await agi.waitForDeployment();
+    agi = await installToken();
 
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    stakeManager = await StakeManager.deploy(
-      await agi.getAddress(),
-      owner.address
-    );
+    stakeManager = await StakeManager.deploy(owner.address);
     await stakeManager.waitForDeployment();
 
     const MockReputation = await ethers.getContractFactory(
