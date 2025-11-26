@@ -64,7 +64,7 @@ Mark **all** of these checks as required branch protections so contributors see 
 - `🚀 CI — Insight Demo / 🐳 Docker build`
 - `🩺 CI Health / CI watchdog`
 
-Pushes to `main` now also run a `🔒 Branch protection guardrails` job inside **🚀 CI — Insight Demo** to assert those required checks remain enforced on the branch, ensuring the badges stay meaningful and every PR surfaces the full matrix.
+Pushes to `main` and in-repo pull requests now run a `🔒 Branch protection guardrails` job inside **🚀 CI — Insight Demo** to assert those required checks remain enforced on the branch, ensuring the badges stay meaningful and every PR surfaces the full matrix before merge.
 
 Use `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the protection rule enforces the list above and still requires branches to be up to date. The **🩺 CI Health** watchdog runs this verification automatically so drift is caught as soon as a workflow completes.
 
