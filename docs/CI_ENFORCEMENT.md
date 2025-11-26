@@ -21,6 +21,7 @@ Use this checklist to keep CI visible and required on both pull requests and the
    - Run `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the rule includes every check above and still requires branches to be up to date. The **🩺 CI Health** workflow runs this helper automatically so regressions are caught quickly.
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
+   - **Permissions:** ensure the workflows checking branch protection (`ci.yml` and `ci-health.yml`) grant the Actions token `administration: read` (plus `actions: write` for dispatch/cancel) so the verification step can read protection rules. Without that permission, the guardrails jobs fail with 403 errors even when the branch is correctly protected.
    - Ensure no environment approval gates block CI. Remove any required reviewers or timeouts on the `ci-on-demand` (or similarly named) environment so the matrix jobs start automatically instead of sitting in a permanent "Pending approval" state.
 
 2. **Badges stay green**
