@@ -22,6 +22,29 @@ The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull r
 
 Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — Insight Demo**, exercising the deploy and signing stages so production artifacts stay provably green.
 
+#### Run CI locally
+
+1. Create and activate a Python 3.11–3.13 virtual environment:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+2. Install required and optional Python dependencies (set `ALPHA_FACTORY_FULL=1` for heavier extras or `--wheelhouse <dir>` when offline):
+   ```bash
+   python check_env.py --auto-install
+   ```
+3. Run formatting and lint hooks:
+   ```bash
+   pre-commit run --all-files
+   ```
+4. Execute the tests:
+   ```bash
+   pytest
+   ```
+5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow**.
+
+**Troubleshooting:** Missing optional packages (`openai_agents`, `gymnasium`, etc.) can fail tests—rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`. When offline or behind strict firewalls, set `WHEELHOUSE=$(pwd)/wheels` and pass `--wheelhouse "$WHEELHOUSE"` so installs use the bundled wheels instead of the network.
+
 Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
 
 - `✅ PR CI / Lint (ruff)`
