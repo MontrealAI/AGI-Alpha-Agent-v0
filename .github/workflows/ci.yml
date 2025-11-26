@@ -69,7 +69,7 @@ jobs:
       repo_owner_lower: ${{ steps.owner-manual.outputs.repo_owner_lower || steps.owner-auto.outputs.repo_owner_lower }}
     steps:
       # Checkout repository so the local ensure-owner action is available
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           fetch-depth: 0
       - id: owner-manual
@@ -99,7 +99,7 @@ jobs:
       checks: write
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Lint workflows
         uses: reviewdog/action-actionlint@437bbe918b0d29544cbf9e8b1d63fe6f4e7a881d # v1
         with:
@@ -120,7 +120,7 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       # checkout required for local composite actions
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -142,7 +142,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -151,7 +151,7 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
 
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -236,7 +236,7 @@ jobs:
         # Retain 3.11–3.12 until upstream publishes stable PyTorch wheels for 3.13.
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -258,7 +258,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -278,7 +278,7 @@ jobs:
           python scripts/check_python_deps.py
           python check_env.py --auto-install --demo macro_sentinel
       # Install Node.js and cache dependencies using both lockfiles
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -373,7 +373,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -395,7 +395,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           # Use 3.11 to align with available CPU-only PyTorch wheels on Windows
           python-version: '3.11'
@@ -407,7 +407,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-demo-cpu.lock
           pip install -r requirements-dev.lock
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -448,7 +448,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -470,7 +470,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           # Use 3.11 to align with available CPU-only PyTorch wheels on macOS
           python-version: '3.11'
@@ -484,7 +484,7 @@ jobs:
           pip install -r requirements-dev.lock
       - name: Install macOS extras
         run: pip install appnope==0.1.4
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -528,7 +528,7 @@ jobs:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -550,7 +550,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           # Stay on 3.12 until upstream publishes stable PyTorch wheels for 3.13
           # to avoid CI flakiness during docs builds.
@@ -569,7 +569,7 @@ jobs:
       - name: Install base dependencies
         run: python check_env.py --auto-install
       - uses: ./.github/actions/setup-insight-assets
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -608,7 +608,7 @@ jobs:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -630,7 +630,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           # Keep parity with supported test matrix (3.11–3.12) so doc builds do not
           # pull unsupported wheels.
@@ -642,7 +642,7 @@ jobs:
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -723,7 +723,7 @@ jobs:
       id-token: write
     # This job builds and pushes the image.
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -745,7 +745,7 @@ jobs:
               exist_ok=True,
           )
           PY
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           # Align build Python with supported runtime versions to keep dependency
           # resolution stable while PyTorch finalizes 3.13 wheels.
@@ -754,7 +754,7 @@ jobs:
           cache-dependency-path: 'requirements.lock'
       - name: Export repo_owner_lower
         run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@v6.0.0 # 2028fbc5c25fe9cf00d9f06a71cc4710d4507903
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -911,7 +911,7 @@ jobs:
       id-token: write
     environment: ci-on-demand
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: Export repo_owner_lower
         run: echo "repo_owner_lower=${{ needs.owner-check.outputs.repo_owner_lower }}" >> "$GITHUB_ENV"
       - name: Show tool versions
@@ -953,7 +953,7 @@ jobs:
         run: |
           cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.ref_name }}"
           cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
-      - uses: actions/download-artifact@v6.0.0 # 018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: web-client
       - name: Verify web client artifact
@@ -988,8 +988,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6.0.0 # 1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
-      - uses: actions/setup-python@v6.1.0 # 83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: '3.12'
       - name: Verify branch protection on main
