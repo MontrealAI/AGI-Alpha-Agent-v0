@@ -177,6 +177,32 @@ pre-commit run --all-files
 
 Refer to [AGENTS.md](AGENTS.md#pre-commit-in-air-gapped-setups) for detailed steps.
 
+### Run CI locally
+
+1. Create and activate a Python 3.11–3.13 virtual environment, then upgrade pip:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -U pip
+   ```
+2. Install dependencies (set `ALPHA_FACTORY_FULL=1` for heavier extras or `--wheelhouse <dir>` when offline):
+   ```bash
+   python check_env.py --auto-install
+   ```
+3. Run the linters and formatters:
+   ```bash
+   pre-commit run --all-files
+   ```
+4. Execute the tests:
+   ```bash
+   pytest
+   ```
+5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow** (repository owners only).
+
+**Troubleshooting:**
+- If tests fail due to missing optional packages, rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`.
+- When running without internet or behind strict firewalls, set `WHEELHOUSE=$(pwd)/wheels` and supply `--wheelhouse "$WHEELHOUSE"` so installs pull from the local wheel cache instead of PyPI.
+
 ## Documentation Builds
 
 Run `mkdocs build --strict` before opening a pull request. The CI pipeline also
