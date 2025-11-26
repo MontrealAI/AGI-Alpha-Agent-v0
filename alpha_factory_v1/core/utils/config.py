@@ -148,14 +148,19 @@ class Settings(SettingsBase):
                 self.island_backends = mapping
         if not self.openai_api_key:
             self.openai_api_key = get_secret("OPENAI_API_KEY")
-        forced_offline = os.getenv("AGI_INSIGHT_OFFLINE") == "1" or data.get("offline") is True
-        if self.openai_api_key and self.offline:
-            if forced_offline:
-                _log.info("AGI_INSIGHT_OFFLINE=1 set – keeping offline mode despite OPENAI_API_KEY availability")
-            else:
+        explicit_offline = "offline" in self.model_fields_set
+        forced_offline = os.getenv("AGI_INSIGHT_OFFLINE") == "1" or (explicit_offline and data.get("offline") is True)
+        if forced_offline:
+            if self.openai_api_key:
+                _log.info(
+                    "AGI_INSIGHT_OFFLINE=1 set – keeping offline mode despite OPENAI_API_KEY availability"
+                )
+            self.offline = True
+        elif self.openai_api_key:
+            if self.offline:
                 _log.info("OPENAI_API_KEY resolved from secret backend – disabling offline mode")
-                self.offline = False
-        if not self.openai_api_key:
+            self.offline = False
+        else:
             _log.warning("OPENAI_API_KEY missing – offline mode enabled")
             self.offline = True
         if self.offline:

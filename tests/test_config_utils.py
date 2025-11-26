@@ -32,6 +32,7 @@ def test_get_secret_env(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_settings_secret_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("AGI_INSIGHT_SECRET_BACKEND", raising=False)
+    monkeypatch.delenv("AGI_INSIGHT_OFFLINE", raising=False)
     cfg.init_config()
     monkeypatch.setattr(cfg, "get_secret", lambda name, default=None: "backend")
     settings = cfg.Settings()

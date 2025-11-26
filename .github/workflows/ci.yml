@@ -43,6 +43,8 @@ concurrency:
 env:
   DOCKER_IMAGE: agi-insight-demo
   SANDBOX_IMAGE: selfheal-sandbox:latest
+  PYTHONUTF8: '1'
+  PIP_NO_INPUT: '1'
   COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
   COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
   NODE_LOCKFILES: |
@@ -321,7 +323,8 @@ jobs:
         shell: bash
         run: |
           python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse "$WHEELHOUSE"}
-          pytest --cov --cov-report=xml --cov-fail-under=80
+          mkdir -p artifacts/test-reports
+          pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml
       - name: Mutation tests
         if: matrix.python-version == '3.11'
         run: |
@@ -358,13 +361,20 @@ jobs:
       - name: Check coverage report
         id: coverage-check
         run: |
-          if [[ -f coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
+          if [[ -f artifacts/coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Upload pytest results
+        if: always()
+        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
+        with:
+          name: pytest-${{ matrix.python-version }}
+          path: artifacts/test-reports/pytest.xml
+          if-no-files-found: warn
       - name: Upload coverage
         if: steps.coverage-check.outputs.found == 'true'
         uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
           name: coverage-xml
-          path: coverage.xml
+          path: artifacts/coverage.xml
 
   windows-smoke:
     name: "Windows Smoke"
