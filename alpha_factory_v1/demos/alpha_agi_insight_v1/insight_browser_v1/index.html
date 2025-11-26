@@ -47,6 +47,24 @@
     <script src="bundle.esm.min.js" crossorigin="anonymous"></script>
     <script src="pyodide.js" crossorigin="anonymous"></script>
     <script>
+      // Provide a resilient toast implementation before deferred modules load.
+      // The Playwright offline checks rely on these calls not throwing.
+      window.toast = window.toast || ((msg) => {
+        const t = document.getElementById('toast');
+        if (t) {
+          t.textContent = msg;
+          t.classList.add('show');
+          clearTimeout((window.toast).id);
+          (window.toast).id = window.setTimeout(
+            () => t.classList.remove('show'),
+            2000,
+          );
+          return;
+        }
+        console.warn(msg);
+      });
+    </script>
+    <script>
       const SW_URL = 'service-worker.js';
       const SW_HASH = '__SW_HASH__';
       // Replaced with the SHA-384 digest of service-worker.js during
