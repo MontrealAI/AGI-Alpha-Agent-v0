@@ -77,11 +77,11 @@ contract StakeManager is Ownable, ReentrancyGuard {
     event AGITypeAdded(address indexed nft, uint256 payoutPct);
     event AGITypeRemoved(address indexed nft);
 
-    constructor(address _agiToken, address _treasury) Ownable(msg.sender) {
-        agiToken = IERC20(_agiToken);
+    constructor(address _treasury) Ownable(msg.sender) {
+        agiToken = IERC20(Constants.AGIALPHA); // uses $AGIALPHA (18 decimals)
         treasury = _treasury;
         require(
-            IERC20Metadata(_agiToken).decimals() == Constants.AGIALPHA_DECIMALS,
+            IERC20Metadata(Constants.AGIALPHA).decimals() == Constants.AGIALPHA_DECIMALS,
             "wrong decimals"
         );
         _setSlashPercents(0, 100);

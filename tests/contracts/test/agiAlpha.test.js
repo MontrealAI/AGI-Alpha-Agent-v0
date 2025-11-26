@@ -1,18 +1,14 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-
-async function deployAGI(decimals) {
-  const Mock = await ethers.getContractFactory(
-    "contracts/v2/mocks/MockAGI.sol:MockAGI"
-  );
-  const agi = await Mock.deploy(decimals);
-  await agi.waitForDeployment();
-  return agi;
-}
+const {
+  AGIALPHA_ADDRESS,
+  AGIALPHA_DECIMALS,
+  installToken,
+} = require("./utils/token");
 
 describe("AGIALPHA integrations", function () {
   let owner, agent, employer, jobRegistry, seller, buyer, mismatch;
-  const amount = ethers.parseUnits("1", 18);
+  const amount = ethers.parseUnits("1", AGIALPHA_DECIMALS);
 
   beforeEach(async () => {
     await ethers.provider.send("hardhat_reset", []);
@@ -20,32 +16,29 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("StakeManager deploy fails if decimals != 18", async function () {
-    const badToken = await deployAGI(6);
+    await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 6);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    await expect(
-      StakeManager.deploy(await badToken.getAddress(), owner.address)
-    ).to.be.revertedWith("wrong decimals");
+    await expect(StakeManager.deploy(owner.address)).to.be.revertedWith(
+      "wrong decimals"
+    );
   });
 
   it("CertificateNFT deploy fails if decimals != 18", async function () {
-    const badToken = await deployAGI(6);
+    await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 6);
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"
     );
-    await expect(
-      CertificateNFT.deploy(await badToken.getAddress())
-    ).to.be.revertedWith("wrong decimals");
+    await expect(CertificateNFT.deploy()).to.be.revertedWith("wrong decimals");
   });
 
   it("staking and locking succeed with 1e18 and fail with mismatched token", async function () {
-    const agi = await deployAGI(18);
+    const agi = await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 18);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    const AGIALPHA = await agi.getAddress();
-    const stake = await StakeManager.deploy(AGIALPHA, owner.address);
+    const stake = await StakeManager.deploy(owner.address);
     await stake.waitForDeployment();
     const stakeAddr = await stake.getAddress();
 
@@ -78,12 +71,11 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("certificate purchasing succeeds with AGI and fails with mismatched token", async function () {
-    const agi = await deployAGI(18);
+    const agi = await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 18);
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"
     );
-    const AGIALPHA = await agi.getAddress();
-    const cert = await CertificateNFT.deploy(AGIALPHA);
+    const cert = await CertificateNFT.deploy();
     await cert.waitForDeployment();
     const certAddr = await cert.getAddress();
     await cert.setJobRegistry(owner.address);
@@ -111,19 +103,16 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("release burns the configured percentage", async function () {
-    const agi = await deployAGI(18);
+    const agi = await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 18);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    const stake = await StakeManager.deploy(
-      await agi.getAddress(),
-      owner.address
-    );
+    const stake = await StakeManager.deploy(owner.address);
     await stake.waitForDeployment();
     await stake.setJobRegistry(jobRegistry.address);
     await stake.setBurnPct(1000); // 10%
 
-    const amount = ethers.parseUnits("1", 18);
+    const amount = ethers.parseUnits("1", AGIALPHA_DECIMALS);
     await agi.mint(employer.address, amount);
     await agi.connect(employer).approve(await stake.getAddress(), amount);
     await stake.connect(jobRegistry).lock(1, employer.address, amount);
@@ -138,19 +127,14 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("prevents reentrancy attacks", async function () {
-    const Malicious = await ethers.getContractFactory(
+    const malicious = await installToken(
       "contracts/v2/mocks/MaliciousToken.sol:MaliciousToken"
     );
-    const malicious = await Malicious.deploy();
-    await malicious.waitForDeployment();
 
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
     );
-    const stake = await StakeManager.deploy(
-      await malicious.getAddress(),
-      owner.address
-    );
+    const stake = await StakeManager.deploy(owner.address);
     await stake.waitForDeployment();
     const stakeAddr = await stake.getAddress();
 
@@ -176,16 +160,14 @@ describe("AGIALPHA integrations", function () {
   });
 
   it("prevents reentrancy attacks in certificate purchase", async function () {
-    const Malicious = await ethers.getContractFactory(
+    const malicious = await installToken(
       "contracts/v2/mocks/MaliciousCertToken.sol:MaliciousCertToken"
     );
-    const malicious = await Malicious.deploy();
-    await malicious.waitForDeployment();
 
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"
     );
-    const cert = await CertificateNFT.deploy(await malicious.getAddress());
+    const cert = await CertificateNFT.deploy();
     await cert.waitForDeployment();
     const certAddr = await cert.getAddress();
     await cert.setJobRegistry(owner.address);
@@ -206,6 +188,17 @@ describe("AGIALPHA integrations", function () {
     await malicious.setAttack(false, 1);
     await cert.connect(buyer).purchase(1);
     expect(await cert.ownerOf(1)).to.equal(buyer.address);
+  });
+
+  it("exposes configured address and decimals", async function () {
+    const ConstantsHarness = await ethers.getContractFactory(
+      "contracts/v2/ConstantsHarness.sol:ConstantsHarness"
+    );
+    const harness = await ConstantsHarness.deploy();
+    await harness.waitForDeployment();
+
+    expect(await harness.agiAlpha()).to.equal(AGIALPHA_ADDRESS);
+    expect(await harness.agiDecimals()).to.equal(AGIALPHA_DECIMALS);
   });
 
 });

@@ -152,9 +152,7 @@ class Settings(SettingsBase):
         forced_offline = os.getenv("AGI_INSIGHT_OFFLINE") == "1" or (explicit_offline and data.get("offline") is True)
         if forced_offline:
             if self.openai_api_key:
-                _log.info(
-                    "AGI_INSIGHT_OFFLINE=1 set – keeping offline mode despite OPENAI_API_KEY availability"
-                )
+                _log.info("AGI_INSIGHT_OFFLINE=1 set – keeping offline mode despite OPENAI_API_KEY availability")
             self.offline = True
         elif self.openai_api_key:
             if self.offline:

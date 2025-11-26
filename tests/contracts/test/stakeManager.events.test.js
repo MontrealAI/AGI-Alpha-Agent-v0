@@ -1,18 +1,15 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { installToken, AGIALPHA_DECIMALS } = require("./utils/token");
 
 const ROLE_VALIDATOR = 2;
 
 async function deployStakeManager() {
-  const Mock = await ethers.getContractFactory(
-    "contracts/v2/mocks/MockAGI.sol:MockAGI"
-  );
-  const agi = await Mock.deploy(18);
-  await agi.waitForDeployment();
+  const agi = await installToken();
   const StakeManager = await ethers.getContractFactory(
     "contracts/v2/StakeManager.sol:StakeManager"
   );
-  const stake = await StakeManager.deploy(await agi.getAddress(), ethers.ZeroAddress);
+  const stake = await StakeManager.deploy(ethers.ZeroAddress);
   await stake.waitForDeployment();
   return { agi, stake };
 }
@@ -104,7 +101,7 @@ describe("StakeManager setters emit events", function () {
 describe("StakeManager slash distribution", function () {
   let owner, validator, beneficiary, treasury, extra;
   let stake, agi;
-  const depositAmount = ethers.parseUnits("100", 18);
+  const depositAmount = ethers.parseUnits("100", AGIALPHA_DECIMALS);
 
   beforeEach(async function () {
     await ethers.provider.send("hardhat_reset", []);
@@ -122,7 +119,7 @@ describe("StakeManager slash distribution", function () {
   });
 
   it("routes the full slash to the treasury by default", async function () {
-    const slashAmount = ethers.parseUnits("40", 18);
+    const slashAmount = ethers.parseUnits("40", AGIALPHA_DECIMALS);
     await expect(
       stake.slash(validator.address, beneficiary.address, slashAmount)
     )
@@ -134,7 +131,7 @@ describe("StakeManager slash distribution", function () {
 
   it("respects the configured employer slash pct", async function () {
     await stake.setEmployerSlashPct(25);
-    const slashAmount = ethers.parseUnits("20", 18);
+    const slashAmount = ethers.parseUnits("20", AGIALPHA_DECIMALS);
     const employerShare = (slashAmount * 25n) / 100n;
     const treasuryShare = slashAmount - employerShare;
     await expect(
@@ -154,7 +151,7 @@ describe("StakeManager slash distribution", function () {
 
   it("sends the entire amount to the treasury when no beneficiary", async function () {
     await stake.setEmployerSlashPct(30);
-    const slashAmount = ethers.parseUnits("10", 18);
+    const slashAmount = ethers.parseUnits("10", AGIALPHA_DECIMALS);
     await expect(
       stake.slash(validator.address, ethers.ZeroAddress, slashAmount)
     )

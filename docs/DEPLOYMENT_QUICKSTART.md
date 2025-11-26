@@ -4,7 +4,7 @@
 
 This guide summarizes how to publish the **α‑AGI Insight** demo using GitHub Pages.
 
-- **Token Address:** `0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`
+- **Token Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
 - **Token Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
 
 ## ERC‑20 Approvals for Staking and Escrow
@@ -15,11 +15,11 @@ token uses 18 decimals, so `1e18` equals one token.
 
 ```bash
 # Approve 100 AGIALPHA for staking
-cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
+cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
   "approve(address,uint256)" $STAKEMANAGER 100e18
 
 # Approve 50 AGIALPHA for job escrow
-cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
+cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
   "approve(address,uint256)" $STAKEMANAGER 50e18
 ```
 
