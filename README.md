@@ -14,7 +14,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 ### Continuous Integration
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
-[![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml)
+[![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
 [![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
