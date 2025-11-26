@@ -22,9 +22,9 @@ def __getattr__(name: str):
     """Lazily import heavy modules to keep smoke tests fast."""
 
     if name == "planning_agent":
-        from . import agents
+        from .agents import planning_agent as _planning_agent
 
-        return agents.planning_agent
+        return _planning_agent
     if name == "orchestrator":
         from alpha_factory_v1.core import orchestrator as _orchestrator
 
