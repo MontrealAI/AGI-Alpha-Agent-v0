@@ -8,7 +8,7 @@ utilities used by the α‑AGI Insight example. Interface layers under
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 __all__ = ["planning_agent", "orchestrator", "self_improver"]
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover - import-time type hints only
     from .agents import planning_agent as _planning_agent
 
 
-def __getattr__(name: str):
+def __getattr__(name: str) -> Any:
     """Lazily import heavy modules to keep smoke tests fast."""
 
     if name == "planning_agent":
