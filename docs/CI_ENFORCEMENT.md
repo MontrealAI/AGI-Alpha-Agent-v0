@@ -5,19 +5,20 @@ Use this checklist to keep CI visible and required on both pull requests and the
 1. **Branch protection**
    - In **Settings → Branches → Branch protection rules**, edit the rule for `main` (or create one).
    - Enable **Require status checks to pass before merging** and **Require branches to be up to date**.
-   - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
-     - `✅ PR CI / Lint (ruff)`
-     - `✅ PR CI / Smoke tests`
-     - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
-     - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
-     - `🚀 CI — Insight Demo / ✅ Actionlint`
-     - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
-     - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
-   - `🚀 CI — Insight Demo / Windows Smoke`
-   - `🚀 CI — Insight Demo / macOS Smoke`
-   - `🚀 CI — Insight Demo / 📜 MkDocs`
-   - `🚀 CI — Insight Demo / 📚 Docs Build`
-   - `🚀 CI — Insight Demo / 🐳 Docker build`
+    - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
+      - `✅ PR CI / Lint (ruff)`
+      - `✅ PR CI / Smoke tests`
+      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
+      - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+      - `🚀 CI — Insight Demo / ✅ Actionlint`
+      - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
+      - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
+      - `🚀 CI — Insight Demo / Windows Smoke`
+      - `🚀 CI — Insight Demo / macOS Smoke`
+      - `🚀 CI — Insight Demo / 📜 MkDocs`
+      - `🚀 CI — Insight Demo / 📚 Docs Build`
+      - `🚀 CI — Insight Demo / 🐳 Docker build`
+      - `🩺 CI Health / CI watchdog`
    - Run `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the rule includes every check above and still requires branches to be up to date. The **🩺 CI Health** workflow runs this helper automatically so regressions are caught quickly.
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
