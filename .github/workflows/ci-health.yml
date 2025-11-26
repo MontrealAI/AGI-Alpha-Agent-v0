@@ -15,8 +15,10 @@ on:
 permissions:
   contents: read
   actions: write
-  # Keep permissions to supported keys—adding unknown scopes like
-  # `administration` makes the workflow invalid.
+  administration: read
+  # Keep permissions limited to supported keys. `administration: read` is
+  # required so the branch-protection verification step can query repository
+  # rules without failing with 403 errors.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
