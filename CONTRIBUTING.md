@@ -215,3 +215,33 @@ contributors cannot execute it unless the owner grants them explicit
 permissions or dispatches the workflow on their behalf. Downstream jobs use
 `if: always()` so Windows and macOS smoke tests, docs and Docker steps still run
 whenever the owner triggers the workflow even if earlier stages fail.
+
+### Branch protection and required checks
+
+Protect `main` (and any long-lived release branches) with required status checks
+so GitHub blocks merges until CI completes:
+
+1. Open **Settings → Branches → Branch protection rules**.
+2. Add or edit the rule targeting `main`.
+3. Enable **Require status checks to pass before merging** and select the
+   following checks (names must match exactly):
+   - `✅ PR CI / Lint (ruff)`
+   - `✅ PR CI / Smoke tests`
+   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
+   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
+   - `🚀 CI — Insight Demo / ✅ Actionlint`
+   - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
+   - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
+   - `🚀 CI — Insight Demo / Windows Smoke`
+   - `🚀 CI — Insight Demo / macOS Smoke`
+   - `🚀 CI — Insight Demo / 📜 MkDocs`
+   - `🚀 CI — Insight Demo / 📚 Docs Build`
+   - `🚀 CI — Insight Demo / 🐳 Docker build`
+   - `🩺 CI Health / CI watchdog`
+4. Keep **Require branches to be up to date before merging** enabled so reruns
+   pick up the latest checks.
+5. Apply the same required checks to any release branches that mirror `main`.
+
+These names stay stable because each workflow job sets an explicit `name`
+value. The list above matches the branch-protection validation performed in
+`scripts/verify_branch_protection.py`.
