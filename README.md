@@ -18,7 +18,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 [![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 
-The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
+The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
 
 The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels pending runs that linger beyond a 10-minute grace window (hard stop at 60 minutes), re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck; it now also triggers after every **PR CI**, **🚀 CI**, or **🔥 Smoke Test** completion so badge issues are remediated immediately instead of waiting for the hourly cron. Tests target Python 3.11 and 3.12 until PyTorch releases stable 3.13 wheels.
 
@@ -1857,7 +1857,7 @@ ultimate α‑signal engine.
 
 ### AGIALPHA Token
 
-- **Address:** `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`
+- **Address:** `0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`
 - **Decimals:** `18` (ERC‑20 standard; 1 token = 1e18 base units)
 - **Config defaults:** `token.config.js` pins the token wiring for builds and
   tests; override with `AGIALPHA_ADDRESS` / `AGIALPHA_DECIMALS` environment
@@ -1871,11 +1871,11 @@ uses 18 decimals, meaning `1e18` represents one token.
 
 ```bash
 # Allow the StakeManager to move 100 AGIALPHA for your stake
-cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
   "approve(address,uint256)" $STAKEMANAGER 100e18
 
 # Authorize 50 AGIALPHA to be locked as job escrow
-cast send 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA \
+cast send 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa \
   "approve(address,uint256)" $STAKEMANAGER 50e18
 ```
 
