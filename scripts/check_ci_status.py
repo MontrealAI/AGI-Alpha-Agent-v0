@@ -47,6 +47,28 @@ def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, obj
     return runs[0]
 
 
+def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> str:
+    if not token:
+        return "GITHUB_TOKEN (or GH_TOKEN) is required to rerun workflows"
+
+    run_id = run.get("id")
+    if not run_id:
+        return "run is missing an id; cannot rerun"
+
+    url = f"{API_ROOT}/repos/{repo}/actions/runs/{run_id}/rerun"
+    request = urllib.request.Request(url, method="POST")
+    request.add_header("Accept", "application/vnd.github+json")
+    request.add_header("Authorization", f"Bearer {token}")
+
+    try:
+        with urllib.request.urlopen(request, timeout=30):  # noqa: S310
+            return "dispatched"
+    except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
+        return f"HTTP {exc.code}: {exc.reason}"
+    except urllib.error.URLError as exc:  # pragma: no cover - network paths
+        return f"network error: {exc.reason}"
+
+
 def _iso_to_datetime(value: str | None) -> datetime | None:
     if not value:
         return None
@@ -131,10 +153,13 @@ def verify_workflows(
     wait_seconds: float = 0,
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
+    rerun_failed: bool = False,
 ) -> tuple[list[str], dict[str, Mapping[str, object]]]:
     failures: list[str] = []
     runs: dict[str, Mapping[str, object]] = {}
     remaining = wait_seconds
+
+    rerun_attempts: dict[str, str] = {}
 
     while True:
         failures.clear()
@@ -164,6 +189,13 @@ def verify_workflows(
             if conclusion == "success":
                 print(f"✅ {workflow} → success ({status})")
                 continue
+
+            if rerun_failed and conclusion in {"failure", "timed_out", "cancelled"}:
+                rerun_status = rerun_attempts.get(workflow)
+                if not rerun_status:
+                    rerun_status = _rerun_workflow(repo, run, token)
+                    rerun_attempts[workflow] = rerun_status
+                    print(f"🔁 {workflow} → rerun requested ({rerun_status})")
 
             is_pending = status in {"queued", "in_progress", "pending"}
             within_grace = age_seconds is None or age_seconds <= pending_grace_seconds
@@ -240,6 +272,14 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--rerun-failed",
+        action="store_true",
+        help=(
+            "Automatically rerun the most recent failed workflow run using GITHUB_TOKEN "
+            "(or GH_TOKEN) when available."
+        ),
+    )
+    parser.add_argument(
         "--stale-minutes",
         type=float,
         default=120,
@@ -280,6 +320,7 @@ def main(argv: list[str] | None = None) -> int:
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+        rerun_failed=args.rerun_failed,
     )
 
     stale_cancelled: set[str] = set()

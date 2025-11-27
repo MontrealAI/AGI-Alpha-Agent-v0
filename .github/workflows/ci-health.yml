@@ -51,6 +51,7 @@ jobs:
             --stale-minutes 60 \
             --cancel-stale \
             --dispatch-missing \
+            --rerun-failed \
             --poll-seconds 30 \
             --ref "${CI_TARGET_BRANCH}"
       - name: Warn when admin token is unavailable
