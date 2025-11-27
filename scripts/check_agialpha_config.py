@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import os
 import re
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
