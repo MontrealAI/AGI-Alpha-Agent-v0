@@ -116,13 +116,9 @@ def _env_config() -> TokenConfig | None:
 def compare_configs(reference: TokenConfig, other: TokenConfig, labels: Iterable[str]) -> None:
     label = "/".join(labels)
     if reference.normalized_address != other.normalized_address:
-        raise ValueError(
-            f"{label} address mismatch: {other.address} (got) != {reference.address} (expected)"
-        )
+        raise ValueError(f"{label} address mismatch: {other.address} (got) != {reference.address} (expected)")
     if reference.decimals != other.decimals:
-        raise ValueError(
-            f"{label} decimals mismatch: {other.decimals} (got) != {reference.decimals} (expected)"
-        )
+        raise ValueError(f"{label} decimals mismatch: {other.decimals} (got) != {reference.decimals} (expected)")
 
 
 def main() -> int:
@@ -144,11 +140,7 @@ def main() -> int:
     if env_cfg:
         compare_configs(token, env_cfg, labels=["token.config.js", "env"])
 
-    print(
-        "AGIALPHA configuration is consistent:\n"
-        f"  address: {token.address}\n"
-        f"  decimals: {token.decimals}"
-    )
+    print("AGIALPHA configuration is consistent:\n" f"  address: {token.address}\n" f"  decimals: {token.decimals}")
     return 0
 
 
