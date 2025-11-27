@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 20
     env:
       CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
-      AGIALPHA_ADDRESS: "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA"
+      AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
       AGIALPHA_DECIMALS: 18
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
