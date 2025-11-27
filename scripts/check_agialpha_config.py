@@ -20,6 +20,7 @@ WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
     ROOT / ".github/workflows/pr-ci.yml",
     ROOT / ".github/workflows/ci-health.yml",
+    ROOT / ".github/workflows/smoke.yml",
 )
 
 
