@@ -29,8 +29,14 @@ jobs:
     name: "CI watchdog"
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
+      AGIALPHA_ADDRESS: "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA"
+      AGIALPHA_DECIMALS: 18
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"

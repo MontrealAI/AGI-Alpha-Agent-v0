@@ -19,6 +19,7 @@ TRUFFLE_MIGRATION = ROOT / "truffle/migrations/2_deploy_agijobs_v2.js"
 WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
     ROOT / ".github/workflows/pr-ci.yml",
+    ROOT / ".github/workflows/ci-health.yml",
 )
 
 
