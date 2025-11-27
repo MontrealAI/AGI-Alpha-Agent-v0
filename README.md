@@ -22,6 +22,8 @@ The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a
 
 The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels pending runs that linger beyond a 10-minute grace window (hard stop at 60 minutes), re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck; it now also triggers after every **PR CI**, **🚀 CI**, or **🔥 Smoke Test** completion so badge issues are remediated immediately instead of waiting for the hourly cron. Tests target Python 3.11 and 3.12 until PyTorch releases stable 3.13 wheels.
 
+`workflow_dispatch` runs triggered by the **🩺 CI Health** watchdog now bypass the manual owner gate when they originate from `github-actions[bot]`, so automated re-dispatches can heal stale badges without waiting for the repository owner to click "Re-run".
+
 To enforce branch-protection verification inside the watchdog, add a fine-grained or classic `ADMIN_GITHUB_TOKEN` secret with branch-administration scope; when absent, the workflow logs a warning and skips the check so the rest of CI remains green.
 
 Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — Insight Demo**, exercising the deploy and signing stages so production artifacts stay provably green.
