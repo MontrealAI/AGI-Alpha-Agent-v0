@@ -15,6 +15,7 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONSTANTS_SOL = ROOT / "tests/contracts/contracts/v2/Constants.sol"
+TRUFFLE_MIGRATION = ROOT / "truffle/migrations/2_deploy_agijobs_v2.js"
 WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
     ROOT / ".github/workflows/pr-ci.yml",
@@ -76,6 +77,17 @@ def load_contract_constants() -> TokenConfig:
     return TokenConfig(address=address, decimals=decimals)
 
 
+def load_truffle_migration(expected: TokenConfig) -> TokenConfig:
+    text = TRUFFLE_MIGRATION.read_text()
+    if not re.search(r"process\.env\.AGIALPHA_ADDRESS\s*\|\|\s*AGIALPHA_ADDRESS", text):
+        raise ValueError("truffle migration must default to AGIALPHA_ADDRESS when env var is unset")
+    if not re.search(r"Number\(process\.env\.AGIALPHA_DECIMALS\s*\|\|\s*AGIALPHA_DECIMALS\)", text):
+        raise ValueError("truffle migration must default to AGIALPHA_DECIMALS when env var is unset")
+    if not re.search(r"agiDecimals\s*!==\s*18", text):
+        raise ValueError("truffle migration AGIALPHA decimal guard must enforce 18 decimals")
+    return TokenConfig(address=expected.address, decimals=expected.decimals)
+
+
 def load_workflow_config(path: Path) -> TokenConfig:
     address = _extract_pattern(
         path,
@@ -119,7 +131,10 @@ def main() -> int:
     compare_configs(CANONICAL_TOKEN, token, labels=["expected", "token.config.js"])
     contract = load_contract_constants()
     compare_configs(CANONICAL_TOKEN, contract, labels=["expected", "Constants.sol"])
+    truffle = load_truffle_migration(token)
+    compare_configs(CANONICAL_TOKEN, truffle, labels=["expected", TRUFFLE_MIGRATION.name])
     compare_configs(token, contract, labels=["token.config.js", "Constants.sol"])
+    compare_configs(token, truffle, labels=["token.config.js", TRUFFLE_MIGRATION.name])
 
     for workflow in WORKFLOWS:
         if workflow.exists():
