@@ -197,6 +197,11 @@ def verify_workflows(
                     rerun_attempts[workflow] = rerun_status
                     print(f"🔁 {workflow} → rerun requested ({rerun_status})")
 
+                if rerun_status == "dispatched":
+                    waiting = True
+                    remaining = max(remaining, poll_interval)
+                    continue
+
             is_pending = status in {"queued", "in_progress", "pending"}
             within_grace = age_seconds is None or age_seconds <= pending_grace_seconds
 
