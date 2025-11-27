@@ -1,71 +1,59 @@
 # SPDX-License-Identifier: Apache-2.0
 # NOTE: This demo is a research prototype and does not implement real AGI.
-"""
+"""AIGA OpenAI Agents bridge.
+
 This module is part of a conceptual research prototype. References to
 'AGI' or 'superintelligence' describe aspirational goals and do not
 indicate the presence of real general intelligence. Use at your own risk.
 
-OpenAI Agents SDK bridge for the AI-GA Meta-Evolution demo.
+The bridge registers a minimal agent capable of driving the evolutionary loop
+via the OpenAI Agents runtime. It intentionally **requires** the OpenAI Agents
+SDK; when that dependency is missing or incomplete, imports fail with a clear
+``ModuleNotFoundError`` so CI and users discover the gap immediately instead of
+silently running against stubbed fallbacks.
 
-This script registers a minimal agent capable of driving the evolutionary
-loop via the OpenAI Agents runtime. It works fully offline when no
-``OPENAI_API_KEY`` is configured by falling back to the local Ollama
-instance started by ``run_aiga_demo.sh``.
+``OPENAI_API_KEY`` is configured by falling back to the local Ollama instance
+started by ``run_aiga_demo.sh``.
 """
 from __future__ import annotations
 
-try:  # optional dependency
-    import openai_agents as _oa
-
-    OpenAIAgent = getattr(_oa, "OpenAIAgent", getattr(_oa, "Agent", object))  # type: ignore[assignment]
-    Agent = getattr(_oa, "Agent", OpenAIAgent)  # type: ignore[assignment]
-    Tool = getattr(_oa, "Tool", lambda *a, **k: (lambda f: f))  # type: ignore[assignment]
-except Exception as exc:  # pragma: no cover - fallback stub
-
-    class Agent:  # type: ignore[misc]  # pragma: no cover - lightweight fallback
-        name = "agent"
-        tools: list[object] = []
-
-    def Tool(*_a, **_k):  # type: ignore[misc]
-        def dec(func):
-            return func
-
-        return dec
-
-    class OpenAIAgent:  # type: ignore[misc]
-        def __init__(self, *_: object, **__: object) -> None:
-            pass
-
-        async def __call__(self, *_: object, **__: object) -> str:
-            return "ok"
-
-    AgentRuntime = None
-else:
-    AgentRuntime = getattr(_oa, "AgentRuntime", None)
+import importlib
 
 
-try:  # ensure Tool is a callable decorator even with unusual exports
-    Tool(lambda x: x)
-except Exception:
-    Tool = lambda *a, **k: (lambda f: f)  # type: ignore[misc,assignment]
+def _load_openai_sdk():
+    """Return the OpenAI Agents primitives or raise when unavailable."""
 
-if AgentRuntime is None or not hasattr(AgentRuntime, "run"):
+    try:
+        oa = importlib.import_module("openai_agents")
+    except ModuleNotFoundError as exc:  # pragma: no cover - explicit failure path
+        raise ModuleNotFoundError(
+            "OpenAI Agents SDK is required for the AIGA bridge"
+        ) from exc
 
-    class AgentRuntime:  # type: ignore[misc]
-        def __init__(self, *_: object, **__: object) -> None:
-            self._agent: Agent | None = None
+    missing: list[str] = []
+    tool = getattr(oa, "Tool", None)
+    agent = getattr(oa, "OpenAIAgent", getattr(oa, "Agent", None))
+    runtime = getattr(oa, "AgentRuntime", None)
 
-        def register(self, agent: Agent) -> None:
-            self._agent = agent
+    if tool is None:
+        missing.append("Tool")
+    if agent is None:
+        missing.append("Agent/OpenAIAgent")
+    if runtime is None:
+        missing.append("AgentRuntime")
 
-        def run(self) -> None:
-            import asyncio
+    if missing:
+        raise ModuleNotFoundError(
+            "OpenAI Agents SDK is required for the AIGA bridge (missing: "
+            + ", ".join(missing)
+            + ")"
+        )
 
-            async def _idle() -> None:
-                while True:
-                    await asyncio.sleep(3600)
+    return oa, agent, tool, runtime
 
-            asyncio.run(_idle())
+
+_OA, OpenAIAgent, Tool, AgentRuntime = _load_openai_sdk()
+Agent = getattr(_OA, "Agent", OpenAIAgent)  # type: ignore[assignment]
 
 
 def _noop_register(_agents: list[Agent]) -> None:  # pragma: no cover - optional
