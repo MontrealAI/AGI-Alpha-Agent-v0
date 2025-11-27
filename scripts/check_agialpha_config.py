@@ -13,7 +13,8 @@ from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
-CONSTANTS_SOL = ROOT / "tests/contracts/contracts/v2/Constants.sol"
+CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
+TEST_CONSTANTS = ROOT / "tests/contracts/contracts/v2/Constants.sol"
 TRUFFLE_MIGRATION = ROOT / "truffle/migrations/2_deploy_agijobs_v2.js"
 WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
@@ -60,15 +61,15 @@ def load_token_config() -> TokenConfig:
     return TokenConfig(address=address, decimals=decimals)
 
 
-def load_contract_constants() -> TokenConfig:
+def load_contract_constants(path: Path) -> TokenConfig:
     address = _extract_pattern(
-        CONSTANTS_SOL,
+        path,
         r"AGIALPHA\s*=\s*(0x[0-9a-fA-F]+)",
         "contract AGIALPHA address",
     )
     decimals = int(
         _extract_pattern(
-            CONSTANTS_SOL,
+            path,
             r"AGIALPHA_DECIMALS\s*=\s*([0-9]+)",
             "contract AGIALPHA decimals",
         )
@@ -128,11 +129,22 @@ def compare_configs(reference: TokenConfig, other: TokenConfig, labels: Iterable
 def main() -> int:
     token = load_token_config()
     compare_configs(CANONICAL_TOKEN, token, labels=["expected", "token.config.js"])
-    contract = load_contract_constants()
-    compare_configs(CANONICAL_TOKEN, contract, labels=["expected", "Constants.sol"])
+    contract = load_contract_constants(CONTRACT_CONSTANTS)
+    compare_configs(CANONICAL_TOKEN, contract, labels=["expected", "contracts/Constants.sol"])
+    test_contract = load_contract_constants(TEST_CONSTANTS)
+    compare_configs(
+        CANONICAL_TOKEN,
+        test_contract,
+        labels=["expected", "tests/contracts/Constants.sol"],
+    )
     truffle = load_truffle_migration(token)
     compare_configs(CANONICAL_TOKEN, truffle, labels=["expected", TRUFFLE_MIGRATION.name])
-    compare_configs(token, contract, labels=["token.config.js", "Constants.sol"])
+    compare_configs(token, contract, labels=["token.config.js", "contracts/Constants.sol"])
+    compare_configs(
+        token,
+        test_contract,
+        labels=["token.config.js", "tests/contracts/Constants.sol"],
+    )
     compare_configs(token, truffle, labels=["token.config.js", TRUFFLE_MIGRATION.name])
 
     for workflow in WORKFLOWS:
