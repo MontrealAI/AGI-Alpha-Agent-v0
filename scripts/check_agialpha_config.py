@@ -15,6 +15,10 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONSTANTS_SOL = ROOT / "tests/contracts/contracts/v2/Constants.sol"
+WORKFLOWS = (
+    ROOT / ".github/workflows/ci.yml",
+    ROOT / ".github/workflows/pr-ci.yml",
+)
 
 
 @dataclass(frozen=True)
@@ -66,6 +70,22 @@ def load_contract_constants() -> TokenConfig:
     return TokenConfig(address=address, decimals=decimals)
 
 
+def load_workflow_config(path: Path) -> TokenConfig:
+    address = _extract_pattern(
+        path,
+        r"AGIALPHA_ADDRESS:\s*\"?([^\"\n]+)\"?",
+        f"workflow {path.name} AGIALPHA address",
+    )
+    decimals = int(
+        _extract_pattern(
+            path,
+            r"AGIALPHA_DECIMALS:\s*([0-9]+)",
+            f"workflow {path.name} AGIALPHA decimals",
+        )
+    )
+    return TokenConfig(address=address, decimals=decimals)
+
+
 def _env_config() -> TokenConfig | None:
     address = os.getenv("AGIALPHA_ADDRESS")
     decimals = os.getenv("AGIALPHA_DECIMALS")
@@ -92,6 +112,11 @@ def main() -> int:
     token = load_token_config()
     contract = load_contract_constants()
     compare_configs(token, contract, labels=["token.config.js", "Constants.sol"])
+
+    for workflow in WORKFLOWS:
+        if workflow.exists():
+            workflow_config = load_workflow_config(workflow)
+            compare_configs(token, workflow_config, labels=["token.config.js", workflow.name])
 
     env_cfg = _env_config()
     if env_cfg:
