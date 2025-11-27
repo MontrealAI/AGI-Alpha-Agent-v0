@@ -29,6 +29,8 @@ jobs:
     name: "CI watchdog"
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      HAS_ADMIN_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4.2.2 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -48,11 +50,11 @@ jobs:
             --poll-seconds 30 \
             --ref "${CI_TARGET_BRANCH}"
       - name: Warn when admin token is unavailable
-        if: ${{ secrets.ADMIN_GITHUB_TOKEN == '' }}
+        if: ${{ env.HAS_ADMIN_TOKEN != 'true' }}
         run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."
 
       - name: Verify branch protection on main
-        if: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
+        if: ${{ env.HAS_ADMIN_TOKEN == 'true' }}
         env:
           # Requires a fine-grained or classic PAT with administration access
           # to branch protection settings. The default GITHUB_TOKEN lacks this

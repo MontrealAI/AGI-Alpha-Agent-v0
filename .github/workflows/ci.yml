@@ -1029,25 +1029,22 @@ jobs:
 
   branch-protection:
     name: "🔒 Branch protection guardrails"
-    if: ${{
-      needs.owner-check.result == 'success' &&
-      secrets.ADMIN_GITHUB_TOKEN != '' &&
-      (
-        (github.ref == 'refs/heads/main' && github.actor == github.repository_owner) ||
-        (github.event_name == 'pull_request' &&
-          github.event.pull_request.base.ref == 'main' &&
-          github.event.pull_request.head.repo.full_name == github.repository)
-      )
-    }}
+    if: ${{ needs.owner-check.result == 'success' && ((github.ref == 'refs/heads/main' && github.actor == github.repository_owner) || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.repo.full_name == github.repository)) }}
     needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      HAS_ADMIN_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: '3.12'
+      - name: Warn when admin token is unavailable
+        if: ${{ env.HAS_ADMIN_TOKEN != 'true' }}
+        run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."
       - name: Verify branch protection on main
+        if: ${{ env.HAS_ADMIN_TOKEN == 'true' }}
         env:
           # Prefer a repository admin token so the job can enforce missing
           # protection rules. Fall back to the default GITHUB_TOKEN for
