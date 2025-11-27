@@ -32,6 +32,7 @@ DEFAULT_REQUIRED_CHECKS = [
     "🚀 CI — Insight Demo / 📜 MkDocs",
     "🚀 CI — Insight Demo / 📚 Docs Build",
     "🚀 CI — Insight Demo / 🐳 Docker build",
+    "🩺 CI Health / CI watchdog",
 ]
 
 
