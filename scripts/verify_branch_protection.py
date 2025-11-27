@@ -159,6 +159,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     required_checks = list(args.required_check or DEFAULT_REQUIRED_CHECKS)
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{args.branch}/protection"
     response = requests.get(url, headers=_build_headers(token), timeout=30)
+    if response.status_code == 403 and not args.apply:
+        sys.stderr.write(
+            "::notice::Missing permission to read branch protection; "
+            "skipping verification because --apply is not set.\n"
+        )
+        return 0
     if response.status_code == 404:
         if not args.apply:
             sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
