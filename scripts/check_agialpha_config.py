@@ -31,6 +31,12 @@ class TokenConfig:
         return self.address.lower()
 
 
+CANONICAL_TOKEN = TokenConfig(
+    address="0xa61a3b3a130a9c20768eebf97e21515a6046a1fa",
+    decimals=18,
+)
+
+
 def _extract_pattern(path: Path, pattern: str, label: str) -> str:
     match = re.search(pattern, path.read_text())
     if not match:
@@ -110,7 +116,9 @@ def compare_configs(reference: TokenConfig, other: TokenConfig, labels: Iterable
 
 def main() -> int:
     token = load_token_config()
+    compare_configs(CANONICAL_TOKEN, token, labels=["expected", "token.config.js"])
     contract = load_contract_constants()
+    compare_configs(CANONICAL_TOKEN, contract, labels=["expected", "Constants.sol"])
     compare_configs(token, contract, labels=["token.config.js", "Constants.sol"])
 
     for workflow in WORKFLOWS:
