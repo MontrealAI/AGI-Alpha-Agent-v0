@@ -1049,15 +1049,24 @@ jobs:
           python-version: '3.12'
       - name: Verify branch protection on main
         env:
-          # Requires a fine-grained or classic PAT with administration access
-          # to branch protection settings. The default GITHUB_TOKEN lacks this
-          # scope and will return 403s when querying protection rules.
-          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+          # Prefer a repository admin token so the job can enforce missing
+          # protection rules. Fall back to the default GITHUB_TOKEN for
+          # read-only verification when the admin secret is unavailable so PRs
+          # from forks do not fail outright.
+          ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN != '' && secrets.ADMIN_GITHUB_TOKEN || github.token }}
           TARGET_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || 'main' }}
         run: |
+          apply_flag=""
+          if [ -n "${ADMIN_GITHUB_TOKEN}" ]; then
+            apply_flag="--apply"
+          else
+            echo "::notice::ADMIN_GITHUB_TOKEN not set; running read-only branch protection check with default token."
+          fi
+
           python scripts/verify_branch_protection.py \
             --branch "${TARGET_BRANCH}" \
-            --apply \
+            ${apply_flag} \
             --required-check "✅ PR CI / Lint (ruff)" \
             --required-check "✅ PR CI / Smoke tests" \
             --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
