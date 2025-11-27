@@ -65,6 +65,19 @@ def _run_age_seconds(run: Mapping[str, object], *, now: datetime | None = None) 
     return max(0.0, age)
 
 
+def _workflow_filename_from_env() -> str | None:
+    workflow_ref = os.environ.get("GITHUB_WORKFLOW_REF")
+    if not workflow_ref:
+        return None
+
+    _, _, workflow_with_ref = workflow_ref.partition("/.github/workflows/")
+    if not workflow_with_ref:
+        return None
+
+    workflow, _, _ = workflow_with_ref.partition("@")
+    return workflow or None
+
+
 def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
     if not token:
         return False, "GITHUB_TOKEN (or GH_TOKEN) is required to cancel runs"
@@ -248,7 +261,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    workflows = args.workflows or DEFAULT_WORKFLOWS
+    workflows = list(args.workflows or DEFAULT_WORKFLOWS)
+    current_workflow = _workflow_filename_from_env()
+    if not args.workflows and current_workflow:
+        workflows = [wf for wf in workflows if wf != current_workflow]
     token = args.token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     wait_seconds = max(0.0, args.wait_minutes * 60)
     if args.once:
