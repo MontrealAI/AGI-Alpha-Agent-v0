@@ -2,9 +2,10 @@
 
 Use this checklist to keep CI visible and required on both pull requests and the `main` branch.
 
-1. **Branch protection**
+1. **Branch protection and merge queue**
    - In **Settings → Branches → Branch protection rules**, edit the rule for `main` (or create one).
    - Enable **Require status checks to pass before merging** and **Require branches to be up to date**.
+   - If you use GitHub's merge queue, enable it for `main` and ensure the queue uses the same required checks below. The workflows now listen for `merge_group` events so queued merges receive the full CI signal before landing.
     - Add these required checks *using the exact names shown in the GitHub UI* so they appear on every PR:
       - `✅ PR CI / Lint (ruff)`
       - `✅ PR CI / Smoke tests`
