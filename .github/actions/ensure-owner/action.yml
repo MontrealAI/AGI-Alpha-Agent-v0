@@ -11,8 +11,17 @@ runs:
     - name: Check owner
       shell: bash
       run: |
-        if [ "${{ github.actor }}" != "${{ github.repository_owner }}" ]; then
-          echo "Only the repository owner can run this workflow."
+        actor="${{ github.actor }}"
+        repo_owner="${{ github.repository_owner }}"
+
+        if [ "$actor" = "github-actions[bot]" ]; then
+          echo "workflow-dispatch initiated by GitHub Actions bot; allowing run."
+          exit 0
+        fi
+
+        if [ "$actor" != "$repo_owner" ]; then
+          echo "Only the repository owner or an in-repo automation run can trigger this workflow."
+          echo "actor=$actor repo_owner=$repo_owner"
           exit 1
         fi
     - name: Set owner output
