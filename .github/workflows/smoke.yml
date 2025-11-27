@@ -12,6 +12,8 @@ permissions:
 
 env:
   PYTHON_VERSION_MATRIX: "3.11,3.12,3.13"
+  AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
+  AGIALPHA_DECIMALS: 18
 
 jobs:
   smoke:
@@ -36,6 +38,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: 'requirements.lock'
+
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
 
       - name: Cache pre-commit
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
