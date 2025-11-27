@@ -18,6 +18,7 @@ import requests
 
 API_URL = "https://api.github.com"
 API_VERSION = "2022-11-28"
+GITHUB_ACTIONS_APP_ID = 15368
 
 DEFAULT_REQUIRED_CHECKS = [
     "✅ PR CI / Lint (ruff)",
@@ -56,7 +57,15 @@ def _configure_required_checks(
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
     payload = {
         "strict": strict,
-        "checks": [{"context": context} for context in required_checks],
+        "checks": [
+            {
+                "context": context,
+                # All required checks currently originate from GitHub Actions, which
+                # must be identified by app_id when configuring required_check_runs.
+                "app_id": GITHUB_ACTIONS_APP_ID,
+            }
+            for context in required_checks
+        ],
     }
     response = requests.patch(url, headers=_build_headers(token), json=payload, timeout=30)
     if response.status_code == 404:
