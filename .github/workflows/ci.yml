@@ -912,27 +912,27 @@ jobs:
         run: |
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         uses: docker/login-action@v3.6.0 # 5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         run: |
           docker tag "$DOCKER_IMAGE:ci" "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Install cosign
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
         with:
           cosign-release: 'v2.5.3'
       - name: Sign image
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         run: cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Verify image signature
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         run: cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
 
   deploy:
