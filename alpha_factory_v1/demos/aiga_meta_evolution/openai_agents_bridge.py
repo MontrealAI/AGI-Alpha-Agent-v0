@@ -26,9 +26,7 @@ def _load_openai_sdk():
     try:
         oa = importlib.import_module("openai_agents")
     except ModuleNotFoundError as exc:  # pragma: no cover - explicit failure path
-        raise ModuleNotFoundError(
-            "OpenAI Agents SDK is required for the AIGA bridge"
-        ) from exc
+        raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge") from exc
 
     missing: list[str] = []
     tool = getattr(oa, "Tool", None)
@@ -46,9 +44,7 @@ def _load_openai_sdk():
 
     if missing:
         raise ModuleNotFoundError(
-            "OpenAI Agents SDK is required for the AIGA bridge (missing: "
-            + ", ".join(missing)
-            + ")"
+            "OpenAI Agents SDK is required for the AIGA bridge (missing: " + ", ".join(missing) + ")"
         )
 
     return oa, agent, tool, runtime

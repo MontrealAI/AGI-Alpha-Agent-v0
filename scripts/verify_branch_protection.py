@@ -99,10 +99,7 @@ def _configure_required_checks(
         )
 
     if not response.ok:
-        raise RuntimeError(
-            "failed to enforce required status checks: "
-            f"{response.status_code} {response.text}"
-        )
+        raise RuntimeError("failed to enforce required status checks: " f"{response.status_code} {response.text}")
 
 
 def _required_contexts(protection: dict) -> set[str]:
