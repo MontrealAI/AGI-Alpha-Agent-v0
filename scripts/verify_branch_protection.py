@@ -33,6 +33,8 @@ DEFAULT_REQUIRED_CHECKS = [
     "🚀 CI — Insight Demo / 📜 MkDocs",
     "🚀 CI — Insight Demo / 📚 Docs Build",
     "🚀 CI — Insight Demo / 🐳 Docker build",
+    "🚀 CI — Insight Demo / 📦 Deploy",
+    "🚀 CI — Insight Demo / 🔒 Branch protection guardrails",
     "🩺 CI Health / CI watchdog",
 ]
 
@@ -97,10 +99,7 @@ def _configure_required_checks(
         )
 
     if not response.ok:
-        raise RuntimeError(
-            "failed to enforce required status checks: "
-            f"{response.status_code} {response.text}"
-        )
+        raise RuntimeError("failed to enforce required status checks: " f"{response.status_code} {response.text}")
 
 
 def _required_contexts(protection: dict) -> set[str]:

@@ -60,9 +60,7 @@ except ImportError:  # pragma: no cover
 try:
     from .openai_agents_bridge import OpenAIAgent, Tool
 except ModuleNotFoundError as exc:  # pragma: no cover - optional dependency missing
-    raise ModuleNotFoundError(
-        "OpenAI Agents SDK is required for the AIGA meta-evolution service"
-    ) from exc
+    raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA meta-evolution service") from exc
 if os.getenv("ENABLE_AIGA_ADK", "false").lower() == "true":
     try:
         from alpha_factory_v1.backend import adk_bridge
