@@ -41,6 +41,8 @@ def _load_openai_sdk():
         missing.append("Agent/OpenAIAgent")
     if runtime is None:
         missing.append("AgentRuntime")
+    elif not callable(getattr(runtime, "run", None)):
+        missing.append("AgentRuntime.run")
 
     if missing:
         raise ModuleNotFoundError(
