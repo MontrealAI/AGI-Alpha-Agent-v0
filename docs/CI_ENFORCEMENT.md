@@ -20,7 +20,7 @@ Use this checklist to keep CI visible and required on both pull requests and the
       - `🚀 CI — Insight Demo / 📚 Docs Build`
       - `🚀 CI — Insight Demo / 🐳 Docker build`
       - `🩺 CI Health / CI watchdog`
-   - Run `python scripts/verify_branch_protection.py --branch main` (export `GITHUB_TOKEN`) to confirm the rule includes every check above and still requires branches to be up to date. The **🩺 CI Health** workflow runs this helper automatically so regressions are caught quickly.
+   - Run `python scripts/verify_branch_protection.py --apply --branch main` (export `GITHUB_TOKEN`) to confirm the rule includes every check above and still requires branches to be up to date. Passing `--apply` automatically re-applies the required checks when they drift so the CI badge stays green. The **🩺 CI Health** workflow runs this helper automatically so regressions are caught quickly.
    - The helper’s default required-check list now mirrors the table above, including the **🩺 CI Health / CI watchdog** gate, so a bare run of the script exercises the full protection policy.
    - Optionally add additional owner-only workflows after verifying they succeed (for example, `📦 Browser Size / size-check`, `🔒 Container Security / sbom-scan-sign`, and `🚀 CI — Insight Demo / lint-type` + `🚀 CI — Insight Demo / tests`).
    - If the UI shows different names (for example, because a job label changed), copy the string verbatim from the latest workflow run; otherwise the protection rule will not attach and PRs will not block on CI.
