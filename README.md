@@ -15,8 +15,8 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
 [![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
-[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
+[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 
 The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
 
