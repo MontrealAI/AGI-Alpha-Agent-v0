@@ -1047,6 +1047,7 @@ jobs:
         run: |
           python scripts/verify_branch_protection.py \
             --branch "${TARGET_BRANCH}" \
+            --apply \
             --required-check "✅ PR CI / Lint (ruff)" \
             --required-check "✅ PR CI / Smoke tests" \
             --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \

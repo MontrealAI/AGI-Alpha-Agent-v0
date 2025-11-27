@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
-from typing import Iterable, Set
+from typing import Iterable
 
 import requests
 
@@ -44,7 +44,57 @@ def _build_headers(token: str) -> dict[str, str]:
     }
 
 
-def _required_contexts(protection: dict) -> Set[str]:
+def _configure_required_checks(
+    *,
+    owner: str,
+    repo: str,
+    branch: str,
+    token: str,
+    required_checks: Iterable[str],
+    strict: bool,
+) -> None:
+    url = f"{API_URL}/repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"
+    payload = {
+        "strict": strict,
+        "checks": [{"context": context} for context in required_checks],
+    }
+    response = requests.patch(url, headers=_build_headers(token), json=payload, timeout=30)
+    if response.status_code == 404:
+        # Branch protection may be disabled entirely; fall back to enabling it with
+        # the expected required checks so future queries succeed.
+        protection_url = f"{API_URL}/repos/{owner}/{repo}/branches/{branch}/protection"
+        protection_payload = {
+            "required_status_checks": payload,
+            "enforce_admins": True,
+            "required_pull_request_reviews": {
+                "required_approving_review_count": 1,
+                "dismiss_stale_reviews": True,
+                "require_code_owner_reviews": False,
+            },
+            "restrictions": None,
+            "allow_force_pushes": False,
+            "allow_deletions": False,
+            "block_creations": False,
+            "required_linear_history": False,
+            "allow_fork_syncing": True,
+            "required_conversation_resolution": True,
+            "lock_branch": False,
+        }
+        response = requests.put(
+            protection_url,
+            headers=_build_headers(token),
+            json=protection_payload,
+            timeout=30,
+        )
+
+    if not response.ok:
+        raise RuntimeError(
+            "failed to enforce required status checks: "
+            f"{response.status_code} {response.text}"
+        )
+
+
+def _required_contexts(protection: dict) -> set[str]:
     contexts: set[str] = set()
     status_checks = protection.get("required_status_checks") or {}
     contexts.update(status_checks.get("contexts") or [])
@@ -65,6 +115,14 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         action="append",
         default=None,
         help="Name of a required status check (may be passed multiple times).",
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help=(
+            "Automatically enforce the expected branch protection status checks when"
+            " they are missing or misconfigured."
+        ),
     )
     parser.add_argument(
         "--skip-strict",
@@ -89,31 +147,69 @@ def main(argv: Iterable[str] | None = None) -> int:
         sys.stderr.write("error: set GITHUB_TOKEN or GH_TOKEN with access to read branch protection\n")
         return 1
 
-    required_checks = args.required_check or DEFAULT_REQUIRED_CHECKS
+    required_checks = list(args.required_check or DEFAULT_REQUIRED_CHECKS)
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{args.branch}/protection"
     response = requests.get(url, headers=_build_headers(token), timeout=30)
     if response.status_code == 404:
-        sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
-        return 1
+        if not args.apply:
+            sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
+            return 1
+        _configure_required_checks(
+            owner=owner,
+            repo=repo,
+            branch=args.branch,
+            token=token,
+            required_checks=required_checks,
+            strict=not args.skip_strict,
+        )
+        response = requests.get(url, headers=_build_headers(token), timeout=30)
     if not response.ok:
         sys.stderr.write(f"error: failed to read protection for {owner}/{repo}@{args.branch}: {response.text}\n")
         return 1
 
     protection = response.json()
+
     status_checks = protection.get("required_status_checks")
     if not status_checks:
-        sys.stderr.write(f"error: {owner}/{repo}@{args.branch} is missing required status checks\n")
-        return 1
+        if not args.apply:
+            sys.stderr.write(f"error: {owner}/{repo}@{args.branch} is missing required status checks\n")
+            return 1
+        _configure_required_checks(
+            owner=owner,
+            repo=repo,
+            branch=args.branch,
+            token=token,
+            required_checks=required_checks,
+            strict=not args.skip_strict,
+        )
+        protection = requests.get(url, headers=_build_headers(token), timeout=30).json()
+        status_checks = protection.get("required_status_checks") or {}
 
     contexts = _required_contexts(protection)
     missing = sorted(set(required_checks) - contexts)
+    strict_enforced = status_checks.get("strict", False)
+
+    if (missing or (not args.skip_strict and not strict_enforced)) and args.apply:
+        _configure_required_checks(
+            owner=owner,
+            repo=repo,
+            branch=args.branch,
+            token=token,
+            required_checks=required_checks,
+            strict=not args.skip_strict,
+        )
+        protection = requests.get(url, headers=_build_headers(token), timeout=30).json()
+        contexts = _required_contexts(protection)
+        missing = sorted(set(required_checks) - contexts)
+        strict_enforced = protection.get("required_status_checks", {}).get("strict", False)
+
     if missing:
         sys.stderr.write("error: missing required checks:\n")
         for check in missing:
             sys.stderr.write(f"  - {check}\n")
         return 1
 
-    if not args.skip_strict and not status_checks.get("strict", False):
+    if not args.skip_strict and not strict_enforced:
         sys.stderr.write("error: 'Require branches to be up to date' is not enabled\n")
         return 1
 
