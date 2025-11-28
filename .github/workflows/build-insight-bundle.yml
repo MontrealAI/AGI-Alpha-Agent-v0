@@ -1,0 +1,52 @@
+# Regenerate the Insight docs bundle when relevant sources change and commit the result.
+name: build-insight-bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - docs/alpha_agi_insight_v1/**
+      - alpha_factory_v1/demos/alpha_agi_insight_v1/**
+      - package.json
+      - package-lock.json
+      - '**/vite.config.*'
+      - '**/rollup.config.*'
+      - '**/webpack.config.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-insight-bundle:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine build script
+        id: detect-build
+        shell: bash
+        run: |
+          script=$(node -e "const fs=require('fs');const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));const preferred=['build:docs-insight','build:insight','build'];const found=preferred.find((name)=>pkg.scripts && pkg.scripts[name]);if(!found){console.error('No build script found');process.exit(1);}console.log(found);")
+          echo "script=$script" >> "$GITHUB_OUTPUT"
+
+      - name: Build Insight bundle
+        run: npm run ${{ steps.detect-build.outputs.script }}
+
+      - name: Commit updated docs bundle
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-regenerate docs Insight bundle"
+          file_pattern: docs/alpha_agi_insight_v1/**
