@@ -1,6 +1,6 @@
 # Regenerates the α‑AGI Insight docs bundle when relevant files change.
-# The workflow rebuilds the Insight browser assets and commits the refreshed
-# docs/alpha_agi_insight_v1/insight.bundle.js back to the repository.
+# Detects the appropriate build script, rebuilds the Insight assets, and commits
+# the refreshed docs/alpha_agi_insight_v1/insight.bundle.js back to the repo.
 name: build-insight-bundle
 
 on:
@@ -8,13 +8,13 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/alpha_agi_insight_v1/**'
-      - 'alpha_factory_v1/demos/alpha_agi_insight_v1/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - '**/vite.config.*'
-      - '**/rollup.config.*'
-      - '**/webpack.config.*'
+      - docs/alpha_agi_insight_v1/**
+      - alpha_factory_v1/demos/alpha_agi_insight_v1/**
+      - package.json
+      - package-lock.json
+      - vite.config.*
+      - rollup.config.*
+      - webpack.config.*
 
 permissions:
   contents: write
@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WORKDIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      DOCS_DIR: docs/alpha_agi_insight_v1
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -33,27 +34,27 @@ jobs:
         with:
           node-version: 20
 
-      - name: Determine docs Insight build script
+      - name: Detect Insight docs build script
         id: build-script
         working-directory: ${{ env.WORKDIR }}
         run: |
           SCRIPT=$(node <<'NODE'
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            const order = ['build:docs-insight', 'build:insight', 'build'];
-            const found = order.find((name) => pkg?.scripts?.[name]);
-            if (!found) {
+            const candidates = ['build:docs-insight', 'build:insight', 'build'];
+            const selected = candidates.find((name) => pkg?.scripts?.[name]);
+            if (!selected) {
               console.error('No suitable build script found in package.json');
               process.exit(1);
             }
-            console.log(found);
+            console.log(selected);
           NODE
           )
           echo "script=${SCRIPT}" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
-        run: npm ci
         working-directory: ${{ env.WORKDIR }}
+        run: npm ci
 
       - name: Build Insight docs bundle
         env:
@@ -61,10 +62,9 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
         run: |
           npm run "$BUILD_SCRIPT"
-          DOCS_DIR="$GITHUB_WORKSPACE/docs/alpha_agi_insight_v1"
-          OUT_DIR="$PWD/dist"
-          mkdir -p "$DOCS_DIR"
-          rsync -a --delete "$OUT_DIR/" "$DOCS_DIR/"
+          TARGET_DIR="${GITHUB_WORKSPACE}/${{ env.DOCS_DIR }}"
+          mkdir -p "$TARGET_DIR"
+          rsync -a --delete dist/ "$TARGET_DIR/"
 
       - name: Commit updated Insight bundle
         uses: stefanzweifel/git-auto-commit-action@v5
