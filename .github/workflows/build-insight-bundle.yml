@@ -36,7 +36,7 @@ jobs:
       - name: Select bundle build script
         id: select-script
         run: |
-          PACKAGE_JSON="$WORKDIR/package.json"
+          export PACKAGE_JSON="$WORKDIR/package.json"
           if [ ! -f "$PACKAGE_JSON" ]; then
             echo "package.json not found at $PACKAGE_JSON" >&2
             exit 1
