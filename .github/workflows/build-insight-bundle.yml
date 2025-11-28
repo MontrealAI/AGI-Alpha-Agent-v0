@@ -1,0 +1,72 @@
+# ♻️ Auto-regenerate the docs Insight bundle when related sources change.
+#
+# Rebuilds docs/alpha_agi_insight_v1/insight.bundle.js using npm and commits
+# updates back to the repository so the published demo stays current.
+name: "🔁 Build Insight bundle"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - docs/alpha_agi_insight_v1/**
+      - alpha_factory_v1/demos/alpha_agi_insight_v1/**
+      - package.json
+      - package-lock.json
+      - "vite.config.*"
+      - "rollup.config.*"
+      - "webpack.config.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-insight-bundle:
+    name: build-insight-bundle
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect build script
+        id: build-script
+        shell: bash
+        run: |
+          build_script=$(node - <<'NODE'
+          const { readFileSync } = require('fs');
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+          const candidates = ['build:docs-insight', 'build:insight', 'build'];
+          const script = candidates.find((name) => pkg.scripts && pkg.scripts[name]);
+          if (!script) {
+            console.error('No build script found in package.json');
+            process.exit(1);
+          }
+          console.log(script);
+          NODE
+          )
+          build_script=${build_script//$'\n'/}
+          echo "Detected build script: ${build_script}"
+          echo "script=${build_script}" >> "$GITHUB_OUTPUT"
+
+      - name: Build Insight bundle
+        run: npm run ${{ steps.build-script.outputs.script }}
+
+      - name: Sync bundle into docs directory
+        run: rsync -av --delete dist/ ../../../../docs/alpha_agi_insight_v1/
+
+      - name: Commit updated bundle
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-regenerate docs Insight bundle"
+          file_pattern: docs/alpha_agi_insight_v1/**
