@@ -1,45 +1,49 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-env serviceworker */
-const WORKBOX_SW_HASH = 'sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd';
-import {precacheAndRoute} from 'workbox-precaching';
-import {registerRoute} from 'workbox-routing';
-import {CacheFirst} from 'workbox-strategies';
 
-// replaced during build
 const CACHE_VERSION = '0.1.0';
-async function init() {
-  const res = await fetch('lib/workbox-sw.js');
-  const buf = await res.arrayBuffer();
-  const digest = await crypto.subtle.digest('SHA-384', buf);
-  const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-  if (`sha384-${b64}` !== WORKBOX_SW_HASH) {
-    throw new Error('lib/workbox-sw.js hash mismatch');
-  }
-  importScripts(URL.createObjectURL(new Blob([buf], {type: 'application/javascript'})));
-  workbox.core.setCacheNameDetails({prefix: CACHE_VERSION});
 
-  // include translation JSON files in the precache
-  precacheAndRoute([]);
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './insight.bundle.js',
+  './d3.v7.min.js',
+  './d3.exports.js',
+  './plotly.min.js',
+  './plotly.min.js.LICENSE.txt',
+  './script.js',
+  './style.css',
+  './manifest.json',
+  './tree.json',
+  './population.json',
+  './forecast.json',
+  './assets/logs.json',
+  './assets/preview.svg',
+  '../assets/pyodide_demo.js',
+  './assets/script.js',
+  './assets/style.css',
+  './favicon.svg',
+  './data/critics/innovations.txt',
+  './docs/API.md',
+  './docs/bus_tls.md',
+  './src/i18n/en.json',
+  './src/i18n/es.json',
+  './src/i18n/fr.json',
+  './src/i18n/zh.json'
+];
 
-  registerRoute(
-    ({request, url}) =>
-      request.destination === 'script' ||
-      request.destination === 'worker' ||
-      request.destination === 'font' ||
-      url.pathname.endsWith('.wasm') ||
-      (url.pathname.includes('/ipfs/') && url.pathname.endsWith('.json')),
-    new CacheFirst({cacheName: `${CACHE_VERSION}-assets`})
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(`${CACHE_VERSION}-precache`).then((cache) => cache.addAll(CORE_ASSETS)),
   );
+  self.skipWaiting();
+});
 
-  self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-      self.skipWaiting();
-    }
-  });
-
-  self.addEventListener('activate', (event) => {
-    event.waitUntil(
-      caches.keys().then((names) =>
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((names) =>
         Promise.all(
           names.map((name) => {
             if (!name.startsWith(CACHE_VERSION)) {
@@ -48,12 +52,26 @@ async function init() {
             return undefined;
           }),
         ),
-      ),
-    );
-  });
-}
+      )
+      .then(() => self.clients.claim()),
+  );
+});
 
-init().catch((err) => {
-  console.error('Service worker failed to initialize', err);
-  self.registration.unregister();
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
+
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(request)
+        .then((resp) => {
+          const clone = resp.clone();
+          caches.open(`${CACHE_VERSION}-dynamic`).then((cache) => cache.put(request, clone));
+          return resp;
+        })
+        .catch(() => cached || Response.error());
+    }),
+  );
 });
