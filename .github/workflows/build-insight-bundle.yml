@@ -35,14 +35,16 @@ jobs:
 
       - name: Select bundle build script
         id: select-script
+        shell: bash
         run: |
-          export PACKAGE_JSON="$WORKDIR/package.json"
-          if [ ! -f "$PACKAGE_JSON" ]; then
+          set -euo pipefail
+          PACKAGE_JSON="$WORKDIR/package.json"
+          if [[ ! -f "$PACKAGE_JSON" ]]; then
             echo "package.json not found at $PACKAGE_JSON" >&2
             exit 1
           fi
           SCRIPT=$(node -e "const fs=require('fs');const pkg=JSON.parse(fs.readFileSync(process.env.PACKAGE_JSON,'utf8'));const order=['build:docs-insight','build:insight','build'];const found=order.find((name)=>pkg.scripts&&pkg.scripts[name]);if(!found){console.error('No suitable build script found in package.json');process.exit(1);}console.log(found);")
-          echo "BUILD_SCRIPT=$SCRIPT" >> "$GITHUB_ENV"
+          echo "build_script=$SCRIPT" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: npm ci
@@ -50,7 +52,7 @@ jobs:
 
       - name: Build Insight docs bundle
         run: |
-          npm run "$BUILD_SCRIPT"
+          npm run "${{ steps.select-script.outputs.build_script }}"
           DOCS_DIR="$GITHUB_WORKSPACE/docs/alpha_agi_insight_v1"
           OUT_DIR="$GITHUB_WORKSPACE/$WORKDIR/dist"
           mkdir -p "$DOCS_DIR"
