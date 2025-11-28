@@ -33,29 +33,38 @@ jobs:
         with:
           node-version: 20
 
-      - name: Select bundle build script
-        id: select-script
+      - name: Determine docs Insight build script
+        id: build-script
+        working-directory: ${{ env.WORKDIR }}
         run: |
-          export PACKAGE_JSON="$WORKDIR/package.json"
-          if [ ! -f "$PACKAGE_JSON" ]; then
-            echo "package.json not found at $PACKAGE_JSON" >&2
-            exit 1
-          fi
-          SCRIPT=$(node -e "const fs=require('fs');const pkg=JSON.parse(fs.readFileSync(process.env.PACKAGE_JSON,'utf8'));const order=['build:docs-insight','build:insight','build'];const found=order.find((name)=>pkg.scripts&&pkg.scripts[name]);if(!found){console.error('No suitable build script found in package.json');process.exit(1);}console.log(found);")
-          echo "BUILD_SCRIPT=$SCRIPT" >> "$GITHUB_ENV"
+          SCRIPT=$(node <<'NODE'
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const order = ['build:docs-insight', 'build:insight', 'build'];
+const found = order.find((name) => pkg?.scripts?.[name]);
+if (!found) {
+  console.error('No suitable build script found in package.json');
+  process.exit(1);
+}
+console.log(found);
+NODE
+)
+          echo "script=${SCRIPT}" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: npm ci
         working-directory: ${{ env.WORKDIR }}
 
       - name: Build Insight docs bundle
+        env:
+          BUILD_SCRIPT: ${{ steps.build-script.outputs.script }}
+        working-directory: ${{ env.WORKDIR }}
         run: |
           npm run "$BUILD_SCRIPT"
           DOCS_DIR="$GITHUB_WORKSPACE/docs/alpha_agi_insight_v1"
-          OUT_DIR="$GITHUB_WORKSPACE/$WORKDIR/dist"
+          OUT_DIR="$PWD/dist"
           mkdir -p "$DOCS_DIR"
           rsync -a --delete "$OUT_DIR/" "$DOCS_DIR/"
-        working-directory: ${{ env.WORKDIR }}
 
       - name: Commit updated Insight bundle
         uses: stefanzweifel/git-auto-commit-action@v5
