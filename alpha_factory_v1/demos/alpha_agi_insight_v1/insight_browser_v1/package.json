@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "scripts": {
-    "preinstall": "node -e \"const m=parseInt(process.versions.node); if(m<22){console.error('Node.js 22+ is required. Current version: '+process.versions.node); process.exit(1);} \"",
+    "preinstall": "node -e \"const m=parseInt(process.versions.node); if(m<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"",
     "lint": "eslint --config eslint.config.js src --ext .js,.ts",
     "build": "node build.js",
     "fetch-assets": "node -e \"console.log('Using PYODIDE_BASE_URL:', process.env.PYODIDE_BASE_URL)\" && python ../../../../scripts/fetch_assets.py",
