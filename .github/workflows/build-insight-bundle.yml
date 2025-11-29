@@ -54,6 +54,8 @@ jobs:
       - name: Build Insight bundle
         run: npm run ${{ steps.build-script.outputs.script }}
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        env:
+          FETCH_ASSETS_SKIP_LLM: "1"
 
       - name: Sync built assets into docs
         run: |
