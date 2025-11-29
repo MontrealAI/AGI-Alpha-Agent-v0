@@ -1,136 +1,11 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
+    <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0d0e2e" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self' blob:; connect-src 'self' https://api.openai.com; child-src 'self' blob:; frame-src 'self' blob:; worker-src 'self' blob:; img-src 'self' data: blob:; script-src 'self' blob: https://cdn.jsdelivr.net 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-RsNuNkJQII9CkMdyDc8hkZBQcolKVkN0x3ZuiugbubDW1fTvOzHmj5g+HfC0ifF3' 'sha384-zyzD8d0FnPd70UrWzW/cr33kYrSnvSZbJMZnQ2pkQs+OdKOgOSXKNgiZ5tEWBlga' 'sha384-EAF2mNlEm60Ms1ZoKs8ETPX/YGxVsMrI9V9Nr2P0ko17g34rLf4Na/+e/e4BU/c/' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'"
-    />
-    <title>α-AGI Insight – in-browser Pareto explorer</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-    <link rel="manifest" href="assets/manifest.json" />
-    <link rel="stylesheet" href="style.css" />
-    <!-- styles injected by insight.bundle.js -->
-  </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="hero relative py-12">
-      <div class="parallax absolute inset-0 -z-10">
-        <div class="stars"></div>
-        <div class="stars2"></div>
-      </div>
-      <div class="hero-content text-center">
-        <p class="uppercase tracking-widest text-sm text-primary">
-          In-browser Pareto explorer
-        </p>
-        <h1
-          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 \
-          bg-clip-text text-transparent animate-gradient"
-        >
-          α-AGI Insight
-        </h1>
-        <p class="mt-4 text-lg opacity-80">
-          Compare timelines, value and agent logs side-by-side — even when fully offline.
-        </p>
-      </div>
-    </header>
 
-    <main class="flex-1 px-6 pb-12">
-      <section class="max-w-6xl mx-auto">
-        <div class="flex flex-wrap gap-3 items-center justify-between mb-6">
-          <div class="flex gap-2" role="group" aria-label="Mode selection">
-            <button id="offline-mode" class="btn btn-primary">Offline demo</button>
-            <button id="online-mode" class="btn btn-secondary">Use OpenAI API</button>
-          </div>
-          <button id="toggle-logs" class="btn btn-ghost" aria-expanded="true">
-            Toggle agent logs
-          </button>
-        </div>
-
-        <div
-          class="grid md:grid-cols-2 gap-6 mb-6"
-          role="region"
-          aria-label="AGI metrics"
-        >
-          <div class="card bg-base-100 shadow-lg p-4">
-            <h2 class="text-xl font-semibold mb-2">AGI capability over time</h2>
-            <div id="capability-chart" style="min-height: 320px;"></div>
-          </div>
-          <div class="card bg-base-100 shadow-lg p-4">
-            <h2 class="text-xl font-semibold mb-2">Sector performance timeline</h2>
-            <div id="timeline-chart" style="min-height: 320px;"></div>
-          </div>
-        </div>
-
-        <div
-          class="grid md:grid-cols-2 gap-6"
-          role="region"
-          aria-label="Trade-offs and plan"
-        >
-          <div class="card bg-base-100 shadow-lg p-4">
-            <h2 class="text-xl font-semibold mb-2">Pareto frontier</h2>
-            <div id="pareto-chart" style="min-height: 360px;"></div>
-          </div>
-          <div class="card bg-base-100 shadow-lg p-4 flex flex-col">
-            <h2 class="text-xl font-semibold mb-2">Research tree</h2>
-            <div
-              id="tree-container"
-              style="min-height: 360px;"
-              class="flex-1"
-            ></div>
-          </div>
-        </div>
-
-        <div
-          class="card bg-base-100 shadow-lg p-4 mt-6"
-          role="region"
-          aria-label="Agent logs"
-        >
-          <div class="flex items-center justify-between mb-3">
-            <h2 class="text-xl font-semibold">Agent activity log</h2>
-            <span class="text-sm opacity-70">Streaming demo entries</span>
-          </div>
-          <pre
-            id="logs-panel"
-            class="font-mono text-sm bg-base-200 p-3 rounded"
-            style="min-height: 160px; white-space: pre-wrap;"
-          ></pre>
-        </div>
-      </section>
-    </main>
-
-    <!-- Hidden legacy containers kept for compatibility -->
-    <div id="controls" class="hidden" aria-hidden="true"></div>
-    <div id="canvas" class="hidden" aria-hidden="true"></div>
-    <div id="log" class="hidden" aria-hidden="true"></div>
-    <div id="toolbar" class="hidden" aria-hidden="true">
-      <button id="install-btn" hidden aria-label="Install application">Install</button>
-    </div>
-    <div id="legend" class="hidden" aria-hidden="true"></div>
-    <div id="depth-legend" class="hidden" aria-hidden="true"></div>
-
-    <div id="toast" aria-live="polite" role="status"></div>
-
-    <footer
-      id="disclaimer"
-      style="font-size: 0.8rem; margin: 1rem; text-align:center;"
-    >
-      This repository is a conceptual research prototype. References to "AGI" and
-      "superintelligence" describe aspirational goals and do not indicate the presence
-      of a real general intelligence. Use at your own risk. Nothing herein constitutes
-      financial advice. MontrealAI and the maintainers accept no liability for losses
-      incurred from using this software.
-    </footer>
-
-    <script
-      src="d3.v7.min.js"
-      integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i"
-      crossorigin="anonymous"
-    ></script>
-    <script src="plotly.min.js" crossorigin="anonymous"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script type="importmap">
       {
         "imports": {
@@ -140,6 +15,8 @@
     </script>
 
     <script>
+      // Provide a resilient toast implementation before deferred modules load.
+      // The Playwright offline checks rely on these calls not throwing.
       if (typeof window.toast !== 'function') {
         window.toast = (msg) => {
           const t = document.getElementById('toast');
@@ -147,10 +24,7 @@
             t.textContent = msg;
             t.classList.add('show');
             clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(
-              () => t.classList.remove('show'),
-              2000,
-            );
+            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
             return;
           }
           console.warn(msg);
@@ -160,45 +34,42 @@
 
     <script>
       const SW_URL = 'service-worker.js';
+      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
 
       if ('serviceWorker' in navigator) {
-        (async () => {
+        window.addEventListener('load', async () => {
           try {
-            await navigator.serviceWorker.register(SW_URL);
-            await navigator.serviceWorker.ready;
-
-            const refreshed = sessionStorage.getItem('sw-refreshed');
-            if (!navigator.serviceWorker.controller && !refreshed) {
-              sessionStorage.setItem('sw-refreshed', '1');
-              window.location.reload();
-              return;
+            const res = await fetch(SW_URL);
+            const buf = await res.arrayBuffer();
+            const digest = await crypto.subtle.digest('SHA-384', buf);
+            const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+            if (`sha384-${b64}` !== SW_HASH) {
+              throw new Error('Service worker hash mismatch');
             }
-            sessionStorage.removeItem('sw-refreshed');
+
+            navigator.serviceWorker.register(SW_URL).then((registration) => {
+              navigator.serviceWorker.ready.then(() => {
+                registration.addEventListener('updatefound', () => {
+                  const newWorker = registration.installing;
+                  if (!newWorker) return;
+
+                  newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed') {
+                      window.toast('Update available — reload to use the latest version.');
+                    }
+                  });
+                });
+              });
+            });
           } catch (err) {
-            console.error('Service worker registration failed', err);
-            toast('Service worker registration failed; offline mode disabled.');
+            console.error(err);
+            window.toast('Service worker failed: ' + err.message);
           }
-        })();
+        });
       }
     </script>
 
-    <script type="module" src="script.js"></script>
-    <script
-      type="module"
-      src="insight.bundle.js"
-      integrity="sha384-0FzpCDX5zS35+fAj1CPHCAnhZfOmCvwSi1oeCc+NET2n9b0UUHDAxc8KLfqv2g6r"
-      crossorigin="anonymous"
-    ></script>
-
-    <script>
-      window.PINNER_TOKEN = atob('');
-      window.OTEL_ENDPOINT = atob('');
-      window.IPFS_GATEWAY = atob('');
-    </script>
-
-    <p><a href="../index.html">⬅️ Back to Gallery</a></p>
-    <p class="snippet">
-      <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
-    </p>
-  </body>
+    <script type="module" src="main.js"></script>
+  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
+</body>
 </html>
