@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      BROWSER_DIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -20,16 +23,26 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ${{ env.BROWSER_DIR }}
 
       - name: Build insight bundle
-        run: npm run build-insight
+        run: npm run build:dist
+        working-directory: ${{ env.BROWSER_DIR }}
+
+      - name: Sync docs bundle
+        run: |
+          DOCS_DIR="${GITHUB_WORKSPACE}/docs/alpha_agi_insight_v1"
+          BUILD_DIR="${GITHUB_WORKSPACE}/${{ env.BROWSER_DIR }}/dist"
+          rm -rf "$DOCS_DIR"
+          mkdir -p "$DOCS_DIR"
+          cp -a "$BUILD_DIR/." "$DOCS_DIR/"
 
       - name: Commit updated bundle
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto-generated updated insight.bundle.js"
-          file_pattern: docs/alpha_agi_insight_v1/insight.bundle.js
+          file_pattern: docs/alpha_agi_insight_v1/**
