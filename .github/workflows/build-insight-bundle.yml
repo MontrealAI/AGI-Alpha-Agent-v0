@@ -1,4 +1,5 @@
-# Automates regeneration of the Insight docs bundle so published assets stay current.
+# Automatically rebuilds the Insight docs bundle when relevant sources change.
+# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js and commits updates back to the repository.
 name: "📦 Build Insight Bundle"
 
 on:
@@ -34,45 +35,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Prepare package.json for Node 20
-      - name: Temporarily relax preinstall Node guard
-        run: |
-          set -euo pipefail
-          cp package.json /tmp/insight-browser-package.json
-          node <<'NODE'
-          import fs from 'fs';
-
-          const pkgPath = 'package.json';
-          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-
-          if (pkg.scripts && pkg.scripts.preinstall) {
-            pkg.scripts.preinstall = "node -e \"const major=parseInt(process.versions.node); if(major<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"";
-          if (pkg.scripts?.preinstall) {
-            pkg.scripts.preinstall = "node -e \"const m=parseInt(process.versions.node); if(m<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"";
-            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-          }
-          NODE
-
       - name: Install dependencies
         run: npm ci
-
-      - name: Restore original package.json
-        if: always()
-        run: mv /tmp/insight-browser-package.json package.json
-
-      - name: Relax build-time Node requirement
-        run: |
-          set -euo pipefail
-          cp build/version_check.js /tmp/version_check.js
-          node <<'NODE'
-          import fs from 'fs';
-
-          const path = 'build/version_check.js';
-          const updated = fs.readFileSync(path, 'utf8')
-            .replace('Node.js 22+ is required. Current version: ${process.versions.node}', 'Node.js 20+ is required. Current version: ${process.versions.node}')
-            .replace('major < 22', 'major < 20');
-          fs.writeFileSync(path, updated);
-          NODE
 
       - name: Select build script
         id: select-script
@@ -84,10 +48,12 @@ jobs:
           const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
           const candidates = ['build:docs-insight', 'build:insight', 'build'];
           const chosen = candidates.find((name) => pkg.scripts && pkg.scripts[name]);
+
           if (!chosen) {
             console.error('No suitable build script found in package.json');
             process.exit(1);
           }
+
           console.log(chosen);
           NODE
           )
@@ -95,18 +61,11 @@ jobs:
 
       - name: Build Insight docs bundle
         env:
-          DOCS_DIR: ${{ github.workspace }}/docs/alpha_agi_insight_v1
           BUILD_SCRIPT: ${{ steps.select-script.outputs.script }}
         run: |
           set -euo pipefail
           echo "Using npm script: $BUILD_SCRIPT"
           npm run "$BUILD_SCRIPT"
-          mkdir -p "$DOCS_DIR"
-          rsync -av --delete dist/ "$DOCS_DIR"/
-
-      - name: Restore Node version guard
-        if: always()
-        run: mv /tmp/version_check.js build/version_check.js
 
       - name: Commit regenerated bundle
         uses: stefanzweifel/git-auto-commit-action@v5
