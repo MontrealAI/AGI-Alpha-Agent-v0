@@ -21,10 +21,6 @@ permissions:
 jobs:
   build-insight-bundle:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-        shell: bash
 
     steps:
       - name: Checkout repository
@@ -36,10 +32,12 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npm ci
 
       - name: Select build script
         id: select-script
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: |
           set -euo pipefail
           BUILD_SCRIPT=$(node --input-type=module <<'NODE'
@@ -62,6 +60,7 @@ jobs:
       - name: Build Insight docs bundle
         env:
           BUILD_SCRIPT: ${{ steps.select-script.outputs.script }}
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: |
           set -euo pipefail
           echo "Using npm script: $BUILD_SCRIPT"
