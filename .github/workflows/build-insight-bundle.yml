@@ -1,72 +1,64 @@
-# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js when relevant sources change
-# and auto-commits updated artifacts back to the repository.
-name: "📦 Build Insight Bundle"
+# Build and publish the Insight docs bundle whenever related sources change.
+# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js and commits the result.
+name: build-insight-bundle
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - "docs/alpha_agi_insight_v1/**"
-      - "alpha_factory_v1/demos/alpha_agi_insight_v1/**"
-      - "package.json"
-      - "package-lock.json"
-      - "vite.config.*"
-      - "rollup.config.*"
-      - "webpack.config.*"
-
-permissions:
-  contents: write
+      - 'docs/alpha_agi_insight_v1/**'
+      - 'alpha_factory_v1/demos/alpha_agi_insight_v1/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.*'
+      - 'rollup.config.*'
+      - 'webpack.config.*'
 
 jobs:
   build-insight-bundle:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
       - name: Detect build script
-        id: select-script
+        id: build-script
         run: |
-          set -euo pipefail
-          BUILD_SCRIPT=$(node --input-type=module <<'NODE'
-          import { readFileSync } from 'fs';
+          scripts=("build:docs-insight" "build:insight" "build")
+          for script in "${scripts[@]}"; do
+            value=$(npm pkg get "scripts.${script}" | tr -d '"')
+            if [ "${value}" != "null" ]; then
+              echo "script=${script}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "No build script found." >&2
+          exit 1
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
-          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
-          const candidates = ['build:docs-insight', 'build:insight', 'build'];
-          const chosen = candidates.find((name) => pkg.scripts?.[name]);
+      - name: Build Insight bundle
+        run: npm run ${{ steps.build-script.outputs.script }}
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
-          if (!chosen) {
-            console.error('No suitable build script found in package.json');
-            process.exit(1);
-          }
-
-          console.log(chosen);
-          NODE
-          )
-          echo "script=$BUILD_SCRIPT" >> "$GITHUB_OUTPUT"
-
-      - name: Build Insight docs bundle
-        env:
-          BUILD_SCRIPT: ${{ steps.select-script.outputs.script }}
+      - name: Sync built assets into docs
         run: |
-          set -euo pipefail
-          echo "Using npm script: $BUILD_SCRIPT"
-          npm run "$BUILD_SCRIPT"
+          rsync -av --delete dist/ ../../../../docs/alpha_agi_insight_v1/
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
       - name: Commit regenerated bundle
         uses: stefanzweifel/git-auto-commit-action@v5
