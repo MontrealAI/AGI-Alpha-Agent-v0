@@ -30,10 +30,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js from .nvmrc
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
@@ -42,12 +42,12 @@ jobs:
         id: select-script
         run: |
           set -euo pipefail
-          BUILD_SCRIPT=$(node <<'NODE'
-          import fs from 'fs';
+          BUILD_SCRIPT=$(node --input-type=module <<'NODE'
+          import { readFileSync } from 'fs';
 
-          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
           const candidates = ['build:docs-insight', 'build:insight', 'build'];
-          const chosen = candidates.find((name) => pkg.scripts && pkg.scripts[name]);
+          const chosen = candidates.find((name) => pkg.scripts?.[name]);
 
           if (!chosen) {
             console.error('No suitable build script found in package.json');
