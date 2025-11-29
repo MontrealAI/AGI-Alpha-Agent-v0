@@ -1,9 +1,6 @@
 # Automates regeneration of the Insight docs bundle so published assets stay current.
 name: "📦 Build Insight Bundle"
 
-permissions:
-  contents: write
-
 on:
   workflow_dispatch:
   push:
@@ -16,6 +13,9 @@ on:
       - "vite.config.*"
       - "rollup.config.*"
       - "webpack.config.*"
+
+permissions:
+  contents: write
 
 jobs:
   build-insight-bundle:
@@ -35,6 +35,7 @@ jobs:
           node-version: 20
 
       - name: Prepare package.json for Node 20
+      - name: Temporarily relax preinstall Node guard
         run: |
           set -euo pipefail
           cp package.json /tmp/insight-browser-package.json
@@ -46,6 +47,8 @@ jobs:
 
           if (pkg.scripts && pkg.scripts.preinstall) {
             pkg.scripts.preinstall = "node -e \"const major=parseInt(process.versions.node); if(major<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"";
+          if (pkg.scripts?.preinstall) {
+            pkg.scripts.preinstall = "node -e \"const m=parseInt(process.versions.node); if(m<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"";
             fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
           }
           NODE
