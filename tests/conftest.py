@@ -46,6 +46,7 @@ pytest.importorskip("cachetools", reason="cachetools required")
 pytest.importorskip("numpy", reason="numpy required")
 
 _HAS_TORCH = importlib.util.find_spec("torch") is not None
+_RUN_AIGA = os.getenv("ENABLE_AIGA_TESTS") == "1"
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -58,6 +59,18 @@ def pytest_configure(config: pytest.Config) -> None:
 def pytest_runtest_setup(item: pytest.Item) -> None:
     if "requires_torch" in item.keywords and not _HAS_TORCH:
         pytest.skip("torch required", allow_module_level=True)
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    if _RUN_AIGA:
+        return
+
+    skip_aiga = pytest.mark.skip(
+        reason="Set ENABLE_AIGA_TESTS=1 to exercise the AIGA meta-evolution demo",
+    )
+    for item in items:
+        if "test_aiga" in item.nodeid:
+            item.add_marker(skip_aiga)
 
 
 @pytest.fixture
