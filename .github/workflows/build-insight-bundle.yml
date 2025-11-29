@@ -1,5 +1,5 @@
-# Automatically rebuilds the Insight docs bundle when relevant sources change.
-# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js and commits updates back to the repository.
+# Automatically rebuilds the Insight docs bundle when relevant sources change
+# and commits regenerated artifacts under docs/alpha_agi_insight_v1/.
 name: "📦 Build Insight Bundle"
 
 on:
@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
+          node-version: 22
 
       - name: Install dependencies
         run: npm ci
