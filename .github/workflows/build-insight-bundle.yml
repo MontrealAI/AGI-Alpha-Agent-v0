@@ -12,6 +12,8 @@ on:
       - 'alpha_factory_v1/demos/alpha_agi_insight_v1/**'
       - 'package.json'
       - 'package-lock.json'
+      - '**/package.json'
+      - '**/package-lock.json'
       - '**/vite.config.*'
       - '**/rollup.config.*'
       - '**/webpack.config.*'
@@ -52,6 +54,8 @@ jobs:
           echo "script=${SCRIPT}" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
+        env:
+          npm_config_ignore_scripts: true
         run: npm ci
         working-directory: ${{ env.WORKDIR }}
 
