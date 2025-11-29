@@ -34,8 +34,28 @@ jobs:
         with:
           node-version: 20
 
+      - name: Align package manifest with Node 20 runner
+        run: |
+          set -euo pipefail
+          cp package.json /tmp/insight-browser-package.json
+          node <<'NODE'
+          import fs from 'fs';
+
+          const pkgPath = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+
+          if (pkg.scripts?.preinstall) {
+            pkg.scripts.preinstall = "node -e \"const m=parseInt(process.versions.node); if(m<20){console.error('Node.js 20+ is required. Current version: '+process.versions.node); process.exit(1);} \"";
+            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+          }
+NODE
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Restore original package manifest
+        if: always()
+        run: mv /tmp/insight-browser-package.json package.json
 
       - name: Build Insight docs bundle
         env:
