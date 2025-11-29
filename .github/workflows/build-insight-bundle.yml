@@ -1,6 +1,4 @@
-# Automates regeneration of the Insight demo bundle for the published docs.
-# When relevant source files change, this workflow rebuilds the bundle and
-# commits the refreshed assets under docs/alpha_agi_insight_v1/.
+# Automates regeneration of the Insight docs bundle so published assets stay current.
 name: "📦 Build Insight Bundle"
 
 permissions:
@@ -26,11 +24,12 @@ jobs:
       run:
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         shell: bash
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -39,7 +38,6 @@ jobs:
         run: npm ci
 
       - name: Build Insight docs bundle
-        id: build
         env:
           DOCS_DIR: ${{ github.workspace }}/docs/alpha_agi_insight_v1
         run: |
@@ -66,4 +64,3 @@ NODE
         with:
           commit_message: "chore: auto-regenerate docs Insight bundle"
           file_pattern: docs/alpha_agi_insight_v1/**
-          repository: ${{ github.workspace }}
