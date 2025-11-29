@@ -1,5 +1,5 @@
-# Automatically rebuilds the Insight docs bundle when relevant sources change
-# and commits regenerated artifacts under docs/alpha_agi_insight_v1/.
+# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js when relevant sources change
+# and auto-commits updated artifacts back to the repository.
 name: "📦 Build Insight Bundle"
 
 on:
@@ -22,6 +22,11 @@ jobs:
   build-insight-bundle:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,12 +37,10 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npm ci
 
-      - name: Select build script
+      - name: Detect build script
         id: select-script
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: |
           set -euo pipefail
           BUILD_SCRIPT=$(node --input-type=module <<'NODE'
@@ -60,7 +63,6 @@ jobs:
       - name: Build Insight docs bundle
         env:
           BUILD_SCRIPT: ${{ steps.select-script.outputs.script }}
-        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: |
           set -euo pipefail
           echo "Using npm script: $BUILD_SCRIPT"
