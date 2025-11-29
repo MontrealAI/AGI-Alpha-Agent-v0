@@ -22,8 +22,11 @@ permissions:
 jobs:
   build-insight-bundle:
     runs-on: ubuntu-latest
-    env:
-      WORKDIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+    defaults:
+      run:
+        shell: bash
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,7 +38,6 @@ jobs:
 
       - name: Determine docs Insight build script
         id: build-script
-        working-directory: ${{ env.WORKDIR }}
         run: |
           SCRIPT=$(node <<'NODE'
             const fs = require('fs');
@@ -53,15 +55,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: ${{ env.WORKDIR }}
 
       - name: Build Insight docs bundle
         env:
           BUILD_SCRIPT: ${{ steps.build-script.outputs.script }}
-        working-directory: ${{ env.WORKDIR }}
+          DOCS_DIR: ${{ github.workspace }}/docs/alpha_agi_insight_v1
         run: |
           npm run "$BUILD_SCRIPT"
-          DOCS_DIR="$GITHUB_WORKSPACE/docs/alpha_agi_insight_v1"
           OUT_DIR="$PWD/dist"
           mkdir -p "$DOCS_DIR"
           rsync -a --delete "$OUT_DIR/" "$DOCS_DIR/"
