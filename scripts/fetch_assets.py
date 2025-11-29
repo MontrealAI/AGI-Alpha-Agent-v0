@@ -37,6 +37,13 @@ HF_GPT2_BASE_URL = os.environ.get("HF_GPT2_BASE_URL", DEFAULT_HF_GPT2_BASE_URL).
 # Updated to Pyodide 0.28.0
 DEFAULT_PYODIDE_BASE_URL = "https://cdn.jsdelivr.net/pyodide/v0.28.0/full"
 PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).rstrip("/")
+
+# Skip downloading the GPT-2 checkpoint when set (helps keep CI commits small)
+FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
+    "1",
+    "true",
+    "yes",
+}
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
@@ -64,6 +71,10 @@ ASSETS = {
     "lib/workbox-sw.js": "https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js",
 }
 
+if FETCH_ASSETS_SKIP_LLM:
+    print("Skipping wasm_llm assets because FETCH_ASSETS_SKIP_LLM is set.")
+    ASSETS = {k: v for k, v in ASSETS.items() if not k.startswith("wasm_llm/")}
+
 CHECKSUMS = {
     "lib/bundle.esm.min.js": "sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD",  # noqa: E501
     "lib/workbox-sw.js": "sha384-R7RXlLLrbRAy0JWTwv62SHZwpjwwc7C0wjnLGa5bRxm6YCl5zw87IRvhlleSM5zd",  # noqa: E501
@@ -72,6 +83,9 @@ CHECKSUMS = {
     "pyodide-lock.json": "sha384-2t7FpZqshEP49Av2AHAvKgiBBKi4lIjL2MqLocHFbE+bqa7/KYAhcqVPtO37bir1",
     "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
 }
+
+if FETCH_ASSETS_SKIP_LLM:
+    CHECKSUMS.pop("pytorch_model.bin", None)
 
 # Remember to run `python scripts/generate_build_manifest.py` whenever
 # these checksum values change so the Insight Browser build manifest
