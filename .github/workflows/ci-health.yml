@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 20
     env:
       ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-      CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
+      CI_TARGET_BRANCH: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref || 'main' }}
       AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
       AGIALPHA_DECIMALS: 18
     steps:
@@ -44,7 +44,7 @@ jobs:
       - name: Check CI health and remediate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
+          CI_TARGET_BRANCH: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref || 'main' }}
         run: |
           python scripts/check_ci_status.py \
             --wait-minutes 10 \
@@ -55,6 +55,7 @@ jobs:
             --rerun-failed \
             --poll-seconds 30 \
             --ref "${CI_TARGET_BRANCH}"
+
       - name: Warn when admin token is unavailable
         if: ${{ env.ADMIN_GITHUB_TOKEN == '' }}
         run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."
@@ -66,7 +67,7 @@ jobs:
           # to branch protection settings. The default GITHUB_TOKEN lacks this
           # scope and will return 403s when querying protection rules.
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN }}
-          CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
+          CI_TARGET_BRANCH: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref || 'main' }}
         run: |
           python scripts/verify_branch_protection.py \
             --branch "${CI_TARGET_BRANCH}" \
