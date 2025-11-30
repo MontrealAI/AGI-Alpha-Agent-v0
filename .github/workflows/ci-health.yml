@@ -71,6 +71,7 @@ jobs:
             --dispatch-missing \
             --rerun-failed \
             --poll-seconds 30 \
+            --branch "${CI_TARGET_BRANCH}" \
             --ref "${CI_TARGET_BRANCH}"
       - name: Warn when admin token is unavailable
         if: ${{ env.ADMIN_GITHUB_TOKEN == '' }}
