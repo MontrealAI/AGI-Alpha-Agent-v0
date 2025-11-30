@@ -130,16 +130,41 @@ def _run_age_seconds(run: Mapping[str, object], *, now: datetime | None = None) 
 
 
 def _workflow_filename_from_env() -> str | None:
+    """Return the workflow filename for the current run if available.
+
+    GitHub exposes ``GITHUB_WORKFLOW_REF`` for reusable workflows, but this
+    variable is not always populated for standard runs. Fall back to scanning
+    ``.github/workflows`` for a file whose ``name`` matches ``GITHUB_WORKFLOW``
+    so the health check can reliably skip the workflow that invoked it.
+    """
+
     workflow_ref = os.environ.get("GITHUB_WORKFLOW_REF")
-    if not workflow_ref:
+    if workflow_ref:
+        _, _, workflow_with_ref = workflow_ref.partition("/.github/workflows/")
+        if workflow_with_ref:
+            workflow, _, _ = workflow_with_ref.partition("@")
+            if workflow:
+                return workflow
+
+    workflow_name = os.environ.get("GITHUB_WORKFLOW")
+    if not workflow_name:
         return None
 
-    _, _, workflow_with_ref = workflow_ref.partition("/.github/workflows/")
-    if not workflow_with_ref:
-        return None
+    workflow_dir = Path(".github/workflows")
+    workflow_files = list(workflow_dir.glob("*.yml")) + list(workflow_dir.glob("*.yaml"))
+    for workflow_file in workflow_files:
+        try:
+            raw = workflow_file.read_text(encoding="utf-8")
+            if yaml is None:
+                continue
+            parsed = yaml.safe_load(raw) or {}
+        except (OSError, yaml.YAMLError):  # pragma: no cover - best effort fallback
+            continue
 
-    workflow, _, _ = workflow_with_ref.partition("@")
-    return workflow or None
+        if parsed.get("name") == workflow_name:
+            return workflow_file.name
+
+    return None
 
 
 def _workflow_events(repo: str, workflow: str, token: str | None) -> tuple[set[str] | None, str | None]:
