@@ -43,7 +43,7 @@ jobs:
           python-version: "3.12"
       - name: Check CI health and remediate
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           CI_TARGET_BRANCH: ${{ (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].base.ref) || 'main' }}
         run: |
           python scripts/check_ci_status.py \
