@@ -23,7 +23,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, Mapping
 
-import yaml
+try:
+    import yaml
+except ImportError:  # pragma: no cover - optional dependency
+    yaml = None
 
 API_ROOT = "https://api.github.com"
 DEFAULT_WORKFLOWS = (
@@ -246,9 +249,14 @@ def _workflow_supports_dispatch(workflow: str) -> bool:
         return False
 
     try:
-        config = yaml.safe_load(path.read_text()) or {}
+        content = path.read_text()
     except OSError:
         return False
+
+    if yaml is None:
+        return "workflow_dispatch" in content
+
+    config = yaml.safe_load(content) or {}
 
     triggers = config.get("on")
     if triggers is None:
