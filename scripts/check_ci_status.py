@@ -66,6 +66,42 @@ def _latest_run(
     return runs[0]
 
 
+def _pr_head_branch_from_event() -> str | None:
+    event_path = os.environ.get("GITHUB_EVENT_PATH")
+    if not event_path or not os.path.exists(event_path):
+        return None
+
+    try:
+        with open(event_path, encoding="utf-8") as event_file:
+            payload = json.load(event_file)
+    except Exception:
+        return None
+
+    pull_request = payload.get("pull_request")
+    if isinstance(pull_request, Mapping):
+        head = pull_request.get("head")
+        if isinstance(head, Mapping):
+            head_ref = head.get("ref")
+            if isinstance(head_ref, str) and head_ref:
+                return head_ref
+
+    workflow_run = payload.get("workflow_run")
+    if isinstance(workflow_run, Mapping):
+        head_branch = workflow_run.get("head_branch")
+        if isinstance(head_branch, str) and head_branch:
+            return head_branch
+
+        pull_requests = workflow_run.get("pull_requests")
+        if isinstance(pull_requests, list) and pull_requests:
+            pr = pull_requests[0]
+            if isinstance(pr, Mapping):
+                head_branch = pr.get("head_branch")
+                if isinstance(head_branch, str) and head_branch:
+                    return head_branch
+
+    return None
+
+
 def _can_rerun(run: Mapping[str, object]) -> bool:
     # GitHub omits the rerun URL when a workflow cannot be retried (e.g. pull
     # requests from forks with restricted permissions). Avoid issuing a rerun
@@ -458,12 +494,20 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Dispatch workflows that are missing or not green using GITHUB_TOKEN",
     )
+
+    default_branch = (
+        _pr_head_branch_from_event()
+        or os.environ.get("GITHUB_HEAD_REF")
+        or os.environ.get("CI_TARGET_BRANCH")
+        or os.environ.get("GITHUB_REF_NAME")
+    )
     parser.add_argument(
         "--branch",
-        default=os.environ.get("CI_TARGET_BRANCH") or os.environ.get("GITHUB_REF_NAME"),
+        default=default_branch,
         help=(
             "Only consider runs for the given branch when evaluating workflow health; "
-            "defaults to CI_TARGET_BRANCH or GITHUB_REF_NAME when set"
+            "defaults to the PR head branch when available, otherwise CI_TARGET_BRANCH "
+            "or GITHUB_REF_NAME"
         ),
     )
     parser.add_argument(
