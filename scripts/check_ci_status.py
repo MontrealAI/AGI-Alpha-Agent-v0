@@ -54,12 +54,37 @@ def _error_detail(exc: urllib.error.HTTPError) -> str:
     return f"{exc.reason}: {body}" if body else exc.reason
 
 
-def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+def _latest_run(
+    repo: str,
+    workflow: str,
+    token: str | None,
+    *,
+    branch: str | None = None,
+    ignore_branch_mismatch: bool = False,
+) -> Mapping[str, object] | None:
+    query = "?per_page=30"
+    if branch:
+        query += f"&branch={branch}"
+
+    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs{query}"
     payload = _github_request(url, token)
     runs = payload.get("workflow_runs") or []
     if not runs:
+        if branch and ignore_branch_mismatch:
+            return None
         raise RuntimeError(f"No runs found for workflow '{workflow}' in repo {repo}")
+
+    if branch:
+        for run in runs:
+            if run.get("head_branch") == branch:
+                return run
+        if ignore_branch_mismatch:
+            return None
+        raise RuntimeError(
+            "No runs found for workflow '"
+            f"{workflow}' on branch '{branch}' in repo {repo}"
+        )
+
     return runs[0]
 
 
@@ -323,14 +348,17 @@ def verify_workflows(
     workflows: Iterable[str],
     token: str | None,
     *,
+    branch: str | None = None,
     wait_seconds: float = 0,
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
     rerun_failed: bool = False,
-) -> tuple[list[str], dict[str, Mapping[str, object]]]:
+    ignore_branch_mismatch: bool = False,
+) -> tuple[list[str], dict[str, Mapping[str, object]], set[str]]:
     failures: list[str] = []
     runs: dict[str, Mapping[str, object]] = {}
     remaining = wait_seconds
+    skipped_branches: set[str] = set()
 
     rerun_attempts: dict[str, str] = {}
 
@@ -342,7 +370,13 @@ def verify_workflows(
 
         for workflow in workflows:
             try:
-                run = _latest_run(repo, workflow, token)
+                run = _latest_run(
+                    repo,
+                    workflow,
+                    token,
+                    branch=branch,
+                    ignore_branch_mismatch=ignore_branch_mismatch,
+                )
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
                 hint = ""
                 if isinstance(exc, urllib.error.HTTPError):
@@ -352,6 +386,14 @@ def verify_workflows(
                     elif status == 401:
                         hint = " (check that GITHUB_TOKEN is valid for the target repo)"
                 failures.append(f"{workflow}: error fetching latest run: {exc}{hint}")
+                continue
+
+            if run is None:
+                print(
+                    f"⚠️ {workflow} → no recent runs on branch {branch}; skipping",
+                    flush=True,
+                )
+                skipped_branches.add(workflow)
                 continue
 
             runs[workflow] = run
@@ -400,7 +442,7 @@ def verify_workflows(
             continue
         break
 
-    return failures, runs
+    return failures, runs, skipped_branches
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -423,6 +465,13 @@ def main(argv: list[str] | None = None) -> int:
         type=float,
         default=0,
         help="Wait for queued/in-progress runs to settle for up to N minutes before failing",
+    )
+    parser.add_argument(
+        "--branch",
+        default=os.environ.get("CI_TARGET_BRANCH") or os.environ.get("GITHUB_REF_NAME"),
+        help=(
+            "Only consider runs on the given branch. When omitted, the latest run regardless of branch is used."
+        ),
     )
     parser.add_argument(
         "--token",
@@ -480,6 +529,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Dispatch workflows that are missing or not green using GITHUB_TOKEN",
     )
     parser.add_argument(
+        "--ignore-branch-mismatch",
+        action="store_true",
+        help=(
+            "Skip workflows whose latest runs do not target --branch instead of failing. "
+            "Useful for default-branch health checks when other branches are still in progress."
+        ),
+    )
+    parser.add_argument(
         "--ref",
         default=os.environ.get("GITHUB_REF_NAME", "main"),
         help="Git ref to use when dispatching workflows (default: main)",
@@ -508,14 +565,16 @@ def main(argv: list[str] | None = None) -> int:
             " actions:write permissions. Provide --token or set GITHUB_TOKEN/GH_TOKEN."
         )
 
-    failures, runs = verify_workflows(
+    failures, runs, skipped_branches = verify_workflows(
         args.repo,
         workflows,
         token,
+        branch=args.branch,
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
         rerun_failed=args.rerun_failed,
+        ignore_branch_mismatch=args.ignore_branch_mismatch,
     )
 
     stale_cancelled: set[str] = set()
@@ -534,7 +593,12 @@ def main(argv: list[str] | None = None) -> int:
             if ok:
                 stale_cancelled.add(workflow)
 
-    failed_workflows = {wf for wf in workflows if wf not in runs or runs[wf].get("conclusion") != "success"}
+    failed_workflows = {
+        wf
+        for wf in workflows
+        if wf not in skipped_branches
+        and (wf not in runs or runs[wf].get("conclusion") != "success")
+    }
 
     dispatched: set[str] = set()
     if args.dispatch_missing and failed_workflows:
@@ -552,13 +616,15 @@ def main(argv: list[str] | None = None) -> int:
     if (stale_cancelled or dispatched) and not failures:
         # If remediation occurred and no prior failures, re-evaluate so we emit
         # updated status for newly dispatched runs.
-        failures, runs = verify_workflows(
+        failures, runs, skipped_branches = verify_workflows(
             args.repo,
             workflows,
             token,
+            branch=args.branch,
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+            ignore_branch_mismatch=args.ignore_branch_mismatch,
         )
 
     if failures:
