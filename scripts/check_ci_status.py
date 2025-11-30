@@ -72,7 +72,11 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
         with urllib.request.urlopen(request, timeout=30):  # noqa: S310
             return "dispatched"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return f"HTTP {exc.code}: {_error_detail(exc)}"
+        detail = _error_detail(exc)
+        fallback = _rerun_failed_jobs(repo, run_id, token)
+        if fallback == "dispatched":
+            return "dispatched failed jobs"
+        return f"HTTP {exc.code}: {detail}; failed jobs rerun attempt → {fallback}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
         return f"network error: {exc.reason}"
 
@@ -109,6 +113,19 @@ def _workflow_filename_from_env() -> str | None:
     return workflow or None
 
 
+def _workflow_events(repo: str, workflow: str, token: str | None) -> tuple[set[str], str | None]:
+    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}"
+    try:
+        payload = _github_request(url, token)
+    except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
+        return set(), f"HTTP {exc.code}: {_error_detail(exc)}"
+    except urllib.error.URLError as exc:  # pragma: no cover - network paths
+        return set(), f"network error: {exc.reason}"
+
+    events = payload.get("events") or []
+    return set(events), None
+
+
 def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
     if not token:
         return False, "GITHUB_TOKEN (or GH_TOKEN) is required to cancel runs"
@@ -125,9 +142,30 @@ def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
         return False, f"network error: {exc.reason}"
 
 
+def _rerun_failed_jobs(repo: str, run_id: int, token: str | None) -> str:
+    url = f"{API_ROOT}/repos/{repo}/actions/runs/{run_id}/rerun-failed-jobs"
+    request = urllib.request.Request(url, method="POST")
+    request.add_header("Accept", "application/vnd.github+json")
+    request.add_header("Authorization", f"Bearer {token}")
+    try:
+        with urllib.request.urlopen(request, timeout=30):  # noqa: S310
+            return "dispatched"
+    except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
+        return f"HTTP {exc.code}: {_error_detail(exc)}"
+    except urllib.error.URLError as exc:  # pragma: no cover - network paths
+        return f"network error: {exc.reason}"
+
+
 def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) -> tuple[bool, str]:
     if not token:
         return False, "GITHUB_TOKEN (or GH_TOKEN) is required to dispatch workflows"
+
+    events, error = _workflow_events(repo, workflow, token)
+    if error:
+        return False, f"unable to read workflow events: {error}"
+    if "workflow_dispatch" not in events:
+        return False, "workflow_dispatch trigger is not defined"
+
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/dispatches"
     request = urllib.request.Request(url, method="POST")
     request.add_header("Authorization", f"Bearer {token}")
