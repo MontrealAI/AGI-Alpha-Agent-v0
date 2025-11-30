@@ -31,6 +31,7 @@ jobs:
     timeout-minutes: 20
     env:
       ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN || github.token }}
       AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
       AGIALPHA_DECIMALS: 18
     steps:
@@ -64,8 +65,6 @@ jobs:
             pyyaml \
             "requests>=2.32,<3"
       - name: Check CI health and remediate
-        env:
-          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
             --wait-minutes 10 \
