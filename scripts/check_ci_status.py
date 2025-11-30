@@ -19,6 +19,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import quote_plus
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, Mapping
@@ -54,8 +55,14 @@ def _error_detail(exc: urllib.error.HTTPError) -> str:
     return f"{exc.reason}: {body}" if body else exc.reason
 
 
-def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+def _latest_run(
+    repo: str, workflow: str, token: str | None, *, branch: str | None = None
+) -> Mapping[str, object]:
+    branch_filter = f"&branch={quote_plus(branch)}" if branch else ""
+    url = (
+        f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+        f"{branch_filter}"
+    )
     payload = _github_request(url, token)
     runs = payload.get("workflow_runs") or []
     if not runs:
@@ -327,6 +334,7 @@ def verify_workflows(
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
     rerun_failed: bool = False,
+    branch: str | None = None,
 ) -> tuple[list[str], dict[str, Mapping[str, object]]]:
     failures: list[str] = []
     runs: dict[str, Mapping[str, object]] = {}
@@ -342,7 +350,7 @@ def verify_workflows(
 
         for workflow in workflows:
             try:
-                run = _latest_run(repo, workflow, token)
+                run = _latest_run(repo, workflow, token, branch=branch)
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
                 hint = ""
                 if isinstance(exc, urllib.error.HTTPError):
@@ -432,6 +440,11 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--branch",
+        default=os.environ.get("CI_TARGET_BRANCH") or os.environ.get("GITHUB_REF_NAME"),
+        help="Restrict checks to runs on a specific branch",
+    )
+    parser.add_argument(
         "--once",
         action="store_true",
         help=(
@@ -516,6 +529,7 @@ def main(argv: list[str] | None = None) -> int:
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
         rerun_failed=args.rerun_failed,
+        branch=args.branch,
     )
 
     stale_cancelled: set[str] = set()
@@ -559,6 +573,7 @@ def main(argv: list[str] | None = None) -> int:
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+            branch=args.branch,
         )
 
     if failures:
