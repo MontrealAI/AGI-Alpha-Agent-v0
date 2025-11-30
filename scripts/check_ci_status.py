@@ -318,6 +318,12 @@ def main(argv: list[str] | None = None) -> int:
         wait_seconds = 0
     poll_interval = max(1.0, args.poll_seconds)
 
+    if (args.rerun_failed or args.cancel_stale or args.dispatch_missing) and not token:
+        parser.error(
+            "--rerun-failed/--cancel-stale/--dispatch-missing require a GitHub token with"
+            " actions:write permissions. Provide --token or set GITHUB_TOKEN/GH_TOKEN."
+        )
+
     failures, runs = verify_workflows(
         args.repo,
         workflows,
