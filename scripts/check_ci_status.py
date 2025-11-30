@@ -18,7 +18,10 @@ import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Iterable, Mapping
+
+import yaml
 
 API_ROOT = "https://api.github.com"
 DEFAULT_WORKFLOWS = (
@@ -53,6 +56,11 @@ def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, obj
     if not runs:
         raise RuntimeError(f"No runs found for workflow '{workflow}' in repo {repo}")
     return runs[0]
+
+
+def _can_rerun(run: Mapping[str, object]) -> bool:
+    rerun_url = run.get("rerun_url")
+    return bool(rerun_url)
 
 
 def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> str:
@@ -143,6 +151,32 @@ def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) ->
         return False, f"network error: {exc.reason}"
 
 
+def _workflow_supports_dispatch(workflow: str) -> bool:
+    path = Path(".github/workflows") / workflow
+    if not path.exists():
+        return False
+
+    try:
+        config = yaml.safe_load(path.read_text()) or {}
+    except OSError:
+        return False
+
+    triggers = config.get("on")
+    if triggers is None:
+        return False
+
+    if isinstance(triggers, str):
+        return triggers == "workflow_dispatch"
+
+    if isinstance(triggers, list):
+        return "workflow_dispatch" in triggers
+
+    if isinstance(triggers, dict):
+        return "workflow_dispatch" in triggers
+
+    return False
+
+
 def _format_failure(run: Mapping[str, object], workflow: str, *, age_seconds: float | None) -> str:
     conclusion = run.get("conclusion") or run.get("status")
     html_url = run.get("html_url", "<missing url>")
@@ -202,7 +236,10 @@ def verify_workflows(
             if rerun_failed and conclusion in {"failure", "timed_out", "cancelled"}:
                 rerun_status = rerun_attempts.get(workflow)
                 if not rerun_status:
-                    rerun_status = _rerun_workflow(repo, run, token)
+                    if _can_rerun(run):
+                        rerun_status = _rerun_workflow(repo, run, token)
+                    else:
+                        rerun_status = "rerun not supported"
                     rerun_attempts[workflow] = rerun_status
                     print(f"🔁 {workflow} → rerun requested ({rerun_status})")
 
@@ -369,6 +406,10 @@ def main(argv: list[str] | None = None) -> int:
     dispatched: set[str] = set()
     if args.dispatch_missing and failed_workflows:
         for workflow in failed_workflows:
+            if not _workflow_supports_dispatch(workflow):
+                print(f"⚠️ dispatch {workflow}: workflow_dispatch not configured; skipping")
+                continue
+
             ok, message = _dispatch_workflow(args.repo, workflow, args.ref, token)
             outcome = "✅" if ok else "❌"
             print(f"{outcome} dispatch {workflow}: {message}")
