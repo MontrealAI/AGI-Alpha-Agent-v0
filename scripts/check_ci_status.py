@@ -38,6 +38,14 @@ def _github_request(url: str, token: str | None) -> Mapping[str, object]:
         return json.load(response)
 
 
+def _error_detail(exc: urllib.error.HTTPError) -> str:
+    try:
+        body = exc.read().decode("utf-8", errors="ignore")
+    except Exception:  # pragma: no cover - defensive fallback
+        return exc.reason
+    return f"{exc.reason}: {body}" if body else exc.reason
+
+
 def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, object]:
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
     payload = _github_request(url, token)
@@ -64,7 +72,7 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
         with urllib.request.urlopen(request, timeout=30):  # noqa: S310
             return "dispatched"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return f"HTTP {exc.code}: {exc.reason}"
+        return f"HTTP {exc.code}: {_error_detail(exc)}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
         return f"network error: {exc.reason}"
 
@@ -112,7 +120,7 @@ def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
         with urllib.request.urlopen(request, timeout=30):  # noqa: S310
             return True, "cancelled"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return False, f"HTTP {exc.code}: {exc.reason}"
+        return False, f"HTTP {exc.code}: {_error_detail(exc)}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
         return False, f"network error: {exc.reason}"
 
@@ -124,12 +132,13 @@ def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) ->
     request = urllib.request.Request(url, method="POST")
     request.add_header("Authorization", f"Bearer {token}")
     request.add_header("Accept", "application/vnd.github+json")
+    request.add_header("Content-Type", "application/json")
     body = json.dumps({"ref": ref}).encode("utf-8")
     try:
         with urllib.request.urlopen(request, body, timeout=30):  # noqa: S310
             return True, f"dispatched on ref '{ref}'"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return False, f"HTTP {exc.code}: {exc.reason}"
+        return False, f"HTTP {exc.code}: {_error_detail(exc)}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
         return False, f"network error: {exc.reason}"
 
@@ -311,7 +320,12 @@ def main(argv: list[str] | None = None) -> int:
     current_workflow = _workflow_filename_from_env()
     if not args.workflows and current_workflow:
         workflows = [wf for wf in workflows if wf != current_workflow]
-    token = args.token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    token = (
+        args.token
+        or os.environ.get("ADMIN_GITHUB_TOKEN")
+        or os.environ.get("GITHUB_TOKEN")
+        or os.environ.get("GH_TOKEN")
+    )
     wait_seconds = max(0.0, args.wait_minutes * 60)
     if args.once:
         args.pending_grace_minutes = 0
