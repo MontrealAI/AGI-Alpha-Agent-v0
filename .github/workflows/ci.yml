@@ -1027,16 +1027,17 @@ jobs:
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           echo "Rollback succeeded"
 
-  branch-protection:
-    name: "🔒 Branch protection guardrails"
-    if: ${{
-      needs.owner-check.result == 'success' &&
-      (
-        github.ref == 'refs/heads/main' ||
-        github.event_name == 'merge_group' ||
-        (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')
-      )
-    }}
+    branch-protection:
+      name: "🔒 Branch protection guardrails"
+      if: >-
+        ${{ needs.owner-check.result == 'success' &&
+            (
+              github.ref == 'refs/heads/main' ||
+              github.event_name == 'merge_group' ||
+              (github.event_name == 'pull_request' &&
+               github.event.pull_request.base.ref == 'main')
+            )
+        }}
     needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 10
