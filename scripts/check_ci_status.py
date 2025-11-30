@@ -11,6 +11,8 @@ for in-flight runs to avoid failing while CI is still progressing.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import json
 import os
 import sys
@@ -113,17 +115,52 @@ def _workflow_filename_from_env() -> str | None:
     return workflow or None
 
 
-def _workflow_events(repo: str, workflow: str, token: str | None) -> tuple[set[str], str | None]:
+def _workflow_events(repo: str, workflow: str, token: str | None) -> tuple[set[str] | None, str | None]:
+    """Return the triggers configured for *workflow*.
+
+    The workflow metadata endpoint omits the ``events`` list, so fall back to
+    parsing the workflow file when the events cannot be read directly. A
+    ``None`` return value indicates the events are unknown (not that there are
+    no events).
+    """
+
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}"
     try:
         payload = _github_request(url, token)
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return set(), f"HTTP {exc.code}: {_error_detail(exc)}"
+        return None, f"HTTP {exc.code}: {_error_detail(exc)}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
-        return set(), f"network error: {exc.reason}"
+        return None, f"network error: {exc.reason}"
 
-    events = payload.get("events") or []
-    return set(events), None
+    events = payload.get("events")
+    if events:
+        return set(events), None
+
+    path = payload.get("path")
+    if not path:
+        return None, "workflow metadata does not include a path"
+
+    content_url = f"{API_ROOT}/repos/{repo}/contents/{path}"
+    try:
+        file_payload = _github_request(content_url, token)
+    except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
+        return None, f"HTTP {exc.code} while reading workflow file: {_error_detail(exc)}"
+    except urllib.error.URLError as exc:  # pragma: no cover - network paths
+        return None, f"network error while reading workflow file: {exc.reason}"
+
+    content = file_payload.get("content")
+    if not content or file_payload.get("encoding") != "base64":
+        return None, "workflow content is missing or not base64 encoded"
+
+    try:
+        decoded = base64.b64decode(content).decode("utf-8")
+    except (UnicodeDecodeError, ValueError, binascii.Error):
+        return None, "unable to decode workflow content"
+
+    if "workflow_dispatch" in decoded:
+        return {"workflow_dispatch"}, None
+
+    return set(), None
 
 
 def _cancel_run(repo: str, run_id: int, token: str | None) -> tuple[bool, str]:
@@ -163,7 +200,7 @@ def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) ->
     events, error = _workflow_events(repo, workflow, token)
     if error:
         return False, f"unable to read workflow events: {error}"
-    if "workflow_dispatch" not in events:
+    if events is not None and "workflow_dispatch" not in events:
         return False, "workflow_dispatch trigger is not defined"
 
     url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/dispatches"
