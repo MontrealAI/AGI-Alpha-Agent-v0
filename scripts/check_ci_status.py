@@ -59,6 +59,11 @@ def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, obj
 
 
 def _can_rerun(run: Mapping[str, object]) -> bool:
+    # GitHub omits the rerun URL when a workflow cannot be retried (e.g. pull
+    # requests from forks with restricted permissions). Avoid issuing a rerun
+    # request in that scenario to prevent noisy 403 responses that obscure the
+    # underlying failure.
+    return bool(run.get("rerun_url"))
     rerun_url = run.get("rerun_url")
     return bool(rerun_url)
 
@@ -66,6 +71,9 @@ def _can_rerun(run: Mapping[str, object]) -> bool:
 def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> str:
     if not token:
         return "GITHUB_TOKEN (or GH_TOKEN) is required to rerun workflows"
+
+    if not _can_rerun(run):
+        return "rerun not supported for this workflow run (missing rerun_url)"
 
     run_id = run.get("id")
     if not run_id:
@@ -146,7 +154,13 @@ def _dispatch_workflow(repo: str, workflow: str, ref: str, token: str | None) ->
         with urllib.request.urlopen(request, body, timeout=30):  # noqa: S310
             return True, f"dispatched on ref '{ref}'"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
-        return False, f"HTTP {exc.code}: {_error_detail(exc)}"
+        message = _error_detail(exc)
+        if exc.code == 422 and "workflow_dispatch" in message:
+            message = (
+                "workflow is not dispatchable (missing workflow_dispatch); "
+                "enable manual dispatch in the workflow triggers"
+            )
+        return False, f"HTTP {exc.code}: {message}"
     except urllib.error.URLError as exc:  # pragma: no cover - network paths
         return False, f"network error: {exc.reason}"
 
@@ -241,7 +255,10 @@ def verify_workflows(
                     else:
                         rerun_status = "rerun not supported"
                     rerun_attempts[workflow] = rerun_status
-                    print(f"🔁 {workflow} → rerun requested ({rerun_status})")
+                    dispatched = rerun_status == "dispatched"
+                    outcome = "rerun requested" if dispatched else "rerun skipped"
+                    icon = "🔁" if dispatched else "⚠️"
+                    print(f"{icon} {workflow} → {outcome} ({rerun_status})")
 
                 if rerun_status == "dispatched":
                     waiting = True
