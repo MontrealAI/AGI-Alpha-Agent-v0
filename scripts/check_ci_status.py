@@ -69,8 +69,6 @@ def _can_rerun(run: Mapping[str, object]) -> bool:
     # request in that scenario to prevent noisy 403 responses that obscure the
     # underlying failure.
     return bool(run.get("rerun_url"))
-    rerun_url = run.get("rerun_url")
-    return bool(rerun_url)
 
 
 def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> str:
@@ -94,6 +92,9 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
             return "dispatched"
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
         detail = _error_detail(exc)
+        if exc.code == 403 and "cannot be retried" in detail:
+            return f"rerun forbidden (HTTP 403): {detail}"
+
         fallback = _rerun_failed_jobs(repo, run_id, token)
         if fallback == "dispatched":
             return "dispatched failed jobs"
