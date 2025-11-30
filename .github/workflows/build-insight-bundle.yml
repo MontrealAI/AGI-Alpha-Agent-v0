@@ -1,5 +1,6 @@
-# Build and commit the Insight docs bundle when related sources change.
-# Regenerates docs/alpha_agi_insight_v1/insight.bundle.js using the Insight browser package.
+# Build and commit the Insight docs bundle whenever related sources change.
+# Detects the appropriate build script, regenerates docs/alpha_agi_insight_v1/insight.bundle.js,
+# and auto-commits updated artifacts back to the repository.
 name: build-insight-bundle
 
 on:
@@ -28,16 +29,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 22.x
+      - name: Set up Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
         working-directory: ${{ env.INSIGHT_BROWSER_DIR }}
-        env:
-          NPM_CONFIG_IGNORE_SCRIPTS: 'true'
 
       - name: Detect docs build script
         id: build-script
