@@ -58,14 +58,21 @@ def _error_detail(exc: urllib.error.HTTPError) -> str:
 def _latest_run(
     repo: str, workflow: str, token: str | None, *, branch: str | None = None
 ) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+    base_url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+    urls = [base_url]
     if branch:
-        url = f"{url}&branch={urllib.parse.quote(branch, safe='')}"
-    payload = _github_request(url, token)
-    runs = payload.get("workflow_runs") or []
-    if not runs:
-        raise RuntimeError(f"No runs found for workflow '{workflow}' in repo {repo}")
-    return runs[0]
+        urls.insert(0, f"{base_url}&branch={urllib.parse.quote(branch, safe='')}")
+
+    for url in urls:
+        payload = _github_request(url, token)
+        runs = payload.get("workflow_runs") or []
+        if runs:
+            return runs[0]
+
+    detail = f"No runs found for workflow '{workflow}' in repo {repo}"
+    if branch:
+        detail = f"{detail} (including branch filter '{branch}')"
+    raise RuntimeError(detail)
 
 
 def _can_rerun(run: Mapping[str, object]) -> bool:
