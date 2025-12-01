@@ -1,11 +1,14 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="style.css" />
+
     <script type="importmap">
       {
         "imports": {
@@ -23,8 +26,8 @@
           if (t) {
             t.textContent = msg;
             t.classList.add('show');
-            clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
+            clearTimeout(window.toast.id);
+            window.toast.id = window.setTimeout(() => t.classList.remove('show'), 2000);
             return;
           }
           console.warn(msg);
@@ -33,8 +36,8 @@
     </script>
 
     <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      const SW_URL = 'sw.js';
+      const SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
@@ -68,8 +71,27 @@
         });
       }
     </script>
+  </head>
+  <body class="min-h-screen bg-base-200">
+    <main id="root" class="min-h-screen">
+      <noscript>
+        JavaScript is required to run the α-AGI Insight experience. Please enable it in your browser.
+      </noscript>
+    </main>
+    <p class="snippet text-center text-sm text-base-content/70 p-4">
+      <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
+      This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals
+      and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial
+      advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
+    </p>
 
-    <script type="module" src="main.js"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+    <div id="toast" role="status" aria-live="polite" class="toast top-0 right-0"></div>
+
+    <script src="insight.bundle.js" defer></script>
+    <script>
+      window.PINNER_TOKEN = atob('');
+      window.OTEL_ENDPOINT = atob('');
+      window.IPFS_GATEWAY = atob('');
+    </script>
+  </body>
 </html>
