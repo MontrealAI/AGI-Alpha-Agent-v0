@@ -69,7 +69,7 @@ jobs:
         run: |
           python scripts/check_ci_status.py \
             --wait-minutes 10 \
-            --pending-grace-minutes 10 \
+            --pending-grace-minutes 120 \
             --stale-minutes 60 \
             --cancel-stale \
             --dispatch-missing \
