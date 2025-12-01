@@ -106,10 +106,10 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
         # example, runs from forks without sufficient permissions). Treat this
         # as a terminal condition rather than attempting to rerun failed jobs,
         # which would trigger the same error and add noise to the logs.
-        if exc.code == 403 and "cannot be retried" in detail:
+        if exc.code == 403:
+            if "cannot be retried" in detail.lower():
+                return f"rerun forbidden (HTTP 403): {detail}"
             return f"HTTP {exc.code}: {detail}"
-        if exc.code == 403 and "cannot be retried" in detail:
-            return f"rerun forbidden (HTTP 403): {detail}"
 
         fallback = _rerun_failed_jobs(repo, run_id, token)
         if fallback == "dispatched":
