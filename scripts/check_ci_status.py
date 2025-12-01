@@ -102,13 +102,11 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
     except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
         detail = _error_detail(exc)
 
-        # GitHub returns 403 for runs that explicitly disallow retries (for
-        # example, runs from forks without sufficient permissions). Treat this
-        # as a terminal condition rather than attempting to rerun failed jobs,
-        # which would trigger the same error and add noise to the logs.
-        if exc.code == 403 and "cannot be retried" in detail:
-            return f"HTTP {exc.code}: {detail}"
-        if exc.code == 403 and "cannot be retried" in detail:
+        # GitHub returns 403 when retries are explicitly disallowed (for example,
+        # runs from forks without sufficient permissions). Treat this as a
+        # terminal condition instead of falling back to rerunning failed jobs,
+        # which would emit the same 403 and clutter logs with redundant output.
+        if exc.code == 403:
             return f"rerun forbidden (HTTP 403): {detail}"
 
         fallback = _rerun_failed_jobs(repo, run_id, token)
