@@ -3,6 +3,7 @@
 This helper compares the canonical token config, Solidity constants, and
 any workflow-provided environment variables so CI fails fast if values drift.
 """
+
 from __future__ import annotations
 
 import os
@@ -154,7 +155,7 @@ def main() -> int:
     if env_cfg:
         compare_configs(token, env_cfg, labels=["token.config.js", "env"])
 
-    print("AGIALPHA configuration is consistent:\n" f"  address: {token.address}\n" f"  decimals: {token.decimals}")
+    print(f"AGIALPHA configuration is consistent:\n  address: {token.address}\n  decimals: {token.decimals}")
     return 0
 
 
