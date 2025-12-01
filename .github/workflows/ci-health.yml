@@ -68,6 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
+            --branch "${CI_TARGET_BRANCH}" \
             --wait-minutes 10 \
             --pending-grace-minutes 10 \
             --stale-minutes 60 \
