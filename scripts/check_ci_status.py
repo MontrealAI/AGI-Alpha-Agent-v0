@@ -54,8 +54,11 @@ def _error_detail(exc: urllib.error.HTTPError) -> str:
     return f"{exc.reason}: {body}" if body else exc.reason
 
 
-def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+def _latest_run(
+    repo: str, workflow: str, token: str | None, *, branch: str | None = None
+) -> Mapping[str, object]:
+    branch_filter = f"&branch={branch}" if branch else ""
+    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1{branch_filter}"
     payload = _github_request(url, token)
     runs = payload.get("workflow_runs") or []
     if not runs:
@@ -323,6 +326,7 @@ def verify_workflows(
     workflows: Iterable[str],
     token: str | None,
     *,
+    branch: str | None = None,
     wait_seconds: float = 0,
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
@@ -342,7 +346,7 @@ def verify_workflows(
 
         for workflow in workflows:
             try:
-                run = _latest_run(repo, workflow, token)
+                run = _latest_run(repo, workflow, token, branch=branch)
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
                 hint = ""
                 if isinstance(exc, urllib.error.HTTPError):
@@ -484,6 +488,14 @@ def main(argv: list[str] | None = None) -> int:
         default=os.environ.get("GITHUB_REF_NAME", "main"),
         help="Git ref to use when dispatching workflows (default: main)",
     )
+    parser.add_argument(
+        "--branch",
+        default=os.environ.get("GITHUB_REF_NAME", "main"),
+        help=(
+            "Branch to validate when checking workflow health; "
+            "defaults to the current ref name or main"
+        ),
+    )
     args = parser.parse_args(argv)
 
     workflows = list(args.workflows or DEFAULT_WORKFLOWS)
@@ -512,6 +524,7 @@ def main(argv: list[str] | None = None) -> int:
         args.repo,
         workflows,
         token,
+        branch=args.branch,
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
@@ -556,6 +569,7 @@ def main(argv: list[str] | None = None) -> int:
             args.repo,
             workflows,
             token,
+            branch=args.branch,
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
