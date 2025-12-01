@@ -508,15 +508,28 @@ def main(argv: list[str] | None = None) -> int:
             " actions:write permissions. Provide --token or set GITHUB_TOKEN/GH_TOKEN."
         )
 
+    pending_grace_seconds = max(0.0, args.pending_grace_minutes * 60)
+
     failures, runs = verify_workflows(
         args.repo,
         workflows,
         token,
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
-        pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+        pending_grace_seconds=pending_grace_seconds,
         rerun_failed=args.rerun_failed,
     )
+
+    pending_within_grace: set[str] = set()
+    if pending_grace_seconds > 0 and runs:
+        now = datetime.now(timezone.utc)
+        for workflow, run in runs.items():
+            status = run.get("status")
+            if status not in {"queued", "in_progress", "pending"}:
+                continue
+            age_seconds = _run_age_seconds(run, now=now)
+            if age_seconds is None or age_seconds <= pending_grace_seconds:
+                pending_within_grace.add(workflow)
 
     stale_cancelled: set[str] = set()
     if args.cancel_stale and runs:
@@ -534,7 +547,11 @@ def main(argv: list[str] | None = None) -> int:
             if ok:
                 stale_cancelled.add(workflow)
 
-    failed_workflows = {wf for wf in workflows if wf not in runs or runs[wf].get("conclusion") != "success"}
+    failed_workflows = {
+        wf
+        for wf in workflows
+        if wf not in pending_within_grace and (wf not in runs or runs[wf].get("conclusion") != "success")
+    }
 
     dispatched: set[str] = set()
     if args.dispatch_missing and failed_workflows:
@@ -558,7 +575,7 @@ def main(argv: list[str] | None = None) -> int:
             token,
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
-            pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+            pending_grace_seconds=pending_grace_seconds,
         )
 
     if failures:
