@@ -138,7 +138,7 @@ def _run_age_seconds(run: Mapping[str, object], *, now: datetime | None = None) 
     return max(0.0, age)
 
 
-def _workflow_filename_from_env() -> str | None:
+def _workflow_filename_from_env(token: str | None = None) -> str | None:
     """Return the workflow filename for the current run if available.
 
     GitHub exposes ``GITHUB_WORKFLOW_REF`` for reusable workflows, but this
@@ -154,6 +154,20 @@ def _workflow_filename_from_env() -> str | None:
             workflow, _, _ = workflow_with_ref.partition("@")
             if workflow:
                 return workflow
+
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    if token and repo and run_id:
+        try:
+            payload = _github_request(f"{API_ROOT}/repos/{repo}/actions/runs/{run_id}", token)
+            path = payload.get("path")
+            if isinstance(path, str):
+                return Path(path).name
+        except urllib.error.HTTPError:
+            # Best effort only; fall back to scanning the workflow files.
+            pass
+        except urllib.error.URLError:
+            pass
 
     workflow_name = os.environ.get("GITHUB_WORKFLOW")
     if not workflow_name:
@@ -503,16 +517,16 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    workflows = list(args.workflows or DEFAULT_WORKFLOWS)
-    current_workflow = _workflow_filename_from_env()
-    if not args.workflows and current_workflow:
-        workflows = [wf for wf in workflows if wf != current_workflow]
     token = (
         args.token
         or os.environ.get("ADMIN_GITHUB_TOKEN")
         or os.environ.get("GITHUB_TOKEN")
         or os.environ.get("GH_TOKEN")
     )
+    workflows = list(args.workflows or DEFAULT_WORKFLOWS)
+    current_workflow = _workflow_filename_from_env(token)
+    if not args.workflows and current_workflow:
+        workflows = [wf for wf in workflows if wf != current_workflow]
     branch = args.branch or os.environ.get("GITHUB_REF_NAME") or "main"
     wait_seconds = max(0.0, args.wait_minutes * 60)
     if args.once:
