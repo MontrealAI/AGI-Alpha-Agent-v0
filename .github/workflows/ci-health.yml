@@ -65,7 +65,7 @@ jobs:
             "requests>=2.32,<3"
       - name: Check CI health and remediate
         env:
-          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN != '' && secrets.ADMIN_GITHUB_TOKEN || github.token }}
         run: |
           python scripts/check_ci_status.py \
             --wait-minutes 10 \
@@ -75,7 +75,8 @@ jobs:
             --dispatch-missing \
             --rerun-failed \
             --poll-seconds 30 \
-            --ref "${CI_TARGET_BRANCH}"
+            --ref "${CI_TARGET_BRANCH}" \
+            --token "${GITHUB_TOKEN}"
       - name: Warn when admin token is unavailable
         if: ${{ env.ADMIN_GITHUB_TOKEN == '' }}
         run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."
