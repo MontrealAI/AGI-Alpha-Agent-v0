@@ -54,8 +54,18 @@ def _error_detail(exc: urllib.error.HTTPError) -> str:
     return f"{exc.reason}: {body}" if body else exc.reason
 
 
-def _latest_run(repo: str, workflow: str, token: str | None) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+def _latest_run(
+    repo: str,
+    workflow: str,
+    token: str | None,
+    *,
+    branch: str | None = None,
+) -> Mapping[str, object]:
+    query = "per_page=1"
+    if branch:
+        query = f"{query}&branch={branch}"
+
+    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?{query}"
     payload = _github_request(url, token)
     runs = payload.get("workflow_runs") or []
     if not runs:
@@ -323,6 +333,7 @@ def verify_workflows(
     workflows: Iterable[str],
     token: str | None,
     *,
+    branch: str | None = None,
     wait_seconds: float = 0,
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
@@ -342,7 +353,7 @@ def verify_workflows(
 
         for workflow in workflows:
             try:
-                run = _latest_run(repo, workflow, token)
+                run = _latest_run(repo, workflow, token, branch=branch)
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
                 hint = ""
                 if isinstance(exc, urllib.error.HTTPError):
@@ -425,6 +436,13 @@ def main(argv: list[str] | None = None) -> int:
         help="Wait for queued/in-progress runs to settle for up to N minutes before failing",
     )
     parser.add_argument(
+        "--branch",
+        help=(
+            "Only consider workflow runs on this branch when evaluating health. "
+            "Defaults to GITHUB_REF_NAME when available."
+        ),
+    )
+    parser.add_argument(
         "--token",
         help=(
             "Personal access token to raise rate limits and allow dispatch/cancel operations; "
@@ -496,6 +514,7 @@ def main(argv: list[str] | None = None) -> int:
         or os.environ.get("GITHUB_TOKEN")
         or os.environ.get("GH_TOKEN")
     )
+    branch = args.branch or os.environ.get("GITHUB_REF_NAME")
     wait_seconds = max(0.0, args.wait_minutes * 60)
     if args.once:
         args.pending_grace_minutes = 0
@@ -512,6 +531,7 @@ def main(argv: list[str] | None = None) -> int:
         args.repo,
         workflows,
         token,
+        branch=branch,
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
@@ -556,6 +576,7 @@ def main(argv: list[str] | None = None) -> int:
             args.repo,
             workflows,
             token,
+            branch=branch,
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
