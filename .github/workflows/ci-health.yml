@@ -28,7 +28,7 @@ jobs:
   ci-health:
     name: "CI watchdog"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
       AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
@@ -68,9 +68,9 @@ jobs:
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
-            --wait-minutes 10 \
-            --pending-grace-minutes 10 \
-            --stale-minutes 60 \
+            --wait-minutes 5 \
+            --pending-grace-minutes 45 \
+            --stale-minutes 90 \
             --cancel-stale \
             --dispatch-missing \
             --rerun-failed \
