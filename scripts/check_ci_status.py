@@ -571,6 +571,7 @@ def main(argv: list[str] | None = None) -> int:
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
+            branch=args.branch,
         )
 
     if failures:
