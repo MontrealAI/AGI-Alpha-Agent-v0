@@ -539,6 +539,8 @@ def main(argv: list[str] | None = None) -> int:
             status = run.get("status")
             if status not in {"queued", "in_progress", "pending"}:
                 continue
+            if pending_grace_seconds > 0 and workflow in pending_within_grace:
+                continue
             if age_seconds is None or age_seconds < stale_threshold:
                 continue
             ok, message = _cancel_run(args.repo, int(run["id"]), token)
