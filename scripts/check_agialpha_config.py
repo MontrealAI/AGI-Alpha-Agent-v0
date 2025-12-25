@@ -16,6 +16,8 @@ TOKEN_CONFIG = ROOT / "token.config.js"
 CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
 TEST_CONSTANTS = ROOT / "tests/contracts/contracts/v2/Constants.sol"
 TRUFFLE_MIGRATION = ROOT / "truffle/migrations/2_deploy_agijobs_v2.js"
+PY_TOKEN_UTILS = ROOT / "alpha_factory_v1/utils/token_utils.py"
+JS_TOKEN_UTILS = ROOT / "tests/contracts/test/utils/token.js"
 WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
     ROOT / ".github/workflows/pr-ci.yml",
@@ -106,6 +108,28 @@ def load_workflow_config(path: Path) -> TokenConfig:
     return TokenConfig(address=address, decimals=decimals)
 
 
+def load_python_token_utils(path: Path) -> TokenConfig:
+    decimals = int(
+        _extract_pattern(
+            path,
+            r"AGIALPHA_DECIMALS\s*=\s*([0-9]+)",
+            "Python token utils decimals",
+        )
+    )
+    # Default to the canonical address because the Python helper only tracks decimals.
+    return TokenConfig(address=CANONICAL_TOKEN.address, decimals=decimals)
+
+
+def verify_js_token_utils(path: Path, expected: TokenConfig) -> None:
+    text = path.read_text()
+    if "token.config" not in text:
+        raise ValueError("JavaScript token utils must import token.config.js for canonical values")
+    if "AGIALPHA_ADDRESS" not in text or "AGIALPHA_DECIMALS" not in text:
+        raise ValueError("JavaScript token utils must surface AGIALPHA constants from token.config.js")
+    if re.search(r"AGIALPHA_ADDRESS\s*=\s*['\"]", text):
+        raise ValueError("JavaScript token utils must not hardcode AGIALPHA; import token.config.js instead")
+
+
 def _env_config() -> TokenConfig | None:
     address = os.getenv("AGIALPHA_ADDRESS")
     decimals = os.getenv("AGIALPHA_DECIMALS")
@@ -149,6 +173,11 @@ def main() -> int:
         if workflow.exists():
             workflow_config = load_workflow_config(workflow)
             compare_configs(token, workflow_config, labels=["token.config.js", workflow.name])
+
+    python_utils = load_python_token_utils(PY_TOKEN_UTILS)
+    compare_configs(token, python_utils, labels=["token.config.js", PY_TOKEN_UTILS.name])
+
+    verify_js_token_utils(JS_TOKEN_UTILS, token)
 
     env_cfg = _env_config()
     if env_cfg:
