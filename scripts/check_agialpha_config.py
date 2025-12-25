@@ -5,12 +5,13 @@ any workflow-provided environment variables so CI fails fast if values drift.
 """
 from __future__ import annotations
 
-import os
-import re
 from dataclasses import dataclass
+import os
 from pathlib import Path
+import re
 from typing import Iterable
 
+ENCODING = "utf-8"
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
@@ -41,7 +42,7 @@ CANONICAL_TOKEN = TokenConfig(
 
 
 def _extract_pattern(path: Path, pattern: str, label: str) -> str:
-    match = re.search(pattern, path.read_text())
+    match = re.search(pattern, path.read_text(encoding=ENCODING))
     if not match:
         raise ValueError(f"Could not find {label} in {path}")
     return match.group(1)
