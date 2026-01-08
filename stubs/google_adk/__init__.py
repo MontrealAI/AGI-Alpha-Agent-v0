@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Compatibility shim for the `google_adk` package.
 
 If the real package is installed under ``google.adk`` this module re-exports

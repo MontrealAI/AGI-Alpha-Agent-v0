@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import os
 import asyncio
 from alpha_factory_v1.backend.agent_runner import _env_float, maybe_await, utc_now

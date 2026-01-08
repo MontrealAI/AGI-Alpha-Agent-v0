@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Verify SRI hash for ``insight.bundle.js``.
 
 The script checks that the ``integrity`` attribute in ``index.html`` matches the
