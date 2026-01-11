@@ -41,7 +41,7 @@ CANONICAL_TOKEN = TokenConfig(
 
 
 def _extract_pattern(path: Path, pattern: str, label: str) -> str:
-    match = re.search(pattern, path.read_text())
+    match = re.search(pattern, path.read_text(encoding="utf-8"))
     if not match:
         raise ValueError(f"Could not find {label} in {path}")
     return match.group(1)
@@ -80,7 +80,7 @@ def load_contract_constants(path: Path) -> TokenConfig:
 
 
 def load_truffle_migration(expected: TokenConfig) -> TokenConfig:
-    text = TRUFFLE_MIGRATION.read_text()
+    text = TRUFFLE_MIGRATION.read_text(encoding="utf-8")
     if not re.search(r"process\.env\.AGIALPHA_ADDRESS\s*\|\|\s*AGIALPHA_ADDRESS", text):
         raise ValueError("truffle migration must default to AGIALPHA_ADDRESS when env var is unset")
     if not re.search(r"Number\(process\.env\.AGIALPHA_DECIMALS\s*\|\|\s*AGIALPHA_DECIMALS\)", text):
