@@ -12,7 +12,7 @@ def test_accepts_uppercase_and_query_string(tmp_path: Path) -> None:
     sri = _hash(bundle)
     html = tmp_path / "index.html"
     html.write_text(
-        """
+        f"""
         <html>
           <body>
             <SCRIPT
@@ -22,7 +22,7 @@ def test_accepts_uppercase_and_query_string(tmp_path: Path) -> None:
             ></SCRIPT>
           </body>
         </html>
-        """.format(sri=sri),
+        """,
         encoding="utf-8",
     )
 
@@ -32,8 +32,8 @@ def test_accepts_uppercase_and_query_string(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     "html_snippet",
     [
-        "<html><body><script src=\"insight.bundle.js\"></script></body></html>",
-        "<html><body><script src=\"other.js\" integrity=\"abc\"></script></body></html>",
+        '<html><body><script src="insight.bundle.js"></script></body></html>',
+        '<html><body><script src="other.js" integrity="abc"></script></body></html>',
     ],
 )
 def test_missing_integrity_or_script_tag_fails(tmp_path: Path, html_snippet: str) -> None:

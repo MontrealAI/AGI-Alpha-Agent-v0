@@ -38,6 +38,7 @@ import uvicorn
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception as exc:  # pragma: no cover - optional dependency
+
     class Agent:  # type: ignore[no-redef]
         def __init__(self, *_a: Any, **_kw: Any) -> None:
             self.name = _kw.get("name", "agent")
@@ -69,7 +70,7 @@ def _check_ollama(url: str) -> None:
         request.urlopen(f"{base}/api/tags", timeout=3)
     except Exception as exc:  # pragma: no cover - network check
         raise RuntimeError(
-            f"Ollama not reachable at {base}. " "Install it from https://ollama.com and run 'ollama serve'."
+            f"Ollama not reachable at {base}. Install it from https://ollama.com and run 'ollama serve'."
         ) from exc
 
 
@@ -161,6 +162,7 @@ async def explain(event: dict[str, Any], hedge: dict[str, Any]) -> str:
 try:
     sentinel = Agent(name="Macro-Sentinel", llm=LLM, tools=[macro_event, mc_risk, order_stub, explain])
 except TypeError:  # pragma: no cover - fallback for minimal stubs
+
     class _StubAgent:
         def __init__(self, name: str) -> None:
             self.name = name
@@ -213,7 +215,7 @@ async def launch_ui() -> None:
                 f"**CVaR 5 %:** {hedge['metrics']['cvar']:.2%} &nbsp;&nbsp;"
                 f"**Skew:** {hedge['metrics']['skew']:.2f}<br>"
                 f"**ES notional:** ${hedge['es_notional']:,.0f}  "
-                f"(Micro-ES qty ≈ {abs(int(hedge['es_notional']//50_000))})"
+                f"(Micro-ES qty ≈ {abs(int(hedge['es_notional'] // 50_000))})"
             )
 
             return event, scen_df, metric, story

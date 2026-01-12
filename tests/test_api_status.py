@@ -12,10 +12,10 @@ pytest.importorskip("fastapi")
 from fastapi.testclient import TestClient  # noqa: E402
 from click.testing import CliRunner
 
-os.environ.setdefault("API_TOKEN", "test-token")
-os.environ.setdefault("API_RATE_LIMIT", "1000")
-os.environ.setdefault("AGI_INSIGHT_ALLOW_INSECURE", "1")
-os.environ.setdefault("AGI_INSIGHT_OFFLINE", "1")
+os.environ["API_TOKEN"] = "test-token"
+os.environ["API_RATE_LIMIT"] = "1000"
+os.environ["AGI_INSIGHT_ALLOW_INSECURE"] = "1"
+os.environ["AGI_INSIGHT_OFFLINE"] = "1"
 
 
 def _make_client() -> TestClient:
