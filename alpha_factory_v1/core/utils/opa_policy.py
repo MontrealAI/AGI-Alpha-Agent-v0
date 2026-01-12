@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 
-_POLICY_DIR = Path(__file__).resolve().parents[2] / "policies"
+_POLICY_DIR = Path(__file__).resolve().parents[3] / "policies"
 
 
 def _load_banned_hosts() -> set[str]:

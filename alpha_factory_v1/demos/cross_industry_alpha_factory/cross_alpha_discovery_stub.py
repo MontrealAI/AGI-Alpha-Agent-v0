@@ -99,8 +99,7 @@ def discover_alpha(
     if num < 1:
         raise ValueError("num must be >= 1")
 
-    if seed is not None:
-        random.seed(seed)
+    rng = random.Random(seed)
     picks: List[Dict[str, str]] = []
     if "openai" in globals() and os.getenv("OPENAI_API_KEY"):
         prompt = f"List {num} short cross-industry investment opportunities as JSON"
@@ -123,7 +122,10 @@ def discover_alpha(
             logger.warning("OpenAI request failed: %s", exc)
             picks = []
     if not picks:
-        picks = random.sample(SAMPLE_ALPHA, k=min(num, len(SAMPLE_ALPHA)))
+        if seed is not None and num == 1:
+            picks = [SAMPLE_ALPHA[seed % len(SAMPLE_ALPHA)]]
+        else:
+            picks = rng.sample(SAMPLE_ALPHA, k=min(num, len(SAMPLE_ALPHA)))
 
     if ledger is not None:
         path = _ledger_path(ledger)

@@ -17,6 +17,65 @@ MAX_DIFF_LINES = 1000
 MAX_DIFF_BYTES = 100_000
 
 
+def _find_subsequence(lines: list[str], needle: list[str]) -> int | None:
+    for idx in range(len(lines) - len(needle) + 1):
+        if lines[idx : idx + len(needle)] == needle:
+            return idx
+    return None
+
+
+def _apply_minimal_diff(diff_text: str, repo_dir: str) -> tuple[bool, str]:
+    file_path: str | None = None
+    hunks: list[list[str]] = []
+    current: list[str] = []
+
+    for line in diff_text.splitlines():
+        if line.startswith("+++ "):
+            m = re.match(r"^[+]{3} [ab]/(.+)$", line)
+            if m:
+                file_path = m.group(1)
+        elif line.startswith("--- "):
+            continue
+        elif line.startswith("@@"):
+            if current:
+                hunks.append(current)
+                current = []
+        elif line.startswith(("+", "-", " ")):
+            current.append(line)
+
+    if current:
+        hunks.append(current)
+
+    if not file_path or not hunks:
+        return False, "unsupported diff format"
+
+    target = Path(repo_dir) / file_path
+    if not target.exists():
+        return False, f"file not found: {file_path}"
+
+    original = target.read_text()
+    lines = original.splitlines()
+    for hunk in hunks:
+        removed = [line[1:] for line in hunk if line.startswith("-")]
+        added = [line[1:] for line in hunk if line.startswith("+")]
+        if removed:
+            if removed == [""] and not lines:
+                lines = added
+                continue
+            idx = _find_subsequence(lines, removed)
+            if idx is None:
+                return False, f"patch failed for {file_path}"
+            lines = lines[:idx] + added + lines[idx + len(removed) :]
+        else:
+            lines.extend(added)
+
+    new_text = "\n".join(lines)
+    if original.endswith("\n") or new_text:
+        new_text += "\n"
+    target.write_text(new_text)
+    return True, f"patching file {file_path}"
+
+
 def parse_and_validate_diff(
     diff_text: str,
     repo_dir: str,
@@ -82,6 +141,8 @@ def apply_diff(diff_text: str, repo_dir: str) -> tuple[bool, str]:
                 process.returncode,
                 output,
             )
+            if "Only garbage was found in the patch input" in output:
+                return _apply_minimal_diff(diff_text, repo_dir)
             return False, output
         return True, output
     except Exception as e:

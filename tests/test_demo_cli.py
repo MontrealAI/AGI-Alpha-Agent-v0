@@ -300,9 +300,9 @@ def test_simulate_save_plots(tmp_path: Path) -> None:
                         "--save-plots",
                     ],
                 )
-    assert res.exit_code == 0
-    assert Path("pareto.png").exists()
-    assert Path("pareto.json").exists()
+                assert res.exit_code == 0
+                assert Path("pareto.png").exists()
+                assert Path("pareto.json").exists()
 
 
 def test_simulate_seed_reproducible(tmp_path: Path) -> None:

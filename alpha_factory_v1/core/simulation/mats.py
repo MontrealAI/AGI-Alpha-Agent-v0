@@ -149,7 +149,10 @@ def _evolve_step(
     genome_length = len(pop[0].genome)
     offspring: Population = []
     while len(offspring) < mu:
-        a, b = rng.sample(pop, 2)
+        if len(pop) < 2:
+            a = b = pop[0]
+        else:
+            a, b = rng.sample(pop, 2)
         if genome_length > 1 and rng.random() < crossover_rate:
             cut = rng.randint(1, genome_length - 1)
             child_genome = a.genome[:cut] + b.genome[cut:]

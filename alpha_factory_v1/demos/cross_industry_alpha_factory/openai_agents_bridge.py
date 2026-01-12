@@ -29,8 +29,6 @@ def _load_agents():
     try:
         from openai_agents import Agent, AgentRuntime, Tool  # type: ignore
 
-        if not os.getenv("OPENAI_API_KEY"):
-            raise RuntimeError("OPENAI_API_KEY not set")
         logger.debug("Using real OpenAI Agents runtime")
         return Agent, AgentRuntime, Tool, True
     except Exception as exc:  # pragma: no cover - optional dep

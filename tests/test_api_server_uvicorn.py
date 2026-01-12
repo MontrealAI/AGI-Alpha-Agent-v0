@@ -42,7 +42,8 @@ def uvicorn_server() -> Iterator[str]:
 def test_simulate_flow_uvicorn(uvicorn_server: str) -> None:
     url = uvicorn_server
     headers = {"Authorization": "Bearer test-token"}
-    with httpx.Client(base_url=url) as client:
+    timeout = httpx.Timeout(30.0)
+    with httpx.Client(base_url=url, timeout=timeout) as client:
         r = client.post("/simulate", json={"horizon": 1, "pop_size": 2, "generations": 1}, headers=headers)
         assert r.status_code == 200
         sim_id = r.json()["id"]
