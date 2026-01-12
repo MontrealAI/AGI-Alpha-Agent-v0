@@ -26,27 +26,38 @@ import contextlib
 import json
 import os
 from urllib import request
-from typing import Any, AsyncIterator, Tuple, cast
+from typing import Any, AsyncIterator, Tuple, TYPE_CHECKING, cast
 
-try:
-    import pandas as pd
+if TYPE_CHECKING:  # pragma: no cover - typing only
     import gradio as gr
-except ModuleNotFoundError as exc:  # pragma: no cover - runtime check
-    raise RuntimeError(
-        "Required packages missing. Run 'python ../../check_env.py --demo macro_sentinel --auto-install'"
-    ) from exc
+    import pandas as pd
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
-except ModuleNotFoundError as exc:  # pragma: no cover - runtime check
-    raise RuntimeError(
-        "openai-agents package missing. Run 'python ../../check_env.py --demo macro_sentinel --auto-install'."
-    ) from exc
-from data_feeds import stream_macro_events
-from simulation_core import MonteCarloSimulator
+except Exception as exc:  # pragma: no cover - optional dependency
+    class Agent:  # type: ignore[no-redef]
+        def __init__(self, *_a: Any, **_kw: Any) -> None:
+            self.name = _kw.get("name", "agent")
+
+    class OpenAIAgent:  # type: ignore[no-redef]
+        def __init__(self, *_a: Any, **_kw: Any) -> None:
+            pass
+
+        def __call__(self, *_a: Any, **_kw: Any) -> str:
+            return ""
+
+    def Tool(*_a: Any, **_kw: Any):  # type: ignore[no-redef]
+        def _decorator(func: Any) -> Any:
+            return func
+
+        return _decorator
+
+    _ = exc
+from .data_feeds import stream_macro_events
+from .simulation_core import MonteCarloSimulator
 
 
 def _check_ollama(url: str) -> None:
@@ -67,7 +78,6 @@ if os.getenv("OPENAI_API_KEY"):
     base_url = None
 else:
     base_url = os.getenv("OLLAMA_BASE_URL", "http://ollama:11434/v1")
-    _check_ollama(base_url)
 
 LLM = OpenAIAgent(
     model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
@@ -148,7 +158,14 @@ async def explain(event: dict[str, Any], hedge: dict[str, Any]) -> str:
 
 
 # ─────────────────────────── Agent ──────────────────────────────────
-sentinel = Agent(name="Macro-Sentinel", llm=LLM, tools=[macro_event, mc_risk, order_stub, explain])
+try:
+    sentinel = Agent(name="Macro-Sentinel", llm=LLM, tools=[macro_event, mc_risk, order_stub, explain])
+except TypeError:  # pragma: no cover - fallback for minimal stubs
+    class _StubAgent:
+        def __init__(self, name: str) -> None:
+            self.name = name
+
+    sentinel = _StubAgent("Macro-Sentinel")
 
 # Optionally expose via Google ADK (Agent-to-Agent federation)
 try:  # pragma: no cover - optional dependency
@@ -162,6 +179,17 @@ except Exception:
 
 # ─────────────────────────── Gradio UI ──────────────────────────────
 async def launch_ui() -> None:
+    try:
+        import gradio as gr  # type: ignore
+        import pandas as pd  # type: ignore
+    except ModuleNotFoundError as exc:  # pragma: no cover - runtime check
+        raise RuntimeError(
+            "Required packages missing. Run 'python ../../check_env.py --demo macro_sentinel --auto-install'"
+        ) from exc
+
+    if base_url:
+        _check_ollama(base_url)
+
     with gr.Blocks(title="Macro-Sentinel") as ui:
         gr.Markdown("## 📈 Macro-Sentinel — real-time macro risk radar")
 
@@ -209,7 +237,7 @@ if __name__ == "__main__":
         asyncio.run(launch_ui())
     finally:
         # tidy aiohttp session if running outside Docker
-        from data_feeds import aiohttp, _SESSION
+        from .data_feeds import aiohttp, _SESSION
 
         if (s := _SESSION) and isinstance(s, aiohttp.ClientSession):
             with contextlib.suppress(Exception):

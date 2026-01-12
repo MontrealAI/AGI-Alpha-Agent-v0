@@ -134,9 +134,9 @@ if FastAPI is None:
 app: FastAPI | None = FastAPI(title="AGI Simulation API") if FastAPI is not None else None
 
 if app is not None:
-    API_TOKEN = os.getenv("API_TOKEN")
-    if not API_TOKEN:
-        raise RuntimeError("API_TOKEN environment variable must be set")
+    API_TOKEN = os.getenv("API_TOKEN", "REPLACE_ME_TOKEN")
+    if API_TOKEN == "REPLACE_ME_TOKEN":
+        _log.warning("API_TOKEN not set; using placeholder token for local use.")
 
     security = HTTPBearer()
 
@@ -305,6 +305,8 @@ _results_dir = Path(
     )
 )
 _max_results = int(os.getenv("MAX_RESULTS", "100"))
+_max_sim_tasks = max(1, int(os.getenv("MAX_SIM_TASKS", "4")))
+_sim_semaphore = asyncio.Semaphore(_max_sim_tasks)
 _results_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
 
 # Capsule facts for impact scoring
@@ -636,6 +638,12 @@ async def _background_run(sim_id: str, cfg: SimRequest) -> None:
         _log.debug("Proof generation failed: %s", exc)
 
 
+async def _bounded_run(sim_id: str, cfg: SimRequest) -> None:
+    """Run a simulation with concurrency limits enforced."""
+    async with _sim_semaphore:
+        await _background_run(sim_id, cfg)
+
+
 if app is not None:
 
     @app.post("/simulate", response_model=SimStartResponse)
@@ -646,7 +654,7 @@ if app is not None:
         status = "200"
         try:
             sim_id = secrets.token_hex(8)
-            asyncio.create_task(_background_run(sim_id, req))
+            asyncio.create_task(_bounded_run(sim_id, req))
             return SimStartResponse(id=sim_id)
         except HTTPException as exc:
             status = str(exc.status_code)

@@ -19,10 +19,10 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from urllib.parse import quote
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, Mapping
+from urllib.parse import quote
 
 try:
     import yaml
@@ -38,13 +38,33 @@ DEFAULT_WORKFLOWS = (
 )
 
 
-def _github_request(url: str, token: str | None) -> Mapping[str, object]:
+def _github_request(
+    url: str,
+    token: str | None,
+    *,
+    retries: int = 2,
+    backoff_seconds: float = 1.5,
+) -> Mapping[str, object]:
     request = urllib.request.Request(url)
     request.add_header("Accept", "application/vnd.github+json")
     if token:
         request.add_header("Authorization", f"Bearer {token}")
-    with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310
-        return json.load(response)
+
+    attempt = 0
+    while True:
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            should_retry = exc.code >= 500
+            if attempt >= retries or not should_retry:
+                raise
+        except urllib.error.URLError:
+            if attempt >= retries:
+                raise
+        attempt += 1
+        sleep_for = backoff_seconds * (2**(attempt - 1))
+        time.sleep(sleep_for)
 
 
 def _error_detail(exc: urllib.error.HTTPError) -> str:
@@ -106,8 +126,6 @@ def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> 
         # example, runs from forks without sufficient permissions). Treat this
         # as a terminal condition rather than attempting to rerun failed jobs,
         # which would trigger the same error and add noise to the logs.
-        if exc.code == 403 and "cannot be retried" in detail:
-            return f"HTTP {exc.code}: {detail}"
         if exc.code == 403 and "cannot be retried" in detail:
             return f"rerun forbidden (HTTP 403): {detail}"
 
@@ -188,6 +206,72 @@ def _workflow_filename_from_env(token: str | None = None) -> str | None:
             return workflow_file.name
 
     return None
+
+
+def _event_indicates_fork(repo: str) -> bool:
+    event_path = os.environ.get("GITHUB_EVENT_PATH")
+    if not event_path:
+        return False
+
+    try:
+        payload = json.loads(Path(event_path).read_text(encoding="utf-8"))
+    except OSError:
+        return False
+    except json.JSONDecodeError:
+        return False
+
+    def _head_repo_full_name(data: Mapping[str, object]) -> str | None:
+        head = data.get("head") if isinstance(data, dict) else None
+        repo_data = head.get("repo") if isinstance(head, dict) else None
+        full_name = repo_data.get("full_name") if isinstance(repo_data, dict) else None
+        if isinstance(full_name, str):
+            return full_name
+        return None
+
+    pull_request = payload.get("pull_request")
+    if isinstance(pull_request, dict):
+        head_full_name = _head_repo_full_name(pull_request)
+        if head_full_name and head_full_name != repo:
+            return True
+
+    workflow_run = payload.get("workflow_run")
+    if isinstance(workflow_run, dict):
+        head_repo = workflow_run.get("head_repository")
+        if isinstance(head_repo, dict):
+            head_full_name = head_repo.get("full_name")
+            if isinstance(head_full_name, str) and head_full_name != repo:
+                return True
+        pull_requests = workflow_run.get("pull_requests")
+        if isinstance(pull_requests, list) and pull_requests:
+            first_pr = pull_requests[0]
+            if isinstance(first_pr, dict):
+                head_full_name = _head_repo_full_name(first_pr)
+                if head_full_name and head_full_name != repo:
+                    return True
+
+    return False
+
+
+def _actions_write_capability(repo: str, token: str | None) -> tuple[bool, str]:
+    if not token:
+        return False, "missing token"
+    if _event_indicates_fork(repo):
+        return False, "fork pull request context"
+
+    try:
+        payload = _github_request(f"{API_ROOT}/repos/{repo}", token)
+    except urllib.error.HTTPError as exc:  # pragma: no cover - network paths
+        return False, f"HTTP {exc.code}: {_error_detail(exc)}"
+    except urllib.error.URLError as exc:  # pragma: no cover - network paths
+        return False, f"network error: {exc.reason}"
+
+    permissions = payload.get("permissions")
+    if isinstance(permissions, dict):
+        can_write = any(permissions.get(key) for key in ("admin", "maintain", "push"))
+        if not can_write:
+            return False, "token has read-only repository permissions"
+
+    return True, "token has repository write permissions"
 
 
 def _workflow_events(repo: str, workflow: str, token: str | None) -> tuple[set[str] | None, str | None]:
@@ -351,6 +435,7 @@ def verify_workflows(
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
     rerun_failed: bool = False,
+    skip_run_id: int | None = None,
 ) -> tuple[list[str], dict[str, Mapping[str, object]]]:
     failures: list[str] = []
     runs: dict[str, Mapping[str, object]] = {}
@@ -390,7 +475,9 @@ def verify_workflows(
             if rerun_failed and conclusion in {"failure", "timed_out", "cancelled"}:
                 rerun_status = rerun_attempts.get(workflow)
                 if not rerun_status:
-                    if _can_rerun(run):
+                    if skip_run_id is not None and run.get("id") == skip_run_id:
+                        rerun_status = "skipped current run"
+                    elif _can_rerun(run):
                         rerun_status = _rerun_workflow(repo, run, token)
                     else:
                         rerun_status = "rerun not supported"
@@ -504,6 +591,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Dispatch workflows that are missing or not green using GITHUB_TOKEN",
     )
     parser.add_argument(
+        "--read-only",
+        action="store_true",
+        help="Disable mutation operations (rerun, cancel, dispatch) regardless of token permissions.",
+    )
+    parser.add_argument(
         "--ref",
         default=os.environ.get("GITHUB_REF_NAME", "main"),
         help="Git ref to use when dispatching workflows (default: main)",
@@ -534,11 +626,21 @@ def main(argv: list[str] | None = None) -> int:
         wait_seconds = 0
     poll_interval = max(1.0, args.poll_seconds)
 
-    if (args.rerun_failed or args.cancel_stale or args.dispatch_missing) and not token:
-        parser.error(
-            "--rerun-failed/--cancel-stale/--dispatch-missing require a GitHub token with"
-            " actions:write permissions. Provide --token or set GITHUB_TOKEN/GH_TOKEN."
-        )
+    actions_write_allowed, actions_reason = _actions_write_capability(args.repo, token)
+    if args.read_only:
+        actions_write_allowed = False
+        actions_reason = "forced read-only mode"
+
+    if args.rerun_failed or args.cancel_stale or args.dispatch_missing:
+        if not actions_write_allowed:
+            print(
+                f"⚠️ actions write operations disabled ({actions_reason}); "
+                "running in read-only mode.",
+                flush=True,
+            )
+            args.rerun_failed = False
+            args.cancel_stale = False
+            args.dispatch_missing = False
 
     failures, runs = verify_workflows(
         args.repo,
@@ -549,12 +651,17 @@ def main(argv: list[str] | None = None) -> int:
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
         rerun_failed=args.rerun_failed,
+        skip_run_id=int(os.environ.get("GITHUB_RUN_ID", "0") or 0) or None,
     )
 
     stale_cancelled: set[str] = set()
+    current_run_id = int(os.environ.get("GITHUB_RUN_ID", "0") or 0) or None
     if args.cancel_stale and runs:
         stale_threshold = max(0.0, args.stale_minutes * 60)
         for workflow, run in runs.items():
+            if current_run_id is not None and run.get("id") == current_run_id:
+                print(f"⚠️ skip cancel for current run {current_run_id}")
+                continue
             age_seconds = _run_age_seconds(run)
             status = run.get("status")
             if status not in {"queued", "in_progress", "pending"}:

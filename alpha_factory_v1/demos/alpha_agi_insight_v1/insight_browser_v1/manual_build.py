@@ -2,6 +2,7 @@
 import os
 import re
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -37,6 +38,9 @@ def _require_python_311() -> None:
 
 
 _require_python_311()
+
+if shutil.which("tsc") is None:
+    sys.exit("TypeScript compiler not found – run `npm install` first.")
 
 ROOT = Path(__file__).resolve().parent
 try:

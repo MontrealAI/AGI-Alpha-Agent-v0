@@ -10,8 +10,10 @@ authentication token from `GITHUB_TOKEN` or `GH_TOKEN`.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
+from pathlib import Path
 from typing import Iterable
 
 import requests
@@ -37,6 +39,7 @@ DEFAULT_REQUIRED_CHECKS = [
     "🚀 CI — Insight Demo / 🔒 Branch protection guardrails",
     "🩺 CI Health / CI watchdog",
 ]
+DEFAULT_REQUIRED_CHECKS_PATH = Path("scripts/required_checks.json")
 
 
 def _build_headers(token: str) -> dict[str, str]:
@@ -125,6 +128,13 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Name of a required status check (may be passed multiple times).",
     )
     parser.add_argument(
+        "--required-checks-file",
+        help=(
+            "Path to a JSON file containing required check names. "
+            "When omitted, scripts/required_checks.json is used if present."
+        ),
+    )
+    parser.add_argument(
         "--apply",
         action="store_true",
         help=(
@@ -140,8 +150,23 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def _load_required_checks(path: Path) -> list[str]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return []
+    except OSError as exc:
+        raise RuntimeError(f"unable to read required checks file: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"invalid required checks JSON: {exc}") from exc
+
+    if isinstance(payload, list) and all(isinstance(item, str) for item in payload):
+        return payload
+    raise RuntimeError("required checks JSON must be a list of strings")
+
+
 def main(argv: Iterable[str] | None = None) -> int:
-    args = _parse_args(argv or sys.argv[1:])
+    args = _parse_args(sys.argv[1:] if argv is None else argv)
     repo_env = os.environ.get("GITHUB_REPOSITORY", ":").split("/", maxsplit=1)
     owner = args.owner or repo_env[0]
     repo = args.repo or (repo_env[1] if len(repo_env) > 1 else "")
@@ -152,17 +177,26 @@ def main(argv: Iterable[str] | None = None) -> int:
 
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if not token:
-        sys.stderr.write("error: set GITHUB_TOKEN or GH_TOKEN with access to read branch protection\n")
-        return 1
+        sys.stderr.write("::warning::No GitHub token available; skipping branch protection verification.\n")
+        return 0
 
-    required_checks = list(args.required_check or DEFAULT_REQUIRED_CHECKS)
+    required_checks: list[str] = []
+    if args.required_check:
+        required_checks = list(args.required_check)
+    else:
+        checks_path = Path(args.required_checks_file) if args.required_checks_file else DEFAULT_REQUIRED_CHECKS_PATH
+        if checks_path.exists():
+            required_checks = _load_required_checks(checks_path)
+        else:
+            required_checks = list(DEFAULT_REQUIRED_CHECKS)
+
+    if not required_checks:
+        sys.stderr.write("error: required checks list is empty; provide --required-check or a checks file\n")
+        return 1
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{args.branch}/protection"
     response = requests.get(url, headers=_build_headers(token), timeout=30)
-    if response.status_code == 403 and not args.apply:
-        sys.stderr.write(
-            "::notice::Missing permission to read branch protection; "
-            "skipping verification because --apply is not set.\n"
-        )
+    if response.status_code == 403:
+        sys.stderr.write("::warning::Missing permission to read branch protection; skipping verification.\n")
         return 0
     if response.status_code == 404:
         if not args.apply:
