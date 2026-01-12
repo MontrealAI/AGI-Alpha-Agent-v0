@@ -26,6 +26,7 @@ Legacy code that still calls the OpenAI SDK keeps working unchanged.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 import os
 from functools import lru_cache
@@ -97,12 +98,24 @@ def _sync_embed(text: str) -> List[float]:
     Delegates to the first provider that is both installed *and* keyed.
     """
 
+    def _hash_embed(value: str, dim: int = 384) -> List[float]:
+        digest = hashlib.sha256(value.encode("utf-8")).digest()
+        values = [(1 if b & 1 else -1) * ((b >> 1) / 128.0) for b in digest]
+        values *= (dim + len(values) - 1) // len(values)
+        vec = values[:dim]
+        norm = sum(x * x for x in vec) ** 0.5 or 1.0
+        return [x / norm for x in vec]
+
     def _local() -> List[float]:
         from sentence_transformers import SentenceTransformer
 
         _note("local-sbert")
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-        return model.encode(text).tolist()  # type: ignore[return-value]
+        try:
+            model = SentenceTransformer("all-MiniLM-L6-v2")
+            return model.encode(text).tolist()  # type: ignore[return-value]
+        except Exception as exc:  # pragma: no cover - offline/model fetch issues
+            _LOG.warning("Local SBERT embedding failed: %s – using hash fallback", exc)
+            return _hash_embed(text)
 
     if openai and _OPENAI_KEY:
         _note("text-embedding-3-small")

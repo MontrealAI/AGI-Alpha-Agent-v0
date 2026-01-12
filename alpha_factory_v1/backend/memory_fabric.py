@@ -193,13 +193,16 @@ def _load_embedder() -> Callable[[str], Sequence[float]]:
 
     _fallback = _hash
     if np is not None and "SentenceTransformer" in globals():
-        logger.info("MemoryFabric: using local SBERT embeddings.")
-        _model = SentenceTransformer("all-MiniLM-L6-v2")
+        try:
+            logger.info("MemoryFabric: using local SBERT embeddings.")
+            _model = SentenceTransformer("all-MiniLM-L6-v2")
 
-        def _sbert(text: str) -> Sequence[float]:
-            return _model.encode(text, normalize_embeddings=True)
+            def _sbert(text: str) -> Sequence[float]:
+                return _model.encode(text, normalize_embeddings=True)
 
-        _fallback = _sbert
+            _fallback = _sbert
+        except Exception as exc:  # pragma: no cover - network/model issues
+            logger.warning("MemoryFabric: SBERT unavailable (%s) → hashing fallback.", exc)
     else:
         logger.warning("MemoryFabric: no embedding backend → hashing fallback.")
 

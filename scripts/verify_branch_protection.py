@@ -166,7 +166,7 @@ def _load_required_checks(path: Path) -> list[str]:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
-    args = _parse_args(argv or sys.argv[1:])
+    args = _parse_args(sys.argv[1:] if argv is None else argv)
     repo_env = os.environ.get("GITHUB_REPOSITORY", ":").split("/", maxsplit=1)
     owner = args.owner or repo_env[0]
     repo = args.repo or (repo_env[1] if len(repo_env) > 1 else "")

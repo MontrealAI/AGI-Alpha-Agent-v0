@@ -29,6 +29,7 @@ Apache 2.0 License © 2025 Montreal AI
 from __future__ import annotations
 
 # ────────────────────────── stdlib ────────────────────────────
+import hashlib
 import logging
 import os
 import queue
@@ -148,6 +149,24 @@ def _l2(mat):
     return out
 
 
+def _hash_embed(texts: Sequence[str], dim: int = _DIM_SBERT):
+    """Return deterministic hash-based embeddings for offline fallback."""
+    vectors: list[list[float]] = []
+    for text in texts:
+        digest = hashlib.sha256(text.encode("utf-8")).digest()
+        values = [(1 if b & 1 else -1) * ((b >> 1) / 128.0) for b in digest]
+        values *= (dim + len(values) - 1) // len(values)
+        vec = values[:dim]
+        if _HAS_NUMPY:
+            arr = _np.asarray(vec, dtype="float32")
+            arr /= _np.linalg.norm(arr) + 1e-12
+            vectors.append(arr.tolist())
+        else:
+            norm = sum(x * x for x in vec) ** 0.5 + 1e-12
+            vectors.append([x / norm for x in vec])
+    return _l2(_np.asarray(vectors, "float32"))
+
+
 def _embed(texts: Sequence[str]):
     """Return L2-normalised embeddings for *texts*."""
     if _HAS_OPENAI:
@@ -162,12 +181,21 @@ def _embed(texts: Sequence[str]):
             _LOG.exception("OpenAI embed failed – falling back to SBERT")
 
     if SentenceTransformer is None:
-        raise RuntimeError("No embedding backend available. Install " "`sentence-transformers` or set OPENAI_API_KEY.")
+        _LOG.warning("SentenceTransformer unavailable; using hash embeddings.")
+        return _hash_embed(texts)
 
     global _SBERT  # pylint: disable=global-statement
     if _SBERT is None:
-        _SBERT = SentenceTransformer(os.getenv("AF_SBER_MODEL", "all-MiniLM-L6-v2"))
-    vectors = _SBERT.encode(list(texts), normalize_embeddings=True)
+        try:
+            _SBERT = SentenceTransformer(os.getenv("AF_SBER_MODEL", "all-MiniLM-L6-v2"))
+        except Exception as exc:  # pragma: no cover - offline model fetch
+            _LOG.warning("SentenceTransformer init failed (%s); using hash embeddings.", exc)
+            return _hash_embed(texts)
+    try:
+        vectors = _SBERT.encode(list(texts), normalize_embeddings=True)
+    except Exception as exc:  # pragma: no cover - runtime model errors
+        _LOG.warning("SentenceTransformer encode failed (%s); using hash embeddings.", exc)
+        return _hash_embed(texts)
     return _l2(_np.asarray(vectors, "float32"))
 
 
