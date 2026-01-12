@@ -4,8 +4,51 @@
     <meta charset="utf-8" />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-/Nk3BsDXRZ9RoSihEbzD13y2pDelDAgbl26jWSDX5Ks9+h6NL60Y3Fs7Z4JdWZbn' 'sha384-EAF2mNlEm60Ms1ZoKs8ETPX/YGxVsMrI9V9Nr2P0ko17g34rLf4Na/+e/e4BU/c/'; style-src 'self' 'unsafe-inline'" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <body class="flex flex-col h-screen">
+    <header class="p-4 bg-base-100/70 backdrop-blur-md">
+      <div class="max-w-4xl mx-auto">
+        <h1
+          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500           bg-clip-text text-transparent animate-gradient"
+        >
+          α-AGI Insight
+        </h1>
+      </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+      <aside id="controls" class="w-64 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" role="region" aria-label="Controls"></aside>
+      <main id="canvas" class="flex-1 relative overflow-hidden" role="main">
+        <div id="tree-container" class="tree-chart" aria-label="Meta-Agentic Tree Search">
+          <div class="node"></div>
+        </div>
+      </main>
+      <aside id="log" class="w-80 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" aria-label="Log" role="region"></aside>
+    </div>
+
+    <div id="toast" aria-live="polite" role="status"></div>
+
+    <div id="toolbar" role="toolbar" aria-label="App controls">
+      <button id="install-btn" hidden aria-label="Install application">Install</button>
+    </div>
+
+    <div id="legend" role="region" aria-label="Legend"></div>
+    <div id="depth-legend" role="region" aria-label="Depth Legend"></div>
+
+    <footer id="disclaimer" style="font-size: 0.8rem; margin: 1rem; text-align: center;">
+      <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
+      This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals
+      and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial
+      advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
+    </footer>
+
+    <script src="assets/d3.v7.min.js" crossorigin="anonymous"></script>
+
     <script type="importmap">
       {
         "imports": {
@@ -34,7 +77,7 @@
 
     <script>
       const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      const SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
@@ -69,7 +112,11 @@
       }
     </script>
 
-    <script type="module" src="main.js"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+    <script type="module" src="insight.bundle.js" integrity="sha384-0lxWd5yd7VddiNNQtH2xnEVsZHoVlkdYWBz1LBi90/9OdkROD1dnM03FTFqjeN9a" crossorigin="anonymous"></script>
+    <script>
+      window.PINNER_TOKEN = atob('');
+      window.OTEL_ENDPOINT = atob('');
+      window.IPFS_GATEWAY = atob('');
+    </script>
+  </body>
 </html>

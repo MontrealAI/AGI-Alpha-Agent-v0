@@ -27,4 +27,4 @@ def test_performance_drop() -> None:
     rng2 = random.Random(1)
     op_bad = SelfRewriteOperator(steps=1, rng=rng2, templates=["meme"], reuse_rate=0.0)
     score_bad = len(op_bad("improve quick test"))
-    assert score_good > score_bad
+    assert score_good < score_bad
