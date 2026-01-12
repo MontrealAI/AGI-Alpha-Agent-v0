@@ -1060,18 +1060,4 @@ jobs:
           python scripts/verify_branch_protection.py \
             --branch "${TARGET_BRANCH}" \
             ${apply_flag} \
-            --required-check "✅ PR CI / Lint (ruff)" \
-            --required-check "✅ PR CI / Smoke tests" \
-            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)" \
-            --required-check "🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)" \
-            --required-check "🚀 CI — Insight Demo / ✅ Actionlint" \
-            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.11)" \
-            --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.12)" \
-            --required-check "🚀 CI — Insight Demo / Windows Smoke" \
-            --required-check "🚀 CI — Insight Demo / macOS Smoke" \
-            --required-check "🚀 CI — Insight Demo / 📜 MkDocs" \
-            --required-check "🚀 CI — Insight Demo / 📚 Docs Build" \
-            --required-check "🚀 CI — Insight Demo / 🐳 Docker build" \
-            --required-check "🚀 CI — Insight Demo / 📦 Deploy" \
-            --required-check "🚀 CI — Insight Demo / 🔒 Branch protection guardrails" \
-            --required-check "🩺 CI Health / CI watchdog"
+            --required-checks-file scripts/required_checks.json

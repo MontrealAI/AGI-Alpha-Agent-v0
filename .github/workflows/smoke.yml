@@ -26,7 +26,7 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
       - name: Check dispatch token
-        if: github.actor != github.repository_owner
+        if: github.actor != github.repository_owner && github.actor != 'github-actions[bot]'
         run: |
           if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
             echo "Unauthorized"
@@ -105,4 +105,3 @@ jobs:
           sqlite3 "$AGI_INSIGHT_LEDGER_PATH" 'SELECT COUNT(*) FROM messages;' | grep -q "^[1-9]"
         env:
           AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
-
