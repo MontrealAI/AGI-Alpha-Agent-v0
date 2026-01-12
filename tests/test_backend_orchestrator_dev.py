@@ -5,9 +5,11 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import importlib
 import time
 
 import pytest
+import pytest_asyncio
 
 try:
     from fastapi.testclient import TestClient  # noqa: E402
@@ -40,7 +42,7 @@ class FailingAgent(AgentBase):  # type: ignore[misc]
         raise RuntimeError("boom")
 
 
-@pytest.fixture()  # type: ignore[misc]
+@pytest_asyncio.fixture()
 async def dev_orchestrator(monkeypatch: pytest.MonkeyPatch) -> orch_mod.Orchestrator:
     monkeypatch.setenv("DEV_MODE", "true")
     monkeypatch.setenv("API_TOKEN", "test-token")
@@ -49,6 +51,13 @@ async def dev_orchestrator(monkeypatch: pytest.MonkeyPatch) -> orch_mod.Orchestr
     from alpha_factory_v1.backend.agents.registry import _HEALTH_Q
     import inspect
     import time
+
+    backend_registry = importlib.import_module("backend.agents.registry")
+    backend_runner = importlib.import_module("backend.agent_runner")
+    backend_health = importlib.import_module("backend.agents.health")
+    af_registry = importlib.import_module("alpha_factory_v1.backend.agents.registry")
+    af_runner = importlib.import_module("alpha_factory_v1.backend.agent_runner")
+    af_health = importlib.import_module("alpha_factory_v1.backend.agents.health")
 
     def list_agents(_detail: bool = False) -> list[str]:  # noqa: D401
         return ["dummy", "fail"]
@@ -73,9 +82,37 @@ async def dev_orchestrator(monkeypatch: pytest.MonkeyPatch) -> orch_mod.Orchestr
             agent.step = _wrapped
         return agent
 
-    monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.list_agents", list_agents)
-    monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.get_agent", get_agent)
-    monkeypatch.setattr("alpha_factory_v1.backend.agent_runner.get_agent", get_agent)
+    def seed_registry(registry_module: object) -> None:
+        with registry_module._REGISTRY_LOCK:
+            registry_module.AGENT_REGISTRY.clear()
+            registry_module.CAPABILITY_GRAPH.clear()
+            registry_module.AGENT_REGISTRY["dummy"] = registry_module.AgentMetadata(
+                name="dummy",
+                cls=DummyAgent,
+                capabilities=[],
+                compliance_tags=[],
+                requires_api_key=False,
+            )
+            registry_module.AGENT_REGISTRY["fail"] = registry_module.AgentMetadata(
+                name="fail",
+                cls=FailingAgent,
+                capabilities=[],
+                compliance_tags=[],
+                requires_api_key=False,
+            )
+
+    seed_registry(backend_registry)
+    seed_registry(af_registry)
+    monkeypatch.setattr(backend_registry, "_ERR_THRESHOLD", 1)
+    monkeypatch.setattr(backend_health, "_ERR_THRESHOLD", 1)
+    monkeypatch.setattr(af_registry, "_ERR_THRESHOLD", 1)
+    monkeypatch.setattr(af_health, "_ERR_THRESHOLD", 1)
+    monkeypatch.setattr(backend_registry, "list_agents", list_agents)
+    monkeypatch.setattr(backend_registry, "get_agent", get_agent)
+    monkeypatch.setattr(backend_runner, "get_agent", get_agent)
+    monkeypatch.setattr(af_registry, "list_agents", list_agents)
+    monkeypatch.setattr(af_registry, "get_agent", get_agent)
+    monkeypatch.setattr(af_runner, "get_agent", get_agent)
     await start_background_tasks()
 
     orch = orch_mod.Orchestrator()

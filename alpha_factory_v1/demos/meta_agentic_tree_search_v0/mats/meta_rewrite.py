@@ -7,13 +7,13 @@ Anthropic integrations used to tweak integer policies.
 
 from __future__ import annotations
 
-import logging
-import importlib.util
 import asyncio
+import importlib.util
+import logging
 import os
-import time
-import re
 import random
+import re
+import time
 from typing import List
 
 try:  # pragma: no cover - optional httpx dependency
@@ -84,9 +84,15 @@ def openai_rewrite(agents: List[int], model: str | None = None) -> List[int]:
     any error occurs.
     """
 
-    have_oai = importlib.util.find_spec("openai_agents") is not None
-    have_adk = importlib.util.find_spec("google_adk") is not None
-    have_openai = importlib.util.find_spec("openai") is not None
+    def _safe_find_spec(module_name: str) -> object | None:
+        try:
+            return importlib.util.find_spec(module_name)
+        except (ValueError, ModuleNotFoundError):
+            return None
+
+    have_oai = _safe_find_spec("openai_agents") is not None
+    have_adk = _safe_find_spec("google_adk") is not None
+    have_openai = _safe_find_spec("openai") is not None
 
     if have_oai and have_openai and os.getenv("OPENAI_API_KEY"):
         try:  # pragma: no cover - optional integration
@@ -102,7 +108,7 @@ def openai_rewrite(agents: List[int], model: str | None = None) -> List[int]:
 
             @Tool(name="improve_policy", description="Return an improved integer policy")  # type: ignore[misc]
             def improve_policy(policy: list[int]) -> list[int]:
-                prompt = "Given the current integer policy " f"{policy}, suggest a slightly improved list of integers."
+                prompt = f"Given the current integer policy {policy}, suggest a slightly improved list of integers."
                 messages = [
                     {
                         "role": "system",
@@ -179,7 +185,7 @@ def anthropic_rewrite(agents: List[int], model: str | None = None) -> List[int]:
             claude_model = model or os.getenv("ANTHROPIC_MODEL", "claude-3-opus-20240229")
             client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-            prompt = "Given the current integer policy " f"{agents}, suggest a slightly improved list of integers."
+            prompt = f"Given the current integer policy {agents}, suggest a slightly improved list of integers."
 
             messages = [{"role": "user", "content": prompt}]
             msg = client.messages.create(

@@ -8,6 +8,7 @@ Optional remediation flags cancel stale pending runs and re-dispatch workflows
 using ``GITHUB_TOKEN`` so badges recover automatically. Provide a grace period
 for in-flight runs to avoid failing while CI is still progressing.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -63,7 +64,7 @@ def _github_request(
             if attempt >= retries:
                 raise
         attempt += 1
-        sleep_for = backoff_seconds * (2**(attempt - 1))
+        sleep_for = backoff_seconds * (2 ** (attempt - 1))
         time.sleep(sleep_for)
 
 
@@ -421,8 +422,8 @@ def _format_failure(run: Mapping[str, object], workflow: str, *, age_seconds: fl
     sha = run.get("head_sha", "<unknown sha>")
     age_hint = ""
     if age_seconds is not None:
-        age_hint = f" age={age_seconds/60:.1f}m"
-    return f"{workflow}: {conclusion}{age_hint} (branch={branch} sha={sha})\n" f"  {html_url}"
+        age_hint = f" age={age_seconds / 60:.1f}m"
+    return f"{workflow}: {conclusion}{age_hint} (branch={branch} sha={sha})\n  {html_url}"
 
 
 def verify_workflows(
@@ -498,7 +499,7 @@ def verify_workflows(
             if is_pending and (remaining > 0 or within_grace):
                 waiting = True
                 grace_hint = "within grace" if within_grace else f"waiting {remaining:.0f}s"
-                age_hint = "age=?" if age_seconds is None else f"age={age_seconds/60:.1f}m"
+                age_hint = "age=?" if age_seconds is None else f"age={age_seconds / 60:.1f}m"
                 print(f"⏳ {workflow} → {status} ({age_hint}, {grace_hint})", flush=True)
                 continue
 
@@ -562,16 +563,14 @@ def main(argv: list[str] | None = None) -> int:
         type=float,
         default=0,
         help=(
-            "Treat queued/pending runs younger than this many minutes as acceptable even if "
-            "they have not finished yet"
+            "Treat queued/pending runs younger than this many minutes as acceptable even if they have not finished yet"
         ),
     )
     parser.add_argument(
         "--rerun-failed",
         action="store_true",
         help=(
-            "Automatically rerun the most recent failed workflow run using GITHUB_TOKEN "
-            "(or GH_TOKEN) when available."
+            "Automatically rerun the most recent failed workflow run using GITHUB_TOKEN (or GH_TOKEN) when available."
         ),
     )
     parser.add_argument(
@@ -602,10 +601,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--branch",
-        help=(
-            "Branch to evaluate workflow health for. Defaults to $GITHUB_REF_NAME "
-            "when available, otherwise 'main'."
-        ),
+        help=("Branch to evaluate workflow health for. Defaults to $GITHUB_REF_NAME when available, otherwise 'main'."),
     )
     args = parser.parse_args(argv)
 
@@ -634,8 +630,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.rerun_failed or args.cancel_stale or args.dispatch_missing:
         if not actions_write_allowed:
             print(
-                f"⚠️ actions write operations disabled ({actions_reason}); "
-                "running in read-only mode.",
+                f"⚠️ actions write operations disabled ({actions_reason}); running in read-only mode.",
                 flush=True,
             )
             args.rerun_failed = False
