@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](/DISCLAIMER_SNIPPET.md)
 # API Overview
 
 This demo exposes a minimal REST and WebSocket interface implemented in `src.interface.api_server`. All requests must include `Authorization: Bearer $API_TOKEN`.
