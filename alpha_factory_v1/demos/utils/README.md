@@ -4,3 +4,14 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 # Demo Utilities
 
 This directory holds helper utilities shared across demos, such as `disclaimer.py` which exposes the standard project disclaimer.
+Use these helpers to keep demo scripts consistent and to avoid duplicating boilerplate.
+
+## Example usage
+
+```python
+from alpha_factory_v1.demos.utils.disclaimer import DISCLAIMER
+
+print(DISCLAIMER)
+```
+
+Update this README whenever new shared utilities are added.
