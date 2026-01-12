@@ -150,9 +150,11 @@ if app is not None:
             def labels(self, *_a: Any, **_kw: Any) -> "_N":
                 return self
 
-            def observe(self, *_a: Any) -> None: ...
+            def observe(self, *_a: Any) -> None:
+                ...
 
-            def inc(self, *_a: Any) -> None: ...
+            def inc(self, *_a: Any) -> None:
+                ...
 
         return _N()
 
