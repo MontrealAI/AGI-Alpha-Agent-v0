@@ -2,20 +2,34 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
+
+import pytest
 
 from alpha_factory_v1.core.archive.manager import PatchManager, _tool_roundtrip
 import alpha_factory_v1.core.archive.manager as manager
 
 
+def _require_self_edit_tools() -> None:
+    try:
+        spec = importlib.util.find_spec("src.self_edit.tools")
+    except ModuleNotFoundError:
+        spec = None
+    if spec is None:
+        pytest.skip("src.self_edit.tools not available in this environment")
+
+
 def test_tool_roundtrip(monkeypatch, tmp_path: Path) -> None:
+    _require_self_edit_tools()
     monkeypatch.setattr(manager, "REPO_ROOT", tmp_path)
     monkeypatch.setattr("src.self_edit.tools.REPO_ROOT", tmp_path)
     assert _tool_roundtrip()
 
 
 def test_admit_policy(monkeypatch, tmp_path: Path) -> None:
+    _require_self_edit_tools()
     monkeypatch.setattr(manager, "REPO_ROOT", tmp_path)
     monkeypatch.setattr("src.self_edit.tools.REPO_ROOT", tmp_path)
     db_path = tmp_path / "arch.db"

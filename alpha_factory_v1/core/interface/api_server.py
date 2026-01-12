@@ -150,11 +150,9 @@ if app is not None:
             def labels(self, *_a: Any, **_kw: Any) -> "_N":
                 return self
 
-            def observe(self, *_a: Any) -> None:
-                ...
+            def observe(self, *_a: Any) -> None: ...
 
-            def inc(self, *_a: Any) -> None:
-                ...
+            def inc(self, *_a: Any) -> None: ...
 
         return _N()
 
@@ -272,8 +270,9 @@ if app is not None:
     @asynccontextmanager
     async def lifespan(app_f: FastAPI) -> AsyncGenerator[None, None]:
         _log.warning(DISCLAIMER)
+        init_config()
         if API_TOKEN == "REPLACE_ME_TOKEN":
-            _log.error("API_TOKEN is set to the default 'REPLACE_ME_TOKEN'. " "Edit .env to use a strong secret.")
+            _log.error("API_TOKEN is set to the default 'REPLACE_ME_TOKEN'. Edit .env to use a strong secret.")
             raise RuntimeError("API_TOKEN placeholder detected")
         orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
         app_f.state.orchestrator = orch_mod.Orchestrator()
@@ -391,7 +390,7 @@ async def _static_analysis_task() -> None:
     semgrep = shutil.which("semgrep")
     if not semgrep:
         _log.warning(
-            "semgrep not found. Install with `pip install semgrep` " "or set STATIC_ANALYSIS_INTERVAL=0 to disable"
+            "semgrep not found. Install with `pip install semgrep` or set STATIC_ANALYSIS_INTERVAL=0 to disable"
         )
         return
     await asyncio.sleep(interval)

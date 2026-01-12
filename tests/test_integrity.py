@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Verify wasm assets are real."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -40,6 +41,8 @@ def test_no_placeholder() -> None:
 
 def test_workbox_sri() -> None:
     index_file = BROWSER / "dist/index.html"
+    if not index_file.is_file():
+        pytest.skip("dist/index.html missing; run npm build to generate bundled assets")
     html = index_file.read_text()
     pattern = r'<script[^>]*src=["\']lib/workbox-sw.js["\'][^>]*>'
     match = re.search(pattern, html)
@@ -57,6 +60,8 @@ def test_workbox_sri() -> None:
 
 def test_csp_meta_tag() -> None:
     index_file = BROWSER / "dist/index.html"
+    if not index_file.is_file():
+        pytest.skip("dist/index.html missing; run npm build to generate bundled assets")
     html = index_file.read_text()
     pattern = r'<meta[^>]*http-equiv=["\']Content-Security-Policy["\'][^>]*>'
     match = re.search(pattern, html)
