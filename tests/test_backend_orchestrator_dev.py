@@ -8,6 +8,7 @@ import contextlib
 import time
 
 import pytest
+import pytest_asyncio
 
 try:
     from fastapi.testclient import TestClient  # noqa: E402
@@ -16,11 +17,6 @@ except ModuleNotFoundError:  # pragma: no cover - optional dep
 
 from alpha_factory_v1.backend import orchestrator as orch_mod
 from alpha_factory_v1.backend.api_server import build_rest
-from alpha_factory_v1.backend.agents.registry import AGENT_REGISTRY, StubAgent
-from alpha_factory_v1.backend.agents.health import (
-    start_background_tasks,
-    stop_background_tasks,
-)
 from alpha_factory_v1.backend.agents.base import AgentBase
 
 
@@ -40,13 +36,13 @@ class FailingAgent(AgentBase):  # type: ignore[misc]
         raise RuntimeError("boom")
 
 
-@pytest.fixture()  # type: ignore[misc]
+@pytest_asyncio.fixture()
 async def dev_orchestrator(monkeypatch: pytest.MonkeyPatch) -> orch_mod.Orchestrator:
     monkeypatch.setenv("DEV_MODE", "true")
     monkeypatch.setenv("API_TOKEN", "test-token")
     monkeypatch.setenv("AGENT_ERR_THRESHOLD", "1")
 
-    from alpha_factory_v1.backend.agents.registry import _HEALTH_Q
+    import importlib
     import inspect
     import time
 
@@ -73,14 +69,29 @@ async def dev_orchestrator(monkeypatch: pytest.MonkeyPatch) -> orch_mod.Orchestr
             agent.step = _wrapped
         return agent
 
+    registry_mod = importlib.import_module("backend.agents.registry")
+    _HEALTH_Q = registry_mod._HEALTH_Q
+    registry_mod.register_agent(registry_mod.AgentMetadata(name="dummy", cls=DummyAgent))
+    registry_mod.register_agent(registry_mod.AgentMetadata(name="fail", cls=FailingAgent))
+    monkeypatch.setattr(registry_mod, "_ERR_THRESHOLD", 1)
+    monkeypatch.setattr("backend.agents.health._ERR_THRESHOLD", 1)
+    monkeypatch.setattr(registry_mod, "list_agents", list_agents)
+    monkeypatch.setattr(registry_mod, "get_agent", get_agent)
+    monkeypatch.setattr("backend.agent_runner.get_agent", get_agent)
+
+    monkeypatch.setattr("alpha_factory_v1.backend.agents.registry._ERR_THRESHOLD", 1)
     monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.list_agents", list_agents)
     monkeypatch.setattr("alpha_factory_v1.backend.agents.registry.get_agent", get_agent)
     monkeypatch.setattr("alpha_factory_v1.backend.agent_runner.get_agent", get_agent)
-    await start_background_tasks()
+    monkeypatch.setattr("alpha_factory_v1.backend.agents.health._ERR_THRESHOLD", 1)
+
+    backend_health = importlib.import_module("backend.agents.health")
+    backend_health._ERR_THRESHOLD = 1
+    await backend_health.start_background_tasks()
 
     orch = orch_mod.Orchestrator()
     yield orch
-    await stop_background_tasks()
+    await backend_health.stop_background_tasks()
 
 
 def _mem_stub() -> object:
@@ -107,4 +118,7 @@ async def test_rest_and_quarantine(dev_orchestrator: orch_mod.Orchestrator) -> N
     await asyncio.sleep(0.05)
     time.sleep(0.05)  # allow health thread to process
 
-    assert AGENT_REGISTRY["fail"].cls is StubAgent
+    import importlib
+
+    registry_mod = importlib.import_module("backend.agents.registry")
+    assert registry_mod.AGENT_REGISTRY["fail"].cls is registry_mod.StubAgent

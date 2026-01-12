@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -10,6 +12,13 @@ import pytest
 
 
 pytest.importorskip("openai_agents", minversion="0.0.17")
+
+
+def _bridge_command() -> list[str]:
+    command = shutil.which("governance-bridge")
+    if command:
+        return [command]
+    return [sys.executable, "-m", "alpha_factory_v1.demos.solving_agi_governance.openai_agents_bridge"]
 
 
 def test_governance_bridge_adk_runtime(tmp_path: Path) -> None:
@@ -33,7 +42,7 @@ class AgentException(Exception):
     env["ALPHA_FACTORY_ENABLE_ADK"] = "true"
 
     proc = subprocess.Popen(
-        ["governance-bridge", "--enable-adk", "--port", "0"],
+        _bridge_command() + ["--enable-adk", "--port", "0"],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
