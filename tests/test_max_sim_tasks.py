@@ -26,6 +26,9 @@ def test_max_sim_tasks(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(api, "_background_run", stub)
 
-    asyncio.run(asyncio.gather(api._bounded_run("a", cfg), api._bounded_run("b", cfg)))
+    async def _run_all() -> None:
+        await asyncio.gather(api._bounded_run("a", cfg), api._bounded_run("b", cfg))
+
+    asyncio.run(_run_all())
 
     assert counter["max"] == 1

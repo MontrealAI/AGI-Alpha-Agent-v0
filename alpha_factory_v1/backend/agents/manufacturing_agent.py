@@ -381,7 +381,11 @@ class ManufacturingAgent(AgentBase):
                 penalties.append(late)
         energy_var = model.NewIntVar(0, horizon * 10, "energy")  # scaled
         # Dummy: minimise lateness + small energy surrogate
-        model.Minimize(cp.Sum(penalties + [energy_var]))
+        objective_terms = penalties + [energy_var]
+        if hasattr(cp, "LinearExpr") and hasattr(cp.LinearExpr, "Sum"):
+            model.Minimize(cp.LinearExpr.Sum(objective_terms))
+        else:
+            model.Minimize(sum(objective_terms))
 
         solver = cp.CpSolver()
         solver.parameters.max_time_in_seconds = float(self.cfg.max_wall_sec)
