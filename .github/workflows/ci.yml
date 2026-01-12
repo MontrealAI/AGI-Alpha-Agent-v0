@@ -167,7 +167,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache Playwright browsers
-        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
+        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles(env.NODE_LOCKFILES) }}-${{ hashFiles('.nvmrc') }}
@@ -183,7 +183,7 @@ jobs:
           git --version
 
       - name: Cache pre-commit
-        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
+        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-py${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -349,7 +349,7 @@ jobs:
           if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload benchmark results
         if: steps.bench-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
+        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: benchmark-results
           path: tests/benchmarks/latest.json
@@ -374,14 +374,14 @@ jobs:
           if [[ -f artifacts/coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload pytest results
         if: always()
-        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
+        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: pytest-${{ matrix.python-version }}
           path: artifacts/test-reports/pytest.xml
           if-no-files-found: warn
       - name: Upload coverage
         if: steps.coverage-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
+        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: coverage-xml
           path: artifacts/coverage.xml
@@ -584,7 +584,7 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
+        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -666,7 +666,7 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v4.3.0 # 0057852bfaa89a56745cba8c7296529d2fc39830
+        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -846,7 +846,7 @@ jobs:
         id: web-client-check
         run: |
           if [[ -f web-client.tar.gz ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
-      - uses: actions/upload-artifact@v5.0.0 # 330a01c490aca151604b8cf639adc76d48f6c5d4
+      - uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
         if: steps.web-client-check.outputs.found == 'true'
         with:
           name: web-client
@@ -1015,7 +1015,7 @@ jobs:
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2.4.2 # 5be0e66d93ac7ed76da52eca8bb058f665c3a5fe
+        uses: softprops/action-gh-release@v2.5.0 # a06a81a03ee405af7f2048a818ed3f03bbf83c7b
         with:
           files: web-client.tar.gz
       - name: Rollback on failure

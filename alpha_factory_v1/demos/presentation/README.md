@@ -1,15 +1,18 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
-# Demo Utilities
+# Demo Presentation Assets
 
-This directory holds helper utilities shared across demos, such as `disclaimer.py` which exposes the standard project disclaimer.
-Use these helpers when writing demo scripts so the safety notice stays consistent.
+This folder collects the slide deck and PDF used to present the Alpha-Factory demo portfolio.
+The assets are provided for reference when reviewing or showcasing the demos.
 
-## Example
+## Included files
 
-```python
-from alpha_factory_v1.demos.utils.disclaimer import print_disclaimer
+- `AGI-Alpha-Agent-v0_Demos_Master_v0.pptx`
+- `AGI-Alpha-Agent-v0_Demos_Master_v0.pdf`
 
-print_disclaimer()
+## Quick view
+
+```bash
+xdg-open AGI-Alpha-Agent-v0_Demos_Master_v0.pdf
 ```
