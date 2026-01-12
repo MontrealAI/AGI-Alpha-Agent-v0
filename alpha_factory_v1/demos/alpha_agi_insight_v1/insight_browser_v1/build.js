@@ -199,7 +199,6 @@ async function relocateDistAssets() {
         "src",
         "d3.v7.min.js",
         "favicon.svg",
-        "insight_browser_quickstart.pdf",
         "manifest.json",
     ];
     for (const item of items) {

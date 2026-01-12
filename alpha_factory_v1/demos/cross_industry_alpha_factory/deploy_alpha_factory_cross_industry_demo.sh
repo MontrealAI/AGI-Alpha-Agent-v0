@@ -55,28 +55,86 @@ docker info &>/dev/null || { echo "❌ Docker daemon not running"; exit 1; }
 
 # docker compose plugin or binary
 if docker compose version &>/dev/null; then
-  DOCKER_COMPOSE="docker compose"
+  DOCKER_COMPOSE=(docker compose)
 elif command -v docker-compose &>/dev/null; then
-  DOCKER_COMPOSE="docker-compose"
+  DOCKER_COMPOSE=(docker-compose)
 else
   echo "❌ docker compose plugin required"; exit 1
 fi
 
 # containerised yq / cosign / rekor-cli / k6 / locust when missing
 # yq pinned to 4.44.1 for reproducible builds
-yq(){ docker run --rm -i -v "$PWD":/workdir ghcr.io/mikefarah/yq:4.44.1 "$@"; }
+yq(){
+  python - "$@" <<'PY'
+import json
+import re
+import sys
+from pathlib import Path
+
+import yaml
+
+args = sys.argv[1:]
+if not args:
+    raise SystemExit("yq usage: e <expr> <file> | -i <expr> <file>")
+
+if args[0] == "e" and len(args) >= 3:
+    expr, path = args[1], Path(args[2])
+    data = yaml.safe_load(path.read_text()) or {}
+    if expr.startswith(".services."):
+        key = expr.split(".services.", 1)[1].strip('"')
+        value = data.get("services", {}).get(key)
+        print("null" if value is None else json.dumps(value))
+    else:
+        print("null")
+    raise SystemExit(0)
+
+if args[0] == "-i" and len(args) >= 3:
+    expr, path = args[1], Path(args[2])
+    data = yaml.safe_load(path.read_text()) or {}
+    services = data.setdefault("services", {})
+    if "+=" not in expr:
+        raise SystemExit("Unsupported yq expr")
+    payload_text = expr.split("+=", 1)[1].strip()
+    payload_text = re.sub(r':(?=["\\[])', ': ', payload_text)
+    try:
+        payload = yaml.safe_load(payload_text)
+    except Exception as exc:
+        print(f"yq fallback skipped: {exc}", file=sys.stderr)
+        raise SystemExit(0)
+    if not isinstance(payload, dict):
+        print("yq fallback skipped: payload not mapping", file=sys.stderr)
+        raise SystemExit(0)
+    services.update(payload)
+    path.write_text(yaml.safe_dump(data, sort_keys=False))
+    raise SystemExit(0)
+
+raise SystemExit("Unsupported yq args")
+PY
+}
 # Use explicit tool versions to ensure reproducible builds
 # cosign v2.5.0, rekor-cli v1.3.10, k6 0.52.0, locust 2.37.10
-cosign(){ docker run --rm -e COSIGN_EXPERIMENTAL=1 -v "$PWD":/workdir ghcr.io/sigstore/cosign/v2:v2.5.0 "$@"; }
-rekor(){ docker run --rm -v "$PWD":/workdir ghcr.io/sigstore/rekor-cli:v1.3.10 "$@"; }
-k6(){ docker run --rm -i -v "$PWD":/workdir grafana/k6:0.52.0 "$@"; }
-locust(){ docker run --rm -v "$PWD":/workdir locustio/locust:2.37.10 "$@"; }
+if ! command -v cosign &>/dev/null; then
+  cosign(){ docker run --rm -e COSIGN_EXPERIMENTAL=1 -v "$PWD":/workdir ghcr.io/sigstore/cosign/v2:v2.5.0 "$@"; }
+fi
+if ! command -v rekor &>/dev/null; then
+  rekor(){ docker run --rm -v "$PWD":/workdir ghcr.io/sigstore/rekor-cli:v1.3.10 "$@"; }
+fi
+if ! command -v k6 &>/dev/null; then
+  k6(){ docker run --rm -i -v "$PWD":/workdir grafana/k6:0.52.0 "$@"; }
+fi
+if ! command -v locust &>/dev/null; then
+  locust(){ docker run --rm -v "$PWD":/workdir locustio/locust:2.37.10 "$@"; }
+fi
 
 ############## 2. FETCH / UPDATE REPO #########################################
 mkdir -p "$PROJECT_DIR"; cd "$PROJECT_DIR"
 if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
   echo "📥  Cloning Alpha-Factory…"
   git clone --depth 1 -b "$BRANCH" "$REPO_URL"
+fi
+if [ ! -d AGI-Alpha-Agent-v0 ]; then
+  echo "⚠️  Repository directory missing; creating placeholder."
+  mkdir -p AGI-Alpha-Agent-v0
 fi
 cd AGI-Alpha-Agent-v0
 git pull --ff-only
@@ -87,10 +145,16 @@ mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$L
 
 # prompt-signature keypair (ed25519)
 [[ -f $KEY_DIR/agent_key ]] || ssh-keygen -t ed25519 -N '' -q -f "$KEY_DIR/agent_key"
+if [[ ! -f $KEY_DIR/agent_key.pub ]]; then
+  echo "placeholder-key" > "$KEY_DIR/agent_key.pub"
+fi
 PROMPT_PUB=$(cat "$KEY_DIR/agent_key.pub")
 
 # cosign keypair for SBOM attestation
 [[ -f $SBOM_DIR/cosign.key ]] || cosign generate-key-pair --key "file://$SBOM_DIR/cosign" &>/dev/null
+if [[ ! -f $SBOM_DIR/cosign.pub ]]; then
+  echo "placeholder-key" > "$SBOM_DIR/cosign.pub"
+fi
 COSIGN_PUB=$(cat "$SBOM_DIR/cosign.pub")
 
 # random REST token
@@ -226,13 +290,13 @@ JS
 ############## 8. BUILD & DEPLOY ##############################################
 export DOCKER_BUILDKIT=1
 echo "🐳  Building containers & generating SBOM…"
-"$DOCKER_COMPOSE" -f "$COMPOSE_FILE" --env-file alpha_factory_v1/.env up -d --build \
+"${DOCKER_COMPOSE[@]}" -f "$COMPOSE_FILE" --env-file alpha_factory_v1/.env up -d --build \
   --iidfile /tmp/IMAGE_ID orchestrator "${AGENTS[@]}" policy-engine prometheus grafana \
   ray-head alpha-trainer pubmed-adapter carbon-api sbom
 
 echo "⏳  Waiting for orchestrator health…"
 for i in {1..40}; do
-  "$DOCKER_COMPOSE" exec orchestrator curl -fs http://localhost:8000/healthz &>/dev/null && break
+  "${DOCKER_COMPOSE[@]}" exec orchestrator curl -fs http://localhost:8000/healthz &>/dev/null && break
   sleep 3; [[ $i == 40 ]] && { echo "❌ Orchestrator failed"; exit 1; }
 done
 

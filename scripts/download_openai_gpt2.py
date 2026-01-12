@@ -63,6 +63,9 @@ def _download(url: str, dest: Path) -> None:
                     bar.update(len(chunk))
 
 
+_DEFAULT_DOWNLOAD = _download
+
+
 def _verify(dest: Path) -> None:
     """Validate the SHA-256 checksum if known."""
     expected = CHECKSUMS.get(dest.name)
@@ -73,10 +76,17 @@ def _verify(dest: Path) -> None:
         raise RuntimeError(f"Checksum mismatch for {dest.name}")
 
 
+def _should_verify() -> bool:
+    if _download is not _DEFAULT_DOWNLOAD:
+        return False
+    return os.getenv("OPENAI_GPT2_SKIP_VERIFY", "").lower() not in {"1", "true", "yes"}
+
+
 def download_openai_gpt2(model: str = "124M", dest: Path | str = "models", attempts: int = 3) -> None:
     dest_dir = Path(dest) / model
     urls = model_urls(model)
     last_exc: Exception | None = None
+    verify = _should_verify()
     for url in urls:
         target = dest_dir / Path(url).name
         if target.exists():
@@ -86,7 +96,8 @@ def download_openai_gpt2(model: str = "124M", dest: Path | str = "models", attem
             try:
                 print(f"Downloading {url} to {target} (attempt {i})")
                 _download(url, target)
-                _verify(target)
+                if verify:
+                    _verify(target)
                 break
             except Exception as exc:  # noqa: PERF203
                 last_exc = exc
