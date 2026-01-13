@@ -215,7 +215,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/insight-browser
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     steps:
@@ -251,7 +251,7 @@ jobs:
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/tests
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/tests
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     strategy:
@@ -415,7 +415,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 30
     env:
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/windows-smoke
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/windows-smoke
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     steps:
@@ -501,7 +501,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     env:
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/macos-smoke
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/macos-smoke
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     steps:
@@ -591,7 +591,7 @@ jobs:
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/docs-check
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs-check
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     steps:
@@ -683,7 +683,7 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/docs-build
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs-build
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
     steps:
@@ -811,6 +811,10 @@ jobs:
       contents: read
       packages: write
       id-token: write
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docker
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     # This job builds and pushes the image.
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -861,18 +865,26 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - uses: ./.github/actions/setup-env
         with:
           sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db --update-db --yes
       - name: Install web client dependencies
-        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+        run: |
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
