@@ -35,7 +35,9 @@ def _ensure_tag(html: str, sri: str, src: str) -> tuple[str, bool]:
             new_tag = tag.replace(">", f"{insert}>", 1)
         if new_tag == tag:
             return html, False
-        return html[:match.start()] + new_tag + html[match.end():], True
+        start = match.start()
+        end = match.end()
+        return f"{html[:start]}{new_tag}{html[end:]}", True
 
     script_tag = f'<script type="module" src="{src}" integrity="{sri}" crossorigin="anonymous"></script>'
     if "</head>" in html:
