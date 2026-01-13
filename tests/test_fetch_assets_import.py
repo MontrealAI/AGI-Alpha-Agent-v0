@@ -1,29 +1,24 @@
+#!/usr/bin/env python
 # SPDX-License-Identifier: Apache-2.0
-"""Regression test for optional requests dependency in fetch_assets."""
+"""Tests for optional requests dependency in fetch_assets."""
 
 from __future__ import annotations
 
 import builtins
 import importlib
-import sys
-from types import ModuleType
-from typing import Callable
-
-from pytest import MonkeyPatch
 
 
-def test_fetch_assets_import_without_requests(monkeypatch: MonkeyPatch) -> None:
-    """Ensure fetch_assets imports even when requests is unavailable."""
+def test_fetch_assets_import_without_requests(monkeypatch) -> None:
+    """Ensure fetch_assets imports cleanly when requests is unavailable."""
+    import scripts.fetch_assets as fetch_assets
 
-    original_import: Callable[..., ModuleType] = builtins.__import__
+    original_import = builtins.__import__
 
-    def guarded_import(name: str, *args: object, **kwargs: object) -> ModuleType:
+    def guarded_import(name: str, *args, **kwargs):
         if name == "requests":
             raise ModuleNotFoundError("No module named 'requests'")
         return original_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", guarded_import)
-    sys.modules.pop("scripts.fetch_assets", None)
 
-    module = importlib.import_module("scripts.fetch_assets")
-    assert module.requests is None
+    importlib.reload(fetch_assets)

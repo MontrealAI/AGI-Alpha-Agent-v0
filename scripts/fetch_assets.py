@@ -19,6 +19,8 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import importlib
+import importlib.util
 import os
 import shutil
 import subprocess
@@ -31,12 +33,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-try:
-    import requests as _requests
-except ModuleNotFoundError:
-    _requests = None
-
-requests: Any | None = _requests
+_REQUESTS_MODULE: Any | None = None
+_REQUESTS_CHECKED = False
 
 
 # Base URL for the GPT-2 small weights
@@ -116,6 +114,19 @@ def _response_url(exc: Exception) -> str | None:
     return getattr(getattr(exc, "response", None), "url", None)
 
 
+def _get_requests() -> Any | None:
+    """Return the requests module if available, otherwise None."""
+    global _REQUESTS_CHECKED, _REQUESTS_MODULE
+    if _REQUESTS_CHECKED:
+        return _REQUESTS_MODULE
+    _REQUESTS_CHECKED = True
+    if importlib.util.find_spec("requests") is None:
+        _REQUESTS_MODULE = None
+    else:
+        _REQUESTS_MODULE = importlib.import_module("requests")
+    return _REQUESTS_MODULE
+
+
 class _HashingReader:
     def __init__(self, raw: Any, hasher: Any) -> None:
         self._raw = raw
@@ -144,11 +155,16 @@ def _verify_checksum(label: str, digest_bytes: bytes, algo: str, ref: str) -> No
     raise RuntimeError(f"Checksum mismatch for {label}: expected {ref} got {calc_b64}")
 
 
-def _download_with_requests(url: str, temp_path: Path, label: str, algo: str | None, ref: str | None) -> None:
-    if requests is None:
-        raise RuntimeError("requests is unavailable")
+def _download_with_requests(
+    requests_module: Any,
+    url: str,
+    temp_path: Path,
+    label: str,
+    algo: str | None,
+    ref: str | None,
+) -> None:
     hasher = hashlib.new(algo) if algo else None
-    response = requests.get(url, timeout=60, stream=True)
+    response = requests_module.get(url, timeout=60, stream=True)
     try:
         response.raise_for_status()
         with temp_path.open("wb") as handle:
@@ -188,8 +204,9 @@ def download(cid: str, path: Path, label: str | None = None) -> None:
     try:
         with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as tmp:
             temp_file = Path(tmp.name)
-        if requests is not None:
-            _download_with_requests(url, temp_file, key, algo, ref)
+        requests_module = _get_requests()
+        if requests_module is not None:
+            _download_with_requests(requests_module, url, temp_file, key, algo, ref)
         else:
             _download_with_urllib(url, temp_file, key, algo, ref)
         os.replace(temp_file, path)
