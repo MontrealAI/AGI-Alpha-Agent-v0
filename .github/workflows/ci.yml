@@ -752,6 +752,14 @@ jobs:
     # This job builds and pushes the image.
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free disk space
+        run: |
+          set -euo pipefail
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc || true
+          sudo rm -rf /usr/local/share/boost /usr/local/share/powershell || true
+          sudo apt-get clean
+          sudo docker system prune -af
+          sudo docker builder prune -af
       - name: Ensure pip cache directory
         shell: bash
         run: |
