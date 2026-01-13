@@ -86,6 +86,7 @@ def _log_diagnostics(
     console_messages: list[str],
     page_errors: list[str],
     request_failures: list[str],
+    response_failures: list[str],
 ) -> None:
     selector_status = _selector_status(page)
     print(
@@ -107,6 +108,10 @@ def _log_diagnostics(
         print("Failed requests:", file=sys.stderr)
         for failure in request_failures:
             print(f"  {failure}", file=sys.stderr)
+    if response_failures:
+        print("Error responses:", file=sys.stderr)
+        for failure in response_failures:
+            print(f"  {failure}", file=sys.stderr)
 
 
 def main() -> int:
@@ -120,6 +125,7 @@ def main() -> int:
                 console_messages: list[str] = []
                 page_errors: list[str] = []
                 request_failures: list[str] = []
+                response_failures: list[str] = []
 
                 page.on(
                     "console",
@@ -133,6 +139,12 @@ def main() -> int:
                     lambda req: request_failures.append(
                         f"{req.url} -> {req.failure.error_text if req.failure else 'unknown'}"
                     ),
+                )
+                page.on(
+                    "response",
+                    lambda resp: response_failures.append(f"{resp.url} -> {resp.status}")
+                    if resp.status >= 400
+                    else None,
                 )
 
                 try:
@@ -149,7 +161,14 @@ def main() -> int:
                         page.wait_for_timeout(250)
                     if not ready:
                         failures.append(demo.name)
-                        _log_diagnostics(demo, page, console_messages, page_errors, request_failures)
+                        _log_diagnostics(
+                            demo,
+                            page,
+                            console_messages,
+                            page_errors,
+                            request_failures,
+                            response_failures,
+                        )
                 finally:
                     page.close()
             browser.close()
