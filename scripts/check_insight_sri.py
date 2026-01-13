@@ -19,7 +19,8 @@ from pathlib import Path
 DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
 SCRIPT_TAG_PATTERN = re.compile(
-    r"<script[^>]*src=['\"](?P<src>[^'\">]*insight\.bundle\.js(?:[?#][^'\">]+)?)['\"][^>]*>",
+    r"<script[^>]*src=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight\.bundle\.js(?:[?#][^'\" >]+)?)"
+    r"(?P=quote)[^>]*>",
     re.IGNORECASE | re.DOTALL,
 )
 INTEGRITY_PATTERN = re.compile(r"integrity=['\"]([^'\"]+)['\"]", re.IGNORECASE)
