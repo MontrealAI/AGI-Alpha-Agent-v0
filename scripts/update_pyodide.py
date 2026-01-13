@@ -12,23 +12,37 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Dict
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
-try:
-    import requests  # type: ignore
-except ImportError:  # pragma: no cover - handled at runtime
-    sys.stderr.write("Missing 'requests'. Install with 'pip install requests' or use requirements-dev.txt'.\n")
-    sys.exit(1)
+MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
+BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
 
 
 def fetch(url: str) -> bytes:
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
-    return resp.content
+    """Fetch remote bytes with retries using urllib."""
+
+    last_exc: Exception | None = None
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            request = Request(url, headers={"User-Agent": "alpha-factory-update-pyodide/1.0"})
+            with urlopen(request, timeout=60) as response:
+                return response.read()
+        except (HTTPError, URLError) as exc:
+            last_exc = exc
+            if attempt == MAX_ATTEMPTS:
+                break
+            delay = BACKOFF * (2 ** (attempt - 1))
+            print(f"Attempt {attempt} failed for {url}: {exc}, retrying in {delay}s...", file=sys.stderr)
+            time.sleep(delay)
+    raise RuntimeError(f"failed to fetch {url}: {last_exc}")
 
 
 def sha384_b64(data: bytes) -> str:
