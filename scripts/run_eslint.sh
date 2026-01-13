@@ -38,4 +38,9 @@ args=()
 for f in "$@"; do
     args+=("$(realpath --relative-to=. "$ROOT/$f")")
 done
-ESLINT_USE_FLAT_CONFIG=true npx eslint --no-warn-ignored --config eslint.config.js "${args[@]}"
+eslint_bin="$BROWSER_DIR/node_modules/.bin/eslint"
+if [[ ! -x "$eslint_bin" ]]; then
+    echo "error: ESLint is missing. Run npm ci in $BROWSER_DIR." >&2
+    exit 1
+fi
+ESLINT_USE_FLAT_CONFIG=true "$eslint_bin" --no-warn-ignored --config eslint.config.js "${args[@]}"

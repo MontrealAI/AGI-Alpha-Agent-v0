@@ -120,6 +120,8 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
     strategy:
       fail-fast: false
       matrix:
@@ -197,12 +199,10 @@ jobs:
         run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-      - name: Clean Node installs
+      - name: Clean Insight Browser install
         run: |
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
-          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
-          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
-          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf "$NPM_CONFIG_CACHE"
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
@@ -755,11 +755,13 @@ jobs:
       - name: Free disk space
         run: |
           set -euo pipefail
+          df -h
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc || true
           sudo rm -rf /usr/local/share/boost /usr/local/share/powershell || true
           sudo apt-get clean
           sudo docker system prune -af
           sudo docker builder prune -af
+          df -h
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -921,6 +923,14 @@ jobs:
             cat axe.json
             exit 1
           fi
+      - name: Reclaim disk before Docker build
+        run: |
+          set -euo pipefail
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf ~/.cache/ms-playwright || true
       - name: Build image
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
