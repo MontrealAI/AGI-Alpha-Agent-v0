@@ -7,6 +7,7 @@ import os
 import re
 import sys
 import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -35,11 +36,27 @@ DISCLAIMER_TEXT_PATTERNS = (
     "use at your own risk",
     "financial advice",
 )
-READY_CANDIDATES: tuple[tuple[str, str], ...] = (
-    ("main h1", "main h1"),
-    ("article h1", "article h1"),
-    ("#root", "#root"),
-    ("[data-testid=\"app\"]", "[data-testid=\"app\"]"),
+@dataclass(frozen=True)
+class ReadyCandidate:
+    """Describe a selector used to detect page readiness."""
+
+    label: str
+    selector: str
+    state: str = "visible"
+
+
+READY_CANDIDATES: tuple[ReadyCandidate, ...] = (
+    ReadyCandidate("main h1", "main h1", "visible"),
+    ReadyCandidate("article h1", "article h1", "visible"),
+    ReadyCandidate("#root", "#root", "visible"),
+    ReadyCandidate("[data-testid=\"app\"]", "[data-testid=\"app\"]", "visible"),
+    ReadyCandidate("#power-panel", "#power-panel", "attached"),
+    ReadyCandidate("#analytics-panel", "#analytics-panel", "attached"),
+    ReadyCandidate("#arena-panel", "#arena-panel", "attached"),
+    ReadyCandidate("#toolbar", "#toolbar", "attached"),
+    ReadyCandidate("#canvas", "#canvas", "attached"),
+    ReadyCandidate("#toast", "#toast", "attached"),
+    ReadyCandidate("canvas", "canvas", "attached"),
 )
 
 
@@ -105,13 +122,27 @@ def wait_for_disclaimer_accept(page: Page) -> None:
         accept_button.first.wait_for(state="hidden")
 
 
-def summarize_ready_candidates(page: Page, candidates: Iterable[tuple[str, str]]) -> list[str]:
-    """Return a summary of readiness selectors found on the page."""
+def summarize_ready_candidate_state(page: Page, candidates: Iterable[ReadyCandidate]) -> list[str]:
+    """Return selector counts for readiness candidates."""
     summary = []
-    for label, selector in candidates:
-        count = page.locator(selector).count()
-        summary.append(f"{label}={count}")
+    for candidate in candidates:
+        count = page.locator(candidate.selector).count()
+        summary.append(f"{candidate.label}={count}")
     return summary
+
+
+def wait_for_any_ready_candidate(page: Page, timeout_ms: int) -> tuple[str | None, float]:
+    """Wait for any readiness selector to appear, honoring priority."""
+    deadline = time.monotonic() + (timeout_ms / 1000)
+    while time.monotonic() < deadline:
+        for candidate in READY_CANDIDATES:
+            locator = page.locator(candidate.selector)
+            if locator.count() == 0:
+                continue
+            locator.first.wait_for(state=candidate.state, timeout=timeout_ms)
+            return candidate.label, deadline
+        page.wait_for_timeout(200)
+    return None, deadline
 
 
 def wait_for_page_ready(page: Page, url: str, timeout_ms: int) -> tuple[str, int | None]:
@@ -120,25 +151,20 @@ def wait_for_page_ready(page: Page, url: str, timeout_ms: int) -> tuple[str, int
     page.wait_for_load_state("domcontentloaded")
     wait_for_disclaimer_accept(page)
 
-    chosen_selector = None
-    for label, selector in READY_CANDIDATES:
-        if page.locator(selector).count() > 0:
-            chosen_selector = (label, selector)
-            break
-
-    if chosen_selector:
-        label, selector = chosen_selector
-        page.locator(selector).first.wait_for(state="visible")
-        return label, response.status if response else None
+    candidate_label, deadline = wait_for_any_ready_candidate(page, timeout_ms)
+    if candidate_label:
+        return candidate_label, response.status if response else None
 
     try:
-        page.wait_for_selector("body", state="visible")
+        remaining_ms = max(0, int((deadline - time.monotonic()) * 1000))
+        page.wait_for_selector("body", state="visible", timeout=remaining_ms)
         page.wait_for_function(
-            f"() => document.body && document.body.innerText.trim().length > {MIN_BODY_TEXT_LENGTH}"
+            f"() => document.body && document.body.innerText.trim().length > {MIN_BODY_TEXT_LENGTH}",
+            timeout=remaining_ms,
         )
         return f"body text > {MIN_BODY_TEXT_LENGTH}", response.status if response else None
     except PlaywrightError as exc:
-        summary = ", ".join(summarize_ready_candidates(page, READY_CANDIDATES))
+        summary = ", ".join(summarize_ready_candidate_state(page, READY_CANDIDATES))
         status_code = response.status if response else None
         message = (
             "No readiness selector found. "
