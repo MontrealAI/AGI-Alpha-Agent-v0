@@ -48,14 +48,12 @@ def check_directory(path: Path) -> int:
         return 1
 
     expected = _hash(bundle)
-    found_script = False
     errors = 0
     index_text = index_html.read_text(encoding="utf-8")
     index_matches = list(SCRIPT_TAG_PATTERN.finditer(index_text))
     if not index_matches:
         print(f"{index_html}: script tag for insight.bundle.js missing", file=sys.stderr)
         return 1
-    found_script = True
     for match in index_matches:
         sri = INTEGRITY_PATTERN.search(match.group(0))
         if not sri:
@@ -76,7 +74,6 @@ def check_directory(path: Path) -> int:
         matches = list(SCRIPT_TAG_PATTERN.finditer(text))
         if not matches:
             continue
-        found_script = True
         for match in matches:
             sri = INTEGRITY_PATTERN.search(match.group(0))
             if not sri:
