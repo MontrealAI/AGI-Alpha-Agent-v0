@@ -23,7 +23,9 @@ def main() -> int:
                 page = browser.new_page()
                 page.goto((demo / "index.html").resolve().as_uri())
                 page.wait_for_selector("body")
-                page.wait_for_selector("h1")
+                title = page.title().strip()
+                if not title:
+                    raise RuntimeError(f"Demo page missing title: {demo}")
                 page.close()
             browser.close()
         return 0
