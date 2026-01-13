@@ -5,7 +5,6 @@ ROOT="$(git rev-parse --show-toplevel)"
 BROWSER_DIR="$ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 LOCK_FILE="$BROWSER_DIR/package-lock.json"
 CHECK_FILE="$BROWSER_DIR/node_modules/.package_lock_checksum"
-NPM_CACHE="$BROWSER_DIR/.npm-cache"
 
 # Enforce the Node version declared in the repo root so installs behave the same
 # locally and in CI. The hook intentionally avoids fetching a new runtime to
@@ -19,33 +18,21 @@ if [[ -f "$ROOT/.nvmrc" ]]; then
     fi
 fi
 
-# Always reinstall dependencies for a clean tree
-chmod -R u+w "$BROWSER_DIR/node_modules" 2>/dev/null || true
-rm -rf "$BROWSER_DIR/node_modules"
-rm -rf "$NPM_CACHE"
-npm --prefix "$BROWSER_DIR" cache clean --force >/dev/null
-# Skip postinstall scripts (e.g., esbuild binary downloads) to keep lint-only
-# installs lightweight and resilient in CI environments. Use a private cache to
-# avoid cross-job corruption on shared runners. Retry once to tolerate transient
-# npm filesystem errors on shared CI hosts.
-attempt=1
-max_attempts=2
-while true; do
-    if NPM_CONFIG_CACHE="$NPM_CACHE" npm --prefix "$BROWSER_DIR" ci --ignore-scripts --no-progress >/dev/null; then
-        break
-    fi
-    if [[ "$attempt" -ge "$max_attempts" ]]; then
-        echo "error: npm ci failed after ${attempt} attempts." >&2
+if [[ ! -d "$BROWSER_DIR/node_modules" ]]; then
+    echo "error: Insight Browser dependencies missing. Run npm ci in $BROWSER_DIR." >&2
+    exit 1
+fi
+
+expected_checksum="$(sha256sum "$LOCK_FILE" | awk '{print $1}')"
+if [[ -f "$CHECK_FILE" ]]; then
+    current_checksum="$(<"$CHECK_FILE")"
+    if [[ "$current_checksum" != "$expected_checksum" ]]; then
+        echo "error: Insight Browser node_modules out of date. Run npm ci in $BROWSER_DIR." >&2
         exit 1
     fi
-    echo "warning: npm ci failed (attempt ${attempt}); retrying." >&2
-    attempt=$((attempt + 1))
-    chmod -R u+w "$BROWSER_DIR/node_modules" 2>/dev/null || true
-    rm -rf "$BROWSER_DIR/node_modules"
-    rm -rf "$NPM_CACHE"
-    npm --prefix "$BROWSER_DIR" cache clean --force >/dev/null
-done
-sha256sum "$LOCK_FILE" | awk '{print $1}' > "$CHECK_FILE"
+else
+    echo "$expected_checksum" > "$CHECK_FILE"
+fi
 cd "$BROWSER_DIR"
 args=()
 for f in "$@"; do
