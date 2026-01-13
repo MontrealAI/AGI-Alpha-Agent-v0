@@ -16,6 +16,9 @@ jobs:
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
       CI: 'true'
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
       # Keep the asset mirrors pinned to official hosts.
       # Optional environment variables for asset downloads. See
       # scripts/fetch_assets.py for details.
@@ -72,10 +75,18 @@ jobs:
           cache-dependency-path: |
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
             alpha_factory_v1/core/interface/web_client/package-lock.json
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - name: Install Insight Browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install Web client dependencies
-        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+        run: |
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes

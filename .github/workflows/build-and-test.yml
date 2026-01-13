@@ -32,6 +32,10 @@ jobs:
     # The workflow itself is dispatched manually so no additional
     # event check is required here.
     runs-on: ubuntu-latest
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/build-test
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     strategy:
       fail-fast: false
       matrix:
@@ -63,6 +67,11 @@ jobs:
             alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
             alpha_factory_v1/core/interface/web_client/package-lock.json
 
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
+
       - name: Cache pre-commit
         uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
         with:
@@ -72,7 +81,9 @@ jobs:
             ${{ runner.os }}-precommit-
 
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
 
       - name: Install pre-commit
         run: pip install pre-commit==4.2.0

@@ -12,23 +12,42 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Dict
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
-try:
-    import requests  # type: ignore
-except ImportError:  # pragma: no cover - handled at runtime
-    sys.stderr.write("Missing 'requests'. Install with 'pip install requests' or use requirements-dev.txt'.\n")
-    sys.exit(1)
+MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
+BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
+
+
+def _status_code(exc: Exception) -> int | None:
+    if isinstance(exc, HTTPError):
+        return exc.code
+    return None
 
 
 def fetch(url: str) -> bytes:
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
-    return resp.content
+    last_exc: Exception | None = None
+    request = Request(url, headers={"User-Agent": "alpha-factory-update-pyodide/1.0"})
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            with urlopen(request, timeout=60) as response:
+                return response.read()
+        except (HTTPError, URLError) as exc:
+            last_exc = exc
+            status = _status_code(exc)
+            if status in {401, 404}:
+                break
+            if attempt < MAX_ATTEMPTS:
+                delay = BACKOFF * (2 ** (attempt - 1))
+                time.sleep(delay)
+    raise RuntimeError(f"Failed to fetch {url}: {last_exc or 'unknown error'}")
 
 
 def sha384_b64(data: bytes) -> str:
@@ -42,7 +61,11 @@ def update_pyodide(version: str) -> None:
     fetch_assets = root / "fetch_assets.py"
     text = fetch_assets.read_text()
 
-    text = re.sub(r"DEFAULT_PYODIDE_BASE_URL = \"[^\"]+\"", f'DEFAULT_PYODIDE_BASE_URL = "{base_url}"', text)
+    text = re.sub(
+        r"DEFAULT_PYODIDE_BASE_URL = \"[^\"]+\"",
+        f'DEFAULT_PYODIDE_BASE_URL = "{base_url}"',
+        text,
+    )
     text = re.sub(r"# Updated to Pyodide [^\n]+", f"# Updated to Pyodide {version}", text)
 
     files = ["pyodide.js", "pyodide.asm.wasm"]

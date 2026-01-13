@@ -7,6 +7,7 @@ import os
 import sys
 import time
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
@@ -26,12 +27,14 @@ def _readiness_state(page) -> dict[str, object]:
         (selectors) => {
           const findMatch = selectors.find((sel) => document.querySelector(sel));
           const main = document.querySelector('main');
+          const mainHeading = main ? main.querySelector('h1') : null;
           const bodyText = document.body ? document.body.innerText.trim() : '';
           const mainText = main ? main.textContent.trim() : '';
           const bundle = document.querySelector('script[src*="insight.bundle.js"]');
           return {
             match: findMatch || null,
             hasMain: Boolean(main),
+            mainHeadingText: mainHeading ? mainHeading.textContent.trim() : '',
             bodyTextLen: bodyText.length,
             mainTextLen: mainText.length,
             hasBundle: Boolean(bundle),
@@ -52,8 +55,12 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     main_text_len = int(state.get("mainTextLen") or 0)
     if has_main and body_text_len > 40:
         return True, "main+body-text"
-    if demo.name == "alpha_agi_insight_v1" and has_main and main_text_len > 0 and state.get("hasBundle"):
-        return True, "insight bundle+main"
+    if demo.name == "alpha_agi_insight_v1" and has_main and state.get("hasBundle"):
+        heading = str(state.get("mainHeadingText") or "")
+        title = str(state.get("title") or "")
+        if main_text_len > 0 or body_text_len > 0:
+            if heading or "Insight" in title:
+                return True, "insight bundle+main"
     return False, ""
 
 
@@ -86,6 +93,8 @@ def _log_diagnostics(
     console_messages: list[str],
     page_errors: list[str],
     request_failures: list[str],
+    response_failures: list[str],
+    missing_assets: list[str],
 ) -> None:
     selector_status = _selector_status(page)
     print(
@@ -107,6 +116,14 @@ def _log_diagnostics(
         print("Failed requests:", file=sys.stderr)
         for failure in request_failures:
             print(f"  {failure}", file=sys.stderr)
+    if response_failures:
+        print("Error responses:", file=sys.stderr)
+        for failure in response_failures:
+            print(f"  {failure}", file=sys.stderr)
+    if missing_assets:
+        print("Missing local assets:", file=sys.stderr)
+        for failure in missing_assets:
+            print(f"  {failure}", file=sys.stderr)
 
 
 def main() -> int:
@@ -120,23 +137,39 @@ def main() -> int:
                 console_messages: list[str] = []
                 page_errors: list[str] = []
                 request_failures: list[str] = []
+                response_failures: list[str] = []
+                missing_assets: list[str] = []
 
-                page.on(
-                    "console",
-                    lambda msg: console_messages.append(f"[{msg.type}] {msg.text}")
-                    if msg.type in {"error", "warning"}
-                    else None,
-                )
-                page.on("pageerror", lambda exc: page_errors.append(str(exc)))
-                page.on(
-                    "requestfailed",
-                    lambda req: request_failures.append(
-                        f"{req.url} -> {req.failure.error_text if req.failure else 'unknown'}"
-                    ),
-                )
+                def _record_console(msg) -> None:
+                    if msg.type in {"error", "warning"}:
+                        console_messages.append(f"[{msg.type}] {msg.text}")
+
+                def _record_page_error(exc: Exception) -> None:
+                    page_errors.append(str(exc))
+
+                def _record_request_failure(req) -> None:
+                    failure = req.failure.error_text if req.failure else "unknown"
+                    request_failures.append(f"{req.url} -> {failure}")
+
+                def _record_response(response) -> None:
+                    if response.status >= 400:
+                        response_failures.append(f"{response.url} -> {response.status}")
+                    if response.url.startswith("file://"):
+                        path = Path(unquote(urlparse(response.url).path))
+                        if not path.exists():
+                            missing_assets.append(f"{response.url} -> missing")
+
+                page.on("console", _record_console)
+                page.on("pageerror", _record_page_error)
+                page.on("requestfailed", _record_request_failure)
+                page.on("response", _record_response)
 
                 try:
-                    page.goto((demo / "index.html").resolve().as_uri(), wait_until="load", timeout=DEFAULT_TIMEOUT_MS)
+                    page.goto(
+                        (demo / "index.html").resolve().as_uri(),
+                        wait_until="load",
+                        timeout=DEFAULT_TIMEOUT_MS,
+                    )
                     page.wait_for_selector("body", timeout=DEFAULT_TIMEOUT_MS)
                     deadline = time.monotonic() + DEFAULT_TIMEOUT_MS / 1000
                     ready = False
@@ -149,7 +182,15 @@ def main() -> int:
                         page.wait_for_timeout(250)
                     if not ready:
                         failures.append(demo.name)
-                        _log_diagnostics(demo, page, console_messages, page_errors, request_failures)
+                        _log_diagnostics(
+                            demo,
+                            page,
+                            console_messages,
+                            page_errors,
+                            request_failures,
+                            response_failures,
+                            missing_assets,
+                        )
                 finally:
                     page.close()
             browser.close()

@@ -16,6 +16,9 @@ jobs:
     env:
       BROWSER_DIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       FETCH_ASSETS_SKIP_LLM: "1"
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-bundle
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
 
     steps:
       - name: Check out repository
@@ -25,9 +28,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: 'npm'
+          cache-dependency-path: ${{ env.BROWSER_DIR }}/package-lock.json
+
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          rm -rf "${{ env.BROWSER_DIR }}/node_modules"
+          npm ci
         working-directory: ${{ env.BROWSER_DIR }}
 
       - name: Build insight bundle
