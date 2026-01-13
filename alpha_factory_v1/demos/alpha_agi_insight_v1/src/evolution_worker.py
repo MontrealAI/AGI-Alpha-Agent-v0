@@ -63,7 +63,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
 app.router.lifespan_context = lifespan
 
 
-@app.post("/mutate", response_model=MutationResponse)  # type: ignore[misc]
+@app.post("/mutate", response_model=MutationResponse)  # type: ignore[untyped-decorator]
 async def mutate(
     tar: UploadFile | None = File(None),
     repo_url: str | None = Form(None),
@@ -95,7 +95,7 @@ async def mutate(
         shutil.rmtree(tmp_path, ignore_errors=True)
 
 
-@app.get("/healthz")  # type: ignore[misc]
+@app.get("/healthz")  # type: ignore[untyped-decorator]
 async def healthz() -> str:
     """Liveness probe."""
 
