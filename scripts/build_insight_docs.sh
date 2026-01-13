@@ -50,6 +50,8 @@ fi
 rm -rf "$DOCS_DIR"
 mkdir -p "$DOCS_DIR"
 unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
+# Ensure the Insight bundle tag and SRI are present in the generated HTML.
+python scripts/update_insight_sri.py "$DOCS_DIR"
 # Copy the quickstart guide from the build output so the docs include it
 PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
 if [[ -f "$PDF_SRC" ]]; then
@@ -137,6 +139,5 @@ if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
     echo "ERROR: Workbox hash verification failed for generated site" >&2
     exit 1
 fi
-
 
 
