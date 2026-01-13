@@ -215,7 +215,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/insight-browser
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
@@ -223,12 +225,18 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - name: Clean Insight Browser install
         run: |
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
           rm -rf "$NPM_CONFIG_CACHE"
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Lint insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run lint
 
@@ -243,6 +251,9 @@ jobs:
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/tests
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     strategy:
       fail-fast: false
       matrix:
@@ -298,6 +309,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - uses: ./.github/actions/setup-env
         with:
           sandbox-image: ${{ env.SANDBOX_IMAGE }}
@@ -305,7 +320,9 @@ jobs:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - uses: ./.github/actions/setup-insight-assets
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       # asset verification handled by setup-insight-assets
       - name: Update browserslist database (Insight demo)
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
@@ -320,7 +337,9 @@ jobs:
           CI: 'true'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
-        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+        run: |
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
@@ -395,6 +414,10 @@ jobs:
     needs: owner-check
     runs-on: windows-latest
     timeout-minutes: 30
+    env:
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/windows-smoke
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -437,6 +460,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - name: Show tool versions
         shell: bash
         run: |
@@ -459,6 +486,7 @@ jobs:
         shell: bash
         run: |
           set -e
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
             npx update-browserslist-db --update-db --yes)
@@ -472,6 +500,10 @@ jobs:
     needs: owner-check
     runs-on: macos-latest
     timeout-minutes: 30
+    env:
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/macos-smoke
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -516,6 +548,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - name: Show tool versions
         shell: bash
         run: |
@@ -538,6 +574,7 @@ jobs:
         shell: bash
         run: |
           set -e
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           (cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 && \
             npx update-browserslist-db --update-db --yes)
@@ -554,6 +591,9 @@ jobs:
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/docs-check
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -603,13 +643,19 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - uses: ./.github/actions/setup-env
         with:
           sandbox-image: ${{ env.SANDBOX_IMAGE }}
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       # asset fetching handled by setup-insight-assets
@@ -637,6 +683,9 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache/docs-build
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -679,6 +728,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Configure npm
+        run: |
+          npm config set fund false
+          npm config set audit false
       - uses: ./.github/actions/setup-env
         with:
           sandbox-image: ${{ env.SANDBOX_IMAGE }}
@@ -691,9 +744,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-docs.lock
       - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install web client dependencies
-        run: npm ci --prefix alpha_factory_v1/core/interface/web_client
+        run: |
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Build web client
         run: make build_web
       - name: Update browserslist database (Insight demo)
