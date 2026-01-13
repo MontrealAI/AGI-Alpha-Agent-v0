@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import logging
 import asyncio
+import os
 from typing import Sequence
 
 from .governance_sim import run_sim
@@ -77,7 +78,8 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO)
     args = _parse_args(argv)
-    if not HAS_OAI:
+    disable_agents = os.getenv("OPENAI_AGENTS_DISABLE", "").lower() in {"1", "true", "yes"}
+    if not HAS_OAI or disable_agents:
         print("openai-agents package is missing. Running offline demo...")
         coop = run_sim(args.agents, args.rounds, args.delta, args.stake)
         print(f"mean cooperation \u2248 {coop:.3f}")
@@ -89,6 +91,7 @@ def main(argv: list[str] | None = None) -> None:
         runtime = AgentRuntime(api_key=None)
     agent = GovernanceSimAgent()
     runtime.register(agent)
+    logger.info("Registered GovernanceSimAgent with runtime")
     if args.enable_adk:
         try:
             from alpha_factory_v1.backend.adk_bridge import auto_register, maybe_launch
@@ -97,8 +100,13 @@ def main(argv: list[str] | None = None) -> None:
             maybe_launch()
         except Exception as exc:  # pragma: no cover - ADK optional
             logger.warning(f"ADK bridge unavailable: {exc}")
-    logger.info("Registered GovernanceSimAgent with runtime")
-    runtime.run()
+    if hasattr(runtime, "run"):
+        runtime.run()
+        return
+    if hasattr(runtime, "serve"):
+        runtime.serve()
+        return
+    logger.info("AgentRuntime run loop unavailable; exiting after registration")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -58,8 +58,6 @@ def _inspect_module(mod: ModuleType) -> Optional[AgentMetadata]:
 
 
 def discover_local() -> None:
-    if _DISCOVERY_DONE:
-        return
     pkg_root = Path(__file__).parent
     prefix = f"{__name__.rsplit('.', 1)[0]}."
     for _, mod_name, is_pkg in pkgutil.iter_modules([str(pkg_root)]):

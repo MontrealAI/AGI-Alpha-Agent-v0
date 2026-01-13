@@ -33,10 +33,15 @@ function applyCsp(html, base) {
         hashes.push(`'sha384-${h}'`);
     }
     const csp = `${base}; script-src 'self' 'wasm-unsafe-eval' ${hashes.join(' ')}; style-src 'self' 'unsafe-inline'`;
-    return html.replace(
-        /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/,
-        `<meta http-equiv="Content-Security-Policy" content="${csp}" />`,
-    );
+    const metaTag = `<meta http-equiv="Content-Security-Policy" content="${csp}" />`;
+    const metaRegex = /<meta[^>]*http-equiv="Content-Security-Policy"[^>]*>/;
+    if (metaRegex.test(html)) {
+        return html.replace(metaRegex, metaTag);
+    }
+    if (html.includes("</head>")) {
+        return html.replace("</head>", `  ${metaTag}\n</head>`);
+    }
+    return `${metaTag}\n${html}`;
 }
 
 function ensureDevPackages() {

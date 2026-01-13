@@ -15,9 +15,6 @@ pytest.importorskip("openai_agents", minversion="0.0.17")
 
 
 def _bridge_command() -> list[str]:
-    command = shutil.which("governance-bridge")
-    if command:
-        return [command]
     return [sys.executable, "-m", "alpha_factory_v1.demos.solving_agi_governance.openai_agents_bridge"]
 
 
@@ -49,7 +46,7 @@ class AgentException(Exception):
         env=env,
     )
     try:
-        time.sleep(2)
+        time.sleep(20)
         proc.terminate()
         out, _ = proc.communicate(timeout=5)
     finally:

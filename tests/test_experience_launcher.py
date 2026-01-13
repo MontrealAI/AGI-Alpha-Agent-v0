@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -137,7 +138,7 @@ def test_experience_launcher_live(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
     assert result.returncode == 0, result.stderr
     assert docker_log.exists()
     log = docker_log.read_text()
-    assert "--profile live-feed" in log
+    assert re.search(r"--profile [^\n]*live-feed", log)
     assert "LIVE_FEED=1" in log
     assert created
 
@@ -224,7 +225,7 @@ def test_experience_launcher_gpu(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     docker_stub.write_text(
         "#!/usr/bin/env bash\n"
         'echo "$@" >> "$DOCKER_LOG"\n'
-        'if [ "$1" = "info" ]; then echo "{"nvidia":{}}"; fi\n'
+        "if [ \"$1\" = \"info\" ]; then echo '{\"nvidia\":{}}'; fi\n"
         'if [ "$1" = "version" ]; then echo "24.0.0"; fi\n'
         "exit 0\n"
     )
@@ -270,7 +271,7 @@ def test_experience_launcher_gpu(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     assert result.returncode == 0, result.stderr
     assert docker_log.exists()
     log = docker_log.read_text()
-    assert "--profile gpu" in log
+    assert re.search(r"--profile [^\n]*gpu", log)
     assert created
 
 

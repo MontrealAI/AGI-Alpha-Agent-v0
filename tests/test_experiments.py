@@ -19,8 +19,14 @@ def test_concurrent_experiments(tmp_path, monkeypatch) -> None:
     with mock.patch.object(orchestrator.Orchestrator, "_init_agents", lambda self: []):
         orch = orchestrator.Orchestrator(settings)
 
-    monkeypatch.setattr("src.evaluators.novelty.embed", lambda _t: np.zeros((1, 1), dtype="float32"))
-    monkeypatch.setattr("src.simulation.surrogate_fitness.aggregate", lambda vals, **kw: [0.0 for _ in vals])
+    monkeypatch.setattr(
+        "alpha_factory_v1.core.evaluators.novelty.embed",
+        lambda _t: np.zeros((1, 1), dtype="float32"),
+    )
+    monkeypatch.setattr(
+        "alpha_factory_v1.core.simulation.surrogate_fitness.aggregate",
+        lambda vals, **kw: [0.0 for _ in vals],
+    )
     times = []
 
     def dummy_run(*_a, **_kw):

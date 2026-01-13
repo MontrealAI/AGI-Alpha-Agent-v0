@@ -142,7 +142,10 @@ def apply_diff(diff_text: str, repo_dir: str) -> tuple[bool, str]:
                 output,
             )
             if "Only garbage was found in the patch input" in output:
-                return _apply_minimal_diff(diff_text, repo_dir)
+                success, minimal_output = _apply_minimal_diff(diff_text, repo_dir)
+                if success:
+                    return True, minimal_output
+                return False, output or minimal_output
             return False, output
         return True, output
     except Exception as e:

@@ -120,8 +120,6 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
     strategy:
       fail-fast: false
       matrix:
@@ -163,23 +161,9 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
 
-      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
-      - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles(env.NODE_LOCKFILES) }}-${{ hashFiles('.nvmrc') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-${{ hashFiles('.nvmrc') }}-
-            playwright-${{ runner.os }}-
       - name: Show tool versions
         run: |
           python --version
-          node --version
           docker --version
           docker compose version
           git --version
@@ -199,12 +183,6 @@ jobs:
         run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-      - name: Clean Insight Browser install
-        run: |
-          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
-          rm -rf "$NPM_CONFIG_CACHE"
-      - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
         run: |
           from_ref="${{ github.event.before }}"
@@ -216,6 +194,7 @@ jobs:
           fi
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+          SKIP: eslint-insight-browser
       - name: Fail on uncommitted changes
         run: |
           git --no-pager diff
@@ -228,6 +207,30 @@ jobs:
       - name: Mypy type-check
         # Use configuration defaults to restrict analysis to the src package
         run: mypy --config-file mypy.ini
+
+  insight-eslint:
+    name: "🧪 Insight Browser ESLint"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Clean Insight Browser install
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf "$NPM_CONFIG_CACHE"
+      - name: Install insight browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Lint insight browser
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run lint
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
@@ -966,7 +969,7 @@ jobs:
   deploy:
     name: "📦 Deploy"
     if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
-    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -1048,7 +1051,7 @@ jobs:
   branch-protection:
     name: "🔒 Branch protection guardrails"
     if: ${{ needs.owner-check.result == 'success' && (github.ref == 'refs/heads/main' || github.event_name == 'merge_group' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')) }}
-    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
