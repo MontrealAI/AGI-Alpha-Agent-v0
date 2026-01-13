@@ -225,7 +225,7 @@ def test_experience_launcher_gpu(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     docker_stub.write_text(
         "#!/usr/bin/env bash\n"
         'echo "$@" >> "$DOCKER_LOG"\n'
-        "if [ \"$1\" = \"info\" ]; then echo '{\"nvidia\":{}}'; fi\n"
+        'if [ "$1" = "info" ]; then echo \'{"nvidia":{}}\'; fi\n'
         'if [ "$1" = "version" ]; then echo "24.0.0"; fi\n'
         "exit 0\n"
     )

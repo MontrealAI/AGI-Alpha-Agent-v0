@@ -1,14 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
+import importlib.util
 import os
-import warnings
-import pytest
+import shutil
+import signal
+import socket
 import sys
 import types
-import importlib.util
-import socket
-import shutil
+import warnings
 from pathlib import Path
 from typing import Any
+
+import pytest
 
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
@@ -47,6 +49,7 @@ pytest.importorskip("numpy", reason="numpy required")
 
 _HAS_TORCH = importlib.util.find_spec("torch") is not None
 _RUN_AIGA = os.getenv("ENABLE_AIGA_TESTS") == "1"
+_DEFAULT_TIMEOUT_SEC = int(os.getenv("PYTEST_TIMEOUT_SEC", "600"))
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -54,6 +57,43 @@ def pytest_configure(config: pytest.Config) -> None:
         "markers",
         "requires_torch: mark test that depends on the torch package",
     )
+    config.addinivalue_line(
+        "markers",
+        "timeout(seconds): override the default per-test timeout in seconds",
+    )
+
+
+def _resolve_timeout(item: pytest.Item) -> int:
+    marker = item.get_closest_marker("timeout")
+    if marker and marker.args:
+        try:
+            return int(marker.args[0])
+        except (TypeError, ValueError):
+            return _DEFAULT_TIMEOUT_SEC
+    return _DEFAULT_TIMEOUT_SEC
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_call(item: pytest.Item) -> Any:
+    if not hasattr(signal, "SIGALRM"):
+        yield
+        return
+    timeout_sec = _resolve_timeout(item)
+    if timeout_sec <= 0:
+        yield
+        return
+
+    def _handler(signum: int, frame: object | None) -> None:
+        raise TimeoutError(f"Test exceeded timeout of {timeout_sec} seconds")
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+    signal.signal(signal.SIGALRM, _handler)
+    signal.setitimer(signal.ITIMER_REAL, timeout_sec)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
 
 
 def pytest_runtest_setup(item: pytest.Item) -> None:

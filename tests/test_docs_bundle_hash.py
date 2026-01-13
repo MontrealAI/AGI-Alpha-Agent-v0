@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Verify SRI for insight.bundle.js in the docs build."""
+"""Verify SRI for the Insight bundle in the docs build."""
 from __future__ import annotations
 
 import base64
@@ -18,12 +18,16 @@ def _sha384(path: Path) -> str:
 
 
 def test_docs_bundle_integrity() -> None:
-    bundle = DOCS_DIR / "insight.bundle.js"
-    if not bundle.is_file():
-        pytest.skip("insight.bundle.js missing")
     html = (DOCS_DIR / "index.html").read_text()
-    match = re.search(r"<script[^>]*src=['\"]insight.bundle.js['\"][^>]*>", html)
-    assert match, "insight.bundle.js script tag missing"
+    match = re.search(
+        r"<script[^>]*src=['\"]([^'\"]*insight[\w.-]*\.bundle\.js(?:[?#][^'\"]+)?)['\"][^>]*>",
+        html,
+    )
+    assert match, "insight bundle script tag missing"
+    src = match.group(1).split("?", 1)[0].split("#", 1)[0]
+    bundle = (DOCS_DIR / src.lstrip("./")).resolve()
+    if not bundle.is_file():
+        pytest.skip("insight bundle missing")
     tag = match.group(0)
     integrity = re.search(r"integrity=['\"]([^'\"]+)['\"]", tag)
     assert integrity, "integrity attribute missing"
