@@ -14,7 +14,7 @@ import shutil
 import tarfile
 import tempfile
 from pathlib import Path
-from typing import List
+from typing import Any, Callable, List, cast
 from collections.abc import AsyncGenerator
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -48,6 +48,10 @@ STORAGE_PATH = Path(os.getenv("STORAGE_PATH", "/tmp/evolution"))
 
 app = FastAPI(title="Evolution Worker")
 
+RouteDecorator = Callable[..., Callable[[Callable[..., Any]], Callable[..., Any]]]
+post = cast(RouteDecorator, app.post)
+get = cast(RouteDecorator, app.get)
+
 
 class MutationResponse(BaseModel):  # type: ignore[misc]
     child: List[float]
@@ -63,7 +67,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
 app.router.lifespan_context = lifespan
 
 
-@app.post("/mutate", response_model=MutationResponse)  # type: ignore[untyped-decorator]
+@post("/mutate", response_model=MutationResponse)
 async def mutate(
     tar: UploadFile | None = File(None),
     repo_url: str | None = Form(None),
@@ -95,7 +99,7 @@ async def mutate(
         shutil.rmtree(tmp_path, ignore_errors=True)
 
 
-@app.get("/healthz")  # type: ignore[untyped-decorator]
+@get("/healthz")
 async def healthz() -> str:
     """Liveness probe."""
 
