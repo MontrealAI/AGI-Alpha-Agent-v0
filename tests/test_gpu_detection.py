@@ -7,9 +7,7 @@ from pathlib import Path
 import pytest
 
 LLM = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/utils/llm.ts")
-TS_NODE_LOADER = Path(
-    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/ts-node/esm.mjs"
-)
+TS_NODE_LOADER = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/ts-node/esm.mjs")
 NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 
 
