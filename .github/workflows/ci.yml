@@ -734,6 +734,13 @@ jobs:
         run: npx playwright install
       - name: Verify demo pages
         run: python scripts/verify_demo_pages.py
+      - name: Upload demo page artifacts
+        if: always()
+        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: demo-page-debug
+          path: artifacts/demo-page-debug
+          if-no-files-found: ignore
       - name: Verify Insight PWA offline
         run: |
           python -m http.server --directory site 8000 &
