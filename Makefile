@@ -1,6 +1,6 @@
 .PHONY: build_web demo-setup demo-run compose-up loadtest \
         gallery-build gallery-open subdir-gallery-open gallery-deploy demo-open \
-        proto proto-verify benchmark
+        insight-sri-refresh proto proto-verify benchmark
 
 build_web:
 	npm ci --prefix alpha_factory_v1/core/interface/web_client
@@ -56,3 +56,6 @@ gallery-deploy:
 
 demo-open:
 	bash scripts/open_demo.sh $(DEMO)
+
+insight-sri-refresh:
+	bash scripts/refresh_insight_sri.sh

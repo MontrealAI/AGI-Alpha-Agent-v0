@@ -120,6 +120,8 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache
     strategy:
       fail-fast: false
       matrix:
@@ -203,6 +205,7 @@ jobs:
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf .npm-cache
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
@@ -633,6 +636,7 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -686,6 +690,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-docs.lock
+      - name: Clean Node installs
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf .npm-cache
       - name: Install insight browser dependencies
         run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Install web client dependencies
@@ -743,6 +754,8 @@ jobs:
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache
     permissions:
       # `contents` enables checkout, `packages` allows GHCR pushes, and `id-token`
       # is required for keyless cosign signatures.
