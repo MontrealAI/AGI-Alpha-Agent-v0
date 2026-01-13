@@ -32,9 +32,11 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 try:
-    import requests
+    import requests as _requests
 except ModuleNotFoundError:
-    requests: Any | None = None
+    _requests = None
+
+requests: Any | None = _requests
 
 
 # Base URL for the GPT-2 small weights
