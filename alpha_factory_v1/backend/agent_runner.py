@@ -243,6 +243,7 @@ async def regression_guard(
     *,
     threshold: float | None = None,
     window: int | None = None,
+    interval: float | None = None,
 ) -> None:
     """Pause evolution when scores regress consistently.
 
@@ -262,8 +263,9 @@ async def regression_guard(
     win = int(_env_float("ALPHA_REGRESSION_WINDOW", float(window or 3)))
     history: deque[float] = deque(maxlen=win)
     baseline: float | None = None
+    sleep_interval = _env_float("ALPHA_REGRESSION_INTERVAL", interval or 1.0)
     while True:
-        await asyncio.sleep(1)
+        await asyncio.sleep(sleep_interval)
         try:
             sample = metrics.dgm_best_score.collect()[0].samples[0]
             score = float(sample.value)

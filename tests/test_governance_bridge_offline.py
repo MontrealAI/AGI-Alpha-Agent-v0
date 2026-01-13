@@ -2,6 +2,7 @@
 """Offline mode test for the governance bridge."""
 
 import builtins
+import os
 import subprocess
 import sys
 
@@ -16,6 +17,8 @@ def test_governance_bridge_offline(monkeypatch):
 
     monkeypatch.setattr(builtins, "__import__", fake_import)
 
+    env = os.environ.copy()
+    env["OPENAI_AGENTS_DISABLE"] = "1"
     result = subprocess.run(
         [
             sys.executable,
@@ -26,6 +29,7 @@ def test_governance_bridge_offline(monkeypatch):
             "-r",
             "20",
         ],
+        env=env,
         capture_output=True,
         text=True,
     )

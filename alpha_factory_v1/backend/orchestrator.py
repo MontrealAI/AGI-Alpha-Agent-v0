@@ -16,6 +16,7 @@ from alpha_factory_v1.utils.env import _env_int
 from .agent_scheduler import AgentScheduler
 from .orchestrator_base import BaseOrchestrator
 from .agent_manager import AgentManager
+from .agent_runner import regression_guard  # noqa: F401
 from .telemetry import MET_LAT, MET_ERR, MET_UP, tracer  # noqa: F401
 from .services import APIServer, KafkaService, MetricsExporter
 from .api_server import build_rest as _build_rest

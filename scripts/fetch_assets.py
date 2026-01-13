@@ -26,7 +26,8 @@ import sys
 import re
 import time
 from urllib.error import HTTPError
-from urllib.request import Request, urlopen
+
+import requests
 
 
 # Base URL for the GPT-2 small weights
@@ -109,15 +110,9 @@ def _response_url(exc: Exception) -> str | None:
 def download(cid: str, path: Path, label: str | None = None) -> None:
     url = cid
     path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        request = Request(url)
-        with urlopen(request, timeout=60) as resp:
-            status = getattr(resp, "status", getattr(resp, "code", None))
-            if status and status >= 400:
-                raise HTTPError(url, status, "HTTP error", hdrs=None, fp=None)
-            data = resp.read()
-    except Exception:
-        raise
+    response = requests.get(url, timeout=60)
+    response.raise_for_status()
+    data = response.content
     path.write_bytes(data)
     key = label or path.name
     expected = CHECKSUMS.get(key) or CHECKSUMS.get(path.name)

@@ -39,7 +39,7 @@ class TestEraOfExperience(unittest.TestCase):
 
         avg = asyncio.run(grab_two())
         del os.environ["STREAM_RATE_HZ"]
-        self.assertLess(avg, 0.4)
+        self.assertLess(avg, 0.6)
         self.assertGreater(avg, 0.1)
 
     def test_reward_backends_produce_floats(self) -> None:

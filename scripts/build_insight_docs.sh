@@ -55,6 +55,9 @@ PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
 if [[ -f "$PDF_SRC" ]]; then
     cp -a "$PDF_SRC" "$DOCS_DIR/"
 fi
+# Ensure the bundle script tag and CSP include the correct hashes after extraction
+python scripts/ensure_insight_sri.py "$DOCS_DIR"
+python scripts/ensure_insight_csp.py "$DOCS_DIR"
 # Ensure the service worker and PWA files exist in the docs directory
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_DIR" || true
@@ -137,6 +140,4 @@ if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
     echo "ERROR: Workbox hash verification failed for generated site" >&2
     exit 1
 fi
-
-
 

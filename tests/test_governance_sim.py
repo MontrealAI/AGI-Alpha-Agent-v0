@@ -37,10 +37,17 @@ class TestGovernanceSim(unittest.TestCase):
 
     def test_summary_auth_error(self) -> None:
         import openai
+        import httpx
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-test"}):
             with patch("openai.OpenAI") as mock_client:
-                mock_client.return_value.chat.completions.create.side_effect = openai.AuthenticationError("bad key")
+                request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+                response = httpx.Response(401, request=request)
+                mock_client.return_value.chat.completions.create.side_effect = openai.AuthenticationError(
+                    "bad key",
+                    response=response,
+                    body=None,
+                )
                 text = summarise_with_agent(
                     0.5,
                     agents=2,
@@ -53,10 +60,15 @@ class TestGovernanceSim(unittest.TestCase):
 
     def test_summary_api_connection_error(self) -> None:
         import openai
+        import httpx
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-test"}):
             with patch("openai.OpenAI") as mock_client:
-                mock_client.return_value.chat.completions.create.side_effect = openai.APIConnectionError("fail")
+                request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+                mock_client.return_value.chat.completions.create.side_effect = openai.APIConnectionError(
+                    message="fail",
+                    request=request,
+                )
                 text = summarise_with_agent(
                     0.5,
                     agents=2,
@@ -69,10 +81,17 @@ class TestGovernanceSim(unittest.TestCase):
 
     def test_summary_rate_limit_error(self) -> None:
         import openai
+        import httpx
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-test"}):
             with patch("openai.OpenAI") as mock_client:
-                mock_client.return_value.chat.completions.create.side_effect = openai.RateLimitError("limit")
+                request = httpx.Request("POST", "https://api.openai.com/v1/chat/completions")
+                response = httpx.Response(429, request=request)
+                mock_client.return_value.chat.completions.create.side_effect = openai.RateLimitError(
+                    "limit",
+                    response=response,
+                    body=None,
+                )
                 text = summarise_with_agent(
                     0.5,
                     agents=2,
