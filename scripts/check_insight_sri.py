@@ -33,28 +33,45 @@ def _hash(path: Path) -> str:
 
 def check_directory(path: Path) -> int:
     bundle = path / "insight.bundle.js"
-    html = path / "index.html"
-    if not bundle.is_file() or not html.is_file():
-        print(f"{path}: insight bundle or index.html missing", file=sys.stderr)
+    if not bundle.is_file():
+        print(f"{path}: insight bundle missing", file=sys.stderr)
         return 1
 
-    text = html.read_text(encoding="utf-8")
-    match = SCRIPT_TAG_PATTERN.search(text)
-    if not match:
-        print(f"{path}: script tag for insight.bundle.js missing", file=sys.stderr)
-        return 1
-
-    sri = INTEGRITY_PATTERN.search(match.group(0))
-    if not sri:
-        print(f"{path}: integrity attribute missing", file=sys.stderr)
+    html_files = sorted(p for p in path.rglob("*.html") if p.is_file())
+    if not html_files:
+        print(f"{path}: no HTML files found to verify", file=sys.stderr)
         return 1
 
     expected = _hash(bundle)
-    if sri.group(1) != expected:
+    found_script = False
+    errors = 0
+    for html in html_files:
+        text = html.read_text(encoding="utf-8")
+        matches = list(SCRIPT_TAG_PATTERN.finditer(text))
+        if not matches:
+            continue
+        found_script = True
+        for match in matches:
+            sri = INTEGRITY_PATTERN.search(match.group(0))
+            if not sri:
+                print(f"{html}: integrity attribute missing", file=sys.stderr)
+                errors += 1
+                continue
+            if sri.group(1) != expected:
+                print(
+                    f"{html}: SRI mismatch: {sri.group(1)} != {expected}",
+                    file=sys.stderr,
+                )
+                errors += 1
+
+    if not found_script:
+        scanned = ", ".join(str(p.relative_to(path)) for p in html_files)
         print(
-            f"{path}: SRI mismatch: {sri.group(1)} != {expected}",
+            f"{path}: script tag for insight.bundle.js missing in [{scanned}]",
             file=sys.stderr,
         )
+        return 1
+    if errors:
         return 1
 
     print(f"{path}: insight bundle integrity verified")

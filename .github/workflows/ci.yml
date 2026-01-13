@@ -921,6 +921,14 @@ jobs:
             cat axe.json
             exit 1
           fi
+      - name: Reclaim disk before Docker build
+        run: |
+          set -euo pipefail
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf ~/.cache/ms-playwright || true
       - name: Build image
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
