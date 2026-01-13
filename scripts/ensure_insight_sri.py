@@ -66,6 +66,7 @@ def _resolve_bundle(directory: Path, html: str) -> Path:
 
 def ensure_sri(directory: Path) -> bool:
     """Return True if the HTML was updated with the correct SRI."""
+    directory = directory.resolve()
     index_html = directory / "index.html"
     if not index_html.is_file():
         raise FileNotFoundError("index.html missing")
