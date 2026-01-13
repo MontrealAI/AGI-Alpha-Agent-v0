@@ -1,0 +1,44 @@
+CI failures for PR #4257 (run: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707)
+
+Notes on log access:
+- Attempted to fetch job logs via GitHub API (e.g., https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/actions/jobs/<job_id>/logs).
+- GitHub API returned 403 "Must have admin rights to Repository." so detailed step logs are not accessible in this environment.
+
+Failing jobs listed in the run:
+1) 🧹 Ruff + 🏷️ Mypy (3.11)
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536489
+   - Failed step (from job metadata): "Run pre-commit checks"
+   - Command (from workflow): pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}" (fallback: pre-commit run --all-files)
+   - Error details: unavailable due to log access restriction (403).
+
+2) ✅ Pytest (3.11)
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536540
+   - Failing step: "Run tests with coverage" (job metadata shows step did not complete)
+   - Command (from workflow):
+     pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml
+   - Error details: unavailable due to log access restriction (403).
+
+3) ✅ Pytest (3.12)
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536504
+   - Failing step: "Run tests with coverage" (job metadata shows step did not complete)
+   - Command (from workflow):
+     pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml
+   - Error details: unavailable due to log access restriction (403).
+
+4) 📜 MkDocs
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536520
+   - Failed step: "Build documentation"
+   - Command (from workflow): mkdocs build --strict
+   - Error details: unavailable due to log access restriction (403).
+
+5) 📚 Docs Build
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536517
+   - Failed step: "Build gallery site"
+   - Command (from workflow): ./scripts/build_gallery_site.sh
+   - Error details: unavailable due to log access restriction (403).
+
+6) 🐳 Docker build
+   - Job URL: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/20937804707/job/60164536505
+   - Failed step: "Build image"
+   - Command (from workflow): docker build -t "$DOCKER_IMAGE:ci" ... (see .github/workflows/ci.yml)
+   - Error details: unavailable due to log access restriction (403).
