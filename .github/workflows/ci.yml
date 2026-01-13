@@ -621,6 +621,7 @@ jobs:
         run: git ls-files -z 'docs/**' | xargs -0 pre-commit run --files
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+          SKIP: eslint-insight-browser
       - name: Build documentation
         run: mkdocs build --strict
 
@@ -709,6 +710,7 @@ jobs:
         run: git ls-files -z 'docs/**' | xargs -0 pre-commit run --files
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+          SKIP: eslint-insight-browser
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site

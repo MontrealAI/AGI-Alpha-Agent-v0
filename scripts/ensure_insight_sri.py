@@ -12,7 +12,7 @@ from pathlib import Path
 DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
 SCRIPT_TAG_PATTERN = re.compile(
-    r"<script[^>]*\bsrc=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight\.bundle\.js(?:[?#][^'\" >]+)?)"
+    r"<script[^>]*\bsrc=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight(?:[\w.-]+)?\.bundle\.js(?:[?#][^'\" >]+)?)"
     r"(?P=quote)[^>]*>",
     re.IGNORECASE | re.DOTALL,
 )
@@ -24,7 +24,7 @@ def _hash(path: Path) -> str:
     return "sha384-" + base64.b64encode(digest).decode()
 
 
-def _ensure_tag(html: str, sri: str) -> tuple[str, bool]:
+def _ensure_tag(html: str, sri: str, src: str) -> tuple[str, bool]:
     match = SCRIPT_TAG_PATTERN.search(html)
     if match:
         tag = match.group(0)
@@ -37,9 +37,7 @@ def _ensure_tag(html: str, sri: str) -> tuple[str, bool]:
             return html, False
         return html[: match.start()] + new_tag + html[match.end() :], True
 
-    script_tag = (
-        f'<script type="module" src="insight.bundle.js" integrity="{sri}" crossorigin="anonymous"></script>'
-    )
+    script_tag = f'<script type="module" src="{src}" integrity="{sri}" crossorigin="anonymous"></script>'
     if "</head>" in html:
         return html.replace("</head>", f"{script_tag}\n</head>", 1), True
     if "</body>" in html:
@@ -47,16 +45,36 @@ def _ensure_tag(html: str, sri: str) -> tuple[str, bool]:
     return html + f"\n{script_tag}\n", True
 
 
+def _resolve_bundle(directory: Path, html: str) -> Path:
+    match = SCRIPT_TAG_PATTERN.search(html)
+    if match:
+        src = match.group("src").split("?", 1)[0].split("#", 1)[0]
+        src_path = (directory / src.lstrip("./")).resolve()
+        if src_path.is_file():
+            return src_path
+        alt_path = directory / src.lstrip("./")
+        if alt_path.is_file():
+            return alt_path
+    bundle = directory / "insight.bundle.js"
+    if bundle.is_file():
+        return bundle
+    candidates = sorted(directory.glob("**/insight*.bundle.js"))
+    if candidates:
+        return candidates[0]
+    raise FileNotFoundError("insight bundle missing")
+
+
 def ensure_sri(directory: Path) -> bool:
     """Return True if the HTML was updated with the correct SRI."""
-    bundle = directory / "insight.bundle.js"
     index_html = directory / "index.html"
-    if not bundle.is_file() or not index_html.is_file():
-        raise FileNotFoundError("insight bundle or index.html missing")
+    if not index_html.is_file():
+        raise FileNotFoundError("index.html missing")
 
-    sri = _hash(bundle)
     html = index_html.read_text(encoding="utf-8")
-    updated, changed = _ensure_tag(html, sri)
+    bundle = _resolve_bundle(directory, html)
+    sri = _hash(bundle)
+    src = bundle.relative_to(directory).as_posix()
+    updated, changed = _ensure_tag(html, sri, src)
     if changed:
         index_html.write_text(updated, encoding="utf-8")
     return changed
