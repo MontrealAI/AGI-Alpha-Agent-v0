@@ -33,28 +33,61 @@ def _hash(path: Path) -> str:
 
 def check_directory(path: Path) -> int:
     bundle = path / "insight.bundle.js"
-    html = path / "index.html"
-    if not bundle.is_file() or not html.is_file():
-        print(f"{path}: insight bundle or index.html missing", file=sys.stderr)
+    if not bundle.is_file():
+        print(f"{path}: insight bundle missing", file=sys.stderr)
         return 1
 
-    text = html.read_text(encoding="utf-8")
-    match = SCRIPT_TAG_PATTERN.search(text)
-    if not match:
-        print(f"{path}: script tag for insight.bundle.js missing", file=sys.stderr)
+    index_html = path / "index.html"
+    if not index_html.is_file():
+        print(f"{path}: index.html missing", file=sys.stderr)
         return 1
 
-    sri = INTEGRITY_PATTERN.search(match.group(0))
-    if not sri:
-        print(f"{path}: integrity attribute missing", file=sys.stderr)
+    html_files = sorted(p for p in path.rglob("*.html") if p.is_file())
+    if not html_files:
+        print(f"{path}: no HTML files found to verify", file=sys.stderr)
         return 1
 
     expected = _hash(bundle)
-    if sri.group(1) != expected:
-        print(
-            f"{path}: SRI mismatch: {sri.group(1)} != {expected}",
-            file=sys.stderr,
-        )
+    errors = 0
+    index_text = index_html.read_text(encoding="utf-8")
+    index_matches = list(SCRIPT_TAG_PATTERN.finditer(index_text))
+    if not index_matches:
+        print(f"{index_html}: script tag for insight.bundle.js missing", file=sys.stderr)
+        return 1
+    for match in index_matches:
+        sri = INTEGRITY_PATTERN.search(match.group(0))
+        if not sri:
+            print(f"{index_html}: integrity attribute missing", file=sys.stderr)
+            errors += 1
+            continue
+        if sri.group(1) != expected:
+            print(
+                f"{index_html}: SRI mismatch: {sri.group(1)} != {expected}",
+                file=sys.stderr,
+            )
+            errors += 1
+
+    for html in html_files:
+        if html == index_html:
+            continue
+        text = html.read_text(encoding="utf-8")
+        matches = list(SCRIPT_TAG_PATTERN.finditer(text))
+        if not matches:
+            continue
+        for match in matches:
+            sri = INTEGRITY_PATTERN.search(match.group(0))
+            if not sri:
+                print(f"{html}: integrity attribute missing", file=sys.stderr)
+                errors += 1
+                continue
+            if sri.group(1) != expected:
+                print(
+                    f"{html}: SRI mismatch: {sri.group(1)} != {expected}",
+                    file=sys.stderr,
+                )
+                errors += 1
+
+    if errors:
         return 1
 
     print(f"{path}: insight bundle integrity verified")

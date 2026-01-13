@@ -197,14 +197,6 @@ jobs:
         run: pip install pre-commit==4.2.0
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-      - name: Clean Node installs
-        run: |
-          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
-          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
-          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
-          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
-      - name: Install insight browser dependencies
-        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       - name: Run pre-commit checks
         run: |
           from_ref="${{ github.event.before }}"
@@ -216,6 +208,7 @@ jobs:
           fi
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
+          SKIP: eslint-insight-browser
       - name: Fail on uncommitted changes
         run: |
           git --no-pager diff
@@ -228,6 +221,30 @@ jobs:
       - name: Mypy type-check
         # Use configuration defaults to restrict analysis to the src package
         run: mypy --config-file mypy.ini
+
+  insight-browser-lint:
+    name: "🧹 Insight Browser ESLint"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-browser
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+      - name: Clean Insight Browser install
+        run: |
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf "$NPM_CONFIG_CACHE"
+      - name: Install Insight Browser dependencies
+        run: npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Lint Insight Browser
+        run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run lint
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
@@ -755,11 +772,13 @@ jobs:
       - name: Free disk space
         run: |
           set -euo pipefail
+          df -h
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc || true
           sudo rm -rf /usr/local/share/boost /usr/local/share/powershell || true
           sudo apt-get clean
           sudo docker system prune -af
           sudo docker builder prune -af
+          df -h
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -921,6 +940,14 @@ jobs:
             cat axe.json
             exit 1
           fi
+      - name: Reclaim disk before Docker build
+        run: |
+          set -euo pipefail
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
+          rm -rf ~/.cache/ms-playwright || true
       - name: Build image
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \
@@ -956,7 +983,7 @@ jobs:
   deploy:
     name: "📦 Deploy"
     if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
-    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type, insight-browser-lint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -1038,7 +1065,7 @@ jobs:
   branch-protection:
     name: "🔒 Branch protection guardrails"
     if: ${{ needs.owner-check.result == 'success' && (github.ref == 'refs/heads/main' || github.event_name == 'merge_group' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')) }}
-    needs: [owner-check, workflow-lint, lint-type, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type, insight-browser-lint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
