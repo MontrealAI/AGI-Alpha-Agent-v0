@@ -37,6 +37,11 @@ def check_directory(path: Path) -> int:
         print(f"{path}: insight bundle missing", file=sys.stderr)
         return 1
 
+    index_html = path / "index.html"
+    if not index_html.is_file():
+        print(f"{path}: index.html missing", file=sys.stderr)
+        return 1
+
     html_files = sorted(p for p in path.rglob("*.html") if p.is_file())
     if not html_files:
         print(f"{path}: no HTML files found to verify", file=sys.stderr)
@@ -45,7 +50,28 @@ def check_directory(path: Path) -> int:
     expected = _hash(bundle)
     found_script = False
     errors = 0
+    index_text = index_html.read_text(encoding="utf-8")
+    index_matches = list(SCRIPT_TAG_PATTERN.finditer(index_text))
+    if not index_matches:
+        print(f"{index_html}: script tag for insight.bundle.js missing", file=sys.stderr)
+        return 1
+    found_script = True
+    for match in index_matches:
+        sri = INTEGRITY_PATTERN.search(match.group(0))
+        if not sri:
+            print(f"{index_html}: integrity attribute missing", file=sys.stderr)
+            errors += 1
+            continue
+        if sri.group(1) != expected:
+            print(
+                f"{index_html}: SRI mismatch: {sri.group(1)} != {expected}",
+                file=sys.stderr,
+            )
+            errors += 1
+
     for html in html_files:
+        if html == index_html:
+            continue
         text = html.read_text(encoding="utf-8")
         matches = list(SCRIPT_TAG_PATTERN.finditer(text))
         if not matches:
@@ -64,13 +90,6 @@ def check_directory(path: Path) -> int:
                 )
                 errors += 1
 
-    if not found_script:
-        scanned = ", ".join(str(p.relative_to(path)) for p in html_files)
-        print(
-            f"{path}: script tag for insight.bundle.js missing in [{scanned}]",
-            file=sys.stderr,
-        )
-        return 1
     if errors:
         return 1
 
