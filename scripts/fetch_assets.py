@@ -20,14 +20,21 @@ import argparse
 import base64
 import hashlib
 import os
+import shutil
 import subprocess
 from pathlib import Path
 import sys
 import re
+import tempfile
 import time
-from urllib.error import HTTPError
+from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
-import requests
+try:
+    import requests
+except ModuleNotFoundError:
+    requests: Any | None = None
 
 
 # Base URL for the GPT-2 small weights
@@ -107,23 +114,87 @@ def _response_url(exc: Exception) -> str | None:
     return getattr(getattr(exc, "response", None), "url", None)
 
 
+class _HashingReader:
+    def __init__(self, raw: Any, hasher: Any) -> None:
+        self._raw = raw
+        self._hasher = hasher
+
+    def read(self, size: int = -1) -> bytes:
+        data = self._raw.read(size)
+        if data:
+            self._hasher.update(data)
+        return data
+
+
+def _expected_checksum(label: str, path: Path) -> tuple[str | None, str | None]:
+    expected = CHECKSUMS.get(label) or CHECKSUMS.get(path.name)
+    if not expected:
+        return None, None
+    algo, ref = expected.split("-", 1)
+    return algo, ref
+
+
+def _verify_checksum(label: str, digest_bytes: bytes, algo: str, ref: str) -> None:
+    calc_b64 = base64.b64encode(digest_bytes).decode()
+    calc_hex = digest_bytes.hex()
+    if ref == calc_b64 or ref.lower() == calc_hex:
+        return
+    raise RuntimeError(f"Checksum mismatch for {label}: expected {ref} got {calc_b64}")
+
+
+def _download_with_requests(url: str, temp_path: Path, label: str, algo: str | None, ref: str | None) -> None:
+    if requests is None:
+        raise RuntimeError("requests is unavailable")
+    hasher = hashlib.new(algo) if algo else None
+    response = requests.get(url, timeout=60, stream=True)
+    try:
+        response.raise_for_status()
+        with temp_path.open("wb") as handle:
+            for chunk in response.iter_content(chunk_size=1024 * 1024):
+                if not chunk:
+                    continue
+                handle.write(chunk)
+                if hasher:
+                    hasher.update(chunk)
+    finally:
+        response.close()
+    if hasher and ref:
+        _verify_checksum(label, hasher.digest(), algo or "", ref)
+
+
+def _download_with_urllib(url: str, temp_path: Path, label: str, algo: str | None, ref: str | None) -> None:
+    hasher = hashlib.new(algo) if algo else None
+    request = Request(url)
+    try:
+        with urlopen(request, timeout=60) as response, temp_path.open("wb") as handle:
+            source = response
+            if hasher:
+                source = _HashingReader(response, hasher)
+            shutil.copyfileobj(source, handle)
+    except (HTTPError, URLError):
+        raise
+    if hasher and ref:
+        _verify_checksum(label, hasher.digest(), algo or "", ref)
+
+
 def download(cid: str, path: Path, label: str | None = None) -> None:
     url = cid
     path.parent.mkdir(parents=True, exist_ok=True)
-    response = requests.get(url, timeout=60)
-    response.raise_for_status()
-    data = response.content
-    path.write_bytes(data)
     key = label or path.name
-    expected = CHECKSUMS.get(key) or CHECKSUMS.get(path.name)
-    if expected:
-        algo, ref = expected.split("-", 1)
-        digest_bytes = getattr(hashlib, algo)(data).digest()
-        calc_b64 = base64.b64encode(digest_bytes).decode()
-        calc_hex = digest_bytes.hex()
-        if ref == calc_b64 or ref.lower() == calc_hex:
-            return
-        raise RuntimeError(f"Checksum mismatch for {key}: expected {ref} got {calc_b64}")
+    algo, ref = _expected_checksum(key, path)
+    temp_file: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as tmp:
+            temp_file = Path(tmp.name)
+        if requests is not None:
+            _download_with_requests(url, temp_file, key, algo, ref)
+        else:
+            _download_with_urllib(url, temp_file, key, algo, ref)
+        os.replace(temp_file, path)
+    except Exception:
+        if temp_file and temp_file.exists():
+            temp_file.unlink(missing_ok=True)
+        raise
 
 
 def download_with_retry(
