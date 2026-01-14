@@ -2,6 +2,7 @@
 """Embedding-based novelty scoring utilities."""
 from __future__ import annotations
 
+import hashlib
 import logging
 from typing import Any, TYPE_CHECKING
 
@@ -16,8 +17,26 @@ if TYPE_CHECKING:  # pragma: no cover
     from sentence_transformers import SentenceTransformer
 
 _LOG = logging.getLogger(__name__)
-_MODEL: "SentenceTransformer" | None = None
+_MODEL: Any | None = None
 _DIM = 384
+_HASH_SCALE = 10.0
+
+
+class _HashEmbeddingModel:
+    """Deterministic fallback embedder for offline environments."""
+
+    def encode(self, texts: list[str], normalize_embeddings: bool = True) -> np.ndarray:
+        vectors = [_hash_vector(text) for text in texts]
+        arr = np.vstack(vectors)
+        return arr * _HASH_SCALE
+
+
+def _hash_vector(text: str) -> np.ndarray:
+    digest = hashlib.sha256(text.encode()).digest()
+    idx = int.from_bytes(digest[:2], "big", signed=False) % _DIM
+    vec = np.full(_DIM, -1.0, dtype="float32")
+    vec[idx] = 1.0
+    return vec
 
 
 def _get_model() -> "SentenceTransformer":
@@ -35,8 +54,12 @@ def _get_model() -> "SentenceTransformer":
         raise ImportError("sentence-transformers missing") from exc
     global _MODEL
     if _MODEL is None:
-        _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
-    return _MODEL
+        try:
+            _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        except Exception as exc:  # pragma: no cover - network/model issues
+            _LOG.warning("MiniLM unavailable (%s); using hash embeddings.", exc)
+            _MODEL = _HashEmbeddingModel()
+    return _MODEL  # type: ignore[return-value]
 
 
 def embed(text: str) -> np.ndarray:
