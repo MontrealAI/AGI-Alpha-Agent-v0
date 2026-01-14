@@ -31,7 +31,7 @@ from alpha_factory_v1.common.utils import messaging
 from alpha_factory_v1.common.utils.logging import Ledger
 from .utils import alerts
 from alpha_factory_v1.core.archive.service import ArchiveService
-from alpha_factory_v1.backend.orchestrator_utils import AgentRunner
+from alpha_factory_v1.backend.orchestrator_utils import AgentRunner, monitor_agents as _monitor_agents
 from alpha_factory_v1.core.archive.solution_archive import SolutionArchive
 from .agents.base_agent import BaseAgent
 from alpha_factory_v1.core.governance.stake_registry import StakeRegistry
@@ -49,6 +49,27 @@ BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
 log = insight_logging.logging.getLogger(__name__)
+
+
+async def monitor_agents(
+    runners: Dict[str, AgentRunner],
+    bus: object,
+    ledger: object,
+    *,
+    err_threshold: int = ERR_THRESHOLD,
+    backoff_exp_after: int = BACKOFF_EXP_AFTER,
+    on_restart: Callable[[AgentRunner], None] | None = None,
+) -> None:
+    """Run the shared monitor loop with Insight demo logging."""
+    await _monitor_agents(
+        runners,
+        bus,
+        ledger,
+        err_threshold=err_threshold,
+        backoff_exp_after=backoff_exp_after,
+        on_restart=on_restart,
+        logger=log,
+    )
 
 
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator

@@ -16,7 +16,29 @@ from __future__ import annotations
 import os
 
 import af_requests as requests
-from openai_agents import Agent, AgentRuntime, Tool
+
+try:
+    from openai_agents import Agent, AgentRuntime, Tool
+except Exception:  # pragma: no cover - optional SDK
+
+    class Agent:  # type: ignore[no-redef]
+        pass
+
+    class AgentRuntime:  # type: ignore[no-redef]
+        def __init__(self, *args, **kwargs) -> None:
+            pass
+
+        def register(self, *args, **kwargs) -> None:
+            pass
+
+        def run(self) -> None:
+            pass
+
+    def Tool(*_args, **_kwargs):  # type: ignore[no-redef]
+        def _decorator(func):
+            return func
+
+        return _decorator
 
 from alpha_factory_v1.backend.logger import get_logger
 
@@ -69,7 +91,7 @@ class InspectorAgent(Agent):
             handler = POLICY_MAP.get(action)
             if handler:
                 return await handler(obs)
-        return await self.tools.list_agents()
+        return await list_agents()
 
 
 def main() -> None:

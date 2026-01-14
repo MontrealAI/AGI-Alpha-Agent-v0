@@ -42,8 +42,14 @@ export function isOffline(): boolean {
 
 async function ensureOrt(): Promise<boolean> {
   if (ortLoaded !== undefined) return ortLoaded;
-  if (typeof window === 'undefined') return false;
-  if (!(window as any).ort) {
+  const runtime: any =
+    typeof window !== 'undefined'
+      ? window
+      : typeof globalThis !== 'undefined'
+        ? globalThis
+        : undefined;
+  if (!runtime) return false;
+  if (!runtime.ort) {
     try {
       await import('onnxruntime-web');
     } catch {
@@ -51,7 +57,7 @@ async function ensureOrt(): Promise<boolean> {
       return false;
     }
   }
-  ortLoaded = !!(window as any).ort;
+  ortLoaded = !!runtime.ort;
   return ortLoaded;
 }
 
@@ -112,4 +118,3 @@ export async function chat(prompt: string): Promise<string> {
   const out = await model(prompt);
   return typeof out === 'string' ? out : out[0]?.generated_text?.trim();
 }
-

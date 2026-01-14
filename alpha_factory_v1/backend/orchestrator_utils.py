@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import logging
 import random
 import time
 from typing import Callable, Dict
@@ -96,6 +97,7 @@ async def monitor_agents(
     err_threshold: int = 3,
     backoff_exp_after: int = 3,
     on_restart: Callable[[AgentRunner], None] | None = None,
+    logger: logging.Logger | None = None,
 ) -> None:
     """Restart crashed or stalled agents and apply exponential backoff."""
     while True:
@@ -103,13 +105,17 @@ async def monitor_agents(
         now = time.time()
         for r in list(runners.values()):
             needs_restart = False
+            unresponsive = False
             if r.task and r.task.done():
                 needs_restart = True
             elif r.error_count >= err_threshold:
                 needs_restart = True
             elif now - r.last_beat > r.period * 5:
                 needs_restart = True
+                unresponsive = True
             if needs_restart:
+                if unresponsive and logger:
+                    logger.warning("%s unresponsive – restarting", r.agent.name)
                 delay = random.uniform(0.5, 1.5)
                 if r.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
