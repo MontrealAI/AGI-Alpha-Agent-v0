@@ -8,7 +8,7 @@ import {CacheFirst} from 'workbox-strategies';
 // replaced during build
 const CACHE_VERSION = '0.1.0';
 async function init() {
-  const res = await fetch('lib/workbox-sw.js');
+  const res = await fetch('assets/lib/workbox-sw.js');
   const buf = await res.arrayBuffer();
   const digest = await crypto.subtle.digest('SHA-384', buf);
   const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));

@@ -39,6 +39,14 @@ def test_extract_failure_text_with_callable_exception() -> None:
     assert _extract_failure_text(_boom) == "unknown"
 
 
+def test_extract_failure_text_with_unknown_object() -> None:
+    class _Failure:
+        def __str__(self) -> str:
+            return "opaque failure"
+
+    assert _extract_failure_text(_Failure()) == "opaque failure"
+
+
 def test_build_demo_url_uses_http() -> None:
     demo = DOCS_DIR / "alpha_agi_insight_v1"
     url = _build_demo_url("http://127.0.0.1:9999", demo)

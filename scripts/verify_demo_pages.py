@@ -30,6 +30,18 @@ class _SilentHandler(SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args: object) -> None:  # noqa: A002
         return
 
+    def handle(self) -> None:
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            return
+
+    def finish(self) -> None:
+        try:
+            super().finish()
+        except (BrokenPipeError, ConnectionResetError):
+            return
+
 
 def iter_demos() -> list[Path]:
     return sorted(p for p in DOCS_DIR.iterdir() if p.is_dir() and (p / "index.html").exists())
@@ -144,6 +156,8 @@ def _extract_failure_text(failure: object | None) -> str:
 def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
     handler = partial(_SilentHandler, directory=str(DOCS_DIR))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    server.daemon_threads = True
+    server.allow_reuse_address = True
     thread = Thread(target=server.serve_forever, name="docs-server", daemon=True)
     thread.start()
     host, port = server.server_address[:2]
@@ -239,10 +253,12 @@ def main() -> int:
 
                     def _record_request_failure(req) -> None:
                         try:
-                            failure = _extract_failure_text(req.failure)
+                            failure_attr = getattr(req, "failure", None)
+                            failure_payload = failure_attr() if callable(failure_attr) else failure_attr
+                            failure = _extract_failure_text(failure_payload)
                             request_failures.append(f"{req.url} -> {failure}")
                         except Exception as exc:  # noqa: BLE001
-                            request_failures.append(f"{req.url} -> handler error: {exc}")
+                            request_failures.append(f"{getattr(req, 'url', 'unknown')} -> handler error: {exc}")
 
                     def _record_response(response) -> None:
                         if response.status >= 400:
