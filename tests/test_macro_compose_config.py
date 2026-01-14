@@ -10,8 +10,24 @@ BASE_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1" / "demos" / 
 COMPOSE_FILE = BASE_DIR / "docker-compose.macro.yml"
 RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+def _docker_compose_ready() -> bool:
+    if not shutil.which("docker"):
+        return False
+    try:
+        subprocess.run(
+            ["docker", "compose", "version"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=5,
+        )
+    except Exception:
+        return False
+    return True
+
+
+if not _docker_compose_ready():
+    pytest.skip("docker compose not available", allow_module_level=True)
 
 
 def test_docker_compose_config() -> None:

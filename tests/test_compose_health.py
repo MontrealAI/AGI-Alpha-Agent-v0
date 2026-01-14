@@ -7,8 +7,24 @@ from pathlib import Path
 import pytest
 import requests
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+def _docker_ready() -> bool:
+    if not shutil.which("docker"):
+        return False
+    try:
+        subprocess.run(
+            ["docker", "info"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=5,
+        )
+    except Exception:
+        return False
+    return True
+
+
+if not _docker_ready():
+    pytest.skip("docker daemon not available", allow_module_level=True)
 
 COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
 ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
