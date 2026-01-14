@@ -30,6 +30,15 @@ class _SilentHandler(SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args: object) -> None:  # noqa: A002
         return
 
+    def log_error(self, format: str, *args: object) -> None:  # noqa: A002
+        return
+
+    def handle(self) -> None:
+        try:
+            super().handle()
+        except BrokenPipeError:
+            return
+
 
 def iter_demos() -> list[Path]:
     return sorted(p for p in DOCS_DIR.iterdir() if p.is_dir() and (p / "index.html").exists())
@@ -238,11 +247,13 @@ def main() -> int:
                         page_errors.append(str(exc))
 
                     def _record_request_failure(req) -> None:
+                        failure_text = "unknown"
                         try:
-                            failure = _extract_failure_text(req.failure)
-                            request_failures.append(f"{req.url} -> {failure}")
+                            failure = getattr(req, "failure", None)
+                            failure_text = _extract_failure_text(failure)
                         except Exception as exc:  # noqa: BLE001
-                            request_failures.append(f"{req.url} -> handler error: {exc}")
+                            failure_text = f"handler error: {exc}"
+                        request_failures.append(f"{req.url} -> {failure_text}")
 
                     def _record_response(response) -> None:
                         if response.status >= 400:
