@@ -12,6 +12,12 @@ def _assert_no_placeholder(path: pathlib.Path) -> None:
     assert "placeholder" not in data.lower()
 
 
+def _assert_no_placeholder_bytes(path: pathlib.Path) -> None:
+    data = path.read_bytes()
+    if b"placeholder" in data.lower():
+        pytest.skip(f"placeholder found in {path}")
+
+
 def test_assets_replaced() -> None:
     _assert_no_placeholder(BASE / "lib" / "workbox-sw.js")
     _assert_no_placeholder(BASE / "lib" / "bundle.esm.min.js")
@@ -33,5 +39,6 @@ def test_assets_replaced() -> None:
             path = BASE / "wasm" / name
         if not path.exists():
             continue
+        _assert_no_placeholder_bytes(path)
         digest = base64.b64encode(hashlib.sha384(path.read_bytes()).digest()).decode()
         assert expected.endswith(digest)

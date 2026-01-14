@@ -131,7 +131,9 @@ services:
         ENABLE_CUDA: "${ENABLE_CUDA:-0}"
     image: alpha_factory_orchestrator:macro
     command: python /app/demo/agent_macro_entrypoint.py
-    env_file: ./config.env
+    env_file:
+      - path: ./config.env
+        required: false
     environment:
       <<: *common-env
       DATABASE_URL: "postgresql://alpha:${PG_PASSWORD:-alpha}@timescaledb:5432/macro_ticks"

@@ -11,6 +11,11 @@ from pathlib import Path
 
 
 _MAP_PATH = Path(__file__).resolve().parents[2] / "data" / "sector_equity_map.csv"
+_DEFAULT_SECTOR_EQUITY_MAP: Dict[str, list[str]] = {
+    "smartphones": ["AAPL"],
+    "retail": ["AMZN"],
+    "apps": ["MSFT"],
+}
 
 
 def delta_sector_to_dcf(sector_state: Dict[str, float]) -> Dict[str, Any]:
@@ -40,8 +45,12 @@ def delta_sector_to_dcf(sector_state: Dict[str, float]) -> Dict[str, Any]:
 def load_sector_equity_map(path: str | Path = _MAP_PATH) -> Dict[str, list[str]]:
     """Return the sector-to-equity mapping from ``path``."""
 
+    path = Path(path)
+    if not path.exists():
+        return {sector: tickers.copy() for sector, tickers in _DEFAULT_SECTOR_EQUITY_MAP.items()}
+
     mapping: Dict[str, list[str]] = {}
-    with Path(path).open(newline="", encoding="utf-8") as fh:
+    with path.open(newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
             sector = (row.get("sector") or "").strip()
@@ -49,6 +58,8 @@ def load_sector_equity_map(path: str | Path = _MAP_PATH) -> Dict[str, list[str]]
             if not sector or not ticker:
                 continue
             mapping.setdefault(sector, []).append(ticker)
+    if not mapping:
+        return {sector: tickers.copy() for sector, tickers in _DEFAULT_SECTOR_EQUITY_MAP.items()}
     return mapping
 
 
