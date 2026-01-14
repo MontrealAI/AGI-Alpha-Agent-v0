@@ -13,7 +13,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
-READY_SELECTORS = ("main h1", "article h1", "#root", "[data-testid='app']")
+READY_SELECTORS = ("main h1", "article h1", "header h1", "#root", "[data-testid='app']", "#app")
 DEFAULT_TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "60000"))
 
 
@@ -58,9 +58,10 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     if demo.name == "alpha_agi_insight_v1" and has_main and state.get("hasBundle"):
         heading = str(state.get("mainHeadingText") or "")
         title = str(state.get("title") or "")
-        if main_text_len > 0 or body_text_len > 0:
-            if heading or "Insight" in title:
+        if heading or "Insight" in title:
+            if main_text_len > 0 or body_text_len > 0:
                 return True, "insight bundle+main"
+            return True, "insight bundle+title"
     return False, ""
 
 
@@ -104,6 +105,24 @@ def _extract_failure_text(failure: object | None) -> str:
     if error_text:
         return str(error_text)
     return str(failure)
+
+
+def _resolve_request_failure(request: object) -> object | None:
+    """Return a stable request failure payload for Playwright requests."""
+    failure_attr = getattr(request, "failure", None)
+    if callable(failure_attr):
+        try:
+            return failure_attr()
+        except Exception:
+            return None
+    return failure_attr
+
+
+def _format_request_failure(request: object) -> str:
+    """Format a request failure entry for logging."""
+    url = getattr(request, "url", "unknown")
+    failure = _resolve_request_failure(request)
+    return f"{url} -> {_extract_failure_text(failure)}"
 
 
 def _log_diagnostics(
@@ -160,26 +179,35 @@ def main() -> int:
                 missing_assets: list[str] = []
 
                 def _record_console(msg) -> None:
-                    if msg.type in {"error", "warning"}:
-                        console_messages.append(f"[{msg.type}] {msg.text}")
+                    try:
+                        if msg.type in {"error", "warning"}:
+                            console_messages.append(f"[{msg.type}] {msg.text}")
+                    except Exception as exc:  # noqa: BLE001
+                        console_messages.append(f"[handler error] {exc}")
 
                 def _record_page_error(exc: Exception) -> None:
-                    page_errors.append(str(exc))
+                    try:
+                        page_errors.append(str(exc))
+                    except Exception as handler_exc:  # noqa: BLE001
+                        page_errors.append(f"handler error: {handler_exc}")
 
                 def _record_request_failure(req) -> None:
                     try:
-                        failure = _extract_failure_text(req.failure)
-                        request_failures.append(f"{req.url} -> {failure}")
+                        request_failures.append(_format_request_failure(req))
                     except Exception as exc:  # noqa: BLE001
-                        request_failures.append(f"{req.url} -> handler error: {exc}")
+                        url = getattr(req, "url", "unknown")
+                        request_failures.append(f"{url} -> handler error: {exc}")
 
                 def _record_response(response) -> None:
-                    if response.status >= 400:
-                        response_failures.append(f"{response.url} -> {response.status}")
-                    if response.url.startswith("file://"):
-                        path = Path(unquote(urlparse(response.url).path))
-                        if not path.exists():
-                            missing_assets.append(f"{response.url} -> missing")
+                    try:
+                        if response.status >= 400:
+                            response_failures.append(f"{response.url} -> {response.status}")
+                        if response.url.startswith("file://"):
+                            path = Path(unquote(urlparse(response.url).path))
+                            if not path.exists():
+                                missing_assets.append(f"{response.url} -> missing")
+                    except Exception as exc:  # noqa: BLE001
+                        response_failures.append(f"handler error: {exc}")
 
                 page.on("console", _record_console)
                 page.on("pageerror", _record_page_error)

@@ -25,6 +25,7 @@ SRC_ATTR_PATTERN = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 INTEGRITY_PATTERN = re.compile(r"integrity=['\"]([^'\"]+)['\"]", re.IGNORECASE)
+BUNDLE_NAME_PATTERN = re.compile(r"insight\.bundle[\w.-]*\.js$", re.IGNORECASE)
 
 
 def _hash(path: Path) -> str:
@@ -48,25 +49,27 @@ def _extract_script_srcs(html_text: str) -> list[str]:
 def _clean_src(src: str) -> str:
     return src.split("?", 1)[0].split("#", 1)[0]
 
-
-def _resolve_bundle(index_html: Path, root: Path, candidates: list[Path]) -> Path | None:
-    html_text = index_html.read_text(encoding="utf-8")
-    sources = _extract_script_srcs(html_text)
-    candidate_names = {candidate.name for candidate in candidates}
-    for src in sources:
-        clean_src = _clean_src(src)
-        if Path(clean_src).name not in candidate_names:
-            continue
-        src_path = (root / clean_src.lstrip("./")).resolve()
-        if src_path.is_file():
-            return src_path
-        alt_path = root / clean_src.lstrip("./")
-        if alt_path.is_file():
-            return alt_path
-        for candidate in candidates:
-            if candidate.name == Path(clean_src).name:
+def _resolve_src_path(root: Path, src: str, candidates: dict[str, Path]) -> Path | None:
+    clean_src = _clean_src(src)
+    rel = Path(clean_src.lstrip("./"))
+    if clean_src.startswith("/"):
+        parts = rel.parts
+        for idx in range(len(parts)):
+            candidate = root / Path(*parts[idx:])
+            if candidate.is_file():
                 return candidate
-    return None
+    src_path = (root / rel).resolve()
+    if src_path.is_file():
+        return src_path
+    alt_path = root / rel
+    if alt_path.is_file():
+        return alt_path
+    return candidates.get(Path(clean_src).name)
+
+
+def _index_bundle_sources(index_html: Path) -> list[str]:
+    sources = _extract_script_srcs(index_html.read_text(encoding="utf-8"))
+    return [src for src in sources if BUNDLE_NAME_PATTERN.search(Path(_clean_src(src)).name)]
 
 
 def _iter_matches(texts: Iterable[tuple[Path, str]]) -> Iterable[tuple[Path, re.Match[str]]]:
@@ -87,9 +90,20 @@ def check_directory(path: Path) -> int:
     if not candidates:
         print(f"{path}: insight bundle missing", file=sys.stderr)
         return 1
-    bundle = _resolve_bundle(index_html, path, candidates)
-    if bundle is None:
+    candidate_map = {candidate.name: candidate for candidate in candidates}
+    bundle_sources = _index_bundle_sources(index_html)
+    if not bundle_sources:
         print(f"{index_html}: script tag for insight bundle missing", file=sys.stderr)
+        return 1
+    resolved_index_bundles = [
+        _resolve_src_path(path, src, candidate_map) for src in bundle_sources
+    ]
+    resolved_index_bundles = [bundle for bundle in resolved_index_bundles if bundle is not None]
+    if not resolved_index_bundles:
+        print(
+            f"{index_html}: insight bundle referenced but file missing: {', '.join(bundle_sources)}",
+            file=sys.stderr,
+        )
         return 1
 
     html_files = sorted(p for p in path.rglob("*.html") if p.is_file())
@@ -97,9 +111,9 @@ def check_directory(path: Path) -> int:
         print(f"{path}: no HTML files found to verify", file=sys.stderr)
         return 1
 
-    expected = _hash(bundle)
     errors = 0
-    candidate_names = {candidate.name for candidate in candidates}
+    hash_cache: dict[Path, str] = {}
+    candidate_names = set(candidate_map)
     html_texts = [(html, html.read_text(encoding="utf-8")) for html in html_files]
     for html, match in _iter_matches(html_texts):
         src_match = SRC_ATTR_PATTERN.search(match.group(0))
@@ -113,6 +127,15 @@ def check_directory(path: Path) -> int:
             print(f"{html}: integrity attribute missing", file=sys.stderr)
             errors += 1
             continue
+        bundle_path = _resolve_src_path(path, src, candidate_map)
+        if bundle_path is None:
+            print(f"{html}: insight bundle referenced but file missing: {src}", file=sys.stderr)
+            errors += 1
+            continue
+        expected = hash_cache.get(bundle_path)
+        if expected is None:
+            expected = _hash(bundle_path)
+            hash_cache[bundle_path] = expected
         if sri.group(1) != expected:
             print(
                 f"{html}: SRI mismatch: {sri.group(1)} != {expected}",
@@ -123,7 +146,8 @@ def check_directory(path: Path) -> int:
     if errors:
         return 1
 
-    print(f"{path}: insight bundle integrity verified ({bundle.name})")
+    bundle_names = sorted({bundle.name for bundle in resolved_index_bundles})
+    print(f"{path}: insight bundle integrity verified ({', '.join(bundle_names)})")
     return 0
 
 
