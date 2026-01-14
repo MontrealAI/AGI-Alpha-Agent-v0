@@ -15,7 +15,13 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
-READY_SELECTORS = ("main h1", "article h1", "#root", "[data-testid='app']")
+READY_SELECTORS = (
+    "main h1",
+    "article h1",
+    "html[data-insight-ready='1']",
+    "#root",
+    "[data-testid='app']",
+)
 DEFAULT_TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "60000"))
 MAX_ATTEMPTS = int(os.environ.get("PWA_DEMO_ATTEMPTS", "3"))
 
@@ -40,14 +46,17 @@ def _readiness_state(page) -> dict[str, object]:
           const bodyText = document.body ? document.body.innerText.trim() : '';
           const mainText = main ? main.textContent.trim() : '';
           const bundle = document.querySelector('script[src*="insight.bundle"]');
+          const insightReady = document.documentElement?.dataset?.insightReady === '1';
           return {
             match: findMatch || null,
             hasMain: Boolean(main),
             hasRoot: Boolean(root),
+            rootChildCount: root ? root.childElementCount : 0,
             mainHeadingText: mainHeading ? mainHeading.textContent.trim() : '',
             bodyTextLen: bodyText.length,
             mainTextLen: mainText.length,
             hasBundle: Boolean(bundle),
+            insightReady,
             title: document.title || ''
           };
         }
@@ -58,8 +67,14 @@ def _readiness_state(page) -> dict[str, object]:
 
 def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     match = state.get("match")
-    if match:
+    if match in {"main h1", "article h1"}:
         return True, f"selector:{match}"
+    if match == "html[data-insight-ready='1']":
+        return True, "insight-ready"
+    if match in {"#root", "[data-testid='app']"}:
+        root_child_count = int(state.get("rootChildCount") or 0)
+        if root_child_count > 0:
+            return True, "root+children"
     has_main = bool(state.get("hasMain"))
     has_root = bool(state.get("hasRoot"))
     body_text_len = int(state.get("bodyTextLen") or 0)
@@ -73,6 +88,8 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     if demo.name == "alpha_agi_insight_v1" and has_main and state.get("hasBundle"):
         heading = str(state.get("mainHeadingText") or "")
         title = str(state.get("title") or "")
+        if state.get("insightReady"):
+            return True, "insight marker"
         if main_text_len > 0 or body_text_len > 0:
             if heading or "Insight" in title:
                 return True, "insight bundle+main"
@@ -192,6 +209,7 @@ def main() -> int:
         server, server_thread, base_url = _start_docs_server()
         with sync_playwright() as p:
             browser = p.chromium.launch()
+            context = browser.new_context(service_workers="block")
             for demo in demos:
                 last_error: str | None = None
                 last_url = ""
@@ -205,7 +223,7 @@ def main() -> int:
                 page_for_diagnostics = None
 
                 for attempt in range(1, MAX_ATTEMPTS + 1):
-                    page = browser.new_page()
+                    page = context.new_page()
                     console_messages: list[str] = []
                     page_errors: list[str] = []
                     request_failures: list[str] = []
@@ -291,6 +309,7 @@ def main() -> int:
                     )
                     if page_for_diagnostics:
                         page_for_diagnostics.close()
+            context.close()
             browser.close()
         if failures:
             print(f"Demo readiness failed for: {', '.join(failures)}", file=sys.stderr)
