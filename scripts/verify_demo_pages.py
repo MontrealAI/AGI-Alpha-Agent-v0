@@ -239,7 +239,9 @@ def main() -> int:
 
                     def _record_request_failure(req) -> None:
                         try:
-                            failure = _extract_failure_text(req.failure)
+                            failure_attr = getattr(req, "failure", None)
+                            failure_payload = failure_attr() if callable(failure_attr) else failure_attr
+                            failure = _extract_failure_text(failure_payload)
                             request_failures.append(f"{req.url} -> {failure}")
                         except Exception as exc:  # noqa: BLE001
                             request_failures.append(f"{req.url} -> handler error: {exc}")

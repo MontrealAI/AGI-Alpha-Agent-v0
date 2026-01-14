@@ -1,12 +1,18 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-insight-ready="0">
   <head>
     <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-wmBbMOjwxvJ39aarpffMTUEI3kl5FrgDlzNQUmksWmpx939OHQPRuMBvHNQp/teR' 'sha384-Q/YzaLZXFkfO60pMfL9tEgLddNys761pdMpFGDtWIXsMxVrFqs0uEGGb7teIsaqZ' 'sha384-EAF2mNlEm60Ms1ZoKs8ETPX/YGxVsMrI9V9Nr2P0ko17g34rLf4Na/+e/e4BU/c/'; style-src 'self' 'unsafe-inline'"
+    />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+
     <script type="importmap">
       {
         "imports": {
@@ -24,8 +30,8 @@
           if (t) {
             t.textContent = msg;
             t.classList.add('show');
-            clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
+            clearTimeout(window.toast.id);
+            window.toast.id = window.setTimeout(() => t.classList.remove('show'), 2000);
             return;
           }
           console.warn(msg);
@@ -34,10 +40,16 @@
     </script>
 
     <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      const SW_URL = 'sw.js';
+      const SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';
+      const IS_LOCALHOST = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      const SHOULD_REGISTER_SW = !IS_LOCALHOST && location.protocol === 'https:';
 
-      if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        document.documentElement.dataset.insightReady = '1';
+      });
+
+      if ('serviceWorker' in navigator && SHOULD_REGISTER_SW) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);
@@ -69,8 +81,43 @@
         });
       }
     </script>
+  </head>
+  <body>
+    <main class="min-h-screen">
+      <h1 class="sr-only">α-AGI Insight</h1>
+      <div id="root" data-testid="app"></div>
+    </main>
+    <div id="toast" class="toast toast-end"></div>
+    <div id="sim-loader">
+      <div class="spinner"></div>
+    </div>
 
-    <script type="module" src="insight.bundle.js" integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz" crossorigin="anonymous"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+    <script
+      src="assets/d3.v7.min.js"
+      integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="assets/lib/bundle.esm.min.js"
+      integrity="sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="assets/lib/pyodide.js"
+      integrity="sha384-PNUiaEvwfaQJ1qhJmwFD774CUdIYY8k0z7TTAqIzw6fNpx7fG6bzyLb9j6qxSZac"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="module"
+      src="insight.bundle.js"
+      integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.PINNER_TOKEN = atob('');
+      window.OTEL_ENDPOINT = atob('');
+      window.IPFS_GATEWAY = atob('');
+    </script>
+  </body>
 </html>
