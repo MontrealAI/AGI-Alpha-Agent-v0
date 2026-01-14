@@ -239,7 +239,17 @@ def main() -> int:
 
                     def _record_request_failure(req) -> None:
                         try:
-                            failure = _extract_failure_text(req.failure)
+                            failure_payload = None
+                            if hasattr(req, "failure"):
+                                failure_payload = req.failure
+                            if callable(failure_payload):
+                                failure_payload = failure_payload()
+                            elif failure_payload is None:
+                                try:
+                                    failure_payload = req.failure()
+                                except Exception:  # noqa: BLE001
+                                    failure_payload = None
+                            failure = _extract_failure_text(failure_payload)
                             request_failures.append(f"{req.url} -> {failure}")
                         except Exception as exc:  # noqa: BLE001
                             request_failures.append(f"{req.url} -> handler error: {exc}")
