@@ -40,6 +40,7 @@ def _readiness_state(page) -> dict[str, object]:
           const bodyText = document.body ? document.body.innerText.trim() : '';
           const mainText = main ? main.textContent.trim() : '';
           const bundle = document.querySelector('script[src*="insight.bundle"]');
+          const appReady = document.querySelector('meta[name="app-ready"][content="1"]');
           return {
             match: findMatch || null,
             hasMain: Boolean(main),
@@ -48,6 +49,7 @@ def _readiness_state(page) -> dict[str, object]:
             bodyTextLen: bodyText.length,
             mainTextLen: mainText.length,
             hasBundle: Boolean(bundle),
+            appReady: Boolean(appReady),
             title: document.title || ''
           };
         }
@@ -76,6 +78,8 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
         if main_text_len > 0 or body_text_len > 0:
             if heading or "Insight" in title:
                 return True, "insight bundle+main"
+    if demo.name == "alpha_agi_insight_v1" and state.get("appReady"):
+        return True, "insight app-ready"
     return False, ""
 
 
@@ -192,6 +196,7 @@ def main() -> int:
         server, server_thread, base_url = _start_docs_server()
         with sync_playwright() as p:
             browser = p.chromium.launch()
+            context = browser.new_context(service_workers="block")
             for demo in demos:
                 last_error: str | None = None
                 last_url = ""
@@ -205,7 +210,7 @@ def main() -> int:
                 page_for_diagnostics = None
 
                 for attempt in range(1, MAX_ATTEMPTS + 1):
-                    page = browser.new_page()
+                    page = context.new_page()
                     console_messages: list[str] = []
                     page_errors: list[str] = []
                     request_failures: list[str] = []
@@ -221,7 +226,8 @@ def main() -> int:
 
                     def _record_request_failure(req) -> None:
                         try:
-                            failure = _extract_failure_text(req.failure)
+                            failure_payload = req.failure() if callable(req.failure) else req.failure
+                            failure = _extract_failure_text(failure_payload)
                             request_failures.append(f"{req.url} -> {failure}")
                         except Exception as exc:  # noqa: BLE001
                             request_failures.append(f"{req.url} -> handler error: {exc}")
@@ -241,7 +247,7 @@ def main() -> int:
                     try:
                         response = page.goto(
                             _build_demo_url(base_url, demo),
-                            wait_until="load",
+                            wait_until="domcontentloaded",
                             timeout=DEFAULT_TIMEOUT_MS,
                         )
                         last_url = page.url
