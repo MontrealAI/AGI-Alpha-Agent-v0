@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from scripts.verify_demo_pages import DOCS_DIR, _build_demo_url, _extract_failure_text
+from scripts.verify_demo_pages import DOCS_DIR, _build_demo_url, _extract_failure_text, _normalize_request_failure
 
 
 def test_extract_failure_text_with_none() -> None:
@@ -37,6 +37,24 @@ def test_extract_failure_text_with_callable_exception() -> None:
         raise RuntimeError("nope")
 
     assert _extract_failure_text(_boom) == "unknown"
+
+
+def test_normalize_request_failure_with_method() -> None:
+    request = SimpleNamespace(failure=lambda: {"errorText": "timeout"})
+    assert _normalize_request_failure(request) == {"errorText": "timeout"}
+
+
+def test_normalize_request_failure_with_attribute() -> None:
+    request = SimpleNamespace(failure="net::ERR_FAILED")
+    assert _normalize_request_failure(request) == "net::ERR_FAILED"
+
+
+def test_normalize_request_failure_with_method_exception() -> None:
+    def _boom() -> str:
+        raise RuntimeError("nope")
+
+    request = SimpleNamespace(failure=_boom)
+    assert _normalize_request_failure(request) is None
 
 
 def test_build_demo_url_uses_http() -> None:

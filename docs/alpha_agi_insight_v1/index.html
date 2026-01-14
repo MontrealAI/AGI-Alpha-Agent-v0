@@ -1,12 +1,67 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-Z04zooY2n+3QQyozuSdjFI44A8+VQOoapOGZSBQWcCKLj1Sa1RxCW68Jg2KcpcE3'; style-src 'self' 'unsafe-inline'"
+    />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="flex flex-col h-screen">
+    <header class="p-4 bg-base-100/70 backdrop-blur-md">
+      <div class="max-w-4xl mx-auto">
+        <h1
+          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent animate-gradient"
+        >
+          α-AGI Insight
+        </h1>
+      </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+      <aside
+        id="controls"
+        class="w-64 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto"
+        role="region"
+        aria-label="Controls"
+      ></aside>
+      <main id="canvas" class="flex-1 relative overflow-hidden" role="main"></main>
+      <aside
+        id="log"
+        class="w-80 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto"
+        aria-label="Log"
+        role="region"
+      ></aside>
+    </div>
+
+    <div id="toast" aria-live="polite" role="status"></div>
+
+    <div id="toolbar" role="toolbar" aria-label="App controls">
+      <button id="install-btn" hidden aria-label="Install application">Install</button>
+    </div>
+
+    <div id="legend" role="region" aria-label="Legend"></div>
+    <div id="depth-legend" role="region" aria-label="Depth Legend"></div>
+
+    <footer id="disclaimer" style="font-size: 0.8rem; margin: 1rem; text-align: center;">
+      This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals
+      and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial
+      advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
+    </footer>
+
+    <script src="assets/d3.v7.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+    <script
+      src="assets/lib/bundle.esm.min.js"
+      integrity="sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD"
+      crossorigin="anonymous"
+    ></script>
+    <script src="assets/wasm/pyodide.js" integrity="sha384-aD6ek5pFVnSSMGK0qubk9ZJdMYGjPs8F6jdJaDJiyZbTcH9jLWR4LJNJ7yY430qI" crossorigin="anonymous"></script>
+
     <script type="importmap">
       {
         "imports": {
@@ -16,61 +71,68 @@
     </script>
 
     <script>
-      // Provide a resilient toast implementation before deferred modules load.
-      // The Playwright offline checks rely on these calls not throwing.
+      const SW_URL = 'sw.js';
+      const SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';
+
+      window.PINNER_TOKEN = atob('');
+      window.OTEL_ENDPOINT = atob('');
+      window.IPFS_GATEWAY = atob('');
+
+      const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+      const shouldRegisterServiceWorker = !isLocalhost && window.location.protocol === 'https:';
+
       if (typeof window.toast !== 'function') {
         window.toast = (msg) => {
           const t = document.getElementById('toast');
           if (t) {
             t.textContent = msg;
             t.classList.add('show');
-            clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
+            clearTimeout(window.toast.id);
+            window.toast.id = window.setTimeout(() => t.classList.remove('show'), 2000);
             return;
           }
           console.warn(msg);
         };
       }
-    </script>
 
-    <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      window.addEventListener('load', async () => {
+        document.documentElement.dataset.insightReady = '1';
 
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', async () => {
-          try {
-            const res = await fetch(SW_URL);
-            const buf = await res.arrayBuffer();
-            const digest = await crypto.subtle.digest('SHA-384', buf);
-            const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-            if (`sha384-${b64}` !== SW_HASH) {
-              throw new Error('Service worker hash mismatch');
-            }
+        if (!shouldRegisterServiceWorker || !('serviceWorker' in navigator)) {
+          return;
+        }
 
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
-                registration.addEventListener('updatefound', () => {
-                  const newWorker = registration.installing;
-                  if (!newWorker) return;
+        try {
+          const res = await fetch(SW_URL);
+          const buf = await res.arrayBuffer();
+          const digest = await crypto.subtle.digest('SHA-384', buf);
+          const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+          if (`sha384-${b64}` !== SW_HASH) {
+            throw new Error('Service worker hash mismatch');
+          }
 
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed') {
-                      window.toast('Update available — reload to use the latest version.');
-                    }
-                  });
+          navigator.serviceWorker.register(SW_URL).then((registration) => {
+            navigator.serviceWorker.ready.then(() => {
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
+
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed') {
+                    window.toast('Update available — reload to use the latest version.');
+                  }
                 });
               });
             });
-          } catch (err) {
-            console.error(err);
-            window.toast('Service worker failed: ' + err.message);
-          }
-        });
-      }
+          });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          console.error(err);
+          window.toast(`Service worker failed: ${message}`);
+        }
+      });
     </script>
 
     <script type="module" src="insight.bundle.js" integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz" crossorigin="anonymous"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+  </body>
 </html>
