@@ -12,7 +12,7 @@ from pathlib import Path
 DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
 SCRIPT_TAG_PATTERN = re.compile(
-    r"<script[^>]*\bsrc=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight(?:[\w.-]+)?\.bundle\.js(?:[?#][^'\" >]+)?)"
+    r"<script[^>]*\bsrc=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight\.bundle[\w.-]*\.js(?:[?#][^'\" >]+)?)"
     r"(?P=quote)[^>]*>",
     re.IGNORECASE | re.DOTALL,
 )
@@ -60,7 +60,7 @@ def _resolve_bundle(directory: Path, html: str) -> Path:
     bundle = directory / "insight.bundle.js"
     if bundle.is_file():
         return bundle
-    candidates = sorted(directory.glob("**/insight*.bundle.js"))
+    candidates = sorted(directory.glob("**/insight.bundle*.js"))
     if candidates:
         return candidates[0]
     raise FileNotFoundError("insight bundle missing")
