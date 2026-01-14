@@ -153,7 +153,15 @@ if has_oai:
             logger.warning("ADK bridge unavailable: %s", exc)
 
         logger.info("Registered MATSAgent with runtime")
-        runtime.run()
+        if hasattr(runtime, "run"):
+            runtime.run()
+            return
+        from agents.run import Runner  # type: ignore[import-not-found]
+
+        runner = Runner()
+        import asyncio
+
+        asyncio.run(runner.run(agent, ""))
 
 else:
     try:
@@ -237,16 +245,37 @@ def main(argv: list[str] | None = None) -> None:
         )
         return
 
+    if not os.getenv("OPENAI_API_KEY"):
+        logger.info("OPENAI_API_KEY missing. Running offline demo...")
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
+        return
+
     if args.enable_adk:
         os.environ.setdefault("ALPHA_FACTORY_ENABLE_ADK", "true")
 
-    _run_runtime(
-        args.episodes,
-        args.target,
-        args.model,
-        args.rewriter,
-        market_data,
-    )
+    try:
+        _run_runtime(
+            args.episodes,
+            args.target,
+            args.model,
+            args.rewriter,
+            market_data,
+        )
+    except Exception as exc:  # pragma: no cover - runtime fallback
+        logger.warning("Runtime failed; falling back to offline demo: %s", exc)
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
 
 
 __all__ = [
