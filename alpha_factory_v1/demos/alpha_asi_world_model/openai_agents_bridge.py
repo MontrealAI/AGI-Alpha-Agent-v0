@@ -16,7 +16,31 @@ from __future__ import annotations
 import os
 
 import af_requests as requests
-from openai_agents import Agent, AgentRuntime, Tool
+
+try:
+    from openai_agents import Agent, AgentRuntime, Tool
+except Exception:  # pragma: no cover - fallback for older SDKs
+    from openai_agents import Agent, Tool
+
+    class AgentRuntime:  # type: ignore[no-redef]
+        def __init__(self, *args, **kwargs) -> None:
+            pass
+
+        def register(self, *args, **kwargs) -> None:
+            pass
+
+
+def _tool_fallback(*_args, **_kwargs):
+    def _decorator(func):
+        return func
+
+    return _decorator
+
+
+try:
+    Tool(name="__probe__", description="__probe__")
+except Exception:  # pragma: no cover - handle non-callable Tool
+    Tool = _tool_fallback  # type: ignore[assignment]
 
 from alpha_factory_v1.backend.logger import get_logger
 
@@ -63,13 +87,19 @@ class InspectorAgent(Agent):
     name = "inspector"
     tools = [list_agents, new_env]
 
+    def __init__(self) -> None:
+        try:
+            super().__init__(name=self.name, tools=self.tools)
+        except TypeError:
+            super().__init__()
+
     async def policy(self, obs, ctx):  # type: ignore[override]
         if isinstance(obs, dict):
             action = obs.get("action")
             handler = POLICY_MAP.get(action)
             if handler:
                 return await handler(obs)
-        return await self.tools.list_agents()
+        return await list_agents()
 
 
 def main() -> None:

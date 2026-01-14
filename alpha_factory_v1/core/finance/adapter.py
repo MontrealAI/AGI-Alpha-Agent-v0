@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 
-_MAP_PATH = Path(__file__).resolve().parents[2] / "data" / "sector_equity_map.csv"
+_MAP_PATH = Path(__file__).resolve().parents[3] / "data" / "sector_equity_map.csv"
 
 
 def delta_sector_to_dcf(sector_state: Dict[str, float]) -> Dict[str, Any]:

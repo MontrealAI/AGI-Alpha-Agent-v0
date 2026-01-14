@@ -72,7 +72,7 @@ services:
       - -c
       - >-
         redis-server --save '' --appendonly no
-        ${REDIS_PASSWORD:+--requirepass "$REDIS_PASSWORD"}
+        $${REDIS_PASSWORD:+--requirepass "$$REDIS_PASSWORD"}
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     volumes:

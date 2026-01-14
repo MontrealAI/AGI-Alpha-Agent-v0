@@ -52,7 +52,6 @@ def test_distribution_zip(tmp_path: Path) -> None:
         "index.html",
         "insight.bundle.js",
         "service-worker.js",
-        "manifest.json",
         "style.css",
         "insight_browser_quickstart.pdf",
     }
@@ -61,6 +60,7 @@ def test_distribution_zip(tmp_path: Path) -> None:
         assert name in names, f"{name} missing from zip"
     # ensure assets directory exists and contains files
     assert any(n.startswith("assets/") for n in names), "assets directory missing"
+    assert "assets/manifest.json" in names, "assets/manifest.json missing from zip"
     # ensure no unexpected files
     allowed_prefixes = {"assets/"}
     for name in names:
