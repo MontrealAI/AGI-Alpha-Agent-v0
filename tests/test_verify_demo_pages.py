@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from scripts.verify_demo_pages import _extract_failure_text
+from scripts.verify_demo_pages import _extract_failure_text, _format_request_failure, _resolve_request_failure
 
 
 def test_extract_failure_text_with_none() -> None:
@@ -37,3 +37,34 @@ def test_extract_failure_text_with_callable_exception() -> None:
         raise RuntimeError("nope")
 
     assert _extract_failure_text(_boom) == "unknown"
+
+
+def test_resolve_request_failure_with_callable() -> None:
+    class DummyRequest:
+        def __init__(self) -> None:
+            self.url = "file://example"
+
+        def failure(self) -> dict[str, str]:
+            return {"errorText": "timeout"}
+
+    assert _resolve_request_failure(DummyRequest()) == {"errorText": "timeout"}
+
+
+def test_format_request_failure_with_string_payload() -> None:
+    class DummyRequest:
+        def __init__(self) -> None:
+            self.url = "file://example"
+            self.failure = "net::ERR_FAILED"
+
+    assert _format_request_failure(DummyRequest()) == "file://example -> net::ERR_FAILED"
+
+
+def test_format_request_failure_with_callable_exception() -> None:
+    class DummyRequest:
+        def __init__(self) -> None:
+            self.url = "file://example"
+
+        def failure(self) -> str:
+            raise RuntimeError("boom")
+
+    assert _format_request_failure(DummyRequest()) == "file://example -> unknown"
