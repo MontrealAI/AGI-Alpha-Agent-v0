@@ -20,6 +20,14 @@ from typing import cast
 logger = logging.getLogger(__name__)
 
 DEFAULT_MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o")
+_VALID_OPENAI_PREFIXES = ("sk-", "sk-proj-")
+
+
+def _has_valid_api_key() -> bool:
+    key = os.getenv("OPENAI_API_KEY", "").strip()
+    if not key:
+        return False
+    return key.startswith(_VALID_OPENAI_PREFIXES)
 
 
 def verify_env() -> None:
@@ -226,8 +234,11 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
-    if not has_oai:
-        logger.info("openai-agents package is missing. Running offline demo...")
+    if not has_oai or not _has_valid_api_key():
+        if not has_oai:
+            logger.info("openai-agents package is missing. Running offline demo...")
+        else:
+            logger.info("OPENAI_API_KEY missing or invalid. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,

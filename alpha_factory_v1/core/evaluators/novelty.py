@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any, TYPE_CHECKING
+import hashlib
 
 import numpy as np
 
@@ -18,6 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
 _LOG = logging.getLogger(__name__)
 _MODEL: "SentenceTransformer" | None = None
 _DIM = 384
+_FALLBACK = False
 
 
 def _get_model() -> "SentenceTransformer":
@@ -34,15 +36,38 @@ def _get_model() -> "SentenceTransformer":
     except Exception as exc:  # pragma: no cover - offline
         raise ImportError("sentence-transformers missing") from exc
     global _MODEL
-    if _MODEL is None:
-        _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+    global _FALLBACK
+    if _MODEL is None and not _FALLBACK:
+        try:
+            _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        except Exception as exc:  # pragma: no cover - offline
+            _LOG.warning("SBERT unavailable (%s) → hashing fallback.", exc)
+            _FALLBACK = True
     return _MODEL
+
+
+def _hash_embed(text: str) -> np.ndarray:
+    seed = int.from_bytes(hashlib.blake2b(text.encode("utf-8"), digest_size=8).digest(), "big")
+    rng = np.random.default_rng(seed)
+    vec = rng.standard_normal(_DIM, dtype="float32")
+    vec /= np.linalg.norm(vec) + 1e-12
+    vec *= 12.0
+    return vec.reshape(1, -1)
 
 
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
-    model = _get_model()
-    vec = model.encode([text], normalize_embeddings=True)
+    try:
+        model = _get_model()
+    except ImportError:
+        model = None
+    if model is None:
+        return _hash_embed(text)
+    try:
+        vec = model.encode([text], normalize_embeddings=True)
+    except Exception as exc:  # pragma: no cover - offline
+        _LOG.warning("SBERT encode failed (%s) → hashing fallback.", exc)
+        return _hash_embed(text)
     return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
 
 
