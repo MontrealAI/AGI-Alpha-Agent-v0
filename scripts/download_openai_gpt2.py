@@ -12,11 +12,12 @@ from __future__ import annotations
 import argparse
 import sys
 import os
+import importlib
 from pathlib import Path
 
 import hashlib
-import requests  # type: ignore[import-untyped]
 from tqdm import tqdm
+from urllib.request import Request, urlopen
 
 
 _FILE_LIST = [
@@ -53,14 +54,29 @@ def model_urls(model: str) -> list[str]:
 
 def _download(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with requests.get(url, stream=True, timeout=60) as resp:
-        resp.raise_for_status()
+    requests = None
+    if importlib.util.find_spec("requests") is not None:
+        requests = importlib.import_module("requests")
+    if requests is not None:
+        with requests.get(url, stream=True, timeout=60) as resp:
+            resp.raise_for_status()
+            total = int(resp.headers.get("Content-Length", 0))
+            with open(dest, "wb") as fh, tqdm(total=total, unit="B", unit_scale=True, desc=dest.name) as bar:
+                for chunk in resp.iter_content(chunk_size=8192):
+                    if chunk:
+                        fh.write(chunk)
+                        bar.update(len(chunk))
+        return
+    request = Request(url, headers={"User-Agent": "alpha-factory-download/1.0"})
+    with urlopen(request, timeout=60) as resp:
         total = int(resp.headers.get("Content-Length", 0))
         with open(dest, "wb") as fh, tqdm(total=total, unit="B", unit_scale=True, desc=dest.name) as bar:
-            for chunk in resp.iter_content(chunk_size=8192):
-                if chunk:
-                    fh.write(chunk)
-                    bar.update(len(chunk))
+            while True:
+                chunk = resp.read(8192)
+                if not chunk:
+                    break
+                fh.write(chunk)
+                bar.update(len(chunk))
 
 
 _DEFAULT_DOWNLOAD = _download
