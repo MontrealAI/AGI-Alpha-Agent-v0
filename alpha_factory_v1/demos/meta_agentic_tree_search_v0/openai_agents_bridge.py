@@ -226,8 +226,19 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
+    api_key = os.getenv("OPENAI_API_KEY")
     if not has_oai:
         logger.info("openai-agents package is missing. Running offline demo...")
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
+        return
+    if not api_key:
+        logger.info("OPENAI_API_KEY missing. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,
@@ -240,13 +251,23 @@ def main(argv: list[str] | None = None) -> None:
     if args.enable_adk:
         os.environ.setdefault("ALPHA_FACTORY_ENABLE_ADK", "true")
 
-    _run_runtime(
-        args.episodes,
-        args.target,
-        args.model,
-        args.rewriter,
-        market_data,
-    )
+    try:
+        _run_runtime(
+            args.episodes,
+            args.target,
+            args.model,
+            args.rewriter,
+            market_data,
+        )
+    except Exception as exc:  # pragma: no cover - best effort fallback
+        logger.warning("OpenAI Agents runtime failed (%s). Running offline demo...", exc)
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
 
 
 __all__ = [

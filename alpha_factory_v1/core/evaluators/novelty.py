@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any, TYPE_CHECKING
+import hashlib
 
 import numpy as np
 
@@ -17,6 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 _LOG = logging.getLogger(__name__)
 _MODEL: "SentenceTransformer" | None = None
+_FALLBACK = False
 _DIM = 384
 
 
@@ -29,21 +31,40 @@ def _get_model() -> "SentenceTransformer":
     (including CI smoke runs) fast and avoids unnecessary startup cost when the
     novelty index is unused.
     """
+    global _MODEL, _FALLBACK
+    if _FALLBACK:
+        raise RuntimeError("SentenceTransformer unavailable")
     try:
         from sentence_transformers import SentenceTransformer
     except Exception as exc:  # pragma: no cover - offline
         raise ImportError("sentence-transformers missing") from exc
-    global _MODEL
     if _MODEL is None:
-        _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        try:
+            _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        except Exception as exc:  # pragma: no cover - offline
+            _FALLBACK = True
+            raise RuntimeError("SentenceTransformer init failed") from exc
     return _MODEL
+
+
+def _hash_embed(text: str) -> np.ndarray:
+    digest = hashlib.sha256(text.encode("utf-8")).digest()
+    reps = (_DIM + len(digest) - 1) // len(digest)
+    raw = (digest * reps)[:_DIM]
+    vec = np.frombuffer(raw, dtype=np.uint8).astype("float32")
+    vec = (vec - 128.0) / 32.0
+    return vec.reshape(1, -1)
 
 
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
-    model = _get_model()
-    vec = model.encode([text], normalize_embeddings=True)
-    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    try:
+        model = _get_model()
+        vec = model.encode([text], normalize_embeddings=True)
+        return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    except Exception as exc:  # pragma: no cover - offline
+        _LOG.warning("SentenceTransformer unavailable (%s). Using hash embeddings.", exc)
+        return _hash_embed(text)
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:
