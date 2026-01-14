@@ -6,9 +6,11 @@ import asyncio
 import importlib
 import pytest
 
-# Stub generated proto dependency if missing
+# Stub generated proto dependency if missing.
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
-if _stub_path not in sys.modules:
+try:
+    import alpha_factory_v1.core.utils.a2a_pb2 as _a2a_pb2  # noqa: F401
+except Exception:
     stub = types.ModuleType("a2a_pb2")
 
     class Envelope:

@@ -15,7 +15,11 @@ from alpha_factory_v1.core.archive import Archive
 
 try:  # pragma: no cover - optional dependency
     import streamlit as _st
+    if _st is None:
+        raise ModuleNotFoundError("streamlit missing")
     from streamlit_autorefresh import st_autorefresh as _autorefresh
+    if _autorefresh is None:
+        raise ModuleNotFoundError("streamlit_autorefresh missing")
 except Exception:  # pragma: no cover - optional
     _st = None
     _autorefresh = None
@@ -63,9 +67,10 @@ def build_tree(df: pd.DataFrame) -> Figure:
         custom_data=[df["patch"].fillna("")],
         color_continuous_scale="Blues",
     )
-    labels = [f"<a href='{p}'>{i}</a>" if p else str(i) for i, p in zip(ids, df["patch"].fillna(""))]
+    patches = df["patch"].fillna("").astype(str).tolist()
+    labels = [f"<a href='{p}'>{i}</a>" if p else str(i) for i, p in zip(ids, patches)]
     fig.data[0].text = labels
-    fig.data[0].hovertemplate = "score=%{color}<br>patch=%{customdata[0]}<extra></extra>"
+    fig.data[0].hovertemplate = patches
     return fig
 
 
