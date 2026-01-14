@@ -8,13 +8,15 @@ of stored items back to the orchestrator.
 
 from __future__ import annotations
 
-from alpha_factory_v1.core.agents.base_agent import BaseAgent
-from alpha_factory_v1.common.utils import messaging, logging as insight_logging
-from alpha_factory_v1.common.utils.logging import Ledger
-from alpha_factory_v1.core.utils.tracing import span
-import os
 import json
+import os
 from pathlib import Path
+
+from alpha_factory_v1.common.utils import logging as insight_logging
+from alpha_factory_v1.common.utils import messaging
+from alpha_factory_v1.common.utils.logging import Ledger
+from alpha_factory_v1.core.agents.base_agent import BaseAgent
+from alpha_factory_v1.core.utils.tracing import span
 
 log = insight_logging.logging.getLogger(__name__)
 
@@ -65,10 +67,22 @@ class MemoryAgent(BaseAgent):
         with span("memory.run_cycle"):
             await self.emit("orch", {"stored": len(self.records)})
 
+    def _normalize_payload(self, payload: object) -> object:
+        """Ensure payloads are JSON serializable when persisted."""
+        if hasattr(payload, "DESCRIPTOR"):
+            try:
+                from google.protobuf import json_format
+
+                return json_format.MessageToDict(payload, preserving_proto_field_name=True)
+            except Exception:  # pragma: no cover - fallback for unexpected proto issues
+                return payload
+        return payload
+
     async def handle(self, env: messaging.Envelope) -> None:
         """Store payload for later retrieval."""
         with span("memory.handle"):
-            self.records.append(env.payload)
+            payload = self._normalize_payload(env.payload)
+            self.records.append(payload)
             if self._limit is not None and len(self.records) > self._limit:
                 excess = len(self.records) - self._limit
                 self.records = self.records[excess:]
@@ -79,4 +93,4 @@ class MemoryAgent(BaseAgent):
             else:
                 if self._store:
                     with self._store.open("a", encoding="utf-8") as fh:
-                        fh.write(json.dumps(env.payload) + "\n")
+                        fh.write(json.dumps(payload) + "\n")
