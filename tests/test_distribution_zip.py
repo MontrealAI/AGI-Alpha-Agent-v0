@@ -30,6 +30,8 @@ def test_distribution_zip(tmp_path: Path) -> None:
     node_major = _node_major()
     if node_major is None or node_major < 22:
         pytest.skip("Node.js 22+ is required to build the Insight demo")
+    if not (BROWSER_DIR / "node_modules").is_dir():
+        pytest.skip("node_modules missing; run npm ci to install Insight demo dependencies")
     zip_path = BROWSER_DIR / "insight_browser.zip"
     if zip_path.exists():
         zip_path.unlink()
