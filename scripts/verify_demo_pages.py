@@ -6,8 +6,10 @@ from __future__ import annotations
 import os
 import sys
 import time
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from threading import Thread
 
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
@@ -15,6 +17,11 @@ from playwright.sync_api import sync_playwright
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
 READY_SELECTORS = ("main h1", "article h1", "#root", "[data-testid='app']")
 DEFAULT_TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "60000"))
+
+
+class _SilentHandler(SimpleHTTPRequestHandler):
+    def log_message(self, format: str, *args: object) -> None:  # noqa: A002
+        return
 
 
 def iter_demos() -> list[Path]:
@@ -106,6 +113,20 @@ def _extract_failure_text(failure: object | None) -> str:
     return str(failure)
 
 
+def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
+    handler = partial(_SilentHandler, directory=str(DOCS_DIR))
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    thread = Thread(target=server.serve_forever, name="docs-server", daemon=True)
+    thread.start()
+    host, port = server.server_address[:2]
+    return server, thread, f"http://{host}:{port}"
+
+
+def _build_demo_url(base_url: str, demo: Path) -> str:
+    rel_path = demo.relative_to(DOCS_DIR).as_posix()
+    return f"{base_url.rstrip('/')}/{rel_path}/index.html"
+
+
 def _log_diagnostics(
     demo: Path,
     page,
@@ -148,7 +169,11 @@ def _log_diagnostics(
 def main() -> int:
     demos = iter_demos()
     failures: list[str] = []
+    server: ThreadingHTTPServer | None = None
+    server_thread: Thread | None = None
+    base_url = ""
     try:
+        server, server_thread, base_url = _start_docs_server()
         with sync_playwright() as p:
             browser = p.chromium.launch()
             for demo in demos:
@@ -176,9 +201,8 @@ def main() -> int:
                 def _record_response(response) -> None:
                     if response.status >= 400:
                         response_failures.append(f"{response.url} -> {response.status}")
-                    if response.url.startswith("file://"):
-                        path = Path(unquote(urlparse(response.url).path))
-                        if not path.exists():
+                    if response.url.startswith(base_url):
+                        if response.status == 404:
                             missing_assets.append(f"{response.url} -> missing")
 
                 page.on("console", _record_console)
@@ -188,7 +212,7 @@ def main() -> int:
 
                 try:
                     page.goto(
-                        (demo / "index.html").resolve().as_uri(),
+                        _build_demo_url(base_url, demo),
                         wait_until="load",
                         timeout=DEFAULT_TIMEOUT_MS,
                     )
@@ -232,6 +256,12 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         print(f"Demo check failed: {exc}", file=sys.stderr)
         return 1
+    finally:
+        if server:
+            server.shutdown()
+            server.server_close()
+        if server_thread:
+            server_thread.join(timeout=2)
 
 
 if __name__ == "__main__":

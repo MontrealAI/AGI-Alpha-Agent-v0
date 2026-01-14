@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from scripts.verify_demo_pages import _extract_failure_text
+from scripts.verify_demo_pages import DOCS_DIR, _build_demo_url, _extract_failure_text
 
 
 def test_extract_failure_text_with_none() -> None:
@@ -37,3 +37,12 @@ def test_extract_failure_text_with_callable_exception() -> None:
         raise RuntimeError("nope")
 
     assert _extract_failure_text(_boom) == "unknown"
+
+
+def test_build_demo_url_uses_http() -> None:
+    demo = DOCS_DIR / "alpha_agi_insight_v1"
+    url = _build_demo_url("http://127.0.0.1:9999", demo)
+
+    assert url.startswith("http://127.0.0.1:9999/")
+    assert url.endswith("/alpha_agi_insight_v1/index.html")
+    assert not url.startswith("file://")
