@@ -30,10 +30,11 @@ except Exception:  # pragma: no cover - optional
 def _expected_root(envs: Iterable[messaging.Envelope]) -> str:
     hashes: list[str] = []
     for env in envs:
-        data = json.dumps(
-            json_format.MessageToDict(env, preserving_proto_field_name=True),
-            sort_keys=True,
-        ).encode()
+        if hasattr(env, "DESCRIPTOR"):
+            record = json_format.MessageToDict(env, preserving_proto_field_name=True)
+        else:
+            record = env.__dict__
+        data = json.dumps(record, sort_keys=True).encode()
         hashes.append(insight_logging.blake3(data).hexdigest())  # type: ignore[attr-defined]
     return insight_logging._merkle_root(hashes)
 

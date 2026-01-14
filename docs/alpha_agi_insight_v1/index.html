@@ -1,19 +1,66 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-insight-ready="1">
   <head>
     <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-/m5/dnOrpByFXPa/UlsG6wbAqwgbnpKZsu0f8ZGOeFeWgUJkWNOsnMnJhlLtVKjV' 'sha384-3Dboua0PFeEb4gQRwfvgBzQ5o0eTObgSEP0aoR7zXQW8QCJ6OUpo5COndbWEuqKU' 'sha384-6uXLUlXRbzUSlajnE2K0BF10x6RoJVL8t6or8ho0dRdj34ZIYs8by8P66vG4xhmo' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'"
+    />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="style.css" />
+
     <script type="importmap">
       {
         "imports": {
-          "d3": "./d3.exports.js"
+          "d3": "./assets/d3.exports.js"
         }
       }
     </script>
+  </head>
+
+  <body class="flex flex-col h-screen">
+    <header class="p-4 bg-base-100/70 backdrop-blur-md">
+      <div class="max-w-4xl mx-auto">
+        <h1
+          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 \
+          bg-clip-text text-transparent animate-gradient"
+        >
+          α-AGI Insight
+        </h1>
+      </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+      <aside
+        id="controls"
+        class="w-64 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto"
+        role="region"
+        aria-label="Controls"
+      ></aside>
+      <main id="canvas" class="flex-1 relative overflow-hidden" role="main"></main>
+      <aside id="log" class="w-80 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" aria-label="Log" role="region"></aside>
+    </div>
+
+    <div id="toast" aria-live="polite" role="status"></div>
+
+    <div id="toolbar" role="toolbar" aria-label="App controls">
+      <button id="install-btn" hidden aria-label="Install application">Install</button>
+    </div>
+
+    <div id="legend" role="region" aria-label="Legend"></div>
+    <div id="depth-legend" role="region" aria-label="Depth Legend"></div>
+
+    <footer id="disclaimer" style="font-size: 0.8rem; margin: 1rem; text-align: center;">
+      This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals
+      and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial
+      advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
+    </footer>
+
+    <script src="assets/d3.v7.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+    <script src="assets/lib/bundle.esm.min.js" integrity="sha384-qri3JZdkai966TTOV3Cl4xxA97q+qXCgKrd49pOn7DPuYN74wOEd6CIJ9HnqEROD" crossorigin="anonymous"></script>
+    <script src="assets/lib/pyodide.js" integrity="sha384-PNUiaEvwfaQJ1qhJmwFD774CUdIYY8k0z7TTAqIzw6fNpx7fG6bzyLb9j6qxSZac" crossorigin="anonymous"></script>
 
     <script>
       // Provide a resilient toast implementation before deferred modules load.
@@ -34,8 +81,8 @@
     </script>
 
     <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      const SW_URL = 'sw.js';
+      const SW_HASH = 'sha384-BSfm47ZPfkxbjGOMhY9fwAiNVSylHpawgZIBP2rRudl5W9v4y1xL2l5dBd+LKB05';
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
@@ -71,6 +118,6 @@
     </script>
 
     <script type="module" src="insight.bundle.js" integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz" crossorigin="anonymous"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+    <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
+  </body>
 </html>
