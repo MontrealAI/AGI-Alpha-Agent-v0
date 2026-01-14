@@ -1,21 +1,34 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
 
+from tests.utils.docker import docker_compose_available, docker_daemon_available
+
 BASE_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1" / "demos" / "macro_sentinel"
 COMPOSE_FILE = BASE_DIR / "docker-compose.macro.yml"
 RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+if not docker_compose_available():
+    pytest.skip("docker compose not available", allow_module_level=True)
+
+if not docker_daemon_available():
+    pytest.skip("docker daemon not available", allow_module_level=True)
 
 
 def test_docker_compose_config() -> None:
-    subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    config_env = RUN_SCRIPT.parent / "config.env"
+    created = False
+    if not config_env.exists():
+        config_env.write_text("OPENAI_API_KEY=\n")
+        created = True
+    try:
+        subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    finally:
+        if created and config_env.exists():
+            config_env.unlink()
 
 
 def test_run_macro_demo_help() -> None:

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
-import shutil
 import subprocess
 import time
 
@@ -13,9 +12,10 @@ import pytest
 
 from alpha_factory_v1.common.utils.logging import Ledger
 from alpha_factory_v1.common.utils import messaging
+from tests.utils.docker import docker_daemon_available
 
-if not shutil.which("docker") or psycopg2 is None:
-    pytest.skip("docker or psycopg2 missing", allow_module_level=True)
+if not docker_daemon_available() or psycopg2 is None:
+    pytest.skip("docker daemon or psycopg2 missing", allow_module_level=True)
 
 
 @pytest.fixture(scope="module")
