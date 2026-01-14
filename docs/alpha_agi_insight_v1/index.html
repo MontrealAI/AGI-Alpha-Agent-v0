@@ -1,12 +1,12 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
-    <title>α-AGI Insight</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' sha384-2hryG7RTOnOHlWx+A114qYg5CDGHS36F7wCmL0DSKJQfCgkIclAZA9QM5tMt0TEW sha384-cb/WEZdyTKJXrGrOrZeOpHpFxJWZPv8Imu6kfsCxjxWy1CDHvWIakIf+omW9Zu/s sha384-HSD0y84goh3xcfITIPVWB+v5eeqUAN7fm0HnqC2KVQ8Yd/2QhIBB8AU8NCFsLB3y sha384-z9qQ0+otPpU3QTErjSTGmSbXmmVrhJcHHQ7WQrBfboPNBdjnVczcw9oRiKMmylRV; style-src 'self' 'unsafe-inline'" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>α-AGI Insight</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="assets/daisyui.min.css" />
     <script type="importmap">
       {
         "imports": {
@@ -24,8 +24,8 @@
           if (t) {
             t.textContent = msg;
             t.classList.add('show');
-            clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
+            clearTimeout(window.toast.id);
+            window.toast.id = window.setTimeout(() => t.classList.remove('show'), 2000);
             return;
           }
           console.warn(msg);
@@ -34,8 +34,8 @@
     </script>
 
     <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
+      const SW_URL = 'sw.js';
+      const SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
@@ -69,8 +69,23 @@
         });
       }
     </script>
+  </head>
+  <body>
+    <main>
+      <h1>α-AGI Insight</h1>
+      <div id="root" data-testid="app"></div>
+    </main>
 
-    <script type="module" src="insight.bundle.js" integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz" crossorigin="anonymous"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
-</body>
+    <script
+      type="module"
+      src="insight.bundle.js"
+      integrity="sha384-qqzAGf6VRJL+I4Dck8OU9CVoUwcYpwsVQLazxhFbOW+7fcqY/yHDRVcblo9xWnYz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.PINNER_TOKEN = atob('');
+      window.OTEL_ENDPOINT = atob('');
+      window.IPFS_GATEWAY = atob('');
+    </script>
+  </body>
 </html>
