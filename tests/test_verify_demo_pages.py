@@ -32,6 +32,10 @@ def test_extract_failure_text_with_callable() -> None:
     assert _extract_failure_text(lambda: "broken pipe") == "broken pipe"
 
 
+def test_extract_failure_text_with_callable_dict() -> None:
+    assert _extract_failure_text(lambda: {"error_text": "socket hangup"}) == "socket hangup"
+
+
 def test_extract_failure_text_with_callable_exception() -> None:
     def _boom() -> str:
         raise RuntimeError("nope")
