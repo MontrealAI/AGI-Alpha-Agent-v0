@@ -30,7 +30,7 @@ def _readiness_state(page) -> dict[str, object]:
           const mainHeading = main ? main.querySelector('h1') : null;
           const bodyText = document.body ? document.body.innerText.trim() : '';
           const mainText = main ? main.textContent.trim() : '';
-          const bundle = document.querySelector('script[src*="insight.bundle.js"]');
+          const bundle = document.querySelector('script[src*="insight.bundle"]');
           return {
             match: findMatch || null,
             hasMain: Boolean(main),
@@ -85,6 +85,25 @@ def _main_snippet(page) -> str:
         return ""
     snippet = " ".join(snippet.split())
     return snippet[:400]
+
+
+def _extract_failure_text(failure: object | None) -> str:
+    """Extract a failure message from a Playwright request failure payload."""
+    if failure is None:
+        return "unknown"
+    if callable(failure):
+        try:
+            failure = failure()
+        except Exception:
+            return "unknown"
+    if isinstance(failure, str):
+        return failure
+    if isinstance(failure, dict):
+        return str(failure.get("errorText") or failure.get("error_text") or "unknown")
+    error_text = getattr(failure, "error_text", None) or getattr(failure, "errorText", None)
+    if error_text:
+        return str(error_text)
+    return str(failure)
 
 
 def _log_diagnostics(
@@ -148,8 +167,11 @@ def main() -> int:
                     page_errors.append(str(exc))
 
                 def _record_request_failure(req) -> None:
-                    failure = req.failure.error_text if req.failure else "unknown"
-                    request_failures.append(f"{req.url} -> {failure}")
+                    try:
+                        failure = _extract_failure_text(req.failure)
+                        request_failures.append(f"{req.url} -> {failure}")
+                    except Exception as exc:  # noqa: BLE001
+                        request_failures.append(f"{req.url} -> handler error: {exc}")
 
                 def _record_response(response) -> None:
                     if response.status >= 400:

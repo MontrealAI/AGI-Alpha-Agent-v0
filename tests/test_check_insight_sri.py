@@ -49,6 +49,26 @@ def test_accepts_unquoted_src(tmp_path: Path) -> None:
     assert check_directory(tmp_path) == 0
 
 
+def test_accepts_hashed_bundle_name(tmp_path: Path) -> None:
+    bundle = tmp_path / "insight.bundle.abc123.js"
+    bundle.write_text("console.log('hi');", encoding="utf-8")
+
+    sri = _hash(bundle)
+    html = tmp_path / "index.html"
+    html.write_text(
+        f"""
+        <html>
+          <body>
+            <script src="insight.bundle.abc123.js" integrity="{sri}" crossorigin="anonymous"></script>
+          </body>
+        </html>
+        """,
+        encoding="utf-8",
+    )
+
+    assert check_directory(tmp_path) == 0
+
+
 @pytest.mark.parametrize(
     "html_snippet",
     [
