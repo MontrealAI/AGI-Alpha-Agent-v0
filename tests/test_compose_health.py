@@ -1,14 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
-import shutil
 import subprocess
 import time
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 import pytest
-import requests
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+from tests.utils.docker import docker_compose_available, docker_daemon_available
+
+if not docker_compose_available() or not docker_daemon_available():
+    pytest.skip("docker compose/daemon not available", allow_module_level=True)
 
 COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
 ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
@@ -20,9 +22,11 @@ if not ENV_FILE.exists():
 def _wait(url: str, timeout: int = 60) -> bool:
     for _ in range(timeout):
         try:
-            if requests.get(url, timeout=2).status_code == 200:
-                return True
-        except Exception:
+            request = Request(url, headers={"User-Agent": "alpha-factory-tests/1.0"})
+            with urlopen(request, timeout=2) as response:
+                if response.status == 200:
+                    return True
+        except (HTTPError, URLError, TimeoutError):
             pass
         time.sleep(1)
     return False

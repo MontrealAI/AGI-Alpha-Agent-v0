@@ -166,6 +166,13 @@ if app is not None:
         allow_headers=["*"],
     )
 
+    try:
+        from alpha_factory_v1.backend.agents.finance_agent import metrics_asgi_app
+
+        app.mount("/metrics", metrics_asgi_app())
+    except Exception:  # pragma: no cover
+        logger.debug("Prometheus metrics endpoint not active.")
+
     _simulations: OrderedDict[str, ResultsResponse] = OrderedDict()
     _progress_ws: Set[Any] = set()
     _latest_id: str | None = None

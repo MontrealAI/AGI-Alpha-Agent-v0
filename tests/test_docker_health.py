@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
-import shutil
 import subprocess
 import time
 
 import pytest
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+from tests.utils.docker import docker_daemon_available
+
+if not docker_daemon_available():
+    pytest.skip("docker daemon not available", allow_module_level=True)
 
 
 @pytest.mark.e2e
