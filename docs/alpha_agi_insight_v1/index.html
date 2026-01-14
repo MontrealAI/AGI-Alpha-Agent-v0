@@ -3,7 +3,7 @@
 <html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-wmBbMOjwxvJ39aarpffMTUEI3kl5FrgDlzNQUmksWmpx939OHQPRuMBvHNQp/teR' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-J1kfFaEtujKM8se2onx8/tKv/t+AcMkKMUSD751Op4IiE2IiCdlpHaiBB/UlIIgd' 'sha384-wmBbMOjwxvJ39aarpffMTUEI3kl5FrgDlzNQUmksWmpx939OHQPRuMBvHNQp/teR' 'sha384-/Nk3BsDXRZ9RoSihEbzD13y2pDelDAgbl26jWSDX5Ks9+h6NL60Y3Fs7Z4JdWZbn' 'sha384-c/zH/BUAqxtBZKIM/eb5rz+z6KrUTGTYsDxNZ7kbhs6EXsCllwcB+Erbpnx6lkf7' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -96,6 +96,27 @@
     <div id="toast" class="toast toast-bottom toast-end" role="status" aria-live="polite"></div>
 
     <script type="module" src="insight.bundle.js" integrity="sha384-4YDjizau6PeT3xXybq5XBDOYDhqLQaxggECxdXbqykx936VD3N84zTElKogFECMw" crossorigin="anonymous"></script>
+    <script>
+      (() => {
+        const root = document.getElementById('root');
+        if (!root) return;
+        const markReady = () => {
+          if (root.childElementCount > 0 || document.querySelector('svg, canvas')) {
+            document.documentElement.dataset.insightReady = '1';
+            return true;
+          }
+          return false;
+        };
+        if (markReady()) return;
+        let attempts = 0;
+        const tick = () => {
+          attempts += 1;
+          if (markReady() || attempts > 240) return;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      })();
+    </script>
     <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
   </body>
 </html>
