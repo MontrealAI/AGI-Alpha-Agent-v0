@@ -141,6 +141,19 @@ def _extract_failure_text(failure: object | None) -> str:
     return str(failure)
 
 
+def _normalize_request_failure(request: object) -> object | None:
+    """Return the request failure payload without raising in event handlers."""
+    failure_attr = getattr(request, "failure", None)
+    if callable(failure_attr):
+        try:
+            return failure_attr()
+        except Exception:
+            return None
+    if failure_attr is not None:
+        return failure_attr
+    return None
+
+
 def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
     handler = partial(_SilentHandler, directory=str(DOCS_DIR))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
@@ -238,11 +251,9 @@ def main() -> int:
                         page_errors.append(str(exc))
 
                     def _record_request_failure(req) -> None:
-                        try:
-                            failure = _extract_failure_text(req.failure)
-                            request_failures.append(f"{req.url} -> {failure}")
-                        except Exception as exc:  # noqa: BLE001
-                            request_failures.append(f"{req.url} -> handler error: {exc}")
+                        failure = _normalize_request_failure(req)
+                        failure_text = _extract_failure_text(failure)
+                        request_failures.append(f"{req.url} -> {failure_text}")
 
                     def _record_response(response) -> None:
                         if response.status >= 400:
