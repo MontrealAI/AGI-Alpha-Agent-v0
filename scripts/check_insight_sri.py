@@ -19,9 +19,9 @@ from typing import Iterable
 
 DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
-SCRIPT_TAG_PATTERN = re.compile(
-    r"<script[^>]*src=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight\.bundle(?:[\w.-]+)?\.js(?:[?#][^'\" >]+)?)"
-    r"(?P=quote)[^>]*>",
+SCRIPT_TAG_PATTERN = re.compile(r"<script[^>]*>", re.IGNORECASE | re.DOTALL)
+SRC_ATTR_PATTERN = re.compile(
+    r"\bsrc\s*=\s*(?P<quote>['\"]?)(?P<src>[^'\" >]+)(?P=quote)",
     re.IGNORECASE | re.DOTALL,
 )
 INTEGRITY_PATTERN = re.compile(r"integrity=['\"]([^'\"]+)['\"]", re.IGNORECASE)
@@ -36,29 +36,45 @@ def _candidate_bundle_paths(path: Path) -> list[Path]:
     return sorted(path.glob("**/insight.bundle*.js"))
 
 
-def _resolve_bundle(index_html: Path, root: Path) -> Path | None:
+def _extract_script_srcs(html_text: str) -> list[str]:
+    sources: list[str] = []
+    for script_tag in SCRIPT_TAG_PATTERN.finditer(html_text):
+        src_match = SRC_ATTR_PATTERN.search(script_tag.group(0))
+        if src_match:
+            sources.append(src_match.group("src"))
+    return sources
+
+
+def _clean_src(src: str) -> str:
+    return src.split("?", 1)[0].split("#", 1)[0]
+
+
+def _resolve_bundle(index_html: Path, root: Path, candidates: list[Path]) -> Path | None:
     html_text = index_html.read_text(encoding="utf-8")
-    matches = list(SCRIPT_TAG_PATTERN.finditer(html_text))
-    if not matches:
-        return None
-    src = matches[0].group("src")
-    src = src.split("?", 1)[0].split("#", 1)[0]
-    src_path = (root / src.lstrip("./")).resolve()
-    if src_path.is_file():
-        return src_path
-    alt_path = root / src.lstrip("./")
-    if alt_path.is_file():
-        return alt_path
-    for candidate in _candidate_bundle_paths(root):
-        if candidate.name == Path(src).name:
-            return candidate
+    sources = _extract_script_srcs(html_text)
+    candidate_names = {candidate.name for candidate in candidates}
+    for src in sources:
+        clean_src = _clean_src(src)
+        if Path(clean_src).name not in candidate_names:
+            continue
+        src_path = (root / clean_src.lstrip("./")).resolve()
+        if src_path.is_file():
+            return src_path
+        alt_path = root / clean_src.lstrip("./")
+        if alt_path.is_file():
+            return alt_path
+        for candidate in candidates:
+            if candidate.name == Path(clean_src).name:
+                return candidate
     return None
 
 
 def _iter_matches(texts: Iterable[tuple[Path, str]]) -> Iterable[tuple[Path, re.Match[str]]]:
     for html_path, html_text in texts:
         for match in SCRIPT_TAG_PATTERN.finditer(html_text):
-            yield html_path, match
+            src_match = SRC_ATTR_PATTERN.search(match.group(0))
+            if src_match:
+                yield html_path, match
 
 
 def check_directory(path: Path) -> int:
@@ -67,12 +83,13 @@ def check_directory(path: Path) -> int:
         print(f"{path}: index.html missing", file=sys.stderr)
         return 1
 
-    bundle = _resolve_bundle(index_html, path)
+    candidates = _candidate_bundle_paths(path)
+    if not candidates:
+        print(f"{path}: insight bundle missing", file=sys.stderr)
+        return 1
+    bundle = _resolve_bundle(index_html, path, candidates)
     if bundle is None:
         print(f"{index_html}: script tag for insight bundle missing", file=sys.stderr)
-        return 1
-    if not bundle.is_file():
-        print(f"{path}: insight bundle missing", file=sys.stderr)
         return 1
 
     html_files = sorted(p for p in path.rglob("*.html") if p.is_file())
@@ -82,8 +99,15 @@ def check_directory(path: Path) -> int:
 
     expected = _hash(bundle)
     errors = 0
+    candidate_names = {candidate.name for candidate in candidates}
     html_texts = [(html, html.read_text(encoding="utf-8")) for html in html_files]
     for html, match in _iter_matches(html_texts):
+        src_match = SRC_ATTR_PATTERN.search(match.group(0))
+        if not src_match:
+            continue
+        src = _clean_src(src_match.group("src"))
+        if Path(src).name not in candidate_names:
+            continue
         sri = INTEGRITY_PATTERN.search(match.group(0))
         if not sri:
             print(f"{html}: integrity attribute missing", file=sys.stderr)
