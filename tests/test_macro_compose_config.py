@@ -19,7 +19,16 @@ if not docker_daemon_available():
 
 
 def test_docker_compose_config() -> None:
-    subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    config_env = RUN_SCRIPT.parent / "config.env"
+    created = False
+    if not config_env.exists():
+        config_env.write_text("OPENAI_API_KEY=\n")
+        created = True
+    try:
+        subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    finally:
+        if created and config_env.exists():
+            config_env.unlink()
 
 
 def test_run_macro_demo_help() -> None:
