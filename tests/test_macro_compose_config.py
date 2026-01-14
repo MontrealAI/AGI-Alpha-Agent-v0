@@ -1,17 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
 
+from tests.utils.docker import docker_compose_available, docker_daemon_available
+
 BASE_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1" / "demos" / "macro_sentinel"
 COMPOSE_FILE = BASE_DIR / "docker-compose.macro.yml"
 RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+if not docker_compose_available():
+    pytest.skip("docker compose not available", allow_module_level=True)
+
+if not docker_daemon_available():
+    pytest.skip("docker daemon not available", allow_module_level=True)
 
 
 def test_docker_compose_config() -> None:
