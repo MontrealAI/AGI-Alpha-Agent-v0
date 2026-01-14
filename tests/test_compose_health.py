@@ -11,6 +11,10 @@ if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
 
 COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
+ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
+
+if not ENV_FILE.exists():
+    pytest.skip("dotenv file missing; create .env from .env.sample to run compose tests", allow_module_level=True)
 
 
 def _wait(url: str, timeout: int = 60) -> bool:

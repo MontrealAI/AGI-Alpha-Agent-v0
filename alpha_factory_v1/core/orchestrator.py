@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import asyncio
 import os
+import random
+import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, cast
 
@@ -52,6 +54,38 @@ log = insight_logging.logging.getLogger(__name__)
 
 
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
+
+
+async def monitor_agents(
+    runners: Dict[str, AgentRunner],
+    bus: messaging.A2ABus,
+    ledger: Ledger,
+    *,
+    err_threshold: int = ERR_THRESHOLD,
+    backoff_exp_after: int = BACKOFF_EXP_AFTER,
+    on_restart: Callable[[AgentRunner], None] | None = None,
+) -> None:
+    """Monitor runners and log warnings when agents restart."""
+    while True:
+        await asyncio.sleep(2)
+        now = time.time()
+        for runner in list(runners.values()):
+            needs_restart = False
+            if runner.task and runner.task.done():
+                needs_restart = True
+            elif runner.error_count >= err_threshold:
+                needs_restart = True
+            elif now - runner.last_beat > runner.period * 5:
+                needs_restart = True
+            if needs_restart:
+                log.warning("%s unresponsive – restarting", runner.agent.name)
+                delay = random.uniform(0.5, 1.5)
+                if runner.restart_streak >= backoff_exp_after:
+                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
+                await asyncio.sleep(delay)
+                await runner.restart(bus, ledger)
+                if on_restart:
+                    on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):

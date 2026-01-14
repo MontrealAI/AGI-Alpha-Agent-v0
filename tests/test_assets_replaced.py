@@ -18,8 +18,20 @@ def test_assets_replaced() -> None:
 
     dist_dir = BASE / "dist"
     if dist_dir.exists():
-        _assert_no_placeholder(dist_dir / "workbox-sw.js")
-        _assert_no_placeholder(dist_dir / "bundle.esm.min.js")
+        lib_dir = dist_dir / "lib"
+        assets_lib_dir = dist_dir / "assets" / "lib"
+        workbox_path = (
+            assets_lib_dir / "workbox-sw.js"
+            if (assets_lib_dir / "workbox-sw.js").exists()
+            else lib_dir / "workbox-sw.js"
+        )
+        bundle_path = (
+            assets_lib_dir / "bundle.esm.min.js"
+            if (assets_lib_dir / "bundle.esm.min.js").exists()
+            else lib_dir / "bundle.esm.min.js"
+        )
+        _assert_no_placeholder(workbox_path)
+        _assert_no_placeholder(bundle_path)
     else:
         pytest.skip("Insight browser dist assets missing; run npm build to generate them")
 
