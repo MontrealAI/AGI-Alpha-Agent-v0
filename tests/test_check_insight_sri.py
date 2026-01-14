@@ -90,6 +90,42 @@ def test_accepts_hashed_bundle_name(tmp_path: Path) -> None:
     assert check_directory(tmp_path) == 0
 
 
+def test_accepts_absolute_path_reference(tmp_path: Path) -> None:
+    bundle = tmp_path / "insight.bundle.js"
+    bundle.write_text("console.log('hi');", encoding="utf-8")
+
+    sri = _hash(bundle)
+    html = tmp_path / "index.html"
+    html.write_text(
+        f"""
+        <html>
+          <body>
+            <script src="/alpha_agi_insight_v1/insight.bundle.js" integrity="{sri}" crossorigin="anonymous"></script>
+          </body>
+        </html>
+        """,
+        encoding="utf-8",
+    )
+
+    assert check_directory(tmp_path) == 0
+
+
+def test_fails_when_bundle_reference_missing_file(tmp_path: Path) -> None:
+    html = tmp_path / "index.html"
+    html.write_text(
+        """
+        <html>
+          <body>
+            <script src="insight.bundle.js" integrity="abc"></script>
+          </body>
+        </html>
+        """,
+        encoding="utf-8",
+    )
+
+    assert check_directory(tmp_path) == 1
+
+
 def test_fails_when_bundle_not_referenced(tmp_path: Path) -> None:
     bundle = tmp_path / "insight.bundle.js"
     bundle.write_text("console.log('hi');", encoding="utf-8")

@@ -13,7 +13,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
-READY_SELECTORS = ("main h1", "article h1", "#root", "[data-testid='app']", "#app")
+READY_SELECTORS = ("main h1", "article h1", "header h1", "#root", "[data-testid='app']", "#app")
 DEFAULT_TIMEOUT_MS = int(os.environ.get("PWA_TIMEOUT_MS", "60000"))
 
 
