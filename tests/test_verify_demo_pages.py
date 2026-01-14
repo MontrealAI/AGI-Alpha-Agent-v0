@@ -23,6 +23,11 @@ def test_extract_failure_text_with_object_attribute() -> None:
     assert _extract_failure_text(failure) == "connection reset"
 
 
+def test_extract_failure_text_with_object_camel_case_attribute() -> None:
+    failure = SimpleNamespace(errorText="request aborted")
+    assert _extract_failure_text(failure) == "request aborted"
+
+
 def test_extract_failure_text_with_callable() -> None:
     assert _extract_failure_text(lambda: "broken pipe") == "broken pipe"
 
