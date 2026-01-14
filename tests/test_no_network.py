@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
 
-if not shutil.which("docker"):
-    pytest.skip("docker not available", allow_module_level=True)
+from tests.utils.docker import docker_compose_available, docker_daemon_available
+
+if not docker_compose_available() or not docker_daemon_available():
+    pytest.skip("docker compose/daemon not available", allow_module_level=True)
 
 COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
 
