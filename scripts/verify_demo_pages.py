@@ -37,6 +37,7 @@ def _readiness_state(page) -> dict[str, object]:
           const main = document.querySelector('main');
           const mainHeading = main ? main.querySelector('h1') : null;
           const root = document.querySelector('#root');
+          const appReady = document.documentElement.dataset.appReady === 'true';
           const bodyText = document.body ? document.body.innerText.trim() : '';
           const mainText = main ? main.textContent.trim() : '';
           const bundle = document.querySelector('script[src*="insight.bundle"]');
@@ -48,6 +49,7 @@ def _readiness_state(page) -> dict[str, object]:
             bodyTextLen: bodyText.length,
             mainTextLen: mainText.length,
             hasBundle: Boolean(bundle),
+            appReady,
             title: document.title || ''
           };
         }
@@ -71,6 +73,8 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     if body_text_len > 120:
         return True, "body-text"
     if demo.name == "alpha_agi_insight_v1" and has_main and state.get("hasBundle"):
+        if state.get("appReady"):
+            return True, "insight app-ready"
         heading = str(state.get("mainHeadingText") or "")
         title = str(state.get("title") or "")
         if main_text_len > 0 or body_text_len > 0:
@@ -121,7 +125,7 @@ def _extract_failure_text(failure: object | None) -> str:
     error_text = getattr(failure, "error_text", None) or getattr(failure, "errorText", None)
     if error_text:
         return str(error_text)
-    return str(failure)
+    return repr(failure)
 
 
 def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
@@ -192,6 +196,7 @@ def main() -> int:
         server, server_thread, base_url = _start_docs_server()
         with sync_playwright() as p:
             browser = p.chromium.launch()
+            context = browser.new_context(service_workers="block")
             for demo in demos:
                 last_error: str | None = None
                 last_url = ""
@@ -205,7 +210,7 @@ def main() -> int:
                 page_for_diagnostics = None
 
                 for attempt in range(1, MAX_ATTEMPTS + 1):
-                    page = browser.new_page()
+                    page = context.new_page()
                     console_messages: list[str] = []
                     page_errors: list[str] = []
                     request_failures: list[str] = []
@@ -291,6 +296,7 @@ def main() -> int:
                     )
                     if page_for_diagnostics:
                         page_for_diagnostics.close()
+            context.close()
             browser.close()
         if failures:
             print(f"Demo readiness failed for: {', '.join(failures)}", file=sys.stderr)
