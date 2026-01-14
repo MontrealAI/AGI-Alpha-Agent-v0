@@ -295,15 +295,17 @@ async function bundle() {
     }
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;
     let bundleText = await fs.readFile(bundlePath, "utf8");
+    const wrapIife = (code, footer) =>
+        `(() => {\n${code}\n${footer}\n})();\n`;
     let web3Code = await fs.readFile(
         path.join("lib", "bundle.esm.min.js"),
         "utf8",
     );
     web3Code = web3Code.replace(/export\s+/g, "");
-    web3Code += "\nwindow.Web3Storage=Web3Storage;";
+    web3Code = wrapIife(web3Code, "window.Web3Storage=Web3Storage;");
     let pyCode = await fs.readFile(path.join("lib", "pyodide.js"), "utf8");
     pyCode = pyCode.replace(/export\s+/g, "");
-    pyCode += "\nwindow.loadPyodide=loadPyodide;";
+    pyCode = wrapIife(pyCode, "window.loadPyodide=loadPyodide;");
     let ortCode = "";
     const ortPath = path.join(
         "node_modules",
@@ -313,7 +315,7 @@ async function bundle() {
     );
     if (fsSync.existsSync(ortPath)) {
         ortCode = await fs.readFile(ortPath, "utf8");
-        ortCode += "\nwindow.ort=ort;";
+        ortCode = wrapIife(ortCode, "window.ort=ort;");
     }
     bundleText =
         `${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
