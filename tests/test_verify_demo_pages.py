@@ -39,6 +39,16 @@ def test_extract_failure_text_with_callable_exception() -> None:
     assert _extract_failure_text(_boom) == "unknown"
 
 
+def test_extract_failure_text_with_callable_object() -> None:
+    class Failure:
+        errorText = "network reset"
+
+    def _call() -> Failure:
+        return Failure()
+
+    assert _extract_failure_text(_call) == "network reset"
+
+
 def test_build_demo_url_uses_http() -> None:
     demo = DOCS_DIR / "alpha_agi_insight_v1"
     url = _build_demo_url("http://127.0.0.1:9999", demo)
