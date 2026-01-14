@@ -20,7 +20,7 @@ from typing import Iterable
 DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
 SCRIPT_TAG_PATTERN = re.compile(
-    r"<script[^>]*src=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight(?:[\w.-]+)?\.bundle\.js(?:[?#][^'\" >]+)?)"
+    r"<script[^>]*src=(?P<quote>['\"]?)(?P<src>[^'\" >]*insight\.bundle(?:[\w.-]+)?\.js(?:[?#][^'\" >]+)?)"
     r"(?P=quote)[^>]*>",
     re.IGNORECASE | re.DOTALL,
 )
@@ -33,7 +33,7 @@ def _hash(path: Path) -> str:
 
 
 def _candidate_bundle_paths(path: Path) -> list[Path]:
-    return sorted(path.glob("**/insight*.bundle.js"))
+    return sorted(path.glob("**/insight.bundle*.js"))
 
 
 def _resolve_bundle(index_html: Path, root: Path) -> Path | None:
