@@ -21,7 +21,7 @@ DEFAULT_DIR = Path("docs/alpha_agi_insight_v1")
 
 SCRIPT_TAG_PATTERN = re.compile(r"<script[^>]*>", re.IGNORECASE | re.DOTALL)
 SRC_ATTR_PATTERN = re.compile(
-    r"\bsrc=(?P<quote>['\"]?)(?P<src>[^'\" >]+)(?P=quote)",
+    r"\bsrc\s*=\s*(?P<quote>['\"]?)(?P<src>[^'\" >]+)(?P=quote)",
     re.IGNORECASE | re.DOTALL,
 )
 INTEGRITY_PATTERN = re.compile(r"integrity=['\"]([^'\"]+)['\"]", re.IGNORECASE)
