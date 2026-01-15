@@ -7,10 +7,13 @@ import importlib
 import importlib.util
 import pytest
 
-# Stub generated proto dependency if missing
+# Stub generated proto dependency only when import fails.
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
 _spec = importlib.util.find_spec(_stub_path)
 if _spec is None and _stub_path not in sys.modules:
+try:
+    importlib.import_module(_stub_path)
+except Exception:
     stub = types.ModuleType("a2a_pb2")
 
     class Envelope:
