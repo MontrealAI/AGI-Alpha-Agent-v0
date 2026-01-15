@@ -93,6 +93,7 @@ def main(argv: list[str] | None = None) -> None:
     runtime.register(agent)
     logger.info("Registered GovernanceSimAgent with runtime")
     if args.enable_adk:
+        logger.info("ADK bridge requested for governance demo")
         try:
             from alpha_factory_v1.backend.adk_bridge import auto_register, maybe_launch
 

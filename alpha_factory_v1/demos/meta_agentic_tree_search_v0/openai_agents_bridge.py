@@ -153,7 +153,19 @@ if has_oai:
             logger.warning("ADK bridge unavailable: %s", exc)
 
         logger.info("Registered MATSAgent with runtime")
-        runtime.run()
+        if hasattr(runtime, "run"):
+            runtime.run()
+        elif hasattr(runtime, "serve"):
+            runtime.serve()
+        else:
+            logger.info("AgentRuntime run loop unavailable; running offline demo")
+            run(
+                episodes=episodes,
+                target=target,
+                model=model,
+                rewriter=rewriter,
+                market_data=market_data,
+            )
 
 else:
     try:
