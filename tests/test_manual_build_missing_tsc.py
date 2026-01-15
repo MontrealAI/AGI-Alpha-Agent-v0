@@ -17,6 +17,12 @@ REASON_NODE = "node not available"
     reason=REASON_NODE,
 )  # type: ignore[misc]
 def test_manual_build_missing_tsc(tmp_path: Path) -> None:
+    try:
+        node_version = subprocess.check_output(["node", "--version"], text=True).strip()
+    except subprocess.SubprocessError:
+        pytest.skip("node not available")
+    if not node_version.lstrip("v").startswith("22."):
+        pytest.skip("Node.js 22+ required for manual build")
     work = tmp_path / "browser"
     shutil.copytree(BROWSER_DIR, work)
     # provide required .env

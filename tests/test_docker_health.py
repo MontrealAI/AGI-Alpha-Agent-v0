@@ -9,6 +9,11 @@ import pytest
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
 
+try:
+    subprocess.run(["docker", "info"], check=True, capture_output=True, text=True)
+except subprocess.SubprocessError:
+    pytest.skip("docker daemon not available", allow_module_level=True)
+
 
 @pytest.mark.e2e
 def test_container_healthcheck() -> None:

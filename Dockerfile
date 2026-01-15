@@ -59,6 +59,7 @@ RUN npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/we
 
 # git executable path for GitPython
 ENV GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git
+ENV API_TOKEN=REPLACE_ME_TOKEN
 ENV PATH="/usr/bin:$PATH"
 
 # run as non-root user for demos
