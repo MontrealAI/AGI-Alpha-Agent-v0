@@ -225,6 +225,11 @@ patch sbom '.services += {"sbom":{image:"anchore/syft:v1.27.0",command:["sh","-c
 # PPO continual-learning builder
 patch alpha-trainer '.services += {"alpha-trainer":{build:{context:"./alpha_factory_v1/continual"},depends_on:["ray-head","orchestrator"]}}'
 
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY and SKIP_BENCH set; skipping bootstrap extras."
+  exit 0
+fi
+
 ############## 5. CONTINUAL-LEARNING PIPELINE #################################
 cat > "$CONTINUAL_DIR/rubric.json" <<'JSON'
 {"success":{"w":1.0},"latency_ms":{"w":-0.001,"target":1000},"cost_usd":{"w":-1.0}}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import inspect
 import json
 import logging
@@ -86,6 +87,31 @@ _WHEEL_PUBKEY = os.getenv(
 _WHEEL_SIGS: Dict[str, str] = {
     "example_agent.whl": ("XKyQtzeUaE2EkbB0Up4teNr+i6gRSNE3Gcy6q605jQogZXjjp4pfxkGko/VDvJCGJgHD5X0fo30Mk+ESwQC9Q==")
 }
+
+
+def _verify_wheel(path: Path) -> bool:
+    """Verify a wheel signature using the configured public key."""
+    if ed25519 is None:
+        return True
+    sig_b64 = _WHEEL_SIGS.get(path.name)
+    if not sig_b64:
+        return False
+    try:
+        sig = base64.b64decode(sig_b64)
+        pub = base64.b64decode(_WHEEL_PUBKEY)
+        key = ed25519.Ed25519PublicKey.from_public_bytes(pub)
+        data = path.read_bytes()
+        try:
+            key.verify(sig, data)
+            return True
+        except InvalidSignature:
+            import hashlib
+
+            digest = hashlib.sha512(data).digest()
+            key.verify(sig, digest)
+            return True
+    except (ValueError, InvalidSignature):
+        return False
 
 # ---------------------------------------------------------------------------
 # logging

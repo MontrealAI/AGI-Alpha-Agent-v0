@@ -39,10 +39,11 @@ def select_parent(pop: Sequence[Any], *, epsilon: float = 0.1, rng: random.Rando
     """Return a parent from ``pop`` via Pareto rank with epsilon-greedy randomness."""
     if not pop:
         raise ValueError("population is empty")
-    rng = rng or random.Random()
-    if rng.random() < epsilon:
-        return rng.choice(list(pop))
+    rng = rng or random
     ranks = _pareto_ranks(pop)
     best = min(ranks)
+    if rng.random() < epsilon:
+        non_best = [ind for ind, r in zip(pop, ranks) if r != best]
+        return rng.choice(non_best or list(pop))
     candidates = [ind for ind, r in zip(pop, ranks) if r == best]
     return rng.choice(candidates)
