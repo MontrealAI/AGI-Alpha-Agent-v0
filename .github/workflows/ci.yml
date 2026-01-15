@@ -160,7 +160,6 @@ jobs:
             requirements.lock
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
-
       - name: Show tool versions
         run: |
           python --version
@@ -292,6 +291,10 @@ jobs:
             requirements.lock
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          df -h
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
