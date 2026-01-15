@@ -12,7 +12,7 @@ REPLAY_TS = Path("src/replay.ts")
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
 def test_branching_and_cid(tmp_path: Path) -> None:
-    js_out = tmp_path / "replay.js"
+    js_out = tmp_path / "src" / "replay.js"
     subprocess.run(
         [
             "tsc",
@@ -21,8 +21,8 @@ def test_branching_and_cid(tmp_path: Path) -> None:
             "--module",
             "es2020",
             REPLAY_TS,
-            "--outFile",
-            js_out,
+            "--outDir",
+            tmp_path,
         ],
         check=True,
     )
