@@ -46,9 +46,7 @@ if has_oai:
     import openai_agents
     from openai_agents import Agent, function_tool
 
-    if hasattr(openai_agents, "AgentRuntime"):
-        from openai_agents import AgentRuntime
-    else:  # fallback shim for newer SDKs without AgentRuntime
+    def _fallback_runtime() -> type:
         from agents.run import Runner
 
         class _FallbackAgentRuntime:
@@ -66,7 +64,14 @@ if has_oai:
                     raise RuntimeError("No agent registered")
                 asyncio.run(self._runner.run(self._agent, ""))
 
-        AgentRuntime = _FallbackAgentRuntime
+        return _FallbackAgentRuntime
+
+    if hasattr(openai_agents, "AgentRuntime"):
+        from openai_agents import AgentRuntime as _AgentRuntime
+
+        AgentRuntime = _fallback_runtime() if not hasattr(_AgentRuntime, "run") else _AgentRuntime
+    else:  # fallback shim for newer SDKs without AgentRuntime
+        AgentRuntime = _fallback_runtime()
 
     try:
         from .run_demo import run
@@ -138,6 +143,16 @@ if has_oai:
             os.environ.setdefault("OPENAI_MODEL", model)
         if rewriter:
             os.environ.setdefault("MATS_REWRITER", rewriter)
+        if not os.getenv("OPENAI_API_KEY"):
+            logger.info("OpenAI API key missing. Running offline demo...")
+            run(
+                episodes=episodes,
+                target=target,
+                model=model,
+                rewriter=rewriter,
+                market_data=market_data,
+            )
+            return
         runtime = AgentRuntime(api_key=os.getenv("OPENAI_API_KEY"))
         agent = MATSAgent(market_data=market_data)
         runtime.register(agent)
@@ -153,7 +168,17 @@ if has_oai:
             logger.warning("ADK bridge unavailable: %s", exc)
 
         logger.info("Registered MATSAgent with runtime")
-        runtime.run()
+        try:
+            runtime.run()
+        except AttributeError as exc:
+            logger.warning("Runtime missing run() (%s). Running offline demo...", exc)
+            run(
+                episodes=episodes,
+                target=target,
+                model=model,
+                rewriter=rewriter,
+                market_data=market_data,
+            )
 
 else:
     try:
@@ -226,8 +251,8 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
-    if not has_oai:
-        logger.info("openai-agents package is missing. Running offline demo...")
+    if not has_oai or not os.getenv("OPENAI_API_KEY"):
+        logger.info("OpenAI agents unavailable. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,
