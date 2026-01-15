@@ -21,6 +21,7 @@ from __future__ import annotations
 
 # ─────────────────────── Back-compat shim (critical) ──────────────────────
 import importlib
+import importlib.util
 import logging
 import sys
 import types
@@ -83,9 +84,14 @@ _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 
-_fin_mod = importlib.import_module(".agents.finance_agent", __name__)
-sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
-sys.modules["backend.finance_agent"] = _fin_mod
+_finance_spec = importlib.util.find_spec(".agents.finance_agent", package=__name__)
+if _finance_spec and _finance_spec.loader:
+    _finance_loader = importlib.util.LazyLoader(_finance_spec.loader)
+    _finance_spec.loader = _finance_loader
+    _fin_mod = importlib.util.module_from_spec(_finance_spec)
+    sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
+    sys.modules["backend.finance_agent"] = _fin_mod
+    _finance_loader.exec_module(_fin_mod)
 
 
 # ──────────────────────── log & CSRF helpers (unchanged) ──────────────────
