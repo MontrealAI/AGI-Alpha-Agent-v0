@@ -6,8 +6,9 @@ from __future__ import annotations
 
 import os
 import sys
-from playwright.sync_api import Error as PlaywrightError, sync_playwright
 import time
+
+from playwright.sync_api import ConsoleMessage, Error as PlaywrightError, sync_playwright
 
 
 URL = "http://localhost:8000/alpha_agi_insight_v1/"
@@ -33,7 +34,7 @@ def _attempt() -> bool:
             context = browser.new_context()
             page = context.new_page()
 
-            def on_console(msg: object) -> None:
+            def on_console(msg: ConsoleMessage) -> None:
                 entry = f"[{msg.type}] {msg.text}"
                 logs.append(entry)
                 print(entry, file=sys.stderr, flush=True)

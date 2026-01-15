@@ -8,23 +8,30 @@ of stored items back to the orchestrator.
 
 from __future__ import annotations
 
-from alpha_factory_v1.core.agents.base_agent import BaseAgent
-from alpha_factory_v1.common.utils import messaging, logging as insight_logging
-from alpha_factory_v1.common.utils.logging import Ledger
-from alpha_factory_v1.core.utils.tracing import span
+import json
+import os
+from pathlib import Path
+from typing import cast
+
 from google.protobuf import json_format
 from google.protobuf.message import Message
-import os
-import json
-from pathlib import Path
+
+from alpha_factory_v1.common.utils import logging as insight_logging
+from alpha_factory_v1.common.utils import messaging
+from alpha_factory_v1.common.utils.logging import Ledger
+from alpha_factory_v1.core.agents.base_agent import BaseAgent
+from alpha_factory_v1.core.utils.tracing import span
 
 log = insight_logging.logging.getLogger(__name__)
 
 
-def _coerce_payload(payload: object) -> dict[str, object] | list[object] | object:
+JSONValue = dict[str, object] | list[object] | str | int | float | bool | None
+
+
+def _coerce_payload(payload: object) -> JSONValue:
     if isinstance(payload, Message):
-        return json_format.MessageToDict(payload, preserving_proto_field_name=True)
-    return payload
+        return cast(JSONValue, json_format.MessageToDict(payload, preserving_proto_field_name=True))
+    return cast(JSONValue, payload)
 
 
 class MemoryAgent(BaseAgent):
@@ -50,7 +57,7 @@ class MemoryAgent(BaseAgent):
                     log.warning("invalid AGI_INSIGHT_MEMORY_LIMIT=%s", raw)
                     memory_limit = None
         self._limit = memory_limit
-        self.records: list[dict[str, object]] = []
+        self.records: list[JSONValue] = []
         self._store = Path(store_path) if store_path else None
         if self._store and self._store.exists():
             for line in self._store.read_text(encoding="utf-8").splitlines():
