@@ -120,7 +120,10 @@ class Orchestrator(BaseOrchestrator):
             )
             sys.exit(1)
 
-        metrics = MetricsExporter(METRICS_PORT)
+        metrics_port = _env_int("METRICS_PORT", METRICS_PORT)
+        port = _env_int("PORT", PORT)
+        a2a_port = _env_int("A2A_PORT", A2A_PORT)
+        metrics = MetricsExporter(metrics_port)
         kafka = KafkaService(KAFKA_BROKER, DEV_MODE)
 
         scheduler = AgentScheduler(
@@ -136,8 +139,8 @@ class Orchestrator(BaseOrchestrator):
             scheduler.manager.runners,
             MODEL_MAX_BYTES,
             mem,
-            PORT,
-            A2A_PORT,
+            port,
+            a2a_port,
             LOGLEVEL,
             SSL_DISABLE,
         )

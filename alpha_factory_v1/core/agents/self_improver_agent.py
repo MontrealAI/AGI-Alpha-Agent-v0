@@ -6,12 +6,13 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.core.self_evolution import self_improver
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch
 
 try:  # optional dependency
     import git  # type: ignore
@@ -72,7 +73,7 @@ class SelfImproverAgent(BaseAgent):
         """Apply the proposed patch if valid and update the metric file."""
         if git is None:
             raise RuntimeError("GitPython is required")
-        diff = self.patch_file.read_text()
+        diff = normalize_patch(self.patch_file.read_text())
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
@@ -90,11 +91,17 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                with tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8") as temp_patch:
+                    temp_patch.write(diff)
+                    temp_path = temp_patch.name
+                repo.git.apply(temp_path)
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
+            finally:
+                if "temp_path" in locals():
+                    Path(temp_path).unlink(missing_ok=True)
         finally:
             shutil.rmtree(clone, ignore_errors=True)

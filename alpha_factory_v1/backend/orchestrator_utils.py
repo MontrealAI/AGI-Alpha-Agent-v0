@@ -11,6 +11,7 @@ import asyncio
 import contextlib
 import random
 import time
+import os
 from typing import Callable, Dict
 
 from google.protobuf import struct_pb2
@@ -100,6 +101,14 @@ async def monitor_agents(
     """Restart crashed or stalled agents and apply exponential backoff."""
     while True:
         await asyncio.sleep(2)
+        try:
+            err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", err_threshold))
+        except (TypeError, ValueError):
+            pass
+        try:
+            backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
+        except (TypeError, ValueError):
+            pass
         now = time.time()
         for r in list(runners.values()):
             needs_restart = False

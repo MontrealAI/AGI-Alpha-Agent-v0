@@ -13,8 +13,10 @@ TAXONOMY_TS = Path("src/taxonomy.ts")
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
 def test_taxonomy_mine_and_prune(tmp_path: Path) -> None:
-    js_out = tmp_path / "taxonomy.js"
-    subprocess.run(["tsc", "--target", "es2020", "--module", "es2020", TAXONOMY_TS, "--outFile", js_out], check=True)
+    js_out = tmp_path / "src" / "taxonomy.js"
+    subprocess.run(
+        ["tsc", "--target", "es2020", "--module", "es2020", TAXONOMY_TS, "--outDir", tmp_path], check=True
+    )
 
     script = tmp_path / "run.mjs"
     script.write_text(

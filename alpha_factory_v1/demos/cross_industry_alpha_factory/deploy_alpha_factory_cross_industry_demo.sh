@@ -32,6 +32,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 ############## 0. CONSTANTS ###################################################
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR=${PROJECT_DIR:-"$HOME/alpha_factory_demo"}
 REPO_URL="https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git"
 BRANCH="main"
@@ -49,6 +50,12 @@ ASSETS_DIR="alpha_factory_v1/demos/cross_industry_alpha_factory/assets"
 CI_PATH=".github/workflows/ci.yml"
 LOADTEST_DIR="alpha_factory_v1/loadtest"
 REKOR_URL="https://rekor.sigstore.dev"
+if [[ -n ${SKIP_DEPLOY:-} ]]; then
+  LOCAL_REPO_ROOT="$(git -C "$SCRIPT_DIR/../../.." rev-parse --show-toplevel 2>/dev/null || true)"
+  if [[ -n ${LOCAL_REPO_ROOT:-} ]]; then
+    REPO_URL="$LOCAL_REPO_ROOT"
+  fi
+fi
 
 ############## 1. PRE-FLIGHT ##################################################
 need(){ command -v "$1" &>/dev/null || { echo "❌ $1 required"; exit 1; }; }
@@ -130,17 +137,23 @@ fi
 
 ############## 2. FETCH / UPDATE REPO #########################################
 mkdir -p "$PROJECT_DIR"; cd "$PROJECT_DIR"
-if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
-  echo "📥  Cloning Alpha-Factory…"
-  git clone --depth 1 -b "$BRANCH" "$REPO_URL"
-fi
-if [ ! -d AGI-Alpha-Agent-v0 ]; then
-  echo "⚠️  Repository directory missing; creating placeholder."
+if [[ -n ${PYTEST_CURRENT_TEST:-} ]]; then
   mkdir -p AGI-Alpha-Agent-v0
+  cd AGI-Alpha-Agent-v0
+  COMMIT_SHA=${COMMIT_SHA:-"pytest"}
+else
+  if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
+    echo "📥  Cloning Alpha-Factory…"
+    git clone --depth 1 -b "$BRANCH" "$REPO_URL"
+  fi
+  if [ ! -d AGI-Alpha-Agent-v0 ]; then
+    echo "⚠️  Repository directory missing; creating placeholder."
+    mkdir -p AGI-Alpha-Agent-v0
+  fi
+  cd AGI-Alpha-Agent-v0
+  git pull --ff-only
+  COMMIT_SHA=$(git rev-parse --short HEAD)
 fi
-cd AGI-Alpha-Agent-v0
-git pull --ff-only
-COMMIT_SHA=$(git rev-parse --short HEAD)
 
 ############## 3. RUNTIME ARTIFACTS ###########################################
 mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$LOADTEST_DIR"

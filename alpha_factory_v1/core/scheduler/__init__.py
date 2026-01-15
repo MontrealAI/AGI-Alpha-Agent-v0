@@ -54,7 +54,15 @@ class SelfImprovementScheduler:
         self.tokens_used = 0
         self.start_time = 0.0
         self.running: Set[asyncio.Task[None]] = set()
-        self.app = Rocketry(execution="async")
+        try:
+            self.app = Rocketry(execution="async")
+        except TypeError:
+            self.app = Rocketry()
+            if hasattr(self.app, "session"):
+                try:
+                    self.app.session.config.execution = "async"
+                except AttributeError:
+                    pass
 
         @self.app.task(every(interval))
         async def _spawn():  # pragma: no cover - Rocketry callback
