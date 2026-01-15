@@ -32,6 +32,16 @@ def _skip_reason() -> str | None:
         return "Node.js 22+ required for ts-node loader"
     if not TS_NODE_LOADER.is_file():
         return "ts-node loader not installed"
+    ort_pkg = LLM.parents[2] / "node_modules" / "onnxruntime-web"
+    if not ort_pkg.exists():
+        return "onnxruntime-web not installed"
+    ort_probe = subprocess.run(
+        ["node", "-e", "import('onnxruntime-web')"],
+        capture_output=True,
+        text=True,
+    )
+    if ort_probe.returncode != 0:
+        return "onnxruntime-web not importable"
     if not LLM.is_file():
         return "llm.ts missing"
     return None

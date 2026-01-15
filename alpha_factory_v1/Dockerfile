@@ -49,6 +49,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DEBIAN_FRONTEND=noninteractive \
     PYTHONPATH=/app \
     GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git \
+    API_TOKEN=REPLACE_ME_TOKEN \
     PATH="/usr/bin:$PATH"
 
 #############################
@@ -121,7 +122,8 @@ USER alphafactory
 #############################
 # 7) Health‑check           #
 #############################
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:8000/healthz || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f \
+    -H "Authorization: Bearer ${API_TOKEN}" http://localhost:8000/healthz || exit 1
 
 #############################
 # 8) Ports & Entrypoint      #

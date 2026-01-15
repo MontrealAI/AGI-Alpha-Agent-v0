@@ -13,6 +13,14 @@ RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
 
+compose_check = subprocess.run(
+    ["docker", "compose", "version"],
+    capture_output=True,
+    text=True,
+)
+if compose_check.returncode != 0:
+    pytest.skip("docker compose not available", allow_module_level=True)
+
 
 def test_docker_compose_config() -> None:
     subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
