@@ -85,6 +85,16 @@ def _plain_table(headers: Iterable[str], rows: Iterable[Iterable[Any]]) -> str:
     return "\n".join([header, line, *data_lines])
 
 
+def _normalize_payload(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: _normalize_payload(val) for key, val in value.items()}
+    if isinstance(value, list):
+        return [_normalize_payload(item) for item in value]
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
+
+
 def _rich_table(headers: Iterable[str], rows: Iterable[Iterable[Any]]) -> None:
     if console and Table:
         table = Table(show_header=True, header_style="bold cyan")
@@ -643,7 +653,8 @@ def replay(since: float | None, count: int | None) -> None:
             since_val = since
             rows = [r for r in rows if r["ts"] >= since_val]
         for row in rows:
-            msg = f"{row['ts']:.2f} {row['sender']} -> {row['recipient']} {json.dumps(row['payload'])}"
+            payload = _normalize_payload(row["payload"])
+            msg = f"{row['ts']:.2f} {row['sender']} -> {row['recipient']} {json.dumps(payload)}"
             click.echo(msg)
             time.sleep(0.1)
 
