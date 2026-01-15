@@ -51,6 +51,32 @@ if has_oai:
 
 if has_oai and runtime_supported:
     from openai_agents import AgentRuntime
+    if hasattr(openai_agents, "AgentRuntime"):
+        from openai_agents import AgentRuntime as _AgentRuntime
+    else:
+        _AgentRuntime = None
+
+    from agents.run import Runner
+
+    class _FallbackAgentRuntime:
+        def __init__(self, *_: object, **__: object) -> None:
+            self._runner = Runner()
+            self._agent: Agent | None = None
+
+        def register(self, agent: Agent) -> None:
+            self._agent = agent
+
+        def run(self) -> None:
+            import asyncio
+
+            if self._agent is None:
+                raise RuntimeError("No agent registered")
+            asyncio.run(self._runner.run(self._agent, ""))
+
+    if _AgentRuntime is None or not hasattr(_AgentRuntime, "run"):
+        AgentRuntime = _FallbackAgentRuntime
+    else:
+        AgentRuntime = _AgentRuntime
 
     try:
         from .run_demo import run
@@ -215,6 +241,9 @@ def main(argv: list[str] | None = None) -> None:
             logger.info("openai-agents package is missing. Running offline demo...")
         else:
             logger.info("openai-agents runtime unavailable. Running offline demo...")
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not has_oai or not api_key:
+        logger.info("openai-agents unavailable or OPENAI_API_KEY unset. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,
@@ -227,13 +256,23 @@ def main(argv: list[str] | None = None) -> None:
     if args.enable_adk:
         os.environ.setdefault("ALPHA_FACTORY_ENABLE_ADK", "true")
 
-    _run_runtime(
-        args.episodes,
-        args.target,
-        args.model,
-        args.rewriter,
-        market_data,
-    )
+    try:
+        _run_runtime(
+            args.episodes,
+            args.target,
+            args.model,
+            args.rewriter,
+            market_data,
+        )
+    except Exception as exc:  # pragma: no cover - offline fallback
+        logger.warning("Runtime failed (%s). Falling back to offline demo.", exc)
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
 
 
 __all__ = [

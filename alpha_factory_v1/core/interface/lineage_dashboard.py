@@ -70,6 +70,7 @@ def build_tree(df: pd.DataFrame) -> Figure:
         "score=%{color}<br>patch=%{customdata[0]}<br>"
         f"patches={patches}<extra></extra>"
     )
+    fig.data[0].hovertemplate = df["patch"].fillna("").astype(str).tolist()
     return fig
 
 
