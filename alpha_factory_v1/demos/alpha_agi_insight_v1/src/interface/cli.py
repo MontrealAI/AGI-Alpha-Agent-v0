@@ -642,8 +642,18 @@ def replay(since: float | None, count: int | None) -> None:
         if since is not None:
             since_val = since
             rows = [r for r in rows if r["ts"] >= since_val]
+        def _normalize_payload(value: object) -> object:
+            if isinstance(value, float) and value.is_integer():
+                return int(value)
+            if isinstance(value, dict):
+                return {key: _normalize_payload(val) for key, val in value.items()}
+            if isinstance(value, list):
+                return [_normalize_payload(item) for item in value]
+            return value
+
         for row in rows:
-            msg = f"{row['ts']:.2f} {row['sender']} -> {row['recipient']} {json.dumps(row['payload'])}"
+            payload = _normalize_payload(row["payload"])
+            msg = f"{row['ts']:.2f} {row['sender']} -> {row['recipient']} {json.dumps(payload)}"
             click.echo(msg)
             time.sleep(0.1)
 

@@ -22,6 +22,11 @@ logger = logging.getLogger(__name__)
 DEFAULT_MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o")
 
 
+def _has_openai_key() -> bool:
+    """Return True when an OpenAI API key is configured."""
+    return bool(os.getenv("OPENAI_API_KEY"))
+
+
 def verify_env() -> None:
     """Best-effort runtime dependency check."""
     try:
@@ -158,7 +163,21 @@ if has_oai:
             logger.warning("ADK bridge unavailable: %s", exc)
 
         logger.info("Registered MATSAgent with runtime")
-        runtime.run()
+        if hasattr(runtime, "run"):
+            runtime.run()
+        elif hasattr(runtime, "start"):
+            runtime.start()
+        elif hasattr(runtime, "serve"):
+            runtime.serve()
+        else:
+            logger.info("AgentRuntime lacks a run entrypoint. Falling back to offline demo.")
+            run(
+                episodes=episodes,
+                target=target,
+                model=model,
+                rewriter=rewriter,
+                market_data=market_data,
+            )
 
 else:
     try:
@@ -231,6 +250,8 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
+    if not has_oai or not _has_openai_key():
+        logger.info("openai-agents package is missing or OPENAI_API_KEY unset. Running offline demo...")
     api_key = os.getenv("OPENAI_API_KEY")
     if not has_oai or not api_key:
         logger.info("openai-agents unavailable or OPENAI_API_KEY unset. Running offline demo...")

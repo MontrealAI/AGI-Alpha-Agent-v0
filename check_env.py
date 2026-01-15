@@ -94,6 +94,7 @@ REQUIRED_BASE = [
     "playwright.sync_api",
     "websockets",
     "pytest_benchmark",
+    "pytest_cov",
     "hypothesis",
     "wheel",
 ]
@@ -160,6 +161,7 @@ PIP_NAMES = {
     "google_adk": "google-adk",
     "grpc": "grpcio",
     "pytest_benchmark": "pytest-benchmark",
+    "pytest_cov": "pytest-cov",
     "playwright.sync_api": "playwright",
     "websockets": "websockets",
     "google.protobuf": "protobuf",
