@@ -13,6 +13,7 @@ import argparse
 import asyncio
 import contextlib
 import importlib
+import importlib.util
 import json
 import logging
 import os
@@ -78,6 +79,14 @@ else:
     _IMPORT_ERROR = None
 
 API_TOKEN_DEFAULT = "changeme"
+prometheus_client = None
+Counter = Histogram = Gauge = generate_latest = None
+if importlib.util.find_spec("prometheus_client"):
+    prometheus_client = importlib.import_module("prometheus_client")
+    Counter = getattr(prometheus_client, "Counter", None)
+    Histogram = getattr(prometheus_client, "Histogram", None)
+    Gauge = getattr(prometheus_client, "Gauge", None)
+    generate_latest = getattr(prometheus_client, "generate_latest", None)
 
 app = FastAPI(title="α‑AGI Insight") if FastAPI is not None else None
 
@@ -165,6 +174,75 @@ if app is not None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    def _noop(*_a: Any, **_kw: Any) -> Any:
+        class _N:
+            def labels(self, *_a: Any, **_kw: Any) -> "_N":
+                return self
+
+            def observe(self, *_a: Any) -> None:
+                ...
+
+            def inc(self, *_a: Any) -> None:
+                ...
+
+        return _N()
+
+    if prometheus_client is not None and Counter and Histogram and Gauge and generate_latest:
+        registry = prometheus_client.REGISTRY
+
+        def _get_or_create_metric(factory: Any, name: str, *args: Any, **kwargs: Any) -> Any:
+            candidates = [name]
+            if name.endswith("_total"):
+                candidates.append(name[: -len("_total")])
+            for candidate in candidates:
+                existing = registry._names_to_collectors.get(candidate)
+                if existing is not None:
+                    return existing
+            return factory(name, *args, **kwargs)
+
+        REQ_COUNT = _get_or_create_metric(
+            Counter,
+            "api_requests_total",
+            "HTTP requests",
+            ["method", "endpoint", "status"],
+        )
+        REQ_LAT = _get_or_create_metric(
+            Histogram,
+            "api_request_seconds",
+            "HTTP request latency",
+            ["method", "endpoint"],
+        )
+        dgm_best_score = _get_or_create_metric(Gauge, "dgm_best_score", "Best candidate score this generation")
+        dgm_archive_mean = _get_or_create_metric(Gauge, "dgm_archive_mean", "Mean score of all candidates")
+        dgm_lineage_depth = _get_or_create_metric(Gauge, "dgm_lineage_depth", "Lineage depth of the archive")
+    else:  # pragma: no cover - prometheus not installed
+        REQ_COUNT = _noop()
+        REQ_LAT = _noop()
+        dgm_best_score = _noop()
+        dgm_archive_mean = _noop()
+        dgm_lineage_depth = _noop()
+
+    dgm_best_score.set(0)
+    dgm_archive_mean.set(0)
+    dgm_lineage_depth.set(0)
+    REQ_COUNT.labels("GET", "/metrics", "200").inc(0)
+    REQ_LAT.labels("GET", "/metrics").observe(0.0)
+
+    @app.middleware("http")
+    async def record_metrics(request: Request, call_next: RequestResponseEndpoint) -> Response:
+        start = time.perf_counter()
+        response = await call_next(request)
+        duration = time.perf_counter() - start
+        REQ_COUNT.labels(request.method, request.url.path, str(response.status_code)).inc()
+        REQ_LAT.labels(request.method, request.url.path).observe(duration)
+        return response
+
+    @app.get("/metrics", response_class=PlainTextResponse)
+    async def metrics_endpoint() -> Response:
+        if prometheus_client is None or generate_latest is None:
+            raise HTTPException(status_code=503, detail="prometheus_client not installed")
+        return PlainTextResponse(generate_latest(), media_type="text/plain; version=0.0.4")
 
     _simulations: OrderedDict[str, ResultsResponse] = OrderedDict()
     _progress_ws: Set[Any] = set()

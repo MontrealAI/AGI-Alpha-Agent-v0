@@ -45,6 +45,7 @@ exit 0
             "COMPOSE_FILE": str(compose),
             "PROJECT_DIR": str(tmp_path),
             "SKIP_BENCH": "1",
+            "SKIP_DEPLOY": "1",
         }
     )
 

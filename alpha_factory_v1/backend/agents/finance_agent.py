@@ -63,7 +63,7 @@ except ModuleNotFoundError:
 try:
     import torch  # type: ignore
     from torch import nn  # type: ignore
-except ModuleNotFoundError:
+except (ModuleNotFoundError, OSError):
     _log.warning("torch missing – MuZero planner disabled")
 if "torch" not in globals():
     torch = None  # type: ignore
