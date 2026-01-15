@@ -308,6 +308,7 @@ class _VectorStore:
             logger.info("VectorStore: SQLite fallback ready.")
             return
         if "faiss" in globals():
+        elif "faiss" in globals():
             self._faiss = faiss.IndexFlatIP(CFG.VECTOR_DIM)
             self._vectors: List[np.ndarray] = []
             self._meta: List[Tuple[str, str, str]] = []  # agent, content, ts

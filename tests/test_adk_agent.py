@@ -4,10 +4,13 @@ import sys
 import types
 import asyncio
 import dataclasses
+import importlib
 
-# Stub generated proto dependency if missing
+# Stub generated proto dependency only when import fails.
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
-if _stub_path not in sys.modules:
+try:
+    importlib.import_module(_stub_path)
+except Exception:
     stub = types.ModuleType("a2a_pb2")
 
     @dataclasses.dataclass
