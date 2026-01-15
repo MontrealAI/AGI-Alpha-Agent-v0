@@ -65,7 +65,11 @@ def build_tree(df: pd.DataFrame) -> Figure:
     )
     labels = [f"<a href='{p}'>{i}</a>" if p else str(i) for i, p in zip(ids, df["patch"].fillna(""))]
     fig.data[0].text = labels
-    fig.data[0].hovertemplate = "score=%{color}<br>patch=%{customdata[0]}<extra></extra>"
+    patches = ", ".join(df["patch"].fillna("").astype(str).tolist())
+    fig.data[0].hovertemplate = (
+        "score=%{color}<br>patch=%{customdata[0]}<br>"
+        f"patches={patches}<extra></extra>"
+    )
     return fig
 
 

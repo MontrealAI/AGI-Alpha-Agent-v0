@@ -42,31 +42,15 @@ try:
 except ValueError:
     _spec = None
 has_oai = _spec is not None
+runtime_supported = False
 if has_oai:
     import openai_agents
     from openai_agents import Agent, function_tool
 
-    if hasattr(openai_agents, "AgentRuntime"):
-        from openai_agents import AgentRuntime
-    else:  # fallback shim for newer SDKs without AgentRuntime
-        from agents.run import Runner
+    runtime_supported = hasattr(openai_agents, "AgentRuntime") and hasattr(openai_agents.AgentRuntime, "run")
 
-        class _FallbackAgentRuntime:
-            def __init__(self, *_: object, **__: object) -> None:
-                self._runner = Runner()
-                self._agent: Agent | None = None
-
-            def register(self, agent: Agent) -> None:
-                self._agent = agent
-
-            def run(self) -> None:
-                import asyncio
-
-                if self._agent is None:
-                    raise RuntimeError("No agent registered")
-                asyncio.run(self._runner.run(self._agent, ""))
-
-        AgentRuntime = _FallbackAgentRuntime
+if has_oai and runtime_supported:
+    from openai_agents import AgentRuntime
 
     try:
         from .run_demo import run
@@ -226,8 +210,11 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
-    if not has_oai:
-        logger.info("openai-agents package is missing. Running offline demo...")
+    if not has_oai or not runtime_supported:
+        if not has_oai:
+            logger.info("openai-agents package is missing. Running offline demo...")
+        else:
+            logger.info("openai-agents runtime unavailable. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,
