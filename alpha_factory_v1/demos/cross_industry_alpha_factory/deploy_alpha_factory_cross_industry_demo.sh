@@ -10,7 +10,7 @@ IFS=$'\n\t'; shopt -s lastpipe
 # Set AUTO_COMMIT=1 to automatically commit generated assets.
 
 usage(){
-  echo "Usage: $0 [--ci] [--skip-bench] [--skip-deploy] [--model-path <dir>]" >&2
+  echo "Usage: $0 [--ci] [--skip-bench] [--skip-deploy] [--patch-only] [--model-path <dir>]" >&2
 }
 
 while [[ $# -gt 0 ]]; do
@@ -21,6 +21,8 @@ while [[ $# -gt 0 ]]; do
       SKIP_BENCH=1;;
     --skip-deploy)
       SKIP_DEPLOY=1;;
+    --patch-only)
+      PATCH_ONLY=1;;
     --model-path)
       MODEL_PATH=$2; shift;;
     -h|--help)
@@ -129,41 +131,42 @@ if ! command -v locust &>/dev/null; then
 fi
 
 ############## 2. FETCH / UPDATE REPO #########################################
-mkdir -p "$PROJECT_DIR"; cd "$PROJECT_DIR"
-if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
-  echo "📥  Cloning Alpha-Factory…"
-  git clone --depth 1 -b "$BRANCH" "$REPO_URL"
-fi
-if [ ! -d AGI-Alpha-Agent-v0 ]; then
-  echo "⚠️  Repository directory missing; creating placeholder."
-  mkdir -p AGI-Alpha-Agent-v0
-fi
-cd AGI-Alpha-Agent-v0
-git pull --ff-only
-COMMIT_SHA=$(git rev-parse --short HEAD)
+if [[ -z ${PATCH_ONLY:-} ]]; then
+  mkdir -p "$PROJECT_DIR"; cd "$PROJECT_DIR"
+  if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
+    echo "📥  Cloning Alpha-Factory…"
+    git clone --depth 1 -b "$BRANCH" "$REPO_URL"
+  fi
+  if [ ! -d AGI-Alpha-Agent-v0 ]; then
+    echo "⚠️  Repository directory missing; creating placeholder."
+    mkdir -p AGI-Alpha-Agent-v0
+  fi
+  cd AGI-Alpha-Agent-v0
+  git pull --ff-only
+  COMMIT_SHA=$(git rev-parse --short HEAD)
 
-############## 3. RUNTIME ARTIFACTS ###########################################
-mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$LOADTEST_DIR"
+  ############## 3. RUNTIME ARTIFACTS #########################################
+  mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$LOADTEST_DIR"
 
-# prompt-signature keypair (ed25519)
-[[ -f $KEY_DIR/agent_key ]] || ssh-keygen -t ed25519 -N '' -q -f "$KEY_DIR/agent_key"
-if [[ ! -f $KEY_DIR/agent_key.pub ]]; then
-  echo "placeholder-key" > "$KEY_DIR/agent_key.pub"
-fi
-PROMPT_PUB=$(cat "$KEY_DIR/agent_key.pub")
+  # prompt-signature keypair (ed25519)
+  [[ -f $KEY_DIR/agent_key ]] || ssh-keygen -t ed25519 -N '' -q -f "$KEY_DIR/agent_key"
+  if [[ ! -f $KEY_DIR/agent_key.pub ]]; then
+    echo "placeholder-key" > "$KEY_DIR/agent_key.pub"
+  fi
+  PROMPT_PUB=$(cat "$KEY_DIR/agent_key.pub")
 
-# cosign keypair for SBOM attestation
-[[ -f $SBOM_DIR/cosign.key ]] || cosign generate-key-pair --key "file://$SBOM_DIR/cosign" &>/dev/null
-if [[ ! -f $SBOM_DIR/cosign.pub ]]; then
-  echo "placeholder-key" > "$SBOM_DIR/cosign.pub"
-fi
-COSIGN_PUB=$(cat "$SBOM_DIR/cosign.pub")
+  # cosign keypair for SBOM attestation
+  [[ -f $SBOM_DIR/cosign.key ]] || cosign generate-key-pair --key "file://$SBOM_DIR/cosign" &>/dev/null
+  if [[ ! -f $SBOM_DIR/cosign.pub ]]; then
+    echo "placeholder-key" > "$SBOM_DIR/cosign.pub"
+  fi
+  COSIGN_PUB=$(cat "$SBOM_DIR/cosign.pub")
 
-# random REST token
-TOKEN=$(openssl rand -hex 16)
+  # random REST token
+  TOKEN=$(openssl rand -hex 16)
 
-# .env
-cat > alpha_factory_v1/.env <<EOF
+  # .env
+  cat > alpha_factory_v1/.env <<EOF
 ALPHA_FACTORY_MODE=cross_industry
 OPENAI_API_KEY=${OPENAI_API_KEY:-}
 OPENAI_API_BASE=${OPENAI_API_BASE:-https://api.openai.com/v1}
@@ -176,12 +179,13 @@ COSIGN_PUBKEY=$COSIGN_PUB
 API_TOKEN=$TOKEN
 EOF
 
-# guard-rails (MCP)
-cat > "$POLICY_DIR/redteam.json" <<'JSON'
+  # guard-rails (MCP)
+  cat > "$POLICY_DIR/redteam.json" <<'JSON'
 {"id":"af_v1_guard",
  "patterns_deny":["(?i)breakout","(?i)privileged","(?i)leak","(?i)jailbreak"],
  "max_tokens":2048,"temperature":{"max":1.2}}
 JSON
+fi
 
 ############## 4. PATCH COMPOSE ###############################################
 patch(){
@@ -196,7 +200,9 @@ patch(){
 # offline Mixtral-8x7B if no API key
 if [[ -z ${OPENAI_API_KEY:-} ]]; then
   OPENAI_API_BASE="http://local-llm:11434/v1"
-  sed -i.bak 's|^OPENAI_API_BASE=.*|OPENAI_API_BASE=http://local-llm:11434/v1|' alpha_factory_v1/.env
+  if [[ -f alpha_factory_v1/.env ]]; then
+    sed -i.bak 's|^OPENAI_API_BASE=.*|OPENAI_API_BASE=http://local-llm:11434/v1|' alpha_factory_v1/.env
+  fi
   # Pin ollama 0.9.0 for reproducibility
   if [[ -n ${MODEL_PATH:-} ]]; then
     patch local-llm ".services += {\"local-llm\":{image:\"ollama/ollama:0.9.0\",ports:[\"11434:11434\"],volumes:[\"${MODEL_PATH}:/models\"],environment:{\"OLLAMA_MODELS\":\"/models\"}}}"
@@ -224,6 +230,11 @@ patch sbom '.services += {"sbom":{image:"anchore/syft:v1.27.0",command:["sh","-c
 
 # PPO continual-learning builder
 patch alpha-trainer '.services += {"alpha-trainer":{build:{context:"./alpha_factory_v1/continual"},depends_on:["ray-head","orchestrator"]}}'
+
+if [[ -n ${PATCH_ONLY:-} ]]; then
+  echo "⚠️  PATCH_ONLY set; skipping bootstrap steps after compose patch."
+  exit 0
+fi
 
 ############## 5. CONTINUAL-LEARNING PIPELINE #################################
 cat > "$CONTINUAL_DIR/rubric.json" <<'JSON'
