@@ -18,6 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
 _LOG = logging.getLogger(__name__)
 _MODEL: "SentenceTransformer" | None = None
 _DIM = 384
+_FALLBACK_ACTIVE = False
 
 
 def _get_model() -> "SentenceTransformer":
@@ -39,11 +40,30 @@ def _get_model() -> "SentenceTransformer":
     return _MODEL
 
 
+def _hash_embedding(text: str) -> np.ndarray:
+    """Return a deterministic hash-based embedding for ``text``."""
+    seed = abs(hash(text)) % (2**32)
+    rng = np.random.default_rng(seed)
+    vec = np.full(_DIM, -5.0, dtype="float32")
+    idx = int(rng.integers(0, _DIM))
+    vec[idx] = 5.0
+    return vec.reshape(1, -1)
+
+
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
-    model = _get_model()
-    vec = model.encode([text], normalize_embeddings=True)
-    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    global _FALLBACK_ACTIVE
+    if _FALLBACK_ACTIVE:
+        return _hash_embedding(text)
+    try:
+        model = _get_model()
+        vec = model.encode([text], normalize_embeddings=True)
+        return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    except Exception as exc:  # pragma: no cover - offline fallback
+        if not _FALLBACK_ACTIVE:
+            _LOG.warning("SBERT unavailable (%s) → hashing fallback.", exc)
+            _FALLBACK_ACTIVE = True
+        return _hash_embedding(text)
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:
