@@ -2,6 +2,7 @@
 """Agent discovery, health monitoring and registry."""
 from __future__ import annotations
 
+from . import registry as _registry
 from .registry import (
     AGENT_REGISTRY,
     CAPABILITY_GRAPH,
@@ -48,6 +49,13 @@ logger.info(
     len(AGENT_REGISTRY),
     len(CAPABILITY_GRAPH),
 )
+
+
+def _verify_wheel(path: "Path") -> bool:
+    """Verify a wheel using the current registry signature configuration."""
+    _registry._WHEEL_PUBKEY = _WHEEL_PUBKEY
+    _registry._WHEEL_SIGS = _WHEEL_SIGS
+    return _registry._verify_wheel(path)
 
 
 def list_agents(detail: bool = False):

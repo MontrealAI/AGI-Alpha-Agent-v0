@@ -80,6 +80,11 @@ def improve_repo(
 
     repo.git.apply(patch_file)
     repo.index.add([metric_file])
+    with repo.config_writer() as config:
+        if not config.has_option("user", "name"):
+            config.set_value("user", "name", "AlphaFactory Bot")
+        if not config.has_option("user", "email"):
+            config.set_value("user", "email", "alpha-factory@example.com")
     repo.index.commit("apply patch")
     # run basic checks before scoring
     run_preflight(repo_dir)

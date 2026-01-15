@@ -27,9 +27,32 @@ log = logging.getLogger(__name__)
 # REST API ---------------------------------------------------------------
 
 
-def build_rest(runners: Dict[str, AgentRunner], model_max_bytes: int, mem: Any) -> Optional["FastAPI"]:
+def build_rest(
+    runners: Dict[str, AgentRunner],
+    model_max_bytes: int | None = None,
+    mem: Any | None = None,
+) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
+
+    if model_max_bytes is None:
+        model_max_bytes = int(os.getenv("ALPHA_MODEL_MAX_BYTES", str(64 * 1024 * 1024)))
+
+    if mem is None:
+        try:
+            from alpha_factory_v1.backend import orchestrator as _orchestrator
+
+            mem = _orchestrator.mem
+        except Exception:
+            vector_stub = type(
+                "VectorStub",
+                (),
+                {
+                    "recent": lambda *_args, **_kwargs: [],
+                    "search": lambda *_args, **_kwargs: [],
+                },
+            )()
+            mem = type("MemoryStub", (), {"vector": vector_stub})()
 
     token = os.getenv("API_TOKEN")
     if not token:

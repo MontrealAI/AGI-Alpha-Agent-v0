@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import importlib.util
+import asyncio
 import os
 import shutil
 import signal
@@ -39,6 +40,8 @@ try:  # pragma: no cover - best effort environment setup
         pytest.skip(reason, allow_module_level=True)
 except Exception as exc:  # pragma: no cover - environment issue
     pytest.skip(f"check_env execution failed: {exc}", allow_module_level=True)
+
+os.environ.setdefault("API_TOKEN", "test-token")
 
 # Skip early when heavy optional deps are missing to avoid stack traces
 pytest.importorskip("yaml", reason="yaml required")
@@ -162,13 +165,44 @@ except Exception as exc:  # pragma: no cover - environment issue
         allow_module_level=True,
     )
 
-rocketry_stub = types.ModuleType("rocketry")
-rocketry_stub.Rocketry = type("Rocketry", (), {})  # type: ignore[attr-defined]
-conds_mod = types.ModuleType("rocketry.conds")
-conds_mod.every = lambda *_: None  # type: ignore[attr-defined]
-rocketry_stub.conds = conds_mod  # type: ignore[attr-defined]
-sys.modules.setdefault("rocketry", rocketry_stub)
-sys.modules.setdefault("rocketry.conds", conds_mod)
+if importlib.util.find_spec("rocketry") is None:
+    rocketry_stub = types.ModuleType("rocketry")
+
+    class _StubSession:
+        def __init__(self) -> None:
+            self._finished = False
+
+        def finish(self) -> None:
+            self._finished = True
+
+        @property
+        def finished(self) -> bool:
+            return self._finished
+
+    class _StubRocketry:
+        def __init__(self, *args, **kwargs) -> None:  # noqa: D401 - stub
+            self.session = _StubSession()
+            self._tasks: list[callable] = []
+
+        def task(self, *_args, **_kwargs):  # noqa: D401 - stub
+            def _decorator(func):
+                self._tasks.append(func)
+                return func
+
+            return _decorator
+
+        async def serve(self) -> None:
+            while not self.session.finished:
+                for task in list(self._tasks):
+                    await task()
+                await asyncio.sleep(0)
+
+    rocketry_stub.Rocketry = _StubRocketry  # type: ignore[attr-defined]
+    conds_mod = types.ModuleType("rocketry.conds")
+    conds_mod.every = lambda *_: None  # type: ignore[attr-defined]
+    rocketry_stub.conds = conds_mod  # type: ignore[attr-defined]
+    sys.modules.setdefault("rocketry", rocketry_stub)
+    sys.modules.setdefault("rocketry.conds", conds_mod)
 
 
 @pytest.fixture(scope="module")  # type: ignore[misc]
