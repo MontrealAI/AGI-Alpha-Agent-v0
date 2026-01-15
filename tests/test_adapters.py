@@ -4,11 +4,13 @@ import sys
 import types
 import asyncio
 import importlib
+import importlib.util
 import pytest
 
 # Stub generated proto dependency if missing
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
-if _stub_path not in sys.modules:
+_spec = importlib.util.find_spec(_stub_path)
+if _spec is None and _stub_path not in sys.modules:
     stub = types.ModuleType("a2a_pb2")
 
     class Envelope:
@@ -20,6 +22,8 @@ if _stub_path not in sys.modules:
 
     stub.Envelope = Envelope
     sys.modules[_stub_path] = stub
+elif _spec is not None:
+    importlib.import_module(_stub_path)
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import ADKAdapter  # noqa: E402
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import MCPAdapter  # noqa: E402
