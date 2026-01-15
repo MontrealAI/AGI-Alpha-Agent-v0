@@ -98,6 +98,8 @@ def main(argv: list[str] | None = None) -> None:
 
             auto_register([agent])
             maybe_launch()
+            logger.info("ADK bridge enabled for governance runtime")
+            print("ADK bridge enabled for governance runtime")
         except Exception as exc:  # pragma: no cover - ADK optional
             logger.warning(f"ADK bridge unavailable: {exc}")
     if hasattr(runtime, "run"):

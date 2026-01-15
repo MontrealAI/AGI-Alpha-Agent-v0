@@ -45,15 +45,16 @@ exit 0
             "COMPOSE_FILE": str(compose),
             "PROJECT_DIR": str(tmp_path),
             "SKIP_BENCH": "1",
+            "SKIP_DEPLOY": "1",
         }
     )
 
-    subprocess.run(["bash", str(script)], check=True, env=env, timeout=10)
+    subprocess.run(["bash", str(script), "--patch-only"], check=True, env=env, timeout=10)
     bak = tmp_path / "AGI-Alpha-Agent-v0" / "alpha_factory_v1" / ".env.bak"
     if bak.exists():
         bak.unlink()
     first = yaml.safe_load(compose.read_text())
-    subprocess.run(["bash", str(script)], check=True, env=env, timeout=10)
+    subprocess.run(["bash", str(script), "--patch-only"], check=True, env=env, timeout=10)
     if bak.exists():
         bak.unlink()
     second = yaml.safe_load(compose.read_text())
