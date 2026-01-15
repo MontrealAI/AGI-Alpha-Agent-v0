@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import hashlib
 from typing import Any, TYPE_CHECKING
 
 import numpy as np
@@ -41,9 +42,21 @@ def _get_model() -> "SentenceTransformer":
 
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
-    model = _get_model()
-    vec = model.encode([text], normalize_embeddings=True)
-    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    try:
+        model = _get_model()
+        vec = model.encode([text], normalize_embeddings=True)
+        return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    except Exception as exc:  # pragma: no cover - offline fallback
+        _LOG.warning("SentenceTransformer unavailable (%s) → hashing fallback.", exc)
+        return _hash_embedding(text)
+
+
+def _hash_embedding(text: str) -> np.ndarray:
+    digest = hashlib.sha256(text.encode("utf-8")).digest()
+    idx = int.from_bytes(digest[:4], "big", signed=False) % _DIM
+    vec = np.zeros(_DIM, dtype="float32")
+    vec[idx] = 20.0
+    return vec.reshape(1, -1)
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:

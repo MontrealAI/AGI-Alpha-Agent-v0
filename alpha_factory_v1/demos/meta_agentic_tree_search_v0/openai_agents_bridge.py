@@ -47,26 +47,31 @@ if has_oai:
     from openai_agents import Agent, function_tool
 
     if hasattr(openai_agents, "AgentRuntime"):
-        from openai_agents import AgentRuntime
-    else:  # fallback shim for newer SDKs without AgentRuntime
-        from agents.run import Runner
+        from openai_agents import AgentRuntime as _AgentRuntime
+    else:
+        _AgentRuntime = None
 
-        class _FallbackAgentRuntime:
-            def __init__(self, *_: object, **__: object) -> None:
-                self._runner = Runner()
-                self._agent: Agent | None = None
+    from agents.run import Runner
 
-            def register(self, agent: Agent) -> None:
-                self._agent = agent
+    class _FallbackAgentRuntime:
+        def __init__(self, *_: object, **__: object) -> None:
+            self._runner = Runner()
+            self._agent: Agent | None = None
 
-            def run(self) -> None:
-                import asyncio
+        def register(self, agent: Agent) -> None:
+            self._agent = agent
 
-                if self._agent is None:
-                    raise RuntimeError("No agent registered")
-                asyncio.run(self._runner.run(self._agent, ""))
+        def run(self) -> None:
+            import asyncio
 
+            if self._agent is None:
+                raise RuntimeError("No agent registered")
+            asyncio.run(self._runner.run(self._agent, ""))
+
+    if _AgentRuntime is None or not hasattr(_AgentRuntime, "run"):
         AgentRuntime = _FallbackAgentRuntime
+    else:
+        AgentRuntime = _AgentRuntime
 
     try:
         from .run_demo import run
@@ -226,8 +231,9 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
-    if not has_oai:
-        logger.info("openai-agents package is missing. Running offline demo...")
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not has_oai or not api_key:
+        logger.info("openai-agents unavailable or OPENAI_API_KEY unset. Running offline demo...")
         run(
             episodes=args.episodes,
             target=args.target,
@@ -240,13 +246,23 @@ def main(argv: list[str] | None = None) -> None:
     if args.enable_adk:
         os.environ.setdefault("ALPHA_FACTORY_ENABLE_ADK", "true")
 
-    _run_runtime(
-        args.episodes,
-        args.target,
-        args.model,
-        args.rewriter,
-        market_data,
-    )
+    try:
+        _run_runtime(
+            args.episodes,
+            args.target,
+            args.model,
+            args.rewriter,
+            market_data,
+        )
+    except Exception as exc:  # pragma: no cover - offline fallback
+        logger.warning("Runtime failed (%s). Falling back to offline demo.", exc)
+        run(
+            episodes=args.episodes,
+            target=args.target,
+            model=args.model,
+            rewriter=args.rewriter,
+            market_data=market_data,
+        )
 
 
 __all__ = [
