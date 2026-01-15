@@ -83,9 +83,14 @@ _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 
-_fin_mod = importlib.import_module(".agents.finance_agent", __name__)
-sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
-sys.modules["backend.finance_agent"] = _fin_mod
+if __name__ + ".finance_agent" in sys.modules:
+    sys.modules.setdefault("backend.finance_agent", sys.modules[__name__ + ".finance_agent"])
+elif "backend.finance_agent" in sys.modules:
+    sys.modules.setdefault(__name__ + ".finance_agent", sys.modules["backend.finance_agent"])
+else:
+    _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
+    sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
+    sys.modules["backend.finance_agent"] = _fin_mod
 
 
 # ──────────────────────── log & CSRF helpers (unchanged) ──────────────────
