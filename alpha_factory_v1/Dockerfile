@@ -124,6 +124,8 @@ USER alphafactory
 #############################
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f \
     -H "Authorization: Bearer ${API_TOKEN}" http://localhost:8000/healthz || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD-SHELL curl -f -H "Authorization: Bearer $API_TOKEN" http://localhost:8000/healthz || exit 1
 
 #############################
 # 8) Ports & Entrypoint      #

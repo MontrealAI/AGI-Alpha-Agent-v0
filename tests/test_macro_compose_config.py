@@ -19,6 +19,14 @@ compose_check = subprocess.run(
     text=True,
 )
 if compose_check.returncode != 0:
+try:
+    subprocess.run(["docker", "info"], check=True, capture_output=True, text=True)
+except subprocess.SubprocessError:
+    pytest.skip("docker daemon not available", allow_module_level=True)
+
+try:
+    subprocess.run(["docker", "compose", "version"], check=True, capture_output=True, text=True)
+except subprocess.SubprocessError:
     pytest.skip("docker compose not available", allow_module_level=True)
 
 

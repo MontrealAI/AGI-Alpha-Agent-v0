@@ -8,6 +8,7 @@ import pytest
 
 LLM = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/utils/llm.ts")
 TS_NODE_LOADER = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/ts-node/esm.mjs")
+ONNX_RUNTIME = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/onnxruntime-web")
 NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 
 
@@ -42,6 +43,8 @@ def _skip_reason() -> str | None:
     )
     if ort_probe.returncode != 0:
         return "onnxruntime-web not importable"
+    if not ONNX_RUNTIME.exists():
+        return "onnxruntime-web not installed"
     if not LLM.is_file():
         return "llm.ts missing"
     return None
