@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # ruff: noqa: E402
-import sys
-import types
 import asyncio
 import dataclasses
+import importlib.util
+import sys
+import types
 import importlib
 
 # Stub generated proto dependency only when import fails.
 _stub_path = "alpha_factory_v1.core.utils.a2a_pb2"
+if importlib.util.find_spec(_stub_path) is None:
 try:
     importlib.import_module(_stub_path)
 except Exception:
