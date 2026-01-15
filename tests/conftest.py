@@ -12,6 +12,8 @@ from typing import Any
 
 import pytest
 
+import alpha_factory_v1.core.utils.a2a_pb2  # noqa: F401
+
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
     from check_env import main as check_env_main, has_network

@@ -41,9 +41,17 @@ try:
     _spec = importlib.util.find_spec("openai_agents")
 except ValueError:
     _spec = None
-has_oai = _spec is not None
-if has_oai:
+has_oai = False
+if _spec is not None:
     import openai_agents
+
+    runtime_ok = hasattr(openai_agents, "AgentRuntime") and hasattr(openai_agents.AgentRuntime, "run")
+    if runtime_ok:
+        from openai_agents import Agent, function_tool, AgentRuntime
+
+        has_oai = True
+    else:
+        logger.info("openai-agents runtime not available; using offline mode.")
     from openai_agents import Agent, function_tool
 
     if hasattr(openai_agents, "AgentRuntime"):
@@ -73,6 +81,7 @@ if has_oai:
     else:
         AgentRuntime = _AgentRuntime
 
+if has_oai:
     try:
         from .run_demo import run
     except ImportError:  # pragma: no cover - direct script execution

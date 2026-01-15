@@ -2,6 +2,7 @@
 """Embedding-based novelty scoring utilities."""
 from __future__ import annotations
 
+import hashlib
 import logging
 import hashlib
 from typing import Any, TYPE_CHECKING
@@ -40,12 +41,23 @@ def _get_model() -> "SentenceTransformer":
     return _MODEL
 
 
+def _hash_embed(text: str) -> np.ndarray:
+    digest = hashlib.sha256(text.encode()).digest()
+    seed = int.from_bytes(digest[:8], "big", signed=False)
+    rng = np.random.default_rng(seed)
+    vec = rng.normal(0.0, 1.0, size=_DIM).astype("float32")
+    return vec[None, :]
+
+
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
     try:
         model = _get_model()
         vec = model.encode([text], normalize_embeddings=True)
         return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    except Exception as exc:  # pragma: no cover - fallback
+        _LOG.warning("MiniLM embedding unavailable (%s); using hash fallback.", exc)
+        return _hash_embed(text)
     except Exception as exc:  # pragma: no cover - offline fallback
         _LOG.warning("SentenceTransformer unavailable (%s) → hashing fallback.", exc)
         return _hash_embedding(text)
