@@ -2,6 +2,7 @@
 """Shared utilities and configuration."""
 
 from contextlib import nullcontext
+from importlib import import_module
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, Iterable
@@ -19,8 +20,6 @@ except Exception:  # pragma: no cover - optional dependency
 
 
 from .file_ops import view, str_replace
-from alpha_factory_v1.common.utils import logging
-
 _logger = _stdlib_logging.getLogger(__name__)
 
 try:
@@ -116,3 +115,11 @@ __all__ = [
     "logging",
     "tracing",
 ]
+
+
+def __getattr__(name: str) -> object:
+    if name == "logging":
+        module = import_module("alpha_factory_v1.common.utils.logging")
+        globals()["logging"] = module
+        return module
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -2,6 +2,7 @@
 """Embedding-based novelty scoring utilities."""
 from __future__ import annotations
 
+import hashlib
 import logging
 from typing import Any, TYPE_CHECKING
 
@@ -41,9 +42,20 @@ def _get_model() -> "SentenceTransformer":
 
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
-    model = _get_model()
-    vec = model.encode([text], normalize_embeddings=True)
-    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    def _hash_embed(value: str) -> np.ndarray:
+        digest = hashlib.sha256(value.encode("utf-8")).digest()
+        seed = int.from_bytes(digest[:8], "little")
+        rng = np.random.default_rng(seed)
+        vec = rng.standard_normal(_DIM, dtype="float32") * 3.0
+        return vec[None, :]
+
+    try:
+        model = _get_model()
+        vec = model.encode([text], normalize_embeddings=True)
+        return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+    except Exception as exc:  # pragma: no cover - offline/model errors
+        _LOG.warning("SBERT embedding failed: %s – using hash fallback", exc)
+        return _hash_embed(text)
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:
