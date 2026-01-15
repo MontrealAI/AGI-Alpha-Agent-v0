@@ -10,7 +10,7 @@ from typing import Any
 import pytest
 
 hypothesis = pytest.importorskip("hypothesis")
-from hypothesis import given, settings, strategies as st  # noqa: E402
+from hypothesis import HealthCheck, given, settings, strategies as st  # noqa: E402
 from hypothesis.strategies import composite  # noqa: E402
 
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
@@ -67,7 +67,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=30)
+@settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow])
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""

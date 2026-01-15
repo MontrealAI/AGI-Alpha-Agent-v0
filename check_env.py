@@ -73,6 +73,7 @@ FULL_FEATURE = os.getenv("ALPHA_FACTORY_FULL", "0").lower() in {"1", "true", "ye
 REQUIRED_BASE = [
     "pytest",
     "pytest_asyncio",
+    "pytest_cov",
     "prometheus_client",
     "openai",
     "anthropic",
@@ -160,6 +161,7 @@ PIP_NAMES = {
     "google_adk": "google-adk",
     "grpc": "grpcio",
     "pytest_benchmark": "pytest-benchmark",
+    "pytest_cov": "pytest-cov",
     "playwright.sync_api": "playwright",
     "websockets": "websockets",
     "google.protobuf": "protobuf",
