@@ -63,9 +63,11 @@ def build_tree(df: pd.DataFrame) -> Figure:
         custom_data=[df["patch"].fillna("")],
         color_continuous_scale="Blues",
     )
-    labels = [f"<a href='{p}'>{i}</a>" if p else str(i) for i, p in zip(ids, df["patch"].fillna(""))]
+    patches = [str(p) for p in df["patch"].fillna("")]
+    labels = [f"<a href='{p}'>{i}</a>" if p else str(i) for i, p in zip(ids, patches)]
     fig.data[0].text = labels
-    fig.data[0].hovertemplate = "score=%{color}<br>patch=%{customdata[0]}<extra></extra>"
+    patch_summary = ", ".join(patches)
+    fig.data[0].hovertemplate = f"score=%{{color}}<br>patch=%{{customdata[0]}}<extra>{patch_summary}</extra>"
     return fig
 
 

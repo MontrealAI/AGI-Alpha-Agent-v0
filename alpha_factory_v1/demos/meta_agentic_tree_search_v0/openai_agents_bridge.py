@@ -41,33 +41,19 @@ try:
     _spec = importlib.util.find_spec("openai_agents")
 except ValueError:
     _spec = None
-has_oai = _spec is not None
-if has_oai:
+has_oai = False
+if _spec is not None:
     import openai_agents
-    from openai_agents import Agent, function_tool
 
-    if hasattr(openai_agents, "AgentRuntime"):
-        from openai_agents import AgentRuntime
-    else:  # fallback shim for newer SDKs without AgentRuntime
-        from agents.run import Runner
+    runtime_ok = hasattr(openai_agents, "AgentRuntime") and hasattr(openai_agents.AgentRuntime, "run")
+    if runtime_ok:
+        from openai_agents import Agent, function_tool, AgentRuntime
 
-        class _FallbackAgentRuntime:
-            def __init__(self, *_: object, **__: object) -> None:
-                self._runner = Runner()
-                self._agent: Agent | None = None
+        has_oai = True
+    else:
+        logger.info("openai-agents runtime not available; using offline mode.")
 
-            def register(self, agent: Agent) -> None:
-                self._agent = agent
-
-            def run(self) -> None:
-                import asyncio
-
-                if self._agent is None:
-                    raise RuntimeError("No agent registered")
-                asyncio.run(self._runner.run(self._agent, ""))
-
-        AgentRuntime = _FallbackAgentRuntime
-
+if has_oai:
     try:
         from .run_demo import run
     except ImportError:  # pragma: no cover - direct script execution

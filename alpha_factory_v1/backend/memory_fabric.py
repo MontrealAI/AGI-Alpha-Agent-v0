@@ -294,13 +294,7 @@ class _VectorStore:
             else:
                 logger.info("VectorStore: numpy missing → RAM mode")
             return
-        if "faiss" in globals():
-            self._faiss = faiss.IndexFlatIP(CFG.VECTOR_DIM)
-            self._vectors: List[np.ndarray] = []
-            self._meta: List[Tuple[str, str, str]] = []  # agent, content, ts
-            self._mode = "faiss"
-            logger.info("VectorStore: FAISS in-memory index ready.")
-        elif use_sqlite:
+        if use_sqlite:
             path = Path(os.getenv("VECTOR_SQLITE_PATH", "vector_mem.db"))
             self._sql = sqlite3.connect(path)
             self._sql.execute(
@@ -312,6 +306,13 @@ class _VectorStore:
             )
             self._mode = "sqlite"
             logger.info("VectorStore: SQLite fallback ready.")
+            return
+        if "faiss" in globals():
+            self._faiss = faiss.IndexFlatIP(CFG.VECTOR_DIM)
+            self._vectors: List[np.ndarray] = []
+            self._meta: List[Tuple[str, str, str]] = []  # agent, content, ts
+            self._mode = "faiss"
+            logger.info("VectorStore: FAISS in-memory index ready.")
         else:
             logger.info("VectorStore: SQLite disabled → RAM mode")
 
