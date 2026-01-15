@@ -83,6 +83,10 @@ _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 
+_services_mod = importlib.import_module(".services", __name__)
+sys.modules.setdefault(__name__ + ".services", _services_mod)
+sys.modules["backend.services"] = _services_mod
+
 _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
 sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
 sys.modules["backend.finance_agent"] = _fin_mod

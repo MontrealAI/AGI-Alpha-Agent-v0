@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 import socket
 import subprocess
@@ -62,7 +63,7 @@ def _start_server_with_retry(
     raise last_err
 
 
-def _wait_ready(proc: subprocess.Popen[bytes], url: str, *, interval: float = 0.05, attempts: int = 100) -> None:
+def _wait_ready(proc: subprocess.Popen[bytes], url: str, *, interval: float = 0.1, attempts: int = 200) -> None:
     for _ in range(attempts):
         if proc.poll() is not None:
             stdout, stderr = proc.communicate()
@@ -70,13 +71,20 @@ def _wait_ready(proc: subprocess.Popen[bytes], url: str, *, interval: float = 0.
                 f"server exited with code {proc.returncode}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
             )
         try:
-            r = httpx.get(f"{url}/metrics")
+            r = httpx.get(f"{url}/metrics", timeout=0.2)
             if r.status_code == 200:
                 return
         except Exception:
             pass
         time.sleep(interval)
-    stdout, stderr = proc.communicate()
+    if proc.poll() is None:
+        with contextlib.suppress(ProcessLookupError):
+            proc.terminate()
+    try:
+        stdout, stderr = proc.communicate(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        stdout, stderr = proc.communicate()
     raise AssertionError(
         f"server did not start within {attempts * interval:.1f}s\n"
         f"exit code {proc.poll()}\nstdout:\n{stdout.decode()}\nstderr:\n{stderr.decode()}"
