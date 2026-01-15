@@ -93,11 +93,13 @@ def main(argv: list[str] | None = None) -> None:
     runtime.register(agent)
     logger.info("Registered GovernanceSimAgent with runtime")
     if args.enable_adk:
+        logger.info("ADK enabled flag detected for governance runtime")
         try:
             from alpha_factory_v1.backend.adk_bridge import auto_register, maybe_launch
 
             auto_register([agent])
             maybe_launch()
+            logger.info("ADK bridge enabled for governance runtime")
         except Exception as exc:  # pragma: no cover - ADK optional
             logger.warning(f"ADK bridge unavailable: {exc}")
     if hasattr(runtime, "run"):
