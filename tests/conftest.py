@@ -50,6 +50,20 @@ pytest.importorskip("numpy", reason="numpy required")
 _HAS_TORCH = importlib.util.find_spec("torch") is not None
 _RUN_AIGA = os.getenv("ENABLE_AIGA_TESTS") == "1"
 _DEFAULT_TIMEOUT_SEC = int(os.getenv("PYTEST_TIMEOUT_SEC", "600"))
+_INSIGHT_DIST_TESTS = {
+    "test_browser_ui.py",
+    "test_evolution_panel_reload.py",
+    "test_install_button.py",
+    "test_pwa_offline.py",
+    "test_pwa_update_reload.py",
+    "test_quickstart_offline.py",
+    "test_simulator_loader.py",
+    "test_sw_offline_reload.py",
+    "test_wasm_base64.py",
+    "test_workbox_integrity.py",
+    "test_sw_integrity.py",
+    "test_umap_fallback.py",
+}
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -99,6 +113,11 @@ def pytest_runtest_call(item: pytest.Item) -> Any:
 def pytest_runtest_setup(item: pytest.Item) -> None:
     if "requires_torch" in item.keywords and not _HAS_TORCH:
         pytest.skip("torch required", allow_module_level=True)
+    if item.fspath and item.fspath.basename in _INSIGHT_DIST_TESTS:
+        repo_root = Path(__file__).resolve().parents[1]
+        dist_dir = repo_root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
+        if not dist_dir.exists():
+            pytest.skip("dist/index.html missing; run npm run build", allow_module_level=True)
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:

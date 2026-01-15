@@ -10,7 +10,7 @@ IFS=$'\n\t'; shopt -s lastpipe
 # Set AUTO_COMMIT=1 to automatically commit generated assets.
 
 usage(){
-  echo "Usage: $0 [--ci] [--skip-bench] [--model-path <dir>]" >&2
+  echo "Usage: $0 [--ci] [--skip-bench] [--skip-deploy] [--model-path <dir>]" >&2
 }
 
 while [[ $# -gt 0 ]]; do
@@ -19,6 +19,8 @@ while [[ $# -gt 0 ]]; do
       CI=1;;
     --skip-bench)
       SKIP_BENCH=1;;
+    --skip-deploy)
+      SKIP_DEPLOY=1;;
     --model-path)
       MODEL_PATH=$2; shift;;
     -h|--help)
@@ -288,22 +290,28 @@ export default function(){
 JS
 
 ############## 8. BUILD & DEPLOY ##############################################
-export DOCKER_BUILDKIT=1
-echo "🐳  Building containers & generating SBOM…"
-"${DOCKER_COMPOSE[@]}" -f "$COMPOSE_FILE" --env-file alpha_factory_v1/.env up -d --build \
-  --iidfile /tmp/IMAGE_ID orchestrator "${AGENTS[@]}" policy-engine prometheus grafana \
-  ray-head alpha-trainer pubmed-adapter carbon-api sbom
+if [[ -n ${SKIP_DEPLOY:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY set; skipping container build and health checks."
+else
+  export DOCKER_BUILDKIT=1
+  echo "🐳  Building containers & generating SBOM…"
+  "${DOCKER_COMPOSE[@]}" -f "$COMPOSE_FILE" --env-file alpha_factory_v1/.env up -d --build \
+    --iidfile /tmp/IMAGE_ID orchestrator "${AGENTS[@]}" policy-engine prometheus grafana \
+    ray-head alpha-trainer pubmed-adapter carbon-api sbom
 
-echo "⏳  Waiting for orchestrator health…"
-for i in {1..40}; do
-  "${DOCKER_COMPOSE[@]}" exec orchestrator curl -fs http://localhost:8000/healthz &>/dev/null && break
-  sleep 3; [[ $i == 40 ]] && { echo "❌ Orchestrator failed"; exit 1; }
-done
+  echo "⏳  Waiting for orchestrator health…"
+  for i in {1..40}; do
+    "${DOCKER_COMPOSE[@]}" exec orchestrator curl -fs http://localhost:8000/healthz &>/dev/null && break
+    sleep 3; [[ $i == 40 ]] && { echo "❌ Orchestrator failed"; exit 1; }
+  done
+fi
 
 ############## 9. OPTIONAL HEAVY-LOAD BENCH ###################################
-if [[ -z ${SKIP_BENCH:-} ]]; then
+if [[ -z ${SKIP_BENCH:-} && -z ${SKIP_DEPLOY:-} ]]; then
   echo "🏋 Running load test"
   k6 run -e AGENTS_ENABLED="${AGENTS[*]}" --duration 60s --vus 50 "$LOADTEST_DIR/k6.js"
+elif [[ -n ${SKIP_DEPLOY:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY set; skipping load test."
 fi
 
 ############# 10. AUTO-COMMIT GENERATED ASSETS ################################

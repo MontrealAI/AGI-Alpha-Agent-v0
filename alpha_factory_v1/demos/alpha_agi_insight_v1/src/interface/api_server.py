@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Any, List, Set, TYPE_CHECKING, Literal
 
 from cachetools import TTLCache  # type: ignore[import-not-found]
+from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram, generate_latest
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
@@ -51,7 +52,7 @@ logger = logging.getLogger(__name__)
 
 _IMPORT_ERROR: Exception | None
 try:
-    from fastapi import FastAPI, HTTPException, WebSocket, Request, Depends
+    from fastapi import APIRouter, FastAPI, HTTPException, WebSocket, Request, Depends
     from contextlib import asynccontextmanager
     from collections.abc import AsyncGenerator
     from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -90,6 +91,42 @@ if app is not None:
     app_f: FastAPI = app
     app_f.state.orchestrator = None
     app_f.state.task = None
+
+    metrics_router = APIRouter()
+    _registry = CollectorRegistry()
+    REQ_COUNT = Counter(
+        "api_requests_total",
+        "HTTP requests",
+        ["method", "endpoint", "status"],
+        registry=_registry,
+    )
+    REQ_LAT = Histogram(
+        "api_request_seconds",
+        "HTTP request latency",
+        ["method", "endpoint"],
+        registry=_registry,
+    )
+    _dgm_best_score = Gauge(
+        "dgm_best_score",
+        "Best candidate score this generation",
+        registry=_registry,
+    )
+    _dgm_archive_mean = Gauge(
+        "dgm_archive_mean",
+        "Mean score of all candidates",
+        registry=_registry,
+    )
+    _dgm_lineage_depth = Gauge(
+        "dgm_lineage_depth",
+        "Lineage depth of the archive",
+        registry=_registry,
+    )
+
+    @metrics_router.get("/metrics", response_class=PlainTextResponse)
+    async def _metrics() -> Response:
+        return PlainTextResponse(generate_latest(_registry), media_type="text/plain; version=0.0.4")
+
+    app.include_router(metrics_router)
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
@@ -149,6 +186,16 @@ if app is not None:
                 self.counters[ip] = dq
             return await call_next(request)
 
+    class MetricsMiddleware(BaseHTTPMiddleware):
+        async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+            start = time.time()
+            response = await call_next(request)
+            duration = time.time() - start
+            endpoint = request.url.path
+            REQ_COUNT.labels(request.method, endpoint, str(response.status_code)).inc()
+            REQ_LAT.labels(request.method, endpoint).observe(duration)
+            return response
+
     async def verify_token(
         credentials: HTTPAuthorizationCredentials = Depends(security),
     ) -> None:
@@ -157,6 +204,7 @@ if app is not None:
             raise HTTPException(status_code=403, detail="Invalid token")
 
     app.add_middleware(SimpleRateLimiter)
+    app.add_middleware(MetricsMiddleware)
     origins = [o.strip() for o in os.getenv("API_CORS_ORIGINS", "*").split(",") if o.strip()]
     app.add_middleware(
         CORSMiddleware,

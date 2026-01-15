@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import atexit
 import contextlib
 import logging
 import os
@@ -12,6 +13,9 @@ import sys
 from typing import Any, Optional
 
 from alpha_factory_v1.utils.env import _env_int
+import openai_agents
+
+AgentRuntime = getattr(openai_agents, "AgentRuntime", None)
 
 from .agent_scheduler import AgentScheduler
 from .orchestrator_base import BaseOrchestrator
@@ -66,6 +70,30 @@ if not logging.getLogger().handlers:
 log = logging.getLogger("alpha_factory.orchestrator")
 
 _manager: AgentManager | None = None
+
+
+class _OpenAIRuntime:
+    """Lazy OpenAI Agents runtime wrapper for backwards compatibility."""
+
+    _runtime: AgentRuntime | None = None
+    _hooked = False
+
+    def runtime(self) -> AgentRuntime:
+        if AgentRuntime is None:
+            raise ModuleNotFoundError("AgentRuntime is unavailable; install openai-agents.")
+        if self._runtime is None:
+            self._runtime = AgentRuntime()
+        if not self._hooked:
+            atexit.register(self.shutdown)
+            self._hooked = True
+        return self._runtime
+
+    def shutdown(self) -> None:
+        if self._runtime is not None:
+            self._runtime.shutdown()
+
+
+_OAI = _OpenAIRuntime()
 
 
 def publish(topic: str, msg: dict[str, object]) -> None:
