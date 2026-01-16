@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -35,6 +36,7 @@ import subprocess
 import tempfile
 import textwrap
 from typing import List, Optional, Tuple
+import inspect
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
@@ -58,7 +60,7 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
-def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+async def generate_patch_async(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
     prompt = textwrap.dedent(
         f"""
@@ -74,9 +76,24 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if inspect.isawaitable(result):
+        result = await result
+    patch = str(result).strip()
+    fallback = os.getenv("PATCH_FILE")
+    if fallback and ("--- " not in patch or "+++ " not in patch):
+        patch = pathlib.Path(fallback).read_text(encoding="utf-8").strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+    """Synchronous wrapper around :func:`generate_patch_async`."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(generate_patch_async(test_log, llm=llm, repo_path=repo_path))
+    raise RuntimeError("generate_patch() cannot run inside an event loop; use generate_patch_async() instead.")
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -91,9 +108,25 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
+def _normalize_patch(patch: str) -> str:
+    """Normalize minimal diff hunks missing range metadata."""
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    for line in lines:
+        if line.strip() == "@@":
+            normalized.append("@@ -1 +1 @@")
+        else:
+            normalized.append(line)
+    text = "\n".join(normalized)
+    if patch.endswith("\n"):
+        text += "\n"
+    return text
+
+
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(

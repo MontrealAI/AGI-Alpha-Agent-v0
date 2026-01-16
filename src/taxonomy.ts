@@ -86,7 +86,7 @@ export async function loadTaxonomy(): Promise<HyperGraph> {
     await withStore('readwrite', META_STORE, (s) => s.put(CURRENT_VERSION, VERSION_KEY));
     return { nodes: {} };
   }
-  const nodes = (await withStore< TaxonomyNode[] >('readonly', NODE_STORE, (s) => s.getAll())) || [];
+  const nodes = (await withStore<TaxonomyNode[]>('readonly', NODE_STORE, (s) => s.getAll())) || [];
   const out: HyperGraph = { nodes: {} };
   for (const n of nodes) {
     if (n && n.id) out.nodes[n.id] = { id: n.id, parent: n.parent ?? null };

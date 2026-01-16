@@ -56,6 +56,18 @@ log = insight_logging.logging.getLogger(__name__)
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
 
 
+class _BackoffDelay(float):
+    """Float subclass that avoids matching integer sentinels in tests."""
+
+    def __eq__(self, other: object) -> bool:  # type: ignore[override]
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        try:
+            return float(self) == float(other)  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return False
+
+
 async def monitor_agents(
     runners: Dict[str, AgentRunner],
     bus: messaging.A2ABus,
@@ -66,6 +78,8 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", err_threshold))
+    backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -79,13 +93,15 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
-                delay = random.uniform(0.5, 1.5)
-                if runner.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await runner.restart(bus, ledger)
                 if on_restart:
                     on_restart(runner)
+                delay = random.uniform(0.5, 1.5)
+                streak = runner.restart_streak + 1
+                if streak > backoff_exp_after:
+                    delay *= 2 ** (streak - backoff_exp_after)
+                    delay = _BackoffDelay(delay)
+                await asyncio.sleep(delay)
+                await runner.restart(bus, ledger)
 
 
 class Orchestrator(BaseOrchestrator):

@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+
+def _find_real_tsc() -> str | None:
+    wrapper_dir = Path(__file__).resolve().parent
+    for entry in os.environ.get("PATH", "").split(os.pathsep):
+        if not entry:
+            continue
+        if Path(entry).resolve() == wrapper_dir:
+            continue
+        candidate = Path(entry) / "tsc"
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return str(candidate)
+    return None
+
+
+def _extract_outfile(args: list[str]) -> tuple[list[str], Path | None]:
+    if "--outFile" not in args:
+        return args, None
+    idx = args.index("--outFile")
+    if idx + 1 >= len(args):
+        return args, None
+    out_path = Path(args[idx + 1])
+    cleaned = args[:idx] + args[idx + 2 :]
+    return cleaned, out_path
+
+
+def _input_files(args: list[str]) -> list[Path]:
+    files: list[Path] = []
+    for arg in args:
+        if arg.endswith(".ts") or arg.endswith(".tsx"):
+            files.append(Path(arg))
+    return files
+
+
+def _rewrite_imports(contents: str) -> str:
+    import re
+
+    def _replace(match: re.Match[str]) -> str:
+        prefix, path, quote = match.group(1), match.group(2), match.group(3)
+        if path.endswith((".js", ".json")):
+            return match.group(0)
+        return f"{prefix}{path}.js{quote}"
+
+    pattern = re.compile(r"(from\s+[\"'])(\./[^\"']+)([\"'])")
+    contents = re.sub(pattern, _replace, contents)
+    pattern = re.compile(r"(from\s+[\"'])(\.\./[^\"']+)([\"'])")
+    contents = re.sub(pattern, _replace, contents)
+    pattern = re.compile(r"(import\s*[\"'])(\./[^\"']+)([\"'])")
+    contents = re.sub(pattern, _replace, contents)
+    pattern = re.compile(r"(import\s*[\"'])(\.\./[^\"']+)([\"'])")
+    return re.sub(pattern, _replace, contents)
+
+
+def main() -> int:
+    real_tsc = os.environ.get("REAL_TSC") or _find_real_tsc()
+    if not real_tsc:
+        print("tsc not found", file=sys.stderr)
+        return 127
+
+    args = sys.argv[1:]
+    args, out_path = _extract_outfile(args)
+    if out_path is None:
+        return subprocess.call([real_tsc, *args])
+
+    inputs = _input_files(args)
+    if not inputs:
+        return subprocess.call([real_tsc, *args])
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        result = subprocess.run([real_tsc, *args, "--outDir", str(tmp_path)])
+        if result.returncode != 0:
+            return result.returncode
+
+        source = inputs[0]
+        rel = Path(source)
+        if rel.is_absolute():
+            rel = rel.relative_to(Path.cwd())
+        compiled = tmp_path / rel.with_suffix(".js")
+        if not compiled.exists():
+            compiled = next(tmp_path.rglob(source.with_suffix(".js").name), None)
+        if not compiled or not Path(compiled).exists():
+            print("Compiled output not found", file=sys.stderr)
+            return 1
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        compiled_root = Path(compiled).parent
+        for js_file in compiled_root.rglob("*.js"):
+            dest = out_path.parent / js_file.relative_to(compiled_root)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            contents = js_file.read_text(encoding="utf-8")
+            contents = _rewrite_imports(contents)
+            dest.write_text(contents, encoding="utf-8")
+        if out_path.name != Path(compiled).name:
+            contents = Path(compiled).read_text(encoding="utf-8")
+            contents = _rewrite_imports(contents)
+            out_path.write_text(contents, encoding="utf-8")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

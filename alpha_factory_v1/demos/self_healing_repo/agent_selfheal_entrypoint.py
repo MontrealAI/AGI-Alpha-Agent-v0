@@ -46,7 +46,7 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+from .patcher_core import generate_patch_async, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -107,7 +107,7 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    patch = await generate_patch_async(report["out"], llm=LLM, repo_path=CLONE_DIR)
     return {"patch": patch}
 
 
