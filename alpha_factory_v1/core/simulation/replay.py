@@ -11,7 +11,20 @@ from typing import List, Any, cast
 from alpha_factory_v1.core.simulation import forecast, sector
 
 
-BASE_DIR = Path(__file__).resolve().parents[2] / "data" / "historic_scenarios"
+def _resolve_base_dir() -> Path:
+    module_root = Path(__file__).resolve().parents[2]
+    repo_root = module_root.parent
+    candidates = (
+        repo_root / "data" / "historic_scenarios",
+        module_root / "data" / "historic_scenarios",
+    )
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return candidates[0]
+
+
+BASE_DIR = _resolve_base_dir()
 
 
 @dataclass(slots=True)
