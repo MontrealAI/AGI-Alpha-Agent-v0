@@ -6,7 +6,7 @@ from __future__ import annotations
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import Iterable, Set, Dict
+from typing import Callable, Dict, Iterable, Set
 
 import random
 
@@ -54,19 +54,29 @@ class SelfImprovementScheduler:
         self.tokens_used = 0
         self.start_time = 0.0
         self.running: Set[asyncio.Task[None]] = set()
-        self.app = Rocketry(execution="async")
+        self._interval_seconds = _parse_interval(interval)
+        self._use_rocketry = False
+        self._finish: Callable[[], None] = lambda: None
+        try:
+            self.app = Rocketry(execution="async")
+        except TypeError:
+            self.app = Rocketry()
 
-        @self.app.task(every(interval))
-        async def _spawn():  # pragma: no cover - Rocketry callback
-            await self._spawn_jobs()
+        if hasattr(self.app, "task"):
+            self._use_rocketry = True
+            self._finish = self.app.session.finish
+
+            @self.app.task(every(interval))
+            async def _spawn():  # pragma: no cover - Rocketry callback
+                await self._spawn_jobs()
 
     async def _spawn_jobs(self) -> None:
         """Spawn new worker tasks until quotas or limits are hit."""
         if self.time_quota and time.time() - self.start_time >= self.time_quota:
-            self.app.session.finish()
+            self._finish()
             return
         if self.tokens_quota is not None and self.tokens_used >= self.tokens_quota:
-            self.app.session.finish()
+            self._finish()
             return
         # schedule initial evaluation or bandit-selected jobs
         while len(self.running) < self.max_workers:
@@ -76,7 +86,7 @@ class SelfImprovementScheduler:
                 job = await self.queue.get()
             else:
                 if not self._active_jobs:
-                    self.app.session.finish()
+                    self._finish()
                     break
                 job = self._select_job()
             task = asyncio.create_task(self._run_job(job))
@@ -138,10 +148,31 @@ class SelfImprovementScheduler:
     async def serve(self) -> None:
         """Run the scheduler until quotas are exhausted or queue is empty."""
         self.start_time = time.time()
-        await self.app.serve()
-        # wait for running tasks to finish
-        if self.running:
-            await asyncio.gather(*self.running, return_exceptions=True)
+        if self._use_rocketry:
+            await self.app.serve()
+            # wait for running tasks to finish
+            if self.running:
+                await asyncio.gather(*self.running, return_exceptions=True)
+            return
+        while True:
+            await self._spawn_jobs()
+            if self.running:
+                await asyncio.gather(*self.running, return_exceptions=True)
+            if (self.tokens_quota is not None and self.tokens_used >= self.tokens_quota) or (
+                self.time_quota and time.time() - self.start_time >= self.time_quota
+            ):
+                break
+            if self._first_round_done and not self._active_jobs and self.queue.empty():
+                break
+            await asyncio.sleep(self._interval_seconds)
 
 
 __all__ = ["Job", "SelfImprovementScheduler"]
+
+
+def _parse_interval(interval: str) -> float:
+    """Parse a simple '<float> second' interval string."""
+    try:
+        return float(interval.split()[0])
+    except (ValueError, IndexError):
+        return 1.0

@@ -101,6 +101,8 @@ def _record_history(p: Path) -> None:
     Returns:
         None.
     """
+    if _EDIT_HISTORY and _EDIT_HISTORY[-1][0] != p:
+        _EDIT_HISTORY.clear()
     _EDIT_HISTORY.append((p, p.read_text(encoding="utf-8", errors="replace")))
 
 

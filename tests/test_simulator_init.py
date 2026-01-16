@@ -10,17 +10,22 @@ SIM_TS = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/sr
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
 def test_simulator_init_fast(tmp_path: Path) -> None:
-    js_out = tmp_path / "sim.js"
+    (tmp_path / "package.json").write_text('{"type":"module"}', encoding="utf-8")
+    js_out = tmp_path / SIM_TS.with_suffix(".js")
     subprocess.run(
         [
             "tsc",
             "--target",
             "es2020",
             "--module",
-            "es2020",
+            "Node16",
+            "--moduleResolution",
+            "node16",
             SIM_TS,
-            "--outFile",
-            js_out,
+            "--outDir",
+            str(tmp_path),
+            "--rootDir",
+            ".",
         ],
         check=True,
     )

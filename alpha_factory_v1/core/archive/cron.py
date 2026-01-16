@@ -32,7 +32,10 @@ def create_scheduler(
     if Rocketry is None or daily is None:
         return None
 
-    app = Rocketry(execution="async")
+    try:
+        app = Rocketry(execution="async")
+    except TypeError:
+        app = Rocketry()
 
     @app.task(daily)
     def _job() -> None:  # pragma: no cover - Rocketry callback

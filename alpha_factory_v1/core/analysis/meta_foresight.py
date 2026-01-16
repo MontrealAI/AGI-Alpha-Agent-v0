@@ -81,7 +81,10 @@ def create_weekly_scheduler(csv_path: str | Path = "replay_metrics.csv") -> Rock
     """Return a ``Rocketry`` scheduler that emails the weekly report."""
     if Rocketry is None or every is None:
         return None
-    app = Rocketry(execution="async")
+    try:
+        app = Rocketry(execution="async")
+    except TypeError:
+        app = Rocketry()
 
     @app.task(every("1 week"))
     def _report() -> None:  # pragma: no cover - scheduler callback
