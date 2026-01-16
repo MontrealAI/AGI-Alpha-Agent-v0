@@ -12,8 +12,13 @@ export interface ReplayFrame {
 
 const DB_NAME = 'replay';
 const FRAME_STORE = 'frames';
+const HAS_INDEXED_DB = typeof indexedDB !== 'undefined';
+const MEMORY_STORE = new Map<number, ReplayFrame>();
 
 function openDB(): Promise<IDBDatabase> {
+  if (!HAS_INDEXED_DB) {
+    return Promise.resolve({} as IDBDatabase);
+  }
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
     req.onupgradeneeded = () => {
@@ -26,6 +31,19 @@ function openDB(): Promise<IDBDatabase> {
 }
 
 function withStore<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+  if (!HAS_INDEXED_DB) {
+    return new Promise((resolve) => {
+      const store = {
+        get: (id: number) => ({ result: MEMORY_STORE.get(id) }),
+        put: (val: ReplayFrame, id: number) => {
+          MEMORY_STORE.set(id, val);
+          return { result: id };
+        },
+      } as unknown as IDBObjectStore;
+      const req = fn(store);
+      resolve(req.result as T);
+    });
+  }
   return openDB().then(
     db => new Promise<T>((resolve, reject) => {
       const tx = db.transaction(FRAME_STORE, mode);
@@ -150,4 +168,3 @@ export class ReplayDB {
     return last;
   }
 }
-

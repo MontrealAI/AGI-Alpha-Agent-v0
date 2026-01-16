@@ -39,9 +39,6 @@ def _load_openai_sdk():
         missing.append("Agent/OpenAIAgent")
     if runtime is None:
         missing.append("AgentRuntime")
-    elif not callable(getattr(runtime, "run", None)):
-        missing.append("AgentRuntime.run")
-
     if missing:
         raise ModuleNotFoundError(
             "OpenAI Agents SDK is required for the AIGA bridge (missing: " + ", ".join(missing) + ")"
@@ -179,7 +176,14 @@ def main() -> None:
     else:
         print("EvolverAgent exposed via ADK gateway (ADK disabled)", flush=True)
 
-    runtime.run()
+    run = getattr(runtime, "run", None)
+    serve = getattr(runtime, "serve", None)
+    if callable(run):
+        run()
+    elif callable(serve):
+        serve()
+    else:
+        print("AgentRuntime loop unavailable; exiting after registration", flush=True)
 
 
 if __name__ == "__main__":  # pragma: no cover

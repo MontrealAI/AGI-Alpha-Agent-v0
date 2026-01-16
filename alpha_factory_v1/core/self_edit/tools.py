@@ -56,7 +56,7 @@ except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-_EDIT_HISTORY: list[tuple[Path, str]] = []
+_EDIT_HISTORY: list[tuple[Path, str, int | None]] = []
 
 __all__ = [
     "view",
@@ -101,7 +101,8 @@ def _record_history(p: Path) -> None:
     Returns:
         None.
     """
-    _EDIT_HISTORY.append((p, p.read_text(encoding="utf-8", errors="replace")))
+    inode = p.stat().st_ino if p.exists() else None
+    _EDIT_HISTORY.append((p, p.read_text(encoding="utf-8", errors="replace"), inode))
 
 
 # ---------------------------------------------------------------------------
@@ -230,11 +231,15 @@ def undo_last_edit() -> bool:
     Returns:
         ``True`` if a previous edit was undone.
     """
-    if not _EDIT_HISTORY:
-        return False
-    p, text = _EDIT_HISTORY.pop()
-    p.write_text(text, encoding="utf-8")
-    return True
+    while _EDIT_HISTORY:
+        p, text, inode = _EDIT_HISTORY.pop()
+        if not p.exists():
+            continue
+        if inode is not None and p.stat().st_ino != inode:
+            continue
+        p.write_text(text, encoding="utf-8")
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------

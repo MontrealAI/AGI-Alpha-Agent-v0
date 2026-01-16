@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import importlib
 from typing import Dict, Optional
 
 from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
@@ -28,7 +29,10 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        agents_module = importlib.import_module("backend.agents")
+        list_agents = getattr(agents_module, "list_agents", None)
+        if list_agents is None:
+            from backend.agents.registry import list_agents
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]

@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import time
 from typing import Callable, Dict, List
+from types import SimpleNamespace
 
 import alpha_factory_v1.core.utils.a2a_pb2 as pb
 
@@ -55,7 +56,7 @@ class DemoOrchestrator:
     def _register(self, runner: AgentRunner) -> None:
         env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
         env.payload.update({"event": "register", "agent": runner.agent.name, "capabilities": runner.capabilities})
-        self.ledger.log(env)
+        self.ledger.log(SimpleNamespace(payload=dict(env.payload)))
         self.bus.publish("system", env)
         self.registry.set_stake(runner.agent.name, 1.0)
         self.registry.set_threshold(f"promote:{runner.agent.name}", self._promotion_threshold)
@@ -63,7 +64,7 @@ class DemoOrchestrator:
     def _record_restart(self, runner: AgentRunner) -> None:
         env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
         env.payload.update({"event": "restart", "agent": runner.agent.name})
-        self.ledger.log(env)
+        self.ledger.log(SimpleNamespace(payload=dict(env.payload)))
         self.bus.publish("system", env)
 
     def slash(self, agent_id: str) -> None:

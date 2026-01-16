@@ -51,13 +51,6 @@ from .patcher_core import generate_patch, apply_patch
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
 
-if shutil.which("patch") is None:
-    logger.error(
-        '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
-    )
-    sys.exit(1)
-
-
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
 
 REPO_URL = "https://github.com/MontrealAI/sample_broken_calc.git"
@@ -77,12 +70,29 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+_LLM = None
+
+
+def _build_llm() -> OpenAIAgent:
+    model = os.getenv("OPENAI_MODEL") or os.getenv("MODEL_NAME", "gpt-4o-mini")
+    api_key = os.getenv("OPENAI_API_KEY", None)
+    base_url = "http://ollama:11434/v1" if not api_key else None
+    try:
+        return OpenAIAgent(
+            model=model,
+            api_key=api_key,
+            base_url=base_url,
+            temperature=float(_temp_env) if _temp_env is not None else None,
+        )
+    except TypeError:
+        return OpenAIAgent()  # type: ignore[call-arg]
+
+
+def _get_llm() -> OpenAIAgent:
+    global _LLM
+    if _LLM is None:
+        _LLM = _build_llm()
+    return _LLM
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -107,12 +117,14 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    patch = await asyncio.to_thread(generate_patch, report["out"], llm=_get_llm(), repo_path=CLONE_DIR)
     return {"patch": patch}
 
 
 @Tool(name="apply_and_test", description="apply patch & retest")
 async def apply_and_test(patch: str):
+    if shutil.which("patch") is None:
+        raise RuntimeError("`patch` command not found. Install it to apply fixes.")
     apply_patch(patch, repo_path=CLONE_DIR)
     return await run_tests()
 
@@ -120,7 +132,7 @@ async def apply_and_test(patch: str):
 apply_patch_and_retst = apply_and_test
 
 # ── Agent orchestration ───────────────────────────────────────────────────────
-agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="Repo‑Healer")
+agent = Agent(llm=_get_llm(), tools=[run_tests, suggest_patch, apply_and_test], name="Repo‑Healer")
 
 
 def create_app() -> FastAPI:

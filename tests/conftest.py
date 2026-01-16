@@ -75,6 +75,17 @@ def pytest_configure(config: pytest.Config) -> None:
         "markers",
         "timeout(seconds): override the default per-test timeout in seconds",
     )
+    if importlib.util.find_spec("hypothesis"):
+        from hypothesis import HealthCheck, settings
+
+        settings.register_profile(
+            "ci",
+            suppress_health_check=[
+                HealthCheck.filter_too_much,
+                HealthCheck.function_scoped_fixture,
+            ],
+        )
+        settings.load_profile("ci")
 
 
 def _resolve_timeout(item: pytest.Item) -> int:

@@ -111,7 +111,10 @@ def _run_simulation(
     Returns:
         None
     """
-    if st is None:  # pragma: no cover - fallback
+    runtime = getattr(st, "runtime", None) if st is not None else None
+    runner = getattr(runtime, "scriptrunner", None) if runtime is not None else None
+    get_ctx = getattr(runner, "get_script_run_ctx", None) if runner is not None else None
+    if st is None or get_ctx is None or get_ctx() is None:  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
 

@@ -34,7 +34,7 @@ def _load_dotenv(path: str = ".env") -> None:
     """Load default variables from ``path`` when available."""
     if Path(path).is_file():
         for k, v in _load_env_file(path).items():
-            os.environ.setdefault(k, v)
+            os.environ[k] = v
 
 
 def _prefetch_vault() -> None:

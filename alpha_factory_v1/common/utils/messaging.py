@@ -31,7 +31,15 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        _ProtoEnvelope = pb.Envelope  # type: ignore
+
+        def Envelope(*args: Any, **kwargs: Any) -> pb.Envelope:  # type: ignore[misc]
+            if "ts" in kwargs:
+                try:
+                    kwargs["ts"] = float(kwargs["ts"] or 0.0)
+                except (TypeError, ValueError):
+                    kwargs["ts"] = 0.0
+            return _ProtoEnvelope(*args, **kwargs)
     except Exception:  # pragma: no cover - optional proto
         Envelope: TypeAlias = Any
 

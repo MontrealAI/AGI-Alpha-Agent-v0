@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import pytest
+from pathlib import Path
 
 pd = pytest.importorskip("pandas")
 pytest.importorskip("plotly.express")
@@ -50,9 +51,15 @@ def test_progress_dom_updates() -> None:
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
-    page = browser.new_page()
-    page.goto(str(client.base_url) + "/web/")
-    page.click("text=Run simulation")
-    page.wait_for_selector("#capability")
-    browser.close()
+    driver = pw.sync_playwright().start()
+    try:
+        if not Path(driver.chromium.executable_path).exists():
+            pytest.skip("Playwright browsers not installed")
+        browser = driver.chromium.launch()
+        page = browser.new_page()
+        page.goto(str(client.base_url) + "/web/")
+        page.click("text=Run simulation")
+        page.wait_for_selector("#capability")
+        browser.close()
+    finally:
+        driver.stop()

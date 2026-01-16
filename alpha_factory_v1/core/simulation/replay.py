@@ -11,7 +11,9 @@ from typing import List, Any, cast
 from alpha_factory_v1.core.simulation import forecast, sector
 
 
-BASE_DIR = Path(__file__).resolve().parents[2] / "data" / "historic_scenarios"
+_DEFAULT_BASE = Path(__file__).resolve().parents[2] / "data" / "historic_scenarios"
+_REPO_BASE = Path(__file__).resolve().parents[3] / "data" / "historic_scenarios"
+BASE_DIR = _DEFAULT_BASE if _DEFAULT_BASE.exists() else _REPO_BASE
 
 
 @dataclass(slots=True)

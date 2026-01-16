@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -27,9 +28,31 @@ log = logging.getLogger(__name__)
 # REST API ---------------------------------------------------------------
 
 
-def build_rest(runners: Dict[str, AgentRunner], model_max_bytes: int, mem: Any) -> Optional["FastAPI"]:
+def build_rest(
+    runners: Dict[str, AgentRunner],
+    model_max_bytes: int | None = None,
+    mem: Any | None = None,
+) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
+    if model_max_bytes is None:
+        model_max_bytes = int(os.getenv("ALPHA_MODEL_MAX_BYTES", 64 * 1024 * 1024))
+    if mem is None:
+        orch_mod = sys.modules.get("alpha_factory_v1.backend.orchestrator")
+        if orch_mod is not None and hasattr(orch_mod, "mem"):
+            mem = orch_mod.mem
+        else:
+            class _VecStub:  # noqa: D401 - lightweight stub
+                def recent(self, *_a: Any, **_kw: Any) -> list[Any]:
+                    return []
+
+                def search(self, *_a: Any, **_kw: Any) -> list[Any]:
+                    return []
+
+            class _MemStub:
+                vector = _VecStub()
+
+            mem = _MemStub()
 
     token = os.getenv("API_TOKEN")
     if not token:

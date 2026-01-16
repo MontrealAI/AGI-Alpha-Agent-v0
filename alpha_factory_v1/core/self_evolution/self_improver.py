@@ -78,7 +78,7 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    repo.git.apply("--unidiff-zero", patch_file)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
