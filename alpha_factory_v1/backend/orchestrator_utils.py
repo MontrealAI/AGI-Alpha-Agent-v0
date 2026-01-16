@@ -82,7 +82,6 @@ class AgentRunner:
         else:
             close()
         self.agent = self.cls(bus, ledger)
-        self.error_count = 0
         self.restarts += 1
         self.restart_streak += 1
         self.start(bus, ledger)

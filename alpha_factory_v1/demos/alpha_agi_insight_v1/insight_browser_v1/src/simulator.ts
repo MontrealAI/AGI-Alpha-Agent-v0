@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { lcg } from './utils/rng.ts';
-import { mutate, type Mutant } from './evolve/mutate.ts';
-import { paretoFront } from './utils/pareto.ts';
-import { createSandboxWorker } from './utils/sandbox.ts';
-import type { Individual as BaseIndividual } from './state/serializer.ts';
+import { lcg } from './utils/rng.js';
+import { mutate, type Mutant } from './evolve/mutate.js';
+import { paretoFront } from './utils/pareto.js';
+import { createSandboxWorker } from './utils/sandbox.js';
+import type { Individual as BaseIndividual } from './state/serializer.js';
 
 export interface SimulatorConfig {
   popSize: number;

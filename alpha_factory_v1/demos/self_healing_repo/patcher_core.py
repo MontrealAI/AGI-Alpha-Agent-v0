@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -39,6 +40,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
+
+from alpha_factory_v1.core.utils.patch_guard import normalize_patch
 
 
 # ─────────────────────────── helpers ─────────────────────────────────────────
@@ -60,6 +63,13 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_override = os.getenv("PATCH_FILE")
+    if patch_override:
+        override_path = pathlib.Path(patch_override)
+        if override_path.is_file():
+            patch = normalize_patch(override_path.read_text(), pathlib.Path(repo_path))
+            _sanity_check_patch(patch, pathlib.Path(repo_path))
+            return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,7 +84,11 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    response = llm(prompt)
+    if asyncio.iscoroutine(response):
+        response = asyncio.run(response)
+    patch = str(response).strip()
+    patch = normalize_patch(patch, pathlib.Path(repo_path))
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -94,6 +108,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = normalize_patch(patch, repo)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
