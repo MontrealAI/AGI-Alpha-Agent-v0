@@ -16,7 +16,7 @@ import shutil
 import subprocess
 import sys
 
-import gradio as gr
+import importlib.util
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -46,7 +46,7 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+from .patcher_core import apply_patch, generate_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -76,13 +76,24 @@ def clone_sample_repo() -> None:
 
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
-_temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+def _build_llm() -> OpenAIAgent:
+    model_name = os.getenv("OPENAI_MODEL") or os.getenv("MODEL_NAME") or "gpt-4o-mini"
+    api_key = os.getenv("OPENAI_API_KEY", None)
+    base_url = "http://ollama:11434/v1" if not api_key else None
+    temp_env = os.getenv("TEMPERATURE")
+    kwargs = {
+        "model": model_name,
+        "api_key": api_key,
+        "base_url": base_url,
+        "temperature": float(temp_env) if temp_env is not None else None,
+    }
+    try:
+        return OpenAIAgent(**kwargs)
+    except TypeError:
+        return OpenAIAgent()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -123,8 +134,29 @@ apply_patch_and_retst = apply_and_test
 agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="Repo‑Healer")
 
 
+def _load_gradio():
+    if "gradio" in sys.modules:
+        return sys.modules["gradio"]
+    if importlib.util.find_spec("gradio"):
+        import gradio as gr
+
+        return gr
+    return None
+
+
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    gr = _load_gradio()
+    app = FastAPI()
+
+    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+    async def _live() -> str:  # noqa: D401
+        return "OK"
+
+    if gr is None:
+        logger.warning("Gradio not installed; serving live endpoint only.")
+        return app
+
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 
@@ -142,12 +174,6 @@ def create_app() -> FastAPI:
 
         run_btn = gr.Button("🩹 Heal Repository")
         run_btn.click(run_pipeline, outputs=log)
-
-    app = FastAPI()
-
-    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
-    async def _live() -> str:  # noqa: D401
-        return "OK"
 
     return gr.mount_gradio_app(app, ui, path="/")
 

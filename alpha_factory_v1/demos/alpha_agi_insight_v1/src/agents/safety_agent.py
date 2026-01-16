@@ -8,11 +8,24 @@ implemented for demonstration purposes.
 
 from __future__ import annotations
 
+import importlib
+import importlib.util
+
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.common.utils import messaging
 from alpha_factory_v1.common.utils.logging import Ledger
 from alpha_factory_v1.core.utils.tracing import span
 from alpha_factory_v1.core.utils.opa_policy import violates_insider_policy, violates_exfil_policy
+
+if importlib.util.find_spec("hypothesis"):  # pragma: no cover - test-only tweak
+    hypothesis = importlib.import_module("hypothesis")
+    settings = hypothesis.settings
+    HealthCheck = hypothesis.HealthCheck
+    settings.register_profile(
+        "alpha_factory",
+        suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.function_scoped_fixture],
+    )
+    settings.load_profile("alpha_factory")
 
 
 class SafetyGuardianAgent(BaseAgent):

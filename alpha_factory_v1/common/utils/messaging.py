@@ -14,7 +14,7 @@ import logging
 from pathlib import Path
 import contextlib
 from types import TracebackType
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol
 from cachetools import TTLCache
 
 from .config import Settings
@@ -25,15 +25,39 @@ from alpha_factory_v1.core.utils import alerts
 if TYPE_CHECKING:  # pragma: no cover - type hints only
     from alpha_factory_v1.core.utils.tracing import span, bus_messages_total
     from alpha_factory_v1.core.utils import a2a_pb2 as pb
-
-    Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
-    try:
-        from alpha_factory_v1.core.utils import a2a_pb2 as pb
+    pb = None
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
-    except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+try:  # pragma: no cover - optional proto
+    from alpha_factory_v1.core.utils import a2a_pb2 as pb  # type: ignore[no-redef]
+except Exception:  # pragma: no cover - optional proto
+    pb = None
+
+
+class Envelope:
+    """Simple envelope wrapper for bus messages."""
+
+    def __init__(
+        self,
+        sender: Any = "",
+        recipient: Any = "",
+        payload: Any | None = None,
+        ts: Any = 0.0,
+    ) -> None:
+        self.sender = "" if sender is None else str(sender)
+        self.recipient = "" if recipient is None else str(recipient)
+        try:
+            self.ts = float(ts) if ts is not None else 0.0
+        except (TypeError, ValueError):
+            self.ts = 0.0
+        if payload is None:
+            self.payload: Dict[str, Any] = {}
+        elif isinstance(payload, dict):
+            self.payload = dict(payload)
+        elif hasattr(payload, "items"):
+            self.payload = dict(payload.items())
+        else:
+            self.payload = {"value": payload}
 
 
 class EnvelopeLike(Protocol):
