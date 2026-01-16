@@ -8,15 +8,45 @@ Self‑Healing Repo demo
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
 4. Opens a Pull Request‑style diff in the dashboard and re‑runs tests.
 """
-import logging
 import asyncio
+import importlib.util
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-import gradio as gr
+if importlib.util.find_spec("gradio") is None:
+    class _GradioStub:
+        class Blocks:
+            def __init__(self, *_, **__):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return None
+
+        class Markdown:
+            def __init__(self, *_, **__):
+                pass
+
+        class Button:
+            def __init__(self, *_, **__):
+                pass
+
+            def click(self, *_, **__):
+                return None
+
+        @staticmethod
+        def mount_gradio_app(app, _ui, path="/"):
+            return app
+
+    gr = _GradioStub()
+else:
+    import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -24,7 +54,7 @@ import uvicorn
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    llm_client = None
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -37,7 +67,9 @@ except Exception:  # pragma: no cover - optional fallback
             pass
 
         def __call__(self, prompt: str) -> str:
-            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+            if llm_client is not None:
+                return llm_client.call_local_model([{"role": "user", "content": prompt}])
+            return ""
 
     class Agent:  # type: ignore
         def __init__(self, llm=None, tools=None, name=None) -> None:
@@ -46,7 +78,13 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+if __package__:
+    from .patcher_core import generate_patch, apply_patch
+else:
+    ROOT = pathlib.Path(__file__).resolve().parents[3]
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from alpha_factory_v1.demos.self_healing_repo.patcher_core import generate_patch, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -77,12 +115,30 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+
+
+class _FallbackLLM:
+    def __call__(self, prompt: str) -> str:
+        if "llm_client" in globals():
+            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+        return ""
+
+
+def _build_llm() -> object:
+    if not callable(OpenAIAgent):
+        return _FallbackLLM()
+    try:
+        return OpenAIAgent(
+            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+            api_key=os.getenv("OPENAI_API_KEY", None),
+            base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+            temperature=float(_temp_env) if _temp_env is not None else None,
+        )
+    except Exception:
+        return _FallbackLLM()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")

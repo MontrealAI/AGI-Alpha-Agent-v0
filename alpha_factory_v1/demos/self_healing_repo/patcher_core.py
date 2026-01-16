@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -60,6 +61,12 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_override = os.getenv("PATCH_FILE")
+    if patch_override:
+        patch = pathlib.Path(patch_override).read_text(encoding="utf-8")
+        patch = textwrap.dedent(patch).lstrip("\n")
+        _sanity_check_patch(patch, pathlib.Path(repo_path))
+        return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,9 +81,17 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch = _maybe_await_llm(llm, prompt).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+def _maybe_await_llm(llm: OpenAIAgent, prompt: str) -> str:
+    """Return the LLM response for ``prompt`` whether sync or async."""
+    result = llm(prompt)
+    if hasattr(result, "__await__"):
+        return asyncio.run(result)
+    return str(result)
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -93,6 +108,8 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
+    patch = textwrap.dedent(patch).lstrip("\n")
+    patch = _normalize_patch(patch)
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
@@ -102,8 +119,9 @@ def apply_patch(patch: str, repo_path: str) -> None:
     backups = {}
 
     # write patch to temp file
+    patch_text = patch if patch.endswith("\n") else f"{patch}\n"
     with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
-        tf.write(patch)
+        tf.write(patch_text)
         patch_file = tf.name
 
     try:
@@ -131,6 +149,17 @@ def apply_patch(patch: str, repo_path: str) -> None:
         for bak in backups.values():
             if bak.exists():
                 os.unlink(bak)
+
+
+def _normalize_patch(patch: str) -> str:
+    """Ensure hunks include line numbers for patch utility compatibility."""
+    lines = []
+    for line in patch.splitlines():
+        if line.strip() == "@@":
+            lines.append("@@ -1 +1 @@")
+        else:
+            lines.append(line)
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":

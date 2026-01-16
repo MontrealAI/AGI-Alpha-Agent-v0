@@ -31,7 +31,34 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        def _coerce_str(value: Any) -> str:
+            if value is None:
+                return ""
+            return str(value)
+
+        def _coerce_float(value: Any) -> float:
+            try:
+                return float(value)
+            except (TypeError, ValueError):
+                return 0.0
+
+        def Envelope(  # type: ignore[misc]
+            *,
+            sender: Any = "",
+            recipient: Any = "",
+            payload: Any = None,
+            ts: Any = 0.0,
+        ) -> pb.Envelope:
+            env = pb.Envelope(
+                sender=_coerce_str(sender),
+                recipient=_coerce_str(recipient),
+                ts=_coerce_float(ts),
+            )
+            if isinstance(payload, dict):
+                env.payload.update(payload)
+            return env
+
+        Envelope: TypeAlias = Envelope
     except Exception:  # pragma: no cover - optional proto
         Envelope: TypeAlias = Any
 

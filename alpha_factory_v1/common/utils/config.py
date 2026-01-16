@@ -36,7 +36,7 @@ def _env_int(name: str, default: int) -> int:
 def init_config(env_file: str = ".env") -> None:
     """Load environment variables and refresh :data:`CFG`."""
 
-    _load_dotenv(env_file)
+    _load_dotenv(env_file, override=True)
     _prefetch_vault()
     global CFG
     CFG = Settings()
