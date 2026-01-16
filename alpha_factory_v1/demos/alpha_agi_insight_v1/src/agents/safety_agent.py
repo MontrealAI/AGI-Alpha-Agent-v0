@@ -13,6 +13,7 @@ from alpha_factory_v1.common.utils import messaging
 from alpha_factory_v1.common.utils.logging import Ledger
 from alpha_factory_v1.core.utils.tracing import span
 from alpha_factory_v1.core.utils.opa_policy import violates_insider_policy, violates_exfil_policy
+from google.protobuf import json_format
 
 
 class SafetyGuardianAgent(BaseAgent):
@@ -36,12 +37,18 @@ class SafetyGuardianAgent(BaseAgent):
     async def handle(self, env: messaging.Envelope) -> None:
         """Validate payload before persistence."""
         with span("safety.handle"):
-            code = str(env.payload["code"] if "code" in env.payload else "")
-            text_parts = [str(v) for v in env.payload.values() if isinstance(v, str)]
+            payload = getattr(env, "payload", {})
+            if not isinstance(payload, dict):
+                if hasattr(payload, "fields"):
+                    payload = json_format.MessageToDict(payload, preserving_proto_field_name=True)
+                else:
+                    payload = {}
+            code = str(payload.get("code", ""))
+            text_parts = [str(v) for v in payload.values() if isinstance(v, str)]
             text = " ".join(text_parts)
             status = "ok"
             if "import os" in code or violates_insider_policy(text) or violates_exfil_policy(text):
                 status = "blocked"
-            payload = dict(env.payload)
-            payload["status"] = status
-            await self.emit("memory", payload)
+            out_payload = dict(payload)
+            out_payload["status"] = status
+            await self.emit("memory", out_payload)

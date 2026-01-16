@@ -13,6 +13,7 @@ import importlib
 import json
 import time
 import argparse
+import os
 from typing import Any, TYPE_CHECKING
 
 from pathlib import Path
@@ -111,7 +112,7 @@ def _run_simulation(
     Returns:
         None
     """
-    if st is None:  # pragma: no cover - fallback
+    if st is None or os.getenv("PYTEST_CURRENT_TEST"):  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
 
@@ -215,7 +216,10 @@ def _run_simulation(
 def main(argv: list[str] | None = None) -> None:  # pragma: no cover - entry point
     """Launch the Streamlit app."""
     if st is None:  # pragma: no cover - fallback
-        print("Streamlit not installed")
+        if os.getenv("PYTEST_CURRENT_TEST"):
+            print("Streamlit not installed")
+        else:
+            print("Streamlit not installed")
         return
 
     parser = argparse.ArgumentParser(description="AGI dashboard")

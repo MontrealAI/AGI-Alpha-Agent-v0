@@ -226,6 +226,9 @@ patch sbom '.services += {"sbom":{image:"anchore/syft:v1.27.0",command:["sh","-c
 patch alpha-trainer '.services += {"alpha-trainer":{build:{context:"./alpha_factory_v1/continual"},depends_on:["ray-head","orchestrator"]}}'
 
 ############## 5. CONTINUAL-LEARNING PIPELINE #################################
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY set; skipping continual-learning artifacts."
+else
 cat > "$CONTINUAL_DIR/rubric.json" <<'JSON'
 {"success":{"w":1.0},"latency_ms":{"w":-0.001,"target":1000},"cost_usd":{"w":-1.0}}
 JSON
@@ -253,8 +256,12 @@ for ag in AGENTS:
       shutil.make_archive(f"{td}/m",'zip',pathlib.Path(ck.path))
       requests.post(f"{API}/{ag}/update_model",files={"file":("ckpt.zip",open(f"{td}/m.zip","rb"))})
 PY
+fi
 
 ############## 6. END-TO-END CI ################################################
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY set; skipping CI workflow generation."
+else
 mkdir -p .github/workflows
 cat > "$CI_PATH" <<'YML'
 name: α-Factory-CI
@@ -270,8 +277,12 @@ jobs:
       - name: Health-probe
         run: curl -fs http://localhost:8000/healthz
 YML
+fi
 
 ############## 7. LOAD / CHAOS TESTING #########################################
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY set; skipping load-test assets."
+else
 cat > "$LOADTEST_DIR/locustfile.py" <<'PY'
 from locust import HttpUser, task, between; import random, os, json
 A=os.getenv("AGENTS_ENABLED","").split()
@@ -288,6 +299,7 @@ export default function(){
   sleep(0.1);
 }
 JS
+fi
 
 ############## 8. BUILD & DEPLOY ##############################################
 if [[ -n ${SKIP_DEPLOY:-} ]]; then

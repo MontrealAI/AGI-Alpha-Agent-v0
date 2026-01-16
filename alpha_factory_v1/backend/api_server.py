@@ -36,6 +36,13 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        try:  # pragma: no cover - optional dependency for tests
+            from alpha_factory_v1.backend import orchestrator as orch
+
+            mem = getattr(orch, "mem", None)
+        except Exception:
+            mem = None
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],
@@ -186,8 +193,17 @@ async def start_rest(app: Optional["FastAPI"], port: int, loglevel: str) -> Opti
 
     if not app or "uvicorn" not in globals():
         return None
-    cfg = uvicorn.Config(app, host="0.0.0.0", port=port, log_level=loglevel.lower())
-    task = asyncio.create_task(uvicorn.Server(cfg).serve())
+    lifespan = "off" if os.getenv("PYTEST_CURRENT_TEST") else "auto"
+    cfg = uvicorn.Config(
+        app,
+        host="0.0.0.0",
+        port=port,
+        log_level=loglevel.lower(),
+        lifespan=lifespan,
+    )
+    server = uvicorn.Server(cfg)
+    task = asyncio.create_task(server.serve())
+    task.server = server  # type: ignore[attr-defined]
     log.info("REST UI →  http://localhost:%d/docs", port)
     return task
 

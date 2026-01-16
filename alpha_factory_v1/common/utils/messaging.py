@@ -14,6 +14,7 @@ import logging
 from pathlib import Path
 import contextlib
 from types import TracebackType
+from dataclasses import dataclass, field
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
 
@@ -30,10 +31,31 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
-
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        pb = None
+
+    @dataclass
+    class SimpleEnvelope:
+        sender: str
+        recipient: str
+        ts: float = 0.0
+        payload: dict[str, Any] = field(default_factory=dict)
+
+    def Envelope(*, sender: Any, recipient: Any, ts: Any = 0.0, payload: Any = None):  # type: ignore[no-redef]
+        """Construct a protobuf envelope when possible, else fall back to SimpleEnvelope."""
+        payload_dict = payload if isinstance(payload, dict) else {}
+        try:
+            if pb is None:
+                raise TypeError("proto unavailable")
+            env = pb.Envelope(sender=str(sender), recipient=str(recipient), ts=float(ts))
+            env.payload.update(payload_dict)
+            return env
+        except Exception:
+            try:
+                ts_val = float(ts)
+            except Exception:
+                ts_val = 0.0
+            return SimpleEnvelope(sender=str(sender), recipient=str(recipient), ts=ts_val, payload=payload_dict)
 
 
 class EnvelopeLike(Protocol):

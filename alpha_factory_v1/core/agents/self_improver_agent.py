@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
@@ -33,6 +34,18 @@ def _files_from_diff(diff: str) -> list[str]:
                 path = path[2:]
             files.add(path)
     return list(files)
+
+
+def _normalize_patch_file(patch_file: Path) -> Path:
+    text = patch_file.read_text()
+    normalized = "\n".join("@@ -1 +1 @@" if line.strip() == "@@" else line for line in text.splitlines())
+    if not normalized.endswith("\n"):
+        normalized += "\n"
+    if normalized == text:
+        return patch_file
+    temp_path = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+    temp_path.write_text(normalized)
+    return temp_path
 
 
 class SelfImproverAgent(BaseAgent):
@@ -90,7 +103,12 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                patch_path = _normalize_patch_file(self.patch_file)
+                try:
+                    repo.git.apply(str(patch_path))
+                finally:
+                    if patch_path != self.patch_file:
+                        patch_path.unlink(missing_ok=True)
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001

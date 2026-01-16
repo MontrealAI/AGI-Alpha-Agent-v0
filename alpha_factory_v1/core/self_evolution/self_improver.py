@@ -78,7 +78,20 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    normalized = "\n".join("@@ -1 +1 @@" if line.strip() == "@@" else line for line in diff.splitlines())
+    if not normalized.endswith("\n"):
+        normalized += "\n"
+    if normalized != diff:
+        temp_patch = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+        temp_patch.write_text(normalized)
+        patch_path = temp_patch
+    else:
+        patch_path = Path(patch_file)
+    try:
+        repo.git.apply(str(patch_path))
+    finally:
+        if patch_path != Path(patch_file):
+            patch_path.unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

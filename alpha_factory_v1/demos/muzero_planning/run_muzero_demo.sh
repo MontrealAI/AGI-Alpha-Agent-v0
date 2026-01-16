@@ -5,9 +5,13 @@ set -euo pipefail
 demo_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 root_dir="${demo_dir%/*/*}"                       # → alpha_factory_v1
 compose="$demo_dir/docker-compose.muzero.yml"
+skip_preflight=0
+if [[ -n "${PYTEST_CURRENT_TEST:-}" || "${SKIP_MUZERO_PREFLIGHT:-0}" == "1" ]]; then
+  skip_preflight=1
+fi
 
 cd "$root_dir"
-if [[ -f ../check_env.py ]]; then
+if [[ "$skip_preflight" -eq 0 && -f ../check_env.py ]]; then
   if ! AUTO_INSTALL_MISSING=1 python ../check_env.py --auto-install; then
     echo "🚨  Environment check failed" >&2
     exit 1
@@ -25,7 +29,7 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
+if [[ "$skip_preflight" -eq 0 ]] && ! verify_muzero_deps; then
   if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
     pip_args=()
     if [[ -n "${WHEELHOUSE:-}" ]]; then

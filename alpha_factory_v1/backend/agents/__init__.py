@@ -39,7 +39,7 @@ from .discovery import (
 )
 from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
-from .plugins import verify_wheel as _verify_wheel
+from . import plugins as _plugins
 
 # Perform initial discovery on import
 run_discovery_once()
@@ -49,6 +49,13 @@ logger.info(
     len(AGENT_REGISTRY),
     len(CAPABILITY_GRAPH),
 )
+
+
+def _verify_wheel(path):  # type: ignore[override]
+    """Proxy to plugin verification with the latest registry keys."""
+    _plugins._WHEEL_PUBKEY = _WHEEL_PUBKEY
+    _plugins._WHEEL_SIGS = _WHEEL_SIGS
+    return _plugins.verify_wheel(path)
 
 
 def list_agents(detail: bool = False):
