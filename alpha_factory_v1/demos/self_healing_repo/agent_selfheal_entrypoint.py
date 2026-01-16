@@ -10,13 +10,23 @@ Self‑Healing Repo demo
 """
 import logging
 import asyncio
+import importlib.util
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-import gradio as gr
+ROOT_DIR = pathlib.Path(__file__).resolve().parents[3]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+if "gradio" in sys.modules:
+    import gradio as gr
+elif importlib.util.find_spec("gradio"):
+    import gradio as gr
+else:
+    gr = None
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -24,7 +34,7 @@ import uvicorn
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -46,7 +56,7 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+from alpha_factory_v1.demos.self_healing_repo.patcher_core import generate_patch, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -125,6 +135,15 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    app = FastAPI()
+
+    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+    async def _live() -> str:  # noqa: D401
+        return "OK"
+
+    if gr is None:
+        return app
+
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 
@@ -142,12 +161,6 @@ def create_app() -> FastAPI:
 
         run_btn = gr.Button("🩹 Heal Repository")
         run_btn.click(run_pipeline, outputs=log)
-
-    app = FastAPI()
-
-    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
-    async def _live() -> str:  # noqa: D401
-        return "OK"
 
     return gr.mount_gradio_app(app, ui, path="/")
 

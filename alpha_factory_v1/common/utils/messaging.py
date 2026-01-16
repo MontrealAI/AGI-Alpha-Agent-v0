@@ -13,7 +13,8 @@ import json
 import logging
 from pathlib import Path
 import contextlib
-from types import TracebackType
+import importlib.util
+from types import SimpleNamespace, TracebackType
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
 
@@ -28,12 +29,46 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 
     Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
-    try:
+    if importlib.util.find_spec("alpha_factory_v1.core.utils.a2a_pb2"):
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
+    else:
+        pb = None
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
-    except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+    def _coerce_str(value: object) -> str:
+        if value is None:
+            return ""
+        return str(value)
+
+    def _coerce_ts(value: object) -> float:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 0.0
+
+    def Envelope(  # type: ignore[override]
+        *,
+        sender: object = "",
+        recipient: object = "",
+        payload: object | None = None,
+        ts: object = 0.0,
+    ) -> Any:
+        if pb is None:
+            return SimpleNamespace(
+                sender=_coerce_str(sender),
+                recipient=_coerce_str(recipient),
+                payload=payload if payload is not None else {},
+                ts=_coerce_ts(ts),
+            )
+        env = pb.Envelope(
+            sender=_coerce_str(sender),
+            recipient=_coerce_str(recipient),
+            ts=_coerce_ts(ts),
+        )
+        if isinstance(payload, dict):
+            env.payload.update(payload)
+        elif payload is not None and hasattr(payload, "items"):
+            env.payload.update(dict(payload))
+        return env
 
 
 class EnvelopeLike(Protocol):

@@ -31,6 +31,7 @@ class APIServer:
         self._loglevel = loglevel
         self._ssl_disable = ssl_disable
         self._rest_task: Optional[asyncio.Task] = None
+        self._rest_server: Optional[Any] = None
         self._grpc_server: Optional[Any] = None
 
     @property
@@ -42,7 +43,7 @@ class APIServer:
         return self._grpc_server
 
     async def start(self) -> None:
-        self._rest_task, self._grpc_server = await start_servers(
+        self._rest_task, self._rest_server, self._grpc_server = await start_servers(
             self._runners,
             self._model_max_bytes,
             self._mem,
@@ -53,9 +54,10 @@ class APIServer:
         )
 
     async def stop(self) -> None:
+        if self._rest_server:
+            self._rest_server.should_exit = True
         if self._rest_task:
-            self._rest_task.cancel()
             with contextlib.suppress(asyncio.CancelledError):
                 await self._rest_task
         if self._grpc_server:
-            self._grpc_server.stop(0)
+            await self._grpc_server.stop(0)

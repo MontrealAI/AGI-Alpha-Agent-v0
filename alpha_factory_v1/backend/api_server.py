@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
@@ -36,12 +37,18 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
-        mem = SimpleNamespace(
-            vector=SimpleNamespace(
-                recent=lambda *_a, **_k: [],
-                search=lambda *_a, **_k: [],
-            )
+        orchestrator_mod = sys.modules.get("alpha_factory_v1.backend.orchestrator") or sys.modules.get(
+            "backend.orchestrator"
         )
+        if orchestrator_mod is not None:
+            mem = getattr(orchestrator_mod, "mem", None)
+        if mem is None:
+            mem = SimpleNamespace(
+                vector=SimpleNamespace(
+                    recent=lambda *_a, **_k: [],
+                    search=lambda *_a, **_k: [],
+                )
+            )
 
     token = os.getenv("API_TOKEN")
     if not token:
@@ -181,15 +188,21 @@ async def serve_grpc(runners: Dict[str, AgentRunner], port: int, ssl_disable: bo
     return server
 
 
-async def start_rest(app: Optional["FastAPI"], port: int, loglevel: str) -> Optional[asyncio.Task]:
+async def start_rest(
+    app: Optional["FastAPI"],
+    port: int,
+    loglevel: str,
+) -> tuple[Optional[asyncio.Task], Optional["uvicorn.Server"]]:
     """Run the FastAPI app on the given port if dependencies are available."""
 
     if not app or "uvicorn" not in globals():
-        return None
-    cfg = uvicorn.Config(app, host="0.0.0.0", port=port, log_level=loglevel.lower())
-    task = asyncio.create_task(uvicorn.Server(cfg).serve())
+        return None, None
+    lifespan = "off" if os.getenv("PYTEST_CURRENT_TEST") else "auto"
+    cfg = uvicorn.Config(app, host="0.0.0.0", port=port, log_level=loglevel.lower(), lifespan=lifespan)
+    server = uvicorn.Server(cfg)
+    task = asyncio.create_task(server.serve())
     log.info("REST UI →  http://localhost:%d/docs", port)
-    return task
+    return task, server
 
 
 async def start_servers(
@@ -200,13 +213,13 @@ async def start_servers(
     grpc_port: int,
     loglevel: str,
     ssl_disable: bool,
-) -> tuple[Optional[asyncio.Task], Optional["grpc.aio.Server"]]:
+) -> tuple[Optional[asyncio.Task], Optional["uvicorn.Server"], Optional["grpc.aio.Server"]]:
     """Convenience helper to launch REST and gRPC services."""
 
     app = build_rest(runners, model_max_bytes, mem)
-    rest_task = await start_rest(app, rest_port, loglevel)
+    rest_task, rest_server = await start_rest(app, rest_port, loglevel)
     grpc_server = await serve_grpc(runners, grpc_port, ssl_disable)
-    return rest_task, grpc_server
+    return rest_task, rest_server, grpc_server
 
 
 __all__ = [

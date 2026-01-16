@@ -35,9 +35,13 @@ class BaseOrchestrator:
 
     async def run(self, stop_event: asyncio.Event) -> None:
         """Run until ``stop_event`` is set."""
-        await self.start()
+        if self.metrics:
+            self.metrics.start()
+        await self.api_server.start()
         await self.manager.run(stop_event)
-        await self.stop()
+        await self.api_server.stop()
+        if self.metrics:
+            self.metrics.stop()
 
     def run_forever(self) -> None:
         """Convenience wrapper used by scripts."""

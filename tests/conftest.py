@@ -12,6 +12,15 @@ from typing import Any
 
 import pytest
 
+if importlib.util.find_spec("hypothesis"):
+    from hypothesis import HealthCheck, settings
+
+    settings.register_profile(
+        "default",
+        settings(suppress_health_check=[HealthCheck.function_scoped_fixture]),
+    )
+    settings.load_profile("default")
+
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
     from check_env import main as check_env_main, has_network
@@ -66,6 +75,25 @@ _INSIGHT_DIST_TESTS = {
 }
 
 
+def _playwright_browser_available() -> bool:
+    browsers_path = os.getenv("PLAYWRIGHT_BROWSERS_PATH")
+    if browsers_path and browsers_path != "0":
+        root = Path(browsers_path)
+    else:
+        root = Path.home() / ".cache" / "ms-playwright"
+    if not root.exists():
+        return False
+    for chromium_dir in root.glob("chromium*"):
+        if (chromium_dir / "chrome-linux" / "chrome").is_file():
+            return True
+        if (chromium_dir / "chrome-linux64" / "chrome").is_file():
+            return True
+    for shell_dir in root.glob("chromium_headless_shell*"):
+        if (shell_dir / "chrome-headless-shell-linux64" / "chrome-headless-shell").is_file():
+            return True
+    return False
+
+
 def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line(
         "markers",
@@ -118,6 +146,9 @@ def pytest_runtest_setup(item: pytest.Item) -> None:
         dist_dir = repo_root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
         if not dist_dir.exists():
             pytest.skip("dist/index.html missing; run npm run build", allow_module_level=True)
+    if item.fspath and item.fspath.basename == "test_web_app.py" and item.name == "test_progress_dom_updates":
+        if not _playwright_browser_available():
+            pytest.skip("Playwright browser not installed", allow_module_level=True)
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
