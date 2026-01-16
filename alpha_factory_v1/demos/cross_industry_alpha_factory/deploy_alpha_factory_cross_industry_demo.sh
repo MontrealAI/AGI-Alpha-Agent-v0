@@ -139,8 +139,12 @@ if [ ! -d AGI-Alpha-Agent-v0 ]; then
   mkdir -p AGI-Alpha-Agent-v0
 fi
 cd AGI-Alpha-Agent-v0
-git pull --ff-only
-COMMIT_SHA=$(git rev-parse --short HEAD)
+if [ -d .git ]; then
+  git pull --ff-only
+  COMMIT_SHA=$(git rev-parse --short HEAD)
+else
+  COMMIT_SHA="unknown"
+fi
 
 ############## 3. RUNTIME ARTIFACTS ###########################################
 mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$LOADTEST_DIR"

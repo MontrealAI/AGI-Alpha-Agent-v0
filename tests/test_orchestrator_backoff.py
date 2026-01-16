@@ -88,6 +88,8 @@ def test_restart_backoff(monkeypatch):
 
     asyncio.run(run())
 
-    restart_delays = [d for d in delays if d not in (0, 2)]
+    restart_delays = [d for d in delays if d != 0]
+    if restart_delays and restart_delays[0] == 2:
+        restart_delays = restart_delays[1:]
     assert restart_delays[:2] == [1.0, 2.0]
     assert events.count("restart") >= 2

@@ -6,12 +6,13 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.core.self_evolution import self_improver
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch
 
 try:  # optional dependency
     import git  # type: ignore
@@ -76,10 +77,17 @@ class SelfImproverAgent(BaseAgent):
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
+        normalized = normalize_patch(diff, self.repo)
+        patch_path = self.patch_file
+        temp_patch: Path | None = None
+        if normalized != diff:
+            temp_patch = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+            temp_patch.write_text(normalized)
+            patch_path = temp_patch
         delta, clone = await asyncio.to_thread(
             self_improver.improve_repo,
             str(self.repo),
-            str(self.patch_file),
+            str(patch_path),
             self.metric_file,
             self.log_file,
             False,
@@ -90,11 +98,13 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                repo.git.apply(str(patch_path))
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
         finally:
+            if temp_patch and temp_patch.exists():
+                temp_patch.unlink()
             shutil.rmtree(clone, ignore_errors=True)

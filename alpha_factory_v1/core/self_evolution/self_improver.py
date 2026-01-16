@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 from typing import Tuple
 
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch
 from alpha_factory_v1.core.eval.preflight import run_preflight
 
 try:
@@ -77,8 +77,15 @@ def improve_repo(
     diff = Path(patch_file).read_text()
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
+    normalized = normalize_patch(diff, repo_dir)
+    patch_path = Path(patch_file)
+    temp_patch: Path | None = None
+    if normalized != diff:
+        temp_patch = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+        temp_patch.write_text(normalized)
+        patch_path = temp_patch
 
-    repo.git.apply(patch_file)
+    repo.git.apply(str(patch_path))
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
@@ -86,6 +93,8 @@ def improve_repo(
     new_score = _evaluate(repo_dir, metric_file)
     delta = new_score - baseline
     _log_delta(delta, Path(log_file))
+    if temp_patch and temp_patch.exists():
+        temp_patch.unlink()
     if cleanup:
         shutil.rmtree(repo_dir, ignore_errors=True)
     return delta, repo_dir

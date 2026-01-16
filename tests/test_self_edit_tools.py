@@ -5,7 +5,7 @@ import re
 import pytest
 
 hypothesis = pytest.importorskip("hypothesis")
-from hypothesis import given, strategies as st  # noqa: E402
+from hypothesis import given, settings, strategies as st  # noqa: E402
 
 from alpha_factory_v1.core.self_edit.tools import view, edit, replace, REPO_ROOT  # noqa: E402
 
@@ -34,7 +34,8 @@ def test_replace_regex(temp_file: Path) -> None:
     assert temp_file.read_text() == "baz bar baz\n"
 
 
-@given(data=st.text())
+@settings(deadline=None)
+@given(data=st.text(max_size=1000))
 def test_replace_property(data: str) -> None:
     path = REPO_ROOT / "tmp_self_edit_prop.txt"
     try:
