@@ -191,10 +191,28 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
+        self._model = None
         if not self.use_openai:
             if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer required for offline mode.")
-            self._model = SentenceTransformer("nomic-embed-text")
+                logger.warning("SentenceTransformer unavailable; using hashed embeddings.")
+            else:
+                try:
+                    self._model = SentenceTransformer("nomic-embed-text")
+                except Exception as exc:  # pragma: no cover - network/model issues
+                    logger.warning("SentenceTransformer failed (%s); using hashed embeddings.", exc)
+
+    def _hash_embed(self, texts: List[str]):
+        import numpy as np  # local import
+
+        vecs = []
+        for text in texts:
+            digest = hashlib.sha256(text.encode()).digest()
+            values = [(b / 255.0) for b in digest]
+            values *= (self.dim + len(values) - 1) // len(values)
+            vec = np.array(values[: self.dim], dtype="float32")
+            norm = np.linalg.norm(vec) or 1.0
+            vecs.append(vec / norm)
+        return np.vstack(vecs)
 
     async def encode(self, texts: List[str]):
         import numpy as np  # local import
@@ -202,10 +220,12 @@ class _Embedder:
         if self.use_openai:
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=texts, encoding_format="float")
             vecs = np.asarray([d.embedding for d in resp["data"]], dtype="float32")
-        else:
+        elif self._model is not None:
             loop = asyncio.get_event_loop()
             vecs = await loop.run_in_executor(None, self._model.encode, texts)
             vecs = vecs.astype("float32")
+        else:
+            vecs = self._hash_embed(texts)
         return vecs
 
 

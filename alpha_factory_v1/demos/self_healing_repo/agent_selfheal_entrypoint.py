@@ -77,12 +77,34 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+
+
+def _local_llm():
+    from .agent_core import llm_client
+
+    class _LocalLLM:
+        def __call__(self, prompt: str) -> str:
+            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+
+    return _LocalLLM()
+
+
+def _build_llm():
+    model_name = os.getenv("MODEL_NAME") or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    api_key = os.getenv("OPENAI_API_KEY")
+    base_url = os.getenv("OPENAI_BASE_URL") or ("http://ollama:11434/v1" if not api_key else None)
+    try:
+        return OpenAIAgent(
+            model=model_name,
+            api_key=api_key,
+            base_url=base_url,
+            temperature=float(_temp_env) if _temp_env is not None else None,
+        )
+    except TypeError:
+        return _local_llm()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")

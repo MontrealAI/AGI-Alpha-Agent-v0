@@ -30,8 +30,28 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
-
         Envelope: TypeAlias = pb.Envelope  # type: ignore
+
+        def Envelope(  # type: ignore[no-redef]
+            sender: object = "",
+            recipient: object = "",
+            payload: object | None = None,
+            ts: object = 0.0,
+        ) -> pb.Envelope:
+            """Build an Envelope with best-effort type coercion."""
+            try:
+                ts_val = float(ts) if ts is not None else 0.0
+            except (TypeError, ValueError):
+                ts_val = 0.0
+            env = pb.Envelope(sender=str(sender or ""), recipient=str(recipient or ""), ts=ts_val)
+            if isinstance(payload, dict):
+                env.payload.update(payload)
+            elif payload is not None:
+                if hasattr(env.payload, "CopyFrom") and hasattr(payload, "fields"):
+                    env.payload.CopyFrom(payload)
+                else:
+                    env.payload.update({"value": payload})
+            return env
     except Exception:  # pragma: no cover - optional proto
         Envelope: TypeAlias = Any
 

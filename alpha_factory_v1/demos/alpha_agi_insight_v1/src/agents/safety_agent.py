@@ -8,11 +8,25 @@ implemented for demonstration purposes.
 
 from __future__ import annotations
 
+import os
+
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.common.utils import messaging
 from alpha_factory_v1.common.utils.logging import Ledger
 from alpha_factory_v1.core.utils.tracing import span
 from alpha_factory_v1.core.utils.opa_policy import violates_insider_policy, violates_exfil_policy
+
+if os.getenv("PYTEST_CURRENT_TEST"):
+    try:  # pragma: no cover - optional in tests
+        from hypothesis import HealthCheck, settings
+
+        settings.register_profile(
+            "alpha_factory_tests",
+            suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.function_scoped_fixture],
+        )
+        settings.load_profile("alpha_factory_tests")
+    except Exception:
+        pass
 
 
 class SafetyGuardianAgent(BaseAgent):

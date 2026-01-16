@@ -80,7 +80,8 @@ def improve_repo(
 
     repo.git.apply(patch_file)
     repo.index.add([metric_file])
-    repo.index.commit("apply patch")
+    author = git.Actor("Alpha Factory", "alpha-factory@example.com")
+    repo.index.commit("apply patch", author=author, committer=author)
     # run basic checks before scoring
     run_preflight(repo_dir)
     new_score = _evaluate(repo_dir, metric_file)
