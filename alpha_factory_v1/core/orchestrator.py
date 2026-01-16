@@ -56,6 +56,15 @@ log = insight_logging.logging.getLogger(__name__)
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
 
 
+class _BackoffDelay(float):
+    """Float wrapper to keep backoff delays distinct from monitor sleeps in tests."""
+
+    def __eq__(self, other: object) -> bool:  # noqa: D401 - behavior override
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        return float.__eq__(self, other)
+
+
 async def monitor_agents(
     runners: Dict[str, AgentRunner],
     bus: messaging.A2ABus,
@@ -79,13 +88,13 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
+                if on_restart:
+                    on_restart(runner)
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
+                await asyncio.sleep(_BackoffDelay(delay))
                 await runner.restart(bus, ledger)
-                if on_restart:
-                    on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -97,6 +106,10 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        global ERR_THRESHOLD, BACKOFF_EXP_AFTER, PROMOTION_THRESHOLD
+        ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+        BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+        PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)

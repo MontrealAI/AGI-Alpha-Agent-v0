@@ -10,7 +10,7 @@ from unittest import mock
 import pytest
 
 hypothesis = pytest.importorskip("hypothesis")
-from hypothesis import assume, given, settings, strategies as st  # noqa: E402
+from hypothesis import given, settings, strategies as st  # noqa: E402
 from hypothesis.strategies import composite  # noqa: E402
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import safety_agent  # noqa: E402
@@ -50,7 +50,7 @@ class DummyLedger:
 @settings(max_examples=30)
 @given(code=st.text(min_size=0, max_size=100))
 def test_blocks_import_os(code: str) -> None:
-    assume("import os" in code)
+    code = f"import os{code}"
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -67,7 +67,7 @@ def test_blocks_import_os(code: str) -> None:
 @settings(max_examples=30)
 @given(code=st.text(min_size=0, max_size=100))
 def test_allows_safe_code(code: str) -> None:
-    assume("import os" not in code)
+    code = code.replace("import os", "import_os")
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -117,8 +117,7 @@ def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
     payload=payloads(include_code=True),
 )
 def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" in code)
+    payload["code"] = f"import os{payload['code']}"
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -135,8 +134,7 @@ def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, 
     payload=payloads(include_code=True),
 )
 def test_fuzz_envelope_allows_safe(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" not in code)
+    payload["code"] = str(payload["code"]).replace("import os", "import_os")
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)

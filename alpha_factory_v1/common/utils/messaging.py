@@ -14,6 +14,7 @@ import logging
 from pathlib import Path
 import contextlib
 from types import TracebackType
+from types import SimpleNamespace
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
 
@@ -30,10 +31,50 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
-
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        pb = None
+
+
+def _coerce_float(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _coerce_str(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value)
+
+
+def Envelope(
+    sender: Any = "",
+    recipient: Any = "",
+    payload: Any | None = None,
+    ts: Any = 0.0,
+) -> Any:
+    """Return a protobuf envelope, coercing malformed fields for tests."""
+    if pb is None:
+        return SimpleNamespace(
+            sender=_coerce_str(sender),
+            recipient=_coerce_str(recipient),
+            payload=payload or {},
+            ts=ts,
+        )
+
+    env = pb.Envelope(sender=_coerce_str(sender), recipient=_coerce_str(recipient), ts=_coerce_float(ts))
+    if payload:
+        if isinstance(payload, struct_pb2.Struct):
+            env.payload.CopyFrom(payload)
+        elif isinstance(payload, dict):
+            env.payload.update(payload)
+        else:
+            try:
+                env.payload.update(dict(payload))
+            except Exception:  # pragma: no cover - best effort
+                pass
+    return env
 
 
 class EnvelopeLike(Protocol):

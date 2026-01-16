@@ -110,13 +110,13 @@ async def monitor_agents(
             elif now - r.last_beat > r.period * 5:
                 needs_restart = True
             if needs_restart:
+                if on_restart:
+                    on_restart(r)
                 delay = random.uniform(0.5, 1.5)
                 if r.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
                 await asyncio.sleep(delay)
                 await r.restart(bus, ledger)
-                if on_restart:
-                    on_restart(r)
 
 
 def handle_heartbeat(runners: Dict[str, AgentRunner], env: object) -> None:
