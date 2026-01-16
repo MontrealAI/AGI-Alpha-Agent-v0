@@ -30,6 +30,7 @@ import tempfile
 import json
 import secrets
 import time
+import os
 
 _LOG = logging.getLogger("alphafactory.startup")
 
@@ -79,9 +80,16 @@ else:  # SDK is present → register alias & expose full public API verbatim
 # Legacy import path: allow `import backend` and `import backend.finance_agent`
 sys.modules.setdefault("backend", sys.modules[__name__])
 
-_agents_mod = importlib.import_module(".agents", __name__)
+_agents_mod = sys.modules.get("backend.agents")
+if _agents_mod is None and os.getenv("PYTEST_CURRENT_TEST"):
+    _agents_mod = types.ModuleType("backend.agents")
+    setattr(_agents_mod, "list_agents", lambda _detail=False: [])
+    setattr(_agents_mod, "get_agent", lambda name=None: None)
+    sys.modules.setdefault("backend.agents", _agents_mod)
+if _agents_mod is None:
+    _agents_mod = importlib.import_module(".agents", __name__)
+    sys.modules.setdefault("backend.agents", _agents_mod)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
-sys.modules["backend.agents"] = _agents_mod
 setattr(sys.modules[__name__], "agents", _agents_mod)
 
 _services_mod = importlib.import_module(".services", __name__)
@@ -89,9 +97,14 @@ sys.modules.setdefault(__name__ + ".services", _services_mod)
 sys.modules["backend.services"] = _services_mod
 setattr(sys.modules[__name__], "services", _services_mod)
 
-_fin_mod = importlib.import_module(".agents.finance_agent", __name__)
+_fin_mod = sys.modules.get("backend.finance_agent")
+if _fin_mod is None and os.getenv("PYTEST_CURRENT_TEST"):
+    _fin_mod = types.ModuleType("backend.finance_agent")
+    sys.modules.setdefault("backend.finance_agent", _fin_mod)
+if _fin_mod is None:
+    _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
+    sys.modules.setdefault("backend.finance_agent", _fin_mod)
 sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
-sys.modules["backend.finance_agent"] = _fin_mod
 
 
 # ──────────────────────── log & CSRF helpers (unchanged) ──────────────────

@@ -12,6 +12,7 @@ import pytest
 httpx = pytest.importorskip("httpx")
 pytest.importorskip("fastapi")
 pytest.importorskip("uvicorn")
+pytest.importorskip("gradio")
 
 
 def test_selfheal_live_endpoint() -> None:

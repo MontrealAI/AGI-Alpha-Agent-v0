@@ -40,8 +40,22 @@ async def test_orchestrator_lifecycle(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("NEO4J_PASSWORD", "x")
     monkeypatch.setenv("PORT", str(rest_port))
     monkeypatch.setenv("A2A_PORT", str(grpc_port))
+    monkeypatch.setenv("HF_HUB_OFFLINE", "1")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "1")
 
     # Prepare stub packages before importing orchestrator
+    for module_name in list(sys.modules):
+        if module_name.startswith(("alpha_factory_v1.backend.agents", "backend.agents")):
+            sys.modules.pop(module_name, None)
+    for module_name in (
+        "alpha_factory_v1.backend",
+        "backend",
+        "alpha_factory_v1.backend.agents",
+        "backend.agents",
+        "alpha_factory_v1.backend.agents.finance_agent",
+        "backend.finance_agent",
+    ):
+        sys.modules.pop(module_name, None)
     agents_stub = types.ModuleType("backend.agents")
     setattr(agents_stub, "list_agents", lambda _detail=False: ["dummy"])
     setattr(agents_stub, "get_agent", lambda name: DummyAgent())

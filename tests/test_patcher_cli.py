@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import textwrap
 from pathlib import Path
 import unittest
 
@@ -21,18 +22,21 @@ class TestPatcherCLI(unittest.TestCase):
             )
 
             patch_file = Path(tmp) / "patch.diff"
-            patch_file.write_text(
-                """--- a/calc.py
-+++ b/calc.py
-@@ -1,2 +1,2 @@
--def add(a, b):
--    return a - b
-+def add(a, b):
-+    return a + b
-\\ No newline at end of file
-""",
-                encoding="utf-8",
+            patch_contents = textwrap.dedent(
+                    """\
+                    --- a/calc.py
+                    +++ b/calc.py
+                    @@ -1,2 +1,2 @@
+                    -def add(a, b):
+                    -    return a - b
+                    +def add(a, b):
+                    +    return a + b
+                    \\ No newline at end of file
+                    """
             )
+            if not patch_contents.endswith("\n"):
+                patch_contents += "\n"
+            patch_file.write_text(patch_contents, encoding="utf-8")
 
             stub_dir = Path(tmp) / "stubs"
             stub_pkg = stub_dir / "openai_agents"

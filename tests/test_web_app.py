@@ -37,6 +37,8 @@ def test_population_df() -> None:
 def test_run_simulation_smoke(capsys: pytest.CaptureFixture[str]) -> None:
     """Ensure _run_simulation accepts energy and entropy options."""
 
+    if web_app.st is not None:
+        pytest.skip("Streamlit is installed; skipping CLI fallback test.")
     web_app._run_simulation(1, "logistic", 2, 3, 1, 1.0, 1.0, save_plots=False)
     out, _ = capsys.readouterr()
     assert "Streamlit not installed" in out
@@ -46,13 +48,21 @@ def test_progress_dom_updates() -> None:
     """Smoke test that the React dashboard receives progress events."""
 
     pw = pytest.importorskip("playwright.sync_api")
+    from playwright.sync_api import Error as PlaywrightError
     from fastapi.testclient import TestClient
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
-    page = browser.new_page()
-    page.goto(str(client.base_url) + "/web/")
-    page.click("text=Run simulation")
-    page.wait_for_selector("#capability")
-    browser.close()
+    try:
+        playwright = pw.sync_playwright().start()
+        browser = playwright.chromium.launch()
+    except PlaywrightError as exc:
+        pytest.skip(f"Playwright not available: {exc}")
+    try:
+        page = browser.new_page()
+        page.goto(str(client.base_url) + "/web/")
+        page.click("text=Run simulation")
+        page.wait_for_selector("#capability")
+    finally:
+        browser.close()
+        playwright.stop()
