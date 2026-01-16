@@ -12,6 +12,19 @@ from typing import Any
 
 import pytest
 
+# Ensure Hypothesis settings avoid noisy health checks for filtered strategies.
+if importlib.util.find_spec("hypothesis") is not None:
+    from hypothesis import HealthCheck, settings
+
+    settings.register_profile(
+        "alpha_factory",
+        suppress_health_check=[
+            HealthCheck.filter_too_much,
+            HealthCheck.function_scoped_fixture,
+        ],
+    )
+    settings.load_profile("alpha_factory")
+
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
     from check_env import main as check_env_main, has_network

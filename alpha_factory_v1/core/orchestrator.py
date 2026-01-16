@@ -46,8 +46,16 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+def _env_int(name: str, default: int) -> int:
+    """Return an integer environment override when present."""
+    try:
+        return int(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+ERR_THRESHOLD = _env_int("AGENT_ERR_THRESHOLD", 3)
+BACKOFF_EXP_AFTER = _env_int("AGENT_BACKOFF_EXP_AFTER", 3)
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
 log = insight_logging.logging.getLogger(__name__)
@@ -66,6 +74,8 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    err_threshold = _env_int("AGENT_ERR_THRESHOLD", err_threshold)
+    backoff_exp_after = _env_int("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after)
     while True:
         await asyncio.sleep(2)
         now = time.time()

@@ -191,10 +191,19 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
+        self._model = None
         if not self.use_openai:
-            if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer required for offline mode.")
-            self._model = SentenceTransformer("nomic-embed-text")
+            self._model = _HashEmbedder(self.dim)
+            if SentenceTransformer is not None:
+                local_only = bool(
+                    os.getenv("PYTEST_CURRENT_TEST")
+                    or os.getenv("HF_HUB_OFFLINE")
+                    or os.getenv("TRANSFORMERS_OFFLINE")
+                )
+                try:
+                    self._model = SentenceTransformer("nomic-embed-text", local_files_only=local_only)
+                except Exception as exc:  # noqa: BLE001
+                    logger.warning("PolicyAgent embedder fallback → hashing (%s)", exc)
 
     async def encode(self, texts: List[str]):
         import numpy as np  # local import
@@ -207,6 +216,28 @@ class _Embedder:
             vecs = await loop.run_in_executor(None, self._model.encode, texts)
             vecs = vecs.astype("float32")
         return vecs
+
+
+class _HashEmbedder:
+    """Deterministic hashing embedder for offline fallback."""
+
+    def __init__(self, dim: int) -> None:
+        self.dim = dim
+
+    def encode(self, texts: List[str]):  # type: ignore[override]
+        import numpy as np
+
+        vecs = []
+        for text in texts:
+            digest = hashlib.sha256(text.encode()).digest()
+            raw = np.frombuffer(digest, dtype=np.uint8).astype("float32")
+            if raw.size < self.dim:
+                raw = np.resize(raw, self.dim)
+            else:
+                raw = raw[: self.dim]
+            norm = np.linalg.norm(raw) or 1.0
+            vecs.append(raw / norm)
+        return np.stack(vecs)
 
 
 class _Retriever:

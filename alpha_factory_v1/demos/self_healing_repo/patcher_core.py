@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -60,7 +61,20 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
-    prompt = textwrap.dedent(
+    patch = _call_llm(llm, _build_prompt(test_log))
+    _sanity_check_patch(patch, pathlib.Path(repo_path))
+    return patch
+
+
+async def generate_patch_async(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+    """Async helper for suggest_patch handlers."""
+    patch = await _call_llm_async(llm, _build_prompt(test_log))
+    _sanity_check_patch(patch, pathlib.Path(repo_path))
+    return patch
+
+
+def _build_prompt(test_log: str) -> str:
+    return textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
 
@@ -74,9 +88,20 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
-    _sanity_check_patch(patch, pathlib.Path(repo_path))
-    return patch
+
+
+def _call_llm(llm: OpenAIAgent, prompt: str) -> str:
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    return str(result).strip()
+
+
+async def _call_llm_async(llm: OpenAIAgent, prompt: str) -> str:
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = await result
+    return str(result).strip()
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -117,9 +142,14 @@ def apply_patch(patch: str, repo_path: str) -> None:
                     shutil.copy2(file_path, backup)
                     backups[file_path] = backup
         # apply
-        code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
+        if _needs_simple_patch(patch):
+            if not _has_patch_files(patch):
+                raise RuntimeError("patch command failed:\ninvalid patch input")
+            _apply_simple_patch(patch, repo)
+        else:
+            code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
+            if code != 0:
+                raise RuntimeError(f"patch command failed:\n{out}")
     except Exception as e:
         # rollback
         for orig, bak in backups.items():
@@ -131,6 +161,64 @@ def apply_patch(patch: str, repo_path: str) -> None:
         for bak in backups.values():
             if bak.exists():
                 os.unlink(bak)
+
+
+def _needs_simple_patch(patch: str) -> bool:
+    return not any(line.startswith("@@ -") for line in patch.splitlines())
+
+
+def _has_patch_files(patch: str) -> bool:
+    has_old = any(line.startswith("--- ") for line in patch.splitlines())
+    has_new = any(line.startswith("+++ ") for line in patch.splitlines())
+    return has_old and has_new
+
+
+def _apply_simple_patch(patch: str, repo: pathlib.Path) -> None:
+    current_file: pathlib.Path | None = None
+    file_lines: list[str] = []
+    changes: list[tuple[pathlib.Path, list[str]]] = []
+
+    for line in patch.splitlines():
+        if line.startswith("--- "):
+            continue
+        if line.startswith("+++ "):
+            rel = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            current_file = repo / rel
+            file_lines = []
+            changes.append((current_file, file_lines))
+            continue
+        if current_file is not None:
+            file_lines.append(line)
+
+    for file_path, hunk_lines in changes:
+        if not file_path.exists():
+            raise RuntimeError(f"Patch refers to missing file: {file_path}")
+        original = file_path.read_text().splitlines()
+        updated = list(original)
+        idx = 0
+        while idx < len(hunk_lines):
+            line = hunk_lines[idx]
+            if line.startswith("@@"):
+                idx += 1
+                continue
+            if line.startswith("-"):
+                old = line[1:]
+                new = None
+                if idx + 1 < len(hunk_lines) and hunk_lines[idx + 1].startswith("+"):
+                    new = hunk_lines[idx + 1][1:]
+                    idx += 1
+                try:
+                    pos = updated.index(old)
+                except ValueError as exc:
+                    raise RuntimeError(f"Patch context not found in {file_path}") from exc
+                if new is None:
+                    del updated[pos]
+                else:
+                    updated[pos] = new
+            elif line.startswith("+"):
+                updated.append(line[1:])
+            idx += 1
+        file_path.write_text("\n".join(updated) + "\n")
 
 
 if __name__ == "__main__":

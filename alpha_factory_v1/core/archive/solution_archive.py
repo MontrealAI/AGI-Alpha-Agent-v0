@@ -2,6 +2,7 @@
 """DuckDB backed archive storing solutions by sector and approach."""
 from __future__ import annotations
 
+import importlib.util
 import json
 import sqlite3
 import time
@@ -13,6 +14,16 @@ try:
     import duckdb
 except Exception:  # pragma: no cover - optional dependency
     duckdb = None
+
+_orjson = None
+if importlib.util.find_spec("orjson") is not None:
+    import orjson as _orjson  # type: ignore[assignment]
+
+
+def _json_loads(payload: str) -> Mapping[str, Any]:
+    if _orjson is not None:
+        return _orjson.loads(payload)
+    return json.loads(payload)
 
 
 @dataclass(slots=True)
@@ -94,7 +105,7 @@ class SolutionArchive:
                 sector=row[0],
                 approach=row[1],
                 score=float(row[2]),
-                data=json.loads(row[3]),
+                data=_json_loads(row[3]),
                 ts=float(row[4]),
             )
             for row in rows

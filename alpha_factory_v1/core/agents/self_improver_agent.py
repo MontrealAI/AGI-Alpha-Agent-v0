@@ -90,7 +90,12 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                try:
+                    repo.git.apply(str(self.patch_file))
+                except Exception:  # noqa: BLE001
+                    from alpha_factory_v1.demos.self_healing_repo import patcher_core
+
+                    patcher_core.apply_patch(diff, repo_path=str(self.repo))
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
