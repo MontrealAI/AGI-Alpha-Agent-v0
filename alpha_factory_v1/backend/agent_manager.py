@@ -28,7 +28,18 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        import sys
+
+        agents_module = sys.modules.get("backend.agents")
+        if agents_module is not None and hasattr(agents_module, "list_agents"):
+            list_agents = agents_module.list_agents  # type: ignore[assignment]
+        else:
+            try:
+                from backend.agents.registry import list_agents
+            except Exception:  # pragma: no cover - fall back to stubbed agents
+                from backend import agents as agents_module
+
+                list_agents = agents_module.list_agents  # type: ignore[assignment]
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
@@ -44,7 +55,18 @@ class AgentManager:
 
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
+        import sys
+
+        agents_module = sys.modules.get("backend.agents")
+        if agents_module is not None and hasattr(agents_module, "start_background_tasks"):
+            start_background_tasks = agents_module.start_background_tasks  # type: ignore[assignment]
+        else:
+            try:
+                from backend.agents.health import start_background_tasks
+            except Exception:  # pragma: no cover - stubbed agents in tests
+                from backend import agents as agents_module
+
+                start_background_tasks = agents_module.start_background_tasks  # type: ignore[assignment]
 
         await start_background_tasks()
 
@@ -69,7 +91,18 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
+        import sys
+
+        agents_module = sys.modules.get("backend.agents")
+        if agents_module is not None and hasattr(agents_module, "stop_background_tasks"):
+            stop_background_tasks = agents_module.stop_background_tasks  # type: ignore[assignment]
+        else:
+            try:
+                from backend.agents.health import stop_background_tasks
+            except Exception:  # pragma: no cover - stubbed agents in tests
+                from backend import agents as agents_module
+
+                stop_background_tasks = agents_module.stop_background_tasks  # type: ignore[assignment]
 
         await stop_background_tasks()
         if self._hb_task:

@@ -97,6 +97,9 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        global ERR_THRESHOLD, BACKOFF_EXP_AFTER
+        ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+        BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)

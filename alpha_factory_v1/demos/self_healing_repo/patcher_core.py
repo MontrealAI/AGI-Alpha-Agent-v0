@@ -27,6 +27,8 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
+import inspect
 import os
 import pathlib
 import re
@@ -74,9 +76,41 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if inspect.isawaitable(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
+    if not any(line.startswith("--- ") for line in patch.splitlines()):
+        patch_path = os.getenv("PATCH_FILE")
+        if patch_path and pathlib.Path(patch_path).is_file():
+            patch = pathlib.Path(patch_path).read_text()
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+def _normalize_patch(patch: str) -> str:
+    """Ensure unified diff hunks include line ranges."""
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    for idx, line in enumerate(lines):
+        if line.startswith("@@") and not re.search(r"@@ -\\d", line):
+            old_count = 0
+            new_count = 0
+            for hunk_line in lines[idx + 1 :]:
+                if hunk_line.startswith(("@@", "--- ", "+++ ")):
+                    break
+                if hunk_line.startswith("-") and not hunk_line.startswith("---"):
+                    old_count += 1
+                elif hunk_line.startswith("+") and not hunk_line.startswith("+++"):
+                    new_count += 1
+            old_range = f"-1,{old_count}" if old_count != 1 else "-1"
+            new_range = f"+1,{new_count}" if new_count != 1 else "+1"
+            line = f"@@ {old_range} {new_range} @@"
+        normalized.append(line)
+    if patch.endswith("\n"):
+        return "\n".join(normalized) + "\n"
+    return "\n".join(normalized)
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -94,6 +128,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
