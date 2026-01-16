@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import base64
+import hashlib
 import unittest
 from pathlib import Path
 
@@ -28,7 +29,7 @@ class TestWheelSignature(unittest.TestCase):
         ).decode()
         wheel = Path("test.whl")
         wheel.write_bytes(b"demo")
-        sig = base64.b64encode(priv.sign(b"demo")).decode()
+        sig = base64.b64encode(priv.sign(hashlib.sha512(b"demo").digest())).decode()
         sig_file = Path("test.whl.sig")
         sig_file.write_text(sig)
         orig_pub = agents_mod._WHEEL_PUBKEY

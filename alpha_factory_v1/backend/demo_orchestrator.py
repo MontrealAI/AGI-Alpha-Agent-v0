@@ -7,8 +7,7 @@ import asyncio
 import contextlib
 import time
 from typing import Callable, Dict, List
-
-import alpha_factory_v1.core.utils.a2a_pb2 as pb
+from types import SimpleNamespace
 
 from .orchestrator_utils import AgentRunner, handle_heartbeat, monitor_agents
 from alpha_factory_v1.core.archive.service import ArchiveService
@@ -53,16 +52,28 @@ class DemoOrchestrator:
         self._register(runner)
 
     def _register(self, runner: AgentRunner) -> None:
-        env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
-        env.payload.update({"event": "register", "agent": runner.agent.name, "capabilities": runner.capabilities})
+        env = SimpleNamespace(
+            sender="orch",
+            recipient="system",
+            ts=time.time(),
+            payload={
+                "event": "register",
+                "agent": runner.agent.name,
+                "capabilities": runner.capabilities,
+            },
+        )
         self.ledger.log(env)
         self.bus.publish("system", env)
         self.registry.set_stake(runner.agent.name, 1.0)
         self.registry.set_threshold(f"promote:{runner.agent.name}", self._promotion_threshold)
 
     def _record_restart(self, runner: AgentRunner) -> None:
-        env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
-        env.payload.update({"event": "restart", "agent": runner.agent.name})
+        env = SimpleNamespace(
+            sender="orch",
+            recipient="system",
+            ts=time.time(),
+            payload={"event": "restart", "agent": runner.agent.name},
+        )
         self.ledger.log(env)
         self.bus.publish("system", env)
 

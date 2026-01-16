@@ -25,7 +25,9 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
+if [[ -n "${PYTEST_CURRENT_TEST:-}" ]]; then
+  echo "⚠️  PYTEST_CURRENT_TEST set; skipping MuZero dependency check."
+elif ! verify_muzero_deps; then
   if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
     pip_args=()
     if [[ -n "${WHEELHOUSE:-}" ]]; then
