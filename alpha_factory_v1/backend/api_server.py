@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import importlib.util
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
@@ -36,12 +38,23 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
-        mem = SimpleNamespace(
-            vector=SimpleNamespace(
-                recent=lambda *_a, **_k: [],
-                search=lambda *_a, **_k: [],
+        orch = sys.modules.get("alpha_factory_v1.backend.orchestrator")
+        if orch is None:
+            backend_pkg = sys.modules.get("alpha_factory_v1.backend")
+            if backend_pkg is not None and hasattr(backend_pkg, "orchestrator"):
+                orch = backend_pkg.orchestrator
+            elif importlib.util.find_spec("alpha_factory_v1.backend.orchestrator") is not None:
+                from alpha_factory_v1.backend import orchestrator as orch
+            else:
+                orch = None
+        mem = getattr(orch, "mem", None) if orch is not None else None
+        if mem is None:
+            mem = SimpleNamespace(
+                vector=SimpleNamespace(
+                    recent=lambda *_a, **_k: [],
+                    search=lambda *_a, **_k: [],
+                )
             )
-        )
 
     token = os.getenv("API_TOKEN")
     if not token:

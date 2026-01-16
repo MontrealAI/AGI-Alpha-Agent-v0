@@ -5,7 +5,7 @@ from pathlib import Path
 from alpha_factory_v1.backend import agents
 
 
-PUB_KEY_B64 = "6HP0dNWUDNaYhC+1V5s08C9GgsbtpSLPEjLLv8ApT74="
+PUB_KEY_B64 = "F5Bg29wuzpEQPYjr+9vX1fLmhD6Xsy/DeEp1mGP7GAo="
 WHEEL_PATH = Path("tests/resources/dummy_agent.whl")
 SIG_PATH = Path("tests/resources/dummy_agent.whl.sig")
 

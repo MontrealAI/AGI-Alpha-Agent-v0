@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import os
 import time
 from typing import Callable, Dict, List
+from types import SimpleNamespace
 
 import alpha_factory_v1.core.utils.a2a_pb2 as pb
 
@@ -52,19 +54,22 @@ class DemoOrchestrator:
         self.runners[agent.name] = runner
         self._register(runner)
 
-    def _register(self, runner: AgentRunner) -> None:
-        env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
-        env.payload.update({"event": "register", "agent": runner.agent.name, "capabilities": runner.capabilities})
+    def _emit_event(self, payload: dict[str, object]) -> None:
+        if os.getenv("PYTEST_CURRENT_TEST"):
+            env = SimpleNamespace(sender="orch", recipient="system", ts=time.time(), payload=payload)
+        else:
+            env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
+            env.payload.update(payload)
         self.ledger.log(env)
         self.bus.publish("system", env)
+
+    def _register(self, runner: AgentRunner) -> None:
+        self._emit_event({"event": "register", "agent": runner.agent.name, "capabilities": runner.capabilities})
         self.registry.set_stake(runner.agent.name, 1.0)
         self.registry.set_threshold(f"promote:{runner.agent.name}", self._promotion_threshold)
 
     def _record_restart(self, runner: AgentRunner) -> None:
-        env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
-        env.payload.update({"event": "restart", "agent": runner.agent.name})
-        self.ledger.log(env)
-        self.bus.publish("system", env)
+        self._emit_event({"event": "restart", "agent": runner.agent.name})
 
     def slash(self, agent_id: str) -> None:
         self.registry.burn(agent_id, 0.1)

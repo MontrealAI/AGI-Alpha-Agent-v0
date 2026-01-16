@@ -46,9 +46,43 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
-PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
+_DEFAULT_ERR_THRESHOLD = 3
+_DEFAULT_BACKOFF_EXP_AFTER = 3
+_DEFAULT_PROMOTION_THRESHOLD = 0.0
+
+
+def _env_int(name: str, default: int) -> int:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    try:
+        return int(val)
+    except ValueError:
+        log.warning("Invalid %s=%r, using %s", name, val, default)
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    try:
+        return float(val)
+    except ValueError:
+        log.warning("Invalid %s=%r, using %s", name, val, default)
+        return default
+
+
+def _get_err_threshold() -> int:
+    return _env_int("AGENT_ERR_THRESHOLD", _DEFAULT_ERR_THRESHOLD)
+
+
+def _get_backoff_exp_after() -> int:
+    return _env_int("AGENT_BACKOFF_EXP_AFTER", _DEFAULT_BACKOFF_EXP_AFTER)
+
+
+def _get_promotion_threshold() -> float:
+    return _env_float("PROMOTION_THRESHOLD", _DEFAULT_PROMOTION_THRESHOLD)
 
 log = insight_logging.logging.getLogger(__name__)
 
@@ -61,11 +95,15 @@ async def monitor_agents(
     bus: messaging.A2ABus,
     ledger: Ledger,
     *,
-    err_threshold: int = ERR_THRESHOLD,
-    backoff_exp_after: int = BACKOFF_EXP_AFTER,
+    err_threshold: int | None = None,
+    backoff_exp_after: int | None = None,
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    if err_threshold is None:
+        err_threshold = _get_err_threshold()
+    if backoff_exp_after is None:
+        backoff_exp_after = _get_backoff_exp_after()
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -129,9 +167,9 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
-            promotion_threshold=PROMOTION_THRESHOLD,
+            err_threshold=_get_err_threshold(),
+            backoff_exp_after=_get_backoff_exp_after(),
+            promotion_threshold=_get_promotion_threshold(),
         )
         for agent in self._init_agents():
             self.add_agent(agent)
@@ -218,6 +256,16 @@ class Orchestrator(BaseOrchestrator):
                 f"{runner.agent.name} restarted",
                 self.settings.alert_webhook_url,
             )
+
+
+def __getattr__(name: str) -> object:
+    if name == "ERR_THRESHOLD":
+        return _get_err_threshold()
+    if name == "BACKOFF_EXP_AFTER":
+        return _get_backoff_exp_after()
+    if name == "PROMOTION_THRESHOLD":
+        return _get_promotion_threshold()
+    raise AttributeError(name)
 
 
 async def _main() -> None:  # pragma: no cover - CLI helper
