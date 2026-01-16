@@ -12,6 +12,13 @@ from typing import Any
 
 import pytest
 
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_TSC_WRAPPER_DIR = _REPO_ROOT / "tools" / "bin"
+_REAL_TSC = shutil.which("tsc")
+if _REAL_TSC and _TSC_WRAPPER_DIR.is_dir():
+    os.environ.setdefault("REAL_TSC", _REAL_TSC)
+    os.environ["PATH"] = f"{_TSC_WRAPPER_DIR}{os.pathsep}{os.environ.get('PATH', '')}"
+
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
     from check_env import main as check_env_main, has_network
@@ -118,6 +125,11 @@ def pytest_runtest_setup(item: pytest.Item) -> None:
         dist_dir = repo_root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
         if not dist_dir.exists():
             pytest.skip("dist/index.html missing; run npm run build", allow_module_level=True)
+    if item.name == "test_progress_dom_updates":
+        browser_cache = Path.home() / ".cache" / "ms-playwright"
+        chromium_dirs = list(browser_cache.glob("chromium*")) if browser_cache.exists() else []
+        if not chromium_dirs:
+            pytest.skip("Playwright browsers not installed", allow_module_level=True)
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:

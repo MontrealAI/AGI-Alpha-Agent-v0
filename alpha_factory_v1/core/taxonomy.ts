@@ -161,7 +161,9 @@ export function clusterKeywords(
 
 export async function validateLabel(name: string): Promise<boolean> {
   try {
-    const { chat } = await import('@insight-src/utils/llm.js');
+    const modulePath = (globalThis as any)?.INSIGHT_LLM_PATH;
+    if (!modulePath) return false;
+    const { chat } = await import(modulePath);
     const resp = await chat(`Does '${name}' denote a distinct economic activity?`);
     return /^yes/i.test(String(resp).trim());
   } catch {

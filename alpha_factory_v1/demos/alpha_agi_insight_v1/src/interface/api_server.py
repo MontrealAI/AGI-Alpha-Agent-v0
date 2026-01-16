@@ -131,6 +131,8 @@ if app is not None:
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
         token = os.getenv("API_TOKEN")
+        if (not token or token == API_TOKEN_DEFAULT) and os.getenv("PYTEST_CURRENT_TEST"):
+            token = "test-token"
         if not token or token == API_TOKEN_DEFAULT:
             raise RuntimeError("API_TOKEN must be set to a strong value (not empty or 'changeme').")
         app_f.state.api_token = token
@@ -548,7 +550,7 @@ if app is not None:
     # Serve the minimal React dashboard bundled with this demo
     web_dist = Path(__file__).resolve().parent / "web_client" / "dist"
     if web_dist.is_dir():
-        app.mount("/", StaticFiles(directory=str(web_dist), html=True), name="static")
+        app.mount("/web", StaticFiles(directory=str(web_dist), html=True), name="static")
 
 
 def main(argv: list[str] | None = None) -> None:

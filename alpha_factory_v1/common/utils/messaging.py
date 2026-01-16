@@ -11,8 +11,10 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 from pathlib import Path
 import contextlib
+from dataclasses import dataclass, field
 from types import TracebackType
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
@@ -28,12 +30,15 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 
     Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
-    try:
-        from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
-    except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+    @dataclass
+    class SimpleEnvelope:
+        sender: Any
+        recipient: Any
+        payload: Dict[str, Any] = field(default_factory=dict)
+        ts: Any = 0.0
+
+    Envelope: TypeAlias = SimpleEnvelope
 
 
 class EnvelopeLike(Protocol):

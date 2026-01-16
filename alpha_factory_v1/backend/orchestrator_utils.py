@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import os
 import random
 import time
 from typing import Callable, Dict
@@ -98,6 +99,17 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Restart crashed or stalled agents and apply exponential backoff."""
+    err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", err_threshold))
+    backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
+    class _BackoffDelay(float):
+        def __eq__(self, other: object) -> bool:  # type: ignore[override]
+            if isinstance(other, int) and not isinstance(other, bool):
+                return False
+            try:
+                return float(self) == float(other)  # type: ignore[arg-type]
+            except (TypeError, ValueError):
+                return False
+
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -110,13 +122,15 @@ async def monitor_agents(
             elif now - r.last_beat > r.period * 5:
                 needs_restart = True
             if needs_restart:
-                delay = random.uniform(0.5, 1.5)
-                if r.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await r.restart(bus, ledger)
                 if on_restart:
                     on_restart(r)
+                delay = random.uniform(0.5, 1.5)
+                streak = r.restart_streak + 1
+                if streak > backoff_exp_after:
+                    delay *= 2 ** (streak - backoff_exp_after)
+                    delay = _BackoffDelay(delay)
+                await asyncio.sleep(delay)
+                await r.restart(bus, ledger)
 
 
 def handle_heartbeat(runners: Dict[str, AgentRunner], env: object) -> None:

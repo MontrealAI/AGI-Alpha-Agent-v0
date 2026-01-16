@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 import tempfile
 import time
 from pathlib import Path
@@ -38,6 +39,21 @@ def _log_delta(delta: float, log_file: Path) -> None:
         log = []
     log.append({"ts": time.time(), "delta": delta})
     log_file.write_text(json.dumps(log))
+
+
+def _normalize_patch(diff: str) -> str:
+    """Normalize minimal unified diffs missing range metadata."""
+    lines = diff.splitlines()
+    normalized: list[str] = []
+    for line in lines:
+        if line.strip() == "@@":
+            normalized.append("@@ -1 +1 @@")
+        else:
+            normalized.append(line)
+    text = "\n".join(normalized)
+    if diff.endswith("\n"):
+        text += "\n"
+    return text
 
 
 def improve_repo(
@@ -74,11 +90,19 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _normalize_patch(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    if shutil.which("patch") is None:
+        raise RuntimeError("`patch` command not found; install it to apply diffs")
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(diff)
+        patch_path = tf.name
+    try:
+        subprocess.run(["patch", "-p1", "-i", patch_path], cwd=repo_dir, check=True)
+    finally:
+        Path(patch_path).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

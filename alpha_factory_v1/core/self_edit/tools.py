@@ -230,11 +230,13 @@ def undo_last_edit() -> bool:
     Returns:
         ``True`` if a previous edit was undone.
     """
-    if not _EDIT_HISTORY:
-        return False
-    p, text = _EDIT_HISTORY.pop()
-    p.write_text(text, encoding="utf-8")
-    return True
+    while _EDIT_HISTORY:
+        p, text = _EDIT_HISTORY.pop()
+        if not p.exists():
+            continue
+        p.write_text(text, encoding="utf-8")
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------

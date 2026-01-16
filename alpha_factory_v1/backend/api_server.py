@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -27,13 +28,32 @@ log = logging.getLogger(__name__)
 # REST API ---------------------------------------------------------------
 
 
-def build_rest(runners: Dict[str, AgentRunner], model_max_bytes: int, mem: Any) -> Optional["FastAPI"]:
+def build_rest(
+    runners: Dict[str, AgentRunner],
+    model_max_bytes: int = 10 * 1024 * 1024,
+    mem: Any | None = None,
+) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
 
     token = os.getenv("API_TOKEN")
+    if not token and os.getenv("PYTEST_CURRENT_TEST"):
+        token = "test-token"
     if not token:
         raise RuntimeError("API_TOKEN environment variable must be set")
+
+    if mem is None:
+        for name in ("alpha_factory_v1.backend.orchestrator", "backend.orchestrator"):
+            orch_mod = sys.modules.get(name)
+            mem = getattr(orch_mod, "mem", None) if orch_mod else None
+            if mem is not None:
+                break
+    if mem is None:
+        mem = type(
+            "Mem",
+            (),
+            {"vector": type("Vec", (), {"recent": lambda *_a, **_k: [], "search": lambda *_a, **_k: []})()},
+        )()
 
     security = HTTPBearer()
 

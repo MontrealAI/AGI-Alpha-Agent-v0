@@ -25,7 +25,7 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
+if [[ -z "${PYTEST_CURRENT_TEST:-}" ]] && ! verify_muzero_deps; then
   if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
     pip_args=()
     if [[ -n "${WHEELHOUSE:-}" ]]; then

@@ -12,6 +12,8 @@ export interface ReplayFrame {
 
 const DB_NAME = 'replay';
 const FRAME_STORE = 'frames';
+const HAS_INDEXED_DB = typeof indexedDB !== 'undefined';
+const MEMORY_STORE = new Map<number, ReplayFrame>();
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -51,7 +53,9 @@ export class ReplayDB {
 
   /** Open the underlying database. */
   async open(): Promise<void> {
-    await openDB();
+    if (HAS_INDEXED_DB) {
+      await openDB();
+    }
   }
 
   /**
@@ -68,7 +72,11 @@ export class ReplayDB {
         ? parseInt(uuidFn.call(globalThis.crypto).replace(/-/g, '').slice(0, 13), 16)
         : Date.now() + Math.floor(Math.random() * 1000);
     const frame: ReplayFrame = { id, parent, delta, timestamp: Date.now() };
-    await withStore('readwrite', (s) => s.put(frame, id));
+    if (HAS_INDEXED_DB) {
+      await withStore('readwrite', (s) => s.put(frame, id));
+    } else {
+      MEMORY_STORE.set(id, frame);
+    }
     return id;
   }
 
@@ -79,7 +87,10 @@ export class ReplayDB {
    * @returns The stored frame or `undefined`.
    */
   async getFrame(id: number): Promise<ReplayFrame | undefined> {
-    return withStore('readonly', (s) => s.get(id));
+    if (HAS_INDEXED_DB) {
+      return withStore('readonly', (s) => s.get(id));
+    }
+    return MEMORY_STORE.get(id);
   }
 
   /**
@@ -150,4 +161,3 @@ export class ReplayDB {
     return last;
   }
 }
-
