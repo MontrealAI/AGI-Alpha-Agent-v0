@@ -48,6 +48,17 @@ sector = importlib.import_module("alpha_factory_v1.core.simulation.sector")
 mats = importlib.import_module("alpha_factory_v1.core.simulation.mats")
 
 
+def _streamlit_active() -> bool:
+    if st is None:
+        return False
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+        return get_script_run_ctx() is not None
+    except Exception:
+        return False
+
+
 def timeline_df(traj: list[Any]) -> pd.DataFrame:
     """Return a DataFrame summarising sector performance."""
 
@@ -111,7 +122,7 @@ def _run_simulation(
     Returns:
         None
     """
-    if st is None:  # pragma: no cover - fallback
+    if not _streamlit_active():  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
 
@@ -214,7 +225,7 @@ def _run_simulation(
 
 def main(argv: list[str] | None = None) -> None:  # pragma: no cover - entry point
     """Launch the Streamlit app."""
-    if st is None:  # pragma: no cover - fallback
+    if not _streamlit_active():  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
 

@@ -39,6 +39,7 @@ from .discovery import (
 )
 from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
+from .plugins import verify_wheel as _verify_wheel
 
 # Perform initial discovery on import
 run_discovery_once()
@@ -71,4 +72,5 @@ __all__ = [
     "get_agent",
     "start_background_tasks",
     "stop_background_tasks",
+    "_verify_wheel",
 ]

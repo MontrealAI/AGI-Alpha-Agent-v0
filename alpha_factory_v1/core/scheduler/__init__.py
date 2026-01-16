@@ -54,7 +54,10 @@ class SelfImprovementScheduler:
         self.tokens_used = 0
         self.start_time = 0.0
         self.running: Set[asyncio.Task[None]] = set()
-        self.app = Rocketry(execution="async")
+        try:
+            self.app = Rocketry(execution="async")
+        except TypeError:  # pragma: no cover - older Rocketry versions
+            self.app = Rocketry()
 
         @self.app.task(every(interval))
         async def _spawn():  # pragma: no cover - Rocketry callback
@@ -138,7 +141,12 @@ class SelfImprovementScheduler:
     async def serve(self) -> None:
         """Run the scheduler until quotas are exhausted or queue is empty."""
         self.start_time = time.time()
-        await self.app.serve()
+        runner = getattr(self.app, "serve", None) or getattr(self.app, "run", None)
+        if runner is None:
+            raise AttributeError("Rocketry runner unavailable")
+        result = runner()
+        if asyncio.iscoroutine(result):
+            await result
         # wait for running tasks to finish
         if self.running:
             await asyncio.gather(*self.running, return_exceptions=True)

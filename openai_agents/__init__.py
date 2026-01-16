@@ -4,6 +4,8 @@
 Provides basic classes so demos import without the real SDK."""
 
 import importlib.machinery
+import os
+from pathlib import Path
 from typing import Any, Callable, TypeVar
 
 _loader = importlib.machinery.SourceFileLoader(__name__, __file__)
@@ -25,6 +27,9 @@ class OpenAIAgent:
         pass
 
     async def __call__(self, text: str) -> str:  # pragma: no cover - demo stub
+        patch_file = os.environ.get("PATCH_FILE")
+        if patch_file:
+            return Path(patch_file).read_text(encoding="utf-8")
         return "ok"
 
 

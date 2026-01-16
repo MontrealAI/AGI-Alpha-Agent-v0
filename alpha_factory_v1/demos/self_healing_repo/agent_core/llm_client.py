@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # llm_client.py
 """LLM interface for generating patch suggestions."""
+import asyncio
 import logging
 import os
 import openai
@@ -43,7 +44,10 @@ def call_local_model(prompt_messages: list[dict[str, str]]) -> str:
 
     agent = OpenAIAgent(model=model, api_key=None, base_url=base_url)
     prompt = "\n".join(f"{m['role']}: {m['content']}" for m in prompt_messages)
-    return str(agent(prompt))
+    result = agent(prompt)
+    if asyncio.iscoroutine(result):
+        return str(asyncio.run(result))
+    return str(result)
 
 
 def build_prompt(error_log: str, code_dir: str) -> list[dict[str, str]]:

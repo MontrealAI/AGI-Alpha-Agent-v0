@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -36,6 +37,8 @@ import tempfile
 import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
+
+from .agent_core import diff_utils
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
@@ -58,7 +61,14 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
-def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+async def _llm_to_text(llm: OpenAIAgent, prompt: str) -> str:
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        return str(await result)
+    return str(result)
+
+
+async def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
     prompt = textwrap.dedent(
         f"""
@@ -74,7 +84,7 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch = (await _llm_to_text(llm, prompt)).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -95,10 +105,6 @@ def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
-    if shutil.which("patch") is None:
-        raise RuntimeError(
-            '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
-        )
     backups = {}
 
     # write patch to temp file
@@ -117,8 +123,8 @@ def apply_patch(patch: str, repo_path: str) -> None:
                     shutil.copy2(file_path, backup)
                     backups[file_path] = backup
         # apply
-        code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
+        ok, out = diff_utils.apply_diff(patch, repo_path)
+        if not ok:
             raise RuntimeError(f"patch command failed:\n{out}")
     except Exception as e:
         # rollback
@@ -160,7 +166,7 @@ if __name__ == "__main__":
     rc, out = validate_repo(args.repo)
     print(out)
     if rc != 0:
-        patch = generate_patch(out, llm=llm, repo_path=args.repo)
+        patch = asyncio.run(generate_patch(out, llm=llm, repo_path=args.repo))
         print(patch)
         apply_patch(patch, repo_path=args.repo)
         rc, out = validate_repo(args.repo)

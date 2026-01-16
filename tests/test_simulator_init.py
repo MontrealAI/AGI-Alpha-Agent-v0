@@ -17,7 +17,7 @@ def test_simulator_init_fast(tmp_path: Path) -> None:
             "--target",
             "es2020",
             "--module",
-            "es2020",
+            "system",
             SIM_TS,
             "--outFile",
             js_out,

@@ -12,6 +12,7 @@ from typing import Sequence
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.core.self_evolution import self_improver
 from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
 try:  # optional dependency
     import git  # type: ignore
@@ -90,7 +91,7 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                patcher_core.apply_patch(diff, repo_path=str(self.repo))
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
