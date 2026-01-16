@@ -46,8 +46,12 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+def _env_int(name: str, default: int) -> int:
+    return int(os.getenv(name, str(default)))
+
+
+ERR_THRESHOLD = _env_int("AGENT_ERR_THRESHOLD", 3)
+BACKOFF_EXP_AFTER = _env_int("AGENT_BACKOFF_EXP_AFTER", 3)
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
 log = insight_logging.logging.getLogger(__name__)
@@ -66,6 +70,11 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    if os.getenv("AGENT_ERR_THRESHOLD") is not None:
+        err_threshold = _env_int("AGENT_ERR_THRESHOLD", err_threshold)
+    if os.getenv("AGENT_BACKOFF_EXP_AFTER") is not None:
+        backoff_exp_after = _env_int("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after)
+
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -129,8 +138,8 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
+            err_threshold=_env_int("AGENT_ERR_THRESHOLD", ERR_THRESHOLD),
+            backoff_exp_after=_env_int("AGENT_BACKOFF_EXP_AFTER", BACKOFF_EXP_AFTER),
             promotion_threshold=PROMOTION_THRESHOLD,
         )
         for agent in self._init_agents():

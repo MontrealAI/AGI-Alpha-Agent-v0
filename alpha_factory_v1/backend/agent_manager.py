@@ -12,6 +12,8 @@ import asyncio
 import contextlib
 from typing import Dict, Optional
 
+import sys
+
 from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
 
 
@@ -28,7 +30,20 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        list_agents = None
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is not None:
+            list_agents = getattr(agents_mod, "list_agents", None)
+        if list_agents is None:
+            try:
+                from backend import agents as agents_mod  # type: ignore[import-not-found]
+
+                list_agents = getattr(agents_mod, "list_agents", None)
+            except Exception:  # pragma: no cover - optional fallback
+                list_agents = None
+
+        if list_agents is None:
+            from backend.agents.registry import list_agents
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]

@@ -9,6 +9,8 @@ the temporary clone via the ``cleanup`` flag.
 from __future__ import annotations
 
 import json
+import subprocess
+import textwrap
 import shutil
 import tempfile
 import time
@@ -38,6 +40,20 @@ def _log_delta(delta: float, log_file: Path) -> None:
         log = []
     log.append({"ts": time.time(), "delta": delta})
     log_file.write_text(json.dumps(log))
+
+
+def _normalize_patch(diff: str) -> str:
+    normalized = textwrap.dedent(diff).lstrip("\n")
+    normalized_lines = []
+    for line in normalized.splitlines():
+        if line.startswith("@@") and "-" not in line and "+" not in line:
+            normalized_lines.append("@@ -1 +1 @@")
+        else:
+            normalized_lines.append(line)
+    normalized = "\n".join(normalized_lines)
+    if normalized and not normalized.endswith("\n"):
+        normalized += "\n"
+    return normalized
 
 
 def improve_repo(
@@ -78,7 +94,21 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    normalized = _normalize_patch(diff)
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(normalized)
+        patch_path = tf.name
+    try:
+        patch_result = subprocess.run(
+            ["patch", "-p1", "-i", patch_path],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+        )
+        if patch_result.returncode != 0:
+            raise RuntimeError(f"patch command failed:\n{patch_result.stdout}{patch_result.stderr}")
+    finally:
+        Path(patch_path).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
