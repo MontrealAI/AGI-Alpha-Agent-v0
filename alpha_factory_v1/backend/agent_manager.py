@@ -28,7 +28,7 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        from backend.agents import list_agents
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]

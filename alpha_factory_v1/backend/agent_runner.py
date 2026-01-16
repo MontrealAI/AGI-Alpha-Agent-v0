@@ -19,7 +19,6 @@ from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -165,6 +164,8 @@ class AgentRunner:
         publish: Callable[[str, Dict[str, Any]], None],
         inst: Any | None = None,
     ) -> None:
+        from backend.agents import get_agent
+
         self.name = name
         self.inst = inst or get_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)

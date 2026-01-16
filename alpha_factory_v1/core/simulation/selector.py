@@ -40,9 +40,12 @@ def select_parent(pop: Sequence[Any], *, epsilon: float = 0.1, rng: random.Rando
     if not pop:
         raise ValueError("population is empty")
     rng = rng or random.Random()
-    if rng.random() < epsilon:
-        return rng.choice(list(pop))
     ranks = _pareto_ranks(pop)
     best = min(ranks)
     candidates = [ind for ind, r in zip(pop, ranks) if r == best]
+    if rng.random() < epsilon:
+        rest = [ind for ind, r in zip(pop, ranks) if r != best]
+        if rest:
+            return rng.choice(rest)
+        return rng.choice(candidates)
     return rng.choice(candidates)

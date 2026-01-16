@@ -101,6 +101,7 @@ def _record_history(p: Path) -> None:
     Returns:
         None.
     """
+    _EDIT_HISTORY[:] = [(path, text) for path, text in _EDIT_HISTORY if path == p]
     _EDIT_HISTORY.append((p, p.read_text(encoding="utf-8", errors="replace")))
 
 

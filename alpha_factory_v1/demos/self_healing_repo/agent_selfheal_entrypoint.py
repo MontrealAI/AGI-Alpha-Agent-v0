@@ -107,7 +107,7 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    patch = await generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
     return {"patch": patch}
 
 

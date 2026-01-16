@@ -39,8 +39,6 @@ def _load_openai_sdk():
         missing.append("Agent/OpenAIAgent")
     if runtime is None:
         missing.append("AgentRuntime")
-    elif not callable(getattr(runtime, "run", None)):
-        missing.append("AgentRuntime.run")
 
     if missing:
         raise ModuleNotFoundError(
@@ -179,7 +177,13 @@ def main() -> None:
     else:
         print("EvolverAgent exposed via ADK gateway (ADK disabled)", flush=True)
 
-    runtime.run()
+    if hasattr(runtime, "run"):
+        runtime.run()
+        return
+    if hasattr(runtime, "serve"):
+        runtime.serve()
+        return
+    print("AgentRuntime run loop unavailable; exiting after registration", flush=True)
 
 
 if __name__ == "__main__":  # pragma: no cover

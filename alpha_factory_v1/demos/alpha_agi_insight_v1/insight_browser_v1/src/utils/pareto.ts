@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Individual } from '../state/serializer.ts';
+import type { Individual } from '../state/serializer';
 
 export function paretoFront(pop: Individual[]): Individual[] {
   if (pop.length === 0) return [];

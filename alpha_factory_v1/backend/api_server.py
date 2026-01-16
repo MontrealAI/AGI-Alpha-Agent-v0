@@ -27,7 +27,30 @@ log = logging.getLogger(__name__)
 # REST API ---------------------------------------------------------------
 
 
-def build_rest(runners: Dict[str, AgentRunner], model_max_bytes: int, mem: Any) -> Optional["FastAPI"]:
+def build_rest(
+    runners: Dict[str, AgentRunner],
+    model_max_bytes: int | None = None,
+    mem: Any | None = None,
+) -> Optional["FastAPI"]:
+    if model_max_bytes is None:
+        model_max_bytes = int(os.getenv("ALPHA_MODEL_MAX_BYTES", str(64 * 1024 * 1024)))
+    if mem is None:
+        try:
+            from alpha_factory_v1.backend import orchestrator as _orch
+
+            mem = _orch.mem
+        except Exception:  # pragma: no cover - optional fallback
+            class _VecStub:
+                def recent(self, *_a: Any, **_k: Any) -> list[Any]:
+                    return []
+
+                def search(self, *_a: Any, **_k: Any) -> list[Any]:
+                    return []
+
+            class _MemStub:
+                vector = _VecStub()
+
+            mem = _MemStub()
     if "FastAPI" not in globals():
         return None
 
