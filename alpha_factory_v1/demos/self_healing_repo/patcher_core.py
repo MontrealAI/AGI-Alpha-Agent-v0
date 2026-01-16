@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -60,6 +61,11 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_path = os.getenv("PATCH_FILE")
+    if patch_path:
+        patch = pathlib.Path(patch_path).read_text()
+        _sanity_check_patch(patch, pathlib.Path(repo_path))
+        return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,7 +80,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -91,6 +100,20 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
+def _normalize_patch(patch: str) -> str:
+    """Normalize minimal unified diffs for patch(1)."""
+    normalized = []
+    for line in patch.splitlines():
+        if re.match(r"^@@\s*$", line):
+            normalized.append("@@ -1 +1 @@")
+        else:
+            normalized.append(line)
+    text = "\n".join(normalized)
+    if not text.endswith("\n"):
+        text += "\n"
+    return text
+
+
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
@@ -101,9 +124,11 @@ def apply_patch(patch: str, repo_path: str) -> None:
         )
     backups = {}
 
+    normalized = _normalize_patch(patch)
+
     # write patch to temp file
     with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
-        tf.write(patch)
+        tf.write(normalized)
         patch_file = tf.name
 
     try:
@@ -119,7 +144,9 @@ def apply_patch(patch: str, repo_path: str) -> None:
         # apply
         code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
         if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
+            git_code, git_out = _run(["git", "apply", "--unidiff-zero", patch_file], cwd=repo_path)
+            if git_code != 0:
+                raise RuntimeError(f"patch command failed:\n{out}{git_out}")
     except Exception as e:
         # rollback
         for orig, bak in backups.items():

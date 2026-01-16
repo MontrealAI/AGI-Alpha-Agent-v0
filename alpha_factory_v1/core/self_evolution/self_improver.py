@@ -40,6 +40,20 @@ def _log_delta(delta: float, log_file: Path) -> None:
     log_file.write_text(json.dumps(log))
 
 
+def _normalize_patch(diff: str) -> str:
+    """Normalize minimal unified diffs for git apply."""
+    lines = []
+    for line in diff.splitlines():
+        if line.strip() == "@@":
+            lines.append("@@ -1 +1 @@")
+        else:
+            lines.append(line)
+    text = "\n".join(lines)
+    if not text.endswith("\n"):
+        text += "\n"
+    return text
+
+
 def improve_repo(
     repo_url: str,
     patch_file: str,
@@ -74,11 +88,17 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _normalize_patch(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(diff)
+        normalized_path = tf.name
+    try:
+        repo.git.apply("--unidiff-zero", normalized_path)
+    finally:
+        Path(normalized_path).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
