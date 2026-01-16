@@ -17,9 +17,10 @@ import atexit
 from datetime import datetime, timezone
 from collections import deque
 from typing import Any, Callable, Dict, Optional
+import importlib
+import importlib.util
 import os
-
-from backend.agents.registry import get_agent
+import sys
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -166,7 +167,7 @@ class AgentRunner:
         inst: Any | None = None,
     ) -> None:
         self.name = name
-        self.inst = inst or get_agent(name)
+        self.inst = inst or self._resolve_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)
         self.spec = getattr(self.inst, "SCHED_SPEC", None)
         self.next_ts = 0.0
@@ -196,6 +197,20 @@ class AgentRunner:
                 self.next_ts = croniter(self.spec, datetime.fromtimestamp(now)).get_next(float)
                 return
         self.next_ts = now + self.period
+
+    @staticmethod
+    def _resolve_agent(name: str) -> Any:
+        if "backend.agents" in sys.modules:
+            agents_mod = sys.modules["backend.agents"]
+            if hasattr(agents_mod, "get_agent"):
+                return agents_mod.get_agent(name)
+        if importlib.util.find_spec("backend.agents") is not None:
+            agents_mod = importlib.import_module("backend.agents")
+            if hasattr(agents_mod, "get_agent"):
+                return agents_mod.get_agent(name)
+        from backend.agents.registry import get_agent
+
+        return get_agent(name)
 
     async def maybe_step(self) -> None:
         if time.time() < self.next_ts:

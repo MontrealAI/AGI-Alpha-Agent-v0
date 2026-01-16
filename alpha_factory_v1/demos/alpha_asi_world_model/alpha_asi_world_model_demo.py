@@ -256,6 +256,7 @@ def _boot(path: str) -> None:
             class StepAdapter(Agent):
                 def __init__(self) -> None:
                     super().__init__(name)
+                    self.display_name = cls_name
                     threading.Thread(target=self._loop, daemon=True).start()
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
@@ -284,6 +285,7 @@ def _boot(path: str) -> None:
                 LOG.debug("[Stub:%s] ← %s", cls_name, _msg)
 
         inst = Stub(name)
+        inst.display_name = cls_name
         LOG.warning("[BOOT] stubbed %s (%s)", cls_name, exc)
 
     AGENTS[name] = inst
@@ -637,7 +639,14 @@ app.router.lifespan_context = lifespan
 
 @app.get("/agents")
 async def list_agents():
-    return list(AGENTS.keys())
+    names = []
+    for key, agent in AGENTS.items():
+        display = getattr(agent, "display_name", None)
+        if display:
+            names.append(display)
+        else:
+            names.append(agent.__class__.__name__ if isinstance(key, str) and key.islower() else key)
+    return sorted(set(names))
 
 
 @app.post("/command")

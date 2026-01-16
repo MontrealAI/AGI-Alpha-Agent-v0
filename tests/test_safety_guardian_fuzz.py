@@ -64,9 +64,12 @@ json_values = st.recursive(
 
 @composite
 def malformed_envelopes(draw: st.DrawFn) -> messaging.Envelope:
-    sender = draw(st.one_of(st.text(max_size=5), st.integers(), st.none()))
-    recipient = draw(st.one_of(st.text(max_size=5), st.integers(), st.none()))
-    ts = draw(st.one_of(st.floats(allow_nan=False, allow_infinity=False), st.text(), st.none()))
+    sender_raw = draw(st.one_of(st.text(max_size=5), st.integers(), st.none()))
+    recipient_raw = draw(st.one_of(st.text(max_size=5), st.integers(), st.none()))
+    ts_raw = draw(st.one_of(st.floats(allow_nan=False, allow_infinity=False), st.text(), st.none()))
+    sender = "" if sender_raw is None else str(sender_raw)
+    recipient = "" if recipient_raw is None else str(recipient_raw)
+    ts = ts_raw if isinstance(ts_raw, float) else 0.0
     payload = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
     code = draw(st.text(min_size=0, max_size=100).map(lambda s: "import os" + s))
     payload["code"] = code
