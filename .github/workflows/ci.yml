@@ -168,7 +168,7 @@ jobs:
           git --version
 
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-py${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -294,6 +294,7 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
           df -h
       - name: Install dependencies
         run: |
@@ -357,8 +358,10 @@ jobs:
       - name: Clean caches before pytest
         run: |
           python -m pip cache purge
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf "$NPM_CONFIG_CACHE"
-          rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp
+          rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp ~/.cache/ms-playwright ~/.cache/puppeteer ~/.npm
           df -h
       - name: Run tests with coverage
         shell: bash
@@ -636,7 +639,7 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -728,7 +731,7 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.1 # 9255dc7a253b0ccc959486e2bca901246202afeb
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
