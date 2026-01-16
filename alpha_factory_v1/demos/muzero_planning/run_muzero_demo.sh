@@ -14,6 +14,10 @@ if [[ -f ../check_env.py ]]; then
   fi
 fi
 
+# Require Docker for the containerized demo.
+command -v docker >/dev/null 2>&1 || {
+  echo "🚨  Docker is required → https://docs.docker.com/get-docker/"; exit 1; }
+
 # Install MuZero specific requirements when AUTO_INSTALL_MISSING is set
 verify_muzero_deps() {
   python - <<'EOF'
@@ -25,22 +29,21 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
-  if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
-    pip_args=()
-    if [[ -n "${WHEELHOUSE:-}" ]]; then
-      pip_args+=(--no-index --find-links "$WHEELHOUSE")
+if [[ "${MUZERO_CHECK_DEPS:-0}" == "1" ]]; then
+  if ! verify_muzero_deps; then
+    if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
+      pip_args=()
+      if [[ -n "${WHEELHOUSE:-}" ]]; then
+        pip_args+=(--no-index --find-links "$WHEELHOUSE")
+      fi
+      pip install "${pip_args[@]}" -r "$demo_dir/requirements.txt"
+      verify_muzero_deps || { echo "🚨  Missing MuZero dependencies" >&2; exit 1; }
+    else
+      echo "🚨  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1" >&2
+      exit 1
     fi
-    pip install "${pip_args[@]}" -r "$demo_dir/requirements.txt"
-    verify_muzero_deps || { echo "🚨  Missing MuZero dependencies" >&2; exit 1; }
-  else
-    echo "🚨  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1" >&2
-    exit 1
   fi
 fi
-
-command -v docker >/dev/null 2>&1 || {
-  echo "🚨  Docker is required → https://docs.docker.com/get-docker/"; exit 1; }
 
 [[ -f "$demo_dir/config.env" ]] || {
   echo "➕  Creating default config.env (edit to add OPENAI_API_KEY)"; 

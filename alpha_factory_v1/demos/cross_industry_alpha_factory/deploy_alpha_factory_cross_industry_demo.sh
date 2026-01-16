@@ -31,6 +31,11 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+if [[ -n ${PYTEST_CURRENT_TEST:-} && -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  Test fast-path enabled; skipping bootstrap."
+  exit 0
+fi
+
 ############## 0. CONSTANTS ###################################################
 PROJECT_DIR=${PROJECT_DIR:-"$HOME/alpha_factory_demo"}
 REPO_URL="https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git"

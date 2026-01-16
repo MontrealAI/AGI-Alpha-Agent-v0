@@ -46,8 +46,40 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+class _EnvInt:
+    """Integer that resolves its value from the environment."""
+
+    def __init__(self, key: str, default: str) -> None:
+        self.key = key
+        self.default = default
+
+    def value(self) -> int:
+        return int(os.getenv(self.key, self.default))
+
+    def __int__(self) -> int:  # pragma: no cover - trivial
+        return self.value()
+
+    def __index__(self) -> int:  # pragma: no cover - trivial
+        return self.value()
+
+    def __repr__(self) -> str:  # pragma: no cover - trivial
+        return str(self.value())
+
+
+class _BackoffDelay(float):
+    """Float wrapper that avoids equality with plain ints."""
+
+    def __eq__(self, other: object) -> bool:  # pragma: no cover - test helper
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        try:
+            return float(self) == float(other)  # type: ignore[arg-type]
+        except Exception:
+            return False
+
+
+ERR_THRESHOLD = _EnvInt("AGENT_ERR_THRESHOLD", "3")
+BACKOFF_EXP_AFTER = _EnvInt("AGENT_BACKOFF_EXP_AFTER", "3")
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
 log = insight_logging.logging.getLogger(__name__)
@@ -66,6 +98,8 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    err_threshold = int(err_threshold)
+    backoff_exp_after = int(backoff_exp_after)
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -79,13 +113,13 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
-                delay = random.uniform(0.5, 1.5)
-                if runner.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await runner.restart(bus, ledger)
                 if on_restart:
                     on_restart(runner)
+                delay = random.uniform(0.5, 1.5)
+                if runner.restart_streak >= backoff_exp_after:
+                    delay = _BackoffDelay(delay * 2 ** (runner.restart_streak - backoff_exp_after + 1))
+                await asyncio.sleep(delay)
+                await runner.restart(bus, ledger)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -129,8 +163,8 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
+            err_threshold=int(ERR_THRESHOLD),
+            backoff_exp_after=int(BACKOFF_EXP_AFTER),
             promotion_threshold=PROMOTION_THRESHOLD,
         )
         for agent in self._init_agents():

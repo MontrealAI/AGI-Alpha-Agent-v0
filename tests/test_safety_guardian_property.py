@@ -48,9 +48,8 @@ class DummyLedger:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: f"import os{s}"))
 def test_blocks_import_os(code: str) -> None:
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -114,11 +113,9 @@ def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
     sender=st.text(max_size=5),
     recipient=st.text(max_size=5),
     ts=st.floats(min_value=0, max_value=1e6, allow_nan=False, allow_infinity=False),
-    payload=payloads(include_code=True),
+    payload=payloads(include_code=True).map(lambda p: {**p, "code": f"import os{p.get('code', '')}"}),
 )
 def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)

@@ -28,7 +28,12 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        try:
+            from backend.agents.registry import list_agents
+        except ModuleNotFoundError:  # pragma: no cover - test stubs
+            from alpha_factory_v1.backend import agents as agents_mod
+
+            list_agents = agents_mod.list_agents
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
@@ -44,7 +49,16 @@ class AgentManager:
 
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
+        try:
+            from backend.agents.health import start_background_tasks
+        except ModuleNotFoundError:  # pragma: no cover - test stubs
+            from alpha_factory_v1.backend import agents as agents_mod
+
+            start_background_tasks = getattr(agents_mod, "start_background_tasks", None)
+            if start_background_tasks is None:
+                async def _noop() -> None:
+                    return None
+                start_background_tasks = _noop
 
         await start_background_tasks()
 
@@ -69,7 +83,16 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
+        try:
+            from backend.agents.health import stop_background_tasks
+        except ModuleNotFoundError:  # pragma: no cover - test stubs
+            from alpha_factory_v1.backend import agents as agents_mod
+
+            stop_background_tasks = getattr(agents_mod, "stop_background_tasks", None)
+            if stop_background_tasks is None:
+                async def _noop() -> None:
+                    return None
+                stop_background_tasks = _noop
 
         await stop_background_tasks()
         if self._hb_task:

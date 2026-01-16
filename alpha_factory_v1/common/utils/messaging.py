@@ -9,10 +9,11 @@ optional transport servers.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
+from dataclasses import dataclass, field
 from pathlib import Path
-import contextlib
 from types import TracebackType
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
@@ -31,9 +32,18 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        ProtoEnvelope: TypeAlias = pb.Envelope
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        ProtoEnvelope = None
+
+    @dataclass
+    class Envelope:  # type: ignore[no-redef]
+        """Lightweight envelope used in tests and offline mode."""
+
+        sender: Any = ""
+        recipient: Any = ""
+        payload: Dict[str, Any] = field(default_factory=dict)
+        ts: Any = 0.0
 
 
 class EnvelopeLike(Protocol):

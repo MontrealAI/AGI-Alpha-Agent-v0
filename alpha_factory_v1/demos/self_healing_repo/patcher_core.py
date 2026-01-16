@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -60,6 +61,13 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_override = os.getenv("PATCH_FILE")
+    if patch_override:
+        patch_path = pathlib.Path(patch_override)
+        if patch_path.is_file():
+            patch = patch_path.read_text()
+            _sanity_check_patch(patch, pathlib.Path(repo_path))
+            return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,7 +82,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -118,7 +129,7 @@ def apply_patch(patch: str, repo_path: str) -> None:
                     backups[file_path] = backup
         # apply
         code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
+        if code != 0 and not _apply_fallback_patch(patch, repo):
             raise RuntimeError(f"patch command failed:\n{out}")
     except Exception as e:
         # rollback
@@ -131,6 +142,52 @@ def apply_patch(patch: str, repo_path: str) -> None:
         for bak in backups.values():
             if bak.exists():
                 os.unlink(bak)
+
+
+def _apply_fallback_patch(patch: str, repo: pathlib.Path) -> bool:
+    """Apply a minimal unified diff without full hunk metadata."""
+    current_file: pathlib.Path | None = None
+    hunks: list[list[str]] = []
+    current_hunk: list[str] | None = None
+    for line in patch.splitlines():
+        if line.startswith("--- "):
+            continue
+        if line.startswith("+++ "):
+            rel = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            current_file = repo / rel
+            continue
+        if line.startswith("@@"):
+            if current_file is None:
+                continue
+            current_hunk = []
+            hunks.append(current_hunk)
+            continue
+        if current_hunk is not None:
+            current_hunk.append(line)
+
+    if not hunks or current_file is None or not current_file.exists():
+        return False
+
+    raw_lines = current_file.read_text().splitlines()
+    updated = raw_lines[:]
+
+    for hunk in hunks:
+        removes = [line[1:] for line in hunk if line.startswith("-")]
+        adds = [line[1:] for line in hunk if line.startswith("+")]
+        if not removes:
+            updated.extend(adds)
+            continue
+        applied = False
+        for idx in range(len(updated) - len(removes) + 1):
+            if updated[idx : idx + len(removes)] == removes:
+                updated[idx : idx + len(removes)] = adds
+                applied = True
+                break
+        if not applied:
+            return False
+
+    current_file.write_text("\n".join(updated) + ("\n" if raw_lines else ""))
+    return True
 
 
 if __name__ == "__main__":
