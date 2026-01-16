@@ -294,6 +294,7 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /opt/hostedtoolcache /usr/local/.ghcup
           df -h
       - name: Install dependencies
         run: |
