@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -74,7 +75,14 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    override = os.getenv("PATCH_FILE")
+    if override:
+        patch = pathlib.Path(override).read_text()
+    else:
+        result = llm(prompt)
+        if asyncio.iscoroutine(result):
+            result = asyncio.run(result)
+        patch = str(result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -91,9 +99,60 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
+def _normalize_patch(patch: str, repo_root: pathlib.Path) -> str:
+    """Normalize patch text for the GNU patch utility."""
+    patch = textwrap.dedent(patch).replace("\r\n", "\n")
+    cleaned_lines: list[str] = []
+    for line in patch.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith(("--- ", "+++ ", "@@", "-", "+", "\\ No newline at end of file")):
+            cleaned_lines.append(stripped)
+        else:
+            cleaned_lines.append(line)
+    patch = "\n".join(cleaned_lines)
+    if not patch.endswith("\n"):
+        patch += "\n"
+
+    lines = patch.splitlines()
+    new_lines: list[str] = []
+    current_file: str | None = None
+    idx = 0
+    while idx < len(lines):
+        line = lines[idx]
+        if line.startswith(("--- ", "+++ ")):
+            current_file = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            new_lines.append(line)
+            idx += 1
+            continue
+        if line.strip() == "@@":
+            hunk_lines: list[str] = []
+            j = idx + 1
+            while j < len(lines) and not lines[j].startswith(("--- ", "+++ ", "@@")):
+                hunk_lines.append(lines[j])
+                j += 1
+            orig_count = sum(1 for hl in hunk_lines if hl.startswith((" ", "-")))
+            new_count = sum(1 for hl in hunk_lines if hl.startswith((" ", "+")))
+            start = 1
+            if current_file:
+                file_path = repo_root / current_file
+                if file_path.exists():
+                    file_lines = file_path.read_text(encoding="utf-8").splitlines()
+                    candidate = next((hl[1:] for hl in hunk_lines if hl.startswith((" ", "-"))), None)
+                    if candidate in file_lines:
+                        start = file_lines.index(candidate) + 1
+            new_lines.append(f"@@ -{start},{orig_count} +{start},{new_count} @@")
+            new_lines.extend(hunk_lines)
+            idx = j
+            continue
+        new_lines.append(line)
+        idx += 1
+    return "\n".join(new_lines) + "\n"
+
+
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch, repo)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(

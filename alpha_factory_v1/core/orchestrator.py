@@ -46,9 +46,26 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
-PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
+def _get_err_threshold() -> int:
+    return int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+
+
+def _get_backoff_exp_after() -> int:
+    return int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+
+
+def _get_promotion_threshold() -> float:
+    return float(os.getenv("PROMOTION_THRESHOLD", "0"))
+
+
+def __getattr__(name: str) -> int | float:
+    if name == "ERR_THRESHOLD":
+        return _get_err_threshold()
+    if name == "BACKOFF_EXP_AFTER":
+        return _get_backoff_exp_after()
+    if name == "PROMOTION_THRESHOLD":
+        return _get_promotion_threshold()
+    raise AttributeError(name)
 
 log = insight_logging.logging.getLogger(__name__)
 
@@ -61,11 +78,15 @@ async def monitor_agents(
     bus: messaging.A2ABus,
     ledger: Ledger,
     *,
-    err_threshold: int = ERR_THRESHOLD,
-    backoff_exp_after: int = BACKOFF_EXP_AFTER,
+    err_threshold: int | None = None,
+    backoff_exp_after: int | None = None,
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    if err_threshold is None:
+        err_threshold = _get_err_threshold()
+    if backoff_exp_after is None:
+        backoff_exp_after = _get_backoff_exp_after()
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -129,9 +150,9 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
-            promotion_threshold=PROMOTION_THRESHOLD,
+            err_threshold=_get_err_threshold(),
+            backoff_exp_after=_get_backoff_exp_after(),
+            promotion_threshold=_get_promotion_threshold(),
         )
         for agent in self._init_agents():
             self.add_agent(agent)

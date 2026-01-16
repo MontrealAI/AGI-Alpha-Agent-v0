@@ -50,6 +50,7 @@ def test_run_tests_respects_config(tmp_path, monkeypatch):
         f"OPENAI_MODEL=my-model\nMODEL_NAME=my-model\nCLONE_DIR={repo}\n",
         encoding="utf-8",
     )
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
     cfg.init_config(str(env_file))
 
     monkeypatch.setitem(

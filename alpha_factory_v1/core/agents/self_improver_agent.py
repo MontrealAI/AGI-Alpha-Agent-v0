@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
@@ -73,6 +74,7 @@ class SelfImproverAgent(BaseAgent):
         if git is None:
             raise RuntimeError("GitPython is required")
         diff = self.patch_file.read_text()
+        diff = self_improver._normalize_patch(diff, self.repo)
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
@@ -90,11 +92,16 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+                    tf.write(diff)
+                    normalized = tf.name
+                repo.git.apply(normalized)
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
+            finally:
+                Path(normalized).unlink(missing_ok=True)
         finally:
             shutil.rmtree(clone, ignore_errors=True)

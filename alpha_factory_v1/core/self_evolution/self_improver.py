@@ -40,6 +40,50 @@ def _log_delta(delta: float, log_file: Path) -> None:
     log_file.write_text(json.dumps(log))
 
 
+def _normalize_patch(patch: str, repo_root: Path) -> str:
+    """Normalize a unified diff to include hunk ranges and a trailing newline."""
+    patch = patch.replace("\r\n", "\n")
+    if not patch.endswith("\n"):
+        patch += "\n"
+
+    lines = patch.splitlines()
+    new_lines: list[str] = []
+    current_file: str | None = None
+    idx = 0
+    while idx < len(lines):
+        line = lines[idx]
+        if line.startswith(("--- ", "+++ ")):
+            current_file = line[4:].split("\t")[0]
+            if current_file.startswith(("a/", "b/")):
+                current_file = current_file[2:]
+            new_lines.append(line)
+            idx += 1
+            continue
+        if line.strip() == "@@":
+            hunk_lines: list[str] = []
+            j = idx + 1
+            while j < len(lines) and not lines[j].startswith(("--- ", "+++ ", "@@")):
+                hunk_lines.append(lines[j])
+                j += 1
+            orig_count = sum(1 for hl in hunk_lines if hl.startswith((" ", "-")))
+            new_count = sum(1 for hl in hunk_lines if hl.startswith((" ", "+")))
+            start = 1
+            if current_file:
+                file_path = repo_root / current_file
+                if file_path.exists():
+                    file_lines = file_path.read_text(encoding="utf-8").splitlines()
+                    candidate = next((hl[1:] for hl in hunk_lines if hl.startswith((" ", "-"))), None)
+                    if candidate in file_lines:
+                        start = file_lines.index(candidate) + 1
+            new_lines.append(f"@@ -{start},{orig_count} +{start},{new_count} @@")
+            new_lines.extend(hunk_lines)
+            idx = j
+            continue
+        new_lines.append(line)
+        idx += 1
+    return "\n".join(new_lines) + "\n"
+
+
 def improve_repo(
     repo_url: str,
     patch_file: str,
@@ -75,12 +119,20 @@ def improve_repo(
     baseline = _evaluate(repo_dir, metric_file)
 
     diff = Path(patch_file).read_text()
+    diff = _normalize_patch(diff, repo_dir)
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
-    repo.index.add([metric_file])
-    repo.index.commit("apply patch")
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(diff)
+        normalized = tf.name
+
+    try:
+        repo.git.apply(normalized)
+        repo.index.add([metric_file])
+        repo.index.commit("apply patch")
+    finally:
+        Path(normalized).unlink(missing_ok=True)
     # run basic checks before scoring
     run_preflight(repo_dir)
     new_score = _evaluate(repo_dir, metric_file)

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import importlib.util
 import pytest
 
 pd = pytest.importorskip("pandas")
@@ -37,6 +38,8 @@ def test_population_df() -> None:
 def test_run_simulation_smoke(capsys: pytest.CaptureFixture[str]) -> None:
     """Ensure _run_simulation accepts energy and entropy options."""
 
+    if importlib.util.find_spec("streamlit") is not None:
+        pytest.skip("streamlit installed; fallback path not applicable")
     web_app._run_simulation(1, "logistic", 2, 3, 1, 1.0, 1.0, save_plots=False)
     out, _ = capsys.readouterr()
     assert "Streamlit not installed" in out
@@ -50,9 +53,16 @@ def test_progress_dom_updates() -> None:
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
-    page = browser.new_page()
-    page.goto(str(client.base_url) + "/web/")
-    page.click("text=Run simulation")
-    page.wait_for_selector("#capability")
-    browser.close()
+    playwright = pw.sync_playwright().start()
+    try:
+        try:
+            browser = playwright.chromium.launch()
+        except Exception as exc:  # pragma: no cover - optional browser dependency
+            pytest.skip(f"Playwright browser unavailable: {exc}")
+        page = browser.new_page()
+        page.goto(str(client.base_url) + "/web/")
+        page.click("text=Run simulation")
+        page.wait_for_selector("#capability")
+        browser.close()
+    finally:
+        playwright.stop()
