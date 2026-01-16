@@ -205,6 +205,9 @@ class Ledger:
                     record = dataclasses.asdict(env) if dataclasses.is_dataclass(env) else env.__dict__
             else:
                 record = env.__dict__
+            payload = record.get("payload")
+            if payload is not None and hasattr(payload, "fields"):
+                record["payload"] = json_format.MessageToDict(payload)
             data = json.dumps(record, sort_keys=True).encode()
             digest = blake3(data).hexdigest()
             payload_json = json.dumps(record.get("payload", {}))

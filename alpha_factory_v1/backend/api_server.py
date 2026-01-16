@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
@@ -35,6 +36,12 @@ def build_rest(
 ) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
+    if mem is None:
+        for mod_name in ("alpha_factory_v1.backend.orchestrator", "backend.orchestrator"):
+            orch_mod = sys.modules.get(mod_name)
+            if orch_mod is not None and hasattr(orch_mod, "mem"):
+                mem = getattr(orch_mod, "mem")
+                break
     if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(

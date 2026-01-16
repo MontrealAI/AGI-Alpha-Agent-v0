@@ -66,6 +66,10 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    if err_threshold == ERR_THRESHOLD:
+        err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", str(err_threshold)))
+    if backoff_exp_after == BACKOFF_EXP_AFTER:
+        backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", str(backoff_exp_after)))
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -79,13 +83,13 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
+                if on_restart:
+                    on_restart(runner)
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
                 await asyncio.sleep(delay)
                 await runner.restart(bus, ledger)
-                if on_restart:
-                    on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):

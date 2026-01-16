@@ -39,7 +39,7 @@ class TestPatcherCore(unittest.TestCase):
                 fh.write("x = 1\n")
             patch = """--- a/alpha/test.py
 +++ b/alpha/test.py
-@@
+@@ -1 +1 @@
 -x = 1
 +x = 2
 """

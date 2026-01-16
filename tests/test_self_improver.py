@@ -13,6 +13,9 @@ git = pytest.importorskip("git")
 
 def _init_repo(path: Path) -> Any:
     repo = git.Repo.init(path)
+    with repo.config_writer() as writer:
+        writer.set_value("user", "name", "CI User")
+        writer.set_value("user", "email", "ci@example.com")
     (path / "metric.txt").write_text("1\n")
     repo.git.add("metric.txt")
     repo.index.commit("init")
@@ -24,7 +27,7 @@ def test_improve_repo(tmp_path: Path) -> None:
     repo_dir.mkdir()
     _init_repo(repo_dir)
 
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@ -1 +1 @@\n-1\n+2\n"""
     patch_file = tmp_path / "patch.diff"
     patch_file.write_text(patch)
     log_file = tmp_path / "log.json"
@@ -57,7 +60,7 @@ def test_improve_repo_cleanup(tmp_path: Path) -> None:
     repo_dir.mkdir()
     _init_repo(repo_dir)
 
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@ -1 +1 @@\n-1\n+2\n"""
     patch_file = tmp_path / "patch.diff"
     patch_file.write_text(patch)
     log_file = tmp_path / "log.json"
@@ -104,7 +107,7 @@ async def test_self_improver_agent_apply(tmp_path: Path) -> None:
     repo_dir = tmp_path / "repo"
     repo_dir.mkdir()
     _init_repo(repo_dir)
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@ -1 +1 @@\n-1\n+2\n"""
     patch_file = tmp_path / "p.diff"
     patch_file.write_text(patch)
     bus = messaging.A2ABus(config.Settings(bus_port=0))
@@ -120,7 +123,7 @@ async def test_self_improver_agent_rollback(monkeypatch, tmp_path: Path) -> None
     repo_dir = tmp_path / "repo"
     repo_dir.mkdir()
     _init_repo(repo_dir)
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@ -1 +1 @@\n-1\n+2\n"""
     patch_file = tmp_path / "p.diff"
     patch_file.write_text(patch)
     bus = messaging.A2ABus(config.Settings(bus_port=0))

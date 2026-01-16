@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 import tempfile
 import time
 from pathlib import Path
@@ -22,6 +23,19 @@ try:
     import git
 except ModuleNotFoundError:  # pragma: no cover - optional
     git = None
+
+
+def _ensure_git_identity(repo: "git.Repo") -> None:
+    """Ensure the repo has user.name and user.email set for commits."""
+    reader = repo.config_reader()
+    needs_name = not reader.has_option("user", "name")
+    needs_email = not reader.has_option("user", "email")
+    if needs_name or needs_email:
+        with repo.config_writer() as writer:
+            if needs_name:
+                writer.set_value("user", "name", "Alpha-Factory Bot")
+            if needs_email:
+                writer.set_value("user", "email", "alpha-factory@example.com")
 
 
 def _evaluate(repo_path: Path, metric_file: str) -> float:
@@ -72,13 +86,21 @@ def improve_repo(
         raise RuntimeError("GitPython is required")
     repo_dir = Path(tempfile.mkdtemp(prefix="selfimprover-"))
     repo = git.Repo.clone_from(repo_url, repo_dir)
+    _ensure_git_identity(repo)
     baseline = _evaluate(repo_dir, metric_file)
 
     diff = Path(patch_file).read_text()
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    result = subprocess.run(
+        ["patch", "-p1", "-i", patch_file],
+        cwd=repo_dir,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Patch apply failed:\n{result.stdout}{result.stderr}")
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

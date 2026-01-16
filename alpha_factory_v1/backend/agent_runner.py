@@ -18,8 +18,8 @@ from datetime import datetime, timezone
 from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
+import sys
 
-from backend.agents.registry import get_agent
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -29,6 +29,18 @@ with contextlib.suppress(ModuleNotFoundError):
     from kafka import KafkaProducer
 
 log = logging.getLogger(__name__)
+
+
+def _get_agent(name: str) -> Any:
+    agents_mod = sys.modules.get("backend.agents") or sys.modules.get("alpha_factory_v1.backend.agents")
+    if agents_mod is not None and hasattr(agents_mod, "get_agent"):
+        return agents_mod.get_agent(name)
+    from backend.agents.registry import get_agent
+
+    return get_agent(name)
+
+
+get_agent = _get_agent
 
 
 def _env_float(name: str, default: float) -> float:
@@ -166,7 +178,7 @@ class AgentRunner:
         inst: Any | None = None,
     ) -> None:
         self.name = name
-        self.inst = inst or get_agent(name)
+        self.inst = inst or _get_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)
         self.spec = getattr(self.inst, "SCHED_SPEC", None)
         self.next_ts = 0.0

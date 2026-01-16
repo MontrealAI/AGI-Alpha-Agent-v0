@@ -19,6 +19,7 @@ from cachetools import TTLCache
 
 from .config import Settings
 from google.protobuf import json_format
+from google.protobuf import struct_pb2
 from typing import TYPE_CHECKING
 from alpha_factory_v1.core.utils import alerts
 
@@ -31,9 +32,53 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        def _coerce_float(value: object) -> float:
+            try:
+                return float(value) if value is not None else 0.0
+            except (TypeError, ValueError):
+                return 0.0
+
+        class EnvelopeCompat(pb.Envelope):  # type: ignore[misc]
+            """Envelope wrapper that coerces malformed fields for fuzz tests."""
+
+            def __init__(
+                self,
+                sender: object = "",
+                recipient: object = "",
+                payload: object | None = None,
+                ts: object = 0.0,
+            ) -> None:
+                super().__init__(
+                    sender="" if sender is None else str(sender),
+                    recipient="" if recipient is None else str(recipient),
+                    ts=_coerce_float(ts),
+                )
+                if isinstance(payload, dict):
+                    self.payload.update(payload)
+                elif payload is not None and hasattr(payload, "fields"):
+                    try:
+                        self.payload.CopyFrom(payload)
+                    except Exception:
+                        pass
+
+        Envelope: TypeAlias = EnvelopeCompat
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        class EnvelopeFallback:
+            """Lightweight envelope fallback when protobufs are unavailable."""
+
+            def __init__(
+                self,
+                sender: object = "",
+                recipient: object = "",
+                payload: object | None = None,
+                ts: object = 0.0,
+            ) -> None:
+                self.sender = sender
+                self.recipient = recipient
+                self.payload = payload if payload is not None else {}
+                self.ts = ts
+
+        Envelope: TypeAlias = EnvelopeFallback
 
 
 class EnvelopeLike(Protocol):
@@ -56,6 +101,13 @@ except ModuleNotFoundError:  # pragma: no cover - broker optional
 
 
 logger = logging.getLogger(__name__)
+
+
+if not hasattr(struct_pb2.Struct, "get"):
+    def _struct_get(self, key: str, default: Any | None = None) -> Any | None:
+        return json_format.MessageToDict(self).get(key, default)
+
+    struct_pb2.Struct.get = _struct_get  # type: ignore[attr-defined]
 
 
 class A2ABus:
