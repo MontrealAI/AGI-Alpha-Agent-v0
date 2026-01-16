@@ -24,6 +24,20 @@ except ModuleNotFoundError:  # pragma: no cover - optional
     git = None
 
 
+def _ensure_git_identity(repo: "git.Repo") -> None:
+    """Ensure commits have a deterministic author identity."""
+    reader = repo.config_reader()
+    has_name = reader.has_option("user", "name")
+    has_email = reader.has_option("user", "email")
+    if has_name and has_email:
+        return
+    with repo.config_writer() as writer:
+        if not has_name:
+            writer.set_value("user", "name", "AlphaFactory Bot")
+        if not has_email:
+            writer.set_value("user", "email", "alpha-factory@example.com")
+
+
 def _evaluate(repo_path: Path, metric_file: str) -> float:
     """Return the numeric metric stored in ``metric_file`` inside ``repo_path``."""
     return float((repo_path / metric_file).read_text().strip())
@@ -72,6 +86,7 @@ def improve_repo(
         raise RuntimeError("GitPython is required")
     repo_dir = Path(tempfile.mkdtemp(prefix="selfimprover-"))
     repo = git.Repo.clone_from(repo_url, repo_dir)
+    _ensure_git_identity(repo)
     baseline = _evaluate(repo_dir, metric_file)
 
     diff = Path(patch_file).read_text()

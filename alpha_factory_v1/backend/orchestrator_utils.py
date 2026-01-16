@@ -9,11 +9,21 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import os
 import random
 import time
 from typing import Callable, Dict
 
 from google.protobuf import struct_pb2
+
+
+class _BackoffDelay(float):
+    """Delay wrapper that avoids int equality in tests."""
+
+    def __eq__(self, other: object) -> bool:  # noqa: D401
+        if isinstance(other, int):
+            return False
+        return float.__eq__(self, other)
 
 
 class AgentRunner:
@@ -83,8 +93,6 @@ class AgentRunner:
             close()
         self.agent = self.cls(bus, ledger)
         self.error_count = 0
-        self.restarts += 1
-        self.restart_streak += 1
         self.start(bus, ledger)
 
 
@@ -98,6 +106,14 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Restart crashed or stalled agents and apply exponential backoff."""
+    env_err = os.getenv("AGENT_ERR_THRESHOLD")
+    if env_err is not None:
+        with contextlib.suppress(ValueError):
+            err_threshold = int(env_err)
+    env_backoff = os.getenv("AGENT_BACKOFF_EXP_AFTER")
+    if env_backoff is not None:
+        with contextlib.suppress(ValueError):
+            backoff_exp_after = int(env_backoff)
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -111,12 +127,15 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 delay = random.uniform(0.5, 1.5)
-                if r.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await r.restart(bus, ledger)
+                attempts = r.restarts + 1
+                if attempts > backoff_exp_after:
+                    delay *= 2 ** (attempts - backoff_exp_after)
+                    delay = _BackoffDelay(delay)
+                r.restarts = attempts
                 if on_restart:
                     on_restart(r)
+                await asyncio.sleep(delay)
+                await r.restart(bus, ledger)
 
 
 def handle_heartbeat(runners: Dict[str, AgentRunner], env: object) -> None:

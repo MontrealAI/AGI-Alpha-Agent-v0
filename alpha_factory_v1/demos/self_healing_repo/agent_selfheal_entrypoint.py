@@ -8,22 +8,26 @@ Self‑Healing Repo demo
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
 4. Opens a Pull Request‑style diff in the dashboard and re‑runs tests.
 """
-import logging
 import asyncio
+import importlib.util
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-import gradio as gr
+if importlib.util.find_spec("gradio") is None:  # pragma: no cover - optional
+    gr = None
+else:
+    import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
-try:
+if importlib.util.find_spec("openai_agents") is not None:
     from openai_agents import Agent, OpenAIAgent, Tool
-except Exception:  # pragma: no cover - optional fallback
+else:  # pragma: no cover - optional fallback
     from .agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
@@ -90,7 +94,7 @@ async def run_tests():
     """Run the project's tests with a timeout and no color codes."""
     try:
         result = subprocess.run(
-            ["pytest", "-q", "--color=no"],
+            [sys.executable, "-m", "pytest", "-q", "--color=no"],
             cwd=CLONE_DIR,
             capture_output=True,
             text=True,
@@ -125,6 +129,15 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    app = FastAPI()
+
+    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+    async def _live() -> str:  # noqa: D401
+        return "OK"
+
+    if gr is None:
+        return app
+
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 
@@ -142,12 +155,6 @@ def create_app() -> FastAPI:
 
         run_btn = gr.Button("🩹 Heal Repository")
         run_btn.click(run_pipeline, outputs=log)
-
-    app = FastAPI()
-
-    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
-    async def _live() -> str:  # noqa: D401
-        return "OK"
 
     return gr.mount_gradio_app(app, ui, path="/")
 

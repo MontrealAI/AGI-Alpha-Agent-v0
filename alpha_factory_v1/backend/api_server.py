@@ -36,6 +36,13 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        try:
+            from . import orchestrator as _orch
+
+            mem = getattr(_orch, "mem", None)
+        except Exception:  # pragma: no cover - fallback
+            mem = None
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],
