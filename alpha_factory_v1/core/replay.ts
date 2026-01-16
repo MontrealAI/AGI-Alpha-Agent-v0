@@ -12,8 +12,17 @@ export interface ReplayFrame {
 
 const DB_NAME = 'replay';
 const FRAME_STORE = 'frames';
+const HAS_INDEXED_DB = typeof indexedDB !== 'undefined';
+const memoryFrames = new Map<number, ReplayFrame>();
+
+function memoryRequest<T>(value: T): IDBRequest<T> {
+  return { result: value } as IDBRequest<T>;
+}
 
 function openDB(): Promise<IDBDatabase> {
+  if (!HAS_INDEXED_DB) {
+    return Promise.resolve({} as IDBDatabase);
+  }
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
     req.onupgradeneeded = () => {
@@ -26,6 +35,23 @@ function openDB(): Promise<IDBDatabase> {
 }
 
 function withStore<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
+  if (!HAS_INDEXED_DB) {
+    try {
+      const store = {
+        put: (value: ReplayFrame, key?: number) => {
+          const id = key ?? value.id;
+          memoryFrames.set(id, value);
+          return memoryRequest(id as unknown as T);
+        },
+        get: (key: number) => memoryRequest(memoryFrames.get(key) as T),
+        getAll: () => memoryRequest(Array.from(memoryFrames.values()) as T),
+      } as unknown as IDBObjectStore;
+      const req = fn(store);
+      return Promise.resolve(req.result as T);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
   return openDB().then(
     db => new Promise<T>((resolve, reject) => {
       const tx = db.transaction(FRAME_STORE, mode);
@@ -150,4 +176,3 @@ export class ReplayDB {
     return last;
   }
 }
-

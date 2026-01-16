@@ -161,6 +161,7 @@ export function clusterKeywords(
 
 export async function validateLabel(name: string): Promise<boolean> {
   try {
+    // @ts-ignore - optional alias provided by the Insight build pipeline
     const { chat } = await import('@insight-src/utils/llm.js');
     const resp = await chat(`Does '${name}' denote a distinct economic activity?`);
     return /^yes/i.test(String(resp).trim());

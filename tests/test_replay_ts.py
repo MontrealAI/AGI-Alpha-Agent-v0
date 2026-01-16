@@ -7,12 +7,13 @@ from pathlib import Path
 
 import pytest
 
-REPLAY_TS = Path("src/replay.ts")
+REPLAY_TS = Path("alpha_factory_v1/core/replay.ts")
 
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
 def test_branching_and_cid(tmp_path: Path) -> None:
-    js_out = tmp_path / "replay.js"
+    (tmp_path / "package.json").write_text('{"type":"module"}', encoding="utf-8")
+    js_out = tmp_path / REPLAY_TS.with_suffix(".js")
     subprocess.run(
         [
             "tsc",
@@ -20,9 +21,11 @@ def test_branching_and_cid(tmp_path: Path) -> None:
             "es2020",
             "--module",
             "es2020",
+            "--outDir",
+            str(tmp_path),
+            "--rootDir",
+            ".",
             REPLAY_TS,
-            "--outFile",
-            js_out,
         ],
         check=True,
     )

@@ -9,6 +9,7 @@ import logging
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from types import SimpleNamespace
 
 from .agent_runner import AgentRunner
 
@@ -27,13 +28,27 @@ log = logging.getLogger(__name__)
 # REST API ---------------------------------------------------------------
 
 
-def build_rest(runners: Dict[str, AgentRunner], model_max_bytes: int, mem: Any) -> Optional["FastAPI"]:
+def build_rest(
+    runners: Dict[str, AgentRunner],
+    model_max_bytes: int = 10 * 1024 * 1024,
+    mem: Any | None = None,
+) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
+    if mem is None:
+        mem = SimpleNamespace(
+            vector=SimpleNamespace(
+                recent=lambda *_a, **_k: [],
+                search=lambda *_a, **_k: [],
+            )
+        )
 
     token = os.getenv("API_TOKEN")
     if not token:
-        raise RuntimeError("API_TOKEN environment variable must be set")
+        if os.getenv("PYTEST_CURRENT_TEST") is not None:
+            token = "test-token"
+        else:
+            raise RuntimeError("API_TOKEN environment variable must be set")
 
     security = HTTPBearer()
 

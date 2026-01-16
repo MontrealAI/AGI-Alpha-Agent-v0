@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Individual as BaseIndividual } from '../state/serializer.ts';
+import type { Individual as BaseIndividual } from '../state/serializer.js';
 
 export interface Mutant extends BaseIndividual {
   strategy: string;
