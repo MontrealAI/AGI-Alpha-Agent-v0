@@ -66,6 +66,10 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    if err_threshold == ERR_THRESHOLD:
+        err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", str(ERR_THRESHOLD)))
+    if backoff_exp_after == BACKOFF_EXP_AFTER:
+        backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", str(BACKOFF_EXP_AFTER)))
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -82,10 +86,12 @@ async def monitor_agents(
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await runner.restart(bus, ledger)
-                if on_restart:
-                    on_restart(runner)
+                try:
+                    await asyncio.sleep(delay)
+                    await runner.restart(bus, ledger)
+                finally:
+                    if on_restart:
+                        on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -98,6 +104,8 @@ class Orchestrator(BaseOrchestrator):
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
         self.settings = settings or config.CFG
+        err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", str(ERR_THRESHOLD)))
+        backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", str(BACKOFF_EXP_AFTER)))
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)
         ledger = Ledger(
@@ -129,8 +137,8 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
+            err_threshold=err_threshold,
+            backoff_exp_after=backoff_exp_after,
             promotion_threshold=PROMOTION_THRESHOLD,
         )
         for agent in self._init_agents():

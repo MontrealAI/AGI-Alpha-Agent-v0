@@ -191,10 +191,18 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
+        self._model = None
+        self._fallback = False
         if not self.use_openai:
             if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer required for offline mode.")
-            self._model = SentenceTransformer("nomic-embed-text")
+                logger.warning("SentenceTransformer unavailable; using hash embeddings.")
+                self._fallback = True
+            else:
+                try:
+                    self._model = SentenceTransformer("nomic-embed-text")
+                except Exception:  # noqa: BLE001
+                    logger.warning("SentenceTransformer load failed; using hash embeddings.", exc_info=True)
+                    self._fallback = True
 
     async def encode(self, texts: List[str]):
         import numpy as np  # local import
@@ -202,10 +210,21 @@ class _Embedder:
         if self.use_openai:
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=texts, encoding_format="float")
             vecs = np.asarray([d.embedding for d in resp["data"]], dtype="float32")
-        else:
+        elif self._model is not None:
             loop = asyncio.get_event_loop()
             vecs = await loop.run_in_executor(None, self._model.encode, texts)
             vecs = vecs.astype("float32")
+        else:
+            vecs = self._hash_embed(texts, np)
+        return vecs
+
+    def _hash_embed(self, texts: List[str], np):  # type: ignore[no-untyped-def]
+        vecs = np.zeros((len(texts), self.dim), dtype="float32")
+        for i, text in enumerate(texts):
+            seed = int.from_bytes(hashlib.sha256(text.encode("utf-8")).digest()[:8], "big")
+            rng = np.random.default_rng(seed)
+            vec = rng.standard_normal(self.dim).astype("float32")
+            vecs[i] = vec / (np.linalg.norm(vec) + 1e-8)
         return vecs
 
 

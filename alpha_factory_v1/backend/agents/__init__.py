@@ -2,6 +2,9 @@
 """Agent discovery, health monitoring and registry."""
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 from .registry import (
     AGENT_REGISTRY,
     CAPABILITY_GRAPH,
@@ -39,6 +42,9 @@ from .discovery import (
 )
 from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
+from . import plugins as _plugins
+
+sys.modules["backend.agents"] = sys.modules[__name__]
 
 # Perform initial discovery on import
 run_discovery_once()
@@ -59,6 +65,12 @@ def list_agents(detail: bool = False):
     return entries + failed
 
 
+def _verify_wheel(path: Path) -> bool:
+    _plugins._WHEEL_PUBKEY = _WHEEL_PUBKEY
+    _plugins._WHEEL_SIGS = _WHEEL_SIGS
+    return _plugins.verify_wheel(path)
+
+
 __all__ = [
     "AGENT_REGISTRY",
     "CAPABILITY_GRAPH",
@@ -71,4 +83,5 @@ __all__ = [
     "get_agent",
     "start_background_tasks",
     "stop_background_tasks",
+    "_verify_wheel",
 ]

@@ -12,10 +12,11 @@ export interface ReplayFrame {
 
 const DB_NAME = 'replay';
 const FRAME_STORE = 'frames';
+const HAS_INDEXED_DB = typeof indexedDB !== 'undefined';
 
-function openDB(): Promise<IDBDatabase> {
+function openDB(name: string): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
+    const req = indexedDB.open(name, 1);
     req.onupgradeneeded = () => {
       const db = req.result;
       if (!db.objectStoreNames.contains(FRAME_STORE)) db.createObjectStore(FRAME_STORE);
@@ -25,8 +26,12 @@ function openDB(): Promise<IDBDatabase> {
   });
 }
 
-function withStore<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
-  return openDB().then(
+function withStore<T>(
+  name: string,
+  mode: IDBTransactionMode,
+  fn: (s: IDBObjectStore) => IDBRequest<T>
+): Promise<T> {
+  return openDB(name).then(
     db => new Promise<T>((resolve, reject) => {
       const tx = db.transaction(FRAME_STORE, mode);
       const st = tx.objectStore(FRAME_STORE);
@@ -42,16 +47,23 @@ function withStore<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRe
  * Each frame links to its parent so threads can be reconstructed.
  */
 export class ReplayDB {
+  private memory?: Map<number, ReplayFrame>;
+
   /**
    * Create a new replay database wrapper.
    *
    * @param name - Optional IndexedDB name.
    */
-  constructor(private name = DB_NAME) {}
+  constructor(private name = DB_NAME) {
+    if (!HAS_INDEXED_DB) {
+      this.memory = new Map();
+    }
+  }
 
   /** Open the underlying database. */
   async open(): Promise<void> {
-    await openDB();
+    if (!HAS_INDEXED_DB) return;
+    await openDB(this.name);
   }
 
   /**
@@ -68,7 +80,11 @@ export class ReplayDB {
         ? parseInt(uuidFn.call(globalThis.crypto).replace(/-/g, '').slice(0, 13), 16)
         : Date.now() + Math.floor(Math.random() * 1000);
     const frame: ReplayFrame = { id, parent, delta, timestamp: Date.now() };
-    await withStore('readwrite', (s) => s.put(frame, id));
+    if (this.memory) {
+      this.memory.set(id, frame);
+      return id;
+    }
+    await withStore(this.name, 'readwrite', (s) => s.put(frame, id));
     return id;
   }
 
@@ -79,7 +95,10 @@ export class ReplayDB {
    * @returns The stored frame or `undefined`.
    */
   async getFrame(id: number): Promise<ReplayFrame | undefined> {
-    return withStore('readonly', (s) => s.get(id));
+    if (this.memory) {
+      return this.memory.get(id);
+    }
+    return withStore(this.name, 'readonly', (s) => s.get(id));
   }
 
   /**
@@ -150,4 +169,3 @@ export class ReplayDB {
     return last;
   }
 }
-

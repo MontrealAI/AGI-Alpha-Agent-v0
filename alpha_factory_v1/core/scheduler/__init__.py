@@ -54,19 +54,27 @@ class SelfImprovementScheduler:
         self.tokens_used = 0
         self.start_time = 0.0
         self.running: Set[asyncio.Task[None]] = set()
-        self.app = Rocketry(execution="async")
-
-        @self.app.task(every(interval))
-        async def _spawn():  # pragma: no cover - Rocketry callback
-            await self._spawn_jobs()
+        self._done = False
+        try:
+            self.app = Rocketry(execution="async")
+        except TypeError:  # pragma: no cover - older Rocketry versions
+            self.app = Rocketry()
+        self._use_fallback = not hasattr(self.app, "task") or not hasattr(self.app, "serve") or not hasattr(
+            self.app, "session"
+        )
+        self._interval_seconds = _parse_interval(interval)
+        if not self._use_fallback:
+            @self.app.task(every(interval))
+            async def _spawn():  # pragma: no cover - Rocketry callback
+                await self._spawn_jobs()
 
     async def _spawn_jobs(self) -> None:
         """Spawn new worker tasks until quotas or limits are hit."""
         if self.time_quota and time.time() - self.start_time >= self.time_quota:
-            self.app.session.finish()
+            self._finish()
             return
         if self.tokens_quota is not None and self.tokens_used >= self.tokens_quota:
-            self.app.session.finish()
+            self._finish()
             return
         # schedule initial evaluation or bandit-selected jobs
         while len(self.running) < self.max_workers:
@@ -76,7 +84,7 @@ class SelfImprovementScheduler:
                 job = await self.queue.get()
             else:
                 if not self._active_jobs:
-                    self.app.session.finish()
+                    self._finish()
                     break
                 job = self._select_job()
             task = asyncio.create_task(self._run_job(job))
@@ -135,13 +143,48 @@ class SelfImprovementScheduler:
                 self._stats[job] = (1 if delta > 0 else 0, 0 if delta > 0 else 1)
         self._first_round_done = True
 
+    def _finish(self) -> None:
+        if self._use_fallback or not hasattr(self.app, "session"):
+            self._done = True
+            return
+        self.app.session.finish()
+
     async def serve(self) -> None:
         """Run the scheduler until quotas are exhausted or queue is empty."""
         self.start_time = time.time()
-        await self.app.serve()
+        if self._use_fallback:
+            while not self._done:
+                await self._spawn_jobs()
+                if self._done:
+                    break
+                await asyncio.sleep(self._interval_seconds)
+        else:
+            await self.app.serve()
         # wait for running tasks to finish
         if self.running:
             await asyncio.gather(*self.running, return_exceptions=True)
+
+
+def _parse_interval(interval: str) -> float:
+    parts = interval.strip().split()
+    if not parts:
+        return 1.0
+    try:
+        value = float(parts[0])
+    except ValueError:
+        return 1.0
+    if len(parts) == 1:
+        return value
+    unit = parts[1].lower()
+    if unit.startswith("ms"):
+        return value / 1000.0
+    if unit.startswith("sec"):
+        return value
+    if unit.startswith("min"):
+        return value * 60.0
+    if unit.startswith("hour"):
+        return value * 3600.0
+    return value
 
 
 __all__ = ["Job", "SelfImprovementScheduler"]
