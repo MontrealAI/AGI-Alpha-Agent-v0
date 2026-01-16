@@ -39,7 +39,7 @@ from .discovery import (
 )
 from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
-from .plugins import verify_wheel as _verify_wheel
+from . import plugins
 
 # Perform initial discovery on import
 run_discovery_once()
@@ -58,6 +58,11 @@ def list_agents(detail: bool = False):
         return entries
     failed = [{"name": name, "status": "error", "message": msg} for name, msg in sorted(FAILED_AGENTS.items())]
     return entries + failed
+
+
+def _verify_wheel(path):
+    """Return ``True`` if *path* has a valid signature."""
+    return plugins.verify_wheel(path, pubkey=_WHEEL_PUBKEY, sigs=_WHEEL_SIGS)
 
 
 __all__ = [

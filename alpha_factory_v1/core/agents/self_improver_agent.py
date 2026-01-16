@@ -11,7 +11,7 @@ from typing import Sequence
 
 from alpha_factory_v1.core.agents.base_agent import BaseAgent
 from alpha_factory_v1.core.self_evolution import self_improver
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch_hunks
 
 try:  # optional dependency
     import git  # type: ignore
@@ -76,6 +76,7 @@ class SelfImproverAgent(BaseAgent):
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
+        normalized = normalize_patch_hunks(diff, self.repo)
         delta, clone = await asyncio.to_thread(
             self_improver.improve_repo,
             str(self.repo),
@@ -89,12 +90,19 @@ class SelfImproverAgent(BaseAgent):
                 return
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
+            patch_path = self.patch_file
             try:
-                repo.git.apply(str(self.patch_file))
+                if normalized != diff:
+                    patch_path = self.patch_file.with_suffix(".normalized.diff")
+                    patch_path.write_text(normalized)
+                repo.git.apply(str(patch_path))
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
+            finally:
+                if patch_path != self.patch_file:
+                    patch_path.unlink(missing_ok=True)
         finally:
             shutil.rmtree(clone, ignore_errors=True)

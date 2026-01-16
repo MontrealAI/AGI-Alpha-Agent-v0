@@ -12,6 +12,8 @@ cd "$SCRIPT_DIR"
 # Force offline mode when no API key is supplied
 if [[ -z "${OPENAI_API_KEY:-}" ]]; then
   export NO_LLM=1
+else
+  unset NO_LLM
 fi
 
 python -m alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo --demo "$@"

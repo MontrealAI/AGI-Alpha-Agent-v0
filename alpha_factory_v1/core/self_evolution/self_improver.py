@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 from typing import Tuple
 
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch_hunks
 from alpha_factory_v1.core.eval.preflight import run_preflight
 
 try:
@@ -77,8 +77,14 @@ def improve_repo(
     diff = Path(patch_file).read_text()
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
-
-    repo.git.apply(patch_file)
+    normalized = normalize_patch_hunks(diff, repo_dir)
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(normalized)
+        normalized_patch = tf.name
+    try:
+        repo.git.apply(normalized_patch)
+    finally:
+        Path(normalized_patch).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

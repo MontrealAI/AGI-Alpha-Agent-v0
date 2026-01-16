@@ -27,6 +27,8 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
+import inspect
 import os
 import pathlib
 import re
@@ -36,6 +38,8 @@ import tempfile
 import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
+
+from alpha_factory_v1.core.utils.patch_guard import normalize_patch_hunks
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
@@ -74,7 +78,11 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if inspect.isawaitable(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
+    patch = normalize_patch_hunks(patch, pathlib.Path(repo_path))
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -94,10 +102,12 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = normalize_patch_hunks(patch, repo)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
-            '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
+            '`patch` command not found. Install the utility, e.g., '
+            '"sudo apt-get update && sudo apt-get install -y patch"'
         )
     backups = {}
 

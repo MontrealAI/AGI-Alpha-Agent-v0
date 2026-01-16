@@ -10,13 +10,52 @@ Self‑Healing Repo demo
 """
 import logging
 import asyncio
+import importlib.util
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
+import types
 
-import gradio as gr
+if "gradio" in sys.modules:
+    gr = sys.modules["gradio"]
+else:
+    _gradio_spec = importlib.util.find_spec("gradio")
+    if _gradio_spec is None:
+
+        class _DummyBlocks:
+            def __init__(self, *a, **k):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                pass
+
+        class _DummyMarkdown:
+            def __init__(self, *a, **k):
+                pass
+
+        class _DummyButton:
+            def __init__(self, *a, **k):
+                pass
+
+            def click(self, *a, **k):
+                pass
+
+        def _mount_gradio_app(app, *_a, **_k):
+            return app
+
+        gr = types.SimpleNamespace(
+            Blocks=_DummyBlocks,
+            Markdown=_DummyMarkdown,
+            Button=_DummyButton,
+            mount_gradio_app=_mount_gradio_app,
+        )
+    else:
+        import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -53,7 +92,8 @@ logger = logging.getLogger(__name__)
 
 if shutil.which("patch") is None:
     logger.error(
-        '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
+        '`patch` command not found. Install the utility, e.g., '
+        '"sudo apt-get update && sudo apt-get install -y patch"'
     )
     sys.exit(1)
 
@@ -76,13 +116,27 @@ def clone_sample_repo() -> None:
 
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
-_temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+def _build_llm() -> object:
+    temp_env = os.getenv("TEMPERATURE")
+    model = os.getenv("OPENAI_MODEL") or os.getenv("MODEL_NAME") or "gpt-4o-mini"
+    try:
+        return OpenAIAgent(
+            model=model,
+            api_key=os.getenv("OPENAI_API_KEY", None),
+            base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+            temperature=float(temp_env) if temp_env is not None else None,
+        )
+    except TypeError:
+        from .agent_core import llm_client
+
+        class _Fallback:
+            def __call__(self, prompt: str) -> str:
+                return llm_client.call_local_model([{"role": "user", "content": prompt}])
+
+        return _Fallback()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")

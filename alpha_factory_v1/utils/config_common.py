@@ -30,11 +30,14 @@ else:  # pragma: no cover - runtime import
 _log = logging.getLogger(__name__)
 
 
-def _load_dotenv(path: str = ".env") -> None:
+def _load_dotenv(path: str = ".env", *, override: bool = False) -> None:
     """Load default variables from ``path`` when available."""
     if Path(path).is_file():
         for k, v in _load_env_file(path).items():
-            os.environ.setdefault(k, v)
+            if override:
+                os.environ[k] = v
+            else:
+                os.environ.setdefault(k, v)
 
 
 def _prefetch_vault() -> None:
