@@ -17,9 +17,20 @@ import atexit
 from datetime import datetime, timezone
 from collections import deque
 from typing import Any, Callable, Dict, Optional
+import importlib.util
 import os
+import sys
 
-from backend.agents.registry import get_agent
+def _resolve_get_agent() -> Callable[[str], Any]:
+    if "backend.agents" in sys.modules:
+        return sys.modules["backend.agents"].get_agent
+    if importlib.util.find_spec("backend.agents") is not None:
+        from backend import agents as agents_mod
+
+        return agents_mod.get_agent
+    from backend.agents import registry as registry_mod
+
+    return registry_mod.get_agent
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -166,6 +177,7 @@ class AgentRunner:
         inst: Any | None = None,
     ) -> None:
         self.name = name
+        get_agent = _resolve_get_agent()
         self.inst = inst or get_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)
         self.spec = getattr(self.inst, "SCHED_SPEC", None)

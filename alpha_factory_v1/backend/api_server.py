@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
@@ -36,12 +37,23 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
-        mem = SimpleNamespace(
-            vector=SimpleNamespace(
-                recent=lambda *_a, **_k: [],
-                search=lambda *_a, **_k: [],
+        backend_orchestrator = None
+        if "alpha_factory_v1.backend.orchestrator" in sys.modules:
+            backend_orchestrator = sys.modules["alpha_factory_v1.backend.orchestrator"]
+        else:
+            try:
+                from alpha_factory_v1.backend import orchestrator as backend_orchestrator
+            except Exception:
+                backend_orchestrator = None
+        if backend_orchestrator is not None and hasattr(backend_orchestrator, "mem"):
+            mem = backend_orchestrator.mem
+        else:  # pragma: no cover - fallback stub
+            mem = SimpleNamespace(
+                vector=SimpleNamespace(
+                    recent=lambda *_a, **_k: [],
+                    search=lambda *_a, **_k: [],
+                )
             )
-        )
 
     token = os.getenv("API_TOKEN")
     if not token:

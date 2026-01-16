@@ -244,6 +244,7 @@ AGENTS: Dict[str, Agent] = {}
 
 def _boot(path: str) -> None:
     module_path, cls_name = (MODROOT + path).rsplit(".", 1)
+    alias_class_name = os.getenv("NO_LLM") == "1"
     try:
         cls = getattr(importlib.import_module(module_path), cls_name)
         inst = cls()  # type: ignore[call-arg]
@@ -287,6 +288,8 @@ def _boot(path: str) -> None:
         LOG.warning("[BOOT] stubbed %s (%s)", cls_name, exc)
 
     AGENTS[name] = inst
+    if alias_class_name and cls_name not in AGENTS:
+        AGENTS[cls_name] = inst
 
 
 for _p in REQUIRED:
