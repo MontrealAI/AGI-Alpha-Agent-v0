@@ -8,6 +8,7 @@ Environment variables:
     PYODIDE_BASE_URL   -- Override the base URL for Pyodide runtime files.
     FETCH_ASSETS_ATTEMPTS -- Maximum attempts per file (default 3).
     FETCH_ASSETS_BACKOFF -- Base delay in seconds between retries (default 1).
+    INSIGHT_ASSET_DIR  -- Override the destination directory for fetched assets.
 
 Pyodide runtime files are fetched directly from the official CDN or a user
 specified mirror. The script no longer attempts alternate gateways when a
@@ -51,6 +52,13 @@ FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
 BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
+
+DEFAULT_ASSET_DIR = (
+    Path(__file__).resolve().parent.parent
+    / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
+)
+INSIGHT_ASSET_DIR = os.environ.get("INSIGHT_ASSET_DIR", "").strip()
+ASSET_ROOT = Path(INSIGHT_ASSET_DIR).expanduser() if INSIGHT_ASSET_DIR else DEFAULT_ASSET_DIR
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -266,8 +274,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parent.parent
-    base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    base = ASSET_ROOT
 
     if args.verify_only:
         failures = verify_assets(base)

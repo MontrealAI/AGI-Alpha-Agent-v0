@@ -13,6 +13,7 @@ cd "$REPO_ROOT"
 
 BROWSER_DIR="alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 DOCS_DIR="docs/alpha_agi_insight_v1"
+ALLOW_BINARY_SYNC="${ALLOW_BINARY_SYNC:-0}"
 
 usage() {
     cat <<USAGE
@@ -40,19 +41,40 @@ npm --prefix "$BROWSER_DIR" ci
 (cd "$BROWSER_DIR" && npx update-browserslist-db --update-db --yes)
 npm --prefix "$BROWSER_DIR" run build:dist
 
-# Refresh docs directory with the new bundle while preserving all
-# non-generated files (e.g. images or additional Markdown docs)
-OLD_DOCS_TEMP=""
-if [[ -d "$DOCS_DIR" ]]; then
-    OLD_DOCS_TEMP="$(mktemp -d)"
-    cp -a "$DOCS_DIR/." "$OLD_DOCS_TEMP/"
-fi
-rm -rf "$DOCS_DIR"
+# Refresh docs directory with the new bundle while preserving
+# existing non-generated files (e.g. images or additional Markdown docs)
+BUILD_TEMP="$(mktemp -d)"
+unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$BUILD_TEMP"
 mkdir -p "$DOCS_DIR"
-unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
-# Copy the quickstart guide from the build output so the docs include it
+RSYNC_EXCLUDES=(
+    --exclude='*.wasm'
+    --exclude='*.pdf'
+    --exclude='*.png'
+    --exclude='*.jpg'
+    --exclude='*.jpeg'
+    --exclude='*.webp'
+    --exclude='*.gif'
+    --exclude='*.ico'
+    --exclude='*.woff'
+    --exclude='*.woff2'
+    --exclude='*.ttf'
+    --exclude='*.otf'
+    --exclude='*.zip'
+    --exclude='*.gz'
+    --exclude='*.bin'
+    --exclude='*.exe'
+    --exclude='*.dll'
+    --exclude='*.so'
+    --exclude='*.dylib'
+)
+if [[ "$ALLOW_BINARY_SYNC" == "1" ]]; then
+    RSYNC_EXCLUDES=()
+fi
+rsync -a "${RSYNC_EXCLUDES[@]}" "$BUILD_TEMP/." "$DOCS_DIR/"
+rm -rf "$BUILD_TEMP"
+# Copy the quickstart guide from the build output when binary sync is allowed
 PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
-if [[ -f "$PDF_SRC" ]]; then
+if [[ "$ALLOW_BINARY_SYNC" == "1" && -f "$PDF_SRC" ]]; then
     cp -a "$PDF_SRC" "$DOCS_DIR/"
 fi
 # Ensure the bundle script tag includes the correct hashes after extraction
@@ -64,23 +86,6 @@ mkdir -p "$DOCS_DIR/assets/lib"
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_DIR/assets/lib" || true
 python scripts/ensure_insight_sw_hash.py "$DOCS_DIR"
 python scripts/ensure_insight_csp.py "$DOCS_DIR"
-if [[ -n "$OLD_DOCS_TEMP" ]]; then
-    while IFS= read -r -d '' file; do
-        rel="${file#"$OLD_DOCS_TEMP"/}"
-        target="$DOCS_DIR/$rel"
-        if [[ ! -e "$target" ]]; then
-            mkdir -p "$(dirname "$target")"
-            cp -a "$file" "$target"
-        fi
-    done < <(find "$OLD_DOCS_TEMP" -mindepth 1 -print0)
-    # Ensure the Plotly license file accompanies plotly.min.js
-    LICENSE_FILE="plotly.min.js.LICENSE.txt"
-    if [[ ! -f "$DOCS_DIR/$LICENSE_FILE" && -f "$OLD_DOCS_TEMP/$LICENSE_FILE" ]]; then
-        cp -a "$OLD_DOCS_TEMP/$LICENSE_FILE" "$DOCS_DIR/"
-    fi
-    rm -rf "$OLD_DOCS_TEMP"
-fi
-
 LICENSE_FILE="plotly.min.js.LICENSE.txt"
 if [[ ! -f "$DOCS_DIR/$LICENSE_FILE" && -f "$REPO_ROOT/docs/alpha_agi_insight_v1/$LICENSE_FILE" ]]; then
     cp -a "$REPO_ROOT/docs/alpha_agi_insight_v1/$LICENSE_FILE" "$DOCS_DIR/"
@@ -120,11 +125,13 @@ copy_assets() {
         cp -a "$src"/* "$dest/"
     done
 
-    # Copy Pyodide runtime files for the gallery
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    # Copy Pyodide runtime files for the gallery only when explicitly allowed.
+    if [[ "$ALLOW_BINARY_SYNC" == "1" ]]; then
+        wasm_src="$BROWSER_DIR/wasm"
+        pyodide_dest="docs/assets/pyodide"
+        mkdir -p "$pyodide_dest"
+        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    fi
 }
 copy_assets
 

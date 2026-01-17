@@ -109,7 +109,8 @@
       const SW_URL = 'service-worker.js';
       const SW_HASH = '__SW_HASH__';
 
-      if ('serviceWorker' in navigator) {
+      const isAutomation = navigator.webdriver || window.__PLAYWRIGHT__ || window.__TEST__;
+      if (!isAutomation && 'serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);
@@ -139,6 +140,8 @@
             window.toast('Service worker failed: ' + err.message);
           }
         });
+      } else if (isAutomation) {
+        console.info('Skipping service worker registration in automation.');
       }
     </script>
 
