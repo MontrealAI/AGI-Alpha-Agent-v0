@@ -66,6 +66,8 @@ env:
   FETCH_ASSETS_BACKOFF: '2'
   AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
   AGIALPHA_DECIMALS: 18
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
+  INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
 
 jobs:
 
@@ -129,6 +131,8 @@ jobs:
     steps:
       # checkout required for local composite actions
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Guard against binary diffs
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -219,6 +223,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Guard against binary diffs
+        run: scripts/check_no_binary_diff.sh
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
@@ -260,6 +266,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Guard against binary diffs
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -431,6 +439,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Guard against binary diffs
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -517,6 +527,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Guard against binary diffs
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -794,6 +806,12 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-playwright-
       - name: Install Playwright system dependencies (Python)
         run: python -m playwright install-deps chromium
       - name: Install Playwright browsers (Python)
@@ -809,6 +827,8 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Guard against binary diffs (post-build)
+        run: scripts/check_no_binary_diff.sh
 
   docker:
     name: "🐳 Docker build"
@@ -1015,7 +1035,7 @@ jobs:
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf alpha_factory_v1/core/interface/web_client/staking/node_modules
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules
-          rm -rf ~/.cache/ms-playwright || true
+          rm -rf "${PLAYWRIGHT_BROWSERS_PATH}" || true
       - name: Build image
         run: |
           docker build -t "$DOCKER_IMAGE:ci" \

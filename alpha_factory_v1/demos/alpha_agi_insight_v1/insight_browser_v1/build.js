@@ -174,6 +174,12 @@ function runFetch() {
 
 function ensureAssets() {
     let placeholders = placeholderFiles();
+    if (process.env.INSIGHT_ASSET_DIR && placeholders.length) {
+        console.warn(
+            "Placeholder assets detected; skipping in-place replacement because INSIGHT_ASSET_DIR is set.",
+        );
+        return;
+    }
     if (placeholders.length) {
         console.log("Detected placeholder assets, running fetch_assets.py...");
         for (const f of placeholders) {
@@ -276,9 +282,6 @@ async function bundle() {
     const wasmPath = "wasm/pyodide.asm.wasm";
     const wasmBuf = fsSync.readFileSync(wasmPath);
     verify(wasmBuf, "pyodide.asm.wasm");
-    const wasmBase64 = wasmBuf.toString("base64");
-    const wasmSri =
-        "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
 
     for (const name of ["pyodide.js"]) {
         const p = path.join("wasm", name);
@@ -286,38 +289,8 @@ async function bundle() {
             verify(fsSync.readFileSync(p), name);
         }
     }
-    let gpt2Base64 = "";
-    if (!wasmBase64) {
-        outHtml = outHtml.replace(
-            "</head>",
-            `<link rel="preload" href="wasm/pyodide.asm.wasm" as="fetch" type="application/wasm" integrity="${wasmSri}" crossorigin="anonymous" />\n</head>`,
-        );
-    }
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;
     let bundleText = await fs.readFile(bundlePath, "utf8");
-    let web3Code = await fs.readFile(
-        path.join("lib", "bundle.esm.min.js"),
-        "utf8",
-    );
-    web3Code = web3Code.replace(/export\s+/g, "");
-    web3Code = `(() => {\n${web3Code}\nwindow.Web3Storage=Web3Storage;\n})();`;
-    let pyCode = await fs.readFile(path.join("lib", "pyodide.js"), "utf8");
-    pyCode = pyCode.replace(/export\s+/g, "");
-    pyCode = `(() => {\n${pyCode}\nwindow.loadPyodide=loadPyodide;\n})();`;
-    let ortCode = "";
-    const ortPath = path.join(
-        "node_modules",
-        "onnxruntime-web",
-        "dist",
-        "ort.all.min.js",
-    );
-    if (fsSync.existsSync(ortPath)) {
-        ortCode = await fs.readFile(ortPath, "utf8");
-        ortCode = `(() => {\n${ortCode}\nwindow.ort=ort;\n})();`;
-    }
-    bundleText =
-        `${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
-        bundleText;
     bundleText = bundleText.replace(
         /\/\/#[ \t]*sourceMappingURL=.*(?:\r?\n)?/g,
         "",
@@ -341,10 +314,6 @@ async function bundle() {
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
-    const devHtml = html.replace(scriptTag, sriTag);
-    if (devHtml !== html) {
-        await fs.writeFile("index.html", devHtml);
-    }
     await relocateDistAssets();
     manifest.precache = manifest.precache.map((p) => {
         if (
