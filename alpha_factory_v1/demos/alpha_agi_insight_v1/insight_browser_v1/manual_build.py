@@ -346,9 +346,12 @@ arena = _compile_worker(ROOT / "worker" / "arenaWorker.ts")
 bundle = (
     d3_code
     + "\n"
+    + "(function() {\n"
     + web3_code
-    + "\n"
+    + "\nwindow.Web3Storage=Web3Storage;\n})();\n"
+    + "(function() {\n"
     + py_code
+    + "\nwindow.loadPyodide=loadPyodide;\n})();\n"
     + f"\nwindow.PYODIDE_WASM_BASE64='{wasm_b64}';window.GPT2_MODEL_BASE64='{gpt2_b64}';\n"  # noqa: E501
     + "(function() {\nconst style="
     + repr(css)
