@@ -97,6 +97,7 @@ if args[0] == "-i" and len(args) >= 3:
     if "+=" not in expr:
         raise SystemExit("Unsupported yq expr")
     payload_text = expr.split("+=", 1)[1].strip()
+    payload_text = payload_text.replace("\\$", "$")
     payload_text = re.sub(r':(?=["\\[])', ': ', payload_text)
     try:
         payload = yaml.safe_load(payload_text)
@@ -210,7 +211,7 @@ fi
 # - prometheus v2.48.1
 # - grafana 10.4.2
 patch policy-engine '.services += {"policy-engine":{image:"openai/mcp-engine:0.2.0",volumes:["./alpha_factory_v1/policies:/policies:ro"]}}'
-patch prometheus '.services += {"prometheus":{image:"prom/prometheus:v2.48.1",ports:["'"${PROM_PORT}"':9090]}}'
+patch prometheus '.services += {"prometheus":{image:"prom/prometheus:v2.48.1",ports:["'"${PROM_PORT}"':9090"]}}'
 patch grafana ".services += {\"grafana\":{image:\"grafana/grafana:10.4.2\",ports:[\"${DASH_PORT}:3000\"]}}"
 patch ray-head ".services += {\"ray-head\":{image:\"rayproject/ray:2.10.0\",command:\"ray start --head --dashboard-port ${RAY_PORT} --dashboard-host 0.0.0.0\",ports:[\"${RAY_PORT}:${RAY_PORT}\"]}}"
 # mock services pinned to 0.1.0
