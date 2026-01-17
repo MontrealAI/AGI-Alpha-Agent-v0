@@ -36,4 +36,4 @@ def test_start_aiga_demo_missing_docker(monkeypatch: pytest.MonkeyPatch) -> None
     monkeypatch.setattr(mod.subprocess, "run", boom)
 
     with pytest.raises(FileNotFoundError):
-        mod.main()
+        mod.main([])

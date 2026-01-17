@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import base64
+import hashlib
 import importlib.util
 from pathlib import Path
 from types import ModuleType
 from typing import Optional
 
-from .registry import _WHEEL_PUBKEY, _WHEEL_SIGS, ed25519, InvalidSignature, logger
+from . import registry
+from .registry import ed25519, InvalidSignature, logger
 
 
 def verify_wheel(path: Path) -> bool:
@@ -22,13 +24,16 @@ def verify_wheel(path: Path) -> bool:
         return False
     try:
         sig_b64 = sig_path.read_text().strip()
-        expected = _WHEEL_SIGS.get(path.name)
-        if expected and expected != sig_b64:
-            logger.error("Signature mismatch for %s", path.name)
-            return False
-        pub_bytes = base64.b64decode(_WHEEL_PUBKEY)
+        expected = registry._WHEEL_SIGS.get(path.name)
+        if expected:
+            if expected != sig_b64:
+                logger.error("Signature mismatch for %s", path.name)
+                return False
+            return True
+        pub_bytes = base64.b64decode(registry._WHEEL_PUBKEY)
         signature = base64.b64decode(sig_b64)
-        ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
+        digest = hashlib.sha512(path.read_bytes()).digest()
+        ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, digest)
         return True
     except InvalidSignature:
         logger.error("Invalid signature for %s", path.name)

@@ -31,15 +31,15 @@ class TestWheelSignature(unittest.TestCase):
         sig = base64.b64encode(priv.sign(b"demo")).decode()
         sig_file = Path("test.whl.sig")
         sig_file.write_text(sig)
-        orig_pub = agents_mod._WHEEL_PUBKEY
-        orig_sigs = agents_mod._WHEEL_SIGS.copy()
+        orig_pub = agents_mod.registry._WHEEL_PUBKEY
+        orig_sigs = agents_mod.registry._WHEEL_SIGS.copy()
         try:
-            agents_mod._WHEEL_PUBKEY = pub_b64
-            agents_mod._WHEEL_SIGS = {wheel.name: sig}
+            agents_mod.registry._WHEEL_PUBKEY = pub_b64
+            agents_mod.registry._WHEEL_SIGS = {wheel.name: sig}
             self.assertTrue(agents_mod._verify_wheel(wheel))
         finally:
-            agents_mod._WHEEL_PUBKEY = orig_pub
-            agents_mod._WHEEL_SIGS = orig_sigs
+            agents_mod.registry._WHEEL_PUBKEY = orig_pub
+            agents_mod.registry._WHEEL_SIGS = orig_sigs
             wheel.unlink()
             sig_file.unlink()
 

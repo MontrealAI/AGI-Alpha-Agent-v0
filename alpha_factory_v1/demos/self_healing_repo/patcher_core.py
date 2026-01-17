@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -57,6 +58,10 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
     return {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
 
 
+def _normalize_patch(patch: str) -> str:
+    return textwrap.dedent(patch).lstrip("\n")
+
+
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
@@ -74,7 +79,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch = llm(prompt)
+    if asyncio.iscoroutine(patch):
+        patch = asyncio.run(patch)
+    patch = _normalize_patch(str(patch).strip())
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -93,6 +101,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
+    patch = _normalize_patch(patch)
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
@@ -103,6 +112,8 @@ def apply_patch(patch: str, repo_path: str) -> None:
 
     # write patch to temp file
     with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        if patch and not patch.endswith("\n"):
+            patch += "\n"
         tf.write(patch)
         patch_file = tf.name
 
@@ -140,23 +151,28 @@ if __name__ == "__main__":
     parser.add_argument("--repo", default=".", help="Repository path")
     args = parser.parse_args()
 
-    _temp_env = os.getenv("TEMPERATURE")
-    try:
-        from openai_agents import OpenAIAgent
-    except ModuleNotFoundError:
-        from .agent_core import llm_client
-
-        def llm(prompt: str) -> str:
-            """Offline fallback using the local LLM."""
-            return llm_client.call_local_model([{"role": "user", "content": prompt}])
-
+    patch_path = os.getenv("PATCH_FILE")
+    if patch_path and pathlib.Path(patch_path).is_file():
+        def llm(_prompt: str) -> str:
+            return pathlib.Path(patch_path).read_text()
     else:
-        llm = OpenAIAgent(
-            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            api_key=os.getenv("OPENAI_API_KEY"),
-            base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-            temperature=float(_temp_env) if _temp_env is not None else None,
-        )
+        _temp_env = os.getenv("TEMPERATURE")
+        try:
+            from openai_agents import OpenAIAgent
+        except ModuleNotFoundError:
+            from .agent_core import llm_client
+
+            def llm(prompt: str) -> str:
+                """Offline fallback using the local LLM."""
+                return llm_client.call_local_model([{"role": "user", "content": prompt}])
+
+        else:
+            llm = OpenAIAgent(
+                model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+                temperature=float(_temp_env) if _temp_env is not None else None,
+            )
     rc, out = validate_repo(args.repo)
     print(out)
     if rc != 0:
