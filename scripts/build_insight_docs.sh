@@ -120,11 +120,22 @@ copy_assets() {
         cp -a "$src"/* "$dest/"
     done
 
-    # Copy Pyodide runtime files for the gallery
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    if [[ "${INSIGHT_SKIP_PYODIDE_COPY:-0}" != "1" ]]; then
+        # Copy Pyodide runtime files for the gallery
+        wasm_src="$BROWSER_DIR/wasm"
+        pyodide_dest="docs/assets/pyodide"
+        mkdir -p "$pyodide_dest"
+        for asset in "$wasm_src"/pyodide.*; do
+            if [[ -f "$asset" ]]; then
+                target="$pyodide_dest/$(basename "$asset")"
+                if [[ ! -f "$target" ]]; then
+                    cp -a "$asset" "$target"
+                fi
+            fi
+        done
+    else
+        echo "INSIGHT_SKIP_PYODIDE_COPY set; skipping Pyodide asset copy." >&2
+    fi
 }
 copy_assets
 

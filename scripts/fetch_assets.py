@@ -6,6 +6,8 @@
 Environment variables:
     HF_GPT2_BASE_URL   -- Override the Hugging Face base URL for the GPT‑2 model.
     PYODIDE_BASE_URL   -- Override the base URL for Pyodide runtime files.
+    INSIGHT_ASSETS_DIR -- Override the destination directory for downloaded assets.
+    FETCH_ASSETS_READONLY -- Prevent checksum updates to fetch_assets.py.
     FETCH_ASSETS_ATTEMPTS -- Maximum attempts per file (default 3).
     FETCH_ASSETS_BACKOFF -- Base delay in seconds between retries (default 1).
 
@@ -51,6 +53,7 @@ FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
 BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
+READ_ONLY = os.environ.get("FETCH_ASSETS_READONLY", "").lower() in {"1", "true", "yes"}
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -211,6 +214,8 @@ def download_with_retry(
 def _update_checksum(name: str, digest: bytes, algo: str) -> None:
     """Rewrite the expected checksum for *name* in fetch_assets.py."""
 
+    if READ_ONLY:
+        raise RuntimeError("Refusing to update checksums in read-only mode.")
     path = Path(__file__).resolve()
     text = path.read_text()
     b64 = base64.b64encode(digest).decode()
@@ -242,13 +247,15 @@ def verify_assets(base: Path) -> list[str]:
                 continue
             print(f"Checksum mismatch for {rel}: expected {ref} got {calc_b64}")
         if expected:
-            _update_checksum(rel, digest_bytes, algo)
             failures.append(rel)
+            if not READ_ONLY:
+                _update_checksum(rel, digest_bytes, algo)
         elif rel in PYODIDE_ASSETS:
             # treat missing checksum as a failure for Pyodide files
-            algo = "sha384"
-            _update_checksum(rel, dest.read_bytes(), algo)
             failures.append(rel)
+            if not READ_ONLY:
+                algo = "sha384"
+                _update_checksum(rel, dest.read_bytes(), algo)
     return failures
 
 
@@ -267,12 +274,20 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
-    base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    base_dir = os.environ.get("INSIGHT_ASSETS_DIR")
+    if base_dir:
+        base = Path(base_dir).expanduser()
+    else:
+        base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    base = base.resolve()
 
     if args.verify_only:
         failures = verify_assets(base)
         if failures:
             joined = ", ".join(failures)
+            if READ_ONLY:
+                print(f"Verification failed for: {joined}")
+                return sys.exit(1)
             print(f"Updated checksums for: {joined}")
             manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
             if manifest_script.exists():
