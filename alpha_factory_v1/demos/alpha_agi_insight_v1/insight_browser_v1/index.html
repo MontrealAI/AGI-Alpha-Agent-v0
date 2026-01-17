@@ -111,6 +111,9 @@
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
+          if (navigator.webdriver) {
+            return;
+          }
           try {
             const res = await fetch(SW_URL);
             const buf = await res.arrayBuffer();
@@ -120,18 +123,16 @@
               throw new Error('Service worker hash mismatch');
             }
 
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
-                registration.addEventListener('updatefound', () => {
-                  const newWorker = registration.installing;
-                  if (!newWorker) return;
+            const registration = await navigator.serviceWorker.register(SW_URL);
+            await navigator.serviceWorker.ready;
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (!newWorker) return;
 
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed') {
-                      window.toast('Update available — reload to use the latest version.');
-                    }
-                  });
-                });
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed') {
+                  window.toast('Update available — reload to use the latest version.');
+                }
               });
             });
           } catch (err) {

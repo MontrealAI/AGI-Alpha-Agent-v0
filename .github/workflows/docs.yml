@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
+      INSIGHT_ASSETS_ROOT: ${{ runner.temp }}/insight-assets
+      FETCH_ASSETS_ROOT: ${{ runner.temp }}/insight-assets
+      PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
@@ -19,6 +23,8 @@ jobs:
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
+      SKIP_BINARY_COPY: '1'
+      SKIP_PYODIDE_COPY: '1'
       # Keep the asset mirrors pinned to official hosts.
       # Optional environment variables for asset downloads. See
       # scripts/fetch_assets.py for details.
@@ -106,6 +112,11 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
           SKIP: eslint-insight-browser
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
       - name: Install Playwright browsers
         run: npx playwright install chromium webkit firefox
       - name: Make scripts executable

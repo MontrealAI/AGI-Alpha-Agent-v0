@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-9y7vZEJ1kMvQLnSpHXmQdmejuwLTQNbLhwAOX62hFhQMD0BUQ6nWR2Qn0xUiFA1Y' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
@@ -39,6 +39,9 @@
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
+          if (navigator.webdriver) {
+            return;
+          }
           try {
             const res = await fetch(SW_URL);
             const buf = await res.arrayBuffer();
@@ -48,18 +51,16 @@
               throw new Error('Service worker hash mismatch');
             }
 
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
-                registration.addEventListener('updatefound', () => {
-                  const newWorker = registration.installing;
-                  if (!newWorker) return;
+            const registration = await navigator.serviceWorker.register(SW_URL);
+            await navigator.serviceWorker.ready;
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (!newWorker) return;
 
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed') {
-                      window.toast('Update available — reload to use the latest version.');
-                    }
-                  });
-                });
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed') {
+                  window.toast('Update available — reload to use the latest version.');
+                }
               });
             });
           } catch (err) {
@@ -70,7 +71,7 @@
       }
     </script>
 
-    <script type="module" src="insight.bundle.js" integrity="sha384-8UIyyixGHGF3UwWpC/fxgU4K87TFgPJ1MYbw3Qro7Ncww291q/ehYbfUaxhZw7wX" crossorigin="anonymous"></script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-VSlAgi+oxbyzhhlksbVk9k55jElXDuwNvCktYqZ9zGp3X4zOeJwmE40GqcVYrfYo" crossorigin="anonymous"></script>
   <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
 </body>
 </html>

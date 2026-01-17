@@ -56,6 +56,10 @@ env:
     alpha_factory_v1/core/interface/web_client/package-lock.json
     alpha_factory_v1/core/interface/web_client/staking/package-lock.json
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
+  INSIGHT_ASSETS_ROOT: ${{ runner.temp }}/insight-assets
+  FETCH_ASSETS_ROOT: ${{ runner.temp }}/insight-assets
+  PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
   # Guard `inputs` usage so push/PR events (which do not populate the
@@ -95,6 +99,19 @@ jobs:
         run: |
           owner_lower="${GITHUB_REPOSITORY_OWNER,,}"
           echo "repo_owner_lower=${owner_lower}" >> "$GITHUB_OUTPUT"
+
+  binary-diff:
+    name: "🔒 Binary diff guard"
+    if: ${{ always() && needs.owner-check.result == 'success' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Check for binary diffs
+        run: scripts/check_no_binary_diff.sh
 
   workflow-lint:
     name: "✅ Actionlint"
@@ -697,6 +714,8 @@ jobs:
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs-build
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
+      SKIP_BINARY_COPY: '1'
+      SKIP_PYODIDE_COPY: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Ensure pip cache directory
@@ -794,6 +813,11 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
       - name: Install Playwright system dependencies (Python)
         run: python -m playwright install-deps chromium
       - name: Install Playwright browsers (Python)
@@ -809,6 +833,8 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Check for binary diffs
+        run: scripts/check_no_binary_diff.sh
 
   docker:
     name: "🐳 Docker build"
