@@ -49,6 +49,9 @@ env:
   SANDBOX_IMAGE: selfheal-sandbox:latest
   PYTHONUTF8: '1'
   PIP_NO_INPUT: '1'
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
+  PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
+  INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
   COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
   COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
   NODE_LOCKFILES: |
@@ -129,6 +132,10 @@ jobs:
     steps:
       # checkout required for local composite actions
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -194,6 +201,10 @@ jobs:
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
           SKIP: eslint-insight-browser
+      - name: Check for binary diffs (late)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Fail on uncommitted changes
         run: |
           git --no-pager diff
@@ -260,6 +271,10 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -418,6 +433,11 @@ jobs:
         with:
           name: coverage-xml
           path: artifacts/coverage.xml
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
   windows-smoke:
     name: "Windows Smoke"
@@ -431,6 +451,10 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -681,6 +705,11 @@ jobs:
           SKIP: eslint-insight-browser
       - name: Build documentation
         run: mkdocs build --strict
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
   docs-build:
     name: "📚 Docs Build"
@@ -699,6 +728,10 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -794,6 +827,13 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Install Playwright system dependencies (Python)
         run: python -m playwright install-deps chromium
       - name: Install Playwright browsers (Python)
@@ -809,6 +849,11 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
   docker:
     name: "🐳 Docker build"
@@ -829,6 +874,10 @@ jobs:
     # This job builds and pushes the image.
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - name: Free disk space
         run: |
           set -euo pipefail
@@ -1047,6 +1096,11 @@ jobs:
       - name: Verify image signature
         if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         run: cosign verify "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
+        env:
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
 
   deploy:
     name: "📦 Deploy"
