@@ -411,12 +411,12 @@ out_html = re.sub(
     out_html,
 )
 out_html = re.sub(
-    r"<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?</script>\s*",
+    r"<script[^>]*src=['\"][^'\"]*bundle\.esm\.min\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
     "",
     out_html,
 )
 out_html = re.sub(
-    r"<script[\s\S]*?pyodide\.js[\s\S]*?</script>\s*",
+    r"<script[^>]*src=['\"][^'\"]*pyodide\.js[^'\"]*['\"][^>]*>\s*</script>\s*",
     "",
     out_html,
 )
