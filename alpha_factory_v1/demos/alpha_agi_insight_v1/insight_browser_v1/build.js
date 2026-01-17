@@ -88,9 +88,13 @@ try {
 }
 
 const scriptPath = fileURLToPath(import.meta.url);
-const repoRoot = path.resolve(path.dirname(scriptPath), "..", "..", "..", "..");
+const sourceRoot = path.dirname(scriptPath);
+const repoRoot = path.resolve(sourceRoot, "..", "..", "..", "..");
 const aliasRoot = path.join(repoRoot, "alpha_factory_v1", "core");
 const quickstartPdf = path.join(repoRoot, manifest.quickstart_pdf);
+const assetRoot = process.env.INSIGHT_ASSET_ROOT
+    ? path.resolve(process.env.INSIGHT_ASSET_ROOT)
+    : sourceRoot;
 const aliasPlugin = {
     name: "alias",
     setup(build) {
@@ -101,7 +105,7 @@ const aliasPlugin = {
 };
 
 async function ensureWeb3Bundle() {
-    const bundlePath = path.join("lib", "bundle.esm.min.js");
+    const bundlePath = path.join(assetRoot, "lib", "bundle.esm.min.js");
     let data = await fs.readFile(bundlePath, "utf8").catch(() => "");
     if (!data || data.includes("Placeholder")) {
         runFetch();
@@ -113,7 +117,7 @@ async function ensureWeb3Bundle() {
 }
 
 async function ensureWorkbox() {
-    const wbPath = path.join("lib", "workbox-sw.js");
+    const wbPath = path.join(assetRoot, "lib", "workbox-sw.js");
     let data = await fs.readFile(wbPath, "utf8").catch(() => "");
     if (!data || data.toLowerCase().includes("placeholder")) {
         runFetch();
@@ -154,7 +158,7 @@ function placeholderFiles() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
     for (const sub of ["lib", "wasm", "wasm_llm"]) {
-        const root = path.join(path.dirname(scriptPath), sub);
+        const root = path.join(assetRoot, sub);
         for (const f of collectFiles(root)) {
             const { size } = fsSync.statSync(f);
             if (size > MAX_SCAN_BYTES) continue;
@@ -168,7 +172,10 @@ function placeholderFiles() {
 
 function runFetch() {
     const script = path.join(repoRoot, "scripts", "fetch_assets.py");
-    const res = spawnSync("python", [script], { stdio: "inherit" });
+    const res = spawnSync("python", [script], {
+        stdio: "inherit",
+        env: { ...process.env, INSIGHT_ASSET_ROOT: assetRoot },
+    });
     if (res.status !== 0) process.exit(res.status ?? 1);
 }
 
@@ -251,7 +258,7 @@ async function bundle() {
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "");
     const envScript = injectEnv(process.env);
-    await copyAssets(manifest, repoRoot, OUT_DIR);
+    await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot, sourceRoot);
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(
             quickstartPdf,
@@ -273,7 +280,7 @@ async function bundle() {
         }
     }
 
-    const wasmPath = "wasm/pyodide.asm.wasm";
+    const wasmPath = path.join(assetRoot, "wasm", "pyodide.asm.wasm");
     const wasmBuf = fsSync.readFileSync(wasmPath);
     verify(wasmBuf, "pyodide.asm.wasm");
     const wasmBase64 = wasmBuf.toString("base64");
@@ -281,7 +288,7 @@ async function bundle() {
         "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
 
     for (const name of ["pyodide.js"]) {
-        const p = path.join("wasm", name);
+        const p = path.join(assetRoot, "wasm", name);
         if (fsSync.existsSync(p)) {
             verify(fsSync.readFileSync(p), name);
         }
@@ -296,12 +303,12 @@ async function bundle() {
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;
     let bundleText = await fs.readFile(bundlePath, "utf8");
     let web3Code = await fs.readFile(
-        path.join("lib", "bundle.esm.min.js"),
+        path.join(assetRoot, "lib", "bundle.esm.min.js"),
         "utf8",
     );
     web3Code = web3Code.replace(/export\s+/g, "");
     web3Code = `(() => {\n${web3Code}\nwindow.Web3Storage=Web3Storage;\n})();`;
-    let pyCode = await fs.readFile(path.join("lib", "pyodide.js"), "utf8");
+    let pyCode = await fs.readFile(path.join(sourceRoot, "lib", "pyodide.js"), "utf8");
     pyCode = pyCode.replace(/export\s+/g, "");
     pyCode = `(() => {\n${pyCode}\nwindow.loadPyodide=loadPyodide;\n})();`;
     let ortCode = "";

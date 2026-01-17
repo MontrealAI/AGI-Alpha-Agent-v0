@@ -34,8 +34,12 @@ if ! node "$BROWSER_DIR/build/version_check.js"; then
     exit 1
 fi
 
-# Fetch WASM assets then install Node dependencies and build the browser bundle
-npm --prefix "$BROWSER_DIR" run fetch-assets
+# Fetch WASM assets unless explicitly skipped, then install Node dependencies
+if [[ "${SKIP_FETCH_ASSETS:-}" =~ ^(1|true|yes)$ ]]; then
+    echo "Skipping fetch-assets because SKIP_FETCH_ASSETS is set."
+else
+    npm --prefix "$BROWSER_DIR" run fetch-assets
+fi
 npm --prefix "$BROWSER_DIR" ci
 (cd "$BROWSER_DIR" && npx update-browserslist-db --update-db --yes)
 npm --prefix "$BROWSER_DIR" run build:dist
@@ -120,11 +124,15 @@ copy_assets() {
         cp -a "$src"/* "$dest/"
     done
 
-    # Copy Pyodide runtime files for the gallery
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    # Copy Pyodide runtime files for the gallery only when explicitly requested
+    if [[ "${SYNC_PYODIDE_ASSETS:-}" =~ ^(1|true|yes)$ ]]; then
+        wasm_src="${INSIGHT_ASSET_ROOT:-$BROWSER_DIR}/wasm"
+        pyodide_dest="docs/assets/pyodide"
+        mkdir -p "$pyodide_dest"
+        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    else
+        echo "Skipping Pyodide asset sync (set SYNC_PYODIDE_ASSETS=1 to enable)."
+    fi
 }
 copy_assets
 

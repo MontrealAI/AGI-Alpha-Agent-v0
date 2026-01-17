@@ -5,11 +5,21 @@ import path from 'path';
 import { createHash } from 'crypto';
 import { injectEnv } from './env_inject.js';
 
-export async function copyAssets(manifest, repoRoot, outDir) {
+export async function copyAssets(manifest, repoRoot, outDir, assetRoot, sourceRoot) {
+  const resolvedSource = sourceRoot ?? process.cwd();
+  const resolveAsset = (rel) => {
+    if (rel === 'lib/pyodide.js') {
+      return path.join(resolvedSource, rel);
+    }
+    if (rel.startsWith('lib/') || rel.startsWith('wasm/') || rel.startsWith('wasm_llm/')) {
+      return path.join(assetRoot, rel);
+    }
+    return rel;
+  };
   for (const rel of manifest.files) {
     const dest = path.join(outDir, rel);
     await fs.mkdir(path.dirname(dest), { recursive: true });
-    await fs.copyFile(rel, dest).catch(() => {});
+    await fs.copyFile(resolveAsset(rel), dest).catch(() => {});
   }
   const i18nDir = manifest.dirs.translations;
   if (fsSync.existsSync(i18nDir)) {
@@ -26,11 +36,14 @@ export async function copyAssets(manifest, repoRoot, outDir) {
     }
   }
   for (const dirKey of ['wasm', 'wasm_llm']) {
-    const dir = manifest.dirs[dirKey];
+    const dir = path.join(assetRoot, manifest.dirs[dirKey]);
     if (fsSync.existsSync(dir)) {
-      await fs.mkdir(path.join(outDir, dir), { recursive: true });
+      await fs.mkdir(path.join(outDir, manifest.dirs[dirKey]), { recursive: true });
       for (const f of await fs.readdir(dir)) {
-        await fs.copyFile(path.join(dir, f), path.join(outDir, dir, f));
+        await fs.copyFile(
+          path.join(dir, f),
+          path.join(outDir, manifest.dirs[dirKey], f),
+        );
       }
     }
   }
