@@ -34,7 +34,10 @@ def _build_base() -> str:
 
 def _build_csp(html: str) -> str:
     hashes = [_hash_snippet(match) for match in INLINE_SCRIPT_RE.findall(html)]
-    return f"{_build_base()}; script-src 'self' 'wasm-unsafe-eval' {' '.join(hashes)}; style-src 'self' 'unsafe-inline'"
+    return (
+        f"{_build_base()}; script-src 'self' 'wasm-unsafe-eval' {' '.join(hashes)}; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net"
+    )
 
 
 def ensure_csp(directory: Path) -> bool:
