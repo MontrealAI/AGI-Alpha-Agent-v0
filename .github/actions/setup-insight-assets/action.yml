@@ -4,6 +4,21 @@ description: Cache, fetch and verify Insight Browser assets.
 runs:
   using: composite
   steps:
+    - name: Resolve asset cache directory
+      id: asset-dir
+      shell: bash
+      run: |
+        set -euo pipefail
+        cache_root="${INSIGHT_ASSETS_DIR:-}"
+        if [[ -z "$cache_root" && -n "${PYODIDE_CACHE_DIR:-}" ]]; then
+          cache_root="${PYODIDE_CACHE_DIR%/}/insight-assets"
+        fi
+        if [[ -z "$cache_root" ]]; then
+          cache_root="${RUNNER_TEMP:-/tmp}/insight-assets"
+        fi
+        mkdir -p "$cache_root"
+        echo "assets_dir=$cache_root" >> "$GITHUB_OUTPUT"
+        echo "INSIGHT_ASSETS_DIR=$cache_root" >> "$GITHUB_ENV"
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
@@ -11,25 +26,22 @@ runs:
       id: asset-cache
       uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
       with:
-        path: |
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+        path: ${{ steps.asset-dir.outputs.assets_dir }}
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
       shell: bash
+      env:
+        INSIGHT_ASSETS_DIR: ${{ steps.asset-dir.outputs.assets_dir }}
+        FETCH_ASSETS_READONLY: "1"
       run: python scripts/fetch_assets.py
     - name: Verify Insight Browser assets
       shell: bash
       run: |
         set -eo pipefail
+        INSIGHT_ASSETS_DIR="${{ steps.asset-dir.outputs.assets_dir }}"
+        export INSIGHT_ASSETS_DIR
+        FETCH_ASSETS_READONLY="1"
+        export FETCH_ASSETS_READONLY
         python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-          echo "::error::Initial asset verification failed" >&2
-          cat verify.log
-          python scripts/update_pyodide.py 0.28.0
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-        fi
         cat verify.log
-
