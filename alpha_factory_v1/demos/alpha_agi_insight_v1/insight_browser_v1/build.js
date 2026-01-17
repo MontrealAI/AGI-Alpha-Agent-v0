@@ -333,10 +333,13 @@ async function bundle() {
     const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
     outHtml = outHtml.replace(scriptTag, sriTag)
         .replace(
-            /<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?<\/script>\s*/g,
+            /<script[^>]*src=['"][^'"]*bundle\.esm\.min\.js[^'"]*['"][^>]*>\s*<\/script>\s*/g,
             "",
         )
-        .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
+        .replace(
+            /<script[^>]*src=['"][^'"]*pyodide\.js[^'"]*['"][^>]*>\s*<\/script>\s*/g,
+            "",
+        )
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
