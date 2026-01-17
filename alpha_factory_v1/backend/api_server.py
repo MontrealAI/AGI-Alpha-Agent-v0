@@ -36,6 +36,24 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        orchestrator_mod = None
+        try:
+            import sys
+
+            orchestrator_mod = sys.modules.get("alpha_factory_v1.backend.orchestrator")
+            if orchestrator_mod is None:
+                backend_pkg = sys.modules.get("alpha_factory_v1.backend")
+                orchestrator_mod = getattr(backend_pkg, "orchestrator", None) if backend_pkg else None
+        except Exception:
+            orchestrator_mod = None
+        if orchestrator_mod is None:
+            try:
+                from . import orchestrator as orchestrator_mod
+            except Exception:  # pragma: no cover - best effort for optional import
+                orchestrator_mod = None
+        if orchestrator_mod is not None:
+            mem = getattr(orchestrator_mod, "mem", None)
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],

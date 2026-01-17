@@ -40,6 +40,21 @@ def _log_delta(delta: float, log_file: Path) -> None:
     log_file.write_text(json.dumps(log))
 
 
+def _normalize_patch(diff: str) -> str:
+    """Return a normalized unified diff with explicit hunk ranges."""
+    lines = diff.splitlines()
+    normalized = []
+    for line in lines:
+        if line.strip() == "@@":
+            normalized.append("@@ -1 +1 @@")
+        else:
+            normalized.append(line)
+    text = "\n".join(normalized)
+    if text and not text.endswith("\n"):
+        text += "\n"
+    return text
+
+
 def improve_repo(
     repo_url: str,
     patch_file: str,
@@ -74,11 +89,14 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _normalize_patch(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    patch_path = repo_dir / "normalized.patch"
+    patch_path.write_text(diff)
+    repo.git.apply(str(patch_path))
+    patch_path.unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

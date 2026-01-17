@@ -28,7 +28,7 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        from .agents import list_agents
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
@@ -44,7 +44,7 @@ class AgentManager:
 
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
+        from .agents import start_background_tasks
 
         await start_background_tasks()
 
@@ -69,9 +69,13 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
+        try:
+            from .agents import stop_background_tasks
+        except ImportError:
+            stop_background_tasks = None
 
-        await stop_background_tasks()
+        if stop_background_tasks is not None:
+            await stop_background_tasks()
         if self._hb_task:
             self._hb_task.cancel()
         if self._reg_task:

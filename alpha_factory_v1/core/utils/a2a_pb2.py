@@ -27,3 +27,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
     _ENVELOPE._serialized_start = 50  # noqa: F821
     _ENVELOPE._serialized_end = 149  # noqa: F821
 # @@protoc_insertion_point(module_scope)
+
+if not hasattr(_struct_pb2.Struct, "get"):
+    def _struct_get(self, key, default=None):  # type: ignore[no-redef]
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    _struct_pb2.Struct.get = _struct_get  # type: ignore[attr-defined]
