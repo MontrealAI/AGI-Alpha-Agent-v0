@@ -300,10 +300,10 @@ async function bundle() {
         "utf8",
     );
     web3Code = web3Code.replace(/export\s+/g, "");
-    web3Code += "\nwindow.Web3Storage=Web3Storage;";
+    web3Code = `(() => {\n${web3Code}\nwindow.Web3Storage=Web3Storage;\n})();`;
     let pyCode = await fs.readFile(path.join("lib", "pyodide.js"), "utf8");
     pyCode = pyCode.replace(/export\s+/g, "");
-    pyCode += "\nwindow.loadPyodide=loadPyodide;";
+    pyCode = `(() => {\n${pyCode}\nwindow.loadPyodide=loadPyodide;\n})();`;
     let ortCode = "";
     const ortPath = path.join(
         "node_modules",
@@ -313,7 +313,7 @@ async function bundle() {
     );
     if (fsSync.existsSync(ortPath)) {
         ortCode = await fs.readFile(ortPath, "utf8");
-        ortCode += "\nwindow.ort=ort;";
+        ortCode = `(() => {\n${ortCode}\nwindow.ort=ort;\n})();`;
     }
     bundleText =
         `${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
