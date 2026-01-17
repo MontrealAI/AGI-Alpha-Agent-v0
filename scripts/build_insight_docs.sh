@@ -63,6 +63,7 @@ unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DI
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_DIR" || true
 mkdir -p "$DOCS_DIR/assets/lib"
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_DIR/assets/lib" || true
+python scripts/ensure_insight_sw_hash.py "$DOCS_DIR"
 if [[ -n "$OLD_DOCS_TEMP" ]]; then
     while IFS= read -r -d '' file; do
         rel="${file#"$OLD_DOCS_TEMP"/}"
@@ -140,4 +141,3 @@ if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
     echo "ERROR: Workbox hash verification failed for generated site" >&2
     exit 1
 fi
-
