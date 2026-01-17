@@ -51,6 +51,9 @@ FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
 BACKOFF = float(os.environ.get("FETCH_ASSETS_BACKOFF", "1"))
+# Optional root override for downloaded assets
+FETCH_ASSETS_ROOT = os.environ.get("FETCH_ASSETS_ROOT")
+FETCH_ASSETS_NO_UPDATE = os.environ.get("FETCH_ASSETS_NO_UPDATE", "").lower() in {"1", "true", "yes"}
 
 PYODIDE_ASSETS = {
     "wasm/pyodide.js",
@@ -221,7 +224,7 @@ def _update_checksum(name: str, digest: bytes, algo: str) -> None:
     CHECKSUMS[name] = new_val
 
 
-def verify_assets(base: Path) -> list[str]:
+def verify_assets(base: Path, allow_update: bool = True) -> list[str]:
     """Return a list of assets that failed verification and refresh hashes."""
 
     failures: list[str] = []
@@ -242,12 +245,14 @@ def verify_assets(base: Path) -> list[str]:
                 continue
             print(f"Checksum mismatch for {rel}: expected {ref} got {calc_b64}")
         if expected:
-            _update_checksum(rel, digest_bytes, algo)
+            if allow_update:
+                _update_checksum(rel, digest_bytes, algo)
             failures.append(rel)
         elif rel in PYODIDE_ASSETS:
             # treat missing checksum as a failure for Pyodide files
-            algo = "sha384"
-            _update_checksum(rel, dest.read_bytes(), algo)
+            if allow_update:
+                algo = "sha384"
+                _update_checksum(rel, dest.read_bytes(), algo)
             failures.append(rel)
     return failures
 
@@ -260,6 +265,16 @@ def main() -> None:
         help="Verify asset checksums and exit",
     )
     parser.add_argument(
+        "--dest",
+        default=None,
+        help="Override the base directory for downloaded assets",
+    )
+    parser.add_argument(
+        "--no-update",
+        action="store_true",
+        help="Do not update checksum metadata during verification",
+    )
+    parser.add_argument(
         "--update-manifest",
         action="store_true",
         help="Synchronize build_assets.json after verifying assets",
@@ -267,18 +282,27 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
-    base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    base = (
+        Path(args.dest)
+        if args.dest
+        else Path(FETCH_ASSETS_ROOT)
+        if FETCH_ASSETS_ROOT
+        else root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
+    )
+    allow_update = not (args.no_update or FETCH_ASSETS_NO_UPDATE)
 
     if args.verify_only:
-        failures = verify_assets(base)
+        failures = verify_assets(base, allow_update=allow_update)
         if failures:
             joined = ", ".join(failures)
-            print(f"Updated checksums for: {joined}")
-            manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
-            if manifest_script.exists():
-                subprocess.run([sys.executable, str(manifest_script)], check=True)
-            print("Re-run fetch_assets.py to retrieve updated files")
-            return
+            if allow_update:
+                print(f"Updated checksums for: {joined}")
+                manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
+                if manifest_script.exists():
+                    subprocess.run([sys.executable, str(manifest_script)], check=True)
+                print("Re-run fetch_assets.py to retrieve updated files")
+                return
+            raise RuntimeError(f"verification failed for: {joined}")
         print("All assets verified successfully")
         return
 
@@ -330,7 +354,7 @@ def main() -> None:
         )
         sys.exit(1)
 
-    failures = verify_assets(base)
+    failures = verify_assets(base, allow_update=allow_update)
     if failures:
         print(f"Refreshing assets for: {', '.join(failures)}")
         for rel in failures:

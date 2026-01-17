@@ -31,6 +31,11 @@ repos:
       - id: actionlint
   - repo: local
     hooks:
+      - id: no-binary-diff
+        name: Block binary diffs in PRs
+        entry: scripts/check_no_binary_diff.sh
+        language: system
+        pass_filenames: false
       - id: proto-verify
         name: Verify protobuf files are up to date
         entry: make proto-verify

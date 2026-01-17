@@ -68,6 +68,10 @@ function toggleTheme(){
   localStorage.setItem('theme',next);
 }
 
+function markInsightReady() {
+  document.documentElement.dataset.insightReady = '1';
+}
+
 function setupView(){
   d3.select('#canvas').select('svg').remove();
   svg=d3.select('#canvas').append('svg')
@@ -347,11 +351,12 @@ window.addEventListener('DOMContentLoaded',async()=>{
   exportBtn.addEventListener('click',exportState)
   initDragDrop(dropZone,loadState)
   window.dispatchEvent(new HashChangeEvent('hashchange'))
+  markInsightReady()
 })
 window.addEventListener('hashchange', () => {
   const p = parseHash();
   panel.setValues(p);
   start(p);
   toast(t('simulation_restarted'));
+  markInsightReady()
 });
-
