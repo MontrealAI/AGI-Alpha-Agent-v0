@@ -4,6 +4,12 @@ description: Cache, fetch and verify Insight Browser assets.
 runs:
   using: composite
   steps:
+    - name: Set Insight asset root
+      shell: bash
+      run: |
+        if [ -z "${INSIGHT_ASSET_ROOT:-}" ]; then
+          echo "INSIGHT_ASSET_ROOT=${RUNNER_TEMP}/insight-assets" >> "$GITHUB_ENV"
+        fi
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
@@ -12,24 +18,26 @@ runs:
       uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
       with:
         path: |
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+          ${{ env.INSIGHT_ASSET_ROOT }}/wasm
+          ${{ env.INSIGHT_ASSET_ROOT }}/wasm_llm
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
       shell: bash
       run: python scripts/fetch_assets.py
+      env:
+        INSIGHT_ASSET_ROOT: ${{ env.INSIGHT_ASSET_ROOT }}
     - name: Verify Insight Browser assets
       shell: bash
       run: |
         set -eo pipefail
-        python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
-        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-          echo "::error::Initial asset verification failed" >&2
-          cat verify.log
-          python scripts/update_pyodide.py 0.28.0
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
+        INSIGHT_ASSET_ROOT="${INSIGHT_ASSET_ROOT}" \
           python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+          echo "::error::Insight asset verification failed" >&2
+          cat verify.log
+          exit 1
         fi
         cat verify.log
-
+      env:
+        INSIGHT_ASSET_ROOT: ${{ env.INSIGHT_ASSET_ROOT }}

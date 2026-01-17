@@ -51,6 +51,11 @@ repos:
         entry: scripts/env_check.sh
         language: system
         pass_filenames: false
+      - id: no-binary-diff
+        name: Block binary diffs
+        entry: bash scripts/check_no_binary_diff.sh
+        language: system
+        pass_filenames: false
       - id: verify-disclaimer-helper
         name: Ensure scripts import disclaimer helper
         entry: python scripts/verify_disclaimer_helper.py

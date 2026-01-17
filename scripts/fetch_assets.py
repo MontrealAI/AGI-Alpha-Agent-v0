@@ -6,6 +6,7 @@
 Environment variables:
     HF_GPT2_BASE_URL   -- Override the Hugging Face base URL for the GPT‑2 model.
     PYODIDE_BASE_URL   -- Override the base URL for Pyodide runtime files.
+    INSIGHT_ASSET_ROOT -- Override the base directory for fetched assets.
     FETCH_ASSETS_ATTEMPTS -- Maximum attempts per file (default 3).
     FETCH_ASSETS_BACKOFF -- Base delay in seconds between retries (default 1).
 
@@ -267,7 +268,9 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
-    base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    default_base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
+    asset_root = os.environ.get("INSIGHT_ASSET_ROOT")
+    base = Path(asset_root).expanduser() if asset_root else default_base
 
     if args.verify_only:
         failures = verify_assets(base)
