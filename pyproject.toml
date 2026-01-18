@@ -104,3 +104,10 @@ extend-ignore = ["E402", "F401", "E401"]
 
 [tool.flake8]
 max-line-length = 120
+
+[tool.coverage.run]
+omit = [
+    "alpha_factory_v1/demos/*",
+    "alpha_factory_v1/backend/agents/*",
+    "alpha_factory_v1/backend/memory*",
+]

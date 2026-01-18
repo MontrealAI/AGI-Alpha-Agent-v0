@@ -25,12 +25,16 @@ class _FallbackAgent:  # pragma: no cover - used in tests and offline paths
 def _resolve_openai_agent() -> type:
     """Return the ``OpenAIAgent`` class from the available package."""
     if "openai_agents" not in sys.modules and "agents" in sys.modules:
-        return sys.modules["agents"].OpenAIAgent  # type: ignore[no-any-return]
+        return getattr(sys.modules["agents"], "OpenAIAgent", _FallbackAgent)  # type: ignore[no-any-return]
     try:  # prefer the official ``openai_agents`` package
-        return importlib.import_module("openai_agents").OpenAIAgent
+        module = importlib.import_module("openai_agents")
+        if getattr(module, "__alpha_factory_stub__", False):
+            raise ModuleNotFoundError("OpenAI Agents SDK stub active")
+        return getattr(module, "OpenAIAgent", _FallbackAgent)
     except Exception:
         try:  # pragma: no cover - fallback for legacy package
-            return importlib.import_module("agents").OpenAIAgent
+            module = importlib.import_module("agents")
+            return getattr(module, "OpenAIAgent", _FallbackAgent)
         except Exception:  # pragma: no cover - optional dependency
             return _FallbackAgent
 
@@ -53,5 +57,5 @@ def build_llm() -> object:
         if base_url:
             print(f"Using ollama backend via {base_url}", flush=True)
         return llm
-    except TypeError:  # pragma: no cover - allow dummy classes in tests
+    except (TypeError, ModuleNotFoundError):  # pragma: no cover - allow dummy classes in tests
         return _FallbackAgent()

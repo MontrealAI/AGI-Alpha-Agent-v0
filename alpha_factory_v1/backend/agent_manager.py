@@ -44,6 +44,8 @@ class AgentManager:
         list_agents = self._resolve_list_agents()
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
+        if not names and dev_mode and avail:
+            names = avail
         if not names:
             raise RuntimeError(f"No agents selected – ENABLED={','.join(enabled) if enabled else 'ALL'}")
 
@@ -56,9 +58,13 @@ class AgentManager:
 
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
-
-        await start_background_tasks()
+        health_mod = sys.modules.get("backend.agents.health")
+        agents_mod = sys.modules.get("backend.agents")
+        if health_mod is None and not (agents_mod is not None and not hasattr(agents_mod, "__path__")):
+            from backend.agents import health as health_mod
+        start_background_tasks = getattr(health_mod, "start_background_tasks", None) if health_mod else None
+        if start_background_tasks is not None:
+            await start_background_tasks()
 
         for r in self.runners.values():
             register = getattr(r.inst, "_register_mesh", None)
@@ -81,9 +87,13 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
-
-        await stop_background_tasks()
+        health_mod = sys.modules.get("backend.agents.health")
+        agents_mod = sys.modules.get("backend.agents")
+        if health_mod is None and not (agents_mod is not None and not hasattr(agents_mod, "__path__")):
+            from backend.agents import health as health_mod
+        stop_background_tasks = getattr(health_mod, "stop_background_tasks", None) if health_mod else None
+        if stop_background_tasks is not None:
+            await stop_background_tasks()
         if self._hb_task:
             self._hb_task.cancel()
         if self._reg_task:
