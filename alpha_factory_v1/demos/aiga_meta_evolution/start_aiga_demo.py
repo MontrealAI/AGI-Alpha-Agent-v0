@@ -85,7 +85,8 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--stop", action="store_true", help="stop running containers")
     if argv is None and "pytest" in sys.modules:
         if Path(sys.argv[0]).name != Path(__file__).name:
-            argv = []
+            if not any(flag in {"-h", "--help"} for flag in sys.argv[1:]):
+                argv = []
     args = ap.parse_args(argv)
 
     dc = docker_compose_cmd()
