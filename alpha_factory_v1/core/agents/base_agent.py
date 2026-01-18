@@ -107,6 +107,11 @@ class BaseAgent:
             self.adk = ADKAdapter()
         if MCPAdapter is not None and MCPAdapter.is_available():
             self.mcp = MCPAdapter()
+            self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
+            self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
+        else:
+            self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
+            self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
         self._handler = self._on_envelope
         self.bus.subscribe(self.name, self._handler)
 
