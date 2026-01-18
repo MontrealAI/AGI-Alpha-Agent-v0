@@ -133,7 +133,18 @@ jobs:
       # checkout required for local composite actions
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Check for binary diffs
-        run: python scripts/check_no_binary_diff.py
+        run: |
+          range=""
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            range="${{ github.event.pull_request.base.sha }}...${{ github.sha }}"
+          elif [ -n "${{ github.event.before }}" ]; then
+            range="${{ github.event.before }}...${{ github.sha }}"
+          fi
+          if [ -n "$range" ]; then
+            python scripts/check_no_binary_diff.py --range "$range"
+          else
+            python scripts/check_no_binary_diff.py
+          fi
       - name: Ensure pip cache directory
         shell: bash
         run: |

@@ -3,6 +3,7 @@
 """Fail if the git diff includes binary file changes."""
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -97,28 +98,47 @@ def _collect_numstat_binaries(diff_numstat: str) -> list[str]:
 
 
 def main() -> int:
-    base_ref = _resolve_base_ref()
-    base_ref = _ensure_base_available(base_ref)
-    if base_ref:
-        name_status = _run(["git", "diff", "--name-status", f"{base_ref}...HEAD"])
-        numstat = _run(["git", "diff", "--numstat", f"{base_ref}...HEAD"])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--staged",
+        action="store_true",
+        help="Only inspect staged changes.",
+    )
+    parser.add_argument(
+        "--range",
+        help="Explicit git diff range (e.g. base...HEAD).",
+    )
+    args = parser.parse_args()
+
+    if args.range:
+        name_status = _run(["git", "diff", "--name-status", args.range])
+        numstat = _run(["git", "diff", "--numstat", args.range])
+    elif args.staged:
+        name_status = _run(["git", "diff", "--name-status", "--cached"])
+        numstat = _run(["git", "diff", "--numstat", "--cached"])
     else:
-        name_status = _run(["git", "diff", "--name-status"])
-        cached = _run(["git", "diff", "--name-status", "--cached"])
-        name_status = subprocess.CompletedProcess(
-            name_status.args,
-            name_status.returncode or cached.returncode,
-            stdout=name_status.stdout + cached.stdout,
-            stderr=name_status.stderr + cached.stderr,
-        )
-        numstat = _run(["git", "diff", "--numstat"])
-        cached_numstat = _run(["git", "diff", "--numstat", "--cached"])
-        numstat = subprocess.CompletedProcess(
-            numstat.args,
-            numstat.returncode or cached_numstat.returncode,
-            stdout=numstat.stdout + cached_numstat.stdout,
-            stderr=numstat.stderr + cached_numstat.stderr,
-        )
+        base_ref = _resolve_base_ref()
+        base_ref = _ensure_base_available(base_ref)
+        if base_ref:
+            name_status = _run(["git", "diff", "--name-status", f"{base_ref}...HEAD"])
+            numstat = _run(["git", "diff", "--numstat", f"{base_ref}...HEAD"])
+        else:
+            name_status = _run(["git", "diff", "--name-status"])
+            cached = _run(["git", "diff", "--name-status", "--cached"])
+            name_status = subprocess.CompletedProcess(
+                name_status.args,
+                name_status.returncode or cached.returncode,
+                stdout=name_status.stdout + cached.stdout,
+                stderr=name_status.stderr + cached.stderr,
+            )
+            numstat = _run(["git", "diff", "--numstat"])
+            cached_numstat = _run(["git", "diff", "--numstat", "--cached"])
+            numstat = subprocess.CompletedProcess(
+                numstat.args,
+                numstat.returncode or cached_numstat.returncode,
+                stdout=numstat.stdout + cached_numstat.stdout,
+                stderr=numstat.stderr + cached_numstat.stderr,
+            )
     if name_status.returncode != 0:
         print(name_status.stderr, file=sys.stderr)
         return name_status.returncode

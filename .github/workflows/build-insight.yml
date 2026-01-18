@@ -24,6 +24,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Check for binary diffs
+        run: python scripts/check_no_binary_diff.py
+
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -42,6 +45,8 @@ jobs:
           npm ci
         working-directory: ${{ env.BROWSER_DIR }}
 
+      - uses: ./.github/actions/setup-insight-assets
+
       - name: Build insight bundle
         run: npm run build:dist
         working-directory: ${{ env.BROWSER_DIR }}
@@ -50,9 +55,33 @@ jobs:
         run: |
           DOCS_DIR="${GITHUB_WORKSPACE}/docs/alpha_agi_insight_v1"
           BUILD_DIR="${GITHUB_WORKSPACE}/${{ env.BROWSER_DIR }}/dist"
-          rm -rf "$DOCS_DIR"
           mkdir -p "$DOCS_DIR"
-          cp -a "$BUILD_DIR/." "$DOCS_DIR/"
+          rsync -a --delete \
+            --exclude="*.wasm" \
+            --exclude="*.zip" \
+            --exclude="*.gz" \
+            --exclude="*.png" \
+            --exclude="*.jpg" \
+            --exclude="*.jpeg" \
+            --exclude="*.webp" \
+            --exclude="*.gif" \
+            --exclude="*.pdf" \
+            --exclude="*.ico" \
+            --exclude="*.mp3" \
+            --exclude="*.mp4" \
+            --exclude="*.woff" \
+            --exclude="*.woff2" \
+            --exclude="*.ttf" \
+            --exclude="*.otf" \
+            --exclude="*.bin" \
+            --exclude="*.exe" \
+            --exclude="*.dll" \
+            --exclude="*.so" \
+            --exclude="*.dylib" \
+            --exclude="assets/wasm/" \
+            --exclude="assets/wasm_llm/" \
+            --exclude="assets/pyodide/" \
+            "$BUILD_DIR/" "$DOCS_DIR/"
 
       - name: Commit updated bundle
         uses: stefanzweifel/git-auto-commit-action@v5

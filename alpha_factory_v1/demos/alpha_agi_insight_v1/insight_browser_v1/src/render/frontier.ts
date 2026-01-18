@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as Plot from '@observablehq/plot';
-import * as d3 from 'd3';
 import { plotCanvas } from './plotCanvas.ts';
 import { paretoFront } from '../utils/pareto.ts';
 import { depthColor } from './colors.ts';
 import { drawHeatmap } from './canvasLayer.ts';
 
 import type { Individual } from '../state/serializer.ts';
+
+const d3 = (globalThis as typeof globalThis & { d3: typeof import('d3') }).d3;
 
 export function renderFrontier(
   container: HTMLElement,

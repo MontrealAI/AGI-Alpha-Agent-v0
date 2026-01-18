@@ -110,38 +110,39 @@
       const SW_HASH = '__SW_HASH__';
 
       if ('serviceWorker' in navigator && !navigator.webdriver) {
-        window.addEventListener('load', async () => {
-          try {
-            const res = await fetch(SW_URL);
-            const buf = await res.arrayBuffer();
-            const digest = await crypto.subtle.digest('SHA-384', buf);
-            const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-            if (`sha384-${b64}` !== SW_HASH) {
-              throw new Error('Service worker hash mismatch');
-            }
+        window.addEventListener('load', () => {
+          const registerSw = async () => {
+            try {
+              const res = await fetch(SW_URL);
+              const buf = await res.arrayBuffer();
+              const digest = await crypto.subtle.digest('SHA-384', buf);
+              const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+              if (`sha384-${b64}` !== SW_HASH) {
+                throw new Error('Service worker hash mismatch');
+              }
 
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
-                registration.addEventListener('updatefound', () => {
-                  const newWorker = registration.installing;
-                  if (!newWorker) return;
+              const registration = await navigator.serviceWorker.register(SW_URL);
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
 
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed') {
-                      window.toast('Update available — reload to use the latest version.');
-                    }
-                  });
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed') {
+                    window.toast('Update available — reload to use the latest version.');
+                  }
                 });
               });
-            });
-          } catch (err) {
-            console.error(err);
-            window.toast('Service worker failed: ' + err.message);
-          }
+              await navigator.serviceWorker.ready;
+            } catch (err) {
+              console.warn('Service worker unavailable', err);
+              window.toast(`Service worker failed: ${err && err.message ? err.message : err}`);
+            }
+          };
+          registerSw();
         });
       }
     </script>
 
-    <script type="module" src="insight.bundle.js" crossorigin="anonymous"></script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-F+Y0lZUp57nPCrCmyP+5H8vL+7RKX92JsMfNBnWlH2Asku8wsQ1CQ8rOsIHtCRI1" crossorigin="anonymous"></script>
   </body>
 </html>

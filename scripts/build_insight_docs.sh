@@ -40,15 +40,8 @@ npm --prefix "$BROWSER_DIR" ci
 (cd "$BROWSER_DIR" && npx update-browserslist-db --update-db --yes)
 npm --prefix "$BROWSER_DIR" run build:dist
 
-# Refresh docs directory with the new bundle while preserving all
-# non-generated files (e.g. images or additional Markdown docs)
-OLD_DOCS_TEMP=""
-if [[ -d "$DOCS_DIR" ]]; then
-    OLD_DOCS_TEMP="$(mktemp -d)"
-    cp -a "$DOCS_DIR/." "$OLD_DOCS_TEMP/"
-fi
-rm -rf "$DOCS_DIR"
-mkdir -p "$DOCS_DIR"
+# Refresh docs directory with the new bundle while preserving existing binaries.
+DOCS_TMP="$(mktemp -d)"
 BINARY_EXCLUDES=(
     "*.wasm"
     "*.zip"
@@ -75,37 +68,46 @@ BINARY_EXCLUDES=(
     "assets/wasm_llm/*"
     "assets/pyodide/*"
 )
-unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR" -x "${BINARY_EXCLUDES[@]}"
-# Copy the quickstart guide from the build output so the docs include it
-PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
-if [[ -f "$PDF_SRC" && ! -f "$DOCS_DIR/insight_browser_quickstart.pdf" ]]; then
-    cp -a "$PDF_SRC" "$DOCS_DIR/"
-fi
+unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_TMP" -x "${BINARY_EXCLUDES[@]}"
 # Ensure the bundle script tag includes the correct hashes after extraction
-python scripts/ensure_insight_sri.py "$DOCS_DIR"
+python scripts/ensure_insight_sri.py "$DOCS_TMP"
 # Ensure the service worker and PWA files exist in the docs directory
-unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DIR" || true
-unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_DIR" || true
-mkdir -p "$DOCS_DIR/assets/lib"
-unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_DIR/assets/lib" || true
-python scripts/ensure_insight_sw_hash.py "$DOCS_DIR"
-python scripts/ensure_insight_csp.py "$DOCS_DIR"
-if [[ -n "$OLD_DOCS_TEMP" ]]; then
-    while IFS= read -r -d '' file; do
-        rel="${file#"$OLD_DOCS_TEMP"/}"
-        target="$DOCS_DIR/$rel"
-        if [[ ! -e "$target" ]]; then
-            mkdir -p "$(dirname "$target")"
-            cp -a "$file" "$target"
-        fi
-    done < <(find "$OLD_DOCS_TEMP" -mindepth 1 -print0)
-    # Ensure the Plotly license file accompanies plotly.min.js
-    LICENSE_FILE="plotly.min.js.LICENSE.txt"
-    if [[ ! -f "$DOCS_DIR/$LICENSE_FILE" && -f "$OLD_DOCS_TEMP/$LICENSE_FILE" ]]; then
-        cp -a "$OLD_DOCS_TEMP/$LICENSE_FILE" "$DOCS_DIR/"
-    fi
-    rm -rf "$OLD_DOCS_TEMP"
-fi
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_TMP" || true
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_TMP" || true
+mkdir -p "$DOCS_TMP/assets/lib"
+unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_TMP/assets/lib" || true
+python scripts/ensure_insight_sw_hash.py "$DOCS_TMP"
+python scripts/ensure_insight_csp.py "$DOCS_TMP"
+
+mkdir -p "$DOCS_DIR"
+rsync -a --delete \
+    --exclude="*.wasm" \
+    --exclude="*.zip" \
+    --exclude="*.gz" \
+    --exclude="*.png" \
+    --exclude="*.jpg" \
+    --exclude="*.jpeg" \
+    --exclude="*.webp" \
+    --exclude="*.gif" \
+    --exclude="*.pdf" \
+    --exclude="*.ico" \
+    --exclude="*.mp3" \
+    --exclude="*.mp4" \
+    --exclude="*.woff" \
+    --exclude="*.woff2" \
+    --exclude="*.ttf" \
+    --exclude="*.otf" \
+    --exclude="*.bin" \
+    --exclude="*.exe" \
+    --exclude="*.dll" \
+    --exclude="*.so" \
+    --exclude="*.dylib" \
+    --exclude="assets/wasm/" \
+    --exclude="assets/wasm_llm/" \
+    --exclude="assets/pyodide/" \
+    --exclude="plotly.min.js.LICENSE.txt" \
+    "$DOCS_TMP"/ "$DOCS_DIR"/
+rm -rf "$DOCS_TMP"
 
 LICENSE_FILE="plotly.min.js.LICENSE.txt"
 if [[ ! -f "$DOCS_DIR/$LICENSE_FILE" && -f "$REPO_ROOT/docs/alpha_agi_insight_v1/$LICENSE_FILE" ]]; then
@@ -146,12 +148,10 @@ copy_assets() {
         cp -a "$src"/* "$dest/"
     done
 
-    # Copy Pyodide runtime files for the gallery (only when missing)
-    wasm_src="$BROWSER_DIR/wasm"
+    # Verify the Pyodide runtime files for the gallery are already present.
     pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
     if [[ ! -f "$pyodide_dest/pyodide.asm.wasm" || ! -f "$pyodide_dest/pyodide.js" ]]; then
-        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+        echo "WARNING: Pyodide assets missing from $pyodide_dest. Skipping binary refresh." >&2
     fi
 }
 copy_assets

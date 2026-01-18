@@ -168,6 +168,15 @@ def extract_offline_html() -> str:
     return "\n".join(html)
 
 
+def _remove_script_by_src(html: str, pattern: str) -> str:
+    """Remove a script tag that references the given src regex pattern."""
+    regex = re.compile(
+        rf'<script[^>]*\bsrc=["\'][^"\']*{pattern}[^"\']*["\'][^>]*>\s*</script>\s*',
+        re.IGNORECASE,
+    )
+    return regex.sub("", html)
+
+
 ROOT = Path(__file__).resolve().parent
 ALIAS_PREFIX = "@insight-src/"
 repo_root = Path(__file__).resolve()
@@ -408,21 +417,8 @@ out_html = out_html.replace(
 )
 env_script = inject_env()
 offline_html = extract_offline_html()
-out_html = re.sub(
-    r"<script[\s\S]*?d3\.v7\.min\.js[\s\S]*?</script>\s*",
-    "",
-    out_html,
-)
-out_html = re.sub(
-    r"<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?</script>\s*",
-    "",
-    out_html,
-)
-out_html = re.sub(
-    r"<script[\s\S]*?pyodide\.js[\s\S]*?</script>\s*",
-    "",
-    out_html,
-)
+out_html = _remove_script_by_src(out_html, r"bundle\.esm\.min\.js")
+out_html = _remove_script_by_src(out_html, r"pyodide\.js")
 out_html = out_html.replace(
     "</body>",
     f"{offline_html}\n{env_script}\n</body>",

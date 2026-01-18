@@ -12,6 +12,7 @@
     "build": "node build.js",
     "fetch-assets": "node -e \"console.log('Using PYODIDE_BASE_URL:', process.env.PYODIDE_BASE_URL)\" && python ../../../../scripts/fetch_assets.py",
     "build:dist": "npm run build && cd dist && cp sw.js service-worker.js && zip -r ../insight_browser.zip index.html insight.bundle.js service-worker.js style.css insight_browser_quickstart.pdf && zip -r ../insight_browser.zip assets && rm service-worker.js",
+    "build:docs-insight": "npm run build:dist",
     "size": "gzip-size-cli dist/insight.bundle.js --bytes",
     "start": "npx serve dist",
     "typecheck": "tsc --noEmit",

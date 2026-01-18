@@ -88,9 +88,13 @@ try {
 }
 
 const scriptPath = fileURLToPath(import.meta.url);
-const repoRoot = path.resolve(path.dirname(scriptPath), "..", "..", "..", "..");
+const browserRoot = path.dirname(scriptPath);
+const repoRoot = path.resolve(browserRoot, "..", "..", "..", "..");
 const aliasRoot = path.join(repoRoot, "alpha_factory_v1", "core");
 const quickstartPdf = path.join(repoRoot, manifest.quickstart_pdf);
+const assetRoot = process.env.FETCH_ASSETS_DIR
+    ? path.resolve(process.env.FETCH_ASSETS_DIR)
+    : browserRoot;
 const aliasPlugin = {
     name: "alias",
     setup(build) {
@@ -101,7 +105,7 @@ const aliasPlugin = {
 };
 
 async function ensureWeb3Bundle() {
-    const bundlePath = path.join("lib", "bundle.esm.min.js");
+    const bundlePath = path.join(assetRoot, "lib", "bundle.esm.min.js");
     let data = await fs.readFile(bundlePath, "utf8").catch(() => "");
     if (!data || data.includes("Placeholder")) {
         runFetch();
@@ -113,7 +117,7 @@ async function ensureWeb3Bundle() {
 }
 
 async function ensureWorkbox() {
-    const wbPath = path.join("lib", "workbox-sw.js");
+    const wbPath = path.join(assetRoot, "lib", "workbox-sw.js");
     let data = await fs.readFile(wbPath, "utf8").catch(() => "");
     if (!data || data.toLowerCase().includes("placeholder")) {
         runFetch();
@@ -154,7 +158,7 @@ function placeholderFiles() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
     for (const sub of ["lib", "wasm", "wasm_llm"]) {
-        const root = path.join(path.dirname(scriptPath), sub);
+        const root = path.join(assetRoot, sub);
         for (const f of collectFiles(root)) {
             const { size } = fsSync.statSync(f);
             if (size > MAX_SCAN_BYTES) continue;
@@ -173,7 +177,20 @@ function runFetch() {
 }
 
 function ensureAssets() {
+    const requiredAssets = [
+        "lib/bundle.esm.min.js",
+        "lib/workbox-sw.js",
+        "wasm/pyodide.js",
+        "wasm/pyodide.asm.wasm",
+        "wasm/pyodide-lock.json",
+    ];
     let placeholders = placeholderFiles();
+    for (const rel of requiredAssets) {
+        const target = path.join(assetRoot, rel);
+        if (!fsSync.existsSync(target)) {
+            placeholders.push(target);
+        }
+    }
     if (placeholders.length) {
         console.log("Detected placeholder assets, running fetch_assets.py...");
         for (const f of placeholders) {
@@ -185,6 +202,12 @@ function ensureAssets() {
         }
         runFetch();
         placeholders = placeholderFiles();
+        for (const rel of requiredAssets) {
+            const target = path.join(assetRoot, rel);
+            if (!fsSync.existsSync(target)) {
+                placeholders.push(target);
+            }
+        }
     }
     if (placeholders.length) {
         throw new Error(`placeholder found in ${placeholders[0]}`);
@@ -251,7 +274,7 @@ async function bundle() {
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "");
     const envScript = injectEnv(process.env);
-    await copyAssets(manifest, repoRoot, OUT_DIR);
+    await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(
             quickstartPdf,
@@ -273,7 +296,7 @@ async function bundle() {
         }
     }
 
-    const wasmPath = "wasm/pyodide.asm.wasm";
+    const wasmPath = path.join(assetRoot, "wasm", "pyodide.asm.wasm");
     const wasmBuf = fsSync.readFileSync(wasmPath);
     verify(wasmBuf, "pyodide.asm.wasm");
     const wasmBase64 = wasmBuf.toString("base64");
@@ -281,7 +304,7 @@ async function bundle() {
         "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
 
     for (const name of ["pyodide.js"]) {
-        const p = path.join("wasm", name);
+        const p = path.join(assetRoot, "wasm", name);
         if (fsSync.existsSync(p)) {
             verify(fsSync.readFileSync(p), name);
         }
@@ -311,15 +334,32 @@ async function bundle() {
     const appSri =
         "sha384-" + createHash("sha384").update(data).digest("base64");
     const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
+    const removeScriptBySrc = (htmlText, srcPattern) =>
+        htmlText.replace(
+            new RegExp(
+                `<script[^>]*\\bsrc=["'][^"']*${srcPattern}[^"']*["'][^>]*>\\s*</script>\\s*`,
+                "gi",
+            ),
+            "",
+        );
     outHtml = outHtml.replace(scriptTag, sriTag)
         .replace(
-            /<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?<\/script>\s*/g,
-            "",
+            /<script[^>]*src=["']https:\/\/cdn\.tailwindcss\.com["'][^>]*><\/script>\s*/i,
+            '<link rel="stylesheet" href="style.css" />\n',
         )
-        .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
+        .replace(/<script[^>]*type=["']importmap["'][^>]*>[\s\S]*?<\/script>\s*/gi, "")
+        .replace(/src=["']d3\.v7\.min\.js["']/i, 'src="assets/d3.v7.min.js"')
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
+    outHtml = removeScriptBySrc(outHtml, "bundle\\.esm\\.min\\.js");
+    outHtml = removeScriptBySrc(outHtml, "pyodide\\.js");
+    if (!outHtml.includes('style.css')) {
+        outHtml = outHtml.replace(
+            "</head>",
+            '    <link rel="stylesheet" href="style.css" />\n</head>',
+        );
+    }
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
     const devHtml = html.replace(scriptTag, sriTag);
     if (devHtml !== html) {
