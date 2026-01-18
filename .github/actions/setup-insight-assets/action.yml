@@ -7,13 +7,20 @@ runs:
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
+    - name: Resolve asset directory
+      shell: bash
+      run: |
+        if [[ -z "${INSIGHT_ASSET_DIR:-}" ]]; then
+          echo "INSIGHT_ASSET_DIR=alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1" >> "$GITHUB_ENV"
+        fi
     - name: Cache Pyodide and GPT-2 assets
       id: asset-cache
       uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
       with:
         path: |
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+          ${{ env.INSIGHT_ASSET_DIR }}/wasm
+          ${{ env.INSIGHT_ASSET_DIR }}/wasm_llm
+          ${{ env.INSIGHT_ASSET_DIR }}/lib
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
@@ -32,4 +39,3 @@ runs:
           python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
         fi
         cat verify.log
-

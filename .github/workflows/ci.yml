@@ -56,6 +56,9 @@ env:
     alpha_factory_v1/core/interface/web_client/package-lock.json
     alpha_factory_v1/core/interface/web_client/staking/package-lock.json
     alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/package-lock.json
+  INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
+  SKIP_BINARY_COPY: '1'
   PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
   HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
   # Guard `inputs` usage so push/PR events (which do not populate the
@@ -260,6 +263,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -294,6 +299,8 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /usr/local/share/powershell /usr/local/share/mono || true
+          sudo apt-get clean
           df -h
       - name: Install dependencies
         run: |
@@ -380,6 +387,9 @@ jobs:
         id: bench-check
         run: |
           if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
       - name: Upload benchmark results
         if: steps.bench-check.outputs.found == 'true'
         uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
@@ -431,6 +441,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -681,6 +693,9 @@ jobs:
           SKIP: eslint-insight-browser
       - name: Build documentation
         run: mkdocs build --strict
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
 
   docs-build:
     name: "📚 Docs Build"
@@ -699,6 +714,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -794,6 +811,12 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: playwright-${{ runner.os }}-
       - name: Install Playwright system dependencies (Python)
         run: python -m playwright install-deps chromium
       - name: Install Playwright browsers (Python)
@@ -809,6 +832,9 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
 
   docker:
     name: "🐳 Docker build"

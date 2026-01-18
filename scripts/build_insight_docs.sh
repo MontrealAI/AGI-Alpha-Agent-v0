@@ -13,6 +13,7 @@ cd "$REPO_ROOT"
 
 BROWSER_DIR="alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 DOCS_DIR="docs/alpha_agi_insight_v1"
+SKIP_BINARY_COPY="${SKIP_BINARY_COPY:-0}"
 
 usage() {
     cat <<USAGE
@@ -43,17 +44,37 @@ npm --prefix "$BROWSER_DIR" run build:dist
 # Refresh docs directory with the new bundle while preserving all
 # non-generated files (e.g. images or additional Markdown docs)
 OLD_DOCS_TEMP=""
-if [[ -d "$DOCS_DIR" ]]; then
+if [[ "$SKIP_BINARY_COPY" != "1" && -d "$DOCS_DIR" ]]; then
     OLD_DOCS_TEMP="$(mktemp -d)"
     cp -a "$DOCS_DIR/." "$OLD_DOCS_TEMP/"
 fi
-rm -rf "$DOCS_DIR"
-mkdir -p "$DOCS_DIR"
-unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
-# Copy the quickstart guide from the build output so the docs include it
-PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
-if [[ -f "$PDF_SRC" ]]; then
-    cp -a "$PDF_SRC" "$DOCS_DIR/"
+if [[ "$SKIP_BINARY_COPY" == "1" ]]; then
+    mkdir -p "$DOCS_DIR"
+    TEMP_BUNDLE_DIR="$(mktemp -d)"
+    unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$TEMP_BUNDLE_DIR"
+    find "$DOCS_DIR" -type f \( \
+        -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.json' -o \
+        -name '*.map' -o -name '*.svg' -o -name '*.txt' -o -name '*.md' \
+    \) -delete
+    while IFS= read -r -d '' file; do
+        rel="${file#"$TEMP_BUNDLE_DIR"/}"
+        target="$DOCS_DIR/$rel"
+        mkdir -p "$(dirname "$target")"
+        cp -a "$file" "$target"
+    done < <(find "$TEMP_BUNDLE_DIR" -type f \( \
+        -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.json' -o \
+        -name '*.map' -o -name '*.svg' -o -name '*.txt' -o -name '*.md' \
+    \) -print0)
+    rm -rf "$TEMP_BUNDLE_DIR"
+else
+    rm -rf "$DOCS_DIR"
+    mkdir -p "$DOCS_DIR"
+    unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
+    # Copy the quickstart guide from the build output so the docs include it
+    PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
+    if [[ -f "$PDF_SRC" ]]; then
+        cp -a "$PDF_SRC" "$DOCS_DIR/"
+    fi
 fi
 # Ensure the bundle script tag includes the correct hashes after extraction
 python scripts/ensure_insight_sri.py "$DOCS_DIR"
@@ -121,10 +142,12 @@ copy_assets() {
     done
 
     # Copy Pyodide runtime files for the gallery
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    if [[ "$SKIP_BINARY_COPY" != "1" ]]; then
+        wasm_src="$BROWSER_DIR/wasm"
+        pyodide_dest="docs/assets/pyodide"
+        mkdir -p "$pyodide_dest"
+        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    fi
 }
 copy_assets
 
