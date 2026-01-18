@@ -4,10 +4,20 @@
 from __future__ import annotations
 
 import random
-from typing import Any, Mapping, Sequence
+from typing import Any, Mapping, Protocol, Sequence
 
 
 __all__ = ["select_parent"]
+
+
+class RandomLike(Protocol):
+    """Protocol for random number generators used by selection helpers."""
+
+    def random(self) -> float:
+        """Return a random float in the range [0.0, 1.0)."""
+
+    def choice(self, seq: Sequence[Any]) -> Any:
+        """Return a random element from a non-empty sequence."""
 
 
 def _metrics(item: Any) -> tuple[float, float, float]:
@@ -35,11 +45,11 @@ def _pareto_ranks(pop: Sequence[Any]) -> list[int]:
     return ranks
 
 
-def select_parent(pop: Sequence[Any], *, epsilon: float = 0.1, rng: random.Random | None = None) -> Any:
+def select_parent(pop: Sequence[Any], *, epsilon: float = 0.1, rng: RandomLike | None = None) -> Any:
     """Return a parent from ``pop`` via Pareto rank with epsilon-greedy randomness."""
     if not pop:
         raise ValueError("population is empty")
-    rng = rng or random.Random()
+    rng = rng or random
     ranks = _pareto_ranks(pop)
     best = min(ranks)
     candidates = [ind for ind, r in zip(pop, ranks) if r == best]
