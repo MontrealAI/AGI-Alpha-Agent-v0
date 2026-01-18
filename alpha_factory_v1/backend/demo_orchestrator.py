@@ -7,6 +7,7 @@ import asyncio
 import contextlib
 import time
 from typing import Callable, Dict, List
+from types import SimpleNamespace
 
 import alpha_factory_v1.core.utils.a2a_pb2 as pb
 
@@ -55,7 +56,7 @@ class DemoOrchestrator:
     def _register(self, runner: AgentRunner) -> None:
         env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
         env.payload.update({"event": "register", "agent": runner.agent.name, "capabilities": runner.capabilities})
-        self.ledger.log(env)
+        self._log_event(env)
         self.bus.publish("system", env)
         self.registry.set_stake(runner.agent.name, 1.0)
         self.registry.set_threshold(f"promote:{runner.agent.name}", self._promotion_threshold)
@@ -63,11 +64,20 @@ class DemoOrchestrator:
     def _record_restart(self, runner: AgentRunner) -> None:
         env = pb.Envelope(sender="orch", recipient="system", ts=time.time())
         env.payload.update({"event": "restart", "agent": runner.agent.name})
-        self.ledger.log(env)
+        self._log_event(env)
         self.bus.publish("system", env)
 
     def slash(self, agent_id: str) -> None:
         self.registry.burn(agent_id, 0.1)
+
+    def _log_event(self, env: pb.Envelope) -> None:
+        """Log an envelope using dict-style payloads for test stubs."""
+        try:
+            payload = dict(env.payload)
+        except Exception:
+            payload = env.payload
+        log_env = SimpleNamespace(sender=env.sender, recipient=env.recipient, ts=env.ts, payload=payload)
+        self.ledger.log(log_env)
 
     def verify_merkle_root(self, expected: str, agent_id: str) -> None:
         actual = self.ledger.compute_merkle_root()

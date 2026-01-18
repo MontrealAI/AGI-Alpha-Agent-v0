@@ -9,6 +9,7 @@ the temporary clone via the ``cleanup`` flag.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -74,11 +75,16 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _normalize_patch(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
-
-    repo.git.apply(patch_file)
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(diff)
+        normalized = tf.name
+    try:
+        repo.git.apply(normalized)
+    finally:
+        Path(normalized).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
@@ -89,3 +95,27 @@ def improve_repo(
     if cleanup:
         shutil.rmtree(repo_dir, ignore_errors=True)
     return delta, repo_dir
+
+
+def _normalize_patch(patch: str) -> str:
+    """Ensure unified diff hunks include line ranges."""
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    for idx, line in enumerate(lines):
+        if line.startswith("@@") and not re.search(r"@@ -\\d", line):
+            old_count = 0
+            new_count = 0
+            for hunk_line in lines[idx + 1 :]:
+                if hunk_line.startswith(("@@", "--- ", "+++ ")):
+                    break
+                if hunk_line.startswith("-") and not hunk_line.startswith("---"):
+                    old_count += 1
+                elif hunk_line.startswith("+") and not hunk_line.startswith("+++"):
+                    new_count += 1
+            old_range = f"-1,{old_count}" if old_count != 1 else "-1"
+            new_range = f"+1,{new_count}" if new_count != 1 else "+1"
+            line = f"@@ {old_range} {new_range} @@"
+        normalized.append(line)
+    if patch.endswith("\n"):
+        return "\n".join(normalized) + "\n"
+    return "\n".join(normalized)

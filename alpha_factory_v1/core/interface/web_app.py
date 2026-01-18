@@ -114,6 +114,14 @@ def _run_simulation(
     if st is None:  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
+    try:  # pragma: no cover - runtime-only check
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+        if get_script_run_ctx() is None:
+            print("Streamlit not installed")
+            return
+    except Exception:
+        pass
 
     st.session_state.logs = []
     secs = [sector.Sector(f"s{i:02d}", energy, entropy) for i in range(num_sectors)]

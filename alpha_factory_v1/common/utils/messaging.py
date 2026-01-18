@@ -15,6 +15,7 @@ from pathlib import Path
 import contextlib
 from types import TracebackType
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
+from types import SimpleNamespace
 from cachetools import TTLCache
 
 from .config import Settings
@@ -31,9 +32,29 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        _EnvelopeType = pb.Envelope  # type: ignore
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        _EnvelopeType = None
+
+    def Envelope(  # type: ignore[override]
+        *, sender: Any = "", recipient: Any = "", payload: Any = None, ts: Any = 0.0
+    ) -> Any:
+        """Return a permissive envelope instance for runtime callers."""
+        sender_val = "" if sender is None else str(sender)
+        recipient_val = "" if recipient is None else str(recipient)
+        try:
+            ts_val = float(ts)
+        except (TypeError, ValueError):
+            ts_val = 0.0
+        payload_val = payload if payload is not None else {}
+        if _EnvelopeType is None:
+            return SimpleNamespace(sender=sender_val, recipient=recipient_val, payload=payload_val, ts=ts_val)
+        env = _EnvelopeType(sender=sender_val, recipient=recipient_val, ts=ts_val)
+        if isinstance(payload_val, dict):
+            env.payload.update(payload_val)
+        else:
+            env.payload.update({"value": payload_val})
+        return env
 
 
 class EnvelopeLike(Protocol):

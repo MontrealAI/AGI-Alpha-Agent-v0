@@ -36,6 +36,16 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        import sys
+
+        backend_mod = sys.modules.get("alpha_factory_v1.backend")
+        orch = (
+            sys.modules.get("alpha_factory_v1.backend.orchestrator")
+            or sys.modules.get("backend.orchestrator")
+            or getattr(backend_mod, "orchestrator", None)
+        )
+        mem = getattr(orch, "mem", None) if orch else None
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],

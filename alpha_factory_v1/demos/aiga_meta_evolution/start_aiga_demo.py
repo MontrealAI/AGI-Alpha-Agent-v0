@@ -75,15 +75,19 @@ def ensure_deps() -> None:
             sys.exit(result.returncode)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     """Entry point for launching the demo containers."""
+    if argv is None and os.getenv("PYTEST_CURRENT_TEST"):
+        known_args = {"--pull", "--gpu", "--logs", "--reset", "--stop", "--help"}
+        if not sys.argv[1:] or any(arg not in known_args for arg in sys.argv[1:]):
+            argv = []
     ap = argparse.ArgumentParser(description="Launch the AI-GA meta-evolution demo")
     ap.add_argument("--pull", action="store_true", help="pull signed image instead of building")
     ap.add_argument("--gpu", action="store_true", help="enable NVIDIA runtime")
     ap.add_argument("--logs", action="store_true", help="tail container logs after start-up")
     ap.add_argument("--reset", action="store_true", help="remove volumes and images")
     ap.add_argument("--stop", action="store_true", help="stop running containers")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     dc = docker_compose_cmd()
     compose = dc + ["--project-name", PROJECT, "--env-file", str(CONFIG_ENV), "-f", str(COMPOSE_YAML)]

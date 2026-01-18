@@ -50,9 +50,19 @@ def test_progress_dom_updates() -> None:
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
-    page = browser.new_page()
-    page.goto(str(client.base_url) + "/web/")
-    page.click("text=Run simulation")
-    page.wait_for_selector("#capability")
-    browser.close()
+    playwright = pw.sync_playwright().start()
+    try:
+        browser = playwright.chromium.launch()
+    except Exception as exc:  # pragma: no cover - optional browser
+        playwright.stop()
+        if "Executable doesn't exist" in str(exc) or "playwright install" in str(exc):
+            pytest.skip("playwright browsers not installed")
+        raise
+    try:
+        page = browser.new_page()
+        page.goto(str(client.base_url) + "/web/")
+        page.click("text=Run simulation")
+        page.wait_for_selector("#capability")
+    finally:
+        browser.close()
+        playwright.stop()
