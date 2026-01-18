@@ -51,10 +51,10 @@ env:
   PIP_NO_INPUT: '1'
   COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
   COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
-  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
-  FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
-  INSIGHT_ASSET_ROOT: ${{ runner.temp }}/insight-assets
-  PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.tmp/ms-playwright
+  FETCH_ASSETS_DIR: ${{ github.workspace }}/.tmp/insight-assets
+  INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.tmp/insight-assets
+  PYODIDE_CACHE_DIR: ${{ github.workspace }}/.tmp/pyodide-cache
   NODE_LOCKFILES: |
     alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
     alpha_factory_v1/core/interface/web_client/package-lock.json
