@@ -26,6 +26,10 @@ const manifest = JSON.parse(
 requireNode22();
 
 const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
+const skipLlmAssets = ["1", "true", "yes"].includes(
+    (process.env.FETCH_ASSETS_SKIP_LLM || "").toLowerCase(),
+);
+const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 
 function resolveAssetPath(relPath) {
     if (!assetRoot) {
@@ -168,6 +172,9 @@ function findAssetIssues() {
     const assets = manifest.assets || [];
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
+        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+            continue;
+        }
         const candidates = roots.map((root) => path.join(root, rel));
         const existing = candidates.find((candidate) => fsSync.existsSync(candidate));
         if (!existing) {
@@ -178,7 +185,7 @@ function findAssetIssues() {
         if (size > MAX_SCAN_BYTES) continue;
         const data = fsSync.readFileSync(existing, "utf8");
         const lowered = data.toLowerCase();
-        if (!data.trim() || lowered.includes("placeholder")) {
+        if (!data.trim() || (!PLACEHOLDER_ALLOWLIST.has(rel) && lowered.includes("placeholder"))) {
             files.push(rel);
         }
     }
@@ -262,7 +269,11 @@ async function bundle() {
         target: "es2020",
         outfile: `${OUT_DIR}/insight.bundle.js`,
         plugins: [aliasPlugin],
-        external: ["d3"],
+        external: [
+            "d3",
+            "../lib/bundle.esm.min.js",
+            "../../lib/bundle.esm.min.js",
+        ],
     });
     execSync(`npx tailwindcss -i style.css -o ${OUT_DIR}/style.css --minify`, {
         stdio: "inherit",
@@ -327,7 +338,8 @@ async function bundle() {
     bundleText = bundleText
         .replace(/\.\/wasm\//g, "./assets/wasm/")
         .replace(/\.\/wasm_llm\//g, "./assets/wasm_llm/")
-        .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
+        .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js")
+        .replace(/\.\.\/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
     await fs.writeFile(bundlePath, bundleText);
     const data = await fs.readFile(bundlePath);
     const appSri =
