@@ -84,7 +84,8 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--reset", action="store_true", help="remove volumes and images")
     ap.add_argument("--stop", action="store_true", help="stop running containers")
     if argv is None and "pytest" in sys.modules:
-        if Path(sys.argv[0]).name != Path(__file__).name:
+        help_flags = {"-h", "--help"}
+        if Path(sys.argv[0]).name != Path(__file__).name and not any(arg in help_flags for arg in sys.argv[1:]):
             argv = []
     args = ap.parse_args(argv)
 
