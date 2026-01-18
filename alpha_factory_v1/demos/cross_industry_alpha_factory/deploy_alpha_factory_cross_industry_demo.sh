@@ -217,6 +217,12 @@ patch ray-head ".services += {\"ray-head\":{image:\"rayproject/ray:2.10.0\",comm
 patch pubmed-adapter '.services += {"pubmed-adapter":{image:"ghcr.io/alpha-factory/mock-pubmed:0.1.0",ports:["8005:80"],labels:["optional=true"]}}'
 patch carbon-api '.services += {"carbon-api":{image:"ghcr.io/alpha-factory/mock-carbon:0.1.0",ports:["8010:80"],labels:["optional=true"]}}'
 
+# Fast exit for CI/test runs that only need the compose patching.
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  echo "⚠️  SKIP_DEPLOY and SKIP_BENCH set; skipping asset scaffolding."
+  exit 0
+fi
+
 # SBOM signer – uses BuildKit --iidfile so IMAGE_ID always populated
 # SBOM signer pinned to syft v1.27.0
 # shellcheck disable=SC2016
