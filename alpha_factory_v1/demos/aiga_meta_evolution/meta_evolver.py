@@ -85,14 +85,28 @@ except ImportError:
 try:
     from prometheus_client import Gauge, REGISTRY
 
+    def _find_metric(name: str):
+        names_to_collectors = getattr(REGISTRY, "_names_to_collectors", {})
+        existing = names_to_collectors.get(name)
+        if existing is not None:
+            return existing
+        existing = names_to_collectors.get(f"{name}_created")
+        if existing is not None:
+            return existing
+        collector_to_names = getattr(REGISTRY, "_collector_to_names", {})
+        for collector, names in collector_to_names.items():
+            if name in names or f"{name}_created" in names:
+                return collector
+        return None
+
     def _reuse_metric(name: str, factory):
-        existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+        existing = _find_metric(name)
         if existing is not None:
             return existing
         try:
             return factory(name, "Average fitness per generation")
         except ValueError:
-            existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+            existing = _find_metric(name)
             if existing is not None:
                 return existing
             raise

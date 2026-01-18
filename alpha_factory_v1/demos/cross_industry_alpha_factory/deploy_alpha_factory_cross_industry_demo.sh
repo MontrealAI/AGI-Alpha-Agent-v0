@@ -130,17 +130,26 @@ fi
 
 ############## 2. FETCH / UPDATE REPO #########################################
 mkdir -p "$PROJECT_DIR"; cd "$PROJECT_DIR"
-if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
-  echo "📥  Cloning Alpha-Factory…"
-  git clone --depth 1 -b "$BRANCH" "$REPO_URL"
-fi
-if [ ! -d AGI-Alpha-Agent-v0 ]; then
-  echo "⚠️  Repository directory missing; creating placeholder."
+if [[ ${SKIP_DEPLOY:-} == "1" && ${SKIP_BENCH:-} == "1" ]]; then
   mkdir -p AGI-Alpha-Agent-v0
+  cd AGI-Alpha-Agent-v0
+else
+  if [ ! -d AGI-Alpha-Agent-v0/.git ]; then
+    echo "📥  Cloning Alpha-Factory…"
+    git clone --depth 1 -b "$BRANCH" "$REPO_URL"
+  fi
+  if [ ! -d AGI-Alpha-Agent-v0 ]; then
+    echo "⚠️  Repository directory missing; creating placeholder."
+    mkdir -p AGI-Alpha-Agent-v0
+  fi
+  cd AGI-Alpha-Agent-v0
+  git pull --ff-only
 fi
-cd AGI-Alpha-Agent-v0
-git pull --ff-only
-COMMIT_SHA=$(git rev-parse --short HEAD)
+if git rev-parse --short HEAD &>/dev/null; then
+  COMMIT_SHA=$(git rev-parse --short HEAD)
+else
+  COMMIT_SHA="unknown"
+fi
 
 ############## 3. RUNTIME ARTIFACTS ###########################################
 mkdir -p "$KEY_DIR" "$POLICY_DIR" "$SBOM_DIR" "$CONTINUAL_DIR" "$ASSETS_DIR" "$LOADTEST_DIR"
