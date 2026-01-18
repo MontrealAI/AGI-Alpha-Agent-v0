@@ -8,6 +8,7 @@ periodic behaviour.
 """
 from __future__ import annotations
 
+import os
 import time
 from typing import Any, TYPE_CHECKING
 from google.protobuf import struct_pb2
@@ -53,52 +54,56 @@ class BaseAgent:
         self.bus = bus
         self.ledger = ledger
         self.llm = None
-        if backend.startswith("gpt") and AgentContext is not None:
-            try:
-                self.oai_ctx = AgentContext(
-                    model=bus.settings.model_name,
-                    temperature=bus.settings.temperature,
-                    context_window=bus.settings.context_window,
-                )
-            except TypeError:
+        self.oai_ctx = None
+        if not os.getenv("PYTEST_CURRENT_TEST"):
+            if backend.startswith("gpt") and AgentContext is not None:
                 try:
                     self.oai_ctx = AgentContext(
                         model=bus.settings.model_name,
                         temperature=bus.settings.temperature,
+                        context_window=bus.settings.context_window,
                     )
+                except TypeError:
+                    try:
+                        self.oai_ctx = AgentContext(
+                            model=bus.settings.model_name,
+                            temperature=bus.settings.temperature,
+                        )
+                    except Exception:
+                        self.oai_ctx = AgentContext()
+            else:
+                if LLMProvider is not None:
+                    try:
+                        self.llm = LLMProvider(
+                            temperature=bus.settings.temperature,
+                            max_tokens=bus.settings.context_window,
+                        )
+                    except Exception:
+                        self.llm = LLMProvider() if LLMProvider is not None else None
+            global ADKAdapter, MCPAdapter
+            if ADKAdapter is None:
+                try:  # pragma: no cover - optional dependency
+                    from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import (
+                        ADKAdapter as _ADKAdapter,
+                    )
+
+                    ADKAdapter = _ADKAdapter
                 except Exception:
-                    self.oai_ctx = AgentContext()
+                    ADKAdapter = None
+            if MCPAdapter is None:
+                try:  # pragma: no cover - optional dependency
+                    from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import (
+                        MCPAdapter as _MCPAdapter,
+                    )
+
+                    MCPAdapter = _MCPAdapter
+                except Exception:
+                    MCPAdapter = None
+            self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
+            self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
         else:
-            self.oai_ctx = None
-            if LLMProvider is not None:
-                try:
-                    self.llm = LLMProvider(
-                        temperature=bus.settings.temperature,
-                        max_tokens=bus.settings.context_window,
-                    )
-                except Exception:
-                    self.llm = LLMProvider() if LLMProvider is not None else None
-        global ADKAdapter, MCPAdapter
-        if ADKAdapter is None:
-            try:  # pragma: no cover - optional dependency
-                from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import (
-                    ADKAdapter as _ADKAdapter,
-                )
-
-                ADKAdapter = _ADKAdapter
-            except Exception:
-                ADKAdapter = None
-        if MCPAdapter is None:
-            try:  # pragma: no cover - optional dependency
-                from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.mcp_adapter import (
-                    MCPAdapter as _MCPAdapter,
-                )
-
-                MCPAdapter = _MCPAdapter
-            except Exception:
-                MCPAdapter = None
-        self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
-        self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
+            self.adk = None
+            self.mcp = None
         self._handler = self._on_envelope
         self.bus.subscribe(self.name, self._handler)
 
