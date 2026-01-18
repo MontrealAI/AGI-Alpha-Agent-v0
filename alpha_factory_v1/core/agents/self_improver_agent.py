@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
@@ -72,7 +73,7 @@ class SelfImproverAgent(BaseAgent):
         """Apply the proposed patch if valid and update the metric file."""
         if git is None:
             raise RuntimeError("GitPython is required")
-        diff = self.patch_file.read_text()
+        diff = self_improver._ensure_hunk_ranges(self.patch_file.read_text())
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
@@ -90,7 +91,13 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+                    tf.write(diff)
+                    normalized_patch = tf.name
+                try:
+                    repo.git.apply(normalized_patch)
+                finally:
+                    Path(normalized_patch).unlink(missing_ok=True)
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001

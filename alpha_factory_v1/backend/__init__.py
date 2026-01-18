@@ -20,8 +20,10 @@ This module remains self-contained and safe to import even when:
 from __future__ import annotations
 
 # ─────────────────────── Back-compat shim (critical) ──────────────────────
+import contextlib
 import importlib
 import logging
+import os
 import sys
 import types
 from pathlib import Path
@@ -33,65 +35,79 @@ import time
 
 _LOG = logging.getLogger("alphafactory.startup")
 
-try:  # attempt to import the new canonical package name first
-    _agents_pkg = importlib.import_module("agents")  # provided by openai-agents ≥0.0.13
-except ModuleNotFoundError:  # SDK not installed
-    _LOG.warning("OpenAI Agents SDK not found - running in degraded mode. " "Install with:  pip install openai-agents")
-    # Create a *minimal* stub so `import openai_agents` will not crash.
-    shim = types.ModuleType("openai_agents")
-    shim.__spec__ = importlib.machinery.ModuleSpec("openai_agents", loader=None)
+try:
+    _legacy_pkg = importlib.import_module("openai_agents")
+except ModuleNotFoundError:
+    try:  # attempt to import the new canonical package name
+        _agents_pkg = importlib.import_module("agents")  # provided by openai-agents ≥0.0.13
+    except ModuleNotFoundError:  # SDK not installed
+        _LOG.warning(
+            "OpenAI Agents SDK not found - running in degraded mode. Install with:  pip install openai-agents"
+        )
+        # Create a *minimal* stub so `import openai_agents` will not crash.
+        shim = types.ModuleType("openai_agents")
+        shim.__spec__ = importlib.machinery.ModuleSpec("openai_agents", loader=None)
+        shim.__alpha_factory_stub__ = True
 
-    class _MissingSDK:  # pylint: disable=too-few-public-methods
-        """Stub that raises helpful errors when the real SDK is absent."""
+        class _MissingSDK:  # pylint: disable=too-few-public-methods
+            """Stub that raises helpful errors when the real SDK is absent."""
 
-        def __getattr__(self, item: str) -> NoReturn:  # noqa: D401
-            raise ModuleNotFoundError(
-                "The OpenAI Agents SDK is required for this operation. "
-                "Please install it with:  pip install openai-agents"
-            )
+            def __getattr__(self, item: str) -> NoReturn:  # noqa: D401
+                raise ModuleNotFoundError(
+                    "The OpenAI Agents SDK is required for this operation. "
+                    "Please install it with:  pip install openai-agents"
+                )
 
-        def __call__(self, *args: object, **kwargs: object) -> NoReturn:  # noqa: D401
-            raise ModuleNotFoundError(
-                "The OpenAI Agents SDK is required for this operation. "
-                "Please install it with:  pip install openai-agents"
-            )
+            def __call__(self, *args: object, **kwargs: object) -> NoReturn:  # noqa: D401
+                raise ModuleNotFoundError(
+                    "The OpenAI Agents SDK is required for this operation. "
+                    "Please install it with:  pip install openai-agents"
+                )
 
-    # Expose typical top-level symbols so `from openai_agents import Agent`
-    # fails with an informative message *at call-time* rather than import-time.
-    for _name in (
-        "Agent",
-        "OpenAIAgent",
-        "Tool",
-        "FunctionTool",
-        "tool",
-        "AgentRuntime",
-    ):
-        setattr(shim, _name, _MissingSDK())
+        # Expose typical top-level symbols so `from openai_agents import Agent`
+        # fails with an informative message *at call-time* rather than import-time.
+        for _name in (
+            "Agent",
+            "OpenAIAgent",
+            "Tool",
+            "FunctionTool",
+            "tool",
+            "AgentRuntime",
+        ):
+            setattr(shim, _name, _MissingSDK())
 
-    sys.modules["openai_agents"] = shim
-else:  # SDK is present → register alias & expose full public API verbatim
-    shim = types.ModuleType("openai_agents")
-    shim.__dict__.update(_agents_pkg.__dict__)
-    shim.__spec__ = _agents_pkg.__spec__
-    sys.modules["openai_agents"] = shim
-    _LOG.info("OpenAI Agents SDK detected — legacy imports patched successfully.")
+        sys.modules["openai_agents"] = shim
+    else:  # SDK is present → register alias & expose full public API verbatim
+        shim = types.ModuleType("openai_agents")
+        shim.__dict__.update(_agents_pkg.__dict__)
+        shim.__spec__ = _agents_pkg.__spec__
+        sys.modules["openai_agents"] = shim
+        _LOG.info("OpenAI Agents SDK detected — legacy imports patched successfully.")
+else:
+    sys.modules.setdefault("openai_agents", _legacy_pkg)
 
 # Legacy import path: allow `import backend` and `import backend.finance_agent`
 sys.modules.setdefault("backend", sys.modules[__name__])
+with contextlib.suppress(ModuleNotFoundError):
+    _utils_mod = importlib.import_module(".utils", __name__)
+    sys.modules.setdefault(__name__ + ".utils", _utils_mod)
+    sys.modules.setdefault("backend.utils", _utils_mod)
 
+_skip_autoload = "pytest" in sys.modules or os.getenv("PYTEST_NET_OFF") == "1"
 _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 setattr(sys.modules[__name__], "agents", _agents_mod)
 
-_services_mod = importlib.import_module(".services", __name__)
-sys.modules.setdefault(__name__ + ".services", _services_mod)
-sys.modules["backend.services"] = _services_mod
-setattr(sys.modules[__name__], "services", _services_mod)
+if not _skip_autoload:
+    _services_mod = importlib.import_module(".services", __name__)
+    sys.modules.setdefault(__name__ + ".services", _services_mod)
+    sys.modules["backend.services"] = _services_mod
+    setattr(sys.modules[__name__], "services", _services_mod)
 
-_fin_mod = importlib.import_module(".agents.finance_agent", __name__)
-sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
-sys.modules["backend.finance_agent"] = _fin_mod
+    _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
+    sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
+    sys.modules["backend.finance_agent"] = _fin_mod
 
 
 # ──────────────────────── log & CSRF helpers (unchanged) ──────────────────
@@ -150,12 +166,13 @@ try:
         _LOG.debug("trace_ws not attached (optional component missing).")
 
     # .— /metrics (Prometheus) ————————————————————————————————————————.
-    try:
-        from .agents.finance_agent import metrics_asgi_app
+    if not _skip_autoload:
+        try:
+            from .agents.finance_agent import metrics_asgi_app
 
-        fast_app.mount(f"{API_PREFIX}/metrics", metrics_asgi_app())
-    except Exception:  # pragma: no cover
-        _LOG.debug("Prometheus metrics endpoint not active.")
+            fast_app.mount(f"{API_PREFIX}/metrics", metrics_asgi_app())
+        except Exception:  # pragma: no cover
+            _LOG.debug("Prometheus metrics endpoint not active.")
 
     # Export the ASGI application expected by uvicorn & gunicorn
     app = fast_app

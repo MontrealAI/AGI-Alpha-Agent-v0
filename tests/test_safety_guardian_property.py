@@ -48,9 +48,8 @@ class DummyLedger:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: "import os" + s))
 def test_blocks_import_os(code: str) -> None:
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -100,10 +99,11 @@ json_values = st.recursive(
 
 
 @composite
-def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
+def payloads(draw: st.DrawFn, include_code: bool, include_import_os: bool = False) -> dict[str, object]:
     extra = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
     if include_code:
-        code = draw(st.text(min_size=0, max_size=100))
+        base = draw(st.text(min_size=0, max_size=100))
+        code = f"import os{base}" if include_import_os else base
         extra["code"] = code
         return extra
     return extra
@@ -114,11 +114,9 @@ def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
     sender=st.text(max_size=5),
     recipient=st.text(max_size=5),
     ts=st.floats(min_value=0, max_value=1e6, allow_nan=False, allow_infinity=False),
-    payload=payloads(include_code=True),
+    payload=payloads(include_code=True, include_import_os=True),
 )
 def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)

@@ -43,6 +43,7 @@ import logging
 import os
 import pathlib
 import sqlite3
+import sys
 import time
 from collections import OrderedDict
 from types import GeneratorType
@@ -471,36 +472,38 @@ except ImportError:
     pass
 
 # llama-cpp (offline fallback)
-try:
-    from llama_cpp import Llama  # type: ignore
+_skip_llama = os.getenv("PYTEST_NET_OFF") == "1" or "pytest" in sys.modules
+if not _skip_llama:
+    try:
+        from llama_cpp import Llama  # type: ignore
 
-    class _LlamaCPP(_Provider):
-        name = "llama"
+        class _LlamaCPP(_Provider):
+            name = "llama"
 
-        def __init__(self) -> None:
-            default = pathlib.Path.home() / ".cache" / "llama" / "TinyLlama-1.1B-Chat-v1.0.Q4_K_M.gguf"
-            mpath = pathlib.Path(os.getenv("LLAMA_MODEL_PATH", default))
-            mpath.parent.mkdir(parents=True, exist_ok=True)
-            if not mpath.exists():
-                _log.info("Downloading TinyLlama weight (~380 MB) …")
-                import huggingface_hub as hf  # type: ignore
+            def __init__(self) -> None:
+                default = pathlib.Path.home() / ".cache" / "llama" / "TinyLlama-1.1B-Chat-v1.0.Q4_K_M.gguf"
+                mpath = pathlib.Path(os.getenv("LLAMA_MODEL_PATH", default))
+                mpath.parent.mkdir(parents=True, exist_ok=True)
+                if not mpath.exists():
+                    _log.info("Downloading TinyLlama weight (~380 MB) …")
+                    import huggingface_hub as hf  # type: ignore
 
-                tmp = hf.hf_hub_download(repo_id="TheBloke/TinyLlama-1.1B-Chat-GGUF", filename=mpath.name)
-                pathlib.Path(tmp).rename(mpath)
-            self._llm = Llama(
-                model_path=str(mpath),
-                n_ctx=int(os.getenv("LLAMA_N_CTX", "2048")),
-                n_threads=max(1, os.cpu_count() // 2),
-            )
+                    tmp = hf.hf_hub_download(repo_id="TheBloke/TinyLlama-1.1B-Chat-GGUF", filename=mpath.name)
+                    pathlib.Path(tmp).rename(mpath)
+                self._llm = Llama(
+                    model_path=str(mpath),
+                    n_ctx=int(os.getenv("LLAMA_N_CTX", "2048")),
+                    n_threads=max(1, os.cpu_count() // 2),
+                )
 
-        def _invoke(self, msgs, temperature, max_tokens, stream, stop):
-            prompt = "\n".join(m["content"] for m in msgs)
-            out = self._llm(prompt, temperature=temperature, max_tokens=max_tokens, stop=stop or [])
-            return out["choices"][0]["text"].strip()
+            def _invoke(self, msgs, temperature, max_tokens, stream, stop):
+                prompt = "\n".join(m["content"] for m in msgs)
+                out = self._llm(prompt, temperature=temperature, max_tokens=max_tokens, stop=stop or [])
+                return out["choices"][0]["text"].strip()
 
-    _install("llama", _LlamaCPP)
-except ImportError:
-    pass
+        _install("llama", _LlamaCPP)
+    except ImportError:
+        pass
 
 _ORDER_ENV = os.getenv("AF_LLM_PROVIDERS")
 if _ORDER_ENV:

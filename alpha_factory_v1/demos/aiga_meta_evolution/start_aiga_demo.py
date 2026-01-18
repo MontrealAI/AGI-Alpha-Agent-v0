@@ -83,8 +83,9 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--logs", action="store_true", help="tail container logs after start-up")
     ap.add_argument("--reset", action="store_true", help="remove volumes and images")
     ap.add_argument("--stop", action="store_true", help="stop running containers")
-    if argv is None and os.getenv("PYTEST_CURRENT_TEST"):
-        argv = []
+    if argv is None and "pytest" in sys.modules:
+        if Path(sys.argv[0]).name != Path(__file__).name:
+            argv = []
     args = ap.parse_args(argv)
 
     dc = docker_compose_cmd()

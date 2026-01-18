@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import types
 
 import pytest
 
@@ -70,7 +71,7 @@ def malformed_envelopes(draw: st.DrawFn) -> messaging.Envelope:
     payload = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
     code = draw(st.text(min_size=0, max_size=100).map(lambda s: "import os" + s))
     payload["code"] = code
-    return messaging.Envelope(sender=sender, recipient=recipient, payload=payload, ts=ts)
+    return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
 @settings(max_examples=25)

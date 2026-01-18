@@ -9,6 +9,7 @@ the temporary clone via the ``cleanup`` flag.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -38,6 +39,34 @@ def _log_delta(delta: float, log_file: Path) -> None:
         log = []
     log.append({"ts": time.time(), "delta": delta})
     log_file.write_text(json.dumps(log))
+
+
+def _ensure_hunk_ranges(patch: str) -> str:
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    idx = 0
+    while idx < len(lines):
+        line = lines[idx]
+        if line.startswith("@@") and not re.search(r"@@\s*-\d", line):
+            removed = 0
+            added = 0
+            scan = idx + 1
+            while scan < len(lines) and not lines[scan].startswith(("@@", "--- ", "+++ ")):
+                hunk_line = lines[scan]
+                if hunk_line.startswith("+") and not hunk_line.startswith("+++"):
+                    added += 1
+                elif hunk_line.startswith("-") and not hunk_line.startswith("---"):
+                    removed += 1
+                else:
+                    added += 1
+                    removed += 1
+                scan += 1
+            normalized.append(f"@@ -1,{removed} +1,{added} @@")
+            idx += 1
+            continue
+        normalized.append(line)
+        idx += 1
+    return "\n".join(normalized) + "\n"
 
 
 def improve_repo(
@@ -74,11 +103,17 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _ensure_hunk_ranges(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+        tf.write(diff)
+        normalized_patch = tf.name
+    try:
+        repo.git.apply(normalized_patch)
+    finally:
+        Path(normalized_patch).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

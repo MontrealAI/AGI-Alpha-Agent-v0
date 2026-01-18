@@ -28,6 +28,9 @@ def _load_openai_sdk():
     except ModuleNotFoundError as exc:  # pragma: no cover - explicit failure path
         raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge") from exc
 
+    if getattr(oa, "__alpha_factory_stub__", False):
+        raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge")
+
     missing: list[str] = []
     tool = getattr(oa, "Tool", None)
     agent = getattr(oa, "OpenAIAgent", getattr(oa, "Agent", None))
@@ -177,7 +180,9 @@ def main() -> None:
     else:
         print("EvolverAgent exposed via ADK gateway (ADK disabled)", flush=True)
 
-    runtime.run()
+    run = getattr(runtime, "run", None)
+    if callable(run):
+        run()
 
 
 if __name__ == "__main__":  # pragma: no cover
