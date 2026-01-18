@@ -50,6 +50,14 @@ ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
 BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
+
+def _refresh_env_settings() -> None:
+    """Refresh backoff settings from the environment."""
+    global ERR_THRESHOLD, BACKOFF_EXP_AFTER, PROMOTION_THRESHOLD
+    ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", str(ERR_THRESHOLD)))
+    BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", str(BACKOFF_EXP_AFTER)))
+    PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", str(PROMOTION_THRESHOLD)))
+
 log = insight_logging.logging.getLogger(__name__)
 
 
@@ -97,6 +105,7 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        _refresh_env_settings()
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)

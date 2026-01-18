@@ -28,6 +28,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 from __future__ import annotations
 
 import os
+import asyncio
 import pathlib
 import re
 import shutil
@@ -58,7 +59,7 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
-def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+async def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
     prompt = textwrap.dedent(
         f"""
@@ -74,9 +75,34 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch_override = os.getenv("PATCH_FILE")
+    if patch_override and pathlib.Path(patch_override).is_file():
+        result = pathlib.Path(patch_override).read_text()
+    else:
+        result = llm(prompt)
+        if asyncio.iscoroutine(result):
+            result = await result
+    patch = _normalize_patch(str(result))
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+def _normalize_patch(patch: str) -> str:
+    """Return a dedented patch with a trailing newline."""
+    normalized_lines = []
+    for raw_line in textwrap.dedent(patch).splitlines():
+        stripped = raw_line.lstrip()
+        if stripped.startswith(("--- ", "+++ ", "@@", "+", "-", " ")):
+            line = stripped
+        else:
+            line = raw_line
+        if line.strip() == "@@":
+            line = "@@ -1 +1 @@"
+        normalized_lines.append(line)
+    normalized = "\n".join(normalized_lines).lstrip()
+    if normalized and not normalized.endswith("\n"):
+        normalized += "\n"
+    return normalized
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -94,6 +120,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
@@ -160,7 +187,7 @@ if __name__ == "__main__":
     rc, out = validate_repo(args.repo)
     print(out)
     if rc != 0:
-        patch = generate_patch(out, llm=llm, repo_path=args.repo)
+        patch = asyncio.run(generate_patch(out, llm=llm, repo_path=args.repo))
         print(patch)
         apply_patch(patch, repo_path=args.repo)
         rc, out = validate_repo(args.repo)

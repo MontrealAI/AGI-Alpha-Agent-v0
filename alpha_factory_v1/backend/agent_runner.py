@@ -19,7 +19,15 @@ from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
+def _resolve_agent(name: str) -> Any:
+    import sys
+
+    mod = sys.modules.get("alpha_factory_v1.backend.agents")
+    if mod is not None and hasattr(mod, "get_agent"):
+        return mod.get_agent(name)
+    from .agents import get_agent
+
+    return get_agent(name)
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -166,7 +174,7 @@ class AgentRunner:
         inst: Any | None = None,
     ) -> None:
         self.name = name
-        self.inst = inst or get_agent(name)
+        self.inst = inst or _resolve_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)
         self.spec = getattr(self.inst, "SCHED_SPEC", None)
         self.next_ts = 0.0

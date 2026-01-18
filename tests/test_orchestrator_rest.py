@@ -49,7 +49,7 @@ class TestRestAPI(unittest.TestCase):
         mem_stub = type("Mem", (), {"vector": vector})()
         runner = DummyRunner(DummyAgent())
         with mock.patch.object(orchestrator, "mem", mem_stub):
-            app = _build_rest({"dummy": runner})
+            app = _build_rest({"dummy": runner}, mem=mem_stub)
             self.assertIsNotNone(app)
             client = TestClient(app)
             headers = {"Authorization": "Bearer test-token"}
