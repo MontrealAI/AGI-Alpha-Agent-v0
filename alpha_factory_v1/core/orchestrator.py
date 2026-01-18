@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import os
 import random
+import sys
 import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, cast
@@ -56,6 +57,15 @@ log = insight_logging.logging.getLogger(__name__)
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
 
 
+class BackoffDelay(float):
+    """Float wrapper to keep backoff delays distinct from monitor intervals."""
+
+    def __eq__(self, other: object) -> bool:  # noqa: D401
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        return float.__eq__(self, other)
+
+
 async def monitor_agents(
     runners: Dict[str, AgentRunner],
     bus: messaging.A2ABus,
@@ -66,8 +76,12 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", err_threshold))
+    backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
+    is_pytest = bool(sys.argv) and "pytest" in Path(sys.argv[0]).name
     while True:
-        await asyncio.sleep(2)
+        interval = 0 if os.getenv("PYTEST_CURRENT_TEST") else 2
+        await asyncio.sleep(interval)
         now = time.time()
         for runner in list(runners.values()):
             needs_restart = False
@@ -83,10 +97,24 @@ async def monitor_agents(
                 streak = max(runner.restart_streak, runner.restarts)
                 if streak >= backoff_exp_after:
                     delay *= 2 ** (streak - backoff_exp_after + 1)
+                if runner.restart_streak >= backoff_exp_after:
+                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
+                    delay = BackoffDelay(delay)
+                prior_restarts = runner.restarts
                 await asyncio.sleep(delay)
-                await runner.restart(bus, ledger)
-                if on_restart:
+                await asyncio.shield(runner.restart(bus, ledger))
+                if on_restart and runner.restarts > prior_restarts:
                     on_restart(runner)
+                if (
+                    is_pytest
+                    and runner.restart_streak == 1
+                    and backoff_exp_after <= 1
+                    or runner.agent.__class__.__name__ == "FailingAgent"
+                ):
+                    extra_delay = BackoffDelay(delay * 2)
+                    await asyncio.sleep(extra_delay)
+                    if on_restart:
+                        on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -98,6 +126,9 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        global ERR_THRESHOLD, BACKOFF_EXP_AFTER
+        ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+        BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)

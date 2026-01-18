@@ -9,6 +9,7 @@ branch so users can explore every demo from a polished subdirectory.
 """
 from __future__ import annotations
 
+import os
 import subprocess
 from pathlib import Path
 from typing import Any, Sequence
@@ -24,6 +25,12 @@ def run(cmd: Sequence[str], **kwargs: Any) -> None:
 
 
 def main() -> None:
+    asset_cache_dir = os.environ.get("INSIGHT_ASSET_ROOT") or os.environ.get("FETCH_ASSETS_DIR")
+    if not asset_cache_dir:
+        asset_cache_dir = str(Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "insight-assets")
+    os.environ.setdefault("FETCH_ASSETS_DIR", asset_cache_dir)
+    os.environ.setdefault("INSIGHT_ASSET_ROOT", asset_cache_dir)
+
     # Environment checks
     run(["python", "alpha_factory_v1/scripts/preflight.py"])
     run(["node", str(BROWSER_DIR / "build/version_check.js")])

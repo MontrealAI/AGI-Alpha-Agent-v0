@@ -36,6 +36,8 @@ class AgentRunner:
             start = time.perf_counter()
             try:
                 await self.agent.run_cycle()
+            except asyncio.CancelledError:
+                raise
             except Exception as exc:  # noqa: BLE001
                 if hasattr(bus, "alert"):
                     try:
@@ -82,7 +84,6 @@ class AgentRunner:
         else:
             close()
         self.agent = self.cls(bus, ledger)
-        self.error_count = 0
         self.restarts += 1
         self.restart_streak += 1
         self.start(bus, ledger)

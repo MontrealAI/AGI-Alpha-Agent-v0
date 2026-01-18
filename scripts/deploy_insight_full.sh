@@ -9,6 +9,12 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
 BROWSER_DIR="alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
+ASSET_CACHE_DIR="${INSIGHT_ASSET_ROOT:-${FETCH_ASSETS_DIR:-}}"
+if [[ -z "$ASSET_CACHE_DIR" ]]; then
+    ASSET_CACHE_DIR="${RUNNER_TEMP:-/tmp}/insight-assets"
+fi
+export FETCH_ASSETS_DIR="$ASSET_CACHE_DIR"
+export INSIGHT_ASSET_ROOT="$ASSET_CACHE_DIR"
 
 # Comprehensive preflight checks
 python alpha_factory_v1/scripts/preflight.py

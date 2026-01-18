@@ -18,7 +18,7 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, Typ
 from cachetools import TTLCache
 
 from .config import Settings
-from google.protobuf import json_format
+from google.protobuf import json_format, struct_pb2
 from typing import TYPE_CHECKING
 from alpha_factory_v1.core.utils import alerts
 
@@ -56,6 +56,15 @@ except ModuleNotFoundError:  # pragma: no cover - broker optional
 
 
 logger = logging.getLogger(__name__)
+
+
+if not hasattr(struct_pb2.Struct, "get"):
+
+    def _struct_get(self: struct_pb2.Struct, key: str, default: Any | None = None) -> Any | None:
+        data = json_format.MessageToDict(self)
+        return data.get(key, default)
+
+    struct_pb2.Struct.get = _struct_get  # type: ignore[attr-defined]
 
 
 class A2ABus:
