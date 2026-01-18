@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import asyncio
 import pathlib
+import tempfile
 from unittest import mock
 
 import pytest
 
 hypothesis = pytest.importorskip("hypothesis")
-from hypothesis import assume, given, settings, strategies as st  # noqa: E402
+from hypothesis import given, settings, strategies as st  # noqa: E402
 from hypothesis.strategies import composite  # noqa: E402
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import safety_agent  # noqa: E402
@@ -48,9 +49,8 @@ class DummyLedger:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: f"import os{s}"))
 def test_blocks_import_os(code: str) -> None:
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -65,9 +65,8 @@ def test_blocks_import_os(code: str) -> None:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: s.replace("import os", "import_os")))
 def test_allows_safe_code(code: str) -> None:
-    assume("import os" not in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -100,12 +99,12 @@ json_values = st.recursive(
 
 
 @composite
-def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
+def payloads(draw: st.DrawFn, include_code: bool, code_strategy: st.SearchStrategy[str] | None = None) -> dict[str, object]:
     extra = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
     if include_code:
-        code = draw(st.text(min_size=0, max_size=100))
-        extra["code"] = code
-        return extra
+        if code_strategy is None:
+            code_strategy = st.text(min_size=0, max_size=100)
+        extra["code"] = draw(code_strategy)
     return extra
 
 
@@ -114,11 +113,9 @@ def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
     sender=st.text(max_size=5),
     recipient=st.text(max_size=5),
     ts=st.floats(min_value=0, max_value=1e6, allow_nan=False, allow_infinity=False),
-    payload=payloads(include_code=True),
+    payload=payloads(include_code=True, code_strategy=st.text(min_size=0, max_size=100).map(lambda s: f"import os{s}")),
 )
 def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -132,11 +129,12 @@ def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, 
     sender=st.text(max_size=5),
     recipient=st.text(max_size=5),
     ts=st.floats(min_value=0, max_value=1e6, allow_nan=False, allow_infinity=False),
-    payload=payloads(include_code=True),
+    payload=payloads(
+        include_code=True,
+        code_strategy=st.text(min_size=0, max_size=100).map(lambda s: s.replace("import os", "import_os")),
+    ),
 )
 def test_fuzz_envelope_allows_safe(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" not in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -190,27 +188,29 @@ def _dummy_classes():
 
 @settings(max_examples=10)
 @given(count=st.integers(min_value=0, max_value=3), broadcast=st.booleans())
-def test_broadcast_merkle_root_property(tmp_path: pathlib.Path, count: int, broadcast: bool) -> None:
-    led = insight_logging.Ledger(str(tmp_path / "l.db"), rpc_url="http://rpc.test", broadcast=broadcast)
-    for i in range(count):
-        env = messaging.Envelope(
-            sender=f"s{i}",
-            recipient=f"r{i}",
-            payload={"v": i},
-            ts=float(i),
-        )
-        led.log(env)
-    root = led.compute_merkle_root()
-    captured, DummyClient, DummyTx, DummyInstr, DummyPk = _dummy_classes()
-    with (
-        mock.patch.object(insight_logging, "AsyncClient", DummyClient, create=True),
-        mock.patch.object(insight_logging, "Transaction", DummyTx, create=True),
-        mock.patch.object(insight_logging, "TransactionInstruction", DummyInstr, create=True),
-        mock.patch.object(insight_logging, "PublicKey", DummyPk, create=True),
-    ):
-        asyncio.run(led.broadcast_merkle_root())
-    if broadcast:
-        assert captured["url"] == "http://rpc.test"
-        assert captured["data"] == root
-    else:
-        assert captured == {}
+def test_broadcast_merkle_root_property(count: int, broadcast: bool) -> None:
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = pathlib.Path(tmp_dir)
+        led = insight_logging.Ledger(str(tmp_path / "l.db"), rpc_url="http://rpc.test", broadcast=broadcast)
+        for i in range(count):
+            env = messaging.Envelope(
+                sender=f"s{i}",
+                recipient=f"r{i}",
+                payload={"v": i},
+                ts=float(i),
+            )
+            led.log(env)
+        root = led.compute_merkle_root()
+        captured, DummyClient, DummyTx, DummyInstr, DummyPk = _dummy_classes()
+        with (
+            mock.patch.object(insight_logging, "AsyncClient", DummyClient, create=True),
+            mock.patch.object(insight_logging, "Transaction", DummyTx, create=True),
+            mock.patch.object(insight_logging, "TransactionInstruction", DummyInstr, create=True),
+            mock.patch.object(insight_logging, "PublicKey", DummyPk, create=True),
+        ):
+            asyncio.run(led.broadcast_merkle_root())
+        if broadcast:
+            assert captured["url"] == "http://rpc.test"
+            assert captured["data"] == root
+        else:
+            assert captured == {}

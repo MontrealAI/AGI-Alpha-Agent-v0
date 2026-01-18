@@ -77,12 +77,21 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+try:
+    LLM = OpenAIAgent(
+        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        api_key=os.getenv("OPENAI_API_KEY", None),
+        base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        temperature=float(_temp_env) if _temp_env is not None else None,
+    )
+except TypeError:  # pragma: no cover - stubbed agent without init signature
+    from .agent_core import llm_client
+
+    class _FallbackAgent:
+        def __call__(self, prompt: str) -> str:
+            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+
+    LLM = _FallbackAgent()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")

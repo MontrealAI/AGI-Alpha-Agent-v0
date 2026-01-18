@@ -19,7 +19,10 @@ from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
+try:
+    from backend.agents.registry import get_agent
+except ModuleNotFoundError:  # pragma: no cover - test stubs
+    from backend.agents import get_agent  # type: ignore
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 

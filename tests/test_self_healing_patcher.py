@@ -3,6 +3,7 @@ import unittest
 import os
 import tempfile
 import pathlib
+import textwrap
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
 
@@ -37,12 +38,15 @@ class TestPatcherCore(unittest.TestCase):
             file_path = os.path.join(repo, "alpha", "test.py")
             with open(file_path, "w") as fh:
                 fh.write("x = 1\n")
-            patch = """--- a/alpha/test.py
-+++ b/alpha/test.py
-@@
--x = 1
-+x = 2
-"""
+            patch = textwrap.dedent(
+                """\
+                --- a/alpha/test.py
+                +++ b/alpha/test.py
+                @@ -1 +1 @@
+                -x = 1
+                +x = 2
+                """
+            )
             # Should not raise for valid nested path
             patcher_core._sanity_check_patch(patch, pathlib.Path(repo))
             patcher_core.apply_patch(patch, repo_path=repo)
@@ -55,12 +59,15 @@ class TestPatcherCore(unittest.TestCase):
             file_path = os.path.join(repo, "hello.txt")
             with open(file_path, "w") as fh:
                 fh.write("hello\n")
-            patch = """--- a/hello.txt
-+++ b/hello.txt
-@@ -1 +1 @@
--hello
-+hello world
-"""
+            patch = textwrap.dedent(
+                """\
+                --- a/hello.txt
+                +++ b/hello.txt
+                @@ -1 +1 @@
+                -hello
+                +hello world
+                """
+            )
             patcher_core.apply_patch(patch, repo_path=repo)
             with open(file_path) as fh:
                 data = fh.read()

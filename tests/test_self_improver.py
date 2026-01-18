@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import json
+import textwrap
 from pathlib import Path
 
 import pytest
@@ -24,7 +25,15 @@ def test_improve_repo(tmp_path: Path) -> None:
     repo_dir.mkdir()
     _init_repo(repo_dir)
 
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = textwrap.dedent(
+        """\
+        --- a/metric.txt
+        +++ b/metric.txt
+        @@ -1 +1 @@
+        -1
+        +2
+        """
+    )
     patch_file = tmp_path / "patch.diff"
     patch_file.write_text(patch)
     log_file = tmp_path / "log.json"
@@ -57,7 +66,15 @@ def test_improve_repo_cleanup(tmp_path: Path) -> None:
     repo_dir.mkdir()
     _init_repo(repo_dir)
 
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = textwrap.dedent(
+        """\
+        --- a/metric.txt
+        +++ b/metric.txt
+        @@ -1 +1 @@
+        -1
+        +2
+        """
+    )
     patch_file = tmp_path / "patch.diff"
     patch_file.write_text(patch)
     log_file = tmp_path / "log.json"
@@ -104,7 +121,15 @@ async def test_self_improver_agent_apply(tmp_path: Path) -> None:
     repo_dir = tmp_path / "repo"
     repo_dir.mkdir()
     _init_repo(repo_dir)
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = textwrap.dedent(
+        """\
+        --- a/metric.txt
+        +++ b/metric.txt
+        @@ -1 +1 @@
+        -1
+        +2
+        """
+    )
     patch_file = tmp_path / "p.diff"
     patch_file.write_text(patch)
     bus = messaging.A2ABus(config.Settings(bus_port=0))
@@ -120,7 +145,15 @@ async def test_self_improver_agent_rollback(monkeypatch, tmp_path: Path) -> None
     repo_dir = tmp_path / "repo"
     repo_dir.mkdir()
     _init_repo(repo_dir)
-    patch = """--- a/metric.txt\n+++ b/metric.txt\n@@\n-1\n+2\n"""
+    patch = textwrap.dedent(
+        """\
+        --- a/metric.txt
+        +++ b/metric.txt
+        @@ -1 +1 @@
+        -1
+        +2
+        """
+    )
     patch_file = tmp_path / "p.diff"
     patch_file.write_text(patch)
     bus = messaging.A2ABus(config.Settings(bus_port=0))
