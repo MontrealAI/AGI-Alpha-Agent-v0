@@ -38,6 +38,8 @@ import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
 
+from alpha_factory_v1.core.utils.patch_guard import normalize_patch_hunks
+
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
 
@@ -89,6 +91,7 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
 
 def _normalize_patch(patch: str) -> str:
     patch = textwrap.dedent(patch).lstrip()
+    patch = normalize_patch_hunks(patch)
     if not patch.endswith("\n"):
         patch += "\n"
     return patch
@@ -172,7 +175,7 @@ if __name__ == "__main__":
     _temp_env = os.getenv("TEMPERATURE")
     try:
         from openai_agents import OpenAIAgent
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, ImportError):
         from .agent_core import llm_client
 
         def llm(prompt: str) -> str:

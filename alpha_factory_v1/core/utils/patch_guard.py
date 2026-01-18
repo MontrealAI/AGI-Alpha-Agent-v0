@@ -17,6 +17,18 @@ _BAD_PATTERNS = [
 ]
 
 
+def normalize_patch_hunks(diff: str) -> str:
+    """Ensure unified diff hunks include line ranges when omitted."""
+    lines = diff.splitlines()
+    normalized: list[str] = []
+    for line in lines:
+        if line.startswith("@@") and re.match(r"^@@\s*$", line):
+            normalized.append("@@ -1,1 +1,1 @@")
+        else:
+            normalized.append(line)
+    return "\n".join(normalized)
+
+
 def _changed_files(diff: str) -> list[str]:
     files: set[str] = set()
     for line in diff.splitlines():

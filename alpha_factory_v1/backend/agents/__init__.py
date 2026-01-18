@@ -2,6 +2,7 @@
 """Agent discovery, health monitoring and registry."""
 from __future__ import annotations
 
+from . import registry as _registry
 from .registry import (
     AGENT_REGISTRY,
     CAPABILITY_GRAPH,
@@ -24,9 +25,7 @@ from .registry import (
     register_agent,
     register,
     list_capabilities,
-    list_agents as _list_agents,
     capability_agents,
-    get_agent,
 )
 from .discovery import (
     discover_local,
@@ -53,11 +52,16 @@ logger.info(
 
 def list_agents(detail: bool = False):
     """Return agent registry entries and failed imports when ``detail`` is ``True``."""
-    entries = _list_agents(detail=detail)
+    entries = _registry.list_agents(detail)
     if not detail:
         return entries
     failed = [{"name": name, "status": "error", "message": msg} for name, msg in sorted(FAILED_AGENTS.items())]
     return entries + failed
+
+
+def get_agent(name: str, **kwargs):
+    """Instantiate an agent by name using the active registry."""
+    return _registry.get_agent(name, **kwargs)
 
 
 __all__ = [

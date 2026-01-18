@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import sys
 from typing import Dict, Optional
 
 from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
@@ -28,9 +29,10 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
-
-        avail = list_agents()
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is None:
+            from backend import agents as agents_mod
+        avail = agents_mod.list_agents()
         names = [n for n in avail if not enabled or n in enabled]
         if not names:
             raise RuntimeError(f"No agents selected – ENABLED={','.join(enabled) if enabled else 'ALL'}")
@@ -44,9 +46,14 @@ class AgentManager:
 
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
-
-        await start_background_tasks()
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is None:
+            from backend import agents as agents_mod
+        start_background_tasks = getattr(agents_mod, "start_background_tasks", None)
+        if start_background_tasks is not None:
+            result = start_background_tasks()
+            if asyncio.iscoroutine(result):
+                await result
 
         for r in self.runners.values():
             register = getattr(r.inst, "_register_mesh", None)
@@ -69,9 +76,14 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
-
-        await stop_background_tasks()
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is None:
+            from backend import agents as agents_mod
+        stop_background_tasks = getattr(agents_mod, "stop_background_tasks", None)
+        if stop_background_tasks is not None:
+            result = stop_background_tasks()
+            if asyncio.iscoroutine(result):
+                await result
         if self._hb_task:
             self._hb_task.cancel()
         if self._reg_task:

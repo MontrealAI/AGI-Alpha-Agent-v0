@@ -49,6 +49,7 @@ NEVER raise at import time.
 from __future__ import annotations
 
 import asyncio
+import functools
 import hashlib
 import json
 import logging
@@ -165,6 +166,19 @@ def _wrap_mcp(agent: str, payload: Any) -> Dict[str, Any]:  # MCP envelope
     }
 
 
+def _fallback_embeddings(texts: List[str], dim: int) -> "np.ndarray":
+    """Create deterministic embeddings without external models."""
+    if np is None:
+        raise RuntimeError("numpy is required for fallback embeddings.")
+    vectors = []
+    for text in texts:
+        digest = hashlib.sha256(text.encode("utf-8")).digest()
+        seed = int.from_bytes(digest[:8], "little", signed=False)
+        rng = np.random.default_rng(seed)
+        vectors.append(rng.standard_normal(dim, dtype="float32"))
+    return np.vstack(vectors)
+
+
 # ───────────────────────────────── CONFIG ────────────────────────────────────
 @dataclass
 class BTConfig:
@@ -199,15 +213,23 @@ class _EmbedStore:
             self._embedder = "openai"
         else:
             if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer unavailable and OPENAI_API_KEY not set.")
+                self._embedder = "fallback"
+                return
             loop = asyncio.get_event_loop()
-            self._embedder = await loop.run_in_executor(None, SentenceTransformer, "nomic-embed-text")
+            try:
+                loader = functools.partial(SentenceTransformer, "nomic-embed-text", local_files_only=True)
+                self._embedder = await loop.run_in_executor(None, loader)
+            except Exception:  # noqa: BLE001
+                logger.warning("Failed to load local SentenceTransformer model; using fallback embeddings.")
+                self._embedder = "fallback"
 
     async def _embed(self, batch: List[str]) -> "np.ndarray":
         await self._ensure_embedder()
         if self._embedder == "openai":  # OpenAI API
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=batch, encoding_format="float")
             vecs = np.array([d.embedding for d in resp["data"]], dtype="float32")  # type: ignore
+        elif self._embedder == "fallback":
+            vecs = _fallback_embeddings(batch, self.cfg.embed_dim)
         else:  # local SBERT
             loop = asyncio.get_event_loop()
             vecs = await loop.run_in_executor(None, self._embedder.encode, batch)  # type: ignore

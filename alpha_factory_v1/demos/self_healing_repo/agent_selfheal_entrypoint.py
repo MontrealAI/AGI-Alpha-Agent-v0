@@ -8,23 +8,71 @@ Self‑Healing Repo demo
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
 4. Opens a Pull Request‑style diff in the dashboard and re‑runs tests.
 """
-import logging
 import asyncio
+import importlib
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-import gradio as gr
+if "gradio" in sys.modules:
+    gr = sys.modules["gradio"]
+elif importlib.util.find_spec("gradio"):
+    gr = importlib.import_module("gradio")
+else:
+    class _FallbackBlocks:
+        def __init__(self, *a, **k):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    class _FallbackMarkdown:
+        def __init__(self, *a, **k):
+            pass
+
+    class _FallbackButton:
+        def __init__(self, *a, **k):
+            pass
+
+        def click(self, *a, **k):
+            return None
+
+    def _mount_gradio_app(app, *_a, **_k):
+        return app
+
+    gr = type(
+        "FallbackGradio",
+        (),
+        {
+            "Blocks": _FallbackBlocks,
+            "Markdown": _FallbackMarkdown,
+            "Button": _FallbackButton,
+            "mount_gradio_app": staticmethod(_mount_gradio_app),
+        },
+    )
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
-try:
-    from openai_agents import Agent, OpenAIAgent, Tool
-except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+if "openai_agents" in sys.modules:
+    _oa = sys.modules["openai_agents"]
+elif importlib.util.find_spec("openai_agents"):
+    _oa = importlib.import_module("openai_agents")
+else:  # pragma: no cover - optional fallback
+    _oa = None
+
+if _oa is None or not all(hasattr(_oa, attr) for attr in ("Agent", "OpenAIAgent", "Tool")):
+    from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -45,8 +93,16 @@ except Exception:  # pragma: no cover - optional fallback
             self.tools = tools or []
             self.name = name
 
+else:
+    Agent = _oa.Agent
+    OpenAIAgent = _oa.OpenAIAgent
+    Tool = _oa.Tool
 
-from .patcher_core import generate_patch, apply_patch
+
+def _patcher():
+    from alpha_factory_v1.demos.self_healing_repo import patcher_core
+
+    return patcher_core
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -77,12 +133,28 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+
+
+def _build_llm():
+    model = os.getenv("OPENAI_MODEL") or os.getenv("MODEL_NAME") or "gpt-4o-mini"
+    api_key = os.getenv("OPENAI_API_KEY", None)
+    base_url = "http://ollama:11434/v1" if not api_key else None
+    temperature = float(_temp_env) if _temp_env is not None else None
+    try:
+        return OpenAIAgent(
+            model=model,
+            api_key=api_key,
+            base_url=base_url,
+            temperature=temperature,
+        )
+    except TypeError:
+        try:
+            return OpenAIAgent()
+        except Exception:
+            return lambda _prompt: ""
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -107,13 +179,15 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    patcher_core = _patcher()
+    patch = patcher_core.generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
     return {"patch": patch}
 
 
 @Tool(name="apply_and_test", description="apply patch & retest")
 async def apply_and_test(patch: str):
-    apply_patch(patch, repo_path=CLONE_DIR)
+    patcher_core = _patcher()
+    patcher_core.apply_patch(patch, repo_path=CLONE_DIR)
     return await run_tests()
 
 

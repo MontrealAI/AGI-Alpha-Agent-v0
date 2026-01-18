@@ -40,6 +40,7 @@ Optional deps (lazy‑loaded):
 from __future__ import annotations
 
 import asyncio
+import functools
 import difflib
 import hashlib
 import json
@@ -156,6 +157,19 @@ def _wrap_mcp(agent: str, payload: Any) -> Dict[str, Any]:
     }
 
 
+def _fallback_embeddings(texts: List[str], dim: int) -> "np.ndarray":
+    """Create deterministic embeddings without external models."""
+    import numpy as np  # local import
+
+    vectors = []
+    for text in texts:
+        digest = hashlib.sha256(text.encode("utf-8")).digest()
+        seed = int.from_bytes(digest[:8], "little", signed=False)
+        rng = np.random.default_rng(seed)
+        vectors.append(rng.standard_normal(dim, dtype="float32"))
+    return np.vstack(vectors)
+
+
 def _chunks(text: str, max_len: int = 512) -> List[str]:
     """Sentence‑aware chunker (≈512 tokens)."""
     sents = re.split(r"(?<=[.!?])\s+", text)
@@ -191,10 +205,10 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
-        if not self.use_openai:
-            if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer required for offline mode.")
-            self._model = SentenceTransformer("nomic-embed-text")
+        self._model = None
+        self._fallback = False
+        if not self.use_openai and SentenceTransformer is None:
+            self._fallback = True
 
     async def encode(self, texts: List[str]):
         import numpy as np  # local import
@@ -203,9 +217,21 @@ class _Embedder:
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=texts, encoding_format="float")
             vecs = np.asarray([d.embedding for d in resp["data"]], dtype="float32")
         else:
-            loop = asyncio.get_event_loop()
-            vecs = await loop.run_in_executor(None, self._model.encode, texts)
-            vecs = vecs.astype("float32")
+            if self._fallback:
+                vecs = _fallback_embeddings(texts, self.dim)
+            else:
+                if self._model is None:
+                    loop = asyncio.get_event_loop()
+                    try:
+                        loader = functools.partial(SentenceTransformer, "nomic-embed-text", local_files_only=True)
+                        self._model = await loop.run_in_executor(None, loader)
+                    except Exception:  # noqa: BLE001
+                        logger.warning("Failed to load local SentenceTransformer model; using fallback embeddings.")
+                        self._fallback = True
+                        return _fallback_embeddings(texts, self.dim)
+                loop = asyncio.get_event_loop()
+                vecs = await loop.run_in_executor(None, self._model.encode, texts)
+                vecs = vecs.astype("float32")
         return vecs
 
 

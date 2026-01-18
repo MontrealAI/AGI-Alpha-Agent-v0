@@ -14,12 +14,12 @@ import json
 import logging
 import time
 import atexit
+import sys
 from datetime import datetime, timezone
 from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -29,6 +29,14 @@ with contextlib.suppress(ModuleNotFoundError):
     from kafka import KafkaProducer
 
 log = logging.getLogger(__name__)
+
+
+def get_agent(name: str, **kwargs: Any) -> Any:
+    """Proxy agent lookup for compatibility with tests."""
+    agents_mod = sys.modules.get("backend.agents")
+    if agents_mod is None:
+        from backend import agents as agents_mod
+    return agents_mod.get_agent(name, **kwargs)
 
 
 def _env_float(name: str, default: float) -> float:

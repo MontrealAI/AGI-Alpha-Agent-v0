@@ -9,10 +9,12 @@ optional transport servers.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
+import os
+from dataclasses import dataclass, field
 from pathlib import Path
-import contextlib
 from types import TracebackType
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
 from cachetools import TTLCache
@@ -28,12 +30,51 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 
     Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
+    EnvelopeProto = None
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        EnvelopeProto = pb.Envelope  # type: ignore[assignment]
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        EnvelopeProto = None
+
+    @dataclass
+    class _EnvelopeFallback:
+        sender: str = ""
+        recipient: str = ""
+        payload: dict[str, Any] = field(default_factory=dict)
+        ts: float = 0.0
+
+    def _coerce_str(value: Any) -> str:
+        return "" if value is None else str(value)
+
+    def _coerce_ts(value: Any) -> float:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 0.0
+
+    if EnvelopeProto is None:
+        Envelope: TypeAlias = _EnvelopeFallback  # type: ignore[assignment]
+    else:
+        class EnvelopeFactory:  # type: ignore[no-redef]
+            def __new__(  # noqa: D401 - factory
+                cls,
+                sender: Any = "",
+                recipient: Any = "",
+                payload: Any = None,
+                ts: Any = 0.0,
+            ) -> "pb.Envelope":
+                env = EnvelopeProto(
+                    sender=_coerce_str(sender),
+                    recipient=_coerce_str(recipient),
+                    ts=_coerce_ts(ts),
+                )
+                if isinstance(payload, dict):
+                    env.payload.update(payload)
+                return env
+
+        Envelope: TypeAlias = EnvelopeFactory  # type: ignore[assignment]
 
 
 class EnvelopeLike(Protocol):

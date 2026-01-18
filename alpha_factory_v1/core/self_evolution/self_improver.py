@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 from typing import Tuple
 
-from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_guard import is_patch_valid, normalize_patch_hunks
 from alpha_factory_v1.core.eval.preflight import run_preflight
 
 try:
@@ -74,11 +74,19 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = normalize_patch_hunks(Path(patch_file).read_text())
+    if not diff.endswith("\n"):
+        diff += "\n"
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    tmp_patch = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+    try:
+        tmp_patch.write_text(diff)
+        repo.git.apply(str(tmp_patch))
+    finally:
+        if tmp_patch.exists():
+            tmp_patch.unlink()
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
