@@ -238,7 +238,11 @@ class AgentRunner:
                         from backend.agents import health as health_mod
 
                         health_task = getattr(health_mod, "_health_task", None)
-                        if health_task is None or health_task.done():
+                        if (
+                            not getattr(self.inst, "_health_wrapped", False)
+                            or health_task is None
+                            or health_task.done()
+                        ):
                             health_mod.handle_health_event(self.name, dur_ms, ok)
                     except Exception:
                         pass

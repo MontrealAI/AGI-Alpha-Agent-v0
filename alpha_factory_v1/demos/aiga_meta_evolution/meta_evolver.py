@@ -95,6 +95,9 @@ try:
             existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
             if existing is not None:
                 return existing
+            for collector in getattr(REGISTRY, "_collector_to_names", {}):
+                if getattr(collector, "_name", None) == name:
+                    return collector
             raise
 
     _fitness_gauge = _reuse_metric("aiga_avg_fitness", Gauge)

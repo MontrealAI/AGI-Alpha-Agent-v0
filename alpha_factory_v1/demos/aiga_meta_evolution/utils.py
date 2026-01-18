@@ -27,7 +27,10 @@ def _resolve_openai_agent() -> type:
     if "openai_agents" not in sys.modules and "agents" in sys.modules:
         return sys.modules["agents"].OpenAIAgent  # type: ignore[no-any-return]
     try:  # prefer the official ``openai_agents`` package
-        return importlib.import_module("openai_agents").OpenAIAgent
+        oa = importlib.import_module("openai_agents")
+        if getattr(oa, "__alpha_factory_stub__", False):
+            raise ModuleNotFoundError("OpenAI Agents SDK stub detected")
+        return oa.OpenAIAgent
     except Exception:
         try:  # pragma: no cover - fallback for legacy package
             return importlib.import_module("agents").OpenAIAgent

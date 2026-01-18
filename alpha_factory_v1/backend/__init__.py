@@ -100,6 +100,12 @@ _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 setattr(sys.modules[__name__], "agents", _agents_mod)
+_registry_mod = importlib.import_module(".agents.registry", __name__)
+sys.modules["backend.agents.registry"] = _registry_mod
+sys.modules["alpha_factory_v1.backend.agents.registry"] = _registry_mod
+_health_mod = importlib.import_module(".agents.health", __name__)
+sys.modules["backend.agents.health"] = _health_mod
+sys.modules["alpha_factory_v1.backend.agents.health"] = _health_mod
 
 _services_mod = importlib.import_module(".services", __name__)
 sys.modules.setdefault(__name__ + ".services", _services_mod)

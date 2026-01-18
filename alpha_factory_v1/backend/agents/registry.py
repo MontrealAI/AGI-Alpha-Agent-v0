@@ -338,6 +338,7 @@ def get_agent(name: str, **kwargs):
                 _HEALTH_Q.put((meta.name, (time.perf_counter() - t0) * 1000, ok))
 
         agent.step = _wrapped  # type: ignore[assignment]
+        setattr(agent, "_health_wrapped", True)
 
     return agent
 
