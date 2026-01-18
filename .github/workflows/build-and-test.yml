@@ -43,6 +43,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check for binary diffs (early)
+        run: scripts/check_no_binary_diff.sh
 
       - name: Set up Python
         uses: actions/setup-python@v5 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -160,6 +162,9 @@ jobs:
         run: |
           cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:${{ github.sha }}"
           cosign verify "ghcr.io/$REPO_OWNER_LC/$DOCKER_IMAGE:$PY_TAG"
+      - name: Check for binary diffs (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
 
       - name: Tag and push latest image
         if: matrix.python-version == '3.13'
