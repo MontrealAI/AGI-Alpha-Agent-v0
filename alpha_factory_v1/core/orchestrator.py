@@ -66,6 +66,9 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    env_backoff = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
+    if env_backoff != backoff_exp_after:
+        backoff_exp_after = env_backoff
     while True:
         await asyncio.sleep(2)
         now = time.time()
