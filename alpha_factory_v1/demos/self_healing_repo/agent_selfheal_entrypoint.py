@@ -10,13 +10,50 @@ Self‑Healing Repo demo
 """
 import logging
 import asyncio
+import importlib.util
+import inspect
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
+import types
 
-import gradio as gr
+if "gradio" in sys.modules:
+    gr = sys.modules["gradio"]
+elif importlib.util.find_spec("gradio") is None:
+    class _DummyBlocks:
+        def __init__(self, *a, **k):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            pass
+
+    class _DummyMarkdown:
+        def __init__(self, *a, **k):
+            pass
+
+    class _DummyButton:
+        def __init__(self, *a, **k):
+            pass
+
+        def click(self, *a, **k):
+            pass
+
+    def _mount_gradio_app(app, _ui, path: str = "/"):
+        return app
+
+    gr = types.SimpleNamespace(
+        Blocks=_DummyBlocks,
+        Markdown=_DummyMarkdown,
+        Button=_DummyButton,
+        mount_gradio_app=_mount_gradio_app,
+    )
+else:
+    import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -24,7 +61,8 @@ import uvicorn
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    from alpha_factory_v1.demos.self_healing_repo import agent_core as _agent_core
+    llm_client = _agent_core.llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -46,7 +84,7 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+from .patcher_core import generate_patch_async, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -75,14 +113,38 @@ def clone_sample_repo() -> None:
             result.check_returncode()
 
 
-# ── LLM bridge ────────────────────────────────────────────────────────────────
-_temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+_LLM = None
+
+
+def _resolve_model() -> str:
+    return os.getenv("MODEL_NAME") or os.getenv("OPENAI_MODEL") or os.getenv("AGI_MODEL_NAME") or "gpt-4o-mini"
+
+
+def _supports_llm_init(target: object) -> bool:
+    try:
+        sig = inspect.signature(target)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return False
+    return bool(sig.parameters)
+
+
+def _build_llm():
+    if not _supports_llm_init(OpenAIAgent):
+        return None
+    temp_env = os.getenv("TEMPERATURE")
+    return OpenAIAgent(
+        model=_resolve_model(),
+        api_key=os.getenv("OPENAI_API_KEY", None),
+        base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        temperature=float(temp_env) if temp_env is not None else None,
+    )
+
+
+def _get_llm():
+    global _LLM
+    if _LLM is None:
+        _LLM = _build_llm()
+    return _LLM
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -107,7 +169,8 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    llm = _get_llm()
+    patch = await generate_patch_async(report["out"], llm=llm, repo_path=CLONE_DIR)
     return {"patch": patch}
 
 
@@ -120,7 +183,7 @@ async def apply_and_test(patch: str):
 apply_patch_and_retst = apply_and_test
 
 # ── Agent orchestration ───────────────────────────────────────────────────────
-agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="Repo‑Healer")
+agent = Agent(llm=_get_llm(), tools=[run_tests, suggest_patch, apply_and_test], name="Repo‑Healer")
 
 
 def create_app() -> FastAPI:

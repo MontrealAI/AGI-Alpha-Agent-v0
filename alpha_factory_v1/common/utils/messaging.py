@@ -33,7 +33,30 @@ else:  # pragma: no cover - runtime fallback
 
         Envelope: TypeAlias = pb.Envelope  # type: ignore
     except Exception:  # pragma: no cover - optional proto
+        pb = None  # type: ignore
         Envelope: TypeAlias = Any
+
+
+if "pb" in globals() and pb is not None:  # pragma: no cover - runtime safety
+    def Envelope(  # type: ignore[assignment]
+        sender: object = "",
+        recipient: object = "",
+        payload: object | None = None,
+        ts: object = 0.0,
+    ) -> "pb.Envelope":
+        """Construct a protobuf Envelope with defensive casting."""
+        env = pb.Envelope(
+            sender=str(sender or ""),
+            recipient=str(recipient or ""),
+            ts=0.0,
+        )
+        try:
+            env.ts = float(ts)  # type: ignore[assignment]
+        except (TypeError, ValueError):
+            env.ts = 0.0
+        if isinstance(payload, dict):
+            env.payload.update(payload)
+        return env
 
 
 class EnvelopeLike(Protocol):

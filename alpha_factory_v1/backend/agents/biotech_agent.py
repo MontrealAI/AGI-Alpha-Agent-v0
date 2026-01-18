@@ -199,9 +199,25 @@ class _EmbedStore:
             self._embedder = "openai"
         else:
             if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer unavailable and OPENAI_API_KEY not set.")
+                logger.warning("SentenceTransformer unavailable – hashing embeddings instead.")
+                self._embedder = _HashEmbedder(self.cfg.embed_dim)
+                return
             loop = asyncio.get_event_loop()
-            self._embedder = await loop.run_in_executor(None, SentenceTransformer, "nomic-embed-text")
+            local_only = bool(
+                os.getenv("PYTEST_CURRENT_TEST")
+                or os.getenv("HF_HUB_OFFLINE")
+                or os.getenv("TRANSFORMERS_OFFLINE")
+            )
+            try:
+                self._embedder = await loop.run_in_executor(
+                    None,
+                    SentenceTransformer,
+                    "nomic-embed-text",
+                    local_files_only=local_only,
+                )
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("Biotech embedder fallback → hashing (%s)", exc)
+                self._embedder = _HashEmbedder(self.cfg.embed_dim)
 
     async def _embed(self, batch: List[str]) -> "np.ndarray":
         await self._ensure_embedder()
@@ -214,6 +230,28 @@ class _EmbedStore:
             vecs = vecs.astype("float32")
         faiss.normalize_L2(vecs)
         return vecs
+
+
+class _HashEmbedder:
+    """Deterministic hashing embedder for offline fallback."""
+
+    def __init__(self, dim: int) -> None:
+        self.dim = dim
+
+    def encode(self, texts: List[str]):  # type: ignore[override]
+        if np is None:
+            raise RuntimeError("numpy required for hash embeddings")
+        vecs = []
+        for text in texts:
+            digest = hashlib.sha256(text.encode()).digest()
+            raw = np.frombuffer(digest, dtype=np.uint8).astype("float32")
+            if raw.size < self.dim:
+                raw = np.resize(raw, self.dim)
+            else:
+                raw = raw[: self.dim]
+            norm = np.linalg.norm(raw) or 1.0
+            vecs.append(raw / norm)
+        return np.stack(vecs)
 
     # ── public ───────────────────────────────────────────────────────────
     async def add(self, texts: List[str], meta: List[str]):

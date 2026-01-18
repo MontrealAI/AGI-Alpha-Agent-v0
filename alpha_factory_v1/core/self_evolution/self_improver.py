@@ -78,7 +78,12 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    try:
+        repo.git.apply(patch_file)
+    except Exception:  # noqa: BLE001
+        from alpha_factory_v1.demos.self_healing_repo import patcher_core
+
+        patcher_core.apply_patch(diff, repo_path=str(repo_dir))
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring
