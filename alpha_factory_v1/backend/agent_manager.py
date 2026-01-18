@@ -28,9 +28,11 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        import importlib
+        import sys
 
-        avail = list_agents()
+        agents_mod = sys.modules.get("backend.agents") or importlib.import_module("backend.agents")
+        avail = agents_mod.list_agents()
         names = [n for n in avail if not enabled or n in enabled]
         if not names:
             raise RuntimeError(f"No agents selected – ENABLED={','.join(enabled) if enabled else 'ALL'}")

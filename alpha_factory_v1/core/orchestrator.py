@@ -46,8 +46,32 @@ try:  # platform specific
 except Exception:  # pragma: no cover - Windows fallback
     resource = None
 
-ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
-BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+def _env_int(name: str, default: int) -> int:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def get_err_threshold() -> int:
+    return _env_int("AGENT_ERR_THRESHOLD", 3)
+
+
+def get_backoff_exp_after() -> int:
+    return _env_int("AGENT_BACKOFF_EXP_AFTER", 3)
+
+
+def __getattr__(name: str) -> int:
+    if name == "ERR_THRESHOLD":
+        return get_err_threshold()
+    if name == "BACKOFF_EXP_AFTER":
+        return get_backoff_exp_after()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
 log = insight_logging.logging.getLogger(__name__)
@@ -61,13 +85,16 @@ async def monitor_agents(
     bus: messaging.A2ABus,
     ledger: Ledger,
     *,
-    err_threshold: int = ERR_THRESHOLD,
-    backoff_exp_after: int = BACKOFF_EXP_AFTER,
+    err_threshold: int | None = None,
+    backoff_exp_after: int | None = None,
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
     while True:
-        await asyncio.sleep(2)
+        if err_threshold is None:
+            err_threshold = get_err_threshold()
+        if backoff_exp_after is None:
+            backoff_exp_after = get_backoff_exp_after()
         now = time.time()
         for runner in list(runners.values()):
             needs_restart = False
@@ -75,7 +102,7 @@ async def monitor_agents(
                 needs_restart = True
             elif runner.error_count >= err_threshold:
                 needs_restart = True
-            elif now - runner.last_beat > runner.period * 5:
+            elif now - runner.last_beat >= runner.period * 5:
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
@@ -86,6 +113,7 @@ async def monitor_agents(
                 await runner.restart(bus, ledger)
                 if on_restart:
                     on_restart(runner)
+        await asyncio.sleep(2)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -129,8 +157,8 @@ class Orchestrator(BaseOrchestrator):
             solution_archive,
             registry,
             self.settings.island_backends,
-            err_threshold=ERR_THRESHOLD,
-            backoff_exp_after=BACKOFF_EXP_AFTER,
+            err_threshold=get_err_threshold(),
+            backoff_exp_after=get_backoff_exp_after(),
             promotion_threshold=PROMOTION_THRESHOLD,
         )
         for agent in self._init_agents():

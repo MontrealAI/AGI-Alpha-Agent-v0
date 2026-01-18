@@ -37,6 +37,8 @@ def test_population_df() -> None:
 def test_run_simulation_smoke(capsys: pytest.CaptureFixture[str]) -> None:
     """Ensure _run_simulation accepts energy and entropy options."""
 
+    if web_app.st is not None:
+        pytest.skip("Streamlit available; console fallback not exercised")
     web_app._run_simulation(1, "logistic", 2, 3, 1, 1.0, 1.0, save_plots=False)
     out, _ = capsys.readouterr()
     assert "Streamlit not installed" in out
@@ -50,7 +52,10 @@ def test_progress_dom_updates() -> None:
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
+    try:
+        browser = pw.sync_playwright().start().chromium.launch()
+    except Exception as exc:
+        pytest.skip(f"Playwright browser unavailable: {exc}")
     page = browser.new_page()
     page.goto(str(client.base_url) + "/web/")
     page.click("text=Run simulation")

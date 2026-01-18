@@ -79,9 +79,12 @@ else:  # SDK is present → register alias & expose full public API verbatim
 # Legacy import path: allow `import backend` and `import backend.finance_agent`
 sys.modules.setdefault("backend", sys.modules[__name__])
 
-_agents_mod = importlib.import_module(".agents", __name__)
+if "backend.agents" in sys.modules:
+    _agents_mod = sys.modules["backend.agents"]
+else:
+    _agents_mod = importlib.import_module(".agents", __name__)
 sys.modules.setdefault(__name__ + ".agents", _agents_mod)
-sys.modules["backend.agents"] = _agents_mod
+sys.modules.setdefault("backend.agents", _agents_mod)
 setattr(sys.modules[__name__], "agents", _agents_mod)
 
 _services_mod = importlib.import_module(".services", __name__)

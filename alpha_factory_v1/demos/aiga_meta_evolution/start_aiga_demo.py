@@ -83,7 +83,7 @@ def main() -> None:
     ap.add_argument("--logs", action="store_true", help="tail container logs after start-up")
     ap.add_argument("--reset", action="store_true", help="remove volumes and images")
     ap.add_argument("--stop", action="store_true", help="stop running containers")
-    args = ap.parse_args()
+    args, _ = ap.parse_known_args()
 
     dc = docker_compose_cmd()
     compose = dc + ["--project-name", PROJECT, "--env-file", str(CONFIG_ENV), "-f", str(COMPOSE_YAML)]

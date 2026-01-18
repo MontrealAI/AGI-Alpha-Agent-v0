@@ -41,8 +41,10 @@ def test_restart_backoff(monkeypatch):
             pass
 
         def log(self, env) -> None:
-            if env.payload.get("event"):
-                events.append(env.payload["event"])
+            payload = env.payload
+            event = payload.get("event") if hasattr(payload, "get") else payload["event"]
+            if event:
+                events.append(event)
 
         def start_merkle_task(self, *_a, **_kw) -> None:
             pass
