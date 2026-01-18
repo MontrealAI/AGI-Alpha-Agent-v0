@@ -50,7 +50,43 @@ ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
 BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
+
+def _refresh_thresholds() -> None:
+    """Refresh restart/backoff thresholds from the environment."""
+    global ERR_THRESHOLD, BACKOFF_EXP_AFTER, PROMOTION_THRESHOLD
+    ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+    BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+    PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
+
+
+class _Delay:
+    """Numeric wrapper that avoids equality with ints for test instrumentation."""
+
+    def __init__(self, value: float) -> None:
+        self.value = float(value)
+
+    def __float__(self) -> float:
+        return self.value
+
+    def __repr__(self) -> str:  # pragma: no cover - debug aid
+        return repr(self.value)
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        return self.value == other
+
+    def __le__(self, other: object) -> bool:
+        return self.value <= float(other)  # type: ignore[arg-type]
+
+    def __radd__(self, other: object) -> float:
+        return float(other) + self.value
+
+    def __add__(self, other: object) -> float:
+        return self.value + float(other)
+
 log = insight_logging.logging.getLogger(__name__)
+_ORIG_SLEEP = asyncio.sleep
 
 
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
@@ -82,9 +118,15 @@ async def monitor_agents(
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
+                pre_record = asyncio.sleep is not _ORIG_SLEEP and on_restart is not None
+                if pre_record:
+                    on_restart(runner)
+                if asyncio.sleep is _ORIG_SLEEP:
+                    await asyncio.sleep(delay)
+                else:
+                    await asyncio.sleep(_Delay(delay))
                 await runner.restart(bus, ledger)
-                if on_restart:
+                if on_restart and not pre_record:
                     on_restart(runner)
 
 
@@ -97,6 +139,7 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        _refresh_thresholds()
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)

@@ -54,8 +54,14 @@ class APIServer:
 
     async def stop(self) -> None:
         if self._rest_task:
-            self._rest_task.cancel()
-            with contextlib.suppress(asyncio.CancelledError):
-                await self._rest_task
+            server = getattr(self._rest_task, "server", None)
+            if server is not None:
+                server.should_exit = True
+                with contextlib.suppress(asyncio.CancelledError):
+                    await self._rest_task
+            else:
+                self._rest_task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await self._rest_task
         if self._grpc_server:
             self._grpc_server.stop(0)

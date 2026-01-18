@@ -10,16 +10,22 @@ Self‑Healing Repo demo
 """
 import logging
 import asyncio
+import importlib.util
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
+
+if "gradio" in sys.modules:
+    gr = sys.modules["gradio"]
+else:
+    _gradio_spec = importlib.util.find_spec("gradio")
+    gr = importlib.import_module("gradio") if _gradio_spec else None
 
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
@@ -77,12 +83,15 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+try:
+    LLM = OpenAIAgent(
+        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        api_key=os.getenv("OPENAI_API_KEY", None),
+        base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        temperature=float(_temp_env) if _temp_env is not None else None,
+    )
+except TypeError:
+    LLM = OpenAIAgent()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -125,6 +134,15 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    app = FastAPI()
+
+    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+    async def _live() -> str:  # noqa: D401
+        return "OK"
+
+    if gr is None:
+        return app
+
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 
@@ -142,12 +160,6 @@ def create_app() -> FastAPI:
 
         run_btn = gr.Button("🩹 Heal Repository")
         run_btn.click(run_pipeline, outputs=log)
-
-    app = FastAPI()
-
-    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
-    async def _live() -> str:  # noqa: D401
-        return "OK"
 
     return gr.mount_gradio_app(app, ui, path="/")
 

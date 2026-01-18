@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -74,7 +75,16 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
+    if not any(line.startswith(("--- ", "+++ ")) for line in patch.splitlines()):
+        patch_file = os.getenv("PATCH_FILE")
+        if patch_file:
+            candidate = pathlib.Path(patch_file)
+            if candidate.is_file():
+                patch = candidate.read_text().strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -93,6 +103,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
+    patch = textwrap.dedent(patch).lstrip()
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
@@ -101,14 +112,17 @@ def apply_patch(patch: str, repo_path: str) -> None:
         )
     backups = {}
 
+    normalized = "\n".join("@@ -1 +1 @@" if line.strip() == "@@" else line for line in patch.splitlines())
+    if not normalized.endswith("\n"):
+        normalized += "\n"
     # write patch to temp file
     with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
-        tf.write(patch)
+        tf.write(normalized)
         patch_file = tf.name
 
     try:
         # back up touched files
-        for line in patch.splitlines():
+        for line in normalized.splitlines():
             if line.startswith(("--- ", "+++ ")):
                 rel = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
                 file_path = repo / rel

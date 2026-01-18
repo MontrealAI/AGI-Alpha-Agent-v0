@@ -19,7 +19,7 @@ from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
+from alpha_factory_v1.backend import agents as agents_mod
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -29,6 +29,7 @@ with contextlib.suppress(ModuleNotFoundError):
     from kafka import KafkaProducer
 
 log = logging.getLogger(__name__)
+get_agent = agents_mod.get_agent
 
 
 def _env_float(name: str, default: float) -> float:
