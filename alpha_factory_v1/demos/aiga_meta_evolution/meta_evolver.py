@@ -113,6 +113,9 @@ try:
             existing = _find_metric(name)
             if existing is not None:
                 return existing
+            for collector in getattr(REGISTRY, "_collector_to_names", {}):
+                if getattr(collector, "_name", None) == name:
+                    return collector
             raise
 
     _fitness_gauge = _reuse_metric("aiga_avg_fitness", Gauge)

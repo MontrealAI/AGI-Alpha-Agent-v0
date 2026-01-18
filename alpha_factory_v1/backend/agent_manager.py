@@ -47,7 +47,10 @@ class AgentManager:
         if not names and dev_mode and avail:
             names = avail
         if not names:
-            raise RuntimeError(f"No agents selected – ENABLED={','.join(enabled) if enabled else 'ALL'}")
+            if dev_mode and avail:
+                names = list(avail)
+            else:
+                raise RuntimeError(f"No agents selected – ENABLED={','.join(enabled) if enabled else 'ALL'}")
 
         self.bus = bus or EventBus(kafka_broker, dev_mode)
         self.runners: Dict[str, AgentRunner] = {

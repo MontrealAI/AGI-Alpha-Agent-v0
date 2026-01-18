@@ -99,10 +99,19 @@ _rescan_task: asyncio.Task[None] | None = None
 async def start_background_tasks() -> None:
     """Launch health monitor and rescan loops exactly once."""
     global _bg_started, _health_task, _rescan_task
+    loop = asyncio.get_running_loop()
+    if _health_task is not None:
+        try:
+            task_loop = _health_task.get_loop()
+        except RuntimeError:
+            task_loop = None
+        if task_loop is not loop:
+            _health_task = None
+            _rescan_task = None
+            _bg_started = False
     if _bg_started and _health_task and not _health_task.done():
         return
     _bg_started = True
-    loop = asyncio.get_running_loop()
     if _health_task is None or _health_task.done():
         _health_task = loop.create_task(_health_loop(), name="agent-health")
     if _rescan_task is None or _rescan_task.done():
