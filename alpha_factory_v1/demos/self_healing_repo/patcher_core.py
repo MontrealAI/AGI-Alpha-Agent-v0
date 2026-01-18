@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -34,6 +35,7 @@ import shutil
 import subprocess
 import tempfile
 import textwrap
+import threading
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
 
@@ -57,6 +59,38 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
     return {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
 
 
+def _normalize_patch(patch: str) -> str:
+    patch = textwrap.dedent(patch)
+    patch = patch.replace("\r\n", "\n")
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    for line in lines:
+        if line.startswith("@@") and not re.match(r"^@@\s*-\d", line):
+            normalized.append("@@ -1,1 +1,1 @@")
+        else:
+            normalized.append(line)
+    return "\n".join(normalized) + "\n"
+
+
+def _resolve_llm_response(response: object) -> str:
+    if asyncio.iscoroutine(response):
+        try:
+            asyncio.get_running_loop()
+        except RuntimeError:
+            return asyncio.run(response)
+
+        result: dict[str, str] = {}
+
+        def _runner() -> None:
+            result["value"] = asyncio.run(response)
+
+        thread = threading.Thread(target=_runner, daemon=True)
+        thread.start()
+        thread.join()
+        return result["value"]
+    return str(response)
+
+
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
@@ -74,13 +108,15 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
-    _sanity_check_patch(patch, pathlib.Path(repo_path))
-    return patch
+    patch = _resolve_llm_response(llm(prompt)).strip()
+    normalized = _normalize_patch(patch)
+    _sanity_check_patch(normalized, pathlib.Path(repo_path))
+    return normalized
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
     """Ensure the diff only touches existing files to avoid LLM wildness."""
+    patch = _normalize_patch(patch)
     touched = set()
     for line in patch.splitlines():
         if line.startswith(("--- ", "+++ ")):
@@ -94,6 +130,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(

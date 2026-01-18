@@ -9,6 +9,7 @@ the temporary clone via the ``cleanup`` flag.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -38,6 +39,18 @@ def _log_delta(delta: float, log_file: Path) -> None:
         log = []
     log.append({"ts": time.time(), "delta": delta})
     log_file.write_text(json.dumps(log))
+
+
+def _normalize_patch(diff: str) -> str:
+    diff = diff.replace("\r\n", "\n")
+    lines = diff.splitlines()
+    normalized: list[str] = []
+    for line in lines:
+        if line.startswith("@@") and not re.match(r"^@@\s*-\d", line):
+            normalized.append("@@ -1,1 +1,1 @@")
+        else:
+            normalized.append(line)
+    return "\n".join(normalized) + "\n"
 
 
 def improve_repo(
@@ -74,11 +87,17 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
+    diff = _normalize_patch(Path(patch_file).read_text())
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    with tempfile.NamedTemporaryFile("w", delete=False) as tf:
+        tf.write(diff)
+        normalized_path = tf.name
+    try:
+        repo.git.apply(normalized_path)
+    finally:
+        Path(normalized_path).unlink(missing_ok=True)
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

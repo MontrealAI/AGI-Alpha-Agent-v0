@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import importlib.util
+import sys
 from pathlib import Path
 from types import ModuleType
 from typing import Optional
@@ -21,12 +22,15 @@ def verify_wheel(path: Path) -> bool:
         logger.error("cryptography library required for signature checks")
         return False
     try:
+        agents_mod = sys.modules.get("alpha_factory_v1.backend.agents")
+        pubkey = getattr(agents_mod, "_WHEEL_PUBKEY", _WHEEL_PUBKEY) if agents_mod else _WHEEL_PUBKEY
+        sigs = getattr(agents_mod, "_WHEEL_SIGS", _WHEEL_SIGS) if agents_mod else _WHEEL_SIGS
         sig_b64 = sig_path.read_text().strip()
-        expected = _WHEEL_SIGS.get(path.name)
+        expected = sigs.get(path.name)
         if expected and expected != sig_b64:
             logger.error("Signature mismatch for %s", path.name)
             return False
-        pub_bytes = base64.b64decode(_WHEEL_PUBKEY)
+        pub_bytes = base64.b64decode(pubkey)
         signature = base64.b64decode(sig_b64)
         ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
         return True

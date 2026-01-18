@@ -28,12 +28,46 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 
     Envelope: TypeAlias = pb.Envelope
 else:  # pragma: no cover - runtime fallback
+
+    class SimpleEnvelope:
+        """Lightweight envelope for fuzz and unit tests."""
+
+        def __init__(
+            self,
+            sender: object = "",
+            recipient: object = "",
+            ts: object = 0.0,
+            payload: Optional[dict[str, Any]] = None,
+        ) -> None:
+            self.sender = sender
+            self.recipient = recipient
+            self.ts = ts
+            self.payload: dict[str, Any] = payload or {}
+
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        def Envelope(
+            sender: object = "",
+            recipient: object = "",
+            ts: object = 0.0,
+            payload: Optional[dict[str, Any]] = None,
+        ) -> pb.Envelope:  # type: ignore
+            try:
+                ts_value = float(ts)  # type: ignore[arg-type]
+            except (TypeError, ValueError):
+                ts_value = 0.0
+            env = pb.Envelope(
+                sender="" if sender is None else str(sender),
+                recipient="" if recipient is None else str(recipient),
+                ts=ts_value,
+            )
+            if isinstance(payload, dict):
+                env.payload.update(payload)
+            return env
+
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        Envelope: TypeAlias = SimpleEnvelope
 
 
 class EnvelopeLike(Protocol):
