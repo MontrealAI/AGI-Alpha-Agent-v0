@@ -41,9 +41,7 @@ except ModuleNotFoundError:
     try:  # attempt to import the new canonical package name
         _agents_pkg = importlib.import_module("agents")  # provided by openai-agents ≥0.0.13
     except ModuleNotFoundError:  # SDK not installed
-        _LOG.warning(
-            "OpenAI Agents SDK not found - running in degraded mode. Install with:  pip install openai-agents"
-        )
+        _LOG.warning("OpenAI Agents SDK not found - running in degraded mode. Install with:  pip install openai-agents")
         # Create a *minimal* stub so `import openai_agents` will not crash.
         shim = types.ModuleType("openai_agents")
         shim.__spec__ = importlib.machinery.ModuleSpec("openai_agents", loader=None)
