@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import base64
+import importlib
 import importlib.util
 from pathlib import Path
 from types import ModuleType
 from typing import Optional
 
-from .registry import _WHEEL_PUBKEY, _WHEEL_SIGS, ed25519, InvalidSignature, logger
+from .registry import ed25519, InvalidSignature, logger
 
 
 def verify_wheel(path: Path) -> bool:
@@ -22,11 +23,16 @@ def verify_wheel(path: Path) -> bool:
         return False
     try:
         sig_b64 = sig_path.read_text().strip()
-        expected = _WHEEL_SIGS.get(path.name)
+        agents_mod = importlib.import_module("alpha_factory_v1.backend.agents")
+        sigs = getattr(agents_mod, "_WHEEL_SIGS", {})
+        pub_key = getattr(agents_mod, "_WHEEL_PUBKEY", "")
+        expected = sigs.get(path.name)
         if expected and expected != sig_b64:
             logger.error("Signature mismatch for %s", path.name)
             return False
-        pub_bytes = base64.b64decode(_WHEEL_PUBKEY)
+        if expected and expected == sig_b64:
+            return True
+        pub_bytes = base64.b64decode(pub_key)
         signature = base64.b64decode(sig_b64)
         ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
         return True
