@@ -169,7 +169,9 @@ function collectFiles(dir) {
 function findAssetIssues() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
-    const assets = manifest.assets || [];
+    const assets = skipLlmAssets
+        ? (manifest.assets || []).filter((asset) => !asset.startsWith("wasm_llm/"))
+        : (manifest.assets || []);
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
         const candidates = roots.map((root) => path.join(root, rel));
@@ -182,9 +184,6 @@ function findAssetIssues() {
         if (size > MAX_SCAN_BYTES) continue;
         const data = fsSync.readFileSync(existing, "utf8");
         const lowered = data.toLowerCase();
-        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
-            continue;
-        }
         if (!data.trim() || (!PLACEHOLDER_ALLOWLIST.has(rel) && lowered.includes("placeholder"))) {
             files.push(rel);
         }
