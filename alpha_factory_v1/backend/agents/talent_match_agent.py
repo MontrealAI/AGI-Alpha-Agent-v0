@@ -191,7 +191,10 @@ class _Embedder:
 
     def __init__(self, dim: int):
         self.dim = dim
-        if SentenceTransformer is not None:
+        if os.getenv("PYTEST_NET_OFF") == "1":
+            self.model = None
+            logger.warning("PYTEST_NET_OFF=1 – using random projection embeddings")
+        elif SentenceTransformer is not None:
             self.model = SentenceTransformer("all-MiniLM-L6-v2")
         else:
             self.model = None

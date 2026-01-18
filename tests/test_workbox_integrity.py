@@ -21,11 +21,9 @@ def _start_server(directory: Path):
     return server, thread
 
 
-def test_workbox_hash_mismatch(tmp_path: Path) -> None:
-    repo = Path(__file__).resolve().parents[1]
-    src = repo / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
+def test_workbox_hash_mismatch(tmp_path: Path, insight_dist: Path) -> None:
     dist = tmp_path / "dist"
-    shutil.copytree(src, dist)
+    shutil.copytree(insight_dist, dist)
     sw_file = dist / "service-worker.js"
     text = sw_file.read_text()
     text = re.sub(r"(WORKBOX_SW_HASH = '\)[^']+(\')", r"\1sha384-invalid\2", text)

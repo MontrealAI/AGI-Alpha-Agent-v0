@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-import pytest
 from pathlib import Path
+import pytest
 
 pw = pytest.importorskip("playwright.sync_api")
 from playwright.sync_api import sync_playwright  # noqa: E402
@@ -21,11 +21,8 @@ def _run_sim(page):
     return coords
 
 
-def test_umap_fallback_random_coordinates() -> None:
-    dist = Path(__file__).resolve().parents[1] / (
-        "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist/index.html"
-    )
-    url = dist.as_uri()
+def test_umap_fallback_random_coordinates(insight_dist: Path) -> None:
+    url = (insight_dist / "index.html").as_uri()
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
