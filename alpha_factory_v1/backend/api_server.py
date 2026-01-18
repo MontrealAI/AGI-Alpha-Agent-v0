@@ -36,6 +36,11 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        with contextlib.suppress(Exception):
+            from . import orchestrator as _orchestrator
+
+            mem = getattr(_orchestrator, "mem", None)
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],

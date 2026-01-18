@@ -199,15 +199,36 @@ class _EmbedStore:
             self._embedder = "openai"
         else:
             if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer unavailable and OPENAI_API_KEY not set.")
+                logger.warning("SentenceTransformer unavailable; using hashed embeddings.")
+                self._embedder = "hash"
+                return
             loop = asyncio.get_event_loop()
-            self._embedder = await loop.run_in_executor(None, SentenceTransformer, "nomic-embed-text")
+            try:
+                self._embedder = await loop.run_in_executor(None, SentenceTransformer, "nomic-embed-text")
+            except Exception as exc:  # pragma: no cover - network/model issues
+                logger.warning("SentenceTransformer failed (%s); using hashed embeddings.", exc)
+                self._embedder = "hash"
+
+    def _hash_embed(self, batch: List[str]) -> "np.ndarray":
+        if np is None:
+            raise RuntimeError("numpy required for hashed embeddings")
+        vecs = []
+        for text in batch:
+            digest = hashlib.sha256(text.encode()).digest()
+            values = [(b / 255.0) for b in digest]
+            values *= (self.cfg.embed_dim + len(values) - 1) // len(values)
+            vec = np.array(values[: self.cfg.embed_dim], dtype="float32")
+            norm = np.linalg.norm(vec) or 1.0
+            vecs.append(vec / norm)
+        return np.vstack(vecs)
 
     async def _embed(self, batch: List[str]) -> "np.ndarray":
         await self._ensure_embedder()
         if self._embedder == "openai":  # OpenAI API
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=batch, encoding_format="float")
             vecs = np.array([d.embedding for d in resp["data"]], dtype="float32")  # type: ignore
+        elif self._embedder == "hash":
+            vecs = self._hash_embed(batch)
         else:  # local SBERT
             loop = asyncio.get_event_loop()
             vecs = await loop.run_in_executor(None, self._embedder.encode, batch)  # type: ignore

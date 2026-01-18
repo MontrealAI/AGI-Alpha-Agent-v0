@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import inspect
 import os
 import pathlib
 import re
@@ -36,6 +37,8 @@ import tempfile
 import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
+
+from alpha_factory_v1.backend.utils.sync import run_sync
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
@@ -74,7 +77,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    response = llm(prompt)
+    if inspect.isawaitable(response):
+        response = run_sync(response)
+    patch = _normalize_patch(str(response).strip())
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -91,9 +97,24 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
+def _normalize_patch(patch: str) -> str:
+    """Normalize minimal diffs so GNU patch can apply them."""
+    if "@@" not in patch:
+        return patch
+    lines = []
+    for line in patch.splitlines():
+        if line.strip() == "@@":
+            lines.append("@@ -1 +1 @@")
+        else:
+            lines.append(line)
+    suffix = "\n" if patch.endswith("\n") else ""
+    return "\n".join(lines) + suffix
+
+
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
