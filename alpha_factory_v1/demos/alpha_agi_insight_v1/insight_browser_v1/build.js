@@ -26,6 +26,9 @@ const manifest = JSON.parse(
 requireNode22();
 
 const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
+const skipLlmAssets = ["1", "true", "yes"].includes(
+    (process.env.FETCH_ASSETS_SKIP_LLM || "").toLowerCase(),
+);
 const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 
 function resolveAssetPath(relPath) {
@@ -179,6 +182,9 @@ function findAssetIssues() {
         if (size > MAX_SCAN_BYTES) continue;
         const data = fsSync.readFileSync(existing, "utf8");
         const lowered = data.toLowerCase();
+        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+            continue;
+        }
         if (!data.trim() || (!PLACEHOLDER_ALLOWLIST.has(rel) && lowered.includes("placeholder"))) {
             files.push(rel);
         }
