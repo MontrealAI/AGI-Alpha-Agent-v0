@@ -549,6 +549,7 @@ if app is not None:
     web_dist = Path(__file__).resolve().parent / "web_client" / "dist"
     if web_dist.is_dir():
         app.mount("/", StaticFiles(directory=str(web_dist), html=True), name="static")
+        app.mount("/web", StaticFiles(directory=str(web_dist), html=True), name="static-web")
 
 
 def main(argv: list[str] | None = None) -> None:

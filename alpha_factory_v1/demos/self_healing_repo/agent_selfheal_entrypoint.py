@@ -16,15 +16,25 @@ import shutil
 import subprocess
 import sys
 
-import gradio as gr
+try:
+    import gradio as gr
+except Exception:  # pragma: no cover - optional UI dependency
+    gr = None
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
+if __package__ is None:  # pragma: no cover - direct script execution
+    repo_root = pathlib.Path(__file__).resolve().parents[3]
+    sys.path.append(str(repo_root))
+
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    try:
+        from .agent_core import llm_client
+    except ImportError:  # pragma: no cover - script execution fallback
+        from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -46,7 +56,10 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+try:
+    from .patcher_core import generate_patch, apply_patch
+except ImportError:  # pragma: no cover - script execution fallback
+    from alpha_factory_v1.demos.self_healing_repo.patcher_core import generate_patch, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -77,12 +90,15 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+try:
+    LLM = OpenAIAgent(
+        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        api_key=os.getenv("OPENAI_API_KEY", None),
+        base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        temperature=float(_temp_env) if _temp_env is not None else None,
+    )
+except TypeError:  # pragma: no cover - stubbed OpenAIAgent
+    LLM = OpenAIAgent()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -125,6 +141,15 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    app = FastAPI()
+
+    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+    async def _live() -> str:  # noqa: D401
+        return "OK"
+
+    if gr is None:
+        return app
+
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 
@@ -142,12 +167,6 @@ def create_app() -> FastAPI:
 
         run_btn = gr.Button("🩹 Heal Repository")
         run_btn.click(run_pipeline, outputs=log)
-
-    app = FastAPI()
-
-    @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
-    async def _live() -> str:  # noqa: D401
-        return "OK"
 
     return gr.mount_gradio_app(app, ui, path="/")
 

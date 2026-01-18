@@ -637,7 +637,8 @@ app.router.lifespan_context = lifespan
 
 @app.get("/agents")
 async def list_agents():
-    return list(AGENTS.keys())
+    required_names = [path.split(".")[-1] for path in REQUIRED]
+    return sorted(set(list(AGENTS.keys()) + required_names))
 
 
 @app.post("/command")

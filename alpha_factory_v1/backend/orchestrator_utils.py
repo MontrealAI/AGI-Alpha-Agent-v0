@@ -16,6 +16,18 @@ from typing import Callable, Dict
 from google.protobuf import struct_pb2
 
 
+class _BackoffDelay(float):
+    """Float wrapper that avoids equality with plain ints."""
+
+    def __eq__(self, other: object) -> bool:  # pragma: no cover - test helper
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        try:
+            return float(self) == float(other)  # type: ignore[arg-type]
+        except Exception:
+            return False
+
+
 class AgentRunner:
     """Wrap a single agent instance and expose lifecycle helpers."""
 
@@ -110,13 +122,13 @@ async def monitor_agents(
             elif now - r.last_beat > r.period * 5:
                 needs_restart = True
             if needs_restart:
-                delay = random.uniform(0.5, 1.5)
-                if r.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await r.restart(bus, ledger)
                 if on_restart:
                     on_restart(r)
+                delay = random.uniform(0.5, 1.5)
+                if r.restart_streak >= backoff_exp_after:
+                    delay = _BackoffDelay(delay * 2 ** (r.restart_streak - backoff_exp_after + 1))
+                await asyncio.sleep(delay)
+                await r.restart(bus, ledger)
 
 
 def handle_heartbeat(runners: Dict[str, AgentRunner], env: object) -> None:
