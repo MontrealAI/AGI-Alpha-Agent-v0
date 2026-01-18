@@ -109,7 +109,7 @@
       const SW_URL = 'service-worker.js';
       const SW_HASH = '__SW_HASH__';
 
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && !navigator.webdriver) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);

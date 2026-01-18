@@ -295,28 +295,8 @@ async function bundle() {
     }
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;
     let bundleText = await fs.readFile(bundlePath, "utf8");
-    let web3Code = await fs.readFile(
-        path.join("lib", "bundle.esm.min.js"),
-        "utf8",
-    );
-    web3Code = web3Code.replace(/export\s+/g, "");
-    web3Code = `(() => {\n${web3Code}\nwindow.Web3Storage=Web3Storage;\n})();`;
-    let pyCode = await fs.readFile(path.join("lib", "pyodide.js"), "utf8");
-    pyCode = pyCode.replace(/export\s+/g, "");
-    pyCode = `(() => {\n${pyCode}\nwindow.loadPyodide=loadPyodide;\n})();`;
-    let ortCode = "";
-    const ortPath = path.join(
-        "node_modules",
-        "onnxruntime-web",
-        "dist",
-        "ort.all.min.js",
-    );
-    if (fsSync.existsSync(ortPath)) {
-        ortCode = await fs.readFile(ortPath, "utf8");
-        ortCode = `(() => {\n${ortCode}\nwindow.ort=ort;\n})();`;
-    }
     bundleText =
-        `${web3Code}\n${pyCode}\n${ortCode}\nwindow.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
+        `window.PYODIDE_WASM_BASE64='${wasmBase64}';window.GPT2_MODEL_BASE64='${gpt2Base64}';\n` +
         bundleText;
     bundleText = bundleText.replace(
         /\/\/#[ \t]*sourceMappingURL=.*(?:\r?\n)?/g,
