@@ -52,6 +52,14 @@ def test_progress_dom_updates() -> None:
 
     client = TestClient(api_server.app)
     try:
+        browser = pw.sync_playwright().start().chromium.launch()
+    except Exception as exc:
+        pytest.skip(f"Playwright browser unavailable: {exc}")
+    page = browser.new_page()
+    page.goto(str(client.base_url) + "/web/")
+    page.click("text=Run simulation")
+    page.wait_for_selector("#capability")
+    browser.close()
         with pw.sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()

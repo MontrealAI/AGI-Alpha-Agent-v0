@@ -49,6 +49,10 @@ ASSETS_DIR="alpha_factory_v1/demos/cross_industry_alpha_factory/assets"
 CI_PATH=".github/workflows/ci.yml"
 LOADTEST_DIR="alpha_factory_v1/loadtest"
 REKOR_URL="https://rekor.sigstore.dev"
+FAST_MODE=0
+if [[ -n ${SKIP_DEPLOY:-} && -n ${SKIP_BENCH:-} ]]; then
+  FAST_MODE=1
+fi
 
 ############## 1. PRE-FLIGHT ##################################################
 need(){ command -v "$1" &>/dev/null || { echo "❌ $1 required"; exit 1; }; }
@@ -225,12 +229,13 @@ patch sbom '.services += {"sbom":{image:"anchore/syft:v1.27.0",command:["sh","-c
 # PPO continual-learning builder
 patch alpha-trainer '.services += {"alpha-trainer":{build:{context:"./alpha_factory_v1/continual"},depends_on:["ray-head","orchestrator"]}}'
 
-############## 5. CONTINUAL-LEARNING PIPELINE #################################
-cat > "$CONTINUAL_DIR/rubric.json" <<'JSON'
+if [[ $FAST_MODE -eq 0 ]]; then
+  ############## 5. CONTINUAL-LEARNING PIPELINE #################################
+  cat > "$CONTINUAL_DIR/rubric.json" <<'JSON'
 {"success":{"w":1.0},"latency_ms":{"w":-0.001,"target":1000},"cost_usd":{"w":-1.0}}
 JSON
 
-cat > "$CONTINUAL_DIR/ppo_trainer.py" <<'PY'
+  cat > "$CONTINUAL_DIR/ppo_trainer.py" <<'PY'
 import os, json, ray, requests, random, tempfile, shutil, pathlib
 from ray import tune; from ray.rllib.algorithms.ppo import PPO
 ray.init(address="auto"); API=os.getenv("API","http://orchestrator:8000/agent")
@@ -254,9 +259,9 @@ for ag in AGENTS:
       requests.post(f"{API}/{ag}/update_model",files={"file":("ckpt.zip",open(f"{td}/m.zip","rb"))})
 PY
 
-############## 6. END-TO-END CI ################################################
-mkdir -p .github/workflows
-cat > "$CI_PATH" <<'YML'
+  ############## 6. END-TO-END CI ################################################
+  mkdir -p .github/workflows
+  cat > "$CI_PATH" <<'YML'
 name: α-Factory-CI
 on: [push, pull_request]
 jobs:
@@ -271,15 +276,15 @@ jobs:
         run: curl -fs http://localhost:8000/healthz
 YML
 
-############## 7. LOAD / CHAOS TESTING #########################################
-cat > "$LOADTEST_DIR/locustfile.py" <<'PY'
+  ############## 7. LOAD / CHAOS TESTING #########################################
+  cat > "$LOADTEST_DIR/locustfile.py" <<'PY'
 from locust import HttpUser, task, between; import random, os, json
 A=os.getenv("AGENTS_ENABLED","").split()
 class Fast(HttpUser):
   wait_time=between(0.1,0.3)
   @task def ping(self): a=random.choice(A); self.client.post(f"/agent/{a}/skill_test",json={"ping":random.random()})
 PY
-cat > "$LOADTEST_DIR/k6.js" <<'JS'
+  cat > "$LOADTEST_DIR/k6.js" <<'JS'
 import http from 'k6/http'; import {check,sleep} from 'k6';
 const A=__ENV.AGENTS_ENABLED.split(' ');
 export default function(){
@@ -288,6 +293,9 @@ export default function(){
   sleep(0.1);
 }
 JS
+else
+  echo "⚡ FAST_MODE enabled; skipping continual training and load-test assets."
+fi
 
 ############## 8. BUILD & DEPLOY ##############################################
 if [[ -n ${SKIP_DEPLOY:-} ]]; then

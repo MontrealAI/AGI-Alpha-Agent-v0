@@ -191,10 +191,29 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
-        if not self.use_openai:
-            if SentenceTransformer is None:
-                raise RuntimeError("SentenceTransformer required for offline mode.")
+        self._model = None
+        self._fallback = False
+        if not self.use_openai and SentenceTransformer is None:
+            self._fallback = True
+
+    def _ensure_model(self) -> None:
+        if self.use_openai or self._fallback or self._model is not None:
+            return
+        try:
             self._model = SentenceTransformer("nomic-embed-text")
+        except Exception:  # pragma: no cover - offline fallback
+            self._fallback = True
+
+    def _hash_vectors(self, texts: list[str]) -> "np.ndarray":
+        import numpy as np
+        import hashlib
+
+        vecs = np.zeros((len(texts), self.dim), dtype="float32")
+        for i, text in enumerate(texts):
+            digest = hashlib.sha256(text.encode("utf-8")).digest()
+            idx = int.from_bytes(digest[:4], "big", signed=False) % self.dim
+            vecs[i, idx] = 1.0
+        return vecs
 
     async def encode(self, texts: List[str]):
         import numpy as np  # local import
@@ -203,9 +222,13 @@ class _Embedder:
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=texts, encoding_format="float")
             vecs = np.asarray([d.embedding for d in resp["data"]], dtype="float32")
         else:
-            loop = asyncio.get_event_loop()
-            vecs = await loop.run_in_executor(None, self._model.encode, texts)
-            vecs = vecs.astype("float32")
+            self._ensure_model()
+            if self._fallback or self._model is None:
+                vecs = self._hash_vectors(texts)
+            else:
+                loop = asyncio.get_event_loop()
+                vecs = await loop.run_in_executor(None, self._model.encode, texts)
+                vecs = vecs.astype("float32")
         return vecs
 
 

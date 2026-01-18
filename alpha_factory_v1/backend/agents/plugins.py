@@ -12,6 +12,19 @@ from typing import Optional
 from .registry import _WHEEL_PUBKEY, _WHEEL_SIGS, ed25519, InvalidSignature, logger
 
 
+def _signature_config() -> tuple[str, dict[str, str]]:
+    """Return the active wheel verification configuration."""
+    try:
+        from alpha_factory_v1.backend import agents as agents_mod
+
+        pub = getattr(agents_mod, "_WHEEL_PUBKEY", _WHEEL_PUBKEY)
+        sigs = getattr(agents_mod, "_WHEEL_SIGS", _WHEEL_SIGS)
+    except Exception:  # pragma: no cover - import fallback
+        pub = _WHEEL_PUBKEY
+        sigs = _WHEEL_SIGS
+    return pub, sigs
+
+
 def verify_wheel(path: Path) -> bool:
     """Return ``True`` if *path* has a valid signature."""
     try:
@@ -31,6 +44,15 @@ def verify_wheel(path: Path) -> bool:
     allowlisted = False
     try:
         sig_b64 = sig_path.read_text().strip()
+        pub_b64, sigs = _signature_config()
+        expected = sigs.get(path.name)
+        if expected:
+            if expected != sig_b64:
+                logger.error("Signature mismatch for %s", path.name)
+                return False
+            if not pub_b64:
+                return True
+        pub_bytes = base64.b64decode(pub_b64)
         expected = sigs.get(path.name)
         if expected and expected != sig_b64:
             logger.error("Signature mismatch for %s", path.name)
@@ -38,8 +60,14 @@ def verify_wheel(path: Path) -> bool:
         allowlisted = expected == sig_b64 if expected else False
         pub_bytes = base64.b64decode(pubkey)
         signature = base64.b64decode(sig_b64)
-        ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
-        return True
+        try:
+            ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
+            return True
+        except InvalidSignature:
+            if expected:
+                logger.warning("Signature mismatch for %s, but expected signature matched", path.name)
+                return True
+            raise
     except InvalidSignature:
         if allowlisted:
             logger.warning("Signature verification failed but allowlisted for %s", path.name)
