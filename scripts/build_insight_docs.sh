@@ -63,9 +63,38 @@ if [[ "${INSIGHT_SKIP_BINARY_ASSETS:-0}" == "1" ]]; then
 else
     unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
 fi
+rm -rf "$DOCS_DIR"
+mkdir -p "$DOCS_DIR"
+BINARY_EXCLUDES=(
+    "*.wasm"
+    "*.zip"
+    "*.gz"
+    "*.png"
+    "*.jpg"
+    "*.jpeg"
+    "*.webp"
+    "*.gif"
+    "*.pdf"
+    "*.ico"
+    "*.mp3"
+    "*.mp4"
+    "*.woff"
+    "*.woff2"
+    "*.ttf"
+    "*.otf"
+    "*.bin"
+    "*.exe"
+    "*.dll"
+    "*.so"
+    "*.dylib"
+    "assets/wasm/*"
+    "assets/wasm_llm/*"
+    "assets/pyodide/*"
+)
+unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR" -x "${BINARY_EXCLUDES[@]}"
 # Copy the quickstart guide from the build output so the docs include it
 PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
-if [[ -f "$PDF_SRC" ]]; then
+if [[ -f "$PDF_SRC" && ! -f "$DOCS_DIR/insight_browser_quickstart.pdf" ]]; then
     cp -a "$PDF_SRC" "$DOCS_DIR/"
 fi
 # Ensure the bundle script tag includes the correct hashes after extraction
@@ -140,6 +169,11 @@ copy_assets() {
         wasm_src="$BROWSER_DIR/wasm"
         pyodide_dest="docs/assets/pyodide"
         mkdir -p "$pyodide_dest"
+    # Copy Pyodide runtime files for the gallery (only when missing)
+    wasm_src="$BROWSER_DIR/wasm"
+    pyodide_dest="docs/assets/pyodide"
+    mkdir -p "$pyodide_dest"
+    if [[ ! -f "$pyodide_dest/pyodide.asm.wasm" || ! -f "$pyodide_dest/pyodide.js" ]]; then
         cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
     fi
 }

@@ -111,6 +111,7 @@
 
       const isAutomated = navigator.webdriver;
       if ('serviceWorker' in navigator && !isAutomated) {
+      if ('serviceWorker' in navigator && !navigator.webdriver) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);

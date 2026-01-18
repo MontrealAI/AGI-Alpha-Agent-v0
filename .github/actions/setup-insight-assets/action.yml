@@ -4,20 +4,26 @@ description: Cache, fetch and verify Insight Browser assets.
 runs:
   using: composite
   steps:
+    - name: Configure asset cache directory
+      shell: bash
+      run: |
+        echo "FETCH_ASSETS_DIR=${RUNNER_TEMP}/insight-assets" >> "$GITHUB_ENV"
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
     - name: Cache Pyodide and GPT-2 assets
       id: asset-cache
-      uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
+      uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
       with:
         path: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
+        path: ${{ env.FETCH_ASSETS_DIR }}
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
       shell: bash
       env:
         INSIGHT_ASSET_DIR: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
+        FETCH_ASSETS_DIR: ${{ env.FETCH_ASSETS_DIR }}
       run: python scripts/fetch_assets.py
     - name: Verify Insight Browser assets
       shell: bash
@@ -26,10 +32,13 @@ runs:
       run: |
         set -eo pipefail
         python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
+        FETCH_ASSETS_DIR="${FETCH_ASSETS_DIR}" python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
         if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-          echo "::error::Initial asset verification failed" >&2
+          echo "::error::Insight asset verification failed. Check FETCH_ASSETS_DIR cache." >&2
           cat verify.log
           python scripts/fetch_assets.py
           python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
         fi
         cat verify.log
+          exit 1
+        fi

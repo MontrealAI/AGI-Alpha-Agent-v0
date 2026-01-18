@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-8HQw6fPoy8+LmIQ4EBvud4Xv3wVIwuWPb28UlhFF/NbRlaIaUcC0UERfAoJQC8dw' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-3+b2KDkxc2OG8ATHp4U0CWG1jGx5P80pY0gAby8lxgh+bVPuXPyNjCtUDMGhrv2X' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
@@ -37,7 +37,7 @@
       const SW_URL = 'service-worker.js';
       const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
 
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && !navigator.webdriver) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);
@@ -70,7 +70,7 @@
       }
     </script>
 
-    <script type="module" src="insight.bundle.js" integrity="sha384-8UIyyixGHGF3UwWpC/fxgU4K87TFgPJ1MYbw3Qro7Ncww291q/ehYbfUaxhZw7wX" crossorigin="anonymous"></script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-cPnH8JaTl44w7OPuAYHaVl0YQXBR1ihNaMXvNhKYXRGo0NwyX/B6e1mk0yznshiK" crossorigin="anonymous"></script>
   <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
 </body>
 </html>
