@@ -15,10 +15,10 @@ jobs:
       PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
       HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
       FETCH_ASSETS_ATTEMPTS: '5'
-      FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
-      INSIGHT_ASSET_ROOT: ${{ runner.temp }}/insight-assets
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
-      PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
+      FETCH_ASSETS_DIR: ${{ github.workspace }}/.cache/insight-assets
+      INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.cache/insight-assets
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+      PYODIDE_CACHE_DIR: ${{ github.workspace }}/.cache/pyodide-cache
       CI: 'true'
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs
       NPM_CONFIG_FUND: 'false'
