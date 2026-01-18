@@ -6,6 +6,9 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import subprocess
+import tempfile
+import textwrap
 from pathlib import Path
 from typing import Sequence
 
@@ -90,11 +93,34 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                normalized = textwrap.dedent(diff).lstrip("\n")
+                normalized_lines = []
+                for line in normalized.splitlines():
+                    if line.startswith("@@") and "-" not in line and "+" not in line:
+                        normalized_lines.append("@@ -1 +1 @@")
+                    else:
+                        normalized_lines.append(line)
+                normalized = "\n".join(normalized_lines)
+                if normalized and not normalized.endswith("\n"):
+                    normalized += "\n"
+                with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
+                    tf.write(normalized)
+                    patch_path = tf.name
+                patch_result = subprocess.run(
+                    ["patch", "-p1", "-i", patch_path],
+                    cwd=self.repo,
+                    capture_output=True,
+                    text=True,
+                )
+                if patch_result.returncode != 0:
+                    raise RuntimeError(f"patch command failed:\n{patch_result.stdout}{patch_result.stderr}")
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
+            finally:
+                if "patch_path" in locals():
+                    Path(patch_path).unlink(missing_ok=True)
         finally:
             shutil.rmtree(clone, ignore_errors=True)

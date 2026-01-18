@@ -31,7 +31,25 @@ else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
 
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
+        def Envelope(  # type: ignore[misc]
+            sender: object = "",
+            recipient: object = "",
+            ts: object = 0.0,
+            payload: dict[str, Any] | None = None,
+        ) -> "pb.Envelope":
+            try:
+                ts_value = float(ts) if ts is not None else 0.0
+            except (TypeError, ValueError):
+                ts_value = 0.0
+            env = pb.Envelope(
+                sender="" if sender is None else str(sender),
+                recipient="" if recipient is None else str(recipient),
+                ts=ts_value,
+            )
+            if isinstance(payload, dict):
+                env.payload.update(payload)
+            return env
+
     except Exception:  # pragma: no cover - optional proto
         Envelope: TypeAlias = Any
 

@@ -50,7 +50,10 @@ def test_progress_dom_updates() -> None:
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     client = TestClient(api_server.app)
-    browser = pw.sync_playwright().start().chromium.launch()
+    try:
+        browser = pw.sync_playwright().start().chromium.launch()
+    except Exception as exc:  # pragma: no cover - depends on browser install
+        pytest.skip(f"Playwright browser unavailable: {exc}")
     page = browser.new_page()
     page.goto(str(client.base_url) + "/web/")
     page.click("text=Run simulation")

@@ -20,6 +20,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Sequence
 
 DEMO_DIR = Path(__file__).resolve().parent
 ROOT_DIR = DEMO_DIR.parent.parent
@@ -75,7 +76,7 @@ def ensure_deps() -> None:
             sys.exit(result.returncode)
 
 
-def main() -> None:
+def main(argv: Sequence[str] | None = None) -> None:
     """Entry point for launching the demo containers."""
     ap = argparse.ArgumentParser(description="Launch the AI-GA meta-evolution demo")
     ap.add_argument("--pull", action="store_true", help="pull signed image instead of building")
@@ -83,7 +84,13 @@ def main() -> None:
     ap.add_argument("--logs", action="store_true", help="tail container logs after start-up")
     ap.add_argument("--reset", action="store_true", help="remove volumes and images")
     ap.add_argument("--stop", action="store_true", help="stop running containers")
-    args = ap.parse_args()
+    if argv is None:
+        pytest_env = os.getenv("PYTEST_CURRENT_TEST")
+        if pytest_env and not {"-h", "--help"} & set(sys.argv[1:]):
+            argv = []
+        else:
+            argv = sys.argv[1:]
+    args = ap.parse_args(argv)
 
     dc = docker_compose_cmd()
     compose = dc + ["--project-name", PROJECT, "--env-file", str(CONFIG_ENV), "-f", str(COMPOSE_YAML)]

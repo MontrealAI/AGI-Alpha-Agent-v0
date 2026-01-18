@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -34,6 +35,7 @@ import shutil
 import subprocess
 import tempfile
 import textwrap
+import inspect
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
 
@@ -58,7 +60,7 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
-def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+async def generate_patch_async(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
     prompt = textwrap.dedent(
         f"""
@@ -74,9 +76,23 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if inspect.isawaitable(result):
+        result = await result
+    patch = textwrap.dedent(str(result)).strip()
+    if patch and not patch.endswith("\n"):
+        patch += "\n"
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+    """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(generate_patch_async(test_log, llm=llm, repo_path=repo_path))
+    raise RuntimeError("generate_patch must be awaited via generate_patch_async inside an event loop")
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -94,7 +110,17 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
-    _sanity_check_patch(patch, repo)
+    normalized = textwrap.dedent(patch).lstrip("\n")
+    normalized_lines = []
+    for line in normalized.splitlines():
+        if re.match(r"^@@\\s*@@", line):
+            normalized_lines.append("@@ -1 +1 @@")
+        else:
+            normalized_lines.append(line)
+    normalized = "\n".join(normalized_lines)
+    if normalized and not normalized.endswith("\n"):
+        normalized += "\n"
+    _sanity_check_patch(normalized, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
             '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
@@ -103,12 +129,12 @@ def apply_patch(patch: str, repo_path: str) -> None:
 
     # write patch to temp file
     with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
-        tf.write(patch)
+        tf.write(normalized)
         patch_file = tf.name
 
     try:
         # back up touched files
-        for line in patch.splitlines():
+        for line in normalized.splitlines():
             if line.startswith(("--- ", "+++ ")):
                 rel = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
                 file_path = repo / rel
