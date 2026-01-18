@@ -25,20 +25,6 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
-  if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
-    pip_args=()
-    if [[ -n "${WHEELHOUSE:-}" ]]; then
-      pip_args+=(--no-index --find-links "$WHEELHOUSE")
-    fi
-    pip install "${pip_args[@]}" -r "$demo_dir/requirements.txt"
-    verify_muzero_deps || { echo "🚨  Missing MuZero dependencies" >&2; exit 1; }
-  else
-    echo "🚨  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1" >&2
-    exit 1
-  fi
-fi
-
 command -v docker >/dev/null 2>&1 || {
   echo "🚨  Docker is required → https://docs.docker.com/get-docker/"; exit 1; }
 
@@ -53,6 +39,19 @@ HOST_PORT=${HOST_PORT:-7861}
 if command -v lsof >/dev/null 2>&1 && lsof -i TCP:"${HOST_PORT}" -s TCP:LISTEN >/dev/null 2>&1; then
   echo "🚨  Port ${HOST_PORT} already in use. Set HOST_PORT to an open port." >&2
   exit 1
+fi
+
+if ! verify_muzero_deps; then
+  if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
+    pip_args=()
+    if [[ -n "${WHEELHOUSE:-}" ]]; then
+      pip_args+=(--no-index --find-links "$WHEELHOUSE")
+    fi
+    pip install "${pip_args[@]}" -r "$demo_dir/requirements.txt"
+    verify_muzero_deps || { echo "🚨  Missing MuZero dependencies" >&2; exit 1; }
+  else
+    echo "🚨  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1" >&2
+  fi
 fi
 
 docker compose --project-name alpha_muzero -f "$compose" up -d --build

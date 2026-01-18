@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
+import sys
 
 from .agent_runner import AgentRunner
 
@@ -36,12 +37,16 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
-        mem = SimpleNamespace(
-            vector=SimpleNamespace(
-                recent=lambda *_a, **_k: [],
-                search=lambda *_a, **_k: [],
+        orch_mod = sys.modules.get("alpha_factory_v1.backend.orchestrator") or sys.modules.get("backend.orchestrator")
+        if orch_mod and hasattr(orch_mod, "mem"):
+            mem = orch_mod.mem
+        else:
+            mem = SimpleNamespace(
+                vector=SimpleNamespace(
+                    recent=lambda *_a, **_k: [],
+                    search=lambda *_a, **_k: [],
+                )
             )
-        )
 
     token = os.getenv("API_TOKEN")
     if not token:

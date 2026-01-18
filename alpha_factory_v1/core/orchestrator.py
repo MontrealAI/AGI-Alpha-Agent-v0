@@ -16,16 +16,6 @@ import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, cast
 
-from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import (
-    planning_agent,
-    research_agent,
-    strategy_agent,
-    market_agent,
-    codegen_agent,
-    safety_agent,
-    memory_agent,
-    adk_summariser_agent,
-)
 from alpha_factory_v1.core.agents.self_improver_agent import SelfImproverAgent
 from .utils import config
 from alpha_factory_v1.common.utils import logging as insight_logging
@@ -50,6 +40,13 @@ ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
 BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
 PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
 
+
+def _refresh_env_settings() -> None:
+    global ERR_THRESHOLD, BACKOFF_EXP_AFTER, PROMOTION_THRESHOLD
+    ERR_THRESHOLD = int(os.getenv("AGENT_ERR_THRESHOLD", "3"))
+    BACKOFF_EXP_AFTER = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", "3"))
+    PROMOTION_THRESHOLD = float(os.getenv("PROMOTION_THRESHOLD", "0"))
+
 log = insight_logging.logging.getLogger(__name__)
 
 
@@ -67,7 +64,6 @@ async def monitor_agents(
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
     while True:
-        await asyncio.sleep(2)
         now = time.time()
         for runner in list(runners.values()):
             needs_restart = False
@@ -81,11 +77,13 @@ async def monitor_agents(
                 log.warning("%s unresponsive – restarting", runner.agent.name)
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
+                    exp = runner.restart_streak - backoff_exp_after + 1
+                    delay *= 2 ** min(exp, 10)
                 await asyncio.sleep(delay)
                 await runner.restart(bus, ledger)
                 if on_restart:
                     on_restart(runner)
+        await asyncio.sleep(2)
 
 
 class Orchestrator(BaseOrchestrator):
@@ -97,6 +95,7 @@ class Orchestrator(BaseOrchestrator):
         *,
         alert_hook: Callable[[str, str | None], None] | None = None,
     ) -> None:
+        _refresh_env_settings()
         self.settings = settings or config.CFG
         insight_logging.setup(json_logs=self.settings.json_logs)
         bus = messaging.A2ABus(self.settings)
@@ -137,6 +136,16 @@ class Orchestrator(BaseOrchestrator):
             self.add_agent(agent)
 
     def _init_agents(self) -> List[BaseAgent]:
+        from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import (
+            planning_agent,
+            research_agent,
+            strategy_agent,
+            market_agent,
+            codegen_agent,
+            safety_agent,
+            memory_agent,
+            adk_summariser_agent,
+        )
         agents: List[BaseAgent] = []
         for island, backend in self.settings.island_backends.items():
             agents.extend(

@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -36,6 +37,8 @@ import tempfile
 import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
+
+from alpha_factory_v1.core.utils.patch_guard import normalize_patch
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
@@ -58,7 +61,7 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
-def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+async def async_generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
     prompt = textwrap.dedent(
         f"""
@@ -74,9 +77,43 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
-    _sanity_check_patch(patch, pathlib.Path(repo_path))
-    return patch
+    result = llm(prompt)
+    patch = await result if asyncio.iscoroutine(result) else result
+    raw_patch = str(patch).strip()
+    _sanity_check_patch(raw_patch, pathlib.Path(repo_path))
+    return normalize_patch(raw_patch, pathlib.Path(repo_path))
+
+
+def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
+    """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    result = llm(
+        textwrap.dedent(
+            f"""
+        You are an expert software engineer. A test suite failed as follows:
+
+        ```text
+        {test_log}
+        ```
+
+        Produce a **unified diff** that fixes the bug. Constraints:
+        1. Modify only existing files inside the repository.
+        2. Do not add or delete entire files.
+        3. Keep the patch minimal and idiomatic.
+        """
+        )
+    )
+    if asyncio.iscoroutine(result):
+        try:
+            asyncio.get_running_loop()
+        except RuntimeError:
+            patch = asyncio.run(result)
+        else:
+            raise RuntimeError("async LLM detected; use async_generate_patch instead")
+    else:
+        patch = result
+    raw_patch = str(patch).strip()
+    _sanity_check_patch(raw_patch, pathlib.Path(repo_path))
+    return normalize_patch(raw_patch, pathlib.Path(repo_path))
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -95,6 +132,7 @@ def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
+    patch = normalize_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
             '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
@@ -143,11 +181,14 @@ if __name__ == "__main__":
     _temp_env = os.getenv("TEMPERATURE")
     try:
         from openai_agents import OpenAIAgent
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, ImportError):
         from .agent_core import llm_client
 
         def llm(prompt: str) -> str:
             """Offline fallback using the local LLM."""
+            patch_file = os.getenv("PATCH_FILE")
+            if patch_file:
+                return pathlib.Path(patch_file).read_text()
             return llm_client.call_local_model([{"role": "user", "content": prompt}])
 
     else:

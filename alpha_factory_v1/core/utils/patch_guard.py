@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 import re
+from typing import Optional
 
 
 _BAD_PATTERNS = [
@@ -53,3 +55,74 @@ def is_patch_valid(diff: str) -> bool:
         return False
 
     return True
+
+
+_HUNK_RE = re.compile(r"^@@\\s+-(\\d+)(?:,(\\d+))?\\s+\\+(\\d+)(?:,(\\d+))?\\s+@@")
+
+
+def _find_hunk_start(lines: list[str], removed: list[str]) -> Optional[int]:
+    if not removed:
+        return len(lines) + 1
+    for idx in range(len(lines) - len(removed) + 1):
+        if lines[idx : idx + len(removed)] == removed:
+            return idx + 1
+    return None
+
+
+def normalize_patch(diff: str, repo_root: Path) -> str:
+    """Normalize unified diffs that omit hunk ranges.
+
+    Args:
+        diff: Original unified diff.
+        repo_root: Repository root used to resolve file paths.
+
+    Returns:
+        Unified diff with explicit hunk ranges when possible.
+    """
+    lines = diff.splitlines()
+    out: list[str] = []
+    i = 0
+    file_lines: list[str] = []
+    while i < len(lines):
+        line = lines[i]
+        if line.startswith("--- "):
+            out.append(line)
+            i += 1
+            continue
+        if line.startswith("+++ "):
+            out.append(line)
+            path = line[4:].split("\t")[0]
+            path = re.sub(r"^[ab]/", "", path)
+            file_path = repo_root / path
+            file_lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
+            i += 1
+            continue
+        if line.startswith("@@"):
+            header = line
+            if _HUNK_RE.match(header):
+                out.append(header)
+                i += 1
+                continue
+            if header.strip() == "@@":
+                i += 1
+                hunk_lines: list[str] = []
+                while i < len(lines) and not lines[i].startswith(("@@", "--- ", "+++ ")):
+                    hunk_lines.append(lines[i])
+                    i += 1
+                removed = [l[1:] for l in hunk_lines if l.startswith("-") and not l.startswith("---")]
+                added = [l[1:] for l in hunk_lines if l.startswith("+") and not l.startswith("+++")]
+                start = _find_hunk_start(file_lines, removed) or 1
+                old_count = len(removed)
+                new_count = len(added)
+                out.append(f"@@ -{start},{old_count} +{start},{new_count} @@")
+                out.extend(hunk_lines)
+                continue
+            out.append(line)
+            i += 1
+            continue
+        out.append(line)
+        i += 1
+    text = "\n".join(out)
+    if diff.endswith("\n"):
+        text += "\n"
+    return text
