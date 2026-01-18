@@ -134,7 +134,20 @@ def _reuse_or_create(name: str, factory, *args, **kwargs):
     existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
     if existing is not None:
         return existing
-    return factory(name, *args, **kwargs)
+    for collector, names in REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
+        if name in names:
+            return collector
+    kwargs.setdefault("registry", REGISTRY)
+    try:
+        return factory(name, *args, **kwargs)
+    except ValueError:
+        existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+        if existing is not None:
+            return existing
+        for collector, names in REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
+            if name in names:
+                return collector
+        raise
 
 
 FITNESS_GAUGE = _reuse_or_create("aiga_best_fitness", Gauge, "Best fitness achieved so far")
