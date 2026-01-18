@@ -24,8 +24,8 @@ jobs:
     env:
       INSIGHT_BROWSER_DIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       DOCS_BUNDLE_DIR: docs/alpha_agi_insight_v1
-      FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
-      INSIGHT_ASSET_ROOT: ${{ runner.temp }}/insight-assets
+      FETCH_ASSETS_DIR: ${{ github.workspace }}/.tmp/insight-assets
+      INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.tmp/insight-assets
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-bundle
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'

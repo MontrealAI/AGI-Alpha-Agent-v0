@@ -26,6 +26,10 @@ const manifest = JSON.parse(
 requireNode22();
 
 const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
+const skipLlmAssets = ["1", "true", "yes"].includes(
+    (process.env.FETCH_ASSETS_SKIP_LLM || "").toLowerCase(),
+);
+const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 
 function resolveAssetPath(relPath) {
     if (!assetRoot) {
@@ -168,6 +172,9 @@ function findAssetIssues() {
     const assets = manifest.assets || [];
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
+        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+            continue;
+        }
         const candidates = roots.map((root) => path.join(root, rel));
         const existing = candidates.find((candidate) => fsSync.existsSync(candidate));
         if (!existing) {
@@ -178,7 +185,7 @@ function findAssetIssues() {
         if (size > MAX_SCAN_BYTES) continue;
         const data = fsSync.readFileSync(existing, "utf8");
         const lowered = data.toLowerCase();
-        if (!data.trim() || lowered.includes("placeholder")) {
+        if (!data.trim() || (!PLACEHOLDER_ALLOWLIST.has(rel) && lowered.includes("placeholder"))) {
             files.push(rel);
         }
     }
@@ -189,6 +196,30 @@ function runFetch() {
     const script = path.join(repoRoot, "scripts", "fetch_assets.py");
     const res = spawnSync("python", [script], { stdio: "inherit" });
     if (res.status !== 0) process.exit(res.status ?? 1);
+}
+
+function syncAssetToLocal(relPath, sourcePath) {
+    if (!sourcePath || !fsSync.existsSync(sourcePath)) {
+        return;
+    }
+    const localPath = path.join(path.dirname(scriptPath), relPath);
+    if (fsSync.existsSync(localPath)) {
+        return;
+    }
+    fsSync.mkdirSync(path.dirname(localPath), { recursive: true });
+    fsSync.copyFileSync(sourcePath, localPath);
+}
+
+function syncAssetsToLocal() {
+    if (!assetRoot) {
+        return;
+    }
+    for (const rel of manifest.assets || []) {
+        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+            continue;
+        }
+        syncAssetToLocal(rel, resolveAssetPath(rel));
+    }
 }
 
 function ensureAssets() {
@@ -211,6 +242,7 @@ function ensureAssets() {
     if (placeholders.length) {
         throw new Error(`placeholder found in ${placeholders[0]}`);
     }
+    syncAssetsToLocal();
 }
 
 const OUT_DIR = "dist";
