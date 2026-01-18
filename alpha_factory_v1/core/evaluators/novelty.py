@@ -40,12 +40,22 @@ def _get_model() -> "SentenceTransformer":
     return _MODEL
 
 
+def _coerce_embedding(vec: np.ndarray | list[object]) -> np.ndarray:
+    """Normalize embeddings into a non-empty 2-D float32 array."""
+    arr = np.asarray(vec, dtype="float32")
+    if arr.ndim == 1:
+        arr = arr.reshape(1, -1)
+    if arr.size == 0 or not np.isfinite(arr).all() or np.allclose(arr, 0.0):
+        raise ValueError("invalid embedding")
+    return arr
+
+
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
     try:
         model = _get_model()
         vec = model.encode([text], normalize_embeddings=True)
-        return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
+        return _coerce_embedding(vec)  # type: ignore[no-any-return]
     except Exception as exc:  # pragma: no cover - offline fallback
         _LOG.warning("SentenceTransformer unavailable (%s) → hashing fallback.", exc)
         return _hash_embedding(text)

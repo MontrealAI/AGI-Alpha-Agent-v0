@@ -80,8 +80,9 @@ async def monitor_agents(
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
                 delay = random.uniform(0.5, 1.5)
-                if runner.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
+                streak = max(runner.restart_streak, runner.restarts)
+                if streak >= backoff_exp_after:
+                    delay *= 2 ** (streak - backoff_exp_after + 1)
                 await asyncio.sleep(delay)
                 await runner.restart(bus, ledger)
                 if on_restart:

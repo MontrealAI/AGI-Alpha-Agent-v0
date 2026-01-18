@@ -34,7 +34,8 @@ import shutil
 import subprocess
 import tempfile
 import textwrap
-from typing import List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Iterable, List, Optional, Tuple
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
@@ -60,6 +61,13 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    override = os.getenv("PATCH_FILE")
+    if override:
+        override_path = pathlib.Path(override)
+        if override_path.is_file():
+            patch = override_path.read_text()
+            _sanity_check_patch(patch, pathlib.Path(repo_path))
+            return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,7 +82,12 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    response = llm(prompt)
+    if hasattr(response, "__await__"):
+        import asyncio
+
+        response = asyncio.run(response)
+    patch = str(response).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -91,14 +104,116 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
+@dataclass
+class _Hunk:
+    old_start: int
+    old_count: int
+    new_start: int
+    new_count: int
+    lines: list[str]
+
+
+_HUNK_RE = re.compile(r"^@@ -(?P<o>\d+)(?:,(?P<ol>\d+))? \\+(?P<n>\d+)(?:,(?P<nl>\d+))? @@")
+
+
+def _parse_diff(patch: str) -> list[tuple[str, list[_Hunk]]]:
+    files: list[tuple[str, list[_Hunk]]] = []
+    current_file: str | None = None
+    hunks: list[_Hunk] = []
+    current_hunk: _Hunk | None = None
+
+    def _flush() -> None:
+        nonlocal current_file, hunks
+        if current_file is not None:
+            files.append((current_file, hunks))
+        current_file = None
+        hunks = []
+
+    for line in patch.splitlines():
+        if line.startswith("--- "):
+            continue
+        if line.startswith("+++ "):
+            _flush()
+            path = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            current_file = path
+            continue
+        if line.startswith("@@"):
+            if current_file is None:
+                raise RuntimeError("patch command failed: missing file header")
+            match = _HUNK_RE.match(line)
+            if match:
+                current_hunk = _Hunk(
+                    old_start=int(match.group("o")),
+                    old_count=int(match.group("ol") or "1"),
+                    new_start=int(match.group("n")),
+                    new_count=int(match.group("nl") or "1"),
+                    lines=[],
+                )
+            else:
+                current_hunk = _Hunk(old_start=1, old_count=0, new_start=1, new_count=0, lines=[])
+            hunks.append(current_hunk)
+            continue
+        if line.startswith("\\ No newline"):
+            continue
+        if current_hunk is not None:
+            current_hunk.lines.append(line)
+
+    if current_file is not None:
+        files.append((current_file, hunks))
+    return files
+
+
+def _apply_hunks(original: list[str], hunks: Iterable[_Hunk]) -> list[str]:
+    new_lines: list[str] = []
+    idx = 0
+    for hunk in hunks:
+        start = max(hunk.old_start - 1, 0)
+        if start > len(original):
+            raise RuntimeError("patch command failed: hunk start out of range")
+        new_lines.extend(original[idx:start])
+        idx = start
+        for hline in hunk.lines:
+            if hline.startswith(" "):
+                expected = hline[1:]
+                if idx >= len(original) or original[idx] != expected:
+                    raise RuntimeError("patch command failed: context mismatch")
+                new_lines.append(original[idx])
+                idx += 1
+            elif hline.startswith("-"):
+                expected = hline[1:]
+                if idx >= len(original) or original[idx] != expected:
+                    raise RuntimeError("patch command failed: removal mismatch")
+                idx += 1
+            elif hline.startswith("+"):
+                new_lines.append(hline[1:])
+            else:
+                raise RuntimeError("patch command failed: unknown diff line")
+    new_lines.extend(original[idx:])
+    return new_lines
+
+
+def _apply_patch_fallback(patch: str, repo: pathlib.Path) -> None:
+    files = _parse_diff(patch)
+    if not files:
+        raise RuntimeError("patch command failed: missing file headers")
+    for rel_path, hunks in files:
+        file_path = repo / rel_path
+        if not file_path.exists():
+            raise RuntimeError("patch command failed: target file missing")
+        text = file_path.read_text(encoding="utf-8")
+        ends_newline = text.endswith("\n")
+        lines = text.splitlines()
+        patched = _apply_hunks(lines, hunks)
+        output = "\n".join(patched)
+        if ends_newline:
+            output += "\n"
+        file_path.write_text(output, encoding="utf-8")
+
+
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
-    if shutil.which("patch") is None:
-        raise RuntimeError(
-            '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
-        )
     backups = {}
 
     # write patch to temp file
@@ -116,10 +231,16 @@ def apply_patch(patch: str, repo_path: str) -> None:
                     backup = file_path.with_suffix(".bak")
                     shutil.copy2(file_path, backup)
                     backups[file_path] = backup
-        # apply
-        code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
+        use_patch_cmd = shutil.which("patch") is not None
+        has_unversioned_hunks = any(
+            line.startswith("@@") and not _HUNK_RE.match(line) for line in patch.splitlines()
+        )
+        if not use_patch_cmd or has_unversioned_hunks:
+            _apply_patch_fallback(patch, repo)
+        else:
+            code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
+            if code != 0:
+                _apply_patch_fallback(patch, repo)
     except Exception as e:
         # rollback
         for orig, bak in backups.items():

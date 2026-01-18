@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Tuple
 
 from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.demos.self_healing_repo import patcher_core
 from alpha_factory_v1.core.eval.preflight import run_preflight
 
 try:
@@ -78,7 +79,7 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    patcher_core.apply_patch(diff, repo_path=str(repo_dir))
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

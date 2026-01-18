@@ -52,10 +52,10 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message
 logger = logging.getLogger(__name__)
 
 if shutil.which("patch") is None:
-    logger.error(
-        '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
+    logger.warning(
+        '`patch` command not found. Falling back to the built-in patcher. '
+        'Install the utility for faster patch application.'
     )
-    sys.exit(1)
 
 
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
@@ -77,12 +77,16 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+_model_env = os.getenv("MODEL_NAME") or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+try:
+    LLM = OpenAIAgent(
+        model=_model_env,
+        api_key=os.getenv("OPENAI_API_KEY", None),
+        base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        temperature=float(_temp_env) if _temp_env is not None else None,
+    )
+except TypeError:  # pragma: no cover - stubbed agents in tests
+    LLM = OpenAIAgent()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")

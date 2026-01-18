@@ -101,6 +101,13 @@ def _cos(a: List[float], b: List[float]) -> float:
     return max(0.0, min(1.0, dot / (na * nb)))
 
 
+def _normalize_embedding(vec: List[float] | List[List[float]]) -> List[float]:
+    """Flatten embeddings to a 1-D list of floats."""
+    if vec and isinstance(vec[0], list):
+        return vec[0]
+    return vec  # type: ignore[return-value]
+
+
 def _to_text(obj: Any) -> str:
     if isinstance(obj, str):
         return obj
@@ -121,7 +128,8 @@ def reward(state: Any, action: Any, result: Any) -> float:  # noqa: D401
     sig = _simhash(txt)
 
     if _have_embed:
-        emb: List[float] = _model.encode(txt, normalize_embeddings=True).tolist()
+        emb: List[float] | List[List[float]] = _model.encode(txt, normalize_embeddings=True).tolist()
+        emb = _normalize_embedding(emb)
 
     with _lock:
         sims: List[float] = []
