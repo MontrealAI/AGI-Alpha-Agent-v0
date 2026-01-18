@@ -269,7 +269,11 @@ async function bundle() {
         target: "es2020",
         outfile: `${OUT_DIR}/insight.bundle.js`,
         plugins: [aliasPlugin],
-        external: ["d3"],
+        external: [
+            "d3",
+            "../lib/bundle.esm.min.js",
+            "../../lib/bundle.esm.min.js",
+        ],
     });
     execSync(`npx tailwindcss -i style.css -o ${OUT_DIR}/style.css --minify`, {
         stdio: "inherit",
@@ -334,7 +338,8 @@ async function bundle() {
     bundleText = bundleText
         .replace(/\.\/wasm\//g, "./assets/wasm/")
         .replace(/\.\/wasm_llm\//g, "./assets/wasm_llm/")
-        .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
+        .replace(/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js")
+        .replace(/\.\.\/\.\.\/lib\/bundle\.esm\.min\.js/g, "./assets/lib/bundle.esm.min.js");
     await fs.writeFile(bundlePath, bundleText);
     const data = await fs.readFile(bundlePath);
     const appSri =
