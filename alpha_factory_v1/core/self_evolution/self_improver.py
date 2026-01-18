@@ -9,6 +9,7 @@ the temporary clone via the ``cleanup`` flag.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -38,6 +39,34 @@ def _log_delta(delta: float, log_file: Path) -> None:
         log = []
     log.append({"ts": time.time(), "delta": delta})
     log_file.write_text(json.dumps(log))
+
+
+def _normalize_patch(patch: str) -> str:
+    """Ensure hunks include line numbers when missing."""
+    lines = patch.splitlines()
+    updated: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.startswith("@@") and not re.search(r"@@\s+-\d", line):
+            removed = 0
+            added = 0
+            j = i + 1
+            while j < len(lines) and not lines[j].startswith(("@@", "--- ", "+++ ")):
+                if lines[j].startswith("-") and not lines[j].startswith("---"):
+                    removed += 1
+                elif lines[j].startswith("+") and not lines[j].startswith("+++"):
+                    added += 1
+                j += 1
+            removed = max(removed, 1)
+            added = max(added, 1)
+            line = f"@@ -1,{removed} +1,{added} @@"
+        updated.append(line)
+        i += 1
+    normalized = "\n".join(updated)
+    if patch.endswith("\n"):
+        normalized += "\n"
+    return normalized
 
 
 def improve_repo(
@@ -74,11 +103,21 @@ def improve_repo(
     repo = git.Repo.clone_from(repo_url, repo_dir)
     baseline = _evaluate(repo_dir, metric_file)
 
-    diff = Path(patch_file).read_text()
-    if not is_patch_valid(diff):
+    patch_path = Path(patch_file)
+    diff = patch_path.read_text()
+    normalized = _normalize_patch(diff)
+    if not is_patch_valid(normalized):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    tmp_file: Path | None = None
+    if normalized != diff:
+        tmp_file = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+        tmp_file.write_text(normalized)
+    try:
+        repo.git.apply(str(tmp_file or patch_path))
+    finally:
+        if tmp_file and tmp_file.exists():
+            tmp_file.unlink()
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

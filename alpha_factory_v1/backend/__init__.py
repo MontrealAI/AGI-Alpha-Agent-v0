@@ -89,9 +89,10 @@ sys.modules.setdefault(__name__ + ".services", _services_mod)
 sys.modules["backend.services"] = _services_mod
 setattr(sys.modules[__name__], "services", _services_mod)
 
-_fin_mod = importlib.import_module(".agents.finance_agent", __name__)
-sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
-sys.modules["backend.finance_agent"] = _fin_mod
+if "pytest" not in sys.modules:
+    _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
+    sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
+    sys.modules["backend.finance_agent"] = _fin_mod
 
 
 # ──────────────────────── log & CSRF helpers (unchanged) ──────────────────

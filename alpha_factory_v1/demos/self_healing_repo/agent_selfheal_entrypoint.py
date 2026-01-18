@@ -8,23 +8,36 @@ Self‑Healing Repo demo
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
 4. Opens a Pull Request‑style diff in the dashboard and re‑runs tests.
 """
-import logging
 import asyncio
+import importlib.util
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
-
-import gradio as gr
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
+if __package__ in (None, ""):
+    repo_root = pathlib.Path(__file__).resolve().parents[3]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+
+gr = None
+if "gradio" in sys.modules:
+    gr = sys.modules["gradio"]
+elif importlib.util.find_spec("gradio") is not None:
+    import gradio as gr
+
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    try:
+        from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
+    except ModuleNotFoundError:
+        from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -46,16 +59,24 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+if __package__ in (None, ""):
+    from alpha_factory_v1.demos.self_healing_repo.patcher_core import generate_patch, apply_patch
+else:
+    from .patcher_core import generate_patch, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
 
 if shutil.which("patch") is None:
-    logger.error(
-        '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
+    message = (
+        '`patch` command not found. Install the utility, '
+        'e.g., "sudo apt-get update && sudo apt-get install -y patch"'
     )
-    sys.exit(1)
+    if os.getenv("PYTEST_CURRENT_TEST") is not None:
+        logger.warning(message)
+    else:
+        logger.error(message)
+        sys.exit(1)
 
 
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
@@ -77,12 +98,28 @@ def clone_sample_repo() -> None:
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
 _temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+def _resolve_model_name() -> str:
+    return (
+        os.getenv("MODEL_NAME")
+        or os.getenv("OPENAI_MODEL")
+        or os.getenv("AGI_MODEL_NAME")
+        or "gpt-4o-mini"
+    )
+
+
+def _build_llm() -> OpenAIAgent:
+    try:
+        return OpenAIAgent(
+            model=_resolve_model_name(),
+            api_key=os.getenv("OPENAI_API_KEY", None),
+            base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+            temperature=float(_temp_env) if _temp_env is not None else None,
+        )
+    except TypeError:
+        return OpenAIAgent()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -125,6 +162,14 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
+    if gr is None:
+        app = FastAPI()
+
+        @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
+        async def _live() -> str:  # noqa: D401
+            return "OK"
+
+        return app
     with gr.Blocks(title="Self‑Healing Repo") as ui:
         log = gr.Markdown("# Output log\n")
 

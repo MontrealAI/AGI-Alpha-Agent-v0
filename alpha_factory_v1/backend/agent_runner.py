@@ -19,7 +19,6 @@ from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
 
-from backend.agents.registry import get_agent
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -152,6 +151,25 @@ async def maybe_await(fn: Callable[..., Any], *a: Any, **kw: Any) -> Any:
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+
+
+def get_agent(name: str) -> Any:
+    """Return an agent instance by name."""
+    import sys
+
+    registry_mod = sys.modules.get("backend.agents.registry") or sys.modules.get(
+        "alpha_factory_v1.backend.agents.registry"
+    )
+    if registry_mod and hasattr(registry_mod, "get_agent"):
+        return registry_mod.get_agent(name)
+
+    agents_mod = sys.modules.get("backend.agents") or sys.modules.get("alpha_factory_v1.backend.agents")
+    if agents_mod and hasattr(agents_mod, "get_agent"):
+        return agents_mod.get_agent(name)
+
+    from backend.agents.registry import get_agent as _get_agent
+
+    return _get_agent(name)
 
 
 class AgentRunner:

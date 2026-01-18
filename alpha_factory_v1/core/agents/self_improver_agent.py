@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import fnmatch
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Sequence
 
@@ -73,13 +74,20 @@ class SelfImproverAgent(BaseAgent):
         if git is None:
             raise RuntimeError("GitPython is required")
         diff = self.patch_file.read_text()
-        if not is_patch_valid(diff):
+        normalized = self_improver._normalize_patch(diff)
+        if not is_patch_valid(normalized):
             raise ValueError("Invalid or unsafe patch")
-        self._check_allowed(diff)
+        self._check_allowed(normalized)
+        patch_path = self.patch_file
+        tmp_file: Path | None = None
+        if normalized != diff:
+            tmp_file = Path(tempfile.mkstemp(prefix="selfimprover-", suffix=".diff")[1])
+            tmp_file.write_text(normalized)
+            patch_path = tmp_file
         delta, clone = await asyncio.to_thread(
             self_improver.improve_repo,
             str(self.repo),
-            str(self.patch_file),
+            str(patch_path),
             self.metric_file,
             self.log_file,
             False,
@@ -90,11 +98,13 @@ class SelfImproverAgent(BaseAgent):
             repo = git.Repo(self.repo)
             head = repo.head.commit.hexsha
             try:
-                repo.git.apply(str(self.patch_file))
+                repo.git.apply(str(patch_path))
                 repo.index.add([self.metric_file])
                 repo.index.commit("self-improvement patch")
             except Exception:  # noqa: BLE001
                 repo.git.reset("--hard", head)
                 raise
         finally:
+            if tmp_file and tmp_file.exists():
+                tmp_file.unlink()
             shutil.rmtree(clone, ignore_errors=True)
