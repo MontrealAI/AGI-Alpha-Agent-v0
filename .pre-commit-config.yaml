@@ -66,6 +66,11 @@ repos:
         entry: python scripts/verify_html_disclaimer.py
         language: python
         pass_filenames: false
+      - id: no-binary-diff
+        name: Block binary diffs
+        entry: python scripts/check_no_binary_diff.py
+        language: python
+        pass_filenames: false
       - id: update-actions
         name: Update workflow action versions
         entry: python tools/update_actions.py

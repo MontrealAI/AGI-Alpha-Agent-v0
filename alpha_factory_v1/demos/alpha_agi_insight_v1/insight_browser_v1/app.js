@@ -348,10 +348,13 @@ window.addEventListener('DOMContentLoaded',async()=>{
   initDragDrop(dropZone,loadState)
   window.dispatchEvent(new HashChangeEvent('hashchange'))
 })
-window.addEventListener('hashchange', () => {
+window.addEventListener('hashchange', async () => {
   const p = parseHash();
   panel.setValues(p);
-  start(p);
+  try {
+    await start(p);
+  } finally {
+    document.documentElement.dataset.insightReady = '1';
+  }
   toast(t('simulation_restarted'));
 });
-

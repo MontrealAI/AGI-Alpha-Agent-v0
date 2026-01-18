@@ -51,6 +51,9 @@ env:
   PIP_NO_INPUT: '1'
   COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
   COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
+  FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
+  PYODIDE_CACHE_DIR: ${{ runner.temp }}/pyodide-cache
   NODE_LOCKFILES: |
     alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
     alpha_factory_v1/core/interface/web_client/package-lock.json
@@ -129,6 +132,8 @@ jobs:
     steps:
       # checkout required for local composite actions
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -224,6 +229,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Configure npm
         run: |
           npm config set fund false
@@ -260,6 +272,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (pre-build)
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -312,6 +326,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Configure npm
         run: |
           npm config set fund false
@@ -431,6 +452,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (pre-build)
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -471,6 +494,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Configure npm
         run: |
           npm config set fund false
@@ -517,6 +547,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (pre-build)
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -607,6 +639,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (pre-build)
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -642,6 +676,13 @@ jobs:
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Install docs requirements
         run: |
           python -m pip install --upgrade pip
@@ -681,6 +722,8 @@ jobs:
           SKIP: eslint-insight-browser
       - name: Build documentation
         run: mkdocs build --strict
+      - name: Check for binary diffs (post-build)
+        run: python scripts/check_no_binary_diff.py
 
   docs-build:
     name: "📚 Docs Build"
@@ -699,6 +742,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check for binary diffs (pre-build)
+        run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -794,6 +839,13 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Install Playwright system dependencies (Python)
         run: python -m playwright install-deps chromium
       - name: Install Playwright browsers (Python)
@@ -809,6 +861,8 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Check for binary diffs (post-build)
+        run: python scripts/check_no_binary_diff.py
 
   docker:
     name: "🐳 Docker build"
