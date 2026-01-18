@@ -36,6 +36,13 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        try:
+            from . import orchestrator as orchestrator_mod
+
+            mem = orchestrator_mod.mem
+        except Exception:
+            mem = None
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],

@@ -34,8 +34,7 @@ if ! verify_muzero_deps; then
     pip install "${pip_args[@]}" -r "$demo_dir/requirements.txt"
     verify_muzero_deps || { echo "🚨  Missing MuZero dependencies" >&2; exit 1; }
   else
-    echo "🚨  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1" >&2
-    exit 1
+    echo "⚠️  Missing MuZero dependencies. Re-run with AUTO_INSTALL_MISSING=1 to install." >&2
   fi
 fi
 

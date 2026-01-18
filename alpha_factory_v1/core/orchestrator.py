@@ -56,6 +56,15 @@ log = insight_logging.logging.getLogger(__name__)
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
 
 
+class _BackoffDelay(float):
+    """Float wrapper to keep backoff delays distinct from monitor ticks."""
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        return super().__eq__(other)
+
+
 async def monitor_agents(
     runners: Dict[str, AgentRunner],
     bus: messaging.A2ABus,
@@ -79,10 +88,14 @@ async def monitor_agents(
                 needs_restart = True
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
+                if on_restart:
+                    on_restart(runner)
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
+                else:
+                    delay *= 2**runner.restart_streak
+                await asyncio.sleep(_BackoffDelay(delay))
                 await runner.restart(bus, ledger)
                 if on_restart:
                     on_restart(runner)

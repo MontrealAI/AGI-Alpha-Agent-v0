@@ -31,7 +31,7 @@ with contextlib.suppress(ModuleNotFoundError):
 # Memory fabric is optional → graceful stub when absent
 try:
     from backend.memory_fabric import mem
-except ModuleNotFoundError:  # pragma: no cover
+except Exception:  # pragma: no cover - optional dependency or runtime failures
     from typing import List
 
     class _VecDummy:  # pylint: disable=too-few-public-methods

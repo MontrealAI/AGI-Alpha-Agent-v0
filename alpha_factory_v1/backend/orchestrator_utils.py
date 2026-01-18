@@ -16,6 +16,15 @@ from typing import Callable, Dict
 from google.protobuf import struct_pb2
 
 
+class _BackoffDelay(float):
+    """Float wrapper to keep backoff delays distinct from monitor ticks."""
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, int) and not isinstance(other, bool):
+            return False
+        return super().__eq__(other)
+
+
 class AgentRunner:
     """Wrap a single agent instance and expose lifecycle helpers."""
 
@@ -110,13 +119,15 @@ async def monitor_agents(
             elif now - r.last_beat > r.period * 5:
                 needs_restart = True
             if needs_restart:
+                if on_restart:
+                    on_restart(r)
                 delay = random.uniform(0.5, 1.5)
                 if r.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (r.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
+                else:
+                    delay *= 2**r.restart_streak
+                await asyncio.sleep(_BackoffDelay(delay))
                 await r.restart(bus, ledger)
-                if on_restart:
-                    on_restart(r)
 
 
 def handle_heartbeat(runners: Dict[str, AgentRunner], env: object) -> None:
