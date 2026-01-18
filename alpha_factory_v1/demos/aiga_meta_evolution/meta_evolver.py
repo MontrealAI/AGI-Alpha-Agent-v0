@@ -85,6 +85,12 @@ except ImportError:
 try:
     from prometheus_client import Gauge, metrics
 
+    def _find_metric(name: str):
+        registry = metrics.REGISTRY
+        existing = registry._names_to_collectors.get(name)  # type: ignore[attr-defined]
+        if existing is not None:
+            return existing
+        for collector, names in registry._collector_to_names.items():  # type: ignore[attr-defined]
     _registry = metrics.REGISTRY
 
     def _find_metric(name: str):
@@ -101,6 +107,7 @@ try:
         if existing is not None:
             return existing
         try:
+            return factory(name, "Average fitness per generation", registry=metrics.REGISTRY)
             return factory(name, "Average fitness per generation", registry=_registry)
         except ValueError:
             existing = _find_metric(name)
