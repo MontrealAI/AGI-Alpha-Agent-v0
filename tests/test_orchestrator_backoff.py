@@ -28,7 +28,8 @@ def test_restart_backoff(monkeypatch):
     orig_sleep = asyncio.sleep
 
     async def fake_sleep(sec: float):
-        delays.append(sec)
+        if sec not in (0, 2):
+            delays.append(sec)
         await orig_sleep(0)
 
     monkeypatch.setattr(orchestrator.asyncio, "sleep", fake_sleep)
@@ -88,6 +89,6 @@ def test_restart_backoff(monkeypatch):
 
     asyncio.run(run())
 
-    restart_delays = [d for d in delays if d not in (0, 2)]
+    restart_delays = delays
     assert restart_delays[:2] == [1.0, 2.0]
     assert events.count("restart") >= 2

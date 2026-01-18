@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -37,6 +38,7 @@ import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
 
+from alpha_factory_v1.core.utils.patch_apply import PatchApplyError, apply_unified_patch
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
 
@@ -74,7 +76,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch_result = llm(prompt)
+    if asyncio.iscoroutine(patch_result):
+        patch_result = asyncio.run(patch_result)
+    patch = str(patch_result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -119,7 +124,15 @@ def apply_patch(patch: str, repo_path: str) -> None:
         # apply
         code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
         if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
+            fallback = "garbage" in out.lower() or "unexpectedly ends" in out.lower()
+            if fallback:
+                apply_unified_patch(repo, patch)
+            else:
+                raise RuntimeError(f"patch command failed:\n{out}")
+    except PatchApplyError as exc:
+        for orig, bak in backups.items():
+            shutil.move(bak, orig)
+        raise RuntimeError(f"patch command failed:\n{exc}") from exc
     except Exception as e:
         # rollback
         for orig, bak in backups.items():

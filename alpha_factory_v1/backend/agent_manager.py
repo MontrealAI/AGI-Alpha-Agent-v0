@@ -10,7 +10,11 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-from typing import Dict, Optional
+import importlib
+import importlib.util
+import sys
+from types import ModuleType
+from typing import Awaitable, Callable, Dict, Optional
 
 from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
 
@@ -28,7 +32,18 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
+        agents_mod = self._load_agents_module()
+        list_agents = None
+        if agents_mod is not None and hasattr(agents_mod, "list_agents"):
+            list_agents = getattr(agents_mod, "list_agents")
+        if list_agents is None and importlib.util.find_spec("backend.agents.registry"):
+            registry_mod = importlib.import_module("backend.agents.registry")
+            list_agents = getattr(registry_mod, "list_agents", None)
+        if list_agents is None:
+            raise RuntimeError("Agent registry unavailable")
+
+        self._start_background_tasks = self._resolve_hook(agents_mod, "start_background_tasks")
+        self._stop_background_tasks = self._resolve_hook(agents_mod, "stop_background_tasks")
 
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
@@ -42,11 +57,29 @@ class AgentManager:
         self._hb_task: Optional[asyncio.Task[None]] = None
         self._reg_task: Optional[asyncio.Task[None]] = None
 
+    @staticmethod
+    def _load_agents_module() -> ModuleType | None:
+        if "backend.agents" in sys.modules:
+            return sys.modules.get("backend.agents")
+        if importlib.util.find_spec("backend.agents"):
+            return importlib.import_module("backend.agents")
+        return None
+
+    @staticmethod
+    def _resolve_hook(agents_mod: ModuleType | None, name: str) -> Callable[[], Awaitable[None]]:
+        async def _noop() -> None:
+            return None
+
+        if agents_mod is not None and hasattr(agents_mod, name):
+            return getattr(agents_mod, name)
+        if importlib.util.find_spec("backend.agents.health"):
+            health_mod = importlib.import_module("backend.agents.health")
+            return getattr(health_mod, name, _noop)
+        return _noop
+
     async def start(self) -> None:
         """Launch heartbeat and regression guard tasks."""
-        from backend.agents.health import start_background_tasks
-
-        await start_background_tasks()
+        await self._start_background_tasks()
 
         for r in self.runners.values():
             register = getattr(r.inst, "_register_mesh", None)
@@ -69,9 +102,7 @@ class AgentManager:
         """Cancel helper tasks and wait for agent cycles to finish."""
 
         await self.bus.stop_consumer()
-        from backend.agents.health import stop_background_tasks
-
-        await stop_background_tasks()
+        await self._stop_background_tasks()
         if self._hb_task:
             self._hb_task.cancel()
         if self._reg_task:

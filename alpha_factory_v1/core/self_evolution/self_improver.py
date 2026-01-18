@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Tuple
 
 from alpha_factory_v1.core.utils.patch_guard import is_patch_valid
+from alpha_factory_v1.core.utils.patch_apply import PatchApplyError, apply_unified_patch
 from alpha_factory_v1.core.eval.preflight import run_preflight
 
 try:
@@ -78,7 +79,17 @@ def improve_repo(
     if not is_patch_valid(diff):
         raise ValueError("Invalid or unsafe patch")
 
-    repo.git.apply(patch_file)
+    try:
+        repo.git.apply(patch_file)
+    except git.GitCommandError as exc:  # type: ignore[union-attr]
+        msg = str(exc)
+        if "No valid patches in input" in msg or "patch with only garbage" in msg:
+            try:
+                apply_unified_patch(repo_dir, diff)
+            except PatchApplyError as apply_exc:
+                raise ValueError(f"Patch failed to apply: {apply_exc}") from apply_exc
+        else:
+            raise
     repo.index.add([metric_file])
     repo.index.commit("apply patch")
     # run basic checks before scoring

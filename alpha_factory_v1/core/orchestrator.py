@@ -68,6 +68,12 @@ async def monitor_agents(
     """Monitor runners and log warnings when agents restart."""
     while True:
         await asyncio.sleep(2)
+        env_err = os.getenv("AGENT_ERR_THRESHOLD")
+        if env_err is not None:
+            err_threshold = int(env_err)
+        env_backoff = os.getenv("AGENT_BACKOFF_EXP_AFTER")
+        if env_backoff is not None:
+            backoff_exp_after = int(env_backoff)
         now = time.time()
         for runner in list(runners.values()):
             needs_restart = False
