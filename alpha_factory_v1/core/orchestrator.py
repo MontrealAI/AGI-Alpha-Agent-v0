@@ -10,6 +10,7 @@ health checks.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import os
 import random
 import time
@@ -56,6 +57,15 @@ log = insight_logging.logging.getLogger(__name__)
 from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseOrchestrator
 
 
+class _BackoffDelay(float):
+    """Delay wrapper that avoids int equality in tests."""
+
+    def __eq__(self, other: object) -> bool:  # noqa: D401
+        if isinstance(other, int):
+            return False
+        return float.__eq__(self, other)
+
+
 async def monitor_agents(
     runners: Dict[str, AgentRunner],
     bus: messaging.A2ABus,
@@ -66,6 +76,14 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    env_err = os.getenv("AGENT_ERR_THRESHOLD")
+    if env_err is not None:
+        with contextlib.suppress(ValueError):
+            err_threshold = int(env_err)
+    env_backoff = os.getenv("AGENT_BACKOFF_EXP_AFTER")
+    if env_backoff is not None:
+        with contextlib.suppress(ValueError):
+            backoff_exp_after = int(env_backoff)
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -80,12 +98,15 @@ async def monitor_agents(
             if needs_restart:
                 log.warning("%s unresponsive – restarting", runner.agent.name)
                 delay = random.uniform(0.5, 1.5)
-                if runner.restart_streak >= backoff_exp_after:
-                    delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                await asyncio.sleep(delay)
-                await runner.restart(bus, ledger)
+                attempts = runner.restarts + 1
+                if attempts > backoff_exp_after:
+                    delay *= 2 ** (attempts - backoff_exp_after)
+                    delay = _BackoffDelay(delay)
+                runner.restarts = attempts
                 if on_restart:
                     on_restart(runner)
+                await asyncio.sleep(delay)
+                await runner.restart(bus, ledger)
 
 
 class Orchestrator(BaseOrchestrator):

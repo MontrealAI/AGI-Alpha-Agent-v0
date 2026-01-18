@@ -88,6 +88,7 @@ class SelfImproverAgent(BaseAgent):
             if delta <= 0:
                 return
             repo = git.Repo(self.repo)
+            self_improver._ensure_git_identity(repo)
             head = repo.head.commit.hexsha
             try:
                 repo.git.apply(str(self.patch_file))

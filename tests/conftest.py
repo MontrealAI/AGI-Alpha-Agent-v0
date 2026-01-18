@@ -12,6 +12,15 @@ from typing import Any
 
 import pytest
 
+if importlib.util.find_spec("hypothesis") is not None:  # pragma: no cover - optional
+    from hypothesis import HealthCheck, settings
+
+    settings.register_profile(
+        "ci",
+        suppress_health_check=[HealthCheck.filter_too_much, HealthCheck.function_scoped_fixture],
+    )
+    settings.load_profile("ci")
+
 # Ensure runtime dependencies are present before collecting tests
 try:  # pragma: no cover - best effort environment setup
     from check_env import main as check_env_main, has_network

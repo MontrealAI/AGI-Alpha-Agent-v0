@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -74,7 +75,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -93,6 +97,12 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
+    patch = textwrap.dedent(patch)
+    patch = "\n".join(
+        "@@ -1,1 +1,1 @@" if line.strip() == "@@" else line for line in patch.splitlines()
+    )
+    if not patch.endswith("\n"):
+        patch += "\n"
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:

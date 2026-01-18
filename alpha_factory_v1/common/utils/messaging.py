@@ -14,11 +14,13 @@ import logging
 from pathlib import Path
 import contextlib
 from types import TracebackType
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias
+from dataclasses import dataclass, field
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Protocol, TypeAlias, cast
 from cachetools import TTLCache
 
 from .config import Settings
 from google.protobuf import json_format
+from google.protobuf import struct_pb2
 from typing import TYPE_CHECKING
 from alpha_factory_v1.core.utils import alerts
 
@@ -30,10 +32,41 @@ if TYPE_CHECKING:  # pragma: no cover - type hints only
 else:  # pragma: no cover - runtime fallback
     try:
         from alpha_factory_v1.core.utils import a2a_pb2 as pb
-
-        Envelope: TypeAlias = pb.Envelope  # type: ignore
     except Exception:  # pragma: no cover - optional proto
-        Envelope: TypeAlias = Any
+        pb = None
+
+    @dataclass(slots=True)
+    class SimpleEnvelope:
+        sender: str
+        recipient: str
+        ts: float
+        payload: Any = field(default_factory=dict)
+
+    def Envelope(  # type: ignore[misc]
+        *,
+        sender: object,
+        recipient: object,
+        payload: Any | None = None,
+        ts: object = 0.0,
+    ) -> Any:
+        """Create a resilient envelope with type coercion."""
+        sender_str = "" if sender is None else str(sender)
+        recipient_str = "" if recipient is None else str(recipient)
+        try:
+            ts_val = float(ts) if ts is not None else 0.0
+        except (TypeError, ValueError):
+            ts_val = 0.0
+        if pb is None:
+            return SimpleEnvelope(sender_str, recipient_str, ts_val, payload or {})
+        env = pb.Envelope(sender=sender_str, recipient=recipient_str, ts=ts_val)
+        if payload is not None:
+            if isinstance(payload, struct_pb2.Struct):
+                env.payload.CopyFrom(payload)
+            elif isinstance(payload, dict):
+                env.payload.update(payload)
+            else:
+                env.payload.update({"value": cast(object, payload)})
+        return env
 
 
 class EnvelopeLike(Protocol):

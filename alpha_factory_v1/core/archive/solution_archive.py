@@ -33,6 +33,13 @@ class SolutionArchive:
             self.conn = duckdb.connect(str(self.path))
         else:  # pragma: no cover - fallback
             self.conn = sqlite3.connect(str(self.path))
+        self._pending = 0
+        self._commit_every = 1000
+        if isinstance(self.conn, sqlite3.Connection):
+            self.conn.execute("PRAGMA journal_mode=OFF")
+            self.conn.execute("PRAGMA synchronous=OFF")
+            self.conn.execute("PRAGMA temp_store=MEMORY")
+            self.conn.execute("PRAGMA cache_size=10000")
         self._ensure()
 
     def _ensure(self) -> None:
@@ -64,7 +71,10 @@ class SolutionArchive:
             (sector, approach, score, band, json.dumps(dict(data)), time.time()),
         )
         if isinstance(self.conn, sqlite3.Connection):  # pragma: no cover - sqlite
-            self.conn.commit()
+            self._pending += 1
+            if self._pending >= self._commit_every:
+                self.conn.commit()
+                self._pending = 0
 
     def query(
         self,
@@ -110,6 +120,9 @@ class SolutionArchive:
     def close(self) -> None:
         """Close the underlying connection."""
         if self.conn:
+            if isinstance(self.conn, sqlite3.Connection) and self._pending:
+                self.conn.commit()
+                self._pending = 0
             self.conn.close()
             self.conn = None
 
