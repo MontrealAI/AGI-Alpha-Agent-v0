@@ -25,6 +25,16 @@ const manifest = JSON.parse(
 
 requireNode22();
 
+const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
+
+function resolveAssetPath(relPath) {
+    if (!assetRoot) {
+        return relPath;
+    }
+    const candidate = path.join(assetRoot, relPath);
+    return fsSync.existsSync(candidate) ? candidate : relPath;
+}
+
 function applyCsp(html, base) {
     const hashes = [];
     const regex = /<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g;
@@ -101,11 +111,12 @@ const aliasPlugin = {
 };
 
 async function ensureWeb3Bundle() {
-    const bundlePath = path.join("lib", "bundle.esm.min.js");
+    const bundlePath = resolveAssetPath(path.join("lib", "bundle.esm.min.js"));
     let data = await fs.readFile(bundlePath, "utf8").catch(() => "");
     if (!data || data.includes("Placeholder")) {
         runFetch();
-        data = await fs.readFile(bundlePath, "utf8").catch(() => "");
+        const retryPath = resolveAssetPath(path.join("lib", "bundle.esm.min.js"));
+        data = await fs.readFile(retryPath, "utf8").catch(() => "");
         if (!data || data.includes("Placeholder")) {
             throw new Error("Failed to fetch lib/bundle.esm.min.js");
         }
@@ -113,11 +124,12 @@ async function ensureWeb3Bundle() {
 }
 
 async function ensureWorkbox() {
-    const wbPath = path.join("lib", "workbox-sw.js");
+    const wbPath = resolveAssetPath(path.join("lib", "workbox-sw.js"));
     let data = await fs.readFile(wbPath, "utf8").catch(() => "");
     if (!data || data.toLowerCase().includes("placeholder")) {
         runFetch();
-        data = await fs.readFile(wbPath, "utf8").catch(() => "");
+        const retryPath = resolveAssetPath(path.join("lib", "workbox-sw.js"));
+        data = await fs.readFile(retryPath, "utf8").catch(() => "");
         if (!data || data.toLowerCase().includes("placeholder")) {
             throw new Error("Failed to fetch lib/workbox-sw.js");
         }
@@ -150,17 +162,24 @@ function collectFiles(dir) {
     return out;
 }
 
-function placeholderFiles() {
+function findAssetIssues() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
-    for (const sub of ["lib", "wasm", "wasm_llm"]) {
-        const root = path.join(path.dirname(scriptPath), sub);
-        for (const f of collectFiles(root)) {
-            const { size } = fsSync.statSync(f);
-            if (size > MAX_SCAN_BYTES) continue;
-            const data = fsSync.readFileSync(f, "utf8");
-            const lowered = data.toLowerCase();
-            if (lowered.startsWith("placeholder")) files.push(f);
+    const assets = manifest.assets || [];
+    const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
+    for (const rel of assets) {
+        const candidates = roots.map((root) => path.join(root, rel));
+        const existing = candidates.find((candidate) => fsSync.existsSync(candidate));
+        if (!existing) {
+            files.push(rel);
+            continue;
+        }
+        const { size } = fsSync.statSync(existing);
+        if (size > MAX_SCAN_BYTES) continue;
+        const data = fsSync.readFileSync(existing, "utf8");
+        const lowered = data.toLowerCase();
+        if (!data.trim() || lowered.includes("placeholder")) {
+            files.push(rel);
         }
     }
     return files;
@@ -173,18 +192,21 @@ function runFetch() {
 }
 
 function ensureAssets() {
-    let placeholders = placeholderFiles();
+    let placeholders = findAssetIssues();
     if (placeholders.length) {
         console.log("Detected placeholder assets, running fetch_assets.py...");
         for (const f of placeholders) {
+            const resolved = resolveAssetPath(f);
             try {
-                fsSync.unlinkSync(f);
+                if (fsSync.existsSync(resolved)) {
+                    fsSync.unlinkSync(resolved);
+                }
             } catch (err) {
                 console.warn(`Failed to remove placeholder ${f}: ${err}`);
             }
         }
         runFetch();
-        placeholders = placeholderFiles();
+        placeholders = findAssetIssues();
     }
     if (placeholders.length) {
         throw new Error(`placeholder found in ${placeholders[0]}`);
@@ -251,7 +273,7 @@ async function bundle() {
         (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
         (otelOrigin ? ` ${otelOrigin}` : "");
     const envScript = injectEnv(process.env);
-    await copyAssets(manifest, repoRoot, OUT_DIR);
+    await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(
             quickstartPdf,
@@ -273,7 +295,7 @@ async function bundle() {
         }
     }
 
-    const wasmPath = "wasm/pyodide.asm.wasm";
+    const wasmPath = resolveAssetPath("wasm/pyodide.asm.wasm");
     const wasmBuf = fsSync.readFileSync(wasmPath);
     verify(wasmBuf, "pyodide.asm.wasm");
     const wasmBase64 = wasmBuf.toString("base64");
@@ -281,7 +303,7 @@ async function bundle() {
         "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
 
     for (const name of ["pyodide.js"]) {
-        const p = path.join("wasm", name);
+        const p = resolveAssetPath(path.join("wasm", name));
         if (fsSync.existsSync(p)) {
             verify(fsSync.readFileSync(p), name);
         }
