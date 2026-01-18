@@ -5,11 +5,19 @@ import path from 'path';
 import { createHash } from 'crypto';
 import { injectEnv } from './env_inject.js';
 
-export async function copyAssets(manifest, repoRoot, outDir) {
+function resolveAssetPath(rel, assetRoot) {
+  if (!assetRoot) return rel;
+  const candidate = path.join(assetRoot, rel);
+  return fsSync.existsSync(candidate) ? candidate : rel;
+}
+
+export async function copyAssets(manifest, repoRoot, outDir, assetRoot = '') {
+  const trackedAssets = new Set(manifest.assets || []);
   for (const rel of manifest.files) {
     const dest = path.join(outDir, rel);
     await fs.mkdir(path.dirname(dest), { recursive: true });
-    await fs.copyFile(rel, dest).catch(() => {});
+    const source = trackedAssets.has(rel) ? resolveAssetPath(rel, assetRoot) : rel;
+    await fs.copyFile(source, dest).catch(() => {});
   }
   const i18nDir = manifest.dirs.translations;
   if (fsSync.existsSync(i18nDir)) {
@@ -27,10 +35,11 @@ export async function copyAssets(manifest, repoRoot, outDir) {
   }
   for (const dirKey of ['wasm', 'wasm_llm']) {
     const dir = manifest.dirs[dirKey];
-    if (fsSync.existsSync(dir)) {
+    const sourceDir = assetRoot ? path.join(assetRoot, dir) : dir;
+    if (fsSync.existsSync(sourceDir)) {
       await fs.mkdir(path.join(outDir, dir), { recursive: true });
-      for (const f of await fs.readdir(dir)) {
-        await fs.copyFile(path.join(dir, f), path.join(outDir, dir, f));
+      for (const f of await fs.readdir(sourceDir)) {
+        await fs.copyFile(path.join(sourceDir, f), path.join(outDir, dir, f));
       }
     }
   }

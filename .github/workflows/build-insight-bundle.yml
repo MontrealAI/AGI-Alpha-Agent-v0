@@ -24,6 +24,8 @@ jobs:
     env:
       INSIGHT_BROWSER_DIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       DOCS_BUNDLE_DIR: docs/alpha_agi_insight_v1
+      FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
+      INSIGHT_ASSET_ROOT: ${{ runner.temp }}/insight-assets
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-bundle
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
@@ -74,7 +76,32 @@ jobs:
       - name: Sync built assets into docs bundle directory
         run: |
           mkdir -p "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}"
-          rsync -av --delete "${GITHUB_WORKSPACE}/${{ env.INSIGHT_BROWSER_DIR }}/dist/" "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}/"
+          rsync -av --delete \
+            --exclude='*.wasm' \
+            --exclude='*.zip' \
+            --exclude='*.gz' \
+            --exclude='*.png' \
+            --exclude='*.jpg' \
+            --exclude='*.jpeg' \
+            --exclude='*.webp' \
+            --exclude='*.gif' \
+            --exclude='*.pdf' \
+            --exclude='*.ico' \
+            --exclude='*.mp3' \
+            --exclude='*.mp4' \
+            --exclude='*.woff' \
+            --exclude='*.woff2' \
+            --exclude='*.ttf' \
+            --exclude='*.otf' \
+            --exclude='*.bin' \
+            --exclude='*.exe' \
+            --exclude='*.dll' \
+            --exclude='*.so' \
+            --exclude='*.dylib' \
+            --exclude='assets/wasm/**' \
+            --exclude='assets/wasm_llm/**' \
+            --exclude='assets/pyodide/**' \
+            "${GITHUB_WORKSPACE}/${{ env.INSIGHT_BROWSER_DIR }}/dist/" "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}/"
 
       - name: Commit regenerated bundle
         uses: stefanzweifel/git-auto-commit-action@v5

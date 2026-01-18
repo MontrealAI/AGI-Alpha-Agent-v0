@@ -8,6 +8,7 @@ runs:
       shell: bash
       run: |
         echo "FETCH_ASSETS_DIR=${RUNNER_TEMP}/insight-assets" >> "$GITHUB_ENV"
+        echo "INSIGHT_ASSET_ROOT=${RUNNER_TEMP}/insight-assets" >> "$GITHUB_ENV"
     - name: Generate asset key
       id: asset-key
       uses: ./.github/actions/generate-asset-key
