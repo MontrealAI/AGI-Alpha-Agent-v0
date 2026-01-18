@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -57,9 +58,66 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
     return {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
 
 
+def _normalize_line(line: str) -> str:
+    return line if line.endswith("\n") else f"{line}\n"
+
+
+def _apply_hunk(lines: list[str], hunk_lines: list[str]) -> list[str]:
+    """Apply a single unified-diff hunk by search/replace."""
+    old = [_normalize_line(l[1:]) for l in hunk_lines if l.startswith(("-", " "))]
+    new = [_normalize_line(l[1:]) for l in hunk_lines if l.startswith(("+", " "))]
+    for idx in range(len(lines) - len(old) + 1):
+        if lines[idx : idx + len(old)] == old:
+            return lines[:idx] + new + lines[idx + len(old) :]
+    raise RuntimeError("hunk context not found for patch application")
+
+
+def _apply_patch_fallback(patch: str, repo_path: str) -> None:
+    """Apply a unified diff without external patch tooling."""
+    repo = pathlib.Path(repo_path)
+    lines = patch.splitlines()
+    i = 0
+    applied = False
+    while i < len(lines):
+        line = lines[i]
+        if line.startswith("--- "):
+            path_line = lines[i + 1] if i + 1 < len(lines) else ""
+            if not path_line.startswith("+++ "):
+                raise RuntimeError("patch missing '+++' header")
+            rel_path = re.sub(r"^[ab]/", "", path_line[4:].split("\t")[0])
+            file_path = repo / rel_path
+            file_lines = file_path.read_text().splitlines(keepends=True)
+            i += 2
+            while i < len(lines) and not lines[i].startswith("--- "):
+                if lines[i].startswith("@@"):
+                    hunk: list[str] = []
+                    i += 1
+                    while i < len(lines) and not lines[i].startswith(("@@", "--- ")):
+                        if lines[i].startswith("\\"):
+                            i += 1
+                            continue
+                        hunk.append(lines[i])
+                        i += 1
+                    if hunk:
+                        file_lines = _apply_hunk(file_lines, hunk)
+                        applied = True
+                else:
+                    i += 1
+            file_path.write_text("".join(file_lines))
+        else:
+            i += 1
+    if not applied:
+        raise RuntimeError("patch command failed:\nNo applicable hunks")
+
+
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_file = os.getenv("PATCH_FILE")
+    if patch_file:
+        patch = textwrap.dedent(pathlib.Path(patch_file).read_text()).strip()
+        _sanity_check_patch(patch, pathlib.Path(repo_path))
+        return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,7 +132,10 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    response = llm(prompt)
+    if asyncio.iscoroutine(response):
+        response = asyncio.run(response)
+    patch = textwrap.dedent(str(response)).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
 
@@ -93,12 +154,9 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
+    patch = textwrap.dedent(patch).strip()
     repo = pathlib.Path(repo_path)
     _sanity_check_patch(patch, repo)
-    if shutil.which("patch") is None:
-        raise RuntimeError(
-            '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
-        )
     backups = {}
 
     # write patch to temp file
@@ -117,9 +175,15 @@ def apply_patch(patch: str, repo_path: str) -> None:
                     shutil.copy2(file_path, backup)
                     backups[file_path] = backup
         # apply
-        code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
+        if shutil.which("patch") is None:
+            _apply_patch_fallback(patch, repo_path)
+        else:
+            code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
+            if code != 0:
+                try:
+                    _apply_patch_fallback(patch, repo_path)
+                except Exception as exc:
+                    raise RuntimeError(f"patch command failed:\n{out}") from exc
     except Exception as e:
         # rollback
         for orig, bak in backups.items():

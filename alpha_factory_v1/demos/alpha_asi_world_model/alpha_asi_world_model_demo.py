@@ -286,7 +286,9 @@ def _boot(path: str) -> None:
         inst = Stub(name)
         LOG.warning("[BOOT] stubbed %s (%s)", cls_name, exc)
 
-    AGENTS[name] = inst
+    AGENTS.setdefault(cls_name, inst)
+    if name != cls_name:
+        AGENTS.setdefault(name, inst)
 
 
 for _p in REQUIRED:
