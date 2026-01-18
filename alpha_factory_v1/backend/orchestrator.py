@@ -113,6 +113,19 @@ class Orchestrator(BaseOrchestrator):
     """Default Alpha‑Factory orchestrator."""
 
     def __init__(self) -> None:
+        global DEV_MODE, LOGLEVEL, PORT, METRICS_PORT, A2A_PORT, SSL_DISABLE
+        global KAFKA_BROKER, CYCLE_DEFAULT, MAX_CYCLE_SEC, MODEL_MAX_BYTES, ENABLED
+        DEV_MODE = ENV("DEV_MODE", "false").lower() == "true" or "--dev" in sys.argv
+        LOGLEVEL = ENV("LOGLEVEL", "INFO").upper()
+        PORT = _env_int("PORT", 8000)
+        METRICS_PORT = _env_int("METRICS_PORT", 0)
+        A2A_PORT = _env_int("A2A_PORT", 0)
+        SSL_DISABLE = ENV("INSECURE_DISABLE_TLS", "false").lower() == "true"
+        KAFKA_BROKER = None if DEV_MODE else ENV("ALPHA_KAFKA_BROKER")
+        CYCLE_DEFAULT = _env_int("ALPHA_CYCLE_SECONDS", 60)
+        MAX_CYCLE_SEC = _env_int("MAX_CYCLE_SEC", 30)
+        MODEL_MAX_BYTES = _env_int("ALPHA_MODEL_MAX_BYTES", 64 * 1024 * 1024)
+        ENABLED = {s.strip() for s in ENV("ALPHA_ENABLED_AGENTS", "").split(",") if s.strip()}
         if os.getenv("NEO4J_PASSWORD") == "REPLACE_ME":
             log.error(
                 "NEO4J_PASSWORD is set to the default 'REPLACE_ME'. "

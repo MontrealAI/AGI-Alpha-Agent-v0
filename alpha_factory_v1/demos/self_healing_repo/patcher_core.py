@@ -27,6 +27,8 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
+import inspect
 import os
 import pathlib
 import re
@@ -57,6 +59,41 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
     return {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
 
 
+def _normalize_patch(patch: str) -> str:
+    """Ensure hunks include line numbers when missing."""
+    lines = patch.splitlines()
+    updated: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.startswith("@@") and not re.search(r"@@\s+-\d", line):
+            removed = 0
+            added = 0
+            j = i + 1
+            while j < len(lines) and not lines[j].startswith(("@@", "--- ", "+++ ")):
+                if lines[j].startswith("-") and not lines[j].startswith("---"):
+                    removed += 1
+                elif lines[j].startswith("+") and not lines[j].startswith("+++"):
+                    added += 1
+                j += 1
+            removed = max(removed, 1)
+            added = max(added, 1)
+            line = f"@@ -1,{removed} +1,{added} @@"
+        updated.append(line)
+        i += 1
+    normalized = "\n".join(updated)
+    if patch.endswith("\n"):
+        normalized += "\n"
+    return normalized
+
+
+def _resolve_llm_response(llm: OpenAIAgent, prompt: str) -> str:
+    response = llm(prompt)
+    if inspect.isawaitable(response):
+        return str(asyncio.run(response))
+    return str(response)
+
+
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
@@ -74,9 +111,9 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    patch = _resolve_llm_response(llm, prompt).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
-    return patch
+    return _normalize_patch(patch)
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -94,6 +131,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
@@ -141,22 +179,31 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     _temp_env = os.getenv("TEMPERATURE")
-    try:
-        from openai_agents import OpenAIAgent
-    except ModuleNotFoundError:
-        from .agent_core import llm_client
+    patch_override = os.getenv("PATCH_FILE")
+    if patch_override:
+        patch_path = pathlib.Path(patch_override)
 
-        def llm(prompt: str) -> str:
-            """Offline fallback using the local LLM."""
-            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+        def llm(_prompt: str) -> str:
+            """Return the patch from the provided file."""
+            return patch_path.read_text()
 
     else:
-        llm = OpenAIAgent(
-            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            api_key=os.getenv("OPENAI_API_KEY"),
-            base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-            temperature=float(_temp_env) if _temp_env is not None else None,
-        )
+        try:
+            from openai_agents import OpenAIAgent
+        except ModuleNotFoundError:
+            from .agent_core import llm_client
+
+            def llm(prompt: str) -> str:
+                """Offline fallback using the local LLM."""
+                return llm_client.call_local_model([{"role": "user", "content": prompt}])
+
+        else:
+            llm = OpenAIAgent(
+                model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                api_key=os.getenv("OPENAI_API_KEY"),
+                base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+                temperature=float(_temp_env) if _temp_env is not None else None,
+            )
     rc, out = validate_repo(args.repo)
     print(out)
     if rc != 0:

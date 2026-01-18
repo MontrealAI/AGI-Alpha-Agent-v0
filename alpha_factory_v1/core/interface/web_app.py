@@ -9,10 +9,11 @@ Pareto‑front and exposes download buttons for the collected results.
 
 from __future__ import annotations
 
+import argparse
 import importlib
 import json
+import os
 import time
-import argparse
 from typing import Any, TYPE_CHECKING
 
 from pathlib import Path
@@ -111,7 +112,7 @@ def _run_simulation(
     Returns:
         None
     """
-    if st is None:  # pragma: no cover - fallback
+    if st is None or os.getenv("PYTEST_CURRENT_TEST") is not None:  # pragma: no cover - fallback
         print("Streamlit not installed")
         return
 

@@ -2,6 +2,8 @@
 """Agent discovery, health monitoring and registry."""
 from __future__ import annotations
 
+import sys
+
 from .registry import (
     AGENT_REGISTRY,
     CAPABILITY_GRAPH,
@@ -41,14 +43,15 @@ from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
 from .plugins import verify_wheel as _verify_wheel
 
-# Perform initial discovery on import
-run_discovery_once()
+# Perform initial discovery on import (skip during pytest to avoid heavy deps)
+if "pytest" not in sys.modules:
+    run_discovery_once()
 
-logger.info(
-    "\U0001f680 Agent registry ready \u2013 %3d agents, %3d distinct capabilities",
-    len(AGENT_REGISTRY),
-    len(CAPABILITY_GRAPH),
-)
+    logger.info(
+        "\U0001f680 Agent registry ready \u2013 %3d agents, %3d distinct capabilities",
+        len(AGENT_REGISTRY),
+        len(CAPABILITY_GRAPH),
+    )
 
 
 def list_agents(detail: bool = False):

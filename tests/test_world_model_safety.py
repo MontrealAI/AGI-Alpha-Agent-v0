@@ -115,6 +115,7 @@ def _run_deploy_script(tmp_path: Path, env_vars: dict[str, str]) -> str:
         '#!/usr/bin/env bash\nprintenv > "$CAPTURE"\n',
     )
     env = os.environ.copy()
+    env.pop("OPENAI_API_KEY", None)
     env.update(env_vars)
     env.update({"PATH": f"{bin_dir}:{os.environ.get('PATH', '')}", "CAPTURE": str(capture)})
     subprocess.run(["bash", str(script)], env=env, check=True, timeout=5)

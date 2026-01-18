@@ -36,6 +36,11 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
+        with contextlib.suppress(ModuleNotFoundError):
+            from alpha_factory_v1.backend import orchestrator as backend_orchestrator
+
+            mem = getattr(backend_orchestrator, "mem", None)
+    if mem is None:
         mem = SimpleNamespace(
             vector=SimpleNamespace(
                 recent=lambda *_a, **_k: [],

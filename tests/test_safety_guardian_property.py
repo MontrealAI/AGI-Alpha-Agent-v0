@@ -10,7 +10,7 @@ from unittest import mock
 import pytest
 
 hypothesis = pytest.importorskip("hypothesis")
-from hypothesis import assume, given, settings, strategies as st  # noqa: E402
+from hypothesis import HealthCheck, given, settings, strategies as st  # noqa: E402
 from hypothesis.strategies import composite  # noqa: E402
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents import safety_agent  # noqa: E402
@@ -48,9 +48,8 @@ class DummyLedger:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: f"import os {s}"))
 def test_blocks_import_os(code: str) -> None:
-    assume("import os" in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -65,9 +64,8 @@ def test_blocks_import_os(code: str) -> None:
 
 
 @settings(max_examples=30)
-@given(code=st.text(min_size=0, max_size=100))
+@given(code=st.text(min_size=0, max_size=100).map(lambda s: s.replace("import os", "import_os")))
 def test_allows_safe_code(code: str) -> None:
-    assume("import os" not in code)
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -117,8 +115,7 @@ def payloads(draw: st.DrawFn, include_code: bool) -> dict[str, object]:
     payload=payloads(include_code=True),
 )
 def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" in code)
+    payload["code"] = f"import os {payload['code']}"
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -135,8 +132,7 @@ def test_fuzz_envelope_blocks_malicious(sender: str, recipient: str, ts: float, 
     payload=payloads(include_code=True),
 )
 def test_fuzz_envelope_allows_safe(sender: str, recipient: str, ts: float, payload: dict[str, object]) -> None:
-    code = payload["code"]
-    assume("import os" not in code)
+    payload["code"] = str(payload["code"]).replace("import os", "import_os")
     bus = DummyBus(config.Settings(bus_port=0))
     led = DummyLedger()
     agent = safety_agent.SafetyGuardianAgent(bus, led)
@@ -188,7 +184,7 @@ def _dummy_classes():
     return captured, DummyClient, DummyTx, DummyInstr, DummyPk
 
 
-@settings(max_examples=10)
+@settings(max_examples=10, suppress_health_check=[HealthCheck.function_scoped_fixture])
 @given(count=st.integers(min_value=0, max_value=3), broadcast=st.booleans())
 def test_broadcast_merkle_root_property(tmp_path: pathlib.Path, count: int, broadcast: bool) -> None:
     led = insight_logging.Ledger(str(tmp_path / "l.db"), rpc_url="http://rpc.test", broadcast=broadcast)
