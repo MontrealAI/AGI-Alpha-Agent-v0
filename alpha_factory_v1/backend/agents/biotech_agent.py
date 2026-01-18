@@ -195,6 +195,9 @@ class _EmbedStore:
     async def _ensure_embedder(self):
         if self._embedder is not None:
             return
+        if os.getenv("PYTEST_NET_OFF") == "1":
+            self._embedder = "offline"
+            return
         if self.cfg.openai_enabled and openai is not None:
             self._embedder = "openai"
         else:
@@ -208,6 +211,10 @@ class _EmbedStore:
         if self._embedder == "openai":  # OpenAI API
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=batch, encoding_format="float")
             vecs = np.array([d.embedding for d in resp["data"]], dtype="float32")  # type: ignore
+        elif self._embedder == "offline":
+            if np is None:
+                raise RuntimeError("numpy is required for offline embeddings.")
+            vecs = np.zeros((len(batch), self.cfg.embed_dim), dtype="float32")
         else:  # local SBERT
             loop = asyncio.get_event_loop()
             vecs = await loop.run_in_executor(None, self._embedder.encode, batch)  # type: ignore

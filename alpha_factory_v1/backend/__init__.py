@@ -35,15 +35,17 @@ import time
 
 _LOG = logging.getLogger("alphafactory.startup")
 
+_ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(_ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(_ROOT_DIR))
+
 try:
     _legacy_pkg = importlib.import_module("openai_agents")
 except ModuleNotFoundError:
     try:  # attempt to import the new canonical package name
         _agents_pkg = importlib.import_module("agents")  # provided by openai-agents ≥0.0.13
     except ModuleNotFoundError:  # SDK not installed
-        _LOG.warning(
-            "OpenAI Agents SDK not found - running in degraded mode. Install with:  pip install openai-agents"
-        )
+        _LOG.warning("OpenAI Agents SDK not found - running in degraded mode. Install with:  pip install openai-agents")
         # Create a *minimal* stub so `import openai_agents` will not crash.
         shim = types.ModuleType("openai_agents")
         shim.__spec__ = importlib.machinery.ModuleSpec("openai_agents", loader=None)
@@ -99,12 +101,12 @@ sys.modules.setdefault(__name__ + ".agents", _agents_mod)
 sys.modules["backend.agents"] = _agents_mod
 setattr(sys.modules[__name__], "agents", _agents_mod)
 
-if not _skip_autoload:
-    _services_mod = importlib.import_module(".services", __name__)
-    sys.modules.setdefault(__name__ + ".services", _services_mod)
-    sys.modules["backend.services"] = _services_mod
-    setattr(sys.modules[__name__], "services", _services_mod)
+_services_mod = importlib.import_module(".services", __name__)
+sys.modules.setdefault(__name__ + ".services", _services_mod)
+sys.modules["backend.services"] = _services_mod
+setattr(sys.modules[__name__], "services", _services_mod)
 
+if not _skip_autoload:
     _fin_mod = importlib.import_module(".agents.finance_agent", __name__)
     sys.modules.setdefault(__name__ + ".finance_agent", _fin_mod)
     sys.modules["backend.finance_agent"] = _fin_mod

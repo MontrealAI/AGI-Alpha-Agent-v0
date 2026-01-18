@@ -120,26 +120,38 @@ class Orchestrator(BaseOrchestrator):
             )
             sys.exit(1)
 
-        metrics = MetricsExporter(METRICS_PORT)
-        kafka = KafkaService(KAFKA_BROKER, DEV_MODE)
+        dev_mode = ENV("DEV_MODE", "false").lower() == "true" or "--dev" in sys.argv
+        loglevel = ENV("LOGLEVEL", "INFO").upper()
+        metrics_port = _env_int("METRICS_PORT", METRICS_PORT)
+        rest_port = _env_int("PORT", PORT)
+        a2a_port = _env_int("A2A_PORT", A2A_PORT)
+        ssl_disable = ENV("INSECURE_DISABLE_TLS", "false").lower() == "true"
+        kafka_broker = None if dev_mode else ENV("ALPHA_KAFKA_BROKER")
+        cycle_default = _env_int("ALPHA_CYCLE_SECONDS", CYCLE_DEFAULT)
+        max_cycle_sec = _env_int("MAX_CYCLE_SEC", MAX_CYCLE_SEC)
+        model_max_bytes = _env_int("ALPHA_MODEL_MAX_BYTES", MODEL_MAX_BYTES)
+        enabled = {s.strip() for s in ENV("ALPHA_ENABLED_AGENTS", "").split(",") if s.strip()}
+
+        metrics = MetricsExporter(metrics_port)
+        kafka = KafkaService(kafka_broker, dev_mode)
 
         scheduler = AgentScheduler(
-            ENABLED,
-            DEV_MODE,
-            KAFKA_BROKER,
-            CYCLE_DEFAULT,
-            MAX_CYCLE_SEC,
+            enabled,
+            dev_mode,
+            kafka_broker,
+            cycle_default,
+            max_cycle_sec,
             bus=kafka.bus,
         )
 
         api_server = APIServer(
             scheduler.manager.runners,
-            MODEL_MAX_BYTES,
+            model_max_bytes,
             mem,
-            PORT,
-            A2A_PORT,
-            LOGLEVEL,
-            SSL_DISABLE,
+            rest_port,
+            a2a_port,
+            loglevel,
+            ssl_disable,
         )
 
         super().__init__(scheduler.manager, api_server, metrics)

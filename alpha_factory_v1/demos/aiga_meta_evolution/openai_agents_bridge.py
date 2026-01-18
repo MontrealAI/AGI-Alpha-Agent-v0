@@ -18,37 +18,49 @@ started by ``run_aiga_demo.sh``.
 from __future__ import annotations
 
 import importlib
+import sys
 
 
 def _load_openai_sdk():
     """Return the OpenAI Agents primitives or raise when unavailable."""
 
-    try:
-        oa = importlib.import_module("openai_agents")
-    except ModuleNotFoundError as exc:  # pragma: no cover - explicit failure path
-        raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge") from exc
+    last_exc: Exception | None = None
+    pkg_candidates = []
+    if "agents" in sys.modules and "openai_agents" not in sys.modules:
+        pkg_candidates.append("agents")
+    pkg_candidates.extend(["openai_agents", "agents"])
+    for pkg_name in dict.fromkeys(pkg_candidates):
+        try:
+            oa = importlib.import_module(pkg_name)
+        except ModuleNotFoundError as exc:  # pragma: no cover - explicit failure path
+            last_exc = exc
+            continue
 
-    if getattr(oa, "__alpha_factory_stub__", False):
-        raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge")
+        if getattr(oa, "__alpha_factory_stub__", False):
+            last_exc = ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge")
+            continue
 
-    missing: list[str] = []
-    tool = getattr(oa, "Tool", None)
-    agent = getattr(oa, "OpenAIAgent", getattr(oa, "Agent", None))
-    runtime = getattr(oa, "AgentRuntime", None)
+        missing: list[str] = []
+        tool = getattr(oa, "Tool", None)
+        agent = getattr(oa, "OpenAIAgent", getattr(oa, "Agent", None))
+        runtime = getattr(oa, "AgentRuntime", None)
 
-    if tool is None:
-        missing.append("Tool")
-    if agent is None:
-        missing.append("Agent/OpenAIAgent")
-    if runtime is None:
-        missing.append("AgentRuntime")
+        if tool is None:
+            missing.append("Tool")
+        if agent is None:
+            missing.append("Agent/OpenAIAgent")
+        if runtime is None:
+            missing.append("AgentRuntime")
 
-    if missing:
-        raise ModuleNotFoundError(
-            "OpenAI Agents SDK is required for the AIGA bridge (missing: " + ", ".join(missing) + ")"
-        )
+        if missing:
+            last_exc = ModuleNotFoundError(
+                "OpenAI Agents SDK is required for the AIGA bridge (missing: " + ", ".join(missing) + ")"
+            )
+            continue
 
-    return oa, agent, tool, runtime
+        return oa, agent, tool, runtime
+
+    raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA bridge") from last_exc
 
 
 _OA, OpenAIAgent, Tool, AgentRuntime = _load_openai_sdk()

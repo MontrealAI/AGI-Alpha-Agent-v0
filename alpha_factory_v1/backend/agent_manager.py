@@ -21,6 +21,9 @@ class AgentManager:
 
     @staticmethod
     def _resolve_list_agents():
+        registry_mod = sys.modules.get("backend.agents.registry")
+        if registry_mod is not None and hasattr(registry_mod, "list_agents"):
+            return registry_mod.list_agents
         agents_mod = sys.modules.get("backend.agents")
         if agents_mod is not None and hasattr(agents_mod, "list_agents"):
             return agents_mod.list_agents

@@ -19,15 +19,15 @@ def _start_server(directory: Path):
     return server, thread
 
 
-def test_quickstart_pdf_offline() -> None:
+def test_quickstart_pdf_offline(insight_dist: Path) -> None:
     repo = Path(__file__).resolve().parents[1]
-    dist = repo / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
     pdf_src = repo / "docs/insight_browser_quickstart.pdf"
+    dist = insight_dist
     pdf_dest = dist / "insight_browser_quickstart.pdf"
     if not pdf_dest.exists() and pdf_src.exists():
         pdf_dest.write_bytes(pdf_src.read_bytes())
 
-    server, thread = _start_server(dist)
+    server, thread = _start_server(insight_dist)
     host, port = server.server_address
     url = f"http://{host}:{port}"
     try:
@@ -69,11 +69,8 @@ def test_quickstart_pdf_offline() -> None:
         thread.join()
 
 
-def test_cache_cleanup_on_activate() -> None:
-    repo = Path(__file__).resolve().parents[1]
-    dist = repo / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
-
-    server, thread = _start_server(dist)
+def test_cache_cleanup_on_activate(insight_dist: Path) -> None:
+    server, thread = _start_server(insight_dist)
     host, port = server.server_address
     url = f"http://{host}:{port}"
     try:

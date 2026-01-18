@@ -89,7 +89,13 @@ try:
         existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
         if existing is not None:
             return existing
-        return factory(name, "Average fitness per generation")
+        try:
+            return factory(name, "Average fitness per generation")
+        except ValueError:
+            existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+            if existing is not None:
+                return existing
+            raise
 
     _fitness_gauge = _reuse_metric("aiga_avg_fitness", Gauge)
 except ImportError:

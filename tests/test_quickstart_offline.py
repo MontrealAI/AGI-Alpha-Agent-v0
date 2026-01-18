@@ -10,9 +10,9 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 from playwright._impl._errors import Error as PlaywrightError  # noqa: E402
 
 
-def test_quickstart_offline() -> None:
+def test_quickstart_offline(insight_dist: Path) -> None:
     repo = Path(__file__).resolve().parents[1]
-    dist = repo / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
+    dist = insight_dist
     pdf_src = repo / "docs/insight_browser_quickstart.pdf"
     pdf_dest = dist / "insight_browser_quickstart.pdf"
     if not pdf_dest.exists() and pdf_src.exists():

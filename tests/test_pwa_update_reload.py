@@ -24,11 +24,11 @@ def _start_server(directory: Path):
 
 
 @pytest.mark.skipif(not shutil.which("npm"), reason="npm not installed")  # type: ignore[misc]
-def test_update_triggers_reload(tmp_path: Path) -> None:
-    repo = Path(__file__).resolve().parents[1] / ("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1")
+def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist: Path) -> None:
+    repo = insight_repo
     subprocess.check_call(["npm", "run", "build"], cwd=repo)
 
-    dist = repo / "dist"
+    dist = insight_dist
     server, thread = _start_server(dist)
     host, port = server.server_address
     url = f"http://{host}:{port}/index.html"

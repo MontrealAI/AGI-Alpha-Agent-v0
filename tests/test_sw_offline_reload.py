@@ -19,11 +19,8 @@ def _start_server(directory: Path):
     return server, thread
 
 
-def test_offline_reload_no_errors() -> None:
-    repo = Path(__file__).resolve().parents[1]
-    dist = repo / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"
-
-    server, thread = _start_server(dist)
+def test_offline_reload_no_errors(insight_dist: Path) -> None:
+    server, thread = _start_server(insight_dist)
     host, port = server.server_address
     url = f"http://{host}:{port}/index.html"
     try:

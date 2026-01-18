@@ -158,6 +158,9 @@ class AgentRunner:
 
     @staticmethod
     def _resolve_get_agent():
+        registry_mod = sys.modules.get("backend.agents.registry")
+        if registry_mod is not None and hasattr(registry_mod, "get_agent"):
+            return registry_mod.get_agent
         agents_mod = sys.modules.get("backend.agents")
         if agents_mod is not None and hasattr(agents_mod, "get_agent"):
             return agents_mod.get_agent
@@ -213,14 +216,17 @@ class AgentRunner:
 
         async def _cycle() -> None:
             t0 = time.time()
+            ok = True
             span_cm = tracer.start_as_current_span(self.name) if tracer else contextlib.nullcontext()
             with span_cm:
                 try:
                     await asyncio.wait_for(maybe_await(self.inst.run_cycle), timeout=self._max_cycle_sec)
                 except asyncio.TimeoutError:
+                    ok = False
                     MET_ERR.labels(self.name).inc()
                     log.error("%s run_cycle exceeded %ss budget – skipped", self.name, self._max_cycle_sec)
                 except Exception as exc:  # noqa: BLE001
+                    ok = False
                     MET_ERR.labels(self.name).inc()
                     log.exception("%s.run_cycle crashed: %s", self.name, exc)
                 finally:
@@ -228,6 +234,14 @@ class AgentRunner:
                     MET_LAT.labels(self.name).observe(dur_ms)
                     self.last_beat = time.time()
                     self._publish("agent.cycle", {"agent": self.name, "latency_ms": dur_ms, "ts": utc_now()})
+                    try:
+                        from backend.agents import health as health_mod
+
+                        health_task = getattr(health_mod, "_health_task", None)
+                        if health_task is None or health_task.done():
+                            health_mod.handle_health_event(self.name, dur_ms, ok)
+                    except Exception:
+                        pass
 
         self.task = asyncio.create_task(_cycle())
 

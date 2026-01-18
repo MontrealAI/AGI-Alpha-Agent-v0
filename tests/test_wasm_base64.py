@@ -7,11 +7,8 @@ from playwright.sync_api import sync_playwright  # noqa: E402
 from playwright._impl._errors import Error as PlaywrightError  # noqa: E402
 
 
-def test_pyodide_base64_global() -> None:
-    dist = Path(__file__).resolve().parents[1] / (
-        "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist/index.html"
-    )
-    url = dist.as_uri()
+def test_pyodide_base64_global(insight_dist: Path) -> None:
+    url = (insight_dist / "index.html").as_uri()
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()

@@ -191,7 +191,12 @@ class _Embedder:
     def __init__(self, cfg: PLConfig):
         self.dim = cfg.embed_dim
         self.use_openai = cfg.openai_enabled and openai is not None
+        self._offline_stub = False
+        self._model = None
         if not self.use_openai:
+            if os.getenv("PYTEST_NET_OFF") == "1":
+                self._offline_stub = True
+                return
             if SentenceTransformer is None:
                 raise RuntimeError("SentenceTransformer required for offline mode.")
             self._model = SentenceTransformer("nomic-embed-text")
@@ -202,9 +207,11 @@ class _Embedder:
         if self.use_openai:
             resp = await openai.Embedding.acreate(model="text-embedding-3-small", input=texts, encoding_format="float")
             vecs = np.asarray([d.embedding for d in resp["data"]], dtype="float32")
+        elif self._offline_stub:
+            vecs = np.zeros((len(texts), self.dim), dtype="float32")
         else:
             loop = asyncio.get_event_loop()
-            vecs = await loop.run_in_executor(None, self._model.encode, texts)
+            vecs = await loop.run_in_executor(None, self._model.encode, texts)  # type: ignore[union-attr]
             vecs = vecs.astype("float32")
         return vecs
 
