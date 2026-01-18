@@ -85,6 +85,8 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--stop", action="store_true", help="stop running containers")
     if argv is None and "pytest" in sys.modules:
         if Path(sys.argv[0]).name != Path(__file__).name:
+            if not any(flag in {"-h", "--help"} for flag in sys.argv[1:]):
+                argv = []
             help_flags = {"-h", "--help"}
             if any(flag in sys.argv[1:] for flag in help_flags):
                 argv = [flag for flag in sys.argv[1:] if flag in help_flags]
