@@ -88,12 +88,24 @@ try:
     def _reuse_metric(name: str, factory):
         registry = metrics.REGISTRY
         existing = registry._names_to_collectors.get(name)  # type: ignore[attr-defined]
+    def _find_metric(name: str):
+        existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
+        if existing is not None:
+            return existing
+        for collector, names in REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
+            if name in names:
+                return collector
+        return None
+
+    def _reuse_metric(name: str, factory):
+        existing = _find_metric(name)
         if existing is not None:
             return existing
         try:
             return factory(name, "Average fitness per generation", registry=registry)
         except ValueError:
             existing = registry._names_to_collectors.get(name)  # type: ignore[attr-defined]
+            existing = _find_metric(name)
             if existing is not None:
                 return existing
             raise
