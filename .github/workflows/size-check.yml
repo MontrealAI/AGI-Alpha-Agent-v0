@@ -17,6 +17,7 @@ jobs:
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/size-check
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
+      INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
     steps:
       - name: Check dispatch token
         if: github.actor != github.repository_owner

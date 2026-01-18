@@ -346,6 +346,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   pauseBtn.addEventListener('click',togglePause)
   exportBtn.addEventListener('click',exportState)
   initDragDrop(dropZone,loadState)
+  document.documentElement.dataset.insightReady = '1';
   window.dispatchEvent(new HashChangeEvent('hashchange'))
 })
 window.addEventListener('hashchange', async () => {

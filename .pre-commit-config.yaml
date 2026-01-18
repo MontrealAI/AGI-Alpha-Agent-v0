@@ -77,6 +77,11 @@ repos:
         language: system
         files: ^\.github/workflows/
         pass_filenames: false
+      - id: no-binary-diff
+        name: Block binary diffs in PRs
+        entry: scripts/check_no_binary_diff.sh
+        language: system
+        pass_filenames: false
       - id: py-compile
         name: Validate Python syntax with py_compile
         entry: python -m py_compile

@@ -49,6 +49,8 @@ env:
   SANDBOX_IMAGE: selfheal-sandbox:latest
   PYTHONUTF8: '1'
   PIP_NO_INPUT: '1'
+  PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
+  INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
   COSIGN_CERT_IDENTITY_REGEX: https://github.com/${{ github.repository }}/.github/workflows/ci.yml@.*
   COSIGN_CERT_ISSUER: https://token.actions.githubusercontent.com
   PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/ms-playwright
@@ -272,6 +274,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check binary diff (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
@@ -330,6 +334,7 @@ jobs:
         uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
@@ -433,6 +438,9 @@ jobs:
           name: pytest-${{ matrix.python-version }}
           path: artifacts/test-reports/pytest.xml
           if-no-files-found: warn
+      - name: Check binary diff (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
       - name: Upload coverage
         if: steps.coverage-check.outputs.found == 'true'
         uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
@@ -452,6 +460,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check binary diff (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
@@ -498,6 +508,7 @@ jobs:
         uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
@@ -547,6 +558,8 @@ jobs:
       NPM_CONFIG_AUDIT: 'false'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check binary diff (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
       - name: Ensure pip cache directory
@@ -591,6 +604,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Configure npm
         run: |
           npm config set fund false
@@ -722,6 +742,9 @@ jobs:
           SKIP: eslint-insight-browser
       - name: Build documentation
         run: mkdocs build --strict
+      - name: Check binary diff (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
       - name: Check for binary diffs (post-build)
         run: python scripts/check_no_binary_diff.py
 
@@ -737,6 +760,7 @@ jobs:
       FETCH_ASSETS_ATTEMPTS: '5'
       SANDBOX_IMAGE: selfheal-sandbox:latest
       PWA_TIMEOUT_MS: '120000'
+      INSIGHT_SKIP_BINARY_ASSETS: '1'
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs-build
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
@@ -861,6 +885,9 @@ jobs:
           sleep 2
           python scripts/verify_insight_offline.py
           kill "$SERVER_PID"
+      - name: Check binary diff (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
       - name: Check for binary diffs (post-build)
         run: python scripts/check_no_binary_diff.py
 
@@ -883,6 +910,8 @@ jobs:
     # This job builds and pushes the image.
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check binary diff (early)
+        run: scripts/check_no_binary_diff.sh
       - name: Free disk space
         run: |
           set -euo pipefail
@@ -930,6 +959,13 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        with:
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements-dev.lock', 'alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Configure npm
         run: |
           npm config set fund false
@@ -1095,6 +1131,9 @@ jobs:
         uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
         with:
           cosign-release: 'v2.5.3'
+      - name: Check binary diff (late)
+        if: always()
+        run: scripts/check_no_binary_diff.sh
       - name: Sign image
         if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
         run: cosign sign --yes "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"

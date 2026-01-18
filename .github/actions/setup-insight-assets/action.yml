@@ -15,21 +15,30 @@ runs:
       id: asset-cache
       uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
       with:
+        path: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
         path: ${{ env.FETCH_ASSETS_DIR }}
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
       shell: bash
       env:
+        INSIGHT_ASSET_DIR: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
         FETCH_ASSETS_DIR: ${{ env.FETCH_ASSETS_DIR }}
       run: python scripts/fetch_assets.py
     - name: Verify Insight Browser assets
       shell: bash
+      env:
+        INSIGHT_ASSET_DIR: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
       run: |
         set -eo pipefail
+        python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
         FETCH_ASSETS_DIR="${FETCH_ASSETS_DIR}" python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
         if [ "${PIPESTATUS[0]}" -ne 0 ]; then
           echo "::error::Insight asset verification failed. Check FETCH_ASSETS_DIR cache." >&2
           cat verify.log
+          python scripts/fetch_assets.py
+          python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
+        fi
+        cat verify.log
           exit 1
         fi

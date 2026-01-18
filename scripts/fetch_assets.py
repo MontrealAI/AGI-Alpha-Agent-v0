@@ -222,7 +222,7 @@ def _update_checksum(name: str, digest: bytes, algo: str) -> None:
     CHECKSUMS[name] = new_val
 
 
-def verify_assets(base: Path) -> list[str]:
+def verify_assets(base: Path, update_checksums: bool = True) -> list[str]:
     """Return a list of assets that failed verification and refresh hashes."""
 
     failures: list[str] = []
@@ -243,12 +243,13 @@ def verify_assets(base: Path) -> list[str]:
                 continue
             print(f"Checksum mismatch for {rel}: expected {ref} got {calc_b64}")
         if expected:
-            _update_checksum(rel, digest_bytes, algo)
+            if update_checksums:
+                _update_checksum(rel, digest_bytes, algo)
             failures.append(rel)
         elif rel in PYODIDE_ASSETS:
             # treat missing checksum as a failure for Pyodide files
-            algo = "sha384"
-            _update_checksum(rel, dest.read_bytes(), algo)
+            if update_checksums:
+                _update_checksum(rel, dest.read_bytes(), "sha384")
             failures.append(rel)
     return failures
 
@@ -261,6 +262,11 @@ def main() -> None:
         help="Verify asset checksums and exit",
     )
     parser.add_argument(
+        "--no-update-checksums",
+        action="store_true",
+        help="Do not rewrite checksums in this script when verification fails",
+    )
+    parser.add_argument(
         "--update-manifest",
         action="store_true",
         help="Synchronize build_assets.json after verifying assets",
@@ -268,15 +274,20 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
+    default_base = root / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"  # noqa: E501
+    base = Path(os.environ.get("INSIGHT_ASSET_DIR", default_base)).expanduser()
     custom_root = os.environ.get("FETCH_ASSETS_DIR")
     base = Path(custom_root).expanduser().resolve() if custom_root else root / (
         "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
     )
 
     if args.verify_only:
-        failures = verify_assets(base)
+        failures = verify_assets(base, update_checksums=not args.no_update_checksums)
         if failures:
             joined = ", ".join(failures)
+            if args.no_update_checksums:
+                print(f"Checksum verification failed for: {joined}")
+                return
             print(f"Updated checksums for: {joined}")
             manifest_script = Path(__file__).resolve().parent / "generate_build_manifest.py"
             if manifest_script.exists():

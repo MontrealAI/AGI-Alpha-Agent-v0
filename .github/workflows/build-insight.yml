@@ -19,6 +19,7 @@ jobs:
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/insight-bundle
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
+      INSIGHT_ASSET_DIR: ${{ runner.temp }}/insight-assets
 
     steps:
       - name: Check out repository
