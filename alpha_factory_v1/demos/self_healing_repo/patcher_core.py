@@ -27,6 +27,7 @@ All file‑system mutations stay **inside `repo_path`** for container safety.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import pathlib
 import re
@@ -60,6 +61,11 @@ def _existing_files(repo: pathlib.Path) -> set[str]:
 # ────────────────────────── patch logic ─────────────────────────────────────
 def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     """Ask the LLM to suggest a unified diff patch fixing the failure."""
+    patch_file = os.getenv("PATCH_FILE")
+    if patch_file:
+        patch = pathlib.Path(patch_file).read_text()
+        _sanity_check_patch(patch, pathlib.Path(repo_path))
+        return patch
     prompt = textwrap.dedent(
         f"""
     You are an expert software engineer. A test suite failed as follows:
@@ -74,9 +80,26 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     3. Keep the patch minimal and idiomatic.
     """
     )
-    patch = str(llm(prompt)).strip()
+    result = llm(prompt)
+    if asyncio.iscoroutine(result):
+        result = asyncio.run(result)
+    patch = str(result).strip()
     _sanity_check_patch(patch, pathlib.Path(repo_path))
     return patch
+
+
+_HUNK_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+\d+(?:,\d+)? @@")
+
+
+def _normalize_patch(patch: str) -> str:
+    """Ensure hunks include line ranges so patch utilities accept them."""
+    normalized: list[str] = []
+    for line in patch.splitlines():
+        if line.startswith("@@") and not _HUNK_RE.match(line):
+            normalized.append("@@ -1 +1 @@")
+        else:
+            normalized.append(line)
+    return "\n".join(normalized) + ("\n" if patch.endswith("\n") else "")
 
 
 def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
@@ -94,6 +117,7 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
 def apply_patch(patch: str, repo_path: str) -> None:
     """Apply patch atomically with rollback on failure."""
     repo = pathlib.Path(repo_path)
+    patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(

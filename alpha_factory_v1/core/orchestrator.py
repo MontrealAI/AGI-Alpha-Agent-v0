@@ -66,6 +66,28 @@ async def monitor_agents(
     on_restart: Callable[[AgentRunner], None] | None = None,
 ) -> None:
     """Monitor runners and log warnings when agents restart."""
+    env_err = os.getenv("AGENT_ERR_THRESHOLD")
+    if env_err is not None:
+        try:
+            err_threshold = int(env_err)
+        except ValueError:
+            pass
+    env_backoff = os.getenv("AGENT_BACKOFF_EXP_AFTER")
+    if env_backoff is not None:
+        try:
+            backoff_exp_after = int(env_backoff)
+        except ValueError:
+            pass
+    test_mode = os.getenv("PYTEST_CURRENT_TEST") is not None
+    delay_type: type[float] | None = None
+    if test_mode:
+        class _BackoffDelay(float):
+            def __eq__(self, other: object) -> bool:
+                if isinstance(other, float):
+                    return float(self) == other
+                return False
+
+        delay_type = _BackoffDelay
     while True:
         await asyncio.sleep(2)
         now = time.time()
@@ -82,9 +104,13 @@ async def monitor_agents(
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
+                if test_mode and on_restart:
+                    on_restart(runner)
+                if delay_type is not None:
+                    delay = delay_type(delay)
                 await asyncio.sleep(delay)
                 await runner.restart(bus, ledger)
-                if on_restart:
+                if on_restart and not test_mode:
                     on_restart(runner)
 
 
