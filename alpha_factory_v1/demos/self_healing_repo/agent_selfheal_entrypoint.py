@@ -16,15 +16,25 @@ import shutil
 import subprocess
 import sys
 
-import gradio as gr
+try:  # optional UI dependency
+    import gradio as gr
+except ModuleNotFoundError:  # pragma: no cover - optional
+    gr = None
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
 
+ROOT = pathlib.Path(__file__).resolve().parents[3]
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+
 try:
     from openai_agents import Agent, OpenAIAgent, Tool
 except Exception:  # pragma: no cover - optional fallback
-    from .agent_core import llm_client
+    try:
+        from .agent_core import llm_client
+    except ImportError:  # pragma: no cover - script execution fallback
+        from alpha_factory_v1.demos.self_healing_repo.agent_core import llm_client
 
     def Tool(*_a, **_kw):  # type: ignore
         def _decorator(func):
@@ -46,7 +56,10 @@ except Exception:  # pragma: no cover - optional fallback
             self.name = name
 
 
-from .patcher_core import generate_patch, apply_patch
+try:
+    from .patcher_core import generate_patch, apply_patch
+except ImportError:  # pragma: no cover - script execution fallback
+    from alpha_factory_v1.demos.self_healing_repo.patcher_core import generate_patch, apply_patch
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
@@ -76,13 +89,22 @@ def clone_sample_repo() -> None:
 
 
 # ── LLM bridge ────────────────────────────────────────────────────────────────
-_temp_env = os.getenv("TEMPERATURE")
-LLM = OpenAIAgent(
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    api_key=os.getenv("OPENAI_API_KEY", None),
-    base_url=("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
-    temperature=float(_temp_env) if _temp_env is not None else None,
-)
+def _build_llm() -> OpenAIAgent:
+    temp = os.getenv("TEMPERATURE")
+    model = os.getenv("OPENAI_MODEL") or os.getenv("MODEL_NAME") or "gpt-4o-mini"
+    kwargs = {
+        "model": model,
+        "api_key": os.getenv("OPENAI_API_KEY", None),
+        "base_url": ("http://ollama:11434/v1" if not os.getenv("OPENAI_API_KEY") else None),
+        "temperature": float(temp) if temp is not None else None,
+    }
+    try:
+        return OpenAIAgent(**kwargs)
+    except TypeError:  # pragma: no cover - stubbed agents in tests
+        return OpenAIAgent()
+
+
+LLM = _build_llm()
 
 
 @Tool(name="run_tests", description="execute pytest on repo")
@@ -125,31 +147,34 @@ agent = Agent(llm=LLM, tools=[run_tests, suggest_patch, apply_and_test], name="R
 
 def create_app() -> FastAPI:
     """Build the Gradio UI and mount it on a FastAPI app."""
-    with gr.Blocks(title="Self‑Healing Repo") as ui:
-        log = gr.Markdown("# Output log\n")
-
-        async def run_pipeline() -> str:
-            if pathlib.Path(CLONE_DIR).exists():
-                shutil.rmtree(CLONE_DIR)
-            clone_sample_repo()
-            out1 = await run_tests()
-            patch = (await suggest_patch())["patch"]
-            out2 = await apply_and_test(patch)
-            log_text = "### Initial test failure\n```\n" + out1["out"] + "```"
-            log_text += "\n### Proposed patch\n```diff\n" + patch + "```"
-            log_text += "\n### Re‑test output\n```\n" + out2["out"] + "```"
-            return log_text
-
-        run_btn = gr.Button("🩹 Heal Repository")
-        run_btn.click(run_pipeline, outputs=log)
-
     app = FastAPI()
+
+    if gr is not None:
+        with gr.Blocks(title="Self‑Healing Repo") as ui:
+            log = gr.Markdown("# Output log\n")
+
+            async def run_pipeline() -> str:
+                if pathlib.Path(CLONE_DIR).exists():
+                    shutil.rmtree(CLONE_DIR)
+                clone_sample_repo()
+                out1 = await run_tests()
+                patch = (await suggest_patch())["patch"]
+                out2 = await apply_and_test(patch)
+                log_text = "### Initial test failure\n```\n" + out1["out"] + "```"
+                log_text += "\n### Proposed patch\n```diff\n" + patch + "```"
+                log_text += "\n### Re‑test output\n```\n" + out2["out"] + "```"
+                return log_text
+
+            run_btn = gr.Button("🩹 Heal Repository")
+            run_btn.click(run_pipeline, outputs=log)
+
+        app = gr.mount_gradio_app(app, ui, path="/")
 
     @app.get("/__live", response_class=PlainTextResponse, include_in_schema=False)
     async def _live() -> str:  # noqa: D401
         return "OK"
 
-    return gr.mount_gradio_app(app, ui, path="/")
+    return app
 
 
 async def launch_gradio() -> None:

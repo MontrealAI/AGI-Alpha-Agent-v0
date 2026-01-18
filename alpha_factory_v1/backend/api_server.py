@@ -36,12 +36,19 @@ def build_rest(
     if "FastAPI" not in globals():
         return None
     if mem is None:
-        mem = SimpleNamespace(
-            vector=SimpleNamespace(
-                recent=lambda *_a, **_k: [],
-                search=lambda *_a, **_k: [],
+        try:
+            from . import orchestrator as orch
+
+            mem = getattr(orch, "mem", None)
+        except Exception:  # pragma: no cover - best effort
+            mem = None
+        if mem is None:
+            mem = SimpleNamespace(
+                vector=SimpleNamespace(
+                    recent=lambda *_a, **_k: [],
+                    search=lambda *_a, **_k: [],
+                )
             )
-        )
 
     token = os.getenv("API_TOKEN")
     if not token:

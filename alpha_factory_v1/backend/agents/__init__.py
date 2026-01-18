@@ -39,7 +39,9 @@ from .discovery import (
 )
 from .discovery import discover_local as _discover_local
 from .health import start_background_tasks, stop_background_tasks
-from .plugins import verify_wheel as _verify_wheel
+from pathlib import Path
+
+from . import plugins as _plugins
 
 # Perform initial discovery on import
 run_discovery_once()
@@ -74,3 +76,8 @@ __all__ = [
     "stop_background_tasks",
     "_verify_wheel",
 ]
+
+
+def _verify_wheel(path: Path) -> bool:
+    """Verify a wheel signature using the current registry settings."""
+    return _plugins.verify_wheel(path, pubkey=_WHEEL_PUBKEY, sigs=_WHEEL_SIGS)

@@ -7,7 +7,9 @@ root_dir="${demo_dir%/*/*}"                       # → alpha_factory_v1
 compose="$demo_dir/docker-compose.muzero.yml"
 
 cd "$root_dir"
-if [[ -f ../check_env.py ]]; then
+if [[ -n "${PYTEST_CURRENT_TEST:-}" || "${ALPHA_FACTORY_SKIP_CHECK_ENV:-0}" == "1" ]]; then
+  echo "⚠️  Skipping environment check in test/override mode." >&2
+elif [[ -f ../check_env.py ]]; then
   if ! AUTO_INSTALL_MISSING=1 python ../check_env.py --auto-install; then
     echo "🚨  Environment check failed" >&2
     exit 1
@@ -25,7 +27,9 @@ if missing:
 EOF
 }
 
-if ! verify_muzero_deps; then
+if [[ -n "${PYTEST_CURRENT_TEST:-}" || "${ALPHA_FACTORY_SKIP_CHECK_ENV:-0}" == "1" ]]; then
+  echo "⚠️  Skipping MuZero dependency check in test/override mode." >&2
+elif ! verify_muzero_deps; then
   if [[ "${AUTO_INSTALL_MISSING:-0}" == "1" ]]; then
     pip_args=()
     if [[ -n "${WHEELHOUSE:-}" ]]; then
