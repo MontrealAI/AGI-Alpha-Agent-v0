@@ -35,7 +35,11 @@ if ! node "$BROWSER_DIR/build/version_check.js"; then
 fi
 
 # Fetch WASM assets then install Node dependencies and build the browser bundle
-npm --prefix "$BROWSER_DIR" run fetch-assets
+if [[ "${INSIGHT_SKIP_FETCH_ASSETS:-0}" != "1" ]]; then
+    npm --prefix "$BROWSER_DIR" run fetch-assets
+else
+    echo "Skipping Insight asset fetch (INSIGHT_SKIP_FETCH_ASSETS=1)."
+fi
 npm --prefix "$BROWSER_DIR" ci
 (cd "$BROWSER_DIR" && npx update-browserslist-db --update-db --yes)
 npm --prefix "$BROWSER_DIR" run build:dist
@@ -43,13 +47,22 @@ npm --prefix "$BROWSER_DIR" run build:dist
 # Refresh docs directory with the new bundle while preserving all
 # non-generated files (e.g. images or additional Markdown docs)
 OLD_DOCS_TEMP=""
-if [[ -d "$DOCS_DIR" ]]; then
+if [[ -d "$DOCS_DIR" && "${INSIGHT_SKIP_BINARY_ASSETS:-0}" != "1" ]]; then
     OLD_DOCS_TEMP="$(mktemp -d)"
     cp -a "$DOCS_DIR/." "$OLD_DOCS_TEMP/"
 fi
-rm -rf "$DOCS_DIR"
-mkdir -p "$DOCS_DIR"
-unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
+if [[ "${INSIGHT_SKIP_BINARY_ASSETS:-0}" == "1" ]]; then
+    mkdir -p "$DOCS_DIR"
+else
+    rm -rf "$DOCS_DIR"
+    mkdir -p "$DOCS_DIR"
+fi
+if [[ "${INSIGHT_SKIP_BINARY_ASSETS:-0}" == "1" ]]; then
+    unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR" \
+        -x "assets/wasm/*" "assets/wasm_llm/*"
+else
+    unzip -q -o "$BROWSER_DIR/insight_browser.zip" -d "$DOCS_DIR"
+fi
 # Copy the quickstart guide from the build output so the docs include it
 PDF_SRC="$BROWSER_DIR/dist/assets/insight_browser_quickstart.pdf"
 if [[ -f "$PDF_SRC" ]]; then
@@ -121,10 +134,14 @@ copy_assets() {
     done
 
     # Copy Pyodide runtime files for the gallery
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    if [[ "${INSIGHT_SKIP_BINARY_ASSETS:-0}" == "1" ]]; then
+        echo "Skipping Pyodide copy into docs/assets/pyodide."
+    else
+        wasm_src="$BROWSER_DIR/wasm"
+        pyodide_dest="docs/assets/pyodide"
+        mkdir -p "$pyodide_dest"
+        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
+    fi
 }
 copy_assets
 

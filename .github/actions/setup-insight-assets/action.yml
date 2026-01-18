@@ -11,25 +11,25 @@ runs:
       id: asset-cache
       uses: actions/cache@v4.2.3 # 5a3ec84eff668545956fd18022155c47e93e2684
       with:
-        path: |
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm
-          alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm
+        path: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
         key: assets-${{ steps.asset-key.outputs.key }}-${{ runner.os }}
         restore-keys: assets-${{ runner.os }}-
     - name: Fetch Insight Browser assets
       shell: bash
+      env:
+        INSIGHT_ASSET_DIR: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
       run: python scripts/fetch_assets.py
     - name: Verify Insight Browser assets
       shell: bash
+      env:
+        INSIGHT_ASSET_DIR: ${{ env.INSIGHT_ASSET_DIR || format('{0}/insight-assets', runner.temp) }}
       run: |
         set -eo pipefail
-        python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+        python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
         if [ "${PIPESTATUS[0]}" -ne 0 ]; then
           echo "::error::Initial asset verification failed" >&2
           cat verify.log
-          python scripts/update_pyodide.py 0.28.0
-          npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run fetch-assets
-          python scripts/fetch_assets.py --verify-only 2>&1 | tee verify.log
+          python scripts/fetch_assets.py
+          python scripts/fetch_assets.py --verify-only --no-update-checksums 2>&1 | tee verify.log
         fi
         cat verify.log
-

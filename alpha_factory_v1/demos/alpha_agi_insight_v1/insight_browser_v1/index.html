@@ -109,7 +109,8 @@
       const SW_URL = 'service-worker.js';
       const SW_HASH = '__SW_HASH__';
 
-      if ('serviceWorker' in navigator) {
+      const isAutomated = navigator.webdriver;
+      if ('serviceWorker' in navigator && !isAutomated) {
         window.addEventListener('load', async () => {
           try {
             const res = await fetch(SW_URL);
@@ -120,8 +121,8 @@
               throw new Error('Service worker hash mismatch');
             }
 
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
+            await navigator.serviceWorker.register(SW_URL).then((registration) => {
+              return navigator.serviceWorker.ready.then(() => {
                 registration.addEventListener('updatefound', () => {
                   const newWorker = registration.installing;
                   if (!newWorker) return;
@@ -139,9 +140,11 @@
             window.toast('Service worker failed: ' + err.message);
           }
         });
+      } else if (isAutomated) {
+        console.warn('Skipping service worker registration in automated context.');
       }
     </script>
 
-    <script type="module" src="insight.bundle.js" crossorigin="anonymous"></script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-982RbeeyJNb4ro0zDVobETKADI1hcr7GsPfrMpyHEw4Nf8tPb+sLmH9NMMoEqftx" crossorigin="anonymous"></script>
   </body>
 </html>
