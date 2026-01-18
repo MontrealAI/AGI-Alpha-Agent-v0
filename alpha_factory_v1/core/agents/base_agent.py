@@ -55,7 +55,10 @@ class BaseAgent:
         self.ledger = ledger
         self.llm = None
         self.oai_ctx = None
-        if not os.getenv("PYTEST_CURRENT_TEST"):
+        self.adk = None
+        self.mcp = None
+        is_pytest = bool(os.getenv("PYTEST_CURRENT_TEST"))
+        if not is_pytest:
             if backend.startswith("gpt") and AgentContext is not None:
                 try:
                     self.oai_ctx = AgentContext(
@@ -80,7 +83,8 @@ class BaseAgent:
                         )
                     except Exception:
                         self.llm = LLMProvider() if LLMProvider is not None else None
-            global ADKAdapter, MCPAdapter
+        global ADKAdapter, MCPAdapter
+        if not is_pytest:
             if ADKAdapter is None:
                 try:  # pragma: no cover - optional dependency
                     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.agents.adk_adapter import (
@@ -99,6 +103,10 @@ class BaseAgent:
                     MCPAdapter = _MCPAdapter
                 except Exception:
                     MCPAdapter = None
+        if ADKAdapter is not None and ADKAdapter.is_available():
+            self.adk = ADKAdapter()
+        if MCPAdapter is not None and MCPAdapter.is_available():
+            self.mcp = MCPAdapter()
             self.adk = ADKAdapter() if ADKAdapter and ADKAdapter.is_available() else None
             self.mcp = MCPAdapter() if MCPAdapter and MCPAdapter.is_available() else None
         else:

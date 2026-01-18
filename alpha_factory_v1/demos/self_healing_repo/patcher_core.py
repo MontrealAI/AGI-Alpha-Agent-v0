@@ -87,8 +87,37 @@ def generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str:
     return patch
 
 
+def _ensure_hunk_ranges(patch: str) -> str:
+    lines = patch.splitlines()
+    normalized: list[str] = []
+    idx = 0
+    while idx < len(lines):
+        line = lines[idx]
+        if line.startswith("@@") and not re.search(r"@@\s*-\d", line):
+            removed = 0
+            added = 0
+            scan = idx + 1
+            while scan < len(lines) and not lines[scan].startswith(("@@", "--- ", "+++ ")):
+                hunk_line = lines[scan]
+                if hunk_line.startswith("+") and not hunk_line.startswith("+++"):
+                    added += 1
+                elif hunk_line.startswith("-") and not hunk_line.startswith("---"):
+                    removed += 1
+                else:
+                    added += 1
+                    removed += 1
+                scan += 1
+            normalized.append(f"@@ -1,{removed} +1,{added} @@")
+            idx += 1
+            continue
+        normalized.append(line)
+        idx += 1
+    return "\n".join(normalized) + "\n"
+
+
 def _normalize_patch(patch: str) -> str:
     patch = textwrap.dedent(patch).lstrip()
+    patch = _ensure_hunk_ranges(patch)
     if not patch.endswith("\n"):
         patch += "\n"
     return patch

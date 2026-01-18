@@ -18,8 +18,7 @@ from datetime import datetime, timezone
 from collections import deque
 from typing import Any, Callable, Dict, Optional
 import os
-
-from backend.agents.registry import get_agent
+import sys
 from alpha_factory_v1.core.monitoring import metrics
 from .utils.sync import run_sync
 
@@ -157,6 +156,15 @@ def utc_now() -> str:
 class AgentRunner:
     """Wrap one agent instance and manage its execution."""
 
+    @staticmethod
+    def _resolve_get_agent():
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is not None and hasattr(agents_mod, "get_agent"):
+            return agents_mod.get_agent
+        from backend.agents.registry import get_agent
+
+        return get_agent
+
     def __init__(
         self,
         name: str,
@@ -166,6 +174,7 @@ class AgentRunner:
         inst: Any | None = None,
     ) -> None:
         self.name = name
+        get_agent = self._resolve_get_agent()
         self.inst = inst or get_agent(name)
         self.period = getattr(self.inst, "CYCLE_SECONDS", cycle_seconds)
         self.spec = getattr(self.inst, "SCHED_SPEC", None)
@@ -226,6 +235,11 @@ class AgentRunner:
         """Resume execution after a pause."""
         self.paused_at = None
         self.next_ts = 0
+
+
+def get_agent(name: str, **kwargs):  # type: ignore[no-untyped-def]
+    """Backwards-compatible agent resolver for tests and legacy callers."""
+    return AgentRunner._resolve_get_agent()(name, **kwargs)
 
 
 async def hb_watch(runners: Dict[str, AgentRunner]) -> None:

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import sys
 from typing import Dict, Optional
 
 from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
@@ -17,6 +18,15 @@ from .agent_runner import AgentRunner, EventBus, hb_watch, regression_guard
 
 class AgentManager:
     """Manage a collection of :class:`AgentRunner` instances."""
+
+    @staticmethod
+    def _resolve_list_agents():
+        agents_mod = sys.modules.get("backend.agents")
+        if agents_mod is not None and hasattr(agents_mod, "list_agents"):
+            return agents_mod.list_agents
+        from backend.agents.registry import list_agents
+
+        return list_agents
 
     def __init__(
         self,
@@ -28,8 +38,7 @@ class AgentManager:
         *,
         bus: EventBus | None = None,
     ) -> None:
-        from backend.agents.registry import list_agents
-
+        list_agents = self._resolve_list_agents()
         avail = list_agents()
         names = [n for n in avail if not enabled or n in enabled]
         if not names:

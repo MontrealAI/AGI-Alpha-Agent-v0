@@ -366,7 +366,11 @@ async def _graceful_exit(*_):
 # MAIN -----------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
     for sig in (signal.SIGTERM, signal.SIGINT):
         loop.add_signal_handler(sig, lambda s=sig: asyncio.create_task(_graceful_exit(s)))
 
