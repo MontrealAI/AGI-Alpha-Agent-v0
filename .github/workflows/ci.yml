@@ -173,6 +173,15 @@ jobs:
           docker compose version
           git --version
 
+      - name: Free disk space
+        run: |
+          set -euo pipefail
+          df -h
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost || true
+          sudo rm -rf /usr/share/swift /usr/local/share/powershell /opt/hostedtoolcache/CodeQL || true
+          sudo apt-get clean
+          df -h
+
       - name: Cache pre-commit
         uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
         with:
@@ -308,7 +317,11 @@ jobs:
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          set -euo pipefail
+          df -h
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost || true
+          sudo rm -rf /usr/share/swift /usr/local/share/powershell /opt/hostedtoolcache/CodeQL || true
+          sudo apt-get clean
           df -h
       - name: Install dependencies
         run: |
