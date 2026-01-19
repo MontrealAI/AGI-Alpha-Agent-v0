@@ -307,9 +307,17 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
-          df -h
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+      - name: Report disk usage
+        run: df -h
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
