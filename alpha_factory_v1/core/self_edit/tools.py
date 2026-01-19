@@ -160,11 +160,13 @@ def replace(path: str | Path, pattern: str, repl: str) -> int:
         Number of substitutions made.
     """
     p = _safe_path(path)
-    text = p.read_text(encoding="utf-8", errors="replace")
+    with p.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+        text = handle.read()
     new_text, n = re.subn(pattern, repl, text, flags=re.MULTILINE)
     if n:
         _record_history(p)
-        p.write_text(new_text, encoding="utf-8")
+        with p.open("w", encoding="utf-8", newline="") as handle:
+            handle.write(new_text)
     return n
 
 
