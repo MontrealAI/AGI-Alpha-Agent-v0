@@ -307,24 +307,16 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet \
-            /opt/ghc \
-            /usr/local/lib/android \
-            /usr/local/share/boost \
-            /usr/share/swift \
-            /opt/hostedtoolcache/CodeQL \
-            /opt/hostedtoolcache/Java \
-            /opt/hostedtoolcache/Ruby \
-            /opt/hostedtoolcache/Perl
-          sudo apt-get clean
-          sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
-          if command -v docker >/dev/null 2>&1; then
-            sudo docker image prune --all --force
-            sudo docker builder prune --all --force
-            sudo docker system prune --all --force --volumes
-          fi
-          df -h
+        uses: jlumbroso/free-disk-space@v1.3.1 # 54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+      - name: Show disk usage
+        run: df -h
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
