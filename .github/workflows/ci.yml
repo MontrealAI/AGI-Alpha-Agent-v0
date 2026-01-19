@@ -309,6 +309,9 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /usr/local/share/powershell /usr/local/share/az_* /usr/local/share/azure-cli
+          sudo rm -rf /usr/local/share/vcpkg /usr/local/share/llvm
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
           df -h
       - name: Install dependencies
         run: |
