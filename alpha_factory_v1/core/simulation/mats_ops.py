@@ -192,5 +192,11 @@ def backtrack_boost(
     if random.random() < rate:
         ranked = sorted(archive, key=lambda c: getattr(c, "fitness", 0.0))
         bottom = ranked[: max(1, len(ranked) // 2)]
-        return random.choice(bottom)
+        fitnesses = [getattr(c, "fitness", 0.0) for c in bottom]
+        if not fitnesses:
+            return random.choice(pop)
+        mean = sum(fitnesses) / len(fitnesses)
+        max_distance = max(abs(val - mean) for val in fitnesses)
+        extremes = [cand for cand in bottom if abs(getattr(cand, "fitness", 0.0) - mean) == max_distance]
+        return random.choice(extremes)
     return select_parent(pop, epsilon=0.1)
