@@ -269,8 +269,10 @@ def main() -> None:
 
     root = Path(__file__).resolve().parent.parent
     custom_root = os.environ.get("FETCH_ASSETS_DIR")
-    base = Path(custom_root).expanduser().resolve() if custom_root else root / (
-        "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
+    base = (
+        Path(custom_root).expanduser().resolve()
+        if custom_root
+        else root / ("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1")
     )
 
     if args.verify_only:
