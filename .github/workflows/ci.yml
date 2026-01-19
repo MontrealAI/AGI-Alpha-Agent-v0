@@ -309,6 +309,7 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /usr/share/swift /usr/local/.ghcup /usr/local/lib/node_modules /usr/local/share/powershell
           df -h
       - name: Install dependencies
         run: |
