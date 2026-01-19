@@ -309,6 +309,8 @@ jobs:
       - name: Free disk space
         run: |
           sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo rm -rf /usr/share/swift /usr/local/share/powershell /opt/hostedtoolcache/CodeQL
+          docker system prune -af || true
           df -h
       - name: Install dependencies
         run: |
