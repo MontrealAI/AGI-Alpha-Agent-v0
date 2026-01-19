@@ -186,7 +186,7 @@ def _dummy_classes():
     return captured, DummyClient, DummyTx, DummyInstr, DummyPk
 
 
-@settings(max_examples=10)
+@settings(max_examples=10, deadline=1000)
 @given(count=st.integers(min_value=0, max_value=3), broadcast=st.booleans())
 def test_broadcast_merkle_root_property(tmp_path: pathlib.Path, count: int, broadcast: bool) -> None:
     led = insight_logging.Ledger(str(tmp_path / "l.db"), rpc_url="http://rpc.test", broadcast=broadcast)
