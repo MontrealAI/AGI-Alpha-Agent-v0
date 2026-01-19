@@ -308,7 +308,17 @@ jobs:
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          set -euo pipefail
+          df -h
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo rm -rf /usr/local/share/boost /usr/local/share/powershell /usr/share/swift
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
+          if command -v docker >/dev/null 2>&1; then
+            sudo docker system prune -af --volumes
+            sudo docker builder prune -af
+          fi
           df -h
       - name: Install dependencies
         run: |
