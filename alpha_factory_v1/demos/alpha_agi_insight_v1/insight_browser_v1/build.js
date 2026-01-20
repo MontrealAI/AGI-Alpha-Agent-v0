@@ -29,6 +29,7 @@ const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
 const skipLlmAssets = ["1", "true", "yes"].includes(
     (process.env.FETCH_ASSETS_SKIP_LLM || "").toLowerCase(),
 );
+const LLM_ASSET_PREFIXES = ["wasm_llm/", "wasm_llm_"];
 const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 
 function resolveAssetPath(relPath) {
@@ -37,6 +38,10 @@ function resolveAssetPath(relPath) {
     }
     const candidate = path.join(assetRoot, relPath);
     return fsSync.existsSync(candidate) ? candidate : relPath;
+}
+
+function isLlmAsset(relPath) {
+    return LLM_ASSET_PREFIXES.some((prefix) => relPath.startsWith(prefix));
 }
 
 function applyCsp(html, base) {
@@ -172,7 +177,7 @@ function findAssetIssues() {
     const assets = manifest.assets || [];
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
-        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+        if (skipLlmAssets && isLlmAsset(rel)) {
             continue;
         }
         const candidates = roots.map((root) => path.join(root, rel));
@@ -215,7 +220,7 @@ function syncAssetsToLocal() {
         return;
     }
     for (const rel of manifest.assets || []) {
-        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+        if (skipLlmAssets && isLlmAsset(rel)) {
             continue;
         }
         syncAssetToLocal(rel, resolveAssetPath(rel));
