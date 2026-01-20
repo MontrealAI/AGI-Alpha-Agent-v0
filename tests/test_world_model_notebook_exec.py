@@ -16,9 +16,24 @@ def test_notebook_runs(tmp_path: Path) -> None:
     assert nb_path.exists(), nb_path
     nb = nbformat.read(nb_path, as_version=4)
 
-    skip = {2, 4, 7, 8, 15, 17, 19}
-    for idx in skip:
-        nb.cells[idx].source = "print('skipped')"
+    def _should_skip(cell_source: str) -> bool:
+        lines = cell_source.splitlines()
+        if any(line.lstrip().startswith(("!", "%")) for line in lines):
+            return True
+        lowered = cell_source.lower()
+        if "google.colab" in lowered:
+            return True
+        if "openai_agents" in lowered:
+            return True
+        if "iframe" in lowered:
+            return True
+        return False
+
+    for cell in nb.cells:
+        if cell.cell_type != "code":
+            continue
+        if _should_skip(cell.source):
+            cell.source = "print('skipped')"
 
     mod = tmp_path / "mod.ipynb"
     nbformat.write(nb, mod)
