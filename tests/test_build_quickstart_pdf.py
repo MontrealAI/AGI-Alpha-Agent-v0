@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
+import os
 import re
 import subprocess
 import shutil
 from pathlib import Path
 
 import pytest
+
+from tests.conftest import _ensure_insight_node_modules
 
 BROWSER_DIR = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1")
 NODE_MAJOR_RE = re.compile(r"v?(\d+)")
@@ -32,6 +35,9 @@ def test_pdf_copied_after_build(tmp_path: Path) -> None:
     pdf = dist / "insight_browser_quickstart.pdf"
     if pdf.exists():
         pdf.unlink()
+    env = os.environ.copy()
+    env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
+    _ensure_insight_node_modules(env)
     result = subprocess.run(
         [
             "npm",
@@ -39,6 +45,7 @@ def test_pdf_copied_after_build(tmp_path: Path) -> None:
             "build",
         ],
         cwd=BROWSER_DIR,
+        env=env,
         capture_output=True,
         text=True,
     )

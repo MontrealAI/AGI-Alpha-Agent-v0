@@ -11,6 +11,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.conftest import _ensure_insight_node_modules
+
 pw = pytest.importorskip("playwright.sync_api")
 from playwright.sync_api import sync_playwright  # noqa: E402
 from playwright._impl._errors import Error as PlaywrightError  # noqa: E402
@@ -29,6 +31,7 @@ def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist
     repo = insight_repo
     env = os.environ.copy()
     env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
+    _ensure_insight_node_modules(env)
     subprocess.check_call(["npm", "run", "build"], cwd=repo, env=env)
 
     dist = insight_dist
@@ -46,6 +49,7 @@ def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist
             page.evaluate("window.__loadCount = (window.__loadCount || 0) + 1")
 
             # rebuild to create a new service worker
+            _ensure_insight_node_modules(env)
             subprocess.check_call(["npm", "run", "build"], cwd=repo, env=env)
             page.evaluate("navigator.serviceWorker.getRegistration().then(r => r.update())")
             page.wait_for_function("document.getElementById('toast').textContent.includes('Refreshing')")
