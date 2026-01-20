@@ -80,7 +80,12 @@ export async function generateServiceWorker(outDir, manifest, version) {
   const indexPath = path.join(outDir, 'index.html');
   let indexText = await fs.readFile(indexPath, 'utf8');
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
-  indexText = indexText.replace('__SW_HASH__', `sha384-${swHash}`);
+  const swHashToken = `sha384-${swHash}`;
+  indexText = indexText.replace('__SW_HASH__', swHashToken);
+  indexText = indexText.replace(
+    /SW_HASH\s*=\s*['"]sha384-[^'"]+['"]/,
+    `SW_HASH = '${swHashToken}'`,
+  );
   const inlineHashes = [];
   for (const m of indexText.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
     const attrs = m[1];

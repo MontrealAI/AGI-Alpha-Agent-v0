@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -14,6 +15,8 @@ os.environ.setdefault("PYTEST_NET_OFF", "1")
 
 _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"
+_INSIGHT_LOCK = _INSIGHT_DIR / "package-lock.json"
+_INSIGHT_LOCK_CHECK = _INSIGHT_DIR / "node_modules" / ".package_lock_checksum"
 _NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 
 
@@ -30,12 +33,25 @@ def _node_major() -> int | None:
     return int(match.group(1))
 
 
+def _package_lock_checksum() -> str:
+    return hashlib.sha256(_INSIGHT_LOCK.read_bytes()).hexdigest()
+
+
+def _node_modules_current() -> bool:
+    if not (_INSIGHT_DIR / "node_modules").exists():
+        return False
+    if not _INSIGHT_LOCK_CHECK.exists():
+        return False
+    return _INSIGHT_LOCK_CHECK.read_text().strip() == _package_lock_checksum()
+
+
 def _ensure_insight_node_modules(env: dict[str, str]) -> None:
-    if (_INSIGHT_DIR / "node_modules").exists():
+    if _node_modules_current():
         return
     if os.environ.get("PYTEST_NET_OFF") == "1":
-        pytest.skip("Insight node_modules missing while network access is disabled")
+        pytest.skip("Insight node_modules missing or stale while network access is disabled")
     subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
+    _INSIGHT_LOCK_CHECK.write_text(_package_lock_checksum())
 
 
 def _ensure_insight_dist() -> Path:

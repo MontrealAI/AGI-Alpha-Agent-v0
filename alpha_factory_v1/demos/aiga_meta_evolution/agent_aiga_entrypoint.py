@@ -22,7 +22,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json, math
+import os, asyncio, signal, logging, time, json, math, tempfile
 from pathlib import Path
 from typing import Any, Dict
 
@@ -105,9 +105,6 @@ AUTH_TOKEN = os.getenv("AUTH_BEARER_TOKEN")
 JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
 JWT_ISSUER = os.getenv("JWT_ISSUER", "aiga.local")
 
-SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
-SAVE_DIR.mkdir(parents=True, exist_ok=True)
-
 # ---------------------------------------------------------------------------
 # LOGGING --------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -116,6 +113,28 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s | %(message)s",
 )
 log = logging.getLogger(SERVICE_NAME)
+
+
+def _resolve_checkpoint_dir() -> Path:
+    configured = os.getenv("CHECKPOINT_DIR")
+    if configured:
+        return Path(configured)
+    base_dir = os.getenv("AF_MEMORY_DIR", "/tmp/alphafactory")
+    return Path(base_dir) / "aiga_meta_evolution" / "checkpoints"
+
+
+def _ensure_checkpoint_dir() -> Path:
+    path = _resolve_checkpoint_dir()
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+    except OSError as exc:
+        fallback = Path(tempfile.mkdtemp(prefix="aiga-checkpoints-"))
+        log.warning("Checkpoint dir %s unavailable (%s); using %s", path, exc, fallback)
+        return fallback
+
+
+SAVE_DIR = _ensure_checkpoint_dir()
 
 if ENABLE_SENTRY and SENTRY_DSN:
     try:

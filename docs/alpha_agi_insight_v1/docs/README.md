@@ -22,11 +22,10 @@ environment check before launching the demo:
 python ../../../check_env.py --auto-install
 ```
 
-Start the Insight demo with the repository root
-[quickstart.sh](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/quickstart.sh):
+Start the Insight demo with the repository root quickstart script:
 
 ```bash
-../../../quickstart.sh
+./quickstart.sh
 ```
 
 An interactive walkthrough is available in the Colab notebook
