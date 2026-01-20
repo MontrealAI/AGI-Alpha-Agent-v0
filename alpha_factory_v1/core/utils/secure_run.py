@@ -45,6 +45,8 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
                 "--network=none",
                 "--cpus=2",
                 "--memory=2g",
+                "--volume",
+                "/tmp:/tmp:rw",
                 "--security-opt",
                 "seccomp=unconfined",
                 "python:3.11-slim",

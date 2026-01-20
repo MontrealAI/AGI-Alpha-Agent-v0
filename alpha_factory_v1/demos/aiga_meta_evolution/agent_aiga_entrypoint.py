@@ -22,7 +22,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json, math
+import os, asyncio, signal, logging, time, json, math, tempfile
 from pathlib import Path
 from typing import Any, Dict
 
@@ -105,9 +105,6 @@ AUTH_TOKEN = os.getenv("AUTH_BEARER_TOKEN")
 JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
 JWT_ISSUER = os.getenv("JWT_ISSUER", "aiga.local")
 
-SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
-SAVE_DIR.mkdir(parents=True, exist_ok=True)
-
 # ---------------------------------------------------------------------------
 # LOGGING --------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -116,6 +113,21 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s | %(message)s",
 )
 log = logging.getLogger(SERVICE_NAME)
+
+
+def _resolve_checkpoint_dir() -> Path:
+    target = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
+    try:
+        target.mkdir(parents=True, exist_ok=True)
+        return target
+    except OSError as exc:
+        fallback = Path(tempfile.gettempdir()) / "aiga_checkpoints"
+        fallback.mkdir(parents=True, exist_ok=True)
+        log.warning("CHECKPOINT_DIR %s unavailable (%s); using %s", target, exc, fallback)
+        return fallback
+
+
+SAVE_DIR = _resolve_checkpoint_dir()
 
 if ENABLE_SENTRY and SENTRY_DSN:
     try:

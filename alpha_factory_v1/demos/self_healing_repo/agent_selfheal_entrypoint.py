@@ -64,11 +64,11 @@ except ImportError:
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
 
-if shutil.which("patch") is None:
-    logger.error(
+PATCH_AVAILABLE = shutil.which("patch") is not None
+if not PATCH_AVAILABLE:
+    logger.warning(
         '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
     )
-    sys.exit(1)
 
 
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
@@ -136,6 +136,8 @@ async def suggest_patch():
 
 @Tool(name="apply_and_test", description="apply patch & retest")
 async def apply_and_test(patch: str):
+    if not PATCH_AVAILABLE:
+        return {"rc": 1, "out": "patch command not available"}
     apply_patch(patch, repo_path=CLONE_DIR)
     return await run_tests()
 
