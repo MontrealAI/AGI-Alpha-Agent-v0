@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from typing import Sequence
@@ -36,7 +37,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
             *cmd,
         ]
     else:
-        docker = shutil.which("docker")
+        docker = shutil.which("docker") if os.getenv("SANDBOX_USE_DOCKER") in {"1", "true", "yes"} else None
         if docker:
             full_cmd = [
                 docker,

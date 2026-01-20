@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -18,11 +19,30 @@ try:
 except subprocess.SubprocessError:
     pytest.skip("docker compose not available", allow_module_level=True)
 
-COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+COMPOSE_FILE = REPO_ROOT / "infrastructure" / "docker-compose.yml"
+ENV_FILE = REPO_ROOT / ".env"
+MIN_DOCKER_DISK_GB = float(os.getenv("MIN_DOCKER_DISK_GB", "8"))
+
+
+def _ensure_disk_space() -> None:
+    usage = shutil.disk_usage(REPO_ROOT)
+    free_gb = usage.free / (1024**3)
+    if free_gb < MIN_DOCKER_DISK_GB:
+        pytest.skip(f"Skipping Docker compose test due to low disk space ({free_gb:.1f} GiB free)")
+
+
+def _ensure_env_file() -> bool:
+    if ENV_FILE.exists():
+        return False
+    ENV_FILE.write_text("NEO4J_PASSWORD=test\nAPI_TOKEN=test-token\n", encoding="utf-8")
+    return True
 
 
 @pytest.fixture(scope="module")
 def compose_stack() -> None:
+    _ensure_disk_space()
+    created_env = _ensure_env_file()
     subprocess.run(
         [
             "docker",
@@ -49,6 +69,8 @@ def compose_stack() -> None:
             ],
             check=False,
         )
+        if created_env:
+            ENV_FILE.unlink(missing_ok=True)
 
 
 def test_agents_no_outbound_network(compose_stack: None) -> None:
