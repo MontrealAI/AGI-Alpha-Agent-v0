@@ -29,9 +29,9 @@ FROM node:22.17.1-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
 WORKDIR /ui
-COPY ui/package*.json ./          # leverage Docker layer cache
+COPY alpha_factory_v1/ui/package*.json ./          # leverage Docker layer cache
 RUN if [ "$INSTALL_UI" = "1" ]; then npm ci --omit=dev; fi
-COPY ui/ .
+COPY alpha_factory_v1/ui/ .
 RUN if [ "$INSTALL_UI" = "1" ]; then npm run build; fi             # → dist/
 
 #######################################################################
@@ -78,31 +78,31 @@ RUN apt-get update && \
 WORKDIR /app
 
 # -- Strict, reproducible lock (if present) ---------------------------
-COPY requirements-lock.txt /tmp/requirements-lock.txt
+COPY alpha_factory_v1/requirements.lock /tmp/requirements.lock
 # -- Project top‑level requirements (edited by humans) ----------------
-COPY backend/requirements.txt /tmp/requirements.txt
+COPY alpha_factory_v1/requirements.txt /tmp/requirements.txt
 
 #  The lock file is preferred (if the project maintains one).  
 #  Fallback to plain requirements for dev checkouts.
-RUN if [ -f /tmp/requirements-lock.txt ]; then \
-        pip install --no-cache-dir --require-hashes -r /tmp/requirements-lock.txt; \
+RUN if [ -f /tmp/requirements.lock ]; then \
+        pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock; \
     else \
         pip install --no-cache-dir -r /tmp/requirements.txt; \
     fi && \
     # ⬇ Explicitly ensure critical agent frameworks are present
     pip install --no-cache-dir \
-        openai-agents>=0.0.17 \   # OpenAI Agents SDK (beta)
+        "openai-agents>=0.0.17" \
         "google-adk @ git+https://github.com/google/adk-python@main#egg=google-adk" \
-        anthropic>=0.21 \
+        "anthropic>=0.21" \
         gunicorn rocketry prometheus-client && \
-    rm -rf /tmp/requirements-lock.txt /tmp/requirements.txt
+    rm -rf /tmp/requirements.lock /tmp/requirements.txt
 
 #############################
 # 4) Copy project source     #
 #############################
-COPY backend/        /app/backend/
-COPY ui/             /app/ui/
-COPY entrypoint.sh   /app/entrypoint.sh
+COPY alpha_factory_v1/backend/        /app/backend/
+COPY alpha_factory_v1/ui/             /app/ui/
+COPY alpha_factory_v1/entrypoint.sh   /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
 #############################

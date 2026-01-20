@@ -105,7 +105,7 @@ AUTH_TOKEN = os.getenv("AUTH_BEARER_TOKEN")
 JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
 JWT_ISSUER = os.getenv("JWT_ISSUER", "aiga.local")
 
-SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
+SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "./checkpoints")).expanduser()
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
 # ---------------------------------------------------------------------------
