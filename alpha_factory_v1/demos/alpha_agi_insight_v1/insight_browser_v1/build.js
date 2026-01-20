@@ -257,6 +257,7 @@ async function relocateDistAssets() {
         "data",
         "src",
         "d3.v7.min.js",
+        "d3.exports.js",
         "favicon.svg",
         "manifest.json",
     ];
@@ -372,6 +373,8 @@ async function bundle() {
         )
         .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
         .replace("</body>", `${envScript}\n</body>`)
+        .replace('src="d3.v7.min.js"', 'src="assets/d3.v7.min.js"')
+        .replace('"d3": "./d3.exports.js"', '"d3": "./assets/d3.exports.js"')
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
@@ -388,6 +391,7 @@ async function bundle() {
             p.startsWith("src/") ||
             p.startsWith("pyodide") ||
             p === "d3.v7.min.js" ||
+            p === "d3.exports.js" ||
             p === "insight_browser_quickstart.pdf"
         ) {
             return `assets/${p}`;
@@ -414,6 +418,7 @@ async function bundle() {
                 'index.html',
                 'insight.bundle.js',
                 'assets/d3.v7.min.js',
+                'assets/d3.exports.js',
                 'assets/lib/bundle.esm.min.js',
             ].map(async (f) => new File([await fs.readFile(`${OUT_DIR}/${f}`)], f)),
         );
