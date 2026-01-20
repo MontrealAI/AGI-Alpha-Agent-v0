@@ -22,7 +22,14 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json, math
+import asyncio
+import json
+import logging
+import math
+import os
+import signal
+import tempfile
+import time
 from pathlib import Path
 from typing import Any, Dict
 
@@ -105,8 +112,23 @@ AUTH_TOKEN = os.getenv("AUTH_BEARER_TOKEN")
 JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
 JWT_ISSUER = os.getenv("JWT_ISSUER", "aiga.local")
 
-SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
-SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+def _resolve_checkpoint_dir() -> Path:
+    primary = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
+    try:
+        primary.mkdir(parents=True, exist_ok=True)
+        if os.access(primary, os.W_OK):
+            return primary
+    except PermissionError:
+        pass
+
+    fallback_root = Path(os.getenv("AF_MEMORY_DIR", tempfile.gettempdir()))
+    fallback = fallback_root / "alpha_factory" / "checkpoints"
+    fallback.mkdir(parents=True, exist_ok=True)
+    return fallback
+
+
+SAVE_DIR = _resolve_checkpoint_dir()
 
 # ---------------------------------------------------------------------------
 # LOGGING --------------------------------------------------------------------

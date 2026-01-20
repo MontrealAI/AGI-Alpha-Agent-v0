@@ -140,6 +140,27 @@ INSIGHT_DOCS_DEST="$DOCS_DIR/docs"
 if [[ -d "$INSIGHT_DOCS_SRC" ]]; then
     mkdir -p "$INSIGHT_DOCS_DEST"
     cp -a "$INSIGHT_DOCS_SRC/." "$INSIGHT_DOCS_DEST/"
+    python - <<'PY'
+from pathlib import Path
+import re
+
+dest = Path("docs/alpha_agi_insight_v1/docs")
+if dest.exists():
+    for doc in dest.glob("*.md"):
+        text = doc.read_text(encoding="utf-8")
+        updated = re.sub(
+            r"\(\.\./\.\./\.\./\.\./docs/DISCLAIMER_SNIPPET\.md\)",
+            "(../../DISCLAIMER_SNIPPET.md)",
+            text,
+        )
+        updated = re.sub(
+            r"\(\.\./\.\./\.\./\.\./DISCLAIMER_SNIPPET\.md\)",
+            "(../../DISCLAIMER_SNIPPET.md)",
+            updated,
+        )
+        if updated != text:
+            doc.write_text(updated, encoding="utf-8")
+PY
 fi
 WASM_LLM_DOC="$BROWSER_DIR/wasm_llm/README.md"
 if [[ -f "$WASM_LLM_DOC" ]]; then
