@@ -60,11 +60,14 @@ injectManifest({{
         return
     finally:
         temp_sw.unlink(missing_ok=True)
-    sw_hash = sha384(sw_dest)
     wb_path = dist_dir / "workbox-sw.js"
     if not wb_path.exists():
         wb_path = dist_dir / "lib" / "workbox-sw.js"
     wb_hash = sha384(wb_path) if wb_path.exists() else ""
+    sw_text = sw_dest.read_text()
+    sw_text = sw_text.replace("__WORKBOX_SW_HASH__", wb_hash)
+    sw_dest.write_text(sw_text)
+    sw_hash = "sha384-" + base64.b64encode(hashlib.sha384(sw_text.encode()).digest()).decode()
     index_path = dist_dir / "index.html"
     text = index_path.read_text()
     text = text.replace(".register('sw.js')", ".register('service-worker.js')")
@@ -85,6 +88,3 @@ injectManifest({{
             text,
         )
     index_path.write_text(text)
-    sw_text = sw_dest.read_text()
-    sw_text = sw_text.replace("__WORKBOX_SW_HASH__", wb_hash)
-    sw_dest.write_text(sw_text)
