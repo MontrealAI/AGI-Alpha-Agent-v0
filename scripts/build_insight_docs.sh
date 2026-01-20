@@ -112,6 +112,12 @@ if [[ -n "$OLD_DOCS_TEMP" ]]; then
     fi
     rm -rf "$OLD_DOCS_TEMP"
 fi
+if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.exports.js" "$DOCS_DIR/d3.exports.js"
+fi
+if [[ ! -f "$DOCS_DIR/d3.v7.min.js" && -f "$DOCS_DIR/assets/d3.v7.min.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.v7.min.js" "$DOCS_DIR/d3.v7.min.js"
+fi
 
 if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; then
     cp -a "$DOCS_DIR/assets/d3.exports.js" "$DOCS_DIR/d3.exports.js"
