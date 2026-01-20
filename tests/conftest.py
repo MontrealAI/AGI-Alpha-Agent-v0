@@ -30,6 +30,14 @@ def _node_major() -> int | None:
     return int(match.group(1))
 
 
+def _ensure_insight_node_modules(env: dict[str, str]) -> None:
+    if (_INSIGHT_DIR / "node_modules").exists():
+        return
+    if os.environ.get("PYTEST_NET_OFF") == "1":
+        pytest.skip("Insight node_modules missing while network access is disabled")
+    subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
+
+
 def _ensure_insight_dist() -> Path:
     if _INSIGHT_DIST.exists() and (_INSIGHT_DIST / "index.html").exists():
         return _INSIGHT_DIST
@@ -40,8 +48,7 @@ def _ensure_insight_dist() -> Path:
         pytest.skip("Node.js 22+ is required to build the Insight demo")
     env = os.environ.copy()
     env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
-    if not (_INSIGHT_DIR / "node_modules").exists():
-        subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
+    _ensure_insight_node_modules(env)
     subprocess.check_call(["npm", "run", "build"], cwd=_INSIGHT_DIR, env=env)
     if not _INSIGHT_DIST.exists():
         pytest.skip("Insight browser dist assets missing; run npm build to generate them")

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import os
 import re
 import subprocess
 import shutil
@@ -6,6 +7,8 @@ import zipfile
 from pathlib import Path
 
 import pytest
+
+from tests.conftest import _ensure_insight_node_modules
 
 BROWSER_DIR = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1")
 MAX_ZIP_BYTES = 500 * 1024 * 1024
@@ -33,6 +36,9 @@ def test_distribution_zip(tmp_path: Path) -> None:
     zip_path = BROWSER_DIR / "insight_browser.zip"
     if zip_path.exists():
         zip_path.unlink()
+    env = os.environ.copy()
+    env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
+    _ensure_insight_node_modules(env)
     result = subprocess.run(
         [
             "npm",
@@ -40,6 +46,7 @@ def test_distribution_zip(tmp_path: Path) -> None:
             "build:dist",
         ],
         cwd=BROWSER_DIR,
+        env=env,
         capture_output=True,
         text=True,
     )

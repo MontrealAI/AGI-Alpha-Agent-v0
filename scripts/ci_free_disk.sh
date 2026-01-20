@@ -21,6 +21,19 @@ sudo rm -rf /usr/share/dotnet \
 sudo apt-get clean
 sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives || true
 
+if [[ -n "${HOME:-}" ]]; then
+  rm -rf \
+    "$HOME/.cache/pip" \
+    "$HOME/.cache/pip-tools" \
+    "$HOME/.cache/pypoetry" \
+    "$HOME/.cache/npm" \
+    "$HOME/.cache/yarn" \
+    "$HOME/.cache/pnpm" \
+    "$HOME/.cache/node-gyp" \
+    "$HOME/.npm/_cacache" \
+    "$HOME/.cache/matplotlib" || true
+fi
+
 if command -v docker >/dev/null 2>&1; then
   sudo docker image prune --all --force || true
   sudo docker builder prune --all --force || true
