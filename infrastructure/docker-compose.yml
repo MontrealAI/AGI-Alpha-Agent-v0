@@ -4,14 +4,16 @@ x-healthcheck: &default_healthcheck
   interval: 30s
   timeout: 5s
   retries: 3
+x-env-file: &default_env_file
+  - path: ../.env
+    required: false
 services:
   orchestrator:
     build:
       context: ..                        # project root as build context
       dockerfile: infrastructure/Dockerfile # container recipe
     image: alpha-demo:latest             # demo image tag
-    env_file:
-      - ../.env                          # default environment variables
+    env_file: *default_env_file
     environment:
       RUN_MODE: api                           # container start mode
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}     # hosted model credential
@@ -36,8 +38,7 @@ services:
       context: ..
       dockerfile: infrastructure/evolution_worker.Dockerfile
     image: evolution-worker:latest
-    env_file:
-      - ../.env
+    env_file: *default_env_file
     environment:
       GPU_TYPE: ${GPU_TYPE:-cpu}
       MAX_GENERATIONS: ${MAX_GENERATIONS:-10}
@@ -51,8 +52,7 @@ services:
 
   agents:
     image: alpha-demo:latest             # reuse the demo image
-    env_file:
-      - ../.env                          # default environment variables
+    env_file: *default_env_file
     environment:
       RUN_MODE: cli                           # entrypoint for agent workers
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}     # hosted model credential
@@ -72,8 +72,7 @@ services:
 
   web:
     image: alpha-demo:latest             # reuse the demo image
-    env_file:
-      - ../.env                          # default environment variables
+    env_file: *default_env_file
     environment:
       RUN_MODE: web                           # start the Streamlit dashboard
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}     # hosted model credential

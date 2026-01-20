@@ -30,11 +30,17 @@ def _node_major() -> int | None:
     return int(match.group(1))
 
 
+def _insight_has_esbuild() -> bool:
+    bin_dir = _INSIGHT_DIR / "node_modules" / ".bin"
+    return (bin_dir / "esbuild").exists() or (bin_dir / "esbuild.cmd").exists()
+
+
 def _ensure_insight_node_modules(env: dict[str, str]) -> None:
-    if (_INSIGHT_DIR / "node_modules").exists():
+    node_modules = _INSIGHT_DIR / "node_modules"
+    if node_modules.exists() and _insight_has_esbuild():
         return
-    if os.environ.get("PYTEST_NET_OFF") == "1":
-        pytest.skip("Insight node_modules missing while network access is disabled")
+    if os.environ.get("PYTEST_NET_OFF") == "1" or os.environ.get("CI") == "true":
+        pytest.skip("Insight node_modules missing while network access is disabled or CI cache was cleared")
     subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
 
 
