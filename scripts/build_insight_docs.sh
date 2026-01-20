@@ -94,6 +94,12 @@ unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" service-worker.js -d "$DOCS_DI
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/manifest.json -d "$DOCS_DIR" || true
 mkdir -p "$DOCS_DIR/assets/lib"
 unzip -q -j -o "$BROWSER_DIR/insight_browser.zip" assets/lib/workbox-sw.js -d "$DOCS_DIR/assets/lib" || true
+if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.exports.js" "$DOCS_DIR/d3.exports.js"
+fi
+if [[ ! -f "$DOCS_DIR/d3.v7.min.js" && -f "$DOCS_DIR/assets/d3.v7.min.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.v7.min.js" "$DOCS_DIR/d3.v7.min.js"
+fi
 python scripts/ensure_insight_sw_hash.py "$DOCS_DIR"
 python scripts/ensure_insight_csp.py "$DOCS_DIR"
 if [[ -n "$OLD_DOCS_TEMP" ]]; then
