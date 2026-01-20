@@ -19,6 +19,9 @@ if [[ -z "$ASSET_CACHE_DIR" ]]; then
 fi
 export FETCH_ASSETS_DIR="$ASSET_CACHE_DIR"
 export INSIGHT_ASSET_ROOT="$ASSET_CACHE_DIR"
+if [[ -z "${FETCH_ASSETS_SKIP_LLM:-}" ]]; then
+    export FETCH_ASSETS_SKIP_LLM=1
+fi
 
 usage() {
     cat <<USAGE
@@ -118,6 +121,9 @@ if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; 
 fi
 if [[ ! -f "$DOCS_DIR/d3.v7.min.js" && -f "$DOCS_DIR/assets/d3.v7.min.js" ]]; then
     cp -a "$DOCS_DIR/assets/d3.v7.min.js" "$DOCS_DIR/d3.v7.min.js"
+fi
+if [[ ! -f "$DOCS_DIR/d3_exports.js" && -f "$DOCS_DIR/d3.exports.js" ]]; then
+    cp -a "$DOCS_DIR/d3.exports.js" "$DOCS_DIR/d3_exports.js"
 fi
 
 LICENSE_FILE="plotly.min.js.LICENSE.txt"
