@@ -186,7 +186,10 @@ class A2ABus:
     @classmethod
     def subscribe(cls, topic: str, cb: Callable[[dict], None]):
         with cls._lock:
-            cls._subs.setdefault(topic, []).append(cb)
+            callbacks = cls._subs.setdefault(topic, [])
+            if cb in callbacks:
+                return
+            callbacks.append(cb)
 
     @classmethod
     def unsubscribe(cls, topic: str, cb: Callable[[dict], None]):

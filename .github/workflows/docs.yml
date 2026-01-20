@@ -31,6 +31,8 @@ jobs:
       - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: ./.github/actions/ensure-owner
       - uses: actions/checkout@v4 # 11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
       - name: Set up Python

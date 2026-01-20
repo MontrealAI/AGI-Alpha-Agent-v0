@@ -19,6 +19,10 @@ except subprocess.SubprocessError:
     pytest.skip("docker compose not available", allow_module_level=True)
 
 COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-compose.yml"
+ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
+
+if not ENV_FILE.exists():
+    pytest.skip(".env missing; docker compose stack requires configured secrets", allow_module_level=True)
 
 
 @pytest.fixture(scope="module")

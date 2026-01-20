@@ -67,7 +67,7 @@ RUN apt-get update && \
         libomp5 \
         libstdc++6 \
         postgresql-client \
-        patch \  # required by the self-healing demo
+        patch \
         curl ca-certificates && \
     git --version && \
     rm -rf /var/lib/apt/lists/*
@@ -91,7 +91,7 @@ RUN if [ -f /tmp/requirements-lock.txt ]; then \
     fi && \
     # ⬇ Explicitly ensure critical agent frameworks are present
     pip install --no-cache-dir \
-        openai-agents>=0.0.17 \   # OpenAI Agents SDK (beta)
+        openai-agents>=0.0.17 \
         "google-adk @ git+https://github.com/google/adk-python@main#egg=google-adk" \
         anthropic>=0.21 \
         gunicorn rocketry prometheus-client && \

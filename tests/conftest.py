@@ -15,6 +15,13 @@ os.environ.setdefault("PYTEST_NET_OFF", "1")
 _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"
 _NODE_MAJOR_RE = re.compile(r"v?(\d+)")
+_INSIGHT_REQUIRED_PACKAGES = (
+    "esbuild",
+    "tailwindcss",
+    "workbox-build",
+    "@web3-storage/w3up-client",
+    "dotenv",
+)
 
 
 def _node_major() -> int | None:
@@ -30,11 +37,23 @@ def _node_major() -> int | None:
     return int(match.group(1))
 
 
+def _insight_packages_installed() -> bool:
+    if not (_INSIGHT_DIR / "node_modules").exists():
+        return False
+    for package in _INSIGHT_REQUIRED_PACKAGES:
+        pkg_path = _INSIGHT_DIR / "node_modules" / Path(*package.split("/")) / "package.json"
+        if not pkg_path.exists():
+            return False
+    return True
+
+
 def _ensure_insight_node_modules(env: dict[str, str]) -> None:
-    if (_INSIGHT_DIR / "node_modules").exists():
+    if _insight_packages_installed():
         return
     if os.environ.get("PYTEST_NET_OFF") == "1":
-        pytest.skip("Insight node_modules missing while network access is disabled")
+        pytest.skip("Insight node_modules missing or incomplete while network access is disabled")
+    if (_INSIGHT_DIR / "node_modules").exists():
+        shutil.rmtree(_INSIGHT_DIR / "node_modules")
     subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
 
 

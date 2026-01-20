@@ -106,7 +106,24 @@ JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
 JWT_ISSUER = os.getenv("JWT_ISSUER", "aiga.local")
 
 SAVE_DIR = Path(os.getenv("CHECKPOINT_DIR", "/data/checkpoints"))
-SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _resolve_save_dir() -> Path:
+    path = SAVE_DIR
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+    except PermissionError:
+        fallback = Path(os.getenv("CHECKPOINT_FALLBACK_DIR", "/tmp/aiga-checkpoints"))
+        fallback.mkdir(parents=True, exist_ok=True)
+        return fallback
+    except OSError:
+        fallback = Path(os.getenv("CHECKPOINT_FALLBACK_DIR", "/tmp/aiga-checkpoints"))
+        fallback.mkdir(parents=True, exist_ok=True)
+        return fallback
+
+
+SAVE_DIR = _resolve_save_dir()
 
 # ---------------------------------------------------------------------------
 # LOGGING --------------------------------------------------------------------
