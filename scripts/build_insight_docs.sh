@@ -113,6 +113,13 @@ if [[ -n "$OLD_DOCS_TEMP" ]]; then
     rm -rf "$OLD_DOCS_TEMP"
 fi
 
+if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.exports.js" "$DOCS_DIR/d3.exports.js"
+fi
+if [[ ! -f "$DOCS_DIR/d3.v7.min.js" && -f "$DOCS_DIR/assets/d3.v7.min.js" ]]; then
+    cp -a "$DOCS_DIR/assets/d3.v7.min.js" "$DOCS_DIR/d3.v7.min.js"
+fi
+
 LICENSE_FILE="plotly.min.js.LICENSE.txt"
 if [[ ! -f "$DOCS_DIR/$LICENSE_FILE" && -f "$REPO_ROOT/docs/alpha_agi_insight_v1/$LICENSE_FILE" ]]; then
     cp -a "$REPO_ROOT/docs/alpha_agi_insight_v1/$LICENSE_FILE" "$DOCS_DIR/"

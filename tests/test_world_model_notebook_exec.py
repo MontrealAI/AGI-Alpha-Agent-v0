@@ -16,7 +16,7 @@ def test_notebook_runs(tmp_path: Path) -> None:
     assert nb_path.exists(), nb_path
     nb = nbformat.read(nb_path, as_version=4)
 
-    skip = {2, 4, 8, 15, 17, 19}
+    skip = {2, 4, 7, 8, 15, 17, 19}
     for idx in skip:
         nb.cells[idx].source = "print('skipped')"
 

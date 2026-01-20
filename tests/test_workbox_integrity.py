@@ -26,7 +26,7 @@ def test_workbox_hash_mismatch(tmp_path: Path, insight_dist: Path) -> None:
     shutil.copytree(insight_dist, dist)
     sw_file = dist / "service-worker.js"
     text = sw_file.read_text()
-    text = re.sub(r"(WORKBOX_SW_HASH = '\)[^']+(\')", r"\1sha384-invalid\2", text)
+    text = re.sub(r"(WORKBOX_SW_HASH = ')([^']+)(')", r"\1sha384-invalid\3", text)
     sw_file.write_text(text)
 
     server, thread = _start_server(dist)
