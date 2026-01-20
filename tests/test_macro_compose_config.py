@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import contextlib
 import os
 import shutil
 import subprocess
@@ -25,7 +26,8 @@ except subprocess.SubprocessError:
 
 
 def test_docker_compose_config() -> None:
-    subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    with _ensure_env_file():
+        subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
 
 
 def test_run_macro_demo_help() -> None:
@@ -154,13 +156,14 @@ def test_run_macro_demo_multiple_profiles(tmp_path: Path) -> None:
 def test_compose_base_url_substitution() -> None:
     env = os.environ.copy()
     env["OLLAMA_BASE_URL"] = "http://example.com/v1"
-    result = subprocess.run(
-        ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+    with _ensure_env_file():
+        result = subprocess.run(
+            ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
     assert "http://example.com/v1" in result.stdout
 
 
@@ -168,12 +171,26 @@ def test_compose_env_substitution() -> None:
     env = os.environ.copy()
     env["REDIS_PASSWORD"] = "secret"
     env["PROMETHEUS_SCRAPE_INTERVAL"] = "30s"
-    result = subprocess.run(
-        ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+    with _ensure_env_file():
+        result = subprocess.run(
+            ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
     assert "secret@redis" in result.stdout
     assert "30s" in result.stdout
+
+
+@contextlib.contextmanager
+def _ensure_env_file():
+    config = RUN_SCRIPT.parent / "config.env"
+    existed = config.exists()
+    if not existed:
+        config.write_text("OPENAI_API_KEY=\n")
+    try:
+        yield
+    finally:
+        if not existed and config.exists():
+            config.unlink()
