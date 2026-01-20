@@ -2,6 +2,7 @@
 import os
 import shutil
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ import pytest
 BASE_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1" / "demos" / "macro_sentinel"
 COMPOSE_FILE = BASE_DIR / "docker-compose.macro.yml"
 RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
+CONFIG_ENV = BASE_DIR / "config.env"
 
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
@@ -24,8 +26,22 @@ except subprocess.SubprocessError:
     pytest.skip("docker compose not available", allow_module_level=True)
 
 
+@contextmanager
+def _ensure_config_env():
+    created = False
+    if not CONFIG_ENV.exists():
+        CONFIG_ENV.write_text("OPENAI_API_KEY=\nPG_PASSWORD=alpha\n")
+        created = True
+    try:
+        yield
+    finally:
+        if created:
+            CONFIG_ENV.unlink(missing_ok=True)
+
+
 def test_docker_compose_config() -> None:
-    subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
+    with _ensure_config_env():
+        subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
 
 
 def test_run_macro_demo_help() -> None:
@@ -154,13 +170,14 @@ def test_run_macro_demo_multiple_profiles(tmp_path: Path) -> None:
 def test_compose_base_url_substitution() -> None:
     env = os.environ.copy()
     env["OLLAMA_BASE_URL"] = "http://example.com/v1"
-    result = subprocess.run(
-        ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+    with _ensure_config_env():
+        result = subprocess.run(
+            ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
     assert "http://example.com/v1" in result.stdout
 
 
@@ -168,12 +185,13 @@ def test_compose_env_substitution() -> None:
     env = os.environ.copy()
     env["REDIS_PASSWORD"] = "secret"
     env["PROMETHEUS_SCRAPE_INTERVAL"] = "30s"
-    result = subprocess.run(
-        ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
-        check=True,
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+    with _ensure_config_env():
+        result = subprocess.run(
+            ["docker", "compose", "-f", str(COMPOSE_FILE), "config"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=env,
+        )
     assert "secret@redis" in result.stdout
     assert "30s" in result.stdout

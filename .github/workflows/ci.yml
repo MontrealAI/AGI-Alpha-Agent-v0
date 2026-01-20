@@ -307,8 +307,19 @@ jobs:
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1 # 54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+          docker-images: true
+      - name: Report disk usage
         run: |
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
           df -h
       - name: Install dependencies
         run: |
@@ -885,14 +896,19 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1 # 54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+          docker-images: true
+      - name: Report disk usage
         run: |
-          set -euo pipefail
-          df -h
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc || true
-          sudo rm -rf /usr/local/share/boost /usr/local/share/powershell || true
           sudo apt-get clean
-          sudo docker system prune -af
-          sudo docker builder prune -af
+          sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
           df -h
       - name: Ensure pip cache directory
         shell: bash
