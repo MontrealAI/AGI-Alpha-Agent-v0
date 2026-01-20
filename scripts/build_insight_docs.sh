@@ -182,3 +182,12 @@ if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
     echo "ERROR: Workbox hash verification failed for generated site" >&2
     exit 1
 fi
+
+# Reclaim temporary asset downloads to avoid exhausting disk space in CI.
+if [[ "${CLEAN_INSIGHT_ASSETS:-1}" != "0" && -n "$ASSET_CACHE_DIR" && -d "$ASSET_CACHE_DIR" ]]; then
+    if [[ "$ASSET_CACHE_DIR" == /tmp/* ]]; then
+        rm -rf "$ASSET_CACHE_DIR"
+    elif [[ -n "${RUNNER_TEMP:-}" && "$ASSET_CACHE_DIR" == "$RUNNER_TEMP"* ]]; then
+        rm -rf "$ASSET_CACHE_DIR"
+    fi
+fi
