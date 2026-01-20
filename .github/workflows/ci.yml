@@ -668,6 +668,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
@@ -771,6 +773,8 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: 'requirements.lock'
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
