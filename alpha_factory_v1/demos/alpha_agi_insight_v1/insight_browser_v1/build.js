@@ -155,24 +155,13 @@ async function compileWorkers() {
     );
 }
 
-function collectFiles(dir) {
-    let out = [];
-    if (!fsSync.existsSync(dir)) return out;
-    for (const entry of fsSync.readdirSync(dir, { withFileTypes: true })) {
-        const p = path.join(dir, entry.name);
-        if (entry.isDirectory()) out = out.concat(collectFiles(p));
-        else out.push(p);
-    }
-    return out;
-}
-
 function findAssetIssues() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
     const assets = manifest.assets || [];
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
-        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+        if (skipLlmAssets && rel.startsWith("wasm_llm")) {
             continue;
         }
         const candidates = roots.map((root) => path.join(root, rel));
@@ -215,7 +204,7 @@ function syncAssetsToLocal() {
         return;
     }
     for (const rel of manifest.assets || []) {
-        if (skipLlmAssets && rel.startsWith("wasm_llm/")) {
+        if (skipLlmAssets && rel.startsWith("wasm_llm")) {
             continue;
         }
         syncAssetToLocal(rel, resolveAssetPath(rel));
@@ -306,6 +295,19 @@ async function bundle() {
         (otelOrigin ? ` ${otelOrigin}` : "");
     const envScript = injectEnv(process.env);
     await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
+    const d3ExportsPath = path.join(OUT_DIR, "d3.exports.js");
+    const d3ExportsAlias = path.join(OUT_DIR, "d3_exports.js");
+    if (fsSync.existsSync(d3ExportsPath)) {
+        await fs.copyFile(d3ExportsPath, d3ExportsAlias).catch(() => {});
+        if (!manifest.precache.includes("d3_exports.js")) {
+            manifest.precache.push("d3_exports.js");
+        }
+    }
+    if (skipLlmAssets) {
+        manifest.precache = manifest.precache.filter(
+            (item) => !item.startsWith("wasm_llm/") && item !== "wasm_llm/*",
+        );
+    }
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(
             quickstartPdf,

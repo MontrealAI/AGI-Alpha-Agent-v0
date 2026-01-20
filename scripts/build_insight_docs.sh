@@ -116,6 +116,9 @@ fi
 if [[ ! -f "$DOCS_DIR/d3.exports.js" && -f "$DOCS_DIR/assets/d3.exports.js" ]]; then
     cp -a "$DOCS_DIR/assets/d3.exports.js" "$DOCS_DIR/d3.exports.js"
 fi
+if [[ -f "$DOCS_DIR/d3.exports.js" && ! -f "$DOCS_DIR/d3_exports.js" ]]; then
+    cp -a "$DOCS_DIR/d3.exports.js" "$DOCS_DIR/d3_exports.js"
+fi
 if [[ ! -f "$DOCS_DIR/d3.v7.min.js" && -f "$DOCS_DIR/assets/d3.v7.min.js" ]]; then
     cp -a "$DOCS_DIR/assets/d3.v7.min.js" "$DOCS_DIR/d3.v7.min.js"
 fi
@@ -129,6 +132,18 @@ fi
 ICON_FILE="favicon.svg"
 if [[ ! -f "$DOCS_DIR/$ICON_FILE" && -f "$BROWSER_DIR/$ICON_FILE" ]]; then
     cp -a "$BROWSER_DIR/$ICON_FILE" "$DOCS_DIR/"
+fi
+
+# Copy Insight API docs into the docs bundle for MkDocs navigation
+INSIGHT_DOCS_SRC="$REPO_ROOT/alpha_factory_v1/demos/alpha_agi_insight_v1/docs"
+INSIGHT_DOCS_DEST="$DOCS_DIR/docs"
+if [[ -d "$INSIGHT_DOCS_SRC" ]]; then
+    mkdir -p "$INSIGHT_DOCS_DEST"
+    cp -a "$INSIGHT_DOCS_SRC/." "$INSIGHT_DOCS_DEST/"
+fi
+WASM_LLM_DOC="$BROWSER_DIR/wasm_llm/README.md"
+if [[ -f "$WASM_LLM_DOC" ]]; then
+    cp -a "$WASM_LLM_DOC" "$DOCS_DIR/wasm_llm.md"
 fi
 
 # Export the latest meta-agent tree when lineage data is available

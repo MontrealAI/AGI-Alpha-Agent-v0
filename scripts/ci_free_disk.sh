@@ -14,6 +14,8 @@ sudo rm -rf /usr/share/dotnet \
   /opt/hostedtoolcache/Java \
   /opt/hostedtoolcache/Ruby \
   /opt/hostedtoolcache/Perl \
+  /opt/hostedtoolcache/Go \
+  /opt/hostedtoolcache/Swift \
   /usr/local/share/powershell || true
 
 sudo apt-get clean
