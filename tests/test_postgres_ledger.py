@@ -17,6 +17,11 @@ from alpha_factory_v1.common.utils import messaging
 if not shutil.which("docker") or psycopg2 is None:
     pytest.skip("docker or psycopg2 missing", allow_module_level=True)
 
+try:
+    subprocess.run(["docker", "info"], check=True, capture_output=True, text=True)
+except subprocess.SubprocessError:
+    pytest.skip("docker daemon not available", allow_module_level=True)
+
 
 @pytest.fixture(scope="module")
 def pg_container():

@@ -2,11 +2,12 @@
 """Verify a new build reloads the Insight demo."""
 
 import http.server
-import threading
+import os
+import shutil
 import subprocess
+import threading
 from functools import partial
 from pathlib import Path
-import shutil
 
 import pytest
 
@@ -26,7 +27,9 @@ def _start_server(directory: Path):
 @pytest.mark.skipif(not shutil.which("npm"), reason="npm not installed")  # type: ignore[misc]
 def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist: Path) -> None:
     repo = insight_repo
-    subprocess.check_call(["npm", "run", "build"], cwd=repo)
+    env = os.environ.copy()
+    env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
+    subprocess.check_call(["npm", "run", "build"], cwd=repo, env=env)
 
     dist = insight_dist
     server, thread = _start_server(dist)
@@ -43,7 +46,7 @@ def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist
             page.evaluate("window.__loadCount = (window.__loadCount || 0) + 1")
 
             # rebuild to create a new service worker
-            subprocess.check_call(["npm", "run", "build"], cwd=repo)
+            subprocess.check_call(["npm", "run", "build"], cwd=repo, env=env)
             page.evaluate("navigator.serviceWorker.getRegistration().then(r => r.update())")
             page.wait_for_function("document.getElementById('toast').textContent.includes('Refreshing')")
             page.wait_for_function("performance.getEntriesByType('navigation').length > 1")
