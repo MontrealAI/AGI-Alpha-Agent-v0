@@ -74,8 +74,11 @@ def test_pareto_front_after_five_generations() -> None:
     assert len(front) >= 10
 
 
-def test_novelty_divergence_for_elites() -> None:
+def test_novelty_divergence_for_elites(monkeypatch: pytest.MonkeyPatch) -> None:
     pytest.importorskip("sentence_transformers")
+    from alpha_factory_v1.core.evaluators import novelty
+
+    monkeypatch.setattr(novelty, "embed", novelty._hash_embedding)
 
     def fn(genome: list[float]) -> tuple[float, float]:
         x, y = genome

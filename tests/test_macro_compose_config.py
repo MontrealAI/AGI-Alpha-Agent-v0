@@ -9,6 +9,7 @@ import pytest
 BASE_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1" / "demos" / "macro_sentinel"
 COMPOSE_FILE = BASE_DIR / "docker-compose.macro.yml"
 RUN_SCRIPT = BASE_DIR / "run_macro_demo.sh"
+ENV_FILE = BASE_DIR / "config.env"
 
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
@@ -24,7 +25,24 @@ except subprocess.SubprocessError:
     pytest.skip("docker compose not available", allow_module_level=True)
 
 
-def test_docker_compose_config() -> None:
+@pytest.fixture(scope="module")
+def macro_env_file() -> None:
+    created = False
+    if not ENV_FILE.exists():
+        sample = BASE_DIR / "config.env.sample"
+        if sample.exists():
+            ENV_FILE.write_text(sample.read_text())
+        else:
+            ENV_FILE.write_text("OPENAI_API_KEY=\n")
+        created = True
+    try:
+        yield
+    finally:
+        if created and ENV_FILE.exists():
+            ENV_FILE.unlink()
+
+
+def test_docker_compose_config(macro_env_file: None) -> None:
     subprocess.run(["docker", "compose", "-f", str(COMPOSE_FILE), "config"], check=True, capture_output=True)
 
 
@@ -151,7 +169,7 @@ def test_run_macro_demo_multiple_profiles(tmp_path: Path) -> None:
     assert "--profile live-feed" in log
 
 
-def test_compose_base_url_substitution() -> None:
+def test_compose_base_url_substitution(macro_env_file: None) -> None:
     env = os.environ.copy()
     env["OLLAMA_BASE_URL"] = "http://example.com/v1"
     result = subprocess.run(
@@ -164,7 +182,7 @@ def test_compose_base_url_substitution() -> None:
     assert "http://example.com/v1" in result.stdout
 
 
-def test_compose_env_substitution() -> None:
+def test_compose_env_substitution(macro_env_file: None) -> None:
     env = os.environ.copy()
     env["REDIS_PASSWORD"] = "secret"
     env["PROMETHEUS_SCRAPE_INTERVAL"] = "30s"

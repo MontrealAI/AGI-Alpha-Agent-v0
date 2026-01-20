@@ -308,23 +308,7 @@ jobs:
             alpha_factory_v1/backend/requirements-lock.txt
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet \
-            /opt/ghc \
-            /usr/local/lib/android \
-            /usr/local/share/boost \
-            /usr/share/swift \
-            /opt/hostedtoolcache/CodeQL \
-            /opt/hostedtoolcache/Java \
-            /opt/hostedtoolcache/Ruby \
-            /opt/hostedtoolcache/Perl
-          sudo apt-get clean
-          sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
-          if command -v docker >/dev/null 2>&1; then
-            sudo docker image prune --all --force
-            sudo docker builder prune --all --force
-            sudo docker system prune --all --force --volumes
-          fi
-          df -h
+          bash scripts/cleanup_runner_disk.sh
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -901,14 +885,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free disk space
         run: |
-          set -euo pipefail
-          df -h
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc || true
-          sudo rm -rf /usr/local/share/boost /usr/local/share/powershell || true
-          sudo apt-get clean
-          sudo docker system prune -af
-          sudo docker builder prune -af
-          df -h
+          bash scripts/cleanup_runner_disk.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |

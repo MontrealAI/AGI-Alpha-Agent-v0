@@ -3,9 +3,10 @@
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
 import subprocess
 import sys
-from pathlib import Path
 import tempfile
 
 import pytest
@@ -15,6 +16,9 @@ pytest.importorskip("nbformat")
 
 def test_cli_emit_helpers() -> None:
     """Ensure emit flags generate expected files."""
+    repo_root = Path(__file__).resolve().parents[1]
+    env = os.environ.copy()
+    env["PYTHONPATH"] = f"{repo_root}{os.pathsep}{env.get('PYTHONPATH', '')}".rstrip(os.pathsep)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
         for flag in ["--emit-docker", "--emit-helm", "--emit-notebook"]:
@@ -26,6 +30,7 @@ def test_cli_emit_helpers() -> None:
                     flag,
                 ],
                 cwd=tmp,
+                env=env,
                 capture_output=True,
                 text=True,
             )

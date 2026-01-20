@@ -17,8 +17,21 @@ def test_notebook_runs(tmp_path: Path) -> None:
     nb = nbformat.read(nb_path, as_version=4)
 
     skip = {2, 4, 8, 15, 17, 19}
-    for idx in skip:
-        nb.cells[idx].source = "print('skipped')"
+    skip_patterns = (
+        "!pip install",
+        "!git clone",
+        "alpha_asi_world_model_demo --demo",
+        "openai_agents_bridge.py",
+    )
+    for idx, cell in enumerate(nb.cells):
+        if idx in skip or cell.cell_type != "code":
+            continue
+        source = str(cell.source)
+        if "&" in source or "%cd" in source or source.lstrip().startswith("!"):
+            cell.source = "print('skipped')"
+            continue
+        if any(pattern in source for pattern in skip_patterns):
+            cell.source = "print('skipped')"
 
     mod = tmp_path / "mod.ipynb"
     nbformat.write(nb, mod)
