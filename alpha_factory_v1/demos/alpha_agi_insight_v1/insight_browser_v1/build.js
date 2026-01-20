@@ -27,7 +27,7 @@ requireNode22();
 
 const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
 const skipLlmAssets = ["1", "true", "yes"].includes(
-    (process.env.FETCH_ASSETS_SKIP_LLM || "").toLowerCase(),
+    (process.env.FETCH_ASSETS_SKIP_LLM || "").trim().toLowerCase(),
 );
 const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 

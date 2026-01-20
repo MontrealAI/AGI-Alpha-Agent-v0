@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-import time
-from pathlib import Path
+import os
 import shutil
 import subprocess
 import sys
+import time
+from pathlib import Path
 
 import pytest
 
@@ -119,7 +120,9 @@ def test_env_value_injected(tmp_path: Path) -> None:
     target = tmp_path / "browser"
     shutil.copytree(browser_dir, target)
     (target / ".env").write_text("PINNER_TOKEN=test123\n")
-    subprocess.check_call(["npm", "run", "build"], cwd=target)
+    env = os.environ.copy()
+    env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
+    subprocess.check_call(["npm", "run", "build"], cwd=target, env=env)
 
     url = (target / "dist" / "index.html").as_uri()
     with sync_playwright() as p:

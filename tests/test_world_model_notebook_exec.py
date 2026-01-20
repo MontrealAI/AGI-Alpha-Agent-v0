@@ -16,9 +16,24 @@ def test_notebook_runs(tmp_path: Path) -> None:
     assert nb_path.exists(), nb_path
     nb = nbformat.read(nb_path, as_version=4)
 
-    skip = {2, 4, 7, 8, 15, 17, 19}
-    for idx in skip:
-        nb.cells[idx].source = "print('skipped')"
+    skip_patterns = (
+        "git clone",
+        "pip install",
+        "alpha_asi_world_model_demo",
+        "serve_kernel_port_as_window",
+        "requests",
+        "IFrame",
+        "openai_agents",
+        "fuser",
+        "google.colab",
+        "&",
+    )
+    for cell in nb.cells:
+        if cell.cell_type != "code":
+            continue
+        source = "".join(cell.source) if isinstance(cell.source, list) else str(cell.source)
+        if source.lstrip().startswith("!") or any(pattern in source for pattern in skip_patterns):
+            cell.source = "print('skipped')"
 
     mod = tmp_path / "mod.ipynb"
     nbformat.write(nb, mod)

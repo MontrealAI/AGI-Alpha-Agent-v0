@@ -38,9 +38,11 @@ def _ensure_insight_dist() -> Path:
     node_major = _node_major()
     if node_major is None or node_major < 22:
         pytest.skip("Node.js 22+ is required to build the Insight demo")
+    env = os.environ.copy()
+    env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")
     if not (_INSIGHT_DIR / "node_modules").exists():
-        subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR)
-    subprocess.check_call(["npm", "run", "build"], cwd=_INSIGHT_DIR)
+        subprocess.check_call(["npm", "ci"], cwd=_INSIGHT_DIR, env=env)
+    subprocess.check_call(["npm", "run", "build"], cwd=_INSIGHT_DIR, env=env)
     if not _INSIGHT_DIST.exists():
         pytest.skip("Insight browser dist assets missing; run npm build to generate them")
     return _INSIGHT_DIST

@@ -550,7 +550,8 @@ class BasicSafetyAgent(Agent):
             self.emit("orch", {"cmd": "stop"})
 
 
-if "safety" not in AGENTS:
+existing_safety = AGENTS.get("safety")
+if not isinstance(existing_safety, Agent) or "safety" not in A2ABus._subs:
     AGENTS["safety"] = BasicSafetyAgent()
 
 # =============================================================================

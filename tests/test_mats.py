@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-from alpha_factory_v1.core.simulation import mats
-from alpha_factory_v1.core.evaluators.novelty import NoveltyIndex
+import os
+
 import pytest
+
+from alpha_factory_v1.core.evaluators.novelty import NoveltyIndex
+from alpha_factory_v1.core.simulation import mats
 
 
 @pytest.fixture(autouse=True)
@@ -75,6 +78,8 @@ def test_pareto_front_after_five_generations() -> None:
 
 
 def test_novelty_divergence_for_elites() -> None:
+    if os.getenv("PYTEST_NET_OFF", "0") == "1":
+        pytest.skip("offline environment cannot download sentence transformer models")
     pytest.importorskip("sentence_transformers")
 
     def fn(genome: list[float]) -> tuple[float, float]:
