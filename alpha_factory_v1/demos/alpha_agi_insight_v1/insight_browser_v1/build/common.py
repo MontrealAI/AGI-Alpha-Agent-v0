@@ -69,6 +69,7 @@ injectManifest({{
     text = index_path.read_text()
     text = text.replace(".register('sw.js')", ".register('service-worker.js')")
     text = text.replace("__SW_HASH__", sw_hash)
+    text = text.replace("__SW_INTEGRITY__", sw_hash)
     inline_hashes: list[str] = []
     for match in re.finditer(r"<script([^>]*)>(.*?)</script>", text, flags=re.DOTALL):
         attrs = match.group(1)

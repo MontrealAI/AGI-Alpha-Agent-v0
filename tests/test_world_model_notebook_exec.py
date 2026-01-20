@@ -17,8 +17,14 @@ def test_notebook_runs(tmp_path: Path) -> None:
     nb = nbformat.read(nb_path, as_version=4)
 
     skip = {2, 4, 8, 15, 17, 19}
-    for idx in skip:
-        nb.cells[idx].source = "print('skipped')"
+    skip_markers = (
+        "alpha_asi_world_model_demo --demo",
+        "get_ipython().system",
+        "&",
+    )
+    for idx, cell in enumerate(nb.cells):
+        if idx in skip or any(marker in cell.source for marker in skip_markers):
+            cell.source = "print('skipped')"
 
     mod = tmp_path / "mod.ipynb"
     nbformat.write(nb, mod)

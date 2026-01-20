@@ -551,7 +551,7 @@ class BasicSafetyAgent(Agent):
 
 
 if "safety" not in AGENTS:
-    BasicSafetyAgent()
+    AGENTS["safety"] = BasicSafetyAgent()
 
 # =============================================================================
 # 9. Optional LLM planner

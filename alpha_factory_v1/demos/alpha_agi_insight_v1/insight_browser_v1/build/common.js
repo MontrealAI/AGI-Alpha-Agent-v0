@@ -81,6 +81,7 @@ export async function generateServiceWorker(outDir, manifest, version) {
   let indexText = await fs.readFile(indexPath, 'utf8');
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
   indexText = indexText.replace('__SW_HASH__', `sha384-${swHash}`);
+  indexText = indexText.replace('__SW_INTEGRITY__', `sha384-${swHash}`);
   const inlineHashes = [];
   for (const m of indexText.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
     const attrs = m[1];

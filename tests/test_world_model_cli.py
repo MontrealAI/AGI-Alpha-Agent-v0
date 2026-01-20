@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -17,6 +18,9 @@ def test_cli_emit_helpers() -> None:
     """Ensure emit flags generate expected files."""
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
+        repo_root = Path(__file__).resolve().parents[1]
+        env = os.environ.copy()
+        env["PYTHONPATH"] = f"{repo_root}{os.pathsep}{env.get('PYTHONPATH', '')}".rstrip(os.pathsep)
         for flag in ["--emit-docker", "--emit-helm", "--emit-notebook"]:
             result = subprocess.run(
                 [
@@ -26,6 +30,7 @@ def test_cli_emit_helpers() -> None:
                     flag,
                 ],
                 cwd=tmp,
+                env=env,
                 capture_output=True,
                 text=True,
             )
