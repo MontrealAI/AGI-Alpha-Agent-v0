@@ -831,6 +831,15 @@ jobs:
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site
         run: ./scripts/build_gallery_site.sh
+      - name: Reclaim disk before Playwright
+        run: |
+          set -euo pipefail
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
+          rm -rf "$NPM_CONFIG_CACHE"
+          rm -rf .cache/pre-commit
+          rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp
+          df -h
       - uses: ./.github/actions/setup-insight-assets
       - name: Check Insight SRI
         run: python scripts/check_insight_sri.py docs/alpha_agi_insight_v1
