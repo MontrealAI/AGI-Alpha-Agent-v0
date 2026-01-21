@@ -15,10 +15,16 @@ DEFAULT_TARGETS = (
 
 EXTRA_TARGETS = (
     Path(".pytest_cache"),
+    Path(".hypothesis"),
     Path(".mypy_cache"),
     Path(".ruff_cache"),
     Path(".coverage"),
     Path("artifacts"),
+    Path("ledger"),
+    Path("vector_mem.db"),
+    Path("improver_log.json"),
+    Path("selector_ablation.csv"),
+    Path("alpha_factory_v1/demos/meta_agentic_agi_v2/meta_agentic_agi_demo_v2.sqlite"),
 )
 
 
