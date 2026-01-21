@@ -34,6 +34,10 @@ if [[ -n "${HOME:-}" ]]; then
     "$HOME/.cache/matplotlib" || true
 fi
 
+if command -v python >/dev/null 2>&1; then
+  python scripts/cleanup_disk_space.py --all || true
+fi
+
 if command -v docker >/dev/null 2>&1; then
   sudo docker image prune --all --force || true
   sudo docker builder prune --all --force || true

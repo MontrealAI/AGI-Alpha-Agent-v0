@@ -11,6 +11,8 @@ DEFAULT_TARGETS = (
     Path("tests/contracts/node_modules"),
     Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules"),
     Path("alpha_factory_v1/core/interface/web_client/node_modules"),
+    Path("alpha_factory_v1/core/interface/web_client/staking/node_modules"),
+    Path("alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/node_modules"),
 )
 
 EXTRA_TARGETS = (
@@ -19,6 +21,7 @@ EXTRA_TARGETS = (
     Path(".ruff_cache"),
     Path(".coverage"),
     Path("artifacts"),
+    Path(".cache/pre-commit"),
 )
 
 
