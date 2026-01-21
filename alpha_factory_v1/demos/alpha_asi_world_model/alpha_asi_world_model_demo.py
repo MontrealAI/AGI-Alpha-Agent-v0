@@ -256,7 +256,11 @@ def _boot(path: str) -> None:
             class StepAdapter(Agent):
                 def __init__(self) -> None:
                     super().__init__(name)
-                    threading.Thread(target=self._loop, daemon=True).start()
+                    self._thread = threading.Thread(target=self._loop, daemon=True)
+
+                def start(self) -> None:
+                    """Start the background loop thread."""
+                    self._thread.start()
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
                     pass
@@ -272,6 +276,11 @@ def _boot(path: str) -> None:
                         time.sleep(max(1, interval))
 
             inst = StepAdapter()
+            try:
+                inst.start()
+            except Exception:
+                inst.close()
+                raise
         else:
             if not hasattr(inst, "name"):
                 inst.name = name  # type: ignore[attr-defined]
