@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import tempfile
 
 import pytest
 
@@ -15,6 +16,44 @@ os.environ.setdefault("PYTEST_NET_OFF", "1")
 _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"
 _NODE_MAJOR_RE = re.compile(r"v?(\d+)")
+_SESSION_TMP: tempfile.TemporaryDirectory[str] | None = None
+
+
+def _session_tmp_dir() -> Path:
+    global _SESSION_TMP
+    if _SESSION_TMP is None:
+        _SESSION_TMP = tempfile.TemporaryDirectory(prefix="alpha-factory-tests-")
+    return Path(_SESSION_TMP.name)
+
+
+def _ensure_parent(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def _configure_temp_paths() -> None:
+    base = _session_tmp_dir()
+    os.environ.setdefault("AF_MEMORY_DIR", str(base / "memory"))
+    os.environ.setdefault("ALPHA_DATA_DIR", str(base / "data"))
+    os.environ.setdefault("ARCHIVE_PATH", str(base / "archive.db"))
+    os.environ.setdefault("ARCHIVE_DB", str(base / "archive.db"))
+    os.environ.setdefault("SOLUTION_ARCHIVE_PATH", str(base / "solutions.duckdb"))
+    os.environ.setdefault("VECTOR_SQLITE_PATH", str(base / "vector_mem.db"))
+    os.environ.setdefault("AGI_INSIGHT_LEDGER_PATH", str(base / "ledger" / "audit.db"))
+    os.environ.setdefault("METAAGI_DB", str(base / "meta_agentic_agi_demo.sqlite"))
+    os.environ.setdefault("HYPOTHESIS_STORAGE_DIRECTORY", str(base / "hypothesis"))
+
+    for env_var in (
+        "AF_MEMORY_DIR",
+        "ALPHA_DATA_DIR",
+        "ARCHIVE_PATH",
+        "ARCHIVE_DB",
+        "SOLUTION_ARCHIVE_PATH",
+        "VECTOR_SQLITE_PATH",
+        "AGI_INSIGHT_LEDGER_PATH",
+        "METAAGI_DB",
+        "HYPOTHESIS_STORAGE_DIRECTORY",
+    ):
+        _ensure_parent(Path(os.environ[env_var]))
 
 
 def _node_major() -> int | None:
@@ -56,6 +95,7 @@ def _ensure_insight_dist() -> Path:
 
 
 def pytest_configure() -> None:
+    _configure_temp_paths()
     try:
         from hypothesis import HealthCheck, settings
     except Exception:
@@ -73,6 +113,14 @@ def pytest_configure() -> None:
     except ValueError:
         pass
     settings.load_profile(profile_name)
+
+
+def pytest_sessionfinish(session, exitstatus) -> None:  # type: ignore[no-untyped-def]
+    del session, exitstatus
+    global _SESSION_TMP
+    if _SESSION_TMP is not None:
+        _SESSION_TMP.cleanup()
+        _SESSION_TMP = None
 
 
 @pytest.fixture
