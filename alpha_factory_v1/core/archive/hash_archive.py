@@ -85,7 +85,8 @@ class HashArchive:
         root = self.merkle_root(date)
         with sqlite3.connect(self.db_path) as cx:
             cx.execute("INSERT OR REPLACE INTO merkle(date, root) VALUES(?,?)", (date, root))
-        Path(f"agi-insight.{date}.eth").write_text(root, encoding="utf-8")
+        output_path = self.db_path.with_name(f"agi-insight.{date}.eth")
+        output_path.write_text(root, encoding="utf-8")
         return root
 
 
