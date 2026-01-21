@@ -69,14 +69,15 @@ export async function generateServiceWorker(outDir, manifest, version) {
     injectionPoint: 'self.__WB_MANIFEST',
   });
   await fs.unlink(swTemp);
-  const swData = await fs.readFile(swDest);
-  const swHash = createHash('sha384').update(swData).digest('base64');
   let wbPath = path.join(outDir, 'workbox-sw.js');
   if (!fsSync.existsSync(wbPath)) wbPath = path.join(outDir, 'assets', 'lib', 'workbox-sw.js');
   let wbHash = '';
   if (fsSync.existsSync(wbPath)) {
     wbHash = createHash('sha384').update(fsSync.readFileSync(wbPath)).digest('base64');
   }
+  const swData = await fs.readFile(swDest, 'utf8');
+  const swText = swData.replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);
+  const swHash = createHash('sha384').update(swText).digest('base64');
   const indexPath = path.join(outDir, 'index.html');
   let indexText = await fs.readFile(indexPath, 'utf8');
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
@@ -96,7 +97,5 @@ export async function generateServiceWorker(outDir, manifest, version) {
     );
   }
   await fs.writeFile(indexPath, indexText);
-  let swText = swData.toString('utf8');
-  swText = swText.replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);
   await fs.writeFile(swDest, swText);
 }

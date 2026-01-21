@@ -18,6 +18,7 @@ _INSIGHT_DIST = _INSIGHT_DIR / "dist"
 _NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 _SESSION_TMP: tempfile.TemporaryDirectory[str] | None = None
 _CLEANUP_DISK_ENV_VARS = ("AF_CLEANUP_DISK", "CI")
+_MIN_FREE_GB = float(os.getenv("AF_MIN_FREE_GB", "5"))
 
 
 def _session_tmp_dir() -> Path:
@@ -81,6 +82,9 @@ def _ensure_insight_node_modules(env: dict[str, str]) -> None:
 def _ensure_insight_dist() -> Path:
     if _INSIGHT_DIST.exists() and (_INSIGHT_DIST / "index.html").exists():
         return _INSIGHT_DIST
+    usage = shutil.disk_usage(Path(__file__).resolve().parents[1])
+    if usage.free < _MIN_FREE_GB * 1024**3:
+        pytest.skip(f"Insufficient disk space to build Insight assets (<{_MIN_FREE_GB} GB free)")
     if not shutil.which("npm"):
         pytest.skip("npm not available")
     node_major = _node_major()

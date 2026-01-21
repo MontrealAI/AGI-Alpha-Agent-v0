@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from typing import Sequence
@@ -38,6 +39,10 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
     else:
         docker = shutil.which("docker")
         if docker:
+            container_cmd = list(cmd)
+            if container_cmd and os.path.isabs(container_cmd[0]):
+                base = os.path.basename(container_cmd[0])
+                container_cmd[0] = "python" if base.startswith("python") else base
             full_cmd = [
                 docker,
                 "run",
@@ -50,7 +55,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
                 "--security-opt",
                 "seccomp=unconfined",
                 "python:3.11-slim",
-                *cmd,
+                *container_cmd,
             ]
         else:
             full_cmd = list(cmd)

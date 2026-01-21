@@ -1,9 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
+import os
 import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
+
+if os.getenv("RUN_DOCKER_TESTS") != "1":
+    pytest.skip("Docker integration tests disabled (set RUN_DOCKER_TESTS=1)", allow_module_level=True)
 
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
