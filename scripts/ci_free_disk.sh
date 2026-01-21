@@ -26,12 +26,20 @@ if [[ -n "${HOME:-}" ]]; then
     "$HOME/.cache/pip" \
     "$HOME/.cache/pip-tools" \
     "$HOME/.cache/pypoetry" \
+    "$HOME/.cache/huggingface" \
+    "$HOME/.cache/ms-playwright" \
+    "$HOME/.cache/torch" \
+    "$HOME/.cache/uv" \
     "$HOME/.cache/npm" \
     "$HOME/.cache/yarn" \
     "$HOME/.cache/pnpm" \
     "$HOME/.cache/node-gyp" \
     "$HOME/.npm/_cacache" \
     "$HOME/.cache/matplotlib" || true
+fi
+
+if [[ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ]]; then
+  rm -rf "$PLAYWRIGHT_BROWSERS_PATH" || true
 fi
 
 if command -v docker >/dev/null 2>&1; then

@@ -33,6 +33,7 @@ import pathlib
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 from typing import List, Optional, Tuple
@@ -50,7 +51,7 @@ def _run(cmd: List[str], cwd: str) -> Tuple[int, str]:
 
 def validate_repo(repo_path: str, cmd: Optional[List[str]] = None) -> Tuple[int, str]:
     """Return (exit_code, full_output)."""
-    cmd = cmd or ["pytest", "-q"]
+    cmd = cmd or [sys.executable, "-m", "pytest", "-q"]
     return _run(cmd, cwd=repo_path)
 
 
