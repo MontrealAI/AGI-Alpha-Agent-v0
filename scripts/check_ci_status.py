@@ -165,15 +165,6 @@ def _workflow_filename_from_env(token: str | None = None) -> str | None:
     ``.github/workflows`` for a file whose ``name`` matches ``GITHUB_WORKFLOW``
     so the health check can reliably skip the workflow that invoked it.
     """
-
-    workflow_ref = os.environ.get("GITHUB_WORKFLOW_REF")
-    if workflow_ref:
-        _, _, workflow_with_ref = workflow_ref.partition("/.github/workflows/")
-        if workflow_with_ref:
-            workflow, _, _ = workflow_with_ref.partition("@")
-            if workflow:
-                return workflow
-
     repo = os.environ.get("GITHUB_REPOSITORY")
     run_id = os.environ.get("GITHUB_RUN_ID")
     if token and repo and run_id:
@@ -187,6 +178,14 @@ def _workflow_filename_from_env(token: str | None = None) -> str | None:
             pass
         except urllib.error.URLError:
             pass
+
+    workflow_ref = os.environ.get("GITHUB_WORKFLOW_REF")
+    if workflow_ref:
+        _, _, workflow_with_ref = workflow_ref.partition("/.github/workflows/")
+        if workflow_with_ref:
+            workflow, _, _ = workflow_with_ref.partition("@")
+            if workflow:
+                return workflow
 
     workflow_name = os.environ.get("GITHUB_WORKFLOW")
     if not workflow_name:
