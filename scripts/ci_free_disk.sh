@@ -17,7 +17,9 @@ if [[ -d "$workspace" ]]; then
     "$workspace/artifacts" \
     "$workspace/tests/contracts/node_modules" \
     "$workspace/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules" \
-    "$workspace/alpha_factory_v1/core/interface/web_client/node_modules" || true
+    "$workspace/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist" \
+    "$workspace/alpha_factory_v1/core/interface/web_client/node_modules" \
+    "$workspace/alpha_factory_v1/core/interface/web_client/dist" || true
 fi
 
 sudo rm -rf /usr/share/dotnet \

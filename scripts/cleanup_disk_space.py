@@ -10,10 +10,14 @@ from pathlib import Path
 DEFAULT_TARGETS = (
     Path("tests/contracts/node_modules"),
     Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules"),
+    Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"),
     Path("alpha_factory_v1/core/interface/web_client/node_modules"),
+    Path("alpha_factory_v1/core/interface/web_client/dist"),
 )
 
 EXTRA_TARGETS = (
+    Path(".cache"),
+    Path(".npm-cache"),
     Path(".pytest_cache"),
     Path(".mypy_cache"),
     Path(".ruff_cache"),
