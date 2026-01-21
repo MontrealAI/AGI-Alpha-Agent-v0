@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
+from pathlib import Path
 from typing import Sequence
 
 __all__ = ["SandboxTimeout", "secure_run"]
@@ -38,6 +40,11 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
     else:
         docker = shutil.which("docker")
         if docker:
+            docker_cmd = list(cmd)
+            if docker_cmd:
+                cmd_name = Path(docker_cmd[0]).name
+                if cmd_name.startswith("python"):
+                    docker_cmd[0] = "python"
             full_cmd = [
                 docker,
                 "run",
@@ -50,7 +57,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
                 "--security-opt",
                 "seccomp=unconfined",
                 "python:3.11-slim",
-                *cmd,
+                *docker_cmd,
             ]
         else:
             full_cmd = list(cmd)

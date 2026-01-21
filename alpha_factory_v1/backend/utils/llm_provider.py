@@ -472,7 +472,7 @@ except ImportError:
     pass
 
 # llama-cpp (offline fallback)
-_skip_llama = os.getenv("PYTEST_NET_OFF") == "1" or "pytest" in sys.modules
+_skip_llama = os.getenv("PYTEST_NET_OFF") == "1" or "pytest" in sys.modules or bool(os.getenv("CI"))
 if not _skip_llama:
     try:
         from llama_cpp import Llama  # type: ignore

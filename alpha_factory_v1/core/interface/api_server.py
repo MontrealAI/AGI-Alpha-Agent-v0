@@ -96,7 +96,7 @@ try:
     from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
     from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
     from fastapi.middleware.cors import CORSMiddleware
-    from starlette.responses import Response, PlainTextResponse
+    from starlette.responses import Response, PlainTextResponse, HTMLResponse
     from fastapi.staticfiles import StaticFiles
     from contextlib import asynccontextmanager
     from collections.abc import AsyncGenerator
@@ -917,6 +917,15 @@ if app is not None:
     static_dir = Path(__file__).resolve().parent / "web_client" / "dist"
     if static_dir.is_dir():
         app.mount("/", StaticFiles(directory=static_dir, html=True), name="spa")
+    else:
+
+        @app.get("/")
+        async def _spa_fallback() -> HTMLResponse:
+            html = (
+                "<!doctype html><html><head><title>Alpha-Factory</title></head>"
+                '<body><div id="root"></div></body></html>'
+            )
+            return HTMLResponse(html)
 
 
 def main(argv: List[str] | None = None) -> None:

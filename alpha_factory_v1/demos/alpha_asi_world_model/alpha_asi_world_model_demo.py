@@ -553,6 +553,10 @@ class BasicSafetyAgent(Agent):
 existing_safety = AGENTS.get("safety")
 if not isinstance(existing_safety, Agent) or "safety" not in A2ABus._subs:
     AGENTS["safety"] = BasicSafetyAgent()
+else:
+    handlers = A2ABus._subs.get("safety") or []
+    if len(handlers) > 1:
+        A2ABus._subs["safety"] = handlers[:1]
 
 # =============================================================================
 # 9. Optional LLM planner
