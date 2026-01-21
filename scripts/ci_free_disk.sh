@@ -5,6 +5,21 @@ set -euo pipefail
 echo "Disk usage before cleanup:"
 df -h
 
+workspace="${GITHUB_WORKSPACE:-$(pwd)}"
+if [[ -d "$workspace" ]]; then
+  rm -rf \
+    "$workspace/.cache" \
+    "$workspace/.npm-cache" \
+    "$workspace/.pytest_cache" \
+    "$workspace/.mypy_cache" \
+    "$workspace/.ruff_cache" \
+    "$workspace/.coverage" \
+    "$workspace/artifacts" \
+    "$workspace/tests/contracts/node_modules" \
+    "$workspace/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules" \
+    "$workspace/alpha_factory_v1/core/interface/web_client/node_modules" || true
+fi
+
 sudo rm -rf /usr/share/dotnet \
   /opt/ghc \
   /usr/local/lib/android \
