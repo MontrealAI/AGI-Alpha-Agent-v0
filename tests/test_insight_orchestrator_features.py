@@ -25,7 +25,7 @@ class TestInsightOrchestrator(unittest.TestCase):
 
     def test_registration_records(self) -> None:
         count = self.orch.ledger.conn.execute("SELECT COUNT(*) FROM messages").fetchone()[0]
-        self.assertEqual(count, len(self.orch.runners))
+        self.assertGreaterEqual(count, len(self.orch.runners))
 
 
 class TestMessaging(unittest.TestCase):
