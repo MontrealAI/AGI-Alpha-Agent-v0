@@ -103,6 +103,8 @@ def _cleanup_disk_space() -> None:
         _INSIGHT_DIR / "node_modules",
         _INSIGHT_DIR / "dist",
         repo_root / "tests/contracts/node_modules",
+        repo_root / "alpha_factory_v1/core/interface/web_client/node_modules",
+        repo_root / "alpha_factory_v1/core/interface/web_client/dist",
     )
     for target in targets:
         if not target.exists():

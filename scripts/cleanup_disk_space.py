@@ -14,11 +14,15 @@ DEFAULT_TARGETS = (
 )
 
 EXTRA_TARGETS = (
+    Path(".cache"),
+    Path(".npm-cache"),
     Path(".pytest_cache"),
     Path(".mypy_cache"),
     Path(".ruff_cache"),
     Path(".coverage"),
     Path("artifacts"),
+    Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"),
+    Path("alpha_factory_v1/core/interface/web_client/dist"),
 )
 
 
