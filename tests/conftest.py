@@ -17,6 +17,7 @@ _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alp
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"
 _NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 _SESSION_TMP: tempfile.TemporaryDirectory[str] | None = None
+_CLEANUP_DISK_ENV_VARS = ("AF_CLEANUP_DISK", "CI")
 
 
 def _session_tmp_dir() -> Path:
@@ -94,6 +95,24 @@ def _ensure_insight_dist() -> Path:
     return _INSIGHT_DIST
 
 
+def _cleanup_disk_space() -> None:
+    if not any(os.environ.get(key) for key in _CLEANUP_DISK_ENV_VARS):
+        return
+    repo_root = Path(__file__).resolve().parents[1]
+    targets = (
+        _INSIGHT_DIR / "node_modules",
+        _INSIGHT_DIR / "dist",
+        repo_root / "tests/contracts/node_modules",
+    )
+    for target in targets:
+        if not target.exists():
+            continue
+        if target.is_dir():
+            shutil.rmtree(target)
+        else:
+            target.unlink()
+
+
 def pytest_configure() -> None:
     _configure_temp_paths()
     try:
@@ -121,6 +140,7 @@ def pytest_sessionfinish(session, exitstatus) -> None:  # type: ignore[no-untype
     if _SESSION_TMP is not None:
         _SESSION_TMP.cleanup()
         _SESSION_TMP = None
+    _cleanup_disk_space()
 
 
 @pytest.fixture
