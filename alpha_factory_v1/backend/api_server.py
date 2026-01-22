@@ -186,15 +186,18 @@ async def serve_grpc(runners: Dict[str, AgentRunner], port: int, ssl_disable: bo
     return server
 
 
-async def start_rest(app: Optional["FastAPI"], port: int, loglevel: str) -> Optional[asyncio.Task]:
+async def start_rest(
+    app: Optional["FastAPI"], port: int, loglevel: str
+) -> tuple[Optional[asyncio.Task], Optional["uvicorn.Server"]]:
     """Run the FastAPI app on the given port if dependencies are available."""
 
     if not app or "uvicorn" not in globals():
-        return None
+        return None, None
     cfg = uvicorn.Config(app, host="0.0.0.0", port=port, log_level=loglevel.lower())
-    task = asyncio.create_task(uvicorn.Server(cfg).serve())
+    server = uvicorn.Server(cfg)
+    task = asyncio.create_task(server.serve())
     log.info("REST UI →  http://localhost:%d/docs", port)
-    return task
+    return task, server
 
 
 async def start_servers(
@@ -205,13 +208,13 @@ async def start_servers(
     grpc_port: int,
     loglevel: str,
     ssl_disable: bool,
-) -> tuple[Optional[asyncio.Task], Optional["grpc.aio.Server"]]:
+) -> tuple[Optional[asyncio.Task], Optional["uvicorn.Server"], Optional["grpc.aio.Server"]]:
     """Convenience helper to launch REST and gRPC services."""
 
     app = build_rest(runners, model_max_bytes, mem)
-    rest_task = await start_rest(app, rest_port, loglevel)
+    rest_task, rest_server = await start_rest(app, rest_port, loglevel)
     grpc_server = await serve_grpc(runners, grpc_port, ssl_disable)
-    return rest_task, grpc_server
+    return rest_task, rest_server, grpc_server
 
 
 __all__ = [
