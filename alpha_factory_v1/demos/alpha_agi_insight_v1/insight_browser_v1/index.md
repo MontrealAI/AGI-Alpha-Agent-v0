@@ -79,6 +79,11 @@ retrieves the official Pyodide runtime from the jsDelivr CDN and the GPT‑2
 small checkpoint from Hugging Face. If a custom `PYODIDE_BASE_URL` is unreachable the helper
 automatically retries using the official CDN. The deprecated `wasm-gpt2.tar`
 archive is no longer used.
+By default the build keeps the Pyodide runtime as a standalone asset (loaded
+from `assets/wasm/` or the `PYODIDE_BASE_URL` CDN fallback at runtime) to avoid
+duplicating the WebAssembly payload inside `insight.bundle.js`. Set
+`INLINE_PYODIDE_WASM=1` when building if you need a fully inlined bundle for
+air‑gapped distribution.
 Set `FETCH_ASSETS_ATTEMPTS` to control the retry count when downloading assets.
 Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors, for example:
 

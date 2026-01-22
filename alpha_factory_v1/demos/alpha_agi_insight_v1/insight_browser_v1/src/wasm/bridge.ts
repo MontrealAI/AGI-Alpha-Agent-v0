@@ -12,21 +12,40 @@ export const PY_LOAD_START = 'py-load-start';
 export const PY_LOAD_END = 'py-load-end';
 
 let pyodideReady: Pyodide | null = null;
+function normalizePyodideBase(url: string): string {
+  if (!url) {
+    return '';
+  }
+  return url.endsWith('/') ? url : `${url}/`;
+}
+
 async function initPy(): Promise<Pyodide> {
   if (!pyodideReady) {
     bridgeEvents.dispatchEvent(new Event(PY_LOAD_START));
     try {
-      let opts = { indexURL: './wasm/' };
-      if ((window as any).PYODIDE_WASM_BASE64) {
+      const baseUrl =
+        normalizePyodideBase((window as any).PYODIDE_BASE_URL) ||
+        'https://cdn.jsdelivr.net/pyodide/v0.28.0/full/';
+      const localOpts = { indexURL: './wasm/' };
+      const inlinePayload = (window as any).PYODIDE_WASM_BASE64;
+      if (inlinePayload) {
         const bytes = Uint8Array.from(
-          atob((window as any).PYODIDE_WASM_BASE64),
+          atob(inlinePayload),
           c => c.charCodeAt(0)
         );
         const blob = new Blob([bytes], { type: 'application/wasm' });
         const url = URL.createObjectURL(blob);
-        opts.indexURL = url;
+        localOpts.indexURL = url;
       }
-      pyodideReady = await loadPyodide(opts);
+      try {
+        pyodideReady = await loadPyodide(localOpts);
+      } catch (err) {
+        if (!inlinePayload && baseUrl) {
+          pyodideReady = await loadPyodide({ indexURL: baseUrl });
+        } else {
+          throw err;
+        }
+      }
     } catch (err) {
       (window as any).toast?.('Pyodide failed to load');
       return Promise.reject(err);
