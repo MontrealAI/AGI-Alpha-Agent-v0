@@ -1209,6 +1209,7 @@ jobs:
           # from forks do not fail outright.
           ADMIN_GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN != '' && secrets.ADMIN_GITHUB_TOKEN || github.token }}
+          ALLOW_MISSING_REQUIRED_CHECKS: ${{ secrets.ADMIN_GITHUB_TOKEN == '' }}
           TARGET_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || 'main' }}
         run: |
           apply_flag=""
