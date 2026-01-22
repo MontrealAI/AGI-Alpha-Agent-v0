@@ -150,10 +150,20 @@ class SelfImprovementScheduler:
         self.start_time = time.time()
         if self._use_rocketry:
             await self.app.serve()
+            if (
+                not self._results
+                and not self.running
+                and self.queue.qsize() == len(self._initial_jobs)
+                and not self._first_round_done
+            ):
+                await self._serve_fallback()
             # wait for running tasks to finish
             if self.running:
                 await asyncio.gather(*self.running, return_exceptions=True)
             return
+        await self._serve_fallback()
+
+    async def _serve_fallback(self) -> None:
         while True:
             await self._spawn_jobs()
             if self.running:

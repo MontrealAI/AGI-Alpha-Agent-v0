@@ -89,16 +89,19 @@ class SolutionArchive:
             sql += " WHERE " + " AND ".join(clauses)
         cur = self.conn.execute(sql, params)
         rows = cur.fetchall()
-        result = [
-            Solution(
-                sector=row[0],
-                approach=row[1],
-                score=float(row[2]),
-                data=json.loads(row[3]),
-                ts=float(row[4]),
+        loads = json.loads
+        result: list[Solution] = []
+        append = result.append
+        for sector, approach, score, data, ts in rows:
+            append(
+                Solution(
+                    sector=sector,
+                    approach=approach,
+                    score=score,
+                    data=loads(data),
+                    ts=ts,
+                )
             )
-            for row in rows
-        ]
         return result
 
     def diversity_histogram(self) -> dict[tuple[str, str], int]:

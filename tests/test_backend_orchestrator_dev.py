@@ -103,20 +103,20 @@ def _mem_stub() -> object:
 async def test_rest_and_quarantine(dev_orchestrator: orch_mod.Orchestrator) -> None:
     app = build_rest(dev_orchestrator.manager.runners, 1024 * 1024, _mem_stub())
     assert app is not None
-    client = TestClient(app)
     headers = {"Authorization": "Bearer test-token"}
 
-    resp = client.get("/agents", headers=headers)
-    assert resp.status_code == 200
-    assert set(resp.json()) == {"dummy", "fail"}
+    with TestClient(app) as client:
+        resp = client.get("/agents", headers=headers)
+        assert resp.status_code == 200
+        assert set(resp.json()) == {"dummy", "fail"}
 
-    runner = dev_orchestrator.manager.runners["fail"]
-    await runner.maybe_step()
-    if runner.task:
-        with contextlib.suppress(Exception):
-            await runner.task
-    await asyncio.sleep(0.05)
-    time.sleep(0.05)  # allow health thread to process
+        runner = dev_orchestrator.manager.runners["fail"]
+        await runner.maybe_step()
+        if runner.task:
+            with contextlib.suppress(Exception):
+                await runner.task
+        await asyncio.sleep(0.05)
+        time.sleep(0.05)  # allow health thread to process
 
     import importlib
 

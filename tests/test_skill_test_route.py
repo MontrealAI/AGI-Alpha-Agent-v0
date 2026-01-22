@@ -28,11 +28,11 @@ class TestSkillTestRoute(unittest.TestCase):
     def test_skill_test_endpoint(self) -> None:
         app = _build_rest({"simple": Runner(SimpleAgent())})
         self.assertIsNotNone(app)
-        client = TestClient(app)
         headers = {"Authorization": "Bearer test-token"}
-        resp = client.post("/agent/simple/skill_test", json={"t": 1}, headers=headers)
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.json(), {"ok": True})
+        with TestClient(app) as client:
+            resp = client.post("/agent/simple/skill_test", json={"t": 1}, headers=headers)
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json(), {"ok": True})
 
 
 if __name__ == "__main__":

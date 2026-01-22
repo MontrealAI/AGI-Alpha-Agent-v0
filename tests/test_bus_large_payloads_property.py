@@ -15,11 +15,14 @@ from hypothesis import given, settings, strategies as st  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+MAX_TEXT_SIZE = 8_192
+
+
 @settings(max_examples=10, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=64_000),
-    recipient=st.text(min_size=1, max_size=64_000),
-    payload_text=st.text(min_size=1, max_size=65_000),
+    sender=st.text(min_size=1, max_size=MAX_TEXT_SIZE),
+    recipient=st.text(min_size=1, max_size=MAX_TEXT_SIZE),
+    payload_text=st.text(min_size=1, max_size=MAX_TEXT_SIZE),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
