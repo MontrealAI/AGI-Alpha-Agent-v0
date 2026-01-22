@@ -42,12 +42,13 @@ HF_GPT2_BASE_URL = os.environ.get("HF_GPT2_BASE_URL", DEFAULT_HF_GPT2_BASE_URL).
 DEFAULT_PYODIDE_BASE_URL = "https://cdn.jsdelivr.net/pyodide/v0.28.0/full"
 PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).rstrip("/")
 
-# Skip downloading the GPT-2 checkpoint when set (helps keep CI commits small)
-FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
-    "1",
-    "true",
-    "yes",
-}
+# Skip downloading the GPT-2 checkpoint when set (helps keep CI commits small).
+# If FETCH_ASSETS_SKIP_LLM is unset, default to skipping in CI environments.
+_skip_llm_raw = os.environ.get("FETCH_ASSETS_SKIP_LLM")
+if _skip_llm_raw is None:
+    FETCH_ASSETS_SKIP_LLM = os.environ.get("CI", "").lower() in {"1", "true", "yes"}
+else:
+    FETCH_ASSETS_SKIP_LLM = _skip_llm_raw.lower() in {"1", "true", "yes"}
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
