@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """royalty_radar.py – Production‑grade α‑AGI Business Module
 ───────────────────────────────────────────────────────────────────────────────
-RoyaltyRadar.a.agi.eth
+RoyaltyRadar.alpha.agi.eth
 ━━━━━━━━━━━━━━━━━━━━━
 Autonomously reconciles music‑streaming royalties, identifies unpaid balances,
 and dispatches cryptographically‑signed claim notices + on‑chain payment
@@ -129,7 +129,7 @@ ADAPTERS = {
 # RoyaltyRadar Agent Implementation
 # ──────────────────────────────────────────────────────────────────────────────
 class RoyaltyRadarBusiness(Agent):
-    LABEL = "RoyaltyRadar.a.agi.eth"
+    LABEL = "RoyaltyRadar.alpha.agi.eth"
 
     def __init__(self, cfg: RoyaltyRadarConfig):
         super().__init__(cfg.__dict__)

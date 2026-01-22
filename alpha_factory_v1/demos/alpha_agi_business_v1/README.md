@@ -28,7 +28,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 * **Mission 🎯** Continuously harvest <code>alpha</code> across <kbd>equities • commodities • crypto • supply‑chains •
   life‑sciences</kbd> and convert it into compounding value — automatically, transparently, safely.
 * **Engine ⚙️** *Alpha‑Factory v1 👁️✨* → six specialised agents orchestrated via **A2A** message‑bus (see §4). 
-* **Vehicle 🏛️** A legally‑shielded **α‑AGI Business** (`x.a.agi.eth`) governed & financed by scarce utility token
+* **Vehicle 🏛️** A legally‑shielded **α‑AGI Business** (`x.alpha.agi.eth`) governed & financed by scarce utility token
   **`$AGIALPHA`**.
 * **Result 📈** A self‑reinforcing fly‑wheel that **Out‑learn • Out‑think • Out‑design • Out‑strategise • Out‑execute**
   the market, round‑after‑round.
@@ -74,8 +74,8 @@ Open financial & industrial alpha is shrinking 📉 — yet trillions in ineffic
 > **Hypothesis 🧩**  *Alpha‑Factory v1* already demonstrates general skill‑acquisition & real‑time orchestration. Pointed
   at live, multi‑modal data it surfaces & arbitrages real‑world inefficiencies continuously.
 
-> **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨
-  (`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
+> **On-chain** as `<name>.alpha.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨
+  (`<name>.alpha.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
 
 ---
 
@@ -84,7 +84,7 @@ Open financial & industrial alpha is shrinking 📉 — yet trillions in ineffic
 
 ```mermaid
 flowchart LR
-  subgraph "α‑AGI Business (x.a.agi.eth) 👁️✨"
+  subgraph "α‑AGI Business (x.alpha.agi.eth) 👁️✨"
     direction LR
     P(PlanningAgent)
     R(ResearchAgent)
@@ -120,13 +120,13 @@ flowchart LR
 ## 3 Role Architecture – Businesses & Agents 🏛️
 
 **α‑AGI Business**
-- ENS: `<sub>.a.agi.eth`
+- ENS: `<sub>.alpha.agi.eth`
 - Treasury: wallet holds **$AGIALPHA**; can issue bounties
 - Responsibilities: curate job portfolios, pool data/IP, enforce constraints
 - Value: captures upside from solved quests and reinvests
 
 **α‑AGI Agent**
-- ENS: `<sub>.a.agent.agi.eth`
+- ENS: `<sub>.alpha.agent.agi.eth`
 - Treasury: personal stake (reputation + escrow)
 - Responsibilities: detect, plan & execute α‑jobs published by any Business
 - Value: earns **$AGIALPHA** rewards, boosts reputation, stores reusable templates

@@ -51,7 +51,7 @@ Global markets seep *trillions* in latent opportunity — “alpha” in the bro
 > **Solution 🚀**  *Alpha‑Factory v1* already **Outlearn • Outthink • Outdesign • Outstrategise • Outexecute** across domains.  
 > The **α‑AGI Marketplace** exposes this capability to *any* participant through a trust‑minimised, pay‑per‑alpha exchange.
 
-> **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
+> **On-chain** as `<name>.alpha.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/`<name>.alpha.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
 
 ---
 
@@ -87,8 +87,8 @@ flowchart TB
 
 | Entity | ENS Convention | Funding / Treasury | Primary Responsibilities | How it Creates Value |
 |--------|----------------|--------------------|---------------------------|----------------------|
-| **α‑AGI Business** | `<sub>.a.agi.eth` | Wallet holds **$AGIALPHA**; can issue bounties | Define **Problem Portfolios** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/series of α‑jobs), pool data/IP rights, set domain constraints | Aggregate high‑value challenges, capture upside from solved portfolios, reinvest in new quests |
-| **α‑AGI Agent** | `<sub>.a.agent.agi.eth` | Holds personal stake (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/reputation & escrow) | Detect, plan & execute individual α‑jobs published by any Business | Earn **$AGIALPHA**, build reputation, store reusable alpha within **MemoryAgent** |
+| **α‑AGI Business** | `<sub>.alpha.agi.eth` | Wallet holds **$AGIALPHA**; can issue bounties | Define **Problem Portfolios** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/series of α‑jobs), pool data/IP rights, set domain constraints | Aggregate high‑value challenges, capture upside from solved portfolios, reinvest in new quests |
+| **α‑AGI Agent** | `<sub>.alpha.agent.agi.eth` | Holds personal stake (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_marketplace_v1/reputation & escrow) | Detect, plan & execute individual α‑jobs published by any Business | Earn **$AGIALPHA**, build reputation, store reusable alpha within **MemoryAgent** |
 
 > **Big Picture:** Businesses curate demand for alpha; Agents supply execution. Marketplace contracts clear both via **$AGIALPHA**, with slashing & reputation aligning incentives.
 

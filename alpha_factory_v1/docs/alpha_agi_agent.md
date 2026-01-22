@@ -4,11 +4,11 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 # α‑AGI Agent 👁️✨ — Canonical Specification v1.1
 
-> **Like a keystone species in a digital ecosystem**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) is an autonomously evolving orchestrator that executes α‑Jobs end-to-end for **α‑AGI Businesses** (`<name>.a.agi.eth`), fueled by **\$AGIALPHA** and guided by validator feedback and on-chain reputation to amplify the network’s collective intelligence and value with unprecedented efficiency.
+> **Like a keystone species in a digital ecosystem**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) is an autonomously evolving orchestrator that executes α‑Jobs end-to-end for **α‑AGI Businesses** (`<name>.alpha.agi.eth`), fueled by **\$AGIALPHA** and guided by validator feedback and on-chain reputation to amplify the network’s collective intelligence and value with unprecedented efficiency.
 
-> **As a masterful conductor in the symphony of intelligent agents**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) dynamically harmonizes **α‑AGI Business** (`<name>.a.agi.eth`) objectives with **α‑Job** execution, leveraging **\$AGIALPHA** as its fuel and validator-vetted on-chain reputation as its score, to deliver decisive end-to-end performance and drive the ecosystem to new heights of innovation and trust.
+> **As a masterful conductor in the symphony of intelligent agents**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) dynamically harmonizes **α‑AGI Business** (`<name>.alpha.agi.eth`) objectives with **α‑Job** execution, leveraging **\$AGIALPHA** as its fuel and validator-vetted on-chain reputation as its score, to deliver decisive end-to-end performance and drive the ecosystem to new heights of innovation and trust.
 
-> **An antifragile, self-improving digital operative**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) uncovers and harnesses “**alpha**” opportunities across the agentic ecosystem, seamlessly interfacing with **α‑AGI Businesses** (`<name>.a.agi.eth`) and executing **α‑Jobs** with end-to-end precision, powered by **\$AGIALPHA** and continuously compounding its on-chain reputation into ever-greater network value.
+> **An antifragile, self-improving digital operative**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) uncovers and harnesses “**alpha**” opportunities across the agentic ecosystem, seamlessly interfacing with **α‑AGI Businesses** (`<name>.alpha.agi.eth`) and executing **α‑Jobs** with end-to-end precision, powered by **\$AGIALPHA** and continuously compounding its on-chain reputation into ever-greater network value.
 
 ---
 
@@ -49,18 +49,18 @@ flowchart LR
     MEM["Memory 🧠"]
   end
   subgraph Domain_Agents
-    FIN["finance.a.agent.agi.eth"]
-    BIO["biotech.a.agent.agi.eth"]
-    MFG["manufacturing.a.agent.agi.eth"]
-    POL["policy.a.agent.agi.eth"]
-    ENE["energy.a.agent.agi.eth"]
-    SUP["supply_chain.a.agent.agi.eth"]
-    RET["retail_demand.a.agent.agi.eth"]
-    MKT["marketing.a.agent.agi.eth"]
-    CYB["cyber_threat.a.agent.agi.eth"]
-    CLM["climate_risk.a.agent.agi.eth"]
-    DRG["drug_design.a.agent.agi.eth"]
-    SMT["smart_contract.a.agent.agi.eth"]
+    FIN["finance.alpha.agent.agi.eth"]
+    BIO["biotech.alpha.agent.agi.eth"]
+    MFG["manufacturing.alpha.agent.agi.eth"]
+    POL["policy.alpha.agent.agi.eth"]
+    ENE["energy.alpha.agent.agi.eth"]
+    SUP["supply_chain.alpha.agent.agi.eth"]
+    RET["retail_demand.alpha.agent.agi.eth"]
+    MKT["marketing.alpha.agent.agi.eth"]
+    CYB["cyber_threat.alpha.agent.agi.eth"]
+    CLM["climate_risk.alpha.agent.agi.eth"]
+    DRG["drug_design.alpha.agent.agi.eth"]
+    SMT["smart_contract.alpha.agent.agi.eth"]
   end
 
   ORC -- A2A --> FIN & BIO & MFG & POL & ENE & SUP & RET & MKT & CYB & CLM & DRG & SMT
@@ -73,7 +73,7 @@ flowchart LR
 ## 5 · Capability Card 📇
 ```jsonc
 {
-  "agent_id": "finance.a.agent.agi.eth",
+  "agent_id": "finance.alpha.agent.agi.eth",
   "version": "1.1.0",
   "capabilities": ["plan", "forecast", "execute_trade"],
   "endpoints": { "grpc": "grpc://finance:9000", "http": "https://finance/api" },
@@ -87,18 +87,18 @@ flowchart LR
 ## 6 · Current Agent Catalogue 🤖
 | ENS Handle | Core Skill | Brief |
 |------------|-----------|-------|
-| finance.a.agent.agi.eth | Quant & execution | Live P&L, VaR |
-| biotech.a.agent.agi.eth | Bio‑R&D | Protein‑fold search |
-| manufacturing.a.agent.agi.eth | Ops AI | MES integration |
-| policy.a.agent.agi.eth | Reg‑Tech | Policy diffing |
-| energy.a.agent.agi.eth | Energy AI | Grid balancing |
-| supply_chain.a.agent.agi.eth | Logistics | VRP optimisation |
-| retail_demand.a.agent.agi.eth | Demand sense | LSTM forecast |
-| marketing.a.agent.agi.eth | Growth AI | RL ad‑spend |
-| cyber_threat.a.agent.agi.eth | SecOps | CVE triage |
-| climate_risk.a.agent.agi.eth | ESG AI | Scenario VaR |
-| drug_design.a.agent.agi.eth | Chem AI | Scaffold hopping |
-| smart_contract.a.agent.agi.eth | Solidity | Formal verify |
+| finance.alpha.agent.agi.eth | Quant & execution | Live P&L, VaR |
+| biotech.alpha.agent.agi.eth | Bio‑R&D | Protein‑fold search |
+| manufacturing.alpha.agent.agi.eth | Ops AI | MES integration |
+| policy.alpha.agent.agi.eth | Reg‑Tech | Policy diffing |
+| energy.alpha.agent.agi.eth | Energy AI | Grid balancing |
+| supply_chain.alpha.agent.agi.eth | Logistics | VRP optimisation |
+| retail_demand.alpha.agent.agi.eth | Demand sense | LSTM forecast |
+| marketing.alpha.agent.agi.eth | Growth AI | RL ad‑spend |
+| cyber_threat.alpha.agent.agi.eth | SecOps | CVE triage |
+| climate_risk.alpha.agent.agi.eth | ESG AI | Scenario VaR |
+| drug_design.alpha.agent.agi.eth | Chem AI | Scaffold hopping |
+| smart_contract.alpha.agent.agi.eth | Solidity | Formal verify |
 
 ---
 
@@ -120,7 +120,7 @@ from openai_agents import AgentRuntime
 from alpha_factory_v1.backend.agents.finance import FinanceAgent
 
 rt = AgentRuntime(api_key=None)           # Works offline
-rt.register(FinanceAgent(ens="finance.demo.a.agent.agi.eth"))
+rt.register(FinanceAgent(ens="finance.demo.alpha.agent.agi.eth"))
 rt.serve()
 # The orchestrator shuts down the runtime automatically on exit
 ```

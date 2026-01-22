@@ -5,7 +5,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 %% ───────────────────────────  PANE A  ───────────────────────────
 %% Royalty Radar 👁️✨ – Meta-Agentic Inner Loop
 flowchart LR
-  subgraph meta["RoyaltyRadar.a.agi.eth  (meta-agent)"]
+  subgraph meta["RoyaltyRadar.alpha.agi.eth  (meta-agent)"]
     ORCH["Coordinator Ω"]:::meta
     ORCH -->|spawn| DM["DataMinerAgent<br/>(DSP adapters)"]:::agent
     ORCH -->|spawn| CL["ClaimAgent<br/>(Bayes + LLM)"]:::agent
@@ -23,7 +23,7 @@ flowchart LR
     CLIENT["Artist / Label"]:::user
     CLIENT -- post&nbsp;job + stake $AGIALPHA --> ESCROW["Escrow ▶"]:::val
     ESCROW --> MATCH["Match Engine"]:::proc
-    MATCH  --> BIZ["RoyaltyRadar.a.agi.eth"]:::meta
+    MATCH  --> BIZ["RoyaltyRadar.alpha.agi.eth"]:::meta
     BIZ    -- proofs&nbsp;✔ --> VALID["Validator Swarm"]:::store
     VALID  -- release ▶ --> ESCROW
     ESCROW -- 💎 $AGIALPHA --> BIZ
@@ -45,7 +45,7 @@ flowchart TD
     client["Artist / Label  🟡"]
     escrow["Escrow  🔵"]
     match["Match Engine  🟧"]
-    rr[RoyaltyRadar.a.agi.eth  🟣]
+    rr[RoyaltyRadar.alpha.agi.eth  🟣]
     vs["Validator Swarm  ⬛"]
     client -- "post job + stake $AGIALPHA" --> escrow
     escrow --> match
@@ -56,7 +56,7 @@ flowchart TD
   end
 
   %% RoyaltyRadar internal
-  subgraph rr_box["RoyaltyRadar.a.agi.eth  (meta-agent)"]
+  subgraph rr_box["RoyaltyRadar.alpha.agi.eth  (meta-agent)"]
     orch["Coordinator Ω  🟪"]
     dm["DataMinerAgent  🟩"]
     cl["ClaimAgent  🟩"]
@@ -73,7 +73,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph "α-AGI Business  (<name>.a.agi.eth)"
+    subgraph "α-AGI Business  (<name>.alpha.agi.eth)"
         META["Meta-Programmer Ω"]:::meta
         subgraph "Agent Swarm"
             FIN["finance.agent"]:::agent

@@ -10,11 +10,11 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 Definitions of the α‑AGI Agent:
 
-> **Like a keystone species in a digital ecosystem**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) is an autonomously evolving orchestrator that executes α‑Jobs end-to-end for **α‑AGI Businesses** (`<name>.a.agi.eth`), fueled by **\$AGIALPHA** and guided by validator feedback and on-chain reputation to amplify the network’s collective intelligence and value with unprecedented efficiency.
+> **Like a keystone species in a digital ecosystem**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) is an autonomously evolving orchestrator that executes α‑Jobs end-to-end for **α‑AGI Businesses** (`<name>.alpha.agi.eth`), fueled by **\$AGIALPHA** and guided by validator feedback and on-chain reputation to amplify the network’s collective intelligence and value with unprecedented efficiency.
 
-> **As a masterful conductor in the symphony of intelligent agents**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) dynamically harmonizes **α‑AGI Business** (`<name>.a.agi.eth`) objectives with **α‑Job** execution, leveraging **\$AGIALPHA** as its fuel and validator-vetted on-chain reputation as its score, to deliver decisive end-to-end performance and drive the ecosystem to new heights of innovation and trust.
+> **As a masterful conductor in the symphony of intelligent agents**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) dynamically harmonizes **α‑AGI Business** (`<name>.alpha.agi.eth`) objectives with **α‑Job** execution, leveraging **\$AGIALPHA** as its fuel and validator-vetted on-chain reputation as its score, to deliver decisive end-to-end performance and drive the ecosystem to new heights of innovation and trust.
 
-> **An antifragile, self-improving digital operative**, the agentic **α‑AGI Agent** (`<name>.a.agent.agi.eth`) uncovers and harnesses “**alpha**” opportunities across the agentic ecosystem, seamlessly interfacing with **α‑AGI Businesses** (`<name>.a.agi.eth`) and executing **α‑Jobs** with end-to-end precision, powered by **\$AGIALPHA** and continuously compounding its on-chain reputation into ever-greater network value.
+> **An antifragile, self-improving digital operative**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) uncovers and harnesses “**alpha**” opportunities across the agentic ecosystem, seamlessly interfacing with **α‑AGI Businesses** (`<name>.alpha.agi.eth`) and executing **α‑Jobs** with end-to-end precision, powered by **\$AGIALPHA** and continuously compounding its on-chain reputation into ever-greater network value.
 
 ---
 
