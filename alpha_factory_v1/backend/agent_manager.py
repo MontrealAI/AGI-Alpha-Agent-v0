@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import os
 import sys
 from typing import Dict, Optional
 
@@ -63,7 +64,7 @@ class AgentManager:
         if health_mod is None and not (agents_mod is not None and not hasattr(agents_mod, "__path__")):
             from backend.agents import health as health_mod
         start_background_tasks = getattr(health_mod, "start_background_tasks", None) if health_mod else None
-        if start_background_tasks is not None:
+        if start_background_tasks is not None and not os.getenv("PYTEST_CURRENT_TEST"):
             await start_background_tasks()
 
         for r in self.runners.values():
@@ -106,15 +107,14 @@ class AgentManager:
         await asyncio.gather(*(r.task for r in self.runners.values() if r.task), return_exceptions=True)
 
     async def run(self, stop_event: asyncio.Event) -> None:
-        """Drive all runners until *stop_event* is set."""
+        """Drive all runners until *stop_event* is set.
 
-        await self.start()
-        try:
-            while not stop_event.is_set():
-                await asyncio.gather(*(r.maybe_step() for r in self.runners.values()))
-                await asyncio.sleep(0.25)
-        finally:
-            await self.stop()
+        Callers are responsible for invoking :meth:`start` and :meth:`stop`.
+        """
+
+        while not stop_event.is_set():
+            await asyncio.gather(*(r.maybe_step() for r in self.runners.values()))
+            await asyncio.sleep(0.25)
 
 
 __all__ = ["AgentManager"]

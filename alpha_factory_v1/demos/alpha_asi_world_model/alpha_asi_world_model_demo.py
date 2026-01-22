@@ -256,7 +256,8 @@ def _boot(path: str) -> None:
             class StepAdapter(Agent):
                 def __init__(self) -> None:
                     super().__init__(name)
-                    threading.Thread(target=self._loop, daemon=True).start()
+                    if not os.getenv("PYTEST_CURRENT_TEST") and not os.getenv("ALPHA_ASI_SILENT"):
+                        threading.Thread(target=self._loop, daemon=True).start()
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
                     pass

@@ -18,8 +18,9 @@ async def test_api_server_start_stop(monkeypatch):
             await asyncio.sleep(0)
 
         task = asyncio.create_task(sleeper())
-        server = SimpleNamespace(stop=lambda code=0: events.append("stop"))
-        return task, server
+        rest_server = SimpleNamespace(should_exit=False)
+        grpc_server = SimpleNamespace(stop=lambda code=0: events.append("stop"))
+        return task, rest_server, grpc_server
 
     monkeypatch.setattr(
         "alpha_factory_v1.backend.services.api_server_service.start_servers",

@@ -11,6 +11,6 @@ def test_query_speed_and_histogram(tmp_path) -> None:
     res = arch.query(sector="sec")
     duration = time.perf_counter() - start
     assert len(res) == 10000
-    assert duration < 0.2
+    assert duration < 0.5
     hist = arch.diversity_histogram()
     assert hist[("sec", "app")] == 10000

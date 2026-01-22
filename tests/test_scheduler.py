@@ -4,7 +4,11 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+import pydantic
 import pytest
+
+if int(pydantic.__version__.split(".", maxsplit=1)[0]) >= 2:
+    pytest.skip("rocketry requires pydantic<2", allow_module_level=True)
 
 rocketry = pytest.importorskip("rocketry")
 from alpha_factory_v1.core import scheduler  # noqa: E402
