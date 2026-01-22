@@ -19,6 +19,7 @@ if [[ -z "$ASSET_CACHE_DIR" ]]; then
 fi
 export FETCH_ASSETS_DIR="$ASSET_CACHE_DIR"
 export INSIGHT_ASSET_ROOT="$ASSET_CACHE_DIR"
+export FETCH_ASSETS_SKIP_LLM="${FETCH_ASSETS_SKIP_LLM:-1}"
 
 usage() {
     cat <<USAGE
