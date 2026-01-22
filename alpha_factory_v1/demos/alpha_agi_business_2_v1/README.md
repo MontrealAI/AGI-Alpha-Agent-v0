@@ -40,7 +40,7 @@ flowchart LR
     PL[🧮 PlanningAgent] --> O
     SA[🛡️ SafetyAgent] --> O
     ME[💾 MemoryAgent] --> O
-    O -->|alpha insights| B(("α-AGI Business<br/>(*.a.agi.eth)"))
+    O -->|alpha insights| B(("α-AGI Business<br/>(*.alpha.agi.eth)"))
   end
   B -->|$AGIALPHA rewards| Users((Stake‑holders))
 ```
@@ -55,13 +55,13 @@ If no external key is detected it seamlessly switches to local Llama‑3 GGUF w
 
 | Entity | ENS Convention | Treasury | Responsibilities | How it Creates Value |
 |--------|----------------|----------|------------------|----------------------|
-| **α‑AGI Business** | `<sub>.a.agi.eth` | Wallet holds **$AGIALPHA** & bounties | Defines **Problem Portfolios** (α‑jobs), pools data/rights, sets domain constraints | Aggregates high‑value problems, captures upside from solved portfolios, reinvests in new quests |
-| **α‑AGI Agent** | `<sub>.a.agent.agi.eth` | Personal stake (reputation + escrow) | Detects, plans & executes α‑jobs issued by any Business | Earns **$AGIALPHA** rewards, grows reputation, evolves reusable alpha recipes |
+| **α‑AGI Business** | `<sub>.alpha.agi.eth` | Wallet holds **$AGIALPHA** & bounties | Defines **Problem Portfolios** (α‑jobs), pools data/rights, sets domain constraints | Aggregates high‑value problems, captures upside from solved portfolios, reinvests in new quests |
+| **α‑AGI Agent** | `<sub>.alpha.agent.agi.eth` | Personal stake (reputation + escrow) | Detects, plans & executes α‑jobs issued by any Business | Earns **$AGIALPHA** rewards, grows reputation, evolves reusable alpha recipes |
 
 > **Big Picture:** Businesses **curate demand** for alpha; Agents **supply execution**.  
 > Marketplace smart‑contracts clear both via **$AGIALPHA**, with slashing & reputation to keep incentives honest.  
 
-> **On-chain** as `<name>.a.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (`<name>.a.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
+> **On-chain** as `<name>.alpha.agi.eth`, an *α-AGI Business* 👁️✨ unleashes a self-improving *α-AGI Agent* 👁️✨ (`<name>.alpha.agent.agi.eth`) swarm to hunt inefficiencies and transmute them into **$AGIALPHA**.
 
 > An **α‑AGI Business** 👁️✨ is a fully autonomous enterprise that identifies latent “*alpha*” opportunities across all industries and converts them into compounding value by out‑learning, out‑thinking, out‑designing, out‑strategizing, and out‑executing all competition.
 

@@ -788,8 +788,8 @@ Global markets seep *USD ✧ trillions/yr* in latent opportunity — “alph
 **Alpha‑Factory v1** is an antifragile constellation of self‑improving Agentic α‑AGI Agents 👁️✨ orchestrated to **spot
 live alpha across any industry and transmute it into compounding value**.
 
-**Definition**: An **α‑AGI Business** 👁️✨ is an on‑chain autonomous enterprise (<name>.a.agi.eth) that unleashes a swarm
-of self‑improving agentic **α‑AGI agents** 👁️✨ (<name>.a.agent.agi.eth) to hunt down inefficiencies across any domain
+**Definition**: An **α‑AGI Business** 👁️✨ is an on‑chain autonomous enterprise (<name>.alpha.agi.eth) that unleashes a swarm
+of self‑improving agentic **α‑AGI agents** 👁️✨ (<name>.alpha.agent.agi.eth) to hunt down inefficiencies across any domain
 and transmute them into **$AGIALPHA**.
 
 Built atop **OpenAI Agents SDK**, **Google ADK**, **A2A protocol**, and Anthropic’s **Model Context Protocol**, the

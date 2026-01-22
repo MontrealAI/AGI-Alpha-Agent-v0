@@ -19,7 +19,7 @@ Planck, Boltzmann, Nash and Basel III scales.  Every number is **back‑tested,
 formal‑verified** and hash‑anchored on‑chain.  You may safely ship it into a
 high‑stakes prod cluster right now.
 
-> **Definition**: An **α‑AGI Business** 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.a.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.a.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
+> **Definition**: An **α‑AGI Business** 👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.alpha.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/`<name>.alpha.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
 
 ---
 
@@ -104,8 +104,8 @@ flowchart LR
 
     %% ── Market ─────────────────────────────────────────────
     subgraph Market["$AGIALPHA Marketplace"]
-        BIZ["α-AGI Business (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.a.agi.eth)"]
-        AGT["α-AGI Agent (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.a.agent.agi.eth)"]
+        BIZ["α-AGI Business (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.alpha.agi.eth)"]
+        AGT["α-AGI Agent (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/.alpha.agent.agi.eth)"]
         class BIZ,AGT layer
     end
 
@@ -175,17 +175,17 @@ Cells with \(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_fa
 
 | ENS | Core Novelty | Physics Role | Verified Scarcity Claim |
 |-----|--------------|-------------|-------------------------|
-| `fin.a.agent.agi.eth` | CVaR 99 % RL‑HF | Computes ΔH<sub>misprice</sub> | Sharpe 3.1 back‑test |
-| `bio.a.agent.agi.eth` | KG‑RAG on UniProt | Reduces entropy via high‑info datapoints | 3 CRISPR patents neutralised |
-| `mat.a.agent.agi.eth` | Diffusion‑MCTS for material space | Lowers enthalpy of catalyst design | DOE grant pre‑empt |
-| `pol.a.agent.agi.eth` | Law QA + GAN red‑line | Captures policy phase‑lags | 37‑jurisdiction coverage |
-| `ene.a.agent.agi.eth` | Grid DR RL‑HF | Sets β(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t) from load | Demoed 14 % bill cut |
-| `mfg.a.agent.agi.eth` | CP‑SAT job‑shop | Converts ΔG to throughput | 6 % OEE lift |
-| `log.a.agent.agi.eth` | VRP‑RL for logistics | Entropy compression | 12 % route savings |
-| `res.a.agent.agi.eth` | Literature ablation design | Orthogonal signals | 0.78 MI F1 gain |
-| `qec.a.agent.agi.eth` | Real‑time surface‑code optimiser | Quantum error entropy ↓ | 14 % qubit overhead cut |
-| `safe.a.agent.agi.eth` | KL‑alignment sentinel | Bounds entropy prod. | Zero severe incidents |
-| `gdl.a.agent.agi.eth` | Gödel Looper | Formal provability | 99.8 % proof success |
+| `fin.alpha.agent.agi.eth` | CVaR 99 % RL‑HF | Computes ΔH<sub>misprice</sub> | Sharpe 3.1 back‑test |
+| `bio.alpha.agent.agi.eth` | KG‑RAG on UniProt | Reduces entropy via high‑info datapoints | 3 CRISPR patents neutralised |
+| `mat.alpha.agent.agi.eth` | Diffusion‑MCTS for material space | Lowers enthalpy of catalyst design | DOE grant pre‑empt |
+| `pol.alpha.agent.agi.eth` | Law QA + GAN red‑line | Captures policy phase‑lags | 37‑jurisdiction coverage |
+| `ene.alpha.agent.agi.eth` | Grid DR RL‑HF | Sets β(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/t) from load | Demoed 14 % bill cut |
+| `mfg.alpha.agent.agi.eth` | CP‑SAT job‑shop | Converts ΔG to throughput | 6 % OEE lift |
+| `log.alpha.agent.agi.eth` | VRP‑RL for logistics | Entropy compression | 12 % route savings |
+| `res.alpha.agent.agi.eth` | Literature ablation design | Orthogonal signals | 0.78 MI F1 gain |
+| `qec.alpha.agent.agi.eth` | Real‑time surface‑code optimiser | Quantum error entropy ↓ | 14 % qubit overhead cut |
+| `safe.alpha.agent.agi.eth` | KL‑alignment sentinel | Bounds entropy prod. | Zero severe incidents |
+| `gdl.alpha.agent.agi.eth` | Gödel Looper | Formal provability | 99.8 % proof success |
 
 ---
 
