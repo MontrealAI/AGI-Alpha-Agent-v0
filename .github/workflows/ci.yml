@@ -1212,13 +1212,16 @@ jobs:
           TARGET_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || 'main' }}
         run: |
           apply_flag=""
+          warn_flag=""
           if [ -n "${ADMIN_GITHUB_TOKEN}" ]; then
             apply_flag="--apply"
           else
             echo "::notice::ADMIN_GITHUB_TOKEN not set; running read-only branch protection check with default token."
+            warn_flag="--warn-only"
           fi
 
           python scripts/verify_branch_protection.py \
             --branch "${TARGET_BRANCH}" \
             ${apply_flag} \
+            ${warn_flag} \
             --required-checks-file scripts/required_checks.json

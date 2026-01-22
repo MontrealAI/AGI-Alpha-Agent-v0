@@ -147,7 +147,20 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         action="store_true",
         help="Allow branch protection without the 'Require branches to be up to date' setting.",
     )
+    parser.add_argument(
+        "--warn-only",
+        action="store_true",
+        help="Emit warnings instead of failing when branch protection is missing or incomplete.",
+    )
     return parser.parse_args(argv)
+
+
+def _warn_or_error(message: str, warn_only: bool) -> int:
+    if warn_only:
+        sys.stderr.write(f"::warning::{message}\n")
+        return 0
+    sys.stderr.write(f"error: {message}\n")
+    return 1
 
 
 def _load_required_checks(path: Path) -> list[str]:
@@ -200,8 +213,10 @@ def main(argv: Iterable[str] | None = None) -> int:
         return 0
     if response.status_code == 404:
         if not args.apply:
-            sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
-            return 1
+            return _warn_or_error(
+                f"branch '{args.branch}' is not protected or not visible",
+                args.warn_only,
+            )
         _configure_required_checks(
             owner=owner,
             repo=repo,
@@ -212,16 +227,20 @@ def main(argv: Iterable[str] | None = None) -> int:
         )
         response = requests.get(url, headers=_build_headers(token), timeout=30)
     if not response.ok:
-        sys.stderr.write(f"error: failed to read protection for {owner}/{repo}@{args.branch}: {response.text}\n")
-        return 1
+        return _warn_or_error(
+            f"failed to read protection for {owner}/{repo}@{args.branch}: {response.text}",
+            args.warn_only,
+        )
 
     protection = response.json()
 
     status_checks = protection.get("required_status_checks")
     if not status_checks:
         if not args.apply:
-            sys.stderr.write(f"error: {owner}/{repo}@{args.branch} is missing required status checks\n")
-            return 1
+            return _warn_or_error(
+                f"{owner}/{repo}@{args.branch} is missing required status checks",
+                args.warn_only,
+            )
         _configure_required_checks(
             owner=owner,
             repo=repo,
@@ -252,14 +271,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         strict_enforced = protection.get("required_status_checks", {}).get("strict", False)
 
     if missing:
-        sys.stderr.write("error: missing required checks:\n")
-        for check in missing:
-            sys.stderr.write(f"  - {check}\n")
-        return 1
+        missing_message = "missing required checks:\n" + "\n".join(f"  - {check}" for check in missing)
+        return _warn_or_error(missing_message, args.warn_only)
 
     if not args.skip_strict and not strict_enforced:
-        sys.stderr.write("error: 'Require branches to be up to date' is not enabled\n")
-        return 1
+        return _warn_or_error("'Require branches to be up to date' is not enabled", args.warn_only)
 
     print(
         f"Branch protection verified for {owner}/{repo}@{args.branch}. "
