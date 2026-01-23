@@ -6,8 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-rocketry = pytest.importorskip("rocketry")
-from alpha_factory_v1.core import scheduler  # noqa: E402
+from alpha_factory_v1.core import scheduler
 
 
 @pytest.mark.asyncio

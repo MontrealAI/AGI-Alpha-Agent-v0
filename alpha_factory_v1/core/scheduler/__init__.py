@@ -10,8 +10,14 @@ from typing import Callable, Dict, Iterable, Set
 
 import random
 
-from rocketry import Rocketry
-from rocketry.conds import every
+import pydantic
+
+if int(pydantic.__version__.split(".", 1)[0]) < 2:
+    from rocketry import Rocketry
+    from rocketry.conds import every
+else:
+    Rocketry = None  # type: ignore[assignment]
+    every = None  # type: ignore[assignment]
 
 from alpha_factory_v1.core.self_evolution import self_improver
 from alpha_factory_v1.core.monitoring import metrics
@@ -57,18 +63,20 @@ class SelfImprovementScheduler:
         self._interval_seconds = _parse_interval(interval)
         self._use_rocketry = False
         self._finish: Callable[[], None] = lambda: None
-        try:
-            self.app = Rocketry(execution="async")
-        except TypeError:
-            self.app = Rocketry()
+        self.app = None
+        if Rocketry is not None and every is not None:
+            try:
+                self.app = Rocketry(execution="async")
+            except TypeError:
+                self.app = Rocketry()
 
-        if hasattr(self.app, "task"):
-            self._use_rocketry = True
-            self._finish = self.app.session.finish
+            if hasattr(self.app, "task"):
+                self._use_rocketry = True
+                self._finish = self.app.session.finish
 
-            @self.app.task(every(interval))
-            async def _spawn():  # pragma: no cover - Rocketry callback
-                await self._spawn_jobs()
+                @self.app.task(every(interval))
+                async def _spawn():  # pragma: no cover - Rocketry callback
+                    await self._spawn_jobs()
 
     async def _spawn_jobs(self) -> None:
         """Spawn new worker tasks until quotas or limits are hit."""
@@ -148,7 +156,7 @@ class SelfImprovementScheduler:
     async def serve(self) -> None:
         """Run the scheduler until quotas are exhausted or queue is empty."""
         self.start_time = time.time()
-        if self._use_rocketry:
+        if self._use_rocketry and self.app is not None:
             await self.app.serve()
             # wait for running tasks to finish
             if self.running:
