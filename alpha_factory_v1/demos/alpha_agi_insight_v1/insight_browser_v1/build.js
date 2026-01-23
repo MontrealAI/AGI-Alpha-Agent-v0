@@ -29,6 +29,9 @@ const assetRoot = (process.env.INSIGHT_ASSET_ROOT || "").trim();
 const skipLlmAssets = ["1", "true", "yes"].includes(
     (process.env.FETCH_ASSETS_SKIP_LLM || "").trim().toLowerCase(),
 );
+const inlinePyodideWasm = ["1", "true", "yes"].includes(
+    (process.env.INLINE_PYODIDE_WASM || "").trim().toLowerCase(),
+);
 const PLACEHOLDER_ALLOWLIST = new Set(["wasm_llm/vocab.json"]);
 
 function resolveAssetPath(relPath) {
@@ -330,11 +333,16 @@ async function bundle() {
     }
 
     const wasmPath = resolveAssetPath("wasm/pyodide.asm.wasm");
-    const wasmBuf = fsSync.readFileSync(wasmPath);
-    verify(wasmBuf, "pyodide.asm.wasm");
-    const wasmBase64 = wasmBuf.toString("base64");
-    const wasmSri =
-        "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
+    let wasmBase64 = "";
+    let wasmSri = "";
+    if (fsSync.existsSync(wasmPath)) {
+        const wasmBuf = fsSync.readFileSync(wasmPath);
+        verify(wasmBuf, "pyodide.asm.wasm");
+        wasmSri = "sha384-" + createHash("sha384").update(wasmBuf).digest("base64");
+        if (inlinePyodideWasm) {
+            wasmBase64 = wasmBuf.toString("base64");
+        }
+    }
 
     for (const name of ["pyodide.js"]) {
         const p = resolveAssetPath(path.join("wasm", name));
@@ -343,10 +351,10 @@ async function bundle() {
         }
     }
     let gpt2Base64 = "";
-    if (!wasmBase64) {
+    if (!wasmBase64 && wasmSri) {
         outHtml = outHtml.replace(
             "</head>",
-            `<link rel="preload" href="wasm/pyodide.asm.wasm" as="fetch" type="application/wasm" integrity="${wasmSri}" crossorigin="anonymous" />\n</head>`,
+            `<link rel="preload" href="assets/wasm/pyodide.asm.wasm" as="fetch" type="application/wasm" integrity="${wasmSri}" crossorigin="anonymous" />\n</head>`,
         );
     }
     const bundlePath = `${OUT_DIR}/insight.bundle.js`;

@@ -332,10 +332,13 @@ def _verify(path: Path, name: str) -> bytes:
     return data
 
 
+inline_pyodide_wasm = os.getenv("INLINE_PYODIDE_WASM", "").strip().lower() in {"1", "true", "yes"}
 wasm_b64 = ""
 wasm_file = ROOT / "wasm" / "pyodide.asm.wasm"
-if wasm_file.exists():
+if inline_pyodide_wasm and wasm_file.exists():
     wasm_b64 = base64.b64encode(_verify(wasm_file, "pyodide.asm.wasm")).decode()
+elif wasm_file.exists():
+    _verify(wasm_file, "pyodide.asm.wasm")
 for name in ("pyodide.js",):
     f = ROOT / "wasm" / name
     if f.exists():
