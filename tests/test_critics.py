@@ -29,22 +29,22 @@ def _free_port() -> int:
 
 def test_rest_scoring() -> None:
     service = DualCriticService(["Paris is the capital of France."])
-    client = TestClient(create_app(service))
-    ok = client.post(
-        "/critique",
-        json={"context": "Paris is the capital of France.", "response": "Paris is the capital of France."},
-    )
-    assert ok.status_code == 200
-    data = ok.json()
-    assert data["logic"] > 0.5
-    assert data["feas"] > 0.0
+    with TestClient(create_app(service)) as client:
+        ok = client.post(
+            "/critique",
+            json={"context": "Paris is the capital of France.", "response": "Paris is the capital of France."},
+        )
+        assert ok.status_code == 200
+        data = ok.json()
+        assert data["logic"] > 0.5
+        assert data["feas"] > 0.0
 
-    bad = client.post(
-        "/critique",
-        json={"context": "Paris is the capital of France.", "response": "Berlin is the capital."},
-    )
-    assert bad.status_code == 200
-    assert bad.json()["logic"] < 0.5
+        bad = client.post(
+            "/critique",
+            json={"context": "Paris is the capital of France.", "response": "Berlin is the capital."},
+        )
+        assert bad.status_code == 200
+        assert bad.json()["logic"] < 0.5
 
 
 def test_grpc_scoring() -> None:

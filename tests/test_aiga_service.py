@@ -18,12 +18,11 @@ from fastapi.testclient import TestClient
 def test_health_endpoint() -> None:
     """Verify /health returns expected metrics."""
     module = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint")
-    client = TestClient(cast(Any, module.app))
-
-    resp = client.get("/health")
-    assert resp.status_code == 200
-    data = resp.json()
-    assert set(data) >= {"status", "generations", "best_fitness"}
+    with TestClient(cast(Any, module.app)) as client:
+        resp = client.get("/health")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert set(data) >= {"status", "generations", "best_fitness"}
 
 
 @pytest.mark.usefixtures("non_network")
