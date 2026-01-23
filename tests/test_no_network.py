@@ -23,6 +23,11 @@ COMPOSE_FILE = Path(__file__).resolve().parents[1] / "infrastructure" / "docker-
 
 @pytest.fixture(scope="module")
 def compose_stack() -> None:
+    env_path = COMPOSE_FILE.parents[1] / ".env"
+    created_env = False
+    if not env_path.exists():
+        env_path.write_text("NEO4J_PASSWORD=test\nAPI_TOKEN=test-token\nAGI_INSIGHT_OFFLINE=1\n")
+        created_env = True
     subprocess.run(
         [
             "docker",
@@ -49,6 +54,8 @@ def compose_stack() -> None:
             ],
             check=False,
         )
+        if created_env:
+            env_path.unlink(missing_ok=True)
 
 
 def test_agents_no_outbound_network(compose_stack: None) -> None:

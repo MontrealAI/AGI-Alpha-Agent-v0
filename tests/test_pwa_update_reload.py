@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.conftest import _ensure_insight_node_modules
+from tests.conftest import _ensure_insight_node_modules, _node_major
 
 pw = pytest.importorskip("playwright.sync_api")
 from playwright.sync_api import sync_playwright  # noqa: E402
@@ -28,6 +28,11 @@ def _start_server(directory: Path):
 
 @pytest.mark.skipif(not shutil.which("npm"), reason="npm not installed")  # type: ignore[misc]
 def test_update_triggers_reload(tmp_path: Path, insight_repo: Path, insight_dist: Path) -> None:
+    node_major = _node_major()
+    if node_major is None:
+        pytest.skip("node not available")
+    if node_major < 22:
+        pytest.skip("Node.js 22+ required to build Insight demo")
     repo = insight_repo
     env = os.environ.copy()
     env.setdefault("FETCH_ASSETS_SKIP_LLM", "1")

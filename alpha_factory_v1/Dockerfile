@@ -78,14 +78,14 @@ RUN apt-get update && \
 WORKDIR /app
 
 # -- Strict, reproducible lock (if present) ---------------------------
-COPY requirements-lock.txt /tmp/requirements-lock.txt
+COPY requirements.lock /tmp/requirements.lock
 # -- Project top‑level requirements (edited by humans) ----------------
-COPY backend/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
 #  The lock file is preferred (if the project maintains one).  
 #  Fallback to plain requirements for dev checkouts.
-RUN if [ -f /tmp/requirements-lock.txt ]; then \
-        pip install --no-cache-dir --require-hashes -r /tmp/requirements-lock.txt; \
+RUN if [ -f /tmp/requirements.lock ]; then \
+        pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock; \
     else \
         pip install --no-cache-dir -r /tmp/requirements.txt; \
     fi && \
@@ -95,7 +95,7 @@ RUN if [ -f /tmp/requirements-lock.txt ]; then \
         "google-adk @ git+https://github.com/google/adk-python@main#egg=google-adk" \
         anthropic>=0.21 \
         gunicorn rocketry prometheus-client && \
-    rm -rf /tmp/requirements-lock.txt /tmp/requirements.txt
+    rm -rf /tmp/requirements.lock /tmp/requirements.txt
 
 #############################
 # 4) Copy project source     #

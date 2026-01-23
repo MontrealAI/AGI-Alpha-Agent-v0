@@ -21,6 +21,8 @@ EXTRA_TARGETS = (
     Path(".ruff_cache"),
     Path(".coverage"),
     Path("artifacts"),
+    Path(".tmp/insight-assets"),
+    Path(".tmp/pyodide-cache"),
     Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist"),
     Path("alpha_factory_v1/core/interface/web_client/dist"),
 )
