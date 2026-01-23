@@ -34,22 +34,22 @@ def test_throttle_alert(monkeypatch: pytest.MonkeyPatch) -> None:
     sent: list[str] = []
     monkeypatch.setattr(api_mod.alerts, "send_alert", lambda msg, url=None: sent.append(msg))
 
-    client = TestClient(cast(Any, api_mod.app))
-    headers = {"Authorization": "Bearer test-token"}
+    with TestClient(cast(Any, api_mod.app)) as client:
+        headers = {"Authorization": "Bearer test-token"}
 
-    client.get("/runs", headers=headers)
-    client.get("/runs", headers=headers)
+        client.get("/runs", headers=headers)
+        client.get("/runs", headers=headers)
 
-    metrics = cast(MetricsMiddleware, api_mod.app.state.metrics)
-    limiter = cast(SimpleRateLimiter, api_mod.app.state.limiter)
-    assert metrics is not None, "Metrics middleware missing"
-    assert limiter is not None, "Rate limiter missing"
-    metrics.window_start = time.time() - 61
-    limiter.counters["testclient"] = deque()
+        metrics = cast(MetricsMiddleware, api_mod.app.state.metrics)
+        limiter = cast(SimpleRateLimiter, api_mod.app.state.limiter)
+        assert metrics is not None, "Metrics middleware missing"
+        assert limiter is not None, "Rate limiter missing"
+        metrics.window_start = time.time() - 61
+        limiter.counters["testclient"] = deque()
 
-    client.get("/runs", headers=headers)
+        client.get("/runs", headers=headers)
 
-    assert sent, "alert not triggered"
+        assert sent, "alert not triggered"
 
     monkeypatch.setenv("API_RATE_LIMIT", "1000")
     importlib.reload(api_mod)
@@ -69,10 +69,10 @@ def test_lineage_detail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None
 
     api_mod = importlib.reload(mod)
 
-    client = TestClient(cast(Any, api_mod.app))
-    headers = {"Authorization": "Bearer test-token"}
-    resp = client.get("/lineage/2", headers=headers)
-    assert resp.status_code == 200
-    data = resp.json()
-    assert len(data) == 2
-    assert data[-1]["id"] == 2
+    with TestClient(cast(Any, api_mod.app)) as client:
+        headers = {"Authorization": "Bearer test-token"}
+        resp = client.get("/lineage/2", headers=headers)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert len(data) == 2
+        assert data[-1]["id"] == 2

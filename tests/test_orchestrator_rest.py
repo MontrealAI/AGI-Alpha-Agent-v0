@@ -51,55 +51,55 @@ class TestRestAPI(unittest.TestCase):
         with mock.patch.object(orchestrator, "mem", mem_stub):
             app = _build_rest({"dummy": runner})
             self.assertIsNotNone(app)
-            client = TestClient(app)
-            headers = {"Authorization": "Bearer test-token"}
+            with TestClient(app) as client:
+                headers = {"Authorization": "Bearer test-token"}
 
-            resp = client.get("/agents", headers=headers)
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.json(), ["dummy"])
+                resp = client.get("/agents", headers=headers)
+                self.assertEqual(resp.status_code, 200)
+                self.assertEqual(resp.json(), ["dummy"])
 
-            runner.next_ts = 5
-            resp = client.post("/agent/dummy/trigger", headers=headers)
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.json(), {"queued": True})
-            self.assertEqual(runner.next_ts, 0)
+                runner.next_ts = 5
+                resp = client.post("/agent/dummy/trigger", headers=headers)
+                self.assertEqual(resp.status_code, 200)
+                self.assertEqual(resp.json(), {"queued": True})
+                self.assertEqual(runner.next_ts, 0)
 
-            resp = client.get("/memory/search", params={"q": "foo", "k": 1}, headers=headers)
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.json(), [{"q": "foo"}])
+                resp = client.get("/memory/search", params={"q": "foo", "k": 1}, headers=headers)
+                self.assertEqual(resp.status_code, 200)
+                self.assertEqual(resp.json(), [{"q": "foo"}])
 
-            buf = io.BytesIO()
-            with zipfile.ZipFile(buf, "w") as zf:
-                zf.writestr("model.txt", "data")
-            resp = client.post(
-                "/agent/dummy/update_model",
-                files={"file": ("m.zip", buf.getvalue(), "application/zip")},
-                headers=headers,
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.json(), {"status": "ok"})
-            self.assertIsNotNone(runner.inst.loaded)
+                buf = io.BytesIO()
+                with zipfile.ZipFile(buf, "w") as zf:
+                    zf.writestr("model.txt", "data")
+                resp = client.post(
+                    "/agent/dummy/update_model",
+                    files={"file": ("m.zip", buf.getvalue(), "application/zip")},
+                    headers=headers,
+                )
+                self.assertEqual(resp.status_code, 200)
+                self.assertEqual(resp.json(), {"status": "ok"})
+                self.assertIsNotNone(runner.inst.loaded)
 
-            resp = client.post(
-                "/agent/dummy/skill_test",
-                json={"ping": 1},
-                headers=headers,
-            )
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.json(), {"ok": True})
+                resp = client.post(
+                    "/agent/dummy/skill_test",
+                    json={"ping": 1},
+                    headers=headers,
+                )
+                self.assertEqual(resp.status_code, 200)
+                self.assertEqual(resp.json(), {"ok": True})
 
-            buf = io.BytesIO()
-            with zipfile.ZipFile(buf, "w") as zf:
-                info = zipfile.ZipInfo("bad")
-                info.create_system = 3
-                info.external_attr = (stat.S_IFLNK | 0o777) << 16
-                zf.writestr(info, "target")
-            resp = client.post(
-                "/agent/dummy/update_model",
-                files={"file": ("m.zip", buf.getvalue(), "application/zip")},
-                headers=headers,
-            )
-            self.assertEqual(resp.status_code, 400)
+                buf = io.BytesIO()
+                with zipfile.ZipFile(buf, "w") as zf:
+                    info = zipfile.ZipInfo("bad")
+                    info.create_system = 3
+                    info.external_attr = (stat.S_IFLNK | 0o777) << 16
+                    zf.writestr(info, "target")
+                resp = client.post(
+                    "/agent/dummy/update_model",
+                    files={"file": ("m.zip", buf.getvalue(), "application/zip")},
+                    headers=headers,
+                )
+                self.assertEqual(resp.status_code, 400)
 
 
 if __name__ == "__main__":  # pragma: no cover

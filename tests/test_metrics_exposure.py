@@ -18,10 +18,10 @@ def make_client() -> TestClient:
 
 
 def test_new_metrics_present() -> None:
-    client = make_client()
-    resp = client.get("/metrics")
-    assert resp.status_code == 200
-    text = resp.text
-    assert "dgm_parents_selected_total" in text
-    assert "dgm_children_admitted_total" in text
-    assert "dgm_revives_total" in text
+    with make_client() as client:
+        resp = client.get("/metrics")
+        assert resp.status_code == 200
+        text = resp.text
+        assert "dgm_parents_selected_total" in text
+        assert "dgm_children_admitted_total" in text
+        assert "dgm_revives_total" in text

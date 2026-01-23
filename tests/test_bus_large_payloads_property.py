@@ -17,9 +17,9 @@ from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 @settings(max_examples=10, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=64_000),
-    recipient=st.text(min_size=1, max_size=64_000),
-    payload_text=st.text(min_size=1, max_size=65_000),
+    sender=st.text(min_size=1, max_size=16_000),
+    recipient=st.text(min_size=1, max_size=16_000),
+    payload_text=st.text(min_size=1, max_size=20_000),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,

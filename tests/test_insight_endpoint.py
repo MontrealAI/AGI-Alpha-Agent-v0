@@ -33,23 +33,23 @@ def _setup_simulations() -> None:
 
 def test_insight_aggregates_results() -> None:
     _setup_simulations()
-    client = _make_client()
-    headers = {"Authorization": "Bearer test-token"}
-    resp = client.post("/insight", json={"ids": ["a", "b"]}, headers=headers)
-    assert resp.status_code == 200
-    assert resp.json() == {"forecast": [{"year": 1, "capability": 0.5}]}
+    with _make_client() as client:
+        headers = {"Authorization": "Bearer test-token"}
+        resp = client.post("/insight", json={"ids": ["a", "b"]}, headers=headers)
+        assert resp.status_code == 200
+        assert resp.json() == {"forecast": [{"year": 1, "capability": 0.5}]}
 
 
 def test_insight_invalid_token() -> None:
     _setup_simulations()
-    client = _make_client()
-    resp = client.post("/insight", json={}, headers={"Authorization": "Bearer bad"})
-    assert resp.status_code == 403
+    with _make_client() as client:
+        resp = client.post("/insight", json={}, headers={"Authorization": "Bearer bad"})
+        assert resp.status_code == 403
 
 
 def test_insight_missing_ids() -> None:
     _setup_simulations()
-    client = _make_client()
-    headers = {"Authorization": "Bearer test-token"}
-    resp = client.post("/insight", json={"ids": ["missing"]}, headers=headers)
-    assert resp.status_code == 404
+    with _make_client() as client:
+        headers = {"Authorization": "Bearer test-token"}
+        resp = client.post("/insight", json={"ids": ["missing"]}, headers=headers)
+        assert resp.status_code == 404
