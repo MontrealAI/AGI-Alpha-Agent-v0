@@ -22,20 +22,19 @@ def test_agents_list_offline(non_network: None) -> None:
     os.environ.setdefault("ALPHA_ASI_MAX_STEPS", "1")
 
     mod = importlib.import_module("alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo")
-    client = TestClient(cast(Any, mod.app))
-
-    resp = client.get("/agents")
-    assert resp.status_code == 200
-    agents = resp.json()
-    expected = {
-        "PlanningAgent",
-        "ResearchAgent",
-        "StrategyAgent",
-        "MarketAnalysisAgent",
-        "CodeGenAgent",
-        "SafetyAgent",
-    }
-    assert expected.issubset(set(agents))
+    with TestClient(cast(Any, mod.app)) as client:
+        resp = client.get("/agents")
+        assert resp.status_code == 200
+        agents = resp.json()
+        expected = {
+            "PlanningAgent",
+            "ResearchAgent",
+            "StrategyAgent",
+            "MarketAnalysisAgent",
+            "CodeGenAgent",
+            "SafetyAgent",
+        }
+        assert expected.issubset(set(agents))
 
 
 def test_post_new_env(non_network: None) -> None:
@@ -45,11 +44,10 @@ def test_post_new_env(non_network: None) -> None:
     os.environ.setdefault("ALPHA_ASI_MAX_STEPS", "1")
 
     mod = importlib.import_module("alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo")
-    client = TestClient(cast(Any, mod.app))
-
-    resp = client.post("/command", json={"cmd": "new_env"})
-    assert resp.status_code == 200
-    assert resp.json() == {"ok": True}
+    with TestClient(cast(Any, mod.app)) as client:
+        resp = client.post("/command", json={"cmd": "new_env"})
+        assert resp.status_code == 200
+        assert resp.json() == {"ok": True}
 
 
 def test_multi_env_reporting(monkeypatch: pytest.MonkeyPatch) -> None:

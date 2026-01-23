@@ -104,13 +104,21 @@ class SelfImprovementScheduler:
     async def _run_job(self, job: Job) -> None:
         start = time.perf_counter()
         try:
-            delta, _ = await asyncio.to_thread(
-                self_improver.improve_repo,
-                job.repo,
-                job.patch,
-                job.metric,
-                job.log,
-            )
+            try:
+                delta, _ = await asyncio.to_thread(
+                    self_improver.improve_repo,
+                    job.repo,
+                    job.patch,
+                    job.metric,
+                    job.log,
+                )
+            except RuntimeError:
+                delta, _ = self_improver.improve_repo(
+                    job.repo,
+                    job.patch,
+                    job.metric,
+                    job.log,
+                )
             self.tokens_used += job.tokens
             gpu_hours = (time.perf_counter() - start) / 3600
             metrics.dgm_gpu_hours_total.inc(gpu_hours)

@@ -32,40 +32,40 @@ def make_client() -> TestClient:
 
 
 def test_api_endpoints() -> None:
-    client = make_client()
-    headers = {"Authorization": "Bearer test-token"}
+    with make_client() as client:
+        headers = {"Authorization": "Bearer test-token"}
 
-    resp = client.post(
-        "/simulate",
-        json={"horizon": 1, "pop_size": 2, "generations": 1, "k": 5.0, "x0": 0.0},
-        headers=headers,
-    )
-    assert resp.status_code == 200
-    data = resp.json()
-    assert isinstance(data, dict)
-    sim_id = data.get("id")
-    assert isinstance(sim_id, str) and sim_id
+        resp = client.post(
+            "/simulate",
+            json={"horizon": 1, "pop_size": 2, "generations": 1, "k": 5.0, "x0": 0.0},
+            headers=headers,
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert isinstance(data, dict)
+        sim_id = data.get("id")
+        assert isinstance(sim_id, str) and sim_id
 
-    for _ in range(200):
-        r = client.get(f"/results/{sim_id}", headers=headers)
-        if r.status_code == 200:
-            results = r.json()
-            break
-        time.sleep(0.05)
-    else:
-        raise AssertionError("Timed out waiting for results")
+        for _ in range(200):
+            r = client.get(f"/results/{sim_id}", headers=headers)
+            if r.status_code == 200:
+                results = r.json()
+                break
+            time.sleep(0.05)
+        else:
+            raise AssertionError("Timed out waiting for results")
 
-    assert isinstance(results, dict)
-    assert results.get("id") == sim_id
-    assert "forecast" in results and isinstance(results["forecast"], list)
-    assert "population" in results and isinstance(results["population"], list)
+        assert isinstance(results, dict)
+        assert results.get("id") == sim_id
+        assert "forecast" in results and isinstance(results["forecast"], list)
+        assert "population" in results and isinstance(results["population"], list)
 
-    runs = client.get("/runs", headers=headers)
-    assert runs.status_code == 200
-    runs_data = runs.json()
-    assert isinstance(runs_data, dict)
-    assert "ids" in runs_data and isinstance(runs_data["ids"], list)
-    assert sim_id in runs_data["ids"]
+        runs = client.get("/runs", headers=headers)
+        assert runs.status_code == 200
+        runs_data = runs.json()
+        assert isinstance(runs_data, dict)
+        assert "ids" in runs_data and isinstance(runs_data["ids"], list)
+        assert sim_id in runs_data["ids"]
 
 
 def test_background_run_direct(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -115,7 +115,7 @@ def test_results_dir_permissions(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 
 
 def test_root_serves_spa() -> None:
-    client = make_client()
-    r = client.get("/")
-    assert r.status_code == 200
-    assert '<div id="root">' in r.text
+    with make_client() as client:
+        r = client.get("/")
+        assert r.status_code == 200
+        assert '<div id="root">' in r.text

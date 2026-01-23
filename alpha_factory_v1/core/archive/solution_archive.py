@@ -14,6 +14,11 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     duckdb = None
 
+try:
+    import orjson
+except Exception:  # pragma: no cover - optional dependency
+    orjson = None
+
 
 @dataclass(slots=True)
 class Solution:
@@ -59,9 +64,10 @@ class SolutionArchive:
     def add(self, sector: str, approach: str, score: float, data: Mapping[str, Any]) -> None:
         """Insert a solution entry grouped by sector and approach."""
         band = self._band(score)
+        payload = json.dumps(dict(data)) if orjson is None else orjson.dumps(dict(data)).decode("utf-8")
         self.conn.execute(
             "INSERT INTO solutions(sector, approach, score, band, data, ts) VALUES (?,?,?,?,?,?)",
-            (sector, approach, score, band, json.dumps(dict(data)), time.time()),
+            (sector, approach, score, band, payload, time.time()),
         )
         if isinstance(self.conn, sqlite3.Connection):  # pragma: no cover - sqlite
             self.conn.commit()
@@ -94,7 +100,7 @@ class SolutionArchive:
                 sector=row[0],
                 approach=row[1],
                 score=float(row[2]),
-                data=json.loads(row[3]),
+                data=json.loads(row[3]) if orjson is None else orjson.loads(row[3]),
                 ts=float(row[4]),
             )
             for row in rows

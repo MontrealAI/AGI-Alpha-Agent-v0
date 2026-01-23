@@ -121,7 +121,10 @@ class Portfolio:
     async def arecord_fill(self, symbol: str, qty: float, price: float, side: str) -> None:
         """Async wrapper around :meth:`record_fill`."""
         loop = asyncio.get_running_loop()
-        await loop.run_in_executor(None, self.record_fill, symbol, qty, price, side)
+        try:
+            await loop.run_in_executor(None, self.record_fill, symbol, qty, price, side)
+        except RuntimeError:
+            self.record_fill(symbol, qty, price, side)
 
     def position(self, symbol: str) -> float:
         """Current net position (0.0 if the symbol has never traded)."""

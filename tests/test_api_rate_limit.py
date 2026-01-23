@@ -22,11 +22,11 @@ def test_rate_limit(monkeypatch: pytest.MonkeyPatch) -> None:
 
     api = importlib.reload(api_server)
 
-    client = TestClient(cast(Any, api.app))
-    headers = {"Authorization": "Bearer test-token"}
+    with TestClient(cast(Any, api.app)) as client:
+        headers = {"Authorization": "Bearer test-token"}
 
-    assert client.get("/runs", headers=headers).status_code == 200
-    assert client.get("/runs", headers=headers).status_code == 200
+        assert client.get("/runs", headers=headers).status_code == 200
+        assert client.get("/runs", headers=headers).status_code == 200
 
-    resp = client.get("/runs", headers=headers)
-    assert resp.status_code == 429
+        resp = client.get("/runs", headers=headers)
+        assert resp.status_code == 429

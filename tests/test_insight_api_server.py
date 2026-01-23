@@ -19,7 +19,8 @@ def client() -> TestClient:
     os.environ.setdefault("API_TOKEN", "test-token")
     os.environ.setdefault("API_RATE_LIMIT", "1000")
     api = importlib.reload(api_server)
-    return TestClient(cast(Any, api.app))
+    with TestClient(cast(Any, api.app)) as client:
+        yield client
 
 
 def test_root_disclaimer_plain(client: TestClient) -> None:

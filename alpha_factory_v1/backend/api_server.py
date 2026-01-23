@@ -8,6 +8,7 @@ import contextlib
 import logging
 import os
 from pathlib import Path
+import sys
 from typing import Any, Dict, List, Optional
 from types import SimpleNamespace
 
@@ -35,18 +36,25 @@ def build_rest(
 ) -> Optional["FastAPI"]:
     if "FastAPI" not in globals():
         return None
-    if mem is None:
-        with contextlib.suppress(Exception):
-            from . import orchestrator as orchestrator_mod
+    default_mem = SimpleNamespace(
+        vector=SimpleNamespace(
+            recent=lambda *_a, **_k: [],
+            search=lambda *_a, **_k: [],
+        )
+    )
 
-            mem = getattr(orchestrator_mod, "mem", None)
-        if mem is None:
-            mem = SimpleNamespace(
-                vector=SimpleNamespace(
-                    recent=lambda *_a, **_k: [],
-                    search=lambda *_a, **_k: [],
-                )
-            )
+    def _resolve_mem() -> Any:
+        if mem is not None:
+            return mem
+        orchestrator_mod = sys.modules.get("alpha_factory_v1.backend.orchestrator")
+        if orchestrator_mod is None:
+            with contextlib.suppress(Exception):
+                from . import orchestrator as orchestrator_mod  # type: ignore[assignment]
+        if orchestrator_mod is not None:
+            orchestrator_mem = getattr(orchestrator_mod, "mem", None)
+            if orchestrator_mem is not None:
+                return orchestrator_mem
+        return default_mem
 
     token = os.getenv("API_TOKEN")
     if not token:
@@ -131,11 +139,11 @@ def build_rest(
 
     @app.get("/memory/{agent}/recent")  # type: ignore[misc]
     async def _recent(agent: str, n: int = 25) -> Any:  # noqa: D401
-        return mem.vector.recent(agent, n)
+        return _resolve_mem().vector.recent(agent, n)
 
     @app.get("/memory/search")  # type: ignore[misc]
     async def _search(q: str, k: int = 5) -> Any:  # noqa: D401
-        return mem.vector.search(q, k)
+        return _resolve_mem().vector.search(q, k)
 
     @app.get("/metrics", response_class=PlainTextResponse)  # type: ignore[misc]
     async def _metrics() -> PlainTextResponse:  # noqa: D401

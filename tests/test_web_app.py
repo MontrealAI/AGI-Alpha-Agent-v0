@@ -50,14 +50,14 @@ def test_progress_dom_updates() -> None:
     from fastapi.testclient import TestClient
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
-    client = TestClient(api_server.app)
-    try:
-        with pw.sync_playwright() as p:
-            browser = p.chromium.launch()
-            page = browser.new_page()
-            page.goto(str(client.base_url) + "/web/")
-            page.click("text=Run simulation")
-            page.wait_for_selector("#capability")
-            browser.close()
-    except PlaywrightError as exc:
-        pytest.skip(f"Playwright browser not installed: {exc}")
+    with TestClient(api_server.app) as client:
+        try:
+            with pw.sync_playwright() as p:
+                browser = p.chromium.launch()
+                page = browser.new_page()
+                page.goto(str(client.base_url) + "/web/")
+                page.click("text=Run simulation")
+                page.wait_for_selector("#capability")
+                browser.close()
+        except PlaywrightError as exc:
+            pytest.skip(f"Playwright browser not installed: {exc}")

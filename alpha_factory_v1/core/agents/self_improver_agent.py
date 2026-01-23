@@ -77,14 +77,23 @@ class SelfImproverAgent(BaseAgent):
         if not is_patch_valid(diff):
             raise ValueError("Invalid or unsafe patch")
         self._check_allowed(diff)
-        delta, clone = await asyncio.to_thread(
-            self_improver.improve_repo,
-            str(self.repo),
-            str(self.patch_file),
-            self.metric_file,
-            self.log_file,
-            False,
-        )
+        try:
+            delta, clone = await asyncio.to_thread(
+                self_improver.improve_repo,
+                str(self.repo),
+                str(self.patch_file),
+                self.metric_file,
+                self.log_file,
+                False,
+            )
+        except RuntimeError:
+            delta, clone = self_improver.improve_repo(
+                str(self.repo),
+                str(self.patch_file),
+                self.metric_file,
+                self.log_file,
+                False,
+            )
         try:
             if delta <= 0:
                 return

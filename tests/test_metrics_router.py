@@ -19,11 +19,11 @@ def make_client() -> TestClient:
 
 
 def test_metrics_endpoint() -> None:
-    client = make_client()
-    resp = client.get("/metrics")
-    assert resp.status_code == 200
-    assert "api_requests_total" in resp.text
-    assert "api_request_seconds" in resp.text
-    assert "dgm_best_score" in resp.text
-    assert "dgm_archive_mean" in resp.text
-    assert "dgm_lineage_depth" in resp.text
+    with make_client() as client:
+        resp = client.get("/metrics")
+        assert resp.status_code == 200
+        assert "api_requests_total" in resp.text
+        assert "api_request_seconds" in resp.text
+        assert "dgm_best_score" in resp.text
+        assert "dgm_archive_mean" in resp.text
+        assert "dgm_lineage_depth" in resp.text
