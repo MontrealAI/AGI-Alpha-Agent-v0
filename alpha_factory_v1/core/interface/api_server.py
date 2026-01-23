@@ -276,9 +276,11 @@ if app is not None:
         if API_TOKEN == "REPLACE_ME_TOKEN":
             _log.error("API_TOKEN is set to the default 'REPLACE_ME_TOKEN'. Edit .env to use a strong secret.")
             raise RuntimeError("API_TOKEN placeholder detected")
-        orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
-        app_f.state.orchestrator = orch_mod.Orchestrator()
-        app_f.state.orch_task = asyncio.create_task(app_f.state.orchestrator.run_forever())
+        disable_orch = os.getenv("AGI_INSIGHT_DISABLE_ORCH") == "1"
+        if not disable_orch:
+            orch_mod = importlib.import_module("alpha_factory_v1.core.orchestrator")
+            app_f.state.orchestrator = orch_mod.Orchestrator()
+            app_f.state.orch_task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         _load_results()
         asyncio.create_task(_static_analysis_task())
         try:
