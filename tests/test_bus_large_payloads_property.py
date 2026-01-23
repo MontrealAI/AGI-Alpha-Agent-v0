@@ -37,17 +37,17 @@ def test_large_payloads_delivered_intact(
 
     bus = messaging.A2ABus(config.Settings(bus_port=0))
     received: list[messaging.Envelope] = []
-    delivered = asyncio.Event()
-
-    async def handler(env: messaging.Envelope) -> None:
-        received.append(env)
-        delivered.set()
-
-    bus.subscribe(recipient, handler)
     env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
     env.payload["data"] = payload_text
 
     async def run() -> None:
+        delivered = asyncio.Event()
+
+        async def handler(env: messaging.Envelope) -> None:
+            received.append(env)
+            delivered.set()
+
+        bus.subscribe(recipient, handler)
         bus.publish(recipient, env)
         await asyncio.wait_for(delivered.wait(), timeout=5)
 
