@@ -47,7 +47,7 @@ def test_large_payloads_delivered_intact(
 
     async def run() -> None:
         bus.publish(recipient, env)
-        await asyncio.sleep(0)
+        await asyncio.sleep(0.01)
 
     asyncio.run(run())
 
@@ -87,6 +87,6 @@ def test_publish_invalid_payload_errors(bad: object) -> None:  # type: ignore[mi
                 env = types.SimpleNamespace(sender="s", recipient="x", payload={"bad": bad}, ts=0.0)
                 with pytest.raises(TypeError):
                     bus.publish("x", env)
-                    await asyncio.sleep(0)
+                    await asyncio.sleep(0.01)
 
         asyncio.run(run())

@@ -82,7 +82,7 @@ def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleN
 
     async def run() -> None:
         bus.publish("x", env)
-        await asyncio.sleep(0)  # allow handler task to run
+        await asyncio.sleep(0.01)  # allow handler task to run
 
     asyncio.run(run())
     assert received
@@ -107,7 +107,7 @@ def test_bus_extreme_envelopes() -> None:
         bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("inf")))
         bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("-inf")))
         bus.publish("x", types.SimpleNamespace(sender=None, recipient="x", payload={}, ts=None))
-        await asyncio.sleep(0)
+        await asyncio.sleep(0.01)
 
     asyncio.run(run())
     assert received
