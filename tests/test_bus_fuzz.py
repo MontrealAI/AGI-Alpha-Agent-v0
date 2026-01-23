@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import types
 from typing import Any
 
@@ -99,4 +100,25 @@ def test_bus_extreme_envelopes() -> None:
     bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("inf")))
     bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("-inf")))
     bus.publish("x", types.SimpleNamespace(sender=None, recipient="x", payload={}, ts=None))
+    assert received
+
+
+def test_bus_async_handler_runs() -> None:
+    """Async handlers should execute when published from an async context."""
+
+    bus = messaging.A2ABus(config.Settings(bus_port=0))
+    received: list[object] = []
+    delivered = asyncio.Event()
+
+    async def handler(env: object) -> None:
+        received.append(env)
+        delivered.set()
+
+    bus.subscribe("x", handler)
+
+    async def run() -> None:
+        bus.publish("x", messaging.Envelope(sender="s", recipient="x", ts=0.0))
+        await asyncio.wait_for(delivered.wait(), timeout=5)
+
+    asyncio.run(run())
     assert received
