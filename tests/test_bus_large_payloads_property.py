@@ -37,9 +37,11 @@ def test_large_payloads_delivered_intact(
 
     bus = messaging.A2ABus(config.Settings(bus_port=0))
     received: list[messaging.Envelope] = []
+    delivered = asyncio.Event()
 
     async def handler(env: messaging.Envelope) -> None:
         received.append(env)
+        delivered.set()
 
     bus.subscribe(recipient, handler)
     env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
@@ -47,7 +49,7 @@ def test_large_payloads_delivered_intact(
 
     async def run() -> None:
         bus.publish(recipient, env)
-        await asyncio.sleep(0)
+        await asyncio.wait_for(delivered.wait(), timeout=5)
 
     asyncio.run(run())
 
