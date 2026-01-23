@@ -373,6 +373,7 @@ async function bundle() {
             "",
         )
         .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
+        .replace('src="d3.v7.min.js"', 'src="assets/d3.v7.min.js"')
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');

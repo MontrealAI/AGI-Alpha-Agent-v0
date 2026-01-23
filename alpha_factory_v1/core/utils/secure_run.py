@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from typing import Sequence
@@ -23,6 +24,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
     """
 
     timeout = 120
+    docker_cmd = list(cmd)
     firejail = shutil.which("firejail")
     if firejail:
         full_cmd = [
@@ -38,6 +40,10 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
     else:
         docker = shutil.which("docker")
         if docker:
+            if cmd:
+                base = os.path.basename(cmd[0]).lower()
+                if base.startswith("python") or base == "py":
+                    docker_cmd = ["python", *cmd[1:]]
             full_cmd = [
                 docker,
                 "run",
@@ -50,7 +56,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
                 "--security-opt",
                 "seccomp=unconfined",
                 "python:3.11-slim",
-                *cmd,
+                *docker_cmd,
             ]
         else:
             full_cmd = list(cmd)
