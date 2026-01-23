@@ -75,16 +75,11 @@ def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleN
     bus = messaging.A2ABus(config.Settings(bus_port=0))
     received: list[object] = []
 
-    async def handler(e: object) -> None:
+    def handler(e: object) -> None:
         received.append(e)
 
     bus.subscribe("x", handler)
-
-    async def run() -> None:
-        bus.publish("x", env)
-        await asyncio.sleep(0)  # allow handler task to run
-
-    asyncio.run(run())
+    bus.publish("x", env)
     assert received
 
 
@@ -94,20 +89,36 @@ def test_bus_extreme_envelopes() -> None:
     bus = messaging.A2ABus(config.Settings(bus_port=0))
     received: list[object] = []
 
+    def handler(env: object) -> None:
+        received.append(env)
+
+    bus.subscribe("x", handler)
+    for size in (0, 1, 100, 1000, 10000, 50000):
+        env = messaging.Envelope(sender="s" * size, recipient="x", ts=1e308)
+        env.payload["data"] = "p" * size
+        bus.publish("x", env)
+    bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("inf")))
+    bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("-inf")))
+    bus.publish("x", types.SimpleNamespace(sender=None, recipient="x", payload={}, ts=None))
+    assert received
+
+
+def test_bus_async_handler_runs() -> None:
+    """Async handlers should execute when published from an async context."""
+
+    bus = messaging.A2ABus(config.Settings(bus_port=0))
+    received: list[object] = []
+    delivered = asyncio.Event()
+
     async def handler(env: object) -> None:
         received.append(env)
+        delivered.set()
 
     bus.subscribe("x", handler)
 
     async def run() -> None:
-        for size in (0, 1, 100, 1000, 10000, 50000):
-            env = messaging.Envelope(sender="s" * size, recipient="x", ts=1e308)
-            env.payload["data"] = "p" * size
-            bus.publish("x", env)
-        bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("inf")))
-        bus.publish("x", messaging.Envelope(sender="", recipient="x", ts=float("-inf")))
-        bus.publish("x", types.SimpleNamespace(sender=None, recipient="x", payload={}, ts=None))
-        await asyncio.sleep(0)
+        bus.publish("x", messaging.Envelope(sender="s", recipient="x", ts=0.0))
+        await asyncio.wait_for(delivered.wait(), timeout=5)
 
     asyncio.run(run())
     assert received
