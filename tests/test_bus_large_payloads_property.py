@@ -37,9 +37,11 @@ def test_large_payloads_delivered_intact(
 
     bus = messaging.A2ABus(config.Settings(bus_port=0))
     received: list[messaging.Envelope] = []
+    handled = asyncio.Event()
 
     async def handler(env: messaging.Envelope) -> None:
         received.append(env)
+        handled.set()
 
     bus.subscribe(recipient, handler)
     env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
@@ -47,7 +49,7 @@ def test_large_payloads_delivered_intact(
 
     async def run() -> None:
         bus.publish(recipient, env)
-        await asyncio.sleep(0.01)
+        await asyncio.wait_for(handled.wait(), timeout=2.0)
 
     asyncio.run(run())
 
@@ -87,6 +89,6 @@ def test_publish_invalid_payload_errors(bad: object) -> None:  # type: ignore[mi
                 env = types.SimpleNamespace(sender="s", recipient="x", payload={"bad": bad}, ts=0.0)
                 with pytest.raises(TypeError):
                     bus.publish("x", env)
-                    await asyncio.sleep(0.01)
+                    await asyncio.sleep(0)
 
         asyncio.run(run())
