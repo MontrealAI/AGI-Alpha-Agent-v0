@@ -240,6 +240,7 @@ REQUIRED = [
 ]
 MODROOT = "alpha_factory_v1.backend.agents."
 AGENTS: Dict[str, Agent] = {}
+_DISABLE_AGENT_THREADS = bool(os.getenv("PYTEST_CURRENT_TEST") or os.getenv("PYTEST_NET_OFF") == "1")
 
 
 def _boot(path: str) -> None:
@@ -256,7 +257,12 @@ def _boot(path: str) -> None:
             class StepAdapter(Agent):
                 def __init__(self) -> None:
                     super().__init__(name)
-                    threading.Thread(target=self._loop, daemon=True).start()
+                    if _DISABLE_AGENT_THREADS:
+                        return
+                    try:
+                        threading.Thread(target=self._loop, daemon=True).start()
+                    except RuntimeError as exc:  # pragma: no cover - thread exhaustion
+                        LOG.warning("[Adapter:%s] thread start failed: %s", name, exc)
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
                     pass
@@ -550,8 +556,7 @@ class BasicSafetyAgent(Agent):
             self.emit("orch", {"cmd": "stop"})
 
 
-existing_safety = AGENTS.get("safety")
-if not isinstance(existing_safety, Agent) or "safety" not in A2ABus._subs:
+if "safety" not in A2ABus._subs:
     AGENTS["safety"] = BasicSafetyAgent()
 
 # =============================================================================
