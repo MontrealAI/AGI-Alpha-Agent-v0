@@ -388,6 +388,8 @@ class ManufacturingAgent(AgentBase):
             model.Minimize(sum(objective_terms))
 
         solver = cp.CpSolver()
+        if os.getenv("PYTEST_CURRENT_TEST") or os.getenv("PYTEST_NET_OFF") == "1":
+            solver.parameters.num_search_workers = 1
         solver.parameters.max_time_in_seconds = float(self.cfg.max_wall_sec)
         status = solver.Solve(model)
         if status not in (cp.OPTIMAL, cp.FEASIBLE):
