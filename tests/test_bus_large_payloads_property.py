@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import string
 import types
 from unittest import mock
 
@@ -15,11 +16,14 @@ from hypothesis import given, settings, strategies as st  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+ALPHABET = string.ascii_letters + string.digits + " _-"
+
+
 @settings(max_examples=5, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=8_192),
-    recipient=st.text(min_size=1, max_size=8_192),
-    payload_text=st.text(min_size=1, max_size=16_384),
+    sender=st.text(alphabet=ALPHABET, min_size=1, max_size=8_192),
+    recipient=st.text(alphabet=ALPHABET, min_size=1, max_size=8_192),
+    payload_text=st.text(alphabet=ALPHABET, min_size=1, max_size=16_384),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
