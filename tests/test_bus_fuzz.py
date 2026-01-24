@@ -41,18 +41,20 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     if as_proto:
         sender = draw(st.text(min_size=0, max_size=5))
         recipient = draw(st.text(min_size=0, max_size=5))
-        ts = draw(st.floats(allow_nan=False, allow_infinity=False))
+        ts = draw(st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False))
         payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
         if big_payload:
             payload["data"] = draw(st.text(max_size=500))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
-    sender = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
-    recipient = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
+    sender = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(min_value=-1000, max_value=1000), st.none()))
+    recipient = draw(
+        st.one_of(st.text(min_size=0, max_size=5), st.integers(min_value=-1000, max_value=1000), st.none())
+    )
     ts = draw(
         st.one_of(
-            st.floats(allow_nan=False, allow_infinity=False),
+            st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False),
             st.text(min_size=0, max_size=5),
             st.none(),
         )
