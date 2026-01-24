@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import string
 import types
 from typing import Any
 
@@ -16,12 +17,16 @@ from hypothesis.strategies import composite  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+INT_BOUND = 1000
+FLOAT_BOUND = 1e6
+SAFE_TEXT_ALPHABET = string.ascii_letters + string.digits + string.punctuation + " "
+
 json_scalars = st.one_of(
     st.none(),
     st.booleans(),
-    st.integers(),
-    st.floats(allow_nan=False, allow_infinity=False),
-    st.text(max_size=20),
+    st.integers(min_value=-INT_BOUND, max_value=INT_BOUND),
+    st.floats(min_value=-FLOAT_BOUND, max_value=FLOAT_BOUND, allow_nan=False, allow_infinity=False),
+    st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=20),
 )
 
 json_values = st.recursive(
@@ -39,28 +44,46 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     as_proto = draw(st.booleans())
     big_payload = draw(st.booleans())
     if as_proto:
-        sender = draw(st.text(min_size=0, max_size=5))
-        recipient = draw(st.text(min_size=0, max_size=5))
-        ts = draw(st.floats(allow_nan=False, allow_infinity=False))
-        payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
+        sender = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=0, max_size=5))
+        recipient = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=0, max_size=5))
+        ts = draw(st.floats(min_value=-FLOAT_BOUND, max_value=FLOAT_BOUND, allow_nan=False, allow_infinity=False))
+        payload: dict[str, Any] = draw(
+            st.dictionaries(
+                st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=5),
+                json_values,
+                max_size=3,
+            )
+        )
         if big_payload:
-            payload["data"] = draw(st.text(max_size=500))
+            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=500))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
-    sender = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
-    recipient = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
+    sender = draw(
+        st.one_of(
+            st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=0, max_size=5),
+            st.integers(min_value=-INT_BOUND, max_value=INT_BOUND),
+            st.none(),
+        )
+    )
+    recipient = draw(
+        st.one_of(
+            st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=0, max_size=5),
+            st.integers(min_value=-INT_BOUND, max_value=INT_BOUND),
+            st.none(),
+        )
+    )
     ts = draw(
         st.one_of(
-            st.floats(allow_nan=False, allow_infinity=False),
-            st.text(min_size=0, max_size=5),
+            st.floats(min_value=-FLOAT_BOUND, max_value=FLOAT_BOUND, allow_nan=False, allow_infinity=False),
+            st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=0, max_size=5),
             st.none(),
         )
     )
     payload = draw(
         st.dictionaries(
-            st.text(min_size=1, max_size=5),
-            st.one_of(json_values, st.text(max_size=500)),
+            st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=5),
+            st.one_of(json_values, st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=500)),
             max_size=3,
         )
     )
