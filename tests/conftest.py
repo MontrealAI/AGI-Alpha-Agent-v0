@@ -12,6 +12,16 @@ import pytest
 
 
 os.environ.setdefault("PYTEST_NET_OFF", "1")
+for env_var in (
+    "OMP_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "MKL_NUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+    "VECLIB_MAXIMUM_THREADS",
+    "BLIS_NUM_THREADS",
+):
+    os.environ.setdefault(env_var, "1")
+os.environ.setdefault("NO_LLM", "1")
 
 _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"

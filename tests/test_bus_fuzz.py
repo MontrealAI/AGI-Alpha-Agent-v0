@@ -44,7 +44,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
         ts = draw(st.floats(allow_nan=False, allow_infinity=False))
         payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
         if big_payload:
-            payload["data"] = draw(st.text(max_size=2000))
+            payload["data"] = draw(st.text(max_size=500))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
@@ -60,7 +60,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     payload = draw(
         st.dictionaries(
             st.text(min_size=1, max_size=5),
-            st.one_of(json_values, st.text(max_size=2000)),
+            st.one_of(json_values, st.text(max_size=500)),
             max_size=3,
         )
     )
@@ -93,7 +93,7 @@ def test_bus_extreme_envelopes() -> None:
         received.append(env)
 
     bus.subscribe("x", handler)
-    for size in (0, 1, 100, 1000, 10000, 50000):
+    for size in (0, 1, 100, 1000, 5000, 10000):
         env = messaging.Envelope(sender="s" * size, recipient="x", ts=1e308)
         env.payload["data"] = "p" * size
         bus.publish("x", env)

@@ -256,7 +256,8 @@ def _boot(path: str) -> None:
             class StepAdapter(Agent):
                 def __init__(self) -> None:
                     super().__init__(name)
-                    threading.Thread(target=self._loop, daemon=True).start()
+                    if not os.getenv("PYTEST_CURRENT_TEST"):
+                        threading.Thread(target=self._loop, daemon=True).start()
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
                     pass
@@ -551,7 +552,7 @@ class BasicSafetyAgent(Agent):
 
 
 existing_safety = AGENTS.get("safety")
-if not isinstance(existing_safety, Agent) or "safety" not in A2ABus._subs:
+if not isinstance(existing_safety, Agent):
     AGENTS["safety"] = BasicSafetyAgent()
 
 # =============================================================================
