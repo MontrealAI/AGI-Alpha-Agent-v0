@@ -12,7 +12,8 @@ def test_load_model_warning(monkeypatch, caplog):
     monkeypatch.setattr(local_llm, "Llama", mock.Mock(side_effect=RuntimeError("boom")))
     monkeypatch.setattr(local_llm, "AutoModelForCausalLM", None)
 
-    local_llm._load_model(local_llm.config.CFG)
+    cfg = local_llm.config.Settings(openai_api_key="test-token", offline=False)
+    local_llm._load_model(cfg)
 
     assert any("boom" in r.message for r in caplog.records)
 

@@ -268,6 +268,7 @@ if app is not None:
     app_f.include_router(metrics_router)
     app_f.state.orchestrator = None
     app_f.state.orch_task = None
+    app_f.state.static_analysis_task = None
 
     @asynccontextmanager
     async def lifespan(app_f: FastAPI) -> AsyncGenerator[None, None]:
@@ -280,10 +281,16 @@ if app is not None:
         app_f.state.orchestrator = orch_mod.Orchestrator()
         app_f.state.orch_task = asyncio.create_task(app_f.state.orchestrator.run_forever())
         _load_results()
-        asyncio.create_task(_static_analysis_task())
+        app_f.state.static_analysis_task = asyncio.create_task(_static_analysis_task())
         try:
             yield
         finally:
+            static_task = getattr(app_f.state, "static_analysis_task", None)
+            if static_task:
+                static_task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await static_task
+                app_f.state.static_analysis_task = None
             task = getattr(app_f.state, "orch_task", None)
             if task:
                 task.cancel()

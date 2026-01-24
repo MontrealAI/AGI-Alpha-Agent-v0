@@ -40,6 +40,13 @@ def _load_model(cfg: Settings | None = None) -> None:
     def _wrap(fn: Callable[[str, Settings], str]) -> Callable[[str, Settings], str]:
         return fn
 
+    if cfg.offline or os.getenv("NO_LLM") == "1":
+        def call_stub(prompt: str, s: Settings) -> str:
+            return f"[offline] {prompt}"
+
+        _CALL = _wrap(call_stub)
+        return
+
     if Llama is not None:
         try:
             _MODEL = Llama(model_path=model_path, n_ctx=n_ctx)
