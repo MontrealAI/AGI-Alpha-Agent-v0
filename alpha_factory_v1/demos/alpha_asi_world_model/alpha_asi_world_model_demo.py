@@ -240,7 +240,7 @@ REQUIRED = [
 ]
 MODROOT = "alpha_factory_v1.backend.agents."
 AGENTS: Dict[str, Agent] = {}
-_TEST_MODE = bool(os.getenv("PYTEST_CURRENT_TEST") or os.getenv("PYTEST_NET_OFF") == "1")
+_TEST_MODE = bool(os.getenv("PYTEST_CURRENT_TEST"))
 
 
 def _boot(path: str) -> None:
