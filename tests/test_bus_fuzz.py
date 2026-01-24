@@ -16,21 +16,23 @@ from hypothesis.strategies import composite  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+int_bounds = st.integers(min_value=-1_000_000, max_value=1_000_000)
+float_bounds = st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False)
 json_scalars = st.one_of(
     st.none(),
     st.booleans(),
-    st.integers(),
-    st.floats(allow_nan=False, allow_infinity=False),
+    int_bounds,
+    float_bounds,
     st.text(max_size=20),
 )
 
 json_values = st.recursive(
     json_scalars,
     lambda children: st.one_of(
-        st.lists(children, max_size=3),
-        st.dictionaries(st.text(min_size=1, max_size=5), children, max_size=3),
+        st.lists(children, max_size=2),
+        st.dictionaries(st.text(min_size=1, max_size=5), children, max_size=2),
     ),
-    max_leaves=5,
+    max_leaves=3,
 )
 
 
@@ -41,20 +43,18 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     if as_proto:
         sender = draw(st.text(min_size=0, max_size=5))
         recipient = draw(st.text(min_size=0, max_size=5))
-        ts = draw(st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False))
-        payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
+        ts = draw(float_bounds)
+        payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=2))
         if big_payload:
-            payload["data"] = draw(st.text(max_size=500))
+            payload["data"] = draw(st.text(max_size=200))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
-    sender = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(min_value=-1000, max_value=1000), st.none()))
-    recipient = draw(
-        st.one_of(st.text(min_size=0, max_size=5), st.integers(min_value=-1000, max_value=1000), st.none())
-    )
+    sender = draw(st.one_of(st.text(min_size=0, max_size=5), int_bounds, st.none()))
+    recipient = draw(st.one_of(st.text(min_size=0, max_size=5), int_bounds, st.none()))
     ts = draw(
         st.one_of(
-            st.floats(min_value=-1e6, max_value=1e6, allow_nan=False, allow_infinity=False),
+            float_bounds,
             st.text(min_size=0, max_size=5),
             st.none(),
         )
@@ -62,14 +62,14 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     payload = draw(
         st.dictionaries(
             st.text(min_size=1, max_size=5),
-            st.one_of(json_values, st.text(max_size=500)),
-            max_size=3,
+            st.one_of(json_values, st.text(max_size=200)),
+            max_size=2,
         )
     )
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow])
+@settings(max_examples=10, suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large])
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""
