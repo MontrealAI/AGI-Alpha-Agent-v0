@@ -12,7 +12,6 @@ import pytest
 
 
 os.environ.setdefault("PYTEST_NET_OFF", "1")
-os.environ.setdefault("NO_LLM", "1")
 
 _INSIGHT_DIR = Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1"
 _INSIGHT_DIST = _INSIGHT_DIR / "dist"

@@ -7,13 +7,13 @@ from alpha_factory_v1.common.utils import local_llm
 
 def test_load_model_warning(monkeypatch, caplog):
     caplog.set_level(logging.WARNING)
-    monkeypatch.delenv("NO_LLM", raising=False)
     monkeypatch.setattr(local_llm, "_MODEL", None)
     monkeypatch.setattr(local_llm, "_CALL", None)
     monkeypatch.setattr(local_llm, "Llama", mock.Mock(side_effect=RuntimeError("boom")))
     monkeypatch.setattr(local_llm, "AutoModelForCausalLM", None)
 
-    local_llm._load_model(local_llm.config.CFG)
+    cfg = local_llm.config.Settings(openai_api_key="test-token", offline=False)
+    local_llm._load_model(cfg)
 
     assert any("boom" in r.message for r in caplog.records)
 

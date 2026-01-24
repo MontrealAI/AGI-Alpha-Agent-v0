@@ -40,7 +40,7 @@ def _load_model(cfg: Settings | None = None) -> None:
     def _wrap(fn: Callable[[str, Settings], str]) -> Callable[[str, Settings], str]:
         return fn
 
-    if os.getenv("NO_LLM") == "1":
+    if cfg.offline or os.getenv("NO_LLM") == "1":
         def call_stub(prompt: str, s: Settings) -> str:
             return f"[offline] {prompt}"
 
