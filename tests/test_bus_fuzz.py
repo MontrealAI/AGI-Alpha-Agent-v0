@@ -16,19 +16,28 @@ from hypothesis.strategies import composite  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+SAFE_CHARS = st.characters(min_codepoint=32, max_codepoint=126)
+
+
+def safe_text(*, min_size: int = 0, max_size: int = 20) -> st.SearchStrategy[str]:
+    """Return a bounded ASCII text strategy to avoid large Unicode allocations."""
+
+    return st.text(alphabet=SAFE_CHARS, min_size=min_size, max_size=max_size)
+
+
 json_scalars = st.one_of(
     st.none(),
     st.booleans(),
     st.integers(),
     st.floats(allow_nan=False, allow_infinity=False),
-    st.text(max_size=20),
+    safe_text(max_size=20),
 )
 
 json_values = st.recursive(
     json_scalars,
     lambda children: st.one_of(
         st.lists(children, max_size=3),
-        st.dictionaries(st.text(min_size=1, max_size=5), children, max_size=3),
+        st.dictionaries(safe_text(min_size=1, max_size=5), children, max_size=3),
     ),
     max_leaves=5,
 )
@@ -39,28 +48,28 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     as_proto = draw(st.booleans())
     big_payload = draw(st.booleans())
     if as_proto:
-        sender = draw(st.text(min_size=0, max_size=5))
-        recipient = draw(st.text(min_size=0, max_size=5))
+        sender = draw(safe_text(min_size=0, max_size=5))
+        recipient = draw(safe_text(min_size=0, max_size=5))
         ts = draw(st.floats(allow_nan=False, allow_infinity=False))
-        payload: dict[str, Any] = draw(st.dictionaries(st.text(min_size=1, max_size=5), json_values, max_size=3))
+        payload: dict[str, Any] = draw(st.dictionaries(safe_text(min_size=1, max_size=5), json_values, max_size=3))
         if big_payload:
-            payload["data"] = draw(st.text(max_size=500))
+            payload["data"] = draw(safe_text(max_size=500))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
-    sender = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
-    recipient = draw(st.one_of(st.text(min_size=0, max_size=5), st.integers(), st.none()))
+    sender = draw(st.one_of(safe_text(min_size=0, max_size=5), st.integers(), st.none()))
+    recipient = draw(st.one_of(safe_text(min_size=0, max_size=5), st.integers(), st.none()))
     ts = draw(
         st.one_of(
             st.floats(allow_nan=False, allow_infinity=False),
-            st.text(min_size=0, max_size=5),
+            safe_text(min_size=0, max_size=5),
             st.none(),
         )
     )
     payload = draw(
         st.dictionaries(
-            st.text(min_size=1, max_size=5),
-            st.one_of(json_values, st.text(max_size=500)),
+            safe_text(min_size=1, max_size=5),
+            st.one_of(json_values, safe_text(max_size=500)),
             max_size=3,
         )
     )

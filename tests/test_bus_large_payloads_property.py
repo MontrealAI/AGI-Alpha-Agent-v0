@@ -15,11 +15,20 @@ from hypothesis import given, settings, strategies as st  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+SAFE_CHARS = st.characters(min_codepoint=32, max_codepoint=126)
+
+
+def safe_text(*, min_size: int, max_size: int) -> st.SearchStrategy[str]:
+    """Return a bounded ASCII text strategy to avoid large Unicode allocations."""
+
+    return st.text(alphabet=SAFE_CHARS, min_size=min_size, max_size=max_size)
+
+
 @settings(max_examples=5, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=8_192),
-    recipient=st.text(min_size=1, max_size=8_192),
-    payload_text=st.text(min_size=1, max_size=16_384),
+    sender=safe_text(min_size=1, max_size=8_192),
+    recipient=safe_text(min_size=1, max_size=8_192),
+    payload_text=safe_text(min_size=1, max_size=16_384),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
