@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import contextlib
+import importlib
 import os
-from typing import Any, Iterator, cast
+from typing import Any, AsyncIterator, Iterator, cast
 
 import pytest
 
@@ -12,16 +13,27 @@ os.environ.setdefault("API_TOKEN", "test-token")
 os.environ.setdefault("API_RATE_LIMIT", "1000")
 os.environ.setdefault("AGI_INSIGHT_ALLOW_INSECURE", "1")
 
-from alpha_factory_v1.core.interface import api_server as api
+api: Any | None = None
 
 
 @contextlib.contextmanager
 def _make_client() -> Iterator[TestClient]:
+    from alpha_factory_v1.core.interface import api_server
+
+    global api
+    api = importlib.reload(api_server)
+    @contextlib.asynccontextmanager
+    async def _noop_lifespan(_: Any) -> AsyncIterator[None]:
+        yield
+
+    api.app.router.lifespan_context = _noop_lifespan
     with TestClient(cast(Any, api.app)) as client:
         yield client
 
 
 def _setup_simulations() -> None:
+    if api is None:
+        raise RuntimeError("API server module not initialized")
     api._simulations.clear()
     api._simulations["a"] = api.ResultsResponse(
         id="a",
