@@ -12,6 +12,7 @@ present, writes proceed without locking and a warning is emitted.
 from __future__ import annotations
 
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import time
@@ -38,6 +39,7 @@ except ModuleNotFoundError:
 DATA_DIR = Path(os.getenv("ALPHA_DATA_DIR", "/tmp/alphafactory"))
 DB_PATH = DATA_DIR / "portfolio.jsonl"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
+_PORTFOLIO_EXECUTOR = ThreadPoolExecutor(max_workers=1)
 
 
 @dataclass(slots=True)
@@ -121,7 +123,7 @@ class Portfolio:
     async def arecord_fill(self, symbol: str, qty: float, price: float, side: str) -> None:
         """Async wrapper around :meth:`record_fill`."""
         loop = asyncio.get_running_loop()
-        await loop.run_in_executor(None, self.record_fill, symbol, qty, price, side)
+        await loop.run_in_executor(_PORTFOLIO_EXECUTOR, self.record_fill, symbol, qty, price, side)
 
     def position(self, symbol: str) -> float:
         """Current net position (0.0 if the symbol has never traded)."""

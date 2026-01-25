@@ -254,15 +254,19 @@ def _boot(path: str) -> None:
             interval = getattr(inst, "CYCLE_SECONDS", 60) or 60
 
             class StepAdapter(Agent):
-                def __init__(self) -> None:
+                def __init__(self, start_loop: bool = True) -> None:
                     super().__init__(name)
-                    threading.Thread(target=self._loop, daemon=True).start()
+                    self._stop_event = threading.Event()
+                    self._thread: Optional[threading.Thread] = None
+                    if start_loop:
+                        self._thread = threading.Thread(target=self._loop, daemon=True)
+                        self._thread.start()
 
                 def handle(self, _msg: dict) -> None:  # noqa: D401
                     pass
 
                 def _loop(self) -> None:
-                    while True:
+                    while not self._stop_event.is_set():
                         try:
                             res = step_fn()
                             if asyncio.iscoroutine(res):
@@ -271,7 +275,14 @@ def _boot(path: str) -> None:
                             LOG.debug("[Adapter:%s] step error: %s", name, exc)
                         time.sleep(max(1, interval))
 
-            inst = StepAdapter()
+                def close(self) -> None:
+                    self._stop_event.set()
+                    if self._thread:
+                        self._thread.join(timeout=1)
+                    super().close()
+
+            start_loop = os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0") not in {"1", "true", "yes"}
+            inst = StepAdapter(start_loop=start_loop)
         else:
             if not hasattr(inst, "name"):
                 inst.name = name  # type: ignore[attr-defined]
@@ -551,8 +562,12 @@ class BasicSafetyAgent(Agent):
 
 
 existing_safety = AGENTS.get("safety")
-if not isinstance(existing_safety, Agent) or "safety" not in A2ABus._subs:
-    AGENTS["safety"] = BasicSafetyAgent()
+existing_handlers = A2ABus._subs.get("safety") or []
+if not existing_handlers:
+    if isinstance(existing_safety, Agent):
+        A2ABus.subscribe("safety", existing_safety._cb)
+    else:
+        AGENTS["safety"] = BasicSafetyAgent()
 
 # =============================================================================
 # 9. Optional LLM planner
@@ -629,6 +644,10 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
             orch.stop = True
         if loop_thread:
             loop_thread.join(timeout=1)
+        for agent in list(AGENTS.values()):
+            if hasattr(agent, "close"):
+                agent.close()
+        A2ABus._subs = {}
         orch = None
         loop_thread = None
 

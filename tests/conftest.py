@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
+import gc
 import os
 from pathlib import Path
 import re
@@ -55,6 +56,7 @@ def _configure_temp_paths() -> None:
         "HYPOTHESIS_STORAGE_DIRECTORY",
     ):
         _ensure_parent(Path(os.environ[env_var]))
+    os.environ.setdefault("ALPHA_ASI_DISABLE_AGENT_THREADS", "1")
 
 
 def _node_major() -> int | None:
@@ -143,6 +145,11 @@ def pytest_sessionfinish(session, exitstatus) -> None:  # type: ignore[no-untype
         _SESSION_TMP.cleanup()
         _SESSION_TMP = None
     _cleanup_disk_space()
+
+
+def pytest_runtest_teardown(item, nextitem) -> None:  # type: ignore[no-untyped-def]
+    del item, nextitem
+    gc.collect()
 
 
 @pytest.fixture
