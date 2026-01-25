@@ -38,6 +38,7 @@ import json
 import logging
 import os
 import random
+import sys
 import threading
 import time
 from dataclasses import dataclass, field
@@ -242,6 +243,10 @@ MODROOT = "alpha_factory_v1.backend.agents."
 AGENTS: Dict[str, Agent] = {}
 
 
+def _running_under_pytest() -> bool:
+    return "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
+
+
 def _boot(path: str) -> None:
     module_path, cls_name = (MODROOT + path).rsplit(".", 1)
     try:
@@ -282,7 +287,7 @@ def _boot(path: str) -> None:
                     super().close()
 
             disable_threads = os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0") in {"1", "true", "yes"}
-            if os.getenv("PYTEST_CURRENT_TEST"):
+            if _running_under_pytest():
                 disable_threads = True
             inst = StepAdapter(start_loop=not disable_threads)
         else:
@@ -631,6 +636,7 @@ app.add_middleware(
 
 orch: Optional[Orchestrator] = None
 loop_thread: Optional[threading.Thread | _LoopThreadStub] = None
+loop_stop_event: Optional[threading.Event] = None
 
 
 class _LoopThreadStub:
@@ -652,13 +658,20 @@ class _LoopThreadStub:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
-    global orch, loop_thread
+    global orch, loop_stop_event, loop_thread
     orch = Orchestrator()
+    loop_stop_event = threading.Event()
+
+    def _idle_loop() -> None:
+        while not loop_stop_event.is_set():
+            time.sleep(0.1)
+
+    target = orch.loop if not _running_under_pytest() else _idle_loop
     try:
-        loop_thread = threading.Thread(target=orch.loop, daemon=True)
+        loop_thread = threading.Thread(target=target, daemon=True)
         loop_thread.start()
     except RuntimeError as exc:
-        if os.getenv("PYTEST_CURRENT_TEST"):
+        if _running_under_pytest():
             LOG.warning("Falling back to stubbed loop thread in tests: %s", exc)
             loop_thread = _LoopThreadStub()
             loop_thread.start()
@@ -669,6 +682,8 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     finally:
         if orch:
             orch.stop = True
+        if loop_stop_event:
+            loop_stop_event.set()
         if loop_thread:
             loop_thread.join(timeout=1)
         for agent in list(AGENTS.values()):
@@ -676,6 +691,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
                 agent.close()
         A2ABus._subs = {}
         orch = None
+        loop_stop_event = None
         loop_thread = None
 
 
