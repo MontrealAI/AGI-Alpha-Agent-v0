@@ -636,7 +636,6 @@ app.add_middleware(
 
 orch: Optional[Orchestrator] = None
 loop_thread: Optional[threading.Thread | _LoopThreadStub] = None
-loop_stop_event: Optional[threading.Event] = None
 
 
 class _LoopThreadStub:
@@ -658,32 +657,23 @@ class _LoopThreadStub:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
-    global orch, loop_stop_event, loop_thread
+    global orch, loop_thread
     orch = Orchestrator()
-    loop_stop_event = threading.Event()
-
-    def _idle_loop() -> None:
-        while not loop_stop_event.is_set():
-            time.sleep(0.1)
-
-    target = orch.loop if not _running_under_pytest() else _idle_loop
-    try:
-        loop_thread = threading.Thread(target=target, daemon=True)
+    if _running_under_pytest():
+        loop_thread = _LoopThreadStub()
         loop_thread.start()
-    except RuntimeError as exc:
-        if _running_under_pytest():
-            LOG.warning("Falling back to stubbed loop thread in tests: %s", exc)
-            loop_thread = _LoopThreadStub()
+    else:
+        try:
+            loop_thread = threading.Thread(target=orch.loop, daemon=True)
             loop_thread.start()
-        else:
+        except RuntimeError as exc:
+            LOG.error("Failed to start world model loop thread: %s", exc)
             raise
     try:
         yield
     finally:
         if orch:
             orch.stop = True
-        if loop_stop_event:
-            loop_stop_event.set()
         if loop_thread:
             loop_thread.join(timeout=1)
         for agent in list(AGENTS.values()):
@@ -691,7 +681,6 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
                 agent.close()
         A2ABus._subs = {}
         orch = None
-        loop_stop_event = None
         loop_thread = None
 
 
