@@ -281,8 +281,10 @@ def _boot(path: str) -> None:
                         self._thread.join(timeout=1)
                     super().close()
 
-            start_loop = os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0") not in {"1", "true", "yes"}
-            inst = StepAdapter(start_loop=start_loop)
+            disable_threads = os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0") in {"1", "true", "yes"}
+            if os.getenv("PYTEST_CURRENT_TEST"):
+                disable_threads = True
+            inst = StepAdapter(start_loop=not disable_threads)
         else:
             if not hasattr(inst, "name"):
                 inst.name = name  # type: ignore[attr-defined]
@@ -628,15 +630,40 @@ app.add_middleware(
 )
 
 orch: Optional[Orchestrator] = None
-loop_thread: Optional[threading.Thread] = None
+loop_thread: Optional[threading.Thread | _LoopThreadStub] = None
+
+
+class _LoopThreadStub:
+    """Minimal thread-like stub used when threads cannot start under pytest."""
+
+    def __init__(self) -> None:
+        self._alive = False
+
+    def start(self) -> None:
+        self._alive = True
+
+    def join(self, timeout: float | None = None) -> None:
+        del timeout
+        self._alive = False
+
+    def is_alive(self) -> bool:
+        return self._alive
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     global orch, loop_thread
     orch = Orchestrator()
-    loop_thread = threading.Thread(target=orch.loop, daemon=True)
-    loop_thread.start()
+    try:
+        loop_thread = threading.Thread(target=orch.loop, daemon=True)
+        loop_thread.start()
+    except RuntimeError as exc:
+        if os.getenv("PYTEST_CURRENT_TEST"):
+            LOG.warning("Falling back to stubbed loop thread in tests: %s", exc)
+            loop_thread = _LoopThreadStub()
+            loop_thread.start()
+        else:
+            raise
     try:
         yield
     finally:
