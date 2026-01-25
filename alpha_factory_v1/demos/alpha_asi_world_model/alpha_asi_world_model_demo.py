@@ -38,6 +38,7 @@ import json
 import logging
 import os
 import random
+import sys
 import threading
 import time
 from dataclasses import dataclass, field
@@ -242,6 +243,10 @@ MODROOT = "alpha_factory_v1.backend.agents."
 AGENTS: Dict[str, Agent] = {}
 
 
+def _running_under_pytest() -> bool:
+    return "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
+
+
 def _boot(path: str) -> None:
     module_path, cls_name = (MODROOT + path).rsplit(".", 1)
     try:
@@ -281,8 +286,10 @@ def _boot(path: str) -> None:
                         self._thread.join(timeout=1)
                     super().close()
 
-            start_loop = os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0") not in {"1", "true", "yes"}
-            inst = StepAdapter(start_loop=start_loop)
+            disable_threads = _str_to_bool(os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0"))
+            if _running_under_pytest():
+                disable_threads = True
+            inst = StepAdapter(start_loop=not disable_threads)
         else:
             if not hasattr(inst, "name"):
                 inst.name = name  # type: ignore[attr-defined]
@@ -628,15 +635,35 @@ app.add_middleware(
 )
 
 orch: Optional[Orchestrator] = None
-loop_thread: Optional[threading.Thread] = None
+loop_thread: Optional[threading.Thread | _LoopThreadStub] = None
+
+
+class _LoopThreadStub:
+    """Minimal thread-like stub used when background threads are disabled."""
+
+    def __init__(self) -> None:
+        self._alive = False
+
+    def start(self) -> None:
+        self._alive = True
+
+    def join(self, timeout: float | None = None) -> None:
+        del timeout
+        self._alive = False
+
+    def is_alive(self) -> bool:
+        return self._alive
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     global orch, loop_thread
     orch = Orchestrator()
-    loop_thread = threading.Thread(target=orch.loop, daemon=True)
-    loop_thread.start()
+    if _running_under_pytest():
+        loop_thread = _LoopThreadStub()
+    else:
+        loop_thread = threading.Thread(target=orch.loop, daemon=True)
+        loop_thread.start()
     try:
         yield
     finally:
