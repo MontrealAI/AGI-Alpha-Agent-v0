@@ -8,6 +8,8 @@ import re
 import shutil
 import subprocess
 import tempfile
+import ctypes
+import sys
 
 import pytest
 
@@ -150,6 +152,7 @@ def pytest_sessionfinish(session, exitstatus) -> None:  # type: ignore[no-untype
 def pytest_runtest_teardown(item, nextitem) -> None:  # type: ignore[no-untyped-def]
     del item, nextitem
     gc.collect()
+    _trim_memory()
 
 
 @pytest.fixture
@@ -210,3 +213,23 @@ def scenario_2020_mrna():  # type: ignore[no-untyped-def]
     from alpha_factory_v1.core.simulation import replay
 
     return replay.load_scenario("2020_mrna")
+
+
+def _trim_memory() -> None:
+    """Attempt to release freed memory back to the OS after each test."""
+
+    if sys.platform != "linux":
+        return
+    for libc_name in ("libc.so.6", "libc.so"):
+        try:
+            libc = ctypes.CDLL(libc_name)
+        except OSError:
+            continue
+        trim = getattr(libc, "malloc_trim", None)
+        if trim is None:
+            return
+        try:
+            trim(0)
+        except Exception:
+            pass
+        return
