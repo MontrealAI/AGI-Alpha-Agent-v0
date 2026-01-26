@@ -38,7 +38,6 @@ import json
 import logging
 import os
 import random
-import sys
 import threading
 import time
 from dataclasses import dataclass, field
@@ -244,7 +243,7 @@ AGENTS: Dict[str, Agent] = {}
 
 
 def _running_under_pytest() -> bool:
-    return "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
+    return "PYTEST_CURRENT_TEST" in os.environ
 
 
 def _boot(path: str) -> None:
