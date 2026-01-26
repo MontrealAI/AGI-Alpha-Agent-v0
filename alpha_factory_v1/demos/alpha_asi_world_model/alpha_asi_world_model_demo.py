@@ -659,9 +659,12 @@ class _LoopThreadStub:
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     global orch, loop_thread
     orch = Orchestrator()
+    disable_loop_thread = _str_to_bool(os.getenv("ALPHA_ASI_DISABLE_AGENT_THREADS", "0"))
     if _running_under_pytest():
         loop_thread = _LoopThreadStub()
         loop_thread.start()
+    elif disable_loop_thread:
+        loop_thread = _LoopThreadStub()
     else:
         loop_thread = threading.Thread(target=orch.loop, daemon=True)
         loop_thread.start()
