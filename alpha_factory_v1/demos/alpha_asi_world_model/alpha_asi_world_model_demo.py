@@ -661,6 +661,7 @@ async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     orch = Orchestrator()
     if _running_under_pytest():
         loop_thread = _LoopThreadStub()
+        loop_thread.start()
     else:
         loop_thread = threading.Thread(target=orch.loop, daemon=True)
         loop_thread.start()
