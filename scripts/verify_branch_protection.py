@@ -40,6 +40,13 @@ DEFAULT_REQUIRED_CHECKS = [
     "🩺 CI Health / CI watchdog",
 ]
 DEFAULT_REQUIRED_CHECKS_PATH = Path("scripts/required_checks.json")
+ALLOW_MISSING_REQUIRED_CHECKS_ENV = "ALLOW_MISSING_REQUIRED_CHECKS"
+
+
+def _env_truthy(value: str | None) -> bool:
+    if value is None:
+        return False
+    return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
 def _build_headers(token: str) -> dict[str, str]:
@@ -179,6 +186,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not token:
         sys.stderr.write("::warning::No GitHub token available; skipping branch protection verification.\n")
         return 0
+    allow_missing = _env_truthy(os.environ.get(ALLOW_MISSING_REQUIRED_CHECKS_ENV))
 
     required_checks: list[str] = []
     if args.required_check:
@@ -200,7 +208,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         return 0
     if response.status_code == 404:
         if not args.apply:
-            sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
+            message = f"branch '{args.branch}' is not protected or not visible"
+            if allow_missing:
+                sys.stderr.write(f"::warning::{message}\n")
+                return 0
+            sys.stderr.write(f"error: {message}\n")
             return 1
         _configure_required_checks(
             owner=owner,
@@ -212,7 +224,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         )
         response = requests.get(url, headers=_build_headers(token), timeout=30)
     if not response.ok:
-        sys.stderr.write(f"error: failed to read protection for {owner}/{repo}@{args.branch}: {response.text}\n")
+        message = f"failed to read protection for {owner}/{repo}@{args.branch}: {response.text}"
+        if allow_missing:
+            sys.stderr.write(f"::warning::{message}\n")
+            return 0
+        sys.stderr.write(f"error: {message}\n")
         return 1
 
     protection = response.json()
@@ -220,7 +236,11 @@ def main(argv: Iterable[str] | None = None) -> int:
     status_checks = protection.get("required_status_checks")
     if not status_checks:
         if not args.apply:
-            sys.stderr.write(f"error: {owner}/{repo}@{args.branch} is missing required status checks\n")
+            message = f"{owner}/{repo}@{args.branch} is missing required status checks"
+            if allow_missing:
+                sys.stderr.write(f"::warning::{message}\n")
+                return 0
+            sys.stderr.write(f"error: {message}\n")
             return 1
         _configure_required_checks(
             owner=owner,
@@ -252,12 +272,20 @@ def main(argv: Iterable[str] | None = None) -> int:
         strict_enforced = protection.get("required_status_checks", {}).get("strict", False)
 
     if missing:
+        if allow_missing:
+            sys.stderr.write("::warning::missing required checks:\n")
+            for check in missing:
+                sys.stderr.write(f"  - {check}\n")
+            return 0
         sys.stderr.write("error: missing required checks:\n")
         for check in missing:
             sys.stderr.write(f"  - {check}\n")
         return 1
 
     if not args.skip_strict and not strict_enforced:
+        if allow_missing:
+            sys.stderr.write("::warning::'Require branches to be up to date' is not enabled\n")
+            return 0
         sys.stderr.write("error: 'Require branches to be up to date' is not enabled\n")
         return 1
 
