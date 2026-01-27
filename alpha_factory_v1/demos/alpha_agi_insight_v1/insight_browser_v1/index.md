@@ -76,9 +76,9 @@ remove the existing `wasm*/` directories—so placeholder files are replaced.
 After the download completes, verify each file with
 `python ../../../../scripts/fetch_assets.py --verify-only`. The script
 retrieves the official Pyodide runtime from the jsDelivr CDN and the GPT‑2
-small checkpoint from Hugging Face. If a custom `PYODIDE_BASE_URL` is unreachable the helper
-automatically retries using the official CDN. The deprecated `wasm-gpt2.tar`
-archive is no longer used.
+small checkpoint from Hugging Face. In CI, the helper skips the GPT‑2 download
+by default when `CI=1` (set `FETCH_ASSETS_SKIP_LLM=0` to force it). The
+deprecated `wasm-gpt2.tar` archive is no longer used.
 Set `FETCH_ASSETS_ATTEMPTS` to control the retry count when downloading assets.
 Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors, for example:
 
@@ -122,7 +122,9 @@ to create it before launching the demo.
 
 ## Build & Run
 Run `npm run fetch-assets` **before installing dependencies** to download the
-Pyodide runtime and GPT‑2 weights, then install the Node modules.
+Pyodide runtime and GPT‑2 weights, then install the Node modules. Use
+`FETCH_ASSETS_SKIP_LLM=0` to override the CI default and fetch the model when
+needed.
 `python ../../../../scripts/download_hf_gpt2.py` or
 `python ../../../../scripts/download_gpt2_small.py` can also fetch the model
 directly if you prefer,
