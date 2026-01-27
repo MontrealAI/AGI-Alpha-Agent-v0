@@ -4,7 +4,8 @@
 """Download the Hugging Face GPT-2 checkpoint files.
 
 Downloads files from ``https://huggingface.co/openai-community/gpt2/resolve/main/``
-by default. The base URL can be overridden via ``HF_GPT2_BASE_URL``.
+by default. The base URL can be overridden via ``HF_GPT2_BASE_URL`` (for example,
+to fetch DistilGPT2 instead).
 """
 
 from __future__ import annotations
@@ -43,11 +44,18 @@ _FILES = [
     "config.json",
 ]
 
-CHECKSUMS = {
+CHECKSUMS_GPT2 = {
     "pytorch_model.bin": "7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
     "vocab.json": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783",
     "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
     "config.json": "0daed7749b4f02b8f76240d5444551d7b08712dab4d0adb8239c56ba823bb7b4",
+}
+
+CHECKSUMS_DISTIL = {
+    "pytorch_model.bin": "ecbb4e22dd2b9dcc43b2622e1b87ebb9361fb31e496b98ea01a38785c1dbaa01",
+    "vocab.json": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783",
+    "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+    "config.json": "4ec5947c1d59fee6212cdf3b0ec1a53eac02092554c5ff0a733488cbd2c64f3a",
 }
 
 
@@ -56,6 +64,12 @@ def _base_url() -> str:
         "HF_GPT2_BASE_URL",
         "https://huggingface.co/openai-community/gpt2/resolve/main",
     ).rstrip("/")
+
+
+def _checksums(base_url: str) -> dict[str, str]:
+    if "distilgpt2" in base_url:
+        return CHECKSUMS_DISTIL
+    return CHECKSUMS_GPT2
 
 
 def _download(url: str, dest: Path) -> None:
@@ -83,8 +97,8 @@ def _download(url: str, dest: Path) -> None:
                 bar.update(len(chunk))
 
 
-def _verify(dest: Path) -> None:
-    expected = CHECKSUMS.get(dest.name)
+def _verify(dest: Path, base_url: str) -> None:
+    expected = _checksums(base_url).get(dest.name)
     if expected:
         digest = hashlib.sha256(dest.read_bytes()).hexdigest()
         if digest != expected:
@@ -105,7 +119,7 @@ def download_hf_gpt2(dest: Path | str = "models/gpt2", attempts: int = 3) -> Non
             try:
                 print(f"Downloading {url} to {target} (attempt {i})")
                 _download(url, target)
-                _verify(target)
+                _verify(target, base)
                 break
             except Exception as exc:  # noqa: PERF203
                 last_exc = exc
