@@ -381,6 +381,8 @@ jobs:
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf "$NPM_CONFIG_CACHE"
           rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp
+          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
+          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           df -h
       - name: Run tests with coverage
         shell: bash
