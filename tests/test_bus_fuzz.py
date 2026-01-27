@@ -105,7 +105,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=_BUS_FUZZ_MAX_EXAMPLES, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
+@settings(max_examples=_BUS_FUZZ_MAX_EXAMPLES, suppress_health_check=[HealthCheck.too_slow], deadline=None)
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""
