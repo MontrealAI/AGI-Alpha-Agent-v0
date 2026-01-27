@@ -313,7 +313,9 @@ download the Insight demo assets. Delete any old `wasm*/` directories or start
 from a clean checkout so placeholders are replaced. After fetching, verify the
 files with `python scripts/fetch_assets.py --verify-only`. The helper retrieves
 the official Pyodide runtime from the jsDelivr CDN and the GPT‑2 small
-checkpoint from Hugging Face.
+checkpoint from Hugging Face. CI environments skip the GPT‑2 checkpoint by
+default to avoid disk-pressure failures; set `FETCH_ASSETS_INCLUDE_LLM=1` when
+you need the full offline model in CI.
 Override `HF_GPT2_BASE_URL` or `PYODIDE_BASE_URL` to use alternate mirrors. See
 [insight_browser_v1/index.md](alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/index.md)
 for a detailed guide. You can also run `python scripts/download_gpt2_small.py`
