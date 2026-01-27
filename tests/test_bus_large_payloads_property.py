@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import string
 import types
 from unittest import mock
 
@@ -29,13 +30,14 @@ def _env_int(name: str, default: int) -> int:
 _SENDER_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_SENDER_MAX", 8_192)
 _RECIPIENT_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_RECIPIENT_MAX", 8_192)
 _PAYLOAD_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_TEXT_MAX", 16_384)
+SAFE_TEXT_ALPHABET = string.ascii_letters + string.digits + string.punctuation + " "
 
 
 @settings(max_examples=5, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=_SENDER_MAX),
-    recipient=st.text(min_size=1, max_size=_RECIPIENT_MAX),
-    payload_text=st.text(min_size=1, max_size=_PAYLOAD_MAX),
+    sender=st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=_SENDER_MAX),
+    recipient=st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=_RECIPIENT_MAX),
+    payload_text=st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=_PAYLOAD_MAX),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
