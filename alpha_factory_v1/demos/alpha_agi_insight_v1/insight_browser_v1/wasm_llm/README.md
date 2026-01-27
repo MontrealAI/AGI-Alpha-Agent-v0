@@ -14,6 +14,7 @@ npm run fetch-assets
 ```
 
 After downloading, the build script copies this directory to `dist/wasm_llm/` so
-the browser demo can operate without an internet connection. Set
-`FETCH_ASSETS_SKIP_LLM=1` when running CI or preview builds to avoid downloading
-the >500 MB checkpoint while keeping other assets up to date.
+the browser demo can operate without an internet connection. The checkpoint is
+larger than 500 MB, so CI runs now skip it by default; set
+`FETCH_ASSETS_INCLUDE_LLM=1` (or explicitly unset `FETCH_ASSETS_SKIP_LLM`) to
+force the download when you need offline inference.

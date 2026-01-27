@@ -376,6 +376,11 @@ python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli self-imp
 
 Streamlit is for demo-mode only—**not recommended for production**.
 Use the **FastAPI + React** stack for production deployments.
+
+The Insight browser demo optionally downloads the GPT‑2 checkpoint for offline
+LLM inference. CI skips this heavyweight asset by default to keep disk usage
+low. Set `FETCH_ASSETS_INCLUDE_LLM=1` (or unset `FETCH_ASSETS_SKIP_LLM`) before
+running `npm run fetch-assets` if you need the offline model bundle.
 ### 5.1 Streamlit (demo mode only)
 
 ```bash
@@ -700,4 +705,3 @@ This demo is released for **research & internal evaluation only**.
 ---
 
 ### ✨ See beyond human foresight. Build the future, today. ✨
-
