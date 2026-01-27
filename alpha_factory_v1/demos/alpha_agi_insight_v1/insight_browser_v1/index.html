@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'"
+    />
 
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -70,6 +74,7 @@
     <div id="depth-legend" role="region" aria-label="Depth Legend"></div>
 
     <footer id="disclaimer" style="font-size: 0.8rem; margin: 1rem; text-align:center;">
+      <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
       This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals
       and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial
       advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
