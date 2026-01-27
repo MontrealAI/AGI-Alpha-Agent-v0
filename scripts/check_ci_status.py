@@ -683,9 +683,11 @@ def main(argv: list[str] | None = None) -> int:
             if ok:
                 dispatched.add(workflow)
 
-    if (stale_cancelled or dispatched) and not failures:
-        # If remediation occurred and no prior failures, re-evaluate so we emit
-        # updated status for newly dispatched runs.
+    if stale_cancelled or dispatched:
+        # If remediation occurred, re-evaluate so we emit updated status for
+        # newly dispatched runs or cancelled stale runs. Previous failures may
+        # have been addressed by remediation, so refresh the state regardless of
+        # whether the initial pass reported issues.
         failures, runs = verify_workflows(
             args.repo,
             workflows,
