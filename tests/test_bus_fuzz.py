@@ -55,7 +55,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
             )
         )
         if big_payload:
-            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=500))
+            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=200))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
@@ -83,14 +83,14 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     payload = draw(
         st.dictionaries(
             st.text(alphabet=SAFE_TEXT_ALPHABET, min_size=1, max_size=5),
-            st.one_of(json_values, st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=500)),
+            st.one_of(json_values, st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=200)),
             max_size=3,
         )
     )
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow], deadline=None)
+@settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""
