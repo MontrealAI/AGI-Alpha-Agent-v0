@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import types
 from unittest import mock
 
@@ -15,11 +16,26 @@ from hypothesis import given, settings, strategies as st  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+def _env_int(name: str, default: int) -> int:
+    value = os.getenv(name)
+    if not value:
+        return default
+    try:
+        return max(1, int(value))
+    except ValueError:
+        return default
+
+
+_SENDER_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_SENDER_MAX", 8_192)
+_RECIPIENT_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_RECIPIENT_MAX", 8_192)
+_PAYLOAD_MAX = _env_int("AF_BUS_LARGE_PAYLOAD_TEXT_MAX", 16_384)
+
+
 @settings(max_examples=5, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=8_192),
-    recipient=st.text(min_size=1, max_size=8_192),
-    payload_text=st.text(min_size=1, max_size=16_384),
+    sender=st.text(min_size=1, max_size=_SENDER_MAX),
+    recipient=st.text(min_size=1, max_size=_RECIPIENT_MAX),
+    payload_text=st.text(min_size=1, max_size=_PAYLOAD_MAX),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
