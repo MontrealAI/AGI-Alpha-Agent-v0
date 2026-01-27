@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import string
 import types
 from typing import Any
@@ -20,6 +21,20 @@ from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 INT_BOUND = 1000
 FLOAT_BOUND = 1e6
 SAFE_TEXT_ALPHABET = string.ascii_letters + string.digits + string.punctuation + " "
+
+
+def _env_int(name: str, default: int) -> int:
+    value = os.getenv(name)
+    if not value:
+        return default
+    try:
+        return max(1, int(value))
+    except ValueError:
+        return default
+
+
+_BUS_FUZZ_MAX_EXAMPLES = _env_int("AF_BUS_FUZZ_MAX_EXAMPLES", 30)
+_BIG_PAYLOAD_MAX = _env_int("AF_BUS_FUZZ_BIG_PAYLOAD_MAX", 200)
 
 json_scalars = st.one_of(
     st.none(),
@@ -55,7 +70,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
             )
         )
         if big_payload:
-            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=200))
+            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=_BIG_PAYLOAD_MAX))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
@@ -90,7 +105,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=30, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
+@settings(max_examples=_BUS_FUZZ_MAX_EXAMPLES, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""

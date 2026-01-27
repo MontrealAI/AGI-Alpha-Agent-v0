@@ -61,6 +61,16 @@ def _configure_temp_paths() -> None:
     os.environ.setdefault("ALPHA_ASI_DISABLE_AGENT_THREADS", "1")
 
 
+def _configure_ci_hypothesis_limits() -> None:
+    if not os.environ.get("CI"):
+        return
+    os.environ.setdefault("AF_BUS_FUZZ_MAX_EXAMPLES", "20")
+    os.environ.setdefault("AF_BUS_FUZZ_BIG_PAYLOAD_MAX", "100")
+    os.environ.setdefault("AF_BUS_LARGE_PAYLOAD_SENDER_MAX", "2048")
+    os.environ.setdefault("AF_BUS_LARGE_PAYLOAD_RECIPIENT_MAX", "2048")
+    os.environ.setdefault("AF_BUS_LARGE_PAYLOAD_TEXT_MAX", "4096")
+
+
 def _streaming_xml_report(self, morfs, outfile=None) -> float:  # type: ignore[no-untyped-def]
     """Write the XML report directly to the output stream to avoid large buffers."""
     outfile = outfile or sys.stdout
@@ -198,6 +208,7 @@ def _cleanup_disk_space() -> None:
 
 def pytest_configure() -> None:
     _configure_temp_paths()
+    _configure_ci_hypothesis_limits()
     _patch_coverage_xml_serialization()
     try:
         from hypothesis import HealthCheck, settings
