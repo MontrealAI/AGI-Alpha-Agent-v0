@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import string
 import types
 from typing import Any
@@ -20,6 +21,9 @@ from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 INT_BOUND = 1000
 FLOAT_BOUND = 1e6
 SAFE_TEXT_ALPHABET = string.ascii_letters + string.digits + string.punctuation + " "
+_CI_LIMITED = bool(os.getenv("CI")) or bool(os.getenv("PYTEST_MEM_MB"))
+_BIG_PAYLOAD_MAX_SIZE = 100 if _CI_LIMITED else 200
+_MAX_EXAMPLES = 20 if _CI_LIMITED else 30
 
 json_scalars = st.one_of(
     st.none(),
@@ -55,7 +59,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
             )
         )
         if big_payload:
-            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=100))
+            payload["data"] = draw(st.text(alphabet=SAFE_TEXT_ALPHABET, max_size=_BIG_PAYLOAD_MAX_SIZE))
         env = messaging.Envelope(sender=sender, recipient=recipient, ts=ts)
         env.payload.update(payload)
         return env
@@ -90,7 +94,7 @@ def envelopes(draw: st.DrawFn) -> messaging.Envelope | types.SimpleNamespace:
     return types.SimpleNamespace(sender=sender, recipient=recipient, payload=payload, ts=ts)
 
 
-@settings(max_examples=20, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
+@settings(max_examples=_MAX_EXAMPLES, suppress_health_check=[HealthCheck.too_slow], deadline=10000)
 @given(env=envelopes())
 def test_bus_handles_arbitrary_envelopes(env: messaging.Envelope | types.SimpleNamespace) -> None:
     """Publishing arbitrary envelopes should not raise exceptions."""

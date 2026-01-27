@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import types
 from unittest import mock
 
@@ -15,11 +16,17 @@ from hypothesis import given, settings, strategies as st  # noqa: E402
 from alpha_factory_v1.common.utils import config, messaging  # noqa: E402
 
 
+_CI_LIMITED = bool(os.getenv("CI")) or bool(os.getenv("PYTEST_MEM_MB"))
+_SENDER_MAX_SIZE = 4_096 if _CI_LIMITED else 8_192
+_RECIPIENT_MAX_SIZE = 4_096 if _CI_LIMITED else 8_192
+_PAYLOAD_MAX_SIZE = 8_192 if _CI_LIMITED else 16_384
+
+
 @settings(max_examples=5, deadline=None)
 @given(
-    sender=st.text(min_size=1, max_size=2_048),
-    recipient=st.text(min_size=1, max_size=2_048),
-    payload_text=st.text(min_size=1, max_size=4_096),
+    sender=st.text(min_size=1, max_size=_SENDER_MAX_SIZE),
+    recipient=st.text(min_size=1, max_size=_RECIPIENT_MAX_SIZE),
+    payload_text=st.text(min_size=1, max_size=_PAYLOAD_MAX_SIZE),
     ts=st.floats(
         min_value=-1e308,
         max_value=1e308,
