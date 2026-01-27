@@ -159,6 +159,12 @@ function findAssetIssues() {
     const files = [];
     const MAX_SCAN_BYTES = 1024 * 1024; // avoid loading huge binaries into memory
     const assets = manifest.assets || [];
+    const placeholderAssets = new Set([
+        "lib/bundle.esm.min.js",
+        "lib/workbox-sw.js",
+        "wasm/pyodide.js",
+        "wasm/pyodide.asm.wasm",
+    ]);
     const roots = assetRoot ? [assetRoot] : [path.dirname(scriptPath)];
     for (const rel of assets) {
         if (skipLlmAssets && rel.startsWith("wasm_llm")) {
@@ -168,6 +174,9 @@ function findAssetIssues() {
         const existing = candidates.find((candidate) => fsSync.existsSync(candidate));
         if (!existing) {
             files.push(rel);
+            continue;
+        }
+        if (!placeholderAssets.has(rel)) {
             continue;
         }
         const { size } = fsSync.statSync(existing);
