@@ -42,10 +42,15 @@ try:
 except ValueError:
     _spec = None
 has_oai = _spec is not None
+runtime_supported = False
 if has_oai:
     import openai_agents
     from openai_agents import Agent, function_tool
 
+    runtime_supported = hasattr(openai_agents, "AgentRuntime") and hasattr(openai_agents.AgentRuntime, "run")
+
+if has_oai and runtime_supported:
+    from openai_agents import AgentRuntime
     if hasattr(openai_agents, "AgentRuntime"):
         from openai_agents import AgentRuntime as _AgentRuntime
     else:
@@ -231,6 +236,11 @@ def main(argv: list[str] | None = None) -> None:
     if args.verify_env:
         verify_env()
 
+    if not has_oai or not runtime_supported:
+        if not has_oai:
+            logger.info("openai-agents package is missing. Running offline demo...")
+        else:
+            logger.info("openai-agents runtime unavailable. Running offline demo...")
     api_key = os.getenv("OPENAI_API_KEY")
     if not has_oai or not api_key:
         logger.info("openai-agents unavailable or OPENAI_API_KEY unset. Running offline demo...")
