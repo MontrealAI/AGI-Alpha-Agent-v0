@@ -53,6 +53,25 @@ if [[ -n "${HOME:-}" ]]; then
     "$HOME/.cache/matplotlib" || true
 fi
 
+workspace_root="${GITHUB_WORKSPACE:-$(pwd)}"
+if [[ -n "${workspace_root:-}" && -d "${workspace_root}" ]]; then
+  rm -rf \
+    "${workspace_root}/.npm-cache" \
+    "${workspace_root}/.tmp" \
+    "${workspace_root}/.pytest_cache" \
+    "${workspace_root}/.mypy_cache" \
+    "${workspace_root}/.ruff_cache" \
+    "${workspace_root}/.coverage" \
+    "${workspace_root}/artifacts" || true
+fi
+
+for cache_var in FETCH_ASSETS_DIR INSIGHT_ASSET_ROOT PYODIDE_CACHE_DIR NPM_CONFIG_CACHE; do
+  cache_path="${!cache_var:-}"
+  if [[ -n "${cache_path}" ]]; then
+    rm -rf "${cache_path}" || true
+  fi
+done
+
 if [[ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ]]; then
   rm -rf "$PLAYWRIGHT_BROWSERS_PATH" || true
 fi
