@@ -40,40 +40,46 @@ CANONICAL_TOKEN = TokenConfig(
 )
 
 
-def _extract_pattern(path: Path, pattern: str, label: str) -> str:
-    match = re.search(pattern, path.read_text())
+def _extract_pattern(text: str, pattern: str, label: str, source: Path) -> str:
+    match = re.search(pattern, text)
     if not match:
-        raise ValueError(f"Could not find {label} in {path}")
+        raise ValueError(f"Could not find {label} in {source}")
     return match.group(1)
 
 
 def load_token_config() -> TokenConfig:
+    token_config = TOKEN_CONFIG.read_text()
     address = _extract_pattern(
-        TOKEN_CONFIG,
+        token_config,
         r"AGIALPHA_ADDRESS:\s*['\"]([^'\"]+)['\"]",
         "AGIALPHA address",
+        TOKEN_CONFIG,
     )
     decimals = int(
         _extract_pattern(
-            TOKEN_CONFIG,
+            token_config,
             r"AGIALPHA_DECIMALS:\s*([0-9]+)",
             "AGIALPHA decimals",
+            TOKEN_CONFIG,
         )
     )
     return TokenConfig(address=address, decimals=decimals)
 
 
 def load_contract_constants(path: Path) -> TokenConfig:
+    constants = path.read_text()
     address = _extract_pattern(
-        path,
+        constants,
         r"AGIALPHA\s*=\s*(0x[0-9a-fA-F]+)",
         "contract AGIALPHA address",
+        path,
     )
     decimals = int(
         _extract_pattern(
-            path,
+            constants,
             r"AGIALPHA_DECIMALS\s*=\s*([0-9]+)",
             "contract AGIALPHA decimals",
+            path,
         )
     )
     return TokenConfig(address=address, decimals=decimals)
@@ -91,16 +97,19 @@ def load_truffle_migration(expected: TokenConfig) -> TokenConfig:
 
 
 def load_workflow_config(path: Path) -> TokenConfig:
+    workflow = path.read_text()
     address = _extract_pattern(
-        path,
+        workflow,
         r"AGIALPHA_ADDRESS:\s*\"?([^\"\n]+)\"?",
         f"workflow {path.name} AGIALPHA address",
+        path,
     )
     decimals = int(
         _extract_pattern(
-            path,
+            workflow,
             r"AGIALPHA_DECIMALS:\s*([0-9]+)",
             f"workflow {path.name} AGIALPHA decimals",
+            path,
         )
     )
     return TokenConfig(address=address, decimals=decimals)
