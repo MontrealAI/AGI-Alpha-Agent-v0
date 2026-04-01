@@ -7,6 +7,8 @@ import subprocess
 import sys
 from dataclasses import dataclass
 
+from .models import ValidatorClass
+
 PYTHON = sys.executable
 
 
@@ -18,13 +20,32 @@ class ValidatorPlan:
     broader: list[str]
 
 
-REGISTRY: dict[str, ValidatorPlan] = {
-    "ruff": ValidatorPlan(["ruff", "check", "."], ["pre-commit", "run", "--all-files"]),
-    "mypy": ValidatorPlan(["mypy", "--config-file", "mypy.ini", "."], [PYTHON, "-m", "pytest", "-q"]),
-    "import": ValidatorPlan([PYTHON, "-m", "pytest", "tests/test_imports.py", "-q"], [PYTHON, "-m", "pytest", "-q"]),
-    "pytest": ValidatorPlan([PYTHON, "-m", "pytest", "-q"], [PYTHON, "-m", "pytest", "-q"]),
-    "mkdocs": ValidatorPlan(["mkdocs", "build", "--strict"], [PYTHON, "-m", "pytest", "tests/test_notebooks.py", "-q"]),
-    "smoke": ValidatorPlan([PYTHON, "scripts/check_python_deps.py"], [PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "-q"]),
+REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
+    ValidatorClass.RUFF: ValidatorPlan(["ruff", "check", "."], ["pre-commit", "run", "--all-files"]),
+    ValidatorClass.MYPY: ValidatorPlan(["mypy", "--config-file", "mypy.ini", "."], [PYTHON, "-m", "pytest", "-q"]),
+    ValidatorClass.PYTEST: ValidatorPlan([PYTHON, "-m", "pytest", "-q"], [PYTHON, "-m", "pytest", "-q"]),
+    ValidatorClass.SMOKE: ValidatorPlan(
+        [
+            PYTHON,
+            "-m",
+            "pytest",
+            "-m",
+            "smoke",
+            "tests/test_af_requests.py",
+            "tests/test_cache_version.py",
+            "tests/test_check_env_core.py",
+            "tests/test_check_env_network.py",
+            "tests/test_config_settings.py",
+            "tests/test_config_utils.py",
+            "tests/test_ping_agent.py",
+            "-q",
+        ],
+        [PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "--cov", "--cov-report=xml"],
+    ),
+    ValidatorClass.DOCS: ValidatorPlan(["mkdocs", "build", "--strict"], ["mkdocs", "build", "--strict"]),
+    ValidatorClass.NONE: ValidatorPlan(
+        [PYTHON, "-c", "print('diagnose-only')"], [PYTHON, "-c", "print('diagnose-only')"]
+    ),
 }
 
 
@@ -34,6 +55,6 @@ def run_validator(cmd: list[str], cwd: str) -> tuple[int, str]:
     return proc.returncode, proc.stdout + proc.stderr
 
 
-def get_plan(key: str) -> ValidatorPlan:
-    """Resolve validator plan by triage key."""
-    return REGISTRY.get(key, REGISTRY["smoke"])
+def get_plan(validator_class: ValidatorClass) -> ValidatorPlan:
+    """Resolve validator plan by class."""
+    return REGISTRY.get(validator_class, REGISTRY[ValidatorClass.PYTEST])

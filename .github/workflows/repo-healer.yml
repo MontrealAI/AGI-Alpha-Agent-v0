@@ -75,24 +75,21 @@ jobs:
             "step": "summary",
             "run_id": str(run.get("id", "manual")),
             "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
+            "failure_class": "unknown",
             "platform": detect_platform(),
             "exit_code": 1,
+            "candidate_files": [],
+            "reproduction_command": [],
+            "validator_class": "none",
+            "risk_tier": "tier2",
+            "support_mode": "REPORT_ONLY",
             "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
             "annotations": [],
             "artifacts": {"event": str(event_path)},
           }
           Path("repo_healer_bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
           Path("repo_healer_candidates.json").write_text(
-              json.dumps(
-                  [
-                      {
-                          "diff": "--- a/README.md\\n+++ b/README.md\\n@@ -1,1 +1,1 @@\\n-[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n+[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n",
-                          "summary": "report-only placeholder candidate",
-                          "score": 0.1,
-                      }
-                  ],
-                  indent=2,
-              ),
+              json.dumps([], indent=2),
               encoding="utf-8",
           )
           PY
