@@ -42,6 +42,8 @@ def main() -> int:
     report = engine.run(bundle, candidates)
     write_report(report, pathlib.Path(args.report))
     print(json.dumps(report.to_dict(), indent=2))
+    if args.report_only:
+        return 0
     return 0 if report.success else 1
 
 
