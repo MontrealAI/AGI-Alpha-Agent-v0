@@ -1,0 +1,78 @@
+name: "🩹 Repo-Healer v1"
+
+on:
+  workflow_run:
+    workflows:
+      - "🚀 CI — Insight Demo"
+      - "✅ PR CI"
+      - "🔥 Smoke Test"
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  triage-and-report:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Build minimal failure bundle
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          event_path = Path(os.environ["GITHUB_EVENT_PATH"])
+          payload = json.loads(event_path.read_text(encoding="utf-8"))
+          run = payload.get("workflow_run", {})
+          bundle = {
+            "workflow": run.get("name", "manual"),
+            "job": "workflow_run",
+            "step": "summary",
+            "run_id": str(run.get("id", "manual")),
+            "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
+            "platform": "linux",
+            "exit_code": 1,
+            "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
+            "annotations": [],
+            "artifacts": {"event": str(event_path)},
+          }
+          Path("repo_healer_bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+          Path("repo_healer_candidates.json").write_text(
+              json.dumps(
+                  [
+                      {
+                          "diff": "--- a/README.md\\n+++ b/README.md\\n@@ -1,1 +1,1 @@\\n-[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n+[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n",
+                          "summary": "report-only placeholder candidate",
+                          "score": 0.1,
+                      }
+                  ],
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+          PY
+      - name: Run Repo-Healer in report-only mode
+        run: |
+          python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+            --repo . \
+            --failure-bundle repo_healer_bundle.json \
+            --candidates repo_healer_candidates.json \
+            --report repo_healer_report.json \
+            --report-only
+      - name: Upload repo-healer artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: repo-healer-v1-report
+          path: |
+            repo_healer_bundle.json
+            repo_healer_candidates.json
+            repo_healer_report.json
