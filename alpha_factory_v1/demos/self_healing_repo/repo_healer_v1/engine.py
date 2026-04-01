@@ -5,13 +5,12 @@ from __future__ import annotations
 
 import json
 import pathlib
-import tempfile
 from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
 from .models import FailureBundle, PatchCandidate, RepairReport, RiskPolicy
-from .safety import is_patch_safe
+from .safety import is_patch_safe, touched_files_from_diff
 from .triage import triage_bundle
 from .validators import get_plan, run_validator
 
@@ -46,20 +45,45 @@ class RepoHealerEngine:
             if not safe:
                 continue
             if self.options.dry_run:
-                return RepairReport(True, triage.policy, "dry-run safe candidate", commands, attempts, candidate.summary)
+                return RepairReport(
+                    True,
+                    triage.policy,
+                    "dry-run safe candidate",
+                    commands,
+                    attempts,
+                    candidate.summary,
+                )
+            snapshot = self._snapshot_files(candidate.diff)
             try:
                 patcher_core.apply_patch(candidate.diff, repo_path=str(self.repo_root))
             except Exception:
+                self._restore_snapshot(snapshot)
                 continue
 
             rc_target, _ = run_validator(plan.targeted, cwd=str(self.repo_root))
             if rc_target != 0:
+                self._restore_snapshot(snapshot)
                 continue
             rc_broader, _ = run_validator(plan.broader, cwd=str(self.repo_root))
             if rc_broader == 0:
                 return RepairReport(True, triage.policy, "validators passed", commands, attempts, candidate.summary)
+            self._restore_snapshot(snapshot)
 
         return RepairReport(False, triage.policy, "no candidate passed validators", commands, attempts)
+
+    def _snapshot_files(self, diff: str) -> dict[pathlib.Path, str]:
+        """Capture pre-apply contents so failed candidates can roll back safely."""
+        snapshot: dict[pathlib.Path, str] = {}
+        for rel in touched_files_from_diff(diff):
+            file_path = self.repo_root / rel
+            if file_path.exists():
+                snapshot[file_path] = file_path.read_text(encoding="utf-8")
+        return snapshot
+
+    def _restore_snapshot(self, snapshot: dict[pathlib.Path, str]) -> None:
+        """Restore repository contents after failed candidate validation."""
+        for path, text in snapshot.items():
+            path.write_text(text, encoding="utf-8")
 
 
 def write_report(report: RepairReport, out_path: pathlib.Path) -> None:

@@ -5,10 +5,20 @@ from __future__ import annotations
 
 from .models import FailureBundle, FailureClass, RiskPolicy, TriageResult
 
-
-TRANSIENT_MARKERS = ("timed out", "connection reset", "temporary failure", "no route to host", "runner lost")
-PERMISSION_MARKERS = ("permission denied", "resource not accessible by integration", "insufficient permission", "403")
-UNSAFE_MARKERS = ("branch protection", "token", "secret", "sign", "publish")
+TRANSIENT_MARKERS = (
+    "timed out",
+    "connection reset",
+    "temporary failure",
+    "no route to host",
+    "runner lost",
+)
+PERMISSION_MARKERS = (
+    "permission denied",
+    "resource not accessible by integration",
+    "insufficient permission",
+    "403",
+)
+UNSAFE_MARKERS = ("branch protection", "token", "secret", "signature", "publish")
 
 
 def triage_bundle(bundle: FailureBundle) -> TriageResult:
@@ -24,15 +34,39 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             candidate_files=[],
         )
     if any(marker in text for marker in PERMISSION_MARKERS):
-        return TriageResult(FailureClass.PERMISSION, RiskPolicy.DIAGNOSE_ONLY, "permission/token context", "none", [])
+        return TriageResult(
+            FailureClass.PERMISSION,
+            RiskPolicy.DIAGNOSE_ONLY,
+            "permission/token context",
+            "none",
+            [],
+        )
     if any(marker in text for marker in UNSAFE_MARKERS):
-        return TriageResult(FailureClass.UNSAFE_SURFACE, RiskPolicy.DIAGNOSE_ONLY, "protected or unsafe surface", "none", [])
+        return TriageResult(
+            FailureClass.UNSAFE_SURFACE,
+            RiskPolicy.DIAGNOSE_ONLY,
+            "protected or unsafe surface",
+            "none",
+            [],
+        )
     if any(marker in text for marker in TRANSIENT_MARKERS):
-        return TriageResult(FailureClass.TRANSIENT_INFRA, RiskPolicy.DIAGNOSE_ONLY, "likely transient infra", "none", [])
+        return TriageResult(
+            FailureClass.TRANSIENT_INFRA,
+            RiskPolicy.DIAGNOSE_ONLY,
+            "likely transient infra",
+            "none",
+            [],
+        )
 
     validator_key = _validator_from_text(text)
     files = _candidate_files(bundle)
-    return TriageResult(FailureClass.AUTO_FIXABLE, RiskPolicy.SAFE_AUTOPATCH, "linux reproducible code failure", validator_key, files)
+    return TriageResult(
+        FailureClass.AUTO_FIXABLE,
+        RiskPolicy.SAFE_AUTOPATCH,
+        "linux reproducible code failure",
+        validator_key,
+        files,
+    )
 
 
 def _validator_from_text(text: str) -> str:
