@@ -20,15 +20,11 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
 
-The **PR CI** workflow runs Ruff linting and focused smoke tests on every pull request and on pushes to `main`. The full **🚀 CI — Insight Demo** matrix (lint, type-check, tests, docs, Docker build, and signed artifacts) now runs on the same events so the badge stays fresh without manual dispatch. A separate **🩺 CI Health** watchdog automatically cancels pending runs that linger beyond a 10-minute grace window (hard stop at 60 minutes), re-dispatches missing jobs with `GITHUB_TOKEN`, and alerts when any workflow is stuck; it now also triggers after every **PR CI**, **🚀 CI**, or **🔥 Smoke Test** completion so badge issues are remediated immediately instead of waiting for the hourly cron. Tests target Python 3.11 and 3.12 until PyTorch releases stable 3.13 wheels.
+The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focused smoke test suite on pull requests, pushes to `main`, and merge queue runs.
 
-When a workflow does fail, the watchdog now also requests an automatic rerun using `GITHUB_TOKEN` so transient network blips or flaky mirrors self-heal before raising an alert. This keeps required checks green on `main` without manual button clicks while preserving visibility into repeated failures.
+The full **🚀 CI — Insight Demo** workflow is intentionally **off the PR path**. It now runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
 
-`workflow_dispatch` runs triggered by the **🩺 CI Health** watchdog now bypass the manual owner gate when they originate from `github-actions[bot]`, so automated re-dispatches can heal stale badges without waiting for the repository owner to click "Re-run".
-
-To enforce branch-protection verification inside the watchdog, add a fine-grained or classic `ADMIN_GITHUB_TOKEN` secret with branch-administration scope; when absent, the workflow logs a warning and skips the check so the rest of CI remains green.
-
-Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — Insight Demo**, exercising the deploy and signing stages so production artifacts stay provably green.
+**🩺 CI Health** still watches PR CI, CI, and Smoke runs and can re-dispatch stale/missing workflows. Use `ADMIN_GITHUB_TOKEN` to enable branch-protection remediation; without it, health checks run read-only.
 
 #### Run CI locally
 
@@ -50,40 +46,28 @@ Pushes of signed release tags (`v*` or `release-*`) also trigger **🚀 CI — I
    ```bash
    pytest
    ```
-5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow** (repository owners only).
+5. Trigger workflows from GitHub Actions when needed:
+   - **✅ PR CI** validates PR gate behavior.
+   - **🚀 CI — Insight Demo** validates full post-merge/release matrix.
 
-**Troubleshooting:**
-- Missing optional packages (`openai_agents`, `gymnasium`, etc.) can fail tests—rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`.
-- When offline or behind strict firewalls, set `WHEELHOUSE=$(pwd)/wheels` and pass `--wheelhouse "$WHEELHOUSE"` so installs pull from the local wheel cache instead of PyPI.
-
-Mark **all** of these checks as required branch protections so contributors see the results on every PR and the `main` branch stays green:
+Set branch protection required checks to:
 
 - `✅ PR CI / Lint (ruff)`
 - `✅ PR CI / Smoke tests`
-- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
-- `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
-- `🚀 CI — Insight Demo / ✅ Actionlint`
-- `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
-- `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
-- `🚀 CI — Insight Demo / Windows Smoke`
-- `🚀 CI — Insight Demo / macOS Smoke`
-- `🚀 CI — Insight Demo / 📜 MkDocs`
-- `🚀 CI — Insight Demo / 📚 Docs Build`
-- `🚀 CI — Insight Demo / 🐳 Docker build`
-- `🩺 CI Health / CI watchdog`
 
-Pushes to `main`, merge-queue runs, and pull requests from any source now run a `🔒 Branch protection guardrails` job inside **🚀 CI — Insight Demo**. The job stays read-only when only the default `GITHUB_TOKEN` is available (for example, forked PRs), so the required check still reports while repositories with an `ADMIN_GITHUB_TOKEN` continue enforcing missing protections automatically. This keeps badges meaningful and ensures every PR surfaces the full matrix before merge.
+Keep **Require branches to be up to date** enabled. Verify protections with:
 
-Use `python scripts/verify_branch_protection.py --apply --branch main` (export `GITHUB_TOKEN`) to confirm the protection rule enforces the list above and still requires branches to be up to date; passing `--apply` auto-heals missing or stale required checks so CI stays green even when settings drift. The **🩺 CI Health** watchdog runs this remediation automatically so drift is caught as soon as a workflow completes.
+```bash
+python scripts/verify_branch_protection.py --apply --branch main
+```
 
-The branch-protection guardrails steps require the Actions token to include `administration:read` scope (alongside the existing `actions:write` for dispatch/cancel) so GitHub returns the protection settings instead of a 403/404. The workflow permissions now set this explicitly to keep the automated verification green.
+Track workflow health with:
 
-Keep **Require branches to be up to date** enabled so merges always include the latest CI signal. Use **🔥 Smoke Test** for a quick, owner-triggered regression check before enabling new protections or releases.
-CI jobs now run without any environment approval gates; ensure the `ci-on-demand` (or similarly named) environment does not require reviewers so checks start immediately on pushes and pull requests.
+```bash
+python scripts/check_ci_status.py --wait-minutes 5 --stale-minutes 90 --pending-grace-minutes 45
+```
 
-Run `python scripts/check_ci_status.py --wait-minutes 5 --stale-minutes 90 --pending-grace-minutes 45` (set `GITHUB_TOKEN` to avoid rate limits) to poll until the latest `ci.yml`, `pr-ci.yml`, `smoke.yml`, and `ci-health.yml` runs finish. The extended grace period tolerates long-running pipelines while still cancelling stale runs after 90 minutes. Use `--once` to fail fast with zero grace when you want an immediate red/green answer for a stalled badge. Pair this with `python scripts/verify_branch_protection.py --apply --branch main --required-check "✅ PR CI / Lint (ruff)" --required-check "🚀 CI — Insight Demo / ✅ Pytest (3.11)" ...` (see `.github/workflows/ci-health.yml` for the complete list) to confirm PRs cannot merge unless every check in `pr-ci.yml` and `ci.yml` succeeds. When invoked from a workflow run, the status checker automatically skips the workflow that called it to avoid dispatching redundant self-runs.
-
-See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for a step-by-step enforcement checklist that keeps required checks visible on PRs and ensures the badges above stay green.
+See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for the up-to-date enforcement checklist.
 
 ### Quick Demo
 
