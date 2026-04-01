@@ -81,3 +81,35 @@ def test_engine_restores_repo_between_candidates(tmp_path: pathlib.Path) -> None
 
     assert report.success is True
     assert readme.read_text(encoding="utf-8") == "good\n"
+
+
+def test_engine_restores_repo_when_validator_raises(tmp_path: pathlib.Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    readme = repo / "README.md"
+    readme.write_text("hello\n", encoding="utf-8")
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="pytest assert")
+    bad_patch = PatchCandidate(
+        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+bad\n",
+        summary="bad",
+        score=1.0,
+    )
+    good_patch = PatchCandidate(
+        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+good\n",
+        summary="good",
+        score=0.9,
+    )
+
+    with (
+        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.run_validator") as run_validator,
+        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.get_plan") as get_plan,
+    ):
+        get_plan.return_value = mock.Mock(targeted=["target"], broader=["broad"])
+        run_validator.side_effect = [FileNotFoundError("missing"), (0, "ok"), (0, "ok")]
+        report = RepoHealerEngine(
+            repo,
+            EngineOptions(dry_run=False, max_attempts=2),
+        ).run(bundle, [bad_patch, good_patch])
+
+    assert report.success is True
+    assert readme.read_text(encoding="utf-8") == "good\n"

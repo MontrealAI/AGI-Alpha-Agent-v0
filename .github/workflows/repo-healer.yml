@@ -28,18 +28,54 @@ jobs:
           python - <<'PY'
           import json
           import os
+          import urllib.request
           from pathlib import Path
 
           event_path = Path(os.environ["GITHUB_EVENT_PATH"])
           payload = json.loads(event_path.read_text(encoding="utf-8"))
           run = payload.get("workflow_run", {})
+
+          def detect_platform() -> str:
+              """Infer platform from failed job metadata when available."""
+              run_id = run.get("id")
+              token = os.environ.get("GITHUB_TOKEN")
+              if not run_id or not token:
+                  return "unknown"
+              api = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/jobs"
+              req = urllib.request.Request(
+                  api,
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=10) as resp:
+                      jobs_payload = json.loads(resp.read().decode("utf-8"))
+              except Exception:
+                  return "unknown"
+
+              for job in jobs_payload.get("jobs", []):
+                  if job.get("conclusion") != "failure":
+                      continue
+                  name = (job.get("runner_name") or "").lower()
+                  labels = [str(x).lower() for x in job.get("labels", [])]
+                  haystack = " ".join([name, *labels])
+                  if "windows" in haystack:
+                      return "windows"
+                  if "macos" in haystack or "mac" in haystack:
+                      return "macos"
+                  if "ubuntu" in haystack or "linux" in haystack:
+                      return "linux"
+              return "unknown"
+
           bundle = {
             "workflow": run.get("name", "manual"),
             "job": "workflow_run",
             "step": "summary",
             "run_id": str(run.get("id", "manual")),
             "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
-            "platform": "linux",
+            "platform": detect_platform(),
             "exit_code": 1,
             "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
             "annotations": [],
@@ -61,6 +97,8 @@ jobs:
           )
           PY
       - name: Run Repo-Healer in report-only mode
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
             --repo . \

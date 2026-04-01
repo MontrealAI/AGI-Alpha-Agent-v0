@@ -60,11 +60,19 @@ class RepoHealerEngine:
                 self._restore_snapshot(snapshot)
                 continue
 
-            rc_target, _ = run_validator(plan.targeted, cwd=str(self.repo_root))
+            try:
+                rc_target, _ = run_validator(plan.targeted, cwd=str(self.repo_root))
+            except Exception:
+                self._restore_snapshot(snapshot)
+                continue
             if rc_target != 0:
                 self._restore_snapshot(snapshot)
                 continue
-            rc_broader, _ = run_validator(plan.broader, cwd=str(self.repo_root))
+            try:
+                rc_broader, _ = run_validator(plan.broader, cwd=str(self.repo_root))
+            except Exception:
+                self._restore_snapshot(snapshot)
+                continue
             if rc_broader == 0:
                 return RepairReport(True, triage.policy, "validators passed", commands, attempts, candidate.summary)
             self._restore_snapshot(snapshot)
