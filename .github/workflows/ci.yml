@@ -1,8 +1,8 @@
 # 🌐 Alpha-AGI Insight CI — GitHub Actions Workflow
 #
 # Validates the demo with lint, type checks, unit tests and Docker build.
-# Runs on pushes and pull requests to `main`, plus optional manual dispatch.
-# Manual runs remain gated by the owner-check job to block untrusted triggers.
+# Runs on pushes to `main` and release tags, plus optional manual dispatch.
+# PR gating lives in pr-ci.yml so this workflow can stay full-scope and non-blocking for contributors.
 # Deploys a Docker image with rollback on failure.
 # Later jobs run unconditionally but check `needs.owner-check.result == 'success'`
 # so they skip when owner verification fails.
@@ -21,9 +21,6 @@ on:
   push:
     branches: ["main"]
     tags: ["v*", "release-*"]
-  pull_request:
-    branches: ["main"]
-  merge_group:
   workflow_dispatch:
     inputs:
       a11y-threshold:
@@ -174,7 +171,7 @@ jobs:
           git --version
 
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-py${{ matrix.python-version }}-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -231,7 +228,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
@@ -326,7 +323,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
@@ -402,7 +399,7 @@ jobs:
           if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload benchmark results
         if: steps.bench-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@v7.0.0 # bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
           name: benchmark-results
           path: tests/benchmarks/latest.json
@@ -417,7 +414,7 @@ jobs:
           PY
       - name: Comment benchmark
         if: ${{ github.event.pull_request }}
-        uses: marocchino/sticky-pull-request-comment@v2.9.4 # 773744901bac0e8cbb5a0dc842800d45e9b2b405
+        uses: marocchino/sticky-pull-request-comment@v3.0.2 # 70d2764d1a7d5d9560b100cbea0077fc8f633987
         with:
           header: benchmark
           path: bench.txt
@@ -427,14 +424,14 @@ jobs:
           if [[ -f artifacts/coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload pytest results
         if: always()
-        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@v7.0.0 # bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
           name: pytest-${{ matrix.python-version }}
           path: artifacts/test-reports/pytest.xml
           if-no-files-found: warn
       - name: Upload coverage
         if: steps.coverage-check.outputs.found == 'true'
-        uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@v7.0.0 # bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
           name: coverage-xml
           path: artifacts/coverage.xml
@@ -494,7 +491,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
@@ -673,12 +670,12 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
@@ -778,7 +775,7 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: .cache/pre-commit
           key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
@@ -852,7 +849,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Cache Playwright browsers
-        uses: actions/cache@v5.0.2 # 8b402f58fbc84540c8b491a91e594a4576fec3d7
+        uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
@@ -977,7 +974,7 @@ jobs:
           tar -czf web-client.tar.gz -C alpha_factory_v1/core/interface/web_client/dist .
           sha256sum web-client.tar.gz > web-client.sha256
       - name: Install cosign
-        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
+        uses: sigstore/cosign-installer@v4.1.1 # cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003
         with:
           cosign-release: 'v2.5.3'
       - name: Sign web client artifact
@@ -999,7 +996,7 @@ jobs:
         id: web-client-check
         run: |
           if [[ -f web-client.tar.gz ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
-      - uses: actions/upload-artifact@v6.0.0 # b7c566a772e6b6bfb58ed0dc250532a479d7789f
+      - uses: actions/upload-artifact@v7.0.0 # bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         if: steps.web-client-check.outputs.found == 'true'
         with:
           name: web-client
@@ -1084,7 +1081,7 @@ jobs:
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
         if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
-        uses: docker/login-action@v3.6.0 # 5e57cd118135c172c3672efd75eb46360885c0ef
+        uses: docker/login-action@v4.0.0 # b45d80f862d83dbcd57f89517bcf500b2ab88fb2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -1096,7 +1093,7 @@ jobs:
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:${{ github.sha }}"
       - name: Install cosign
         if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
-        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
+        uses: sigstore/cosign-installer@v4.1.1 # cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003
         with:
           cosign-release: 'v2.5.3'
       - name: Sign image
@@ -1129,13 +1126,13 @@ jobs:
           docker compose version
           git --version
       - name: Login to GHCR
-        uses: docker/login-action@v3.6.0 # 5e57cd118135c172c3672efd75eb46360885c0ef
+        uses: docker/login-action@v4.0.0 # b45d80f862d83dbcd57f89517bcf500b2ab88fb2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install cosign
-        uses: sigstore/cosign-installer@v4.0.0 # faadad0cce49287aee09b3a48701e75088a2c6ad
+        uses: sigstore/cosign-installer@v4.1.1 # cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003
         with:
           cosign-release: 'v2.5.3'
       - name: Pull previous image
@@ -1176,7 +1173,7 @@ jobs:
       - name: Prepare release assets
         run: echo "Using prebuilt web client artifact"
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2.5.0 # a06a81a03ee405af7f2048a818ed3f03bbf83c7b
+        uses: softprops/action-gh-release@v2.6.1 # 153bb8e04406b158c6c84fc1615b65b24149a1fe
         with:
           files: web-client.tar.gz
       - name: Rollback on failure
