@@ -8,12 +8,18 @@ import json
 import pathlib
 
 from .engine import EngineOptions, RepoHealerEngine, write_report
-from .models import FailureBundle, FailureSignal, PatchCandidate
+from .models import FailureBundle, FailureClass, FailureSignal, PatchCandidate, SupportMode, ValidatorClass
 
 
 def _load_bundle(path: pathlib.Path) -> FailureBundle:
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["annotations"] = [FailureSignal(**a) for a in payload.get("annotations", [])]
+    if "failure_class" in payload:
+        payload["failure_class"] = FailureClass(payload["failure_class"])
+    if "validator_class" in payload:
+        payload["validator_class"] = ValidatorClass(payload["validator_class"])
+    if "support_mode" in payload:
+        payload["support_mode"] = SupportMode(payload["support_mode"])
     return FailureBundle(**payload)
 
 
@@ -42,9 +48,7 @@ def main() -> int:
     report = engine.run(bundle, candidates)
     write_report(report, pathlib.Path(args.report))
     print(json.dumps(report.to_dict(), indent=2))
-    if args.report_only:
-        return 0
-    return 0 if report.success else 1
+    return 0 if args.report_only or report.success else 1
 
 
 if __name__ == "__main__":

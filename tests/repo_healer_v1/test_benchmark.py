@@ -10,4 +10,5 @@ from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark import ru
 def test_seeded_benchmark_machine_readable() -> None:
     payload = run_seeded_benchmark(pathlib.Path("."))
     assert payload["total"] == 6
+    assert payload["healed"] >= 4
     assert isinstance(payload["results"], list)

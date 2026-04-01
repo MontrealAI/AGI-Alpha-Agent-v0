@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
-from .models import FailureBundle, PatchCandidate, RepairReport, RiskPolicy
+from .models import FailureBundle, PatchCandidate, RepairReport, SupportMode, TriageDecision
 from .safety import is_patch_safe, touched_files_from_diff
 from .triage import triage_bundle
 from .validators import get_plan, run_validator
@@ -33,21 +33,33 @@ class RepoHealerEngine:
 
     def run(self, bundle: FailureBundle, candidates: list[PatchCandidate]) -> RepairReport:
         triage = triage_bundle(bundle)
-        if triage.policy != RiskPolicy.SAFE_AUTOPATCH or self.options.report_only:
-            return RepairReport(False, triage.policy, triage.reason, [], 0)
+        if self.options.report_only:
+            triage = triage.__class__(
+                failure_class=triage.failure_class,
+                decision=triage.decision,
+                reason=f"report-only mode: {triage.reason}",
+                validator_class=triage.validator_class,
+                candidate_files=triage.candidate_files,
+                support_mode=SupportMode.REPORT_ONLY,
+            )
+        if triage.support_mode != SupportMode.AUTOPATCH_SAFE:
+            return RepairReport(False, triage.decision, triage.support_mode, triage.reason, [], 0)
 
-        plan = get_plan(triage.validator_key)
-        commands = [plan.targeted, plan.broader]
+        plan = get_plan(triage.validator_class)
+        targeted_cmd = bundle.reproduction_command or plan.targeted
+        broader_cmd = plan.broader if not bundle.reproduction_command else targeted_cmd
+        commands = [targeted_cmd, broader_cmd]
         attempts = 0
         for candidate in sorted(candidates, key=lambda c: c.score, reverse=True)[: self.options.max_attempts]:
             attempts += 1
-            safe, reason = is_patch_safe(candidate.diff, self.repo_root)
+            safe, _ = is_patch_safe(candidate.diff, self.repo_root)
             if not safe:
                 continue
             if self.options.dry_run:
                 return RepairReport(
                     True,
-                    triage.policy,
+                    TriageDecision.SAFE_AUTOPATCH,
+                    triage.support_mode,
                     "dry-run safe candidate",
                     commands,
                     attempts,
@@ -56,28 +68,34 @@ class RepoHealerEngine:
             snapshot = self._snapshot_files(candidate.diff)
             try:
                 patcher_core.apply_patch(candidate.diff, repo_path=str(self.repo_root))
+                rc_target, _ = run_validator(targeted_cmd, cwd=str(self.repo_root))
+                if rc_target != 0:
+                    self._restore_snapshot(snapshot)
+                    continue
+                rc_broader, _ = run_validator(broader_cmd, cwd=str(self.repo_root))
+                if rc_broader == 0:
+                    return RepairReport(
+                        True,
+                        TriageDecision.SAFE_AUTOPATCH,
+                        triage.support_mode,
+                        "validators passed",
+                        commands,
+                        attempts,
+                        candidate.summary,
+                    )
+                self._restore_snapshot(snapshot)
             except Exception:
                 self._restore_snapshot(snapshot)
                 continue
 
-            try:
-                rc_target, _ = run_validator(plan.targeted, cwd=str(self.repo_root))
-            except Exception:
-                self._restore_snapshot(snapshot)
-                continue
-            if rc_target != 0:
-                self._restore_snapshot(snapshot)
-                continue
-            try:
-                rc_broader, _ = run_validator(plan.broader, cwd=str(self.repo_root))
-            except Exception:
-                self._restore_snapshot(snapshot)
-                continue
-            if rc_broader == 0:
-                return RepairReport(True, triage.policy, "validators passed", commands, attempts, candidate.summary)
-            self._restore_snapshot(snapshot)
-
-        return RepairReport(False, triage.policy, "no candidate passed validators", commands, attempts)
+        return RepairReport(
+            False,
+            TriageDecision.DIAGNOSE_ONLY,
+            SupportMode.REPORT_ONLY,
+            "no candidate passed validators",
+            commands,
+            attempts,
+        )
 
     def _snapshot_files(self, diff: str) -> dict[pathlib.Path, str]:
         """Capture pre-apply contents so failed candidates can roll back safely."""
