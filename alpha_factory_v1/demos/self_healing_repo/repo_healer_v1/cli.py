@@ -7,6 +7,7 @@ import argparse
 import json
 import pathlib
 
+from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine, write_report
 from .models import FailureBundle, FailureSignal, PatchCandidate, SupportMode, ValidatorClass
 
@@ -41,6 +42,8 @@ def main() -> int:
     )
     bundle = _load_bundle(pathlib.Path(args.failure_bundle))
     candidates = _load_candidates(pathlib.Path(args.candidates))
+    if not candidates and not args.report_only:
+        candidates = generate_candidates(pathlib.Path(args.repo).resolve(), bundle)
     report = engine.run(bundle, candidates)
     write_report(report, pathlib.Path(args.report))
     print(json.dumps(report.to_dict(), indent=2))
