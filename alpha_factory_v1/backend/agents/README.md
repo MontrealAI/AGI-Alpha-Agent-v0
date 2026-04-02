@@ -204,7 +204,7 @@ graph TD
 | 9 | `fin_momentum_bot` | 💹 | Live momentum + risk parity. | `af demo fin` |
 |10 | `macro_sentinel` | 🛰 | Macro data watcher for tail risk. | `af demo macro` |
 |11 | `muzero_planner` | ♟ | Tree-search planner with MuZero++ core. | `af demo plan` |
-|12 | `self_healing_repo` | 🩹 | CI fails → agent patches → PR green. | `af demo heal` |
+|12 | `self_healing_repo` | 🩹 | Repo-Healer v1: bounded repair for Tier-1 failures; diagnose-only for protected surfaces. | `af demo heal` |
 ---
 
 <a name="5"></a>

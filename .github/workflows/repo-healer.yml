@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.12"
-      - name: Build minimal failure bundle
+      - name: Build structured failure bundle
         run: |
           python - <<'PY'
           import json
@@ -35,12 +35,11 @@ jobs:
           payload = json.loads(event_path.read_text(encoding="utf-8"))
           run = payload.get("workflow_run", {})
 
-          def detect_platform() -> str:
-              """Infer platform from failed job metadata when available."""
+          def infer_platform() -> str:
               run_id = run.get("id")
               token = os.environ.get("GITHUB_TOKEN")
               if not run_id or not token:
-                  return "unknown"
+                  return "linux"
               api = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/jobs"
               req = urllib.request.Request(
                   api,
@@ -53,21 +52,23 @@ jobs:
                   with urllib.request.urlopen(req, timeout=10) as resp:
                       jobs_payload = json.loads(resp.read().decode("utf-8"))
               except Exception:
-                  return "unknown"
+                  return "linux"
 
               for job in jobs_payload.get("jobs", []):
                   if job.get("conclusion") != "failure":
                       continue
-                  name = (job.get("runner_name") or "").lower()
-                  labels = [str(x).lower() for x in job.get("labels", [])]
-                  haystack = " ".join([name, *labels])
+                  haystack = " ".join(
+                      [
+                          str(job.get("runner_name", "")).lower(),
+                          *[str(label).lower() for label in job.get("labels", [])],
+                          str(job.get("name", "")).lower(),
+                      ]
+                  )
                   if "windows" in haystack:
                       return "windows"
                   if "macos" in haystack or "mac" in haystack:
                       return "macos"
-                  if "ubuntu" in haystack or "linux" in haystack:
-                      return "linux"
-              return "unknown"
+              return "linux"
 
           bundle = {
             "workflow": run.get("name", "manual"),
@@ -75,30 +76,25 @@ jobs:
             "step": "summary",
             "run_id": str(run.get("id", "manual")),
             "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
-            "platform": detect_platform(),
+            "platform": infer_platform(),
+            "failure_class": "workflow_run_failure",
             "exit_code": 1,
+            "candidate_files": [],
+            "reproduction_command": ["python", "-m", "pytest", "-q"],
+            "validator_class": "none",
+            "risk_tier": "tier2",
+            "support_mode": "REPORT_ONLY",
             "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
             "annotations": [],
             "artifacts": {"event": str(event_path)},
           }
           Path("repo_healer_bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
           Path("repo_healer_candidates.json").write_text(
-              json.dumps(
-                  [
-                      {
-                          "diff": "--- a/README.md\\n+++ b/README.md\\n@@ -1,1 +1,1 @@\\n-[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n+[See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)\\n",
-                          "summary": "report-only placeholder candidate",
-                          "score": 0.1,
-                      }
-                  ],
-                  indent=2,
-              ),
+              json.dumps([], indent=2),
               encoding="utf-8",
           )
           PY
       - name: Run Repo-Healer in report-only mode
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
             --repo . \
