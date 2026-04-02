@@ -28,7 +28,7 @@ UNSAFE_MARKERS = (
     "disable test",
     "skip ci",
 )
-DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflow")
+DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "workflow")
 
 
 def triage_bundle(bundle: FailureBundle) -> TriageResult:
@@ -52,11 +52,20 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
 
     text = "\n".join([bundle.logs, *(a.message for a in bundle.annotations)]).lower()
 
-    if bundle.platform.lower() in {"windows", "macos"}:
+    platform = bundle.platform.lower()
+    if platform in {"windows", "macos"}:
         return TriageResult(
-            classification=FailureClass.DRAFT_PR_ONLY,
+            classification=FailureClass.UNSUPPORTED_PLATFORM_SPECIFIC,
             support_mode=SupportMode.DRAFT_PR_ONLY,
             reason=f"{bundle.platform} replay is Tier-2 diagnose-only in v1",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=[],
+        )
+    if platform != "linux":
+        return TriageResult(
+            classification=FailureClass.UNSUPPORTED_PLATFORM_SPECIFIC,
+            support_mode=SupportMode.REPORT_ONLY,
+            reason=f"unsupported platform '{bundle.platform}'",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
         )

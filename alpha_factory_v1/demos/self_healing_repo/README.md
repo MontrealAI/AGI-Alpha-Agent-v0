@@ -49,6 +49,7 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
 ## Repo-Healer v1 architecture
 
 - `repo_healer_v1/models.py`: typed failure bundle and report model.
+- `repo_healer_v1/ci_ingest.py`: structured GitHub Actions event/jobs/JUnit ingestion.
 - `repo_healer_v1/triage.py`: deterministic classification to support mode.
 - `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
@@ -67,7 +68,8 @@ Workflow: `.github/workflows/repo-healer.yml`
 
 - Trigger: failed `workflow_run` from real CI workflows + manual dispatch.
 - Emits structured artifacts:
-  - `repo_healer_bundle.json`
+  - `repo_healer_bundle.json` (normalized context pack)
+  - `repo_healer_jobs.json` (when API access is available)
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
 - Current workflow runs report-only by default for fork/permission safety.

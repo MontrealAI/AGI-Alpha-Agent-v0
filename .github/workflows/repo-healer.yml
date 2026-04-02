@@ -30,65 +30,36 @@ jobs:
           import os
           import urllib.request
           from pathlib import Path
+          from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_ingest import build_bundle_from_event
+          from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import SupportMode
 
           event_path = Path(os.environ["GITHUB_EVENT_PATH"])
           payload = json.loads(event_path.read_text(encoding="utf-8"))
           run = payload.get("workflow_run", {})
 
-          def infer_platform() -> str:
-              run_id = run.get("id")
-              token = os.environ.get("GITHUB_TOKEN")
-              if not run_id or not token:
-                  return "linux"
-              api = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/jobs"
-              req = urllib.request.Request(
-                  api,
-                  headers={
-                      "Authorization": f"Bearer {token}",
-                      "Accept": "application/vnd.github+json",
-                  },
+          run_id = run.get("id")
+          token = os.environ.get("GITHUB_TOKEN")
+          if run_id and token:
+              jobs_api = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/jobs"
+              jobs_req = urllib.request.Request(
+                  jobs_api,
+                  headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
               )
               try:
-                  with urllib.request.urlopen(req, timeout=10) as resp:
+                  with urllib.request.urlopen(jobs_req, timeout=20) as resp:
                       jobs_payload = json.loads(resp.read().decode("utf-8"))
+                  jobs_path = Path("repo_healer_jobs.json")
+                  jobs_path.write_text(json.dumps(jobs_payload, indent=2), encoding="utf-8")
+                  os.environ["REPO_HEALER_JOBS_JSON"] = str(jobs_path)
               except Exception:
-                  return "linux"
+                  pass
 
-              for job in jobs_payload.get("jobs", []):
-                  if job.get("conclusion") != "failure":
-                      continue
-                  haystack = " ".join(
-                      [
-                          str(job.get("runner_name", "")).lower(),
-                          *[str(label).lower() for label in job.get("labels", [])],
-                          str(job.get("name", "")).lower(),
-                      ]
-                  )
-                  if "windows" in haystack:
-                      return "windows"
-                  if "macos" in haystack or "mac" in haystack:
-                      return "macos"
-              return "linux"
-
-          bundle = {
-            "workflow": run.get("name", "manual"),
-            "job": "workflow_run",
-            "step": "summary",
-            "run_id": str(run.get("id", "manual")),
-            "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
-            "platform": infer_platform(),
-            "failure_class": "workflow_run_failure",
-            "exit_code": 1,
-            "candidate_files": [],
-            "reproduction_command": ["python", "-m", "pytest", "-q"],
-            "validator_class": "none",
-            "risk_tier": "tier2",
-            "support_mode": "REPORT_ONLY",
-            "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
-            "annotations": [],
-            "artifacts": {"event": str(event_path)},
-          }
-          Path("repo_healer_bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+          bundle = build_bundle_from_event(payload, Path.cwd())
+          if run.get("conclusion") == "failure":
+              bundle.support_mode = SupportMode.AUTOPATCH_SAFE
+          else:
+              bundle.support_mode = SupportMode.REPORT_ONLY
+          Path("repo_healer_bundle.json").write_text(json.dumps(bundle.to_dict(), indent=2), encoding="utf-8")
           Path("repo_healer_candidates.json").write_text(
               json.dumps([], indent=2),
               encoding="utf-8",
