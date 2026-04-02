@@ -38,7 +38,7 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Uses report-only mode by default so it complements CI Health reruns.
+- Runs in dry-run mode by default and marks early run attempts report-only so it complements CI Health reruns.
 
 ## Local replay
 
@@ -59,4 +59,4 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
   --out repo_healer_benchmark.json
 ```
 
-The benchmark runs from a clean temporary copy and reports machine-readable baseline vs healed outcomes.
+The benchmark runs from a clean temporary copy, does not touch the main working tree, and reports machine-readable baseline vs healed outcomes.

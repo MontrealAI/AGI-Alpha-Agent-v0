@@ -6,6 +6,7 @@ on:
       - "🚀 CI — Insight Demo"
       - "✅ PR CI"
       - "🔥 Smoke Test"
+      - "📚 Docs"
     types: [completed]
   workflow_dispatch:
 
@@ -23,85 +24,64 @@ jobs:
       - uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.12"
+
       - name: Build structured failure bundle
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle \
+            --event-path "$GITHUB_EVENT_PATH" \
+            --repository "$GITHUB_REPOSITORY" \
+            --token "$GITHUB_TOKEN" \
+            --bundle-out repo_healer_bundle.json \
+            --candidates-out repo_healer_candidates.json
+
+      - name: Mark early-attempt runs as report-only
+        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.run_attempt < 2 }}
         run: |
           python - <<'PY'
           import json
-          import os
-          import urllib.request
           from pathlib import Path
 
-          event_path = Path(os.environ["GITHUB_EVENT_PATH"])
-          payload = json.loads(event_path.read_text(encoding="utf-8"))
-          run = payload.get("workflow_run", {})
-
-          def infer_platform() -> str:
-              run_id = run.get("id")
-              token = os.environ.get("GITHUB_TOKEN")
-              if not run_id or not token:
-                  return "linux"
-              api = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/jobs"
-              req = urllib.request.Request(
-                  api,
-                  headers={
-                      "Authorization": f"Bearer {token}",
-                      "Accept": "application/vnd.github+json",
-                  },
-              )
-              try:
-                  with urllib.request.urlopen(req, timeout=10) as resp:
-                      jobs_payload = json.loads(resp.read().decode("utf-8"))
-              except Exception:
-                  return "linux"
-
-              for job in jobs_payload.get("jobs", []):
-                  if job.get("conclusion") != "failure":
-                      continue
-                  haystack = " ".join(
-                      [
-                          str(job.get("runner_name", "")).lower(),
-                          *[str(label).lower() for label in job.get("labels", [])],
-                          str(job.get("name", "")).lower(),
-                      ]
-                  )
-                  if "windows" in haystack:
-                      return "windows"
-                  if "macos" in haystack or "mac" in haystack:
-                      return "macos"
-              return "linux"
-
-          bundle = {
-            "workflow": run.get("name", "manual"),
-            "job": "workflow_run",
-            "step": "summary",
-            "run_id": str(run.get("id", "manual")),
-            "sha": run.get("head_sha", os.environ.get("GITHUB_SHA", "unknown")),
-            "platform": infer_platform(),
-            "failure_class": "workflow_run_failure",
-            "exit_code": 1,
-            "candidate_files": [],
-            "reproduction_command": ["python", "-m", "pytest", "-q"],
-            "validator_class": "none",
-            "risk_tier": "tier2",
-            "support_mode": "REPORT_ONLY",
-            "logs": f"conclusion={run.get('conclusion', 'unknown')} event={run.get('event', 'workflow_dispatch')}",
-            "annotations": [],
-            "artifacts": {"event": str(event_path)},
-          }
-          Path("repo_healer_bundle.json").write_text(json.dumps(bundle, indent=2), encoding="utf-8")
-          Path("repo_healer_candidates.json").write_text(
-              json.dumps([], indent=2),
-              encoding="utf-8",
-          )
+          bundle_path = Path("repo_healer_bundle.json")
+          bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+          bundle["support_mode"] = "REPORT_ONLY"
+          bundle["logs"] = f"{bundle.get('logs', '')}\nrun_attempt={bundle.get('artifacts', {}).get('run_attempt', '1')} pending ci-health reruns"
+          bundle_path.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
           PY
-      - name: Run Repo-Healer in report-only mode
+
+      - name: Run Repo-Healer
         run: |
-          python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
-            --repo . \
-            --failure-bundle repo_healer_bundle.json \
-            --candidates repo_healer_candidates.json \
-            --report repo_healer_report.json \
-            --report-only
+          MODE=$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
+          candidates = json.loads(Path("repo_healer_candidates.json").read_text(encoding="utf-8"))
+          support_mode = bundle.get("support_mode", "AUTOPATCH_SAFE")
+          if support_mode == "REPORT_ONLY" or not candidates:
+              print("REPORT_ONLY")
+          else:
+              print("AUTOPATCH_SAFE")
+          PY
+          )
+
+          if [ "$MODE" = "REPORT_ONLY" ]; then
+            python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+              --repo . \
+              --failure-bundle repo_healer_bundle.json \
+              --candidates repo_healer_candidates.json \
+              --report repo_healer_report.json \
+              --report-only
+          else
+            python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+              --repo . \
+              --failure-bundle repo_healer_bundle.json \
+              --candidates repo_healer_candidates.json \
+              --report repo_healer_report.json \
+              --dry-run
+          fi
+
       - name: Upload repo-healer artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
