@@ -8,12 +8,14 @@ import json
 import pathlib
 
 from .engine import EngineOptions, RepoHealerEngine, write_report
-from .models import FailureBundle, FailureSignal, PatchCandidate
+from .models import FailureBundle, FailureSignal, PatchCandidate, SupportMode, ValidatorClass
 
 
 def _load_bundle(path: pathlib.Path) -> FailureBundle:
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["annotations"] = [FailureSignal(**a) for a in payload.get("annotations", [])]
+    payload["validator_class"] = ValidatorClass(payload.get("validator_class", ValidatorClass.NONE.value))
+    payload["support_mode"] = SupportMode(payload.get("support_mode", SupportMode.AUTOPATCH_SAFE.value))
     return FailureBundle(**payload)
 
 

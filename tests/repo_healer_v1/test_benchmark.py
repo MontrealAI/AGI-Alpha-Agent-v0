@@ -11,3 +11,11 @@ def test_seeded_benchmark_machine_readable() -> None:
     payload = run_seeded_benchmark(pathlib.Path("."))
     assert payload["total"] == 6
     assert isinstance(payload["results"], list)
+    assert {row["case"] for row in payload["results"]} == {
+        "ruff_failure",
+        "mypy_failure",
+        "broken_import",
+        "pytest_failure",
+        "mkdocs_failure",
+        "non_autofix_permissions",
+    }
