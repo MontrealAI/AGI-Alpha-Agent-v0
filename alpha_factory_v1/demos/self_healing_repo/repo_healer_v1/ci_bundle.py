@@ -39,6 +39,15 @@ def _infer_validator(step_name: str, logs: str) -> ValidatorClass:
     return ValidatorClass.NONE
 
 
+def _classname_to_path(classname: str) -> str | None:
+    normalized = classname.strip()
+    if not normalized:
+        return None
+    if normalized.startswith("tests."):
+        normalized = normalized[len("tests.") :]
+    return f"tests/{normalized.replace('.', '/')}.py"
+
+
 def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
     if not junit_path.exists():
         return []
@@ -49,7 +58,9 @@ def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
 
     out: list[FailureSignal] = []
     for case in root.findall(".//testcase"):
-        failed = case.find("failure") or case.find("error")
+        failed = case.find("failure")
+        if failed is None:
+            failed = case.find("error")
         if failed is None:
             continue
         classname = case.attrib.get("classname", "")
@@ -59,7 +70,7 @@ def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
             FailureSignal(
                 source="junit",
                 message=f"{classname}::{name}: {msg}".strip(),
-                path=f"tests/{classname.replace('.', '/')}.py" if classname else None,
+                path=_classname_to_path(classname),
             )
         )
     return out

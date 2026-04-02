@@ -50,14 +50,32 @@ jobs:
           bundle_path.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
           PY
 
-      - name: Run Repo-Healer (dry-run)
+      - name: Run Repo-Healer
         run: |
-          python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
-            --repo . \
-            --failure-bundle repo_healer_bundle.json \
-            --candidates repo_healer_candidates.json \
-            --report repo_healer_report.json \
-            --dry-run
+          MODE=$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
+          print(bundle.get("support_mode", "AUTOPATCH_SAFE"))
+          PY
+          )
+
+          if [ "$MODE" = "REPORT_ONLY" ]; then
+            python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+              --repo . \
+              --failure-bundle repo_healer_bundle.json \
+              --candidates repo_healer_candidates.json \
+              --report repo_healer_report.json \
+              --report-only
+          else
+            python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+              --repo . \
+              --failure-bundle repo_healer_bundle.json \
+              --candidates repo_healer_candidates.json \
+              --report repo_healer_report.json \
+              --dry-run
+          fi
 
       - name: Upload repo-healer artifacts
         uses: actions/upload-artifact@v4.6.2
