@@ -207,7 +207,10 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
             case_path.write_text(broken, encoding="utf-8")
             baseline_rc = _run(case.baseline_cmd, cwd=work_repo)
 
-            engine = RepoHealerEngine(work_repo, EngineOptions(dry_run=False, max_attempts=1))
+            engine = RepoHealerEngine(
+                work_repo,
+                EngineOptions(dry_run=False, max_attempts=1, run_broader_validation=False),
+            )
             patch = PatchCandidate(
                 diff=_safe_revert_diff(case.target_file, broken, original),
                 summary=f"revert seeded mutation: {case.name}",

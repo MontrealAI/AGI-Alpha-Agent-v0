@@ -8,6 +8,7 @@ import pathlib
 import shutil
 import sys
 import tempfile
+from typing import cast
 from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
@@ -25,6 +26,7 @@ class EngineOptions:
     dry_run: bool = False
     report_only: bool = False
     max_attempts: int = 2
+    run_broader_validation: bool = True
 
 
 class RepoHealerEngine:
@@ -41,7 +43,7 @@ class RepoHealerEngine:
 
         plan = get_plan(triage.validator_class)
         targeted = self._resolve_targeted_command(bundle, triage.validator_class, plan.targeted)
-        commands = [targeted, plan.broader]
+        commands = [targeted] + ([plan.broader] if self.options.run_broader_validation else [])
         attempts = 0
 
         for candidate in sorted(candidates, key=lambda c: c.score, reverse=True)[: self.options.max_attempts]:
@@ -74,19 +76,23 @@ class RepoHealerEngine:
                     continue
                 if rc_target != 0:
                     continue
-                try:
-                    rc_broader, _ = run_validator(plan.broader, cwd=str(isolated_repo))
-                except Exception:
-                    continue
-                if rc_broader != 0:
-                    continue
+                if self.options.run_broader_validation:
+                    try:
+                        rc_broader, _ = run_validator(plan.broader, cwd=str(isolated_repo))
+                    except Exception:
+                        continue
+                    if rc_broader != 0:
+                        continue
+                    success_reason = "targeted and broader validators passed"
+                else:
+                    success_reason = "targeted validator passed (broader validation skipped by option)"
 
                 self._promote_patch(candidate.diff, isolated_repo)
                 return RepairReport(
                     True,
                     triage.classification,
                     triage.support_mode,
-                    "targeted and broader validators passed",
+                    success_reason,
                     commands,
                     attempts,
                     candidate.summary,
@@ -107,11 +113,11 @@ class RepoHealerEngine:
     ) -> list[str]:
         """Resolve a targeted replay command from structured bundle hints."""
         if bundle.reproduction_command:
-            return bundle.reproduction_command
+            return list(bundle.reproduction_command)
         if validator_class != ValidatorClass.PYTEST:
             return default
 
-        hinted_files = list(bundle.candidate_files) + [a.path for a in bundle.annotations if a.path]
+        hinted_files = list(bundle.candidate_files) + [cast(str, a.path) for a in bundle.annotations if a.path]
         test_files = [path for path in hinted_files if path.startswith("tests/") and path.endswith(".py")]
         if test_files:
             return [sys.executable, "-m", "pytest", *test_files, "-q"]

@@ -138,3 +138,31 @@ def test_engine_prefers_reproduction_command_when_present() -> None:
     )
     cmd = RepoHealerEngine._resolve_targeted_command(bundle, ValidatorClass.PYTEST, ["fallback"])
     assert cmd == ["python", "-m", "pytest", "tests/test_imports.py", "-q"]
+
+
+def test_engine_can_skip_broader_validation(tmp_path: pathlib.Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    readme = repo / "README.md"
+    readme.write_text("hello\n", encoding="utf-8")
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="pytest assert")
+    patch = PatchCandidate(
+        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+good\n",
+        summary="good",
+        score=1.0,
+    )
+
+    with (
+        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.run_validator") as run_validator,
+        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.get_plan") as get_plan,
+    ):
+        get_plan.return_value = mock.Mock(targeted=["target"], broader=["broad"])
+        run_validator.return_value = (0, "ok")
+        report = RepoHealerEngine(
+            repo,
+            EngineOptions(dry_run=False, max_attempts=1, run_broader_validation=False),
+        ).run(bundle, [patch])
+
+    assert report.success is True
+    assert run_validator.call_count == 1
+    assert "skipped" in report.reason
