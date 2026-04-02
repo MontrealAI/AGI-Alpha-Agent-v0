@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import difflib
 import json
 import pathlib
 import shutil
@@ -12,8 +11,9 @@ import sys
 import tempfile
 from dataclasses import dataclass
 
+from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine
-from .models import FailureBundle, PatchCandidate, SupportMode, ValidatorClass
+from .models import FailureBundle, SupportMode, ValidatorClass
 
 PYTHON = sys.executable
 
@@ -50,8 +50,7 @@ def _build_cases() -> list[SeedCase]:
             target_file="alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/triage.py",
             before="from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n",
             after=(
-                "from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n"
-                "import pathlib\n"
+                "from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass; import pathlib\n"
             ),
             bundle=FailureBundle(
                 workflow="✅ PR CI",
@@ -61,8 +60,9 @@ def _build_cases() -> list[SeedCase]:
                 sha="deadbeef",
                 failure_class="ruff",
                 validator_class=ValidatorClass.RUFF,
-                logs="ruff F401 'pathlib' imported but unused",
+                logs="ruff E702 Multiple statements on one line (semicolon)",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                candidate_files=["alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/triage.py"],
                 reproduction_command=[
                     "ruff",
                     "check",
@@ -86,6 +86,7 @@ def _build_cases() -> list[SeedCase]:
                 validator_class=ValidatorClass.MYPY,
                 logs="mypy: Argument 'sha' to 'FailureBundle' has incompatible type 'str'; expected 'str'",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                candidate_files=["alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/models.py"],
                 reproduction_command=[
                     PYTHON,
                     "-m",
@@ -119,6 +120,7 @@ def _build_cases() -> list[SeedCase]:
                 validator_class=ValidatorClass.IMPORT,
                 logs="ModuleNotFoundError: No module named 'definitely_missing_module'",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                candidate_files=["tests/test_imports.py"],
             ),
             baseline_cmd=[PYTHON, "-m", "pytest", "tests/test_imports.py", "-q"],
         ),
@@ -137,6 +139,7 @@ def _build_cases() -> list[SeedCase]:
                 validator_class=ValidatorClass.PYTEST,
                 logs="AssertionError in tests/test_ping_agent.py",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                candidate_files=["tests/test_ping_agent.py"],
             ),
             baseline_cmd=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "-q"],
         ),
@@ -155,6 +158,7 @@ def _build_cases() -> list[SeedCase]:
                 validator_class=ValidatorClass.MKDOCS,
                 logs="mkdocs build --strict failed",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                candidate_files=["mkdocs.yml"],
             ),
             baseline_cmd=["mkdocs", "build", "--strict"],
         ),
@@ -178,18 +182,6 @@ def _build_cases() -> list[SeedCase]:
     ]
 
 
-def _safe_revert_diff(path: str, broken: str, original: str) -> str:
-    """Build a valid unified diff that reverts one seeded mutation."""
-    diff = difflib.unified_diff(
-        broken.splitlines(),
-        original.splitlines(),
-        fromfile=f"a/{path}",
-        tofile=f"b/{path}",
-        lineterm="",
-    )
-    return "\n".join(diff) + "\n"
-
-
 def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
     """Run seeded cases in isolated workspace and return machine-readable result."""
     results: list[dict[str, object]] = []
@@ -211,12 +203,8 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
                 work_repo,
                 EngineOptions(dry_run=False, max_attempts=1, run_broader_validation=False),
             )
-            patch = PatchCandidate(
-                diff=_safe_revert_diff(case.target_file, broken, original),
-                summary=f"revert seeded mutation: {case.name}",
-                score=1.0,
-            )
-            report = engine.run(case.bundle, [patch])
+            candidates = generate_candidates(case.bundle, work_repo)
+            report = engine.run(case.bundle, candidates)
 
             healed_rc = _run(case.baseline_cmd, cwd=work_repo)
             results.append(

@@ -10,8 +10,10 @@ import pathlib
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
+from dataclasses import asdict
 from typing import Any, cast
 
+from .candidate_generation import generate_candidates
 from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
 
 
@@ -197,7 +199,7 @@ def build_failure_bundle(
 
 
 def main() -> int:
-    """CLI to create repo_healer_bundle.json and placeholder candidates file."""
+    """CLI to create repo_healer_bundle.json and generated candidate patches."""
     parser = argparse.ArgumentParser(description="Build Repo-Healer failure bundle from GitHub event")
     parser.add_argument("--event-path", required=True)
     parser.add_argument("--repository", required=True)
@@ -205,6 +207,7 @@ def main() -> int:
     parser.add_argument("--junit", default="")
     parser.add_argument("--bundle-out", default="repo_healer_bundle.json")
     parser.add_argument("--candidates-out", default="repo_healer_candidates.json")
+    parser.add_argument("--repo", default=".")
     args = parser.parse_args()
 
     junit_path = pathlib.Path(args.junit) if args.junit else None
@@ -216,7 +219,8 @@ def main() -> int:
     )
 
     pathlib.Path(args.bundle_out).write_text(json.dumps(bundle.to_dict(), indent=2), encoding="utf-8")
-    pathlib.Path(args.candidates_out).write_text("[]\n", encoding="utf-8")
+    candidates = [asdict(c) for c in generate_candidates(bundle, pathlib.Path(args.repo).resolve())]
+    pathlib.Path(args.candidates_out).write_text(json.dumps(candidates, indent=2), encoding="utf-8")
     print(json.dumps(bundle.to_dict(), indent=2))
     return 0
 

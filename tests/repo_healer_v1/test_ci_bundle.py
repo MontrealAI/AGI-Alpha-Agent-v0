@@ -11,9 +11,7 @@ from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle import bu
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import SupportMode, ValidatorClass
 
 
-def test_build_failure_bundle_from_workflow_run_event(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     event = {
         "workflow_run": {
             "id": 42,

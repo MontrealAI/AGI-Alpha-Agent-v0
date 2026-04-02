@@ -52,8 +52,22 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
 - `repo_healer_v1/triage.py`: deterministic classification to support mode.
 - `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
+- `repo_healer_v1/candidate_generation.py`: deterministic patch synthesis for Tier-1 replayable failures.
 - `repo_healer_v1/engine.py`: isolated repair loop (`triage -> safety -> targeted -> broader -> promote`).
 - `repo_healer_v1/benchmark.py`: seeded benchmark in isolated temp copy with machine-readable result.
+
+
+## What Repo-Healer v1 can actually patch today
+
+Repo-Healer v1 is intentionally bounded. It only auto-generates patches for deterministic Tier-1 patterns:
+
+- Ruff unused-import regressions (e.g., `F401`),
+- simple mypy assignment regressions introduced in existing files,
+- broken imports that reference missing modules,
+- Linux pytest/smoke assertion regressions with known string mismatches,
+- MkDocs strict-build regressions caused by malformed injected YAML lines.
+
+Anything else is classified into draft-only or report-only modes with a structured diagnosis.
 
 ## Report modes
 
