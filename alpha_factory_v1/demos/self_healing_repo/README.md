@@ -100,7 +100,7 @@ Cases:
 - mkdocs seed
 - non-autofix permission/context seed (graceful refusal)
 
-The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes.
+The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes. For determinism and bounded runtime it executes targeted validators only (the full engine still runs targeted + broader validators by default).
 
 ## Legacy demo wrapper
 
