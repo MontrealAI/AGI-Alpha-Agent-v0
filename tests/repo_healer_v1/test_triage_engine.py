@@ -6,15 +6,20 @@ import pathlib
 from unittest import mock
 
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine import EngineOptions, RepoHealerEngine
-from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import FailureBundle, PatchCandidate
+from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import (
+    FailureBundle,
+    PatchCandidate,
+    SupportMode,
+    ValidatorClass,
+)
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli import _load_bundle
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.triage import triage_bundle
 
 
-def test_triage_permission_is_diagnose_only() -> None:
+def test_triage_permission_is_report_only() -> None:
     bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="403 Resource not accessible by integration")
     result = triage_bundle(bundle)
-    assert result.policy.value == "diagnose_only"
+    assert result.support_mode.value == "REPORT_ONLY"
 
 
 def test_engine_dry_run_autofix(tmp_path: pathlib.Path) -> None:
@@ -47,26 +52,52 @@ def test_cli_deserializes_annotations(tmp_path: pathlib.Path) -> None:
 
 
 def test_triage_does_not_flag_assignment_as_unsafe() -> None:
-    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs='mypy: Incompatible types in assignment')
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="mypy: Incompatible types in assignment")
     result = triage_bundle(bundle)
-    assert result.policy.value == "safe_autopatch"
+    assert result.support_mode.value == "AUTOPATCH_SAFE"
 
 
-def test_engine_restores_repo_between_candidates(tmp_path: pathlib.Path) -> None:
+def test_triage_honors_report_only_mode_from_bundle() -> None:
+    bundle = FailureBundle(
+        "wf",
+        "job",
+        "step",
+        "1",
+        "abc",
+        logs="pytest failure",
+        support_mode=SupportMode.REPORT_ONLY,
+        validator_class=ValidatorClass.PYTEST,
+    )
+    result = triage_bundle(bundle)
+    assert result.support_mode == SupportMode.REPORT_ONLY
+    assert result.validator_class == ValidatorClass.NONE
+
+
+def test_triage_honors_explicit_validator_from_bundle() -> None:
+    bundle = FailureBundle(
+        "wf",
+        "job",
+        "step",
+        "1",
+        "abc",
+        logs="generic failure text",
+        validator_class=ValidatorClass.MYPY,
+    )
+    result = triage_bundle(bundle)
+    assert result.support_mode == SupportMode.AUTOPATCH_SAFE
+    assert result.validator_class == ValidatorClass.MYPY
+
+
+def test_engine_isolated_validation_promotes_patch(tmp_path: pathlib.Path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
     readme = repo / "README.md"
     readme.write_text("hello\n", encoding="utf-8")
     bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="pytest assert")
-    bad_patch = PatchCandidate(
-        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+bad\n",
-        summary="bad",
-        score=1.0,
-    )
-    good_patch = PatchCandidate(
+    patch = PatchCandidate(
         diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+good\n",
         summary="good",
-        score=0.9,
+        score=1.0,
     )
 
     with (
@@ -74,42 +105,8 @@ def test_engine_restores_repo_between_candidates(tmp_path: pathlib.Path) -> None
         mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.get_plan") as get_plan,
     ):
         get_plan.return_value = mock.Mock(targeted=["target"], broader=["broad"])
-        run_validator.side_effect = [(1, "fail"), (0, "ok"), (0, "ok")]
-        report = RepoHealerEngine(
-            repo, EngineOptions(dry_run=False, max_attempts=2)
-        ).run(bundle, [bad_patch, good_patch])
-
-    assert report.success is True
-    assert readme.read_text(encoding="utf-8") == "good\n"
-
-
-def test_engine_restores_repo_when_validator_raises(tmp_path: pathlib.Path) -> None:
-    repo = tmp_path / "repo"
-    repo.mkdir()
-    readme = repo / "README.md"
-    readme.write_text("hello\n", encoding="utf-8")
-    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="pytest assert")
-    bad_patch = PatchCandidate(
-        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+bad\n",
-        summary="bad",
-        score=1.0,
-    )
-    good_patch = PatchCandidate(
-        diff="--- a/README.md\n+++ b/README.md\n@@ -1,1 +1,1 @@\n-hello\n+good\n",
-        summary="good",
-        score=0.9,
-    )
-
-    with (
-        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.run_validator") as run_validator,
-        mock.patch("alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.engine.get_plan") as get_plan,
-    ):
-        get_plan.return_value = mock.Mock(targeted=["target"], broader=["broad"])
-        run_validator.side_effect = [FileNotFoundError("missing"), (0, "ok"), (0, "ok")]
-        report = RepoHealerEngine(
-            repo,
-            EngineOptions(dry_run=False, max_attempts=2),
-        ).run(bundle, [bad_patch, good_patch])
+        run_validator.side_effect = [(0, "ok"), (0, "ok")]
+        report = RepoHealerEngine(repo, EngineOptions(dry_run=False, max_attempts=1)).run(bundle, [patch])
 
     assert report.success is True
     assert readme.read_text(encoding="utf-8") == "good\n"

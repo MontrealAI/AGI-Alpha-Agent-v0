@@ -8,27 +8,40 @@ from enum import Enum
 from typing import Any
 
 
+class SupportMode(str, Enum):
+    """Execution mode for the repair engine."""
+
+    AUTOPATCH_SAFE = "AUTOPATCH_SAFE"
+    DRAFT_PR_ONLY = "DRAFT_PR_ONLY"
+    REPORT_ONLY = "REPORT_ONLY"
+
+
 class FailureClass(str, Enum):
-    """Normalized failure classes used by triage and policy."""
+    """Normalized failure classifications."""
 
-    AUTO_FIXABLE = "auto_fixable"
-    TRANSIENT_INFRA = "transient_infra"
-    PERMISSION = "permission"
-    UNSAFE_SURFACE = "unsafe_surface"
-    UNSUPPORTED_PLATFORM = "unsupported_platform"
+    SAFE_AUTOPATCH = "SAFE_AUTOPATCH"
+    DRAFT_PR_ONLY = "DRAFT_PR_ONLY"
+    DIAGNOSE_ONLY = "DIAGNOSE_ONLY"
+    TRANSIENT_INFRA = "TRANSIENT_INFRA"
+    PERMISSION_OR_FORK_CONTEXT = "PERMISSION_OR_FORK_CONTEXT"
+    UNSAFE_PROTECTED_SURFACE = "UNSAFE_PROTECTED_SURFACE"
 
 
-class RiskPolicy(str, Enum):
-    """Policy buckets for downstream execution."""
+class ValidatorClass(str, Enum):
+    """Canonical validator classes currently used by this repository."""
 
-    SAFE_AUTOPATCH = "safe_autopatch"
-    DRAFT_PR_ONLY = "draft_pr_only"
-    DIAGNOSE_ONLY = "diagnose_only"
+    RUFF = "ruff"
+    MYPY = "mypy"
+    IMPORT = "import"
+    PYTEST = "pytest"
+    SMOKE = "smoke"
+    MKDOCS = "mkdocs"
+    NONE = "none"
 
 
 @dataclass(slots=True)
 class FailureSignal:
-    """Single structured CI signal."""
+    """Single structured signal extracted from CI output."""
 
     source: str
     message: str
@@ -39,32 +52,41 @@ class FailureSignal:
 
 @dataclass(slots=True)
 class FailureBundle:
-    """Minimal context pack consumed by Repo-Healer."""
+    """Structured failure bundle consumed by Repo-Healer."""
 
     workflow: str
     job: str
     step: str
     run_id: str
     sha: str
+    failure_class: str = "unknown"
     platform: str = "linux"
     exit_code: int = 1
+    candidate_files: list[str] = field(default_factory=list)
+    reproduction_command: list[str] = field(default_factory=list)
+    validator_class: ValidatorClass = ValidatorClass.NONE
+    risk_tier: str = "tier1"
+    support_mode: SupportMode = SupportMode.AUTOPATCH_SAFE
     logs: str = ""
     junit_xml: str | None = None
     annotations: list[FailureSignal] = field(default_factory=list)
     artifacts: dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        payload["validator_class"] = self.validator_class.value
+        payload["support_mode"] = self.support_mode.value
+        return payload
 
 
 @dataclass(slots=True)
 class TriageResult:
-    """Triage output used by the repair loop."""
+    """Triage output used by the bounded repair loop."""
 
-    failure_class: FailureClass
-    policy: RiskPolicy
+    classification: FailureClass
+    support_mode: SupportMode
     reason: str
-    validator_key: str
+    validator_class: ValidatorClass
     candidate_files: list[str]
 
 
@@ -82,7 +104,8 @@ class RepairReport:
     """Machine-readable report for CI artifacts and benchmarking."""
 
     success: bool
-    policy: RiskPolicy
+    classification: FailureClass
+    support_mode: SupportMode
     reason: str
     validator_commands: list[list[str]]
     attempts: int
@@ -91,5 +114,6 @@ class RepairReport:
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
-        payload["policy"] = self.policy.value
+        payload["classification"] = self.classification.value
+        payload["support_mode"] = self.support_mode.value
         return payload
