@@ -5,11 +5,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import cli
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.safety import is_patch_safe
 
 
-def test_cli_report_only_returns_zero(tmp_path: Path, monkeypatch) -> None:
+def test_cli_report_only_returns_zero(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     bundle = {
         "workflow": "wf",
         "job": "job",

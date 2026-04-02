@@ -66,11 +66,12 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
 Workflow: `.github/workflows/repo-healer.yml`
 
 - Trigger: failed `workflow_run` from real CI workflows + manual dispatch.
+- CI integration waits for `run_attempt >= 2` before entering autopatch-safe mode so CI Health reruns go first.
 - Emits structured artifacts:
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Current workflow runs report-only by default for fork/permission safety.
+- Workflow executes bounded dry-run by default; local/manual invocations can run apply mode.
 
 ## Local replay
 
@@ -98,7 +99,7 @@ Cases:
 - broken import seed
 - Linux pytest seed
 - mkdocs seed
-- non-autofix permission/context seed (graceful refusal)
+- Tier 2 actionlint/workflow diagnose-only seed
 
 The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes. For determinism and bounded runtime it executes targeted validators only (the full engine still runs targeted + broader validators by default).
 

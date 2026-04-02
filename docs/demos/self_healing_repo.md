@@ -34,11 +34,12 @@ exit code, annotations, artifacts, logs, and optional JUnit XML path.
 Workflow: `.github/workflows/repo-healer.yml`
 
 - Triggered from real failed workflow runs.
+- Uses `run_attempt >= 2` gating so CI Health reruns get first chance to clear flakes.
 - Produces reusable artifacts:
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Uses report-only mode by default so it complements CI Health reruns.
+- Executes bounded engine dry-run in CI; local/manual runs can execute apply mode.
 
 ## Local replay
 
