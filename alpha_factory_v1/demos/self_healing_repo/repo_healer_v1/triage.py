@@ -54,7 +54,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
 
     if bundle.platform.lower() in {"windows", "macos"}:
         return TriageResult(
-            classification=FailureClass.DRAFT_PR_ONLY,
+            classification=FailureClass.UNSUPPORTED_PLATFORM,
             support_mode=SupportMode.DRAFT_PR_ONLY,
             reason=f"{bundle.platform} replay is Tier-2 diagnose-only in v1",
             validator_class=ValidatorClass.NONE,

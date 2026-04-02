@@ -8,7 +8,6 @@ import pathlib
 import shutil
 import sys
 import tempfile
-from typing import cast
 from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
@@ -117,7 +116,7 @@ class RepoHealerEngine:
         if validator_class != ValidatorClass.PYTEST:
             return default
 
-        hinted_files = list(bundle.candidate_files) + [cast(str, a.path) for a in bundle.annotations if a.path]
+        hinted_files = list(bundle.candidate_files) + [a.path for a in bundle.annotations if a.path]
         test_files = [path for path in hinted_files if path.startswith("tests/") and path.endswith(".py")]
         if test_files:
             return [sys.executable, "-m", "pytest", *test_files, "-q"]
