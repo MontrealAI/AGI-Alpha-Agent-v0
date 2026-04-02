@@ -73,3 +73,16 @@ def test_entrypoint_offline(monkeypatch):
 
     assert entrypoint.LLM("hi") == "local"
     assert called["url"] == "http://example.com/v1/chat/completions"
+
+
+def test_should_attempt_patch_helper(monkeypatch):
+    monkeypatch.setitem(
+        sys.modules,
+        "gradio",
+        types.SimpleNamespace(Blocks=DummyBlocks, Markdown=DummyMarkdown, Button=DummyButton),
+    )
+    sys.modules.pop("alpha_factory_v1.demos.self_healing_repo.agent_selfheal_entrypoint", None)
+    entrypoint = importlib.import_module("alpha_factory_v1.demos.self_healing_repo.agent_selfheal_entrypoint")
+
+    assert entrypoint._should_attempt_patch({"rc": 1}) is True
+    assert entrypoint._should_attempt_patch({"rc": 0}) is False

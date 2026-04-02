@@ -7,12 +7,15 @@ import argparse
 import json
 import os
 import pathlib
+import sys
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, cast
 
 from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
+
+PYTHON = sys.executable
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -82,6 +85,52 @@ def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
             )
         )
     return out
+
+
+def _default_reproduction_command(validator: ValidatorClass, candidate_files: list[str]) -> list[str]:
+    if validator == ValidatorClass.RUFF:
+        return ["ruff", "check", "."]
+    if validator == ValidatorClass.MYPY:
+        return ["mypy", "--config-file", "mypy.ini", "."]
+    if validator == ValidatorClass.IMPORT:
+        return [PYTHON, "-m", "pytest", "tests/test_imports.py", "-q"]
+    if validator in {ValidatorClass.PYTEST, ValidatorClass.SMOKE}:
+        tests = [path for path in candidate_files if path.startswith("tests/") and path.endswith(".py")]
+        if tests:
+            return [PYTHON, "-m", "pytest", *tests, "-q"]
+        return [
+            PYTHON,
+            "-m",
+            "pytest",
+            "-m",
+            "smoke",
+            "tests/test_af_requests.py",
+            "tests/test_cache_version.py",
+            "tests/test_check_env_core.py",
+            "tests/test_check_env_network.py",
+            "tests/test_config_settings.py",
+            "tests/test_config_utils.py",
+            "tests/test_ping_agent.py",
+            "-q",
+        ]
+    if validator == ValidatorClass.MKDOCS:
+        return ["mkdocs", "build", "--strict"]
+    return []
+
+
+def _risk_tier(validator: ValidatorClass, platform: str) -> str:
+    if platform.lower() in {"windows", "macos"}:
+        return "tier2"
+    if validator in {
+        ValidatorClass.RUFF,
+        ValidatorClass.MYPY,
+        ValidatorClass.IMPORT,
+        ValidatorClass.PYTEST,
+        ValidatorClass.SMOKE,
+        ValidatorClass.MKDOCS,
+    }:
+        return "tier1"
+    return "tier2"
 
 
 def _job_platform(job: dict[str, Any]) -> str:
@@ -189,6 +238,8 @@ def build_failure_bundle(
     bundle.logs = logs
     bundle.validator_class = validator
     bundle.candidate_files = candidate_files
+    bundle.reproduction_command = _default_reproduction_command(validator, candidate_files)
+    bundle.risk_tier = _risk_tier(validator, platform)
     bundle.annotations = annotations
     bundle.artifacts["jobs_api"] = jobs_url
     if junit_path:

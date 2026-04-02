@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Validator registry aligned with the repository's canonical CI surfaces."""
+"""Validator registry aligned with the repository's canonical CI surfaces.
+
+The command plans mirror the current CI gates:
+- ✅ PR CI (ruff + smoke pytest subset)
+- 🚀 CI — Insight Demo (mypy, full pytest, mkdocs --strict)
+"""
 
 from __future__ import annotations
 
@@ -26,7 +31,7 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "-m", "smoke", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.MYPY: ValidatorPlan(
-        targeted=["mypy", "--config-file", "mypy.ini"],
+        targeted=["mypy", "--config-file", "mypy.ini", "."],
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.IMPORT: ValidatorPlan(
@@ -88,3 +93,12 @@ def run_validator(cmd: list[str], cwd: str) -> tuple[int, str]:
 def get_plan(kind: ValidatorClass) -> ValidatorPlan:
     """Resolve validator plan by triage validator class."""
     return REGISTRY.get(kind, REGISTRY[ValidatorClass.NONE])
+
+
+def canonical_ci_surface() -> dict[str, list[str]]:
+    """Expose the current canonical CI workflows consumed by Repo-Healer."""
+    return {
+        "pr_gate": ["✅ PR CI"],
+        "full_ci": ["🚀 CI — Insight Demo"],
+        "optional": ["🔥 Smoke Test", "📚 Docs"],
+    }

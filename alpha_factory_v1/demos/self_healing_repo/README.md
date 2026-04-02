@@ -106,3 +106,9 @@ The benchmark runs in an isolated temp copy and reports baseline vs healed exit 
 
 `agent_selfheal_entrypoint.py` and `sample_broken_calc/` remain as lightweight fixture/UI examples only.
 They are not the canonical Repo-Healer v1 production loop.
+
+
+## Legacy UI demo mode
+
+`agent_selfheal_entrypoint.py` now defaults to this repository.
+Use `SELFHEAL_MODE=sample` to exercise the old `sample_broken_calc` fixture intentionally.
