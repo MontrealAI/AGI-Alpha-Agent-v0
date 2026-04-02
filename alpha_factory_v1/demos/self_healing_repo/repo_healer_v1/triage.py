@@ -28,7 +28,7 @@ UNSAFE_MARKERS = (
     "disable test",
     "skip ci",
 )
-DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflow yaml")
+DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflow", "lint workflows")
 
 
 def triage_bundle(bundle: FailureBundle) -> TriageResult:
