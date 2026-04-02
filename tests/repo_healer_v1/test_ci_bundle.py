@@ -117,3 +117,50 @@ def test_build_failure_bundle_includes_junit_failure_signal(tmp_path: Path, monk
     assert bundle.junit_xml == str(junit_path)
     assert any(signal.source == "junit" for signal in bundle.annotations)
     assert "tests/test_sample.py" in bundle.candidate_files
+
+
+def test_junit_classname_with_test_class_maps_to_module_path(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 90,
+            "name": "✅ PR CI",
+            "head_sha": "cafe123",
+            "head_branch": "feature/classname",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    junit_path = tmp_path / "junit.xml"
+    junit_path.write_text(
+        """
+<testsuite tests="1" failures="1">
+  <testcase classname="tests.test_sample.TestA" name="test_case">
+    <failure message="boom" />
+  </testcase>
+</testsuite>
+""".strip(),
+        encoding="utf-8",
+    )
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "tests",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "pytest", "conclusion": "failure", "number": 11}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token", junit_path=junit_path)
+
+    assert "tests/test_sample.py" in bundle.candidate_files
+    assert all(not path.endswith("/TestA.py") for path in bundle.candidate_files)

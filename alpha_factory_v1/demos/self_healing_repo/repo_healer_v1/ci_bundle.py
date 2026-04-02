@@ -43,9 +43,15 @@ def _classname_to_path(classname: str) -> str | None:
     normalized = classname.strip()
     if not normalized:
         return None
-    if normalized.startswith("tests."):
-        normalized = normalized[len("tests.") :]
-    return f"tests/{normalized.replace('.', '/')}.py"
+
+    parts = normalized.split(".")
+    if parts and parts[0] == "tests":
+        parts = parts[1:]
+    if parts and parts[-1][:1].isupper():
+        parts = parts[:-1]
+    if not parts:
+        return None
+    return f"tests/{'/'.join(parts)}.py"
 
 
 def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
