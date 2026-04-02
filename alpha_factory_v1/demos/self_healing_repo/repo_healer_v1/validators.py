@@ -26,7 +26,7 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "-m", "smoke", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.MYPY: ValidatorPlan(
-        targeted=["mypy", "--config-file", "mypy.ini", "alpha_factory_v1/demos/self_healing_repo/repo_healer_v1"],
+        targeted=["mypy", "--config-file", "mypy.ini"],
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.IMPORT: ValidatorPlan(

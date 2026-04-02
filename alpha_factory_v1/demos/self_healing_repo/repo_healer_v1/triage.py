@@ -33,6 +33,23 @@ DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflo
 
 def triage_bundle(bundle: FailureBundle) -> TriageResult:
     """Classify a bundle into support mode and validator target."""
+    if bundle.support_mode == SupportMode.REPORT_ONLY:
+        return TriageResult(
+            classification=FailureClass.DIAGNOSE_ONLY,
+            support_mode=SupportMode.REPORT_ONLY,
+            reason="bundle requested report-only mode",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=_candidate_files(bundle),
+        )
+    if bundle.support_mode == SupportMode.DRAFT_PR_ONLY:
+        return TriageResult(
+            classification=FailureClass.DRAFT_PR_ONLY,
+            support_mode=SupportMode.DRAFT_PR_ONLY,
+            reason="bundle requested draft-pr-only mode",
+            validator_class=bundle.validator_class,
+            candidate_files=_candidate_files(bundle),
+        )
+
     text = "\n".join([bundle.logs, *(a.message for a in bundle.annotations)]).lower()
 
     if bundle.platform.lower() in {"windows", "macos"}:
@@ -76,7 +93,9 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             candidate_files=_candidate_files(bundle),
         )
 
-    validator_class = _validator_from_text(text)
+    validator_class = (
+        bundle.validator_class if bundle.validator_class != ValidatorClass.NONE else _validator_from_text(text)
+    )
     return TriageResult(
         classification=FailureClass.SAFE_AUTOPATCH,
         support_mode=SupportMode.AUTOPATCH_SAFE,
