@@ -3,10 +3,10 @@
 """
 Self‑Healing Repo demo
 ──────────────────────
-1. Clones a deliberately broken sample repo (tiny_py_calc).
-2. Detects failing pytest run.
+1. Targets this repository by default (or sample fixture in explicit demo mode).
+2. Detects a failing validator command.
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
-4. Opens a Pull Request‑style diff in the dashboard and re‑runs tests.
+4. Opens a Pull Request‑style diff in the dashboard and re‑runs validation.
 """
 import logging
 import asyncio
@@ -75,6 +75,9 @@ GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
 
 REPO_URL = "https://github.com/MontrealAI/sample_broken_calc.git"
 LOCAL_REPO = pathlib.Path(__file__).resolve().parent / "sample_broken_calc"
+DEFAULT_TARGET_REPO = pathlib.Path(__file__).resolve().parents[3]
+SELFHEAL_MODE = os.getenv("SELFHEAL_MODE", "repo").lower()
+TARGET_REPO = pathlib.Path(os.getenv("REPO_HEAL_TARGET", str(DEFAULT_TARGET_REPO))).resolve()
 CLONE_DIR = os.getenv("CLONE_DIR", "/tmp/demo_repo")
 
 
@@ -110,11 +113,17 @@ LLM = _build_llm()
 
 @Tool(name="run_tests", description="execute pytest on repo")
 async def run_tests():
-    """Run the project's tests with a timeout and no color codes."""
+    """Run the selected validator command with a timeout and no color codes."""
+    repo_path = CLONE_DIR if SELFHEAL_MODE == "sample" else str(TARGET_REPO)
+    test_cmd = (
+        ["pytest", "-q", "--color=no"]
+        if SELFHEAL_MODE == "sample"
+        else ["pytest", "-m", "smoke", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q", "--color=no"]
+    )
     try:
         result = subprocess.run(
-            ["pytest", "-q", "--color=no"],
-            cwd=CLONE_DIR,
+            test_cmd,
+            cwd=repo_path,
             capture_output=True,
             text=True,
             timeout=300,
@@ -163,9 +172,10 @@ def create_app() -> FastAPI:
         log = gr.Markdown("# Output log\n")
 
         async def run_pipeline() -> str:
-            if pathlib.Path(CLONE_DIR).exists():
-                shutil.rmtree(CLONE_DIR)
-            clone_sample_repo()
+            if SELFHEAL_MODE == "sample":
+                if pathlib.Path(CLONE_DIR).exists():
+                    shutil.rmtree(CLONE_DIR)
+                clone_sample_repo()
             out1 = await run_tests()
             patch = (await suggest_patch())["patch"]
             out2 = await apply_and_test(patch)
