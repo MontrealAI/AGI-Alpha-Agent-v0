@@ -34,7 +34,8 @@ jobs:
             --repository "$GITHUB_REPOSITORY" \
             --token "$GITHUB_TOKEN" \
             --bundle-out repo_healer_bundle.json \
-            --candidates-out repo_healer_candidates.json
+            --candidates-out repo_healer_candidates.json \
+            --repo .
 
       - name: Mark early-attempt runs as report-only
         if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.run_attempt < 2 }}

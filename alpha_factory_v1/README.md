@@ -263,7 +263,7 @@ sequenceDiagram
 |9|`finance_alpha`|💹|Live momentum + risk‑parity bot on Binance test‑net.|Generates real P&L; stress‑tested against CVaR.|`./alpha_factory_v1/demos/finance_alpha/deploy_alpha_factory_demo.sh`|
 |10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
 |11|`muzero_planning`|♟|MuZero in 60 s; online world‑model with MCTS.|Distills planning research into a one‑command demo.|`./alpha_factory_v1/demos/muzero_planning/run_muzero_demo.sh`|
-|12|`self_healing_repo`|🩹|Repo-Healer v1 runs bounded triage + targeted repair for this repo.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
+|12|`self_healing_repo`|🩹|Repo-Healer v1 runs bounded triage + deterministic Tier-1 repairs for this repo.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
 
 > **Colab?** Each folder ships an `*.ipynb` that mirrors the Docker flow with free GPUs.
 
@@ -281,7 +281,7 @@ sequenceDiagram
 |[finance_alpha](demos/finance_alpha/README.md)|Momentum and risk-parity bot|Beta|
 |[macro_sentinel](demos/macro_sentinel/README.md)|News scanner with futures hedging|Beta|
 |[muzero_planning](demos/muzero_planning/README.md)|Minimal MuZero planning demo|Beta|
-|[self_healing_repo](demos/self_healing_repo/README.md)|Agents auto-fix failing CI|Beta|
+|[self_healing_repo](demos/self_healing_repo/README.md)|Bounded CI repair: Tier-1 autopatch, Tier-2/3 diagnosis|Beta|
 |[meta_agentic_tree_search_v0](demos/meta_agentic_tree_search_v0/README.md)|Recursive agent tree search|Incub|
 |[alpha_agi_insight_v0](demos/alpha_agi_insight_v0/README.md)|Sector ranking via zero-data search|Beta|
 
