@@ -34,8 +34,22 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.PYTEST: ValidatorPlan(
-        targeted=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "-q"],
-        broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
+        targeted=[PYTHON, "-m", "pytest", "-q"],
+        broader=[
+            PYTHON,
+            "-m",
+            "pytest",
+            "-m",
+            "smoke",
+            "tests/test_af_requests.py",
+            "tests/test_cache_version.py",
+            "tests/test_check_env_core.py",
+            "tests/test_check_env_network.py",
+            "tests/test_config_settings.py",
+            "tests/test_config_utils.py",
+            "tests/test_ping_agent.py",
+            "-q",
+        ],
     ),
     ValidatorClass.SMOKE: ValidatorPlan(
         targeted=[

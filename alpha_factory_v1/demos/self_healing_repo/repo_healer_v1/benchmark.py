@@ -137,6 +137,7 @@ def _build_cases() -> list[SeedCase]:
                 validator_class=ValidatorClass.PYTEST,
                 logs="AssertionError in tests/test_ping_agent.py",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
+                reproduction_command=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "-q"],
             ),
             baseline_cmd=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "-q"],
         ),
