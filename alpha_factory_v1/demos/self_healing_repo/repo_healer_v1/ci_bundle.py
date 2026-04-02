@@ -84,6 +84,23 @@ def _collect_junit_signals(junit_path: pathlib.Path) -> list[FailureSignal]:
     return out
 
 
+def _job_platform(job_name: str, labels: list[str]) -> str:
+    haystack = " ".join([job_name.lower(), *[label.lower() for label in labels]])
+    if "windows" in haystack:
+        return "windows"
+    if "macos" in haystack:
+        return "macos"
+    return "linux"
+
+
+def _select_failed_job(failed_jobs: list[dict[str, Any]]) -> dict[str, Any]:
+    for job in failed_jobs:
+        platform = _job_platform(str(job.get("name", "")), [str(label) for label in job.get("labels", [])])
+        if platform == "linux":
+            return job
+    return failed_jobs[0]
+
+
 def build_failure_bundle(
     event_path: pathlib.Path,
     repository: str,
@@ -130,9 +147,9 @@ def build_failure_bundle(
         bundle.logs = "no failed jobs found"
         return bundle
 
-    failed_job = failed_jobs[0]
+    failed_job = _select_failed_job(failed_jobs)
     job_name = str(failed_job.get("name", "unknown"))
-    labels = [str(label).lower() for label in failed_job.get("labels", [])]
+    labels = [str(label) for label in failed_job.get("labels", [])]
     step_name = "unknown"
     exit_code = 1
 
@@ -144,12 +161,7 @@ def build_failure_bundle(
                 exit_code = step_number
             break
 
-    platform = "linux"
-    haystack = " ".join([job_name.lower(), *labels])
-    if "windows" in haystack:
-        platform = "windows"
-    elif "macos" in haystack:
-        platform = "macos"
+    platform = _job_platform(job_name, labels)
 
     annotations: list[FailureSignal] = []
     for annotation in failed_job.get("steps", []):
@@ -166,7 +178,7 @@ def build_failure_bundle(
     if junit_path is not None:
         annotations.extend(_collect_junit_signals(junit_path))
 
-    logs = "\n".join([f"job={job_name}", f"step={step_name}", f"head_branch={run.get('head_branch', '')}"])
+    logs = "\n".join([f"job={job_name}", f"step={step_name}"])
     validator = _infer_validator(step_name, job_name)
 
     candidate_files = sorted({signal.path for signal in annotations if signal.path})

@@ -198,3 +198,79 @@ def test_branch_name_with_docs_does_not_force_mkdocs(tmp_path: Path, monkeypatch
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
     assert bundle.validator_class == ValidatorClass.RUFF
+
+
+def test_logs_exclude_head_branch_text(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 303,
+            "name": "✅ PR CI",
+            "head_sha": "aa11bb",
+            "head_branch": "feature/workflow-cleanup",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-and-smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 3}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert "head_branch" not in bundle.logs
+    assert "workflow-cleanup" not in bundle.logs
+
+
+def test_prefers_linux_failed_job_when_multiple_platforms_fail(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 404,
+            "name": "🚀 CI — Insight Demo",
+            "head_sha": "dd33ee",
+            "head_branch": "feature/matrix-fail",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "tests (windows)",
+                    "conclusion": "failure",
+                    "labels": ["windows-latest"],
+                    "steps": [{"name": "pytest", "conclusion": "failure", "number": 7}],
+                },
+                {
+                    "name": "tests (linux)",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "pytest", "conclusion": "failure", "number": 8}],
+                },
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.platform == "linux"
+    assert bundle.job == "tests (linux)"
