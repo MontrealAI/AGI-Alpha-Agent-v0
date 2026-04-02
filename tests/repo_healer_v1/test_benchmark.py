@@ -17,5 +17,5 @@ def test_seeded_benchmark_machine_readable() -> None:
         "broken_import",
         "pytest_failure",
         "mkdocs_failure",
-        "non_autofix_permissions",
+        "tier2_actionlint",
     }

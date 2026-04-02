@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass
+from .models import FailureBundle, FailureClass, RiskPolicy, SupportMode, TriageResult, ValidatorClass
 
 TRANSIENT_MARKERS = (
     "timed out",
@@ -40,6 +40,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="bundle requested report-only mode",
             validator_class=ValidatorClass.NONE,
             candidate_files=_candidate_files(bundle),
+            risk_policy=RiskPolicy.DIAGNOSE_ONLY,
         )
     if bundle.support_mode == SupportMode.DRAFT_PR_ONLY:
         return TriageResult(
@@ -48,17 +49,19 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="bundle requested draft-pr-only mode",
             validator_class=bundle.validator_class,
             candidate_files=_candidate_files(bundle),
+            risk_policy=RiskPolicy.DRAFT_PR_ONLY,
         )
 
     text = "\n".join([bundle.logs, *(a.message for a in bundle.annotations)]).lower()
 
     if bundle.platform.lower() in {"windows", "macos"}:
         return TriageResult(
-            classification=FailureClass.DRAFT_PR_ONLY,
+            classification=FailureClass.UNSUPPORTED_PLATFORM,
             support_mode=SupportMode.DRAFT_PR_ONLY,
             reason=f"{bundle.platform} replay is Tier-2 diagnose-only in v1",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
+            risk_policy=RiskPolicy.DRAFT_PR_ONLY,
         )
     if any(marker in text for marker in PERMISSION_MARKERS):
         return TriageResult(
@@ -67,6 +70,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="permission or fork context",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
+            risk_policy=RiskPolicy.DIAGNOSE_ONLY,
         )
     if any(marker in text for marker in UNSAFE_MARKERS):
         return TriageResult(
@@ -75,6 +79,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="protected or unsafe surface",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
+            risk_policy=RiskPolicy.DIAGNOSE_ONLY,
         )
     if any(marker in text for marker in TRANSIENT_MARKERS):
         return TriageResult(
@@ -83,6 +88,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="likely transient infrastructure",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
+            risk_policy=RiskPolicy.DIAGNOSE_ONLY,
         )
     if any(marker in text for marker in DRAFT_ONLY_MARKERS):
         return TriageResult(
@@ -91,6 +97,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
             reason="tier-2 surface: draft patch or diagnosis only",
             validator_class=ValidatorClass.NONE,
             candidate_files=_candidate_files(bundle),
+            risk_policy=RiskPolicy.DRAFT_PR_ONLY,
         )
 
     validator_class = (
@@ -102,6 +109,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
         reason="linux reproducible code failure",
         validator_class=validator_class,
         candidate_files=_candidate_files(bundle),
+        risk_policy=RiskPolicy.SAFE_AUTOPATCH,
     )
 
 

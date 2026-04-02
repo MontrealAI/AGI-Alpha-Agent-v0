@@ -48,9 +48,13 @@ def _build_cases() -> list[SeedCase]:
         SeedCase(
             name="ruff_failure",
             target_file="alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/triage.py",
-            before="from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n",
+            before=(
+                "from .models import FailureBundle, FailureClass, RiskPolicy, SupportMode, TriageResult, "
+                "ValidatorClass\n"
+            ),
             after=(
-                "from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n"
+                "from .models import FailureBundle, FailureClass, RiskPolicy, SupportMode, TriageResult, "
+                "ValidatorClass\n"
                 "import pathlib\n"
             ),
             bundle=FailureBundle(
@@ -159,21 +163,22 @@ def _build_cases() -> list[SeedCase]:
             baseline_cmd=["mkdocs", "build", "--strict"],
         ),
         SeedCase(
-            name="non_autofix_permissions",
+            name="tier2_actionlint",
             target_file="README.md",
             before="### Security Note\n",
             after="### Security Note\n",
             bundle=FailureBundle(
                 workflow="🚀 CI — Insight Demo",
-                job="owner-check",
-                step="Verify owner",
-                run_id="seed-perm",
+                job="lint-actions",
+                step="actionlint",
+                run_id="seed-tier2",
                 sha="deadbeef",
-                failure_class="permission",
-                logs="resource not accessible by integration",
-                support_mode=SupportMode.REPORT_ONLY,
+                failure_class="workflow",
+                logs="actionlint: shellcheck warning in workflow",
+                support_mode=SupportMode.DRAFT_PR_ONLY,
+                validator_class=ValidatorClass.NONE,
             ),
-            baseline_cmd=[PYTHON, "-c", "print('permission context')"],
+            baseline_cmd=[PYTHON, "-c", "print('tier2 suggestion only')"],
         ),
     ]
 

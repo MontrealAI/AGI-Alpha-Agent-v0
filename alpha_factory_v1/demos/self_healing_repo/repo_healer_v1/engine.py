@@ -8,11 +8,11 @@ import pathlib
 import shutil
 import sys
 import tempfile
-from typing import cast
 from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
+from .github_integration import branch_name
 from .models import FailureBundle, PatchCandidate, RepairReport, SupportMode, ValidatorClass
 from .safety import is_patch_safe, touched_files_from_diff
 from .triage import triage_bundle
@@ -39,7 +39,15 @@ class RepoHealerEngine:
     def run(self, bundle: FailureBundle, candidates: list[PatchCandidate]) -> RepairReport:
         triage = triage_bundle(bundle)
         if triage.support_mode != SupportMode.AUTOPATCH_SAFE or self.options.report_only:
-            return RepairReport(False, triage.classification, triage.support_mode, triage.reason, [], 0)
+            return RepairReport(
+                False,
+                triage.classification,
+                triage.support_mode,
+                triage.reason,
+                [],
+                0,
+                replay_commands=[],
+            )
 
         plan = get_plan(triage.validator_class)
         targeted = self._resolve_targeted_command(bundle, triage.validator_class, plan.targeted)
@@ -60,6 +68,8 @@ class RepoHealerEngine:
                     commands,
                     attempts,
                     candidate.summary,
+                    branch_name=branch_name(bundle.run_id, bundle.sha),
+                    replay_commands=commands,
                 )
 
             with tempfile.TemporaryDirectory(prefix="repo-healer-attempt-") as tmpdir:
@@ -96,6 +106,8 @@ class RepoHealerEngine:
                     commands,
                     attempts,
                     candidate.summary,
+                    branch_name=branch_name(bundle.run_id, bundle.sha),
+                    replay_commands=commands,
                 )
 
         return RepairReport(
@@ -105,6 +117,7 @@ class RepoHealerEngine:
             "no candidate passed validators",
             commands,
             attempts,
+            replay_commands=commands,
         )
 
     @staticmethod
@@ -117,7 +130,7 @@ class RepoHealerEngine:
         if validator_class != ValidatorClass.PYTEST:
             return default
 
-        hinted_files = list(bundle.candidate_files) + [cast(str, a.path) for a in bundle.annotations if a.path]
+        hinted_files = list(bundle.candidate_files) + [a.path for a in bundle.annotations if a.path]
         test_files = [path for path in hinted_files if path.startswith("tests/") and path.endswith(".py")]
         if test_files:
             return [sys.executable, "-m", "pytest", *test_files, "-q"]

@@ -25,6 +25,7 @@ class FailureClass(str, Enum):
     TRANSIENT_INFRA = "TRANSIENT_INFRA"
     PERMISSION_OR_FORK_CONTEXT = "PERMISSION_OR_FORK_CONTEXT"
     UNSAFE_PROTECTED_SURFACE = "UNSAFE_PROTECTED_SURFACE"
+    UNSUPPORTED_PLATFORM = "UNSUPPORTED_PLATFORM"
 
 
 class ValidatorClass(str, Enum):
@@ -37,6 +38,14 @@ class ValidatorClass(str, Enum):
     SMOKE = "smoke"
     MKDOCS = "mkdocs"
     NONE = "none"
+
+
+class RiskPolicy(str, Enum):
+    """Risk policy selected after triage."""
+
+    SAFE_AUTOPATCH = "safe-autopatch"
+    DRAFT_PR_ONLY = "draft-pr-only"
+    DIAGNOSE_ONLY = "diagnose-only"
 
 
 @dataclass(slots=True)
@@ -88,6 +97,7 @@ class TriageResult:
     reason: str
     validator_class: ValidatorClass
     candidate_files: list[str]
+    risk_policy: RiskPolicy
 
 
 @dataclass(slots=True)
@@ -111,6 +121,7 @@ class RepairReport:
     attempts: int
     selected_patch_summary: str | None = None
     branch_name: str | None = None
+    replay_commands: list[list[str]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
