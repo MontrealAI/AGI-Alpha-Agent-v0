@@ -11,9 +11,7 @@ from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle import bu
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import SupportMode, ValidatorClass
 
 
-def test_build_failure_bundle_from_workflow_run_event(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     event = {
         "workflow_run": {
             "id": 42,
@@ -275,3 +273,103 @@ def test_selects_linux_job_when_multiple_failures_present(tmp_path: Path, monkey
     assert bundle.platform == "linux"
     assert bundle.job == "linux-lint"
     assert bundle.validator_class == ValidatorClass.RUFF
+
+
+def test_build_bundle_sets_reproduction_and_risk_tier(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 404,
+            "name": "✅ PR CI",
+            "head_sha": "a1b2c3",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 4}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.reproduction_command == ["ruff", "check", "."]
+    assert bundle.risk_tier == "tier1"
+
+
+def test_reproduction_command_uses_active_python(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 505,
+            "name": "✅ PR CI",
+            "head_sha": "a1b2c3",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "pytest", "conclusion": "failure", "number": 9}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.reproduction_command[0] == ci_bundle.sys.executable
+
+
+def test_mypy_reproduction_command_matches_ci_scope(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 606,
+            "name": "🚀 CI — Insight Demo",
+            "head_sha": "mypy123",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-type",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Mypy type-check", "conclusion": "failure", "number": 12}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.reproduction_command == ["mypy", "--config-file", "mypy.ini"]

@@ -166,3 +166,24 @@ def test_engine_can_skip_broader_validation(tmp_path: pathlib.Path) -> None:
     assert report.success is True
     assert run_validator.call_count == 1
     assert "skipped" in report.reason
+
+
+def test_validator_registry_exposes_canonical_ci_surface() -> None:
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.validators import canonical_ci_surface
+
+    surface = canonical_ci_surface()
+    assert "✅ PR CI" in surface["pr_gate"]
+    assert "🚀 CI — Insight Demo" in surface["full_ci"]
+
+
+def test_triage_workflow_lint_routes_to_draft_only() -> None:
+    bundle = FailureBundle("wf", "workflow-lint", "Lint workflows", "1", "abc", logs="workflow lint failed")
+    result = triage_bundle(bundle)
+    assert result.support_mode == SupportMode.DRAFT_PR_ONLY
+
+
+def test_mypy_validator_plan_matches_ci_scope() -> None:
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.validators import get_plan
+
+    plan = get_plan(ValidatorClass.MYPY)
+    assert plan.targeted == ["mypy", "--config-file", "mypy.ini"]
