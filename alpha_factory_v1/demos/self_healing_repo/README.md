@@ -16,7 +16,7 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
    - relying on unstructured logs and placeholder diffs,
    - treating pytest as one-size-fits-all validation.
 3. **Narrow truthful v1**
-   - typed failure bundle,
+   - typed failure bundle plus GitHub workflow_run ingestion (`ci_bundle.py`),
    - deterministic triage + validator registry aligned to real CI commands,
    - bounded isolated repair loop with patch safety checks,
    - seeded benchmark proving baseline vs healed outcomes on this repo.
@@ -70,7 +70,7 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Current workflow runs report-only by default for fork/permission safety.
+- Workflow runs dry-run validation by default and downgrades early run attempts to report-only until rerun surfaces settle.
 
 ## Local replay
 
