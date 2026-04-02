@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import os
 import pytest
 
 pd = pytest.importorskip("pandas")
@@ -48,6 +49,9 @@ def test_progress_dom_updates() -> None:
     pw = pytest.importorskip("playwright.sync_api")
     from playwright._impl._errors import Error as PlaywrightError
     from fastapi.testclient import TestClient
+
+    os.environ.setdefault("API_TOKEN", "test-token")
+    os.environ.setdefault("AGI_INSIGHT_ALLOW_INSECURE", "1")
     from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import api_server
 
     try:
