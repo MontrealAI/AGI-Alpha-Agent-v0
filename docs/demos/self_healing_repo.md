@@ -39,6 +39,7 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
 - Runs in dry-run mode by default and marks early run attempts report-only so it complements CI Health reruns.
+- Canonical workflow names are discovered from the checked-in workflow YAML files (`pr-ci.yml`, `ci.yml`, `smoke.yml`, `docs.yml`) instead of stale hardcoded docs labels.
 
 ## Local replay
 

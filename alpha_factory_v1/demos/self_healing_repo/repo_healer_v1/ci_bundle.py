@@ -89,7 +89,7 @@ def _default_reproduction_command(validator: ValidatorClass, candidate_files: li
     if validator == ValidatorClass.RUFF:
         return ["ruff", "check", "."]
     if validator == ValidatorClass.MYPY:
-        return ["mypy", "--config-file", "mypy.ini"]
+        return ["mypy", "--config-file", "mypy.ini", "."]
     if validator == ValidatorClass.IMPORT:
         return [sys.executable, "-m", "pytest", "tests/test_imports.py", "-q"]
     if validator in {ValidatorClass.PYTEST, ValidatorClass.SMOKE}:

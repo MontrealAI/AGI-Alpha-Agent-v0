@@ -51,6 +51,7 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
 - `repo_healer_v1/models.py`: typed failure bundle and report model.
 - `repo_healer_v1/triage.py`: deterministic classification to support mode.
 - `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
+  It reads `.github/workflows/pr-ci.yml`, `ci.yml`, `smoke.yml`, and `docs.yml` to resolve canonical workflow names.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
 - `repo_healer_v1/engine.py`: isolated repair loop (`triage -> safety -> targeted -> broader -> promote`).
 - `repo_healer_v1/benchmark.py`: seeded benchmark in isolated temp copy with machine-readable result.
