@@ -60,3 +60,8 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
 ```
 
 The benchmark runs from a clean temporary copy, does not touch the main working tree, and reports machine-readable baseline vs healed outcomes.
+
+
+## Legacy fixture mode
+
+The UI entrypoint targets this repository by default. Set `SELFHEAL_MODE=sample` to run the historical `sample_broken_calc` fixture.

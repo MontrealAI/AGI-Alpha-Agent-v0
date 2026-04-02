@@ -166,3 +166,11 @@ def test_engine_can_skip_broader_validation(tmp_path: pathlib.Path) -> None:
     assert report.success is True
     assert run_validator.call_count == 1
     assert "skipped" in report.reason
+
+
+def test_validator_registry_exposes_canonical_ci_surface() -> None:
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.validators import canonical_ci_surface
+
+    surface = canonical_ci_surface()
+    assert "✅ PR CI" in surface["pr_gate"]
+    assert "🚀 CI — Insight Demo" in surface["full_ci"]
