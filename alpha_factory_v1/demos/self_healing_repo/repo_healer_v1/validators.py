@@ -6,10 +6,14 @@ from __future__ import annotations
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
+from .ci_surface import discover_ci_surface
 from .models import ValidatorClass
 
 PYTHON = sys.executable
+SURFACE = discover_ci_surface(Path.cwd())
+SMOKE_ARGS = SURFACE.pr_smoke_command[1:] if SURFACE.pr_smoke_command[:1] == ["pytest"] else SURFACE.pr_smoke_command
 
 
 @dataclass(frozen=True)
@@ -22,8 +26,8 @@ class ValidatorPlan:
 
 REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
     ValidatorClass.RUFF: ValidatorPlan(
-        targeted=["ruff", "check", "."],
-        broader=[PYTHON, "-m", "pytest", "-m", "smoke", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
+        targeted=SURFACE.pr_ruff_command,
+        broader=[PYTHON, "-m", "pytest", *SMOKE_ARGS],
     ),
     ValidatorClass.MYPY: ValidatorPlan(
         targeted=["mypy", "--config-file", "mypy.ini"],
@@ -34,39 +38,11 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.PYTEST: ValidatorPlan(
-        targeted=[
-            PYTHON,
-            "-m",
-            "pytest",
-            "-m",
-            "smoke",
-            "tests/test_af_requests.py",
-            "tests/test_cache_version.py",
-            "tests/test_check_env_core.py",
-            "tests/test_check_env_network.py",
-            "tests/test_config_settings.py",
-            "tests/test_config_utils.py",
-            "tests/test_ping_agent.py",
-            "-q",
-        ],
-        broader=[PYTHON, "-m", "pytest", "-q"],
+        targeted=[PYTHON, "-m", "pytest", *SMOKE_ARGS],
+        broader=[PYTHON, "-m", "pytest", *SMOKE_ARGS],
     ),
     ValidatorClass.SMOKE: ValidatorPlan(
-        targeted=[
-            PYTHON,
-            "-m",
-            "pytest",
-            "-m",
-            "smoke",
-            "tests/test_af_requests.py",
-            "tests/test_cache_version.py",
-            "tests/test_check_env_core.py",
-            "tests/test_check_env_network.py",
-            "tests/test_config_settings.py",
-            "tests/test_config_utils.py",
-            "tests/test_ping_agent.py",
-            "-q",
-        ],
+        targeted=[PYTHON, "-m", "pytest", *SMOKE_ARGS],
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.MKDOCS: ValidatorPlan(

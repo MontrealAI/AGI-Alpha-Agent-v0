@@ -5,24 +5,14 @@
 Repo-Healer v1 is a **bounded CI repair capability for this repository** (`AGI-Alpha-Agent-v0`).
 The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no longer the production repair path.
 
-## Maintainer scratchpad (current state)
+## Current evaluator surface
 
-1. **Canonical evaluator surface now**
-   - PR gate: **✅ PR CI** (`.github/workflows/pr-ci.yml`) with `ruff check .` and smoke pytest subset.
-   - Heavy integration matrix: **🚀 CI — Insight Demo** (`.github/workflows/ci.yml`) with actionlint, Ruff, Mypy, pytest, docs/deploy/build checks.
-   - Optional surfaces: **🔥 Smoke Test** and **📚 Docs** workflows.
-2. **What was toy-specific before**
-   - defaulting to `sample_broken_calc` clone flow,
-   - relying on unstructured logs and placeholder diffs,
-   - treating pytest as one-size-fits-all validation.
-3. **Narrow truthful v1**
-   - typed failure bundle,
-   - deterministic triage + validator registry aligned to real CI commands,
-   - bounded isolated repair loop with patch safety checks,
-   - seeded benchmark proving baseline vs healed outcomes on this repo.
-4. **Docs that overclaimed**
-   - legacy table rows suggesting fully autonomous CI healing to green for every class,
-   - toy clone behavior implied as the main production path.
+- PR gate: **✅ PR CI** (`.github/workflows/pr-ci.yml`) with `ruff check .` plus smoke pytest subset.
+- Heavy integration matrix: **🚀 CI — Insight Demo** (`.github/workflows/ci.yml`) with workflow linting, Ruff, Mypy,
+  pytest, docs, Docker, and deploy-path checks.
+- Additional signal-only workflows: **🔥 Smoke Test**, **📚 Docs**, and **🩺 CI Health**.
+
+Repo-Healer v1 discovers PR gate replay commands from `pr-ci.yml` and uses those commands for Tier-1 local replay.
 
 ## Tiered support model
 
@@ -71,6 +61,9 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
 - Current workflow runs report-only by default for fork/permission safety.
+
+In low-permission contexts (forks, missing token, workflow_run read-only metadata), Repo-Healer explicitly degrades to
+`REPORT_ONLY` and emits diagnosis artifacts instead of trying to push fixes.
 
 ## Local replay
 

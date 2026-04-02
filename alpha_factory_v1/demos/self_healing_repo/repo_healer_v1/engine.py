@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import shutil
 import sys
 import tempfile
@@ -44,7 +45,8 @@ class RepoHealerEngine:
         commands = [targeted, plan.broader]
         attempts = 0
 
-        for candidate in sorted(candidates, key=lambda c: c.score, reverse=True)[: self.options.max_attempts]:
+        ranked_candidates = self._rank_candidates(candidates)
+        for candidate in ranked_candidates[: self.options.max_attempts]:
             attempts += 1
             safe, reason = is_patch_safe(candidate.diff, self.repo_root)
             if not safe:
@@ -100,6 +102,26 @@ class RepoHealerEngine:
             commands,
             attempts,
         )
+
+    def _rank_candidates(self, candidates: list[PatchCandidate]) -> list[PatchCandidate]:
+        """Score candidates by safety-adjacent heuristics and caller-provided model score."""
+
+        def _score(candidate: PatchCandidate) -> float:
+            touched = touched_files_from_diff(candidate.diff)
+            changed_lines = 0
+            collateral = 0
+            for line in candidate.diff.splitlines():
+                if line.startswith(("+", "-")) and not line.startswith(("+++", "---")):
+                    changed_lines += 1
+                if line.startswith(("+", "-")) and "tests/" in line and "skip" in line.lower():
+                    collateral += 1
+            clarity = 1.0 if re.search(r"[a-z]", candidate.summary) else 0.0
+            minimality = 1.0 / max(changed_lines, 1)
+            narrow_scope = 1.0 / max(len(touched), 1)
+            collateral_penalty = float(collateral) * 0.2
+            return candidate.score + minimality + narrow_scope + clarity - collateral_penalty
+
+        return sorted(candidates, key=_score, reverse=True)
 
     @staticmethod
     def _resolve_targeted_command(

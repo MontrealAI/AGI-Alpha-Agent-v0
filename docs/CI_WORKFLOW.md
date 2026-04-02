@@ -58,3 +58,12 @@ After editing workflow files, run:
 python tools/update_actions.py
 pre-commit run --files .github/workflows/ci.yml .github/workflows/pr-ci.yml .github/workflows/ci-health.yml
 ```
+
+## Repo-Healer v1 workflow
+
+`.github/workflows/repo-healer.yml` listens to failed `workflow_run` events from PR CI, CI, and Smoke workflows and
+emits structured triage artifacts (`repo_healer_bundle.json`, `repo_healer_candidates.json`, `repo_healer_report.json`).
+It records failing workflow/job/step metadata, inferred validator class, and replay command in a machine-readable bundle.
+
+Current repository policy keeps this workflow in report mode by default; patch application remains a local maintainer
+operation via `python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli`.
