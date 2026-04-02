@@ -1081,7 +1081,7 @@ jobs:
           docker run --rm -e RUN_MODE=cli "$DOCKER_IMAGE:ci" simulate --horizon 1 --offline
       - name: Login to GHCR
         if: github.event_name != 'pull_request' && github.event_name != 'merge_group'
-        uses: docker/login-action@v4.0.0 # b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        uses: docker/login-action@v4.1.0 # 4907a6ddec9925e35a0a9e82d7399ccc52663121
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -1126,7 +1126,7 @@ jobs:
           docker compose version
           git --version
       - name: Login to GHCR
-        uses: docker/login-action@v4.0.0 # b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        uses: docker/login-action@v4.1.0 # 4907a6ddec9925e35a0a9e82d7399ccc52663121
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

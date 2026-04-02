@@ -34,7 +34,6 @@ API_ROOT = "https://api.github.com"
 DEFAULT_WORKFLOWS = (
     "ci.yml",
     "pr-ci.yml",
-    "smoke.yml",
     "ci-health.yml",
 )
 

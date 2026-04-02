@@ -44,7 +44,7 @@ python scripts/verify_branch_protection.py --apply --branch main
 
 ## CI health
 
-The **🩺 CI Health** workflow monitors `pr-ci.yml`, `ci.yml`, `smoke.yml`, and `ci-health.yml`, and can cancel stale runs/re-dispatch missing runs.
+The **🩺 CI Health** workflow monitors `pr-ci.yml`, `ci.yml`, and `ci-health.yml`, and can cancel stale runs/re-dispatch missing runs.
 
 Use:
 

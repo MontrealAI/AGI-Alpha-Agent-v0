@@ -24,7 +24,7 @@ The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focu
 
 The full **🚀 CI — Insight Demo** workflow is intentionally **off the PR path**. It now runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
 
-**🩺 CI Health** still watches PR CI, CI, and Smoke runs and can re-dispatch stale/missing workflows. Use `ADMIN_GITHUB_TOKEN` to enable branch-protection remediation; without it, health checks run read-only.
+**🩺 CI Health** watches PR CI and CI runs (plus its own watchdog run) and can re-dispatch stale/missing workflows. Use `ADMIN_GITHUB_TOKEN` to enable branch-protection remediation; without it, health checks run read-only.
 
 #### Run CI locally
 
@@ -207,13 +207,13 @@ Update the version in `.github/workflows/ci.yml` and rerun
 The [🚀 CI](.github/workflows/ci.yml) job verifies the Insight demo with
 linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI —
 Insight Demo**, select the branch or tag to test in the drop‑down and click
-**Run workflow** to dispatch the pipeline. This
-workflow has no automatic triggers; only the repository owner can launch it
-manually from the GitHub UI. Each job begins by verifying the actor matches the
-repository owner, so non‑owners exit immediately before running the heavy
-steps. When the owner launches the workflow every job runs.
+**Run workflow** to dispatch the pipeline. This workflow also runs
+automatically on pushes to `main` and release tags (`v*`, `release-*`), while
+staying off pull requests. Each job begins by verifying the actor matches the
+repository owner only for manual dispatches; push and tag runs execute
+automatically for normal integration validation.
 Because the first job checks `${{ github.actor }}` against `${{ github.repository_owner }}`,
-you must own the repository to run the workflow successfully.
+you must own the repository to run the workflow from manual dispatch.
 Jobs following the main test stage include `if: always()` so the Windows and
 macOS smoke tests, documentation build and Docker jobs execute even when the
 lint or unit tests fail. This behavior helps confirm that cross‑platform builds
@@ -269,7 +269,7 @@ pre-commit run --all-files
 Launch the CI workflow manually via **Actions → 🚀 CI — Insight Demo** and click
 **Run workflow** as described in [AGENTS.md](AGENTS.md#starting-the-ci-pipeline).
 The workflow performs linting, type checks, the full unit test matrix on Python
-3.11, 3.12 and 3.13, Windows and macOS smoke tests, documentation builds, Docker
+3.11 and 3.12, Windows and macOS smoke tests, documentation builds, Docker
 builds and an optional deploy step for tagged releases.
 
 ### Verify Docker image signature
