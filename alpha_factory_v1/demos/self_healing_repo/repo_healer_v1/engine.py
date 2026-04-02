@@ -5,11 +5,14 @@ from __future__ import annotations
 
 import json
 import pathlib
+import shutil
+import sys
+import tempfile
 from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
-from .models import FailureBundle, PatchCandidate, RepairReport, RiskPolicy
+from .models import FailureBundle, PatchCandidate, RepairReport, SupportMode, ValidatorClass
 from .safety import is_patch_safe, touched_files_from_diff
 from .triage import triage_bundle
 from .validators import get_plan, run_validator
@@ -25,7 +28,7 @@ class EngineOptions:
 
 
 class RepoHealerEngine:
-    """Run triage, patch attempt, and validation in a bounded loop."""
+    """Run triage, patch attempt, and validation in an isolated bounded loop."""
 
     def __init__(self, repo_root: pathlib.Path, options: EngineOptions | None = None):
         self.repo_root = repo_root
@@ -33,12 +36,14 @@ class RepoHealerEngine:
 
     def run(self, bundle: FailureBundle, candidates: list[PatchCandidate]) -> RepairReport:
         triage = triage_bundle(bundle)
-        if triage.policy != RiskPolicy.SAFE_AUTOPATCH or self.options.report_only:
-            return RepairReport(False, triage.policy, triage.reason, [], 0)
+        if triage.support_mode != SupportMode.AUTOPATCH_SAFE or self.options.report_only:
+            return RepairReport(False, triage.classification, triage.support_mode, triage.reason, [], 0)
 
-        plan = get_plan(triage.validator_key)
-        commands = [plan.targeted, plan.broader]
+        plan = get_plan(triage.validator_class)
+        targeted = self._resolve_targeted_command(bundle, triage.validator_class, plan.targeted)
+        commands = [targeted, plan.broader]
         attempts = 0
+
         for candidate in sorted(candidates, key=lambda c: c.score, reverse=True)[: self.options.max_attempts]:
             attempts += 1
             safe, reason = is_patch_safe(candidate.diff, self.repo_root)
@@ -47,51 +52,85 @@ class RepoHealerEngine:
             if self.options.dry_run:
                 return RepairReport(
                     True,
-                    triage.policy,
-                    "dry-run safe candidate",
+                    triage.classification,
+                    triage.support_mode,
+                    f"dry-run safe candidate ({reason})",
                     commands,
                     attempts,
                     candidate.summary,
                 )
-            snapshot = self._snapshot_files(candidate.diff)
-            try:
-                patcher_core.apply_patch(candidate.diff, repo_path=str(self.repo_root))
-            except Exception:
-                self._restore_snapshot(snapshot)
-                continue
 
-            try:
-                rc_target, _ = run_validator(plan.targeted, cwd=str(self.repo_root))
-            except Exception:
-                self._restore_snapshot(snapshot)
-                continue
-            if rc_target != 0:
-                self._restore_snapshot(snapshot)
-                continue
-            try:
-                rc_broader, _ = run_validator(plan.broader, cwd=str(self.repo_root))
-            except Exception:
-                self._restore_snapshot(snapshot)
-                continue
-            if rc_broader == 0:
-                return RepairReport(True, triage.policy, "validators passed", commands, attempts, candidate.summary)
-            self._restore_snapshot(snapshot)
+            with tempfile.TemporaryDirectory(prefix="repo-healer-attempt-") as tmpdir:
+                isolated_repo = pathlib.Path(tmpdir) / "repo"
+                self._copy_repo(self.repo_root, isolated_repo)
+                try:
+                    patcher_core.apply_patch(candidate.diff, repo_path=str(isolated_repo))
+                except Exception:
+                    continue
 
-        return RepairReport(False, triage.policy, "no candidate passed validators", commands, attempts)
+                try:
+                    rc_target, _ = run_validator(targeted, cwd=str(isolated_repo))
+                except Exception:
+                    continue
+                if rc_target != 0:
+                    continue
+                try:
+                    rc_broader, _ = run_validator(plan.broader, cwd=str(isolated_repo))
+                except Exception:
+                    continue
+                if rc_broader != 0:
+                    continue
 
-    def _snapshot_files(self, diff: str) -> dict[pathlib.Path, str]:
-        """Capture pre-apply contents so failed candidates can roll back safely."""
-        snapshot: dict[pathlib.Path, str] = {}
+                self._promote_patch(candidate.diff, isolated_repo)
+                return RepairReport(
+                    True,
+                    triage.classification,
+                    triage.support_mode,
+                    "targeted and broader validators passed",
+                    commands,
+                    attempts,
+                    candidate.summary,
+                )
+
+        return RepairReport(
+            False,
+            triage.classification,
+            triage.support_mode,
+            "no candidate passed validators",
+            commands,
+            attempts,
+        )
+
+    @staticmethod
+    def _resolve_targeted_command(
+        bundle: FailureBundle, validator_class: ValidatorClass, default: list[str]
+    ) -> list[str]:
+        """Resolve a targeted replay command from structured bundle hints."""
+        if bundle.reproduction_command:
+            return bundle.reproduction_command
+        if validator_class != ValidatorClass.PYTEST:
+            return default
+
+        hinted_files = list(bundle.candidate_files) + [a.path for a in bundle.annotations if a.path]
+        test_files = [path for path in hinted_files if path.startswith("tests/") and path.endswith(".py")]
+        if test_files:
+            return [sys.executable, "-m", "pytest", *test_files, "-q"]
+        return default
+
+    @staticmethod
+    def _copy_repo(src: pathlib.Path, dst: pathlib.Path) -> None:
+        """Copy repository into isolated scratch directory."""
+        ignore = shutil.ignore_patterns(".git", ".pytest_cache", ".mypy_cache", "__pycache__")
+        shutil.copytree(src, dst, ignore=ignore)
+
+    def _promote_patch(self, diff: str, isolated_repo: pathlib.Path) -> None:
+        """Copy touched files from validated isolated repo back to working tree."""
         for rel in touched_files_from_diff(diff):
-            file_path = self.repo_root / rel
-            if file_path.exists():
-                snapshot[file_path] = file_path.read_text(encoding="utf-8")
-        return snapshot
-
-    def _restore_snapshot(self, snapshot: dict[pathlib.Path, str]) -> None:
-        """Restore repository contents after failed candidate validation."""
-        for path, text in snapshot.items():
-            path.write_text(text, encoding="utf-8")
+            source = isolated_repo / rel
+            destination = self.repo_root / rel
+            if source.exists():
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
 
 
 def write_report(report: RepairReport, out_path: pathlib.Path) -> None:
