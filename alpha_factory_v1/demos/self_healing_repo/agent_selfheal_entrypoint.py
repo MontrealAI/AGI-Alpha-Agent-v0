@@ -81,6 +81,11 @@ TARGET_REPO = pathlib.Path(os.getenv("REPO_HEAL_TARGET", str(DEFAULT_TARGET_REPO
 CLONE_DIR = os.getenv("CLONE_DIR", "/tmp/demo_repo")
 
 
+def _active_repo_path() -> str:
+    """Return the repository path used for validate/patch phases."""
+    return CLONE_DIR if SELFHEAL_MODE == "sample" else str(TARGET_REPO)
+
+
 def clone_sample_repo() -> None:
     """Clone the example repo, falling back to the bundled copy."""
     result = subprocess.run(["git", "clone", REPO_URL, CLONE_DIR], capture_output=True)
@@ -114,7 +119,7 @@ LLM = _build_llm()
 @Tool(name="run_tests", description="execute pytest on repo")
 async def run_tests():
     """Run the selected validator command with a timeout and no color codes."""
-    repo_path = CLONE_DIR if SELFHEAL_MODE == "sample" else str(TARGET_REPO)
+    repo_path = _active_repo_path()
     test_cmd = (
         ["pytest", "-q", "--color=no"]
         if SELFHEAL_MODE == "sample"
@@ -139,7 +144,7 @@ async def run_tests():
 @Tool(name="suggest_patch", description="propose code fix")
 async def suggest_patch():
     report = await run_tests()
-    patch = generate_patch(report["out"], llm=LLM, repo_path=CLONE_DIR)
+    patch = generate_patch(report["out"], llm=LLM, repo_path=_active_repo_path())
     return {"patch": patch}
 
 
@@ -147,7 +152,7 @@ async def suggest_patch():
 async def apply_and_test(patch: str):
     if not PATCH_AVAILABLE:
         return {"rc": 1, "out": "patch command not available"}
-    apply_patch(patch, repo_path=CLONE_DIR)
+    apply_patch(patch, repo_path=_active_repo_path())
     return await run_tests()
 
 
