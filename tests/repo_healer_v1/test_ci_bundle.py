@@ -340,3 +340,36 @@ def test_reproduction_command_uses_active_python(tmp_path: Path, monkeypatch: py
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
     assert bundle.reproduction_command[0] == ci_bundle.sys.executable
+
+
+def test_mypy_reproduction_command_matches_ci_scope(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 606,
+            "name": "🚀 CI — Insight Demo",
+            "head_sha": "mypy123",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-type",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Mypy type-check", "conclusion": "failure", "number": 12}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.reproduction_command == ["mypy", "--config-file", "mypy.ini"]
