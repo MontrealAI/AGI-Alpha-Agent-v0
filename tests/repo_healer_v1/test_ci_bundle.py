@@ -307,3 +307,30 @@ def test_build_bundle_sets_reproduction_and_risk_tier(tmp_path: Path, monkeypatc
 
     assert bundle.reproduction_command == ["ruff", "check", "."]
     assert bundle.risk_tier == "tier1"
+
+
+def test_reproduction_command_uses_active_python(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {"id": 505, "name": "✅ PR CI", "head_sha": "ff", "conclusion": "failure", "run_attempt": 2}
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "pytest", "conclusion": "failure", "number": 1}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.reproduction_command[0] == ci_bundle.PYTHON

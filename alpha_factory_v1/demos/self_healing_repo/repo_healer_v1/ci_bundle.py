@@ -7,12 +7,15 @@ import argparse
 import json
 import os
 import pathlib
+import sys
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, cast
 
 from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
+
+PYTHON = sys.executable
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -90,13 +93,13 @@ def _default_reproduction_command(validator: ValidatorClass, candidate_files: li
     if validator == ValidatorClass.MYPY:
         return ["mypy", "--config-file", "mypy.ini", "."]
     if validator == ValidatorClass.IMPORT:
-        return ["python", "-m", "pytest", "tests/test_imports.py", "-q"]
+        return [PYTHON, "-m", "pytest", "tests/test_imports.py", "-q"]
     if validator in {ValidatorClass.PYTEST, ValidatorClass.SMOKE}:
         tests = [path for path in candidate_files if path.startswith("tests/") and path.endswith(".py")]
         if tests:
-            return ["python", "-m", "pytest", *tests, "-q"]
+            return [PYTHON, "-m", "pytest", *tests, "-q"]
         return [
-            "python",
+            PYTHON,
             "-m",
             "pytest",
             "-m",

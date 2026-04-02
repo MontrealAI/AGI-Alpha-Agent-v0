@@ -116,6 +116,11 @@ def _build_llm() -> OpenAIAgent:
 LLM = _build_llm()
 
 
+def _should_attempt_patch(report: dict[str, object]) -> bool:
+    """Return True when the initial validation failed and patching should proceed."""
+    return int(report.get("rc", 1)) != 0
+
+
 @Tool(name="run_tests", description="execute pytest on repo")
 async def run_tests():
     """Run the selected validator command with a timeout and no color codes."""
@@ -182,6 +187,9 @@ def create_app() -> FastAPI:
                     shutil.rmtree(CLONE_DIR)
                 clone_sample_repo()
             out1 = await run_tests()
+            if not _should_attempt_patch(out1):
+                return "### Initial validation passed\n```\n" + out1["out"] + "```"
+
             patch = (await suggest_patch())["patch"]
             out2 = await apply_and_test(patch)
             log_text = "### Initial test failure\n```\n" + out1["out"] + "```"
