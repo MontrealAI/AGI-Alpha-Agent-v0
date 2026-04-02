@@ -11,6 +11,9 @@ from __future__ import annotations
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
+
+import yaml
 
 from .models import ValidatorClass
 
@@ -31,7 +34,7 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "-m", "smoke", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.MYPY: ValidatorPlan(
-        targeted=["mypy", "--config-file", "mypy.ini"],
+        targeted=["mypy", "--config-file", "mypy.ini", "."],
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.IMPORT: ValidatorPlan(
@@ -96,9 +99,38 @@ def get_plan(kind: ValidatorClass) -> ValidatorPlan:
 
 
 def canonical_ci_surface() -> dict[str, list[str]]:
-    """Expose the current canonical CI workflows consumed by Repo-Healer."""
-    return {
+    """Expose canonical CI workflow names by reading current workflow files.
+
+    Falls back to known defaults when workflow files are unavailable.
+    """
+    defaults = {
         "pr_gate": ["✅ PR CI"],
         "full_ci": ["🚀 CI — Insight Demo"],
         "optional": ["🔥 Smoke Test", "📚 Docs"],
     }
+    repo_root = Path(__file__).resolve().parents[4]
+    mapping = {
+        "pr_gate": repo_root / ".github/workflows/pr-ci.yml",
+        "full_ci": repo_root / ".github/workflows/ci.yml",
+        "optional_smoke": repo_root / ".github/workflows/smoke.yml",
+        "optional_docs": repo_root / ".github/workflows/docs.yml",
+    }
+    try:
+        loaded: dict[str, str] = {}
+        for key, path in mapping.items():
+            if not path.exists():
+                continue
+            payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            name = payload.get("name")
+            if isinstance(name, str) and name.strip():
+                loaded[key] = name.strip()
+        return {
+            "pr_gate": [loaded.get("pr_gate", defaults["pr_gate"][0])],
+            "full_ci": [loaded.get("full_ci", defaults["full_ci"][0])],
+            "optional": [
+                loaded.get("optional_smoke", defaults["optional"][0]),
+                loaded.get("optional_docs", defaults["optional"][1]),
+            ],
+        }
+    except Exception:
+        return defaults

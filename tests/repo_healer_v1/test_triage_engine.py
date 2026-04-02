@@ -186,4 +186,4 @@ def test_mypy_validator_plan_matches_ci_scope() -> None:
     from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.validators import get_plan
 
     plan = get_plan(ValidatorClass.MYPY)
-    assert plan.targeted == ["mypy", "--config-file", "mypy.ini"]
+    assert plan.targeted == ["mypy", "--config-file", "mypy.ini", "."]

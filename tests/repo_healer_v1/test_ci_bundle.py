@@ -372,4 +372,4 @@ def test_mypy_reproduction_command_matches_ci_scope(tmp_path: Path, monkeypatch:
     monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
-    assert bundle.reproduction_command == ["mypy", "--config-file", "mypy.ini"]
+    assert bundle.reproduction_command == ["mypy", "--config-file", "mypy.ini", "."]
