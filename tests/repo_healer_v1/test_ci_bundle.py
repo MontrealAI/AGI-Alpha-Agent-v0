@@ -164,3 +164,37 @@ def test_junit_classname_with_test_class_maps_to_module_path(tmp_path: Path, mon
 
     assert "tests/test_sample.py" in bundle.candidate_files
     assert all(not path.endswith("/TestA.py") for path in bundle.candidate_files)
+
+
+def test_branch_name_with_docs_does_not_force_mkdocs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 101,
+            "name": "✅ PR CI",
+            "head_sha": "123abc",
+            "head_branch": "docs/refactor-ci-bits",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-and-smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 5}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.validator_class == ValidatorClass.RUFF

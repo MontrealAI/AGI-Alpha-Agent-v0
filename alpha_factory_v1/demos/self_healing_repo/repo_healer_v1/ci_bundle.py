@@ -24,13 +24,15 @@ def _api_get(url: str, token: str | None) -> dict[str, Any]:
         return cast(dict[str, Any], json.loads(response.read().decode("utf-8")))
 
 
-def _infer_validator(step_name: str, logs: str) -> ValidatorClass:
-    text = f"{step_name}\n{logs}".lower()
+def _infer_validator(step_name: str, job_name: str) -> ValidatorClass:
+    text = f"{step_name}\n{job_name}".lower()
     if "ruff" in text:
         return ValidatorClass.RUFF
     if "mypy" in text:
         return ValidatorClass.MYPY
-    if "mkdocs" in text or "docs" in text:
+    if "mkdocs" in text:
+        return ValidatorClass.MKDOCS
+    if any(marker in text for marker in ("docs build", "documentation", "📚 docs", "docs-deploy")):
         return ValidatorClass.MKDOCS
     if "importerror" in text or "modulenotfound" in text:
         return ValidatorClass.IMPORT
@@ -165,7 +167,7 @@ def build_failure_bundle(
         annotations.extend(_collect_junit_signals(junit_path))
 
     logs = "\n".join([f"job={job_name}", f"step={step_name}", f"head_branch={run.get('head_branch', '')}"])
-    validator = _infer_validator(step_name, logs)
+    validator = _infer_validator(step_name, job_name)
 
     candidate_files = sorted({signal.path for signal in annotations if signal.path})
     bundle.job = job_name
