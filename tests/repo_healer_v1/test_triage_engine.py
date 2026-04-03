@@ -23,6 +23,21 @@ def test_triage_permission_is_report_only() -> None:
     assert result.support_mode.value == "PERMISSION_OR_FORK_CONTEXT"
 
 
+def test_triage_honors_permission_mode_from_bundle() -> None:
+    bundle = FailureBundle(
+        "wf",
+        "job",
+        "step",
+        "1",
+        "abc",
+        logs="ruff failure output without permission markers",
+        support_mode=SupportMode.PERMISSION_OR_FORK_CONTEXT,
+    )
+    result = triage_bundle(bundle)
+    assert result.support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT
+    assert result.classification.value == "PERMISSION_OR_FORK_CONTEXT"
+
+
 def test_engine_dry_run_autofix(tmp_path: pathlib.Path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()
