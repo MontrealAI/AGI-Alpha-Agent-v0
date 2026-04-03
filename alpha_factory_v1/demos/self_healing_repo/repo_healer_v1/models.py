@@ -14,6 +14,9 @@ class SupportMode(str, Enum):
     AUTOPATCH_SAFE = "AUTOPATCH_SAFE"
     DRAFT_PR_ONLY = "DRAFT_PR_ONLY"
     REPORT_ONLY = "REPORT_ONLY"
+    TRANSIENT_INFRA = "TRANSIENT_INFRA"
+    PERMISSION_OR_FORK_CONTEXT = "PERMISSION_OR_FORK_CONTEXT"
+    UNSAFE_PROTECTED_SURFACE = "UNSAFE_PROTECTED_SURFACE"
 
 
 class FailureClass(str, Enum):
@@ -60,6 +63,9 @@ class FailureBundle:
     step: str
     run_id: str
     sha: str
+    event: str = "workflow_run"
+    branch: str = ""
+    ref: str = ""
     failure_class: str = "unknown"
     platform: str = "linux"
     exit_code: int = 1
@@ -72,6 +78,8 @@ class FailureBundle:
     junit_xml: str | None = None
     annotations: list[FailureSignal] = field(default_factory=list)
     artifacts: dict[str, str] = field(default_factory=dict)
+    notes: list[str] = field(default_factory=list)
+    evidence: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)

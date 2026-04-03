@@ -24,7 +24,7 @@ The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focu
 
 The full **🚀 Integration CI — Insight Demo** workflow is intentionally **off the PR path**. It runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
 
-**🩺 CI Health** watches PR CI and CI runs (plus its own watchdog run) and can re-dispatch stale/missing workflows. Use `ADMIN_GITHUB_TOKEN` to enable branch-protection remediation; without it, health checks run read-only.
+**🩺 CI Health** hard-monitors the canonical required surface (✅ PR CI) and context-switches to 🚀 Integration CI checks only when triggered by that workflow. Scheduled/manual runs keep heavy CI freshness as informational-only, and `ADMIN_GITHUB_TOKEN` enables branch-protection remediation while default tokens stay read-only for admin APIs.
 
 #### Run CI locally
 

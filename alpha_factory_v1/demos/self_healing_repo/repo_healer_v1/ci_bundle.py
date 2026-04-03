@@ -167,10 +167,20 @@ def build_failure_bundle(
         step="unknown",
         run_id=run_id,
         sha=sha,
+        event=str(run.get("event") or payload.get("event_name") or "workflow_run"),
+        branch=str(run.get("head_branch") or payload.get("ref", "")),
+        ref=str(run.get("head_branch") or payload.get("ref", "")),
         logs=f"conclusion={run.get('conclusion', 'unknown')}",
         artifacts={"event": str(event_path), "run_attempt": str(run.get("run_attempt", 1))},
         support_mode=SupportMode.AUTOPATCH_SAFE,
     )
+
+    head_repo = run.get("head_repository") if isinstance(run, dict) else None
+    if isinstance(head_repo, dict):
+        head_name = str(head_repo.get("full_name") or "")
+        if head_name and head_name.lower() != repository.lower():
+            bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
+            bundle.notes.append("workflow_run originates from fork context")
 
     if not run.get("id"):
         bundle.support_mode = SupportMode.REPORT_ONLY
@@ -240,6 +250,7 @@ def build_failure_bundle(
     bundle.risk_tier = _risk_tier(validator, platform)
     bundle.annotations = annotations
     bundle.artifacts["jobs_api"] = jobs_url
+    bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
     return bundle

@@ -69,6 +69,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          HARD_WORKFLOW="pr-ci.yml"
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            source_workflow=$(jq -r '.workflow_run.name // empty' "$GITHUB_EVENT_PATH")
+            if [[ "$source_workflow" == "🚀 Integration CI — Insight Demo" ]]; then
+              HARD_WORKFLOW="ci.yml"
+            fi
+          fi
+
           python scripts/check_ci_status.py \
             --wait-minutes 5 \
             --pending-grace-minutes 45 \
@@ -77,8 +85,21 @@ jobs:
             --dispatch-missing \
             --rerun-failed \
             --poll-seconds 30 \
+            --workflow "$HARD_WORKFLOW" \
             --branch "${CI_TARGET_BRANCH}" \
             --ref "${CI_TARGET_BRANCH}"
+
+      - name: Observe integration CI freshness (informational)
+        if: ${{ github.event_name != 'workflow_run' }}
+        env:
+          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/check_ci_status.py \
+            --once \
+            --workflow ci.yml \
+            --branch "${CI_TARGET_BRANCH}" \
+            --ref "${CI_TARGET_BRANCH}" \
+            --read-only || echo "::warning::Integration CI workflow is not green or missing recent runs."
       - name: Warn when admin token is unavailable
         if: ${{ env.ADMIN_GITHUB_TOKEN == '' }}
         run: echo "::warning::ADMIN_GITHUB_TOKEN not configured; branch protection verification skipped."

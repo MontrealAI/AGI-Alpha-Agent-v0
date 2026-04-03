@@ -63,7 +63,10 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 
 - `AUTOPATCH_SAFE`: run bounded autopatch loop.
 - `DRAFT_PR_ONLY`: produce structured diagnosis and commands for human/draft flow.
-- `REPORT_ONLY`: permission/transient/unsafe contexts; no patch application.
+- `REPORT_ONLY`: explicit read-only/report execution mode.
+- `TRANSIENT_INFRA`: retry-oriented transient infrastructure diagnosis mode.
+- `PERMISSION_OR_FORK_CONTEXT`: fork/permission constrained diagnosis mode.
+- `UNSAFE_PROTECTED_SURFACE`: policy-protected surface refusal mode.
 
 ## CI integration
 

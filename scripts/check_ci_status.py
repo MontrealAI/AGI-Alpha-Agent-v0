@@ -31,11 +31,13 @@ except ImportError:  # pragma: no cover - optional dependency
     yaml = None
 
 API_ROOT = "https://api.github.com"
-DEFAULT_WORKFLOWS = (
-    "ci.yml",
-    "pr-ci.yml",
-    "ci-health.yml",
-)
+DEFAULT_WORKFLOWS = ("pr-ci.yml",)
+
+WORKFLOW_NAME_TO_FILE = {
+    "✅ PR CI": "pr-ci.yml",
+    "🚀 Integration CI — Insight Demo": "ci.yml",
+    "🩺 CI Health": "ci-health.yml",
+}
 
 
 def _github_request(
@@ -205,6 +207,30 @@ def _workflow_filename_from_env(token: str | None = None) -> str | None:
             return workflow_file.name
 
     return None
+
+
+def _default_workflows_for_event(event_path: str | None) -> list[str]:
+    """Return context-aware default workflows when --workflow is not set."""
+    if not event_path:
+        return list(DEFAULT_WORKFLOWS)
+
+    try:
+        payload = json.loads(Path(event_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return list(DEFAULT_WORKFLOWS)
+
+    workflow_run = payload.get("workflow_run")
+    if not isinstance(workflow_run, dict):
+        return list(DEFAULT_WORKFLOWS)
+
+    source_name = workflow_run.get("name")
+    if not isinstance(source_name, str):
+        return list(DEFAULT_WORKFLOWS)
+
+    mapped = WORKFLOW_NAME_TO_FILE.get(source_name)
+    if mapped:
+        return [mapped]
+    return list(DEFAULT_WORKFLOWS)
 
 
 def _event_indicates_fork(repo: str) -> bool:
@@ -609,7 +635,8 @@ def main(argv: list[str] | None = None) -> int:
         or os.environ.get("GITHUB_TOKEN")
         or os.environ.get("GH_TOKEN")
     )
-    workflows = list(args.workflows or DEFAULT_WORKFLOWS)
+    event_path = os.environ.get("GITHUB_EVENT_PATH")
+    workflows = list(args.workflows or _default_workflows_for_event(event_path))
     current_workflow = _workflow_filename_from_env(token)
     if not args.workflows and current_workflow:
         workflows = [wf for wf in workflows if wf != current_workflow]

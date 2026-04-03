@@ -20,7 +20,7 @@ from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.triage import triag
 def test_triage_permission_is_report_only() -> None:
     bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="403 Resource not accessible by integration")
     result = triage_bundle(bundle)
-    assert result.support_mode.value == "REPORT_ONLY"
+    assert result.support_mode.value == "PERMISSION_OR_FORK_CONTEXT"
 
 
 def test_engine_dry_run_autofix(tmp_path: pathlib.Path) -> None:
