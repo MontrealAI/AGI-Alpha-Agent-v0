@@ -36,7 +36,6 @@ DEFAULT_WORKFLOWS = ("pr-ci.yml",)
 WORKFLOW_NAME_TO_FILE = {
     "✅ PR CI": "pr-ci.yml",
     "🚀 Integration CI — Insight Demo": "ci.yml",
-    "🩺 CI Health": "ci-health.yml",
 }
 
 
@@ -632,6 +631,11 @@ def main(argv: list[str] | None = None) -> int:
         "--branch",
         help=("Branch to evaluate workflow health for. Defaults to $GITHUB_REF_NAME when available, otherwise 'main'."),
     )
+    parser.add_argument(
+        "--include-self",
+        action="store_true",
+        help="Include the currently running workflow when resolving targets (default: skip self-monitoring).",
+    )
     args = parser.parse_args(argv)
 
     token = (
@@ -643,7 +647,7 @@ def main(argv: list[str] | None = None) -> int:
     event_path = os.environ.get("GITHUB_EVENT_PATH")
     workflows = list(args.workflows or _default_workflows_for_event(event_path))
     current_workflow = _workflow_filename_from_env(token)
-    if not args.workflows and current_workflow:
+    if current_workflow and not args.include_self:
         workflows = [wf for wf in workflows if wf != current_workflow]
     branch = args.branch or os.environ.get("GITHUB_REF_NAME") or "main"
     wait_seconds = max(0.0, args.wait_minutes * 60)

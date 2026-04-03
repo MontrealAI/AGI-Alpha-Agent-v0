@@ -89,7 +89,7 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
   --report repo_healer_report.json
 ```
 
-Use `--dry-run` to verify safety/classification and planned validators without applying patches.
+Use `--dry-run` to verify safety/classification and planned validators without applying patches. The CLI defaults `--repo` to this repository root (`AGI-Alpha-Agent-v0`) so production runs target the real codebase by default.
 
 If `--candidates` is empty, Repo-Healer v1 attempts bounded rule-based candidate generation for supported classes before falling back to structured diagnosis.
 

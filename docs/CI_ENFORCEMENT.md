@@ -26,6 +26,7 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
 
 4. **CI health monitoring**
    - Keep **🩺 CI Health / CI watchdog** active to enforce required PR-gate health and context-aware remediation.
+   - Default behavior skips self-monitoring; only opt in with `--include-self` when explicitly auditing the watchdog workflow itself.
    - For automatic branch-protection remediation, set `ADMIN_GITHUB_TOKEN` with branch admin scope.
    - Without admin token, health checks run in read-only mode.
 

@@ -11,6 +11,8 @@ from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine, write_report
 from .models import FailureBundle, FailureSignal, PatchCandidate, SupportMode, ValidatorClass
 
+DEFAULT_REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
+
 
 def _load_bundle(path: pathlib.Path) -> FailureBundle:
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -28,7 +30,7 @@ def _load_candidates(path: pathlib.Path) -> list[PatchCandidate]:
 def main() -> int:
     """Run Repo-Healer v1 in bounded dry-run or apply mode."""
     parser = argparse.ArgumentParser(description="Repo-Healer v1")
-    parser.add_argument("--repo", default=".")
+    parser.add_argument("--repo", default=str(DEFAULT_REPO_ROOT))
     parser.add_argument("--failure-bundle", required=True)
     parser.add_argument("--candidates", required=True)
     parser.add_argument("--report", default="repo_healer_report.json")
