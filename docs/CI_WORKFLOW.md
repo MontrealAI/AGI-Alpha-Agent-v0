@@ -5,7 +5,7 @@
 The repository uses two distinct CI surfaces:
 
 1. **✅ PR CI (`.github/workflows/pr-ci.yml`)** — canonical pull-request gate.
-2. **🚀 CI — Insight Demo (`.github/workflows/ci.yml`)** — full matrix for integration/release confidence.
+2. **🚀 Integration CI — Insight Demo (`.github/workflows/ci.yml`)** — full matrix for integration/release confidence.
 
 ## Triggers
 
@@ -19,7 +19,7 @@ Jobs:
 - `Lint (ruff)`
 - `Smoke tests`
 
-### 🚀 CI — Insight Demo (non-PR heavy matrix)
+### 🚀 Integration CI — Insight Demo (non-PR heavy matrix)
 - `push` to `main`
 - release tags: `v*`, `release-*`
 - `workflow_dispatch`
@@ -44,7 +44,7 @@ python scripts/verify_branch_protection.py --apply --branch main
 
 ## CI health
 
-The **🩺 CI Health** workflow monitors `pr-ci.yml`, `ci.yml`, and `ci-health.yml`, and can cancel stale runs/re-dispatch missing runs.
+The **🩺 CI Health** workflow monitors `pr-ci.yml` and `ci.yml`, and can cancel stale runs/re-dispatch missing runs.
 
 Use:
 

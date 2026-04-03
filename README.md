@@ -14,7 +14,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 ### Continuous Integration
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml)
-[![🚀 CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
+[![🚀 Integration CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
 [![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml)
 [![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml)
 
@@ -22,7 +22,7 @@ The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a
 
 The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focused smoke test suite on pull requests, pushes to `main`, and merge queue runs.
 
-The full **🚀 CI — Insight Demo** workflow is intentionally **off the PR path**. It now runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
+The full **🚀 Integration CI — Insight Demo** workflow is intentionally **off the PR path**. It runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
 
 **🩺 CI Health** watches PR CI and CI runs (plus its own watchdog run) and can re-dispatch stale/missing workflows. Use `ADMIN_GITHUB_TOKEN` to enable branch-protection remediation; without it, health checks run read-only.
 
@@ -48,7 +48,7 @@ The full **🚀 CI — Insight Demo** workflow is intentionally **off the PR pat
    ```
 5. Trigger workflows from GitHub Actions when needed:
    - **✅ PR CI** validates PR gate behavior.
-   - **🚀 CI — Insight Demo** validates full post-merge/release matrix.
+   - **🚀 Integration CI — Insight Demo** validates the full post-merge/release matrix.
 
 Set branch protection required checks to:
 
@@ -204,9 +204,8 @@ Update the version in `.github/workflows/ci.yml` and rerun
 
 ### CI Workflow
 
-The [🚀 CI](.github/workflows/ci.yml) job verifies the Insight demo with
-linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 CI —
-Insight Demo**, select the branch or tag to test in the drop‑down and click
+The [🚀 Integration CI](.github/workflows/ci.yml) workflow verifies the Insight demo with
+linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 Integration CI — Insight Demo**, select the branch or tag to test in the drop‑down and click
 **Run workflow** to dispatch the pipeline. This workflow also runs
 automatically on pushes to `main` and release tags (`v*`, `release-*`), while
 staying off pull requests. Each job begins by verifying the actor matches the
@@ -266,7 +265,7 @@ pytest --cov --cov-report=xml
 pre-commit run --all-files
 ```
 
-Launch the CI workflow manually via **Actions → 🚀 CI — Insight Demo** and click
+Launch the integration workflow manually via **Actions → 🚀 Integration CI — Insight Demo** and click
 **Run workflow** as described in [AGENTS.md](AGENTS.md#starting-the-ci-pipeline).
 The workflow performs linting, type checks, the full unit test matrix on Python
 3.11 and 3.12, Windows and macOS smoke tests, documentation builds, Docker

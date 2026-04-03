@@ -18,7 +18,7 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
      ```
 
 3. **Heavy CI stays off PR gating**
-   - Keep **🚀 CI — Insight Demo** for post-merge/release confidence:
+   - Keep **🚀 Integration CI — Insight Demo** for post-merge/release confidence:
      - `push` to `main`
      - release tags (`v*`, `release-*`)
      - manual dispatch
