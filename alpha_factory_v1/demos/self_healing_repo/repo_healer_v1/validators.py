@@ -8,6 +8,7 @@ The command plans mirror the current CI gates:
 
 from __future__ import annotations
 
+import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -28,6 +29,22 @@ class ValidatorPlan:
     broader: list[str]
 
 
+DEFAULT_SMOKE_TARGETED = [
+    PYTHON,
+    "-m",
+    "pytest",
+    "-m",
+    "smoke",
+    "tests/test_af_requests.py",
+    "tests/test_cache_version.py",
+    "tests/test_check_env_core.py",
+    "tests/test_check_env_network.py",
+    "tests/test_config_settings.py",
+    "tests/test_config_utils.py",
+    "tests/test_ping_agent.py",
+    "-q",
+]
+
 REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
     ValidatorClass.RUFF: ValidatorPlan(
         targeted=["ruff", "check", "."],
@@ -42,39 +59,11 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.PYTEST: ValidatorPlan(
-        targeted=[
-            PYTHON,
-            "-m",
-            "pytest",
-            "-m",
-            "smoke",
-            "tests/test_af_requests.py",
-            "tests/test_cache_version.py",
-            "tests/test_check_env_core.py",
-            "tests/test_check_env_network.py",
-            "tests/test_config_settings.py",
-            "tests/test_config_utils.py",
-            "tests/test_ping_agent.py",
-            "-q",
-        ],
+        targeted=DEFAULT_SMOKE_TARGETED,
         broader=[PYTHON, "-m", "pytest", "-q"],
     ),
     ValidatorClass.SMOKE: ValidatorPlan(
-        targeted=[
-            PYTHON,
-            "-m",
-            "pytest",
-            "-m",
-            "smoke",
-            "tests/test_af_requests.py",
-            "tests/test_cache_version.py",
-            "tests/test_check_env_core.py",
-            "tests/test_check_env_network.py",
-            "tests/test_config_settings.py",
-            "tests/test_config_utils.py",
-            "tests/test_ping_agent.py",
-            "-q",
-        ],
+        targeted=DEFAULT_SMOKE_TARGETED,
         broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
     ),
     ValidatorClass.MKDOCS: ValidatorPlan(
@@ -95,7 +84,14 @@ def run_validator(cmd: list[str], cwd: str) -> tuple[int, str]:
 
 def get_plan(kind: ValidatorClass) -> ValidatorPlan:
     """Resolve validator plan by triage validator class."""
-    return REGISTRY.get(kind, REGISTRY[ValidatorClass.NONE])
+    plan = REGISTRY.get(kind, REGISTRY[ValidatorClass.NONE])
+    if kind not in {ValidatorClass.PYTEST, ValidatorClass.SMOKE}:
+        return plan
+
+    smoke_cmd = _extract_smoke_pytest_command()
+    if not smoke_cmd:
+        return plan
+    return ValidatorPlan(targeted=smoke_cmd, broader=plan.broader)
 
 
 def canonical_ci_surface() -> dict[str, list[str]]:
@@ -134,3 +130,52 @@ def canonical_ci_surface() -> dict[str, list[str]]:
         }
     except Exception:
         return defaults
+
+
+def _extract_smoke_pytest_command() -> list[str]:
+    """Read PR CI workflow and extract the smoke pytest command."""
+    workflow = Path(__file__).resolve().parents[4] / ".github/workflows/pr-ci.yml"
+    if not workflow.exists():
+        return []
+    try:
+        payload = yaml.safe_load(workflow.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return []
+    if not isinstance(payload, dict):
+        return []
+    jobs = payload.get("jobs", {})
+    smoke = jobs.get("smoke", {}) if isinstance(jobs, dict) else {}
+    steps = smoke.get("steps", []) if isinstance(smoke, dict) else []
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        run = step.get("run")
+        if not isinstance(run, str) or "pytest" not in run:
+            continue
+        cmd = _parse_first_pytest_command(run)
+        if cmd:
+            return cmd
+    return []
+
+
+def _parse_first_pytest_command(run_block: str) -> list[str]:
+    """Parse the first pytest command from a workflow run block."""
+    lines = [line.rstrip() for line in run_block.strip().splitlines() if line.strip()]
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped.startswith("pytest "):
+            continue
+        command_parts = [stripped]
+        cursor = index + 1
+        while command_parts[-1].endswith("\\") and cursor < len(lines):
+            command_parts[-1] = command_parts[-1][:-1].rstrip()
+            command_parts.append(lines[cursor].strip())
+            cursor += 1
+        joined = " ".join(command_parts)
+        tokens = shlex.split(joined)
+        if not tokens:
+            return []
+        if tokens[0] == "pytest":
+            return [PYTHON, "-m", *tokens]
+        return tokens
+    return []
