@@ -346,7 +346,7 @@ def test_mypy_reproduction_command_matches_ci_scope(tmp_path: Path, monkeypatch:
     event = {
         "workflow_run": {
             "id": 606,
-            "name": "🚀 CI — Insight Demo",
+            "name": "🚀 Integration CI — Insight Demo",
             "head_sha": "mypy123",
             "conclusion": "failure",
             "run_attempt": 2,

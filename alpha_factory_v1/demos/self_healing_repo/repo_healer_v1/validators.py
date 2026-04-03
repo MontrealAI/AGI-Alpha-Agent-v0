@@ -3,7 +3,7 @@
 
 The command plans mirror the current CI gates:
 - ✅ PR CI (ruff + smoke pytest subset)
-- 🚀 CI — Insight Demo (mypy, full pytest, mkdocs --strict)
+- 🚀 Integration CI — Insight Demo (mypy, full pytest, mkdocs --strict)
 """
 
 from __future__ import annotations
@@ -101,7 +101,7 @@ def canonical_ci_surface() -> dict[str, list[str]]:
     """
     defaults = {
         "pr_gate": ["✅ PR CI"],
-        "full_ci": ["🚀 CI — Insight Demo"],
+        "full_ci": ["🚀 Integration CI — Insight Demo"],
         "optional": ["🔥 Smoke Test", "📚 Docs"],
     }
     repo_root = Path(__file__).resolve().parents[4]

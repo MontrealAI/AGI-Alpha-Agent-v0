@@ -11,7 +11,7 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 
 1. **Canonical evaluator surface now**
    - PR gate: **✅ PR CI** (`.github/workflows/pr-ci.yml`) with `ruff check .` and smoke pytest subset.
-   - Heavy integration matrix: **🚀 CI — Insight Demo** (`.github/workflows/ci.yml`) with actionlint, Ruff, Mypy, pytest, docs/deploy/build checks.
+   - Heavy integration matrix: **🚀 Integration CI — Insight Demo** (`.github/workflows/ci.yml`) with actionlint, Ruff, Mypy, pytest, docs/deploy/build checks.
    - Optional surfaces: **🔥 Smoke Test** and **📚 Docs** workflows.
 2. **What was toy-specific before**
    - defaulting to `sample_broken_calc` clone flow,

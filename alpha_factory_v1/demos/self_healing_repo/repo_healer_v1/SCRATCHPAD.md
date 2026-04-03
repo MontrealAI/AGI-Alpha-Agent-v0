@@ -4,7 +4,7 @@
 
 1. **Canonical evaluator surface now**
    - PR gate: `✅ PR CI` in `.github/workflows/pr-ci.yml` (`ruff check .` + smoke pytest subset).
-   - Full post-merge gate: `🚀 CI — Insight Demo` in `.github/workflows/ci.yml` (actionlint, Ruff, Mypy, pytest, docs/build checks).
+   - Full post-merge gate: `🚀 Integration CI — Insight Demo` in `.github/workflows/ci.yml` (actionlint, Ruff, Mypy, pytest, docs/build checks).
    - Optional/manual surfaces: `🔥 Smoke Test` and `📚 Docs`.
 2. **Toy-specific leftovers identified**
    - Legacy entrypoint and fixture (`sample_broken_calc`) remain for demo mode only.

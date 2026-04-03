@@ -197,7 +197,7 @@ Refer to [AGENTS.md](AGENTS.md#pre-commit-in-air-gapped-setups) for detailed ste
    ```bash
    pytest
    ```
-5. Trigger the GitHub Actions pipeline from **Actions → 🚀 CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow** (repository owners only).
+5. Trigger the GitHub Actions pipeline from **Actions → 🚀 Integration CI — Insight Demo** (or **PR CI** for pull requests) and click **Run workflow** (repository owners only).
 
 **Troubleshooting:**
 - If tests fail due to missing optional packages, rerun `python check_env.py --auto-install` with `ALPHA_FACTORY_FULL=1`.
@@ -228,7 +228,7 @@ Windows and macOS smoke tests, the offline docs build and the Docker
 image build. It does **not** run automatically from pull requests. Instead, the
 repository owner must trigger it manually from the GitHub Actions page:
 
-1. Open **Actions → 🚀 CI — Insight Demo**.
+1. Open **Actions → 🚀 Integration CI — Insight Demo**.
 2. Click **Run workflow** to start the pipeline.
 
 Remember to lint workflow edits:
@@ -253,17 +253,6 @@ so GitHub blocks merges until CI completes:
    following checks (names must match exactly):
    - `✅ PR CI / Lint (ruff)`
    - `✅ PR CI / Smoke tests`
-   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.11)`
-   - `🚀 CI — Insight Demo / 🧹 Ruff + 🏷️ Mypy (3.12)`
-   - `🚀 CI — Insight Demo / ✅ Actionlint`
-   - `🚀 CI — Insight Demo / ✅ Pytest (3.11)`
-   - `🚀 CI — Insight Demo / ✅ Pytest (3.12)`
-   - `🚀 CI — Insight Demo / Windows Smoke`
-   - `🚀 CI — Insight Demo / macOS Smoke`
-   - `🚀 CI — Insight Demo / 📜 MkDocs`
-   - `🚀 CI — Insight Demo / 📚 Docs Build`
-   - `🚀 CI — Insight Demo / 🐳 Docker build`
-   - `🩺 CI Health / CI watchdog`
 4. Keep **Require branches to be up to date before merging** enabled so reruns
    pick up the latest checks.
 5. Apply the same required checks to any release branches that mirror `main`.
