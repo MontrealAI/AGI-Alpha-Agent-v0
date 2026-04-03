@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import difflib
 import json
 import pathlib
 import shutil
@@ -12,8 +11,9 @@ import sys
 import tempfile
 from dataclasses import dataclass
 
+from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine
-from .models import FailureBundle, PatchCandidate, SupportMode, ValidatorClass
+from .models import FailureBundle, SupportMode, ValidatorClass
 
 PYTHON = sys.executable
 
@@ -179,18 +179,6 @@ def _build_cases() -> list[SeedCase]:
     ]
 
 
-def _safe_revert_diff(path: str, broken: str, original: str) -> str:
-    """Build a valid unified diff that reverts one seeded mutation."""
-    diff = difflib.unified_diff(
-        broken.splitlines(),
-        original.splitlines(),
-        fromfile=f"a/{path}",
-        tofile=f"b/{path}",
-        lineterm="",
-    )
-    return "\n".join(diff) + "\n"
-
-
 def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
     """Run seeded cases in isolated workspace and return machine-readable result."""
     results: list[dict[str, object]] = []
@@ -213,12 +201,8 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
                 work_repo,
                 EngineOptions(dry_run=False, max_attempts=1, run_broader_validation=False),
             )
-            patch = PatchCandidate(
-                diff=_safe_revert_diff(case.target_file, broken, original),
-                summary=f"revert seeded mutation: {case.name}",
-                score=1.0,
-            )
-            report = engine.run(case.bundle, [patch])
+            candidates = generate_candidates(work_repo, case.bundle)
+            report = engine.run(case.bundle, candidates)
 
             healed_rc = _run(case.baseline_cmd, cwd=work_repo)
             if not reproducible:
@@ -235,6 +219,7 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
                     "status": status,
                     "reproducible": reproducible,
                     "healed": report.success,
+                    "candidate_count": len(candidates),
                     "classification": report.classification.value,
                     "support_mode": report.support_mode.value,
                     "reason": report.reason,

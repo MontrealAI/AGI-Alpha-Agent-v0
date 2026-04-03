@@ -54,7 +54,7 @@ The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no
   It reads `.github/workflows/pr-ci.yml`, `ci.yml`, `smoke.yml`, and `docs.yml` to resolve canonical workflow names.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
 - `repo_healer_v1/engine.py`: isolated repair loop (`triage -> safety -> targeted -> broader -> promote`).
-- `repo_healer_v1/candidate_generation.py`: deterministic rule-based candidate synthesis for Ruff (`ruff --fix`), missing-import regressions, and MkDocs YAML regressions when no explicit candidates are supplied.
+- `repo_healer_v1/candidate_generation.py`: deterministic rule-based candidate synthesis for Ruff (`ruff --fix`), missing-import regressions, narrow Mypy literal-regression repairs, bounded pytest/smoke regression repairs for this repo, and MkDocs YAML regressions when no explicit candidates are supplied.
 - `repo_healer_v1/benchmark.py`: seeded benchmark in isolated temp copy with machine-readable result.
 
 ## Report modes
@@ -86,7 +86,7 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
 
 Use `--dry-run` to verify safety/classification and planned validators without applying patches.
 
-If `--candidates` is empty, Repo-Healer v1 now attempts bounded rule-based candidate generation for supported classes before falling back to structured diagnosis.
+If `--candidates` is empty, Repo-Healer v1 attempts bounded rule-based candidate generation for supported classes before falling back to structured diagnosis.
 
 ## Seeded benchmark (required proof)
 
@@ -96,7 +96,7 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
   --out repo_healer_benchmark.json
 ```
 
-Cases:
+Cases (all against this repository in an isolated copy):
 - Ruff seed
 - Mypy seed
 - broken import seed

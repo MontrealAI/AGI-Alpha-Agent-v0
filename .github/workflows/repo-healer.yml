@@ -57,9 +57,8 @@ jobs:
           from pathlib import Path
 
           bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
-          candidates = json.loads(Path("repo_healer_candidates.json").read_text(encoding="utf-8"))
           support_mode = bundle.get("support_mode", "AUTOPATCH_SAFE")
-          if support_mode == "REPORT_ONLY" or not candidates:
+          if support_mode == "REPORT_ONLY":
               print("REPORT_ONLY")
           else:
               print("AUTOPATCH_SAFE")

@@ -23,3 +23,4 @@ def test_seeded_benchmark_machine_readable() -> None:
     for row in rows:
         assert row["status"] in {"HEALED", "NOT_HEALED", "SKIPPED_MISSING_VALIDATOR"}
         assert isinstance(row["reproducible"], bool)
+        assert isinstance(row["candidate_count"], int)
