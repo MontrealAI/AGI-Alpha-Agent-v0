@@ -40,18 +40,25 @@ jobs:
       - name: Resolve CI target branch
         run: |
           default_branch=${{ github.event.repository.default_branch || 'main' }}
-          target_branch="$default_branch"
+          eval_branch="$default_branch"
+          policy_branch="$default_branch"
 
           if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
-            pr_base=$(jq -r '.workflow_run.pull_requests[0].base.ref // empty' "$GITHUB_EVENT_PATH")
+            workflow_head=$(jq -r '.workflow_run.head_branch // empty' "$GITHUB_EVENT_PATH")
             event_type=$(jq -r '.workflow_run.event // empty' "$GITHUB_EVENT_PATH")
+            pr_base=$(jq -r '.workflow_run.pull_requests[0].base.ref // empty' "$GITHUB_EVENT_PATH")
+
+            if [[ -n "$workflow_head" ]]; then
+              eval_branch="$workflow_head"
+            fi
 
             if [[ "$event_type" == "pull_request" && -n "$pr_base" ]]; then
-              target_branch="$pr_base"
+              policy_branch="$pr_base"
             fi
           fi
 
-          echo "CI_TARGET_BRANCH=$target_branch" >> "$GITHUB_ENV"
+          echo "CI_EVAL_BRANCH=$eval_branch" >> "$GITHUB_ENV"
+          echo "CI_POLICY_BRANCH=$policy_branch" >> "$GITHUB_ENV"
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - uses: actions/setup-python@v5.6.0 # a26af69be951a213d495a4c3e4e4022e16d87065
@@ -86,8 +93,8 @@ jobs:
             --rerun-failed \
             --poll-seconds 30 \
             --workflow "$HARD_WORKFLOW" \
-            --branch "${CI_TARGET_BRANCH}" \
-            --ref "${CI_TARGET_BRANCH}"
+            --branch "${CI_EVAL_BRANCH}" \
+            --ref "${CI_POLICY_BRANCH}"
 
       - name: Observe integration CI freshness (informational)
         if: ${{ github.event_name != 'workflow_run' }}
@@ -97,8 +104,8 @@ jobs:
           python scripts/check_ci_status.py \
             --once \
             --workflow ci.yml \
-            --branch "${CI_TARGET_BRANCH}" \
-            --ref "${CI_TARGET_BRANCH}" \
+            --branch "${CI_POLICY_BRANCH}" \
+            --ref "${CI_POLICY_BRANCH}" \
             --read-only || echo "::warning::Integration CI workflow is not green or missing recent runs."
       - name: Warn when admin token is unavailable
         if: ${{ env.ADMIN_GITHUB_TOKEN == '' }}
@@ -113,6 +120,6 @@ jobs:
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN }}
         run: |
           python scripts/verify_branch_protection.py \
-            --branch "${CI_TARGET_BRANCH}" \
+            --branch "${CI_POLICY_BRANCH}" \
             --apply \
             --required-checks-file scripts/required_checks.json
