@@ -35,6 +35,7 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 - Broken imports/simple Python config regressions.
 - Linux reproducible pytest/smoke failures.
 - MkDocs `mkdocs build --strict` failures when reproducible locally.
+- Unknown/unmapped signatures are automatically downgraded to structured `REPORT_ONLY` diagnosis instead of unsafe guess-patching.
 
 ### Tier 2 — diagnose/draft only
 
@@ -52,6 +53,7 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 
 - `repo_healer_v1/models.py`: typed failure bundle and report model.
 - `repo_healer_v1/triage.py`: deterministic classification to support mode.
+- `repo_healer_v1/ci_bundle.py`: workflow-run ingestion that captures run/job URLs, Linux-first failed job selection, and smoke-vs-pytest validator mapping.
 - `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
   It reads `.github/workflows/pr-ci.yml`, `ci.yml`, `smoke.yml`, and `docs.yml` to resolve canonical workflow names.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.

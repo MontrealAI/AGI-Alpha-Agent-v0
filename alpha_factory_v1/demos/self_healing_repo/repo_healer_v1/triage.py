@@ -120,6 +120,14 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
     validator_class = (
         bundle.validator_class if bundle.validator_class != ValidatorClass.NONE else _validator_from_text(text)
     )
+    if validator_class == ValidatorClass.NONE:
+        return TriageResult(
+            classification=FailureClass.DIAGNOSE_ONLY,
+            support_mode=SupportMode.REPORT_ONLY,
+            reason="unable to map failure to a supported validator class",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=_candidate_files(bundle),
+        )
     return TriageResult(
         classification=FailureClass.SAFE_AUTOPATCH,
         support_mode=SupportMode.AUTOPATCH_SAFE,
@@ -142,7 +150,7 @@ def _validator_from_text(text: str) -> ValidatorClass:
         return ValidatorClass.SMOKE
     if "pytest" in text or "assert" in text:
         return ValidatorClass.PYTEST
-    return ValidatorClass.SMOKE
+    return ValidatorClass.NONE
 
 
 def _candidate_files(bundle: FailureBundle) -> list[str]:
