@@ -93,3 +93,56 @@ def test_default_workflows_for_integration_workflow_run(tmp_path):
 
     workflows = check_ci_status._default_workflows_for_event(str(event_path))
     assert workflows == ["ci.yml"]
+
+
+def test_dispatch_missing_does_not_dispatch_failed_workflows(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
+
+    def fake_verify(repo, workflows, token, **kwargs):  # type: ignore[override]
+        return ["pr-ci.yml: failure"], {"pr-ci.yml": {"conclusion": "failure"}}
+
+    dispatch_calls: list[str] = []
+
+    monkeypatch.setattr(check_ci_status, "verify_workflows", fake_verify)
+    monkeypatch.setattr(check_ci_status, "_actions_write_capability", lambda repo, token: (True, "ok"))
+    monkeypatch.setattr(check_ci_status, "_workflow_supports_dispatch", lambda workflow: True)
+    monkeypatch.setattr(
+        check_ci_status,
+        "_dispatch_workflow",
+        lambda repo, workflow, ref, token: (dispatch_calls.append(workflow) is None, "dispatched"),
+    )
+
+    exit_code = check_ci_status.main(["--repo", "owner/repo", "--workflow", "pr-ci.yml", "--dispatch-missing", "--once"])
+
+    assert exit_code == 1
+    assert dispatch_calls == []
+
+
+def test_dispatch_failed_opt_in_dispatches_failed_workflow(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
+
+    verify_calls = {"count": 0}
+
+    def fake_verify(repo, workflows, token, **kwargs):  # type: ignore[override]
+        verify_calls["count"] += 1
+        return ["pr-ci.yml: failure"], {"pr-ci.yml": {"conclusion": "failure"}}
+
+    dispatch_calls: list[str] = []
+
+    monkeypatch.setattr(check_ci_status, "verify_workflows", fake_verify)
+    monkeypatch.setattr(check_ci_status, "_actions_write_capability", lambda repo, token: (True, "ok"))
+    monkeypatch.setattr(check_ci_status, "_workflow_supports_dispatch", lambda workflow: True)
+
+    def fake_dispatch(repo, workflow, ref, token):  # type: ignore[override]
+        dispatch_calls.append(workflow)
+        return True, "dispatched"
+
+    monkeypatch.setattr(check_ci_status, "_dispatch_workflow", fake_dispatch)
+
+    exit_code = check_ci_status.main(
+        ["--repo", "owner/repo", "--workflow", "pr-ci.yml", "--dispatch-missing", "--dispatch-failed", "--once"]
+    )
+
+    assert exit_code == 1
+    assert dispatch_calls == ["pr-ci.yml"]
+    assert verify_calls["count"] == 1

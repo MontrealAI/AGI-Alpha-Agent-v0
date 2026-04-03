@@ -65,6 +65,7 @@ Track workflow health with:
 
 ```bash
 python scripts/check_ci_status.py --wait-minutes 5 --stale-minutes 90 --pending-grace-minutes 45
+# add --dispatch-failed only for explicit remediation runs
 ```
 
 See [`docs/CI_ENFORCEMENT.md`](docs/CI_ENFORCEMENT.md) for the up-to-date enforcement checklist.
