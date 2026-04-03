@@ -281,7 +281,7 @@ sequenceDiagram
 |[finance_alpha](demos/finance_alpha/README.md)|Momentum and risk-parity bot|Beta|
 |[macro_sentinel](demos/macro_sentinel/README.md)|News scanner with futures hedging|Beta|
 |[muzero_planning](demos/muzero_planning/README.md)|Minimal MuZero planning demo|Beta|
-|[self_healing_repo](demos/self_healing_repo/README.md)|Agents auto-fix failing CI|Beta|
+|[self_healing_repo](demos/self_healing_repo/README.md)|Bounded Repo-Healer v1 for Tier-1 CI failures + structured diagnosis|Beta|
 |[meta_agentic_tree_search_v0](demos/meta_agentic_tree_search_v0/README.md)|Recursive agent tree search|Incub|
 |[alpha_agi_insight_v0](demos/alpha_agi_insight_v0/README.md)|Sector ranking via zero-data search|Beta|
 

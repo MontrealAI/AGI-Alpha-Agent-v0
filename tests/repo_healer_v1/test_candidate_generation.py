@@ -36,5 +36,47 @@ def test_generate_candidates_noop_for_unsupported_class(tmp_path: pathlib.Path) 
     repo.mkdir()
     (repo / "README.md").write_text("ok\n", encoding="utf-8")
 
-    bundle = FailureBundle("wf", "job", "step", "1", "abc", validator_class=ValidatorClass.PYTEST, logs="assert")
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", validator_class=ValidatorClass.NONE, logs="assert")
     assert generate_candidates(repo, bundle) == []
+
+
+def test_generate_candidates_fixes_simple_mypy_literal_regression(tmp_path: pathlib.Path) -> None:
+    repo = tmp_path / "repo"
+    target = repo / "alpha_factory_v1" / "demos" / "self_healing_repo" / "repo_healer_v1" / "models.py"
+    target.parent.mkdir(parents=True)
+    target.write_text("class X:\n    sha: str = 1\n", encoding="utf-8")
+    bundle = FailureBundle(
+        "wf",
+        "lint-type",
+        "Mypy type-check",
+        "1",
+        "abc",
+        validator_class=ValidatorClass.MYPY,
+        candidate_files=["alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/models.py"],
+        logs="mypy: Incompatible types in assignment",
+    )
+    candidates = generate_candidates(repo, bundle)
+    assert len(candidates) == 1
+    assert "-    sha: str = 1" in candidates[0].diff
+    assert "+    sha: str" in candidates[0].diff
+
+
+def test_generate_candidates_fixes_known_pytest_smoke_regression(tmp_path: pathlib.Path) -> None:
+    repo = tmp_path / "repo"
+    target = repo / "tests" / "test_ping_agent.py"
+    target.parent.mkdir(parents=True)
+    target.write_text('self.assertEqual(topic, "agent.pong")\n', encoding="utf-8")
+    bundle = FailureBundle(
+        "wf",
+        "smoke",
+        "Smoke tests",
+        "1",
+        "abc",
+        validator_class=ValidatorClass.PYTEST,
+        candidate_files=["tests/test_ping_agent.py"],
+        logs="AssertionError in tests/test_ping_agent.py",
+    )
+    candidates = generate_candidates(repo, bundle)
+    assert len(candidates) == 1
+    assert '-self.assertEqual(topic, "agent.pong")' in candidates[0].diff
+    assert '+self.assertEqual(topic, "agent.ping")' in candidates[0].diff
