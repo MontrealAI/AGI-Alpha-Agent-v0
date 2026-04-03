@@ -21,3 +21,16 @@ def test_parse_first_pytest_command_multiline() -> None:
 def test_parse_first_pytest_command_returns_empty_when_absent() -> None:
     cmd = validators._parse_first_pytest_command("python -m pip install -U pip")
     assert cmd == []
+
+
+def test_extract_smoke_pytest_command_returns_empty_on_invalid_yaml(monkeypatch) -> None:
+    def _boom(_text: str) -> list[str]:
+        raise validators.yaml.YAMLError("bad yaml")
+
+    monkeypatch.setattr(validators.yaml, "safe_load", _boom)
+    assert validators._extract_smoke_pytest_command() == []
+
+
+def test_extract_smoke_pytest_command_returns_empty_on_non_mapping_yaml(monkeypatch) -> None:
+    monkeypatch.setattr(validators.yaml, "safe_load", lambda _text: ["not-a-mapping"])
+    assert validators._extract_smoke_pytest_command() == []

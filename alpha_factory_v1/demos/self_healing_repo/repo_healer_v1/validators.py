@@ -137,7 +137,12 @@ def _extract_smoke_pytest_command() -> list[str]:
     workflow = Path(__file__).resolve().parents[4] / ".github/workflows/pr-ci.yml"
     if not workflow.exists():
         return []
-    payload = yaml.safe_load(workflow.read_text(encoding="utf-8")) or {}
+    try:
+        payload = yaml.safe_load(workflow.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return []
+    if not isinstance(payload, dict):
+        return []
     jobs = payload.get("jobs", {})
     smoke = jobs.get("smoke", {}) if isinstance(jobs, dict) else {}
     steps = smoke.get("steps", []) if isinstance(smoke, dict) else []
