@@ -64,3 +64,8 @@ def test_safety_rejects_dot_git_paths(tmp_path: Path) -> None:
 
     assert safe is False
     assert "protected surface" in reason
+
+
+def test_cli_default_repo_targets_current_repository() -> None:
+    expected = Path(__file__).resolve().parents[2]
+    assert cli.DEFAULT_REPO_ROOT == expected

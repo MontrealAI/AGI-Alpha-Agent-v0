@@ -112,7 +112,9 @@ def test_dispatch_missing_does_not_dispatch_failed_workflows(monkeypatch):
         lambda repo, workflow, ref, token: (dispatch_calls.append(workflow) is None, "dispatched"),
     )
 
-    exit_code = check_ci_status.main(["--repo", "owner/repo", "--workflow", "pr-ci.yml", "--dispatch-missing", "--once"])
+    exit_code = check_ci_status.main(
+        ["--repo", "owner/repo", "--workflow", "pr-ci.yml", "--dispatch-missing", "--once"]
+    )
 
     assert exit_code == 1
     assert dispatch_calls == []
@@ -146,3 +148,23 @@ def test_dispatch_failed_opt_in_dispatches_failed_workflow(monkeypatch):
     assert exit_code == 1
     assert dispatch_calls == ["pr-ci.yml"]
     assert verify_calls["count"] == 1
+
+
+def test_main_can_include_current_workflow_when_opted_in(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
+    monkeypatch.setenv("GITHUB_WORKFLOW", "CI Health")
+
+    monkeypatch.setattr(check_ci_status, "_workflow_filename_from_env", lambda token=None: "ci-health.yml")
+
+    captured: list[str] = []
+
+    def fake_verify(repo, workflows, token, **kwargs):  # type: ignore[override]
+        captured.extend(workflows)
+        return [], {wf: {} for wf in workflows}
+
+    monkeypatch.setattr(check_ci_status, "verify_workflows", fake_verify)
+
+    assert (
+        check_ci_status.main(["--repo", "owner/repo", "--workflow", "ci-health.yml", "--include-self", "--once"]) == 0
+    )
+    assert "ci-health.yml" in captured

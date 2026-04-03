@@ -44,7 +44,7 @@ python scripts/verify_branch_protection.py --apply --branch main
 
 ## CI health
 
-The **🩺 CI Health** workflow hard-monitors `pr-ci.yml` (required PR gate) and evaluates `ci.yml` as a hard surface only when triggered by that workflow; scheduled/manual freshness checks for `ci.yml` are informational warnings. Missing-run dispatch is default-safe (missing only); failed-run dispatch is opt-in via `--dispatch-failed`.
+The **🩺 CI Health** workflow hard-monitors `pr-ci.yml` (required PR gate) and evaluates `ci.yml` as a hard surface only when triggered by that workflow; scheduled/manual freshness checks for `ci.yml` are informational warnings. Missing-run dispatch is default-safe (missing only); failed-run dispatch is opt-in via `--dispatch-failed`, and self-monitoring is opt-in via `--include-self`.
 
 Use:
 
