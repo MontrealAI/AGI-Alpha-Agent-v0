@@ -105,6 +105,8 @@ Cases:
 - non-autofix permission/context seed (graceful refusal)
 
 The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes. For determinism and bounded runtime it executes targeted validators only (the full engine still runs targeted + broader validators by default).
+If a required validator binary is unavailable in the local environment (for example, `mkdocs`), that case is marked as
+`SKIPPED_MISSING_VALIDATOR` in the machine-readable output instead of being misreported as a failed auto-repair.
 
 ## Legacy demo wrapper
 
