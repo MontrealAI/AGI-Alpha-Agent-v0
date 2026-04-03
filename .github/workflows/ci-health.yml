@@ -94,7 +94,7 @@ jobs:
             --poll-seconds 30 \
             --workflow "$HARD_WORKFLOW" \
             --branch "${CI_EVAL_BRANCH}" \
-            --ref "${CI_POLICY_BRANCH}"
+            --ref "${CI_EVAL_BRANCH}"
 
       - name: Observe integration CI freshness (informational)
         if: ${{ github.event_name != 'workflow_run' }}

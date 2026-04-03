@@ -73,15 +73,29 @@ jobs:
               --report repo_healer_report.json \
               --report-only
           else
+            set +e
             python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
               --repo . \
               --failure-bundle repo_healer_bundle.json \
               --candidates repo_healer_candidates.json \
               --report repo_healer_report.json \
               --dry-run
+            dry_run_rc=$?
+            set -e
+
+            if [ "$dry_run_rc" -ne 0 ]; then
+              echo "::warning::Repo-Healer dry-run found no safe candidate; emitting report-only diagnosis artifact."
+              python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+                --repo . \
+                --failure-bundle repo_healer_bundle.json \
+                --candidates repo_healer_candidates.json \
+                --report repo_healer_report.json \
+                --report-only
+            fi
           fi
 
       - name: Upload repo-healer artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4.6.2
         with:
           name: repo-healer-v1-report
