@@ -11,7 +11,8 @@ def test_seeded_benchmark_machine_readable() -> None:
     payload = run_seeded_benchmark(pathlib.Path("."))
     assert payload["total"] == 6
     assert isinstance(payload["results"], list)
-    assert {row["case"] for row in payload["results"]} == {
+    rows = payload["results"]
+    assert {row["case"] for row in rows} == {
         "ruff_failure",
         "mypy_failure",
         "broken_import",
@@ -19,3 +20,6 @@ def test_seeded_benchmark_machine_readable() -> None:
         "mkdocs_failure",
         "non_autofix_permissions",
     }
+    for row in rows:
+        assert row["status"] in {"HEALED", "NOT_HEALED", "SKIPPED_MISSING_VALIDATOR"}
+        assert isinstance(row["reproducible"], bool)

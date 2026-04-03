@@ -61,6 +61,8 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
 ```
 
 The benchmark runs from a clean temporary copy, does not touch the main working tree, and reports machine-readable baseline vs healed outcomes.
+When a validator executable is missing in the local environment, the corresponding case is emitted as
+`SKIPPED_MISSING_VALIDATOR` so unsupported local prerequisites are explicit in the report.
 
 
 ## Legacy fixture mode

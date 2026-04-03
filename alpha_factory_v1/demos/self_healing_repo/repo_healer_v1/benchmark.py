@@ -48,10 +48,11 @@ def _build_cases() -> list[SeedCase]:
         SeedCase(
             name="ruff_failure",
             target_file="alpha_factory_v1/demos/self_healing_repo/repo_healer_v1/triage.py",
-            before="from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n",
+            before='DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflow", "lint workflows")\n',
             after=(
-                "from .models import FailureBundle, FailureClass, SupportMode, TriageResult, ValidatorClass\n"
-                "import pathlib\n"
+                "DRAFT_ONLY_MARKERS = "
+                '("actionlint", "docker build", "windows", "macos", "workflow", "lint workflows")\n'
+                "UNDEFINED_RUFF_SENTINEL = undefined_repo_healer_symbol\n"
             ),
             bundle=FailureBundle(
                 workflow="✅ PR CI",
@@ -61,7 +62,7 @@ def _build_cases() -> list[SeedCase]:
                 sha="deadbeef",
                 failure_class="ruff",
                 validator_class=ValidatorClass.RUFF,
-                logs="ruff F401 'pathlib' imported but unused",
+                logs="ruff F821 undefined name 'undefined_repo_healer_symbol'",
                 support_mode=SupportMode.AUTOPATCH_SAFE,
                 reproduction_command=[
                     "ruff",
@@ -206,6 +207,7 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
             broken = _replace_once(original, case.before, case.after)
             case_path.write_text(broken, encoding="utf-8")
             baseline_rc = _run(case.baseline_cmd, cwd=work_repo)
+            reproducible = baseline_rc not in {127}
 
             engine = RepoHealerEngine(
                 work_repo,
@@ -219,11 +221,19 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
             report = engine.run(case.bundle, [patch])
 
             healed_rc = _run(case.baseline_cmd, cwd=work_repo)
+            if not reproducible:
+                status = "SKIPPED_MISSING_VALIDATOR"
+            elif report.success and healed_rc == 0:
+                status = "HEALED"
+            else:
+                status = "NOT_HEALED"
             results.append(
                 {
                     "case": case.name,
                     "baseline_exit_code": baseline_rc,
                     "healed_exit_code": healed_rc,
+                    "status": status,
+                    "reproducible": reproducible,
                     "healed": report.success,
                     "classification": report.classification.value,
                     "support_mode": report.support_mode.value,
