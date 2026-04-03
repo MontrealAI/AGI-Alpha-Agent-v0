@@ -78,7 +78,7 @@ def _build_cases() -> list[SeedCase]:
             before="    sha: str\n",
             after="    sha: str = 1\n",
             bundle=FailureBundle(
-                workflow="🚀 CI — Insight Demo",
+                workflow="🚀 Integration CI — Insight Demo",
                 job="lint-type",
                 step="Mypy type-check",
                 run_id="seed-mypy",
@@ -165,7 +165,7 @@ def _build_cases() -> list[SeedCase]:
             before="### Security Note\n",
             after="### Security Note\n",
             bundle=FailureBundle(
-                workflow="🚀 CI — Insight Demo",
+                workflow="🚀 Integration CI — Insight Demo",
                 job="owner-check",
                 step="Verify owner",
                 run_id="seed-perm",

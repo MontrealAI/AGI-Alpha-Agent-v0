@@ -173,7 +173,7 @@ def test_validator_registry_exposes_canonical_ci_surface() -> None:
 
     surface = canonical_ci_surface()
     assert "✅ PR CI" in surface["pr_gate"]
-    assert "🚀 CI — Insight Demo" in surface["full_ci"]
+    assert "🚀 Integration CI — Insight Demo" in surface["full_ci"]
 
 
 def test_triage_workflow_lint_routes_to_draft_only() -> None:
