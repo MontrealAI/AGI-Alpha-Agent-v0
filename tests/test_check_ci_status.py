@@ -74,3 +74,22 @@ def test_actions_write_capability_detects_fork(monkeypatch, tmp_path):
     allowed, reason = check_ci_status._actions_write_capability("owner/repo", "token")
     assert allowed is False
     assert "fork" in reason
+
+
+def test_default_workflows_for_pr_gate_workflow_run(tmp_path):
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps({"workflow_run": {"name": "✅ PR CI"}}), encoding="utf-8")
+
+    workflows = check_ci_status._default_workflows_for_event(str(event_path))
+    assert workflows == ["pr-ci.yml"]
+
+
+def test_default_workflows_for_integration_workflow_run(tmp_path):
+    event_path = tmp_path / "event.json"
+    event_path.write_text(
+        json.dumps({"workflow_run": {"name": "🚀 Integration CI — Insight Demo"}}),
+        encoding="utf-8",
+    )
+
+    workflows = check_ci_status._default_workflows_for_event(str(event_path))
+    assert workflows == ["ci.yml"]

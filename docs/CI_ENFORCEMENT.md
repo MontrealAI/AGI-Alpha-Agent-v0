@@ -25,7 +25,7 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
    - Do not add this full matrix back to required PR checks unless the PR gate is redesigned and docs/scripts are updated together.
 
 4. **CI health monitoring**
-   - Keep **🩺 CI Health / CI watchdog** active to detect and remediate stale runs.
+   - Keep **🩺 CI Health / CI watchdog** active to enforce required PR-gate health and context-aware remediation.
    - For automatic branch-protection remediation, set `ADMIN_GITHUB_TOKEN` with branch admin scope.
    - Without admin token, health checks run in read-only mode.
 

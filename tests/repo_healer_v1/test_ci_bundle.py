@@ -51,6 +51,8 @@ def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatc
     assert bundle.validator_class == ValidatorClass.RUFF
     assert bundle.support_mode == SupportMode.AUTOPATCH_SAFE
     assert bundle.artifacts["run_attempt"] == "2"
+    assert bundle.event == "workflow_run"
+    assert bundle.branch == "feature/repro"
 
 
 def test_build_failure_bundle_manual_dispatch_is_report_only(tmp_path: Path) -> None:
@@ -60,6 +62,41 @@ def test_build_failure_bundle_manual_dispatch_is_report_only(tmp_path: Path) -> 
     bundle = build_failure_bundle(event_path, repository="org/repo", token=None)
 
     assert bundle.support_mode == SupportMode.REPORT_ONLY
+
+
+def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 55,
+            "name": "✅ PR CI",
+            "head_sha": "abc123",
+            "head_branch": "feature/fork",
+            "conclusion": "failure",
+            "head_repository": {"full_name": "someone/fork"},
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-and-smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 7}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT
 
 
 def test_build_failure_bundle_includes_junit_failure_signal(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

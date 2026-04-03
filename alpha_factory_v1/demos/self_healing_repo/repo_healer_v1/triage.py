@@ -33,6 +33,30 @@ DRAFT_ONLY_MARKERS = ("actionlint", "docker build", "windows", "macos", "workflo
 
 def triage_bundle(bundle: FailureBundle) -> TriageResult:
     """Classify a bundle into support mode and validator target."""
+    if bundle.support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT:
+        return TriageResult(
+            classification=FailureClass.PERMISSION_OR_FORK_CONTEXT,
+            support_mode=SupportMode.PERMISSION_OR_FORK_CONTEXT,
+            reason="bundle requested permission/fork mode",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=[],
+        )
+    if bundle.support_mode == SupportMode.TRANSIENT_INFRA:
+        return TriageResult(
+            classification=FailureClass.TRANSIENT_INFRA,
+            support_mode=SupportMode.TRANSIENT_INFRA,
+            reason="bundle requested transient-infra mode",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=[],
+        )
+    if bundle.support_mode == SupportMode.UNSAFE_PROTECTED_SURFACE:
+        return TriageResult(
+            classification=FailureClass.UNSAFE_PROTECTED_SURFACE,
+            support_mode=SupportMode.UNSAFE_PROTECTED_SURFACE,
+            reason="bundle requested unsafe-protected-surface mode",
+            validator_class=ValidatorClass.NONE,
+            candidate_files=[],
+        )
     if bundle.support_mode == SupportMode.REPORT_ONLY:
         return TriageResult(
             classification=FailureClass.DIAGNOSE_ONLY,
@@ -63,7 +87,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
     if any(marker in text for marker in PERMISSION_MARKERS):
         return TriageResult(
             classification=FailureClass.PERMISSION_OR_FORK_CONTEXT,
-            support_mode=SupportMode.REPORT_ONLY,
+            support_mode=SupportMode.PERMISSION_OR_FORK_CONTEXT,
             reason="permission or fork context",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
@@ -71,7 +95,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
     if any(marker in text for marker in UNSAFE_MARKERS):
         return TriageResult(
             classification=FailureClass.UNSAFE_PROTECTED_SURFACE,
-            support_mode=SupportMode.REPORT_ONLY,
+            support_mode=SupportMode.UNSAFE_PROTECTED_SURFACE,
             reason="protected or unsafe surface",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],
@@ -79,7 +103,7 @@ def triage_bundle(bundle: FailureBundle) -> TriageResult:
     if any(marker in text for marker in TRANSIENT_MARKERS):
         return TriageResult(
             classification=FailureClass.TRANSIENT_INFRA,
-            support_mode=SupportMode.REPORT_ONLY,
+            support_mode=SupportMode.TRANSIENT_INFRA,
             reason="likely transient infrastructure",
             validator_class=ValidatorClass.NONE,
             candidate_files=[],

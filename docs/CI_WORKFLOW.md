@@ -44,7 +44,7 @@ python scripts/verify_branch_protection.py --apply --branch main
 
 ## CI health
 
-The **🩺 CI Health** workflow monitors `pr-ci.yml` and `ci.yml`, and can cancel stale runs/re-dispatch missing runs.
+The **🩺 CI Health** workflow hard-monitors `pr-ci.yml` (required PR gate) and evaluates `ci.yml` as a hard surface only when triggered by that workflow; scheduled/manual freshness checks for `ci.yml` are informational warnings.
 
 Use:
 
