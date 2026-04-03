@@ -611,7 +611,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--dispatch-missing",
         action="store_true",
-        help="Dispatch workflows that are missing or not green using GITHUB_TOKEN",
+        help="Dispatch workflows with no recent run in the selected context using GITHUB_TOKEN",
+    )
+    parser.add_argument(
+        "--dispatch-failed",
+        action="store_true",
+        help="Also dispatch failed/non-green workflows when --dispatch-missing is enabled.",
     )
     parser.add_argument(
         "--read-only",
@@ -661,6 +666,7 @@ def main(argv: list[str] | None = None) -> int:
             args.rerun_failed = False
             args.cancel_stale = False
             args.dispatch_missing = False
+            args.dispatch_failed = False
 
     failures, runs = verify_workflows(
         args.repo,
@@ -694,11 +700,16 @@ def main(argv: list[str] | None = None) -> int:
             if ok:
                 stale_cancelled.add(workflow)
 
-    failed_workflows = {wf for wf in workflows if wf not in runs or runs[wf].get("conclusion") != "success"}
+    missing_workflows = {wf for wf in workflows if wf not in runs}
+    failed_workflows = {wf for wf in workflows if wf in runs and runs[wf].get("conclusion") != "success"}
+
+    dispatch_targets = set(missing_workflows)
+    if args.dispatch_failed:
+        dispatch_targets.update(failed_workflows)
 
     dispatched: set[str] = set()
-    if args.dispatch_missing and failed_workflows:
-        for workflow in failed_workflows:
+    if args.dispatch_missing and dispatch_targets:
+        for workflow in sorted(dispatch_targets):
             if not _workflow_supports_dispatch(workflow):
                 print(f"⚠️ dispatch {workflow}: workflow_dispatch not configured; skipping")
                 continue

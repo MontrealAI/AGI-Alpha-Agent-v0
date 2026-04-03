@@ -42,6 +42,7 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
    - Poll workflow state when debugging:
      ```bash
      python scripts/check_ci_status.py --wait-minutes 5 --pending-grace-minutes 45 --stale-minutes 90
+     # optional: add --dispatch-failed for explicit failed-run redispatches
      ```
    - Use `--once` for immediate pass/fail status.
 
