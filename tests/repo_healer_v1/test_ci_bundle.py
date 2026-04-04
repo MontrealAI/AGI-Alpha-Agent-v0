@@ -98,6 +98,46 @@ def test_run_attempt_one_is_report_only(tmp_path: Path, monkeypatch: pytest.Monk
 
     assert bundle.support_mode == SupportMode.REPORT_ONLY
     assert any("run_attempt<2" in note for note in bundle.notes)
+    assert bundle.failure_class == FailureClass.DIAGNOSE_ONLY.value
+
+
+def test_run_attempt_one_report_only_is_sticky_for_fork_context(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    event = {
+        "workflow_run": {
+            "id": 44,
+            "name": "✅ PR CI",
+            "head_sha": "abc123",
+            "head_branch": "feature/retry-fork",
+            "conclusion": "failure",
+            "run_attempt": 1,
+            "head_repository": {"full_name": "someone/fork"},
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint-and-smoke",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 3}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == FailureClass.DIAGNOSE_ONLY.value
+    assert any("suppressed by run_attempt<2" in note for note in bundle.notes)
 
 
 def test_unknown_workflow_is_report_only(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
