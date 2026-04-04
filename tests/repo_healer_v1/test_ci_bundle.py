@@ -50,6 +50,7 @@ def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatc
     assert bundle.step == "Ruff check"
     assert bundle.validator_class == ValidatorClass.RUFF
     assert bundle.support_mode == SupportMode.AUTOPATCH_SAFE
+    assert bundle.failure_class == "SAFE_AUTOPATCH"
     assert bundle.artifacts["run_attempt"] == "2"
     assert bundle.event == "workflow_run"
     assert bundle.branch == "feature/repro"
@@ -97,6 +98,7 @@ def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: py
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
     assert bundle.support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT
+    assert bundle.failure_class == "PERMISSION_OR_FORK_CONTEXT"
 
 
 def test_build_failure_bundle_includes_junit_failure_signal(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

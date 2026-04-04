@@ -13,7 +13,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, cast
 
-from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
+from .models import FailureBundle, FailureClass, FailureSignal, SupportMode, ValidatorClass
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -133,6 +133,27 @@ def _risk_tier(validator: ValidatorClass, platform: str) -> str:
     return "tier2"
 
 
+def _failure_class_for_bundle(
+    *,
+    validator: ValidatorClass,
+    support_mode: SupportMode,
+    platform: str,
+) -> str:
+    if support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT:
+        return FailureClass.PERMISSION_OR_FORK_CONTEXT.value
+    if support_mode == SupportMode.TRANSIENT_INFRA:
+        return FailureClass.TRANSIENT_INFRA.value
+    if support_mode == SupportMode.UNSAFE_PROTECTED_SURFACE:
+        return FailureClass.UNSAFE_PROTECTED_SURFACE.value
+    if support_mode in {SupportMode.REPORT_ONLY, SupportMode.DRAFT_PR_ONLY}:
+        return FailureClass.DIAGNOSE_ONLY.value
+    if platform.lower() in {"windows", "macos"}:
+        return FailureClass.UNSUPPORTED_PLATFORM.value
+    if validator == ValidatorClass.NONE:
+        return FailureClass.DIAGNOSE_ONLY.value
+    return FailureClass.SAFE_AUTOPATCH.value
+
+
 def _job_platform(job: dict[str, Any]) -> str:
     name = str(job.get("name", "")).lower()
     labels = [str(label).lower() for label in job.get("labels", [])]
@@ -250,6 +271,11 @@ def build_failure_bundle(
     bundle.candidate_files = candidate_files
     bundle.reproduction_command = _default_reproduction_command(validator, candidate_files)
     bundle.risk_tier = _risk_tier(validator, platform)
+    bundle.failure_class = _failure_class_for_bundle(
+        validator=validator,
+        support_mode=bundle.support_mode,
+        platform=platform,
+    )
     bundle.annotations = annotations
     bundle.artifacts["jobs_api"] = jobs_url
     bundle.artifacts["run_html_url"] = str(run.get("html_url", ""))
