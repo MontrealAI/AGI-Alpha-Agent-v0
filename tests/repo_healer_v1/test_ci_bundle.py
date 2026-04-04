@@ -101,6 +101,43 @@ def test_unknown_workflow_is_report_only(tmp_path: Path, monkeypatch: pytest.Mon
     assert any("unsupported workflow" in note for note in bundle.notes)
 
 
+def test_workflow_name_collision_is_guarded_by_path(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 1235,
+            "name": "✅ PR CI",
+            "path": ".github/workflows/not-pr-ci.yml",
+            "head_sha": "abc123",
+            "head_branch": "feature/name-collision",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "lint",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "steps": [{"name": "Ruff check", "conclusion": "failure", "number": 2}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == FailureClass.DIAGNOSE_ONLY.value
+    assert any("unsupported workflow file" in note for note in bundle.notes)
+
+
 def test_failure_class_mapping_keeps_draft_pr_only_distinct() -> None:
     from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle import _failure_class_for_support_mode
 

@@ -17,6 +17,22 @@ from .models import FailureBundle, FailureClass, FailureSignal, SupportMode, Val
 from .validators import canonical_ci_surface
 
 
+SUPPORTED_WORKFLOW_PATHS = {
+    ".github/workflows/pr-ci.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/smoke.yml",
+    ".github/workflows/docs.yml",
+}
+
+
+def _normalize_workflow_path(path: str) -> str:
+    """Normalize workflow_run.path values to repository-relative workflow file paths."""
+    trimmed = path.strip()
+    if not trimmed:
+        return ""
+    return trimmed.split("@", maxsplit=1)[0].removeprefix("./")
+
+
 def _supported_workflow_names() -> set[str]:
     """Return workflow names Repo-Healer v1 intentionally supports."""
     surfaces = canonical_ci_surface()
@@ -185,13 +201,14 @@ def build_failure_bundle(
     run = payload.get("workflow_run", {})
     run_id = str(run.get("id", "manual"))
     run_name = str(run.get("name", "manual"))
+    run_path = _normalize_workflow_path(str(run.get("path") or ""))
     sha = run.get("head_sha") or payload.get("after") or os.environ.get("GITHUB_SHA", "unknown")
     head_branch = str(run.get("head_branch") or payload.get("ref", ""))
     branch_ref = head_branch if head_branch.startswith("refs/") else f"refs/heads/{head_branch}" if head_branch else ""
 
     bundle = FailureBundle(
         workflow=run_name,
-        workflow_file=str(run.get("path") or ""),
+        workflow_file=run_path,
         job="unknown",
         step="unknown",
         run_id=run_id,
@@ -206,7 +223,7 @@ def build_failure_bundle(
             "event": str(event_path),
             "run_attempt": str(run.get("run_attempt", 1)),
             "run_id": run_id,
-            "workflow_file": str(run.get("path") or ""),
+            "workflow_file": run_path,
         },
         support_mode=SupportMode.AUTOPATCH_SAFE,
         failure_class=FailureClass.SAFE_AUTOPATCH.value,
@@ -215,10 +232,14 @@ def build_failure_bundle(
     if bundle.run_url:
         bundle.evidence.append(f"run_url={bundle.run_url}")
 
-    if run_name and run_name not in _supported_workflow_names():
+    if run_path and run_path not in SUPPORTED_WORKFLOW_PATHS:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
-        bundle.notes.append(f"unsupported workflow for bounded v1 autopatch: {run_name}")
+        bundle.notes.append(f"unsupported workflow file for bounded v1 autopatch: {run_path}")
+    elif run_name and run_name not in _supported_workflow_names():
+        bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
+        bundle.notes.append(f"unsupported workflow name for bounded v1 autopatch: {run_name}")
 
     head_repo = run.get("head_repository") if isinstance(run, dict) else None
     if isinstance(head_repo, dict):
