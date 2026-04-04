@@ -22,7 +22,7 @@ The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a
 
 The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focused smoke test suite on pull requests, pushes to `main`, and merge queue runs.
 
-The full **🚀 Integration CI — Insight Demo** workflow is intentionally **off the PR path**. It runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
+The full **🚀 Integration CI — Insight Demo** workflow is intentionally **off the PR path**. It runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. Push-to-main runs a lean stable subset, while tags/manual dispatch run the heavy release matrix (multi-version lint/type-check/test, docs build validation, Docker build/signing, deployment checks).
 
 **🩺 CI Health** hard-monitors the canonical required surface (✅ PR CI) and context-switches to 🚀 Integration CI checks only when triggered by that workflow. Scheduled/manual runs keep heavy CI freshness as informational-only and still allow missing-run dispatch, while `workflow_run` watchdog executions are rerun-only (no extra dispatch) because the upstream run already exists. Self-monitoring remains opt-in (`--include-self`), and rerun support helps Repo-Healer progress beyond run-attempt-1 report-only triage. `ADMIN_GITHUB_TOKEN` enables branch-protection remediation while default tokens stay read-only for admin APIs.
 
@@ -209,9 +209,10 @@ The [🚀 Integration CI](.github/workflows/ci.yml) workflow verifies the Insigh
 linting, type checks, unit tests and a Docker build. Open **Actions → 🚀 Integration CI — Insight Demo**, select the branch or tag to test in the drop‑down and click
 **Run workflow** to dispatch the pipeline. This workflow also runs
 automatically on pushes to `main` and release tags (`v*`, `release-*`), while
-staying off pull requests. Each job begins by verifying the actor matches the
-repository owner only for manual dispatches; push and tag runs execute
-automatically for normal integration validation.
+staying off pull requests. Push-to-main runs keep the stable integration subset,
+while release tags/manual dispatch run the full release matrix. Each job begins
+by verifying the actor matches the repository owner only for manual dispatches;
+push and tag runs execute automatically for normal integration validation.
 Because the first job checks `${{ github.actor }}` against `${{ github.repository_owner }}`,
 you must own the repository to run the workflow from manual dispatch.
 Jobs following the main test stage include `if: always()` so the Windows and

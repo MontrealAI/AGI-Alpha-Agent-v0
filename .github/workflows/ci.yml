@@ -117,15 +117,13 @@ jobs:
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' && (github.event_name != 'push' || startsWith(github.ref, 'refs/tags/')) }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        # PyTorch's triton wheels do not yet support Python 3.13, so keep tests on
-        # 3.11–3.12 until upstream publishes compatible builds.
         python-version: ["3.11", "3.12"]
     steps:
       # checkout required for local composite actions
@@ -210,6 +208,33 @@ jobs:
         # Use configuration defaults to restrict analysis to the src package
         run: mypy --config-file mypy.ini
 
+  lint-type-main:
+    name: "🧹 Ruff + 🏷️ Mypy (3.11 main)"
+    if: ${{ always() && needs.owner-check.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.lock
+            requirements-dev.lock
+            alpha_factory_v1/backend/requirements-lock.txt
+      - name: Install lint tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.lock
+      - name: Ruff lint
+        run: ruff check alpha_factory_v1/demos/alpha_agi_insight_v1
+      - name: Mypy type-check
+        run: mypy --config-file mypy.ini
+
   insight-eslint:
     name: "🧪 Insight Browser ESLint"
     if: ${{ always() && needs.owner-check.result == 'success' }}
@@ -251,7 +276,7 @@ jobs:
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' && (github.event_name != 'push' || startsWith(github.ref, 'refs/tags/')) }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -435,6 +460,39 @@ jobs:
         with:
           name: coverage-xml
           path: artifacts/coverage.xml
+
+  tests-main:
+    name: "✅ Pytest smoke (main)"
+    if: ${{ always() && needs.owner-check.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: owner-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Verify $AGIALPHA configuration
+        run: python scripts/check_agialpha_config.py
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.lock
+            requirements-dev.lock
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.lock
+          pip install -r requirements-dev.lock
+      - name: Run smoke tests
+        run: |
+          pytest -m smoke \
+            tests/test_af_requests.py \
+            tests/test_cache_version.py \
+            tests/test_check_env_core.py \
+            tests/test_check_env_network.py \
+            tests/test_config_settings.py \
+            tests/test_config_utils.py \
+            tests/test_ping_agent.py -q
 
   windows-smoke:
     name: "Windows Smoke"
@@ -725,7 +783,7 @@ jobs:
 
   docs-build:
     name: "📚 Docs Build"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' && (github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')) }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -875,7 +933,7 @@ jobs:
 
   docker:
     name: "🐳 Docker build"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
+    if: ${{ always() && needs.owner-check.result == 'success' && (github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')) }}
     needs: owner-check
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -1183,7 +1241,7 @@ jobs:
   branch-protection:
     name: "🔒 Branch protection guardrails"
     if: ${{ needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' }}
-    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    needs: [owner-check, workflow-lint, lint-type-main, insight-eslint, tests-main, windows-smoke, macos-smoke, docs-check]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
