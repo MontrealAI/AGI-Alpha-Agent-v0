@@ -14,6 +14,29 @@ import xml.etree.ElementTree as ET
 from typing import Any, cast
 
 from .models import FailureBundle, FailureClass, FailureSignal, SupportMode, ValidatorClass
+from .validators import canonical_ci_surface
+
+
+SUPPORTED_WORKFLOW_PATHS = {
+    ".github/workflows/pr-ci.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/smoke.yml",
+    ".github/workflows/docs.yml",
+}
+
+
+def _normalize_workflow_path(path: str) -> str:
+    """Normalize workflow_run.path values to repository-relative workflow file paths."""
+    trimmed = path.strip()
+    if not trimmed:
+        return ""
+    return trimmed.split("@", maxsplit=1)[0].removeprefix("./")
+
+
+def _supported_workflow_names() -> set[str]:
+    """Return workflow names Repo-Healer v1 intentionally supports."""
+    surfaces = canonical_ci_surface()
+    return set(surfaces.get("pr_gate", [])) | set(surfaces.get("full_ci", [])) | set(surfaces.get("optional", []))
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -151,20 +174,20 @@ def _select_failed_job(failed_jobs: list[dict[str, Any]]) -> dict[str, Any]:
     return failed_jobs[0]
 
 
-def _failure_class_for_support_mode(support_mode: SupportMode) -> str:
+def _failure_class_for_support_mode(support_mode: SupportMode) -> FailureClass:
     if support_mode == SupportMode.AUTOPATCH_SAFE:
-        return FailureClass.SAFE_AUTOPATCH.value
+        return FailureClass.SAFE_AUTOPATCH
     if support_mode == SupportMode.DRAFT_PR_ONLY:
-        return FailureClass.DRAFT_PR_ONLY.value
+        return FailureClass.DRAFT_PR_ONLY
     if support_mode == SupportMode.REPORT_ONLY:
-        return FailureClass.DIAGNOSE_ONLY.value
+        return FailureClass.DIAGNOSE_ONLY
     if support_mode == SupportMode.TRANSIENT_INFRA:
-        return FailureClass.TRANSIENT_INFRA.value
+        return FailureClass.TRANSIENT_INFRA
     if support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT:
-        return FailureClass.PERMISSION_OR_FORK_CONTEXT.value
+        return FailureClass.PERMISSION_OR_FORK_CONTEXT
     if support_mode == SupportMode.UNSAFE_PROTECTED_SURFACE:
-        return FailureClass.UNSAFE_PROTECTED_SURFACE.value
-    return FailureClass.DIAGNOSE_ONLY.value
+        return FailureClass.UNSAFE_PROTECTED_SURFACE
+    return FailureClass.DIAGNOSE_ONLY
 
 
 def build_failure_bundle(
@@ -177,11 +200,15 @@ def build_failure_bundle(
     payload = json.loads(event_path.read_text(encoding="utf-8"))
     run = payload.get("workflow_run", {})
     run_id = str(run.get("id", "manual"))
+    run_name = str(run.get("name", "manual"))
+    run_path = _normalize_workflow_path(str(run.get("path") or ""))
     sha = run.get("head_sha") or payload.get("after") or os.environ.get("GITHUB_SHA", "unknown")
+    head_branch = str(run.get("head_branch") or payload.get("ref", ""))
+    branch_ref = head_branch if head_branch.startswith("refs/") else f"refs/heads/{head_branch}" if head_branch else ""
 
     bundle = FailureBundle(
-        workflow=run.get("name", "manual"),
-        workflow_file=str(run.get("path") or ""),
+        workflow=run_name,
+        workflow_file=run_path,
         job="unknown",
         step="unknown",
         run_id=run_id,
@@ -189,13 +216,30 @@ def build_failure_bundle(
         run_attempt=int(run.get("run_attempt") or 1),
         run_url=str(run.get("html_url") or ""),
         event=str(run.get("event") or payload.get("event_name") or "workflow_run"),
-        branch=str(run.get("head_branch") or payload.get("ref", "")),
-        ref=str(run.get("head_branch") or payload.get("ref", "")),
+        branch=head_branch,
+        ref=branch_ref,
         logs=f"conclusion={run.get('conclusion', 'unknown')}",
-        artifacts={"event": str(event_path), "run_attempt": str(run.get("run_attempt", 1))},
+        artifacts={
+            "event": str(event_path),
+            "run_attempt": str(run.get("run_attempt", 1)),
+            "run_id": run_id,
+            "workflow_file": run_path,
+        },
         support_mode=SupportMode.AUTOPATCH_SAFE,
         failure_class=FailureClass.SAFE_AUTOPATCH.value,
     )
+    bundle.evidence.append(f"run_id={run_id}")
+    if bundle.run_url:
+        bundle.evidence.append(f"run_url={bundle.run_url}")
+
+    if run_path and run_path not in SUPPORTED_WORKFLOW_PATHS:
+        bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
+        bundle.notes.append(f"unsupported workflow file for bounded v1 autopatch: {run_path}")
+    elif run_name and run_name not in _supported_workflow_names():
+        bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
+        bundle.notes.append(f"unsupported workflow name for bounded v1 autopatch: {run_name}")
 
     head_repo = run.get("head_repository") if isinstance(run, dict) else None
     if isinstance(head_repo, dict):
@@ -203,11 +247,11 @@ def build_failure_bundle(
         if head_name and head_name.lower() != repository.lower():
             bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
             bundle.notes.append("workflow_run originates from fork context")
-            bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+            bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
 
     if not run.get("id"):
         bundle.support_mode = SupportMode.REPORT_ONLY
-        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
         bundle.logs = "manual dispatch without workflow_run payload"
         return bundle
 
@@ -216,19 +260,19 @@ def build_failure_bundle(
         jobs_payload = _api_get(jobs_url, token)
     except urllib.error.HTTPError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
-        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
         bundle.logs = f"failed to fetch jobs payload: HTTP {exc.code}"
         return bundle
     except urllib.error.URLError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
-        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
         bundle.logs = f"failed to fetch jobs payload: {exc.reason}"
         return bundle
 
     failed_jobs = [job for job in jobs_payload.get("jobs", []) if job.get("conclusion") == "failure"]
     if not failed_jobs:
         bundle.support_mode = SupportMode.REPORT_ONLY
-        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
         bundle.logs = "no failed jobs found"
         return bundle
 
@@ -284,7 +328,7 @@ def build_failure_bundle(
     bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
-    bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
+    bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
     return bundle
 
 
