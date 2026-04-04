@@ -156,6 +156,34 @@ def _risk_tier(validator: ValidatorClass, platform: str) -> str:
     return "tier2"
 
 
+def _step_support_mode(job_name: str, step_name: str, platform: str) -> SupportMode:
+    """Classify support mode directly from failed step metadata."""
+    text = f"{job_name}\n{step_name}".lower()
+    if platform in {"windows", "macos"}:
+        return SupportMode.DRAFT_PR_ONLY
+    if any(marker in text for marker in ("resource not accessible", "permission denied", "forbidden", "403")):
+        return SupportMode.PERMISSION_OR_FORK_CONTEXT
+    if any(marker in text for marker in ("timed out", "timeout", "connection reset", "network", "runner lost")):
+        return SupportMode.TRANSIENT_INFRA
+    if any(
+        marker in text
+        for marker in (
+            "branch protection",
+            "verify image signature",
+            "cosign",
+            "publish",
+            "release",
+            "deploy",
+            "secret",
+            "token",
+        )
+    ):
+        return SupportMode.UNSAFE_PROTECTED_SURFACE
+    if any(marker in text for marker in ("actionlint", "docker build", "workflow", "lint workflows")):
+        return SupportMode.DRAFT_PR_ONLY
+    return SupportMode.AUTOPATCH_SAFE
+
+
 def _job_platform(job: dict[str, Any]) -> str:
     name = str(job.get("name", "")).lower()
     labels = [str(label).lower() for label in job.get("labels", [])]
@@ -231,6 +259,14 @@ def build_failure_bundle(
     bundle.evidence.append(f"run_id={run_id}")
     if bundle.run_url:
         bundle.evidence.append(f"run_url={bundle.run_url}")
+    if run.get("logs_url"):
+        bundle.artifacts["run_logs_url"] = str(run.get("logs_url"))
+        bundle.evidence.append(f"run_logs_url={run.get('logs_url')}")
+
+    if bundle.run_attempt < 2:
+        bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
+        bundle.notes.append("run_attempt<2: report-only until CI Health rerun is available")
 
     if run_path and run_path not in SUPPORTED_WORKFLOW_PATHS:
         bundle.support_mode = SupportMode.REPORT_ONLY
@@ -325,6 +361,12 @@ def build_failure_bundle(
     if failed_job.get("html_url"):
         bundle.job_url = str(failed_job.get("html_url"))
         bundle.artifacts["job_html_url"] = bundle.job_url
+
+    inferred_mode = _step_support_mode(job_name, step_name, platform)
+    if bundle.support_mode == SupportMode.AUTOPATCH_SAFE and inferred_mode != SupportMode.AUTOPATCH_SAFE:
+        bundle.support_mode = inferred_mode
+        bundle.notes.append(f"support_mode inferred from failed step metadata: {inferred_mode.value}")
+
     bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
