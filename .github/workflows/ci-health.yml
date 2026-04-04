@@ -78,11 +78,15 @@ jobs:
         run: |
           HARD_WORKFLOW="pr-ci.yml"
           RERUN_ARGS=()
+          DISPATCH_ARGS=(--dispatch-missing)
           if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
             source_workflow=$(jq -r '.workflow_run.name // empty' "$GITHUB_EVENT_PATH")
             if [[ "$source_workflow" == "🚀 Integration CI — Insight Demo" ]]; then
               HARD_WORKFLOW="ci.yml"
             fi
+            # A completed workflow_run already guarantees a concrete run exists.
+            # Avoid extra dispatches in this context and only rerun failed runs.
+            DISPATCH_ARGS=()
             # Repo-Healer marks run_attempt<2 as report-only; keep one automatic rerun
             # path for failed workflow_run contexts so AUTOPATCH_SAFE can activate.
             RERUN_ARGS+=("--rerun-failed")
@@ -93,7 +97,7 @@ jobs:
             --pending-grace-minutes 45 \
             --stale-minutes 90 \
             --cancel-stale \
-            --dispatch-missing \
+            "${DISPATCH_ARGS[@]}" \
             "${RERUN_ARGS[@]}" \
             --poll-seconds 30 \
             --workflow "$HARD_WORKFLOW" \

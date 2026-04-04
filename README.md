@@ -24,7 +24,7 @@ The **canonical pull-request gate** is **✅ PR CI**. It runs Ruff plus the focu
 
 The full **🚀 Integration CI — Insight Demo** workflow is intentionally **off the PR path**. It runs on pushes to `main`, release tags (`v*` / `release-*`), and manual dispatch for maintainers. That keeps heavy matrix work (multi-version lint/type-check/test, docs validation, Docker build/signing, deployment checks) visible on integration/release paths without duplicating PR-required signal.
 
-**🩺 CI Health** hard-monitors the canonical required surface (✅ PR CI) and context-switches to 🚀 Integration CI checks only when triggered by that workflow. Scheduled/manual runs keep heavy CI freshness as informational-only, self-monitoring is opt-in (`--include-self`), and workflow-run watchdog executions keep an automatic rerun path so Repo-Healer can progress beyond run-attempt-1 report-only triage. `ADMIN_GITHUB_TOKEN` enables branch-protection remediation while default tokens stay read-only for admin APIs.
+**🩺 CI Health** hard-monitors the canonical required surface (✅ PR CI) and context-switches to 🚀 Integration CI checks only when triggered by that workflow. Scheduled/manual runs keep heavy CI freshness as informational-only and still allow missing-run dispatch, while `workflow_run` watchdog executions are rerun-only (no extra dispatch) because the upstream run already exists. Self-monitoring remains opt-in (`--include-self`), and rerun support helps Repo-Healer progress beyond run-attempt-1 report-only triage. `ADMIN_GITHUB_TOKEN` enables branch-protection remediation while default tokens stay read-only for admin APIs.
 
 #### Run CI locally
 
