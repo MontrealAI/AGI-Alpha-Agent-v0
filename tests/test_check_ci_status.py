@@ -168,3 +168,32 @@ def test_main_can_include_current_workflow_when_opted_in(monkeypatch):
         check_ci_status.main(["--repo", "owner/repo", "--workflow", "ci-health.yml", "--include-self", "--once"]) == 0
     )
     assert "ci-health.yml" in captured
+
+
+def test_workflow_run_context_disables_dispatch(monkeypatch, tmp_path):
+    monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
+    monkeypatch.setenv("GITHUB_EVENT_NAME", "workflow_run")
+
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps({"workflow_run": {"name": "✅ PR CI"}}), encoding="utf-8")
+    monkeypatch.setenv("GITHUB_EVENT_PATH", str(event_path))
+
+    def fake_verify(repo, workflows, token, **kwargs):  # type: ignore[override]
+        return ["pr-ci.yml: error fetching latest run: missing"], {}
+
+    dispatch_calls: list[str] = []
+
+    monkeypatch.setattr(check_ci_status, "verify_workflows", fake_verify)
+    monkeypatch.setattr(check_ci_status, "_actions_write_capability", lambda repo, token: (True, "ok"))
+    monkeypatch.setattr(check_ci_status, "_workflow_supports_dispatch", lambda workflow: True)
+
+    def fake_dispatch(repo, workflow, ref, token):  # type: ignore[override]
+        dispatch_calls.append(workflow)
+        return True, "dispatched"
+
+    monkeypatch.setattr(check_ci_status, "_dispatch_workflow", fake_dispatch)
+
+    exit_code = check_ci_status.main(["--repo", "owner/repo", "--dispatch-missing", "--once"])
+
+    assert exit_code == 1
+    assert dispatch_calls == []
