@@ -410,3 +410,40 @@ def test_mypy_reproduction_command_matches_ci_scope(tmp_path: Path, monkeypatch:
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
     assert bundle.reproduction_command == ["mypy", "--config-file", "mypy.ini", "."]
+
+
+def test_smoke_failure_maps_to_smoke_validator(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    event = {
+        "workflow_run": {
+            "id": 707,
+            "name": "✅ PR CI",
+            "head_sha": "smoke123",
+            "conclusion": "failure",
+            "run_attempt": 2,
+            "html_url": "https://github.example/run/707",
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        return {
+            "jobs": [
+                {
+                    "name": "Smoke tests",
+                    "conclusion": "failure",
+                    "labels": ["ubuntu-latest"],
+                    "html_url": "https://github.example/job/11",
+                    "steps": [{"name": "Run smoke tests", "conclusion": "failure", "number": 11}],
+                }
+            ]
+        }
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.validator_class == ValidatorClass.SMOKE
+    assert bundle.artifacts["run_html_url"] == "https://github.example/run/707"
+    assert bundle.artifacts["job_html_url"] == "https://github.example/job/11"

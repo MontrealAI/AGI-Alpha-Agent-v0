@@ -34,3 +34,8 @@ def test_extract_smoke_pytest_command_returns_empty_on_invalid_yaml(monkeypatch)
 def test_extract_smoke_pytest_command_returns_empty_on_non_mapping_yaml(monkeypatch) -> None:
     monkeypatch.setattr(validators.yaml, "safe_load", lambda _text: ["not-a-mapping"])
     assert validators._extract_smoke_pytest_command() == []
+
+
+def test_smoke_broader_validation_runs_full_pytest_suite() -> None:
+    plan = validators.get_plan(validators.ValidatorClass.SMOKE)
+    assert plan.broader == [validators.PYTHON, "-m", "pytest", "-q"]

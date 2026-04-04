@@ -104,6 +104,13 @@ def test_triage_honors_explicit_validator_from_bundle() -> None:
     assert result.validator_class == ValidatorClass.MYPY
 
 
+def test_triage_unknown_failure_is_report_only() -> None:
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", logs="opaque failure marker with no known validator")
+    result = triage_bundle(bundle)
+    assert result.support_mode == SupportMode.REPORT_ONLY
+    assert result.validator_class == ValidatorClass.NONE
+
+
 def test_engine_isolated_validation_promotes_patch(tmp_path: pathlib.Path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()

@@ -31,13 +31,15 @@ def _infer_validator(step_name: str, job_name: str) -> ValidatorClass:
         return ValidatorClass.RUFF
     if "mypy" in text:
         return ValidatorClass.MYPY
+    if "smoke" in text:
+        return ValidatorClass.SMOKE
     if "mkdocs" in text:
         return ValidatorClass.MKDOCS
     if any(marker in text for marker in ("docs build", "documentation", "📚 docs", "docs-deploy")):
         return ValidatorClass.MKDOCS
     if "importerror" in text or "modulenotfound" in text:
         return ValidatorClass.IMPORT
-    if "pytest" in text or "smoke" in text:
+    if "pytest" in text:
         return ValidatorClass.PYTEST
     return ValidatorClass.NONE
 
@@ -250,6 +252,9 @@ def build_failure_bundle(
     bundle.risk_tier = _risk_tier(validator, platform)
     bundle.annotations = annotations
     bundle.artifacts["jobs_api"] = jobs_url
+    bundle.artifacts["run_html_url"] = str(run.get("html_url", ""))
+    if failed_job.get("html_url"):
+        bundle.artifacts["job_html_url"] = str(failed_job.get("html_url"))
     bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
