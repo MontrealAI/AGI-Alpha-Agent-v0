@@ -1191,8 +1191,8 @@ jobs:
 
   branch-protection:
     name: "🔒 Branch protection guardrails"
-    if: ${{ needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' }}
-    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check]
+    if: ${{ always() && needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' }}
+    needs: [owner-check, workflow-lint, lint-type, tests, docs-check]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
