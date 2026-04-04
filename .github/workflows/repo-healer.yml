@@ -36,20 +36,6 @@ jobs:
             --bundle-out repo_healer_bundle.json \
             --candidates-out repo_healer_candidates.json
 
-      - name: Mark early-attempt runs as report-only
-        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.run_attempt < 2 }}
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          bundle_path = Path("repo_healer_bundle.json")
-          bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
-          bundle["support_mode"] = "REPORT_ONLY"
-          bundle["logs"] = f"{bundle.get('logs', '')}\nrun_attempt={bundle.get('artifacts', {}).get('run_attempt', '1')} pending ci-health reruns"
-          bundle_path.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
-          PY
-
       - name: Run Repo-Healer
         run: |
           MODE=$(python - <<'PY'

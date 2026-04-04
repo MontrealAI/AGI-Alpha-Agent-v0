@@ -54,6 +54,7 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 - `repo_healer_v1/models.py`: typed failure bundle and report model (workflow name/file, run id/url/attempt, event/ref/sha, job/step, validator/support/risk, evidence).
 - `repo_healer_v1/triage.py`: deterministic classification to support mode.
 - `repo_healer_v1/ci_bundle.py`: workflow-run ingestion that captures run/job URLs, Linux-first failed job selection, and smoke-vs-pytest validator mapping.
+  It also enforces early-attempt `run_attempt<2` report-only posture and infers non-autopatch support modes from failed-step metadata (permission, transient infra, protected release surfaces, and platform constraints).
 - `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
   It reads `.github/workflows/pr-ci.yml`, `ci.yml`, `smoke.yml`, and `docs.yml` to resolve canonical workflow names.
 - `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
