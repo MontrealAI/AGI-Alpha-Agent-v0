@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle import build_failure_bundle
-from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import SupportMode, ValidatorClass
+from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import FailureClass, SupportMode, ValidatorClass
 
 
 def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -62,6 +62,14 @@ def test_build_failure_bundle_manual_dispatch_is_report_only(tmp_path: Path) -> 
     bundle = build_failure_bundle(event_path, repository="org/repo", token=None)
 
     assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == FailureClass.DIAGNOSE_ONLY.value
+
+
+def test_failure_class_mapping_keeps_draft_pr_only_distinct() -> None:
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle import _failure_class_for_support_mode
+
+    assert _failure_class_for_support_mode(SupportMode.DRAFT_PR_ONLY) == FailureClass.DRAFT_PR_ONLY.value
+    assert _failure_class_for_support_mode(SupportMode.REPORT_ONLY) == FailureClass.DIAGNOSE_ONLY.value
 
 
 def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
