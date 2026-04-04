@@ -22,6 +22,7 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
      - `push` to `main`
      - release tags (`v*`, `release-*`)
      - manual dispatch
+   - Keep push-to-main scope lean/stable; reserve docs-build + Docker/signing + full matrix replay for tag/manual release contexts.
    - Do not add this full matrix back to required PR checks unless the PR gate is redesigned and docs/scripts are updated together.
 
 4. **CI health monitoring**
