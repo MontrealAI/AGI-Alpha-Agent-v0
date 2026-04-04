@@ -44,7 +44,7 @@ python scripts/verify_branch_protection.py --apply --branch main
 
 ## CI health
 
-The **🩺 CI Health** workflow hard-monitors `pr-ci.yml` (required PR gate) and evaluates `ci.yml` as a hard surface only when triggered by that workflow; scheduled/manual freshness checks for `ci.yml` are informational warnings. Missing-run dispatch is default-safe (missing only); self-monitoring is opt-in via `--include-self`; and workflow-run executions keep `--rerun-failed` enabled so Repo-Healer can move past run-attempt-1 report-only triage when failures persist.
+The **🩺 CI Health** workflow hard-monitors `pr-ci.yml` (required PR gate) and evaluates `ci.yml` as a hard surface only when triggered by that workflow; scheduled/manual freshness checks for `ci.yml` are informational warnings. Missing-run dispatch remains enabled for scheduled/manual watchdog runs, but `workflow_run` executions are rerun-only (`--rerun-failed`) to avoid redundant dispatches when a concrete upstream run already exists. Self-monitoring is opt-in via `--include-self`, and workflow-run executions keep reruns enabled so Repo-Healer can move past run-attempt-1 report-only triage when failures persist.
 
 Use:
 
