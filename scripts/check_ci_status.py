@@ -645,6 +645,12 @@ def main(argv: list[str] | None = None) -> int:
         or os.environ.get("GH_TOKEN")
     )
     event_path = os.environ.get("GITHUB_EVENT_PATH")
+
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+    if event_name == "workflow_run" and args.dispatch_missing:
+        print("⚠️ dispatch-missing disabled for workflow_run context; upstream run already exists.")
+        args.dispatch_missing = False
+        args.dispatch_failed = False
     workflows = list(args.workflows or _default_workflows_for_event(event_path))
     current_workflow = _workflow_filename_from_env(token)
     if current_workflow and not args.include_self:
