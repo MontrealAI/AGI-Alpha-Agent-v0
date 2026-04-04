@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import urllib.error
 from pathlib import Path
 
 import pytest
@@ -63,6 +64,35 @@ def test_build_failure_bundle_manual_dispatch_is_report_only(tmp_path: Path) -> 
     bundle = build_failure_bundle(event_path, repository="org/repo", token=None)
 
     assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == "DIAGNOSE_ONLY"
+
+
+def test_build_failure_bundle_jobs_api_error_sets_typed_failure_class(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    event = {
+        "workflow_run": {
+            "id": 707,
+            "name": "✅ PR CI",
+            "head_sha": "dead123",
+            "head_branch": "feature/api-error",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        raise urllib.error.URLError("network down")
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == "DIAGNOSE_ONLY"
 
 
 def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

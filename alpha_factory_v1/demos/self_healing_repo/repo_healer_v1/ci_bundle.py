@@ -204,10 +204,20 @@ def build_failure_bundle(
         if head_name and head_name.lower() != repository.lower():
             bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
             bundle.notes.append("workflow_run originates from fork context")
+            bundle.failure_class = _failure_class_for_bundle(
+                validator=bundle.validator_class,
+                support_mode=bundle.support_mode,
+                platform=bundle.platform,
+            )
 
     if not run.get("id"):
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = "manual dispatch without workflow_run payload"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     jobs_url = f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/jobs?per_page=100"
@@ -216,16 +226,31 @@ def build_failure_bundle(
     except urllib.error.HTTPError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = f"failed to fetch jobs payload: HTTP {exc.code}"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
     except urllib.error.URLError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = f"failed to fetch jobs payload: {exc.reason}"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     failed_jobs = [job for job in jobs_payload.get("jobs", []) if job.get("conclusion") == "failure"]
     if not failed_jobs:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = "no failed jobs found"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     failed_job = _select_failed_job(failed_jobs)
