@@ -63,6 +63,10 @@ class FailureBundle:
     step: str
     run_id: str
     sha: str
+    workflow_file: str = ""
+    run_attempt: int = 1
+    run_url: str = ""
+    job_url: str = ""
     event: str = "workflow_run"
     branch: str = ""
     ref: str = ""

@@ -181,10 +181,13 @@ def build_failure_bundle(
 
     bundle = FailureBundle(
         workflow=run.get("name", "manual"),
+        workflow_file=str(run.get("path") or ""),
         job="unknown",
         step="unknown",
         run_id=run_id,
         sha=sha,
+        run_attempt=int(run.get("run_attempt") or 1),
+        run_url=str(run.get("html_url") or ""),
         event=str(run.get("event") or payload.get("event_name") or "workflow_run"),
         branch=str(run.get("head_branch") or payload.get("ref", "")),
         ref=str(run.get("head_branch") or payload.get("ref", "")),
@@ -276,7 +279,8 @@ def build_failure_bundle(
     bundle.artifacts["jobs_api"] = jobs_url
     bundle.artifacts["run_html_url"] = str(run.get("html_url", ""))
     if failed_job.get("html_url"):
-        bundle.artifacts["job_html_url"] = str(failed_job.get("html_url"))
+        bundle.job_url = str(failed_job.get("html_url"))
+        bundle.artifacts["job_html_url"] = bundle.job_url
     bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
