@@ -25,7 +25,8 @@ Jobs:
 - `workflow_dispatch`
 
 This workflow intentionally does **not** run on `pull_request` or `merge_group`.
-It contains heavier checks (multi-version lint/type/test, docs verification, Docker build/signing, deploy-path checks) that are high value after merge but noisy/duplicative on every PR.
+On `push` to `main`, it runs a **lean integration surface** (owner/actionlint, Linux lint+type and smoke-aligned pytest replay, docs-check).
+On tags/manual dispatch it expands to the full release matrix (dual-version lint/type/test, docs build validation, Docker/signing/deploy path checks).
 
 ## Branch protection (required checks)
 
