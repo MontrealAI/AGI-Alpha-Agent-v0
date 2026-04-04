@@ -13,7 +13,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, cast
 
-from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
+from .models import FailureBundle, FailureClass, FailureSignal, SupportMode, ValidatorClass
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -151,6 +151,22 @@ def _select_failed_job(failed_jobs: list[dict[str, Any]]) -> dict[str, Any]:
     return failed_jobs[0]
 
 
+def _failure_class_for_support_mode(support_mode: SupportMode) -> str:
+    if support_mode == SupportMode.AUTOPATCH_SAFE:
+        return FailureClass.SAFE_AUTOPATCH.value
+    if support_mode == SupportMode.DRAFT_PR_ONLY:
+        return FailureClass.DRAFT_PR_ONLY.value
+    if support_mode == SupportMode.REPORT_ONLY:
+        return FailureClass.DIAGNOSE_ONLY.value
+    if support_mode == SupportMode.TRANSIENT_INFRA:
+        return FailureClass.TRANSIENT_INFRA.value
+    if support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT:
+        return FailureClass.PERMISSION_OR_FORK_CONTEXT.value
+    if support_mode == SupportMode.UNSAFE_PROTECTED_SURFACE:
+        return FailureClass.UNSAFE_PROTECTED_SURFACE.value
+    return FailureClass.DIAGNOSE_ONLY.value
+
+
 def build_failure_bundle(
     event_path: pathlib.Path,
     repository: str,
@@ -175,6 +191,7 @@ def build_failure_bundle(
         logs=f"conclusion={run.get('conclusion', 'unknown')}",
         artifacts={"event": str(event_path), "run_attempt": str(run.get("run_attempt", 1))},
         support_mode=SupportMode.AUTOPATCH_SAFE,
+        failure_class=FailureClass.SAFE_AUTOPATCH.value,
     )
 
     head_repo = run.get("head_repository") if isinstance(run, dict) else None
@@ -183,9 +200,11 @@ def build_failure_bundle(
         if head_name and head_name.lower() != repository.lower():
             bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
             bundle.notes.append("workflow_run originates from fork context")
+            bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
 
     if not run.get("id"):
         bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
         bundle.logs = "manual dispatch without workflow_run payload"
         return bundle
 
@@ -194,16 +213,19 @@ def build_failure_bundle(
         jobs_payload = _api_get(jobs_url, token)
     except urllib.error.HTTPError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
         bundle.logs = f"failed to fetch jobs payload: HTTP {exc.code}"
         return bundle
     except urllib.error.URLError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
         bundle.logs = f"failed to fetch jobs payload: {exc.reason}"
         return bundle
 
     failed_jobs = [job for job in jobs_payload.get("jobs", []) if job.get("conclusion") == "failure"]
     if not failed_jobs:
         bundle.support_mode = SupportMode.REPORT_ONLY
+        bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
         bundle.logs = "no failed jobs found"
         return bundle
 
@@ -258,6 +280,7 @@ def build_failure_bundle(
     bundle.evidence.append(f"jobs_api={jobs_url}")
     if junit_path:
         bundle.junit_xml = str(junit_path)
+    bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode)
     return bundle
 
 
