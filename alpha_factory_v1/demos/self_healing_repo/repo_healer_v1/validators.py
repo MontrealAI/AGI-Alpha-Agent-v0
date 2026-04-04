@@ -64,7 +64,7 @@ REGISTRY: dict[ValidatorClass, ValidatorPlan] = {
     ),
     ValidatorClass.SMOKE: ValidatorPlan(
         targeted=DEFAULT_SMOKE_TARGETED,
-        broader=[PYTHON, "-m", "pytest", "tests/test_ping_agent.py", "tests/test_af_requests.py", "-q"],
+        broader=[PYTHON, "-m", "pytest", "-q"],
     ),
     ValidatorClass.MKDOCS: ValidatorPlan(
         targeted=["mkdocs", "build", "--strict"],
