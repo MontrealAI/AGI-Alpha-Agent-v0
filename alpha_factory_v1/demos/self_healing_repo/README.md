@@ -79,6 +79,9 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
+  - Failure bundles include explicit `failure_class` values (`SAFE_AUTOPATCH`,
+    `DIAGNOSE_ONLY`, `PERMISSION_OR_FORK_CONTEXT`, etc.) so downstream systems
+    can reason about policy-safe automation vs refusal paths without parsing logs.
 - Workflow runs dry-run validation by default and downgrades early run attempts to report-only until rerun surfaces settle.
 
 ## Local replay
@@ -114,6 +117,8 @@ Cases (all against this repository in an isolated copy):
 The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes. For determinism and bounded runtime it executes targeted validators only (the full engine still runs targeted + broader validators by default).
 If a required validator binary is unavailable in the local environment (for example, `mkdocs`), that case is marked as
 `SKIPPED_MISSING_VALIDATOR` in the machine-readable output instead of being misreported as a failed auto-repair.
+Cases that are intentionally non-autopatchable by policy are reported as
+`REFUSED_SAFE`.
 
 ## Legacy demo wrapper
 

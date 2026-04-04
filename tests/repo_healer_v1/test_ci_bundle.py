@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import urllib.error
 from pathlib import Path
 
 import pytest
@@ -50,6 +51,7 @@ def test_build_failure_bundle_from_workflow_run_event(tmp_path: Path, monkeypatc
     assert bundle.step == "Ruff check"
     assert bundle.validator_class == ValidatorClass.RUFF
     assert bundle.support_mode == SupportMode.AUTOPATCH_SAFE
+    assert bundle.failure_class == "SAFE_AUTOPATCH"
     assert bundle.artifacts["run_attempt"] == "2"
     assert bundle.event == "workflow_run"
     assert bundle.branch == "feature/repro"
@@ -62,6 +64,35 @@ def test_build_failure_bundle_manual_dispatch_is_report_only(tmp_path: Path) -> 
     bundle = build_failure_bundle(event_path, repository="org/repo", token=None)
 
     assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == "DIAGNOSE_ONLY"
+
+
+def test_build_failure_bundle_jobs_api_error_sets_typed_failure_class(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    event = {
+        "workflow_run": {
+            "id": 707,
+            "name": "✅ PR CI",
+            "head_sha": "dead123",
+            "head_branch": "feature/api-error",
+            "conclusion": "failure",
+            "run_attempt": 2,
+        }
+    }
+    event_path = tmp_path / "event.json"
+    event_path.write_text(json.dumps(event), encoding="utf-8")
+
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import ci_bundle
+
+    def fake_api_get(_url: str, _token: str | None) -> dict[str, object]:
+        raise urllib.error.URLError("network down")
+
+    monkeypatch.setattr(ci_bundle, "_api_get", fake_api_get)
+    bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
+
+    assert bundle.support_mode == SupportMode.REPORT_ONLY
+    assert bundle.failure_class == "DIAGNOSE_ONLY"
 
 
 def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -97,6 +128,7 @@ def test_build_failure_bundle_marks_fork_context(tmp_path: Path, monkeypatch: py
     bundle = build_failure_bundle(event_path, repository="org/repo", token="token")
 
     assert bundle.support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT
+    assert bundle.failure_class == "PERMISSION_OR_FORK_CONTEXT"
 
 
 def test_build_failure_bundle_includes_junit_failure_signal(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

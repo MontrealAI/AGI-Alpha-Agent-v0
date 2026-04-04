@@ -13,7 +13,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, cast
 
-from .models import FailureBundle, FailureSignal, SupportMode, ValidatorClass
+from .models import FailureBundle, FailureClass, FailureSignal, SupportMode, ValidatorClass
 
 
 def _api_get(url: str, token: str | None) -> dict[str, Any]:
@@ -133,6 +133,27 @@ def _risk_tier(validator: ValidatorClass, platform: str) -> str:
     return "tier2"
 
 
+def _failure_class_for_bundle(
+    *,
+    validator: ValidatorClass,
+    support_mode: SupportMode,
+    platform: str,
+) -> str:
+    if support_mode == SupportMode.PERMISSION_OR_FORK_CONTEXT:
+        return FailureClass.PERMISSION_OR_FORK_CONTEXT.value
+    if support_mode == SupportMode.TRANSIENT_INFRA:
+        return FailureClass.TRANSIENT_INFRA.value
+    if support_mode == SupportMode.UNSAFE_PROTECTED_SURFACE:
+        return FailureClass.UNSAFE_PROTECTED_SURFACE.value
+    if support_mode in {SupportMode.REPORT_ONLY, SupportMode.DRAFT_PR_ONLY}:
+        return FailureClass.DIAGNOSE_ONLY.value
+    if platform.lower() in {"windows", "macos"}:
+        return FailureClass.UNSUPPORTED_PLATFORM.value
+    if validator == ValidatorClass.NONE:
+        return FailureClass.DIAGNOSE_ONLY.value
+    return FailureClass.SAFE_AUTOPATCH.value
+
+
 def _job_platform(job: dict[str, Any]) -> str:
     name = str(job.get("name", "")).lower()
     labels = [str(label).lower() for label in job.get("labels", [])]
@@ -183,10 +204,20 @@ def build_failure_bundle(
         if head_name and head_name.lower() != repository.lower():
             bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
             bundle.notes.append("workflow_run originates from fork context")
+            bundle.failure_class = _failure_class_for_bundle(
+                validator=bundle.validator_class,
+                support_mode=bundle.support_mode,
+                platform=bundle.platform,
+            )
 
     if not run.get("id"):
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = "manual dispatch without workflow_run payload"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     jobs_url = f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/jobs?per_page=100"
@@ -195,16 +226,31 @@ def build_failure_bundle(
     except urllib.error.HTTPError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = f"failed to fetch jobs payload: HTTP {exc.code}"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
     except urllib.error.URLError as exc:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = f"failed to fetch jobs payload: {exc.reason}"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     failed_jobs = [job for job in jobs_payload.get("jobs", []) if job.get("conclusion") == "failure"]
     if not failed_jobs:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.logs = "no failed jobs found"
+        bundle.failure_class = _failure_class_for_bundle(
+            validator=bundle.validator_class,
+            support_mode=bundle.support_mode,
+            platform=bundle.platform,
+        )
         return bundle
 
     failed_job = _select_failed_job(failed_jobs)
@@ -250,6 +296,11 @@ def build_failure_bundle(
     bundle.candidate_files = candidate_files
     bundle.reproduction_command = _default_reproduction_command(validator, candidate_files)
     bundle.risk_tier = _risk_tier(validator, platform)
+    bundle.failure_class = _failure_class_for_bundle(
+        validator=validator,
+        support_mode=bundle.support_mode,
+        platform=platform,
+    )
     bundle.annotations = annotations
     bundle.artifacts["jobs_api"] = jobs_url
     bundle.artifacts["run_html_url"] = str(run.get("html_url", ""))

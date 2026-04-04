@@ -21,6 +21,6 @@ def test_seeded_benchmark_machine_readable() -> None:
         "non_autofix_permissions",
     }
     for row in rows:
-        assert row["status"] in {"HEALED", "NOT_HEALED", "SKIPPED_MISSING_VALIDATOR"}
+        assert row["status"] in {"HEALED", "NOT_HEALED", "SKIPPED_MISSING_VALIDATOR", "REFUSED_SAFE"}
         assert isinstance(row["reproducible"], bool)
         assert isinstance(row["candidate_count"], int)

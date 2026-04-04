@@ -207,6 +207,8 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
             healed_rc = _run(case.baseline_cmd, cwd=work_repo)
             if not reproducible:
                 status = "SKIPPED_MISSING_VALIDATOR"
+            elif report.support_mode in {SupportMode.REPORT_ONLY, SupportMode.DRAFT_PR_ONLY}:
+                status = "REFUSED_SAFE"
             elif report.success and healed_rc == 0:
                 status = "HEALED"
             else:
