@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import io
 import json
 from pathlib import Path
@@ -77,4 +78,9 @@ def test_verification_succeeds_without_requests_dependency(monkeypatch):
 
 def test_script_does_not_import_requests() -> None:
     script = Path("scripts/verify_branch_protection.py").read_text(encoding="utf-8")
-    assert "import requests" not in script
+    tree = ast.parse(script)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            assert all(alias.name != "requests" for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            assert node.module != "requests"
