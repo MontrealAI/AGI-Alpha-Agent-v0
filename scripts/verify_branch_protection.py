@@ -13,10 +13,10 @@ import argparse
 import json
 import os
 import sys
+import urllib.error
+import urllib.request
 from pathlib import Path
-from typing import Iterable
-
-import requests
+from typing import Any, Iterable, Sequence
 
 API_URL = "https://api.github.com"
 API_VERSION = "2022-11-28"
@@ -35,6 +35,40 @@ def _build_headers(token: str) -> dict[str, str]:
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": API_VERSION,
     }
+
+
+def _api_request(
+    method: str,
+    url: str,
+    token: str,
+    *,
+    payload: dict[str, Any] | None = None,
+) -> tuple[int, dict[str, Any] | None, str]:
+    body = None
+    if payload is not None:
+        body = json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(url, data=body, method=method)
+    for key, value in _build_headers(token).items():
+        request.add_header(key, value)
+    if body is not None:
+        request.add_header("Content-Type", "application/json")
+
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310
+            response_body = response.read().decode("utf-8", errors="replace")
+            parsed = json.loads(response_body) if response_body else None
+            return response.status, parsed if isinstance(parsed, dict) else None, response_body
+    except urllib.error.HTTPError as exc:
+        response_body = exc.read().decode("utf-8", errors="replace")
+        parsed = None
+        if response_body:
+            try:
+                decoded = json.loads(response_body)
+            except json.JSONDecodeError:
+                decoded = None
+            if isinstance(decoded, dict):
+                parsed = decoded
+        return exc.code, parsed, response_body
 
 
 def _configure_required_checks(
@@ -59,8 +93,8 @@ def _configure_required_checks(
             for context in required_checks
         ],
     }
-    response = requests.patch(url, headers=_build_headers(token), json=payload, timeout=30)
-    if response.status_code == 404:
+    status, _, response_text = _api_request("PATCH", url, token, payload=payload)
+    if status == 404:
         # Branch protection may be disabled entirely; fall back to enabling it with
         # the expected required checks so future queries succeed.
         protection_url = f"{API_URL}/repos/{owner}/{repo}/branches/{branch}/protection"
@@ -81,18 +115,13 @@ def _configure_required_checks(
             "required_conversation_resolution": True,
             "lock_branch": False,
         }
-        response = requests.put(
-            protection_url,
-            headers=_build_headers(token),
-            json=protection_payload,
-            timeout=30,
-        )
+        status, _, response_text = _api_request("PUT", protection_url, token, payload=protection_payload)
 
-    if not response.ok:
-        raise RuntimeError("failed to enforce required status checks: " f"{response.status_code} {response.text}")
+    if status < 200 or status >= 300:
+        raise RuntimeError(f"failed to enforce required status checks: {status} {response_text}")
 
 
-def _required_contexts(protection: dict) -> set[str]:
+def _required_contexts(protection: dict[str, Any]) -> set[str]:
     contexts: set[str] = set()
     status_checks = protection.get("required_status_checks") or {}
     contexts.update(status_checks.get("contexts") or [])
@@ -103,7 +132,7 @@ def _required_contexts(protection: dict) -> set[str]:
     return contexts
 
 
-def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
+def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--owner", help="GitHub repository owner (default: from GITHUB_REPOSITORY)")
     parser.add_argument("--repo", help="GitHub repository name (default: from GITHUB_REPOSITORY)")
@@ -153,7 +182,8 @@ def _load_required_checks(path: Path) -> list[str]:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
-    args = _parse_args(sys.argv[1:] if argv is None else argv)
+    args_source = sys.argv[1:] if argv is None else list(argv)
+    args = _parse_args(args_source)
     repo_env = os.environ.get("GITHUB_REPOSITORY", ":").split("/", maxsplit=1)
     owner = args.owner or repo_env[0]
     repo = args.repo or (repo_env[1] if len(repo_env) > 1 else "")
@@ -181,11 +211,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         sys.stderr.write("error: required checks list is empty; provide --required-check or a checks file\n")
         return 1
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{args.branch}/protection"
-    response = requests.get(url, headers=_build_headers(token), timeout=30)
-    if response.status_code == 403:
+    status, protection, response_text = _api_request("GET", url, token)
+    if status == 403:
         sys.stderr.write("::warning::Missing permission to read branch protection; skipping verification.\n")
         return 0
-    if response.status_code == 404:
+    if status == 404:
         if not args.apply:
             sys.stderr.write(f"error: branch '{args.branch}' is not protected or not visible\n")
             return 1
@@ -197,12 +227,10 @@ def main(argv: Iterable[str] | None = None) -> int:
             required_checks=required_checks,
             strict=not args.skip_strict,
         )
-        response = requests.get(url, headers=_build_headers(token), timeout=30)
-    if not response.ok:
-        sys.stderr.write(f"error: failed to read protection for {owner}/{repo}@{args.branch}: {response.text}\n")
+        status, protection, response_text = _api_request("GET", url, token)
+    if status < 200 or status >= 300 or protection is None:
+        sys.stderr.write(f"error: failed to read protection for {owner}/{repo}@{args.branch}: {response_text}\n")
         return 1
-
-    protection = response.json()
 
     status_checks = protection.get("required_status_checks")
     if not status_checks:
@@ -217,7 +245,8 @@ def main(argv: Iterable[str] | None = None) -> int:
             required_checks=required_checks,
             strict=not args.skip_strict,
         )
-        protection = requests.get(url, headers=_build_headers(token), timeout=30).json()
+        _, protection, _ = _api_request("GET", url, token)
+        protection = protection or {}
         status_checks = protection.get("required_status_checks") or {}
 
     contexts = _required_contexts(protection)
@@ -233,10 +262,11 @@ def main(argv: Iterable[str] | None = None) -> int:
             required_checks=required_checks,
             strict=not args.skip_strict,
         )
-        protection = requests.get(url, headers=_build_headers(token), timeout=30).json()
+        _, protection, _ = _api_request("GET", url, token)
+        protection = protection or {}
         contexts = _required_contexts(protection)
         missing = sorted(set(required_checks) - contexts)
-        strict_enforced = protection.get("required_status_checks", {}).get("strict", False)
+        strict_enforced = (protection.get("required_status_checks") or {}).get("strict", False)
 
     if missing:
         sys.stderr.write("error: missing required checks:\n")
