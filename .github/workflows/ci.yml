@@ -261,6 +261,7 @@ jobs:
       NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/tests
       NPM_CONFIG_FUND: 'false'
       NPM_CONFIG_AUDIT: 'false'
+      FULL_RELEASE_CONTEXT: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
     strategy:
       fail-fast: false
       matrix:
@@ -315,11 +316,13 @@ jobs:
           python check_env.py --auto-install --demo macro_sentinel
       # Install Node.js and cache dependencies using both lockfiles
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: ${{ env.NODE_LOCKFILES }}
       - name: Cache Playwright browsers
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         uses: actions/cache@v5.0.4 # 668228422ae6a00e4ad889ee87cd7109ec5666a7
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
@@ -327,6 +330,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
       - name: Configure npm
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: |
           npm config set fund false
           npm config set audit false
@@ -336,37 +340,47 @@ jobs:
         env:
           SANDBOX_IMAGE: ${{ env.SANDBOX_IMAGE || 'selfheal-sandbox:latest' }}
       - uses: ./.github/actions/setup-insight-assets
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
       - name: Install insight browser dependencies
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: |
           rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
       # asset verification handled by setup-insight-assets
       - name: Update browserslist database (Insight demo)
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
         run: npx update-browserslist-db --update-db --yes
       - name: Audit insight browser dependencies
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         # Fail only on critical vulnerabilities to reduce noise while still blocking
         # severe supply-chain issues. High/Moderate advisories frequently surface in
         # transient transitive dependencies and are tracked separately via Dependabot.
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=critical
       - name: Run insight browser tests
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         env:
           CI: 'true'
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 test
       - name: Install web dependencies
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: |
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           npm ci --prefix alpha_factory_v1/core/interface/web_client
       - name: Update browserslist database (Web client)
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         working-directory: alpha_factory_v1/core/interface/web_client
         run: npx update-browserslist-db --update-db --yes
       - name: Audit web dependencies
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         # Aligns with the reduced-noise audit gate above while still enforcing
         # actionable supply-chain hygiene on the primary web client bundle.
         run: npm --prefix alpha_factory_v1/core/interface/web_client audit --production --audit-level=critical
       - name: Type check insight browser
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run typecheck
       - name: Verify protobuf
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: make proto-verify
       - name: Clean caches before pytest
         run: |
@@ -395,14 +409,16 @@ jobs:
             pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml
           fi
       - name: Mutation tests
-        if: matrix.python-version == '3.11'
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' && matrix.python-version == '3.11' }}
         run: |
           mutmut run --paths-to-mutate alpha_factory_v1/demos/alpha_agi_insight_v1/src --runner "pytest -q"
       - name: Run benchmark
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: |
           pytest tests/test_benchmark.py -q
           cat tests/benchmarks/latest.json
       - name: Check benchmark result
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         id: bench-check
         run: |
           if [[ -f tests/benchmarks/latest.json ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
@@ -413,6 +429,7 @@ jobs:
           name: benchmark-results
           path: tests/benchmarks/latest.json
       - name: Generate benchmark comment
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' }}
         run: |
           python - <<'PY'
           import json
@@ -422,7 +439,7 @@ jobs:
               f.write(f"tokens used: {data['tokens']}\n")
           PY
       - name: Comment benchmark
-        if: ${{ github.event.pull_request }}
+        if: ${{ env.FULL_RELEASE_CONTEXT == 'true' && github.event.pull_request }}
         uses: marocchino/sticky-pull-request-comment@v3.0.3 # d4d6b0936434b21bc8345ad45a440c5f7d2c40ff
         with:
           header: benchmark

@@ -27,6 +27,7 @@ Jobs:
 This workflow intentionally does **not** run on `pull_request` or `merge_group`.
 On `push` to `main`, it runs a **lean integration surface** (owner/actionlint, Linux lint+type and smoke-aligned pytest replay, docs-check).
 On tags/manual dispatch it expands to the full release matrix (dual-version lint/type/test, docs build validation, Docker/signing/deploy path checks).
+The lean `push` path intentionally skips release-only browser/audit, mutation-testing, benchmark-commentary, docs-build, and Docker-signing jobs to keep merge-to-`main` signal stable and high-value.
 
 ## Branch protection (required checks)
 

@@ -76,6 +76,7 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
 Workflow: `.github/workflows/repo-healer.yml`
 
 - Trigger: failed `workflow_run` from real CI workflows + manual dispatch.
+- In `workflow_run` mode, checkout is pinned to `workflow_run.head_sha` so diagnosis/patch attempts evaluate the exact failing revision.
 - Emits structured artifacts:
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
