@@ -95,6 +95,17 @@ def test_default_workflows_for_integration_workflow_run(tmp_path):
     assert workflows == ["ci.yml"]
 
 
+def test_default_workflows_for_docs_workflow_run(tmp_path):
+    event_path = tmp_path / "event.json"
+    event_path.write_text(
+        json.dumps({"workflow_run": {"name": "📚 Docs"}}),
+        encoding="utf-8",
+    )
+
+    workflows = check_ci_status._default_workflows_for_event(str(event_path))
+    assert workflows == ["docs.yml"]
+
+
 def test_dispatch_missing_does_not_dispatch_failed_workflows(monkeypatch):
     monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
 
