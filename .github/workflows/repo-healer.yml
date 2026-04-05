@@ -9,6 +9,11 @@ on:
       - "📚 Docs"
     types: [completed]
   workflow_dispatch:
+    inputs:
+      apply-after-attempt:
+        description: "Minimum run attempt before AUTOPATCH_SAFE apply mode is allowed"
+        required: false
+        default: "2"
 
 permissions:
   contents: read
@@ -28,6 +33,7 @@ jobs:
       - name: Build structured failure bundle
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          REPO_HEALER_APPLY_AFTER_ATTEMPT: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs['apply-after-attempt']) || vars.REPO_HEALER_APPLY_AFTER_ATTEMPT || '2' }}
         run: |
           python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.ci_bundle \
             --event-path "$GITHUB_EVENT_PATH" \
@@ -40,14 +46,34 @@ jobs:
         run: |
           MODE=$(python - <<'PY'
           import json
+          import os
+          import sys
           from pathlib import Path
 
           bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
           support_mode = bundle.get("support_mode", "AUTOPATCH_SAFE")
+          run_attempt = int(bundle.get("run_attempt", 1))
+          raw_threshold = os.getenv("REPO_HEALER_APPLY_AFTER_ATTEMPT", "2") or "2"
+          try:
+              apply_after_attempt = int(raw_threshold)
+          except ValueError:
+              print(
+                  f"invalid REPO_HEALER_APPLY_AFTER_ATTEMPT={raw_threshold!r}; using default 2",
+                  file=sys.stderr,
+              )
+              apply_after_attempt = 2
+          if apply_after_attempt < 1:
+              print(
+                  f"non-positive REPO_HEALER_APPLY_AFTER_ATTEMPT={apply_after_attempt}; clamping to 1",
+                  file=sys.stderr,
+              )
+              apply_after_attempt = 1
           if support_mode != "AUTOPATCH_SAFE":
               print("REPORT_ONLY")
+          elif run_attempt < apply_after_attempt:
+              print("DRY_RUN")
           else:
-              print("AUTOPATCH_SAFE")
+              print("APPLY")
           PY
           )
 
@@ -58,7 +84,7 @@ jobs:
               --candidates repo_healer_candidates.json \
               --report repo_healer_report.json \
               --report-only
-          else
+          elif [ "$MODE" = "DRY_RUN" ]; then
             set +e
             python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
               --repo . \
@@ -78,7 +104,15 @@ jobs:
                 --report repo_healer_report.json \
                 --report-only
             fi
+          else
+            python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+              --repo . \
+              --failure-bundle repo_healer_bundle.json \
+              --candidates repo_healer_candidates.json \
+              --report repo_healer_report.json
           fi
+        env:
+          REPO_HEALER_APPLY_AFTER_ATTEMPT: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs['apply-after-attempt']) || vars.REPO_HEALER_APPLY_AFTER_ATTEMPT || '2' }}
 
       - name: Upload repo-healer artifacts
         if: ${{ always() }}
