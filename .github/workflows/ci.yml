@@ -398,13 +398,31 @@ jobs:
         if: matrix.python-version == '3.11'
         run: |
           mutmut --version
+          python - <<'PY'
+          import pathlib
+          import tomllib
+
+          pyproject = pathlib.Path("pyproject.toml")
+          cfg = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+          mutmut_cfg = cfg.get("tool", {}).get("mutmut")
+          if not mutmut_cfg:
+              raise SystemExit("[tool.mutmut] must be configured in pyproject.toml")
+          if not mutmut_cfg.get("paths_to_mutate"):
+              raise SystemExit("[tool.mutmut].paths_to_mutate must be configured")
+          PY
           mutmut_help="$(mutmut run --help 2>&1 || true)"
+          args=()
           if printf '%s\n' "$mutmut_help" | grep -q -- '--paths-to-mutate'; then
-            mutmut run --paths-to-mutate alpha_factory_v1/demos/alpha_agi_insight_v1/src --runner "pytest -q"
+            args+=(--paths-to-mutate alpha_factory_v1/demos/alpha_agi_insight_v1/src)
           else
             echo "::notice::mutmut CLI does not support --paths-to-mutate; using pyproject.toml [tool.mutmut] configuration."
-            mutmut run --runner "pytest -q"
           fi
+          if printf '%s\n' "$mutmut_help" | grep -q -- '--runner'; then
+            args+=(--runner "pytest -q")
+          else
+            echo "::notice::mutmut CLI does not support --runner; using pyproject.toml/default mutmut test command."
+          fi
+          mutmut run "${args[@]}"
       - name: Run benchmark
         run: |
           pytest tests/test_benchmark.py -q
