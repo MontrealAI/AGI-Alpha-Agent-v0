@@ -36,6 +36,8 @@ DEFAULT_WORKFLOWS = ("pr-ci.yml",)
 WORKFLOW_NAME_TO_FILE = {
     "✅ PR CI": "pr-ci.yml",
     "🚀 Integration CI — Insight Demo": "ci.yml",
+    "🔥 Smoke Test": "smoke.yml",
+    "📚 Docs": "docs.yml",
 }
 
 
