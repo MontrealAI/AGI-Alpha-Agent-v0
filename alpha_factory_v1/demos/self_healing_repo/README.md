@@ -82,8 +82,8 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_report.json`
 - Execution modes are context-aware:
   - `workflow_dispatch`: report-only diagnosis by default for ordinary manual runs (because no failed workflow-run bundle is attached), but mode selection still honors the configured threshold when an `AUTOPATCH_SAFE` bundle is supplied.
-  - `workflow_run` with `run_attempt < 2`: dry-run only after CI Health rerun handoff.
-  - `workflow_run` with `run_attempt >= 2` and `AUTOPATCH_SAFE`: bounded apply mode in checkout, still no auto-merge/no branch-protection changes.
+  - `workflow_run` with `run_attempt` below `REPO_HEALER_APPLY_AFTER_ATTEMPT`: report-only triage in bundle ingestion, then dry-run/apply remains blocked.
+  - `workflow_run` with `run_attempt >= REPO_HEALER_APPLY_AFTER_ATTEMPT` and `AUTOPATCH_SAFE`: bounded apply mode in checkout, still no auto-merge/no branch-protection changes.
   - Apply threshold can be tuned for all events via repository variable `REPO_HEALER_APPLY_AFTER_ATTEMPT`; `workflow_dispatch` input only overrides it for that manual run.
 
 ## Local replay

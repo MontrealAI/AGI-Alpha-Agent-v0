@@ -25,6 +25,16 @@ SUPPORTED_WORKFLOW_PATHS = {
 }
 
 
+def _autopatch_min_attempt() -> int:
+    """Return minimum run attempt before autopatch/dry-run can proceed."""
+    raw = os.getenv("REPO_HEALER_APPLY_AFTER_ATTEMPT", "2") or "2"
+    try:
+        parsed = int(raw)
+    except ValueError:
+        return 2
+    return parsed if parsed > 0 else 1
+
+
 def _normalize_workflow_path(path: str) -> str:
     """Normalize workflow_run.path values to repository-relative workflow file paths."""
     trimmed = path.strip()
@@ -263,11 +273,12 @@ def build_failure_bundle(
         bundle.artifacts["run_logs_url"] = str(run.get("logs_url"))
         bundle.evidence.append(f"run_logs_url={run.get('logs_url')}")
 
-    report_only_locked = bundle.run_attempt < 2
+    min_attempt = _autopatch_min_attempt()
+    report_only_locked = bundle.run_attempt < min_attempt
     if report_only_locked:
         bundle.support_mode = SupportMode.REPORT_ONLY
         bundle.failure_class = _failure_class_for_support_mode(bundle.support_mode).value
-        bundle.notes.append("run_attempt<2: report-only until CI Health rerun is available")
+        bundle.notes.append(f"run_attempt<{min_attempt}: report-only until CI Health rerun is available")
 
     if run_path and run_path not in SUPPORTED_WORKFLOW_PATHS:
         bundle.support_mode = SupportMode.REPORT_ONLY
@@ -284,7 +295,7 @@ def build_failure_bundle(
         if head_name and head_name.lower() != repository.lower():
             if report_only_locked:
                 bundle.notes.append(
-                    "workflow_run originates from fork context (suppressed by run_attempt<2 report-only)"
+                    f"workflow_run originates from fork context (suppressed by run_attempt<{min_attempt} report-only)"
                 )
             else:
                 bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
