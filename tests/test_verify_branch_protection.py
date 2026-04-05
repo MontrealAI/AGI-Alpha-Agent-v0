@@ -81,6 +81,6 @@ def test_script_does_not_import_requests() -> None:
     tree = ast.parse(script)
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
-            assert all(alias.name != "requests" for alias in node.names)
+            assert all(not alias.name.startswith("requests") for alias in node.names)
         elif isinstance(node, ast.ImportFrom):
-            assert node.module != "requests"
+            assert not (node.module or "").startswith("requests")
