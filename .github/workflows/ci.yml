@@ -410,19 +410,9 @@ jobs:
           if not mutmut_cfg.get("paths_to_mutate"):
               raise SystemExit("[tool.mutmut].paths_to_mutate must be configured")
           PY
-          mutmut_help="$(mutmut run --help 2>&1 || true)"
-          args=()
-          if printf '%s\n' "$mutmut_help" | grep -q -- '--paths-to-mutate'; then
-            args+=(--paths-to-mutate alpha_factory_v1/demos/alpha_agi_insight_v1/src)
-          else
-            echo "::notice::mutmut CLI does not support --paths-to-mutate; using pyproject.toml [tool.mutmut] configuration."
-          fi
-          if printf '%s\n' "$mutmut_help" | grep -q -- '--runner'; then
-            args+=(--runner "pytest -q")
-          else
-            echo "::notice::mutmut CLI does not support --runner; using pyproject.toml/default mutmut test command."
-          fi
-          mutmut run "${args[@]}"
+          # mutmut 3.3.0 rejects legacy CLI flags such as --paths-to-mutate and --runner.
+          # Keep CI stable by relying on pyproject.toml [tool.mutmut] config only.
+          mutmut run
       - name: Run benchmark
         run: |
           pytest tests/test_benchmark.py -q
