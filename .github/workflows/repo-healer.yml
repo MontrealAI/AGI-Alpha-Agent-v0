@@ -105,11 +105,24 @@ jobs:
                 --report-only
             fi
           else
+            set +e
             python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
               --repo . \
               --failure-bundle repo_healer_bundle.json \
               --candidates repo_healer_candidates.json \
               --report repo_healer_report.json
+            apply_rc=$?
+            set -e
+
+            if [ "$apply_rc" -ne 0 ]; then
+              echo "::warning::Repo-Healer apply-mode found no safe candidate; emitting report-only diagnosis artifact."
+              python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
+                --repo . \
+                --failure-bundle repo_healer_bundle.json \
+                --candidates repo_healer_candidates.json \
+                --report repo_healer_report.json \
+                --report-only
+            fi
           fi
         env:
           REPO_HEALER_APPLY_AFTER_ATTEMPT: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs['apply-after-attempt']) || vars.REPO_HEALER_APPLY_AFTER_ATTEMPT || '2' }}
