@@ -398,7 +398,8 @@ jobs:
         if: matrix.python-version == '3.11'
         run: |
           mutmut --version
-          if mutmut run --help | grep -q -- '--paths-to-mutate'; then
+          mutmut_help="$(mutmut run --help 2>&1 || true)"
+          if printf '%s\n' "$mutmut_help" | grep -q -- '--paths-to-mutate'; then
             mutmut run --paths-to-mutate alpha_factory_v1/demos/alpha_agi_insight_v1/src --runner "pytest -q"
           else
             echo "::notice::mutmut CLI does not support --paths-to-mutate; using pyproject.toml [tool.mutmut] configuration."
