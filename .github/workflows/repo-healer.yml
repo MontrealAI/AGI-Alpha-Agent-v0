@@ -46,6 +46,7 @@ jobs:
           MODE=$(python - <<'PY'
           import json
           import os
+          import sys
           from pathlib import Path
 
           bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
@@ -56,10 +57,16 @@ jobs:
           try:
               apply_after_attempt = int(raw_threshold)
           except ValueError:
-              print(f"invalid REPO_HEALER_APPLY_AFTER_ATTEMPT={raw_threshold!r}; using default 2")
+              print(
+                  f"invalid REPO_HEALER_APPLY_AFTER_ATTEMPT={raw_threshold!r}; using default 2",
+                  file=sys.stderr,
+              )
               apply_after_attempt = 2
           if apply_after_attempt < 1:
-              print(f"non-positive REPO_HEALER_APPLY_AFTER_ATTEMPT={apply_after_attempt}; clamping to 1")
+              print(
+                  f"non-positive REPO_HEALER_APPLY_AFTER_ATTEMPT={apply_after_attempt}; clamping to 1",
+                  file=sys.stderr,
+              )
               apply_after_attempt = 1
           if event_name == "workflow_dispatch":
               print("REPORT_ONLY")
