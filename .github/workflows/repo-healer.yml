@@ -48,11 +48,18 @@ jobs:
           import os
           from pathlib import Path
 
+          def _safe_int(value: str | None, default: int) -> int:
+              try:
+                  parsed = int((value or "").strip())
+              except (TypeError, ValueError):
+                  return default
+              return parsed if parsed > 0 else default
+
           bundle = json.loads(Path("repo_healer_bundle.json").read_text(encoding="utf-8"))
           support_mode = bundle.get("support_mode", "AUTOPATCH_SAFE")
           run_attempt = int(bundle.get("run_attempt", 1))
           event_name = os.getenv("GITHUB_EVENT_NAME", "")
-          apply_after_attempt = int(os.getenv("REPO_HEALER_APPLY_AFTER_ATTEMPT", "2") or "2")
+          apply_after_attempt = _safe_int(os.getenv("REPO_HEALER_APPLY_AFTER_ATTEMPT"), 2)
           if event_name == "workflow_dispatch":
               print("REPORT_ONLY")
           elif support_mode != "AUTOPATCH_SAFE":
