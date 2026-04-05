@@ -69,9 +69,7 @@ jobs:
           python -m pip install --upgrade pip
           # keep runtime lean by installing only the libraries required by the
           # watchdog scripts.
-          python -m pip install \
-            pyyaml \
-            "requests>=2.32,<3"
+          python -m pip install pyyaml
       - name: Check CI health and remediate
         env:
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
