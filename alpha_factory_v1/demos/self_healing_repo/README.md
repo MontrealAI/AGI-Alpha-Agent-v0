@@ -80,7 +80,10 @@ Workflow: `.github/workflows/repo-healer.yml`
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Workflow runs dry-run validation by default and downgrades early run attempts to report-only until rerun surfaces settle.
+- Execution modes are context-aware:
+  - `workflow_dispatch`: report-only diagnosis by default.
+  - `workflow_run` with `run_attempt < 2`: dry-run only after CI Health rerun handoff.
+  - `workflow_run` with `run_attempt >= 2` and `AUTOPATCH_SAFE`: bounded apply mode in checkout, still no auto-merge/no branch-protection changes.
 
 ## Local replay
 

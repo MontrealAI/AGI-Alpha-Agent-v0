@@ -283,7 +283,9 @@ def build_failure_bundle(
         head_name = str(head_repo.get("full_name") or "")
         if head_name and head_name.lower() != repository.lower():
             if report_only_locked:
-                bundle.notes.append("workflow_run originates from fork context (suppressed by run_attempt<2 report-only)")
+                bundle.notes.append(
+                    "workflow_run originates from fork context (suppressed by run_attempt<2 report-only)"
+                )
             else:
                 bundle.support_mode = SupportMode.PERMISSION_OR_FORK_CONTEXT
                 bundle.notes.append("workflow_run originates from fork context")
@@ -367,7 +369,11 @@ def build_failure_bundle(
         bundle.artifacts["job_html_url"] = bundle.job_url
 
     inferred_mode = _step_support_mode(job_name, step_name, platform)
-    if not report_only_locked and bundle.support_mode == SupportMode.AUTOPATCH_SAFE and inferred_mode != SupportMode.AUTOPATCH_SAFE:
+    if (
+        not report_only_locked
+        and bundle.support_mode == SupportMode.AUTOPATCH_SAFE
+        and inferred_mode != SupportMode.AUTOPATCH_SAFE
+    ):
         bundle.support_mode = inferred_mode
         bundle.notes.append(f"support_mode inferred from failed step metadata: {inferred_mode.value}")
 
