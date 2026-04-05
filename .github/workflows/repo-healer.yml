@@ -114,7 +114,7 @@ jobs:
               --report repo_healer_report.json
           fi
         env:
-          REPO_HEALER_APPLY_AFTER_ATTEMPT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['apply-after-attempt'] || '2' }}
+          REPO_HEALER_APPLY_AFTER_ATTEMPT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['apply-after-attempt'] || vars.REPO_HEALER_APPLY_AFTER_ATTEMPT || '2' }}
 
       - name: Upload repo-healer artifacts
         if: ${{ always() }}
