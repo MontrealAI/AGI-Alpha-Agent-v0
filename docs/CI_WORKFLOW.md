@@ -27,7 +27,7 @@ Jobs:
 This workflow intentionally does **not** run on `pull_request` or `merge_group`.
 On `push` to `main`, it runs a **lean integration surface** (owner/actionlint, Linux lint+type and smoke-aligned pytest replay, docs-check).
 On tags/manual dispatch it expands to the full release matrix (dual-version lint/type/test, docs build validation, Docker/signing/deploy path checks).
-Mutation testing in `ci.yml` is compatibility-guarded: it only passes `--paths-to-mutate` and `--runner` when those flags are supported by the installed mutmut CLI, otherwise it falls back to `[tool.mutmut]` from `pyproject.toml` and mutmut defaults so CLI drift does not break merges.
+Mutation testing in `ci.yml` is config-driven: the workflow always runs `mutmut run` and relies on `[tool.mutmut]` in `pyproject.toml` (no legacy `--paths-to-mutate`/`--runner` flags) so mutmut CLI changes do not break merge runs.
 
 ## Branch protection (required checks)
 
