@@ -21,6 +21,10 @@ repos:
       - id: semgrep
         args: ["--config", "semgrep.yml"]
         types: [python]
+        # Semgrep currently depends on opentelemetry instrumentation codepaths
+        # that still import pkg_resources. setuptools>=81 drops pkg_resources,
+        # so pin an older setuptools in the isolated hook env for Python 3.12.
+        additional_dependencies: ["setuptools<81"]
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: d0a0a0d7aa4e87ed0c7a31b5fcee1c20697718ff
     hooks:
