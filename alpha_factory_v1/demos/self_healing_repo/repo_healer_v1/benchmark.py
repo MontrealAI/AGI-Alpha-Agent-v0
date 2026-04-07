@@ -186,7 +186,17 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix="repo-healer-bench-") as tmp:
         work_repo = pathlib.Path(tmp) / "repo"
         shutil.copytree(
-            repo_root, work_repo, ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", ".mypy_cache")
+            repo_root,
+            work_repo,
+            ignore=shutil.ignore_patterns(
+                ".git",
+                ".cache",
+                "__pycache__",
+                ".pytest_cache",
+                ".mypy_cache",
+                ".ruff_cache",
+                "node_modules",
+            ),
         )
 
         for case in _build_cases():
