@@ -46,3 +46,16 @@ def test_build_demo_url_uses_http() -> None:
     assert url.startswith("http://127.0.0.1:9999/")
     assert url.endswith("/alpha_agi_insight_v1/index.html")
     assert not url.startswith("file://")
+
+
+def test_insight_importmap_contract_uses_local_d3_exports() -> None:
+    index = (DOCS_DIR / "alpha_agi_insight_v1" / "index.html").read_text(encoding="utf-8")
+    assert '"d3": "./d3.exports.js"' in index
+    assert 'src="d3.v7.min.js"' in index
+
+
+def test_d3_exports_include_observable_plot_projection_symbols() -> None:
+    exports = (DOCS_DIR / "alpha_agi_insight_v1" / "d3.exports.js").read_text(encoding="utf-8")
+    assert "export const geoAzimuthalEqualArea = d3.geoAzimuthalEqualArea;" in exports
+    assert "export const select = d3.select;" in exports
+    assert exports.count("export const ") >= 500
