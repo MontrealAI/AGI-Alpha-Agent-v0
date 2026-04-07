@@ -20,6 +20,7 @@ repos:
     hooks:
       - id: semgrep
         args: ["--config", "semgrep.yml"]
+        additional_dependencies: ["setuptools>=75,<81"]
         types: [python]
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: d0a0a0d7aa4e87ed0c7a31b5fcee1c20697718ff

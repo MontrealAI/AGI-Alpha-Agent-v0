@@ -28,6 +28,7 @@ This workflow intentionally does **not** run on `pull_request` or `merge_group`.
 On `push` to `main`, it runs the **full non-release integration surface** (actionlint, lint/type matrix, pytest matrix, Insight ESLint, Windows/macOS smoke, MkDocs, Docs Build, Docker build validation, branch-protection guardrails).
 On tags/manual dispatch it additionally runs release-only publish/sign/deploy path checks.
 Mutation testing in `ci.yml` is config-driven: the workflow always runs `mutmut run` and relies on `[tool.mutmut]` in `pyproject.toml` (no legacy `--paths-to-mutate`/`--runner` flags) so mutmut CLI changes do not break merge runs. For merge safety the mutmut scope is intentionally bounded to `scripts/mutation_smoke_target.py`, uses explicit pytest test-selection fields, mutates covered lines only, and runs under a 20-minute timeout guard. The merge surface pins `mutmut==3.3.0` via `requirements-dev.lock`, and tests assert the lock pin and merge-safe config contract remain intact.
+The Semgrep pre-commit hook is pinned with an explicit `setuptools` additional dependency so Python 3.12 hook environments still provide `pkg_resources` for the OpenTelemetry import path used by Semgrep.
 The merge-surface pytest/docs jobs and other merge validators enforce an npm cache lifecycle contract: when `actions/setup-node` uses `cache: npm` with `NPM_CONFIG_CACHE`, the directory is created before setup-node and is not removed later in the job so setup-node's post-step cache save always has a valid, populated path.
 
 ## Branch protection (required checks)
