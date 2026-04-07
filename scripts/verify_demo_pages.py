@@ -14,7 +14,9 @@ from threading import Thread
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
-DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DOCS_DIR = REPO_ROOT / "docs"
+SITE_DIR = REPO_ROOT / "site"
 READY_SELECTORS = (
     "main h1",
     "article h1",
@@ -34,8 +36,25 @@ class _SilentHandler(SimpleHTTPRequestHandler):
         return
 
 
-def iter_demos() -> list[Path]:
-    return sorted(p for p in DOCS_DIR.iterdir() if p.is_dir() and (p / "index.html").exists())
+def resolve_demo_pages_dir() -> Path:
+    """Resolve the demo-pages directory to verify.
+
+    The docs workflow first builds MkDocs output under ``site/`` and then runs
+    this verifier. To validate the *built* offline pages (not raw source docs),
+    prefer ``site/`` when available while retaining a local fallback to
+    ``docs/`` for developer workflows that have not run MkDocs yet.
+    """
+    configured = os.environ.get("DEMO_PAGES_DIR", "").strip()
+    if configured:
+        return Path(configured).expanduser().resolve()
+    insight_site = SITE_DIR / "alpha_agi_insight_v1" / "index.html"
+    if insight_site.is_file():
+        return SITE_DIR
+    return DOCS_DIR
+
+
+def iter_demos(pages_dir: Path) -> list[Path]:
+    return sorted(p for p in pages_dir.iterdir() if p.is_dir() and (p / "index.html").exists())
 
 
 def _readiness_state(page) -> dict[str, object]:
@@ -155,8 +174,8 @@ def _extract_failure_text(failure: object | None) -> str:
     return str(failure)
 
 
-def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
-    handler = partial(_SilentHandler, directory=str(DOCS_DIR))
+def _start_docs_server(pages_dir: Path) -> tuple[ThreadingHTTPServer, Thread, str]:
+    handler = partial(_SilentHandler, directory=str(pages_dir))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = Thread(target=server.serve_forever, name="docs-server", daemon=True)
     thread.start()
@@ -164,8 +183,8 @@ def _start_docs_server() -> tuple[ThreadingHTTPServer, Thread, str]:
     return server, thread, f"http://{host}:{port}"
 
 
-def _build_demo_url(base_url: str, demo: Path) -> str:
-    rel_path = demo.relative_to(DOCS_DIR).as_posix()
+def _build_demo_url(base_url: str, demo: Path, pages_dir: Path) -> str:
+    rel_path = demo.relative_to(pages_dir).as_posix()
     return f"{base_url.rstrip('/')}/{rel_path}/index.html"
 
 
@@ -214,13 +233,14 @@ def _log_diagnostics(
 
 
 def main() -> int:
-    demos = iter_demos()
+    pages_dir = resolve_demo_pages_dir()
+    demos = iter_demos(pages_dir)
     failures: list[str] = []
     server: ThreadingHTTPServer | None = None
     server_thread: Thread | None = None
     base_url = ""
     try:
-        server, server_thread, base_url = _start_docs_server()
+        server, server_thread, base_url = _start_docs_server(pages_dir)
         with sync_playwright() as p:
             browser = p.chromium.launch()
             context = browser.new_context(service_workers="block")
@@ -272,7 +292,7 @@ def main() -> int:
 
                     try:
                         response = page.goto(
-                            _build_demo_url(base_url, demo),
+                            _build_demo_url(base_url, demo, pages_dir),
                             wait_until="load",
                             timeout=DEFAULT_TIMEOUT_MS,
                         )
