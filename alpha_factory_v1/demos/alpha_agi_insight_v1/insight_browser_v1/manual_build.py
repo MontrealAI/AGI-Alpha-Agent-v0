@@ -406,22 +406,37 @@ out_html = out_html.replace(
         + 'crossorigin="anonymous"></script>'
     ),
 )
+out_html = re.sub(
+    r"""<link[^>]*href=["']https://cdn\.jsdelivr\.net/npm/daisyui@[^"']*["'][^>]*>\s*""",
+    '<link rel="stylesheet" href="style.css" />\n',
+    out_html,
+    flags=re.IGNORECASE,
+)
+out_html = re.sub(
+    r"""<script[^>]*\bsrc=["']https://cdn\.tailwindcss\.com["'][^>]*></script>\s*""",
+    "",
+    out_html,
+    flags=re.IGNORECASE,
+)
 env_script = inject_env()
 offline_html = extract_offline_html()
 out_html = re.sub(
-    r"<script[\s\S]*?d3\.v7\.min\.js[\s\S]*?</script>\s*",
+    r"""<script[^>]*\bsrc=["'][^"']*d3\.v7\.min\.js[^"']*["'][^>]*>\s*</script>\s*""",
     "",
     out_html,
+    flags=re.IGNORECASE,
 )
 out_html = re.sub(
-    r"<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?</script>\s*",
+    r"""<script[^>]*\bsrc=["'][^"']*bundle\.esm\.min\.js[^"']*["'][^>]*>\s*</script>\s*""",
     "",
     out_html,
+    flags=re.IGNORECASE,
 )
 out_html = re.sub(
-    r"<script[\s\S]*?pyodide\.js[\s\S]*?</script>\s*",
+    r"""<script[^>]*\bsrc=["'][^"']*pyodide\.js[^"']*["'][^>]*>\s*</script>\s*""",
     "",
     out_html,
+    flags=re.IGNORECASE,
 )
 out_html = out_html.replace(
     "</body>",

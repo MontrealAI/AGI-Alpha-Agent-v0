@@ -405,12 +405,21 @@ async function bundle() {
     const appSri =
         "sha384-" + createHash("sha384").update(data).digest("base64");
     const sriTag = `<script type="module" src="insight.bundle.js" integrity="${appSri}" crossorigin="anonymous"></script>`;
-    outHtml = outHtml.replace(scriptTag, sriTag)
+    outHtml = outHtml
         .replace(
-            /<script[\s\S]*?bundle\.esm\.min\.js[\s\S]*?<\/script>\s*/g,
+            /<link[^>]*href=["']https:\/\/cdn\.jsdelivr\.net\/npm\/daisyui@[^"']*["'][^>]*>\s*/gi,
+            '<link rel="stylesheet" href="style.css" />\n',
+        )
+        .replace(/<script[^>]*\bsrc=["']https:\/\/cdn\.tailwindcss\.com["'][^>]*><\/script>\s*/gi, "")
+        .replace(scriptTag, sriTag)
+        .replace(
+            /<script[^>]*\bsrc=["'][^"']*bundle\.esm\.min\.js[^"']*["'][^>]*>\s*<\/script>\s*/gi,
             "",
         )
-        .replace(/<script[\s\S]*?pyodide\.js[\s\S]*?<\/script>\s*/g, "")
+        .replace(
+            /<script[^>]*\bsrc=["'][^"']*pyodide\.js[^"']*["'][^>]*>\s*<\/script>\s*/gi,
+            "",
+        )
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
