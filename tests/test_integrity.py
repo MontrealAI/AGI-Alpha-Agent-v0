@@ -78,13 +78,22 @@ def test_unbundled_sri() -> None:
     index_file = BROWSER / "index.html"
     html = index_file.read_text()
     assets = {
-        "d3.v7.min.js": BROWSER / "d3.v7.min.js",
+        "assets/d3.v7.min.js": BROWSER / "assets/d3.v7.min.js",
         "bundle.esm.min.js": BROWSER / "lib/bundle.esm.min.js",
         "pyodide.js": BROWSER / "lib/pyodide.js",
     }
+    fallback_assets = {
+        "assets/d3.v7.min.js": ("d3.v7.min.js", BROWSER / "d3.v7.min.js"),
+    }
     for name, path in assets.items():
-        pattern = rf'<script[^>]*src=["\']{name}["\'][^>]*>'
+        pattern = rf'<script[^>]*src=["\']{re.escape(name)}["\'][^>]*>'
         match = re.search(pattern, html)
+        if not match and name in fallback_assets:
+            alt_name, alt_path = fallback_assets[name]
+            pattern = rf'<script[^>]*src=["\']{re.escape(alt_name)}["\'][^>]*>'
+            match = re.search(pattern, html)
+            if match:
+                path = alt_path
         assert match, f"{name} script tag missing"
         tag = match.group(0)
         integrity = re.search(r'integrity=["\']([^"\']+)["\']', tag)

@@ -32,7 +32,15 @@ except ModuleNotFoundError:  # pragma: no cover - offline fallback
 try:  # feedparser optional at test time
     import feedparser
 except ModuleNotFoundError:  # pragma: no cover - offline fallback
-    feedparser = None
+
+    class _FeedParserFallback:
+        """Fallback object so tests can patch ``feedparser.parse`` reliably."""
+
+        @staticmethod
+        def parse(_: str) -> Any:
+            return type("Feed", (), {"entries": []})()
+
+    feedparser = _FeedParserFallback()
 from typing import AsyncIterator, Dict, Any, Optional, cast
 from collections import deque
 from urllib.request import urlopen
