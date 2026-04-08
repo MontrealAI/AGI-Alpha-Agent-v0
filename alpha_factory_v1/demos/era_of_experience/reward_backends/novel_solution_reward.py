@@ -101,6 +101,15 @@ def _cos(a: List[float], b: List[float]) -> float:
     return max(0.0, min(1.0, dot / (na * nb)))
 
 
+def _normalize_embedding(raw: Any) -> List[float]:
+    """Return a flat float vector from encoder output shapes."""
+    if isinstance(raw, list):
+        if raw and isinstance(raw[0], list):
+            return [float(x) for x in raw[0]]
+        return [float(x) for x in raw]
+    return [float(x) for x in raw.tolist()]
+
+
 def _to_text(obj: Any) -> str:
     if isinstance(obj, str):
         return obj
@@ -121,7 +130,7 @@ def reward(state: Any, action: Any, result: Any) -> float:  # noqa: D401
     sig = _simhash(txt)
 
     if _have_embed:
-        emb: List[float] = _model.encode(txt, normalize_embeddings=True).tolist()
+        emb = _normalize_embedding(_model.encode(txt, normalize_embeddings=True))
 
     with _lock:
         sims: List[float] = []

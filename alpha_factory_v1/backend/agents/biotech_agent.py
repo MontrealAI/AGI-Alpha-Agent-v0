@@ -183,10 +183,8 @@ class _EmbedStore:
     """Incremental FAISS index with pluggable embedder (OpenAI or SBERT)."""
 
     def __init__(self, cfg: BTConfig):
-        if faiss is None:
-            raise RuntimeError("faiss is required for BiotechAgent.")
         self.cfg = cfg
-        self._index: faiss.IndexFlatIP = faiss.IndexFlatIP(cfg.embed_dim)
+        self._index: faiss.IndexFlatIP | None = faiss.IndexFlatIP(cfg.embed_dim) if faiss is not None else None
         self._docs: List[str] = []  # raw text
         self._meta: List[str] = []  # URI or doc-id
         self._embedder = None  # lazy initialised
@@ -225,7 +223,8 @@ class _EmbedStore:
     # ── public ───────────────────────────────────────────────────────────
     async def add(self, texts: List[str], meta: List[str]):
         vecs = await self._embed(texts)
-        self._index.add(vecs)
+        if self._index is not None:
+            self._index.add(vecs)
         self._docs.extend(texts)
         self._meta.extend(meta)
 
@@ -233,8 +232,19 @@ class _EmbedStore:
         if not self._docs:
             return []
         vec = await self._embed([query])
-        scores, idx = self._index.search(vec, k)
-        return [(self._docs[i], self._meta[i], float(scores[0][j])) for j, i in enumerate(idx[0]) if i != -1]
+        if self._index is not None:
+            scores, idx = self._index.search(vec, k)
+            return [(self._docs[i], self._meta[i], float(scores[0][j])) for j, i in enumerate(idx[0]) if i != -1]
+        if np is None:
+            return []
+        query_vec = vec[0]
+        sims: list[tuple[int, float]] = []
+        corpus = await self._embed(self._docs)
+        for i, doc_vec in enumerate(corpus):
+            score = float(np.dot(query_vec, doc_vec))
+            sims.append((i, score))
+        sims.sort(key=lambda item: item[1], reverse=True)
+        return [(self._docs[i], self._meta[i], score) for i, score in sims[:k]]
 
 
 # ─────────────────────────────── Knowledge-Graph ────────────────────────────
