@@ -207,7 +207,8 @@ jobs:
             exit 1
           fi
       - name: Ruff lint
-        run: python -m ruff check --force-exclude .
+        run: |
+          python scripts/ruff_targets.py | xargs -0 -r python -m ruff check --force-exclude
       - name: Mypy type-check
         # Use configuration defaults to restrict analysis to the src package
         run: python -m mypy --config-file mypy.ini
