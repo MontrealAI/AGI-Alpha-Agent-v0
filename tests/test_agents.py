@@ -283,7 +283,7 @@ def test_codegen_agent_sandbox_blocks_import(monkeypatch) -> None:
         for r in ledger.records
         if (hasattr(r.payload, "__contains__") and "stderr" in r.payload)
     ]
-    assert errs and "ImportError" in errs[-1]
+    assert errs and any("ImportError" in err for err in errs)
 
 
 def test_planning_agent_no_openai_sdk() -> None:

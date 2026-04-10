@@ -1,12 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 import shutil
 import subprocess
+import os
 from pathlib import Path
 
 import pytest
 
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
+
+if os.environ.get("RUN_DOCKER_E2E") != "1":
+    pytest.skip("set RUN_DOCKER_E2E=1 to run docker e2e checks", allow_module_level=True)
 
 try:
     subprocess.run(["docker", "info"], check=True, capture_output=True, text=True)

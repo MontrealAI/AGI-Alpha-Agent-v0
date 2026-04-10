@@ -22,6 +22,8 @@ def _start_server(directory: Path):
 
 
 def test_workbox_hash_mismatch(tmp_path: Path, insight_dist: Path) -> None:
+    if not (insight_dist / "index.html").exists() or not (insight_dist / "service-worker.js").exists():
+        pytest.skip("Insight dist assets are missing")
     dist = tmp_path / "dist"
     shutil.copytree(insight_dist, dist)
     sw_file = dist / "service-worker.js"

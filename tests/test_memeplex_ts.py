@@ -8,7 +8,8 @@ from pathlib import Path
 
 import pytest
 
-MEMEPLEX_TS = Path("src/memeplex.ts")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+MEMEPLEX_TS = REPO_ROOT / "src" / "memeplex.ts"
 
 
 @pytest.mark.skipif(not shutil.which("tsc") or not shutil.which("node"), reason="tsc/node not available")
@@ -24,11 +25,12 @@ def test_meme_mining(tmp_path: Path) -> None:
             "--moduleResolution",
             "node",
             "--rootDir",
-            ".",
+            str(REPO_ROOT),
             "--outDir",
             str(tmp_path),
             MEMEPLEX_TS,
         ],
+        cwd=REPO_ROOT,
         check=True,
     )
     script = tmp_path / "run.mjs"

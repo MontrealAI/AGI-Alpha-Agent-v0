@@ -5,6 +5,7 @@ import os
 import tempfile
 import unittest
 from unittest import mock
+from unittest.mock import patch
 
 from alpha_factory_v1.core import orchestrator
 from alpha_factory_v1.core.utils import config
@@ -14,13 +15,17 @@ from alpha_factory_v1.common.utils import messaging, logging as insight_logging
 class TestInsightOrchestrator(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
-        self.settings = config.Settings(bus_port=0, ledger_path=os.path.join(self.tmp.name, "ledger.db"))
+        self.ledger_path = os.path.join(self.tmp.name, "ledger.db")
+        self._env_patcher = patch.dict(os.environ, {"AGI_INSIGHT_LEDGER_PATH": self.ledger_path})
+        self._env_patcher.start()
+        self.settings = config.Settings(bus_port=0, ledger_path=self.ledger_path)
         self.orch = orchestrator.Orchestrator(self.settings)
 
     def tearDown(self) -> None:
         asyncio.run(self.orch.bus.stop())
         asyncio.run(self.orch.ledger.stop_merkle_task())
         self.orch.ledger.close()
+        self._env_patcher.stop()
         self.tmp.cleanup()
 
     def test_registration_records(self) -> None:
