@@ -85,6 +85,11 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     gr = None  # type: ignore[assignment]
 
+try:
+    import fcntl
+except Exception:  # pragma: no cover - Windows fallback
+    fcntl = None  # type: ignore[assignment]
+
 try:  # optional JWT auth
     import jwt  # type: ignore
 except Exception:  # pragma: no cover - optional
@@ -406,6 +411,26 @@ def _launch_gradio(api_loop: asyncio.AbstractEventLoop) -> None:  # noqa: D401
 
 _gradio_thread: threading.Thread | None = None
 _gradio_ui: Any | None = None
+_gradio_lock_handle: Any | None = None
+
+
+def _acquire_gradio_process_lock() -> bool:
+    """Allow only one process to launch the Gradio dashboard for this port."""
+    global _gradio_lock_handle
+    if fcntl is None:
+        return True
+    if _gradio_lock_handle is not None:
+        return True
+
+    lock_path = Path(tempfile.gettempdir()) / f"aiga-gradio-{GRADIO_PORT}.lock"
+    lock_handle = open(lock_path, "w", encoding="utf-8")
+    try:
+        fcntl.flock(lock_handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        lock_handle.close()
+        return False
+    _gradio_lock_handle = lock_handle
+    return True
 
 
 @app.on_event("startup")
@@ -414,6 +439,9 @@ async def _start_gradio_dashboard() -> None:
     global _gradio_thread
     if gr is None:
         log.info("Skipping Gradio startup")
+        return
+    if not _acquire_gradio_process_lock():
+        log.info("Skipping Gradio startup in this worker (dashboard already owned by another process)")
         return
     if _gradio_thread and not _gradio_thread.is_alive():
         _gradio_thread = None
@@ -432,7 +460,7 @@ async def _start_gradio_dashboard() -> None:
 @app.on_event("shutdown")
 async def _checkpoint_on_shutdown() -> None:
     """Persist state and stop Gradio before FastAPI shuts down."""
-    global _gradio_thread, _gradio_ui
+    global _gradio_thread, _gradio_ui, _gradio_lock_handle
     log.info("Shutdown received – persisting state …")
     await service.checkpoint()
     if _gradio_ui is not None:
@@ -444,6 +472,11 @@ async def _checkpoint_on_shutdown() -> None:
         _gradio_thread.join(timeout=5)
     _gradio_thread = None
     _gradio_ui = None
+    if _gradio_lock_handle is not None:
+        if fcntl is not None:
+            fcntl.flock(_gradio_lock_handle.fileno(), fcntl.LOCK_UN)
+        _gradio_lock_handle.close()
+        _gradio_lock_handle = None
 
 
 # ---------------------------------------------------------------------------
