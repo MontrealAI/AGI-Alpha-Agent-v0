@@ -328,10 +328,14 @@ async function bundle() {
         stdio: "inherit",
     });
     let outHtml = html;
+    const connectSrc = [
+        "'self'",
+        "https://api.openai.com",
+        ...(ipfsOrigin ? [ipfsOrigin] : []),
+        ...(otelOrigin ? [otelOrigin] : []),
+    ].join(" ");
     const cspBase =
-        "default-src 'self'; connect-src 'self' https://api.openai.com; frame-src 'self' blob:; worker-src 'self' blob:" +
-        (ipfsOrigin ? ` ${ipfsOrigin}` : "") +
-        (otelOrigin ? ` ${otelOrigin}` : "");
+        `default-src 'self'; connect-src ${connectSrc}; frame-src 'self' blob:; worker-src 'self' blob:`;
     const envScript = injectEnv(process.env);
     await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
     if (fsSync.existsSync(d3ExportsPath)) {

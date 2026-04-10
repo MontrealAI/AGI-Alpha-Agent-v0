@@ -22,7 +22,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json, math, tempfile, threading
+import os, asyncio, logging, time, json, math, tempfile
 from pathlib import Path
 from typing import Any, Dict
 
@@ -113,6 +113,7 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s | %(message)s",
 )
 log = logging.getLogger(SERVICE_NAME)
+MAIN_LOOP: asyncio.AbstractEventLoop | None = None
 
 
 def _resolve_checkpoint_dir() -> Path:
@@ -395,38 +396,37 @@ async def _launch_gradio() -> None:  # noqa: D401
         log_md = gr.Markdown()
 
         def on_step(g=5):
-            asyncio.run(service.evolve(g))
+            if MAIN_LOOP is None:
+                raise RuntimeError("Main event loop is not initialized")
+            future = asyncio.run_coroutine_threadsafe(service.evolve(g), MAIN_LOOP)
+            future.result()
             return service.history_plot(), service.latest_log()
 
         gr.Button("Evolve 5 Generations").click(on_step, [], [plot, log_md])
-    ui.launch(server_name="0.0.0.0", server_port=GRADIO_PORT, share=False)
+    await asyncio.to_thread(
+        ui.launch,
+        server_name="0.0.0.0",
+        server_port=GRADIO_PORT,
+        share=False,
+        prevent_thread_lock=True,
+    )
 
 
-# ---------------------------------------------------------------------------
-# SIGNAL HANDLERS ------------------------------------------------------------
-# ---------------------------------------------------------------------------
-async def _graceful_exit(*_):
-    log.info("SIGTERM received – persisting state …")
-    await service.checkpoint()
-    loop = asyncio.get_event_loop()
-    loop.stop()
+@app.on_event("startup")
+async def _on_startup() -> None:
+    """Capture the FastAPI event loop and launch the optional Gradio app."""
+    global MAIN_LOOP
+    MAIN_LOOP = asyncio.get_running_loop()
+    if gr is None:
+        log.info("Skipping Gradio startup")
+        return
+    asyncio.create_task(_launch_gradio())
 
 
 # ---------------------------------------------------------------------------
 # MAIN -----------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    for sig in (signal.SIGTERM, signal.SIGINT):
-        loop.add_signal_handler(sig, lambda s=sig: asyncio.create_task(_graceful_exit(s)))
-
-    # Start Gradio in a daemon thread so uvicorn can own the main event loop.
-    if gr is not None:
-        threading.Thread(target=lambda: asyncio.run(_launch_gradio()), daemon=True).start()
-    else:
-        log.info("Skipping Gradio startup")
-
     # register with agent mesh (optional)
     if AgentRuntime:
         AgentRuntime.register(SERVICE_NAME, f"http://localhost:{API_PORT}")
