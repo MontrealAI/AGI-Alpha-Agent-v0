@@ -22,7 +22,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 """
 from __future__ import annotations
 
-import os, asyncio, signal, logging, time, json, math, tempfile, threading
+import os, asyncio, logging, time, json, math, tempfile, threading
 from pathlib import Path
 from typing import Any, Dict
 
@@ -84,6 +84,11 @@ try:
     import gradio as gr
 except Exception:  # pragma: no cover - optional dependency
     gr = None  # type: ignore[assignment]
+
+try:
+    import fcntl
+except Exception:  # pragma: no cover - Windows fallback
+    fcntl = None  # type: ignore[assignment]
 
 try:  # optional JWT auth
     import jwt  # type: ignore
@@ -385,7 +390,8 @@ async def best_alpha():
 # ---------------------------------------------------------------------------
 # GRADIO DASHBOARD -----------------------------------------------------------
 # ---------------------------------------------------------------------------
-async def _launch_gradio() -> None:  # noqa: D401
+def _launch_gradio(api_loop: asyncio.AbstractEventLoop) -> None:  # noqa: D401
+    global _gradio_ui
     if gr is None:
         log.info("Gradio dashboard disabled (package not installed)")
         return
@@ -395,38 +401,88 @@ async def _launch_gradio() -> None:  # noqa: D401
         log_md = gr.Markdown()
 
         def on_step(g=5):
-            asyncio.run(service.evolve(g))
+            asyncio.run_coroutine_threadsafe(service.evolve(g), api_loop).result()
             return service.history_plot(), service.latest_log()
 
         gr.Button("Evolve 5 Generations").click(on_step, [], [plot, log_md])
+    _gradio_ui = ui
     ui.launch(server_name="0.0.0.0", server_port=GRADIO_PORT, share=False)
 
 
-# ---------------------------------------------------------------------------
-# SIGNAL HANDLERS ------------------------------------------------------------
-# ---------------------------------------------------------------------------
-async def _graceful_exit(*_):
-    log.info("SIGTERM received – persisting state …")
+_gradio_thread: threading.Thread | None = None
+_gradio_ui: Any | None = None
+_gradio_lock_handle: Any | None = None
+
+
+def _acquire_gradio_process_lock() -> bool:
+    """Allow only one process to launch the Gradio dashboard for this port."""
+    global _gradio_lock_handle
+    if fcntl is None:
+        return True
+    if _gradio_lock_handle is not None:
+        return True
+
+    lock_path = Path(tempfile.gettempdir()) / f"aiga-gradio-{GRADIO_PORT}.lock"
+    lock_handle = open(lock_path, "w", encoding="utf-8")
+    try:
+        fcntl.flock(lock_handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        lock_handle.close()
+        return False
+    _gradio_lock_handle = lock_handle
+    return True
+
+
+@app.on_event("startup")
+async def _start_gradio_dashboard() -> None:
+    """Launch Gradio once and bridge callbacks to FastAPI's event loop."""
+    global _gradio_thread
+    if gr is None:
+        log.info("Skipping Gradio startup")
+        return
+    if not _acquire_gradio_process_lock():
+        log.info("Skipping Gradio startup in this worker (dashboard already owned by another process)")
+        return
+    if _gradio_thread and not _gradio_thread.is_alive():
+        _gradio_thread = None
+    if _gradio_thread and _gradio_thread.is_alive():
+        return
+
+    api_loop = asyncio.get_running_loop()
+    _gradio_thread = threading.Thread(
+        target=lambda: _launch_gradio(api_loop),
+        daemon=True,
+        name="aiga-gradio",
+    )
+    _gradio_thread.start()
+
+
+@app.on_event("shutdown")
+async def _checkpoint_on_shutdown() -> None:
+    """Persist state and stop Gradio before FastAPI shuts down."""
+    global _gradio_thread, _gradio_ui, _gradio_lock_handle
+    log.info("Shutdown received – persisting state …")
     await service.checkpoint()
-    loop = asyncio.get_event_loop()
-    loop.stop()
+    if _gradio_ui is not None:
+        try:
+            _gradio_ui.close()
+        except Exception:
+            log.exception("Failed to close Gradio UI cleanly")
+    if _gradio_thread and _gradio_thread.is_alive():
+        _gradio_thread.join(timeout=5)
+    _gradio_thread = None
+    _gradio_ui = None
+    if _gradio_lock_handle is not None:
+        if fcntl is not None:
+            fcntl.flock(_gradio_lock_handle.fileno(), fcntl.LOCK_UN)
+        _gradio_lock_handle.close()
+        _gradio_lock_handle = None
 
 
 # ---------------------------------------------------------------------------
 # MAIN -----------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    for sig in (signal.SIGTERM, signal.SIGINT):
-        loop.add_signal_handler(sig, lambda s=sig: asyncio.create_task(_graceful_exit(s)))
-
-    # Start Gradio in a daemon thread so uvicorn can own the main event loop.
-    if gr is not None:
-        threading.Thread(target=lambda: asyncio.run(_launch_gradio()), daemon=True).start()
-    else:
-        log.info("Skipping Gradio startup")
-
     # register with agent mesh (optional)
     if AgentRuntime:
         AgentRuntime.register(SERVICE_NAME, f"http://localhost:{API_PORT}")
