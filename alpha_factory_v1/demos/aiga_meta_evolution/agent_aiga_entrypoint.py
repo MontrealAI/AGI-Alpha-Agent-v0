@@ -395,14 +395,25 @@ def _launch_gradio(api_loop: asyncio.AbstractEventLoop) -> None:  # noqa: D401
         log_md = gr.Markdown()
 
         def on_step(g=5):
+            if api_loop.is_closed():
+                log.warning("Skipping evolve request because API event loop is closed")
+                return service.history_plot(), service.latest_log()
             asyncio.run_coroutine_threadsafe(service.evolve(g), api_loop).result()
             return service.history_plot(), service.latest_log()
 
         gr.Button("Evolve 5 Generations").click(on_step, [], [plot, log_md])
-    ui.launch(server_name="0.0.0.0", server_port=GRADIO_PORT, share=False)
+    ui.launch(
+        server_name="0.0.0.0",
+        server_port=GRADIO_PORT,
+        share=False,
+        prevent_thread_lock=True,
+    )
+    _gradio_stop_event.wait()
+    ui.close()
 
 
 _gradio_thread: threading.Thread | None = None
+_gradio_stop_event = threading.Event()
 
 
 @app.on_event("startup")
@@ -415,6 +426,7 @@ async def _start_gradio_dashboard() -> None:
     if _gradio_thread and _gradio_thread.is_alive():
         return
 
+    _gradio_stop_event.clear()
     api_loop = asyncio.get_running_loop()
     _gradio_thread = threading.Thread(
         target=lambda: _launch_gradio(api_loop),
@@ -427,6 +439,11 @@ async def _start_gradio_dashboard() -> None:
 @app.on_event("shutdown")
 async def _checkpoint_on_shutdown() -> None:
     """Persist state before FastAPI shuts down."""
+    global _gradio_thread
+    _gradio_stop_event.set()
+    if _gradio_thread and _gradio_thread.is_alive():
+        _gradio_thread.join(timeout=5)
+    _gradio_thread = None
     log.info("Shutdown received – persisting state …")
     await service.checkpoint()
 
