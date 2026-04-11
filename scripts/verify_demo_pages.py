@@ -98,8 +98,10 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
         if demo.name == "alpha_agi_insight_v1":
             has_bundle = bool(state.get("hasBundle"))
             has_main = bool(state.get("hasMain"))
+            has_root = bool(state.get("hasRoot"))
+            root_child_count = _as_int(state.get("rootChildCount") or 0)
             body_text_len = _as_int(state.get("bodyTextLen") or 0)
-            if has_bundle and has_main and body_text_len > 120:
+            if has_bundle and has_main and has_root and root_child_count > 0 and body_text_len > 120:
                 return True, "insight-content-fallback"
         return False, ""
 

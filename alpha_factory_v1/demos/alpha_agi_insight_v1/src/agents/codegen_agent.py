@@ -152,7 +152,13 @@ class CodeGenAgent(BaseAgent):
                 # Some sandboxes prepend diagnostics before the JSON payload.
                 # Parse the final non-empty line as a best effort fallback.
                 tail = next((line.strip() for line in reversed(raw_stdout.splitlines()) if line.strip()), "")
-                data = json.loads(tail) if tail.startswith("{") else {}
+                if tail.startswith("{"):
+                    try:
+                        data = json.loads(tail)
+                    except json.JSONDecodeError:
+                        data = {}
+                else:
+                    data = {}
             out = str(data.get("stdout", "")) if isinstance(data, dict) else ""
             err = str(data.get("stderr", "")) if isinstance(data, dict) else ""
             if not out and not err:
