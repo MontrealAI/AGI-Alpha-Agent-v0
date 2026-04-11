@@ -146,8 +146,10 @@ class CodeGenAgent(BaseAgent):
             proc = secure_run(cmd)
             raw_stdout = proc.stdout or ""
             raw_stderr = proc.stderr or ""
+            parsed_from_json = False
             try:
                 data = json.loads(raw_stdout or "{}")
+                parsed_from_json = True
             except json.JSONDecodeError:
                 # Some sandboxes prepend diagnostics before the JSON payload.
                 # Parse the final non-empty line as a best effort fallback.
@@ -155,13 +157,14 @@ class CodeGenAgent(BaseAgent):
                 if tail.startswith("{"):
                     try:
                         data = json.loads(tail)
+                        parsed_from_json = True
                     except json.JSONDecodeError:
                         data = {}
                 else:
                     data = {}
             out = str(data.get("stdout", "")) if isinstance(data, dict) else ""
             err = str(data.get("stderr", "")) if isinstance(data, dict) else ""
-            if not out and not err:
+            if not parsed_from_json and not out and not err:
                 out, err = raw_stdout, raw_stderr
         except Exception as exc:  # pragma: no cover - runtime errors
             out, err = "", str(exc)

@@ -140,7 +140,6 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
     ignorable_markers = (
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
-        "cannot read properties of undefined (reading 'nan')",
     )
     return any(marker in msg for marker in ignorable_markers)
 
