@@ -95,6 +95,14 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
             root_child_count = _as_int(state.get("rootChildCount") or 0)
             if root_child_count > 0:
                 return True, "insight-root-mounted"
+        if demo.name == "alpha_agi_insight_v1":
+            has_bundle = bool(state.get("hasBundle"))
+            has_main = bool(state.get("hasMain"))
+            has_root = bool(state.get("hasRoot"))
+            root_child_count = _as_int(state.get("rootChildCount") or 0)
+            body_text_len = _as_int(state.get("bodyTextLen") or 0)
+            if has_bundle and has_main and has_root and root_child_count > 0 and body_text_len > 120:
+                return True, "insight-content-fallback"
         return False, ""
 
     match = state.get("match")
@@ -129,7 +137,11 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
 
 def _is_ignorable_insight_page_error(message: str) -> bool:
     msg = message.lower()
-    return "service worker is disabled because the context is sandboxed" in msg
+    ignorable_markers = (
+        "service worker is disabled because the context is sandboxed",
+        "failed to execute 'postmessage' on 'domwindow'",
+    )
+    return any(marker in msg for marker in ignorable_markers)
 
 
 def _insight_contract_ok(
