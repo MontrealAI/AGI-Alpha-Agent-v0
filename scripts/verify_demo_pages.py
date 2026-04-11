@@ -140,7 +140,6 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
     ignorable_markers = (
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
-        "cannot read properties of undefined (reading 'nan')",
     )
     return any(marker in msg for marker in ignorable_markers)
 
@@ -158,7 +157,17 @@ def _insight_contract_ok(
         return False, "missing-local-assets"
     if response_failures:
         return False, "http-error-responses"
-    filtered_errors = [e for e in page_errors if not _is_ignorable_insight_page_error(e)]
+    has_sandbox_signal = any(_is_ignorable_insight_page_error(e) for e in page_errors)
+    filtered_errors = []
+    for error in page_errors:
+        if _is_ignorable_insight_page_error(error):
+            continue
+        lowered = error.lower()
+        # Some sandboxed browser contexts emit this generic TypeError while bootstrapping
+        # the Insight page. Keep it non-fatal only when other explicit sandbox signals exist.
+        if has_sandbox_signal and "cannot read properties of undefined (reading 'nan')" in lowered:
+            continue
+        filtered_errors.append(error)
     if filtered_errors:
         return False, "page-errors"
     return True, ""

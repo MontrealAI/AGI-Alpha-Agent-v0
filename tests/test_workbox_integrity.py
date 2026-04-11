@@ -22,8 +22,8 @@ def _start_server(directory: Path):
 
 
 def test_workbox_hash_mismatch(tmp_path: Path, insight_dist: Path) -> None:
-    if not (insight_dist / "index.html").is_file() or not (insight_dist / "service-worker.js").is_file():
-        pytest.skip("Insight dist artifacts missing; run npm build to generate bundled assets")
+    assert (insight_dist / "index.html").is_file(), "Missing Insight dist index.html"
+    assert (insight_dist / "service-worker.js").is_file(), "Missing Insight service-worker.js"
     dist = tmp_path / "dist"
     shutil.copytree(insight_dist, dist)
     sw_file = dist / "service-worker.js"
