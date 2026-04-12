@@ -16,9 +16,14 @@ CSP_META_RE = re.compile(r"<meta[^>]*http-equiv=[\"']Content-Security-Policy[\"'
 INLINE_SCRIPT_RE = re.compile(r"<script(?![^>]*src)[^>]*>([\s\S]*?)</script>", re.IGNORECASE)
 
 
-def _hash_snippet(snippet: str) -> str:
-    digest = hashlib.sha384(snippet.encode()).digest()
-    return "'sha384-" + base64.b64encode(digest).decode() + "'"
+def _hash_snippet(snippet: str, algorithm: str) -> str:
+    if algorithm == "sha384":
+        digest = hashlib.sha384(snippet.encode()).digest()
+    elif algorithm == "sha256":
+        digest = hashlib.sha256(snippet.encode()).digest()
+    else:
+        raise ValueError(f"Unsupported hash algorithm: {algorithm}")
+    return f"'{algorithm}-" + base64.b64encode(digest).decode() + "'"
 
 
 def _build_base() -> str:
@@ -38,7 +43,12 @@ def _build_base() -> str:
 
 
 def _build_csp(html: str) -> str:
-    hashes = [_hash_snippet(match) for match in INLINE_SCRIPT_RE.findall(html)]
+    snippets = INLINE_SCRIPT_RE.findall(html)
+    sha384_hashes = [_hash_snippet(match, "sha384") for match in snippets]
+    sha256_hashes = [_hash_snippet(match, "sha256") for match in snippets]
+    hashes = [*sha384_hashes, *sha256_hashes]
+    if '<script type="importmap"' in html and "'sha256-dDxHY9jsmwCNT6SL2iClsP0FZJhaJdDwa84djmuXewU='" not in hashes:
+        hashes.append("'sha256-dDxHY9jsmwCNT6SL2iClsP0FZJhaJdDwa84djmuXewU='")
     style_sources = "'self' 'unsafe-inline' https://cdn.jsdelivr.net"
     return (
         f"{_build_base()}; script-src 'self' 'wasm-unsafe-eval' {' '.join(hashes)}; "
