@@ -5,8 +5,7 @@
     <title>α-AGI Insight</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
 
     <style>
       @keyframes gradient {
@@ -40,7 +39,7 @@
         opacity: 1;
       }
     </style>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-177zXf5eB3dnF9pKwGvc3ITN0EN04yL+Lju+41FYl59Rk/ooEBgXYv3+I8s/0zR0' 'sha384-79nEfECpiwNfTKeXO3LCt0sLutpd3k4stwrBgGfcJBKvwd9SsNd9wIP34JDO4M50' 'sha384-S/HpIy5nMSwGRdVif2eZ3cvGREvSWay48Hf5S44wcCUQ0HW9qYkQDrwyKoG6dSj5' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-Xk9S+uMmV2IBLoszp8N1kKkD8mN7MYR3pw81gSi6PrAo9KZi41x4nlXQoDWMpGtp'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net" />
 </head>
 
   <body class="flex flex-col h-screen">
@@ -79,79 +78,9 @@
       </div>
     </footer>
 
-    <script src="d3.v7.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "d3": "./d3.exports.js"
-        }
-      }
-    </script>
-
-    <script>
-      // Provide a resilient toast implementation before deferred modules load.
-      // The Playwright offline checks rely on these calls not throwing.
-      if (typeof window.toast !== 'function') {
-        window.toast = (msg) => {
-          const t = document.getElementById('toast');
-          if (t) {
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout((window.toast).id);
-            (window.toast).id = window.setTimeout(() => t.classList.remove('show'), 2000);
-            return;
-          }
-          console.warn(msg);
-        };
-      }
-    </script>
-
-    <script>
-      const SW_URL = 'service-worker.js';
-      const SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';
-
-      const serviceWorkerSupported = (() => {
-        try {
-          return Boolean(navigator.serviceWorker);
-        } catch (_err) {
-          return false;
-        }
-      })();
-
-      if (serviceWorkerSupported && !navigator.webdriver) {
-        window.addEventListener('load', async () => {
-          try {
-            const res = await fetch(SW_URL);
-            const buf = await res.arrayBuffer();
-            const digest = await crypto.subtle.digest('SHA-384', buf);
-            const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-            if (`sha384-${b64}` !== SW_HASH) {
-              throw new Error('Service worker hash mismatch');
-            }
-
-            navigator.serviceWorker.register(SW_URL).then((registration) => {
-              navigator.serviceWorker.ready.then(() => {
-                registration.addEventListener('updatefound', () => {
-                  const newWorker = registration.installing;
-                  if (!newWorker) return;
-
-                  newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed') {
-                      window.toast('Update available — reload to use the latest version.');
-                    }
-                  });
-                });
-              });
-            });
-          } catch (err) {
-            console.error(err);
-            window.toast('Service worker failed: ' + err.message);
-          }
-        });
-      }
-    </script>
-
+    <script type="importmap">{"imports":{"d3":"./d3.exports.js"}}</script>
+    <script>window.SW_HASH = 'sha384-kQo+PZJcRiSq81DoHg7dyh+D8v/XRPNke0/dvpo2pT968hYeKRy2hfcZk4KYSIh5';</script>
+    <script src="bootstrap.js"></script>
     <script type="module" src="insight.bundle.js" integrity="sha384-Mb1VRv2DyAqBUMvCGGI6/e90gepYQ9/zjE2rAa8wRVbmwPWSFsW3zIMomuaVkHeh" crossorigin="anonymous"></script>
-  <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
 </body>
 </html>
