@@ -24,7 +24,6 @@ if (typeof window.toast !== "function") {
 }
 
 const SW_URL = "service-worker.js";
-const SW_HASH = "sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ";
 
 const supportsServiceWorker = (() => {
   try {
@@ -41,7 +40,8 @@ if (supportsServiceWorker && !navigator.webdriver) {
       const buffer = await response.arrayBuffer();
       const digest = await crypto.subtle.digest("SHA-384", buffer);
       const digestB64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-      if (`sha384-${digestB64}` !== SW_HASH) {
+      const swHash = typeof window.SW_HASH === "string" ? window.SW_HASH : "";
+      if (!swHash || `sha384-${digestB64}` !== swHash) {
         throw new Error("Service worker hash mismatch");
       }
 
