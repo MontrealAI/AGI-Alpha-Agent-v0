@@ -140,9 +140,15 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
     ignorable_markers = (
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
-        "cannot read properties of undefined (reading 'nan')",
     )
-    return any(marker in msg for marker in ignorable_markers)
+    if any(marker in msg for marker in ignorable_markers):
+        return True
+    # Scoped workaround: ignore the known sandbox-only Insight runtime TypeError
+    # only when it originates from the specific minified bundle location.
+    return (
+        "cannot read properties of undefined (reading 'nan')" in msg
+        and "insight.bundle.js:2907:" in msg
+    )
 
 
 def _insight_contract_ok(
@@ -320,7 +326,11 @@ def main() -> int:
                             console_messages.append(f"[{msg.type}] {msg.text}")
 
                     def _record_page_error(exc: Exception) -> None:
-                        page_errors.append(str(exc))
+                        stack = getattr(exc, "stack", "")
+                        if stack:
+                            page_errors.append(f"{exc} | {stack}")
+                        else:
+                            page_errors.append(str(exc))
 
                     def _record_request_failure(req: Any) -> None:
                         try:
