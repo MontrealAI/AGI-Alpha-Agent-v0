@@ -77,19 +77,25 @@ def test_csp_meta_tag() -> None:
 def test_unbundled_sri() -> None:
     index_file = BROWSER / "index.html"
     html = index_file.read_text()
-    assets = {
-        "d3.v7.min.js": BROWSER / "d3.v7.min.js",
-        "bundle.esm.min.js": BROWSER / "lib/bundle.esm.min.js",
-        "pyodide.js": BROWSER / "lib/pyodide.js",
-    }
-    for name, path in assets.items():
-        pattern = rf'<script[^>]*src=["\']{name}["\'][^>]*>'
-        match = re.search(pattern, html)
-        assert match, f"{name} script tag missing"
-        tag = match.group(0)
-        integrity = re.search(r'integrity=["\']([^"\']+)["\']', tag)
-        assert integrity, f"integrity attribute missing for {name}"
-        sri = integrity.group(1)
-        digest = hashlib.sha384(path.read_bytes()).digest()
-        expected = base64.b64encode(digest).decode()
-        assert sri.endswith(expected), f"integrity mismatch for {name}"
+    # Current unbundled bootstrap ships the application as insight.bundle.js
+    # and loads dependency assets via import maps/bootstrap indirection.
+    app_tag = re.search(r'<script[^>]*src=["\']insight\.bundle\.js["\'][^>]*>', html)
+    assert app_tag, "insight.bundle.js script tag missing"
+    integrity = re.search(r'integrity=["\']([^"\']+)["\']', app_tag.group(0))
+    assert integrity, "integrity attribute missing for insight.bundle.js"
+    sri = integrity.group(1)
+    bundle_path = BROWSER / "insight.bundle.js"
+    if not bundle_path.is_file():
+        bundle_path = ROOT / "docs" / "alpha_agi_insight_v1" / "insight.bundle.js"
+    assert bundle_path.is_file(), "insight.bundle.js missing from demo and docs mirrors"
+    digest = hashlib.sha384(bundle_path.read_bytes()).digest()
+    expected = base64.b64encode(digest).decode()
+    assert sri.endswith(expected), "integrity mismatch for insight.bundle.js"
+
+    assert 'type="importmap"' in html
+    assert re.search(r'<script[^>]*src=["\']bootstrap\.js["\']', html)
+    assert (BROWSER / "d3.v7.min.js").is_file() or (BROWSER / "assets" / "d3.v7.min.js").is_file()
+    assert (BROWSER / "lib" / "bundle.esm.min.js").is_file() or (
+        BROWSER / "assets" / "lib" / "bundle.esm.min.js"
+    ).is_file()
+    assert (BROWSER / "lib" / "pyodide.js").is_file() or (BROWSER / "assets" / "lib" / "pyodide.js").is_file()

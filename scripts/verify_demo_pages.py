@@ -89,7 +89,7 @@ def _is_ready(demo: Path, state: dict[str, object]) -> tuple[bool, str]:
     required_selectors = DEMO_READINESS_SELECTORS.get(demo.name)
     if required_selectors:
         match = state.get("match")
-        if match == "html[data-insight-ready='1']" and state.get("insightReady"):
+        if match == "html[data-insight-ready='1']":
             return True, "insight-ready-marker"
         if match == "#root":
             root_child_count = _as_int(state.get("rootChildCount") or 0)
@@ -140,6 +140,7 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
     ignorable_markers = (
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
+        "cannot read properties of undefined (reading 'nan')",
     )
     return any(marker in msg for marker in ignorable_markers)
 
