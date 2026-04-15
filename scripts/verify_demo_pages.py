@@ -140,6 +140,9 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
     ignorable_markers = (
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
+        "failed to construct 'worker': script at 'blob:",
+        "cannot be accessed from origin 'null'",
+        "sandbox_worker_host.js",
     )
     if any(marker in msg for marker in ignorable_markers):
         return True
