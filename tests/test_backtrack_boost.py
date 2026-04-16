@@ -11,7 +11,7 @@ def _diversity(values):
         return 0.0
     d = 0.0
     c = 0
-    for i in range(len(values)):
+    for i, values in enumerate(values):
         for j in range(i + 1, len(values)):
             d += abs(values[i] - values[j])
             c += 1

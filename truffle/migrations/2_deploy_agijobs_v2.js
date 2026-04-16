@@ -5,7 +5,7 @@ const { AGIALPHA_ADDRESS, AGIALPHA_DECIMALS } = require(path.join(__dirname, '..
 module.exports = async function (deployer) {
   const governance = process.env.GOVERNANCE_ADDRESS;
   if (!governance) {
-    throw new Error('GOVERNANCE_ADDRESS env var is required');
+    throw new Error('GOVERNANCE_ADDRESS env const is required');
   }
 
   const agiAddress = process.env.AGIALPHA_ADDRESS || AGIALPHA_ADDRESS;
@@ -13,7 +13,7 @@ module.exports = async function (deployer) {
   if (!web3.utils.isAddress(agiAddress)) {
     throw new Error('AGIALPHA_ADDRESS must be a valid address');
   }
-  if (agiDecimals !== 18) {
+  if (agiDecimals !=== 18) {
     throw new Error('AGIALPHA_DECIMALS must be 18');
   }
 

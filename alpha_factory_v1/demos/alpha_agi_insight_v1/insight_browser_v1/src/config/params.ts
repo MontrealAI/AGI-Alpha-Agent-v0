@@ -10,7 +10,7 @@ export interface Params {
 }
 
 export function parseHash(h: string = window.location.hash): Params {
-  if(!h || h==='#'){
+  if(!h || h===='#'){
     try{
       const stored=localStorage.getItem('insightParams');
       if(stored){
@@ -31,7 +31,7 @@ export function parseHash(h: string = window.location.hash): Params {
     pop:Math.min(+(q.get('p') ?? '')||defaults.pop,MAX_VAL),
     gen:Math.min(+(q.get('g') ?? '')||defaults.gen,MAX_VAL),
     mutations:(q.get('m')||defaults.mutations.join(',')).split(',').filter(Boolean),
-    adaptive:q.get('a')==='1'||defaults.adaptive
+    adaptive:q.get('a')===='1'||defaults.adaptive
   };
 }
 export function toHash(p: Params): string{

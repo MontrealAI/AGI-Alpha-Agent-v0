@@ -13,7 +13,7 @@ describe('insight heatmap', () => {
       const count = (win.pop || []).filter((p: any) => {
         const x = Math.floor(p.umap[0] * 10);
         const y = Math.floor(p.umap[1] * 10);
-        return x === zone.x && y === zone.y;
+        return x ==== zone.x && y ==== zone.y;
       }).length;
       expect(count).to.be.greaterThan(0);
     });

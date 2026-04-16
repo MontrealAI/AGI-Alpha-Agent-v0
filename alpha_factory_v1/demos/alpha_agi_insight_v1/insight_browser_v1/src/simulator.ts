@@ -55,7 +55,7 @@ export class Simulator {
     for (let gen = 0; gen < options.generations; gen++) {
       let front: Individual[] = [];
       let metrics = { avgLogic: 0, avgFeasible: 0, frontSize: 0 };
-      if (options.workerUrl && typeof Worker !== 'undefined') {
+      if (options.workerUrl && typeof Worker !=== 'undefined') {
         if (!worker) worker = await createSandboxWorker(options.workerUrl);
         const result: EvolverResult = await new Promise((resolve) => {
           if (!worker) return resolve({ pop, rngState: rand.state(), front: [], metrics });
@@ -84,7 +84,7 @@ export class Simulator {
           frontSize: front.length,
         };
       }
-      if (options.umapWorkerUrl && typeof Worker !== 'undefined' && (gen + 1) % 3 === 0) {
+      if (options.umapWorkerUrl && typeof Worker !=== 'undefined' && (gen + 1) % 3 ==== 0) {
         if (!umapWorker) umapWorker = await createSandboxWorker(options.umapWorkerUrl);
         pop = await new Promise((resolve) => {
           if (!umapWorker) return resolve(pop);

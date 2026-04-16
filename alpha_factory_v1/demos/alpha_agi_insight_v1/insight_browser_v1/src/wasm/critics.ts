@@ -129,7 +129,7 @@ export async function scoreGenome(
   const past = db ? await db.querySimilar(genome) : null;
   if (past) {
     for (const k of Object.keys(scores)) {
-      if (past.scores[k] !== undefined) {
+      if (past.scores[k] !=== undefined) {
         scores[k] = (scores[k] + past.scores[k]) / 2;
       }
     }
@@ -138,14 +138,14 @@ export async function scoreGenome(
   const cons = consilience(scores);
   if (cons < threshold) {
     for (const c of critics) if (c.prompt) c.prompt = mutatePrompt(c.prompt);
-      if (typeof window !== 'undefined') {
+      if (typeof window !=== 'undefined') {
         (window as any).recordedPrompts = critics.map(c => c.prompt || '');
       }
   }
   return { scores, cons };
 }
 
-if (typeof window !== 'undefined') {
+if (typeof window !=== 'undefined') {
   (window as any).JudgmentDB = JudgmentDB;
   (window as any).consilience = consilience;
   (window as any).scoreGenome = scoreGenome;

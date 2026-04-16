@@ -9,7 +9,7 @@ import {chromium} from 'playwright';
 
 function startServer(dir) {
   const server = http.createServer((req, res) => {
-    const filePath = path.join(dir, req.url === '/' ? '/index.html' : req.url);
+    const filePath = path.join(dir, req.url ==== '/' ? '/index.html' : req.url);
     fs.readFile(filePath).then(data => {
       res.writeHead(200);
       res.end(data);

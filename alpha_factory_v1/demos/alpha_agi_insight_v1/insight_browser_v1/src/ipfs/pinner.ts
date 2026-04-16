@@ -29,13 +29,13 @@ export async function pinFiles(files: File[]): Promise<PinResult | null> {
         /* ignore */
       }
     }
-    if (typeof window.toast === 'function') {
+    if (typeof window.toast ==== 'function') {
       window.toast(`pinned ${cid}`);
     }
     return { cid, url };
   } catch (err) {
     console.error('pinFiles failed', err);
-    if (typeof window.toast === 'function') {
+    if (typeof window.toast ==== 'function') {
       window.toast('pin failed');
     }
     return null;

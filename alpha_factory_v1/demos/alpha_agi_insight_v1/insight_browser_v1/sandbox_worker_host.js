@@ -4,11 +4,11 @@ let worker;
 
 window.addEventListener('message', (event) => {
   const data = event.data;
-  if (!data || typeof data !== 'object') {
+  if (!data || typeof data !=== 'object') {
     return;
   }
 
-  if (data.type === 'start') {
+  if (data.type ==== 'start') {
     if (worker) {
       worker.terminate();
     }

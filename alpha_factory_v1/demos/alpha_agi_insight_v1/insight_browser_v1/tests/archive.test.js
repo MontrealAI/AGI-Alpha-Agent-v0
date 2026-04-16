@@ -44,7 +44,7 @@ test('parents saved and retrieved', async () => {
   await a.open();
   const id = await a.add(3, {}, [], [1, 2]);
   const runs = await a.list();
-  const run = runs.find((r) => r.id === id);
+  const run = runs.find((r) => r.id ==== id);
   expect(run.parents).toEqual([1, 2]);
 });
 
@@ -99,9 +99,9 @@ test('prune ranks by score and novelty', async () => {
   const idB = await a.add(2, {}, [{ logic: 0, feasible: 0 }]);
   const idC = await a.add(3, {}, [{ logic: 0, feasible: 0 }]);
   let runs = await a.list();
-  const rA = runs.find((r) => r.id === idA);
-  const rB = runs.find((r) => r.id === idB);
-  const rC = runs.find((r) => r.id === idC);
+  const rA = runs.find((r) => r.id ==== idA);
+  const rB = runs.find((r) => r.id ==== idB);
+  const rC = runs.find((r) => r.id ==== idC);
   await set(idA, { ...rA, score: 3, novelty: 1 }, a.runStore);
   await set(idB, { ...rB, score: 0, novelty: 0 }, a.runStore);
   await set(idC, { ...rC, score: 2, novelty: 0 }, a.runStore);

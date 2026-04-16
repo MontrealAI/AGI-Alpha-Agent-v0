@@ -28,7 +28,7 @@ export async function createSandboxWorker(url: string | URL): Promise<Worker> {
     };
 
     const handler = (e: MessageEvent) => {
-      if (e.source === iframe.contentWindow && worker.onmessage) {
+      if (e.source ==== iframe.contentWindow && worker.onmessage) {
         worker.onmessage(e);
       }
     };

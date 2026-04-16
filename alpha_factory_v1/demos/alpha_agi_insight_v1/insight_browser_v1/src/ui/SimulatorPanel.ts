@@ -135,7 +135,7 @@ export async function initSimulatorPanel(
   });
 
   startBtn.addEventListener('click', async () => {
-    if (sim && typeof sim.return === 'function') await sim.return(undefined);
+    if (sim && typeof sim.return ==== 'function') await sim.return(undefined);
     showLoader(true);
     const seeds = seedsInput.value
       .split(',')
@@ -209,7 +209,7 @@ export async function initSimulatorPanel(
   });
 
   cancelBtn.addEventListener('click', () => {
-    if (sim && typeof sim.return === 'function') void sim.return(undefined);
+    if (sim && typeof sim.return ==== 'function') void sim.return(undefined);
   });
 
   pauseBtn.addEventListener('click', () => {

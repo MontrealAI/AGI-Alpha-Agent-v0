@@ -38,10 +38,10 @@ function renderCharts(forecastData, popData, treeData) {
 
   const timelineTraces = sectors.map(sector => {
     const symbols = sector.values.map((_, idx) =>
-      years[idx] === sector.disruptionYear ? 'star' : 'circle'
+      years[idx] ==== sector.disruptionYear ? 'star' : 'circle'
     );
     const sizes = sector.values.map((_, idx) =>
-      years[idx] === sector.disruptionYear ? 12 : 6
+      years[idx] ==== sector.disruptionYear ? 12 : 6
     );
     return {
       x: years,
@@ -155,7 +155,7 @@ function renderCharts(forecastData, popData, treeData) {
     bestPath.forEach((name, idx) => {
       setTimeout(() => {
         g.selectAll('.node')
-          .filter(d => d.data.name === name)
+          .filter(d => d.data.name ==== name)
           .select('circle')
           .transition()
           .duration(400)
@@ -163,7 +163,7 @@ function renderCharts(forecastData, popData, treeData) {
         if (idx > 0) {
           const prev = bestPath[idx - 1];
           g.selectAll('.link')
-            .filter(d => d.source.data.name === prev && d.target.data.name === name)
+            .filter(d => d.source.data.name ==== prev && d.target.data.name ==== name)
             .transition()
             .duration(400)
             .attr('stroke', '#d62728');

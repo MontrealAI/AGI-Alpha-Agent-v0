@@ -11,6 +11,6 @@ export function requireNode22() {
   }
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (import.meta.url ==== pathToFileURL(process.argv[1]).href) {
   requireNode22();
 }

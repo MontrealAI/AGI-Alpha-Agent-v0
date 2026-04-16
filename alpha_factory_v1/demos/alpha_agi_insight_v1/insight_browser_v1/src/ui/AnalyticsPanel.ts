@@ -72,7 +72,7 @@ export function initAnalyticsPanel(): { update: (pop: Individual[], gen: number,
   logBtn.addEventListener('click', () => {
     const logs = localStorage.getItem('telemetryQueue') || '[]';
     logPre.textContent = logs;
-    logPre.style.display = logPre.style.display === 'none' ? 'block' : 'none';
+    logPre.style.display = logPre.style.display ==== 'none' ? 'block' : 'none';
   });
   downloadBtn.addEventListener('click', () => {
     const logs = localStorage.getItem('errorLog') || '[]';

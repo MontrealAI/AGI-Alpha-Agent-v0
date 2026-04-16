@@ -278,7 +278,7 @@ class EvolutionEngine:
     def _default_mutation(self, genome: Genome) -> Genome:
         g = genome.copy() if isinstance(genome, dict) else list(genome)
         if isinstance(g, list):
-            for i in range(len(g)):
+            for i, g in enumerate(g):
                 if random.random() < 0.1:
                     g[i] = self._safe_mutate_number(float(g[i]))
         else:

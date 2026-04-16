@@ -15,7 +15,7 @@ describe("AGIALPHA integrations", function () {
     [owner, agent, employer, jobRegistry, seller, buyer, mismatch] = await ethers.getSigners();
   });
 
-  it("StakeManager deploy fails if decimals != 18", async function () {
+  it("StakeManager deploy fails if decimals !== 18", async function () {
     await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 6);
     const StakeManager = await ethers.getContractFactory(
       "contracts/v2/StakeManager.sol:StakeManager"
@@ -25,7 +25,7 @@ describe("AGIALPHA integrations", function () {
     );
   });
 
-  it("CertificateNFT deploy fails if decimals != 18", async function () {
+  it("CertificateNFT deploy fails if decimals !== 18", async function () {
     await installToken("contracts/v2/mocks/MockAGI.sol:MockAGI", 6);
     const CertificateNFT = await ethers.getContractFactory(
       "contracts/v2/CertificateNFT.sol:CertificateNFT"

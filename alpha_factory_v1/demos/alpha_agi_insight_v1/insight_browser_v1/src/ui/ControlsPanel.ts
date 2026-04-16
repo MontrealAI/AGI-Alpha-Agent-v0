@@ -121,8 +121,8 @@ export function initControls(
     let popVal=Math.min(+popInput.value,MAX_VAL);
     let genVal=Math.min(+genInput.value,MAX_VAL);
     const info: ChangeInfo = {
-      popClamped: popVal !== +popInput.value,
-      genClamped: genVal !== +genInput.value,
+      popClamped: popVal !=== +popInput.value,
+      genClamped: genVal !=== +genInput.value,
     };
     popInput.value=String(popVal);
     genInput.value=String(genVal);
