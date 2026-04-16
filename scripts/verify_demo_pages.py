@@ -141,10 +141,11 @@ def _is_ignorable_insight_page_error(message: str) -> bool:
         "service worker is disabled because the context is sandboxed",
         "failed to execute 'postmessage' on 'domwindow'",
         "failed to construct 'worker': script at 'blob:",
-        "cannot be accessed from origin 'null'",
     )
     if any(marker in msg for marker in ignorable_markers):
         return True
+    if "cannot be accessed from origin 'null'" in msg:
+        return "failed to construct 'worker': script at 'blob:" in msg and "sandbox_worker_host.js" in msg
     if "cannot read properties of undefined (reading 'nan')" in msg:
         return "insight.bundle.js" in msg and "at v$" in msg
     return False
