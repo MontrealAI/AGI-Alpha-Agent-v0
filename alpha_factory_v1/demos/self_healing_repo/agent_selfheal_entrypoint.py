@@ -8,18 +8,14 @@ Self‑Healing Repo demo
 3. Uses OpenAI Agents SDK to propose & apply a patch via patcher_core.
 4. Opens a Pull Request‑style diff in the dashboard and re‑runs validation.
 """
-import logging
 import asyncio
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 
-try:
-    import gradio as gr
-except ModuleNotFoundError:  # pragma: no cover - optional UI
-    gr = None
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 import uvicorn
@@ -72,6 +68,7 @@ if not PATCH_AVAILABLE:
 
 
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
+SKIP_GRADIO_UI = os.getenv("SELFHEAL_DISABLE_GRADIO", "0") == "1" or bool(os.getenv("PYTEST_CURRENT_TEST"))
 
 REPO_URL = "https://github.com/MontrealAI/sample_broken_calc.git"
 LOCAL_REPO = pathlib.Path(__file__).resolve().parent / "sample_broken_calc"
@@ -181,7 +178,12 @@ def create_app() -> FastAPI:
     async def _live() -> str:  # noqa: D401
         return "OK"
 
-    if gr is None:  # pragma: no cover - optional UI
+    if SKIP_GRADIO_UI:  # pragma: no cover - testing/low-dependency mode
+        return app
+
+    try:
+        import gradio as gr
+    except ModuleNotFoundError:  # pragma: no cover - optional UI
         return app
 
     with gr.Blocks(title="Self‑Healing Repo") as ui:
