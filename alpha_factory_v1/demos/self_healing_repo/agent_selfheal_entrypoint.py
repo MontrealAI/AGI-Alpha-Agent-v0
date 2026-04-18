@@ -68,6 +68,7 @@ if not PATCH_AVAILABLE:
 
 
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
+SKIP_GRADIO_UI = os.getenv("SELFHEAL_DISABLE_GRADIO", "0") == "1" or bool(os.getenv("PYTEST_CURRENT_TEST"))
 
 
 def _skip_gradio_ui() -> bool:
@@ -184,6 +185,7 @@ def create_app() -> FastAPI:
         return "OK"
 
     if _skip_gradio_ui():  # pragma: no cover - testing/low-dependency mode
+    if SKIP_GRADIO_UI:  # pragma: no cover - testing/low-dependency mode
         return app
 
     try:
