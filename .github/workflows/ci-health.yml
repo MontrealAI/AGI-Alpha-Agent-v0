@@ -72,7 +72,8 @@ jobs:
           python -m pip install pyyaml
       - name: Check CI health and remediate
         env:
-          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN || github.token }}
         run: |
           HARD_WORKFLOW="pr-ci.yml"
           RERUN_ARGS=()
