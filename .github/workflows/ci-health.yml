@@ -72,7 +72,10 @@ jobs:
           python -m pip install pyyaml
       - name: Check CI health and remediate
         env:
-          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          # Always use the workflow token for CI health checks. The admin token
+          # is reserved for branch-protection operations and may be unavailable
+          # or rotated independently.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           HARD_WORKFLOW="pr-ci.yml"
           RERUN_ARGS=()
@@ -91,6 +94,7 @@ jobs:
           fi
 
           python scripts/check_ci_status.py \
+            --token "${GITHUB_TOKEN}" \
             --wait-minutes 5 \
             --pending-grace-minutes 45 \
             --stale-minutes 90 \
@@ -105,9 +109,10 @@ jobs:
       - name: Check merge-surface integration CI health
         if: ${{ github.event_name != 'workflow_run' }}
         env:
-          GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN != '' && env.ADMIN_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
+            --token "${GITHUB_TOKEN}" \
             --wait-minutes 5 \
             --pending-grace-minutes 45 \
             --stale-minutes 90 \
