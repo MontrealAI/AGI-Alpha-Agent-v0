@@ -212,8 +212,9 @@ def main(argv: Iterable[str] | None = None) -> int:
         return 1
     url = f"{API_URL}/repos/{owner}/{repo}/branches/{args.branch}/protection"
     status, protection, response_text = _api_request("GET", url, token)
-    if status == 403:
-        sys.stderr.write("::warning::Missing permission to read branch protection; skipping verification.\n")
+    if status in {401, 403}:
+        reason = "authentication" if status == 401 else "permission"
+        sys.stderr.write(f"::warning::Missing {reason} to read branch protection; skipping verification.\n")
         return 0
     if status == 404:
         if not args.apply:
