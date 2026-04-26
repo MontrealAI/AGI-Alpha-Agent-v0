@@ -94,6 +94,7 @@ jobs:
           fi
 
           python scripts/check_ci_status.py \
+            --token "${GITHUB_TOKEN}" \
             --wait-minutes 5 \
             --pending-grace-minutes 45 \
             --stale-minutes 90 \
@@ -111,6 +112,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/check_ci_status.py \
+            --token "${GITHUB_TOKEN}" \
             --wait-minutes 5 \
             --pending-grace-minutes 45 \
             --stale-minutes 90 \
