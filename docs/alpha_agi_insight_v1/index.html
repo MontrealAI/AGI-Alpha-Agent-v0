@@ -39,7 +39,7 @@
         opacity: 1;
       }
     </style>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-8EzrlAris6MLirPYFKRY4ewS/HYnCKoXFJnB/3zX+XSQ8buVADrMBB6qPBUFs77f' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-8EzrlAris6MLirPYFKRY4ewS/HYnCKoXFJnB/3zX+XSQ8buVADrMBB6qPBUFs77f' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL' 'sha384-3GKj2EFs4JPK3e7TBu2E7r555irvHtYeLPVB+20XWiN2KvJgM2H5JP91IWKwMWA2'; style-src 'self' 'unsafe-inline'" />
 </head>
 
   <body class="flex flex-col h-screen">
@@ -80,6 +80,11 @@
     <script type="importmap">{"imports":{"d3":"./d3.exports.js"}}</script>
     <script src="d3.v7.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
     <script>window.SW_HASH = 'sha384-jNrRb0RaME0Q+lz0/ITUhfnQBDj97uJPtmPXPc9rSfGvo79YnRebfKvL0rUyytDQ';</script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.__AF_SW_PATH = 'service-worker.js';
+      }
+    </script>
     <script src="bootstrap.js"></script>
 
     <script type="module" src="insight.bundle.js" integrity="sha384-nx9eP7ZnXMwiSANdsw9N1ial37mzqZUVRt8tm3G4Sx5T+VlF2PjC+9dR3bGtNgTF" crossorigin="anonymous"></script>
