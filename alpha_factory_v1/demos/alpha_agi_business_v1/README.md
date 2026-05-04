@@ -233,7 +233,7 @@ Set the variable yourself to customise the agent list.
 #     set `ALPHA_BEST_ONLY=1` to only emit the single highest-scoring one
 #     and optionally `YFINANCE_SYMBOL=SPY` to pull a live price via `yfinance`
 #     set `ALPHA_TOP_N=3` to publish the top 3 opportunities each cycle
-#     or run `python examples/find_best_alpha.py` to print the current highest-scoring entry
+#     or run `python examples/find_best_alpha.py` to print the current highest-scoring entry (see the "Testing" section for validation details)
 #   • **AlphaExecutionAgent** converts an opportunity into an executed trade
 #   • **AlphaRiskAgent** performs a trivial risk assessment
 #   • **AlphaComplianceAgent** validates regulatory compliance
