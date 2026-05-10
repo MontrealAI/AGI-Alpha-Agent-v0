@@ -178,6 +178,8 @@ def create_app() -> FastAPI:
     async def _live() -> str:  # noqa: D401
         return "OK"
 
+    skip_gradio_ui = os.getenv("SELFHEAL_DISABLE_GRADIO", "0") == "1" or bool(os.getenv("PYTEST_CURRENT_TEST"))
+    if skip_gradio_ui:  # pragma: no cover - testing/low-dependency mode
     if SKIP_GRADIO_UI:  # pragma: no cover - testing/low-dependency mode
         return app
 
