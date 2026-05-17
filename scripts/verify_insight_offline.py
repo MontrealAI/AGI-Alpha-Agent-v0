@@ -54,7 +54,10 @@ def _attempt() -> bool:
             context.set_offline(True)
             page.reload()
             page.wait_for_selector("body", timeout=TIMEOUT_MS)
-            page.wait_for_selector("#tree-container .node", timeout=TIMEOUT_MS)
+            # The demo marks readiness by setting data-insight-ready on <html>
+            # after the hashchange bootstrap finishes. This is more stable than
+            # waiting for legacy tree selectors.
+            page.wait_for_selector("html[data-insight-ready='1']", timeout=TIMEOUT_MS)
             browser.close()
         return True
     except PlaywrightError as exc:
