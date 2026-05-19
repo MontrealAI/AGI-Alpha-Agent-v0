@@ -32,8 +32,13 @@ function withStore<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRe
         const tx = db.transaction(MEME_STORE, mode);
         const st = tx.objectStore(MEME_STORE);
         const req = fn(st);
-        tx.oncomplete = () => resolve(req.result as T);
-        tx.onerror = () => reject(tx.error);
+        const finalize = (handler: () => void) => {
+          handler();
+          db.close();
+        };
+        tx.oncomplete = () => finalize(() => resolve(req.result as T));
+        tx.onerror = () => finalize(() => reject(tx.error));
+        tx.onabort = () => finalize(() => reject(tx.error));
       }),
   );
 }
