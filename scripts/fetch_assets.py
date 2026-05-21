@@ -33,8 +33,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 
-# Base URL for the GPT-2 small weights
-DEFAULT_HF_GPT2_BASE_URL = "https://huggingface.co/openai-community/gpt2/resolve/main"
+# Base URL for the DistilGPT2 weights (smaller default checkpoint for the Insight demo)
+DEFAULT_HF_GPT2_BASE_URL = "https://huggingface.co/distilgpt2/resolve/main"
 HF_GPT2_BASE_URL = os.environ.get("HF_GPT2_BASE_URL", DEFAULT_HF_GPT2_BASE_URL).rstrip("/")
 
 # Base URL for the Pyodide runtime
@@ -64,7 +64,7 @@ ASSETS = {
     "wasm/pyodide.js": f"{PYODIDE_BASE_URL}/pyodide.js",
     "wasm/pyodide.asm.wasm": f"{PYODIDE_BASE_URL}/pyodide.asm.wasm",
     "wasm/pyodide-lock.json": f"{PYODIDE_BASE_URL}/pyodide-lock.json",
-    # GPT-2 small weights
+    # DistilGPT2 weights (smaller GPT-2 variant)
     "wasm_llm/pytorch_model.bin": f"{HF_GPT2_BASE_URL}/pytorch_model.bin",
     "wasm_llm/vocab.json": f"{HF_GPT2_BASE_URL}/vocab.json",
     "wasm_llm/merges.txt": f"{HF_GPT2_BASE_URL}/merges.txt",
@@ -85,7 +85,7 @@ CHECKSUMS = {
     "pyodide.asm.wasm": "sha384-nmltu7flheCw5NzKFX44e8BEt8XM61Av/mLIbzbS4aOf2COxsQxE2u75buNoSrVg",
     "pyodide.js": "sha384-aD6ek5pFVnSSMGK0qubk9ZJdMYGjPs8F6jdJaDJiyZbTcH9jLWR4LJNJ7yY430qI",
     "pyodide-lock.json": "sha384-2t7FpZqshEP49Av2AHAvKgiBBKi4lIjL2MqLocHFbE+bqa7/KYAhcqVPtO37bir1",
-    "pytorch_model.bin": "sha256-7c5d3f4b8b76583b422fcb9189ad6c89d5d97a094541ce8932dce3ecabde1421",
+    "pytorch_model.bin": "sha256-ecbb4e22dd2b9dcc43b2622e1b87ebb9361fb31e496b98ea01a38785c1dbaa01",
 }
 
 if FETCH_ASSETS_SKIP_LLM:

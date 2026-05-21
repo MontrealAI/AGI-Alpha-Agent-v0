@@ -64,7 +64,7 @@ is missing the build scripts continue with default empty values:
 - Browsers with WebGPU can accelerate the local model using the ONNX runtime.
   Use the GPU toggle in the power panel to switch between WebGPU and WASM.
 - The power panel also includes an **Offline/API** selector. Choose
-  **Run Offline** to execute the bundled GPT‑2 model via Pyodide or
+  **Run Offline** to execute the bundled DistilGPT2 model via Pyodide or
   **Run with OpenAI API** when an `OPENAI_API_KEY` is available. The key is
   stored in `localStorage` and the app falls back to offline mode when absent.
 - Set `window.DEBUG = true` before loading the page to expose debugging helpers
@@ -75,12 +75,14 @@ before installing dependencies. Execute this command in a fresh checkout—or
 remove the existing `wasm*/` directories—so placeholder files are replaced.
 After the download completes, verify each file with
 `python ../../../../scripts/fetch_assets.py --verify-only`. The script
-retrieves the official Pyodide runtime from the jsDelivr CDN and the GPT‑2
-small checkpoint from Hugging Face. If a custom `PYODIDE_BASE_URL` is unreachable the helper
+retrieves the official Pyodide runtime from the jsDelivr CDN and the smaller
+DistilGPT2 checkpoint from Hugging Face by default (~337&nbsp;MiB vs ~523&nbsp;MiB for
+GPT‑2 124M). If a custom `PYODIDE_BASE_URL` is unreachable the helper
 automatically retries using the official CDN. The deprecated `wasm-gpt2.tar`
 archive is no longer used.
 Set `FETCH_ASSETS_ATTEMPTS` to control the retry count when downloading assets.
-Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors, for example:
+Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors. To fetch the
+full GPT‑2 124M checkpoint instead of DistilGPT2, set:
 
 ```bash
 export HF_GPT2_BASE_URL="https://huggingface.co/openai-community/gpt2/resolve/main"
@@ -93,8 +95,8 @@ python ../../../../scripts/download_hf_gpt2.py models/gpt2
 
 Alternatively, execute `python ../../../../scripts/download_hf_gpt2.py`,
 `python ../../../../scripts/download_gpt2_small.py`, or
-`python ../../../../scripts/download_openai_gpt2.py` to fetch the GPT‑2 model
-directly.
+`python ../../../../scripts/download_openai_gpt2.py` to fetch the full GPT‑2
+124M model directly.
 
 If the Pyodide runtime fails to download, run the helper manually:
 
@@ -122,10 +124,10 @@ to create it before launching the demo.
 
 ## Build & Run
 Run `npm run fetch-assets` **before installing dependencies** to download the
-Pyodide runtime and GPT‑2 weights, then install the Node modules.
+Pyodide runtime and DistilGPT2 weights, then install the Node modules.
 `python ../../../../scripts/download_hf_gpt2.py` or
-`python ../../../../scripts/download_gpt2_small.py` can also fetch the model
-directly if you prefer,
+`python ../../../../scripts/download_gpt2_small.py` can also fetch the full
+GPT‑2 124M model directly if you prefer,
 compile the bundle:
 ```bash
 npm run fetch-assets
@@ -159,12 +161,12 @@ offline run:
 npm run fetch-assets
 ```
 
-This downloads the Pyodide runtime and GPT‑2 model from the configured
+This downloads the Pyodide runtime and DistilGPT2 model from the configured
 mirrors. Assets land in `wasm/` and `wasm_llm/`.
 It also retrieves `lib/bundle.esm.min.js` from the mirror. You may instead run
 `python ../../../../scripts/download_hf_gpt2.py` or
-`python ../../../../scripts/download_gpt2_small.py` to pull the model
-directly. The build and
+`python ../../../../scripts/download_gpt2_small.py` to pull the full GPT‑2 124M
+model directly. The build and
 `manual_build.py` scripts scan every downloaded asset for the word
 `"placeholder"` and abort when any file still contains that marker.
 `npm run fetch-assets` also downloads `lib/workbox-sw.js` from
@@ -182,7 +184,7 @@ Set `W3UP_EMAIL` to the address registered with
 results can be pinned.
 
 If `OPENAI_API_KEY` is stored in `localStorage`, the demo uses the OpenAI API for
-chat prompts. When no key is present a lightweight GPT‑2 model under
+chat prompts. When no key is present a lightweight DistilGPT2 model under
 `wasm_llm/` runs locally.
 Use the Offline/API selector in the power panel to switch modes at any time.
 
@@ -199,11 +201,11 @@ Running `npm run build` or `python manual_build.py` copies this file to
 Use `manual_build.py` for air‑gapped environments:
 
 1. `cp .env.sample .env` and edit the values if you haven't already, then `chmod 600 .env`.
-2. `npm run fetch-assets` to fetch Pyodide and the GPT‑2 model.
+2. `npm run fetch-assets` to fetch Pyodide and the DistilGPT2 model.
    Alternatively run `python ../../../../scripts/download_gpt2_small.py`,
    `python ../../../../scripts/download_openai_gpt2.py` or
    `python ../../../../scripts/download_hf_gpt2.py` to grab
-   the model directly from the official mirror.
+   the full GPT‑2 124M model directly from the official mirror.
    The build scripts verify these files no longer contain the word `"placeholder"`.
    Failing to replace placeholders will break offline mode.
 3. Run `node build/version_check.js` to ensure Node.js **v22** or newer is
@@ -221,7 +223,7 @@ If `.env` is absent the script continues with empty defaults rather than abortin
 
 Follow these steps when building without internet access:
 
-1. Run `npm run fetch-assets` (or `python ../../../../scripts/download_gpt2_small.py`, `python ../../../../scripts/download_openai_gpt2.py`).
+1. Run `npm run fetch-assets` (or `python ../../../../scripts/download_gpt2_small.py` for the full GPT‑2 124M model, `python ../../../../scripts/download_openai_gpt2.py`).
 2. Verify checksums match `build_assets.json` with
    `python ../../../../scripts/fetch_assets.py --verify-only` and ensure no
    files under `wasm/` or `lib/` contain the word "placeholder".
@@ -234,7 +236,8 @@ Failing to replace placeholders will break offline mode.
 ### Offline build checklist
 
 1. Run `npm run fetch-assets`.
-   (`python ../../../../scripts/download_gpt2_small.py` or `python ../../../../scripts/download_openai_gpt2.py` also works.)
+   (`python ../../../../scripts/download_gpt2_small.py` for the full GPT‑2 124M model or
+   `python ../../../../scripts/download_openai_gpt2.py` also works.)
 2. `npm ci` to install dependencies from `package-lock.json`.
 3. Confirm no placeholder text remains in `lib/` or `wasm*/`.
 4. Execute `python manual_build.py` (or `./manual_build.ps1`) to generate the PWA in `dist/`. Use
@@ -371,7 +374,7 @@ Pyodide is disabled on Safari and iOS devices because the runtime fails to load
 reliably. The demo automatically falls back to the JavaScript engine instead of
 executing Python code in the browser. Expect noticeably slower performance for
 LLM tasks and the absence of features that rely on the Python bridge, such as
-the local GPT‑2 critic.
+the local DistilGPT2 critic.
 
 ## Running Browser Tests
 
