@@ -9,9 +9,10 @@ import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Pattern
 
 ROOT = Path(__file__).resolve().parents[1]
+ENCODING = "utf-8"
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
 TEST_CONSTANTS = ROOT / "tests/contracts/contracts/v2/Constants.sol"
@@ -40,8 +41,9 @@ CANONICAL_TOKEN = TokenConfig(
 )
 
 
-def _extract_pattern(path: Path, pattern: str, label: str) -> str:
-    match = re.search(pattern, path.read_text())
+def _extract_pattern(path: Path, pattern: str | Pattern[str], label: str) -> str:
+    compiled = re.compile(pattern) if isinstance(pattern, str) else pattern
+    match = compiled.search(path.read_text(encoding=ENCODING))
     if not match:
         raise ValueError(f"Could not find {label} in {path}")
     return match.group(1)
