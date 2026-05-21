@@ -79,6 +79,10 @@ retrieves the official Pyodide runtime from the jsDelivr CDN and the GPT‑2
 small checkpoint from Hugging Face. If a custom `PYODIDE_BASE_URL` is unreachable the helper
 automatically retries using the official CDN. The deprecated `wasm-gpt2.tar`
 archive is no longer used.
+CI and documentation builds set `FETCH_ASSETS_SKIP_LLM=1` by default to avoid
+downloading the >500 MB GPT‑2 checkpoint. Run `npm run fetch-assets` without
+that flag (or set `FETCH_ASSETS_SKIP_LLM=0`) when you need the offline model
+bundled for local demos.
 Set `FETCH_ASSETS_ATTEMPTS` to control the retry count when downloading assets.
 Override `PYODIDE_BASE_URL` or `HF_GPT2_BASE_URL` to change the mirrors, for example:
 
