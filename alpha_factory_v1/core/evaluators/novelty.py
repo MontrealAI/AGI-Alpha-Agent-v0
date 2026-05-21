@@ -2,6 +2,7 @@
 """Embedding-based novelty scoring utilities."""
 from __future__ import annotations
 
+import hashlib
 import logging
 import hashlib
 from typing import Any, TYPE_CHECKING
@@ -21,7 +22,17 @@ _MODEL: "SentenceTransformer" | None = None
 _DIM = 384
 
 
-def _get_model() -> "SentenceTransformer":
+def _hash_embed(text: str, dim: int = _DIM) -> np.ndarray:
+    """Return a deterministic hashing-based embedding."""
+    digest = hashlib.sha256(text.encode("utf-8")).digest()
+    seed = int.from_bytes(digest[:8], "big", signed=False)
+    rng = np.random.default_rng(seed)
+    vec = rng.standard_normal(dim).astype("float32")
+    vec /= np.linalg.norm(vec) or 1.0
+    return vec.reshape(1, -1)
+
+
+def _get_model() -> "SentenceTransformer | None":
     """Lazily import and initialize the MiniLM encoder.
 
     Importing ``sentence-transformers`` pulls in PyTorch, which can take several
@@ -33,15 +44,25 @@ def _get_model() -> "SentenceTransformer":
     try:
         from sentence_transformers import SentenceTransformer
     except Exception as exc:  # pragma: no cover - offline
-        raise ImportError("sentence-transformers missing") from exc
+        _LOG.warning("SentenceTransformer unavailable (%s) → hashing fallback.", exc)
+        return None
     global _MODEL
     if _MODEL is None:
-        _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        try:
+            _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
+        except Exception as exc:  # pragma: no cover - offline
+            _LOG.warning("SentenceTransformer load failed (%s) → hashing fallback.", exc)
+            return None
     return _MODEL
 
 
 def embed(text: str) -> np.ndarray:
     """Return the MiniLM embedding for ``text``."""
+    model = _get_model()
+    if model is None:
+        return _hash_embed(text)
+    vec = model.encode([text], normalize_embeddings=True)
+    return np.asarray(vec, dtype="float32")  # type: ignore[no-any-return]
     try:
         model = _get_model()
         vec = model.encode([text], normalize_embeddings=True)
@@ -86,6 +107,11 @@ class NoveltyIndex:
         vec = embed(text)
         if self.count == 0:
             return 1.0
+        if _MODEL is None:
+            v = vec[0]
+            denom = float(np.linalg.norm(v) * np.linalg.norm(self.mean)) or 1.0
+            cosine = float(np.dot(v, self.mean) / denom)
+            return 1.0 - cosine
         p = _softmax(vec[0])
         q = _softmax(self.mean)
         kl = float(np.sum(p * np.log((p + 1e-12) / (q + 1e-12))))
