@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+import re
+
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
