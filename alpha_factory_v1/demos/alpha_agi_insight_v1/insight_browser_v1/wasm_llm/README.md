@@ -17,3 +17,5 @@ After downloading, the build script copies this directory to `dist/wasm_llm/` so
 the browser demo can operate without an internet connection. Set
 `FETCH_ASSETS_SKIP_LLM=1` when running CI or preview builds to avoid downloading
 the >500 MB checkpoint while keeping other assets up to date.
+CI sets the `CI=1` environment variable, so `scripts/fetch_assets.py` will skip
+the GPT‑2 checkpoint by default unless you set `FETCH_ASSETS_INCLUDE_LLM=1`.
