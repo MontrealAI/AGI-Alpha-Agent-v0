@@ -1,6 +1,6 @@
 .PHONY: build_web demo-setup demo-run compose-up loadtest \
         gallery-build gallery-open subdir-gallery-open gallery-deploy demo-open \
-        proto proto-verify benchmark
+        proto proto-verify benchmark clean-disk
 
 build_web:
 	npm ci --prefix alpha_factory_v1/core/interface/web_client
@@ -39,6 +39,9 @@ proto-verify:
 
 benchmark:
 	python benchmarks/docker_runner.py > bench_results.json
+
+clean-disk:
+	python scripts/cleanup_disk_space.py --all
 
 # Demo gallery helpers
 
