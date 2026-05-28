@@ -70,6 +70,12 @@ if not PATCH_AVAILABLE:
 GRADIO_SHARE = os.getenv("GRADIO_SHARE", "0") == "1"
 SKIP_GRADIO_UI = os.getenv("SELFHEAL_DISABLE_GRADIO", "0") == "1" or bool(os.getenv("PYTEST_CURRENT_TEST"))
 
+
+def _skip_gradio_ui() -> bool:
+    """Return whether the Gradio UI should be skipped for this invocation."""
+    return os.getenv("SELFHEAL_DISABLE_GRADIO", "0") == "1" or bool(os.getenv("PYTEST_CURRENT_TEST"))
+
+
 REPO_URL = "https://github.com/MontrealAI/sample_broken_calc.git"
 LOCAL_REPO = pathlib.Path(__file__).resolve().parent / "sample_broken_calc"
 DEFAULT_TARGET_REPO = pathlib.Path(__file__).resolve().parents[3]
@@ -178,6 +184,7 @@ def create_app() -> FastAPI:
     async def _live() -> str:  # noqa: D401
         return "OK"
 
+    if _skip_gradio_ui():  # pragma: no cover - testing/low-dependency mode
     if SKIP_GRADIO_UI:  # pragma: no cover - testing/low-dependency mode
         return app
 
