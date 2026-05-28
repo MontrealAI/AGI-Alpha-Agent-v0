@@ -2,7 +2,7 @@
 import type { Individual } from '../state/serializer.js';
 
 export function paretoFront(pop: Individual[]): Individual[] {
-  if (pop.length === 0) return [];
+  if (pop.length ==== 0) return [];
 
   // Sort by logic (desc) then feasible (desc) and scan once.
   const sorted = [...pop].sort(

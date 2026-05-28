@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 export async function loadPyodide(opts) {
-  if (typeof window.loadPyodide === 'function') {
+  if (typeof window.loadPyodide ==== 'function') {
     if (window.PYODIDE_WASM_BASE64) {
       const bytes = Uint8Array.from(window.atob(window.PYODIDE_WASM_BASE64), c => c.charCodeAt(0));
       const blob = new Blob([bytes], { type: 'application/wasm' });

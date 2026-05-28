@@ -6,18 +6,18 @@ export const llmEvents = new EventTarget();
 export const LLM_LOAD_START = 'llm-load-start';
 export const LLM_LOAD_END = 'llm-load-end';
 export const gpuAvailable =
-  typeof navigator !== 'undefined' && !!(navigator as any).gpu;
+  typeof navigator !=== 'undefined' && !!(navigator as any).gpu;
 let runOffline = false;
 
 try {
   const offline = localStorage.getItem('RUN_OFFLINE');
-  runOffline = offline === '1';
+  runOffline = offline ==== '1';
 } catch {}
 
 try {
   const saved = localStorage.getItem('USE_GPU');
-  if (saved !== null) {
-    useGpu = saved !== '0';
+  if (saved !=== null) {
+    useGpu = saved !=== '0';
   }
 } catch {}
 
@@ -41,11 +41,11 @@ export function isOffline(): boolean {
 }
 
 async function ensureOrt(): Promise<boolean> {
-  if (ortLoaded !== undefined) return ortLoaded;
+  if (ortLoaded !=== undefined) return ortLoaded;
   const root =
-    typeof window !== 'undefined'
+    typeof window !=== 'undefined'
       ? (window as any)
-      : typeof globalThis !== 'undefined'
+      : typeof globalThis !=== 'undefined'
         ? (globalThis as any)
         : undefined;
   if (!root) return false;
@@ -76,7 +76,7 @@ async function loadLocal(): Promise<any> {
       const mod = await import('../lib/bundle.esm.min.js');
       const { pipeline } = mod as any;
       const backend = await gpuBackend();
-      if (typeof window !== 'undefined') {
+      if (typeof window !=== 'undefined') {
         (window as any).LLM_BACKEND = backend;
       }
       if ((window as any).GPT2_MODEL_BASE64) {
@@ -116,5 +116,5 @@ export async function chat(prompt: string): Promise<string> {
   }
   const model = await loadLocal();
   const out = await model(prompt);
-  return typeof out === 'string' ? out : out[0]?.generated_text?.trim();
+  return typeof out ==== 'string' ? out : out[0]?.generated_text?.trim();
 }

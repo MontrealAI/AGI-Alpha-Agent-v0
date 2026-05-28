@@ -3,7 +3,7 @@
 export function createStore(dbName, storeName) {
   const store = { dbp: Promise.resolve(null), storeName, memory: null };
 
-  if (typeof indexedDB === 'undefined') {
+  if (typeof indexedDB ==== 'undefined') {
     store.dbp = Promise.resolve(null);
     store.memory = new Map();
     return store;

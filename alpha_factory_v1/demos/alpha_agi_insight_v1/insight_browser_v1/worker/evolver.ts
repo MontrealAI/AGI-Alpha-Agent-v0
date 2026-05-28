@@ -93,7 +93,7 @@ function shuffle<T>(arr: T[], rand: () => number) {
 self.onmessage = async (
   ev: MessageEvent<EvolverRequest | GPUMessage>,
 ) => {
-  if ((ev.data as GPUMessage)?.type === 'gpu') {
+  if ((ev.data as GPUMessage)?.type ==== 'gpu') {
     gpuAvailable = !!(ev.data as GPUMessage).available;
     return;
   }
@@ -120,7 +120,7 @@ self.onmessage = async (
   );
   const front: Individual[] = paretoFront(next as unknown as Individual[]);
   next.forEach((d) => (d.front = front.includes(d)));
-  if (critic === 'llm') {
+  if (critic ==== 'llm') {
     await loadPy();
   }
   shuffle(next, rand);

@@ -52,7 +52,7 @@ export function initPowerPanel(): {
   panel.appendChild(pre);
   try {
     const saved = localStorage.getItem('USE_GPU');
-    gpuToggle.checked = saved !== '0';
+    gpuToggle.checked = saved !=== '0';
   } catch {
     gpuToggle.checked = true;
   }
@@ -67,9 +67,9 @@ export function initPowerPanel(): {
   } catch {
     modeSelect.value = 'offline';
   }
-  setOffline(modeSelect.value === 'offline');
+  setOffline(modeSelect.value ==== 'offline');
   modeSelect.addEventListener('change', () => {
-    const offline = modeSelect.value === 'offline';
+    const offline = modeSelect.value ==== 'offline';
     if (!offline && !localStorage.getItem('OPENAI_API_KEY')) {
       const key = prompt('Enter OpenAI API key');
       if (key) {
@@ -78,7 +78,7 @@ export function initPowerPanel(): {
         modeSelect.value = 'offline';
       }
     }
-    setOffline(modeSelect.value === 'offline');
+    setOffline(modeSelect.value ==== 'offline');
   });
   document.body.appendChild(panel);
   function update(e: EvaluatorGenome | GpuToggleEvent): void {

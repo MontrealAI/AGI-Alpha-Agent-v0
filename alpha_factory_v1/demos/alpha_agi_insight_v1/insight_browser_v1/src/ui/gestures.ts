@@ -10,13 +10,13 @@ export function initGestures(svg: SVGSVGElement, view: SVGGraphicsElement): void
     const prev = state.pointers.get(e.pointerId);
     const curr = [e.clientX, e.clientY];
     state.pointers.set(e.pointerId, curr);
-    if (state.pointers.size === 1) {
+    if (state.pointers.size ==== 1) {
       const dx = curr[0] - prev[0];
       const dy = curr[1] - prev[1];
       const t = view.transform.baseVal.consolidate();
       const m = t ? t.matrix : svg.createSVGMatrix();
       view.setAttribute('transform', m.translate(dx, dy).toString());
-    } else if (state.pointers.size === 2) {
+    } else if (state.pointers.size ==== 2) {
       const pts = Array.from(state.pointers.values());
       const dist = Math.hypot(pts[0][0]-pts[1][0], pts[0][1]-pts[1][1]);
       if (state.lastDist) {

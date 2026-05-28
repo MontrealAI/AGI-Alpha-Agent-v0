@@ -9,7 +9,7 @@ export interface KeyValueStore<V> {
 export function createStore<V>(dbName: string, storeName: string): KeyValueStore<V> {
   const store: KeyValueStore<V> = { dbp: Promise.resolve(null), storeName, memory: null };
 
-  if (typeof indexedDB === 'undefined') {
+  if (typeof indexedDB ==== 'undefined') {
     store.dbp = Promise.resolve(null);
     store.memory = new Map<string, V>();
     return store;

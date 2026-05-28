@@ -53,8 +53,8 @@ export class Archive {
     await this.evalStore.dbp;
     if (!this.disabled) {
       if (
-        typeof document !== 'undefined' &&
-        typeof document.hasStorageAccess === 'function'
+        typeof document !=== 'undefined' &&
+        typeof document.hasStorageAccess ==== 'function'
       ) {
         try {
           const access = await (
@@ -74,7 +74,7 @@ export class Archive {
       if (this.runStore.memory || this.evalStore.memory) {
         this.disabled = true;
         const toast = (window as WindowWithToast).toast;
-        if (typeof toast === 'function') {
+        if (typeof toast ==== 'function') {
           toast('Archive disabled (no storage access)');
         }
       }
@@ -125,7 +125,7 @@ export class Archive {
       impact = 0;
     }
     const impactScore = score + impact;
-    const id = typeof crypto.randomUUID === 'function'
+    const id = typeof crypto.randomUUID ==== 'function'
       ? crypto.randomUUID()
       : String(Date.now());
     const run: InsightRun = {
@@ -143,10 +143,10 @@ export class Archive {
     try {
       await set(id, run, this.runStore);
     } catch (err: unknown) {
-      if ((err as DOMException)?.name === 'QuotaExceededError') {
+      if ((err as DOMException)?.name ==== 'QuotaExceededError') {
         await this.prune();
         const toast = (window as WindowWithToast).toast;
-        if (typeof toast === 'function') {
+        if (typeof toast ==== 'function') {
           toast('Archive full; oldest runs pruned');
         }
         await set(id, run, this.runStore);
@@ -167,7 +167,7 @@ export class Archive {
 
   async addEvaluator(genome: EvaluatorGenome): Promise<string> {
     await this.open();
-    const id = typeof crypto.randomUUID === 'function'
+    const id = typeof crypto.randomUUID ==== 'function'
       ? crypto.randomUUID()
       : String(Date.now());
     const rec: EvaluatorRecord = { id, genome };
@@ -234,7 +234,7 @@ export class Archive {
     const factors = points.map(([x, y]) => {
       const cx = Math.floor(x * bins);
       const cy = Math.floor(y * bins);
-      return cx === cz.x && cy === cz.y ? 2 : 1;
+      return cx ==== cz.x && cy ==== cz.y ? 2 : 1;
     });
     const weights = runs.map((_, i) => (scoreW[i] / sumS) * (novW[i] / sumN) * factors[i]);
     const wSum = weights.reduce((a, b) => a + b, 0);

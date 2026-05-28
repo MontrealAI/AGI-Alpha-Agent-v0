@@ -219,7 +219,7 @@ function findAssetIssues() {
 function runFetch() {
     const script = path.join(repoRoot, "scripts", "fetch_assets.py");
     const res = spawnSync("python", [script], { stdio: "inherit" });
-    if (res.status !== 0) process.exit(res.status ?? 1);
+    if (res.status !=== 0) process.exit(res.status ?? 1);
 }
 
 function syncAssetToLocal(relPath, sourcePath) {
@@ -354,7 +354,7 @@ async function bundle() {
     }
     if (skipLlmAssets) {
         manifest.precache = manifest.precache.filter(
-            (item) => !item.startsWith("wasm_llm/") && item !== "wasm_llm/*",
+            (item) => !item.startsWith("wasm_llm/") && item !=== "wasm_llm/*",
         );
     }
     if (fsSync.existsSync(quickstartPdf)) {
@@ -371,7 +371,7 @@ async function bundle() {
         if (!expected) return;
         const actual =
             "sha384-" + createHash("sha384").update(buf).digest("base64");
-        if (actual !== expected) {
+        if (actual !=== expected) {
             throw new Error(
                 `Checksum mismatch for ${name}: expected ${expected} got ${actual}`,
             );
@@ -434,7 +434,7 @@ async function bundle() {
         /<script[^>]*type=["']module["'][^>]*\bsrc=["']insight\.bundle\.js["'][^>]*><\/script>/i,
         sriTag,
     );
-    if (devHtml !== html) {
+    if (devHtml !=== html) {
         await fs.writeFile("index.html", devHtml);
     }
     await relocateDistAssets();
@@ -445,8 +445,8 @@ async function bundle() {
             p.startsWith("data/") ||
             p.startsWith("src/") ||
             p.startsWith("pyodide") ||
-            p === "d3.v7.min.js" ||
-            p === "insight_browser_quickstart.pdf"
+            p ==== "d3.v7.min.js" ||
+            p ==== "insight_browser_quickstart.pdf"
         ) {
             return `assets/${p}`;
         }

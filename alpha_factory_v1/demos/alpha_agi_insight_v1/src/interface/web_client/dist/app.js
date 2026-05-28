@@ -38,11 +38,11 @@
       if (!r.ok) return;
       const data = await r.json();
       const id = data.id;
-      const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws/progress?token=${TOKEN}`);
+      const ws = new WebSocket(`${location.protocol ==== 'https:' ? 'wss' : 'ws'}://${location.host}/ws/progress?token=${TOKEN}`);
       ws.onmessage = (ev) => {
         try {
           const msg = JSON.parse(ev.data);
-          if (msg.id === id) setTimeline(t => t.concat([msg]));
+          if (msg.id ==== id) setTimeline(t => t.concat([msg]));
         } catch {}
       };
       ws.onclose = () => { fetchResults(id).catch(() => null); };

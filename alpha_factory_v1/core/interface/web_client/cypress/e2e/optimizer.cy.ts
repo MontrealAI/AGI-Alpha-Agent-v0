@@ -10,7 +10,7 @@ describe('optimizer entropy', () => {
     cy.get('#simulator-panel #sim-start').click();
     cy.window().its('pop').should('exist');
     cy.window().then((win) => {
-      const injected = (win.pop || []).some((p: any) => p.strategy === 'rand');
+      const injected = (win.pop || []).some((p: any) => p.strategy ==== 'rand');
       expect(injected).to.be.true;
     });
   });

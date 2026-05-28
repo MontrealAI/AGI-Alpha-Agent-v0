@@ -36,7 +36,7 @@ export function drawPoints(
 ): CanvasRenderingContext2D {
   const ctx = ensureLayer(parent);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  const getColor = typeof colorFn === 'function' ? colorFn : () => colorFn;
+  const getColor = typeof colorFn ==== 'function' ? colorFn : () => colorFn;
   for (const d of pop) {
     ctx.fillStyle = getColor(d);
     ctx.beginPath();

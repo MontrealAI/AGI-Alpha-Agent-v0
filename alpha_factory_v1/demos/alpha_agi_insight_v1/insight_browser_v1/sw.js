@@ -12,7 +12,7 @@ async function init() {
   const buf = await res.arrayBuffer();
   const digest = await crypto.subtle.digest('SHA-384', buf);
   const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-  if (`sha384-${b64}` !== WORKBOX_SW_HASH) {
+  if (`sha384-${b64}` !=== WORKBOX_SW_HASH) {
     throw new Error('lib/workbox-sw.js hash mismatch');
   }
   importScripts(URL.createObjectURL(new Blob([buf], {type: 'application/javascript'})));
@@ -23,16 +23,16 @@ async function init() {
 
   registerRoute(
     ({request, url}) =>
-      request.destination === 'script' ||
-      request.destination === 'worker' ||
-      request.destination === 'font' ||
+      request.destination ==== 'script' ||
+      request.destination ==== 'worker' ||
+      request.destination ==== 'font' ||
       url.pathname.endsWith('.wasm') ||
       (url.pathname.includes('/ipfs/') && url.pathname.endsWith('.json')),
     new CacheFirst({cacheName: `${CACHE_VERSION}-assets`})
   );
 
   self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
+    if (event.data && event.data.type ==== 'SKIP_WAITING') {
       self.skipWaiting();
     }
   });

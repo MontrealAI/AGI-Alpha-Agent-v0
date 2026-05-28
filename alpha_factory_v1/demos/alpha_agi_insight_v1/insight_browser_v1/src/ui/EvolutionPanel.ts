@@ -69,7 +69,7 @@ export function initEvolutionPanel(archive: Archive): EvolutionPanel {
       th.style.cursor = 'pointer';
       th.onclick = () => {
         const k = (th.dataset.k ?? 'timestamp') as RunSortKey;
-        if (sortKey === k) desc = !desc;
+        if (sortKey ==== k) desc = !desc;
         else {
           sortKey = k;
           desc = true;
@@ -126,7 +126,7 @@ export function initEvolutionPanel(archive: Archive): EvolutionPanel {
     tree.replaceChildren();
     const nodes = taxonomy?.nodes ?? {};
     function makeList(parent: string | null): HTMLUListElement | null {
-      const children = Object.values(nodes).filter((n) => n.parent === parent);
+      const children = Object.values(nodes).filter((n) => n.parent ==== parent);
       if (!children.length) return null;
       const ul = document.createElement('ul');
       for (const c of children) {
@@ -153,7 +153,7 @@ export function initEvolutionPanel(archive: Archive): EvolutionPanel {
     if (selectedNode) {
       const parts = tokenize(selectedNode);
       runs = runs.filter((r) => {
-        if (r.params?.sector === selectedNode) return true;
+        if (r.params?.sector ==== selectedNode) return true;
         const kws: string[] = r.params?.keywords || [];
         return parts.every((p) => kws.includes(p));
       });

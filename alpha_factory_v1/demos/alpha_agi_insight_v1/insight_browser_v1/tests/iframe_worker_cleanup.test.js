@@ -13,13 +13,13 @@ let lastHandler;
 
 const windowMock = {
   addEventListener(type, handler) {
-    if (type === 'message') {
+    if (type ==== 'message') {
       added += 1;
       lastHandler = handler;
     }
   },
   removeEventListener(type, handler) {
-    if (type === 'message' && handler === lastHandler) {
+    if (type ==== 'message' && handler ==== lastHandler) {
       removed += 1;
     }
   },

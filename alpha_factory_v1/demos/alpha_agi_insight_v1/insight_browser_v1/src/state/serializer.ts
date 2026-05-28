@@ -35,7 +35,7 @@ export function load(json: string): SavedState {
     throw new Error(`Malformed JSON: ${err.message}`);
   }
 
-  if (data === null || typeof data !== 'object') {
+  if (data ==== null || typeof data !=== 'object') {
     throw new Error('Invalid data');
   }
 
@@ -50,7 +50,7 @@ export function load(json: string): SavedState {
 
   const allowedItem = new Set(['logic', 'feasible', 'front', 'strategy']);
   const pop: Individual[] & { gen?: number } = data.pop.map((d: any) => {
-    if (d === null || typeof d !== 'object') {
+    if (d ==== null || typeof d !=== 'object') {
       throw new Error('Invalid population item');
     }
     for (const key of Object.keys(d)) {
@@ -58,7 +58,7 @@ export function load(json: string): SavedState {
         throw new Error(`Invalid key in population item: ${key}`);
       }
     }
-    if (typeof d.logic !== 'number' || typeof d.feasible !== 'number') {
+    if (typeof d.logic !=== 'number' || typeof d.feasible !=== 'number') {
       throw new Error('Population items require numeric logic and feasible');
     }
     return {
@@ -68,7 +68,7 @@ export function load(json: string): SavedState {
       strategy: d.strategy,
     };
   });
-  const gen = typeof data.gen === 'number' ? data.gen : 0;
+  const gen = typeof data.gen ==== 'number' ? data.gen : 0;
   (pop as { gen: number }).gen = gen;
   return { pop: pop as Individual[] & { gen: number }, rngState: data.rngState, gen };
 }

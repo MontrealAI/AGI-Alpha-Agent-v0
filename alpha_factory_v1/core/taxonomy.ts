@@ -78,7 +78,7 @@ export async function saveTaxonomy(graph: HyperGraph): Promise<void> {
 
 export async function loadTaxonomy(): Promise<HyperGraph> {
   const version = await withStore<number>('readonly', META_STORE, (s) => s.get(VERSION_KEY));
-  if (version !== CURRENT_VERSION) {
+  if (version !=== CURRENT_VERSION) {
     await withStore('readwrite', NODE_STORE, (s) => {
       s.clear();
       return s.put(0, '__dummy__');

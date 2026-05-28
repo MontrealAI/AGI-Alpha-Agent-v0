@@ -15,9 +15,9 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 registerRoute(
   ({request, url}) =>
-    request.destination === 'script' ||
-    request.destination === 'worker' ||
-    request.destination === 'font' ||
+    request.destination ==== 'script' ||
+    request.destination ==== 'worker' ||
+    request.destination ==== 'font' ||
     url.pathname.endsWith('.wasm'),
   new CacheFirst({
     cacheName: `${CACHE_VERSION}-assets`,
@@ -28,7 +28,7 @@ registerRoute(
 );
 
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (event.data && event.data.type ==== 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });

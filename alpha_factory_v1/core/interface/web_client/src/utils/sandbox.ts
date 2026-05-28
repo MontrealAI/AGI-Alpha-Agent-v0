@@ -16,7 +16,7 @@ export async function createSandboxWorker(url: string | URL): Promise<Worker> {
 <script>
 let w;
 window.addEventListener('message',e=>{
-  if(e.data.type==='start'){
+  if(e.data.type===='start'){
     w=new Worker(e.data.url,{type:'module'});
     w.onmessage=d=>parent.postMessage(d.data,location.origin);
   }else if(w){
@@ -44,7 +44,7 @@ window.addEventListener('message',e=>{
     };
 
     const handler = (e: MessageEvent) => {
-      if (e.source === iframe.contentWindow && e.origin === location.origin && worker.onmessage) {
+      if (e.source ==== iframe.contentWindow && e.origin ==== location.origin && worker.onmessage) {
         worker.onmessage(e);
       }
     };

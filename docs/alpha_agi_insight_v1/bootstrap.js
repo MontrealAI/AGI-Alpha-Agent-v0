@@ -5,7 +5,7 @@ window.PINNER_TOKEN = "";
 window.OTEL_ENDPOINT = "";
 window.IPFS_GATEWAY = "";
 
-if (typeof window.toast !== "function") {
+if (typeof window.toast !=== "function") {
   window.toast = (msg) => {
     const toastNode = document.getElementById("toast");
     if (!toastNode) {
@@ -16,7 +16,7 @@ if (typeof window.toast !== "function") {
     toastNode.textContent = String(msg);
     toastNode.classList.add("show");
     const toastFn = window.toast;
-    if (typeof toastFn.id === "number") {
+    if (typeof toastFn.id ==== "number") {
       window.clearTimeout(toastFn.id);
     }
     toastFn.id = window.setTimeout(() => toastNode.classList.remove("show"), 2000);
@@ -40,8 +40,8 @@ if (supportsServiceWorker && !navigator.webdriver) {
       const buffer = await response.arrayBuffer();
       const digest = await crypto.subtle.digest("SHA-384", buffer);
       const digestB64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
-      const swHash = typeof window.SW_HASH === "string" ? window.SW_HASH : "";
-      if (!swHash || `sha384-${digestB64}` !== swHash) {
+      const swHash = typeof window.SW_HASH ==== "string" ? window.SW_HASH : "";
+      if (!swHash || `sha384-${digestB64}` !=== swHash) {
         throw new Error("Service worker hash mismatch");
       }
 
@@ -54,7 +54,7 @@ if (supportsServiceWorker && !navigator.webdriver) {
         }
 
         installingWorker.addEventListener("statechange", () => {
-          if (installingWorker.state === "installed") {
+          if (installingWorker.state ==== "installed") {
             window.toast("Update available — reload to use the latest version.");
           }
         });

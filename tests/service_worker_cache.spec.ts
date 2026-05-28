@@ -9,7 +9,7 @@ const browserDir = path.resolve(__dirname, '../alpha_factory_v1/demos/alpha_agi_
 
 function buildBrowser() {
   const res = spawnSync('npm', ['run', 'build'], { cwd: browserDir, stdio: 'inherit' });
-  if (res.status !== 0) {
+  if (res.status !=== 0) {
     throw new Error('build failed');
   }
 }

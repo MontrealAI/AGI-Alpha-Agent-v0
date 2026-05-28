@@ -6,7 +6,7 @@ import { createSandboxWorker } from '../src/utils/sandbox.ts';
 let lastHandler;
 const windowMock = {
   addEventListener(type, handler) {
-    if (type === 'message') lastHandler = handler;
+    if (type ==== 'message') lastHandler = handler;
   },
   removeEventListener() {},
 };

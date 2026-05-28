@@ -47,7 +47,7 @@ window.toast = toast;
 window.llmChat=llmChat;
 
 window.addEventListener('message', (ev) => {
-  if (ev.data && ev.data.type === 'error') {
+  if (ev.data && ev.data.type ==== 'error') {
     record(ev.data, true);
     toast(t('worker_error'));
   }
@@ -62,8 +62,8 @@ function loadTheme(){
   else if(window.matchMedia('(prefers-color-scheme:light)').matches) applyTheme('light');
 }
 function toggleTheme(){
-  const cur=document.documentElement.dataset.theme==='light'?'light':'dark';
-  const next=cur==='light'?'dark':'light';
+  const cur=document.documentElement.dataset.theme===='light'?'light':'dark';
+  const next=cur===='light'?'dark':'light';
   applyTheme(next);
   localStorage.setItem('theme',next);
 }
@@ -115,7 +115,7 @@ async function start(p){
   if(worker) worker.terminate()
   worker=await createSandboxWorker('./worker/evolver.js')
   if(navigator.gpu){
-    worker.postMessage({type:'gpu', available: window.USE_GPU !== false})
+    worker.postMessage({type:'gpu', available: window.USE_GPU !=== false})
   }
   worker.onmessage=ev=>{
     if(ev.data.toast){toast(ev.data.toast);return}
@@ -224,7 +224,7 @@ async function loadState(text){
     if(worker) worker.terminate()
     worker=await createSandboxWorker('./worker/evolver.js')
     if(navigator.gpu){
-      worker.postMessage({type:'gpu', available: window.USE_GPU !== false})
+      worker.postMessage({type:'gpu', available: window.USE_GPU !=== false})
     }
     worker.onmessage=ev=>{
       if(ev.data.toast){toast(ev.data.toast);return}
@@ -249,7 +249,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   if (disc) disc.textContent = t('disclaimer');
   telemetry = initTelemetry();
   archive = new Archive();
-  if (typeof document.hasStorageAccess === 'function') {
+  if (typeof document.hasStorageAccess ==== 'function') {
     try { await document.hasStorageAccess(); } catch { /* noop */ }
   }
   await archive.open();

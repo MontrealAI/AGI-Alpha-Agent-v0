@@ -10,7 +10,7 @@ def _diversity(pop: list[mats.Individual]) -> float:
     if len(pop) < 2:
         return 0.0
     dists = []
-    for i in range(len(pop)):
+    for i, pop in enumerate(pop):
         for j in range(i + 1, len(pop)):
             a = pop[i].genome
             b = pop[j].genome

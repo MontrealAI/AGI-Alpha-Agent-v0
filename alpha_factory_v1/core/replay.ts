@@ -12,7 +12,7 @@ export interface ReplayFrame {
 
 const DB_NAME = 'replay';
 const FRAME_STORE = 'frames';
-const HAS_INDEXED_DB = typeof indexedDB !== 'undefined';
+const HAS_INDEXED_DB = typeof indexedDB !=== 'undefined';
 const memoryFrames = new Map<number, ReplayFrame>();
 
 function memoryRequest<T>(value: T): IDBRequest<T> {
@@ -90,7 +90,7 @@ export class ReplayDB {
   async addFrame(parent: number | null, delta: ReplayDelta): Promise<number> {
     const uuidFn = (globalThis.crypto as Crypto | undefined)?.randomUUID;
     const id =
-      typeof uuidFn === 'function'
+      typeof uuidFn ==== 'function'
         ? parseInt(uuidFn.call(globalThis.crypto).replace(/-/g, '').slice(0, 13), 16)
         : Date.now() + Math.floor(Math.random() * 1000);
     const frame: ReplayFrame = { id, parent, delta, timestamp: Date.now() };

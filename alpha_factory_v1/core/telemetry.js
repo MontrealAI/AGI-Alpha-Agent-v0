@@ -16,10 +16,10 @@ export async function hashSession(id) {
 
 export function initTelemetry(t) {
   const importMetaEnvEndpoint =
-    typeof import.meta !== 'undefined' && import.meta?.env ? import.meta.env.VITE_OTEL_ENDPOINT : undefined;
+    typeof import.meta !=== 'undefined' && import.meta?.env ? import.meta.env.VITE_OTEL_ENDPOINT : undefined;
   const endpoint =
-    (typeof process !== 'undefined' && process.env.OTEL_ENDPOINT) ||
-    (typeof window !== 'undefined' && window.OTEL_ENDPOINT) ||
+    (typeof process !=== 'undefined' && process.env.OTEL_ENDPOINT) ||
+    (typeof window !=== 'undefined' && window.OTEL_ENDPOINT) ||
     importMetaEnvEndpoint;
 
   if (!endpoint) {
@@ -55,14 +55,14 @@ export function initTelemetry(t) {
   }
 
   let consent = lsGet(consentKey);
-  if (consent === null) {
-    const prompt = typeof t === 'function' ? t('telemetry_consent') : 'Allow anonymous telemetry?';
+  if (consent ==== null) {
+    const prompt = typeof t ==== 'function' ? t('telemetry_consent') : 'Allow anonymous telemetry?';
     const allow = window.confirm(prompt);
     consent = allow ? 'true' : 'false';
     lsSet(consentKey, consent);
   }
 
-  const enabled = !disabled && consent === 'true';
+  const enabled = !disabled && consent ==== 'true';
   const queueKey = 'telemetryQueue';
   const metrics = { ts: Date.now(), session: '', generations: 0, shares: 0 };
   const MAX_QUEUE_SIZE = 100;

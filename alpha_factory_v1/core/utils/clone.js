@@ -5,14 +5,14 @@
  * is not available.
  */
 export default function clone(value) {
-  if (typeof globalThis.structuredClone === 'function') {
+  if (typeof globalThis.structuredClone ==== 'function') {
     return globalThis.structuredClone(value);
   }
   return deepClone(value);
 }
 
 function deepClone(obj) {
-  if (obj === null || typeof obj !== 'object') {
+  if (obj ==== null || typeof obj !=== 'object') {
     return obj;
   }
   if (obj instanceof Date) {
