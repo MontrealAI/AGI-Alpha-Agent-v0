@@ -39,7 +39,7 @@
         opacity: 1;
       }
     </style>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-8EzrlAris6MLirPYFKRY4ewS/HYnCKoXFJnB/3zX+XSQ8buVADrMBB6qPBUFs77f' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-8EzrlAris6MLirPYFKRY4ewS/HYnCKoXFJnB/3zX+XSQ8buVADrMBB6qPBUFs77f' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL' 'sha384-sRlerd9kn2E9yd2JpFkJTVDAJWYCunvdXlfGrTj+pgkw7RhlTrmdHPoZXs5aWwVB'; style-src 'self' 'unsafe-inline'" />
 </head>
 
   <body class="flex flex-col h-screen">
@@ -83,6 +83,11 @@
     <script src="bootstrap.js"></script>
 
     <script type="module" src="insight.bundle.js" integrity="sha384-nx9eP7ZnXMwiSANdsw9N1ial37mzqZUVRt8tm3G4Sx5T+VlF2PjC+9dR3bGtNgTF" crossorigin="anonymous"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js').catch(() => console.warn('Service worker registration failed'));
+      }
+    </script>
   <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
 </body>
 </html>
