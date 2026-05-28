@@ -167,7 +167,11 @@ def _insight_contract_ok(
         return False, "missing-local-assets"
     if response_failures:
         return False, "http-error-responses"
-    filtered_errors = [e for e in page_errors if not _is_ignorable_insight_page_error(e)]
+    filtered_errors = []
+    for error in page_errors:
+        if _is_ignorable_insight_page_error(error):
+            continue
+        filtered_errors.append(error)
     if filtered_errors:
         return False, "page-errors"
     return True, ""
