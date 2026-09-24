@@ -90,6 +90,9 @@ jobs:
           curl --fail --silent http://127.0.0.1:8000/healthz
           docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-after.json
           cmp evidence/container-before.json evidence/container-after.json
+      - name: Verify the legacy default container and its three services
+        if: matrix.python == '3.12'
+        run: python -m pytest --noconftest -o addopts= tests/test_docker_health.py -q --junitxml=evidence/legacy-container.xml
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

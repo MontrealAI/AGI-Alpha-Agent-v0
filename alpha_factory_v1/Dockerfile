@@ -28,11 +28,12 @@ ARG INSTALL_UI=1
 FROM node:22.17.1-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
-WORKDIR /ui
+WORKDIR /ui/alpha_factory_v1/core/interface/web_client
 COPY alpha_factory_v1/core/interface/web_client/package*.json ./
 ENV CYPRESS_INSTALL_BINARY=0
 RUN if [ "$INSTALL_UI" = "1" ]; then npm ci; fi
 COPY alpha_factory_v1/core/interface/web_client/ .
+COPY alpha_factory_v1/core/telemetry.js /ui/alpha_factory_v1/core/telemetry.js
 RUN mkdir -p dist && if [ "$INSTALL_UI" = "1" ]; then npm run build; fi
 
 #######################################################################
@@ -96,7 +97,7 @@ RUN chmod +x /app/entrypoint.sh
 # 5) (optional) UI bundle    #
 #############################
 ARG INSTALL_UI
-COPY --from=ui-build /ui/dist/ /app/static/trace/
+COPY --from=ui-build /ui/alpha_factory_v1/core/interface/web_client/dist/ /app/static/trace/
 
 #############################
 # 6) Non-root user           #
