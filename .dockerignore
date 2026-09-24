@@ -34,8 +34,8 @@ Dockerfile*
 alpha_factory_v1/tests/
 requests/tests/
 
-# Restrict build context for demo images
-alpha_factory_v1/demos/*
+# Preserve demo source for legacy launchers; generated caches remain excluded.
+# alpha_factory_v1/demos/*
 !alpha_factory_v1/demos/meta_agentic_tree_search_v0/
 !alpha_factory_v1/demos/meta_agentic_tree_search_v0/**
 !alpha_factory_v1/demos/__init__.py

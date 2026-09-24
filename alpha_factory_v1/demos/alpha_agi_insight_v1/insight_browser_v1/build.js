@@ -39,8 +39,11 @@ function resolveAssetPath(relPath) {
     return fsSync.existsSync(candidate) ? candidate : relPath;
 }
 
+const sandboxHostScript = fsSync.readFileSync(new URL('./sandbox_worker_host.js', import.meta.url), 'utf8');
 function applyCsp(html, base) {
-    const hashes = [];
+    // The opaque sandbox inherits this policy; permit only its exact host code.
+    const hostHash = createHash('sha384').update(sandboxHostScript).digest('base64');
+    const hashes = [`'sha384-${hostHash}'`];
     const regex = /<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g;
     for (const m of html.matchAll(regex)) {
         const h = createHash('sha384').update(m[1]).digest('base64');
@@ -346,6 +349,13 @@ async function bundle() {
     const cspBase = `default-src 'self'; connect-src ${connectSrc}; frame-src 'self' blob:; worker-src 'self' blob:`;
     const envScript = injectEnv(process.env);
     await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
+    // Opaque sandbox documents cannot use the parent's service worker. Embed
+    // their fixed host script and load the document through the parent cache.
+    const sandboxHtmlPath = path.join(OUT_DIR, 'sandbox_worker_host.html');
+    const sandboxHtml = await fs.readFile(sandboxHtmlPath, 'utf8');
+    await fs.writeFile(sandboxHtmlPath, sandboxHtml.replace(
+        '<script src="sandbox_worker_host.js"></script>', `<script>${sandboxHostScript}</script>`,
+    ));
     // The generated bridge must not be replaced by an older source snapshot.
     await fs.writeFile(d3ExportsPath, renderD3BridgeModule(d3ExportNames), "utf8");
     if (fsSync.existsSync(d3ExportsPath)) {

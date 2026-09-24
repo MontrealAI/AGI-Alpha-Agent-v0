@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
+import base64
+import hashlib
 import re
 import subprocess
 import shutil
@@ -55,6 +57,12 @@ def test_distribution_zip(tmp_path: Path) -> None:
     assert zip_path.stat().st_size <= MAX_ZIP_BYTES, "zip size exceeds 500 MiB"
     with zipfile.ZipFile(zip_path) as zf:
         names = zf.namelist()
+        host = zf.read("sandbox_worker_host.html").decode()
+        assert "<script src=" not in host, "Opaque sandbox must not fetch external scripts offline"
+        script = re.search(r"<script>([\s\S]*?)</script>", host)
+        assert script, "Self-contained sandbox script missing"
+        digest = base64.b64encode(hashlib.sha384(script[1].encode()).digest()).decode()
+        assert f"'sha384-{digest}'" in zf.read("index.html").decode()
     expected = {
         "index.html",
         "insight.bundle.js",

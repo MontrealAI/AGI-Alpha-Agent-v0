@@ -181,7 +181,10 @@ valid journal suffix. Independent backups/checkpoints are necessary for rollback
 ## Container installation
 
 The `agent-runtime` target of `alpha_factory_v1/Dockerfile` runs the connected agent as UID 10001.
-Unqualified builds retain the historical universal-runtime default and its original build context.
+Unqualified builds retain the historical orchestrator, RPC facade and Flask UI. Both targets now
+use the repository root as their build context; the checked-in Compose files select that context.
+The legacy target requires `API_TOKEN` and the documented legacy environment settings at launch.
+It installs the historical core lock; heavyweight domain integrations remain optional.
 Build from the repository root and bind the published port to host loopback:
 
 ```sh

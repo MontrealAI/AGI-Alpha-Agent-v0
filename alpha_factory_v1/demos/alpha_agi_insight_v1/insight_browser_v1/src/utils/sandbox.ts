@@ -6,11 +6,15 @@ export async function createSandboxWorker(url: string | URL): Promise<Worker> {
   const response = await fetch(source);
   if (!response.ok) throw new Error(`Worker source unavailable: ${response.status}`);
   const script = await response.text();
+  const hostResponse = await fetch(new URL('./sandbox_worker_host.html', window.location.href));
+  if (!hostResponse.ok) throw new Error(`Sandbox host unavailable: ${hostResponse.status}`);
+  const hostDocument = await hostResponse.text();
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
     iframe.setAttribute('sandbox', 'allow-scripts');
     iframe.style.display = 'none';
-    iframe.src = new URL('./sandbox_worker_host.html', window.location.href).toString();
+    const hostUrl = URL.createObjectURL(new Blob([hostDocument], { type: 'text/html' }));
+    iframe.src = hostUrl;
     let timer: ReturnType<typeof setTimeout>;
     let settled = false;
     const worker: any = {
@@ -19,6 +23,7 @@ export async function createSandboxWorker(url: string | URL): Promise<Worker> {
         clearTimeout(timer);
         iframe.contentWindow?.postMessage({ type: 'sandbox-terminate' }, '*');
         iframe.remove();
+        URL.revokeObjectURL(hostUrl);
         window.removeEventListener('message', handler);
       },
       onmessage: null as ((event: MessageEvent) => void) | null,

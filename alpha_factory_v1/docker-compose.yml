@@ -18,8 +18,8 @@ services:
     <<: *restart_policy
     container_name: orchestrator
     build:
-      context: .
-      dockerfile: Dockerfile            # multi‑stage (UI pre‑built)
+      context: ..
+      dockerfile: alpha_factory_v1/Dockerfile            # multi‑stage (UI pre‑built)
       args:
         # swap at build‑time, e.g. BASE_IMAGE=nvidia/cuda:12.4.0-runtime‑ubuntu22.04
         BASE_IMAGE: ${BASE_IMAGE:-python:3.11-slim-bookworm}
@@ -33,7 +33,7 @@ services:
       OPENAI_API_KEY:       ${OPENAI_API_KEY:-}           # optional
       ALPHA_MARKET_PROVIDER: ${ALPHA_MARKET_PROVIDER:-sim}  # polygon | binance | sim
       ALPHA_BROKER:         ${ALPHA_BROKER:-sim}          # alpaca | ibkr | sim
-      A2A_PORT:             "8000"
+      A2A_PORT:             "0"
 
     ports:
       - "3000:3000"    # Trace‑graph UI  (static bundle)
@@ -49,7 +49,7 @@ services:
 
     healthcheck:
       <<: *default_healthcheck
-      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      test: ["CMD-SHELL", "curl -f -H \"Authorization: Bearer $$API_TOKEN\" http://localhost:8000/healthz"]
 
     deploy:
       # GPU stanza is ignored on non‑NVIDIA hosts (safe default)

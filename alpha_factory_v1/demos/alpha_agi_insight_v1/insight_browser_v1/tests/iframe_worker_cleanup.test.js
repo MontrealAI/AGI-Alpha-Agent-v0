@@ -33,11 +33,13 @@ test('iframe remains script-only and cleans up after the worker handshake', asyn
     body: { appendChild(value) { assert.equal(value, iframe); global.queueMicrotask(() => iframe.onload()); } },
   };
   global.fetch = async (url) => {
+    if (url.pathname === '/sandbox_worker_host.html') return new global.Response('<script>/* host */</script>');
     assert.equal(url.href, 'http://localhost/worker/evolver.js');
     return new global.Response('self.onmessage = () => {};');
   };
   const worker = await createSandboxWorker('./worker/evolver.js');
   assert.equal(messages[0].script, 'self.onmessage = () => {};');
+  assert.match(iframe.src, /^blob:/);
   worker.terminate();
   assert.equal(messages[1].type, 'sandbox-terminate');
   assert.equal(removed, 1);
