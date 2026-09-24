@@ -20,7 +20,7 @@ class SandboxTimeout(Exception):
 
 
 class SandboxUnavailable(RuntimeError):
-    """No supported isolation backend is installed; host execution is forbidden."""
+    """No supported isolation backend is available; host execution is forbidden."""
 
 
 def _bounded_run(cmd: Sequence[str], timeout: int) -> subprocess.CompletedProcess[str]:
@@ -76,8 +76,24 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
         raise ValueError("sandbox command is empty")
     timeout = 120
     docker, firejail = shutil.which("docker"), shutil.which("firejail")
+    if docker:
+        try:
+            available = (
+                subprocess.run(
+                    [docker, "info"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=5,
+                    check=False,
+                ).returncode
+                == 0
+            )
+        except (OSError, subprocess.SubprocessError):
+            available = False
+        if not available:
+            docker = None
     if not docker and not firejail:
-        raise SandboxUnavailable("install Docker or Firejail; generated code is never executed on the host")
+        raise SandboxUnavailable("a usable Docker daemon or Firejail is required; host execution is forbidden")
     with tempfile.TemporaryDirectory(prefix="alpha-sandbox-") as temporary:
         stage = Path(temporary)
         stage.chmod(0o755)
