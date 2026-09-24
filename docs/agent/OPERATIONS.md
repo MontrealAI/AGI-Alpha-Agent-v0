@@ -180,12 +180,12 @@ valid journal suffix. Independent backups/checkpoints are necessary for rollback
 
 ## Container installation
 
-The default target of `alpha_factory_v1/Dockerfile` runs the connected agent as UID 10001.
-The older universal-runtime stages remain available in the file as historical recipes.
+The `agent-runtime` target of `alpha_factory_v1/Dockerfile` runs the connected agent as UID 10001.
+Unqualified builds retain the historical universal-runtime default and its original build context.
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build -t agialpha-agent:1.2.0 -f alpha_factory_v1/Dockerfile .
+docker build --target agent-runtime -t agialpha-agent:1.2.0 -f alpha_factory_v1/Dockerfile .
 docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.2.0
 docker exec agialpha-agent cat /data/agent/api.token
 ```

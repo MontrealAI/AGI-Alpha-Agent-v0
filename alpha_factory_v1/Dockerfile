@@ -132,7 +132,7 @@ EXPOSE 8000 3000
 CMD ["/app/entrypoint.sh"]
 
 # The historical universal-runtime stages above are retained for compatibility.
-# The default target is the connected, hash-locked AGIALPHA operator runtime.
+# Select --target agent-runtime for the connected, hash-locked operator.
 FROM python:3.12-slim AS agent-runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app
 WORKDIR /app
@@ -152,3 +152,7 @@ EXPOSE 8000
 HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)" || exit 1
 CMD ["python", "-m", "alpha_factory_v1.core.runtime.container"]
+
+# Preserve the historical default and its alpha_factory_v1 build context.
+# Existing compose files and unqualified builds must not switch applications.
+FROM runtime AS legacy-default

@@ -56,18 +56,27 @@ export async function checkGzipSize(file, maxBytes = 5 * 1024 * 1024) {
 
 export async function generateServiceWorker(outDir, manifest, version) {
   const { injectManifest } = await import('workbox-build');
+  const { build } = await import('esbuild');
   const swSrc = 'sw.js';
   const swTemp = path.join(outDir, 'sw.build.js');
   const swDest = path.join(outDir, 'sw.js');
   const swTemplate = await fs.readFile(swSrc, 'utf8');
-  await fs.writeFile(swTemp, swTemplate.replace('__CACHE_VERSION__', version));
-  await injectManifest({
+  await build({
+    stdin: {contents: swTemplate.replace('__CACHE_VERSION__', version), resolveDir: process.cwd(), loader: 'js'},
+    outfile: swTemp, bundle: true, format: 'iife', target: 'es2020',
+  });
+  const result = await injectManifest({
     swSrc: swTemp,
     swDest,
     globDirectory: outDir,
     globPatterns: manifest.precache,
     injectionPoint: 'self.__WB_MANIFEST',
+    maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
   });
+  if (!result.count || result.warnings.some((warning) => warning.includes('An error occurred') || (warning.includes('insight.bundle.js') && warning.includes("won't be precached")))) {
+    throw new Error(`Invalid service worker precache: ${result.warnings.join('; ')}`);
+  }
+  for (const warning of result.warnings) console.warn(warning);
   await fs.unlink(swTemp);
   const swData = await fs.readFile(swDest);
   let wbPath = path.join(outDir, 'workbox-sw.js');

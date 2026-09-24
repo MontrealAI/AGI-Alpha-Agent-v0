@@ -32,7 +32,8 @@ def main() -> None:
     releases = json.loads(gh("api", f"repos/{repo}/releases?per_page=100"))
     prior = next((item for item in releases if item["tag_name"] == tag), None)
     if prior and not prior["draft"]:
-        raise ValueError("release is already public; refuse to replace it")
+        print(f"{tag} is already public; its tag and assets remain unchanged: {prior['html_url']}")
+        return
     ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True)
     if ref.returncode == 0:
         obj = json.loads(ref.stdout)["object"]

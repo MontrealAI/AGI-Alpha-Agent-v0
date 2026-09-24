@@ -346,6 +346,8 @@ async function bundle() {
     const cspBase = `default-src 'self'; connect-src ${connectSrc}; frame-src 'self' blob:; worker-src 'self' blob:`;
     const envScript = injectEnv(process.env);
     await copyAssets(manifest, repoRoot, OUT_DIR, assetRoot);
+    // The generated bridge must not be replaced by an older source snapshot.
+    await fs.writeFile(d3ExportsPath, renderD3BridgeModule(d3ExportNames), "utf8");
     if (fsSync.existsSync(d3ExportsPath)) {
         await fs.copyFile(d3ExportsPath, d3ExportsAlias).catch(() => {});
         if (!manifest.precache.includes("d3_exports.js")) {
@@ -428,6 +430,7 @@ async function bundle() {
         )
         .replace("</body>", `${envScript}\n</body>`)
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
+        .replace('src="d3.v7.min.js"', 'src="assets/d3.v7.min.js"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
     await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
     const devHtml = html.replace(

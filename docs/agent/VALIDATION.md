@@ -7,9 +7,9 @@ The release workflow (`agent-release.yml`) must complete its gates before publis
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
 
-## Direct local evidence
+## Runtime and integration evidence
 
-- 46 runtime/control tests passed, including four mission lifecycles, signatures, corruption, review
+- 44 runtime/control tests passed per supported Python version, covering mission execution, signatures, corruption, review
   races, pause, idempotency, provider failure, coding opt-in, wallet control, confirmation/finality,
   invalid transfer receipts, exact integer accounting and replay rejection. RPC attack cases use fixtures.
 - [Real local inference](release-evidence/local-inference.json): pinned Qwen3 4B GGUF via llama.cpp,

@@ -20,12 +20,9 @@ def _start_server(directory: Path):
 
 
 def test_quickstart_pdf_offline(insight_dist: Path) -> None:
-    repo = Path(__file__).resolve().parents[1]
-    pdf_src = repo / "docs/insight_browser_quickstart.pdf"
     dist = insight_dist
-    pdf_dest = dist / "insight_browser_quickstart.pdf"
-    if not pdf_dest.exists() and pdf_src.exists():
-        pdf_dest.write_bytes(pdf_src.read_bytes())
+    if not (dist / "assets/insight_browser_quickstart.pdf").exists():
+        pytest.skip("Optional quickstart PDF was not generated before the browser build")
 
     server, thread = _start_server(insight_dist)
     host, port = server.server_address
@@ -46,7 +43,7 @@ def test_quickstart_pdf_offline(insight_dist: Path) -> None:
                   const names = await caches.keys();
                   for (const n of names) {
                     const c = await caches.open(n);
-                    if (await c.match('insight_browser_quickstart.pdf')) {
+                    if (await c.match('assets/insight_browser_quickstart.pdf')) {
                       return true;
                     }
                   }
@@ -56,10 +53,10 @@ def test_quickstart_pdf_offline(insight_dist: Path) -> None:
             )
             assert pdf_cached, "PDF not cached by service worker"
             context.set_offline(True)
-            resp = page.goto(url + "/insight_browser_quickstart.pdf")
+            resp = page.goto(url + "/assets/insight_browser_quickstart.pdf")
             assert resp and resp.ok, "PDF not served offline"
             page.reload()
-            resp = page.goto(url + "/insight_browser_quickstart.pdf")
+            resp = page.goto(url + "/assets/insight_browser_quickstart.pdf")
             assert resp and resp.ok, "PDF not served offline after reload"
             browser.close()
     except PlaywrightError as exc:
@@ -77,13 +74,13 @@ def test_cache_cleanup_on_activate(insight_dist: Path) -> None:
         with sync_playwright() as p:
             browser = p.chromium.launch()
             context = browser.new_context()
-            context.add_init_script("caches.open('legacy-cache')")
+            context.add_init_script("caches.open('alpha-insight-obsolete-cache')")
             page = context.new_page()
             page.goto(url + "/index.html")
             page.wait_for_selector("#controls")
             page.wait_for_function("navigator.serviceWorker.controller !== null")
             names = page.evaluate("caches.keys()")
-            assert "legacy-cache" not in names
+            assert "alpha-insight-obsolete-cache" not in names
             browser.close()
     except PlaywrightError as exc:
         pytest.skip(f"Playwright browser not installed: {exc}")

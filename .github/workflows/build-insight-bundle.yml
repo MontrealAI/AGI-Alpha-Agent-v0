@@ -92,6 +92,12 @@ jobs:
             --exclude='assets/pyodide/**' \
             "${GITHUB_WORKSPACE}/${{ env.INSIGHT_BROWSER_DIR }}/dist/" "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}/"
 
+      - name: Require committed generated assets on source pushes
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          git diff --exit-code -- docs/alpha_agi_insight_v1
+          test -z "$(git ls-files --others --exclude-standard docs/alpha_agi_insight_v1)"
+
       - name: Commit regenerated bundle
         if: github.event_name == 'workflow_dispatch'
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
