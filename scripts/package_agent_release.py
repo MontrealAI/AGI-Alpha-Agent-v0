@@ -26,7 +26,7 @@ def main() -> None:
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-    subprocess.run([sys.executable, "scripts/check_agent_preservation.py"], check=True)
+    subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     subprocess.run(
         [
             "git",

@@ -8,7 +8,7 @@ permissions:
   contents: read
 concurrency:
   group: agent-release-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 defaults:
   run:
@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python scripts/check_agent_preservation.py > evidence/preservation.json
+          python -m scripts.check_agent_preservation > evidence/preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
           python -m build --wheel --no-isolation --outdir wheel-dist
@@ -68,7 +68,7 @@ jobs:
           ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
           export ALPHA_SANDBOX_IMAGE
           printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
-          python scripts/validate_agent_sandbox.py --output evidence/sandbox.json
+          python -m scripts.validate_agent_sandbox --output evidence/sandbox.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -102,13 +102,13 @@ jobs:
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
-          python scripts/run_local_tests.py -q --junitxml=evidence/regression.xml
+          python -m scripts.run_local_tests -q --junitxml=evidence/regression.xml
       - name: Strict types and repository checks
         run: |
           python -m mypy --config-file mypy-runtime.ini
           python -m mypy --config-file mypy.ini
           python scripts/ruff_targets.py --run
-          python scripts/check_agent_preservation.py > evidence/preservation.json
+          python -m scripts.check_agent_preservation > evidence/preservation.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -140,7 +140,7 @@ jobs:
           python -m playwright install --with-deps chromium
           mkdir -p evidence
       - name: Real operator browser acceptance
-        run: python scripts/validate_agent_ui.py --output evidence/operator-ui
+        run: python -m scripts.validate_agent_ui --output evidence/operator-ui
       - name: Historical web client tests
         run: |
           npm ci --prefix alpha_factory_v1/core/interface/web_client
@@ -158,8 +158,8 @@ jobs:
         run: |
           npm ci --prefix tests/contracts
           npm test --prefix tests/contracts | tee evidence/contracts.txt
-          python scripts/check_agent_preservation.py > evidence/preservation.json
-          python scripts/validate_agent_chain.py --output evidence/local-evm.json
+          python -m scripts.check_agent_preservation > evidence/preservation.json
+          python -m scripts.validate_agent_chain --output evidence/local-evm.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -183,12 +183,12 @@ jobs:
         run: |
           python -m pip install --require-hashes -r requirements-agent.lock
           mkdir -p evidence model
-          curl --fail --location --retry 3 \
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 \
             https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-ubuntu-x64.tar.gz \
             --output model/llama.tar.gz
           echo 'c150306eb16b5ab696f76a8bdf810c35fd98a24e82158742e6fa28f420ff8410  model/llama.tar.gz' | sha256sum -c -
           tar -xzf model/llama.tar.gz -C model
-          curl --fail --location --retry 3 \
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 \
             https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
             --output model/Qwen3-4B-Instruct-2507-Q4_K_M.gguf
           docker pull python:3.12-slim
@@ -197,7 +197,7 @@ jobs:
           ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
           export ALPHA_SANDBOX_IMAGE
           printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
-          python scripts/validate_agent_model.py --with-code \
+          python -m scripts.validate_agent_model --with-code \
             --server model/llama-b11146/llama-server \
             --model model/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
             --sha256 3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597 \
@@ -227,7 +227,7 @@ jobs:
       - name: Build, verify and package the exact tested commit
         run: |
           python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0
-          python scripts/package_agent_release.py --output release --evidence evidence
+          python -m scripts.package_agent_release --output release --evidence evidence
           python scripts/install_agent.py --release-dir release --venv "$RUNNER_TEMP/release-install"
           cd release
           sha256sum -c SHA256SUMS
@@ -255,4 +255,4 @@ jobs:
       - name: Publish only after re-downloading and verifying draft assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python scripts/publish_agent_release.py
+        run: python -m scripts.publish_agent_release

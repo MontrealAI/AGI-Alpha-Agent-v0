@@ -81,6 +81,7 @@ jobs:
             "$BUILD_DIR/" "$DOCS_DIR/"
 
       - name: Commit updated bundle
+        if: github.event_name == 'workflow_dispatch'
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           commit_message: "Auto-generated updated insight.bundle.js"
