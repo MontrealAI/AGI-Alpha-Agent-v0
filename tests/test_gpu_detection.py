@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 LLM = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/src/utils/llm.ts")
-TS_NODE_LOADER = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/ts-node/esm.mjs")
+TSX_LOADER = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/tsx/dist/loader.mjs")
 ONNX_RUNTIME = Path("alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/onnxruntime-web")
 NODE_MAJOR_RE = re.compile(r"v?(\d+)")
 
@@ -30,9 +30,9 @@ def _skip_reason() -> str | None:
     if node_major is None:
         return "node not available"
     if node_major < 22:
-        return "Node.js 22+ required for ts-node loader"
-    if not TS_NODE_LOADER.is_file():
-        return "ts-node loader not installed"
+        return "Node.js 22+ required for tsx loader"
+    if not TSX_LOADER.is_file():
+        return "tsx loader not installed"
     if not ONNX_RUNTIME.exists():
         return "onnxruntime-web not installed"
     if not LLM.is_file():
@@ -47,13 +47,13 @@ def test_llm_gpu_backend(tmp_path: Path) -> None:
         pytest.skip(reason)
     script = tmp_path / "run.mjs"
     script.write_text(
-        f"globalThis.navigator = {{ gpu: {{}} }};\n"
+        'Object.defineProperty(globalThis, "navigator", {value: {gpu: {}}, configurable: true});\n'
         f"globalThis.localStorage = {{ getItem: () => null }};\n"
         f"const m = await import('{LLM.resolve().as_posix()}');\n"
         "console.log(await m.gpuBackend());\n"
     )
     res = subprocess.run(
-        ["node", "--loader", TS_NODE_LOADER.resolve().as_posix(), script],
+        ["node", "--import", TSX_LOADER.resolve().as_posix(), script],
         capture_output=True,
         text=True,
     )
@@ -68,13 +68,13 @@ def test_llm_no_gpu_backend(tmp_path: Path) -> None:
         pytest.skip(reason)
     script = tmp_path / "run.mjs"
     script.write_text(
-        f"globalThis.navigator = {{}};\n"
+        'Object.defineProperty(globalThis, "navigator", {value: {}, configurable: true});\n'
         f"globalThis.localStorage = {{ getItem: () => null }};\n"
         f"const m = await import('{LLM.resolve().as_posix()}');\n"
         "console.log(await m.gpuBackend());\n"
     )
     res = subprocess.run(
-        ["node", "--loader", TS_NODE_LOADER.resolve().as_posix(), script],
+        ["node", "--import", TSX_LOADER.resolve().as_posix(), script],
         capture_output=True,
         text=True,
     )

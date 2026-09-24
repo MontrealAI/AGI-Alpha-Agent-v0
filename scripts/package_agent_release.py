@@ -89,6 +89,7 @@ def main() -> None:
             "full offline Python regression",
             "strict runtime types",
             "real Docker isolation",
+            "pinned local model inference and generated-code evaluation",
             "Chromium operator workflow",
             "legacy browser tests",
             "Solidity tests with shipped identity logic",

@@ -99,10 +99,12 @@ jobs:
           python check_env.py --auto-install
           python -m pip check
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          FETCH_ASSETS_SKIP_LLM=1 npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          python -m playwright install --with-deps chromium
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
-          python -m scripts.run_local_tests -q --junitxml=evidence/regression.xml
+          python -m scripts.run_local_tests -q --cov --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
       - name: Strict types and repository checks
         run: |
           python -m mypy --config-file mypy-runtime.ini
@@ -147,6 +149,7 @@ jobs:
           cd alpha_factory_v1/core/interface/web_client
           npx playwright install --with-deps chromium
           npm test
+          npm run build
       - name: Insight browser tests and build
         run: |
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1

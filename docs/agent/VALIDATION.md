@@ -39,12 +39,15 @@ service credentials, external Python sockets or model downloads. Run locally wit
 
 ```sh
 python scripts/check_python_deps.py
-python scripts/run_local_tests.py --junitxml=regression.xml
-python scripts/check_agent_preservation.py
-python scripts/validate_agent_ui.py --output ui-evidence
-python scripts/validate_agent_sandbox.py --output sandbox-evidence.json
-python scripts/validate_agent_chain.py --output chain-evidence.json
+python -m scripts.run_local_tests --junitxml=regression.xml
+python -m scripts.check_agent_preservation
+python -m scripts.validate_agent_ui --output ui-evidence
+python -m scripts.validate_agent_sandbox --output sandbox-evidence.json
+python -m scripts.validate_agent_chain --output chain-evidence.json
 ```
+
+Prefetch Insight browser assets with `FETCH_ASSETS_SKIP_LLM=1 npm run build` in its browser directory
+before the offline regression; its network guard intentionally blocks downloads during tests.
 
 The last three require installed Playwright Chromium, Docker, and compiled Hardhat dependencies,
 respectively. They fail if their required capability is missing; they do not silently skip.

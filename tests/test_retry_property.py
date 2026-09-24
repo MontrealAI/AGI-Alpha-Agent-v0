@@ -8,7 +8,8 @@ from hypothesis import HealthCheck, given, strategies as st, settings, assume  #
 from alpha_factory_v1.common.utils import retry  # noqa: E402
 
 
-@settings(max_examples=25, suppress_health_check=[HealthCheck.function_scoped_fixture])
+# This checks retry counts with mocked sleep, not event-loop wall-clock performance.
+@settings(max_examples=25, deadline=None, suppress_health_check=[HealthCheck.function_scoped_fixture])
 @given(failures=st.integers(min_value=0, max_value=4), max_tries=st.integers(min_value=1, max_value=5))
 def test_with_retry_sync_property(monkeypatch: pytest.MonkeyPatch, failures: int, max_tries: int) -> None:
     assume(max_tries > 0)
@@ -32,7 +33,8 @@ def test_with_retry_sync_property(monkeypatch: pytest.MonkeyPatch, failures: int
         assert calls["n"] == failures + 1
 
 
-@settings(max_examples=25, suppress_health_check=[HealthCheck.function_scoped_fixture])
+# This checks retry counts with mocked sleep, not event-loop wall-clock performance.
+@settings(max_examples=25, deadline=None, suppress_health_check=[HealthCheck.function_scoped_fixture])
 @given(failures=st.integers(min_value=0, max_value=4), max_tries=st.integers(min_value=1, max_value=5))
 def test_with_retry_async_property(monkeypatch: pytest.MonkeyPatch, failures: int, max_tries: int) -> None:
     assume(max_tries > 0)

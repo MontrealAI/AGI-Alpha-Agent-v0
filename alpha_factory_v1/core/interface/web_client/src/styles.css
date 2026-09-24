@@ -1,0 +1,17 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+:root { font-family: system-ui, sans-serif; color: #17252a; background: #f7f9fa; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 1rem; }
+header, main { max-width: 1100px; margin: 0 auto; }
+nav { padding: 1rem 0; }
+button, input, select { font: inherit; margin: .25rem; max-width: 100%; }
+button { cursor: pointer; padding: .45rem .8rem; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #1b7898; outline-offset: 3px; }
+#sectors, #capability { width: 100%; min-height: 300px; }
+#pareto, #pareto3d, #lineage-timeline { width: 100%; min-height: 400px; }
+#lineage-tree { display: block; width: 100%; height: auto; min-height: 200px; }
+.diff { max-width: 100%; overflow: auto; padding: 1rem; }
+.modal-overlay { position: fixed; inset: 0; z-index: 100; background: #0008; display: flex; justify-content: center; align-items: flex-start; padding-top: 10vh; }
+.modal-content { background: white; color: #17252a; padding: 1.25rem; width: 320px; max-width: calc(100vw - 32px); max-height: 60vh; overflow: auto; border-radius: .5rem; }
+.skip-link { position: absolute; left: -10000px; }
+.skip-link:focus { left: 1rem; top: .25rem; background: white; z-index: 200; }

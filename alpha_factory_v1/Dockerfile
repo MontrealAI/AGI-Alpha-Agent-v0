@@ -67,7 +67,7 @@ RUN apt-get update && \
         libomp5 \
         libstdc++6 \
         postgresql-client \
-        patch \  # required by the self-healing demo
+        patch \
         curl ca-certificates && \
     git --version && \
     rm -rf /var/lib/apt/lists/*
@@ -91,7 +91,7 @@ RUN if [ -f /tmp/requirements-lock.txt ]; then \
     fi && \
     # ⬇ Explicitly ensure critical agent frameworks are present
     pip install --no-cache-dir \
-        openai-agents>=0.0.17 \   # OpenAI Agents SDK (beta)
+        "openai-agents>=0.0.17" \
         "google-adk @ git+https://github.com/google/adk-python@main#egg=google-adk" \
         anthropic>=0.21 \
         gunicorn rocketry prometheus-client && \
@@ -123,10 +123,32 @@ USER alphafactory
 # 7) Health‑check           #
 #############################
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD-SHELL curl -f -H "Authorization: Bearer $API_TOKEN" http://localhost:8000/healthz || exit 1
+  CMD curl -f -H "Authorization: Bearer $API_TOKEN" http://localhost:8000/healthz || exit 1
 
 #############################
 # 8) Ports & Entrypoint      #
 #############################
 EXPOSE 8000 3000
 CMD ["/app/entrypoint.sh"]
+
+# The historical universal-runtime stages above are retained for compatibility.
+# The default target is the connected, hash-locked AGIALPHA operator runtime.
+FROM python:3.12-slim AS agent-runtime
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app
+WORKDIR /app
+COPY requirements-agent.lock /tmp/requirements-agent.lock
+RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements-agent.lock && \
+    python -m pip check && \
+    groupadd --gid 10001 alphaagent && \
+    useradd --uid 10001 --gid alphaagent --no-create-home alphaagent && \
+    mkdir /data && chown alphaagent:alphaagent /data
+COPY alpha_factory_v1/__init__.py /app/alpha_factory_v1/__init__.py
+COPY alpha_factory_v1/core/ /app/alpha_factory_v1/core/
+COPY alpha_factory_v1/common/ /app/alpha_factory_v1/common/
+COPY alpha_factory_v1/utils/ /app/alpha_factory_v1/utils/
+USER 10001:10001
+VOLUME ["/data"]
+EXPOSE 8000
+HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)" || exit 1
+CMD ["python", "-m", "alpha_factory_v1.core.runtime.container"]
