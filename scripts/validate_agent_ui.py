@@ -59,42 +59,61 @@ def main() -> None:
                         else route.abort()
                     ),
                 )
-                page.goto(f"http://127.0.0.1:{port}")
-                page.locator("#token").fill("incorrect")
-                page.get_by_role("button", name="Connect", exact=True).click()
-                expect(page.locator("#message")).to_contain_text("Access token required")
-                page.locator("#token").fill((journal.root / "api.token").read_text())
-                page.get_by_role("button", name="Connect", exact=True).click()
-                expect(page.locator("#workspace")).to_be_visible()
-                completed = []
-                for kind in ("research", "allocation", "schedule", "forecast"):
-                    page.locator("#kind").select_option(kind)
-                    page.locator("#start").click()
-                    expect(page.locator("#approve")).to_be_visible(timeout=30000)
-                    expect(page.locator("#stages li")).to_have_count(7)
-                    page.locator("#review-note").fill(
-                        "Reviewed example constraints and explicit limits in browser acceptance test."
+                try:
+                    page.goto(f"http://127.0.0.1:{port}")
+                    page.locator("#token").fill("incorrect")
+                    page.get_by_role("button", name="Connect", exact=True).click()
+                    expect(page.locator("#message")).to_contain_text("Access token required")
+                    page.locator("#token").fill((journal.root / "api.token").read_text())
+                    page.get_by_role("button", name="Connect", exact=True).click()
+                    expect(page.locator("#workspace")).to_be_visible()
+                    completed = []
+                    for kind in ("research", "allocation", "schedule", "forecast"):
+                        page.locator("#kind").select_option(kind)
+                        page.locator("#start").click()
+                        expect(page.locator("#approve")).to_be_visible(timeout=30000)
+                        expect(page.locator("#stages li")).to_have_count(7)
+                        note = "Reviewed example constraints and explicit limits in browser acceptance test."
+                        page.locator("#review-note").fill(note)
+                        with page.expect_response(lambda response: response.url.endswith("/api/missions")) as refreshed:
+                            page.locator("#refresh").click()
+                        refreshed.value.finished()
+                        page.evaluate("new Promise(requestAnimationFrame)")
+                        expect(page.locator("#review-note")).to_have_value(note)
+                        page.locator("#approve").click()
+                        expect(page.locator("#download")).to_be_visible()
+                        with page.expect_download() as download:
+                            page.locator("#download").click()
+                        artifact = json.loads(Path(download.value.path()).read_bytes())
+                        assert artifact["receipt"]["body"]["document"]["state"] == "completed"
+                        completed.append(kind)
+                    page.locator("#pause").click()
+                    expect(page.locator("#start")).to_be_disabled()
+                    expect(page.locator("#connection")).to_have_text("Paused")
+                    page.locator("#pause").click()
+                    expect(page.locator("#start")).to_be_enabled()
+                    page.screenshot(path=str(args.output / "operator-desktop.png"), full_page=True)
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+                    page.screenshot(path=str(args.output / "operator-mobile.png"), full_page=True)
+                    page.locator("#disconnect").click()
+                    expect(page.locator("#login")).to_be_visible()
+                    assert page.evaluate("localStorage.length") == 0
+                    assert not errors, errors
+                except Exception:
+                    page.screenshot(path=str(args.output / "failure.png"), full_page=True)
+                    (args.output / "failure.json").write_text(
+                        json.dumps(
+                            {
+                                "message": page.locator("#message").inner_text(),
+                                "errors": errors,
+                                "missions": journal.missions(),
+                            },
+                            indent=2,
+                        )
+                        + "\n"
                     )
-                    page.locator("#approve").click()
-                    expect(page.locator("#download")).to_be_visible()
-                    with page.expect_download() as download:
-                        page.locator("#download").click()
-                    artifact = json.loads(Path(download.value.path()).read_bytes())
-                    assert artifact["receipt"]["body"]["document"]["state"] == "completed"
-                    completed.append(kind)
-                page.locator("#pause").click()
-                expect(page.locator("#start")).to_be_disabled()
-                expect(page.locator("#connection")).to_have_text("Paused")
-                page.locator("#pause").click()
-                expect(page.locator("#start")).to_be_enabled()
-                page.screenshot(path=str(args.output / "operator-desktop.png"), full_page=True)
-                page.set_viewport_size({"width": 390, "height": 844})
-                assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
-                page.screenshot(path=str(args.output / "operator-mobile.png"), full_page=True)
-                page.locator("#disconnect").click()
-                expect(page.locator("#login")).to_be_visible()
-                assert page.evaluate("localStorage.length") == 0
-                assert not errors, errors
+                    raise
                 browser.close()
             evidence = {
                 "passed": True,
@@ -103,6 +122,7 @@ def main() -> None:
                     "authentication failure",
                     "seven stages",
                     "signed export",
+                    "review note survives refresh",
                     "persistent pause/resume",
                     "mobile no horizontal overflow",
                     "disconnect",

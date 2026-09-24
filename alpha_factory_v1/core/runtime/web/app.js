@@ -28,6 +28,8 @@ async function api(path, options = {}) {
 }
 function loadExample() { const kind = $('kind').value; $('goal').value = examples[kind].goal; $('input').value = JSON.stringify(examples[kind].work, null, 2); $('input-help').textContent = hints[kind]; }
 function render(record) {
+  if (selected && selected.id === record.id && selected.revision > record.revision) return;
+  const changed = !selected || selected.id !== record.id || selected.revision !== record.revision;
   selected = record; $('empty').hidden = true; $('detail').hidden = false;
   $('mission-label').textContent = record.state + ' · ' + record.request.work.kind;
   $('mission-goal').textContent = record.request.goal;
@@ -37,7 +39,7 @@ function render(record) {
   if (record.result && record.result.improvement !== undefined) {const p = document.createElement('p'); p.className = 'metric'; p.textContent = 'Measured objective improvement: ' + record.result.improvement + ' ' + record.result.unit + '. ' + record.result.limits; $('result-summary').append(p);}
   $('review-box').hidden = record.state !== 'review'; $('download').hidden = record.state !== 'completed';
   $('recover').hidden = !['failed', 'running', 'queued'].includes(record.state); $('recover').textContent = record.state === 'queued' ? 'Execute queued mission' : 'Recover and rerun';
-  $('review-note').value = '';
+  if (changed) $('review-note').value = '';
 }
 async function refresh() {
   const status = await api('/status'); paused = status.control === 'paused';
