@@ -3,22 +3,22 @@ version: "3.9"
 services:
   orchestrator:
     build:
-      context: ../..                 # alpha_factory_v1 root
-      dockerfile: ./Dockerfile
+      context: ../../..              # repository root
+      dockerfile: alpha_factory_v1/Dockerfile
     image: alpha_factory_orchestrator:selfheal
     env_file: ./config.env
     command: python /app/demo/agent_selfheal_entrypoint.py
     volumes:
       - ./:/app/demo:ro
-  ports:
-    - "7863:7863"
-  depends_on:
-    - ollama
-  healthcheck:
-    test: ["CMD", "curl", "-sf", "http://localhost:7863/__live"]
-    interval: 30s
-    timeout: 5s
-    retries: 3
+    ports:
+      - "7863:7863"
+    depends_on:
+      - ollama
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:7863/__live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   ollama:
     image: ollama/ollama:latest
@@ -31,7 +31,7 @@ services:
   sandbox:
     build:
       context: ../../..
-      dockerfile: ../../sandbox.Dockerfile
+      dockerfile: sandbox.Dockerfile
     image: selfheal-sandbox:latest
     entrypoint: ["/bin/true"]
 

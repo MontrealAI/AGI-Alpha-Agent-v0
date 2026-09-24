@@ -48,8 +48,8 @@ services:
     <<: *common
     image: ${AIGA_IMAGE:-ghcr.io/montrealai/alpha-aiga:latest}
     build:
-      context: ../..
-      dockerfile: ./Dockerfile
+      context: ../../..
+      dockerfile: alpha_factory_v1/Dockerfile
       target: runtime
     command: python /app/demo/agent_aiga_entrypoint.py
     volumes:

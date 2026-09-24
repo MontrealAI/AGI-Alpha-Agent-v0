@@ -189,6 +189,10 @@ valid journal suffix. Independent backups/checkpoints are necessary for rollback
 The `agent-runtime` target of `alpha_factory_v1/Dockerfile` runs the connected agent as UID 10001.
 Unqualified builds retain the historical orchestrator, RPC facade and Flask UI. Both targets now
 use the repository root as their build context; the checked-in Compose files select that context.
+The five historical demo Compose consumers use the same context. Their default and all-profile
+configuration models and local build inputs are checked by `python -m scripts.validate_legacy_compose
+--docker-compose`. Optional dependency profiles require Compose 2.20 or later. This parse/build-path
+check does not start those research stacks or establish their optional GPU, model or service integrations.
 The legacy target requires `API_TOKEN` and the documented legacy environment settings at launch.
 It installs the historical core lock; heavyweight domain integrations remain optional.
 Build from the repository root and bind the published port to host loopback:

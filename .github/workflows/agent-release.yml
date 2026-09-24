@@ -93,6 +93,9 @@ jobs:
       - name: Verify the legacy default container and its three services
         if: matrix.python == '3.12'
         run: python -m pytest --noconftest -o addopts= tests/test_docker_health.py -q --junitxml=evidence/legacy-container.xml
+      - name: Verify every shared legacy Compose build consumer
+        if: matrix.python == '3.12'
+        run: python -m scripts.validate_legacy_compose --docker-compose --output evidence/legacy-compose.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

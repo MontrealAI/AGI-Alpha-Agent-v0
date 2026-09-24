@@ -35,12 +35,12 @@ services:
   # ───────────── Vector Memory (Qdrant) ─────────────
   qdrant:
     image: qdrant/qdrant:v1.8.1
+    environment:
+      HEALTH_URL: http://localhost:6333/health
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
       <<: *hc
-      environment:
-        HEALTH_URL: http://localhost:6333/health
 
   # ───────────── TimescaleDB stream logger (live-feed) ─────────────
   timescaledb:
@@ -50,12 +50,11 @@ services:
       POSTGRES_PASSWORD: "${PG_PASSWORD:-experience}"
       POSTGRES_USER: experience
       POSTGRES_DB: exp_stream
+      HEALTH_URL: http://localhost:5432
     volumes:
       - ts_data:/var/lib/postgresql/data
     healthcheck:
       <<: *hc
-      environment:
-        HEALTH_URL: http://localhost:5432
 
   # ───────────── Redis queue for async tools ─────────────
   redis:
@@ -73,18 +72,17 @@ services:
     tty: true
     environment:
       - OLLAMA_MODELS=mixtral:instruct
+      - HEALTH_URL=http://localhost:11434/.well-known/ready
     volumes:
       - ollama_models:/root/.ollama
     healthcheck:
       <<: *hc
-      environment:
-        HEALTH_URL: http://localhost:11434/.well-known/ready
 
   # ───────────── Orchestrator Agent ─────────────
   orchestrator:
     build:
-      context: ../..
-      dockerfile: ./Dockerfile
+      context: ../../..
+      dockerfile: alpha_factory_v1/Dockerfile
       args:
         ENABLE_CUDA: "${ENABLE_CUDA:-0}"   # toggled by --profile gpu
     image: alpha_factory_orchestrator:experience
@@ -97,6 +95,7 @@ services:
       DATABASE_URL: "postgresql://experience:${PG_PASSWORD:-experience}@timescaledb:5432/exp_stream"
       LLM_BASE_URL: "${LLM_BASE_URL:-http://ollama:11434/v1}"
       SAMPLE_DATA_DIR: "/app/demo/offline_samples"
+      HEALTH_URL: http://localhost:7860/__live
     volumes:
       - ./:/app/demo:ro
       - ${SAMPLE_DATA_DIR:-./offline_samples}:/app/demo/offline_samples:ro
@@ -107,14 +106,14 @@ services:
         condition: service_healthy
       ollama:
         condition: service_started
+        required: false
       timescaledb:
         condition: service_healthy
+        required: false
     ports:
       - "7860:7860"
     healthcheck:
       <<: *hc
-      environment:
-        HEALTH_URL: http://localhost:7860/__live
     restart: unless-stopped
     deploy:
       resources:

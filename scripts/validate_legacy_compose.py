@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Validate shared legacy Docker build contexts and optional Compose models."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import shlex
+import subprocess
+
+import yaml
+
+from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--docker-compose", action="store_true", help="Require real Compose config validation")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    shared = root / "alpha_factory_v1/Dockerfile"
+    tracked = (
+        subprocess.check_output(["git", "ls-files", "-z", "--", "*compose*.yml", "*compose*.yaml"], cwd=root)
+        .decode()
+        .split("\0")
+    )
+    consumers: list[dict[str, str]] = []
+    configurations: set[Path] = set()
+    for name in sorted(filter(None, tracked)):
+        path = root / name
+        model = yaml.safe_load(path.read_text())
+        for service, settings in model.get("services", {}).items():
+            if not isinstance(settings, dict):
+                raise ValueError(f"{name}: service {service} must be an object")
+            build = settings.get("build")
+            if not isinstance(build, dict):
+                continue
+            context = (path.parent / build.get("context", ".")).resolve()
+            dockerfile = (context / build.get("dockerfile", "Dockerfile")).resolve()
+            if not dockerfile.is_file():
+                raise ValueError(f"{name}: {service} Dockerfile does not exist: {dockerfile}")
+            if dockerfile != shared:
+                continue
+            # Resolve every local COPY input, including globs, against the
+            # consumer's actual context. Stage-to-stage COPY has no host input.
+            for line in shared.read_text().splitlines():
+                if not line.startswith("COPY ") or "--from=" in line:
+                    continue
+                for source in shlex.split(line)[1:-1]:
+                    if not list(context.glob(source)):
+                        raise ValueError(f"{name}: {service} COPY input {source!r} is absent from {context}")
+            configurations.add(path)
+            consumers.append({"file": name, "service": service, "context": str(context.relative_to(root))})
+    if len(consumers) < 7:
+        raise ValueError("expected the two core and five demo consumers of the shared Dockerfile")
+    if args.docker_compose:
+        # Parse only: never start services, pull images or load operator secrets.
+        env = {key: value for key, value in os.environ.items() if key in {"PATH", "HOME", "SYSTEMROOT", "TMPDIR"}}
+        env["COMPOSE_DISABLE_ENV_FILE"] = "1"
+        for path in sorted(configurations):
+            for profiles in ([], ["--profile", "*"]):
+                command = [
+                    "docker",
+                    "compose",
+                    "--env-file",
+                    os.devnull,
+                    *profiles,
+                    "-f",
+                    str(path),
+                    "config",
+                    "--no-env-resolution",
+                    "--format",
+                    "json",
+                ]
+                result = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True, timeout=30)
+                if result.returncode:
+                    raise ValueError(f"Compose rejected {path.relative_to(root)}: {result.stderr}")
+                if "services" not in json.loads(result.stdout):
+                    raise ValueError(f"Compose returned no services for {path.relative_to(root)}")
+    report = {
+        "passed": True,
+        "shared_dockerfile_consumers": consumers,
+        "local_copy_inputs_resolve": True,
+        "compose_default_and_all_profiles_validated": args.docker_compose,
+        "research_services_started": False,
+    }
+    encoded = json.dumps(report, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(encoded)
+    print(encoded)
+
+
+if __name__ == "__main__":
+    main()
