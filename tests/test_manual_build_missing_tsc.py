@@ -24,21 +24,8 @@ def test_manual_build_missing_tsc(tmp_path: Path) -> None:
     if not node_version.lstrip("v").startswith("22."):
         pytest.skip("Node.js 22+ required for manual build")
     work = tmp_path / "browser"
-    shutil.copytree(BROWSER_DIR, work)
-    # provide required .env
-    (work / ".env").write_text((BROWSER_DIR / ".env.sample").read_text())
-    (work / "build" / "__init__.py").touch()
-
-    # scrub placeholder text to avoid asset download
-    for sub in ("wasm", "wasm_llm"):
-        d = work / sub
-        if d.exists():
-            for p in d.rglob("*"):
-                if p.is_file():
-                    data = p.read_bytes().replace(b"placeholder", b"")
-                    p.write_bytes(data)
-    bundle = work / "lib" / "bundle.esm.min.js"
-    bundle.write_text(bundle.read_text().replace("Placeholder", ""))
+    work.mkdir()
+    shutil.copy2(BROWSER_DIR / "manual_build.py", work / "manual_build.py")
 
     # isolate PATH with node only
     bin_dir = tmp_path / "bin"

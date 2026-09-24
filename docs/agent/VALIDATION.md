@@ -19,7 +19,8 @@ screenshots and integration evidence are retained as workflow artifacts and rele
   ephemeral Hardhat chain 31337; actual signed wallet proof, transaction, confirmation delay, receipt,
   integer balance, duplicate rejection after restart and verified backup/restore. No public-chain funds.
 - Solidity suite: 36 tests passed against shipped sources, including two new real identity rejection tests.
-  The initial 34-test baseline used an always-true identity stub; it was not evidence of identity enforcement. Insight browser suite: 6 passed, 1 skipped;
+  The initial 34-test baseline used an always-true identity stub; it was not evidence of identity enforcement. The initial local Insight browser suite reported 6 passed, 1 skipped;
+  hosted execution reported 5 passed, 1 skipped before the additional source-host test;
   TypeScript compilation passed; ESLint had zero errors and 9 existing warnings.
 - Initial broad Python regression: 893 passed, 12 failed, 100 skipped, 5 expected failures.
   Configuration precedence, loopback guard, compiler discovery and missing preview-asset causes were fixed;
@@ -29,7 +30,8 @@ screenshots and integration evidence are retained as workflow artifacts and rele
 
 The workspace kernel prevents Chromium and ZMQ notebook sockets. Their local failures are **not passes**.
 Hosted CI runs the full offline Python regression, real Chromium console interactions, the legacy web
-client tests, sandboxed Insight simulation online/offline, and real Docker isolation plus persistent
+client tests, sandboxed Insight simulation online/offline from both npm and manual builds, the legacy container
+services, and real Docker isolation plus persistent
 operator-container restart. Each must succeed before publication. Optional test skips and
 expected failures remain visible in JUnit; they do not establish unavailable hardware, cloud credentials,
 optional integrations, live trading or deployed mainnet behavior.

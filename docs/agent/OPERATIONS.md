@@ -199,3 +199,13 @@ do not delete it when upgrading. Commands inside the container use
 Do not mount the host Docker socket into this service. Use the host installation for coding missions,
 where the isolated evaluator can use a deliberately configured local Docker engine. The container's
 health endpoint is public and minimal; every mission/control endpoint still requires the access token.
+
+## Historical Insight browser build
+
+With Node.js 22.17.1 and Python 3.11+ installed, run `npm ci` in
+`alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1`, then `python manual_build.py`
+(or `./manual_build.ps1` in PowerShell). This uses the same checked build as `npm run build`,
+including bundled service workers, sandbox hosts, CSP hashes and offline assets. For an air-gapped
+build, prefetch the dependencies and browser assets before disconnecting; `FETCH_ASSETS_SKIP_LLM=1`
+omits the optional historical browser model. The previous manual compiler is retained verbatim in
+`build/manual_build_legacy.py.txt` as historical source, not the active build path.

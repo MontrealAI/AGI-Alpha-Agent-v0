@@ -8,7 +8,15 @@ export async function createSandboxWorker(url: string | URL): Promise<Worker> {
   const script = await response.text();
   const hostResponse = await fetch(new URL('./sandbox_worker_host.html', window.location.href));
   if (!hostResponse.ok) throw new Error(`Sandbox host unavailable: ${hostResponse.status}`);
-  const hostDocument = await hostResponse.text();
+  let hostDocument = await hostResponse.text();
+  const externalHost = '<script src="sandbox_worker_host.js"></script>';
+  if (hostDocument.includes(externalHost)) {
+    // Source-tree and older manual distributions need the same self-contained
+    // document as the canonical build; all fetches use the parent's cache.
+    const hostScript = await fetch(new URL('./sandbox_worker_host.js', window.location.href));
+    if (!hostScript.ok) throw new Error(`Sandbox script unavailable: ${hostScript.status}`);
+    hostDocument = hostDocument.replace(externalHost, `<script>${await hostScript.text()}</script>`);
+  }
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
     iframe.setAttribute('sandbox', 'allow-scripts');

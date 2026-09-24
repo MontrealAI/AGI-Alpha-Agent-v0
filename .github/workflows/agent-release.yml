@@ -185,6 +185,14 @@ jobs:
         run: |
           npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
+      - name: Manual browser build uses the same offline distribution
+        run: |
+          cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          sha256sum dist/index.html dist/service-worker.js dist/insight.bundle.js dist/sandbox_worker_host.html > "$RUNNER_TEMP/insight-build.sha256"
+          python manual_build.py
+          sha256sum -c "$RUNNER_TEMP/insight-build.sha256"
+          cd "$GITHUB_WORKSPACE"
+          python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-manual-offline.json
       - name: Shipped contracts and real agent payment lifecycle
         run: |
           npm ci --prefix tests/contracts
