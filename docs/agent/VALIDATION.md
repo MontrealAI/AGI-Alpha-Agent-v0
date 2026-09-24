@@ -33,6 +33,15 @@ client tests, and real Docker isolation. Each must succeed before publication. O
 expected failures remain visible in JUnit; they do not establish unavailable hardware, cloud credentials,
 optional integrations, live trading or deployed mainnet behavior.
 
+Both browser projects have production-dependency audit gates, with JSON reports retained in release
+evidence. The repaired dashboard audit reports zero production advisories. Some optional legacy
+development tools still have advisories; this is not a claim that every historical dependency is clear.
+
+The Python coverage gate retains the repository's existing scope: demos, legacy backend agents/memory
+and temporary test copies are excluded in both collection and reporting. The earlier expanded report
+measured 74.97%; applying the already configured scope measured 81.72%. The release retains its XML
+and raw coverage data so this distinction remains inspectable.
+
 The runtime matrix covers Python 3.11, 3.12 and 3.13 using the hash-locked minimal environment.
 The larger historical suite runs in its original locked Python 3.12 development environment, without
 service credentials, external Python sockets or model downloads. Run locally with:

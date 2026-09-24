@@ -113,6 +113,16 @@ omit = [
     "*/tmp/*",
 ]
 
+# Apply the same existing scope to data collected by test subprocesses.
+[tool.coverage.report]
+omit = [
+    "alpha_factory_v1/demos/*",
+    "alpha_factory_v1/backend/agents/*",
+    "alpha_factory_v1/backend/memory*",
+    "/tmp/*",
+    "*/tmp/*",
+]
+
 [tool.mutmut]
 # Merge-safe mutation smoke scope. This intentionally targets a bounded,
 # high-signal Python surface so push-to-main runs stay deterministic.

@@ -145,12 +145,6 @@ class Orchestrator(BaseOrchestrator):
         solution_archive = SolutionArchive(os.getenv("SOLUTION_ARCHIVE_PATH", "solutions.duckdb"))
         registry = StakeRegistry()
         self._alert_hook = alert_hook or alerts.send_alert
-        if resource is not None:
-            try:
-                limit = 8 * 1024 * 1024 * 1024
-                resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
-            except Exception:  # pragma: no cover - unsupported platform
-                pass
         super().__init__(
             bus,
             ledger,
@@ -250,6 +244,11 @@ class Orchestrator(BaseOrchestrator):
 
 
 async def _main() -> None:  # pragma: no cover - CLI helper
+    # A library constructor must not irreversibly cap its caller and every child
+    # process. Apply the historical process budget only to the standalone service.
+    if resource is not None:
+        limit = 8 * 1024 * 1024 * 1024
+        resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
     orch = Orchestrator()
     await orch.run_forever()
 

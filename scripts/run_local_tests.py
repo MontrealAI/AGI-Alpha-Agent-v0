@@ -17,6 +17,7 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     keep = {
         "PATH",
+        "CI",
         "HOME",
         "TMPDIR",
         "TEMP",

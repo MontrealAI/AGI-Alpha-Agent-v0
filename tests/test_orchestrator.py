@@ -10,8 +10,14 @@ from alpha_factory_v1.common.utils import config
 
 def test_run_forever_shutdown() -> None:
     settings = config.Settings(bus_port=0)
+    from alpha_factory_v1.core import orchestrator as core_orchestrator
+
+    limits = core_orchestrator.resource
+    before = limits.getrlimit(limits.RLIMIT_AS) if limits is not None else None
     with mock.patch.object(orchestrator.Orchestrator, "_init_agents", lambda self: []):
         orch = orchestrator.Orchestrator(settings)
+    if limits is not None:
+        assert limits.getrlimit(limits.RLIMIT_AS) == before
 
     async def run() -> None:
         with (

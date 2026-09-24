@@ -160,6 +160,9 @@ alpha-agent --home ./restored-state restore ./private-backup.zip
 alpha-agent --home ./restored-state verify
 ```
 
+Restore currently accepts archives up to 256 MiB uncompressed. Check backup size and test recovery
+before depending on an archive; retain the original state directory for larger journals.
+
 Backups contain the identity key and token. Encrypt them with your normal backup system, store separately,
 and retain the reported SHA-256 and journal head in an independent trusted location. Restore never
 merges into or overwrites an existing directory. Stop old processes before switching to the restored

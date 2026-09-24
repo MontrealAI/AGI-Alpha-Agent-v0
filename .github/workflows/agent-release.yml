@@ -104,7 +104,8 @@ jobs:
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
-          python -m scripts.run_local_tests -q --cov --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
+          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
+          cp .coverage evidence/coverage.data
       - name: Strict types and repository checks
         run: |
           python -m mypy --config-file mypy-runtime.ini
@@ -146,6 +147,7 @@ jobs:
       - name: Historical web client tests
         run: |
           npm ci --prefix alpha_factory_v1/core/interface/web_client
+          npm audit --prefix alpha_factory_v1/core/interface/web_client --omit=dev --audit-level=moderate --json > evidence/coreweb-audit.json
           cd alpha_factory_v1/core/interface/web_client
           npx playwright install --with-deps chromium
           npm test
@@ -153,6 +155,7 @@ jobs:
       - name: Insight browser tests and build
         run: |
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npm audit --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 --omit=dev --audit-level=moderate --json > evidence/insight-audit.json
           cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           npm test
           npx tsc --noEmit

@@ -25,6 +25,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    // Retain historical hashed assets alongside the newly generated bundle.
+    emptyOutDir: false,
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name].[hash].[ext]'

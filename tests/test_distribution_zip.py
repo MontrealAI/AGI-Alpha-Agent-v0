@@ -61,6 +61,8 @@ def test_distribution_zip(tmp_path: Path) -> None:
         "service-worker.js",
         "style.css",
         "insight_browser_quickstart.pdf",
+        "d3.exports.js",
+        "d3_exports.js",
     }
     # ensure expected files exist
     for name in expected:
