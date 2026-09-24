@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 from click.testing import CliRunner
+import httpx
+import pytest
 
-from alpha_factory_v1.core.archive import Archive
+from alpha_factory_v1.core.archive import Agent, Archive
 from alpha_factory_v1.core.tools import transfer_test as tt
 
 import sys
@@ -19,6 +21,45 @@ sys.modules.setdefault("rocketry", rocketry_stub)
 sys.modules.setdefault("rocketry.conds", conds_mod)
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface import cli  # noqa: E402
+
+
+@pytest.mark.parametrize("kind", ["valid", "oversized", "compressed"])
+def test_transfer_stream_is_bounded(monkeypatch: pytest.MonkeyPatch, kind: str) -> None:
+    monkeypatch.setenv("ALPHA_TRANSFER_BASE_URL", "http://127.0.0.1:12345/v1")
+    agent = Agent(1, {"transfer_cases": [{"prompt": "2+2", "expected": "4"}]}, 0)
+
+    class Body(httpx.SyncByteStream):
+        chunks = 0
+        closed = False
+
+        def __iter__(self):  # type: ignore[no-untyped-def]
+            if kind == "oversized":
+                for _ in range(256):
+                    self.chunks += 1
+                    yield b"x" * 65536
+            else:
+                self.chunks += 1
+                yield b'{"choices":[{"finish_reason":"stop","message":{"content":"4"}}]}'
+
+        def close(self) -> None:
+            self.closed = True
+
+    body = Body()
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        assert request.headers["Accept-Encoding"] == "identity"
+        headers = {"Content-Encoding": "gzip"} if kind == "compressed" else {}
+        return httpx.Response(200, headers=headers, stream=body)
+
+    client_type = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: client_type(transport=httpx.MockTransport(respond), **kwargs))
+    if kind == "valid":
+        assert tt.evaluate_agent(agent, "test-model") == 1.0
+    else:
+        with pytest.raises(ValueError, match="1 MiB" if kind == "oversized" else "identity encoding"):
+            tt.evaluate_agent(agent, "test-model")
+    assert body.closed
+    assert body.chunks <= 17
 
 
 def test_run_transfer_test_writes_matrix(tmp_path, monkeypatch) -> None:

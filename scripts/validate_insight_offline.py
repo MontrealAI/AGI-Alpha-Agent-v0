@@ -10,6 +10,7 @@ import http.server
 import json
 from pathlib import Path
 import threading
+import time
 
 from playwright.sync_api import sync_playwright
 
@@ -28,29 +29,50 @@ def main() -> None:
     worker.start()
     url = f"http://127.0.0.1:{server.server_port}/index.html"
     errors: list[str] = []
+    console_errors: list[str] = []
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
             context = browser.new_context()
             page = context.new_page()
+            session = context.new_cdp_session(page)
+
+            def evaluate(expression: str):  # type: ignore[no-untyped-def]
+                # DevTools introspection must not require weakening the page's CSP.
+                result = session.send(
+                    "Runtime.evaluate",
+                    {
+                        "expression": expression,
+                        "returnByValue": True,
+                        "awaitPromise": True,
+                        "allowUnsafeEvalBlockedByCSP": True,
+                    },
+                )
+                assert "exceptionDetails" not in result, result
+                return result["result"].get("value")
+
+            def wait(expression: str) -> None:
+                deadline = time.monotonic() + 60
+                while not evaluate(expression):
+                    if time.monotonic() > deadline:
+                        raise TimeoutError(expression)
+                    page.wait_for_timeout(100)
+
             page.on("pageerror", lambda error: errors.append(str(error)))
+            page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
             page.goto(url)
-            page.wait_for_function(
-                "typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0"
-            )
-            page.wait_for_function("navigator.serviceWorker.controller !== null", timeout=60000)
-            page.evaluate("caches.open('unrelated-application-cache')")
+            wait("typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0")
+            wait("navigator.serviceWorker.controller !== null")
+            evaluate("caches.open('unrelated-application-cache').then(() => true)")
             context.set_offline(True)
             response = page.reload()
             assert response and response.ok and response.from_service_worker
-            page.wait_for_function(
-                "typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0"
-            )
+            wait("typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0")
             assert page.locator("#controls").is_visible()
-            assert page.evaluate("typeof window.d3 !== 'undefined'")
-            assert page.evaluate("async () => (await fetch('style.css')).ok")
-            assert page.evaluate("async () => (await fetch('assets/src/i18n/en.json')).ok")
-            assert "unrelated-application-cache" in page.evaluate("caches.keys()")
+            assert evaluate("typeof window.d3 !== 'undefined'")
+            assert evaluate("fetch('style.css').then(response => response.ok)")
+            assert evaluate("fetch('assets/src/i18n/en.json').then(response => response.ok)")
+            assert "unrelated-application-cache" in evaluate("caches.keys()")
             assert not errors, errors
             evidence = {
                 "passed": True,
@@ -68,6 +90,12 @@ def main() -> None:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(evidence, indent=2) + "\n")
             browser.close()
+    except Exception:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        failure = {"passed": False, "page_errors": errors, "console_errors": console_errors}
+        args.output.write_text(json.dumps(failure, indent=2) + "\n")
+        print(json.dumps(failure))
+        raise
     finally:
         server.shutdown()
         worker.join()

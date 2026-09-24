@@ -247,8 +247,13 @@ async def _main() -> None:  # pragma: no cover - CLI helper
     # A library constructor must not irreversibly cap its caller and every child
     # process. Apply the historical process budget only to the standalone service.
     if resource is not None:
-        limit = 8 * 1024 * 1024 * 1024
-        resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
+        try:
+            soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+            limits = [8 * 1024 * 1024 * 1024]
+            limits.extend(value for value in (soft, hard) if value != resource.RLIM_INFINITY)
+            resource.setrlimit(resource.RLIMIT_AS, (min(limits), hard))
+        except (OSError, ValueError):
+            log.warning("Unable to apply the optional standalone address-space limit", exc_info=True)
     orch = Orchestrator()
     await orch.run_forever()
 

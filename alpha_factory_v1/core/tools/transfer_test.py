@@ -36,7 +36,7 @@ def evaluate_agent(agent: Agent, model: str) -> float:
     cases = agent.meta.get("transfer_cases")
     if not endpoint or not isinstance(cases, list) or not 1 <= len(cases) <= 100:
         raise ValueError("transfer evaluation requires an explicit provider and 1–100 archived transfer_cases")
-    headers = {}
+    headers = {"Accept-Encoding": "identity"}
     key = os.getenv("ALPHA_TRANSFER_API_KEY")
     if key:
         headers["Authorization"] = f"Bearer {key}"
@@ -50,7 +50,8 @@ def evaluate_agent(agent: Agent, model: str) -> float:
                 or not all(isinstance(v, str) and len(v) <= 10000 for v in case.values())
             ):
                 raise ValueError("invalid transfer benchmark case")
-            response = client.post(
+            with client.stream(
+                "POST",
                 endpoint.rstrip("/") + "/chat/completions",
                 headers=headers,
                 json={
@@ -59,11 +60,16 @@ def evaluate_agent(agent: Agent, model: str) -> float:
                     "max_tokens": 512,
                     "messages": [{"role": "user", "content": case["prompt"]}],
                 },
-            )
-            response.raise_for_status()
-            if len(response.content) > 1024**2:
-                raise ValueError("transfer response exceeds 1 MiB")
-            choice = response.json()["choices"][0]
+            ) as response:
+                response.raise_for_status()
+                if response.headers.get("content-encoding", "identity").lower() != "identity":
+                    raise ValueError("transfer response must use identity encoding")
+                content = bytearray()
+                for chunk in response.iter_raw(chunk_size=65536):
+                    if len(content) + len(chunk) > 1024**2:
+                        raise ValueError("transfer response exceeds 1 MiB")
+                    content.extend(chunk)
+            choice = json.loads(content)["choices"][0]
             if choice.get("finish_reason") != "stop":
                 raise ValueError("transfer response did not complete")
             passed += choice["message"]["content"].strip() == case["expected"].strip()

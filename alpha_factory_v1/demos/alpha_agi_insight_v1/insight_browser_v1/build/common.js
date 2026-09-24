@@ -39,6 +39,9 @@ export async function copyAssets(manifest, repoRoot, outDir, assetRoot = '') {
     if (fsSync.existsSync(sourceDir)) {
       await fs.mkdir(path.join(outDir, dir), { recursive: true });
       for (const f of await fs.readdir(sourceDir)) {
+        // Interrupted downloads can leave NamedTemporaryFile cache entries.
+        // They are not runtime assets and must not affect the precache hash.
+        if (/^tmp[^.]+$/.test(f) || f.endsWith('.tmp')) continue;
         await fs.copyFile(path.join(sourceDir, f), path.join(outDir, dir, f));
       }
     }
