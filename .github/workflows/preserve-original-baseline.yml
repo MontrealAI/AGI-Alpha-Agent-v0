@@ -31,53 +31,9 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-      - name: Build and restore the archival checkpoint
-        run: |
-          set -euo pipefail
-          python3 "$CHECKPOINT_TOOLS/build_checkpoint.py" --repository "$GITHUB_WORKSPACE" --out "$RUNNER_TEMP/checkpoint"
-          python3 "$CHECKPOINT_TOOLS/VERIFY.py" "$RUNNER_TEMP/checkpoint/AGI_Alpha_Agent_Baseline_2026-09-24.zip"
-      - name: Publish verified archival prerelease
+      - name: Verify uploaded draft and publish by release ID
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if gh release view "$CHECKPOINT_TAG" >/dev/null 2>&1; then
-            echo "Checkpoint release already exists; refusing to replace it."
-            exit 1
-          fi
-          CURRENT_MAIN=$(git ls-remote origin refs/heads/main | cut -f1)
-          test "$CURRENT_MAIN" = "$BASELINE_COMMIT"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if git show-ref --verify --quiet "refs/tags/$CHECKPOINT_TAG"; then
-            test "$(git rev-parse "$CHECKPOINT_TAG^{commit}")" = "$BASELINE_COMMIT"
-          else
-            git tag -a "$CHECKPOINT_TAG" "$BASELINE_COMMIT" -m 'Preserve the original Alpha Agent source and history before completion work.'
-            git push origin "refs/tags/$CHECKPOINT_TAG"
-          fi
-          gh release create "$CHECKPOINT_TAG" \
-            "$RUNNER_TEMP/checkpoint/AGI_Alpha_Agent_Baseline_2026-09-24.zip" \
-            "$RUNNER_TEMP/checkpoint/PRESERVATION_MANIFEST.json" \
-            "$RUNNER_TEMP/checkpoint/RESTORE.md" \
-            "$RUNNER_TEMP/checkpoint/SHA256SUMS.txt" \
-            --verify-tag --draft --prerelease --latest=false \
-            --title 'AGI Alpha Agent — Original Baseline (2026-09-24)' \
-            --notes-file "$CHECKPOINT_TOOLS/RELEASE_NOTES.md"
-          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$CHECKPOINT_TAG" > "$RUNNER_TEMP/checkpoint-release.json"
-          python3 - <<'PY'
-          import hashlib, json, os
-          from pathlib import Path
-          root = Path(os.environ['RUNNER_TEMP'])
-          release = json.loads((root / 'checkpoint-release.json').read_text())
-          assets = {a['name']: a for a in release['assets']}
-          files = list((root / 'checkpoint').iterdir())
-          assert set(assets) == {p.name for p in files}
-          for path in files:
-              with path.open('rb') as handle:
-                  checksum = hashlib.file_digest(handle, 'sha256').hexdigest()
-              assert assets[path.name]['size'] == path.stat().st_size
-              assert assets[path.name]['digest'] == 'sha256:' + checksum
-          assert release['draft'] and release['prerelease']
-          print('Every uploaded asset matches its local SHA-256 and size.')
-          PY
-          gh release edit "$CHECKPOINT_TAG" --draft=false --prerelease --latest=false
+          python3 "$CHECKPOINT_TOOLS/resume_draft.py" "$RUNNER_TEMP/checkpoint-download"
