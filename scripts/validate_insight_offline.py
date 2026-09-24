@@ -63,11 +63,17 @@ def main() -> None:
             page.goto(url)
             wait("typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0")
             wait("navigator.serviceWorker.controller !== null")
+            simulation_advanced = (
+                "Array.from(document.querySelectorAll('#canvas svg text')).some(node => "
+                "Number((node.textContent.match(/^gen (\\d+)$/) || [])[1]) >= 2)"
+            )
+            wait(simulation_advanced)
             evaluate("caches.open('unrelated-application-cache').then(() => true)")
             context.set_offline(True)
             response = page.reload()
             assert response and response.ok and response.from_service_worker
             wait("typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0")
+            wait(simulation_advanced)
             assert page.locator("#controls").is_visible()
             assert evaluate("typeof window.d3 !== 'undefined'")
             assert evaluate("fetch('style.css').then(response => response.ok)")
@@ -84,6 +90,7 @@ def main() -> None:
                     "styles",
                     "translations",
                     "unrelated cache preserved",
+                    "sandboxed simulation advances online and offline",
                 ],
                 "page_errors": errors,
             }

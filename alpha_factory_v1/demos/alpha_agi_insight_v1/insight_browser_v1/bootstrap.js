@@ -36,6 +36,7 @@ const supportsServiceWorker = (() => {
 if (supportsServiceWorker) {
   window.addEventListener("load", async () => {
     try {
+      if (!navigator.onLine && navigator.serviceWorker.controller) return;
       const response = await fetch(SW_URL);
       const buffer = await response.arrayBuffer();
       const digest = await crypto.subtle.digest("SHA-384", buffer);

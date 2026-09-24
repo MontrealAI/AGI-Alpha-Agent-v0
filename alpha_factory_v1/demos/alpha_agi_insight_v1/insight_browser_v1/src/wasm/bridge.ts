@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { loadPyodide } from '../lib/pyodide.js';
+import { loadPyodide } from '../../lib/pyodide.js';
 
 interface Pyodide {
   globals: { set(key: string, value: unknown): void; get(key: string): string };

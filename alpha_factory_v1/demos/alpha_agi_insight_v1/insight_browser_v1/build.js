@@ -182,8 +182,8 @@ async function compileWorkers() {
             build({
                 entryPoints: [`worker/${w}.ts`],
                 outfile: `worker/${w}.js`,
-                bundle: false,
-                format: "esm",
+                bundle: true,
+                format: "iife",
                 target: "es2020",
             }),
         ),
@@ -441,6 +441,9 @@ async function bundle() {
         await fs.writeFile("index.html", devHtml);
     }
     await relocateDistAssets();
+    if (fsSync.existsSync(quickstartPdf)) {
+        await fs.copyFile(quickstartPdf, path.join(OUT_DIR, "insight_browser_quickstart.pdf"));
+    }
     manifest.precache = manifest.precache.map((p) => {
         if (
             p.startsWith("wasm") ||

@@ -60,10 +60,17 @@ def test_distribution_zip(tmp_path: Path) -> None:
         "insight.bundle.js",
         "service-worker.js",
         "style.css",
-        "insight_browser_quickstart.pdf",
         "d3.exports.js",
         "d3_exports.js",
+        "bootstrap.js",
+        "sandbox_worker_host.html",
+        "sandbox_worker_host.js",
+        "worker/evolver.js",
+        "worker/arenaWorker.js",
+        "worker/umapWorker.js",
     }
+    if Path("docs/insight_browser_quickstart.pdf").exists():
+        expected.add("insight_browser_quickstart.pdf")
     # ensure expected files exist
     for name in expected:
         assert name in names, f"{name} missing from zip"
@@ -71,7 +78,7 @@ def test_distribution_zip(tmp_path: Path) -> None:
     assert any(n.startswith("assets/") for n in names), "assets directory missing"
     assert "assets/manifest.json" in names, "assets/manifest.json missing from zip"
     # ensure no unexpected files
-    allowed_prefixes = {"assets/"}
+    allowed_prefixes = {"assets/", "worker/"}
     for name in names:
         if name in expected:
             continue

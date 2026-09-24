@@ -1,42 +1,48 @@
 // SPDX-License-Identifier: Apache-2.0
-/**
- * Spawn a Web Worker inside a sandboxed iframe.
- *
- * The worker is created from a Blob URL inside the sandbox and
- * communicates with the parent via postMessage.
- */
+/** Spawn a self-contained worker in an opaque-origin, script-only iframe. */
 export async function createSandboxWorker(url: string | URL): Promise<Worker> {
-  return new Promise((resolve) => {
-    const workerBlob = new Blob([`import "${url.toString()}";`], { type: 'text/javascript' });
-    const workerUrl = URL.createObjectURL(workerBlob);
-
+  const source = new URL(url.toString(), window.location.href);
+  if (source.origin !== window.location.origin) throw new Error('Worker source must be same-origin');
+  const response = await fetch(source);
+  if (!response.ok) throw new Error(`Worker source unavailable: ${response.status}`);
+  const script = await response.text();
+  return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
-    // allow only script execution in the sandboxed iframe
-    (iframe as any).sandbox = 'allow-scripts';
+    iframe.setAttribute('sandbox', 'allow-scripts');
     iframe.style.display = 'none';
     iframe.src = new URL('./sandbox_worker_host.html', window.location.href).toString();
-    document.body.appendChild(iframe);
-
+    let timer: ReturnType<typeof setTimeout>;
+    let settled = false;
     const worker: any = {
-      postMessage: (m: any) => iframe.contentWindow!.postMessage(m, '*'),
+      postMessage: (message: unknown) => iframe.contentWindow!.postMessage(message, '*'),
       terminate() {
+        clearTimeout(timer);
+        iframe.contentWindow?.postMessage({ type: 'sandbox-terminate' }, '*');
         iframe.remove();
-        URL.revokeObjectURL(workerUrl);
         window.removeEventListener('message', handler);
       },
-      onmessage: null as ((ev: MessageEvent) => void) | null,
+      onmessage: null as ((event: MessageEvent) => void) | null,
     };
-
-    const handler = (e: MessageEvent) => {
-      if (e.source === iframe.contentWindow && worker.onmessage) {
-        worker.onmessage(e);
+    const handler = (event: MessageEvent) => {
+      if (event.source !== iframe.contentWindow) return;
+      if (event.data?.type === 'sandbox-ready' && !settled) {
+        settled = true;
+        clearTimeout(timer);
+        resolve(worker as Worker);
+      } else if (event.data?.type === 'sandbox-error' && !settled) {
+        settled = true;
+        worker.terminate();
+        reject(new Error(event.data.message));
+      } else if (worker.onmessage) {
+        worker.onmessage(event);
       }
     };
     window.addEventListener('message', handler);
-
-    iframe.onload = () => {
-      iframe.contentWindow!.postMessage({ type: 'start', url: workerUrl }, '*');
-      resolve(worker as unknown as Worker);
-    };
+    iframe.onload = () => iframe.contentWindow!.postMessage({ type: 'sandbox-start', script }, '*');
+    timer = setTimeout(() => {
+      worker.terminate();
+      reject(new Error('Sandbox worker startup timed out'));
+    }, 10000);
+    document.body.appendChild(iframe);
   });
 }
