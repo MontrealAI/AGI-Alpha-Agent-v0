@@ -450,6 +450,11 @@ async function bundle() {
     if (devHtml !== html) {
         await fs.writeFile("index.html", devHtml);
     }
+    // The verified WASM is already embedded in insight.bundle.js. Raw Pyodide
+    // backend files remain in full distributions but are optional research
+    // assets, not installation prerequisites for the deployed JS simulation.
+    // Docs intentionally omit those duplicate external runtime files.
+    if (wasmBase64) manifest.precache = manifest.precache.filter((item) => item !== 'wasm/*');
     await relocateDistAssets();
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(quickstartPdf, path.join(OUT_DIR, "insight_browser_quickstart.pdf"));

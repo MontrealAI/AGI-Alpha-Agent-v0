@@ -188,6 +188,8 @@ jobs:
         run: |
           npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
+      - name: Verify the checked-in documentation demo offline
+        run: python -m scripts.validate_insight_offline --dist docs/alpha_agi_insight_v1 --output evidence/insight-docs-offline.json
       - name: Manual browser build uses the same offline distribution
         run: |
           cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
