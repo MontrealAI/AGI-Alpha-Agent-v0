@@ -18,6 +18,7 @@ def main() -> int:
     keep = {
         "PATH",
         "CI",
+        "ALPHA_PYTEST_OWNER_PID",
         "HOME",
         "TMPDIR",
         "TEMP",

@@ -187,6 +187,10 @@ def _ensure_insight_dist() -> Path:
 
 
 def _cleanup_disk_space() -> None:
+    # Nested pytest runs share these assets with the outer session. Only the
+    # process that established the session may remove them after all tests end.
+    if os.environ.get("ALPHA_PYTEST_OWNER_PID") != str(os.getpid()):
+        return
     if not any(os.environ.get(key) for key in _CLEANUP_DISK_ENV_VARS):
         return
     repo_root = Path(__file__).resolve().parents[1]
@@ -217,6 +221,7 @@ def _cleanup_disk_space() -> None:
 
 
 def pytest_configure() -> None:
+    os.environ.setdefault("ALPHA_PYTEST_OWNER_PID", str(os.getpid()))
     _configure_temp_paths()
     _configure_ci_hypothesis_limits()
     _patch_coverage_xml_serialization()
