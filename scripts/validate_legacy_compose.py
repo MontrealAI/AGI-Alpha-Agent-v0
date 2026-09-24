@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import shlex
 import subprocess
+import tempfile
 
 import yaml
 
@@ -61,31 +62,54 @@ def main() -> None:
         # Parse only: never start services, pull images or load operator secrets.
         env = {key: value for key, value in os.environ.items() if key in {"PATH", "HOME", "SYSTEMROOT", "TMPDIR"}}
         env["COMPOSE_DISABLE_ENV_FILE"] = "1"
-        for path in sorted(configurations):
-            for profiles in ([], ["--profile", "*"]):
-                command = [
-                    "docker",
-                    "compose",
-                    "--env-file",
-                    os.devnull,
-                    *profiles,
-                    "-f",
-                    str(path),
-                    "config",
-                    "--no-env-resolution",
-                    "--format",
-                    "json",
-                ]
-                result = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True, timeout=30)
-                if result.returncode:
-                    raise ValueError(f"Compose rejected {path.relative_to(root)}: {result.stderr}")
-                if "services" not in json.loads(result.stdout):
-                    raise ValueError(f"Compose returned no services for {path.relative_to(root)}")
+        with tempfile.TemporaryDirectory(prefix="alpha-compose-") as temporary:
+            mirror = Path(temporary) / "repository"
+            for path in sorted(configurations):
+                copied = mirror / path.relative_to(root)
+                copied.parent.mkdir(parents=True, exist_ok=True)
+                copied.write_bytes(path.read_bytes())
+                model = yaml.safe_load(path.read_text())
+                references = []
+                for service in model["services"].values():
+                    files = service.get("env_file", [])
+                    references.extend(files if isinstance(files, list) else [files])
+                for kind in ("secrets", "configs"):
+                    references.extend(value["file"] for value in model.get(kind, {}).values() if "file" in value)
+                # Compose still stats env files with --no-env-resolution. Empty
+                # fixtures preserve the original model and relative paths;
+                # neither existing secrets nor application sources are copied.
+                for reference in references:
+                    name = reference["path"] if isinstance(reference, dict) else reference
+                    fixture = (copied.parent / name).resolve()
+                    if not fixture.is_relative_to(mirror):
+                        raise ValueError("Compose fixture reference escapes its temporary repository")
+                    fixture.parent.mkdir(parents=True, exist_ok=True)
+                    fixture.touch(exist_ok=True)
+                for profiles in ([], ["--profile", "*"]):
+                    command = [
+                        "docker",
+                        "compose",
+                        "--env-file",
+                        os.devnull,
+                        *profiles,
+                        "-f",
+                        str(copied),
+                        "config",
+                        "--no-env-resolution",
+                        "--format",
+                        "json",
+                    ]
+                    result = subprocess.run(command, cwd=mirror, env=env, capture_output=True, text=True, timeout=30)
+                    if result.returncode:
+                        raise ValueError(f"Compose rejected {path.relative_to(root)}: {result.stderr}")
+                    if "services" not in json.loads(result.stdout):
+                        raise ValueError(f"Compose returned no services for {path.relative_to(root)}")
     report = {
         "passed": True,
         "shared_dockerfile_consumers": consumers,
         "local_copy_inputs_resolve": True,
         "compose_default_and_all_profiles_validated": args.docker_compose,
+        "operator_secrets_loaded": False,
         "research_services_started": False,
     }
     encoded = json.dumps(report, indent=2) + "\n"
