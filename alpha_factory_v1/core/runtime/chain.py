@@ -17,7 +17,7 @@ from typing import Any
 import httpx
 
 from .models import ChainConfig
-from .store import Conflict, Journal
+from .store import Conflict, Journal, digest
 
 AGIALPHA = "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
 DECIMALS = 18
@@ -160,14 +160,19 @@ class Economics:
 
     def invoice(self, ident: str, payer: str, amount: str) -> dict[str, Any]:
         """Record expected payment terms before a transfer is observed."""
-        cfg = self.journal.config.chain
+        config = self.journal.config.model_copy(deep=True)
+        config_hash = digest(config.model_dump())
+        cfg = config.chain
         if cfg is None:
             raise ValueError("configure and pin a chain before requesting payment")
         amount_int, sender = units(amount), address(payer)
         snapshot = RPC(cfg).verify_token()
         with self.journal.transaction() as cx:
-            if self.journal.latest("@control", cx)["state"] != "ready":
+            control = self.journal.latest("@control", cx)
+            if control["state"] != "ready":
                 raise Conflict("agent is paused")
+            if control["config_hash"] != config_hash:
+                raise Conflict("configuration changed during verification; restart and retry")
             mission = self.journal.latest(ident, cx)
             if mission["state"] != "completed":
                 raise Conflict("only approved completed work can request payment")
@@ -188,6 +193,7 @@ class Economics:
                         "recipient": wallet,
                         "amount_units": str(amount_int),
                         "chain_id": cfg.chain_id,
+                        "config_hash": config_hash,
                         "token": AGIALPHA,
                         "issued_after_block": snapshot["head"],
                         "state": "awaiting_payment",
@@ -197,7 +203,9 @@ class Economics:
 
     def settle(self, ident: str, tx_hash: str, log_index: int) -> dict[str, Any]:
         """Verify a canonical confirmed Transfer and consume it atomically once."""
-        cfg = self.journal.config.chain
+        config = self.journal.config.model_copy(deep=True)
+        config_hash = digest(config.model_dump())
+        cfg = config.chain
         if cfg is None or not re.fullmatch(r"0x[0-9a-fA-F]{64}", tx_hash) or log_index < 0:
             raise ValueError("configured chain, transaction hash and log index required")
         invoice = self.journal.latest(f"@invoice:{ident}")
@@ -240,8 +248,11 @@ class Economics:
         amount = int(invoice["amount_units"])
         key = f"@receipt:{cfg.chain_id}:{tx_hash.lower()}:{log_index}"
         with self.journal.transaction() as cx:
-            if self.journal.latest("@control", cx)["state"] != "ready":
+            control = self.journal.latest("@control", cx)
+            if control["state"] != "ready":
                 raise Conflict("agent is paused")
+            if control["config_hash"] != config_hash:
+                raise Conflict("configuration changed during verification; restart and retry")
             latest = self.journal.latest(f"@invoice:{ident}", cx)
             if latest["revision"] != invoice["revision"]:
                 raise Conflict("invoice changed during verification")
@@ -254,6 +265,7 @@ class Economics:
             evidence = {
                 "mission": ident,
                 "chain_id": cfg.chain_id,
+                "config_hash": config_hash,
                 "environment": snapshot["environment"],
                 "transaction_hash": tx_hash.lower(),
                 "log_index": log_index,

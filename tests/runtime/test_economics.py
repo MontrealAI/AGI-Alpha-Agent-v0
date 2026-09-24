@@ -151,6 +151,69 @@ def test_pause_blocks_payment(economy: tuple[Economics, str, dict[str, Any]]) ->
         economics.settle(ident, TX, 0)
 
 
+@pytest.mark.parametrize("operation", ["invoice", "settle"])
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"rpc_url": "http://127.0.0.1:8546"},
+        {"token_code_sha256": "b" * 64},
+        {"confirmations": 3},
+        {"reinvest_bps": 5000},
+    ],
+)
+def test_configuration_change_during_rpc_cannot_commit(
+    economy: tuple[Economics, str, dict[str, Any]],
+    monkeypatch: pytest.MonkeyPatch,
+    operation: str,
+    change: dict[str, Any],
+) -> None:
+    economics, ident, _ = economy
+    journal = economics.journal
+    original_invoice = journal.latest("@invoice:" + ident)
+    if operation == "invoice":
+        engine = Engine(journal)
+        mission = Mission.model_validate(journal.latest(ident)["request"])
+        record = engine.execute(journal.submit(mission)["id"])
+        ident = record["id"]
+        engine.review(ident, record["revision"], digest(record["result"]), True, "Verified constraints")
+    original_verify = RPC.verify_token
+
+    def verify_then_reconfigure(rpc: RPC) -> dict[str, Any]:
+        snapshot = original_verify(rpc)
+        operator = Journal(journal.root)
+        configuration = operator.config.model_dump()
+        configuration["chain"].update(change)
+        operator.control(True)
+        operator.configure(RuntimeConfig.model_validate(configuration))
+        operator.control(False)
+        return snapshot
+
+    monkeypatch.setattr(RPC, "verify_token", verify_then_reconfigure)
+    with pytest.raises(Conflict, match="configuration changed"):
+        if operation == "invoice":
+            economics.invoice(ident, original_invoice["payer"], AMOUNT)
+        else:
+            economics.settle(ident, TX, 0)
+    current = Journal(journal.root)
+    if operation == "invoice":
+        with pytest.raises(KeyError):
+            current.latest("@invoice:" + ident)
+    else:
+        assert current.latest("@invoice:" + ident) == original_invoice
+        with pytest.raises(KeyError):
+            current.latest(f"@receipt:31337:{TX}:0")
+    assert current.verify()["valid"]
+    # A fresh operator may deliberately retry under the new active policy.
+    monkeypatch.setattr(RPC, "verify_token", original_verify)
+    refreshed = Economics(current)
+    result = (
+        refreshed.invoice(ident, original_invoice["payer"], AMOUNT)
+        if operation == "invoice"
+        else refreshed.settle(ident, TX, 0)
+    )
+    assert result["config_hash"] == current.latest("@control")["config_hash"]
+
+
 @pytest.mark.parametrize("value", ["0", "-1", "1.1", "1e18", str(2**256)])
 def test_rejects_inexact_units(value: str) -> None:
     with pytest.raises(ValueError):
