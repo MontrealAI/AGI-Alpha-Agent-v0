@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>α · AGIALPHA Agent</title><link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="/">α<span>AGIALPHA<br><small>AGENT WORKSPACE</small></span></a>
+    <nav><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0#meta-agentic-α-agi-️" target="_blank" rel="noopener">Original vision &amp; flywheel ↗</a>
+      <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/docs" target="_blank" rel="noopener">Demos &amp; documentation ↗</a></nav>
+    <span id="connection" class="badge">Disconnected</span>
+  </header>
+  <main>
+    <section class="intro"><p class="eyebrow">FROM EVIDENCE TO REVIEWED WORK</p><h1>Give an idea a<br><em>measurable outcome.</em></h1>
+      <p>Research your sources, allocate resources, improve a schedule, test a forecast, or verify a Python function. Every mission keeps its inputs, decisions, checks and results together.</p></section>
+    <section id="login" class="panel"><h2>Connect to your agent</h2>
+      <p>Paste the access token from the private <code>api.token</code> file created during initialization. It stays in this page’s memory.</p>
+      <form id="login-form"><label for="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required><button>Connect</button></div></form>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <div id="workspace" hidden>
+      <section class="status-strip"><div><span class="eyebrow">AGENT</span><strong id="agent-name"></strong></div><div><span class="eyebrow">JOURNAL</span><strong id="integrity"></strong></div>
+        <div><span class="eyebrow">RESEARCH MODE</span><strong id="inference"></strong></div><button id="pause" class="secondary">Pause agent</button><button id="disconnect" class="quiet">Disconnect</button></section>
+      <div class="columns">
+        <section class="panel"><div class="section-title"><span class="step">01</span><h2>Start a mission</h2></div>
+          <form id="mission-form"><label for="kind">Work to do</label><select id="kind"><option value="research">Research supplied sources</option><option value="allocation">Allocate a constrained budget</option><option value="schedule">Optimize a production schedule</option><option value="forecast">Backtest and forecast observations</option><option value="code">Generate and test a Python function</option></select>
+            <label for="goal">Your goal</label><textarea id="goal" rows="2" required></textarea>
+            <label for="mission-file">Load your mission file <span class="muted">(optional JSON)</span></label><input id="mission-file" type="file" accept=".json,application/json">
+            <label for="input">Mission data</label><p id="input-help" class="help"></p><textarea id="input" rows="12" spellcheck="false" required></textarea>
+            <p class="help">Examples are labeled sample data. Replace them with your observations. Source URLs are citations; this agent does not fetch them automatically.</p>
+            <button id="start">Run and prepare for review</button>
+          </form>
+        </section>
+        <section class="panel"><div class="section-title"><span class="step">02</span><h2>Review the evidence</h2></div>
+          <div id="empty"><div class="orbit" aria-hidden="true">α</div><h3>Your work, with a history.</h3><p>Choose a mission to inspect its seven stages, measured result and independent checks.</p></div>
+          <div id="detail" hidden><p id="mission-label" class="eyebrow"></p><h3 id="mission-goal"></h3><ol id="stages" class="stages"></ol>
+            <div id="result-summary"></div><details open><summary>Result and verification</summary><pre id="result"></pre></details>
+            <div id="review-box" hidden><label for="review-note">Review note</label><textarea id="review-note" rows="2" placeholder="What did you verify? What limits should accompany this result?"></textarea>
+              <div class="inline"><button id="approve">Approve result</button><button id="reject" class="secondary">Reject result</button></div><p class="help">Approval archives this result for reuse. It does not send money, trade, or operate machinery.</p></div>
+            <button id="download" class="secondary" hidden>Download result &amp; signed receipt</button><button id="recover" class="secondary" hidden>Recover and rerun</button>
+          </div>
+        </section>
+      </div>
+      <section class="panel"><div class="section-title"><span class="step">03</span><h2>Your mission archive</h2><button id="refresh" class="quiet">Refresh</button></div>
+        <p class="help">Approved schedules and allocations seed later missions with matching input IDs. Every reused result is recorded as a parent, then checked against the new constraints.</p><div id="missions" class="archive"></div>
+        <details><summary>Identity and recovery</summary><p id="identity" class="mono"></p><p>The local signing key identifies this installation. It is not proof of an ENS name or wallet. Use <code>alpha-agent backup</code> to create a private recovery archive and <code>alpha-agent verify</code> to check it. Store backups privately: they include the identity key.</p></details>
+        <details><summary>$AGIALPHA wallet and payments</summary><p>Use <code>alpha-agent wallet-challenge</code> and <code>wallet-bind</code> to prove wallet control. After approving a mission, <code>invoice</code> records its payment terms and <code>settle</code> verifies a confirmed token transfer. <code>balance</code> reads the verified wallet balance. These commands never hold your wallet key or send funds. Setup and recovery are documented in the operator guide.</p></details>
+      </section>
+    </div>
+  </main>
+  <footer><span>α · $AGIALPHA Project</span><p>Measured work, explicit limits. The original research demonstrations remain available.<br>Planning improvements are not realized revenue. AGI and guaranteed returns are not claimed.</p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/DISCLAIMER_SNIPPET.md" target="_blank" rel="noopener">Project notice</a></footer>
+</body></html>

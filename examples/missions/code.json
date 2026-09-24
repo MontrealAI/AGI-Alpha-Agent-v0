@@ -1,0 +1,45 @@
+{
+  "goal": "Implement solve(values): return the sum of the squares of the supplied integers.",
+  "work": {
+    "kind": "code",
+    "examples": [
+      {
+        "args": [
+          [
+            1,
+            2
+          ]
+        ],
+        "expected": 5
+      }
+    ],
+    "heldout": [
+      {
+        "args": [
+          [
+            -3,
+            0,
+            4
+          ]
+        ],
+        "expected": 25
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          [
+            10,
+            -10
+          ]
+        ],
+        "expected": 200
+      }
+    ],
+    "candidate": "def solve(values):\n    return sum(value * value for value in values)\n"
+  }
+}

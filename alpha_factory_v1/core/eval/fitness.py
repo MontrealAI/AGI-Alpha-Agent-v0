@@ -7,10 +7,10 @@ from collections import defaultdict, deque
 from typing import Iterable, Mapping, Any
 import logging
 from pathlib import Path
+import math
 
-from alpha_factory_v1.core.archive.db import ArchiveDB
 
-__all__ = ["compute_fitness", "evaluate_agent", "CurriculumSwitcher"]
+__all__ = ["compute_fitness", "evaluate_agent", "simulate_fitness", "CurriculumSwitcher"]
 
 
 def compute_fitness(results: Iterable[Mapping[str, Any]]) -> dict[str, dict[str, float]]:
@@ -37,20 +37,30 @@ def compute_fitness(results: Iterable[Mapping[str, Any]]) -> dict[str, dict[str,
         except KeyError as exc:  # pragma: no cover - guard against bad input
             raise KeyError("task_id missing from result") from exc
         dataset = str(task_id).split("/")[0]
+        if not dataset or not isinstance(entry.get("pass"), bool):
+            raise ValueError("benchmark results require a dataset and a boolean pass field")
+        duration = entry.get("time_ms")
+        if (
+            isinstance(duration, bool)
+            or not isinstance(duration, (int, float))
+            or not math.isfinite(duration)
+            or duration < 0
+        ):
+            raise ValueError("benchmark time_ms must be finite and nonnegative")
         grouped[dataset].append(entry)
 
     metrics: dict[str, dict[str, float]] = {}
     for dataset, items in grouped.items():
         total = len(items)
         passed = sum(1 for i in items if i.get("pass"))
-        avg_ms = sum(int(i.get("time_ms", 0)) for i in items) / total if total else 0.0
+        avg_ms = sum(float(i["time_ms"]) for i in items) / total if total else 0.0
         metrics[dataset] = {"pass_rate": passed / total if total else 0.0, "avg_ms": avg_ms}
 
     return metrics
 
 
-def evaluate_agent(code: str) -> dict[str, float]:
-    """Return accuracy, novelty SimHash and execution latency."""
+def simulate_fitness(code: str) -> dict[str, float]:
+    """Preserve the original hash-derived DEMONSTRATION scores, not a benchmark."""
 
     import random
     import time
@@ -69,6 +79,62 @@ def evaluate_agent(code: str) -> dict[str, float]:
     }
 
 
+def evaluate_agent(code: str, cases: Iterable[Mapping[str, Any]] | None = None) -> dict[str, float]:
+    """Execute ``solve(*args)`` in isolation and score outputs outside the sandbox.
+
+    Cases contain ``args`` (a JSON list) and ``expected`` (a JSON value). Expected
+    answers are never mounted into the candidate container. This measures the
+    supplied cases only; use separate held-out cases for promotion decisions.
+    """
+    import json
+    import tempfile
+    import time
+    from hashlib import blake2b
+    from alpha_factory_v1.core.utils.secure_run import secure_run
+
+    if cases is None:
+        raise ValueError("real evaluation requires benchmark cases; use simulate_fitness for the legacy demonstration")
+    items = list(cases)
+    if not 1 <= len(items) <= 100 or len(code.encode()) > 100000:
+        raise ValueError("benchmark requires 1–100 cases and at most 100 KiB of source")
+    if any(set(item) != {"args", "expected"} or not isinstance(item["args"], list) for item in items):
+        raise ValueError("each case needs args and expected")
+    encoded = json.dumps([item["args"] for item in items], allow_nan=False)
+    if len(encoded.encode()) > 100000:
+        raise ValueError("benchmark inputs exceed 100 KiB")
+    harness = (
+        "import json,sys,contextlib,io\n"
+        "source=open(sys.argv[1]).read()\n"
+        "inputs=json.load(open(sys.argv[2]))\n"
+        "namespace={}\n"
+        "with contextlib.redirect_stdout(io.StringIO()):\n"
+        " exec(compile(source,'candidate.py','exec'),namespace)\n"
+        " outputs=[namespace['solve'](*args) for args in inputs]\n"
+        "print(json.dumps(outputs,allow_nan=False))\n"
+    )
+    with tempfile.TemporaryDirectory(prefix="alpha-benchmark-") as temporary:
+        folder = Path(temporary)
+        for name, content in (("candidate.py", code), ("inputs.json", encoded), ("runner.py", harness)):
+            (folder / name).write_text(content)
+        started = time.perf_counter()
+        process = secure_run(
+            ["python3", str(folder / "runner.py"), str(folder / "candidate.py"), str(folder / "inputs.json")]
+        )
+        elapsed = (time.perf_counter() - started) * 1000
+    if process.returncode:
+        raise ValueError("candidate failed isolated execution")
+    outputs = json.loads(process.stdout)
+    if not isinstance(outputs, list) or len(outputs) != len(items):
+        raise ValueError("candidate returned an invalid output vector")
+    passed = sum(
+        json.dumps(actual, sort_keys=True, allow_nan=False)
+        == json.dumps(item["expected"], sort_keys=True, allow_nan=False)
+        for actual, item in zip(outputs, items)
+    )
+    fingerprint = int.from_bytes(blake2b(code.encode(), digest_size=6).digest(), "big")
+    return {"accuracy": passed / len(items), "novelty_simhash": float(fingerprint), "latency_ms": elapsed}
+
+
 class CurriculumSwitcher:
     """Manage dataset curriculum based on rolling pass rate."""
 
@@ -77,6 +143,8 @@ class CurriculumSwitcher:
     POLYGLOT = "polyglot_lite"
 
     def __init__(self, db_path: str | Path, window: int = 10) -> None:
+        from alpha_factory_v1.core.archive.db import ArchiveDB
+
         self.db = ArchiveDB(db_path)
         self.window = window
         self.history: deque[float] = deque(maxlen=window)

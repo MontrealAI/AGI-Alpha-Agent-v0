@@ -74,7 +74,19 @@ def test_pareto_front_after_five_generations() -> None:
         novelty_index=None,
     )
     front = mats.pareto_front(pop)
-    assert len(front) >= 10
+    # The number of non-dominated candidates is data-dependent. Independently
+    # check membership; dominated points must never be restored by iteration.
+    expected = {
+        ind.fitness
+        for ind in pop
+        if not any(
+            all(a <= b for a, b in zip(other.fitness, ind.fitness))
+            and any(a < b for a, b in zip(other.fitness, ind.fitness))
+            for other in pop
+        )
+    }
+    assert front
+    assert {ind.fitness for ind in front} == expected
 
 
 def test_novelty_divergence_for_elites() -> None:

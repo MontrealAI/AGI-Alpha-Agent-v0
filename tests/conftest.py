@@ -200,6 +200,16 @@ def _cleanup_disk_space() -> None:
     for target in targets:
         if not target.exists():
             continue
+        # CI may clean caches, but never delete checked-in demos or assets.
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", str(target.relative_to(repo_root))],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        if tracked:
+            continue
         if target.is_dir():
             shutil.rmtree(target)
         else:

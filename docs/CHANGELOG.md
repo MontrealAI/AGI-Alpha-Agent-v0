@@ -1,3 +1,8 @@
+## 1.2.0 — connected $AGIALPHA Agent
+
+See [release notes](agent/RELEASE_NOTES_1.2.0.md), [capabilities](agent/CAPABILITIES.md) and
+[operator guide](agent/OPERATIONS.md). Original content and flywheels are preserved.
+
 [See docs/DISCLAIMER_SNIPPET.md](DISCLAIMER_SNIPPET.md)
 
 # Changelog

@@ -52,9 +52,8 @@ jobs:
         run: |
           DOCS_DIR="${GITHUB_WORKSPACE}/docs/alpha_agi_insight_v1"
           BUILD_DIR="${GITHUB_WORKSPACE}/${{ env.BROWSER_DIR }}/dist"
-          rm -rf "$DOCS_DIR"
           mkdir -p "$DOCS_DIR"
-          rsync -av --delete \
+          rsync -av \
             --exclude='*.wasm' \
             --exclude='*.zip' \
             --exclude='*.gz' \

@@ -239,7 +239,7 @@ contract JobRegistry is Ownable {
         require(taxPolicy.isAcknowledged(msg.sender), "tax");
         require(
             additionalAgents[msg.sender] ||
-                IdentityLib.verify(msg.sender, subdomain, proof, agentRootNode),
+                IdentityLib.verify(msg.sender, subdomain, proof, agentRootNode, agentMerkleRoot),
             "identity"
         );
         Job storage job = jobs[jobId];

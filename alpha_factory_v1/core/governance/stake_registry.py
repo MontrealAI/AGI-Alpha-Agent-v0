@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import math
 from typing import Dict, MutableMapping
 
 
@@ -16,14 +17,20 @@ class StakeRegistry:
 
     def set_stake(self, agent_id: str, amount: float) -> None:
         """Register ``agent_id`` with ``amount`` tokens."""
+        if not agent_id or not math.isfinite(amount) or amount < 0:
+            raise ValueError("stake requires an identity and a finite nonnegative amount")
         self.stakes[agent_id] = float(amount)
 
     def set_threshold(self, proposal_id: str, fraction: float) -> None:
         """Set custom acceptance threshold for ``proposal_id``."""
+        if not math.isfinite(fraction) or not 0 <= fraction <= 1:
+            raise ValueError("threshold must be in [0, 1]; zero is the demo auto-promotion mode")
         self.thresholds[proposal_id] = float(fraction)
 
     def burn(self, agent_id: str, fraction: float) -> None:
         """Burn ``fraction`` of ``agent_id``'s stake if present."""
+        if not math.isfinite(fraction) or not 0 <= fraction <= 1:
+            raise ValueError("burn fraction must be in [0, 1]")
         if agent_id in self.stakes:
             self.stakes[agent_id] = max(0.0, self.stakes[agent_id] * (1.0 - fraction))
 

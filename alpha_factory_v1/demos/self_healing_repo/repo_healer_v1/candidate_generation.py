@@ -13,7 +13,7 @@ from typing import Callable
 
 from .models import FailureBundle, PatchCandidate, ValidatorClass
 
-_IGNORE_DIRS = {".git", ".mypy_cache", ".pytest_cache", "__pycache__"}
+_IGNORE_DIRS = {".git", ".mypy_cache", ".pytest_cache", "__pycache__", "node_modules", ".venv", "venv"}
 
 
 def generate_candidates(repo_root: pathlib.Path, bundle: FailureBundle) -> list[PatchCandidate]:
