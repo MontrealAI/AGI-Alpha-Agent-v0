@@ -172,11 +172,17 @@ class Journal:
         *,
         fields: dict[str, Any] | None = None,
         require_ready: bool = True,
+        expected_config_hash: str | None = None,
     ) -> dict[str, Any]:
         """Apply a compare-and-swap state transition and an optional result."""
         with self.transaction() as cx:
-            if require_ready and self.latest("@control", cx)["state"] != "ready":
-                raise Conflict("agent is paused")
+            if require_ready:
+                control = self.latest("@control", cx)
+                if control["state"] != "ready":
+                    raise Conflict("agent is paused")
+                config_hash = expected_config_hash or digest(self.config.model_dump())
+                if control["config_hash"] != config_hash:
+                    raise Conflict("configuration changed; restart and retry")
             old = self.latest(ident, cx)
             if old["revision"] != revision or old["state"] not in allowed:
                 raise Conflict("mission state changed; review its current revision")

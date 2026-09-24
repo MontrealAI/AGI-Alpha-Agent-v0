@@ -194,6 +194,7 @@ class Economics:
                         "amount_units": str(amount_int),
                         "chain_id": cfg.chain_id,
                         "config_hash": config_hash,
+                        "chain_config_hash": digest(cfg.model_dump()),
                         "token": AGIALPHA,
                         "issued_after_block": snapshot["head"],
                         "state": "awaiting_payment",
@@ -211,6 +212,8 @@ class Economics:
         invoice = self.journal.latest(f"@invoice:{ident}")
         if invoice["state"] != "awaiting_payment" or invoice["chain_id"] != cfg.chain_id:
             raise Conflict("invoice is not awaiting payment on the configured chain")
+        if invoice.get("chain_config_hash") != digest(cfg.model_dump()):
+            raise Conflict("invoice chain policy changed; restore its original chain configuration before settlement")
         rpc = RPC(cfg)
         snapshot = rpc.verify_token()
         receipt = rpc.call("eth_getTransactionReceipt", [tx_hash])
@@ -266,6 +269,7 @@ class Economics:
                 "mission": ident,
                 "chain_id": cfg.chain_id,
                 "config_hash": config_hash,
+                "chain_config_hash": invoice["chain_config_hash"],
                 "environment": snapshot["environment"],
                 "transaction_hash": tx_hash.lower(),
                 "log_index": log_index,

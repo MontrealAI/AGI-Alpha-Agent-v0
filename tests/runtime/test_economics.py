@@ -169,6 +169,7 @@ def test_configuration_change_during_rpc_cannot_commit(
 ) -> None:
     economics, ident, _ = economy
     journal = economics.journal
+    original_config = journal.config.model_copy(deep=True)
     original_invoice = journal.latest("@invoice:" + ident)
     if operation == "invoice":
         engine = Engine(journal)
@@ -203,8 +204,14 @@ def test_configuration_change_during_rpc_cannot_commit(
         with pytest.raises(KeyError):
             current.latest(f"@receipt:31337:{TX}:0")
     assert current.verify()["valid"]
-    # A fresh operator may deliberately retry under the new active policy.
+    # New invoices may use the new policy; existing ones keep their issued terms.
     monkeypatch.setattr(RPC, "verify_token", original_verify)
+    if operation == "settle":
+        with pytest.raises(Conflict, match="invoice chain policy changed"):
+            Economics(current).settle(ident, TX, 0)
+        current.control(True)
+        current.configure(original_config)
+        current.control(False)
     refreshed = Economics(current)
     result = (
         refreshed.invoice(ident, original_invoice["payer"], AMOUNT)
@@ -212,6 +219,51 @@ def test_configuration_change_during_rpc_cannot_commit(
         else refreshed.settle(ident, TX, 0)
     )
     assert result["config_hash"] == current.latest("@control")["config_hash"]
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"rpc_url": "http://127.0.0.1:8546"},
+        {"token_code_sha256": "b" * 64},
+        {"confirmations": 3},
+        {"reinvest_bps": 5000},
+    ],
+)
+def test_invoice_policy_cannot_change_before_settlement(
+    economy: tuple[Economics, str, dict[str, Any]], monkeypatch: pytest.MonkeyPatch, change: dict[str, Any]
+) -> None:
+    economics, ident, _ = economy
+    operator = Journal(economics.journal.root)
+    invoice = operator.latest("@invoice:" + ident)
+    configuration = operator.config.model_dump()
+    configuration["chain"].update(change)
+    operator.control(True)
+    operator.configure(RuntimeConfig.model_validate(configuration))
+    operator.control(False)
+
+    def unexpected_rpc(self: RPC) -> dict[str, Any]:
+        raise AssertionError("changed invoice policy must be rejected before RPC")
+
+    monkeypatch.setattr(RPC, "verify_token", unexpected_rpc)
+    with pytest.raises(Conflict, match="invoice chain policy changed"):
+        Economics(operator).settle(ident, TX, 0)
+    assert operator.latest("@invoice:" + ident) == invoice
+    assert operator.verify()["valid"]
+
+
+def test_unrelated_configuration_change_keeps_invoice_valid(economy: tuple[Economics, str, dict[str, Any]]) -> None:
+    economics, ident, _ = economy
+    operator = Journal(economics.journal.root)
+    invoice = operator.latest("@invoice:" + ident)
+    configuration = operator.config.model_dump()
+    configuration["max_evaluations"] = 100
+    operator.control(True)
+    operator.configure(RuntimeConfig.model_validate(configuration))
+    operator.control(False)
+    receipt = Economics(operator).settle(ident, TX, 0)
+    assert receipt["config_hash"] != invoice["config_hash"]
+    assert receipt["chain_config_hash"] == invoice["chain_config_hash"]
 
 
 @pytest.mark.parametrize("value", ["0", "-1", "1.1", "1e18", str(2**256)])

@@ -61,6 +61,8 @@ class Engine:
             raise Conflict("an execution is already active in this process")
         try:
             self.journal.verify()
+            cfg = self.journal.config.model_copy(deep=True)
+            config_hash = digest(cfg.model_dump())
             initial = self.journal.latest(ident)
             mission = Mission.model_validate(initial["request"])
             record = self.journal.transition(
@@ -68,38 +70,52 @@ class Engine:
                 initial["revision"],
                 {"queued"},
                 "running",
-                fields={"lease_expires_ns": time.time_ns() + 660 * 10**9, "stages": [], "error": None},
+                expected_config_hash=config_hash,
+                fields={
+                    "lease_expires_ns": time.time_ns() + 660 * 10**9,
+                    "stages": [],
+                    "error": None,
+                    "execution_config_hash": config_hash,
+                },
             )
             started = time.monotonic()
             last_check = 0.0
 
-            def checkpoint() -> None:
+            def checkpoint(force: bool = False) -> None:
                 nonlocal last_check
                 now = time.monotonic()
                 if now - started > 600:
                     raise TimeoutError("mission exceeded its 600 second wall-clock budget")
-                if now - last_check >= 0.05:
-                    if self.journal.latest("@control")["state"] != "ready":
+                if force or now - last_check >= 0.05:
+                    control = self.journal.latest("@control")
+                    if control["state"] != "ready":
                         raise Conflict("operator paused execution")
+                    if control["config_hash"] != config_hash:
+                        raise Conflict("configuration changed during execution; restart and recover")
                     last_check = now
 
             def stage(role: str, detail: dict[str, Any]) -> None:
                 nonlocal record
-                checkpoint()
+                checkpoint(True)
                 stages = [*record["stages"], {"role": role, "detail": detail}]
                 record = self.journal.transition(
-                    ident, record["revision"], {"running"}, "running", fields={"stages": stages}
+                    ident,
+                    record["revision"],
+                    {"running"},
+                    "running",
+                    fields={"stages": stages},
+                    expected_config_hash=config_hash,
                 )
 
             result: dict[str, Any] | None = None
             try:
-                cfg = self.journal.config
                 stage(
                     "planning",
                     {
                         "goal": mission.goal,
                         "kind": mission.work.kind,
                         "input_hash": initial["request_hash"],
+                        "config_hash": config_hash,
                         "evaluation_limit": cfg.max_evaluations,
                         "wall_seconds_limit": 600,
                     },
@@ -117,6 +133,7 @@ class Engine:
                 if isinstance(mission.work, Research):
                     result = work.research(mission)
                     if cfg.llm_url:
+                        checkpoint(True)
                         findings, inference = synthesize(mission, cfg)
                         result.update(findings)
                         result["method"] = "model synthesis with exact quotation verification"
@@ -131,7 +148,9 @@ class Engine:
                         raise ValueError("code execution requires explicit operator configuration")
                     code = mission.work.candidate
                     if not code:
+                        checkpoint(True)
                         code, inference = generate_code(mission, cfg)
+                    checkpoint(True)
                     result = work.coding(mission, code)
                 elif isinstance(mission.work, Forecast):
                     result = work.forecast(mission)
@@ -167,6 +186,7 @@ class Engine:
                     record["revision"],
                     {"running"},
                     "review",
+                    expected_config_hash=config_hash,
                     fields={
                         "result": result,
                         "verification": verification,
@@ -199,6 +219,7 @@ class Engine:
     def review(self, ident: str, revision: int, result_hash: str, approve: bool, note: str) -> dict[str, Any]:
         """Approve exactly the artifact reviewed, or retain it as rejected."""
         self.journal.verify()
+        config_hash = digest(self.journal.config.model_dump())
         current = self.journal.latest(ident)
         if self.journal.latest("@control")["state"] != "ready":
             raise Conflict("agent is paused")
@@ -214,6 +235,7 @@ class Engine:
             revision,
             {"review"},
             "completed" if approve else "rejected",
+            expected_config_hash=config_hash,
             fields={
                 "review": {
                     "approved": approve,

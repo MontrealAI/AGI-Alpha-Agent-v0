@@ -140,6 +140,10 @@ alpha-agent --home ./agent-state settle MISSION_UUID --transaction 0xTRANSACTION
 
 Only approved work can be invoiced. Settlement checks the exact sender, recipient, token, amount, success,
 canonical block and confirmation/finality policy. Old payments and reused transfer logs are rejected.
+Each invoice binds its chain settings, including the RPC, bytecode pin, confirmations and reinvestment
+fraction. Keep those settings until payment settles; if changed, restore the invoice's original chain
+configuration before retrying. Unrelated model or search settings do not invalidate an invoice.
+Configuration changes during RPC verification reject the write and require a fresh process and retry.
 The operator associates the transfer with the invoice: ERC20 itself has no mission memo. A reinvestment
 fraction records an earmark only. No automatic transaction, staking deposit, burn or buyback occurs.
 These mechanics have real local-EVM acceptance evidence; mainnet operation is not demonstrated.
@@ -149,6 +153,8 @@ These mechanics have real local-EVM acceptance evidence; mainnet operation is no
 `pause` persists across restarts and blocks execution, review and receipt recording. Search checks pause
 at bounded checkpoints; a current model request or isolated execution can finish before control returns.
 A mission has a 600-second work budget; an abandoned running lease expires after 660 seconds.
+Changing configuration during work invalidates its result even if the operator resumes immediately.
+The mission records a failure; restart the process, then recover and execute it under the new policy.
 To recover, inspect its error/stages, correct configuration if needed, then use `recover UUID` and
 `execute UUID`. Recovery does not edit the original inputs. Submit a new mission for changed data.
 

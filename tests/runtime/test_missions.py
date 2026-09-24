@@ -144,6 +144,110 @@ def test_persistent_pause_blocks_execution_and_review(journal: Journal) -> None:
         engine.review(record["id"], record["revision"], digest(record["result"]), True, "Reviewed")
 
 
+@pytest.mark.parametrize("phase", ["provider", "generation", "sandbox", "final"])
+def test_reconfiguration_invalidates_running_result(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, phase: str
+) -> None:
+    from alpha_factory_v1.core.runtime import engine as engine_module
+
+    config = RuntimeConfig(
+        llm_url="http://127.0.0.1:1234/v1" if phase in {"provider", "generation"} else "",
+        llm_model="fixture" if phase in {"provider", "generation"} else "",
+        allow_code_execution=phase in {"sandbox", "generation"},
+    )
+    journal = Journal.initialize(tmp_path / "agent", config)
+    engine = Engine(journal)
+
+    def reconfigure() -> None:
+        operator = Journal(journal.root)
+        replacement = operator.config.model_dump()
+        replacement.update(llm_url="", llm_model="", allow_code_execution=False, max_evaluations=100)
+        operator.control(True)
+        operator.configure(RuntimeConfig.model_validate(replacement))
+        operator.control(False)
+
+    if phase == "provider":
+
+        def synthesize_then_revoke(*args: Any) -> tuple[dict[str, Any], dict[str, Any]]:
+            reconfigure()
+            return {}, {"fixture": True}
+
+        monkeypatch.setattr(engine_module, "synthesize", synthesize_then_revoke)
+        request = mission("research")
+    elif phase in {"sandbox", "generation"}:
+
+        def coding_then_revoke(*args: Any) -> dict[str, Any]:
+            reconfigure()
+            return {"method": "fixture sandbox result"}
+
+        monkeypatch.setattr(engine_module.work, "coding", coding_then_revoke)
+        request = Mission(
+            goal="Exercise policy revocation during isolated evaluation",
+            work={
+                "kind": "code",
+                "candidate": "def solve(x): return x" if phase == "sandbox" else "",
+                "heldout": [{"args": [1], "expected": 1}],
+            },
+        )
+        if phase == "generation":
+
+            def generate_then_revoke(*args: Any) -> tuple[str, dict[str, Any]]:
+                reconfigure()
+                return "def solve(x): return x", {"fixture": True}
+
+            def must_not_execute(*args: Any) -> dict[str, Any]:
+                raise AssertionError("code execution was revoked during generation")
+
+            monkeypatch.setattr(engine_module, "generate_code", generate_then_revoke)
+            monkeypatch.setattr(engine_module.work, "coding", must_not_execute)
+    else:
+        transition = journal.transition
+
+        def change_before_commit(
+            ident: str, revision: int, allowed: set[str], state: str, **kwargs: Any
+        ) -> dict[str, Any]:
+            if state == "review":
+                reconfigure()
+            return transition(ident, revision, allowed, state, **kwargs)
+
+        monkeypatch.setattr(journal, "transition", change_before_commit)
+        request = mission("allocation")
+    queued = journal.submit(request)
+    with pytest.raises(Conflict, match="configuration changed"):
+        engine.execute(queued["id"])
+    current = Journal(journal.root)
+    failed = current.latest(queued["id"])
+    assert failed["state"] == "failed" and failed["error"] == "Conflict"
+    assert failed["execution_config_hash"] != current.latest("@control")["config_hash"]
+    assert current.verify()["valid"]
+    with pytest.raises(Conflict):
+        Engine(current).export(queued["id"])
+    assert Engine(current).recover(queued["id"])["state"] == "queued"
+
+
+def test_reconfiguration_during_review_cannot_approve(journal: Journal, monkeypatch: pytest.MonkeyPatch) -> None:
+    from alpha_factory_v1.core.runtime import engine as engine_module
+
+    engine = Engine(journal)
+    record = engine.execute(journal.submit(mission("allocation"))["id"])
+    original_verify = engine_module.work.verify_result
+
+    def verify_then_reconfigure(*args: Any) -> dict[str, Any]:
+        result = original_verify(*args)
+        operator = Journal(journal.root)
+        configuration = operator.config.model_dump()
+        configuration["max_evaluations"] = 100
+        operator.control(True)
+        operator.configure(RuntimeConfig.model_validate(configuration))
+        operator.control(False)
+        return result
+
+    monkeypatch.setattr(engine_module.work, "verify_result", verify_then_reconfigure)
+    with pytest.raises(Conflict, match="configuration changed"):
+        engine.review(record["id"], record["revision"], digest(record["result"]), True, "Reviewed constraints")
+    assert Journal(journal.root).latest(record["id"]) == record
+
+
 def test_recovery_detects_corruption_and_never_overwrites(journal: Journal, tmp_path: Path) -> None:
     Engine(journal).execute(journal.submit(mission("forecast"))["id"])
     before = journal.verify()
