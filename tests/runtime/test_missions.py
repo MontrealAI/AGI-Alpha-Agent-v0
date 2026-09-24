@@ -112,6 +112,24 @@ def test_idempotency_rejects_changed_payload(journal: Journal) -> None:
         journal.submit(mission("schedule"), ident)
 
 
+@pytest.mark.parametrize("form", ["upper", "hex", "braces", "urn"])
+def test_idempotency_normalizes_uuid_forms_after_restart(journal: Journal, form: str) -> None:
+    key = uuid.UUID("ef0457e0-81c1-4f0c-a26b-c08c7099d2c1")
+    canonical_id = str(key)
+    variants = {"upper": canonical_id.upper(), "hex": key.hex, "braces": "{" + canonical_id + "}", "urn": key.urn}
+    original = journal.submit(mission("research"), variants[form])
+    assert original["id"] == canonical_id
+    executed = Engine(journal).execute(original["id"])
+    restarted = Journal(journal.root)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        retries = list(pool.map(lambda ident: restarted.submit(mission("research"), ident), variants.values()))
+    assert all(item["id"] == canonical_id and item["revision"] == executed["revision"] for item in retries)
+    assert len(restarted.missions()) == 1
+    with pytest.raises(Conflict):
+        restarted.submit(mission("schedule"), variants[form])
+    assert restarted.verify()["valid"]
+
+
 def test_persistent_pause_blocks_execution_and_review(journal: Journal) -> None:
     engine = Engine(journal)
     queued = journal.submit(mission("allocation"))

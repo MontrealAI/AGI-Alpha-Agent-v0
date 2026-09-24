@@ -9,7 +9,7 @@ screenshots and integration evidence are retained as workflow artifacts and rele
 
 ## Runtime and integration evidence
 
-- 44 runtime/control tests passed per supported Python version, covering mission execution, signatures, corruption, review
+- The runtime/control suite runs on every supported Python version, covering mission execution, signatures, corruption, review
   races, pause, idempotency, provider failure, coding opt-in, wallet control, confirmation/finality,
   invalid transfer receipts, exact integer accounting and replay rejection. RPC attack cases use fixtures.
 - [Real local inference](release-evidence/local-inference.json): pinned Qwen3 4B GGUF via llama.cpp,

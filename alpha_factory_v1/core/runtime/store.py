@@ -152,8 +152,7 @@ class Journal:
 
     def submit(self, mission: Mission, request_id: str | None = None) -> dict[str, Any]:
         """Idempotently enqueue a request without executing it."""
-        ident = request_id or str(uuid.uuid4())
-        uuid.UUID(ident)
+        ident = str(uuid.UUID(request_id)) if request_id is not None else str(uuid.uuid4())
         payload = mission.model_dump()
         with self.transaction() as cx:
             try:
