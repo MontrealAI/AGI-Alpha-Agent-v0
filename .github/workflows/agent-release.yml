@@ -298,6 +298,8 @@ jobs:
           import subprocess
           result = subprocess.run(["pre-commit", "run", "--all-files"], capture_output=True, text=True)
           Path("evidence/precommit-all.txt").write_text(result.stdout + result.stderr)
+          print(result.stdout, end="")
+          print(result.stderr, end="")
           patch = subprocess.check_output(["git", "diff", "--binary"])
           Path("evidence/precommit-all.patch").write_bytes(patch)
           Path("evidence/precommit-all.json").write_text(json.dumps({"passed": result.returncode == 0, "exit_code": result.returncode}) + "\n")
