@@ -267,8 +267,45 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  gallery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      FETCH_ASSETS_SKIP_LLM: '1'
+      CYPRESS_INSTALL_BINARY: '0'
+      PWA_TIMEOUT_MS: '180000'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install the historical documentation environment
+        run: |
+          bash scripts/ci_install_python_baseline.sh --include-docs-lock
+          python -m playwright install --with-deps chromium
+      - name: Verify exact inherited CSP script hashes
+        run: python -m pytest --noconftest -o addopts= tests/security/test_csp.py -q
+      - name: Rebuild the complete gallery with the legacy documentation tools
+        run: bash scripts/build_gallery_site.sh
+      - name: Verify every rebuilt demo page
+        run: python scripts/verify_demo_pages.py
+      - name: Verify the rebuilt gallery simulation and offline recovery
+        run: python -m scripts.validate_insight_offline --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: gallery
+          path: evidence/
+          if-no-files-found: warn
+
   package:
-    needs: [runtime, regression, browser-contracts, real-model]
+    needs: [runtime, regression, browser-contracts, real-model, gallery]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

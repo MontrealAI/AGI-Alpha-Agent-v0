@@ -2,10 +2,15 @@
 
 # Release acceptance and reproducibility
 
-Version 1.2.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.2.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
+
+The 1.2.0 release remains available unchanged. Patch 1.2.1 adds a required complete gallery rebuild:
+legacy documentation repair must retain the exact sandbox-host script hashes, every generated demo
+must load, and the rebuilt site must advance its simulation online and offline under normal browser
+security. Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
 
 ## Runtime and integration evidence
 
