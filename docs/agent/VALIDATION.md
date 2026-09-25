@@ -44,7 +44,7 @@ TypeScript meme mining uses the locked compiler. Both integration checks must ru
 
 ## Required hosted gates
 
-The workspace kernel prevents Chromium and ZMQ notebook sockets. Their local failures are **not passes**.
+The initial workspace kernel prevented Chromium and ZMQ notebook sockets. Those local failures were **not passes**.
 Hosted CI runs the full offline Python regression, real Chromium console interactions, the legacy web
 client tests, sandboxed Insight simulation online/offline from both npm and manual builds, the legacy container
 services, and real Docker isolation plus persistent
@@ -86,7 +86,8 @@ before the offline regression; its network guard intentionally blocks downloads 
 The last three require installed Playwright Chromium, Docker, and compiled Hardhat dependencies,
 respectively. They fail if their required capability is missing; they do not silently skip.
 The model validator additionally requires the independently downloaded server binary and pinned GGUF;
-its exact SHA and invocation are in the evidence JSON. No model weights are included in the release.
+its exact SHA and invocation are in the evidence JSON. The Qwen GGUF is downloaded independently;
+the full browser release ZIP includes the separately pinned quantized GPT-2 ONNX weights.
 
 `check_agent_preservation.py` checks all 2,125 original paths, the entire original README text and flywheels (only CI badge URL queries may change),
 and equality of shipped Solidity sources with the copies compiled by the contract tests.
