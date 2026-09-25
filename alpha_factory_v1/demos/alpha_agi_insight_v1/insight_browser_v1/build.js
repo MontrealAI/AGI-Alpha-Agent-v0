@@ -486,7 +486,9 @@ async function bundle() {
     }
     await fs.copyFile('node_modules/@huggingface/transformers/LICENSE', path.join(llmDir, 'TRANSFORMERS_LICENSE.txt'));
     await fs.copyFile('THIRD_PARTY_MODEL_NOTICES.md', path.join(llmDir, 'THIRD_PARTY_MODEL_NOTICES.md'));
-    manifest.precache.push('assets/local-llm/*.js', 'assets/local-llm/*.mjs', 'assets/local-llm/*.wasm');
+    // Cache the optional inference WASM on first use, like its model weights.
+    // Documentation source distributions intentionally exclude binary assets.
+    manifest.precache.push('assets/local-llm/*.js', 'assets/local-llm/*.mjs');
     if (!skipLlmAssets) manifest.precache.push('assets/local-llm/models/gpt2/*.json', 'assets/local-llm/models/gpt2/*.txt');
 
     if (fsSync.existsSync(quickstartPdf)) {

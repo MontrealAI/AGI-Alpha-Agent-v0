@@ -57,6 +57,17 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
 
+      - name: Isolate dependencies from hosted runner tools
+        run: |
+          python - <<'PYCODE'
+          import os, venv
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'alpha-smoke-venv'
+          venv.EnvBuilder(with_pip=True).create(root)
+          with open(os.environ['GITHUB_PATH'], 'a', encoding='utf-8') as target:
+              target.write(str(root / ('Scripts' if os.name == 'nt' else 'bin')) + '\n')
+          PYCODE
+
       - name: Install reproducible smoke dependencies
         run: |
           python -m pip install --require-hashes -r requirements.lock
