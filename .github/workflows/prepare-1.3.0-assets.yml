@@ -11,8 +11,8 @@ jobs:
     timeout-minutes: 20
     env:
       FETCH_ASSETS_SKIP_LLM: '1'
-      FETCH_ASSETS_DIR: ${{ runner.temp }}/insight-assets
-      INSIGHT_ASSET_ROOT: ${{ runner.temp }}/insight-assets
+      FETCH_ASSETS_DIR: ${{ github.workspace }}/.tmp/insight-assets
+      INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.tmp/insight-assets
       BROWSER_DIR: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
