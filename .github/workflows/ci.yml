@@ -514,6 +514,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-demo-cpu.lock
           pip install -r requirements-dev.lock
+          python -m pip install eth-account==0.13.7
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: '.nvmrc'
@@ -611,6 +612,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-demo-cpu.lock
           pip install -r requirements-dev.lock
+          python -m pip install eth-account==0.13.7
       - name: Install macOS extras
         run: pip install appnope==0.1.4
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0

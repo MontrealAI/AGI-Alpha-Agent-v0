@@ -76,14 +76,14 @@ jobs:
           docker volume create agialpha-acceptance-data
           trap 'docker rm -f agialpha-acceptance >/dev/null 2>&1 || true; docker volume rm agialpha-acceptance-data >/dev/null 2>&1 || true' EXIT
           docker run -d --name agialpha-acceptance -p 127.0.0.1:8000:8000 -v agialpha-acceptance-data:/data agialpha-acceptance
-          for attempt in {1..60}; do
+          for _attempt in {1..60}; do
             if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
             sleep 2
           done
           curl --fail --silent http://127.0.0.1:8000/healthz
           docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-before.json
           docker restart agialpha-acceptance
-          for attempt in {1..60}; do
+          for _attempt in {1..60}; do
             if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
             sleep 2
           done
@@ -94,7 +94,7 @@ jobs:
           mkdir "$RUNNER_TEMP/agent-empty-mount"
           sudo chown 10001:10001 "$RUNNER_TEMP/agent-empty-mount"
           docker run -d --name agialpha-acceptance -p 127.0.0.1:8000:8000 -v "$RUNNER_TEMP/agent-empty-mount:/data/agent" agialpha-acceptance
-          for attempt in {1..60}; do
+          for _attempt in {1..60}; do
             if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
             sleep 2
           done

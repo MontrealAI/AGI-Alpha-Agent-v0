@@ -41,3 +41,6 @@ fi
 if [[ "$include_docs_lock" -eq 1 ]]; then
     pip install -r requirements-docs.lock
 fi
+
+# Wallet-signature tests are collected by the full and smoke suites.
+python -m pip install eth-account==0.13.7
