@@ -18,7 +18,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
  using <em>Alpha‑Factory v1</em> multi‑agent stack, on‑chain incentives & antifragile safety‑loops.</b>
 </p>
 
-<a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush"><img alt="Repository integration checks" src="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main&amp;event=push"></a>
+<a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain"><img alt="Repository integration checks" src="https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Integration%20matrix&amp;label=Integration%20CI&amp;logo=github"></a>
 <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
 <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/CAPABILITIES.md"><img alt="Scope: research demo" src="https://img.shields.io/badge/scope-research%20demo-blue"></a>
 </p>

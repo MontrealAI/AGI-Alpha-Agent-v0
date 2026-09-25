@@ -1,6 +1,6 @@
 ## After 1.3.0 — live badge maintenance
 
-Scope CI badges to main, use live watchdog and complete matrix results for Health/Smoke, and prevent
+Scope CI badges to main, use live watchdog and complete matrix results for Health/Smoke/Integration, and prevent
 unrelated Health runs from cancelling one another. Demo build badges now report real CI; research
 scope and linked validation replace static production and 100% coverage claims. All original paths,
 README prose and flywheels are preserved. Published 1.3.0 assets remain unchanged.

@@ -15,7 +15,7 @@ AGI/ASI, economic and compliance aspirations are not release guarantees. This is
 [![Release](https://img.shields.io/github/v/release/MontrealAI/AGI-Alpha-Agent-v0)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest)
 [![Release acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml/badge.svg?branch=main&event=push)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml?query=branch%3Amain+event%3Apush)
 
-CI badges show live results and open their supporting checks. Health and Smoke read the
+CI badges show live results and open their supporting checks. Health, Integration and Smoke read the
 current main commit's watchdog and complete matrix results directly. [Badge meanings and troubleshooting](docs/CI_STATUS.md)
 explain the scope of each check and where to find release evidence.
 
@@ -43,7 +43,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 ### Continuous Integration
 
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg?branch=main&event=push)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml?query=branch%3Amain+event%3Apush)
-[![🚀 Integration CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush)
+[![🚀 Integration CI — Insight Demo](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Integration%20matrix&label=Integration%20CI&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
 [![🔥 Smoke Test](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Smoke%20matrix&label=Smoke%20Test&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain)
 [![🩺 CI Health](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=CI%20watchdog&label=CI%20Health&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain)
 

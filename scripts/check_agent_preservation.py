@@ -20,8 +20,12 @@ SMOKE_BADGE = (
     b"https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main"
     b"?nameFilter=Smoke%20matrix&label=Smoke%20Test&logo=github"
 )
-LIVE_CHECK_BADGES = {"ci-health": CI_HEALTH_BADGE, "smoke": SMOKE_BADGE}
-BADGE_MAINTENANCE = "CI badge URL queries and the exact live main-commit Health/Smoke badge URLs only"
+INTEGRATION_BADGE = (
+    b"https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main"
+    b"?nameFilter=Integration%20matrix&label=Integration%20CI&logo=github"
+)
+LIVE_CHECK_BADGES = {"ci-health": CI_HEALTH_BADGE, "smoke": SMOKE_BADGE, "ci": INTEGRATION_BADGE}
+BADGE_MAINTENANCE = "CI badge URL queries and the exact live main-commit Health/Smoke/Integration badge URLs only"
 
 
 def normalize_badge_urls(readme: bytes) -> bytes:
