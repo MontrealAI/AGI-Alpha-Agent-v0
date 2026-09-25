@@ -195,7 +195,7 @@ configuration models and local build inputs are checked by `python -m scripts.va
 check does not start those research stacks or establish their optional GPU, model or service integrations.
 With `--dev-ui`, the same validator also starts the isolated development dashboard with fresh Node
 dependencies and loads its shared telemetry module. The hot-reload Compose override uses Node 22.17.1,
-read-only source mounts and a separate dependency volume; its first start runs `npm ci`.
+source mounts and a separate dependency volume; its first start runs `npm ci`.
 The legacy target requires `API_TOKEN` and the documented legacy environment settings at launch.
 It installs the historical core lock; heavyweight domain integrations remain optional.
 Build from the repository root and bind the published port to host loopback:
