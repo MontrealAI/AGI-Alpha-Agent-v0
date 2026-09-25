@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Hold release pending documentation investigation
+on:
+  push:
+    branches: [release/hold-1.2.1-docs]
+permissions:
+  contents: read
+  actions: write
+jobs:
+  hold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Cancel the exact unpublished release run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST repos/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/36114969284/cancel
