@@ -43,6 +43,12 @@ class TestInsightOrchestratorRestart(unittest.TestCase):
 
         async def run() -> bool:
             async with orch.bus, orch.ledger:
+                restarted = asyncio.Event()
+
+                def record_restart(current: orchestrator.AgentRunner) -> None:
+                    orch._record_restart(current)
+                    restarted.set()
+
                 runner.start(orch.bus, orch.ledger)
                 monitor = asyncio.create_task(
                     orchestrator.monitor_agents(
@@ -51,18 +57,20 @@ class TestInsightOrchestratorRestart(unittest.TestCase):
                         orch.ledger,
                         err_threshold=orchestrator.ERR_THRESHOLD,
                         backoff_exp_after=orchestrator.BACKOFF_EXP_AFTER,
-                        on_restart=orch._record_restart,
+                        on_restart=record_restart,
                     )
                 )
-                await asyncio.sleep(3)
-                active = runner.task is not None and not runner.task.done()
-                monitor.cancel()
-                with contextlib.suppress(asyncio.CancelledError):
-                    await monitor
-                if runner.task:
-                    runner.task.cancel()
+                try:
+                    await asyncio.wait_for(restarted.wait(), timeout=10)
+                    active = runner.restarts >= 1 and runner.task is not None and not runner.task.done()
+                finally:
+                    monitor.cancel()
                     with contextlib.suppress(asyncio.CancelledError):
-                        await runner.task
+                        await monitor
+                    if runner.task:
+                        runner.task.cancel()
+                        with contextlib.suppress(asyncio.CancelledError):
+                            await runner.task
             return active
 
         with mock.patch.object(orchestrator.log, "warning") as warn:

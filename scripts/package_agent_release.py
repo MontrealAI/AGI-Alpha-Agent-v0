@@ -8,11 +8,13 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
+import tomllib
 import zipfile
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
@@ -25,6 +27,9 @@ def main() -> None:
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
+    version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        raise ValueError("release version must be major.minor.patch")
     sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     subprocess.run(
@@ -32,18 +37,18 @@ def main() -> None:
             "git",
             "archive",
             "--format=zip",
-            "--prefix=AGI-Alpha-Agent-v1.2.0/",
+            f"--prefix=AGI-Alpha-Agent-v{version}/",
             "-o",
-            str(output / "alpha-agent-v1.2.0-source.zip"),
+            str(output / f"alpha-agent-v{version}-source.zip"),
             sha,
         ],
         check=True,
     )
     with tempfile.TemporaryDirectory(prefix="alpha-release-build-") as temporary:
         clean = Path(temporary)
-        with zipfile.ZipFile(output / "alpha-agent-v1.2.0-source.zip") as archive:
+        with zipfile.ZipFile(output / f"alpha-agent-v{version}-source.zip") as archive:
             archive.extractall(clean)
-        source = clean / "AGI-Alpha-Agent-v1.2.0"
+        source = clean / f"AGI-Alpha-Agent-v{version}"
         subprocess.run(
             [sys.executable, "-m", "build", "--no-isolation", "--outdir", str(output)], cwd=source, check=True
         )
@@ -63,17 +68,17 @@ def main() -> None:
         "docs/agent/OPERATIONS.md",
         "docs/agent/CAPABILITIES.md",
         "docs/agent/VALIDATION.md",
-        "docs/agent/RELEASE_NOTES_1.2.0.md",
+        f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)
-    with zipfile.ZipFile(output / "alpha-agent-v1.2.0-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+    with zipfile.ZipFile(output / f"alpha-agent-v{version}-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(args.evidence.rglob("*")):
             if path.is_file():
                 archive.write(path, path.relative_to(args.evidence))
         for path in sorted(Path("docs/agent/release-evidence").glob("*.json")):
             archive.write(path, "local/" + path.name)
     manifest = {
-        "version": "1.2.0",
+        "version": version,
         "commit": sha,
         "baseline": "ac9b112a44670f67d53fc3d188ef73fa16e90894",
         "repository": "MontrealAI/AGI-Alpha-Agent-v0",
@@ -88,10 +93,13 @@ def main() -> None:
             "runtime Python 3.11/3.12/3.13",
             "full offline Python regression",
             "strict runtime types",
+            "full-repository and changed-file pre-commit hooks",
             "real Docker isolation",
+            "real PostgreSQL ledger and locked TypeScript integration",
             "pinned local model inference and generated-code evaluation",
             "Chromium operator workflow",
             "legacy browser tests",
+            "complete gallery rebuild and offline simulation",
             "Solidity tests with shipped identity logic",
             "real local EVM payments",
             "clean wheel installation",

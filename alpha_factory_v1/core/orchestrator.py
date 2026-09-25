@@ -12,7 +12,6 @@ from __future__ import annotations
 import asyncio
 import os
 import random
-import sys
 import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, cast
@@ -58,12 +57,7 @@ from alpha_factory_v1.backend.demo_orchestrator import DemoOrchestrator as BaseO
 
 
 class BackoffDelay(float):
-    """Float wrapper to keep backoff delays distinct from monitor intervals."""
-
-    def __eq__(self, other: object) -> bool:  # noqa: D401
-        if isinstance(other, int) and not isinstance(other, bool):
-            return False
-        return float.__eq__(self, other)
+    """Compatibility numeric type for historical backoff consumers."""
 
 
 async def monitor_agents(
@@ -78,10 +72,8 @@ async def monitor_agents(
     """Monitor runners and log warnings when agents restart."""
     err_threshold = int(os.getenv("AGENT_ERR_THRESHOLD", err_threshold))
     backoff_exp_after = int(os.getenv("AGENT_BACKOFF_EXP_AFTER", backoff_exp_after))
-    is_pytest = bool(sys.argv) and "pytest" in Path(sys.argv[0]).name
     while True:
-        interval = 0 if os.getenv("PYTEST_CURRENT_TEST") else 2
-        await asyncio.sleep(interval)
+        await asyncio.sleep(2)
         now = time.time()
         for runner in list(runners.values()):
             needs_restart = False
@@ -96,22 +88,11 @@ async def monitor_agents(
                 delay = random.uniform(0.5, 1.5)
                 if runner.restart_streak >= backoff_exp_after:
                     delay *= 2 ** (runner.restart_streak - backoff_exp_after + 1)
-                    delay = BackoffDelay(delay)
                 prior_restarts = runner.restarts
                 await asyncio.sleep(delay)
                 await asyncio.shield(runner.restart(bus, ledger))
                 if on_restart and runner.restarts > prior_restarts:
                     on_restart(runner)
-                if (
-                    is_pytest
-                    and runner.restart_streak == 1
-                    and backoff_exp_after <= 1
-                    or runner.agent.__class__.__name__ == "FailingAgent"
-                ):
-                    extra_delay = BackoffDelay(delay * 2)
-                    await asyncio.sleep(extra_delay)
-                    if on_restart:
-                        on_restart(runner)
 
 
 class Orchestrator(BaseOrchestrator):

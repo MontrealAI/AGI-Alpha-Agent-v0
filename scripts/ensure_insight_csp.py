@@ -37,8 +37,9 @@ def _build_base() -> str:
     return base
 
 
-def _build_csp(html: str) -> str:
-    hashes = [_hash_snippet(match) for match in INLINE_SCRIPT_RE.findall(html)]
+def _build_csp(html: str, inherited_html: str = "") -> str:
+    snippets = [snippet for document in (html, inherited_html) for snippet in INLINE_SCRIPT_RE.findall(document)]
+    hashes = list(dict.fromkeys(_hash_snippet(snippet) for snippet in snippets))
     style_sources = "'self' 'unsafe-inline' https://cdn.jsdelivr.net"
     return (
         f"{_build_base()}; script-src 'self' 'wasm-unsafe-eval' {' '.join(hashes)}; "
@@ -53,7 +54,11 @@ def ensure_csp(directory: Path) -> bool:
         raise FileNotFoundError("index.html missing")
 
     html = index_html.read_text(encoding="utf-8")
-    csp = _build_csp(html)
+    # The opaque srcdoc sandbox inherits the parent policy. Permit the exact
+    # bundled host scripts as well as the page scripts, without unsafe-inline.
+    host = directory / "sandbox_worker_host.html"
+    host_html = host.read_text(encoding="utf-8") if host.is_file() else ""
+    csp = _build_csp(html, host_html)
     meta_tag = f'<meta http-equiv="Content-Security-Policy" content="{csp}" />'
 
     if CSP_META_RE.search(html):

@@ -1,6 +1,6 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.2.0 adds a connected, bounded working agent.** Start with the
+**Version 1.2.1 provides a connected, bounded working agent.** Start with the
 [operator guide](docs/agent/OPERATIONS.md), [capability matrix](docs/agent/CAPABILITIES.md)
 and [validation evidence](docs/agent/VALIDATION.md). Install the official release wheel and
 hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.

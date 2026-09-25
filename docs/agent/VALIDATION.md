@@ -2,10 +2,20 @@
 
 # Release acceptance and reproducibility
 
-Version 1.2.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.2.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
+
+The 1.2.0 release remains available unchanged. Patch 1.2.1 adds a required complete gallery rebuild:
+legacy documentation repair must retain the exact sandbox-host script hashes, every generated demo
+must load, and the rebuilt site must advance its simulation online and offline under normal browser
+security. Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
+
+Full-repository and changed-file pre-commit hooks are required gates, including the locked browser
+ESLint environment. Their complete report, exit status and any proposed formatting are retained.
+The PostgreSQL ledger is exercised against a real temporary Docker database after TCP readiness;
+TypeScript meme mining uses the locked compiler. Both integration checks must run without skips.
 
 ## Runtime and integration evidence
 

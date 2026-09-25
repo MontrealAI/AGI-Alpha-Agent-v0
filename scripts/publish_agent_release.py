@@ -7,9 +7,11 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
+import tomllib
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
@@ -27,7 +29,11 @@ def main() -> None:
     manifest = json.loads((folder / "release-manifest.json").read_bytes())
     if manifest["commit"] != sha:
         raise ValueError("package commit differs from tested commit")
-    tag = "v1.2.0"
+    version = manifest["version"]
+    declared = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version) or version != declared:
+        raise ValueError("package version differs from the declared release version")
+    tag = f"v{version}"
     # Never move or overwrite an existing tag or published release.
     releases = json.loads(gh("api", f"repos/{repo}/releases?per_page=100"))
     prior = next((item for item in releases if item["tag_name"] == tag), None)
@@ -54,7 +60,7 @@ def main() -> None:
                 "-f",
                 f"tag={tag}",
                 "-f",
-                "message=$AGIALPHA Agent 1.2.0: tested bounded runtime; preservation verified",
+                f"message=$AGIALPHA Agent {version}: tested bounded runtime; preservation verified",
                 "-f",
                 f"object={sha}",
                 "-f",
@@ -81,9 +87,9 @@ def main() -> None:
             "--verify-tag",
             "--draft",
             "--title",
-            "$AGIALPHA Agent 1.2.0",
+            f"$AGIALPHA Agent {version}",
             "--notes-file",
-            str(folder / "RELEASE_NOTES_1.2.0.md"),
+            str(folder / f"RELEASE_NOTES_{version}.md"),
         )
     # Upload is idempotent only while the release remains a draft.
     for path in sorted(folder.iterdir()):
