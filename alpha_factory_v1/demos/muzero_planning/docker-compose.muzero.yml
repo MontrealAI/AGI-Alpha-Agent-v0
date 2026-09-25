@@ -3,8 +3,8 @@ version: "3.9"
 services:
   orchestrator:
     build:
-      context: ../..                # alpha_factory_v1 root
-      dockerfile: ./Dockerfile      # uses existing image recipe
+      context: ../../..             # repository root
+      dockerfile: alpha_factory_v1/Dockerfile      # uses existing image recipe
     image: alpha_factory_orchestrator:muzero
     user: "1001:1001"
     env_file: ./config.env

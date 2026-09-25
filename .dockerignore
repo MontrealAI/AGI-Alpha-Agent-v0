@@ -34,8 +34,8 @@ Dockerfile*
 alpha_factory_v1/tests/
 requests/tests/
 
-# Restrict build context for demo images
-alpha_factory_v1/demos/*
+# Preserve demo source for legacy launchers; generated caches remain excluded.
+# alpha_factory_v1/demos/*
 !alpha_factory_v1/demos/meta_agentic_tree_search_v0/
 !alpha_factory_v1/demos/meta_agentic_tree_search_v0/**
 !alpha_factory_v1/demos/__init__.py
@@ -50,3 +50,21 @@ alpha_factory_v1/demos/*
 !requirements-demo.txt
 !alpha_factory_v1/core/interface/web_client/dist/
 !alpha_factory_v1/core/interface/web_client/dist/**
+
+# Required by the installed/container operator runtime.
+!alpha_factory_v1/utils/DISCLAIMER_SNIPPET.md
+
+# Apply private-file/cache exclusions after the demo-source inclusion rules.
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/.venv*/
+**/.git/
+**/.env
+**/.env.*
+**/*.env
+!**/.env.sample
+!**/.env.example

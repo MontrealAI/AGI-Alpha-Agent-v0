@@ -1,0 +1,316 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Agent release acceptance
+on:
+  push:
+    branches: [main, codex/alpha-agent-completion]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: agent-release-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: '1'
+  OPENAI_AGENTS_DISABLE_TRACING: 'true'
+  NO_DISCLAIMER: '1'
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install hash-locked operator dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install pytest==8.4.1 setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1
+          python -m pip check
+      - name: Runtime tests in minimal environment
+        run: |
+          mkdir -p evidence
+          python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
+          python -m scripts.check_agent_preservation > evidence/preservation.json
+      - name: Build and exercise wheel outside the repository
+        run: |
+          python -m build --wheel --no-isolation --outdir wheel-dist
+          python -m pip install --no-deps wheel-dist/*.whl
+          mission="$PWD/examples/missions/allocation.json"
+          cd "$RUNNER_TEMP"
+          alpha-agent --home installed-agent init
+          alpha-agent --home installed-agent run "$mission" > installed-result.json
+          alpha-agent --home installed-agent verify
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from alpha_factory_v1.core.runtime import api
+          assert json.loads(Path('installed-result.json').read_text())['state'] == 'review'
+          assert Path(api.__file__).with_name('web').joinpath('index.html').is_file()
+          PY
+      - name: Pin and exercise real Docker isolation
+        if: matrix.python == '3.12'
+        run: |
+          docker pull python:3.12-slim
+          ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
+          export ALPHA_SANDBOX_IMAGE
+          printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
+          python -m scripts.validate_agent_sandbox --output evidence/sandbox.json
+      - name: Verify the operator container and persistent restart
+        if: matrix.python == '3.12'
+        run: |
+          docker build --target agent-runtime -t agialpha-acceptance -f alpha_factory_v1/Dockerfile .
+          docker volume create agialpha-acceptance-data
+          trap 'docker rm -f agialpha-acceptance >/dev/null 2>&1 || true; docker volume rm agialpha-acceptance-data >/dev/null 2>&1 || true' EXIT
+          docker run -d --name agialpha-acceptance -p 127.0.0.1:8000:8000 -v agialpha-acceptance-data:/data agialpha-acceptance
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:8000/healthz
+          docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-before.json
+          docker restart agialpha-acceptance
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:8000/healthz
+          docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-after.json
+          cmp evidence/container-before.json evidence/container-after.json
+          docker rm -f agialpha-acceptance
+          mkdir "$RUNNER_TEMP/agent-empty-mount"
+          sudo chown 10001:10001 "$RUNNER_TEMP/agent-empty-mount"
+          docker run -d --name agialpha-acceptance -p 127.0.0.1:8000:8000 -v "$RUNNER_TEMP/agent-empty-mount:/data/agent" agialpha-acceptance
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:8000/healthz
+          docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-empty-mount.json
+      - name: Verify the legacy default container and its three services
+        if: matrix.python == '3.12'
+        run: python -m pytest --noconftest -o addopts= tests/test_docker_health.py -q --junitxml=evidence/legacy-container.xml
+      - name: Verify every shared legacy Compose build consumer
+        if: matrix.python == '3.12'
+        run: python -m scripts.validate_legacy_compose --docker-compose --dev-ui --output evidence/legacy-compose.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: runtime-${{ matrix.python }}
+          path: evidence/
+          if-no-files-found: error
+
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Original locked development environment
+        run: |
+          python -m pip install 'pip<26'
+          python -m pip install --require-hashes -r requirements.lock -r requirements-dev.lock
+          python -m pip install eth-account==0.13.7
+          python scripts/check_python_deps.py
+          python check_env.py --auto-install
+          python -m pip check
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          FETCH_ASSETS_SKIP_LLM=1 npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          python -m playwright install --with-deps chromium
+      - name: Full offline regression including notebooks
+        run: |
+          mkdir -p evidence
+          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
+          cp .coverage evidence/coverage.data
+      - name: Strict types and repository checks
+        run: |
+          python -m mypy --config-file mypy-runtime.ini
+          python -m mypy --config-file mypy.ini
+          python scripts/ruff_targets.py --run
+          python -m scripts.check_agent_preservation > evidence/preservation.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: regression
+          path: evidence/
+          if-no-files-found: error
+
+  browser-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      FETCH_ASSETS_SKIP_LLM: '1'
+      CYPRESS_INSTALL_BINARY: '0'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install browser and runtime
+        run: |
+          python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install playwright==1.54.0
+          python -m playwright install --with-deps chromium
+          mkdir -p evidence
+      - name: Real operator browser acceptance
+        run: python -m scripts.validate_agent_ui --output evidence/operator-ui
+      - name: Historical web client tests
+        run: |
+          npm ci --prefix alpha_factory_v1/core/interface/web_client
+          npm audit --prefix alpha_factory_v1/core/interface/web_client --omit=dev --audit-level=moderate --json > evidence/coreweb-audit.json
+          cd alpha_factory_v1/core/interface/web_client
+          npx playwright install --with-deps chromium
+          npm test
+          npm run build
+      - name: Insight browser tests and build
+        run: |
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npm audit --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 --omit=dev --audit-level=moderate --json > evidence/insight-audit.json
+          cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npm test
+          npx tsc --noEmit
+          npm run lint
+      - name: Build and verify real offline Insight behavior
+        run: |
+          npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          python -m scripts.validate_insight_cache_update --output evidence/insight-cache-update.json
+          python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
+      - name: Verify the checked-in documentation demo offline
+        run: python -m scripts.validate_insight_offline --dist docs/alpha_agi_insight_v1 --output evidence/insight-docs-offline.json
+      - name: Manual browser build uses the same offline distribution
+        run: |
+          cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          sha256sum dist/index.html dist/service-worker.js dist/insight.bundle.js dist/sandbox_worker_host.html > "$RUNNER_TEMP/insight-build.sha256"
+          python manual_build.py
+          sha256sum -c "$RUNNER_TEMP/insight-build.sha256"
+          cd "$GITHUB_WORKSPACE"
+          python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-manual-offline.json
+      - name: Shipped contracts and real agent payment lifecycle
+        run: |
+          npm ci --prefix tests/contracts
+          npm test --prefix tests/contracts | tee evidence/contracts.txt
+          python -m scripts.check_agent_preservation > evidence/preservation.json
+          python -m scripts.validate_agent_chain --output evidence/local-evm.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: browser-contracts
+          path: |
+            evidence/
+            alpha_factory_v1/core/interface/web_client/test-results/
+          if-no-files-found: error
+
+  real-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Install runtime and checksum-pinned local model
+        run: |
+          python -m pip install --require-hashes -r requirements-agent.lock
+          mkdir -p evidence model
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-ubuntu-x64.tar.gz \
+            --output model/llama.tar.gz
+          echo 'c150306eb16b5ab696f76a8bdf810c35fd98a24e82158742e6fa28f420ff8410  model/llama.tar.gz' | sha256sum -c -
+          tar -xzf model/llama.tar.gz -C model
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 \
+            https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
+            --output model/Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          docker pull python:3.12-slim
+      - name: Real inference, generated code, Docker evaluation, review and recovery
+        run: |
+          ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
+          export ALPHA_SANDBOX_IMAGE
+          printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
+          python -m scripts.validate_agent_model --with-code \
+            --server model/llama-b11146/llama-server \
+            --model model/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
+            --sha256 3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597 \
+            --output evidence/real-inference.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: real-model
+          path: evidence/
+          if-no-files-found: error
+
+  package:
+    needs: [runtime, regression, browser-contracts, real-model]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: evidence
+      - name: Build, verify and package the exact tested commit
+        run: |
+          python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0
+          python -m scripts.package_agent_release --output release --evidence evidence
+          python scripts/install_agent.py --release-dir release --venv "$RUNNER_TEMP/release-install"
+          cd release
+          sha256sum -c SHA256SUMS
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: release-package
+          path: release/
+          if-no-files-found: error
+
+  publish:
+    needs: package
+    if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-package
+          path: release
+      - name: Publish only after re-downloading and verifying draft assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m scripts.publish_agent_release

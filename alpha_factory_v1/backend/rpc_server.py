@@ -62,7 +62,7 @@ async def rpc(task: Task) -> Ack:
 def serve() -> None:
     """Run the RPC server with `uvicorn`."""
 
-    uvicorn.run("backend.rpc_server:app", host=RPC_HOST, port=RPC_PORT)
+    uvicorn.run("alpha_factory_v1.backend.rpc_server:app", host=RPC_HOST, port=RPC_PORT)
 
 
 if __name__ == "__main__":

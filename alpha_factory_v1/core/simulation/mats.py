@@ -253,7 +253,6 @@ def pareto_front(pop: Population) -> Population:
     for i, fi in enumerate(fits):
         dom = np.all(fi <= fits, axis=1) & np.any(fi < fits, axis=1)
         dominated |= dom
-        dominated[i] = False
     front = [ind for ind, d in zip(pop, dominated) if not d]
     _crowding(front)
     return sorted(front, key=lambda x: -x.crowd)

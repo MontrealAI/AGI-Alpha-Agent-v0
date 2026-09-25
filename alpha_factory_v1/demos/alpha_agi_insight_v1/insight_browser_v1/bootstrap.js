@@ -33,9 +33,10 @@ const supportsServiceWorker = (() => {
   }
 })();
 
-if (supportsServiceWorker && !navigator.webdriver) {
+if (supportsServiceWorker) {
   window.addEventListener("load", async () => {
     try {
+      if (!navigator.onLine && navigator.serviceWorker.controller) return;
       const response = await fetch(SW_URL);
       const buffer = await response.arrayBuffer();
       const digest = await crypto.subtle.digest("SHA-384", buffer);
@@ -46,7 +47,10 @@ if (supportsServiceWorker && !navigator.webdriver) {
       }
 
       const registration = await navigator.serviceWorker.register(SW_URL);
-      await navigator.serviceWorker.ready;
+      await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Installation timed out')), 30000)),
+      ]);
       registration.addEventListener("updatefound", () => {
         const installingWorker = registration.installing;
         if (!installingWorker) {
@@ -62,7 +66,7 @@ if (supportsServiceWorker && !navigator.webdriver) {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error(err);
-      window.toast(`Service worker failed: ${message}`);
+      window.toast(`Service worker failed; offline mode disabled: ${message}`);
     }
   });
 }

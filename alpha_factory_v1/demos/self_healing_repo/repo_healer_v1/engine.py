@@ -125,7 +125,9 @@ class RepoHealerEngine:
     @staticmethod
     def _copy_repo(src: pathlib.Path, dst: pathlib.Path) -> None:
         """Copy repository into isolated scratch directory."""
-        ignore = shutil.ignore_patterns(".git", ".pytest_cache", ".mypy_cache", "__pycache__")
+        ignore = shutil.ignore_patterns(
+            ".git", ".pytest_cache", ".mypy_cache", "__pycache__", "node_modules", ".venv", "venv"
+        )
         shutil.copytree(src, dst, ignore=ignore)
 
     def _promote_patch(self, diff: str, isolated_repo: pathlib.Path) -> None:

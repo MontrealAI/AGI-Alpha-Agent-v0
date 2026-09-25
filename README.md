@@ -1,3 +1,19 @@
+# $AGIALPHA Agent — release status
+
+**Version 1.2.0 adds a connected, bounded working agent.** Start with the
+[operator guide](docs/agent/OPERATIONS.md), [capability matrix](docs/agent/CAPABILITIES.md)
+and [validation evidence](docs/agent/VALIDATION.md). Install the official release wheel and
+hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.
+For the current container demo profiles, use **Docker Compose 2.20 or later**; the older
+Compose minimum in the preserved historical documentation below no longer covers those profiles.
+
+The original vision, flywheels, examples and demos below are preserved verbatim. Historical
+AGI/ASI, economic and compliance aspirations are not release guarantees. This is the
+**$AGIALPHA project**, separate from AGI Jobs. The previous state is preserved in
+[baseline-2026-09-24](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/baseline-2026-09-24).
+
+---
+
 [See docs/DISCLAIMER_SNIPPET.md](docs/DISCLAIMER_SNIPPET.md)
 
 This repository is a conceptual research prototype.

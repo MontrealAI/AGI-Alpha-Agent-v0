@@ -1,0 +1,91 @@
+{
+  "model_file": "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+  "model_sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "server_version": "",
+  "verified_quote_count": 6,
+  "elapsed_seconds": 19.499722,
+  "inference": {
+    "configured_model": "qwen3-4b-pinned",
+    "reported_model": "qwen3-4b-pinned",
+    "request_hash": "f6a5f14683130ed203e76170f8cfddac8fd50214097e11088e25346f0652b345",
+    "response_hash": "c43b7287af1f0678a91d09a55938681383002ee8c81174ca3665f0cb999213c3",
+    "usage": {
+      "completion_tokens": 294,
+      "prompt_tokens": 243,
+      "total_tokens": 537,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "finish_reason": "stop",
+    "provider": "http://127.0.0.1:50155/v1",
+    "mode": "local_inference"
+  },
+  "result": {
+    "method": "model synthesis with exact quotation verification",
+    "findings": [
+      {
+        "claim": "The pilot processed 120 requests over one week, indicating a baseline operational scale.",
+        "source_id": "pilot",
+        "quote": "The pilot processed 120 requests over one week."
+      },
+      {
+        "claim": "Nine requests in the pilot required manual review, suggesting potential scalability or reliability concerns.",
+        "source_id": "pilot",
+        "quote": "Nine requests required manual review."
+      },
+      {
+        "claim": "No long-term reliability result was established in the pilot, indicating insufficient evidence for production deployment.",
+        "source_id": "pilot",
+        "quote": "No long-term reliability result was established."
+      },
+      {
+        "claim": "The measured compute cost was 24 planning units, providing a cost baseline for production evaluation.",
+        "source_id": "cost",
+        "quote": "Measured compute cost was 24 planning units."
+      },
+      {
+        "claim": "Review time was not measured in the cost evidence, limiting assessment of operational efficiency.",
+        "source_id": "cost",
+        "quote": "Review time was not measured."
+      },
+      {
+        "claim": "Revenue was not observed in the cost evidence, preventing financial viability assessment.",
+        "source_id": "cost",
+        "quote": "Revenue was not observed."
+      }
+    ],
+    "sources": [
+      {
+        "id": "pilot",
+        "title": "Sample pilot evidence",
+        "url": "",
+        "sha256": "2f7bd6d4a9a50426a1a958fda4f5e665a3ea1497f00b2c4f355bb414dfca4b50"
+      },
+      {
+        "id": "cost",
+        "title": "Sample cost evidence",
+        "url": "",
+        "sha256": "d527e3d518b173ac9a7f604fe373f18735b8237d5f965b87c1701ca628a28116"
+      }
+    ],
+    "limits": "Supplied-source analysis; source authenticity and claim interpretation require operator review."
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "every quotation occurs in its cited input",
+      "source identifiers are valid"
+    ],
+    "result_hash": "3c3cc9388baa278570fb441f62eea7f47e7f973bcbcaca9b5d2aac5aa2a08fd6",
+    "semantic_review_required": true
+  },
+  "artifact_hash": "053e77616d710bfa6f126426572c4a64f5ac0e6041dfd5463511b6e7aa103a81",
+  "recovery": {
+    "valid": true,
+    "events": 12,
+    "head": "bc769e262bde535838b44b033f418146f18b411206006c93781f4492ed60caec",
+    "identity": "urn:agialpha:ed25519:1a9f8b13cccc9971892c4c15a802faec1b551dcd0e3d753e4ec40eebeb16eed4"
+  },
+  "limits": "One supplied-source research task; not a general-intelligence or financial-performance benchmark."
+}

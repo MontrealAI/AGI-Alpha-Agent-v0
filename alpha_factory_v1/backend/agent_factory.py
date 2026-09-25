@@ -69,10 +69,22 @@ if SDK_AVAILABLE:  # pragma: no cover
         ComputerTool,
         FileSearchTool,
         ModelSettings,
-        PythonTool,
         RunContextWrapper,
         WebSearchTool,
     )
+
+    def PythonTool():  # noqa: N802 - preserve the public factory name
+        """Create an explicitly opted-in, isolated Python function tool."""
+        from agents import function_tool
+        from alpha_factory_v1.core.utils.secure_run import secure_run
+
+        @function_tool
+        def isolated_python(code: str) -> str:
+            """Execute Python with the configured OS sandbox; never on the host."""
+            result = secure_run(["python3", "-c", code])
+            return json.dumps({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
+
+        return isolated_python
 else:  # --------------------------- stub fall-backs --------------------------
 
     class _StubTool:  # noqa: D401
@@ -201,19 +213,20 @@ def get_default_tools() -> List[Any]:
     The selection is recalculated each time to honour environment variables
     that may change at runtime.  The returned list is safe to mutate.
     """
-    base: List[Any] = [
-        FileSearchTool(max_num_results=5),
-        WebSearchTool(),
-        run_pytest_tool,
-    ]
+    base: List[Any] = []
+    stores = [s.strip() for s in os.getenv("ALPHA_FACTORY_VECTOR_STORE_IDS", "").split(",") if s.strip()]
+    if stores:
+        base.append(FileSearchTool(vector_store_ids=stores, max_num_results=5))
+    if os.getenv("OPENAI_API_KEY"):
+        base.append(WebSearchTool())
 
-    # Remote tools (ComputerTool runs in OpenAI's sandbox) need an API key.
-    if SDK_AVAILABLE and os.getenv("OPENAI_API_KEY"):
-        base.append(ComputerTool())
+    # ComputerTool requires an operator-supplied Computer implementation. It
+    # remains available through extra_tools, never constructed with no driver.
 
     # PythonTool executes *locally* – only enable if user opts in explicitly.
     if SDK_AVAILABLE and _allow_local_code():
         base.append(PythonTool())
+        base.append(run_pytest_tool)
 
     return base
 

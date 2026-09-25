@@ -7,20 +7,20 @@
     "dev": "vite",
     "build": "vite build && workbox injectManifest workbox.config.cjs && cp dist/service-worker.js public/service-worker.js",
     "preview": "vite preview",
-    "test": "echo \"Running smoke test\" && exit 0",
+    "test": "playwright test",
     "test:e2e": "playwright test",
     "test:cypress": "cypress run",
     "percy:cypress": "percy exec -- cypress run"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.8.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
-    "@opentelemetry/sdk-trace-web": "^1.8.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.222.0",
+    "@opentelemetry/sdk-trace-web": "^2.11.0",
     "d3": "^7.9.0",
     "plotly.js-dist": "^2.24.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^7.18.4",
     "vue": "^3.3.4"
   },
   "devDependencies": {

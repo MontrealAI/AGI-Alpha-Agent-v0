@@ -118,25 +118,28 @@ library IdentityLib {
         // Merkle proof failed, attempt ENS-based recovery
         emit RecoveryInitiated(claimant, subdomain);
 
-        // Step 3: Check ownership via NameWrapper
-        try wrapper.ownerOf(uint256(subnode)) returns (address owner) {
-            if (owner == claimant) {
-                emit OwnershipVerified(claimant, subdomain);
-                return true;
-            }
-        } catch {}
-
-        // Step 4: Resolve ENS record directly
-        try ens.resolver(subnode) returns (address resolverAddr) {
-            if (resolverAddr != address(0)) {
-                try IResolver(resolverAddr).addr(subnode) returns (address resolved) {
-                    if (resolved == claimant) {
-                        emit OwnershipVerified(claimant, subdomain);
-                        return true;
-                    }
-                } catch {}
-            }
-        } catch {}
+        // Optional ENS services must be actual contracts. Calls to an absent
+        // service can fail ABI decoding outside Solidity's external-call catch.
+        if (address(wrapper).code.length > 0) {
+            try wrapper.ownerOf(uint256(subnode)) returns (address owner) {
+                if (owner == claimant) {
+                    emit OwnershipVerified(claimant, subdomain);
+                    return true;
+                }
+            } catch {}
+        }
+        if (address(ens).code.length > 0) {
+            try ens.resolver(subnode) returns (address resolverAddr) {
+                if (resolverAddr.code.length > 0) {
+                    try IResolver(resolverAddr).addr(subnode) returns (address resolved) {
+                        if (resolved == claimant) {
+                            emit OwnershipVerified(claimant, subdomain);
+                            return true;
+                        }
+                    } catch {}
+                }
+            } catch {}
+        }
 
         // All checks failed
         return false;

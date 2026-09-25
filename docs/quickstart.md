@@ -13,7 +13,7 @@ API credentials.
    source .venv/bin/activate
    pip install -U pip pre-commit==4.2.0
    ```
-2. Install **Docker** and **Docker Compose** (Compose ≥2.5).
+2. Install **Docker** and **Docker Compose** (Compose ≥2.20 for the current demo profiles).
 3. Install **Node.js 22.17.1** for the web client. Run `nvm use` to activate the version from `.nvmrc`.
 4. Ensure `git` is available. Verify the tools:
    ```bash

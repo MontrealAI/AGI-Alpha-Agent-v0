@@ -55,7 +55,7 @@ def _build_ccxt_client() -> object:
         _LOG.warning("BINANCE_API_KEY/SECRET missing – offline price stub engaged")
         return ExchangeStub()
 
-    return ccxt.binanceusdm(
+    client = ccxt.binanceusdm(
         {
             "apiKey": key,
             "secret": secret,
@@ -63,6 +63,11 @@ def _build_ccxt_client() -> object:
             "options": {"defaultType": "future"},  # testnet futures
         }
     )
+    # Selecting a futures market does not select the test network. Set sandbox
+    # mode before any exchange request so this test-only wrapper cannot trade
+    # on production endpoints when credentials are present.
+    client.set_sandbox_mode(True)
+    return client
 
 
 # --------------------------------------------------------------------- #

@@ -10,7 +10,7 @@
 #                                                                            #
 #  Build switches                                                            #
 #  ─────────────────────────────────────────────────────────────────────────  #
-#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.13).    #
+#  BASE_IMAGE           ‑ Parent image for Stage 1 (default python:3.12).    #
 #                        Pass  nvidia/cuda:12.4.0-runtime‑ubuntu22.04        #
 #                        for a GPU‑enabled variant.                          #
 #  INSTALL_UI           ‑ Set to "0" to skip the UI build stage.           #
@@ -19,7 +19,7 @@
 #######################################################################
 #  Global ARGs must precede every FROM that references them           #
 #######################################################################
-ARG BASE_IMAGE=python:3.13-slim
+ARG BASE_IMAGE=python:3.12-slim
 ARG INSTALL_UI=1
 
 #######################################################################
@@ -28,11 +28,13 @@ ARG INSTALL_UI=1
 FROM node:22.17.1-bookworm-slim AS ui-build
 ARG INSTALL_UI
 RUN if [ "$INSTALL_UI" = "0" ]; then echo "Skipping UI build stage" && exit 0; fi
-WORKDIR /ui
-COPY ui/package*.json ./          # leverage Docker layer cache
-RUN if [ "$INSTALL_UI" = "1" ]; then npm ci --omit=dev; fi
-COPY ui/ .
-RUN if [ "$INSTALL_UI" = "1" ]; then npm run build; fi             # → dist/
+WORKDIR /ui/alpha_factory_v1/core/interface/web_client
+COPY alpha_factory_v1/core/interface/web_client/package*.json ./
+ENV CYPRESS_INSTALL_BINARY=0
+RUN if [ "$INSTALL_UI" = "1" ]; then npm ci; fi
+COPY alpha_factory_v1/core/interface/web_client/ .
+COPY alpha_factory_v1/core/telemetry.js /ui/alpha_factory_v1/core/telemetry.js
+RUN mkdir -p dist && if [ "$INSTALL_UI" = "1" ]; then npm run build; fi
 
 #######################################################################
 #  Stage 1 — Python Runtime                                           #
@@ -49,7 +51,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DEBIAN_FRONTEND=noninteractive \
     PYTHONPATH=/app \
     GIT_PYTHON_GIT_EXECUTABLE=/usr/bin/git \
-    API_TOKEN=REPLACE_ME_TOKEN \
     PATH="/usr/bin:$PATH"
 
 #############################
@@ -67,7 +68,7 @@ RUN apt-get update && \
         libomp5 \
         libstdc++6 \
         postgresql-client \
-        patch \  # required by the self-healing demo
+        patch \
         curl ca-certificates && \
     git --version && \
     rm -rf /var/lib/apt/lists/*
@@ -77,39 +78,26 @@ RUN apt-get update && \
 #############################
 WORKDIR /app
 
-# -- Strict, reproducible lock (if present) ---------------------------
-COPY requirements-lock.txt /tmp/requirements-lock.txt
-# -- Project top‑level requirements (edited by humans) ----------------
-COPY backend/requirements.txt /tmp/requirements.txt
-
-#  The lock file is preferred (if the project maintains one).  
-#  Fallback to plain requirements for dev checkouts.
-RUN if [ -f /tmp/requirements-lock.txt ]; then \
-        pip install --no-cache-dir --require-hashes -r /tmp/requirements-lock.txt; \
-    else \
-        pip install --no-cache-dir -r /tmp/requirements.txt; \
-    fi && \
-    # ⬇ Explicitly ensure critical agent frameworks are present
-    pip install --no-cache-dir \
-        openai-agents>=0.0.17 \   # OpenAI Agents SDK (beta)
-        "google-adk @ git+https://github.com/google/adk-python@main#egg=google-adk" \
-        anthropic>=0.21 \
-        gunicorn rocketry prometheus-client && \
-    rm -rf /tmp/requirements-lock.txt /tmp/requirements.txt
+# Reproduce the historical core environment; heavy domain extras remain opt-in.
+# Build this file from the repository root for both runtime targets.
+COPY requirements.lock /tmp/requirements.lock
+RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock && \
+    python -m pip check && rm /tmp/requirements.lock
 
 #############################
 # 4) Copy project source     #
 #############################
-COPY backend/        /app/backend/
-COPY ui/             /app/ui/
-COPY entrypoint.sh   /app/entrypoint.sh
+COPY alpha_factory_v1/ /app/alpha_factory_v1/
+COPY af_requests/ /app/af_requests/
+COPY openai_agents/ /app/openai_agents/
+COPY alpha_factory_v1/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
 #############################
 # 5) (optional) UI bundle    #
 #############################
 ARG INSTALL_UI
-COPY --from=ui-build /ui/dist/ /app/static/trace/
+COPY --from=ui-build /ui/alpha_factory_v1/core/interface/web_client/dist/ /app/static/trace/
 
 #############################
 # 6) Non-root user           #
@@ -123,10 +111,36 @@ USER alphafactory
 # 7) Health‑check           #
 #############################
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD-SHELL curl -f -H "Authorization: Bearer $API_TOKEN" http://localhost:8000/healthz || exit 1
+  CMD curl -f -H "Authorization: Bearer $API_TOKEN" http://localhost:${PORT:-8000}/healthz || exit 1
 
 #############################
 # 8) Ports & Entrypoint      #
 #############################
 EXPOSE 8000 3000
 CMD ["/app/entrypoint.sh"]
+
+# The historical universal-runtime stages above are retained for compatibility.
+# Select --target agent-runtime for the connected, hash-locked operator.
+FROM python:3.12-slim AS agent-runtime
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app
+WORKDIR /app
+COPY requirements-agent.lock /tmp/requirements-agent.lock
+RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements-agent.lock && \
+    python -m pip check && \
+    groupadd --gid 10001 alphaagent && \
+    useradd --uid 10001 --gid alphaagent --no-create-home alphaagent && \
+    mkdir /data && chown alphaagent:alphaagent /data
+COPY alpha_factory_v1/__init__.py /app/alpha_factory_v1/__init__.py
+COPY alpha_factory_v1/core/ /app/alpha_factory_v1/core/
+COPY alpha_factory_v1/common/ /app/alpha_factory_v1/common/
+COPY alpha_factory_v1/utils/ /app/alpha_factory_v1/utils/
+USER 10001:10001
+VOLUME ["/data"]
+EXPOSE 8000
+HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)" || exit 1
+CMD ["python", "-m", "alpha_factory_v1.core.runtime.container"]
+
+# Preserve the historical default; both targets use the repository root context.
+# Existing compose files and unqualified builds must not switch applications.
+FROM runtime AS legacy-default

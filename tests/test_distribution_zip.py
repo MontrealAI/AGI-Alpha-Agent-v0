@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
+import base64
+import hashlib
 import re
 import subprocess
 import shutil
@@ -55,13 +57,28 @@ def test_distribution_zip(tmp_path: Path) -> None:
     assert zip_path.stat().st_size <= MAX_ZIP_BYTES, "zip size exceeds 500 MiB"
     with zipfile.ZipFile(zip_path) as zf:
         names = zf.namelist()
+        host = zf.read("sandbox_worker_host.html").decode()
+        assert "<script src=" not in host, "Opaque sandbox must not fetch external scripts offline"
+        script = re.search(r"<script>([\s\S]*?)</script>", host)
+        assert script, "Self-contained sandbox script missing"
+        digest = base64.b64encode(hashlib.sha384(script[1].encode()).digest()).decode()
+        assert f"'sha384-{digest}'" in zf.read("index.html").decode()
     expected = {
         "index.html",
         "insight.bundle.js",
         "service-worker.js",
         "style.css",
-        "insight_browser_quickstart.pdf",
+        "d3.exports.js",
+        "d3_exports.js",
+        "bootstrap.js",
+        "sandbox_worker_host.html",
+        "sandbox_worker_host.js",
+        "worker/evolver.js",
+        "worker/arenaWorker.js",
+        "worker/umapWorker.js",
     }
+    if Path("docs/insight_browser_quickstart.pdf").exists():
+        expected.add("insight_browser_quickstart.pdf")
     # ensure expected files exist
     for name in expected:
         assert name in names, f"{name} missing from zip"
@@ -69,7 +86,7 @@ def test_distribution_zip(tmp_path: Path) -> None:
     assert any(n.startswith("assets/") for n in names), "assets directory missing"
     assert "assets/manifest.json" in names, "assets/manifest.json missing from zip"
     # ensure no unexpected files
-    allowed_prefixes = {"assets/"}
+    allowed_prefixes = {"assets/", "worker/"}
     for name in names:
         if name in expected:
             continue

@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 
 import pytest
+import re
 
 pytestmark = pytest.mark.smoke
 
@@ -17,4 +18,4 @@ def test_cache_version_matches_package() -> None:
     sw = sw_path.read_text()
     if "__CACHE_VERSION__" in sw:
         pytest.skip("version placeholder not expanded")
-    assert f'CACHE_VERSION="{version}"' in sw or f"CACHE_VERSION = '{version}'" in sw
+    assert re.search(rf"CACHE_VERSION\s*=\s*['\"]{re.escape(version)}['\"]", sw)

@@ -51,7 +51,8 @@ async function ensureOrt(): Promise<boolean> {
   if (!root) return false;
   if (!root.ort) {
     try {
-      await import('onnxruntime-web');
+      const ort = await import('onnxruntime-web');
+      root.ort = ort;
     } catch {
       ortLoaded = false;
       return false;

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = 'v6387cdd6';
+const CACHE = 'vc20c216a';
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
@@ -32,10 +32,17 @@ self.addEventListener('install', (event) => {
           '../alpha_agi_insight_v0/assets/preview.svg',
           '../alpha_agi_insight_v0/assets/script.js',
           '../alpha_agi_insight_v0/assets/style.css',
-          '../alpha_agi_insight_v1/assets/logs.json',
+          '../alpha_agi_insight_v1/assets/d3.v7.min.js',
+          '../alpha_agi_insight_v1/assets/favicon.svg',
+          '../alpha_agi_insight_v1/assets/lib/bundle.esm.min.js',
+          '../alpha_agi_insight_v1/assets/lib/pyodide.js',
+          '../alpha_agi_insight_v1/assets/lib/workbox-sw.js',
+          '../alpha_agi_insight_v1/assets/manifest.json',
           '../alpha_agi_insight_v1/assets/preview.svg',
-          '../alpha_agi_insight_v1/assets/script.js',
-          '../alpha_agi_insight_v1/assets/style.css',
+          '../alpha_agi_insight_v1/assets/src/i18n/en.json',
+          '../alpha_agi_insight_v1/assets/src/i18n/es.json',
+          '../alpha_agi_insight_v1/assets/src/i18n/fr.json',
+          '../alpha_agi_insight_v1/assets/src/i18n/zh.json',
           '../alpha_agi_marketplace_v1/assets/logs.json',
           '../alpha_agi_marketplace_v1/assets/preview.svg',
           '../alpha_agi_marketplace_v1/assets/script.js',
@@ -100,6 +107,7 @@ self.addEventListener('install', (event) => {
           '../omni_factory_demo/assets/preview.svg',
           '../omni_factory_demo/assets/script.js',
           '../omni_factory_demo/assets/style.css',
+          '../presentation/assets/preview.svg',
           '../self_healing_repo/assets/logs.json',
           '../self_healing_repo/assets/preview.svg',
           '../self_healing_repo/assets/script.js',

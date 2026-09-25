@@ -22,14 +22,14 @@ services:
     container_name: orchestrator-dev
     # Re-use the multi-stage Dockerfile but build only the *runtime* stage
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: alpha_factory_v1/Dockerfile
       target: runtime                # Stage 1 in the Dockerfile
       args:
         BASE_IMAGE: python:3.11-slim-bookworm   # fast CPU build for dev
     image: alphafactory-dev:latest
     command: >
-      uvicorn backend.__init__:app
+      uvicorn alpha_factory_v1.backend:app
       --reload
       --host 0.0.0.0
       --port 8000
@@ -39,8 +39,8 @@ services:
       - "8000:8000"
     volumes:
       # Hot‑reload Python + UI templates
-      - ./backend:/app/backend
-      - ./ui:/app/ui
+      - ./backend:/app/alpha_factory_v1/backend
+      - ./ui:/app/alpha_factory_v1/ui
       - ./entrypoint.sh:/app/entrypoint.sh:ro
       # Persist logs so pytest smoke‑tests behave like prod
       - /tmp/alphafactory:/tmp/alphafactory
@@ -50,7 +50,7 @@ services:
       PYTHONUNBUFFERED: "1"
     healthcheck:
       <<: *default_healthcheck
-      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      test: ["CMD-SHELL", "curl -f -H \"Authorization: Bearer $$API_TOKEN\" http://localhost:8000/api/logs"]
     depends_on:
       - redis
     networks: [af-net]
@@ -61,19 +61,23 @@ services:
   ui:
     <<: *restart_policy
     container_name: alphafactory-ui-dev
-    image: node:22-bookworm-slim
-    working_dir: /ui
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+    image: node:22.17.1-bookworm-slim
+    working_dir: /ui/alpha_factory_v1/core/interface/web_client
+    command: ["sh", "-c", "npm ci && exec npm run dev -- --host 0.0.0.0 --port 3000"]
     ports:
       - "3000:3000"
     volumes:
-      - ./ui:/ui
+      - ./core/interface/web_client:/ui/alpha_factory_v1/core/interface/web_client
+      - ./core/telemetry.js:/ui/alpha_factory_v1/core/telemetry.js:ro
+      - ui-node-modules:/ui/alpha_factory_v1/core/interface/web_client/node_modules
     environment:
       # Vite proxies API requests during dev
       VITE_API_BASE: http://localhost:8000
+      CYPRESS_INSTALL_BINARY: "0"
     healthcheck:
       <<: *default_healthcheck
-      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000"]
+      start_period: 180s
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
     networks: [af-net]
 
   ###########################################################################
@@ -101,3 +105,4 @@ networks:
 
 volumes:
   redis-data:
+  ui-node-modules:

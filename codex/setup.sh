@@ -4,10 +4,12 @@ set -euo pipefail
 
 PYTHON=${PYTHON:-python3}
 
-# Default to a wheelhouse next to the repository root when available
+# A checkout includes wheels/README.md; only use it as an offline wheelhouse
+# when it actually contains distributions. An explicitly configured wheelhouse
+# remains offline and must never silently fall back to the public index.
 if [[ -z "${WHEELHOUSE:-}" ]]; then
   default_wheelhouse="$(dirname "$0")/../wheels"
-  if [[ -d "$default_wheelhouse" ]]; then
+  if compgen -G "$default_wheelhouse/*.whl" > /dev/null; then
     export WHEELHOUSE="$default_wheelhouse"
   fi
 fi
@@ -15,26 +17,18 @@ fi
 # Support offline installation via WHEELHOUSE
 wheel_opts=()
 if [[ -n "${WHEELHOUSE:-}" ]]; then
+  if ! compgen -G "$WHEELHOUSE/*.whl" > /dev/null; then
+    echo "ERROR: WHEELHOUSE must contain wheel files: $WHEELHOUSE" >&2
+    exit 1
+  fi
   wheel_opts+=(--no-index --find-links "$WHEELHOUSE")
 fi
 
-# Abort early when offline and no wheelhouse is provided
-if [[ -z "${WHEELHOUSE:-}" ]]; then
-  if ! $PYTHON - <<'EOF'
-import socket, sys
-try:
-    socket.create_connection(("pypi.org", 443), timeout=3)
-except Exception:
-    sys.exit(1)
-EOF
-  then
-    echo "ERROR: No network access detected. Re-run with '--wheelhouse <dir>' to install packages from local wheels." >&2
-    exit 1
-  fi
-fi
+# Let pip use its configured index, certificate store and proxy. A direct TCP
+# probe to pypi.org incorrectly rejects supported mirror/proxy installations.
 
 # Upgrade pip and core build tools
-$PYTHON -m pip install --quiet "${wheel_opts[@]}" --upgrade pip setuptools wheel
+$PYTHON -m pip install --quiet "${wheel_opts[@]}" --upgrade 'pip<26' setuptools wheel
 
 # Install pip-compile (pip-tools) early so hooks can verify lock files
 $PYTHON -m pip install --quiet "${wheel_opts[@]}" pip-tools
@@ -48,7 +42,10 @@ fi
 
 # Ensure pre-commit 4.2.0 is available for git hooks
 required_pre_commit=4.2.0
-current_pre_commit=$(command -v pre-commit >/dev/null && pre-commit --version 2>/dev/null | awk '{print $2}')
+current_pre_commit=""
+if command -v pre-commit >/dev/null; then
+  current_pre_commit=$(pre-commit --version | awk '{print $2}')
+fi
 if [[ -z "$current_pre_commit" || "$current_pre_commit" != "$required_pre_commit" ]]; then
   echo "Installing pre-commit==$required_pre_commit" >&2
   $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit=="$required_pre_commit"
@@ -63,7 +60,7 @@ $PYTHON -m pip install --quiet "${wheel_opts[@]}" -e .
 # wheelhouse. Otherwise install a minimal set of runtime packages for fast
 # setup in networked environments.
 if [[ "${FULL_INSTALL:-0}" == "1" ]]; then
-  $PYTHON -m pip install --quiet "${wheel_opts[@]}" -r requirements.lock
+  $PYTHON -m pip install --quiet "${wheel_opts[@]}" -r requirements.lock -r requirements-dev.lock
 elif [[ "${MINIMAL_INSTALL:-0}" == "1" ]]; then
   packages=(
     pytest
@@ -173,9 +170,9 @@ check_env_opts=()
 if [[ -n "${WHEELHOUSE:-}" ]]; then
   check_env_opts+=(--wheelhouse "$WHEELHOUSE")
 fi
-if [[ "${FULL_INSTALL:-0}" == "1" ]]; then
-  export ALPHA_FACTORY_FULL=1
-fi
+# FULL_INSTALL is the locked development baseline. Heavy model extras remain
+# available through the explicitly supplied ALPHA_FACTORY_FULL=1 flag; do not
+# replace a pinned install with an unbounded second dependency resolution.
 $PYTHON check_env.py --auto-install "${check_env_opts[@]}"
 
 # Verify all dependencies are satisfied and abort on issues
@@ -191,4 +188,3 @@ fi
 if command -v pre-commit >/dev/null; then
   pre-commit install
 fi
-

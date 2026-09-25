@@ -4,6 +4,8 @@
 from pathlib import Path
 
 _DOCS_PATH = Path(__file__).resolve().parents[2] / "docs" / "DISCLAIMER_SNIPPET.md"
+if not _DOCS_PATH.is_file():
+    _DOCS_PATH = Path(__file__).with_name("DISCLAIMER_SNIPPET.md")
 DISCLAIMER: str = _DOCS_PATH.read_text(encoding="utf-8").strip()
 
 

@@ -66,12 +66,22 @@ export default function D3LineageTree({ data }: Props) {
       .append('circle')
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
-      .attr('r', 4)
+      .attr('r', 6)
+      .attr('role', 'button')
+      .attr('tabindex', 0)
+      .attr('aria-label', (d) => `Agent ${d.data.id}, pass rate ${d.data.pass_rate}`)
       .attr('fill', (d) => d3.interpolateBlues(d.data.pass_rate))
       .style('cursor', 'pointer')
       .on('click', (_, d) => {
         setSelected(d.data);
-        setOpen((o) => !o);
+        setOpen(false);
+      })
+      .on('keydown', (event, d) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          setSelected(d.data);
+          setOpen(false);
+        }
       });
 
     node.append('title').text((d) => `pass=${d.data.pass_rate}`);
@@ -85,7 +95,8 @@ export default function D3LineageTree({ data }: Props) {
 
   return (
     <div>
-      <svg ref={ref} width={840} height={440} />
+      <svg id="lineage-tree" ref={ref} viewBox="0 0 840 440" width={840} height={440}
+        aria-label="Agent lineage tree" />
       {selected && (
         <div>
           <button type="button" onClick={() => setOpen((o) => !o)}>

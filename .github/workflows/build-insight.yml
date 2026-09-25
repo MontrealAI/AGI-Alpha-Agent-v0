@@ -52,9 +52,8 @@ jobs:
         run: |
           DOCS_DIR="${GITHUB_WORKSPACE}/docs/alpha_agi_insight_v1"
           BUILD_DIR="${GITHUB_WORKSPACE}/${{ env.BROWSER_DIR }}/dist"
-          rm -rf "$DOCS_DIR"
           mkdir -p "$DOCS_DIR"
-          rsync -av --delete \
+          rsync -av \
             --exclude='*.wasm' \
             --exclude='*.zip' \
             --exclude='*.gz' \
@@ -81,7 +80,14 @@ jobs:
             --exclude='assets/pyodide/**' \
             "$BUILD_DIR/" "$DOCS_DIR/"
 
+      - name: Require committed generated assets on source pushes
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          git diff --exit-code -- docs/alpha_agi_insight_v1
+          test -z "$(git ls-files --others --exclude-standard docs/alpha_agi_insight_v1)"
+
       - name: Commit updated bundle
+        if: github.event_name == 'workflow_dispatch'
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           commit_message: "Auto-generated updated insight.bundle.js"

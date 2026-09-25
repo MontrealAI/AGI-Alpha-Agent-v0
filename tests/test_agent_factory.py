@@ -27,9 +27,7 @@ class TestAgentFactory(unittest.TestCase):
         with mock.patch.dict(os.environ, {}, clear=True):
             tools = self.af.get_default_tools()
         names = [getattr(t, "name", str(t)) for t in tools]
-        self.assertIn("FileSearchTool", names)
-        self.assertIn("WebSearchTool", names)
-        self.assertEqual(len(tools), 3)
+        self.assertEqual(names, [])
         self.assertFalse(any(isinstance(t, self.af.ComputerTool) for t in tools))
         self.assertFalse(any(isinstance(t, self.af.PythonTool) for t in tools))
 
@@ -41,7 +39,7 @@ class TestAgentFactory(unittest.TestCase):
         ):
             with mock.patch.object(self.af, "SDK_AVAILABLE", True):
                 tools = self.af.get_default_tools()
-        self.assertTrue(any(isinstance(t, self.af.ComputerTool) for t in tools))
+        self.assertFalse(any(isinstance(t, self.af.ComputerTool) for t in tools))
         self.assertTrue(any(isinstance(t, self.af.PythonTool) for t in tools))
 
     def test_auto_select_model_precedence(self) -> None:

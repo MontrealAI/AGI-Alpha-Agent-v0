@@ -57,8 +57,8 @@ export function drawHeatmap(
   const bins = 20;
   const grid = Array.from({ length: bins }, () => Array(bins).fill(0));
   for (const d of pop) {
-    const gx = Math.max(0, Math.min(bins - 1, Math.floor((x(d.logic) / ctx.canvas.width) * bins)));
-    const gy = Math.max(0, Math.min(bins - 1, Math.floor((y(d.feasible) / ctx.canvas.height) * bins)));
+    const gx = Math.max(0, Math.min(bins - 1, Math.floor((x(d) / ctx.canvas.width) * bins)));
+    const gy = Math.max(0, Math.min(bins - 1, Math.floor((y(d) / ctx.canvas.height) * bins)));
     grid[gy][gx] += 1;
   }
   const max = Math.max(...grid.flat(), 1);

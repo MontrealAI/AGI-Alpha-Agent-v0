@@ -1,50 +1,46 @@
 [build-system]
-requires = ["setuptools>=67"]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "alpha-factory-v1"
-version = "0.1.0-alpha"
-description = "Alpha-Factory v1"
+version = "1.2.0"
+description = "AGIALPHA Agent: evidence-driven missions, evolutionary optimization and operator controls"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license = "Apache-2.0"
+dependencies = [
+    "cryptography>=45,<49",
+    "fastapi>=0.116,<1",
+    "httpx>=0.28,<1",
+    "numpy>=2.2,<2.5",
+    "pydantic>=2.11,<3",
+    "pydantic-settings>=2.10,<3",
+    "PyYAML>=6,<7",
+    "uvicorn>=0.35,<1",
+    "prometheus-client>=0.19,<1",
+]
 
 [tool.setuptools]
-packages = [
-    "alpha_factory_v1",
-    "alpha_factory_v1.demos.alpha_agi_insight_v1",
-    "alpha_factory_v1.demos.alpha_agi_insight_v1.src",
-    "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface",
-    "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.web_client",
-    "alpha_factory_v1.core",
-    "alpha_factory_v1.core.interface",
-    "alpha_factory_v1.core.interface.web_client",
-    "alpha_factory_v1.core.agents",
-    "alpha_factory_v1.core.evaluators",
-    "alpha_factory_v1.core.self_evolution",
-    "alpha_factory_v1.core.simulation",
-    "alpha_factory_v1.core.utils",
-    "alpha_factory_v1.core.tools",
-    "alpha_factory_v1.common",
-    "alpha_factory_v1.common.utils",
-    "alpha_factory_v1.utils",
-    "af_requests",
-    "alpha_factory_v1.demos.meta_agentic_tree_search_v0",
-    "alpha_factory_v1.demos.meta_agentic_tree_search_v0.mats",
-    "alpha_factory_v1.demos.self_healing_repo",
-    "alpha_factory_v1.demos.self_healing_repo.agent_core",
-    "alpha_factory_v1.demos.self_healing_repo.sample_broken_calc",
-]
 include-package-data = true
 
+[tool.setuptools.packages.find]
+include = ["alpha_factory_v1*", "af_requests*", "openai_agents*"]
+exclude = ["*.node_modules*", "*.tests*", "*.test*", "*.build*", "*.wasm*", "*.dist*", "*.presentation*", "*.venv*"]
+namespaces = true
+
 [tool.setuptools.package-data]
-"alpha_factory_v1" = ["py.typed", "../docs/DISCLAIMER_SNIPPET.md"]
+"alpha_factory_v1" = ["py.typed", "**/*.yaml", "**/*.yml", "**/*.json", "**/*.proto", "**/*.txt", "**/*.md"]
+"alpha_factory_v1.core.runtime" = ["web/*"]
 "alpha_factory_v1.demos.alpha_agi_insight_v1" = ["py.typed"]
 "alpha_factory_v1.core.interface.web_client" = ["dist/**"]
 "alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.web_client" = ["dist/**"]
 
+[tool.setuptools.exclude-package-data]
+"*" = ["**/node_modules/**", "**/__pycache__/**", "**/.venv/**", "**/venv/**"]
+
 [project.scripts]
+alpha-agent = "alpha_factory_v1.core.runtime.cli:main"
 alpha-factory = "alpha_factory_v1.run:run"
 governance-sim = "alpha_factory_v1.demos.solving_agi_governance.governance_sim:main"
 edge-runner = "alpha_factory_v1.edge_runner:main"
@@ -63,6 +59,7 @@ governance-bridge = "alpha_factory_v1.demos.solving_agi_governance.openai_agents
 macro-sentinel = "alpha_factory_v1.demos.macro_sentinel.agent_macro_entrypoint:launch_ui"
 
 [project.optional-dependencies]
+chain = ["eth-account>=0.13.7,<0.14"]
 tests = [
     "pytest",
 ]
@@ -108,6 +105,16 @@ extend-ignore = ["E402", "F401", "E401"]
 max-line-length = 120
 
 [tool.coverage.run]
+omit = [
+    "alpha_factory_v1/demos/*",
+    "alpha_factory_v1/backend/agents/*",
+    "alpha_factory_v1/backend/memory*",
+    "/tmp/*",
+    "*/tmp/*",
+]
+
+# Apply the same existing scope to data collected by test subprocesses.
+[tool.coverage.report]
 omit = [
     "alpha_factory_v1/demos/*",
     "alpha_factory_v1/backend/agents/*",

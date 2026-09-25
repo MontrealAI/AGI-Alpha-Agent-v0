@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import math
 from typing import Iterable, Sequence, cast
 
 import yaml
@@ -87,6 +88,8 @@ def aggregate(
 ) -> list[float]:
     """Return scalar surrogate scores for ``values``."""
     cfg = weights if weights is not None else load_weights(weights_path)
+    if not values:
+        return []
     rank_w = float(cast(float, cfg.get("rank", 1.0)))
     crowd_w = float(cast(float, cfg.get("crowd", 0.0)))
     obj_w = cfg.get("objectives", [])
@@ -95,9 +98,12 @@ def aggregate(
     obj_w = list(obj_w) + [0.0] * (len(values[0]) - len(obj_w))
     ranks, fronts = _non_dominated_sort(values)
     crowds = _crowding(values, fronts)
+    finite_crowds = [crowd for crowd in crowds if math.isfinite(crowd)]
+    boundary_crowd = max(finite_crowds, default=0.0) + 1.0
     scores = []
     for idx, vec in enumerate(values):
-        s = rank_w * ranks[idx] + crowd_w * crowds[idx]
+        crowd = crowds[idx] if math.isfinite(crowds[idx]) else boundary_crowd
+        s = rank_w * ranks[idx] + crowd_w * crowd
         s += sum(w * v for w, v in zip(obj_w, vec))
         scores.append(float(s))
     return scores

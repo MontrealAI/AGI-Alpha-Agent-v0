@@ -39,6 +39,9 @@ export async function copyAssets(manifest, repoRoot, outDir, assetRoot = '') {
     if (fsSync.existsSync(sourceDir)) {
       await fs.mkdir(path.join(outDir, dir), { recursive: true });
       for (const f of await fs.readdir(sourceDir)) {
+        // Interrupted downloads can leave NamedTemporaryFile cache entries.
+        // They are not runtime assets and must not affect the precache hash.
+        if (/^tmp[^.]+$/.test(f) || f.endsWith('.tmp')) continue;
         await fs.copyFile(path.join(sourceDir, f), path.join(outDir, dir, f));
       }
     }
@@ -56,31 +59,52 @@ export async function checkGzipSize(file, maxBytes = 5 * 1024 * 1024) {
 
 export async function generateServiceWorker(outDir, manifest, version) {
   const { injectManifest } = await import('workbox-build');
+  const { build } = await import('esbuild');
   const swSrc = 'sw.js';
   const swTemp = path.join(outDir, 'sw.build.js');
   const swDest = path.join(outDir, 'sw.js');
   const swTemplate = await fs.readFile(swSrc, 'utf8');
-  await fs.writeFile(swTemp, swTemplate.replace('__CACHE_VERSION__', version));
-  await injectManifest({
-    swSrc: swTemp,
-    swDest,
-    globDirectory: outDir,
-    globPatterns: manifest.precache,
-    injectionPoint: 'self.__WB_MANIFEST',
+  await build({
+    stdin: {contents: swTemplate.replace('__CACHE_VERSION__', version), resolveDir: process.cwd(), loader: 'js'},
+    outfile: swTemp, bundle: true, format: 'iife', target: 'es2020',
   });
-  await fs.unlink(swTemp);
-  const swData = await fs.readFile(swDest);
-  const swHash = createHash('sha384').update(swData).digest('base64');
+  const workerTemplate = await fs.readFile(swTemp);
   let wbPath = path.join(outDir, 'workbox-sw.js');
   if (!fsSync.existsSync(wbPath)) wbPath = path.join(outDir, 'assets', 'lib', 'workbox-sw.js');
   let wbHash = '';
   if (fsSync.existsSync(wbPath)) {
     wbHash = createHash('sha384').update(fsSync.readFileSync(wbPath)).digest('base64');
   }
+  const result = await injectManifest({
+    swSrc: swTemp,
+    swDest,
+    globDirectory: outDir,
+    globPatterns: manifest.precache,
+    injectionPoint: 'self.__WB_MANIFEST',
+    maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
+    // index.html embeds this worker's integrity hash. Break that circular
+    // dependency with a revision covering every input to the final worker,
+    // including the policy-complete page template and all precached assets.
+    manifestTransforms: [async (entries) => {
+      const revision = createHash('sha256').update(workerTemplate).update(wbHash)
+        .update(JSON.stringify(entries)).digest('hex');
+      return {manifest: entries.map(entry => entry.url === 'index.html' ? {...entry, revision} : entry), warnings: []};
+    }],
+  });
+  if (!result.count || result.warnings.some((warning) => warning.includes('An error occurred') || (warning.includes('insight.bundle.js') && warning.includes("won't be precached")))) {
+    throw new Error(`Invalid service worker precache: ${result.warnings.join('; ')}`);
+  }
+  for (const warning of result.warnings) console.warn(warning);
+  await fs.unlink(swTemp);
+  const swData = await fs.readFile(swDest);
+  // Hash the final bytes, including the Workbox integrity value.
+  const swText = swData.toString('utf8').replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);
+  await fs.writeFile(swDest, swText);
+  const swHash = createHash('sha384').update(swText).digest('base64');
   const indexPath = path.join(outDir, 'index.html');
   let indexText = await fs.readFile(indexPath, 'utf8');
   indexText = indexText.replace(".register('sw.js')", ".register('service-worker.js')");
-  indexText = indexText.replace('__SW_HASH__', `sha384-${swHash}`);
+  indexText = indexText.replace(/SW_HASH\s*=\s*(['"])(?:__SW_HASH__|sha384-[^'"]+)\1/, `SW_HASH = 'sha384-${swHash}'`);
   const inlineHashes = [];
   for (const m of indexText.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
     const attrs = m[1];
@@ -96,7 +120,4 @@ export async function generateServiceWorker(outDir, manifest, version) {
     );
   }
   await fs.writeFile(indexPath, indexText);
-  let swText = swData.toString('utf8');
-  swText = swText.replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);
-  await fs.writeFile(swDest, swText);
 }

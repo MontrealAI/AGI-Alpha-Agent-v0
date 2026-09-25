@@ -4,7 +4,7 @@ from typing import Any, Callable, TypeVar, cast
 
 from flask import Flask, jsonify, render_template, request, Response
 
-from backend.memory import Memory
+from alpha_factory_v1.backend.memory import Memory
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 mem = Memory()

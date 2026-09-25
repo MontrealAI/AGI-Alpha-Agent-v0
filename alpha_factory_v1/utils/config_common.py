@@ -68,6 +68,14 @@ class SettingsBase(BaseSettings):
         "env_prefix": "",
     }
 
+    def __init__(self, **data: Any) -> None:
+        # Pydantic-settings can merge an environment alias alongside an explicit
+        # field name. Normalize explicit names to aliases so constructor values
+        # keep their documented precedence over the ambient environment.
+        fields = type(self).model_fields
+        normalized = {fields[key].alias or key if key in fields else key: value for key, value in data.items()}
+        super().__init__(**normalized)
+
     def __repr__(self) -> str:  # pragma: no cover - trivial
         data = self.model_dump()
         for k in tuple(data):

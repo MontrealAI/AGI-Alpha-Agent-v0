@@ -2,16 +2,38 @@
 import asyncio
 import contextlib
 from unittest import mock
+import pytest
 
 from alpha_factory_v1.demos.alpha_agi_insight_v1.src import orchestrator
 from alpha_factory_v1.backend import orchestrator_utils
 from alpha_factory_v1.common.utils import config
 
 
+@pytest.mark.parametrize("rejected", [False, True])
+def test_standalone_respects_existing_process_limits(rejected: bool) -> None:
+    from alpha_factory_v1.core import orchestrator as core
+
+    limits = mock.Mock(RLIM_INFINITY=-1, RLIMIT_AS=9)
+    limits.getrlimit.return_value = (512 * 1024**2, 1024**3)
+    if rejected:
+        limits.setrlimit.side_effect = ValueError("service manager rejected limit")
+    service = mock.Mock(run_forever=mock.AsyncMock())
+    with mock.patch.object(core, "resource", limits), mock.patch.object(core, "Orchestrator", return_value=service):
+        asyncio.run(core._main())
+    limits.setrlimit.assert_called_once_with(9, (512 * 1024**2, 1024**3))
+    service.run_forever.assert_awaited_once()
+
+
 def test_run_forever_shutdown() -> None:
     settings = config.Settings(bus_port=0)
+    from alpha_factory_v1.core import orchestrator as core_orchestrator
+
+    limits = core_orchestrator.resource
+    before = limits.getrlimit(limits.RLIMIT_AS) if limits is not None else None
     with mock.patch.object(orchestrator.Orchestrator, "_init_agents", lambda self: []):
         orch = orchestrator.Orchestrator(settings)
+    if limits is not None:
+        assert limits.getrlimit(limits.RLIMIT_AS) == before
 
     async def run() -> None:
         with (

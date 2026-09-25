@@ -187,6 +187,10 @@ def _ensure_insight_dist() -> Path:
 
 
 def _cleanup_disk_space() -> None:
+    # Nested pytest runs share these assets with the outer session. Only the
+    # process that established the session may remove them after all tests end.
+    if os.environ.get("ALPHA_PYTEST_OWNER_PID") != str(os.getpid()):
+        return
     if not any(os.environ.get(key) for key in _CLEANUP_DISK_ENV_VARS):
         return
     repo_root = Path(__file__).resolve().parents[1]
@@ -200,6 +204,16 @@ def _cleanup_disk_space() -> None:
     for target in targets:
         if not target.exists():
             continue
+        # CI may clean caches, but never delete checked-in demos or assets.
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", str(target.relative_to(repo_root))],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+        if tracked:
+            continue
         if target.is_dir():
             shutil.rmtree(target)
         else:
@@ -207,6 +221,7 @@ def _cleanup_disk_space() -> None:
 
 
 def pytest_configure() -> None:
+    os.environ.setdefault("ALPHA_PYTEST_OWNER_PID", str(os.getpid()))
     _configure_temp_paths()
     _configure_ci_hypothesis_limits()
     _patch_coverage_xml_serialization()

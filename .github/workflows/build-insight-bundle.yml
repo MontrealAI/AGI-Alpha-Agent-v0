@@ -1,6 +1,5 @@
-# Build and commit the Insight docs bundle whenever related sources change.
-# Detects the appropriate build script, regenerates docs/alpha_agi_insight_v1/insight.bundle.js,
-# and auto-commits updated artifacts back to the repository.
+# Validate the Insight docs bundle whenever related sources change.
+# Explicit manual dispatch can commit regenerated assets without deleting historical files.
 name: build-insight-bundle
 
 on:
@@ -37,7 +36,7 @@ jobs:
       - name: Set up Node.js 22.x
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: 'npm'
           cache-dependency-path: ${{ env.INSIGHT_BROWSER_DIR }}/package-lock.json
 
@@ -66,7 +65,7 @@ jobs:
       - name: Sync built assets into docs bundle directory
         run: |
           mkdir -p "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}"
-          rsync -av --delete \
+          rsync -av \
             --exclude='*.wasm' \
             --exclude='*.zip' \
             --exclude='*.gz' \
@@ -93,7 +92,14 @@ jobs:
             --exclude='assets/pyodide/**' \
             "${GITHUB_WORKSPACE}/${{ env.INSIGHT_BROWSER_DIR }}/dist/" "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}/"
 
+      - name: Require committed generated assets on source pushes
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          git diff --exit-code -- docs/alpha_agi_insight_v1
+          test -z "$(git ls-files --others --exclude-standard docs/alpha_agi_insight_v1)"
+
       - name: Commit regenerated bundle
+        if: github.event_name == 'workflow_dispatch'
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           commit_message: "chore: auto-regenerate docs Insight bundle"

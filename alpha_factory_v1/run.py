@@ -3,6 +3,7 @@
 
 import os
 import argparse
+import sys
 from pathlib import Path
 
 from .utils.disclaimer import print_disclaimer
@@ -68,6 +69,10 @@ def apply_env(args: argparse.Namespace) -> None:
 
 def run(show_disclaimer: bool = True) -> None:
     """Entry point used by the ``alpha-factory`` console script."""
+    if len(sys.argv) > 1 and sys.argv[1] == "mission":
+        from .core.runtime.cli import main
+
+        raise SystemExit(main(sys.argv[2:]))
     args = parse_args()
     if show_disclaimer:
         print_disclaimer()

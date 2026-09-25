@@ -337,7 +337,9 @@ contract ValidationModule is Ownable, IValidationModule {
         }
         validatorSubdomains[validator] = subdomain;
         bytes32[] storage p = validatorProofs[validator];
-        delete p;
+        while (p.length > 0) {
+            p.pop();
+        }
         for (uint256 i = 0; i < proof.length; i++) {
             p.push(proof[i]);
         }

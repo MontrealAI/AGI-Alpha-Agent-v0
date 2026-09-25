@@ -125,8 +125,8 @@ services:
 ################################################################################
   orchestrator:
     build:
-      context: ../..
-      dockerfile: ./Dockerfile
+      context: ../../..
+      dockerfile: alpha_factory_v1/Dockerfile
       args:
         ENABLE_CUDA: "${ENABLE_CUDA:-0}"
     image: alpha_factory_orchestrator:macro
