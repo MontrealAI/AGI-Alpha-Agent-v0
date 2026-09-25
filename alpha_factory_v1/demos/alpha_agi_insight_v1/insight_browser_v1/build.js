@@ -458,6 +458,30 @@ async function bundle() {
     // Docs intentionally omit those duplicate external runtime files.
     if (wasmBase64) manifest.precache = manifest.precache.filter((item) => item !== 'wasm/*');
     await relocateDistAssets();
+    const llmDir = path.join(OUT_DIR, 'assets', 'local-llm');
+    await fs.rm(llmDir, {recursive: true, force: true});
+    await fs.mkdir(llmDir, {recursive: true});
+    for (const name of ['transformers.min.js', 'ort-wasm-simd-threaded.jsep.mjs', 'ort-wasm-simd-threaded.jsep.wasm']) {
+        await fs.copyFile(path.join('node_modules/@huggingface/transformers/dist', name), path.join(llmDir, name));
+    }
+    if (!skipLlmAssets) {
+        const modelCache = process.env.INSIGHT_ONNX_CACHE || path.join(assetRoot || 'wasm_llm', 'onnx-gpt2');
+        const result = spawnSync(process.env.PYTHON || 'python', [
+            '-m', 'scripts.download_browser_model', '--output', path.resolve(modelCache),
+        ], {cwd: repoRoot, stdio: 'inherit'});
+        if (result.status !== 0) throw new Error('Pinned ONNX model download failed');
+        const modelManifest = JSON.parse(await fs.readFile(path.join(repoRoot, 'scripts/browser_model_manifest.json'), 'utf8'));
+        for (const name of Object.keys(modelManifest.files)) {
+            const target = path.join(llmDir, 'models', 'gpt2', name);
+            await fs.mkdir(path.dirname(target), {recursive: true});
+            await fs.copyFile(path.join(modelCache, name), target);
+        }
+    }
+    await fs.copyFile('node_modules/@huggingface/transformers/LICENSE', path.join(llmDir, 'TRANSFORMERS_LICENSE.txt'));
+    await fs.copyFile('THIRD_PARTY_MODEL_NOTICES.md', path.join(llmDir, 'THIRD_PARTY_MODEL_NOTICES.md'));
+    manifest.precache.push('assets/local-llm/*.js', 'assets/local-llm/*.mjs', 'assets/local-llm/*.wasm');
+    if (!skipLlmAssets) manifest.precache.push('assets/local-llm/models/gpt2/*.json', 'assets/local-llm/models/gpt2/*.txt');
+
     if (fsSync.existsSync(quickstartPdf)) {
         await fs.copyFile(quickstartPdf, path.join(OUT_DIR, "insight_browser_quickstart.pdf"));
     }

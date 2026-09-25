@@ -1,69 +1,57 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {promises as fs} from 'fs';
+import {promises as fs, createReadStream} from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import http from 'http';
 import {chromium} from 'playwright';
 
 function startServer(dir) {
+  const types = {'.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.wasm': 'application/wasm', '.svg': 'image/svg+xml'};
   const server = http.createServer((req, res) => {
-    const filePath = path.join(dir, req.url === '/' ? '/index.html' : req.url);
-    fs.readFile(filePath).then(data => {
-      res.writeHead(200);
-      res.end(data);
-    }).catch(() => {
-      res.writeHead(404);
-      res.end();
+    const pathname = new URL(req.url, 'http://localhost').pathname;
+    const filePath = path.join(dir, pathname === '/' ? '/index.html' : pathname);
+    const stream = createReadStream(filePath);
+    stream.on('error', () => { res.writeHead(404); res.end(); });
+    stream.on('open', () => {
+      res.writeHead(200, {'Content-Type': types[path.extname(filePath)] || 'application/octet-stream', 'Cache-Control': 'no-store'});
+      stream.pipe(res);
     });
   });
-  return new Promise(resolve => {
-    server.listen(0, '127.0.0.1', () => resolve(server));
-  });
+  return new Promise(resolve => server.listen(0, '127.0.0.1', () => resolve(server)));
 }
 
-if (process.env.CI) {
-  test.skip('service worker update reloads page', () => {});
-} else {
-  test('service worker update reloads page', async () => {
-  let browser;
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const dist = path.resolve(__dirname, '../dist');
-  const server = await startServer(dist);
-  const {port} = server.address();
-  const url = `http://127.0.0.1:${port}/index.html`;
-  const swPath = path.join(dist, 'service-worker.js');
+test('a changed service worker installs and takes control without disabling CSP', async () => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../dist');
+  const swPath = path.join(root, 'service-worker.js');
   const original = await fs.readFile(swPath, 'utf8');
-
+  const server = await startServer(root);
+  let browser;
   try {
     browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto(url);
-    await page.waitForSelector('#controls', { state: 'attached' });
-    await page.waitForFunction('navigator.serviceWorker.ready');
-    const initial = await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL);
-
-    const updated = original.replace(/CACHE_VERSION\s*=\s*['"](?:.*?)['"]/,'CACHE_VERSION="test"');
-    await fs.writeFile(swPath, updated);
-
-    await page.evaluate('navigator.serviceWorker.getRegistration().then(r=>r.update())');
-    await page.waitForFunction('performance.getEntriesByType("navigation").length > 1');
-    const after = await page.evaluate(() => navigator.serviceWorker.controller?.scriptURL);
-
-    assert.notEqual(initial, after);
-    await browser.close();
-  } catch (err) {
-    if (err instanceof Error && err.message.includes('browser')) {
-      test.skip('Playwright browser not installed');
-    } else {
-      throw err;
+    const session = await context.newCDPSession(page);
+    const evaluate = async expression => {
+      const result = await session.send('Runtime.evaluate', {expression, returnByValue: true, awaitPromise: true, allowUnsafeEvalBlockedByCSP: true});
+      assert.equal(result.exceptionDetails, undefined, JSON.stringify(result.exceptionDetails));
+      return result.result.value;
+    };
+    await page.goto(`http://127.0.0.1:${server.address().port}/index.html`);
+    await evaluate('navigator.serviceWorker.ready.then(() => true)');
+    await evaluate('window.previousController = navigator.serviceWorker.controller; window.workerChanged = false; navigator.serviceWorker.addEventListener("controllerchange", () => window.workerChanged = navigator.serviceWorker.controller !== window.previousController); true');
+    await fs.writeFile(swPath, original + '\n// Acceptance update changes bytes, not policy or cached content.\n');
+    await evaluate('navigator.serviceWorker.getRegistration().then(registration => registration.update()).then(() => true)');
+    const deadline = Date.now() + 30000;
+    while (!await evaluate('window.workerChanged && navigator.serviceWorker.controller.state === "activated"')) {
+      assert.ok(Date.now() < deadline, 'Updated service worker did not take control');
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
+    assert.equal(await evaluate('navigator.serviceWorker.controller.state'), 'activated');
   } finally {
     if (browser) await browser.close();
-    server.close();
-  await fs.writeFile(swPath, original);
+    await fs.writeFile(swPath, original);
+    await new Promise(resolve => server.close(resolve));
   }
-  });
-}
+});

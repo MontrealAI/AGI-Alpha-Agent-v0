@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import secrets
 import sqlite3
+import subprocess
 import time
 from typing import Any, Iterator
 import uuid
@@ -32,10 +33,43 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical(value)).hexdigest()
 
 
+def restrict_access(path: Path) -> None:
+    """Grant only the current OS account access before writing private state."""
+    if os.name != "nt":
+        path.chmod(0o700 if path.is_dir() else 0o600)
+        return
+    script = r"""
+$ErrorActionPreference = 'Stop'
+$path = $env:ALPHA_PRIVATE_PATH
+$sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
+if ((Get-Item -LiteralPath $path).PSIsContainer) {
+    $acl = New-Object System.Security.AccessControl.DirectorySecurity
+    $inherit = [System.Security.AccessControl.InheritanceFlags]'ContainerInherit, ObjectInherit'
+} else {
+    $acl = New-Object System.Security.AccessControl.FileSecurity
+    $inherit = [System.Security.AccessControl.InheritanceFlags]::None
+}
+$acl.SetOwner($sid)
+$acl.SetAccessRuleProtection($true, $false)
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule($sid, 'FullControl', $inherit, 'None', 'Allow')
+$acl.AddAccessRule($rule)
+Set-Acl -LiteralPath $path -AclObject $acl
+"""
+    subprocess.run(
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+        env={**os.environ, "ALPHA_PRIVATE_PATH": str(path.resolve())},
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+
+
 def private_write(path: Path, data: bytes) -> None:
     """Create a private file exclusively, without following an existing link."""
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "wb") as stream:
+        if os.name == "nt":
+            restrict_access(path)
         stream.write(data)
         stream.flush()
         os.fsync(stream.fileno())
@@ -87,7 +121,7 @@ class Journal:
         except FileExistsError:
             if not allow_empty or not path.is_dir() or any(path.iterdir()):
                 raise
-            path.chmod(0o700)
+        restrict_access(path)
         cfg = config or RuntimeConfig()
         private_write(path / "config.json", canonical(cfg.model_dump()))
         key = Ed25519PrivateKey.generate()
@@ -294,6 +328,7 @@ class Journal:
         if manifest != {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}:
             raise ValueError("recovery archive checksum mismatch")
         target.mkdir(parents=True, exist_ok=False, mode=0o700)
+        restrict_access(target)
         for name, data in files.items():
             private_write(target / name, data)
         journal = cls(target)

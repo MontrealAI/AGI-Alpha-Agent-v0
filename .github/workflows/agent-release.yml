@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
@@ -375,7 +375,10 @@ jobs:
       - name: Verify every rebuilt demo page
         run: python scripts/verify_demo_pages.py
       - name: Verify the rebuilt gallery simulation and offline recovery
-        run: python -m scripts.validate_insight_offline --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json
+        run: |
+          model_args=()
+          if [[ "${{ matrix.assets }}" == "full" ]]; then model_args+=(--model); fi
+          python -m scripts.validate_insight_offline --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json "${model_args[@]}"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

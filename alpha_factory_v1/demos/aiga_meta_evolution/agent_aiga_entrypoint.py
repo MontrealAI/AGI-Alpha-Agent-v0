@@ -20,6 +20,7 @@ Kubernetes‑/Docker‑friendly micro‑service with:
 The file is *self‑contained*; **no existing behaviour removed** – only
 additive hardening to satisfy enterprise infosec & regulator audits.
 """
+
 from __future__ import annotations
 
 import os, asyncio, logging, time, json, math, tempfile, threading
@@ -30,6 +31,14 @@ if os.name != "nt":
     import fcntl
 else:
     fcntl = None  # type: ignore[assignment]
+
+if not __package__:
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+    __package__ = "alpha_factory_v1.demos.aiga_meta_evolution"
+
 
 import uvicorn
 from fastapi import FastAPI, BackgroundTasks, HTTPException
@@ -73,12 +82,6 @@ if os.getenv("ENABLE_AIGA_ADK", "false").lower() == "true":
         adk_bridge = None
 else:
     adk_bridge = None
-if __package__ is None:
-    import sys
-    from pathlib import Path
-
-    sys.path.append(str(Path(__file__).resolve().parent))
-    __package__ = "alpha_factory_v1.demos.aiga_meta_evolution"
 
 from .openai_agents_bridge import EvolverAgent
 from .meta_evolver import MetaEvolver
@@ -418,7 +421,7 @@ _gradio_lock_file: Any | None = None
 async def _start_gradio_dashboard() -> None:
     """Launch Gradio once and bridge callbacks to FastAPI's event loop."""
     global _gradio_thread, _gradio_lock_file
-    if gr is None:
+    if gr is None or os.getenv("ENABLE_GRADIO", "true").lower() != "true":
         log.info("Skipping Gradio startup")
         return
     if _gradio_thread and not _gradio_thread.is_alive():

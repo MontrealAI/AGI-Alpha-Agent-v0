@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.2.1 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.3.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -88,10 +88,22 @@ respectively. They fail if their required capability is missing; they do not sil
 The model validator additionally requires the independently downloaded server binary and pinned GGUF;
 its exact SHA and invocation are in the evidence JSON. No model weights are included in the release.
 
-`check_agent_preservation.py` checks all 2,125 original paths, the entire original README byte sequence,
+`check_agent_preservation.py` checks all 2,125 original paths, the entire original README text and flywheels (only CI badge URL queries may change),
 and equality of shipped Solidity sources with the copies compiled by the contract tests.
 Packaging verifies wheel metadata, installs outside the repository in a clean virtual environment,
 checks dependency consistency, and exercises the installed CLI and packaged web assets.
 
 This evidence supports the bounded capabilities in [CAPABILITIES.md](CAPABILITIES.md).
 It is not a security audit, regulatory approval, investment-performance result or proof of AGI/ASI.
+
+## Additional 1.3.0 acceptance
+
+The full-gallery job now requires real local ONNX text generation before and after a network-disabled
+reload, with matching deterministic continuations, the actual WASM backend and no page errors. The
+minimal-gallery job continues to require working offline simulation. Browser API-response fixtures
+are reported separately from actual ONNX inference. Model provenance is in `scripts/browser_model_manifest.json`.
+
+The standalone Smoke Test matrix covers all nine OS/Python combinations; exact-main smoke success is
+included in the historical-CI publication gate. AIGA's direct-file startup test can no longer turn a
+service failure into a skip. README preservation permits only query changes to the four historical CI
+badge URLs and still rejects any removed flywheel or other historical text.

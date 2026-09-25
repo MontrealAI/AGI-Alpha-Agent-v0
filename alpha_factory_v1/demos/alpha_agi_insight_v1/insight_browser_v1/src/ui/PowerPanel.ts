@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { setUseGpu, gpuAvailable, setOffline, isOffline } from '../utils/llm.ts';
+import { setUseGpu, gpuAvailable, setOffline, isOffline, setApiKey, hasApiKey, chat } from '../utils/llm.ts';
 import type { EvaluatorGenome } from '../evaluator_genome.ts';
 import type { GpuToggleEvent } from './types.ts';
 
@@ -42,7 +42,7 @@ export function initPowerPanel(): {
   modeSelect.id = 'api-mode';
   const optOffline = document.createElement('option');
   optOffline.value = 'offline';
-  optOffline.textContent = 'Run Offline';
+  optOffline.textContent = 'Offline GPT-2 (full build)';
   const optApi = document.createElement('option');
   optApi.value = 'api';
   optApi.textContent = 'Run with OpenAI API';
@@ -50,6 +50,34 @@ export function initPowerPanel(): {
   modeLabel.appendChild(modeSelect);
   panel.appendChild(modeLabel);
   panel.appendChild(pre);
+  const completion = document.createElement('details');
+  const summary = document.createElement('summary');
+  summary.textContent = 'Try text generation';
+  const promptInput = document.createElement('textarea');
+  promptInput.id = 'llm-prompt';
+  promptInput.maxLength = 4096;
+  promptInput.rows = 3;
+  promptInput.placeholder = 'The capital of France is';
+  promptInput.setAttribute('aria-label', 'Text generation prompt');
+  const generate = document.createElement('button');
+  generate.id = 'llm-generate';
+  generate.textContent = 'Generate';
+  const output = document.createElement('p');
+  output.id = 'llm-output';
+  output.setAttribute('role', 'status');
+  output.style.whiteSpace = 'pre-wrap';
+  output.style.maxWidth = '320px';
+  output.textContent = 'Offline: GPT-2 text completion. First load caches the model for offline use.';
+  generate.addEventListener('click', async () => {
+    generate.disabled = true;
+    output.textContent = 'Generating… The first local model load may take a minute.';
+    try { output.textContent = await chat(promptInput.value); }
+    catch (error) { output.textContent = error instanceof Error ? error.message : String(error); }
+    finally { generate.disabled = false; }
+  });
+  completion.append(summary, promptInput, document.createElement('br'), generate, output);
+  panel.appendChild(completion);
+
   try {
     const saved = localStorage.getItem('USE_GPU');
     gpuToggle.checked = saved !== '0';
@@ -70,10 +98,10 @@ export function initPowerPanel(): {
   setOffline(modeSelect.value === 'offline');
   modeSelect.addEventListener('change', () => {
     const offline = modeSelect.value === 'offline';
-    if (!offline && !localStorage.getItem('OPENAI_API_KEY')) {
+    if (!offline && !hasApiKey()) {
       const key = prompt('Enter OpenAI API key');
       if (key) {
-        try { localStorage.setItem('OPENAI_API_KEY', key); } catch {}
+        setApiKey(key);
       } else {
         modeSelect.value = 'offline';
       }

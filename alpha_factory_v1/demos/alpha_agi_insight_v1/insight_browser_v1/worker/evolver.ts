@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { selectPopulation } from '../src/evolve/selection.ts';
 import { mutate, type Mutant } from '../src/evolve/mutate.js';
 import { paretoFront } from '../src/utils/pareto.js';
 import { lcg } from '../src/utils/rng.js';
@@ -124,7 +125,7 @@ self.onmessage = async (
     await loadPy();
   }
   shuffle(next, rand);
-  next = front.concat(next.slice(0, popSize - 10));
+  next = selectPopulation(next, front, popSize);
   const metrics = {
     avgLogic: next.reduce((s: number, d: Individual) => s + (d.logic ?? 0), 0) / next.length,
     avgFeasible: next.reduce(

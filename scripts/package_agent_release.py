@@ -88,7 +88,8 @@ def main() -> None:
         ),
         "python": sys.version,
         "original_files_preserved": 2125,
-        "original_readme_verbatim": True,
+        "original_readme_text_and_flywheels_preserved": True,
+        "permitted_readme_changes": "CI badge URL queries only",
         "release_gates": [
             "runtime Python 3.11/3.12/3.13",
             "full offline Python regression",
@@ -100,6 +101,8 @@ def main() -> None:
             "Chromium operator workflow",
             "legacy browser tests",
             "complete gallery rebuild and offline simulation",
+            "real browser ONNX generation online and offline",
+            "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",
             "Solidity tests with shipped identity logic",
             "real local EVM payments",
             "clean wheel installation",

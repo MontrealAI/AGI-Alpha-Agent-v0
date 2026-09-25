@@ -6,6 +6,8 @@ from __future__ import annotations
 import base64
 import copy
 import json
+import os
+import subprocess
 from pathlib import Path
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -51,7 +53,29 @@ def test_container_initializes_empty_home_and_reuses_identity(tmp_path: Path, mo
     assert Journal(root).verify() == first
     assert (root / "identity.key").read_bytes() == key
     assert (root / "api.token").read_bytes() == token
-    assert root.stat().st_mode & 0o777 == 0o700
+    if os.name == "nt":
+        script = r"""
+$ErrorActionPreference = 'Stop'
+$sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+foreach ($path in @($env:ALPHA_PRIVATE_PATH, (Join-Path $env:ALPHA_PRIVATE_PATH 'identity.key'))) {
+    $acl = Get-Acl -LiteralPath $path
+    if (-not $acl.AreAccessRulesProtected) { throw 'ACL inherits other accounts' }
+    foreach ($rule in $acl.Access) {
+        if ($rule.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value -ne $sid) {
+            throw 'Another account can access private state'
+        }
+    }
+    if ($acl.Access.Count -ne 1) { throw 'Expected one owner access rule' }
+}
+"""
+        subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+            env={**os.environ, "ALPHA_PRIVATE_PATH": str(root)},
+            check=True,
+            timeout=30,
+        )
+    else:
+        assert root.stat().st_mode & 0o777 == 0o700
 
 
 @pytest.mark.parametrize("existing_file", ["identity.key", "config.json", "unrelated.txt"])

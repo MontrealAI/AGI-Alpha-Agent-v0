@@ -30,6 +30,7 @@ registerRoute(
     request.destination === 'worker' ||
     request.destination === 'font' ||
     url.pathname.endsWith('.wasm') ||
+    (url.pathname.includes('/assets/local-llm/models/') && url.pathname.endsWith('.onnx')) ||
     (url.pathname.includes('/ipfs/') && url.pathname.endsWith('.json')),
   new CacheFirst({cacheName: `${CACHE_PREFIX}-assets`})
 );

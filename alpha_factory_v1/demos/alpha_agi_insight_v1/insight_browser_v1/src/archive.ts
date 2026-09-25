@@ -3,7 +3,7 @@ import { createStore, set, get, del, values } from './utils/keyval.ts';
 import type { EvaluatorGenome } from './evaluator_genome.ts';
 import type { Individual } from './state/serializer.ts';
 import { detectColdZone } from './utils/cluster.ts';
-import { chat } from './utils/llm.ts';
+import { chat, hasApiKey, isOffline } from './utils/llm.ts';
 
 interface KeyValueStore<T> {
   dbp: Promise<IDBDatabase | null>;
@@ -114,7 +114,7 @@ export class Archive {
     const novelty = await this._novelty(vec);
     let impact = 0;
     try {
-      if (localStorage.getItem('OPENAI_API_KEY')) {
+      if (hasApiKey() && !isOffline()) {
         const resp = await chat(
           `Estimate economic impact for: ${JSON.stringify(paretoFront)}`,
         );

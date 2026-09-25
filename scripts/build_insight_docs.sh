@@ -73,6 +73,7 @@ BINARY_EXCLUDES=(
     "*.ttf"
     "*.otf"
     "*.bin"
+    "*.onnx"
     "*.exe"
     "*.dll"
     "*.so"

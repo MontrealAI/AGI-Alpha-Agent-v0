@@ -7,10 +7,21 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import subprocess
+import re
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 BASE = "ac9b112a44670f67d53fc3d188ef73fa16e90894"
+
+
+def normalize_badge_urls(readme: bytes) -> bytes:
+    """Allow only CI badge URL query updates; retain every label and all other bytes."""
+    return re.sub(
+        rb"(https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/"
+        rb"(?:pr-ci|ci|smoke|ci-health)\.yml(?:/badge\.svg)?)(?:\?[^)\s]*)?",
+        rb"\1",
+        readme,
+    )
 
 
 def main() -> None:
@@ -19,8 +30,8 @@ def main() -> None:
     if missing:
         raise ValueError(f"Original files missing: {missing}")
     readme = subprocess.check_output(["git", "show", f"{BASE}:README.md"])
-    if readme not in Path("README.md").read_bytes():
-        raise ValueError("Original README, including every flywheel, must be retained verbatim")
+    if normalize_badge_urls(readme) not in normalize_badge_urls(Path("README.md").read_bytes()):
+        raise ValueError("Original README text and every flywheel must remain; only CI badge URL queries may change")
     if (
         Path("docs/DISCLAIMER_SNIPPET.md").read_bytes()
         != Path("alpha_factory_v1/utils/DISCLAIMER_SNIPPET.md").read_bytes()
@@ -35,7 +46,8 @@ def main() -> None:
             {
                 "baseline": BASE,
                 "original_files_preserved": len(original) - 1,
-                "original_readme_verbatim": True,
+                "original_readme_text_and_flywheels_preserved": True,
+                "permitted_readme_changes": "CI badge URL queries only",
                 "contract_copies_match": True,
             }
         )

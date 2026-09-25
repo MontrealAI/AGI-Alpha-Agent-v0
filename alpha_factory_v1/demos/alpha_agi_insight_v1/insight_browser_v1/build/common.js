@@ -81,7 +81,7 @@ export async function generateServiceWorker(outDir, manifest, version) {
     globDirectory: outDir,
     globPatterns: manifest.precache,
     injectionPoint: 'self.__WB_MANIFEST',
-    maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
+    maximumFileSizeToCacheInBytes: 32 * 1024 * 1024,
     // index.html embeds this worker's integrity hash. Break that circular
     // dependency with a revision covering every input to the final worker,
     // including the policy-complete page template and all precached assets.

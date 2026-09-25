@@ -3,6 +3,8 @@
 declare global {
   interface Window {
     toast?: (msg: string) => void;
+    setLlmOffline?: (offline: boolean) => void;
+    setLlmApiKey?: (key: string) => void;
     llmChat?: (prompt: string) => Promise<string> | string;
     PINNER_TOKEN?: string;
     OPENAI_API_KEY?: string;

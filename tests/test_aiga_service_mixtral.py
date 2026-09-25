@@ -65,6 +65,8 @@ def test_mixtral_fallback(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> No
     env["OPENAI_API_KEY"] = ""
     env["OLLAMA_BASE_URL"] = f"http://127.0.0.1:{ollama_port}/v1"
     env["API_PORT"] = str(api_port)
+    env["CHECKPOINT_DIR"] = str(tmp_path / "checkpoints")
+    env["ENABLE_GRADIO"] = "false"
     env["PYTHONPATH"] = f"{stub_dir}:{env.get('PYTHONPATH', '')}"
 
     proc = subprocess.Popen(
@@ -84,14 +86,20 @@ def test_mixtral_fallback(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> No
             except Exception:
                 time.sleep(0.1)
         else:
-            out, _ = proc.communicate(timeout=5)
-            server.shutdown()
-            thread.join()
-            pytest.skip(f"service failed to start: {out}")
+            proc.terminate()
+            out, _ = proc.communicate(timeout=15)
+            pytest.fail(f"service failed to start: {out}")
     finally:
         proc.terminate()
-        out, _ = proc.communicate(timeout=5)
-        server.shutdown()
+        try:
+            out, _ = proc.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            out, _ = proc.communicate(timeout=5)
+            pytest.fail(f"service did not shut down gracefully: {out}")
+        finally:
+            server.shutdown()
+            server.server_close()
         thread.join()
 
     assert "ollama" in out.lower() or "mixtral" in out.lower()
