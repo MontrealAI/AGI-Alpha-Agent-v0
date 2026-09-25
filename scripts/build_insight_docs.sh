@@ -214,6 +214,11 @@ python scripts/generate_gallery_html.py
 # surface as errors both locally and in CI.
 mkdocs build --strict
 
+# Keep source documentation lightweight, but publish the complete built runtime.
+# Its service worker precaches assets (including model configuration) excluded
+# from the tracked docs extraction above. Serve the exact distribution bytes.
+cp -a "$BROWSER_DIR/dist/." site/alpha_agi_insight_v1/
+
 # Verify the Workbox hash again in the generated site directory
 if ! python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1; then
     echo "ERROR: Workbox hash verification failed for generated site" >&2

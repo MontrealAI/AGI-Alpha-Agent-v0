@@ -36,6 +36,7 @@ python scripts/build_service_worker.py
 
 # Build the static site and verify integrity
 mkdocs build --strict
+cp -a "$BROWSER_DIR/dist/." site/alpha_agi_insight_v1/
 python scripts/verify_workbox_hash.py site/alpha_agi_insight_v1
 
 echo "Demo gallery built under $REPO_ROOT/site"

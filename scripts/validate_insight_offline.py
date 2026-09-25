@@ -58,7 +58,7 @@ def main() -> None:
                         raise TimeoutError(expression)
                     page.wait_for_timeout(100)
 
-            page.on("pageerror", lambda error: errors.append(str(error)))
+            page.on("pageerror", lambda error: errors.append(error.stack or str(error)))
             page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
             page.goto(url)
             wait("typeof window.PYODIDE_WASM_BASE64 === 'string' && window.PYODIDE_WASM_BASE64.length > 0")

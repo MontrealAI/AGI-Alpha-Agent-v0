@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
@@ -341,9 +341,13 @@ jobs:
   gallery:
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        assets: [minimal, full]
     env:
       SANDBOX_IMAGE: selfheal-sandbox:latest
-      FETCH_ASSETS_SKIP_LLM: '1'
+      FETCH_ASSETS_SKIP_LLM: ${{ matrix.assets == 'minimal' && '1' || '0' }}
       CYPRESS_INSTALL_BINARY: '0'
       PWA_TIMEOUT_MS: '180000'
     steps:
@@ -375,12 +379,39 @@ jobs:
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: gallery
+          name: gallery-${{ matrix.assets }}
+          path: evidence/
+          if-no-files-found: warn
+
+  historical-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Require successful historical CI on this exact main commit
+        if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m scripts.wait_for_release_ci
+      - name: Record non-publishing candidate scope
+        if: github.ref != 'refs/heads/main'
+        run: |
+          mkdir -p evidence
+          echo '{"required": false, "reason": "Branch candidate; publication requires the main-commit historical checks."}' > evidence/historical-ci.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: historical-ci
           path: evidence/
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery, quality]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, quality, historical-ci]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -408,7 +439,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    needs: package
+    needs: [package, historical-ci]
     if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
     runs-on: ubuntu-latest
     timeout-minutes: 15
