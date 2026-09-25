@@ -200,6 +200,7 @@ jobs:
       - name: Build and verify real offline Insight behavior
         run: |
           npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          python -m scripts.validate_insight_cache_update --output evidence/insight-cache-update.json
           python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
       - name: Verify the checked-in documentation demo offline
         run: python -m scripts.validate_insight_offline --dist docs/alpha_agi_insight_v1 --output evidence/insight-docs-offline.json

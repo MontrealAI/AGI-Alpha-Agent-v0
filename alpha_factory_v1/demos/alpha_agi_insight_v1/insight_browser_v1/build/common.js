@@ -68,6 +68,13 @@ export async function generateServiceWorker(outDir, manifest, version) {
     stdin: {contents: swTemplate.replace('__CACHE_VERSION__', version), resolveDir: process.cwd(), loader: 'js'},
     outfile: swTemp, bundle: true, format: 'iife', target: 'es2020',
   });
+  const workerTemplate = await fs.readFile(swTemp);
+  let wbPath = path.join(outDir, 'workbox-sw.js');
+  if (!fsSync.existsSync(wbPath)) wbPath = path.join(outDir, 'assets', 'lib', 'workbox-sw.js');
+  let wbHash = '';
+  if (fsSync.existsSync(wbPath)) {
+    wbHash = createHash('sha384').update(fsSync.readFileSync(wbPath)).digest('base64');
+  }
   const result = await injectManifest({
     swSrc: swTemp,
     swDest,
@@ -75,6 +82,14 @@ export async function generateServiceWorker(outDir, manifest, version) {
     globPatterns: manifest.precache,
     injectionPoint: 'self.__WB_MANIFEST',
     maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
+    // index.html embeds this worker's integrity hash. Break that circular
+    // dependency with a revision covering every input to the final worker,
+    // including the policy-complete page template and all precached assets.
+    manifestTransforms: [async (entries) => {
+      const revision = createHash('sha256').update(workerTemplate).update(wbHash)
+        .update(JSON.stringify(entries)).digest('hex');
+      return {manifest: entries.map(entry => entry.url === 'index.html' ? {...entry, revision} : entry), warnings: []};
+    }],
   });
   if (!result.count || result.warnings.some((warning) => warning.includes('An error occurred') || (warning.includes('insight.bundle.js') && warning.includes("won't be precached")))) {
     throw new Error(`Invalid service worker precache: ${result.warnings.join('; ')}`);
@@ -82,12 +97,6 @@ export async function generateServiceWorker(outDir, manifest, version) {
   for (const warning of result.warnings) console.warn(warning);
   await fs.unlink(swTemp);
   const swData = await fs.readFile(swDest);
-  let wbPath = path.join(outDir, 'workbox-sw.js');
-  if (!fsSync.existsSync(wbPath)) wbPath = path.join(outDir, 'assets', 'lib', 'workbox-sw.js');
-  let wbHash = '';
-  if (fsSync.existsSync(wbPath)) {
-    wbHash = createHash('sha384').update(fsSync.readFileSync(wbPath)).digest('base64');
-  }
   // Hash the final bytes, including the Workbox integrity value.
   const swText = swData.toString('utf8').replace('__WORKBOX_SW_HASH__', `sha384-${wbHash}`);
   await fs.writeFile(swDest, swText);

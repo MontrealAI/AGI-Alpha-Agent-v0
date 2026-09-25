@@ -442,7 +442,9 @@ async function bundle() {
         .replace('href="manifest.json"', 'href="assets/manifest.json"')
         .replace('src="d3.v7.min.js"', 'src="assets/d3.v7.min.js"')
         .replace('href="favicon.svg"', 'href="assets/favicon.svg"');
-    await fs.writeFile(`${OUT_DIR}/index.html`, outHtml);
+    // Include the sandbox policy in the precache revision. The final pass below
+    // updates the inline SW_HASH policy after the worker's bytes are available.
+    await fs.writeFile(`${OUT_DIR}/index.html`, applyCsp(outHtml, cspBase));
     const devHtml = html.replace(
         /<script[^>]*type=["']module["'][^>]*\bsrc=["']insight\.bundle\.js["'][^>]*><\/script>/i,
         sriTag,

@@ -36,6 +36,12 @@ operator-container restart. Each must succeed before publication. Optional test 
 expected failures remain visible in JUnit; they do not establish unavailable hardware, cloud credentials,
 optional integrations, live trading or deployed mainnet behavior.
 
+The Insight cache-update check rebuilds after separate host-only and worker-only changes, requires
+new page precache revisions and matching CSP/worker integrity, then restores and reproduces the
+original build. The page revision covers its policy-complete template, the bundled worker template
+and all precached assets before filling the worker hash; hashing the final page and a worker that
+embeds that page's hash would create a circular dependency.
+
 Both browser projects have production-dependency audit gates, with JSON reports retained in release
 evidence. The repaired dashboard audit reports zero production advisories. Some optional legacy
 development tools still have advisories; this is not a claim that every historical dependency is clear.
