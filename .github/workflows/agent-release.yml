@@ -90,12 +90,22 @@ jobs:
           curl --fail --silent http://127.0.0.1:8000/healthz
           docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-after.json
           cmp evidence/container-before.json evidence/container-after.json
+          docker rm -f agialpha-acceptance
+          mkdir "$RUNNER_TEMP/agent-empty-mount"
+          sudo chown 10001:10001 "$RUNNER_TEMP/agent-empty-mount"
+          docker run -d --name agialpha-acceptance -p 127.0.0.1:8000:8000 -v "$RUNNER_TEMP/agent-empty-mount:/data/agent" agialpha-acceptance
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:8000/healthz; then break; fi
+            sleep 2
+          done
+          curl --fail --silent http://127.0.0.1:8000/healthz
+          docker exec agialpha-acceptance python -m alpha_factory_v1.core.runtime.cli --home /data/agent verify > evidence/container-empty-mount.json
       - name: Verify the legacy default container and its three services
         if: matrix.python == '3.12'
         run: python -m pytest --noconftest -o addopts= tests/test_docker_health.py -q --junitxml=evidence/legacy-container.xml
       - name: Verify every shared legacy Compose build consumer
         if: matrix.python == '3.12'
-        run: python -m scripts.validate_legacy_compose --docker-compose --output evidence/legacy-compose.json
+        run: python -m scripts.validate_legacy_compose --docker-compose --dev-ui --output evidence/legacy-compose.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

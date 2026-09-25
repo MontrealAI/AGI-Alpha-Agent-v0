@@ -34,6 +34,36 @@ def journal(tmp_path: Path) -> Journal:
     return Journal.initialize(tmp_path / "agent")
 
 
+@pytest.mark.parametrize("existing", [False, True])
+def test_container_initializes_empty_home_and_reuses_identity(tmp_path: Path, monkeypatch: Any, existing: bool) -> None:
+    from alpha_factory_v1.core.runtime import container
+
+    root = tmp_path / "mounted-home"
+    if existing:
+        root.mkdir()
+    monkeypatch.setenv("ALPHA_AGENT_HOME", str(root))
+    monkeypatch.setattr(container.uvicorn, "run", lambda *args, **kwargs: None)
+    container.main()
+    first = Journal(root).verify()
+    key = (root / "identity.key").read_bytes()
+    token = (root / "api.token").read_bytes()
+    container.main()
+    assert Journal(root).verify() == first
+    assert (root / "identity.key").read_bytes() == key
+    assert (root / "api.token").read_bytes() == token
+    assert root.stat().st_mode & 0o777 == 0o700
+
+
+@pytest.mark.parametrize("existing_file", ["identity.key", "config.json", "unrelated.txt"])
+def test_empty_mount_initialization_never_overwrites_partial_home(tmp_path: Path, existing_file: str) -> None:
+    root = tmp_path / "mounted-home"
+    root.mkdir()
+    (root / existing_file).write_bytes(b"preserve this operator data")
+    with pytest.raises(FileExistsError):
+        Journal.initialize(root, allow_empty=True)
+    assert {path.name: path.read_bytes() for path in root.iterdir()} == {existing_file: b"preserve this operator data"}
+
+
 @pytest.mark.parametrize("kind", ["research", "allocation", "schedule", "forecast"])
 def test_complete_lifecycle_and_portable_signature(journal: Journal, kind: str) -> None:
     engine = Engine(journal)

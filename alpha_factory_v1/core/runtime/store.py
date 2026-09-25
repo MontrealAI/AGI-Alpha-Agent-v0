@@ -79,10 +79,15 @@ class Journal:
             raise ValueError("journal is missing; restore a verified backup")
 
     @classmethod
-    def initialize(cls, root: str | Path, config: RuntimeConfig | None = None) -> Journal:
-        """Initialize a new directory; never overwrite an existing identity."""
+    def initialize(cls, root: str | Path, config: RuntimeConfig | None = None, *, allow_empty: bool = False) -> Journal:
+        """Initialize a new directory or explicitly allowed empty mount; never overwrite identity."""
         path = Path(root).resolve()
-        path.mkdir(mode=0o700, parents=True, exist_ok=False)
+        try:
+            path.mkdir(mode=0o700, parents=True, exist_ok=False)
+        except FileExistsError:
+            if not allow_empty or not path.is_dir() or any(path.iterdir()):
+                raise
+            path.chmod(0o700)
         cfg = config or RuntimeConfig()
         private_write(path / "config.json", canonical(cfg.model_dump()))
         key = Ed25519PrivateKey.generate()

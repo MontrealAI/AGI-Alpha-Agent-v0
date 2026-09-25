@@ -19,7 +19,7 @@ All contributors must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 Please report security vulnerabilities as described in our [Security Policy](SECURITY.md).
 ## Prerequisites
 - Python 3.11–3.13 (**Python ≥3.11, <3.14**)
-- Docker and Docker Compose (Compose ≥2.5)
+- Docker and Docker Compose (Compose ≥2.20 for the current demo profiles)
 - Git
 - Node.js 22.17.1 for the web client and browser demo. A `.nvmrc` is provided, so run
   `nvm use` before installing Node dependencies.
@@ -46,7 +46,7 @@ docker --version
 docker compose version
 git --version
 ```
-Python must report 3.11–3.13 and Docker Compose must be at least 2.5.
+Python must report 3.11–3.13 and Docker Compose must be at least 2.20 for the current demo profiles.
 
 ## Development Environment
 - Create and activate a Python 3.11–3.13 (**Python ≥3.11, <3.14**) virtual

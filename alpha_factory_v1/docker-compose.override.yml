@@ -61,19 +61,23 @@ services:
   ui:
     <<: *restart_policy
     container_name: alphafactory-ui-dev
-    image: node:22-bookworm-slim
-    working_dir: /ui
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+    image: node:22.17.1-bookworm-slim
+    working_dir: /ui/alpha_factory_v1/core/interface/web_client
+    command: ["sh", "-c", "npm ci && exec npm run dev -- --host 0.0.0.0 --port 3000"]
     ports:
       - "3000:3000"
     volumes:
-      - ./core/interface/web_client:/ui
+      - ./core/interface/web_client:/ui/alpha_factory_v1/core/interface/web_client:ro
+      - ./core/telemetry.js:/ui/alpha_factory_v1/core/telemetry.js:ro
+      - ui-node-modules:/ui/alpha_factory_v1/core/interface/web_client/node_modules
     environment:
       # Vite proxies API requests during dev
       VITE_API_BASE: http://localhost:8000
+      CYPRESS_INSTALL_BINARY: "0"
     healthcheck:
       <<: *default_healthcheck
-      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000"]
+      start_period: 180s
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
     networks: [af-net]
 
   ###########################################################################
@@ -101,3 +105,4 @@ networks:
 
 volumes:
   redis-data:
+  ui-node-modules:

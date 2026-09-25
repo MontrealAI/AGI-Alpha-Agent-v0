@@ -4,6 +4,8 @@
 [operator guide](docs/agent/OPERATIONS.md), [capability matrix](docs/agent/CAPABILITIES.md)
 and [validation evidence](docs/agent/VALIDATION.md). Install the official release wheel and
 hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.
+For the current container demo profiles, use **Docker Compose 2.20 or later**; the older
+Compose minimum in the preserved historical documentation below no longer covers those profiles.
 
 The original vision, flywheels, examples and demos below are preserved verbatim. Historical
 AGI/ASI, economic and compliance aspirations are not release guarantees. This is the

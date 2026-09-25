@@ -193,6 +193,9 @@ The five historical demo Compose consumers use the same context. Their default a
 configuration models and local build inputs are checked by `python -m scripts.validate_legacy_compose
 --docker-compose`. Optional dependency profiles require Compose 2.20 or later. This parse/build-path
 check does not start those research stacks or establish their optional GPU, model or service integrations.
+With `--dev-ui`, the same validator also starts the isolated development dashboard with fresh Node
+dependencies and loads its shared telemetry module. The hot-reload Compose override uses Node 22.17.1,
+read-only source mounts and a separate dependency volume; its first start runs `npm ci`.
 The legacy target requires `API_TOKEN` and the documented legacy environment settings at launch.
 It installs the historical core lock; heavyweight domain integrations remain optional.
 Build from the repository root and bind the published port to host loopback:
@@ -206,6 +209,9 @@ docker exec agialpha-agent cat /data/agent/api.token
 Open `http://127.0.0.1:8000`. The named volume holds the identity, configuration, token and journal;
 do not delete it when upgrading. Commands inside the container use
 `python -m alpha_factory_v1.core.runtime.cli --home /data/agent ...`.
+An existing empty bind-mounted home is also initialized once. Make that directory writable by UID
+10001 before starting the container. A nonempty or partially initialized home is never reinitialized;
+preserve it and restore a verified backup if required files are missing.
 Do not mount the host Docker socket into this service. Use the host installation for coding missions,
 where the isolated evaluator can use a deliberately configured local Docker engine. The container's
 health endpoint is public and minimal; every mission/control endpoint still requires the access token.
