@@ -1,0 +1,1013 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <meta name="theme-color" content="#080e16" />
+        <meta
+            name="description"
+            content="The Ascension Lab: turn opportunities into an encrypted Nova-Seed, fund a FusionPlan, orchestrate work, inspect settlement and explore the mathematics of agent governance."
+        />
+        <title>Ascension Lab · $AGIALPHA</title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/ascension/lab.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#lab-main">Skip to the lab</a>
+        <header class="lab-header">
+            <a class="brand" href="../"
+                ><span class="brand-mark">α</span
+                ><span>AGIALPHA<small>ASCENSION LAB</small></span></a
+            >
+            <nav aria-label="Project navigation">
+                <a href="../#explore">All demos</a
+                ><a href="../agent/WHITEPAPER_IMPLEMENTATION/"
+                    >White paper guide ↗</a
+                >
+            </nav>
+            <span class="mode"><i></i> ON YOUR DEVICE</span>
+        </header>
+        <main id="lab-main">
+            <section class="lab-intro">
+                <div>
+                    <p class="eyebrow">
+                        META-AGENTIC α–AGI / INTERACTIVE RESEARCH LAB
+                    </p>
+                    <h1>From a spark.<br />To an <em>ecosystem.</em></h1>
+                </div>
+                <div class="intro-note">
+                    <p>
+                        Discover the opportunity. Design the plan. Follow the
+                        value.
+                    </p>
+                    <p class="muted">
+                        Explore the white paper as a working, inspectable
+                        system. Algorithms and encryption run here; funding and
+                        governance are explicit protocol simulations.
+                    </p>
+                    <a href="#case-picker" class="text-link"
+                        >Choose your mission ↓</a
+                    >
+                </div>
+            </section>
+            <section
+                id="case-picker"
+                class="case-picker"
+                aria-label="Choose a scenario"
+            ></section>
+            <div class="lab-toolbar">
+                <span id="case-context"></span>
+                <div class="toolbar-actions">
+                    <label class="text-button file-label"
+                        >Import your scenario<input
+                            id="scenario-import"
+                            type="file"
+                            accept=".json,application/json" /></label
+                    ><button id="download-scenario" class="text-button">
+                        Download inputs ↓</button
+                    ><button id="reset-lab" class="text-button">
+                        Reset mission
+                    </button>
+                </div>
+            </div>
+            <p
+                id="lab-status"
+                class="global-status"
+                role="status"
+                aria-live="polite"
+            >
+                Loading the scenario library…
+            </p>
+            <div class="lab-layout">
+                <aside class="journey-rail">
+                    <p class="eyebrow">THE ASCENSION LOOP</p>
+                    <nav id="journey" aria-label="Mission stages">
+                        <button data-step="insight" aria-current="step">
+                            <span>01</span
+                            ><b>Insight<small>Find the opportunity</small></b
+                            ><i></i>
+                        </button>
+                        <button data-step="seed">
+                            <span>02</span
+                            ><b>Nova-Seed<small>Seal the FusionPlan</small></b
+                            ><i></i>
+                        </button>
+                        <button data-step="market">
+                            <span>03</span
+                            ><b>MARK<small>Explore the funding curve</small></b
+                            ><i></i>
+                        </button>
+                        <button data-step="sovereign">
+                            <span>04</span
+                            ><b>Sovereign<small>Coordinate the work</small></b
+                            ><i></i>
+                        </button>
+                        <button data-step="settlement">
+                            <span>05</span
+                            ><b>Council<small>Verify &amp; settle</small></b
+                            ><i></i>
+                        </button>
+                        <button data-step="architect">
+                            <span>06</span
+                            ><b
+                                >Architect<small
+                                    >Improve the next cycle</small
+                                ></b
+                            ><i></i>
+                        </button>
+                    </nav>
+                    <div class="rail-separator"></div>
+                    <button data-step="governance" class="governance-link">
+                        ⌘ &nbsp; Governance observatory
+                    </button>
+                    <div class="rail-note">
+                        <span class="eyebrow">YOU ARE THE OPERATOR</span>
+                        <p>
+                            Your inputs. Explicit decisions. Exportable
+                            evidence.
+                        </p>
+                        <a href="../#operate">Connect your own agent ↗</a>
+                    </div>
+                </aside>
+                <div class="lab-canvas">
+                    <section
+                        class="stage-panel"
+                        data-panel="insight"
+                        aria-labelledby="insight-title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">01 / INSIGHT</p>
+                                <h2 id="insight-title">
+                                    Find the best next move.
+                                </h2>
+                            </div>
+                            <span class="pill">EXACT PORTFOLIO SEARCH</span>
+                        </div>
+                        <p class="panel-lead">
+                            Explore competing opportunities. Change the
+                            assumptions and see which projects make the cut.
+                        </p>
+                        <form id="scenario-form">
+                            <div class="input-pair">
+                                <label
+                                    >Pilot budget <span>planning credits</span
+                                    ><input
+                                        id="scenario-budget"
+                                        type="number"
+                                        min="1"
+                                        max="1000000"
+                                        step="1"
+                                        required /></label
+                                ><label
+                                    >Risk allowance
+                                    <span>additive scenario score</span
+                                    ><input
+                                        id="scenario-risk"
+                                        type="number"
+                                        min="0"
+                                        max="70000"
+                                        step="1"
+                                        required
+                                /></label>
+                            </div>
+                            <div class="table-scroll">
+                                <table class="opportunities">
+                                    <caption>
+                                        Edit opportunity assumptions
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Opportunity</th>
+                                            <th>Cost</th>
+                                            <th>Benefit</th>
+                                            <th>Risk</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="opportunity-inputs"></tbody>
+                                </table>
+                            </div>
+                            <details class="source-editor">
+                                <summary>
+                                    Source notes, effort and complete scenario
+                                    JSON
+                                </summary>
+                                <p>
+                                    Edit up to seven opportunities, with
+                                    research, delivery and verification
+                                    durations. This is your scenario data; no
+                                    live economic data is implied.
+                                </p>
+                                <label for="scenario-json"
+                                    >Scenario document</label
+                                ><textarea
+                                    id="scenario-json"
+                                    rows="12"
+                                    spellcheck="false"
+                                ></textarea
+                                ><button
+                                    id="apply-scenario"
+                                    type="button"
+                                    class="button secondary"
+                                >
+                                    Apply document
+                                </button>
+                            </details>
+                            <div class="actions">
+                                <button
+                                    class="button primary"
+                                    id="analyse"
+                                    type="submit"
+                                >
+                                    Discover the portfolio ↗</button
+                                ><button
+                                    id="stop-analysis"
+                                    type="button"
+                                    class="button secondary"
+                                    hidden
+                                >
+                                    Stop calculation
+                                </button>
+                            </div>
+                        </form>
+                        <div id="insight-results" hidden>
+                            <div
+                                id="portfolio-metrics"
+                                class="metric-grid"
+                            ></div>
+                            <div class="chart-card">
+                                <div class="chart-heading">
+                                    <h3>The opportunity landscape</h3>
+                                    <span>Cost × assumed benefit</span>
+                                </div>
+                                <div
+                                    id="frontier-chart"
+                                    class="chart"
+                                    role="img"
+                                    aria-label="Opportunity costs and benefits"
+                                ></div>
+                                <p class="chart-key">
+                                    <i class="key selected"></i> Selected for
+                                    this portfolio
+                                    <i class="key other"></i> Other
+                                    opportunities
+                                </p>
+                            </div>
+                            <div
+                                id="portfolio-selection"
+                                class="selection-list"
+                            ></div>
+                            <p class="small muted">
+                                The search maximizes the supplied benefit scores
+                                within budget and risk limits. These scores are
+                                assumptions, not measured gains or forecasts.
+                            </p>
+                            <button class="button primary" data-next="seed">
+                                Build the Nova-Seed →
+                            </button>
+                        </div>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="seed"
+                        aria-labelledby="seed-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">02 / NOVA-SEED</p>
+                                <h2 id="seed-title">An idea. Encapsulated.</h2>
+                            </div>
+                            <span class="pill">REAL ENCRYPTION</span>
+                        </div>
+                        <p class="panel-lead">
+                            Your selected opportunities, sources and executable
+                            mission inputs become one portable FusionPlan.
+                        </p>
+                        <div class="seed-display">
+                            <div class="seed-orb" aria-hidden="true">
+                                <div></div>
+                                <span>α</span>
+                            </div>
+                            <div>
+                                <p class="eyebrow">NOVA-SEED GENOME</p>
+                                <h3 id="seed-name">
+                                    Run Insight to prepare your seed.
+                                </h3>
+                                <p id="seed-detail" class="muted"></p>
+                                <span class="pill"
+                                    >AES-256-GCM · SHA-256 COMMITMENT</span
+                                >
+                            </div>
+                        </div>
+                        <details>
+                            <summary>Inspect the genome before sealing</summary>
+                            <pre id="genome-preview" tabindex="0"></pre>
+                        </details>
+                        <form id="seal-form" class="control-card">
+                            <h3>Seal &amp; carry it forward.</h3>
+                            <p>
+                                Choose a private passphrase of at least 12
+                                characters. Keep it separately; a lost
+                                passphrase cannot be recovered.
+                            </p>
+                            <label for="seed-passphrase"
+                                >Private passphrase</label
+                            ><input
+                                id="seed-passphrase"
+                                type="password"
+                                minlength="12"
+                                maxlength="256"
+                                autocomplete="new-password"
+                                required
+                            />
+                            <div class="actions">
+                                <button
+                                    id="seal-seed"
+                                    class="button primary"
+                                    type="submit"
+                                >
+                                    Seal Nova-Seed ↗</button
+                                ><button
+                                    id="download-seed"
+                                    class="button secondary"
+                                    type="button"
+                                    disabled
+                                >
+                                    Download capsule ↓
+                                </button>
+                            </div>
+                            <p id="seed-status" class="small" role="status"></p>
+                            <p class="small muted">
+                                Encryption happens on this device. The capsule
+                                authenticates its contents; it is not an NFT or
+                                a signature proving authorship.
+                            </p>
+                        </form>
+                        <details>
+                            <summary>Recover a saved Nova-Seed</summary>
+                            <form id="recover-form">
+                                <label
+                                    >Sealed capsule<input
+                                        id="seed-import"
+                                        type="file"
+                                        accept=".json,application/json"
+                                        required /></label
+                                ><label
+                                    >Recovery passphrase<input
+                                        id="recovery-passphrase"
+                                        type="password"
+                                        minlength="12"
+                                        maxlength="256"
+                                        autocomplete="off"
+                                        required /></label
+                                ><button class="button secondary" type="submit">
+                                    Decrypt &amp; inspect
+                                </button>
+                                <p id="recovery-status" role="status"></p>
+                            </form>
+                            <pre
+                                id="recovered-genome"
+                                tabindex="0"
+                                hidden
+                            ></pre>
+                            <button
+                                id="restore-plan"
+                                class="button secondary"
+                                hidden
+                            >
+                                Restore this mission
+                            </button>
+                        </details>
+                        <div class="actions">
+                            <button class="button primary" data-next="market">
+                                Explore the funding curve →
+                            </button>
+                        </div>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="market"
+                        aria-labelledby="market-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">03 / MARK</p>
+                                <h2 id="market-title">
+                                    Give the plan momentum.
+                                </h2>
+                            </div>
+                            <span class="pill simulation"
+                                >PROTOCOL SIMULATION</span
+                            >
+                        </div>
+                        <p class="panel-lead">
+                            Explore a transparent funding curve. Each new lot
+                            costs a little more; redemption reverses the exact
+                            curve before execution.
+                        </p>
+                        <div class="chart-card">
+                            <div class="chart-heading">
+                                <h3>The Nova-Seed funding curve</h3>
+                                <span
+                                    >Next lot = 1 + 0.25 × outstanding
+                                    lots</span
+                                >
+                            </div>
+                            <div
+                                id="curve-chart"
+                                class="chart"
+                                role="img"
+                                aria-label="Discrete linear funding curve"
+                            ></div>
+                        </div>
+                        <div id="market-metrics" class="metric-grid"></div>
+                        <form id="market-form" class="control-card">
+                            <div class="input-pair">
+                                <label
+                                    >Lots to fund or redeem<input
+                                        id="market-lots"
+                                        type="number"
+                                        min="1"
+                                        max="1000000"
+                                        step="1"
+                                        value="25"
+                                        required
+                                /></label>
+                                <div class="quote">
+                                    <span class="eyebrow">COST TO FUND</span
+                                    ><strong id="market-quote">—</strong
+                                    ><small>modeled $AGIALPHA</small>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button
+                                    id="buy-lots"
+                                    class="button primary"
+                                    type="submit"
+                                >
+                                    Fund the plan ↗</button
+                                ><button
+                                    id="sell-lots"
+                                    class="button secondary"
+                                    type="button"
+                                >
+                                    Redeem lots
+                                </button>
+                            </div>
+                            <p id="market-status" role="status"></p>
+                        </form>
+                        <p class="small muted">
+                            No wallet, purchase or transaction is involved. The
+                            sandbox uses exact 18-decimal arithmetic and one
+                            modeled funder. These lots are accounting units, not
+                            tradable securities or a claim on real $AGIALPHA.
+                        </p>
+                        <button class="button primary" data-next="sovereign">
+                            Open the FusionPlan →
+                        </button>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="sovereign"
+                        aria-labelledby="sovereign-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">04 / SOVEREIGN</p>
+                                <h2 id="sovereign-title">
+                                    Make the work executable.
+                                </h2>
+                            </div>
+                            <span class="pill">BOUNDED SCHEDULING</span>
+                        </div>
+                        <p class="panel-lead">
+                            Research, delivery, verification. Every selected
+                            project has dependencies, a resource lane and a
+                            place in the schedule.
+                        </p>
+                        <div id="schedule-metrics" class="metric-grid"></div>
+                        <div class="chart-card">
+                            <div class="chart-heading">
+                                <h3>Your FusionPlan</h3>
+                                <span>Scenario time units</span>
+                            </div>
+                            <div
+                                id="gantt-chart"
+                                class="chart"
+                                role="img"
+                                aria-label="Project delivery schedule"
+                            ></div>
+                        </div>
+                        <div id="task-list" class="selection-list"></div>
+                        <div class="control-card">
+                            <h3>Take the plan into your agent.</h3>
+                            <p>
+                                Download native mission inputs. The local
+                                operator can execute these same bounded tasks,
+                                sign the results and keep a durable journal.
+                            </p>
+                            <div class="actions">
+                                <button
+                                    data-mission="allocation"
+                                    class="button secondary"
+                                >
+                                    Portfolio mission ↓</button
+                                ><button
+                                    data-mission="research"
+                                    class="button secondary"
+                                >
+                                    Research mission ↓</button
+                                ><button
+                                    data-mission="schedule"
+                                    class="button secondary"
+                                >
+                                    Schedule mission ↓
+                                </button>
+                            </div>
+                            <a class="text-link" href="../#operate"
+                                >Install &amp; connect your agent ↗</a
+                            >
+                        </div>
+                        <div class="actions">
+                            <button
+                                class="button primary"
+                                data-next="settlement"
+                            >
+                                Convene the Council →
+                            </button>
+                        </div>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="settlement"
+                        aria-labelledby="settlement-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">05 / VALIDATOR COUNCIL</p>
+                                <h2 id="settlement-title">
+                                    Show the work. Trace the value.
+                                </h2>
+                            </div>
+                            <span class="pill simulation"
+                                >PROTOCOL SIMULATION</span
+                            >
+                        </div>
+                        <p class="panel-lead">
+                            Two distinct mechanical checks review the plan. You
+                            decide whether to accept the scenario outcome and
+                            model settlement.
+                        </p>
+                        <div id="council-checks" class="council-grid"></div>
+                        <p class="small muted">
+                            These are budget and capacity checks in one browser,
+                            not independent human validators, formal proofs or
+                            confirmation of real-world delivery.
+                        </p>
+                        <form id="settlement-form" class="control-card">
+                            <h3>Review before settlement.</h3>
+                            <label class="check-label"
+                                ><input
+                                    id="operator-approval"
+                                    type="checkbox"
+                                    required
+                                />
+                                I have inspected this scenario plan and accept
+                                it for modeled settlement.</label
+                            >
+                            <details>
+                                <summary>
+                                    Explore the paper’s value-minting policy
+                                </summary>
+                                <p>
+                                    Projected benefit is never minted
+                                    automatically. Explicitly model a separately
+                                    certified outcome below. The cap includes
+                                    both the actor and treasury mint.
+                                </p>
+                                <div class="input-pair">
+                                    <label
+                                        >Assumed certified value
+                                        <span>token-denominated</span
+                                        ><input
+                                            id="certified-value"
+                                            type="text"
+                                            inputmode="decimal"
+                                            value="0"
+                                            maxlength="80" /></label
+                                    ><label
+                                        >Combined emission cap<input
+                                            id="emission-cap"
+                                            type="text"
+                                            inputmode="decimal"
+                                            value="0"
+                                            maxlength="80"
+                                    /></label>
+                                </div>
+                            </details>
+                            <button
+                                class="button primary"
+                                id="settle-plan"
+                                type="submit"
+                            >
+                                Accept &amp; model settlement ↗
+                            </button>
+                            <p id="settlement-status" role="status"></p>
+                        </form>
+                        <div id="settlement-results" hidden>
+                            <div id="ledger-flow" class="ledger-flow"></div>
+                            <div id="ledger-metrics" class="metric-grid"></div>
+                            <div class="table-scroll" id="ledger-table"></div>
+                            <div class="actions">
+                                <button
+                                    id="download-report"
+                                    class="button secondary"
+                                >
+                                    Download evidence JSON ↓</button
+                                ><button
+                                    id="download-brief"
+                                    class="button secondary"
+                                >
+                                    Download mission brief ↓</button
+                                ><button
+                                    class="button primary"
+                                    data-next="architect"
+                                >
+                                    Build on what worked →
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="architect"
+                        aria-labelledby="architect-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">06 / ARCHITECT</p>
+                                <h2 id="architect-title">
+                                    A better next cycle.
+                                </h2>
+                            </div>
+                            <span class="pill"
+                                >20-POLICY SENSITIVITY SEARCH</span
+                            >
+                        </div>
+                        <p class="panel-lead">
+                            Change the budget and risk policy. Compare the
+                            trade-offs. Choose a new portfolio deliberately.
+                        </p>
+                        <div id="reservoir" class="reservoir-card">
+                            <span class="eyebrow">VALUE RESERVOIR</span>
+                            <h3>
+                                Complete settlement to inspect the reservoir.
+                            </h3>
+                            <p>
+                                Unspent escrow and the modeled treasury remain
+                                visible. Workers’ payouts are not automatically
+                                recycled.
+                            </p>
+                        </div>
+                        <div class="actions">
+                            <button id="run-architect" class="button primary">
+                                Explore 20 policy variants ↗</button
+                            ><button
+                                id="stop-architect"
+                                class="button secondary"
+                                hidden
+                            >
+                                Stop search
+                            </button>
+                        </div>
+                        <p id="architect-status" role="status"></p>
+                        <div id="architect-results" hidden>
+                            <div class="chart-card">
+                                <div class="chart-heading">
+                                    <h3>The policy frontier</h3>
+                                    <span
+                                        >Cost, risk, duration and assumed
+                                        benefit</span
+                                    >
+                                </div>
+                                <div
+                                    id="architect-chart"
+                                    class="chart"
+                                    role="img"
+                                    aria-label="Policy sensitivity frontier"
+                                ></div>
+                            </div>
+                            <div id="policy-list" class="policy-grid"></div>
+                        </div>
+                        <p class="small muted">
+                            This is a reproducible search over your supplied
+                            assumptions. It does not train a model, establish
+                            future returns or prove that successive cycles
+                            improve real-world performance.
+                        </p>
+                    </section>
+                    <section
+                        class="stage-panel"
+                        data-panel="governance"
+                        aria-labelledby="governance-title"
+                        hidden
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <p class="eyebrow">
+                                    THE GOVERNANCE OBSERVATORY
+                                </p>
+                                <h2 id="governance-title">
+                                    Put the mathematics in motion.
+                                </h2>
+                            </div>
+                            <span class="pill">INSPECTABLE MODELS</span>
+                        </div>
+                        <p class="panel-lead">
+                            Explore the paper’s incentives and controls. See the
+                            calculated outcome, including cases where
+                            cooperation does not converge.
+                        </p>
+                        <div class="control-card">
+                            <div class="chart-heading">
+                                <h3>Strategy dynamics</h3>
+                                <span
+                                    >Replicator equation · RK4 integration</span
+                                >
+                            </div>
+                            <div class="input-pair">
+                                <label
+                                    >Game<select id="game-kind">
+                                        <option value="hawk">Hawk–Dove</option>
+                                        <option value="rps">
+                                            Rock–Paper–Scissors
+                                        </option>
+                                        <option value="coordination">
+                                            Coordination
+                                        </option>
+                                    </select></label
+                                ><label
+                                    >Initial first-strategy share
+                                    <output id="mix-value">20%</output
+                                    ><input
+                                        id="initial-mix"
+                                        type="range"
+                                        min="1"
+                                        max="99"
+                                        value="20"
+                                /></label>
+                            </div>
+                            <div id="hawk-inputs" class="input-pair">
+                                <label
+                                    >Resource value V<input
+                                        id="hawk-value"
+                                        type="number"
+                                        min="1"
+                                        max="100"
+                                        value="2" /></label
+                                ><label
+                                    >Conflict cost C<input
+                                        id="hawk-cost"
+                                        type="number"
+                                        min="1"
+                                        max="100"
+                                        value="4"
+                                /></label>
+                            </div>
+                            <div
+                                id="strategy-chart"
+                                class="chart"
+                                role="img"
+                                aria-label="Strategy proportions over time"
+                            ></div>
+                            <div id="strategy-note" class="callout"></div>
+                        </div>
+                        <div class="control-card">
+                            <h3>Risk: calculate the actual formula.</h3>
+                            <p>
+                                Table 4 combines staking (40%), formal
+                                mitigation (40%) and fuzzing (20%). Move the
+                                mitigation assumptions and inspect each
+                                residual.
+                            </p>
+                            <div class="input-pair">
+                                <label
+                                    >Additional mitigation
+                                    <output id="mitigation-value"
+                                        >0 percentage points</output
+                                    ><input
+                                        id="mitigation"
+                                        type="range"
+                                        min="0"
+                                        max="60"
+                                        value="0" /></label
+                                ><label
+                                    >Admission threshold<input
+                                        id="risk-threshold"
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        step="0.01"
+                                        value="0.3"
+                                /></label>
+                            </div>
+                            <div id="risk-chart" class="risk-bars"></div>
+                            <p id="risk-conclusion" class="callout"></p>
+                            <p class="small muted">
+                                At the printed inputs the sum is 0.393045, not
+                                0.215. It exceeds the paper’s 0.3 gate. This is
+                                a normalized scenario score, not a measured
+                                catastrophe probability.
+                            </p>
+                        </div>
+                        <div class="control-card">
+                            <h3>A trillion actions changes the risk budget.</h3>
+                            <div class="input-pair">
+                                <label
+                                    >Per-action failure probability<input
+                                        id="per-action"
+                                        type="number"
+                                        min="0"
+                                        max="1"
+                                        step="any"
+                                        value="0.000000001" /></label
+                                ><label
+                                    >Number of actions<input
+                                        id="action-count"
+                                        type="number"
+                                        min="1"
+                                        max="1000000000000000"
+                                        step="1"
+                                        value="1000000000000"
+                                /></label>
+                            </div>
+                            <div id="action-risk" class="metric-grid"></div>
+                            <p class="small muted">
+                                The independence calculation requires
+                                independent events. The union bound does not;
+                                neither model establishes a real system’s
+                                failure rate.
+                            </p>
+                        </div>
+                        <div class="control-card">
+                            <h3>Identity, stake and consequences.</h3>
+                            <div class="input-pair">
+                                <label
+                                    >Modeled agent identity<input
+                                        id="stake-name"
+                                        value="researcher.alpha.agent.agi.eth"
+                                        maxlength="120" /></label
+                                ><label
+                                    >Stake
+                                    <span>modeled $AGIALPHA; minimum 10</span
+                                    ><input
+                                        id="stake-amount"
+                                        value="100"
+                                        inputmode="decimal"
+                                        maxlength="80"
+                                /></label>
+                            </div>
+                            <label class="check-label"
+                                ><input
+                                    id="identity-attested"
+                                    type="checkbox"
+                                    checked
+                                />
+                                Assume identity is attested in this
+                                scenario</label
+                            ><label
+                                >Fault severity
+                                <output id="severity-value">20%</output
+                                ><input
+                                    id="fault-severity"
+                                    type="range"
+                                    min="0"
+                                    max="10000"
+                                    step="100"
+                                    value="2000"
+                            /></label>
+                            <p id="stake-result" class="callout"></p>
+                            <p class="small muted">
+                                An attestation checkbox is a model input. Actual
+                                wallet signatures, identity providers and
+                                slashing authority belong to an operator
+                                deployment.
+                            </p>
+                        </div>
+                        <div class="control-card">
+                            <h3>A voice. A budget. Time to inspect.</h3>
+                            <div class="input-pair">
+                                <label
+                                    >Votes for the proposal
+                                    <span
+                                        >cost = votes²; 100 credits
+                                        available</span
+                                    ><input
+                                        id="proposal-votes"
+                                        type="number"
+                                        min="-1000"
+                                        max="1000"
+                                        value="7" /></label
+                                ><label
+                                    >Days since the proposal was queued<input
+                                        id="upgrade-days"
+                                        type="range"
+                                        min="0"
+                                        max="10"
+                                        step="1"
+                                        value="0"
+                                    /><output id="days-value"
+                                        >Day 0</output
+                                    ></label
+                                >
+                            </div>
+                            <label class="check-label"
+                                ><input
+                                    id="governance-approved"
+                                    type="checkbox"
+                                />
+                                Assume the proposal has passed its approval
+                                process</label
+                            ><label class="check-label"
+                                ><input
+                                    id="policy-valid"
+                                    type="checkbox"
+                                    checked
+                                />
+                                Policy checks pass</label
+                            >
+                            <p id="governance-result" class="callout"></p>
+                            <p class="small muted">
+                                A passing ballot budget is not a complete
+                                election. The demo also requires explicit
+                                approval, passing policy checks and the full
+                                eight-day delay.
+                            </p>
+                        </div>
+                        <a
+                            class="button secondary"
+                            href="../agent/WHITEPAPER_IMPLEMENTATION/"
+                            >Read the implementation &amp; corrections guide
+                            ↗</a
+                        >
+                    </section>
+                </div>
+            </div>
+            <section class="paper-banner">
+                <div>
+                    <p class="eyebrow">THE ORIGINAL VISION, PRESERVED</p>
+                    <h2>Ambition deserves evidence.</h2>
+                    <p>
+                        Read the original white paper alongside the
+                        implementation map, corrected calculations and limits of
+                        each experiment.
+                    </p>
+                </div>
+                <div class="actions">
+                    <a
+                        class="button primary"
+                        href="../assets/whitepaper_v0.1.0-alphav15.pdf"
+                        >Read the original PDF ↗</a
+                    ><a
+                        class="button secondary"
+                        href="../agent/WHITEPAPER_IMPLEMENTATION/"
+                        >Explore the evidence ↗</a
+                    >
+                </div>
+            </section>
+        </main>
+        <footer>
+            <a href="../">← Back to Gallery</a
+            ><span>AGIALPHA · v1.5.0 · Apache 2.0</span
+            ><a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
+        </footer>
+        <noscript
+            >This interactive lab requires JavaScript. The
+            <a href="../agent/WHITEPAPER_IMPLEMENTATION/"
+                >implementation guide</a
+            >
+            and
+            <a href="../assets/whitepaper_v0.1.0-alphav15.pdf">white paper</a>
+            remain available.</noscript
+        >
+        <script type="module" src="../assets/ascension/lab.mjs"></script>
+    </body>
+</html>

@@ -14,6 +14,7 @@ import html
 import json
 import os
 import re
+import shutil
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -324,6 +325,16 @@ def main() -> None:
     }
     (REPO_ROOT / "docs/assets/portal/examples.json").write_text(json.dumps(examples, indent=2) + "\n")
     INDEX_FILE.write_text(index_html, encoding="utf-8")
+    ascension = REPO_ROOT / "docs/ascension/index.html"
+    ascension.parent.mkdir(parents=True, exist_ok=True)
+    ascension.write_text(
+        (REPO_ROOT / "scripts/templates/ascension.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
+        encoding="utf-8",
+    )
+    # Publish the unchanged original paper, without maintaining a second binary source.
+    shutil.copyfile(
+        REPO_ROOT / "whitepaper_v0.1.0-alphav15.pdf", REPO_ROOT / "docs/assets/whitepaper_v0.1.0-alphav15.pdf"
+    )
 
     gallery_redirect = (
         "<!DOCTYPE html>\n"

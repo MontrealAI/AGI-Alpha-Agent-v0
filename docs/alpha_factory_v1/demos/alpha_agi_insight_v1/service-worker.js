@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-0fa48dd7ae00d0b2";
+const CACHE = "agialpha-gallery-d6bce5286a472dcb";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -165,6 +165,14 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/index.html",
   "../../../alpha_factory_v1/index.html",
   "../../../alpha_super_planner_v1/assets/preview.svg",
+  "../../../ascension/index.html",
+  "../../../assets/ascension/crypto.mjs",
+  "../../../assets/ascension/engine.mjs",
+  "../../../assets/ascension/home.css",
+  "../../../assets/ascension/lab.css",
+  "../../../assets/ascension/lab.mjs",
+  "../../../assets/ascension/scenarios.json",
+  "../../../assets/ascension/worker.mjs",
   "../../../assets/chart-provenance.json",
   "../../../assets/chart.min.js",
   "../../../assets/portal/examples.json",

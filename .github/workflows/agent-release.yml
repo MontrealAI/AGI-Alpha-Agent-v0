@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -375,7 +375,7 @@ jobs:
       - name: Verify exact inherited CSP script hashes
         run: python -m pytest --noconftest -o addopts= tests/security/test_csp.py -q
       - name: Verify independent browser algorithm contracts
-        run: node --test tests/browser/portal_engine.test.mjs
+        run: node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
       - name: Verify every rebuilt demo page
@@ -387,6 +387,8 @@ jobs:
           model_args=()
           if [[ "${{ matrix.assets }}" == "full" ]]; then model_args+=(--model); fi
           python -m scripts.validate_pages_workspace --site site --output evidence/pages-workspace "${model_args[@]}"
+      - name: Verify the complete white-paper Ascension journey and recovery
+        run: python -m scripts.validate_ascension --site site --output evidence/ascension
       - name: Verify the rebuilt gallery simulation and offline recovery
         run: |
           model_args=()
@@ -555,6 +557,7 @@ jobs:
           python -m playwright install --with-deps chromium
           python -m scripts.wait_for_pages_release --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --commit "$GITHUB_SHA" --output evidence/public-pages/release.json
           python -m scripts.validate_pages_workspace --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --model --output evidence/public-pages
+          python -m scripts.validate_ascension --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

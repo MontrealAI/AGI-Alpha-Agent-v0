@@ -20,6 +20,13 @@ def finalize(folder: Path, evidence: Path) -> None:
         raise ValueError("Public Pages evidence differs from the packaged source")
     if workspace["origin"] != url or not workspace["model_required"] or public["url"] != url:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
+    ascension = None
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
+        ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
+        if ascension.get("passed") is not True or ascension.get("origin") != url:
+            raise ValueError("Ascension must pass on the canonical public site")
+        if ascension.get("paper_sha256") != "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa":
+            raise ValueError("Public white paper differs from the preserved original")
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -36,6 +43,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if ascension:
+        manifest["public_ascension"] = ascension
+        manifest["release_gates"].append(
+            "public Ascension journey, authenticated recovery, exact settlement and offline use"
+        )
     manifest["release_gates"].append("public HTTPS Pages workflows and actual offline model generation")
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     checksums = []

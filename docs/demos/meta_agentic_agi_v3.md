@@ -7,7 +7,7 @@
 [Launch Demo](../meta_agentic_agi_v3/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Identity curriculum. Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.
 

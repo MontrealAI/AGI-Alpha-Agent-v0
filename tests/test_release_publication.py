@@ -61,15 +61,30 @@ def test_invalid_package_version_cannot_publish(
         publish_agent_release.main()
 
 
-@pytest.mark.parametrize("problem", [None, "commit", "asset"])
-def test_public_evidence_requires_same_commit_and_intact_package(tmp_path: Path, problem: str | None) -> None:
+@pytest.mark.parametrize(
+    "version,problem",
+    [
+        ("1.4.0", None),
+        ("1.4.0", "commit"),
+        ("1.4.0", "asset"),
+        ("1.5.0", None),
+        ("1.5.0", "commit"),
+        ("1.5.0", "asset"),
+        ("1.5.0", "ascension"),
+        ("1.5.0", "paper"),
+        ("1.5.0", "origin"),
+    ],
+)
+def test_public_evidence_requires_same_commit_and_intact_package(
+    tmp_path: Path, problem: str | None, version: str
+) -> None:
     folder = tmp_path / "release"
     evidence = tmp_path / "evidence"
     folder.mkdir()
     (evidence / "public-pages").mkdir(parents=True)
-    manifest = {"version": "1.4.0", "commit": "a" * 40, "release_gates": []}
+    manifest = {"version": version, "commit": "a" * 40, "release_gates": []}
     (folder / "release-manifest.json").write_text(json.dumps(manifest))
-    archive_path = folder / "alpha-agent-v1.4.0-validation.zip"
+    archive_path = folder / f"alpha-agent-v{version}-validation.zip"
     with zipfile.ZipFile(archive_path, "w") as archive:
         archive.writestr("existing.txt", "existing evidence")
     (folder / "source.zip").write_bytes(b"immutable source fixture")
@@ -83,6 +98,20 @@ def test_public_evidence_requires_same_commit_and_intact_package(tmp_path: Path,
         (folder / "source.zip").write_bytes(b"corrupted source fixture")
     (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
     (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
+    if version == "1.5.0":
+        ascension_dir = evidence / "public-pages" / "ascension"
+        ascension_dir.mkdir()
+        (ascension_dir / "ascension.json").write_text(
+            json.dumps(
+                {
+                    "origin": "https://example.test/" if problem == "origin" else url,
+                    "passed": problem != "ascension",
+                    "paper_sha256": "altered"
+                    if problem == "paper"
+                    else "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa",
+                }
+            )
+        )
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):

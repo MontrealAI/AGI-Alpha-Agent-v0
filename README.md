@@ -1,6 +1,10 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.4.0 adds a useful browser workspace to the connected, bounded working agent.** Start with the
+**Version 1.5.0 brings the white paper to life in the connected Ascension Lab.** Explore the
+[new flagship missions](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/) and
+[implementation map](docs/agent/WHITEPAPER_IMPLEMENTATION.md): Insight, encrypted Nova-Seeds, funding curves,
+Sovereign schedules, Council settlement and Architect policy search. The governance observatory makes
+the paper’s equations interactive and documents necessary mathematical corrections. Start with the
 [operator guide](docs/agent/OPERATIONS.md), [capability matrix](docs/agent/CAPABILITIES.md)
 and [validation evidence](docs/agent/VALIDATION.md). Install the official release wheel and
 hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.

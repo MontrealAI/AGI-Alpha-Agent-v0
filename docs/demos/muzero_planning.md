@@ -7,7 +7,7 @@
 [Launch Demo](../muzero_planning/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Research planning. Runs a small MuZero-style planner in a Gymnasium environment.
 

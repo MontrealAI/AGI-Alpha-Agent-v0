@@ -2,6 +2,12 @@
 
 # AGIALPHA demo catalog
 
+**New in 1.5.0:** [Launch the Ascension Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/).
+Explore the white paper end to end with three editable flagship scenarios, encrypted Nova-Seed recovery,
+computed FusionPlans, exact modeled funding/settlement and an interactive governance observatory.
+The [implementation guide](../../../docs/agent/WHITEPAPER_IMPLEMENTATION.md) maps each mechanism to code,
+test evidence and its limits. The original catalog below remains available in full.
+
 Start with the [browser gallery](https://montrealai.github.io/AGI-Alpha-Agent-v0/).
 It includes **24 demos and 2 reference/support entries**. Most legacy browser charts
 replay bundled illustrative traces; Insight v1 additionally supports real local

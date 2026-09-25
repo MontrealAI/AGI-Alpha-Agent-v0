@@ -71,6 +71,7 @@ def main() -> None:
         "docs/agent/VALIDATION.md",
         "docs/agent/DEMO_VALIDATION.md",
         "docs/agent/PAGES_GUIDE.md",
+        "docs/agent/WHITEPAPER_IMPLEMENTATION.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)

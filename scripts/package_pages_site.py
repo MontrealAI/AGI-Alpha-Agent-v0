@@ -30,19 +30,22 @@ def package(site: Path, output: Path) -> None:
     site = site.resolve()
     version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-    parser = Links()
-    parser.feed((site / "index.html").read_text(encoding="utf-8"))
-    for url in parser.urls:
-        parts = urlsplit(url)
-        if parts.scheme or parts.netloc or not parts.path:
+    for entry in (site / "index.html", site / "ascension/index.html"):
+        if not entry.is_file():
             continue
-        target = (site / unquote(parts.path)).resolve()
-        if not target.is_relative_to(site):
-            raise ValueError(f"Workspace link escapes site: {url}")
-        if target.is_dir():
-            target /= "index.html"
-        if not target.is_file():
-            raise ValueError(f"Broken workspace navigation or asset: {url}")
+        parser = Links()
+        parser.feed(entry.read_text(encoding="utf-8"))
+        for url in parser.urls:
+            parts = urlsplit(url)
+            if parts.scheme or parts.netloc or not parts.path:
+                continue
+            target = (entry.parent / unquote(parts.path)).resolve()
+            if not target.is_relative_to(site):
+                raise ValueError(f"Workspace link escapes site: {url}")
+            if target.is_dir():
+                target /= "index.html"
+            if not target.is_file():
+                raise ValueError(f"Broken workspace navigation or asset: {url}")
     manifest = {
         "schema": 1,
         "version": version,

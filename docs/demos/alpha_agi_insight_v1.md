@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_insight_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Browser + simulation. Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.
 
