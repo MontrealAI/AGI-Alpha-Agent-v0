@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Verify public v1.3.0 release and link its evidence
+on:
+  push:
+    branches: [release/verify-v1.3.0-notes]
+permissions:
+  contents: write
+jobs:
+  verify-public-release:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify public assets and make release evidence directly accessible
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          import zipfile
+          from pathlib import Path
+          from xml.etree import ElementTree
+          repo = "MontrealAI/AGI-Alpha-Agent-v0"
+          tag = "v1.3.0"
+          expected = "616be2c942f72f3c86bdda8a9f9df958938ba1e1"
+          def gh(*args):
+              return subprocess.check_output(["gh", *args], text=True)
+          def read(path):
+              return json.loads(gh("api", f"repos/{repo}/{path}"))
+          release = read(f"releases/tags/{tag}")
+          assert release["id"] == 396684813 and not release["draft"] and not release["prerelease"]
+          reference = read(f"git/ref/tags/{tag}")["object"]
+          assert reference["type"] == "tag"
+          annotated = read(f"git/tags/{reference['sha']}")
+          assert annotated["object"]["sha"] == expected
+          assets = {item["name"]: item for item in release["assets"]}
+          assert len(assets) == 13 and all(item["state"] == "uploaded" for item in assets.values())
+          before = {name: item["digest"] for name, item in assets.items()}
+          folder = Path("verified-release")
+          folder.mkdir()
+          gh("release", "download", tag, "--repo", repo, "--dir", str(folder),
+             "--pattern", "release-manifest.json", "--pattern", "SHA256SUMS",
+             "--pattern", "alpha-agent-v1.3.0-validation.zip")
+          manifest = json.loads((folder / "release-manifest.json").read_text())
+          assert manifest["commit"] == expected and manifest["version"] == "1.3.0"
+          assert manifest["workflow_run"] == f"https://github.com/{repo}/actions/runs/36144347683"
+          sums = {}
+          for line in (folder / "SHA256SUMS").read_text().splitlines():
+              digest, name = line.split("  ", 1)
+              sums[name] = digest
+              assert before[name] == "sha256:" + digest, name
+          assert set(sums) | {"SHA256SUMS"} == set(assets)
+          for path in folder.iterdir():
+              assert "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest() == before[path.name]
+          with zipfile.ZipFile(folder / "alpha-agent-v1.3.0-validation.zip") as archive:
+              cases = list(ElementTree.fromstring(archive.read("regression/regression.xml")).iter("testcase"))
+              failures = sum(case.find("failure") is not None or case.find("error") is not None for case in cases)
+              skipped = [case.find("skipped") for case in cases if case.find("skipped") is not None]
+              expected_failures = sum(item.get("type") == "pytest.xfail" for item in skipped)
+              passed = len(cases) - len(skipped) - failures
+              ordinary_skips = len(skipped) - expected_failures
+              assert (passed, ordinary_skips, expected_failures, failures) == (1066, 54, 4, 0)
+              coverage = ElementTree.fromstring(archive.read("regression/coverage.xml"))
+              coverage_percent = round(float(coverage.attrib["line-rate"]) * 100, 2)
+              assert coverage_percent == 82.09
+          runs = [36144347683, 36144347749, 36144347753, 36144347773]
+          for run_id in runs:
+              run = read(f"actions/runs/{run_id}")
+              assert run["head_sha"] == expected and run["conclusion"] == "success", run_id
+          smoke = read("actions/runs/36144347773/jobs?per_page=100")["jobs"]
+          assert len(smoke) == 9 and all(job["conclusion"] == "success" for job in smoke)
+          body = release["body"].replace(
+              "[Project notice](../DISCLAIMER_SNIPPET.md)",
+              f"[Project notice](https://github.com/{repo}/blob/{tag}/docs/DISCLAIMER_SNIPPET.md)")
+          footer = f"""
+          ## Verified release evidence
+
+          Published from commit [{expected[:12]}](https://github.com/{repo}/commit/{expected}).
+
+          - Release regression: **1,066 passed, 54 skipped, 4 expected failures; 82.09% coverage**.
+          - Integration CI: **1,078 passed** on each of Python 3.11 and 3.12, with 53 skips and 4 expected failures reported in each run.
+          - All nine Linux/macOS/Windows and Python 3.11–3.13 smoke combinations passed.
+          - All 13 uploaded assets were re-downloaded and verified before publication. Public checksum entries also match GitHub's asset digests.
+          - All 2,125 original paths and the historical README/flywheels passed preservation checks.
+
+          [Operator and recovery guide](https://github.com/{repo}/blob/{tag}/docs/agent/OPERATIONS.md) · [Capability boundaries](https://github.com/{repo}/blob/{tag}/docs/agent/CAPABILITIES.md)
+          [Acceptance run](https://github.com/{repo}/actions/runs/36144347683) · [Integration CI](https://github.com/{repo}/actions/runs/36144347749) · [Validation archive](https://github.com/{repo}/releases/download/{tag}/alpha-agent-v1.3.0-validation.zip)
+          [Release manifest](https://github.com/{repo}/releases/download/{tag}/release-manifest.json) · [SHA-256 checksums](https://github.com/{repo}/releases/download/{tag}/SHA256SUMS)
+          """
+          if "## Verified release evidence" not in body:
+              body = body.rstrip() + "\n\n" + footer.strip() + "\n"
+          subprocess.run(
+              ["gh", "api", "--method", "PATCH", f"repos/{repo}/releases/{release['id']}", "--input", "-"],
+              input=json.dumps({"body": body}), text=True, capture_output=True, check=True)
+          after = read(f"releases/tags/{tag}")
+          assert after["body"] == body and not after["draft"] and not after["prerelease"]
+          assert {item["name"]: item["digest"] for item in after["assets"]} == before
+          assert read("releases/latest")["id"] == release["id"]
+          report = {"release": after["html_url"], "release_id": after["id"], "commit": expected,
+                    "annotated_tag": reference["sha"], "assets": before, "checksum_entries": len(sums),
+                    "passed": passed, "skipped": ordinary_skips, "expected_failures": expected_failures,
+                    "coverage_percent": coverage_percent, "native_smoke_combinations": len(smoke),
+                    "required_runs": runs, "public_release_verified": True}
+          (folder / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
+          print(json.dumps(report, indent=2))
+          PY
+      - name: Retain the downloaded public evidence and verification report
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: public-release-verification
+          path: verified-release/
+          if-no-files-found: error
