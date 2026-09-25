@@ -136,8 +136,8 @@ def main(argv: list[str] | None = None) -> int:
                         "configured; validate with a research mission" if journal.config.llm_url else "extractive mode"
                     ),
                     "sandbox": (
-                        "available; execution still requires validation"
-                        if shutil.which("docker") or shutil.which("firejail")
+                        "Docker binary found; execution checks daemon availability and isolation"
+                        if shutil.which("docker")
                         else "unavailable; generated code blocked"
                     ),
                     "capabilities": ["research", "allocation", "schedule", "forecast", "code"],

@@ -66,18 +66,23 @@ def _bounded_run(
         )
 
 
-def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
-    """Execute ``cmd`` under ``firejail`` or ``docker`` constraints.
+def secure_run(cmd: Sequence[str], *, allow_trusted_firejail: bool = False) -> subprocess.CompletedProcess[str]:
+    """Execute untrusted ``cmd`` under Docker constraints.
 
     The sandbox runs with seccomp, ``2`` CPU cores, ``2`` GB of RAM and a
     ``120`` second timeout. When the command exceeds the timeout a
     :class:`SandboxTimeout` is raised.
+
+    ``allow_trusted_firejail=True`` preserves the historical Firejail launcher
+    for explicitly trusted local code only. Its private home is not a complete
+    host filesystem boundary. Agent missions and model tools never enable it.
     """
 
     if not cmd:
         raise ValueError("sandbox command is empty")
     timeout = 120
-    docker, firejail = shutil.which("docker"), shutil.which("firejail")
+    docker = shutil.which("docker")
+    firejail = shutil.which("firejail") if allow_trusted_firejail is True else None
     if docker:
         try:
             available = (
@@ -95,7 +100,7 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
         if not available:
             docker = None
     if not docker and not firejail:
-        raise SandboxUnavailable("a usable Docker daemon or Firejail is required; host execution is forbidden")
+        raise SandboxUnavailable("a usable Docker daemon is required for untrusted code; host execution is forbidden")
     with tempfile.TemporaryDirectory(prefix="alpha-sandbox-") as temporary:
         stage = Path(temporary)
         stage.chmod(0o755)

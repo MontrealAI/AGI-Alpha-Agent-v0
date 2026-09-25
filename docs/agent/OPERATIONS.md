@@ -93,11 +93,14 @@ export ALPHA_SANDBOX_IMAGE='python@sha256:THE_DIGEST_YOU_VERIFIED'
 
 Only the candidate, test inputs and trusted runner enter the container; expected answers remain with
 the evaluator. Network is disabled, root is read-only, execution is non-root, capabilities are dropped,
-and CPU/memory/process/time/output limits apply. Docker is the release-tested backend. The retained
-Firejail compatibility path is not covered by the Docker acceptance evidence. Use a dedicated,
-maintained host for untrusted code; container isolation is not a claim of perfect containment.
-The optional Firejail launcher receives only a fixed executable path, locale and temporary home;
-it never inherits provider credentials, Python startup hooks or other service environment variables.
+and CPU/memory/process/time/output limits apply. Docker is required for agent missions and model tools;
+an unavailable daemon blocks execution even when Firejail is installed. Use a dedicated, maintained
+host for untrusted code; container isolation is not a claim of perfect containment.
+The historical Firejail launcher is retained as the Python-only `allow_trusted_firejail=True` option
+for explicitly trusted local code. It is never enabled by agent missions or model tools and is not
+covered by Docker acceptance evidence. Its private home does not hide every readable host file.
+It receives only a fixed executable path, locale and temporary home, without service credentials or
+Python startup hooks. Do not use that trusted-code option for generated or otherwise untrusted code.
 
 A provided `candidate` bypasses generation. Otherwise generation requires the configured model.
 `examples` are model-visible; `heldout` answers are not. All held-out cases must pass, and results are

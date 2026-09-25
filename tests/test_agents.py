@@ -286,8 +286,8 @@ def test_codegen_agent_sandbox_blocks_import(monkeypatch) -> None:
     import shutil
 
     assert errs
-    if not shutil.which("docker") and not shutil.which("firejail"):
-        assert "generated code is never executed on the host" in errs[-1]
+    if not shutil.which("docker"):
+        assert "host execution is forbidden" in errs[-1]
     else:
         assert "ImportError" in errs[-1]
 

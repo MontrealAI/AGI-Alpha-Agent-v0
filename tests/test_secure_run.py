@@ -22,10 +22,14 @@ def test_secure_run_timeout(monkeypatch) -> None:
         secure_run(["sleep", "130"])
 
 
-def test_secure_run_refuses_host_fallback(monkeypatch) -> None:
+@pytest.mark.parametrize("firejail", [None, "/usr/bin/firejail"])
+def test_secure_run_refuses_host_fallback(monkeypatch, firejail) -> None:
     from alpha_factory_v1.core.utils.secure_run import SandboxUnavailable
 
-    monkeypatch.setattr(shutil, "which", lambda n: None)
+    monkeypatch.setattr(shutil, "which", lambda name: firejail if name == "firejail" else None)
+    monkeypatch.setattr(
+        subprocess, "Popen", lambda *args, **kwargs: pytest.fail("untrusted code reached host execution")
+    )
     with pytest.raises(SandboxUnavailable):
         secure_run(["python", "-c", "print('must not execute')"])
 
@@ -64,12 +68,15 @@ def test_unusable_docker_is_checked_before_candidate_execution(monkeypatch, tmp_
 
     monkeypatch.setattr(subprocess, "run", probe)
     monkeypatch.setattr("alpha_factory_v1.core.utils.secure_run._bounded_run", execute)
+    with pytest.raises(SandboxUnavailable):
+        secure_run(["python", str(candidate)])
+    assert not executions  # A present Firejail must never authorize untrusted code.
     if firejail_available:
-        assert secure_run(["python", str(candidate)]).stdout == "42\n"
+        assert secure_run(["python", str(candidate)], allow_trusted_firejail=True).stdout == "42\n"
         assert len(executions) == 1
     else:
         with pytest.raises(SandboxUnavailable):
-            secure_run(["python", str(candidate)])
+            secure_run(["python", str(candidate)], allow_trusted_firejail=True)
         assert not executions
 
 
