@@ -161,14 +161,20 @@ class StubProvider(BaseProvider):
     name = "stub"
 
     def chat(self, system: str, user: str, **kw) -> str:  # type: ignore[override]
-        LOG.debug("StubProvider called - offline mode.")
-        return "⚠️ Offline stub: no provider available.\n" f"(Echo of last 120 chars of user prompt)\n\n{user[-120:]}"
+        if "Proposer" in system:
+            return (
+                "```python # program\ndef main(x):\n    return x\n```\n"
+                "```json # input\n3\n```\n```json # output\n3\n```"
+            )
+        return "def agent(x):\n    return x"
 
 
 def auto_provider(spec: Optional[str] = None) -> BaseProvider:
     """Instantiate the best available provider, respecting an optional spec."""
     if spec:
         pid, *rest = spec.split(":", 1)
+        if pid == "stub":
+            return StubProvider()
         if pid in {"openai", "oai"}:
             return OpenAIProvider(rest[0] if rest else "gpt-4o-mini")
         if pid in {"anthropic", "claude"}:
@@ -176,6 +182,7 @@ def auto_provider(spec: Optional[str] = None) -> BaseProvider:
         if pid in {"local", "gguf"}:
             mpath = rest[0] if rest else os.getenv("LOCAL_MODEL_PATH", "mistral-7b-instruct.gguf")
             return LocalLlamaProvider(mpath)
+        raise ValueError(f"Unknown provider: {pid}")
 
     # Auto-detect precedence
     with contextlib.suppress(Exception):
@@ -278,53 +285,11 @@ _FORBIDDEN = (
 
 
 def _safe_exec(agent_code: str, x: Any, timeout: int = 3) -> Optional[str]:
-    """
-    Run candidate code in a *very* restrictive subprocess.
+    """Evaluate a candidate through the shared isolated code evaluator."""
+    from alpha_factory_v1.demos.utils.code_eval import evaluate
 
-    Returns `str(output)` or `None` on error / policy violation.
-    """
-    if any(tok in agent_code for tok in _FORBIDDEN):
-        return None
-
-    # Wrap candidate into isolated script
-    with tempfile.NamedTemporaryFile("w+", suffix=".py", delete=False) as tmp:
-        tmp.write(
-            agent_code
-            + "\n\n"
-            + textwrap.dedent(
-                f"""
-                if __name__ == '__main__':
-                    import json, sys
-                    try:
-                        _res = agent({json.dumps(x)})
-                        print(json.dumps(_res, separators=(',', ':')))
-                    except Exception as e:
-                        print(repr(e), file=sys.stderr)
-                """
-            )
-        )
-        tmp.flush()
-        script = tmp.name
-
-    # Launch in capped resource subprocess
-    cmd = [sys.executable, script]
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
-    try:
-        out, err = proc.communicate(timeout=timeout)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        return None
-    finally:
-        with contextlib.suppress(OSError):
-            os.remove(script)
-    if err.strip():
-        return None
-    return out.strip()
+    out, error = evaluate(agent_code, x, "agent")
+    return None if error else out
 
 
 # --------------------------------------------------------------------------- #
@@ -343,11 +308,13 @@ async def evolutionary_search(
     """
     # Run-time import of AZR curriculum (ensures we don’t require it if absent).
     try:
-        from curriculum.azr_engine import curriculum_factory  # type: ignore
+        from alpha_factory_v1.demos.meta_agentic_agi_v3.curriculum.azr_engine import curriculum_factory
     except ImportError as exc:  # pragma: no cover
         LOG.error("AZR engine missing - did you pull sub-module? %s", exc)
         raise
 
+    if generations < 1 or pop_size < 1:
+        raise ValueError("generations and population size must be positive")
     azr = curriculum_factory(fm)
     rng = random.Random(2025)
 
@@ -357,7 +324,6 @@ async def evolutionary_search(
             code=textwrap.dedent(
                 """
                 def agent(x):
-                    \"\"\"Identity baseline.\"\"\"
                     return x
                 """
             ).strip()
@@ -369,6 +335,11 @@ async def evolutionary_search(
     for gen in range(1, generations + 1):
         # --- AZR self-curriculum ------------------------------------------------ #
         tasks = azr.propose(k=max(4, pop_size))  # new challenges
+        if not tasks:
+            raise RuntimeError(
+                "No valid curriculum tasks. Use --provider stub for the offline fixture; "
+                "generated programs require a usable Docker sandbox."
+            )
         solve_res = azr.solve(tasks)
         azr.learn(solve_res)
         db.event(
@@ -392,18 +363,20 @@ async def evolutionary_search(
                 "Return *only* the code block."
             )
             code = fm.chat("You are Builder-Agent.", prompt, temperature=0.7, max_tokens=400)
+            if code.strip().startswith("```"):
+                code = "\n".join(code.strip().splitlines()[1:-1])
             # ensure we only keep the code part
             if "def agent" not in code:
                 code = "def agent(x):\n    return x"
             offspring.append(Candidate(code.strip()))
 
         # --- Evaluate on AZR tasks --------------------------------------------- #
-        for cand in offspring:
+        for cand in population + offspring:
             correct = 0
             for t in tasks:
                 inp = json.loads(t.inp)  # type: ignore[arg-type]
                 expected = t.out.strip()
-                out = _safe_exec(cand.code.replace("def agent", "def main"), inp)
+                out = _safe_exec(cand.code, inp)
                 if out == expected:
                     correct += 1
             cand.metrics = {"correct": correct, "total": len(tasks)}
@@ -458,40 +431,34 @@ def run_cli(args, fm: BaseProvider, db: LineageDB) -> None:
     print(best.code)
     print(
         f"\n🔍  Open the lineage dashboard:\n"
-        f"    streamlit run {pathlib.Path(__file__).with_name('ui_lineage_app.py')} "
+        f"    streamlit run {pathlib.Path(__file__).parent / 'ui' / 'lineage_app.py'} "
         f"-- --db {args.db}\n"
     )
 
 
 # ---------- Streamlit UI --------------------------------------------------- #
 def run_streamlit(args) -> None:
-    try:
-        import pandas as pd
-        import streamlit as st
-    except ImportError:
-        print("⚠  Install UI deps:  pip install streamlit pandas", file=sys.stderr)
-        sys.exit(1)
+    """Launch the maintained lineage UI in the actual Streamlit server."""
+    import subprocess
 
-    db_path = args.db
-    conn = sqlite3.connect(db_path)
-
-    st.set_page_config(page_title="Meta-Agentic AGI Lineage", layout="wide", page_icon="🧬")
-    st.title("📈 Meta-Agentic α-AGI Lineage")
-
-    # Auto-refresh every few seconds
-    poll = st.sidebar.slider("Refresh interval (s)", 2, 30, 5)
-
-    def load_agents():
-        return pd.read_sql("SELECT * FROM agent_lineage ORDER BY id", conn)
-
-    placeholder = st.empty()
-    last = 0
-    while True:
-        with placeholder.container():
-            df = load_agents()
-            st.write(f"Loaded {len(df)} agents")
-            st.dataframe(df, height=600, use_container_width=True)
-        time.sleep(poll)
+    ui = pathlib.Path(__file__).parent / "ui" / "lineage_app.py"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "streamlit",
+            "run",
+            str(ui),
+            "--server.address",
+            "127.0.0.1",
+            "--",
+            "--db",
+            str(pathlib.Path(args.db).resolve()),
+        ],
+        check=False,
+    )
+    if result.returncode:
+        raise RuntimeError("Streamlit stopped with an error. Install the documented UI dependencies.")
 
 
 # ---------- FastAPI service ------------------------------------------------ #
@@ -532,7 +499,7 @@ def run_api(args, fm: BaseProvider, db: LineageDB) -> None:
             return JSONResponse({"status": "running"}, status_code=202)
         return JSONResponse({"code": state["best"].code})  # type: ignore[index]
 
-    uvicorn.run(app, host="0.0.0.0", port=args.port)
+    uvicorn.run(app, host="127.0.0.1", port=args.port)
 
 
 # --------------------------------------------------------------------------- #
@@ -568,14 +535,17 @@ def main() -> None:
     LOG.info("Using provider: %s", fm.name)
     db = LineageDB(args.db)
 
-    if args.mode == "cli":
-        run_cli(args, fm, db)
-    elif args.mode == "streamlit":
-        run_streamlit(args)
-    elif args.mode == "api":
-        run_api(args, fm, db)
-    else:  # pragma: no cover
-        raise ValueError(f"Unknown mode {args.mode}")
+    try:
+        if args.mode == "cli":
+            run_cli(args, fm, db)
+        elif args.mode == "streamlit":
+            run_streamlit(args)
+        elif args.mode == "api":
+            run_api(args, fm, db)
+        else:  # pragma: no cover
+            raise ValueError(f"Unknown mode {args.mode}")
+    finally:
+        db._conn.close()
 
 
 if __name__ == "__main__":

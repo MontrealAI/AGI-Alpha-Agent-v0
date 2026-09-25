@@ -5,6 +5,7 @@ declare global {
     toast?: (msg: string) => void;
     setLlmOffline?: (offline: boolean) => void;
     setLlmApiKey?: (key: string) => void;
+    setLlmApiModel?: (model: string) => void;
     llmChat?: (prompt: string) => Promise<string> | string;
     PINNER_TOKEN?: string;
     OPENAI_API_KEY?: string;

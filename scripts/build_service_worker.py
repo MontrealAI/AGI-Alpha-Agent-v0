@@ -1,125 +1,111 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Generate docs/assets/service-worker.js with updated precache list."""
+"""Build content-versioned gallery caches without touching model or operator caches."""
 from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 
-HEADER_TEMPLATE = """/* SPDX-License-Identifier: Apache-2.0 */
+TEMPLATE = """/* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = '{cache}';
-self.addEventListener('install', (event) => {{
-  event.waitUntil(
-    caches
-      .open(CACHE)
-      .then(async (cache) => {{
-        const assets = ["""
-
-FOOTER = """        ];
-        await cache.addAll(assets);
-      })
-      .catch(() => undefined),
-  );
-  self.skipWaiting();
+const CACHE = __CACHE__;
+const ASSETS = __ASSETS__;
+const URLS = new Set(ASSETS.map(path => new URL(path, self.location.href).href));
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
-self.addEventListener('activate', (event) => {{
-  event.waitUntil(
-    caches.keys().then((names) =>
-      Promise.all(
-        names.map((name) => (name !== CACHE ? caches.delete(name) : undefined)),
-      ),
-    ),
-  );
-  self.clients.claim();
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(names => Promise.all(
+    names.filter(name => name.startsWith('agialpha-gallery-') && name !== CACHE).map(name => caches.delete(name))
+  )).then(() => self.clients.claim()));
 });
-self.addEventListener('fetch', (event) => {{
+self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) {{
-    event.respondWith(
-      caches.open(CACHE).then(async (cache) => {{
-        try {{
-          const resp = await fetch(event.request);
-          if (resp.ok) {{
-            cache.put(event.request, resp.clone());
-          }
-          return resp;
-        }} catch (err) {{
-          const cached =
-            (await cache.match(event.request)) ||
-            (await cache.match(`pyodide/${url.pathname.split('/').pop()}`));
-          return cached || Promise.reject(err);
-        }
-      }),
-    );
-    return;
+  const normalized = new URL(event.request.url);
+  if (event.request.mode === 'navigate') {
+    if (normalized.pathname.endsWith('/')) normalized.pathname += 'index.html';
+    normalized.search = '';
   }
-  event.respondWith(
-    caches.open(CACHE).then((cache) =>
-      cache.match(event.request).then(
-        (cached) =>
-          cached ||
-          fetch(event.request)
-            .then((resp) => {{
-              if (resp.ok) {{
-                cache.put(event.request, resp.clone());
-              }}
-              return resp;
-            }})
-            .catch(() => cached),
-      ),
-    ),
-  );
+  const key = normalized.href;
+  if (!URLS.has(key)) return;
+  event.respondWith(caches.open(CACHE).then(async cache => {
+    if (event.request.mode === 'navigate') {
+      try {
+        const response = await fetch(event.request);
+        if (response.ok) await cache.put(key, response.clone());
+        return response;
+      } catch {
+        return (await cache.match(key)) || Response.error();
+      }
+    }
+    return (await cache.match(key)) || fetch(event.request);
+  }));
 });
 """
 
 
 def gather_assets(docs_dir: Path) -> list[str]:
-    base_assets = docs_dir / "assets"
-    assets: list[str] = []
-    allowed = {".js", ".css", ".svg", ".json", ".wasm", ".tar", ".cast"}
-    pyodide_dir = base_assets / "pyodide"
-    if pyodide_dir.is_dir():
-        order = ["pyodide.js", "pyodide.asm.wasm", "pyodide-lock.json"]
-        for name in order:
-            file = pyodide_dir / name
-            if file.is_file() and file.suffix in allowed:
-                rel = Path("assets") / "pyodide" / file.name
-                assets.append(rel.as_posix())
-    for item in sorted(docs_dir.iterdir()):
-        if not item.is_dir() or item.name == "assets":
+    """Select lightweight gallery resources; Insight manages its own model cache."""
+    assets: set[str] = set()
+    for item in docs_dir.rglob("*"):
+        if not item.is_file():
             continue
-        a_dir = item / "assets"
-        if a_dir.is_dir():
-            for file in sorted(a_dir.rglob("*")):
-                if file.is_file() and file.suffix in allowed:
-                    rel = Path("..") / item.name / "assets" / file.relative_to(a_dir)
-                    assets.append(rel.as_posix())
+        relative = item.relative_to(docs_dir)
+        if "pyodide" in relative.parts:
+            continue
+        if "alpha_agi_insight_v1" in relative.parts:
+            legacy = "alpha_factory_v1/demos/alpha_agi_insight_v1/"
+            allowed = {
+                "index.html",
+                "style.css",
+                "script.js",
+                "plotly.min.js",
+                "d3.v7.min.js",
+                "forecast.json",
+                "population.json",
+                "tree.json",
+            }
+            if relative.as_posix().startswith(legacy) and relative.as_posix().removeprefix(legacy) in allowed:
+                assets.add(relative.as_posix())
+            continue
+        if item.name == "service-worker.js":
+            continue
+        if item.name == "index.html" or relative.as_posix() == "gallery.html":
+            assets.add(relative.as_posix())
+        elif item.suffix in {".js", ".mjs", ".css", ".svg", ".json"} and (
+            "assets" in relative.parts or "stylesheets" in relative.parts
+        ):
+            assets.add(relative.as_posix())
+    return sorted(assets)
 
-    # Add index.html pages so navigation works offline without prior visits
-    for file in sorted(docs_dir.rglob("index.html")):
-        if file.is_file():
-            rel = Path("..") / file.relative_to(docs_dir)
-            assets.append(rel.as_posix())
-    return assets
+
+def build(docs_dir: Path) -> str:
+    """Write root and compatibility workers with a digest of the actual bytes."""
+    assets = gather_assets(docs_dir)
+    digest = hashlib.sha256()
+    for asset in assets:
+        digest.update(asset.encode())
+        digest.update((docs_dir / asset).read_bytes())
+    version = "agialpha-gallery-" + digest.hexdigest()[:16]
+    for destination, prefix in [
+        (docs_dir / "service-worker.js", "./"),
+        (docs_dir / "assets" / "service-worker.js", "../"),
+        (docs_dir / "alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js", "../../../"),
+    ]:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        script = TEMPLATE.replace("__CACHE__", json.dumps(version)).replace(
+            "__ASSETS__", json.dumps([prefix + asset for asset in assets], indent=2)
+        )
+        destination.write_text(script, encoding="utf-8")
+    return version
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--docs", default="docs", help="Documentation directory")
+    parser.add_argument("--docs", type=Path, default=Path("docs"))
     args = parser.parse_args()
-    docs_dir = Path(args.docs)
-    assets = gather_assets(docs_dir)
-    version = "v" + hashlib.sha1("\n".join(assets).encode()).hexdigest()[:8]
-    sw_path = docs_dir / "assets" / "service-worker.js"
-    header = HEADER_TEMPLATE.format(cache=version)
-    lines = [header]
-    for asset in assets:
-        lines.append(f"          '{asset}',")
-    lines.append(FOOTER.replace("{{", "{").replace("}}", "}"))
-    sw_path.write_text("\n".join(lines))
-    print(f"Wrote {sw_path} with cache {version}")
+    print(f"Wrote gallery workers with cache {build(args.docs)}")
 
 
 if __name__ == "__main__":

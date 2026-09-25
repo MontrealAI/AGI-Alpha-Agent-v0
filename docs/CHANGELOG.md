@@ -1,3 +1,12 @@
+## 1.4.0 — usable browser workspace and complete demo catalog
+
+A new GitHub Pages workspace connects checked browser missions, local ONNX generation, reviewed exports,
+optional memory, verification of signed agent results and a guided handoff to the installed agent.
+All original demos, documents and flywheels are retained. The complete launch catalog distinguishes
+working backends, simulations and preserved deployment templates. Dedicated browser and CPU checks
+cover the repaired demos. The exact tested site is published and included in the release archive.
+See [release notes](agent/RELEASE_NOTES_1.4.0.md) and [demo evidence](agent/DEMO_VALIDATION.md).
+
 ## After 1.3.0 — live badge maintenance
 
 Scope CI badges to main, use live watchdog and complete matrix results for Health/Smoke/Integration, and prevent

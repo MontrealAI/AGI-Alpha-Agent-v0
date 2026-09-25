@@ -14,6 +14,7 @@ GitHub Pages gallery stays up to date.
 from __future__ import annotations
 
 import re
+import unicodedata
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +32,7 @@ def extract_title(readme: Path) -> str:
     # Search the first 50 lines for a level-one heading
     for line in lines[:50]:
         m = TITLE_RE.match(line.strip())
-        if m:
+        if m and "DISCLAIMER_SNIPPET.md" not in m.group(1):
             return m.group(1).strip()
     # Fallback to folder name if no heading found early in the file
     return readme.parent.name.replace("_", " ").title()
@@ -58,77 +59,53 @@ def build_page(demo: Path) -> str:
 
     readme_path = demo / "README.md"
     readme_lines = readme_path.read_text(encoding="utf-8").splitlines()
+    explicit_anchors = set(re.findall(r'(?:id|name)=["\']([^"\']+)["\']', "\n".join(readme_lines)))
     if readme_lines and readme_lines[0].startswith("#"):
         readme_lines = readme_lines[1:]
 
+    # Preserve commands, diagrams and prose. Rewrite Markdown link destinations
+    # only, outside code fences; parentheses in Python and shell are not links.
+    github_base = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/"
     cleaned: list[str] = []
-    skip_section = False
+    fence: str | None = None
+    removed_title = False
     for line in readme_lines:
         stripped = line.strip()
-        if skip_section:
-            if stripped.startswith("#") or stripped.startswith("---") or not stripped:
-                skip_section = False
+        if stripped.startswith(("```", "~~~")):
+            marker = stripped[:3]
+            fence = None if fence == marker else marker if fence is None else fence
+            cleaned.append(line)
+            continue
+        if fence is not None:
+            cleaned.append(line)
             continue
         if "DISCLAIMER_SNIPPET.md" in stripped:
             continue
-        if "README.md" in stripped:
+        if not removed_title and TITLE_RE.match(stripped):
+            removed_title = True
             continue
-        if "plugins/" in stripped or "scripts/README.md" in stripped or "tests/README.md" in stripped:
-            continue
-        if ".env.sample" in stripped:
-            continue
-        if "CONCEPTUAL_FRAMEWORK.md" in stripped:
-            continue
-        if "adk_bridge.py" in stripped:
-            continue
-        if "(#" in stripped:
-            continue
-        if (
-            "conceptual research prototype" in stripped
-            or "financial advice" in stripped
-            or "research and educational purposes" in stripped
-            or "trading decisions" in stripped
-            or "no liability" in stripped
-        ):
-            continue
-        if stripped.lower().startswith("##") and "disclaimer" in stripped.lower():
-            skip_section = True
-            continue
-        cleaned.append(line)
 
+        def rewrite(match: re.Match[str]) -> str:
+            url = match.group(2)
+            if url.startswith("#"):
+                if url[1:] in explicit_anchors:
+                    return match.group(0)
+                anchor = unicodedata.normalize("NFKD", url[1:]).encode("ascii", "ignore").decode().lower()
+                anchor = re.sub(r"[^\w\s-]", "", anchor)
+                anchor = re.sub(r"[-\s]+", "-", anchor).strip("-")
+                return match.group(1) + "#" + anchor + ")"
+            if url.startswith(("https://", "http://", "mailto:", "data:")):
+                return match.group(0)
+            path, sep, anchor = url.partition("#")
+            target = (demo / path).resolve()
+            try:
+                rel = target.relative_to(REPO_ROOT)
+            except ValueError:
+                return match.group(0)
+            return match.group(1) + github_base + rel.as_posix() + (sep + anchor if sep else "") + ")"
+
+        cleaned.append(re.sub(r"(\]\()([^\s)]+)\)", rewrite, line))
     readme_text = "\n".join(cleaned).lstrip("\n")
-
-    # Fix relative links that break once the README is moved under docs/demos.
-    github_base = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/"
-    readme_text = re.sub(r"\(\.\./\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
-    readme_text = re.sub(r"\(\.\./\.\./\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
-    readme_text = re.sub(r"\(\.\./\.\./docs/([^)]+)\)", r"(../\1)", readme_text)
-    readme_text = re.sub(
-        r"\((?:\.\./)+AGENTS.md([#^)]+)?\)", lambda m: f"({github_base}AGENTS.md{m.group(1) or ''})", readme_text
-    )
-    readme_text = re.sub(
-        r"\((?:\.\./)+alpha_factory_v1/([^)]+)\)",
-        lambda m: f"({github_base}alpha_factory_v1/{m.group(1)})",
-        readme_text,
-    )
-
-    def _rewrite(match: re.Match[str]) -> str:
-        url, anchor = match.group(1), match.group(2) or ""
-        if url.startswith(("http://", "https://", "#", "mailto:")):
-            return match.group(0)
-        target = (demo / url).resolve()
-        try:
-            rel = target.relative_to(REPO_ROOT)
-        except ValueError:
-            return match.group(0)
-
-        if target.is_dir():
-            index_html = REPO_ROOT / "docs" / target.name / "index.html"
-            if index_html.exists():
-                return f"(../{target.name}/index.html{anchor})"
-        return f"({github_base}{rel.as_posix()}{anchor})"
-
-    readme_text = re.sub(r"\((?!https?://|mailto:|#)([^)#]+)(#[^)]+)?\)", _rewrite, readme_text)
 
     content = [
         DISCLAIMER_LINK,

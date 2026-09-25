@@ -69,6 +69,8 @@ def main() -> None:
         "docs/agent/OPERATIONS.md",
         "docs/agent/CAPABILITIES.md",
         "docs/agent/VALIDATION.md",
+        "docs/agent/DEMO_VALIDATION.md",
+        "docs/agent/PAGES_GUIDE.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)
@@ -90,9 +92,13 @@ def main() -> None:
                 if hashlib.file_digest(model_file, "sha256").hexdigest() != expected:
                     raise ValueError(f"Packaged browser model checksum mismatch: {name}")
     shutil.copy2(browser_source, browser_target)
+    site_archive = args.evidence / "pages-distribution" / "site.tar.gz"
+    shutil.copy2(site_archive, output / f"alpha-agent-v{version}-site.tar.gz")
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(args.evidence.rglob("*")):
-            if path.is_file() and "browser-distribution" not in path.relative_to(args.evidence).parts:
+            if path.is_file() and not {"browser-distribution", "pages-distribution", "github-pages"}.intersection(
+                path.relative_to(args.evidence).parts
+            ):
                 archive.write(path, path.relative_to(args.evidence))
         for path in sorted(Path("docs/agent/release-evidence").glob("*.json")):
             archive.write(path, "local/" + path.name)
@@ -121,6 +127,9 @@ def main() -> None:
             "legacy browser tests",
             "complete gallery rebuild and offline simulation",
             "real browser ONNX generation online and offline",
+            "complete browser workspace, native handoff and Ed25519 verification",
+            "native CPU demos and Streamlit lineage UIs",
+            "complete demo catalog and every browser replay",
             "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",
             "Solidity tests with shipped identity logic",
             "real local EVM payments",

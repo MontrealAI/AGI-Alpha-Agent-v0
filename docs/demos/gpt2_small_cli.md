@@ -3,7 +3,32 @@
 # GPT‑2 Small CLI Demo
 
 ![preview](../gpt2_small_cli/assets/preview.svg){.demo-preview}
-# GPT‑2 Small CLI Demo
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Local model. Generates text with the actual GPT-2 124M model.
+
+**Prerequisites:** torch, transformers and roughly 550 MB model storage; first download requires network. Use --model-path PATH --offline with cached weights.
+
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run gpt2_small_cli
+```
+
+**Expected result:** Generated text after the model has loaded.
+
+**Scope:** CPU latency varies; this is a completion model, not an instruction-following assistant.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
+
+
 
 This minimal example downloads the official GPT‑2 124M checkpoint using
 `scripts/download_gpt2_small.py`, which first tries the Hugging Face mirror and

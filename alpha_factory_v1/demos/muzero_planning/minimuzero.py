@@ -200,19 +200,23 @@ class MiniMu:
 
 
 def play_episode(agent: MiniMu, render: bool = True, max_steps: int = 500) -> Tuple[List, float]:
-    """Run a full episode using the agent."""
-    obs = agent.reset()
+    """Run at most ``max_steps`` transitions and always close the environment."""
+    if max_steps < 1:
+        raise ValueError("max_steps must be positive")
     frames: List = []
     total_reward = 0.0
-    done = False
-    truncated = False
-    while not done and not truncated and len(frames) < max_steps:
+    try:
+        obs = agent.reset()
+        for _ in range(max_steps):
+            if render:
+                frames.append(agent.env.render())
+            action = agent.act(obs)
+            obs, reward, done, truncated, _ = agent.env.step(action)
+            total_reward += float(reward)
+            if done or truncated:
+                break
         if render:
             frames.append(agent.env.render())
-        action = agent.act(obs)
-        obs, reward, done, truncated, _ = agent.env.step(action)
-        total_reward += float(reward)
-    if render:
-        frames.append(agent.env.render())
-    agent.env.close()
+    finally:
+        agent.env.close()
     return frames, total_reward

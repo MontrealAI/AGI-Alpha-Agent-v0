@@ -18,7 +18,7 @@ Core features
 from __future__ import annotations
 import argparse, asyncio, json, os, random, sqlite3, sys, time, hashlib, textwrap
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Optional, Any
 
@@ -127,10 +127,16 @@ class Fitness:
 
 def pareto_sort(pop: List[Fitness]) -> None:
     """Assign ≤ 1-based rank for each individual (NSGA-II style)."""
+
+    def objective(fit: Fitness, key: str) -> float:
+        value = getattr(fit, key)
+        return -value if key in {"accuracy", "novelty"} else value
+
     keys = [k for k in Fitness.__annotations__.keys() if k != "rank"]
     for fi in pop:
         fi.rank = 1 + sum(
-            all(getattr(fj, k) <= getattr(fi, k) for k in keys) and any(getattr(fj, k) < getattr(fi, k) for k in keys)
+            all(objective(fj, k) <= objective(fi, k) for k in keys)
+            and any(objective(fj, k) < objective(fi, k) for k in keys)
             for fj in pop
         )
 
@@ -164,7 +170,7 @@ def db_conn():
 def db_insert(db, e_id: int, gen: int, code: str, fit: Fitness):
     db.execute(
         "INSERT INTO lineage VALUES (?,?,?,?,?)",
-        (e_id, gen, datetime.utcnow().isoformat(), code, json.dumps(asdict(fit))),
+        (e_id, gen, datetime.now(timezone.utc).isoformat(), code, json.dumps(asdict(fit))),
     )
     db.commit()
 
@@ -178,8 +184,8 @@ def evaluate_agent(code: str, reps: int = 3) -> float:
 
     For demonstration we return a pseudo-accuracy in [0.80, 1.00).
     """
-    random.seed(hash(code) & 0xFFFF_FFFF)
-    return sum(0.8 + random.random() * 0.2 for _ in range(reps)) / reps
+    rng = random.Random(hashlib.sha256(code.encode()).digest())
+    return sum(0.8 + rng.random() * 0.2 for _ in range(reps)) / reps
 
 
 # ────────────────────────────────────────────────────────────────────
@@ -224,7 +230,7 @@ async def meta_loop(generations: int, provider_spec: str):
             carbon=answer.latency * 0.0002,
             novelty=novelty_hash(candidate_code),
         )
-        e_id = random.randint(1, 1_000_000_000)
+        e_id = db.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM lineage").fetchone()[0]
         db_insert(db, e_id, gen, candidate_code, fit)
         arc[e_id] = fit
 
@@ -234,7 +240,9 @@ async def meta_loop(generations: int, provider_spec: str):
 
         print(f"Gen {gen:02d} | acc={fit.accuracy:.3f} lat={fit.latency:.2f}s " f"cost=${fit.cost:.4f} rank={fit.rank}")
 
-    print("✅ Meta-search finished → run  `streamlit run ui/lineage_app.py`")
+    db.close()
+    print(f"Simulation complete. Synthetic fitness only; lineage saved to {DB.resolve()}")
+    print(f"Dashboard: streamlit run {Path(__file__).parent / 'ui' / 'lineage_app.py'} -- --db {DB.resolve()}")
 
 
 # ────────────────────────────────────────────────────────────────────

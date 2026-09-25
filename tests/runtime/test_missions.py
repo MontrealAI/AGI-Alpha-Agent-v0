@@ -509,3 +509,21 @@ def test_portable_export_requires_trusted_identity_and_intact_content(journal: J
     artifact["receipt"]["body"]["document"]["result"]["value"] += 1
     with pytest.raises(ValueError):
         verify_export(artifact, journal.public)
+
+
+def test_export_portable_canonical_bytes_match_signed_record(journal: Journal) -> None:
+    from alpha_factory_v1.core.runtime.engine import verify_export
+    from alpha_factory_v1.core.runtime.store import canonical
+
+    engine = Engine(journal)
+    queued = journal.submit(mission("forecast"))
+    record = engine.execute(queued["id"])
+    engine.review(record["id"], record["revision"], digest(record["result"]), True, "Checked temporal split")
+    artifact = engine.export(record["id"])
+    receipt = artifact["receipt"]
+    assert receipt["canonical_body"].encode() == canonical(receipt["body"])
+    assert receipt["canonical_result"].encode() == canonical(receipt["body"]["document"]["result"])
+    assert verify_export(artifact, journal.public)["valid"]
+    receipt["canonical_body"] += " "
+    with pytest.raises(ValueError, match="canonical body mismatch"):
+        verify_export(artifact, journal.public)

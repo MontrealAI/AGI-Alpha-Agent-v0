@@ -84,7 +84,10 @@ def main() -> None:
                     body='{"choices":[{"message":{"content":"provider fixture"}}]}',
                 ),
             )
-            evaluate("window.setLlmApiKey('acceptance-fixture'); window.setLlmOffline(false)")
+            evaluate(
+                "window.setLlmApiModel('acceptance-fixture'); "
+                "window.setLlmApiKey('acceptance-fixture'); window.setLlmOffline(false)"
+            )
             assert evaluate("localStorage.getItem('OPENAI_API_KEY')") is None
             assert evaluate("window.llmChat('fixture')") == "provider fixture"
             page.unroute("https://api.openai.com/v1/chat/completions")

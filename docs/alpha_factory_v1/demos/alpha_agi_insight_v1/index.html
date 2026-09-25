@@ -19,6 +19,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <aside class="current-guide"><strong>Preserved Insight presentation · synthetic 2025 scenario.</strong>
+    These curves and scripted agent logs illustrate the original design; they are not measured forecasts or economic valuations.
+    <a href="../../../alpha_agi_insight_v1/">Open the current interactive Insight studio</a> ·
+    <a href="../../../agent/PAGES_GUIDE/">Workspace guide</a></aside>
+  <p id="legacy-status" role="status" aria-live="polite">Loading the bundled scenario…</p>
   <header>
     <h1><span aria-hidden="true">🎖️</span> α‑AGI Insight <span class="eye" aria-hidden="true">👁️</span><span aria-hidden="true">✨</span> — Beyond Human Foresight</h1>
     <p class="tagline">
@@ -28,8 +33,8 @@
     </p>
   </header>
   <div id="mode-control">
-    <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-    <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
+    <button id="offline-mode" aria-label="Replay bundled sample">Offline</button>
+    <button id="online-mode" aria-label="Generate synthetic data with OpenAI">OpenAI API</button>
   </div>
 
   <main>
@@ -104,7 +109,7 @@
         This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
       </section>
       <p>
-        <a href="../../README/">⬅ Back to Documentation</a>
+        <a href="../../../PROJECT_README/">⬅ Back to Documentation</a>
       </p>
       <p>
         <a href="../index.html">⬅️ Back to Gallery</a>
@@ -113,7 +118,7 @@
 
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(() => {
+      navigator.serviceWorker.register('../../../service-worker.js').catch(() => {
         console.warn('Service worker registration failed');
       });
     }

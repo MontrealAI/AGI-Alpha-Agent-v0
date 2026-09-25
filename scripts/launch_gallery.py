@@ -10,6 +10,7 @@ server so users can explore the demos offline.
 from __future__ import annotations
 
 import subprocess
+import re
 import sys
 import threading
 from functools import partial
@@ -29,16 +30,24 @@ def _build_local_site(repo_root: Path) -> bool:
     if not script.is_file():
         return False
     try:
-        subprocess.run([str(script)], check=True)
+        subprocess.run([str(script)], check=True, cwd=repo_root)
     except Exception:
         return False
     return True
 
 
 def _gallery_url() -> str:
-    remote = subprocess.check_output(["git", "config", "--get", "remote.origin.url"], text=True).strip()
-    repo_path = remote.split("github.com")[-1].lstrip(":/").removesuffix(".git")
-    org, repo = repo_path.split("/", 1)
+    try:
+        remote = subprocess.check_output(
+            ["git", "config", "--get", "remote.origin.url"],
+            text=True,
+            cwd=REPO_ROOT,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        remote = ""
+    match = re.search(r"github\.com[:/]([\w.-]+)/([\w.-]+?)(?:\.git)?$", remote)
+    org, repo = match.groups() if match else ("MontrealAI", "AGI-Alpha-Agent-v0")
     return f"https://{org}.github.io/{repo}/alpha_factory_v1/demos/"
 
 

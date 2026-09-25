@@ -1,10 +1,35 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Simulation. Runs a bounded multi-agent business cycle with local fallback results.
+
+**Prerequisites:** Repository demo dependencies; optional model/ADK services must be configured separately.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run alpha_agi_business_3_v1
+```
+
+**Expected result:** One completed business cycle and its audit output.
+
+**Scope:** The local fallback is simulated; no fundraising or real-world execution is established.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 
 # 🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — **Omega‑Grade Edition**  
+
 > **Alpha‑Factory v1 → Ω‑Lattice v0**  
 > _Transmuting cosmological free‑energy gradients into compounding cash‑flows._
 

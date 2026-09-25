@@ -13,7 +13,7 @@ import {pinFiles} from './src/ipfs/pinner.ts';
 import {initGestures} from './src/ui/gestures.js';
 import {initFpsMeter} from './src/ui/fpsMeter.js';
 import {initI18n,t} from './src/ui/i18n.js';
-import {chat as llmChat, setOffline as setLlmOffline, setApiKey as setLlmApiKey} from './src/utils/llm.js';
+import {chat as llmChat, setOffline as setLlmOffline, setApiKey as setLlmApiKey, setApiModel as setLlmApiModel} from './src/utils/llm.js';
 import { initTelemetry } from '@insight-src/telemetry.js';
 import { lcg } from './src/utils/rng.js';
 import { paretoFront } from './src/utils/pareto.js';
@@ -47,6 +47,7 @@ window.toast = toast;
 window.llmChat=llmChat;
 window.setLlmOffline=setLlmOffline;
 window.setLlmApiKey=setLlmApiKey;
+window.setLlmApiModel=setLlmApiModel;
 
 window.addEventListener('message', (ev) => {
   if (ev.data && ev.data.type === 'error') {

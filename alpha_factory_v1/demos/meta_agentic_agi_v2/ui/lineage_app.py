@@ -20,6 +20,7 @@ Copyright © 2025 MONTREAL.AI  |  Apache-2.0
 from __future__ import annotations
 
 import json
+import argparse
 import os
 import sqlite3
 import time
@@ -34,7 +35,10 @@ from streamlit_autorefresh import st_autorefresh  # pip install streamlit-autore
 # ────────────────────────────────────────────────────────────────────────────────
 # 1. Configuration ─ env overrides make it portable & CI-friendly
 # ────────────────────────────────────────────────────────────────────────────────
-DB_ENV = os.getenv("METAAGI_DB")  # custom DB path (optional)
+parser = argparse.ArgumentParser(add_help=False)
+parser.add_argument("--db")
+ui_args, _unknown = parser.parse_known_args()
+DB_ENV = ui_args.db or os.getenv("METAAGI_DB")  # custom DB path (optional)
 REFRESH = int(os.getenv("METAAGI_REFRESH", 5))  # seconds between polls
 THEME = os.getenv("METAAGI_THEME", "light")  # Streamlit theme override
 
@@ -57,15 +61,22 @@ def connect(db_path: Path) -> sqlite3.Connection:
             "‣ Make sure you have run `meta_agentic_agi_demo_v2.py` at least once, or\n"
             "‣ Set METAAGI_DB env-var to the correct .sqlite path."
         )
-    conn = sqlite3.connect(str(db_path), check_same_thread=False)
+    conn = sqlite3.connect(db_path.resolve().as_uri() + "?mode=ro", uri=True, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
 
-@st.cache_data(ttl=2, show_spinner=False)
 def fetch_dataframe(conn: sqlite3.Connection) -> pd.DataFrame:
     """Load & denormalise lineage table → Pandas DataFrame."""
-    df = pd.read_sql("SELECT * FROM lineage ORDER BY gen ASC", conn)
+    tables = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    if "lineage" in tables:
+        df = pd.read_sql("SELECT * FROM lineage ORDER BY gen ASC", conn)
+    elif "agent_lineage" in tables:
+        df = pd.read_sql("SELECT * FROM agent_lineage ORDER BY generation ASC", conn).rename(
+            columns={"generation": "gen", "agent_code": "code", "metrics": "fitness"}
+        )
+    else:
+        raise ValueError("This file is not a demo lineage database")
     if df.empty:
         return df
 
@@ -84,7 +95,11 @@ def nice(name: str) -> str:
 # ────────────────────────────────────────────────────────────────────────────────
 # 3. Streamlit page setup
 # ────────────────────────────────────────────────────────────────────────────────
-st.set_page_config(page_title="Lineage – Meta-Agentic α-AGI", layout="wide", page_icon="📊", theme={"base": THEME})
+st.set_page_config(
+    page_title="Lineage – Meta-Agentic α-AGI",
+    layout="wide",
+    page_icon="📊",
+)
 
 st.title("📊 Meta-Agentic α-AGI Lineage")
 st.caption(
@@ -97,7 +112,7 @@ st_autorefresh(interval=REFRESH * 1000, key="__refresh")
 # DB connection
 try:
     conn = connect(DB_PATH)
-except FileNotFoundError as e:
+except (FileNotFoundError, ValueError, sqlite3.DatabaseError) as e:
     st.error(str(e))
     st.stop()
 
@@ -113,11 +128,13 @@ with st.sidebar:
     st.header("⚙️ Controls")
 
     g_min, g_max = int(df["gen"].min()), int(df["gen"].max())
-    gen_range = st.slider(
-        "Generation range", min_value=g_min, max_value=g_max, value=(g_min, g_max), step=1, format="%d"
+    gen_range = (
+        (g_min, g_max)
+        if g_min == g_max
+        else st.slider("Generation range", min_value=g_min, max_value=g_max, value=(g_min, g_max), step=1, format="%d")
     )
 
-    metric_cols = ["accuracy", "latency", "cost", "carbon", "novelty"]
+    metric_cols = [col for col in ["accuracy", "correct", "total", "latency", "cost", "carbon", "novelty"] if col in df]
     sel_metric = st.selectbox(
         "Metric to plot",
         metric_cols,
@@ -128,7 +145,7 @@ with st.sidebar:
     show_code = st.checkbox("Show code snippets", value=False)
     csv_button = st.download_button(
         "📥 Export filtered CSV",
-        data=df.to_csv(index=False).encode(),
+        data=df.query("@gen_range[0] <= gen <= @gen_range[1]").to_csv(index=False).encode(),
         file_name="meta_agentic_lineage.csv",
         mime="text/csv",
     )

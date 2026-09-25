@@ -1,4 +1,28 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Local API client. Validates a bundled job and can submit it to a configured legacy orchestrator.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run alpha_agi_marketplace_v1
+```
+
+**Expected result:** A dry-run JSON job; remove --dry-run only after starting the documented local API.
+
+**Scope:** This is an API client and job fixture, not a deployed exchange or token settlement service.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -148,6 +172,7 @@ git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/alpha_agi_marketplace_v1
 
 # spin up full stack
+
 docker compose --profile full up -d
 
 open http://localhost:7749           # Dashboard SPA

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { setUseGpu, gpuAvailable, setOffline, isOffline, setApiKey, hasApiKey, chat } from '../utils/llm.ts';
+import { setUseGpu, gpuAvailable, setOffline, isOffline, setApiKey, hasApiKey, setApiModel, getApiModel, chat } from '../utils/llm.ts';
 import type { EvaluatorGenome } from '../evaluator_genome.ts';
 import type { GpuToggleEvent } from './types.ts';
 
@@ -21,9 +21,15 @@ export function initPowerPanel(): {
     padding: '8px',
     fontSize: '12px',
     zIndex: 1000,
-    whiteSpace: 'pre',
+    whiteSpace: 'normal',
+    maxWidth: 'calc(100vw - 20px)',
+    maxHeight: 'calc(100vh - 20px)',
+    overflow: 'auto',
+    boxSizing: 'border-box',
   });
   const pre = document.createElement('pre');
+  pre.style.whiteSpace = 'pre-wrap';
+  pre.style.overflowWrap = 'anywhere';
   const gpuLabel = document.createElement('label');
   const gpuToggle = document.createElement('input');
   gpuToggle.type = 'checkbox';
@@ -50,6 +56,20 @@ export function initPowerPanel(): {
   modeLabel.appendChild(modeSelect);
   panel.appendChild(modeLabel);
   panel.appendChild(pre);
+  const apiModelLabel = document.createElement('label');
+  apiModelLabel.textContent = ' API model ID ';
+  const apiModelInput = document.createElement('input');
+  apiModelInput.id = 'api-model-id';
+  apiModelInput.maxLength = 128;
+  apiModelInput.placeholder = 'Model available in your account';
+  apiModelInput.setAttribute('aria-label', 'OpenAI model ID');
+  apiModelInput.value = getApiModel();
+  apiModelLabel.style.display = 'block';
+  apiModelInput.style.maxWidth = '100%';
+  apiModelInput.addEventListener('input', () => setApiModel(apiModelInput.value));
+  apiModelLabel.append(apiModelInput);
+  panel.appendChild(apiModelLabel);
+
   const completion = document.createElement('details');
   const summary = document.createElement('summary');
   summary.textContent = 'Try text generation';
@@ -98,6 +118,11 @@ export function initPowerPanel(): {
   setOffline(modeSelect.value === 'offline');
   modeSelect.addEventListener('change', () => {
     const offline = modeSelect.value === 'offline';
+    if (!offline && !getApiModel()) {
+      const model = prompt('OpenAI model ID for this paid request');
+      if (!model?.trim()) { modeSelect.value = 'offline'; setOffline(true); return; }
+      setApiModel(model); apiModelInput.value = model.trim();
+    }
     if (!offline && !hasApiKey()) {
       const key = prompt('Enter OpenAI API key');
       if (key) {

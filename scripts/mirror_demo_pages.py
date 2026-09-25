@@ -30,26 +30,33 @@ EXCLUDE = {
 
 
 def fix_paths(target: Path) -> None:
-    """Adjust relative links in the mirrored demo."""
-    index = target / "index.html"
-    if index.exists():
-        data = index.read_text()
-        for old, new in REPLACEMENTS.items():
-            data = data.replace(old, new)
-        index.write_text(data)
+    """Resolve shared resources from each copied file, including nested JS/CSS."""
+    source = DOCS_DIR / target.name
+    for copied in target.rglob("*"):
+        if not copied.is_file() or copied.suffix not in {".html", ".js", ".css", ".md"}:
+            continue
+        original = source / copied.relative_to(target)
+        text = copied.read_text(encoding="utf-8")
 
-    script = target / "script.js"
-    if script.exists():
-        txt = script.read_text()
-        txt = txt.replace("../assets/", "../../../assets/")
-        script.write_text(txt)
+        def rewrite(match: re.Match[str]) -> str:
+            quote, url = match.group(1), match.group(2)
+            path, sep, fragment = url.partition("#")
+            resolved = (original.parent / path).resolve()
+            if resolved.is_relative_to(source.resolve()):
+                return match.group(0)
+            if not resolved.is_relative_to(DOCS_DIR.resolve()):
+                return match.group(0)
+            rel = Path(os.path.relpath(resolved, copied.parent)).as_posix()
+            if not rel.startswith("."):
+                rel = "./" + rel
+            return quote + rel + (sep + fragment if sep else "") + quote
 
-    snippet = DOCS_DIR / "DISCLAIMER_SNIPPET.md"
-    for md in target.rglob("*.md"):
-        txt = md.read_text()
-        rel = os.path.relpath(snippet, md.parent)
-        txt = re.sub(r"\((?:\./|\.\./)+DISCLAIMER_SNIPPET\.md\)", f"({rel})", txt)
-        md.write_text(txt)
+        text = re.sub(r"([\"'])(\.\.?/[^\"'\s]+)\1", rewrite, text)
+        snippet = DOCS_DIR / "DISCLAIMER_SNIPPET.md"
+        if copied.suffix == ".md":
+            rel = os.path.relpath(snippet, copied.parent)
+            text = re.sub(r"\((?:\./|\.\./)+DISCLAIMER_SNIPPET\.md\)", f"({rel})", text)
+        copied.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
@@ -63,9 +70,10 @@ def main() -> None:
         if not (entry / "index.html").is_file():
             continue
         target = SUBDIR_ROOT / name
-        if target.exists():
-            shutil.rmtree(target)
-        shutil.copytree(entry, target)
+        # This original mirror is a distinct Plotly/tree presentation, not a duplicate.
+        if name == "alpha_agi_insight_v1" and (target / "index.html").is_file():
+            continue
+        shutil.copytree(entry, target, dirs_exist_ok=True)
         fix_paths(target)
     print("Mirrored demos to", SUBDIR_ROOT.relative_to(REPO_ROOT))
 

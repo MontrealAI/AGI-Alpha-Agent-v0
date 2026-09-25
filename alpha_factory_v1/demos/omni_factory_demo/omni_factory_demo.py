@@ -53,7 +53,7 @@ import sys
 import time
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 ###############################################################################
 # Optional third‑party (feature‑flagged)                                      #
@@ -121,8 +121,8 @@ if "gadk" not in globals():
 ###############################################################################
 # Alpha‑Factory backbone                                                      #
 ###############################################################################
-from alpha_factory_v1.backend.orchestrator import Orchestrator  # noqa: E402
-from alpha_factory_v1.backend.world_model import wm  # noqa: E402
+if TYPE_CHECKING:
+    from alpha_factory_v1.backend.orchestrator import Orchestrator
 
 PLUGINS: list[ModuleType] = []
 
@@ -211,7 +211,7 @@ _FALLBACK_SCENARIOS: tuple[str, ...] = (
 def _llm_one_liner(prompt: str) -> str:
     """LLM helper with deterministic fallback."""
     if "openai" not in globals() or not os.getenv("OPENAI_API_KEY"):
-        idx = abs(hash(prompt) + CFG.seed) % len(_FALLBACK_SCENARIOS)
+        idx = (int(hashlib.sha256(prompt.encode()).hexdigest()[:16], 16) + CFG.seed) % len(_FALLBACK_SCENARIOS)
         return _FALLBACK_SCENARIOS[idx]
     try:
         openai.api_key = os.getenv("OPENAI_API_KEY")  # type: ignore[attr-defined]
@@ -224,7 +224,7 @@ def _llm_one_liner(prompt: str) -> str:
         )
         return resp.choices[0].message.content.strip()  # type: ignore[index]
     except Exception:  # pragma: no cover – network/quotas/etc.
-        idx = abs(hash(prompt) + CFG.seed) % len(_FALLBACK_SCENARIOS)
+        idx = (int(hashlib.sha256(prompt.encode()).hexdigest()[:16], 16) + CFG.seed) % len(_FALLBACK_SCENARIOS)
         return _FALLBACK_SCENARIOS[idx]
 
 
@@ -395,6 +395,8 @@ def _plan(obs: List[float], scenario: str) -> Dict[str, Any]:
         action_id = int(sum(obs) * 10) % 5
         return {"action": {"id": action_id}}
     # 3) Alpha‑Factory world‑model planner ----------------------------------
+    from alpha_factory_v1.backend.world_model import wm
+
     plan = wm.plan("smart_city", {"obs": obs, "scenario": scenario})
     if plan:
         return plan
@@ -444,7 +446,7 @@ def _load_plugins(folder: Path | None = None) -> List[ModuleType]:
 # 7. Single episode runner                                                    #
 ###############################################################################
 async def _episode(
-    orch: Orchestrator,
+    orch: Orchestrator | None,
     env: SmartCityEnv,
     tgen: TaskGenerator,
     evaler: SuccessEvaluator,
@@ -488,8 +490,9 @@ async def _episode(
 # 8. Continuous open‑ended loop                                               #
 ###############################################################################
 async def _main_loop(max_episodes: int | None) -> None:
-    # Orchestrator has no __init__ arguments – dev mode is handled via env vars
-    orch = Orchestrator()
+    # The numeric city simulation does not use the service orchestrator.
+    # Do not start unrelated agents, model downloads or background services.
+    orch = None
     env = SmartCityEnv()
     tgen = TaskGenerator()
     evaler = SuccessEvaluator()
@@ -502,7 +505,7 @@ async def _main_loop(max_episodes: int | None) -> None:
         try:
             await _episode(orch, env, tgen, evaler, eps)
         except Exception as exc:  # pragma: no cover
-            print(f"[WARN] Episode {eps} crashed: {exc!r}")
+            raise RuntimeError(f"Episode {eps} failed: {exc}") from exc
         await asyncio.sleep(0)  # cooperative sched
 
 
@@ -531,7 +534,7 @@ def _parse_cli(argv: List[str]) -> argparse.Namespace:
 
 def main(argv: List[str] | None = None) -> None:  # noqa: D401
     """Module‑safe entry so `python -m …` works neatly."""
-    args = _parse_cli(argv or [])
+    args = _parse_cli(sys.argv[1:] if argv is None else argv)
 
     global METRICS
     METRICS = _Metrics(args.metrics_port)
@@ -565,8 +568,14 @@ def main(argv: List[str] | None = None) -> None:  # noqa: D401
     async def _runner() -> None:
         prod = asyncio.create_task(_main_loop(args.max_episodes))
         stopper = asyncio.create_task(stop.wait())
-        await asyncio.wait({prod, stopper}, return_when=asyncio.FIRST_COMPLETED)
-        prod.cancel()
+        try:
+            done, pending = await asyncio.wait({prod, stopper}, return_when=asyncio.FIRST_COMPLETED)
+            if prod in done:
+                await prod  # propagate episode failures to the CLI exit status
+        finally:
+            for task in (prod, stopper):
+                task.cancel()
+            await asyncio.gather(prod, stopper, return_exceptions=True)
 
     try:
         loop.run_until_complete(_runner())

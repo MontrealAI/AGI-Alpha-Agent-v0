@@ -6,16 +6,40 @@
 
 [Launch Demo](../alpha_agi_insight_v0/index.html){.md-button}
 
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline simulation. Searches a toy sector-scoring landscape.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run alpha_agi_insight_v0
+```
+
+**Expected result:** Three episodes, best sector and a ranked table.
+
+**Scope:** Scores are simulated, not forecasts or calibrated investment probabilities.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
-# α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Zero Data)
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/colab_alpha_agi_insight_demo.ipynb)
 
 
 The **α‑AGI Insight** demo predicts which industry sector is most likely to be
 transformed by Artificial General Intelligence. It runs a small
-**Meta‑Agentic Tree Search** (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/MATS) over a list of sector names. No external
+**Meta‑Agentic Tree Search** (MATS) over a list of sector names. No external
 data is required so the script executes fully offline. Pass a custom sector
 list with ``--sectors`` to experiment with your own domains. When the argument
 points to a text file, each non-empty line is treated as a sector name. The
@@ -24,7 +48,7 @@ Google ADK gateway whenever credentials are present.
 
 > **Note**
 > Older convenience entry points such as ``alpha-agi-insight`` were removed.
-> Run ``python official_demo_final.py`` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/or ``run_demo.py``) directly to launch
+> Run ``python official_demo_final.py`` (or ``run_demo.py``) directly to launch
 > the demo.
 
 **Quick Start:** run ``python official_demo_final.py --episodes 5`` to launch
@@ -85,16 +109,16 @@ retrieve the ranked sector list.
 ## Overview
 
 ```mermaid
-%% α-AGI Insight — Meta-Agentic Tree Search Architecture (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/ZERO-DATA Demo)
+%% α-AGI Insight — Meta-Agentic Tree Search Architecture (ZERO-DATA Demo)
 flowchart TD
     %% ─────────────  Core components  ─────────────
-    Controller["<b>Controller</b><br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Meta-Agent<br/>Orchestrator)"]:::controller
-    DB["<b>Knowledge&nbsp;Base</b><br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Program&nbsp;DB / Insight Archive)"]:::db
-    Sampler["<b>Prompt&nbsp;/&nbsp;Task Sampler</b><br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Curriculum Generator)"]:::sampler
-    Ensemble["<b>LLM&nbsp;Ensemble</b><br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Insight Generators)"]:::ensemble
-    Evaluator["<b>Evaluator&nbsp;Pool</b><br/>(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/Sandbox &amp; Scorers)"]:::evaluator
+    Controller["<b>Controller</b><br/>(Meta-Agent<br/>Orchestrator)"]:::controller
+    DB["<b>Knowledge&nbsp;Base</b><br/>(Program&nbsp;DB / Insight Archive)"]:::db
+    Sampler["<b>Prompt&nbsp;/&nbsp;Task Sampler</b><br/>(Curriculum Generator)"]:::sampler
+    Ensemble["<b>LLM&nbsp;Ensemble</b><br/>(Insight Generators)"]:::ensemble
+    Evaluator["<b>Evaluator&nbsp;Pool</b><br/>(Sandbox &amp; Scorers)"]:::evaluator
 
-    %% ─────────────  Evolutionary loop (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/dashed ring)  ─────────────
+    %% ─────────────  Evolutionary loop (dashed ring)  ─────────────
     subgraph EvolutionaryLoop
         direction TB
         Controller
@@ -168,7 +192,7 @@ module path:
 python run_demo.py --episodes 2
 ```
 
-To expose the demo via the OpenAI Agents runtime (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/and optional ADK gateway), run
+To expose the demo via the OpenAI Agents runtime (and optional ADK gateway), run
 the ``openai_agents_bridge.py`` helper:
 
 ```bash
@@ -294,7 +318,7 @@ generated in the log directory.
 
 - ``OPENAI_API_KEY`` – enable OpenAI-based rewriting via ``openai_rewrite``.
 - ``ANTHROPIC_API_KEY`` – use ``anthropic_rewrite`` with Claude models.
-- ``OPENAI_MODEL`` – override the OpenAI model (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/default ``gpt-4o``).
+- ``OPENAI_MODEL`` – override the OpenAI model (default ``gpt-4o``).
 - ``MATS_REWRITER`` – select the rewrite strategy when unspecified.
 - ``ALPHA_AGI_SECTORS`` – comma-separated sector list or path to a text file.
 - ``MCP_ENDPOINT`` – optional URL for Model Context Protocol logging.

@@ -1,11 +1,17 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.3.0 provides a connected, bounded working agent.** Start with the
+**Version 1.4.0 adds a useful browser workspace to the connected, bounded working agent.** Start with the
 [operator guide](docs/agent/OPERATIONS.md), [capability matrix](docs/agent/CAPABILITIES.md)
 and [validation evidence](docs/agent/VALIDATION.md). Install the official release wheel and
 hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.
 For the current container demo profiles, use **Docker Compose 2.20 or later**; the older
 Compose minimum in the preserved historical documentation below no longer covers those profiles.
+
+Start in the [GitHub Pages workspace](https://montrealai.github.io/AGI-Alpha-Agent-v0/) for checked
+research, allocation, scheduling and forecasting, real local text generation, reviewed exports and
+verification of signed agent results. The [workspace guide](docs/agent/PAGES_GUIDE.md) explains privacy,
+offline use and the handoff to your agent. The [complete demo catalog](alpha_factory_v1/demos/README.md)
+labels every launch path, sample replay, research backend and historical integration template.
 
 The original vision, flywheels, examples and demos below are preserved; CI badges explicitly track main. Historical
 AGI/ASI, economic and compliance aspirations are not release guarantees. This is the

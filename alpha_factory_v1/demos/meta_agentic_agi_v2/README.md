@@ -1,10 +1,35 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Synthetic evaluation. Runs provider-driven code proposals, synthetic fitness and SQLite lineage.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run meta_agentic_agi_v2
+```
+
+**Expected result:** Three generations saved to lineage.sqlite; repeat runs append safely.
+
+**Scope:** The mock provider and pseudo-accuracy are explicitly synthetic, not measured task performance.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 
 # Meta‑Agentic α‑AGI 👁️✨ Demo v2 – **Production‑Grade v0.1.0**
+
 
 Identical to **v1** plus a statistical-physics wrapper that logs and minimises **Gibbs / variational free-energy** for each candidate agent during the evolutionary search.
 

@@ -1,148 +1,30 @@
----
+# SPDX-License-Identifier: Apache-2.0
 name: "📚 Docs"
 
 on:
   workflow_dispatch:
 
+# The manual entry point uses the same tested artifact and release gates as a
+# main push. Pages publishing must not race a separate gh-pages branch build.
 permissions:
   contents: write
+  actions: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-deploy:
+  authorize:
     runs-on: ubuntu-latest
-    env:
-      SANDBOX_IMAGE: selfheal-sandbox:latest
-      PYODIDE_BASE_URL: https://cdn.jsdelivr.net/pyodide/v0.28.0/full
-      HF_GPT2_BASE_URL: https://huggingface.co/openai-community/gpt2/resolve/main
-      FETCH_ASSETS_ATTEMPTS: '5'
-      FETCH_ASSETS_DIR: ${{ github.workspace }}/.tmp/insight-assets
-      INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.tmp/insight-assets
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.tmp/ms-playwright
-      PYODIDE_CACHE_DIR: ${{ github.workspace }}/.tmp/pyodide-cache
-      CI: 'true'
-      NPM_CONFIG_CACHE: ${{ github.workspace }}/.npm-cache/docs
-      NPM_CONFIG_FUND: 'false'
-      NPM_CONFIG_AUDIT: 'false'
-      # Keep the asset mirrors pinned to official hosts.
-      # Optional environment variables for asset downloads. See
-      # scripts/fetch_assets.py for details.
-      # HF_GPT2_BASE_URL overrides the default Hugging Face mirror.
+    timeout-minutes: 5
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0
+          persist-credentials: false
       - uses: ./.github/actions/ensure-owner
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-      - name: Check for binary diffs (pre-build)
-        run: python scripts/check_no_binary_diff.py
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: '3.13'
-          cache: 'pip'
-          cache-dependency-path: 'requirements.lock'
 
-      - name: Cache pre-commit
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
-        with:
-          path: .cache/pre-commit
-          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-precommit-
-      - name: Cache Playwright browsers
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
-        with:
-          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ runner.os }}-playwright-${{ hashFiles('alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
-      - name: Cache sandbox layers
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-sandbox-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-sandbox-
-      - name: Build sandbox image
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
-        with:
-          context: .
-          file: sandbox.Dockerfile
-          tags: $SANDBOX_IMAGE
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-      - name: Update cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      - name: Install Ruff
-        run: pip install ruff
-      - name: Install docs dependencies
-        run: pip install -r requirements-docs.txt
-      - name: Install project dependencies
-        run: python check_env.py --auto-install
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: |
-            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
-            alpha_factory_v1/core/interface/web_client/package-lock.json
-      - name: Configure npm
-        run: |
-          npm config set fund false
-          npm config set audit false
-      - name: Install Insight Browser dependencies
-        run: |
-          rm -rf alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules
-          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-      - name: Install Web client dependencies
-        run: |
-          rm -rf alpha_factory_v1/core/interface/web_client/node_modules
-          npm ci --prefix alpha_factory_v1/core/interface/web_client
-      - name: Update browserslist database
-        working-directory: alpha_factory_v1/core/interface/web_client
-        run: npx update-browserslist-db --update-db --yes
-      - name: Install pre-commit
-        run: pip install pre-commit==4.2.0
-        env:
-          PRE_COMMIT_HOME: .cache/pre-commit
-      - name: Run pre-commit checks
-        run: |
-          from_ref="${{ github.event.before }}"
-          if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then
-            pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
-          else
-            echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."
-            pre-commit run --all-files
-          fi
-        env:
-          PRE_COMMIT_HOME: .cache/pre-commit
-          SKIP: eslint-insight-browser
-      - name: Install Playwright browsers
-        run: npx playwright install chromium webkit firefox
-      - name: Make scripts executable
-        run: chmod +x ./scripts/*.sh
-      - uses: ./.github/actions/setup-insight-assets
-      - name: Update build manifest
-        run: python scripts/generate_build_manifest.py
-      - name: Build and deploy gallery
-        env:
-          PYODIDE_BASE_URL: ${{ env.PYODIDE_BASE_URL }}
-          HF_GPT2_BASE_URL: ${{ env.HF_GPT2_BASE_URL }}
-          CI_SKIP_ENV_CHECK: '1'
-        run: |
-          export CI=true
-          ./scripts/edge_human_knowledge_pages_sprint.sh
-      - uses: ./.github/actions/setup-insight-assets
-      - name: Check internal links
-        uses: lycheeverse/lychee-action@v2.4.1 # 82202e5e9c2f4ef1a55a3d02563e1cb6041e5332
-        with:
-          args: --offline --base ./site ./site/**/*.html
-          fail: true
-      - name: Check for binary diffs (post-build)
-        run: python scripts/check_no_binary_diff.py
+  build-deploy:
+    needs: authorize
+    uses: ./.github/workflows/agent-release.yml
+    secrets: inherit

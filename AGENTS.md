@@ -378,10 +378,14 @@ The **Deploy — Kind** workflow provisions a local kind cluster, builds the Ins
 2. Click "Run workflow" to launch the deployment.
 
 ### Documentation Workflow
-The **📚 Docs** workflow builds the demo gallery and publishes the MkDocs site to
-GitHub Pages. The underlying scripts now run `mkdocs build --strict` in all
-environments, so any warnings or broken links will fail the build. Fix these
-issues locally before dispatching the workflow.
+The **📚 Docs** manual entry point calls the same **Agent release acceptance**
+workflow used by main pushes. It builds and validates the complete gallery,
+packages the tested site and publishes it through GitHub Actions Pages. Main
+runs require all release checks and public browser acceptance; branch runs
+validate without publishing. Configure Pages with **Source: GitHub Actions**.
+The underlying scripts run `mkdocs build --strict`, so warnings or broken links
+fail the build. Fix these issues locally before dispatching the workflow. The
+preserved `mkdocs gh-deploy` helpers are for historical branch-based deployments.
 
 ### PR Message Guidelines
 - Keep the subject line concise and under 72 characters.

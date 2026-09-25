@@ -1,45 +1,121 @@
-![preview](../self_healing_repo/assets/preview.svg){.demo-preview}
+[See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
 # Self-Healing Repo / Repo-Healer v1
 
-Repo-Healer v1 now targets this repository with structured CI failure bundles and bounded local validation.
-The previous toy-only flow is retained as a UI demo wrapper, not the production path.
+![preview](../self_healing_repo/assets/preview.svg){.demo-preview}
 
-## Capability matrix
+[Launch Demo](../self_healing_repo/index.html){.md-button}
 
-### Tier 1 (auto-patch)
-- Ruff lint failures
-- Mypy failures
-- Broken imports/simple Python config regressions
-- Linux-reproducible pytest/smoke failures
-- MkDocs/docs failures reproducible locally
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
 
-### Tier 2 (diagnose + suggestion/draft only)
-- GitHub workflow/actionlint failures
-- Docker build failures
-- Windows/macOS-only failures
+**Mode:** Bounded repair. Provides repository-specific triage and isolated repair evaluation.
 
-### Tier 3 (refused)
-- Secrets/tokens/credentials/signing/release publishing
-- Branch-protection weakening or CI bypass edits
-- Any unsafe protected-surface patch
+**Prerequisites:** Repository development dependencies and Docker for sandbox execution.
 
-## Structured inputs
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
-Repo-Healer consumes a normalized failure bundle containing workflow/job/step metadata,
-exit code, annotations, artifacts, logs, and optional JUnit XML path.
+```bash
+python -m alpha_factory_v1.demos show self_healing_repo
+```
+
+**Expected result:** Follow the README benchmark commands. Review proposed repairs before applying them.
+
+**Scope:** Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+
+
+
+Repo-Healer v1 is a **bounded CI repair capability for this repository** (`AGI-Alpha-Agent-v0`).
+The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no longer the production repair path.
+
+## Maintainer scratchpad (current state)
+
+See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used during implementation.
+
+1. **Canonical evaluator surface now**
+   - PR gate: **✅ PR CI** (`.github/workflows/pr-ci.yml`) with `ruff check .` and smoke pytest subset.
+   - Heavy integration matrix: **🚀 Integration CI — Insight Demo** (`.github/workflows/ci.yml`) with actionlint, Ruff, Mypy, pytest, docs/deploy/build checks.
+   - Optional surfaces: **🔥 Smoke Test** and **📚 Docs** workflows.
+2. **What was toy-specific before**
+   - defaulting to `sample_broken_calc` clone flow,
+   - relying on unstructured logs and placeholder diffs,
+   - treating pytest as one-size-fits-all validation.
+3. **Narrow truthful v1**
+   - typed failure bundle plus GitHub workflow_run ingestion (`ci_bundle.py`),
+   - deterministic triage + validator registry aligned to real CI commands,
+   - bounded isolated repair loop with patch safety checks,
+   - seeded benchmark proving baseline vs healed outcomes on this repo.
+4. **Docs that overclaimed**
+   - legacy table rows suggesting fully autonomous CI healing to green for every class,
+   - toy clone behavior implied as the main production path.
+
+## Tiered support model
+
+### Tier 1 — supported for bounded repair
+
+- Ruff failures.
+- Mypy failures.
+- Broken imports/simple Python config regressions.
+- Linux reproducible pytest/smoke failures.
+- MkDocs `mkdocs build --strict` failures when reproducible locally.
+- Unknown/unmapped signatures are automatically downgraded to structured `REPORT_ONLY` diagnosis instead of unsafe guess-patching.
+
+### Tier 2 — diagnose/draft only
+
+- workflow YAML/actionlint issues,
+- Docker build failures,
+- Windows-only and macOS-only failures.
+
+### Tier 3 — explicit refusal
+
+- Secrets/tokens/credentials/signing/release publish surfaces.
+- Branch protection weakening, CI bypasses, skipped validators.
+- Permission broadening or policy bypasses.
+
+## Repo-Healer v1 architecture
+
+- `repo_healer_v1/models.py`: typed failure bundle and report model (workflow name/file, run id/url/attempt, event/ref/sha, job/step, validator/support/risk, evidence).
+- `repo_healer_v1/triage.py`: deterministic classification to support mode.
+- `repo_healer_v1/ci_bundle.py`: workflow-run ingestion that captures run/job URLs, Linux-first failed job selection, and smoke-vs-pytest validator mapping.
+  It also enforces early-attempt `run_attempt<2` report-only posture and infers non-autopatch support modes from failed-step metadata (permission, transient infra, protected release surfaces, and platform constraints).
+- `repo_healer_v1/validators.py`: registry of targeted + broader validator commands from real workflows.
+  It reads `.github/workflows/pr-ci.yml`, `ci.yml`, `smoke.yml`, and `docs.yml` to resolve canonical workflow names.
+- `repo_healer_v1/safety.py`: protected-surface and existing-file-only patch safety policy.
+- `repo_healer_v1/engine.py`: isolated repair loop (`triage -> safety -> targeted -> broader -> promote`).
+- `repo_healer_v1/candidate_generation.py`: deterministic rule-based candidate synthesis for Ruff (`ruff --fix`), missing-import regressions, narrow Mypy literal-regression repairs, bounded pytest/smoke regression repairs for this repo, and MkDocs YAML regressions when no explicit candidates are supplied.
+- `repo_healer_v1/benchmark.py`: seeded benchmark in isolated temp copy with machine-readable result.
+
+## Report modes
+
+- `AUTOPATCH_SAFE`: run bounded autopatch loop.
+- `DRAFT_PR_ONLY`: produce structured diagnosis and commands for human/draft flow.
+- `REPORT_ONLY`: explicit read-only/report execution mode.
+- `TRANSIENT_INFRA`: retry-oriented transient infrastructure diagnosis mode.
+- `PERMISSION_OR_FORK_CONTEXT`: fork/permission constrained diagnosis mode.
+- `UNSAFE_PROTECTED_SURFACE`: policy-protected surface refusal mode.
 
 ## CI integration
 
 Workflow: `.github/workflows/repo-healer.yml`
 
-- Triggered from real failed workflow runs.
-- Produces reusable artifacts:
+- Runtime dependencies are installed from `repo_healer_v1/requirements-ci.txt` to keep bundle/report execution deterministic and explicit.
+- Trigger: failed `workflow_run` from real CI workflows + manual dispatch.
+- Emits structured artifacts:
   - `repo_healer_bundle.json`
   - `repo_healer_candidates.json`
   - `repo_healer_report.json`
-- Runs in dry-run mode by default and marks early run attempts report-only so it complements CI Health reruns.
-- Canonical workflow names are discovered from the checked-in workflow YAML files (`pr-ci.yml`, `ci.yml`, `smoke.yml`, `docs.yml`) instead of stale hardcoded docs labels.
+- Execution modes are context-aware:
+  - `workflow_dispatch`: report-only diagnosis by default for ordinary manual runs (because no failed workflow-run bundle is attached), but mode selection still honors the configured threshold when an `AUTOPATCH_SAFE` bundle is supplied.
+  - `workflow_run` with `run_attempt` below `REPO_HEALER_APPLY_AFTER_ATTEMPT`: report-only triage in bundle ingestion, then dry-run/apply remains blocked.
+  - `workflow_run` with `run_attempt >= REPO_HEALER_APPLY_AFTER_ATTEMPT` and `AUTOPATCH_SAFE`: bounded apply mode in checkout, still no auto-merge/no branch-protection changes.
+  - Apply threshold can be tuned for all events via repository variable `REPO_HEALER_APPLY_AFTER_ATTEMPT`; `workflow_dispatch` input only overrides it for that manual run.
 
 ## Local replay
 
@@ -48,11 +124,14 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.cli \
   --repo . \
   --failure-bundle repo_healer_bundle.json \
   --candidates repo_healer_candidates.json \
-  --report repo_healer_report.json \
-  --dry-run
+  --report repo_healer_report.json
 ```
 
-## Seeded benchmark
+Use `--dry-run` to verify safety/classification and planned validators without applying patches. The CLI defaults `--repo` to this repository root (`AGI-Alpha-Agent-v0`) so production runs target the real codebase by default.
+
+If `--candidates` is empty, Repo-Healer v1 attempts bounded rule-based candidate generation for supported classes before falling back to structured diagnosis.
+
+## Seeded benchmark (required proof)
 
 ```bash
 python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
@@ -60,11 +139,27 @@ python -m alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.benchmark \
   --out repo_healer_benchmark.json
 ```
 
-The benchmark runs from a clean temporary copy, does not touch the main working tree, and reports machine-readable baseline vs healed outcomes.
-When a validator executable is missing in the local environment, the corresponding case is emitted as
-`SKIPPED_MISSING_VALIDATOR` so unsupported local prerequisites are explicit in the report.
+Cases (all against this repository in an isolated copy):
+- Ruff seed
+- Mypy seed
+- broken import seed
+- Linux pytest seed
+- mkdocs seed
+- non-autofix permission/context seed (graceful refusal)
+
+The benchmark runs in an isolated temp copy and reports baseline vs healed exit codes. For determinism and bounded runtime it executes targeted validators only (the full engine still runs targeted + broader validators by default).
+If a required validator binary is unavailable in the local environment (for example, `mkdocs`), that case is marked as
+`SKIPPED_MISSING_VALIDATOR` in the machine-readable output instead of being misreported as a failed auto-repair.
+
+## Legacy demo wrapper
+
+`agent_selfheal_entrypoint.py` and `sample_broken_calc/` remain as lightweight fixture/UI examples only.
+They are not the canonical Repo-Healer v1 production loop.
 
 
-## Legacy fixture mode
+## Legacy UI demo mode
 
-The UI entrypoint targets this repository by default. Set `SELFHEAL_MODE=sample` to run the historical `sample_broken_calc` fixture.
+`agent_selfheal_entrypoint.py` now defaults to this repository.
+Use `SELFHEAL_MODE=sample` to exercise the old `sample_broken_calc` fixture intentionally.
+
+[View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/self_healing_repo/README.md)

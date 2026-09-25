@@ -198,7 +198,8 @@ class EvoNet(nn.Module):
         self.model = nn.ModuleList(modules)
         self.genome = g
         if g.hebbian:
-            self.hFast = torch.zeros_like(next(self.model.parameters()))
+            for idx, layer in enumerate(self.model[:-1]):
+                self.register_buffer(f"fast_{idx}", torch.zeros_like(layer.weight))
         self._init()
 
     def _init(self):
@@ -211,12 +212,16 @@ class EvoNet(nn.Module):
         act_fn = _ACT[self.genome.activation]
         h = x
         for idx, layer in enumerate(self.model):
+            previous = h
             h = act_fn(layer(h))
             if self.genome.hebbian and idx < len(self.model) - 1:
                 with torch.no_grad():
-                    dw = 0.03 * torch.bmm(h.unsqueeze(2), x.unsqueeze(1))
-                    self.hFast = (self.hFast + dw.mean(0)).clamp(-0.02, 0.02)
-                    layer.weight.data += self.hFast
+                    before = previous.reshape(-1, previous.shape[-1])
+                    after = h.reshape(-1, h.shape[-1])
+                    dw = 0.03 * after.T @ before / before.shape[0]
+                    fast = getattr(self, f"fast_{idx}")
+                    fast.copy_((fast + dw).clamp(-0.02, 0.02))
+                    layer.weight.add_(fast)
         return h
 
 
@@ -480,7 +485,7 @@ def cli() -> None:
     args = parser.parse_args()
 
     if np is None or not _TORCH:
-        print("Champion: stub")
+        print("Champion: stub (no training; install numpy and torch for evolution)")
         return
 
     from .curriculum_env import CurriculumEnv
@@ -495,8 +500,8 @@ def cli() -> None:
             print(df.tail())
         except Exception:  # pragma: no cover - pandas optional
             pass
-    except Exception:
-        print("Champion: stub")
+    except Exception as exc:
+        parser.exit(1, f"Evolution failed: {exc}\n")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -6,10 +6,34 @@
 
 [Launch Demo](../solving_agi_governance/index.html){.md-button}
 
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline simulation. Runs a bounded stochastic cooperation model.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run solving_agi_governance
+```
+
+**Expected result:** Mean cooperation for the selected seed and assumptions.
+
+**Scope:** A simulation is not a proof of unique equilibrium, a security audit or an on-chain deployment.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
-# Solving **α-AGI Governance** [![Open In Colab]][colab-notebook]
+
 *Minimal Conditions for Stable, Antifragile Multi-Agent Order*
 **Author :** Vincent Boucher — President, MONTREAL.AI · QUEBEC.AI
 
@@ -39,7 +63,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ---
 
-### 3 · Core Theorems (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/proved & fuzz-checked)
+### 3 · Core Theorems (proved & fuzz-checked)
 
 1. **Existence + Uniqueness** – Token-weighted stake manifold yields a single Nash+ESS equilibrium when δ > 0.8.  
 2. **Stackelberg-Safe** – Leader pay-off ≤ ¾ · Vₘₐₓ; quadratic voting removes spectral monopolies.  
@@ -49,7 +73,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ### 4 · System Hamiltonian  
 \[
-\mathcal H=\sum_{i=1}^{N}\bigl[\dot{\mathbf x}_i^{\!\top}\mathbf P\,\dot{\mathbf x}_i-\lambda\,U_i(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/\mathbf x)\bigr]\!,
+\mathcal H=\sum_{i=1}^{N}\bigl[\dot{\mathbf x}_i^{\!\top}\mathbf P\,\dot{\mathbf x}_i-\lambda\,U_i(\mathbf x)\bigr]\!,
 \quad
 \nabla_{\mathbf x}\mathcal H=0\Longrightarrow\sum_i\nabla U_i=0
 \]
@@ -60,7 +84,7 @@ Six million Monte-Carlo rounds at *N = 10⁴* confirm convergence ± 1.7 %.
 
 ### 5 · Empirical Benchmarks  
 
-| Scenario | Agents *N* | Convergence Rounds | σ (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/pay-off) |
+| Scenario | Agents *N* | Convergence Rounds | σ (pay-off) |
 |----------|-----------:|-------------------:|------------:|
 | Symmetric pilot | 10 | < 80 | 0.03 |
 | Mid-scale | 10² | < 400 | 0.02 |
@@ -124,9 +148,10 @@ Python standard library.
   ```
   This installs optional packages like `openai>=1.82.0,<2.0` and
   `openai-agents>=0.0.17` used by the Agents bridge.
+  See [tests/README.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/README.md) for full instructions.
 
 ### 9 · Running the Demo
-The CLI simulator has **no third‑party dependencies**—use Python 3.11–3.13.
+The CLI simulator has **no third‑party dependencies**—use Python 3.11 or 3.12.
 
 Clone the repository and launch the Monte‑Carlo simulator:
 
@@ -140,7 +165,7 @@ discount factor `δ` is at least 0.8. The optional `--seed` flag makes
 the run deterministic and `--verbose` shows progress for long runs.
 
 Use `--summary` to generate a natural-language recap via the OpenAI Agents SDK
-(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/when `openai` is installed and `OPENAI_API_KEY` is set). Without network
+(when `openai` is installed and `OPENAI_API_KEY` is set). Without network
 access, the script falls back to a local summary string.
 
 ```bash
@@ -157,7 +182,7 @@ governance-sim --agents 500 --summary
    pip install -r alpha_factory_v1/demos/solving_agi_governance/requirements.txt
    ```
 
-2. **Install** the package in a fresh **Python 3.11–3.13** virtual environment:
+2. **Install** the package in a fresh **Python 3.11 or 3.12** virtual environment:
 
    ```bash
    python -m pip install -e .[tests]
@@ -178,7 +203,7 @@ governance-sim --agents 500 --summary
    python -m unittest discover -s alpha_factory_v1/tests -p 'test_governance_sim.py'
    ```
 
-If you encounter issues, ensure Python 3.11–3.13 is in your PATH and that
+If you encounter issues, ensure Python 3.11 or 3.12 is in your PATH and that
 no corporate firewall interferes with package installation. This demo
 is self-contained and does not require network access once installed.
 
@@ -206,7 +231,7 @@ The script registers a `GovernanceSimAgent` with the Agents runtime and, when
 `google-adk` is available, also exposes it over the A2A protocol. If either
 package is missing the bridge prints a warning and executes the local simulator
 instead. The offline fallback accepts the same parameters as `governance-sim`
-(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/`-N`, `-r`, `--delta`, `--stake`) so the demo remains fully offline capable.
+(`-N`, `-r`, `--delta`, `--stake`) so the demo remains fully offline capable.
 
 Specify a custom runtime port with `--port`:
 

@@ -1,3 +1,29 @@
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline sample. Extracts simple signals from bundled historical CSV samples.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run era_of_experience
+```
+
+**Expected result:** Yield-curve and supply-chain sample signals with a heuristic selection.
+
+**Scope:** Static historical samples, not current market data or recommendations.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+# Era of Experience
+
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
@@ -42,6 +68,7 @@ Within 60 seconds you will witness an agent <em>rewrite its own playbook</em> e
   Then, you can run the script directly with a command like:
   ```bash
   SAMPLE_DATA_DIR=/path/to/csvs python agent_experience_entrypoint.py
+  ```
 
 ---
 

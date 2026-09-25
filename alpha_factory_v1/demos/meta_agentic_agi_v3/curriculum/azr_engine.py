@@ -31,7 +31,6 @@ import multiprocessing as _mp
 import os
 import random
 import re
-import resource
 import subprocess
 import sys
 import tempfile
@@ -72,56 +71,15 @@ _BANNED = ("os.", "sys.", "subprocess", "socket", "threading", "multiprocessing"
 # ---------------------------------------------------------------------
 #                         Sandbox helpers
 # ---------------------------------------------------------------------
-def _apply_limits() -> None:
-    """CPU & memory rlimits inside subprocess."""
-    try:
-        resource.setrlimit(resource.RLIMIT_AS, (MEM_MB << 20, MEM_MB << 20))
-        resource.setrlimit(resource.RLIMIT_CPU, (SOFT_T, SOFT_T))
-    except Exception:
-        pass  # non‑POSIX platforms
-
-
 def _exec_trusted(code: str, inp_json: str) -> Tuple[str, str]:
-    """Run *trusted* Python code in an isolated subprocess."""
-    with tempfile.NamedTemporaryFile("w+", suffix=".py", delete=False) as tmp:
-        tmp.write(code)
-        script = tmp.name
+    """Evaluate the identity fixture or run generated code in Docker isolation."""
+    from alpha_factory_v1.demos.utils.code_eval import evaluate
 
-    def _target(q: _mp.Queue) -> None:
-        _apply_limits()
-        try:
-            proc = subprocess.Popen(
-                [sys.executable, script],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-            try:
-                out, err = proc.communicate(inp_json, timeout=SOFT_T)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                out, err = proc.communicate()
-            q.put((out, err))
-        except Exception as exc:  # pragma: no cover
-            q.put(("", str(exc)))
-
-    q: _mp.Queue = _mp.Queue()
-    p = _mp.Process(target=_target, args=(q,))
-    p.start()
-    p.join(HARD_T)
-    if p.is_alive():
-        p.terminate()
     try:
-        out, err = q.get_nowait()
-    except Exception:
-        out, err = "", "RuntimeError: queue empty"
-    finally:
-        try:
-            os.remove(script)
-        except OSError:
-            pass
-    return out.strip(), err.strip()
+        value = json.loads(inp_json)
+    except ValueError as exc:
+        return "", str(exc)
+    return evaluate(code, value)
 
 
 # ---------------------------------------------------------------------
@@ -256,20 +214,9 @@ class AZREngine:
 
         self.log(f"[AZR] reward={reward:.3f} adv={adv:+.3f} -> T={self.temperature:.2f}")
 
-        examples = (
-            "\n\n".join(
-                f"```python\n{t.program}```\n```json\n{t.inp}```\n```json\n{t.out}```"
-                for t in self._rng.sample(self.buffer, k=min(3, len(self.buffer)))
-            )
-            or "(buffer empty)"
-        )
-
-        return self._PROMPT.format(
-            n=n,  # noqa: F821
-            max_loc=MAX_PROG_LOC,
-            buf=len(self.buffer),
-            examples=examples,
-        )
+    def _parse_triplets(self, raw: str) -> List[Triplet]:
+        """Parse fenced program/input/output groups from a proposer response."""
+        return [Triplet(m["prog"].strip(), m["inp"].strip(), m["out"].strip()) for m in self._TRIPLE_RE.finditer(raw)]
 
     def _validate(self, t: Triplet) -> bool:
         if (

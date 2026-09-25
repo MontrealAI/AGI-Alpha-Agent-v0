@@ -1,14 +1,39 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run macro_sentinel
+```
+
+**Expected result:** JSON sample size and lower-tail VaR/CVaR.
+
+**Scope:** Historical sample inputs and illustrative assumptions; no orders or hedge transactions.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 
 # 🌐 Macro‑Sentinel · Alpha‑Factory v1 👁️✨  
+
 *Cross‑asset macro risk radar powered by multi‑agent α‑AGI*
 
-[![Docker](https://img.shields.io/badge/Run‑with-Docker-blue?logo=docker)](#one‑command‑docker) 
-[![Colab](https://img.shields.io/badge/Try‑on‑Colab-yellow?logo=googlecolab)](#google‑colab) 
+[![Docker](https://img.shields.io/badge/Run‑with-Docker-blue?logo=docker)](#onecommand-docker) 
+[![Colab](https://img.shields.io/badge/Try‑on‑Colab-yellow?logo=googlecolab)](#google-colab) 
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
 
 > **TL;DR**   Spin up a self‑healing stack that ingests macro telemetry, runs a Monte‑Carlo risk engine, sizes an ES hedge, and explains its reasoning—all behind a Gradio dashboard.

@@ -59,3 +59,18 @@ video.demo-preview {
   border: none;
   cursor: pointer;
 }
+
+.demo-card[hidden] { display: none; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 3px solid #135ca8;
+  outline-offset: 4px;
+}
+#result-count, #no-results { text-align: center; }
+@media (max-width: 480px) {
+  .demo-grid { grid-template-columns: minmax(0, 1fr); }
+  body { padding: 1rem !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-card { transition: none; }
+  .demo-card:hover { transform: none; }
+}
