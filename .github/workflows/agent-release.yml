@@ -142,7 +142,8 @@ jobs:
       - name: Verify deterministic legacy restart behavior
         run: |
           mkdir -p evidence
-          python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
+          # The full suite owns shared browser assets and cleans them after use.
+          ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
