@@ -93,6 +93,7 @@ def main() -> None:
             "runtime Python 3.11/3.12/3.13",
             "full offline Python regression",
             "strict runtime types",
+            "pre-commit hooks on release changes (full-tree report retained)",
             "real Docker isolation",
             "pinned local model inference and generated-code evaluation",
             "Chromium operator workflow",

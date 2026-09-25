@@ -267,6 +267,57 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FETCH_ASSETS_SKIP_LLM: '1'
+      CYPRESS_INSTALL_BINARY: '0'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install the repository hook environment
+        run: |
+          bash scripts/ci_install_python_baseline.sh
+          python scripts/check_python_deps.py
+          python check_env.py --auto-install
+      - name: Record the full repository hook report
+        run: |
+          mkdir -p evidence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import subprocess
+          result = subprocess.run(["pre-commit", "run", "--all-files"], capture_output=True, text=True)
+          Path("evidence/precommit-all.txt").write_text(result.stdout + result.stderr)
+          patch = subprocess.check_output(["git", "diff", "--binary"])
+          Path("evidence/precommit-all.patch").write_bytes(patch)
+          Path("evidence/precommit-all.json").write_text(json.dumps({"passed": result.returncode == 0, "exit_code": result.returncode}) + "\n")
+          print(f"Full repository hook exit code: {result.returncode}; complete output and proposed formatting are retained.")
+          if result.returncode:
+              print("::warning::Full repository hooks report findings; inspect precommit-all.txt and precommit-all.patch.")
+          PY
+          git restore --worktree -- .
+      - name: Require hooks on every release change
+        run: |
+          python tools/update_actions.py
+          git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
+          git diff --exit-code
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: quality
+          path: evidence/
+          if-no-files-found: error
+
   gallery:
     runs-on: ubuntu-latest
     timeout-minutes: 35
@@ -305,7 +356,7 @@ jobs:
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, quality]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

@@ -12,6 +12,9 @@ legacy documentation repair must retain the exact sandbox-host script hashes, ev
 must load, and the rebuilt site must advance its simulation online and offline under normal browser
 security. Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
 
+Changed-file pre-commit hooks are a required gate. A complete repository hook report, exit status,
+and any proposed formatting are also included in the evidence archive.
+
 ## Runtime and integration evidence
 
 - The runtime/control suite runs on every supported Python version, covering mission execution, signatures, corruption, review
