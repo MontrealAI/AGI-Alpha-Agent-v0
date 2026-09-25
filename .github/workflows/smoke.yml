@@ -116,3 +116,15 @@ jobs:
             evidence/
             sim.log
           if-no-files-found: error
+
+  smoke-result:
+    name: Smoke matrix
+    needs: smoke
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require all nine platform and Python runs to succeed
+        env:
+          MATRIX_RESULT: ${{ needs.smoke.result }}
+        run: test "$MATRIX_RESULT" = success

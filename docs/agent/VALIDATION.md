@@ -92,7 +92,8 @@ The model validator additionally requires the independently downloaded server bi
 its exact SHA and invocation are in the evidence JSON. The Qwen GGUF is downloaded independently;
 the full browser release ZIP includes the separately pinned quantized GPT-2 ONNX weights.
 
-`check_agent_preservation.py` checks all 2,125 original paths, the entire original README text and flywheels (only CI badge URL queries may change),
+`check_agent_preservation.py` checks all 2,125 original paths, the entire original README text and flywheels
+(only CI badge queries and the exact live main-commit Health/Smoke/Integration image URLs may change),
 and equality of shipped Solidity sources with the copies compiled by the contract tests.
 Packaging verifies wheel metadata, installs outside the repository in a clean virtual environment,
 checks dependency consistency, and exercises the installed CLI and packaged web assets.
@@ -109,5 +110,6 @@ are reported separately from actual ONNX inference. Model provenance is in `scri
 
 The standalone Smoke Test matrix covers all nine OS/Python combinations; exact-main smoke success is
 included in the historical-CI publication gate. AIGA's direct-file startup test can no longer turn a
-service failure into a skip. README preservation permits only query changes to the four historical CI
-badge URLs and still rejects any removed flywheel or other historical text.
+service failure into a skip. README preservation permits CI badge query maintenance and the exact
+live main-commit Health/Smoke/Integration image URLs. It rejects static passing replacements, forced Health colors,
+unrelated checks or branches, and any removed flywheel or other historical text.

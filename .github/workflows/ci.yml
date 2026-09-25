@@ -1229,6 +1229,26 @@ jobs:
           docker push "ghcr.io/$repo_owner_lower/$DOCKER_IMAGE:latest"
           echo "Rollback succeeded"
 
+  integration-result:
+    name: Integration matrix
+    if: ${{ always() && github.ref == 'refs/heads/main' }}
+    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker, branch-protection]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every main-branch validation job to succeed
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python - <<'PY'
+          import json, os
+          results = json.loads(os.environ['JOB_RESULTS'])
+          failures = {name: item['result'] for name, item in results.items() if item['result'] != 'success'}
+          if not results or failures:
+              raise SystemExit(f'Integration validation is incomplete: {failures}')
+          print(f'All {len(results)} required validation jobs passed, including every matrix variant.')
+          PY
+
   branch-protection:
     name: "🔒 Branch protection guardrails"
     if: ${{ always() && needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' }}

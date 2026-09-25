@@ -2,7 +2,8 @@
 
 # Vision, implementation and evidence
 
-The original README, including every flywheel, retains all text beneath the release-status introduction; only CI badge URL queries were updated.
+The original README, including every flywheel, retains all text beneath the release-status introduction;
+CI badge selectors and live Health/Smoke/Integration image sources are maintained. See [badge scope](../CI_STATUS.md).
 The preservation release `baseline-2026-09-24` retains the original source and complete Git history.
 This project belongs to **$AGIALPHA**. It is separate from AGI Jobs and does not connect this agent to
 USDC job settlement or a private OpenClaw installation. Historical job-contract experiments remain present.
