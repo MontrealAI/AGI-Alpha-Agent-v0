@@ -385,6 +385,14 @@ jobs:
           name: gallery-${{ matrix.assets }}
           path: evidence/
           if-no-files-found: warn
+      - name: Retain the tested full browser distribution
+        if: matrix.assets == 'full'
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: browser-distribution
+          path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/insight_browser.zip
+          compression-level: 0
+          if-no-files-found: error
 
   historical-ci:
     runs-on: ubuntu-latest

@@ -34,7 +34,8 @@ The preceding state is recoverable from `checkpoint-2026-09-25-v1.2.1`, includin
 Use `OPERATIONS.md`, `install_agent.py`, the hash-locked runtime and the release wheel.
 Existing 1.2.x operator homes need no journal migration. Back up first; restore to a new directory
 and verify the signed journal before resuming. Never overwrite an operator's existing data during restore.
-For browser inference, build without `FETCH_ASSETS_SKIP_LLM=1`; see the full-browser instructions.
+For browser inference, the release includes a ready-to-serve full browser ZIP whose model hashes are
+checked again during packaging. To build from source, build without `FETCH_ASSETS_SKIP_LLM=1`; see the full-browser instructions.
 
 ## Validation and limits
 

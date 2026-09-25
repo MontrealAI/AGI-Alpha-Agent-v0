@@ -71,9 +71,27 @@ def main() -> None:
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)
+    browser_source = args.evidence / "browser-distribution" / "insight_browser.zip"
+    browser_target = output / f"alpha-agent-v{version}-browser.zip"
+    model_manifest = json.loads(Path("scripts/browser_model_manifest.json").read_text(encoding="utf-8"))
+    with zipfile.ZipFile(browser_source) as browser_archive:
+        required = {
+            "index.html",
+            "service-worker.js",
+            "insight.bundle.js",
+            "assets/local-llm/transformers.min.js",
+            "assets/local-llm/THIRD_PARTY_MODEL_NOTICES.md",
+        }
+        if not required.issubset(browser_archive.namelist()):
+            raise ValueError("Full browser distribution is incomplete")
+        for name, expected in model_manifest["files"].items():
+            with browser_archive.open("assets/local-llm/models/gpt2/" + name) as model_file:
+                if hashlib.file_digest(model_file, "sha256").hexdigest() != expected:
+                    raise ValueError(f"Packaged browser model checksum mismatch: {name}")
+    shutil.copy2(browser_source, browser_target)
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(args.evidence.rglob("*")):
-            if path.is_file():
+            if path.is_file() and "browser-distribution" not in path.relative_to(args.evidence).parts:
                 archive.write(path, path.relative_to(args.evidence))
         for path in sorted(Path("docs/agent/release-evidence").glob("*.json")):
             archive.write(path, "local/" + path.name)

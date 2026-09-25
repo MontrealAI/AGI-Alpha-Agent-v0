@@ -233,7 +233,12 @@ omits the optional historical browser model. The previous manual compiler is ret
 
 ## Full browser text generation (1.3.0)
 
-Use Python 3.11–3.13 and Node 22.17.1 from the repository root:
+The release includes `alpha-agent-v1.3.0-browser.zip`, the complete tested browser distribution.
+Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
+`python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
+Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.
+
+To build from source, use Python 3.11–3.13 and Node 22.17.1 from the repository root:
 
 ```bash
 python scripts/fetch_assets.py
