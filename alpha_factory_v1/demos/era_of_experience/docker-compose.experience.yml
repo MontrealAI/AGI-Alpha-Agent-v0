@@ -55,6 +55,7 @@ services:
       - ts_data:/var/lib/postgresql/data
     healthcheck:
       <<: *hc
+      test: ["CMD", "pg_isready", "-U", "experience", "-d", "exp_stream"]
 
   # ───────────── Redis queue for async tools ─────────────
   redis:
