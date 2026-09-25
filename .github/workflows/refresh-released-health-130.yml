@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Refresh and verify released CI health
+on:
+  push:
+    branches: [release/refresh-ci-health-1.3.0]
+permissions:
+  contents: read
+  actions: write
+jobs:
+  refresh-health:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Run the real main-branch health check and verify public badges
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import datetime
+          import json
+          import subprocess
+          import time
+          import urllib.request
+          from xml.etree import ElementTree
+          repo = "MontrealAI/AGI-Alpha-Agent-v0"
+          expected = "616be2c942f72f3c86bdda8a9f9df958938ba1e1"
+          def read(path):
+              return json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"], text=True))
+          assert read("git/ref/heads/main")["object"]["sha"] == expected
+          assert read("releases/latest")["tag_name"] == "v1.3.0"
+          for run_id in [36144347683, 36144347749, 36144347753, 36144347773]:
+              run = read(f"actions/runs/{run_id}")
+              assert run["head_sha"] == expected and run["conclusion"] == "success"
+          started = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=2)).isoformat()
+          subprocess.run(["gh", "api", "--method", "POST", f"repos/{repo}/actions/workflows/ci-health.yml/dispatches", "-f", "ref=main"], check=True)
+          deadline = time.monotonic() + 300
+          while time.monotonic() < deadline:
+              candidates = read("actions/workflows/ci-health.yml/runs?event=workflow_dispatch&branch=main&per_page=10")["workflow_runs"]
+              candidates = [item for item in candidates if item["head_sha"] == expected and item["created_at"] >= started[:19] + "Z"]
+              if candidates:
+                  run = candidates[0]
+                  if run["status"] == "completed":
+                      assert run["conclusion"] == "success", run
+                      print(json.dumps({"health_run": run["html_url"], "commit": expected, "conclusion": run["conclusion"]}), flush=True)
+                      break
+              time.sleep(5)
+          else:
+              raise RuntimeError("Fresh CI Health check did not finish within five minutes")
+          def badge(workflow):
+              url = f"https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/{workflow}/badge.svg?branch=main"
+              request = urllib.request.Request(url, headers={"Cache-Control": "no-cache", "User-Agent": "AGIALPHA-release-verification"})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  root = ElementTree.fromstring(response.read())
+              return next(node.text for node in root.iter() if node.tag.endswith("title"))
+          workflows = ["pr-ci.yml", "ci.yml", "smoke.yml", "ci-health.yml", "agent-release.yml"]
+          deadline = time.monotonic() + 360
+          while time.monotonic() < deadline:
+              states = {name: badge(name) for name in workflows}
+              print(json.dumps({"badges": states}), flush=True)
+              if all(value.endswith(" - passing") for value in states.values()):
+                  break
+              time.sleep(15)
+          else:
+              raise RuntimeError("Public badge images still differ from verified successful workflows")
+          PY
