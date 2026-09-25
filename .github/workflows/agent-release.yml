@@ -289,7 +289,8 @@ jobs:
           bash scripts/ci_install_python_baseline.sh
           python scripts/check_python_deps.py
           python check_env.py --auto-install
-      - name: Record the full repository hook report
+          npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Require the full repository hook report
         run: |
           mkdir -p evidence
           python - <<'PY'
@@ -304,15 +305,26 @@ jobs:
           Path("evidence/precommit-all.patch").write_bytes(patch)
           Path("evidence/precommit-all.json").write_text(json.dumps({"passed": result.returncode == 0, "exit_code": result.returncode}) + "\n")
           print(f"Full repository hook exit code: {result.returncode}; complete output and proposed formatting are retained.")
-          if result.returncode:
-              print("::warning::Full repository hooks report findings; inspect precommit-all.txt and precommit-all.patch.")
+          raise SystemExit(result.returncode)
           PY
-          git restore --worktree -- .
       - name: Require hooks on every release change
         run: |
           python tools/update_actions.py
           git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
           git diff --exit-code
+      - name: Exercise historical PostgreSQL and TypeScript integrations
+        run: |
+          python -m pip install psycopg2-binary==2.9.10
+          python -c 'import psycopg2'
+          docker info > /dev/null
+          export PATH="$PWD/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/node_modules/.bin:$PATH"
+          python -m pytest --noconftest -o addopts= tests/test_postgres_ledger.py tests/test_memeplex_ts.py -q --junitxml=evidence/legacy-integrations.xml
+          python - <<'PY'
+          from xml.etree import ElementTree
+          suites = ElementTree.parse("evidence/legacy-integrations.xml").getroot()
+          cases = list(suites.iter("testcase"))
+          assert len(cases) == 2 and all(len(case) == 0 for case in cases), "both integrations must run without skips"
+          PY
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

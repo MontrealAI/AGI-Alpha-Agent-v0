@@ -9,6 +9,10 @@ checks. Version 1.2.0 and the original preservation release remain available unc
   online and offline before release packaging. Browser security remains enabled.
 - Install the wallet-signature test dependency in the historical Windows, macOS and shared CI
   environments; keep benchmark and coverage artifacts separate for each Python version.
+- Wait for the final PostgreSQL TCP server, restore test environment variables after use, and fail
+  an established integration if persistence breaks. Compile meme mining with supported module resolution.
+- Require all repository hooks with installed browser dependencies and retain their full report.
+  Run the PostgreSQL and locked TypeScript integration checks without skips.
 - Derive package names, release notes, manifests and annotated tags from the declared project version.
   Publication still verifies the tested commit and re-downloads all draft assets before publication.
 

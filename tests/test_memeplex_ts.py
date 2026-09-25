@@ -22,7 +22,7 @@ def test_meme_mining(tmp_path: Path) -> None:
             "--module",
             "es2020",
             "--moduleResolution",
-            "node",
+            "bundler",
             "--rootDir",
             ".",
             "--outDir",

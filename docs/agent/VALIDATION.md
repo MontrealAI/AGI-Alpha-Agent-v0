@@ -12,8 +12,10 @@ legacy documentation repair must retain the exact sandbox-host script hashes, ev
 must load, and the rebuilt site must advance its simulation online and offline under normal browser
 security. Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
 
-Changed-file pre-commit hooks are a required gate. A complete repository hook report, exit status,
-and any proposed formatting are also included in the evidence archive.
+Full-repository and changed-file pre-commit hooks are required gates, including the locked browser
+ESLint environment. Their complete report, exit status and any proposed formatting are retained.
+The PostgreSQL ledger is exercised against a real temporary Docker database after TCP readiness;
+TypeScript meme mining uses the locked compiler. Both integration checks must run without skips.
 
 ## Runtime and integration evidence
 
