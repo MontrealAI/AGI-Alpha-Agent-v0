@@ -58,9 +58,11 @@ original build. The page revision covers its policy-complete template, the bundl
 and all precached assets before filling the worker hash; hashing the final page and a worker that
 embeds that page's hash would create a circular dependency.
 
-Both browser projects have production-dependency audit gates, with JSON reports retained in release
-evidence. The repaired dashboard audit reports zero production advisories. Some optional legacy
-development tools still have advisories; this is not a claim that every historical dependency is clear.
+Both browser projects have dependency audit gates, with JSON reports retained in release evidence.
+The Insight audit includes its entire npm graph, including build tools and bundled browser libraries;
+its prior production-only audit omitted those development-labelled dependencies. The repaired dashboard
+audit covers production dependencies. Other legacy development environments can still have advisories;
+this is not a claim that every historical dependency is clear.
 
 The Python coverage gate retains the repository's existing scope: demos, legacy backend agents/memory
 and temporary test copies are excluded in both collection and reporting. The earlier expanded report

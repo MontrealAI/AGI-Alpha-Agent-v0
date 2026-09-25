@@ -30,6 +30,10 @@ The preceding state is recoverable from `checkpoint-2026-09-25-v1.2.1`, includin
   Artifacts include the OS and Python version. Main-commit smoke success is required before publication.
 - Existing workflow badges remain and explicitly track main; release and acceptance badges are added.
   The release badge follows the latest stable version rather than a hard-coded passing label.
+- The Insight npm lock updates affected build and runtime dependencies, including protobuf, browser
+  download tooling and native image libraries. Its required audit now includes development-labelled
+  dependencies, and browser tests install the Chromium revision matching the locked Playwright version.
+  Workbox uses its supported glob API; the tested Transformers.js/model revision stays pinned.
 
 ## Installation and recovery
 

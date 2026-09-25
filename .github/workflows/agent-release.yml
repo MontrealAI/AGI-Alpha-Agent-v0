@@ -198,8 +198,9 @@ jobs:
       - name: Insight browser tests and build
         run: |
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-          npm audit --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 --omit=dev --audit-level=moderate --json > evidence/insight-audit.json
+          npm audit --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 --audit-level=moderate --json > evidence/insight-audit.json
           cd alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+          npx playwright install --with-deps chromium
           npm test
           npx tsc --noEmit
           npm run lint
