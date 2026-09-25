@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Stop blocked v1.3.0 acceptance
+on:
+  push:
+    branches: [release/cancel-blocked-130-20260925]
+permissions:
+  contents: read
+  actions: write
+jobs:
+  cancel-blocked:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Cancel only the release run blocked by the proven browser setup failure
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          repo = "MontrealAI/AGI-Alpha-Agent-v0"
+          expected = "6ec271f593ec56f6ebe82f046b05e0bc3bf6aea8"
+          target = 36142454334
+          def read(path):
+              return json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"], text=True))
+          run = read(f"actions/runs/{target}")
+          assert run["head_sha"] == expected and run["path"] == ".github/workflows/agent-release.yml"
+          jobs = read("actions/runs/36142454596/jobs?per_page=100")["jobs"]
+          failed = next(job for job in jobs if job["id"] == 108095625278)
+          assert failed["conclusion"] == "failure", "The recorded release blocker must remain visible"
+          releases = read("releases?per_page=100")
+          assert not any(item["tag_name"] == "v1.3.0" and not item["draft"] for item in releases)
+          if run["status"] == "completed":
+              print(f"Blocked run {target} already ended: {run['conclusion']}")
+          else:
+              subprocess.run(["gh", "api", "--method", "POST", f"repos/{repo}/actions/runs/{target}/cancel"], check=True)
+              print(f"Cancelled blocked release run {target} at {expected}; corrected-main gates remain required.")
+          PY
