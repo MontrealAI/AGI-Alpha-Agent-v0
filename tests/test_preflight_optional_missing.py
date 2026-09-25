@@ -12,6 +12,21 @@ from alpha_factory_v1.scripts import preflight
 
 
 class TestPreflightOptionalMissing(unittest.TestCase):
+    def test_compose_version_must_support_current_profiles(self) -> None:
+        for version, supported in [
+            ("2.5.0", False),
+            ("2.19.9", False),
+            ("2.20.0", True),
+            ("2.39.0", True),
+            ("3.0.0", True),
+        ]:
+            with self.subTest(version=version):
+                with mock.patch("shutil.which", return_value="/usr/bin/docker"):
+                    with mock.patch(
+                        "subprocess.run", return_value=mock.Mock(stdout=f"Docker Compose version v{version}")
+                    ):
+                        self.assertEqual(preflight.check_docker_compose(), supported)
+
     def test_missing_optional_packages_ok(self) -> None:
         def fake_check_pkg(name: str, optional: bool = False) -> bool:
             return True

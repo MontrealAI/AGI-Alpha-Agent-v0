@@ -117,7 +117,8 @@ def check_docker_compose() -> bool:
             major = int(match.group(1))
             minor = int(match.group(2))
             if (major, minor) < (2, 20):
-                banner("docker compose >=2.20 required for current demo profiles", "YELLOW")
+                banner("docker compose >=2.20 required for current demo profiles", "RED")
+                return False
         return True
     except (subprocess.CalledProcessError, OSError):
         banner("docker compose missing", "RED")
