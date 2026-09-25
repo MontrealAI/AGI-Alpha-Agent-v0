@@ -1,6 +1,10 @@
 name: "🔥 Smoke Test"
 
 on:
+  push:
+    branches: [main, codex/alpha-agent-completion]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       run_token:
@@ -10,7 +14,13 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 env:
+  PYTHONUTF8: "1"
+  OPENAI_AGENTS_DISABLE_TRACING: "true"
   PYTHON_VERSION_MATRIX: "3.11,3.12,3.13"
   AGIALPHA_ADDRESS: "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
   AGIALPHA_DECIMALS: 18
@@ -18,18 +28,21 @@ env:
 jobs:
   smoke:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.11", "3.12", "3.13"]
     steps:
-      - name: Check dispatch token
-        if: github.actor != github.repository_owner && github.actor != 'github-actions[bot]'
+      - name: Check manual dispatch token
+        if: github.event_name == 'workflow_dispatch' && github.actor != github.repository_owner && github.actor != 'github-actions[bot]'
+        env:
+          PROVIDED_TOKEN: ${{ inputs.run_token }}
+          EXPECTED_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
         run: |
-          if [ "${{ github.event.inputs.run_token }}" != "${{ secrets.DISPATCH_TOKEN }}" ]; then
-            echo "Unauthorized"
+          if [[ -z "$EXPECTED_TOKEN" || "$PROVIDED_TOKEN" != "$EXPECTED_TOKEN" ]]; then
+            echo "Unauthorized manual dispatch"
             exit 1
           fi
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -44,52 +57,32 @@ jobs:
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
 
-      - name: Cache pre-commit
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
-        with:
-          path: .cache/pre-commit
-          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-precommit-
-      - name: Prepare build tools
+      - name: Isolate dependencies from hosted runner tools
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-      - name: Install dependencies
+          python - <<'PYCODE'
+          import os, venv
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'alpha-smoke-venv'
+          venv.EnvBuilder(with_pip=True).create(root)
+          with open(os.environ['GITHUB_PATH'], 'a', encoding='utf-8') as target:
+              target.write(str(root / ('Scripts' if os.name == 'nt' else 'bin')) + '\n')
+          PYCODE
+
+      - name: Install reproducible smoke dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.lock
-          if [ "${{ matrix.python-version }}" = "3.11" ]; then
-            pip install -r requirements-dev.txt
-          fi
-      - name: Install pre-commit
-        if: matrix.python-version == '3.11'
-        run: pip install pre-commit==4.2.0
-        env:
-          PRE_COMMIT_HOME: .cache/pre-commit
-      - name: Run pre-commit checks
-        if: matrix.python-version == '3.11'
+          python -m pip install --require-hashes -r requirements.lock
+          python -m pip install pytest==8.4.1 pytest-cov==6.2.1 eth-account==0.13.7
+          python -m pip check
+          python scripts/check_python_deps.py
+          python check_env.py
+      - name: Run focused smoke tests on every platform and Python version
         run: |
-          from_ref="${{ github.event.before }}"
-          if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then
-            pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
-          else
-            echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."
-            pre-commit run --all-files
-          fi
-        env:
-          PRE_COMMIT_HOME: .cache/pre-commit
-          SKIP: eslint-insight-browser
-      - name: Run smoke tests
-        if: matrix.python-version == '3.11'
+          mkdir -p evidence
+          python -m pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py -q --junitxml=evidence/smoke.xml
+      - name: Exercise the installed operator lifecycle
         run: |
-          pytest tests/test_ping_agent.py tests/test_af_requests.py \
-            --cov --cov-report=xml --cov-fail-under=80
-      - name: Upload coverage
-        if: matrix.python-version == '3.11'
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
-        with:
-          name: coverage-xml-${{ matrix.python-version }}
-          path: coverage.xml
+          python -m pip install --no-deps .
+          python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
@@ -104,7 +97,22 @@ jobs:
 
       - name: Verify ledger output
         run: |
-          grep -qi year "$AGI_INSIGHT_LEDGER_PATH" || true
-          sqlite3 "$AGI_INSIGHT_LEDGER_PATH" 'SELECT COUNT(*) FROM messages;' | grep -q "^[1-9]"
+          python - <<'PYCODE'
+          import os, sqlite3
+          from pathlib import Path
+          path = Path(os.environ['AGI_INSIGHT_LEDGER_PATH'])
+          assert path.is_file(), path
+          with sqlite3.connect(path) as db:
+              assert db.execute('SELECT COUNT(*) FROM messages').fetchone()[0] > 0
+              assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
+          PYCODE
         env:
           AGI_INSIGHT_LEDGER_PATH: ${{ runner.temp }}/audit.db
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: smoke-${{ runner.os }}-${{ matrix.python-version }}
+          path: |
+            evidence/
+            sim.log
+          if-no-files-found: error

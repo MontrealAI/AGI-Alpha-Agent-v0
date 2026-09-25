@@ -1,32 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
-let localModel: any;
-let useGpu = true;
-let ortLoaded: boolean | undefined;
+type Generator = (prompt: string, options: Record<string, unknown>) => Promise<any>;
+let localModel: Promise<Generator> | undefined;
+let useGpu = false;
+let apiKey = '';
 export const llmEvents = new EventTarget();
 export const LLM_LOAD_START = 'llm-load-start';
 export const LLM_LOAD_END = 'llm-load-end';
-export const gpuAvailable =
-  typeof navigator !== 'undefined' && !!(navigator as any).gpu;
-let runOffline = false;
-
+export const gpuAvailable = typeof navigator !== 'undefined' && !!(navigator as any).gpu;
+let runOffline = true;
 try {
-  const offline = localStorage.getItem('RUN_OFFLINE');
-  runOffline = offline === '1';
+  runOffline = localStorage.getItem('RUN_OFFLINE') !== '0';
+  useGpu = localStorage.getItem('USE_GPU') === '1';
+  // Earlier versions persisted credentials; migrate once to memory and erase storage.
+  apiKey = localStorage.getItem('OPENAI_API_KEY') || '';
+  localStorage.removeItem('OPENAI_API_KEY');
 } catch {}
 
-try {
-  const saved = localStorage.getItem('USE_GPU');
-  if (saved !== null) {
-    useGpu = saved !== '0';
-  }
-} catch {}
+export function setApiKey(key: string): void { apiKey = key.trim(); }
+export function hasApiKey(): boolean { return apiKey.length > 0; }
 
 export function setUseGpu(flag: boolean) {
   useGpu = !!flag;
   try {
     localStorage.setItem('USE_GPU', useGpu ? '1' : '0');
   } catch {}
-  localModel = null;
+  // The quantized baseline uses WASM on all platforms; GPU preference is retained.
 }
 
 export function setOffline(flag: boolean) {
@@ -40,82 +38,56 @@ export function isOffline(): boolean {
   return runOffline;
 }
 
-async function ensureOrt(): Promise<boolean> {
-  if (ortLoaded !== undefined) return ortLoaded;
-  const root =
-    typeof window !== 'undefined'
-      ? (window as any)
-      : typeof globalThis !== 'undefined'
-        ? (globalThis as any)
-        : undefined;
-  if (!root) return false;
-  if (!root.ort) {
-    try {
-      const ort = await import('onnxruntime-web');
-      root.ort = ort;
-    } catch {
-      ortLoaded = false;
-      return false;
-    }
-  }
-  ortLoaded = !!root.ort;
-  return ortLoaded;
-}
-
 export async function gpuBackend(): Promise<string> {
-  if (useGpu && gpuAvailable) {
-    const ok = await ensureOrt();
-    if (ok) return 'webgpu';
-  }
+  // Report the backend actually used by the quantized baseline.
   return 'wasm-simd';
 }
 
-async function loadLocal(): Promise<any> {
+async function loadLocal(): Promise<Generator> {
   if (!localModel) {
     llmEvents.dispatchEvent(new Event(LLM_LOAD_START));
-    try {
-      const mod = await import('../lib/bundle.esm.min.js');
-      const { pipeline } = mod as any;
-      const backend = await gpuBackend();
-      if (typeof window !== 'undefined') {
-        (window as any).LLM_BACKEND = backend;
-      }
-      if ((window as any).GPT2_MODEL_BASE64) {
-        const bytes = Uint8Array.from(atob((window as any).GPT2_MODEL_BASE64), c => c.charCodeAt(0));
-        const blob = new Blob([bytes]);
-        const url = URL.createObjectURL(blob);
-        localModel = await pipeline('text-generation', url, { backend });
-      } else {
-        localModel = await pipeline('text-generation', './wasm_llm/', { backend });
-      }
-    } catch (err) {
-      localModel = async (p: string) => `[offline] ${p}`;
-    } finally {
-      llmEvents.dispatchEvent(new Event(LLM_LOAD_END));
-    }
+    localModel = (async () => {
+      const base = new URL('./assets/local-llm/', document.baseURI);
+      const moduleUrl = new URL('transformers.min.js', base).href;
+      const { pipeline, env } = await import(moduleUrl);
+      env.allowRemoteModels = false;
+      env.allowLocalModels = true;
+      env.localModelPath = new URL('models/', base).href;
+      env.backends.onnx.wasm.wasmPaths = base.href;
+      env.backends.onnx.wasm.numThreads = 1;
+      env.backends.onnx.wasm.proxy = false;
+      const generator = await pipeline('text-generation', 'gpt2', { device: 'wasm', dtype: 'q8' });
+      (window as any).LLM_BACKEND = await gpuBackend();
+      return generator as Generator;
+    })();
+    try { return await localModel; }
+    catch (error) {
+      localModel = undefined;
+      throw new Error('Local model unavailable. Install the full browser build with its verified ONNX assets. ' + String(error));
+    } finally { llmEvents.dispatchEvent(new Event(LLM_LOAD_END)); }
   }
   return localModel;
 }
 
 export async function chat(prompt: string): Promise<string> {
-  const offline = runOffline;
-  const key = offline ? null : localStorage.getItem('OPENAI_API_KEY');
-  if (key) {
+  if (!prompt.trim() || prompt.length > 4096) throw new Error('Enter a prompt of 1–4096 characters.');
+  if (!runOffline && apiKey) {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-      }),
+      signal: AbortSignal.timeout(60000),
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({ model: 'gpt-3.5-turbo', messages: [{ role: 'user', content: prompt }], max_tokens: 256 }),
     });
+    if (!resp.ok) throw new Error(`Model provider returned HTTP ${resp.status}`);
     const data = await resp.json();
-    return data.choices[0].message.content.trim();
+    const text = data?.choices?.[0]?.message?.content;
+    if (typeof text !== 'string' || !text.trim()) throw new Error('Model provider returned no text.');
+    return text.trim();
   }
-  const model = await loadLocal();
-  const out = await model(prompt);
-  return typeof out === 'string' ? out : out[0]?.generated_text?.trim();
+  if (!runOffline) throw new Error('Enter an API key or select offline mode.');
+  const generator = await loadLocal();
+  const output = await generator(prompt, { max_new_tokens: 32, do_sample: false, return_full_text: false });
+  const text = output?.[0]?.generated_text;
+  if (typeof text !== 'string' || !text.trim()) throw new Error('Local model returned no text.');
+  return text.trim();
 }

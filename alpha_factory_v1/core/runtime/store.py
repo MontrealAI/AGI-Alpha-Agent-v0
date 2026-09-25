@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import base64
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 import hashlib
 import json
 import os
 from pathlib import Path
 import secrets
 import sqlite3
+import subprocess
 import time
 from typing import Any, Iterator
 import uuid
@@ -32,10 +33,43 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical(value)).hexdigest()
 
 
+def restrict_access(path: Path) -> None:
+    """Grant only the current OS account access before writing private state."""
+    if os.name != "nt":
+        path.chmod(0o700 if path.is_dir() else 0o600)
+        return
+    script = r"""
+$ErrorActionPreference = 'Stop'
+$path = $env:ALPHA_PRIVATE_PATH
+$sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
+if ((Get-Item -LiteralPath $path).PSIsContainer) {
+    $acl = New-Object System.Security.AccessControl.DirectorySecurity
+    $inherit = [System.Security.AccessControl.InheritanceFlags]'ContainerInherit, ObjectInherit'
+} else {
+    $acl = New-Object System.Security.AccessControl.FileSecurity
+    $inherit = [System.Security.AccessControl.InheritanceFlags]::None
+}
+$acl.SetOwner($sid)
+$acl.SetAccessRuleProtection($true, $false)
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule($sid, 'FullControl', $inherit, 'None', 'Allow')
+$acl.AddAccessRule($rule)
+Set-Acl -LiteralPath $path -AclObject $acl
+"""
+    subprocess.run(
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+        env={**os.environ, "ALPHA_PRIVATE_PATH": str(path.resolve())},
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+
+
 def private_write(path: Path, data: bytes) -> None:
     """Create a private file exclusively, without following an existing link."""
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "wb") as stream:
+        if os.name == "nt":
+            restrict_access(path)
         stream.write(data)
         stream.flush()
         os.fsync(stream.fileno())
@@ -87,14 +121,14 @@ class Journal:
         except FileExistsError:
             if not allow_empty or not path.is_dir() or any(path.iterdir()):
                 raise
-            path.chmod(0o700)
+        restrict_access(path)
         cfg = config or RuntimeConfig()
         private_write(path / "config.json", canonical(cfg.model_dump()))
         key = Ed25519PrivateKey.generate()
         private_write(path / "identity.key", key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption()))
         private_write(path / "api.token", secrets.token_urlsafe(32).encode())
         private_write(path / "journal.sqlite3", b"")
-        with sqlite3.connect(path / "journal.sqlite3") as cx:
+        with closing(sqlite3.connect(path / "journal.sqlite3")) as cx, cx:
             cx.execute("PRAGMA journal_mode=WAL")
             cx.execute(
                 "CREATE TABLE events(seq INTEGER PRIMARY KEY, mission TEXT NOT NULL, "
@@ -109,7 +143,7 @@ class Journal:
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
         """Serialize state changes and roll back on every exception."""
-        with sqlite3.connect(self.path, timeout=30) as cx:
+        with closing(sqlite3.connect(self.path, timeout=30)) as cx, cx:
             cx.execute("PRAGMA synchronous=FULL")
             cx.execute("BEGIN IMMEDIATE")
             yield cx
@@ -137,7 +171,7 @@ class Journal:
     def latest(self, mission: str, cx: sqlite3.Connection | None = None) -> dict[str, Any]:
         """Read a signed state; verify the full chain with ``verify`` at startup."""
         if cx is None:
-            with sqlite3.connect(self.path) as connection:
+            with closing(sqlite3.connect(self.path)) as connection:
                 return self.latest(mission, connection)
         row = cx.execute(
             "SELECT seq,body,hash,signature FROM events WHERE mission=? ORDER BY seq DESC LIMIT 1", (mission,)
@@ -201,7 +235,7 @@ class Journal:
 
     def missions(self) -> list[dict[str, Any]]:
         """Return the latest state of each submitted mission."""
-        with sqlite3.connect(self.path) as cx:
+        with closing(sqlite3.connect(self.path)) as cx:
             ids = [
                 row[0]
                 for row in cx.execute(
@@ -213,7 +247,7 @@ class Journal:
     def verify(self) -> dict[str, Any]:
         """Verify integrity, every signature, chain order and active configuration."""
         previous, count = "0" * 64, 0
-        with sqlite3.connect(self.path) as cx:
+        with closing(sqlite3.connect(self.path)) as cx:
             if cx.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise ValueError("SQLite integrity check failed")
             for seq, mission, raw, hashed, signature in cx.execute("SELECT * FROM events ORDER BY seq"):
@@ -261,7 +295,7 @@ class Journal:
             # rows. configure() uses the same lock, so files and rows agree.
             with self.transaction():
                 self.verify()
-                with sqlite3.connect(self.path) as source, sqlite3.connect(temporary) as dest:
+                with closing(sqlite3.connect(self.path)) as source, closing(sqlite3.connect(temporary)) as dest:
                     source.backup(dest)
                 files = {name: (self.root / name).read_bytes() for name in ("config.json", "identity.key", "api.token")}
                 files["journal.sqlite3"] = temporary.read_bytes()
@@ -294,6 +328,7 @@ class Journal:
         if manifest != {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}:
             raise ValueError("recovery archive checksum mismatch")
         target.mkdir(parents=True, exist_ok=False, mode=0o700)
+        restrict_access(target)
         for name, data in files.items():
             private_write(target / name, data)
         journal = cls(target)

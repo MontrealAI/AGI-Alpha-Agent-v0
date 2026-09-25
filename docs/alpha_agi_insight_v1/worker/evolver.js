@@ -88,6 +88,19 @@ print(json.dumps([{'year': r.year, 'capability': r.capability} for r in res]))`;
     }
   });
 
+  // src/evolve/selection.ts
+  function selectPopulation(candidates, front, requested) {
+    if (!Number.isFinite(requested) || requested < 1) throw new Error("Population size must be positive");
+    const limit = Math.min(1e4, Math.floor(requested));
+    const elites = [...new Set(front)].slice(0, limit);
+    const selected = new Set(elites);
+    for (const candidate of candidates) {
+      if (selected.size >= limit) break;
+      selected.add(candidate);
+    }
+    return [...selected];
+  }
+
   // src/evolve/mutate.ts
   function mutate(pop, rand, strategies, gen = 0, adaptive = false, scale = 1, gpu = false) {
     const clamp = (v) => Math.min(1, Math.max(0, v));
@@ -323,7 +336,7 @@ print(json.dumps([{'year': r.year, 'capability': r.capability} for r in res]))`;
       await loadPy();
     }
     shuffle(next, rand);
-    next = front.concat(next.slice(0, popSize - 10));
+    next = selectPopulation(next, front, popSize);
     const metrics = {
       avgLogic: next.reduce((s, d) => s + (d.logic ?? 0), 0) / next.length,
       avgFeasible: next.reduce(

@@ -14,7 +14,7 @@ from typing import Any
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
-WORKFLOWS = ("ci.yml", "pr-ci.yml")
+WORKFLOWS = ("ci.yml", "pr-ci.yml", "smoke.yml")
 
 
 def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:

@@ -2,7 +2,7 @@
 
 # Vision, implementation and evidence
 
-The original README, including every flywheel, remains verbatim beneath the release-status introduction.
+The original README, including every flywheel, retains all text beneath the release-status introduction; only CI badge URL queries were updated.
 The preservation release `baseline-2026-09-24` retains the original source and complete Git history.
 This project belongs to **$AGIALPHA**. It is separate from AGI Jobs and does not connect this agent to
 USDC job settlement or a private OpenClaw installation. Historical job-contract experiments remain present.
@@ -16,7 +16,7 @@ The design document explicitly calls its forecast a toy model and its architectu
 The implementation historically mixed real algorithms and integrations with synthetic fitness, no-op
 SDK compatibility classes, random market fixtures and ambitious future claims.
 
-Version 1.2.1 connects a usable bounded agent around the original roles and algorithms. The supported
+Version 1.3.0 connects a usable bounded agent around the original roles and algorithms. The supported
 entry point is `alpha-agent` (also `alpha-factory mission`). Its state, policy, identity, evidence,
 operator review, memory and payment receipts share one signed persistent journal. Existing launchers,
 interfaces, experiments, assets and documentation remain available.
@@ -61,3 +61,17 @@ not silently promoted into release guarantees.
 
 See [the operator guide](OPERATIONS.md) for supported installation, configuration, review and recovery,
 and [validation](VALIDATION.md) for the exact acceptance surface.
+
+## Browser inference and legacy service completion in 1.3.0
+
+The full Insight build now runs the actual Xenova GPT-2 ONNX model through Transformers.js 3.7.2,
+using CPU WASM and a bounded 32-token continuation. Model files are revision-pinned and SHA-256 checked.
+The GPU preference remains available for other browser features; the GPT-2 baseline accurately reports
+WASM execution. The initial model load requires the full local distribution to be served; after a
+successful generation its browser cache supports offline reload. Minimal builds retain the simulation
+and explicitly report that model assets are unavailable. The original PyTorch assets are retained.
+This completes the browser model integration, not the research aspiration of general intelligence.
+
+AIGA's direct-file service launcher is covered by a required health/startup/shutdown test. Its provider
+fallback uses a local HTTP fixture in that test; real-model acceptance is reported separately for the
+supported operator runtime and the browser ONNX baseline.

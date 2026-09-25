@@ -25,6 +25,7 @@ function run(cmd, options = {}) {
 run(['npm', 'run', 'build']);
 run([process.execPath, '--import', 'tsx', '--test',
   'tests/entropy.test.js',
+  'tests/population_bound.test.js',
   'tests/iframe_worker_cleanup.test.js',
   'tests/locale_parity.test.js',
   'tests/test_sw_update.js',

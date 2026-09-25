@@ -182,7 +182,7 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 to 1.2.1.
+version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 to 1.3.0.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -206,8 +206,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.2.1 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.2.1
+docker build --target agent-runtime -t agialpha-agent:1.3.0 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.3.0
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 
@@ -230,3 +230,48 @@ including bundled service workers, sandbox hosts, CSP hashes and offline assets.
 build, prefetch the dependencies and browser assets before disconnecting; `FETCH_ASSETS_SKIP_LLM=1`
 omits the optional historical browser model. The previous manual compiler is retained verbatim in
 `build/manual_build_legacy.py.txt` as historical source, not the active build path.
+
+## Full browser text generation (1.3.0)
+
+The release includes `alpha-agent-v1.3.0-browser.zip`, the complete tested browser distribution.
+Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
+`python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
+Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.
+
+To build from source, use Python 3.11–3.13 and Node 22.17.1 from the repository root:
+
+```bash
+python scripts/fetch_assets.py
+npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+python -m http.server 8080 --bind 127.0.0.1 --directory alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist
+```
+
+Leave `FETCH_ASSETS_SKIP_LLM` unset for a full build. The build downloads a pinned ONNX GPT-2 model,
+verifies all hashes and copies the browser inference runtime from the locked npm dependency.
+The original PyTorch model remains in the distribution; ONNX powers actual browser generation.
+Serve the output over localhost or HTTPS; opening the HTML through `file://` does not support the
+service worker. Allow space for both original assets and the additional approximately 150 MB browser
+inference assets. The first successful generation caches the model; retain browser site data to use
+it after an offline reload. Clearing site data requires loading the full model again.
+
+`INSIGHT_ONNX_CACHE` can select a reusable model download directory. Its files are verified on every
+build. A minimal build (`FETCH_ASSETS_SKIP_LLM=1`) supports the simulation but cannot generate local
+model text. Missing model data is reported explicitly, without a fabricated response.
+Expand **Try text generation** in the Power panel, enter a prompt and select **Generate**.
+API mode asks for a key held only in memory and cleared by a reload. No API key is embedded in builds.
+The local baseline generates text continuations; it is not a substitute for an instruction-tuned model.
+
+Validate the actual full build with:
+
+```bash
+python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --model --output evidence/browser-model.json
+```
+
+For an API-only AIGA service without its optional dashboard, set `ENABLE_GRADIO=false` before launching.
+Both `python -m alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint` and the original direct
+file command are supported. Private operator data still requires the separate runtime backup procedure.
+
+On Windows, new and restored operator homes and private files receive an explicit owner-only ACL
+before secret bytes are written. Initialization fails if Windows cannot apply the ACL. On Linux/macOS,
+private directories use mode 0700 and private files use mode 0600. Keep backups private as well.

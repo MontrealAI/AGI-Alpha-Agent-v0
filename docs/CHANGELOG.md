@@ -1,3 +1,9 @@
+## 1.3.0 — browser inference and release verification
+
+Real pinned offline ONNX generation, memory-only browser credentials, CSP-compatible WebGL rendering,
+working direct AIGA launch, automatic nine-platform/Python smoke acceptance and main-scoped badges.
+See [release notes](agent/RELEASE_NOTES_1.3.0.md). Original files and flywheels remain present.
+
 ## 1.2.0 — connected $AGIALPHA Agent
 
 See [release notes](agent/RELEASE_NOTES_1.2.0.md), [capabilities](agent/CAPABILITIES.md) and
