@@ -462,7 +462,14 @@ async function bundle() {
     await fs.rm(llmDir, {recursive: true, force: true});
     await fs.mkdir(llmDir, {recursive: true});
     for (const name of ['transformers.min.js', 'ort-wasm-simd-threaded.jsep.mjs', 'ort-wasm-simd-threaded.jsep.wasm']) {
-        await fs.copyFile(path.join('node_modules/@huggingface/transformers/dist', name), path.join(llmDir, name));
+        const source = path.join('node_modules/@huggingface/transformers/dist', name);
+        const target = path.join(llmDir, name);
+        if (name.endsWith('.mjs')) {
+            // Normalize upstream whitespace-only lines for reproducible, lint-clean docs.
+            await fs.writeFile(target, (await fs.readFile(source, 'utf8')).replace(/^[\t ]+$/gm, ''));
+        } else {
+            await fs.copyFile(source, target);
+        }
     }
     if (!skipLlmAssets) {
         const modelCache = process.env.INSIGHT_ONNX_CACHE || path.join(assetRoot || 'wasm_llm', 'onnx-gpt2');
