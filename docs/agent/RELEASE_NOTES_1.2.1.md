@@ -2,6 +2,9 @@
 
 This patch completes the full documentation rebuild path discovered during the post-release main
 checks. Version 1.2.0 and the original preservation release remain available unchanged.
+The pre-completion work is also preserved in the
+[development checkpoint](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/checkpoint-2026-09-24-v1.2.1-wip),
+with exact source, restored Git history, checksums and recovery instructions.
 
 - Preserve the exact inline sandbox-host hashes when the historical documentation tools repair CSP.
   The opaque sandbox can start after a complete gallery rebuild without weakening script policy.
