@@ -81,6 +81,20 @@ python3.12 -m venv .venv-native-demos
 .venv-native-demos/bin/python -m scripts.validate_native_demos --model models/gpt2 --output evidence/native-demos.json
 ```
 
+Maintainers regenerate this lock with Python 3.12 and the pinned compiler tools:
+
+```sh
+python -m pip install pip==25.2 pip-tools==7.5.0 click==8.2.1
+pip-compile --allow-unsafe --constraint=requirements-agent.lock \
+  --extra-index-url=https://download.pytorch.org/whl/cpu --generate-hashes \
+  --output-file=requirements-demo-verified.lock pyproject.toml requirements-demo-verified.in
+```
+
+The operator lock remains a compiler constraint. Pass it on the command line because GitHub's
+dependency scanner only fetches `.txt` and `.in` constraint references from requirement manifests.
+The input manifest declares the same CPU wheel index as the compiled lock. Users install the
+hash-locked output above; the input manifest is for dependency maintenance and indexing.
+
 The original optional requirements and deployment examples remain available for research. Their presence
 does not establish provider integration, infrastructure readiness or external service availability.
 Release artifacts contain the actual CI outcomes and commit, including failures/skips where relevant;

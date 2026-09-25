@@ -1,5 +1,7 @@
 # Reproducible optional CPU research demos; keep separate from the agent environment.
--c requirements-agent.lock
+# Apply requirements-agent.lock with pip-compile --constraint; GitHub's dependency
+# scanner only fetches .txt/.in constraint references. See docs/agent/DEMO_VALIDATION.md.
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.6.0+cpu
 transformers==4.55.4
 gymnasium==1.2.0
