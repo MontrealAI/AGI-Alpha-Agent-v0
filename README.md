@@ -7,13 +7,17 @@ hash-locked runtime, then run `alpha-agent init` and `alpha-agent serve`.
 For the current container demo profiles, use **Docker Compose 2.20 or later**; the older
 Compose minimum in the preserved historical documentation below no longer covers those profiles.
 
-The original vision, flywheels, examples and demos below are preserved; CI badge URLs now explicitly track main. Historical
+The original vision, flywheels, examples and demos below are preserved; CI badges explicitly track main. Historical
 AGI/ASI, economic and compliance aspirations are not release guarantees. This is the
 **$AGIALPHA project**, separate from AGI Jobs. The previous state is preserved in
 [baseline-2026-09-24](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/baseline-2026-09-24).
 
 [![Release](https://img.shields.io/github/v/release/MontrealAI/AGI-Alpha-Agent-v0)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest)
-[![Release acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml/badge.svg?branch=main)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml?query=branch%3Amain)
+[![Release acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml/badge.svg?branch=main&event=push)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml?query=branch%3Amain+event%3Apush)
+
+CI badges show live results and open their supporting checks. Health and Smoke read the
+current main commit's watchdog and complete matrix results directly. [Badge meanings and troubleshooting](docs/CI_STATUS.md)
+explain the scope of each check and where to find release evidence.
 
 Smoke tests now run automatically across Linux, macOS and Windows on Python 3.11–3.13.
 Full browser builds include verified ONNX GPT-2 text generation that works offline after installation.
@@ -38,10 +42,10 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 
 ### Continuous Integration
 
-[![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml?query=branch%3Amain)
-[![🚀 Integration CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
-[![🔥 Smoke Test](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain)
-[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain)
+[![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg?branch=main&event=push)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml?query=branch%3Amain+event%3Apush)
+[![🚀 Integration CI — Insight Demo](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush)
+[![🔥 Smoke Test](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Smoke%20matrix&label=Smoke%20Test&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain)
+[![🩺 CI Health](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=CI%20watchdog&label=CI%20Health&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain)
 
 The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
 

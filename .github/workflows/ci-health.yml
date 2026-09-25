@@ -23,8 +23,10 @@ permissions:
   # security-events, statuses.
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # workflow_run executes on the default branch even when it watches a PR.
+  # Keep unrelated source branches, upstream workflows and periodic checks apart.
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.workflow_run.workflow_id || 'periodic' }}-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   ci-health:

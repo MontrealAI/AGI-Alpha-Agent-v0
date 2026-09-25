@@ -18,6 +18,7 @@ import tomllib
 import zipfile
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from scripts.check_agent_preservation import BADGE_MAINTENANCE
 
 
 def main() -> None:
@@ -107,7 +108,7 @@ def main() -> None:
         "python": sys.version,
         "original_files_preserved": 2125,
         "original_readme_text_and_flywheels_preserved": True,
-        "permitted_readme_changes": "CI badge URL queries only",
+        "permitted_readme_changes": BADGE_MAINTENANCE,
         "release_gates": [
             "runtime Python 3.11/3.12/3.13",
             "full offline Python regression",
