@@ -428,7 +428,7 @@ jobs:
         if: steps.bench-check.outputs.found == 'true'
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
-          name: benchmark-results
+          name: benchmark-results-${{ matrix.python-version }}
           path: tests/benchmarks/latest.json
       - name: Generate benchmark comment
         run: |
@@ -460,7 +460,7 @@ jobs:
         if: steps.coverage-check.outputs.found == 'true'
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
-          name: coverage-xml
+          name: coverage-xml-${{ matrix.python-version }}
           path: artifacts/coverage.xml
 
   windows-smoke:
