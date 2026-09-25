@@ -10,7 +10,13 @@ screenshots and integration evidence are retained as workflow artifacts and rele
 The 1.2.0 release remains available unchanged. Patch 1.2.1 adds a required complete gallery rebuild:
 legacy documentation repair must retain the exact sandbox-host script hashes, every generated demo
 must load, and the rebuilt site must advance its simulation online and offline under normal browser
-security. Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
+security. Both minimal and full-asset gallery builds must pass. The generated site receives the
+complete browser distribution so documentation source exclusions cannot break its precache.
+Workflow-only repairs also retain distinct evidence from both Python matrix jobs.
+
+Before main-branch packaging, a separate gate requires the historical integration and PR CI workflows
+to succeed on that exact main commit. A failure, cancellation, timeout or skipped workflow blocks
+publication. Their final run snapshots are included in the validation archive.
 
 Full-repository and changed-file pre-commit hooks are required gates, including the locked browser
 ESLint environment. Their complete report, exit status and any proposed formatting are retained.
