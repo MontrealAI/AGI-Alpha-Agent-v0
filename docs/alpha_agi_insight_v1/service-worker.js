@@ -1,7 +1,7 @@
 (() => {
   // node_modules/workbox-core/_version.js
   try {
-    self["workbox:core:7.2.0"] && _();
+    self["workbox:core:7.4.0"] && _();
   } catch (e) {
   }
 
@@ -493,7 +493,7 @@
 
   // node_modules/workbox-precaching/_version.js
   try {
-    self["workbox:precaching:7.2.0"] && _();
+    self["workbox:precaching:7.4.0"] && _();
   } catch (e) {
   }
 
@@ -612,7 +612,7 @@
 
   // node_modules/workbox-strategies/_version.js
   try {
-    self["workbox:strategies:7.2.0"] && _();
+    self["workbox:strategies:7.4.0"] && _();
   } catch (e) {
   }
 
@@ -950,7 +950,7 @@
     /**
      * Adds a promise to the
      * [extend lifetime promises]{@link https://w3c.github.io/ServiceWorker/#extendableevent-extend-lifetime-promises}
-     * of the event event associated with the request being handled (usually a
+     * of the event associated with the request being handled (usually a
      * `FetchEvent`).
      *
      * Note: you can await
@@ -971,13 +971,17 @@
      *
      * Note: any work done after `doneWaiting()` settles should be manually
      * passed to an event's `waitUntil()` method (not this handler's
-     * `waitUntil()` method), otherwise the service worker thread my be killed
+     * `waitUntil()` method), otherwise the service worker thread may be killed
      * prior to your work completing.
      */
     async doneWaiting() {
-      let promise;
-      while (promise = this._extendLifetimePromises.shift()) {
-        await promise;
+      while (this._extendLifetimePromises.length) {
+        const promises = this._extendLifetimePromises.splice(0);
+        const result = await Promise.allSettled(promises);
+        const firstRejection = result.find((i) => i.status === "rejected");
+        if (firstRejection) {
+          throw firstRejection.reason;
+        }
       }
     }
     /**
@@ -1604,7 +1608,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
 
   // node_modules/workbox-routing/_version.js
   try {
-    self["workbox:routing:7.2.0"] && _();
+    self["workbox:routing:7.4.0"] && _();
   } catch (e) {
   }
 
@@ -2261,7 +2265,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   var CACHE_VERSION = "1.3.0";
   var CACHE_PREFIX = `alpha-insight-${CACHE_VERSION}`;
   setCacheNameDetails({ prefix: CACHE_PREFIX });
-  precacheAndRoute([{"revision":"68490e1ed445c898cf37c013f9c98cf7a2dbd0c88da400445208810fae1e9453","url":"index.html"},{"revision":"eeb15dfac54c7d62f060e0a5e30bfd80","url":"insight.bundle.js"},{"revision":"4fe6431a12b57259dcee823b2cfaa9f2","url":"d3.exports.js"},{"revision":"69faba9d2fffc70c04f5620e7076efb0","url":"assets/d3.v7.min.js"},{"revision":"e1a14b3cbb3ce35ce4fa91cc3f42615f","url":"assets/data/critics/innovations.txt"},{"revision":"cc50e45fa645e92357145677dfc72f20","url":"assets/src/i18n/en.json"},{"revision":"a7a5b84ef9ba6850165d33bc89e1b437","url":"assets/src/i18n/es.json"},{"revision":"113f9527b24c38be260032144bb2409a","url":"assets/src/i18n/fr.json"},{"revision":"589100950e6f87d533ec45c4de3d3aa9","url":"assets/src/i18n/zh.json"},{"revision":"4aa35235ff3874a487a62642cd7fa8bd","url":"bootstrap.js"},{"revision":"764a8bbaf88ae30cd89e5f80d26422ae","url":"sandbox_worker_host.html"},{"revision":"db3d046e00cc6913bdfc12a686222fb8","url":"sandbox_worker_host.js"},{"revision":"86655df8263f115640515cdfb38c9734","url":"style.css"},{"revision":"4fe6431a12b57259dcee823b2cfaa9f2","url":"d3_exports.js"},{"revision":"d6e9eb44a24f1e781164287002302b0c","url":"assets/lib/workbox-sw.js"},{"revision":"3638f0170fab6dcf776662832996072a","url":"assets/lib/bundle.esm.min.js"},{"revision":"b8667ae0f82c5a5ced94e3d806e93be2","url":"assets/manifest.json"},{"revision":"07edf3fece7077ab3e91cdbb816b9826","url":"assets/favicon.svg"},{"revision":"ea0e3d07e67e98da7505477c43848ee3","url":"worker/evolver.js"},{"revision":"4b85a9d4ca506cce580c72d496073758","url":"worker/arenaWorker.js"},{"revision":"2c1c532c459956382f236427026af444","url":"worker/umapWorker.js"},{"revision":"ae8dbaeb43673b429fb8da4989394482","url":"assets/local-llm/transformers.min.js"},{"revision":"a8a3ef09acb1a47aba50aa67477bf52c","url":"assets/local-llm/ort-wasm-simd-threaded.jsep.mjs"}]);
+  precacheAndRoute([{"revision":"f1d715b8296afc7b2771936018c5aedc3448333430f5069d8ae1bfc97db9ecb1","url":"index.html"},{"revision":"eeb15dfac54c7d62f060e0a5e30bfd80","url":"insight.bundle.js"},{"revision":"4fe6431a12b57259dcee823b2cfaa9f2","url":"d3.exports.js"},{"revision":"69faba9d2fffc70c04f5620e7076efb0","url":"assets/d3.v7.min.js"},{"revision":"e1a14b3cbb3ce35ce4fa91cc3f42615f","url":"assets/data/critics/innovations.txt"},{"revision":"589100950e6f87d533ec45c4de3d3aa9","url":"assets/src/i18n/zh.json"},{"revision":"113f9527b24c38be260032144bb2409a","url":"assets/src/i18n/fr.json"},{"revision":"a7a5b84ef9ba6850165d33bc89e1b437","url":"assets/src/i18n/es.json"},{"revision":"cc50e45fa645e92357145677dfc72f20","url":"assets/src/i18n/en.json"},{"revision":"4aa35235ff3874a487a62642cd7fa8bd","url":"bootstrap.js"},{"revision":"764a8bbaf88ae30cd89e5f80d26422ae","url":"sandbox_worker_host.html"},{"revision":"db3d046e00cc6913bdfc12a686222fb8","url":"sandbox_worker_host.js"},{"revision":"86655df8263f115640515cdfb38c9734","url":"style.css"},{"revision":"4fe6431a12b57259dcee823b2cfaa9f2","url":"d3_exports.js"},{"revision":"d6e9eb44a24f1e781164287002302b0c","url":"assets/lib/workbox-sw.js"},{"revision":"3638f0170fab6dcf776662832996072a","url":"assets/lib/bundle.esm.min.js"},{"revision":"b8667ae0f82c5a5ced94e3d806e93be2","url":"assets/manifest.json"},{"revision":"07edf3fece7077ab3e91cdbb816b9826","url":"assets/favicon.svg"},{"revision":"ea0e3d07e67e98da7505477c43848ee3","url":"worker/evolver.js"},{"revision":"4b85a9d4ca506cce580c72d496073758","url":"worker/arenaWorker.js"},{"revision":"2c1c532c459956382f236427026af444","url":"worker/umapWorker.js"},{"revision":"ae8dbaeb43673b429fb8da4989394482","url":"assets/local-llm/transformers.min.js"},{"revision":"a8a3ef09acb1a47aba50aa67477bf52c","url":"assets/local-llm/ort-wasm-simd-threaded.jsep.mjs"}]);
   clientsClaim();
   self.addEventListener("install", (event) => {
     event.waitUntil((async () => {
