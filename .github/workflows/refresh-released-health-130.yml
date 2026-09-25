@@ -1,21 +1,88 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Configure Pages through the connected repository
+name: Verify published Pages release and badges
 on:
   push:
     branches: [release/refresh-ci-health-1.3.0]
 permissions:
   contents: read
-  pages: write
+  actions: read
 jobs:
-  configure:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
-      - name: Configure Actions publishing with the existing repository token
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
-        with:
-          enablement: true
-      - name: Verify the resulting Pages configuration
+      - name: Verify public badges, exact release, public commit and preserved checkpoint
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh api repos/MontrealAI/AGI-Alpha-Agent-v0/pages --jq '{html_url, build_type, status, https_enforced}'
+        run: |
+          python - <<'PYTHON'
+          import base64, concurrent.futures, datetime, hashlib, json, pathlib, re, subprocess, time
+          import xml.etree.ElementTree as ET
+          repo = "MontrealAI/AGI-Alpha-Agent-v0"
+          expected = "72063316a3da2dedae2b4d400a4ac6486ad7a91b"
+          baseline = {"CAPABILITIES.md":"sha256:d73147a8ee5bd7e0ecb81877556fefe8d854e879dabf56deaa22f4245fccbc16","OPERATIONS.md":"sha256:236d48207619516803be0325543ad706771ad3b4e441f802f1d297ce7c46b343","RELEASE_NOTES_1.3.0.md":"sha256:46a8f21253731adde4f366abce95d6c1195d987f87fe12905384b8f368ca5a96","VALIDATION.md":"sha256:010a8efa374b9b5c0a4a889699b7e9093cdbb67911afd0ef359cfd9df31e7d16","alpha-agent-v1.3.0-browser.zip":"sha256:240a9e77fa8bc4103a8c4f9b2dfa174b7970ca16e91f6dfd1a8ba9ddbbbba6ff","alpha-agent-v1.3.0-source.zip":"sha256:ac133da5805f7b55eb0ce3d5f85a563591e74bd8f78c9acdfceead2c68b4a890","alpha-agent-v1.3.0-validation.zip":"sha256:103e233ca18ccbd3943f5b698dbd512d75f1ed1096b268d50c89a195afb99b7a","alpha_factory_v1-1.3.0-py3-none-any.whl":"sha256:e41ead5500d0cd3aac4ab2773141f2b33da59b721291618fab587ffcf37d0362","alpha_factory_v1-1.3.0.tar.gz":"sha256:70614389234a76f9d5dde47e73f3208d5042a59f351b7ec6b8ff9983d0987317","install_agent.py":"sha256:e885c72590036239f05dc0fbb283fa4388ec976bf16f9f9136c1e38b30ff5b80","release-manifest.json":"sha256:61bc6798558ac33db5e57063b93500dad89e827a0ad9ca7873b731564eddb6fa","requirements-agent.lock":"sha256:379740bbca5e3cef7e8dfcceee487dec18b5c86aeac511c7ad80a4b7ff17d85c","SHA256SUMS":"sha256:9c05273f76cd4d153335fb9cabcfeab21464e4f4496e5865bf035751960db8e9"}
+          folder = pathlib.Path("publication-evidence")
+          folder.mkdir()
+          def api(path):
+              return json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"], text=True))
+          assert api("git/ref/heads/main")["object"]["sha"] == expected
+          checks = {}
+          for workflow in ["pr-ci.yml", "ci.yml", "smoke.yml", "ci-health.yml", "agent-release.yml"]:
+              runs = api(f"actions/workflows/{workflow}/runs?branch=main&per_page=50")["workflow_runs"]
+              matching = [r for r in runs if r["head_sha"] == expected and (workflow == "ci-health.yml" or r["event"] == "push")]
+              assert matching, workflow
+              run = max(matching, key=lambda r: r["id"])
+              assert run["status"] == "completed" and run["conclusion"] == "success", run
+              checks[workflow] = {"run": run["html_url"], "sha": run["head_sha"], "conclusion": run["conclusion"]}
+          latest = api("releases/latest")
+          assert latest["tag_name"] == "v1.4.0" and not latest["draft"] and not latest["prerelease"]
+          tag = api("git/ref/tags/v1.4.0")["object"]
+          assert tag["type"] == "tag"
+          assert api("git/tags/" + tag["sha"])["object"]["sha"] == expected
+          previous = api("releases/tags/v1.3.0")
+          assert {a["name"]: a["digest"] for a in previous["assets"]} == baseline
+          subprocess.run(["gh", "release", "download", "v1.4.0", "--repo", repo, "--dir", str(folder), "--pattern", "SHA256SUMS", "--pattern", "release-manifest.json"], check=True)
+          checksums = dict(line.split("  ", 1)[::-1] for line in (folder / "SHA256SUMS").read_text().splitlines())
+          assets = {a["name"]: a for a in latest["assets"]}
+          assert set(assets) == set(checksums) | {"SHA256SUMS"}
+          assert all(assets[name]["digest"] == "sha256:" + digest for name, digest in checksums.items())
+          for name in ["SHA256SUMS", "release-manifest.json"]:
+              assert assets[name]["digest"] == "sha256:" + hashlib.sha256((folder / name).read_bytes()).hexdigest()
+          manifest = json.loads((folder / "release-manifest.json").read_text())
+          assert manifest["commit"] == expected and manifest["version"] == "1.4.0"
+          assert manifest["public_pages"]["commit"] == expected
+          url = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+          public = json.loads(subprocess.check_output(["curl", "--fail", "--silent", "--show-error", "--max-time", "30", url + "release.json"]))
+          assert public["commit"] == expected and public["version"] == "1.4.0" and public["url"] == url
+          readme = base64.b64decode(api(f"contents/README.md?ref={expected}")["content"]).decode()
+          urls = re.findall(r'\[!\[[^]]*\]\((https://[^)]+)\)\]', readme)
+          assert len(urls) == 7, urls
+          def probe(item):
+              index, badge_url = item
+              assert badge_url.startswith(("https://github.com/", "https://img.shields.io/")), badge_url
+              data = subprocess.check_output(["curl", "--fail", "--silent", "--show-error", "--max-time", "30", badge_url])
+              title = ET.fromstring(data).findtext("{http://www.w3.org/2000/svg}title")
+              (folder / f"badge-{index}.svg").write_bytes(data)
+              return {"url": badge_url, "title": title}
+          for attempt in range(21):
+              with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+                  images = list(pool.map(probe, enumerate(urls)))
+              statuses = [i for i in images if "/actions/workflows/" in i["url"] or "/check-runs/" in i["url"]]
+              assert len(statuses) == 5
+              release_title = next(i["title"] for i in images if "/v/release/" in i["url"])
+              if all(i["title"].endswith((" - passing", ": passing")) for i in statuses) and release_title == "release: v1.4.0":
+                  break
+              print(json.dumps({"waiting_for_badge_cache": attempt, "badges": images}), flush=True)
+              if attempt == 20:
+                  raise AssertionError("Public badges do not reflect the verified commit")
+              time.sleep(30)
+          report = {"verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "commit": expected, "checks": checks, "badges": images, "public_pages": public, "release": {"url": latest["html_url"], "assets": {n:a["digest"] for n,a in assets.items()}}, "previous_release": {"url": previous["html_url"], "unchanged_assets": len(baseline)}}
+          (folder / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
+          print(json.dumps(report, indent=2), flush=True)
+          PYTHON
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: public-pages-release-verification
+          path: publication-evidence/
+          if-no-files-found: error
