@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Simulation. Runs a bounded multi-agent business cycle with local fallback results.
 

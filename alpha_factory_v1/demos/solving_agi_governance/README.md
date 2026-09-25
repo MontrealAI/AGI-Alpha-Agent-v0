@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Offline simulation. Runs a bounded stochastic cooperation model.
 
@@ -22,6 +22,12 @@ Browser charts for legacy demos are labeled sample replays. Original research
 narratives and advanced scripts below are preserved; they do not expand the tested
 scope stated here.
 <!-- CURRENT-DEMO:END -->
+
+**Interactive white-paper companion:** the [Governance Observatory](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/#governance)
+computes the corrected Hawk–Dove dynamics, Table 4 residual risk, action risk budget and governance gates.
+The [implementation guide](https://montrealai.github.io/AGI-Alpha-Agent-v0/agent/WHITEPAPER_IMPLEMENTATION/)
+explains which historical claims below require additional evidence.
+
 
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.

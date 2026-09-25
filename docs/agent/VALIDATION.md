@@ -2,10 +2,16 @@
 
 # Release acceptance and reproducibility
 
-Version 1.4.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.5.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
+
+The [Ascension implementation guide](WHITEPAPER_IMPLEMENTATION.md) covers the new white-paper lab.
+Independent Node tests check exact accounting, encryption/tampering, policy gates and analytic dynamics.
+Real Chromium acceptance exercises all three scenarios, funding/redemption, Council settlement, native
+mission downloads, Nova-Seed recovery, policy changes, mobile layouts and offline reload. It also verifies
+the original PDF checksum. Both site builds and the public deployed URL must pass before publication.
 
 The 1.2.0 release remains available unchanged. Patch 1.2.1 adds a required complete gallery rebuild:
 legacy documentation repair must retain the exact sandbox-host script hashes, every generated demo

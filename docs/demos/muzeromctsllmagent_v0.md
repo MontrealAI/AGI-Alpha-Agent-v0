@@ -7,7 +7,7 @@
 [Launch Demo](../muzeromctsllmagent_v0/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Deployment template. Preserves the original combined planning and model-integration concept.
 

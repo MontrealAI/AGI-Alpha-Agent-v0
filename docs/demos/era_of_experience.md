@@ -7,7 +7,7 @@
 [Launch Demo](../era_of_experience/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.4.0
+## Current runnable path — 1.5.0
 
 **Mode:** Offline sample. Extracts simple signals from bundled historical CSV samples.
 

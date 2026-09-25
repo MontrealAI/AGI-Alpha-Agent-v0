@@ -192,3 +192,11 @@ Downstream users should consult this section when upgrading.
 - Initial release with an offline-friendly CLI and REST API for running simulations.
 - Included a minimal web interface served when `RUN_MODE=web`.
 - Shipped Meta-Agentic Tree Search and forecasting modules with Docker deployment scripts.
+## 1.5.0 — Ascension and the interactive white paper
+
+Adds a connected six-stage lab with three editable flagship scenarios, real portfolio/schedule algorithms,
+authenticated Nova-Seed encryption/recovery, exact modeled token accounting and policy search. The
+governance observatory exposes replicator dynamics, risk corrections, stake/slash controls, quadratic
+credits and an eight-day gate. Redesigns the Pages entry point while preserving every original demo and flywheel.
+
+See [release notes](agent/RELEASE_NOTES_1.5.0.md) and [implementation evidence](agent/WHITEPAPER_IMPLEMENTATION.md).

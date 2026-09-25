@@ -1,6 +1,11 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Demo validation and honest execution modes — 1.4.0
+# Demo validation and honest execution modes — 1.5.0
+
+The new [Ascension Lab](../ascension/index.html) adds three interactive flagship scenarios and a governance
+observatory alongside the preserved 26-entry catalog. Its [implementation guide](WHITEPAPER_IMPLEMENTATION.md)
+maps the original white paper to executable algorithms, encryption, clearly labeled protocol simulations
+and the browser/Node acceptance evidence. All original demo checks below remain required.
 
 All 26 original directories remain: 24 demos, presentation assets and shared utilities. Every guide has
 an additive current launch section, backed by one machine-readable catalog. The original designs and

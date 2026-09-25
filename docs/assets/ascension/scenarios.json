@@ -1,0 +1,231 @@
+[
+    {
+        "schema": "agialpha.ascension.scenario.v1",
+        "id": "resilient-city",
+        "title": "The resilient city",
+        "eyebrow": "ENERGY · INFRASTRUCTURE · ADAPTATION",
+        "description": "A city has seven competing opportunities and one constrained pilot budget. Find the strongest portfolio, coordinate delivery and test the funding loop.",
+        "goal": "Allocate the city's energy resilience pilot budget using the supplied cost, benefit and implementation-risk assumptions.",
+        "unit": "modeled resilience points",
+        "budget": 100,
+        "risk_limit": 12,
+        "opportunities": [
+            {
+                "id": "district-storage",
+                "title": "District energy storage",
+                "sector": "Energy",
+                "cost": 55,
+                "value": 80,
+                "risk": 5,
+                "effort": [4, 12, 3],
+                "evidence": "Illustrative planning brief: district energy storage has a cost of 55 credits, an assumed resilience benefit of 80 points and implementation risk score 5. Permits and field performance are unverified."
+            },
+            {
+                "id": "heat-recovery",
+                "title": "Industrial heat recovery",
+                "sector": "Industry",
+                "cost": 30,
+                "value": 61,
+                "risk": 3,
+                "effort": [5, 8, 4],
+                "evidence": "Illustrative planning brief: industrial heat recovery connects a modeled waste-heat source to district demand. Pilot cost is 30 credits; assumed benefit is 61 resilience points; risk score is 3. These inputs are not measured savings."
+            },
+            {
+                "id": "demand-response",
+                "title": "Adaptive demand response",
+                "sector": "Grid",
+                "cost": 25,
+                "value": 57,
+                "risk": 2,
+                "effort": [3, 6, 3],
+                "evidence": "Illustrative planning brief: adaptive demand response shifts flexible loads in a pilot. Cost is 25 credits, assumed resilience benefit 57 points, and risk score 2. No live grid is connected."
+            },
+            {
+                "id": "leak-detection",
+                "title": "Water loss intelligence",
+                "sector": "Water",
+                "cost": 20,
+                "value": 43,
+                "risk": 2,
+                "effort": [3, 5, 2],
+                "evidence": "Illustrative planning brief: water loss intelligence prioritizes inspections. A 20-credit pilot has an assumed benefit of 43 resilience points and risk score 2. Field confirmation would be a separate operational task."
+            },
+            {
+                "id": "cooling-control",
+                "title": "Building cooling control",
+                "sector": "Buildings",
+                "cost": 25,
+                "value": 49,
+                "risk": 2,
+                "effort": [2, 7, 3],
+                "evidence": "Illustrative planning brief: building cooling control uses an assumed 25-credit pilot budget, 49 resilience points of benefit and risk score 2. Comfort constraints must be independently assessed before a real deployment."
+            },
+            {
+                "id": "logistics",
+                "title": "Electric fleet orchestration",
+                "sector": "Mobility",
+                "cost": 40,
+                "value": 62,
+                "risk": 4,
+                "effort": [4, 10, 3],
+                "evidence": "Illustrative planning brief: electric fleet orchestration coordinates charging and deliveries. Cost 40 credits, assumed resilience benefit 62 points, implementation risk score 4. Vehicle and charger availability are scenario assumptions."
+            },
+            {
+                "id": "urban-digital-twin",
+                "title": "Urban simulation twin",
+                "sector": "Planning",
+                "cost": 35,
+                "value": 50,
+                "risk": 3,
+                "effort": [6, 8, 4],
+                "evidence": "Illustrative planning brief: a city simulation twin supports scenario comparison. Cost 35 credits, assumed resilience benefit 50 points, risk score 3. A digital twin would need calibration against actual observations."
+            }
+        ]
+    },
+    {
+        "schema": "agialpha.ascension.scenario.v1",
+        "id": "research-foundry",
+        "title": "The discovery foundry",
+        "eyebrow": "SCIENCE · COMPUTE · EXPERIMENTS",
+        "description": "Turn a crowded research backlog into an executable portfolio. Compare compute, evidence quality and verification capacity before launching experiments.",
+        "goal": "Prioritize reproducible research experiments within the laboratory's compute and implementation-risk budget.",
+        "unit": "modeled research value points",
+        "budget": 90,
+        "risk_limit": 10,
+        "opportunities": [
+            {
+                "id": "foundation-run",
+                "title": "Large foundation-model run",
+                "sector": "Models",
+                "cost": 65,
+                "value": 75,
+                "risk": 6,
+                "effort": [5, 18, 5],
+                "evidence": "Illustrative research brief: a foundation-model run consumes 65 compute credits for an assumed value of 75 points. Risk score 6 reflects uncertainty, not a measured probability of failure."
+            },
+            {
+                "id": "data-curation",
+                "title": "Evidence-first data curation",
+                "sector": "Data",
+                "cost": 20,
+                "value": 48,
+                "risk": 1,
+                "effort": [4, 5, 3],
+                "evidence": "Illustrative research brief: evidence-first data curation costs 20 credits, has an assumed research value of 48 points and risk score 1. Reproduction and source checks are explicit tasks."
+            },
+            {
+                "id": "small-specialist",
+                "title": "Small specialist models",
+                "sector": "Models",
+                "cost": 30,
+                "value": 62,
+                "risk": 3,
+                "effort": [3, 9, 4],
+                "evidence": "Illustrative research brief: small specialist models use 30 compute credits, with an assumed value of 62 research points and risk score 3. No trained model or benchmark advantage is claimed by this scenario."
+            },
+            {
+                "id": "symbolic-search",
+                "title": "Symbolic hypothesis search",
+                "sector": "Reasoning",
+                "cost": 25,
+                "value": 51,
+                "risk": 2,
+                "effort": [6, 7, 3],
+                "evidence": "Illustrative research brief: symbolic hypothesis search costs 25 credits and has an assumed value of 51 research points with risk score 2. Hypotheses still require experimental validation."
+            },
+            {
+                "id": "evaluation-gym",
+                "title": "Independent evaluation gym",
+                "sector": "Verification",
+                "cost": 15,
+                "value": 39,
+                "risk": 1,
+                "effort": [3, 4, 5],
+                "evidence": "Illustrative research brief: an independent evaluation gym uses 15 credits and is assigned 39 research value points with risk score 1. Review capacity is a modeled resource, not proof of general intelligence."
+            },
+            {
+                "id": "world-model",
+                "title": "Adaptive world-model pilot",
+                "sector": "Simulation",
+                "cost": 40,
+                "value": 68,
+                "risk": 4,
+                "effort": [5, 11, 4],
+                "evidence": "Illustrative research brief: an adaptive world-model pilot costs 40 credits, with assumed research value 68 points and risk score 4. Simulator validity must be evaluated separately."
+            }
+        ]
+    },
+    {
+        "schema": "agialpha.ascension.scenario.v1",
+        "id": "enterprise-frontier",
+        "title": "The enterprise frontier",
+        "eyebrow": "OPERATIONS · INTELLIGENCE · VALUE",
+        "description": "Find the next useful automation portfolio. Make cost, operational risk and review effort visible, then export real mission inputs for your own agent.",
+        "goal": "Select enterprise automation pilots that maximize the supplied benefit score while respecting budget and operational risk.",
+        "unit": "modeled operational benefit points",
+        "budget": 80,
+        "risk_limit": 9,
+        "opportunities": [
+            {
+                "id": "platform-rebuild",
+                "title": "Enterprise platform rebuild",
+                "sector": "Platform",
+                "cost": 60,
+                "value": 76,
+                "risk": 6,
+                "effort": [6, 15, 5],
+                "evidence": "Illustrative operations brief: a platform rebuild costs 60 credits, has an assumed benefit of 76 points and risk score 6. No revenue or production outcome is implied."
+            },
+            {
+                "id": "evidence-search",
+                "title": "Internal evidence navigator",
+                "sector": "Knowledge",
+                "cost": 20,
+                "value": 46,
+                "risk": 2,
+                "effort": [4, 5, 3],
+                "evidence": "Illustrative operations brief: an internal evidence navigator costs 20 credits, assumed benefit 46 points, risk score 2. Real use requires authorized documents and access controls."
+            },
+            {
+                "id": "planning-agent",
+                "title": "Capacity planning agent",
+                "sector": "Planning",
+                "cost": 25,
+                "value": 59,
+                "risk": 2,
+                "effort": [3, 7, 3],
+                "evidence": "Illustrative operations brief: a capacity planning pilot costs 25 credits for an assumed 59 benefit points and risk score 2. Scheduling invariants can be tested independently."
+            },
+            {
+                "id": "document-quality",
+                "title": "Document quality review",
+                "sector": "Quality",
+                "cost": 15,
+                "value": 38,
+                "risk": 1,
+                "effort": [2, 4, 4],
+                "evidence": "Illustrative operations brief: document quality review costs 15 credits, assumed benefit 38 points and risk score 1. A human remains responsible for accepting the output."
+            },
+            {
+                "id": "demand-planning",
+                "title": "Demand planning workbench",
+                "sector": "Forecasting",
+                "cost": 20,
+                "value": 42,
+                "risk": 2,
+                "effort": [3, 5, 3],
+                "evidence": "Illustrative operations brief: demand planning costs 20 credits, assumed benefit 42 points, risk score 2. Forecast evaluation must use a separate temporal holdout."
+            },
+            {
+                "id": "supplier-mapping",
+                "title": "Supplier resilience map",
+                "sector": "Supply chain",
+                "cost": 30,
+                "value": 53,
+                "risk": 3,
+                "effort": [5, 6, 4],
+                "evidence": "Illustrative operations brief: supplier resilience mapping costs 30 credits, assumed benefit 53 points and risk score 3. The scenario contains no live supplier or market data."
+            }
+        ]
+    }
+]

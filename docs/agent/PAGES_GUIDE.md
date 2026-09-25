@@ -119,3 +119,13 @@ the older `invalid tag "$SANDBOX_IMAGE"` Docs failure came from a duplicated leg
 the maintained Docs entry point now uses the release workflow's tested Docker build. The preserved
 `mkdocs gh-deploy` scripts are legacy helpers for forks configured to publish from a branch, not the
 publishing path for this repository's Actions-based Pages site.
+# Ascension Lab — version 1.5.0
+
+[Open Ascension](../ascension/index.html) for a connected journey through the original white paper.
+Choose a city, research or enterprise mission, edit its assumptions, compute a portfolio and schedule,
+seal a Nova-Seed, explore modeled funding and settlement, then compare the next policy cycle.
+The [white-paper implementation guide](WHITEPAPER_IMPLEMENTATION.md) includes the complete walkthrough,
+encryption recovery, accounting rules, equation corrections and test commands.
+
+The original workspace below, every demo and the six-stage flywheel remain available. The new lab runs
+locally in your browser. Its economic and governance controls are explicitly labeled simulations.
