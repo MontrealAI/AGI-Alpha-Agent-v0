@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Preserve current development checkpoint
+on:
+  push:
+    branches: [release/checkpoint-2026-09-25-v1.3.0-wip]
+permissions:
+  contents: write
+concurrency:
+  group: checkpoint-2026-09-25-v1.3.0-wip
+  cancel-in-progress: false
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Package and independently restore the exact checkpoint
+        run: python .github/checkpoint/package.py
+      - name: Publish only after upload checksum verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python .github/checkpoint/publish.py
