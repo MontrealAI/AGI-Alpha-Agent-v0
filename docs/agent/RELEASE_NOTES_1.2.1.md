@@ -18,6 +18,8 @@ with exact source, restored Git history, checksums and recovery instructions.
   dependency consistency before building the gallery.
 - Require all repository hooks with installed browser dependencies and retain their full report.
   Run the PostgreSQL and locked TypeScript integration checks without skips.
+- Give the historical restart monitor the same polling and backoff behavior in tests and operation,
+  with one notification per completed restart. Check actual restart completion and exponential delays.
 - Derive package names, release notes, manifests and annotated tags from the declared project version.
   Publication still verifies the tested commit and re-downloads all draft assets before publication.
 
