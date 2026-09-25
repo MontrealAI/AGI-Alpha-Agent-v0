@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import base64
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 import hashlib
 import json
 import os
@@ -128,7 +128,7 @@ class Journal:
         private_write(path / "identity.key", key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption()))
         private_write(path / "api.token", secrets.token_urlsafe(32).encode())
         private_write(path / "journal.sqlite3", b"")
-        with sqlite3.connect(path / "journal.sqlite3") as cx:
+        with closing(sqlite3.connect(path / "journal.sqlite3")) as cx, cx:
             cx.execute("PRAGMA journal_mode=WAL")
             cx.execute(
                 "CREATE TABLE events(seq INTEGER PRIMARY KEY, mission TEXT NOT NULL, "
@@ -143,7 +143,7 @@ class Journal:
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
         """Serialize state changes and roll back on every exception."""
-        with sqlite3.connect(self.path, timeout=30) as cx:
+        with closing(sqlite3.connect(self.path, timeout=30)) as cx, cx:
             cx.execute("PRAGMA synchronous=FULL")
             cx.execute("BEGIN IMMEDIATE")
             yield cx
@@ -171,7 +171,7 @@ class Journal:
     def latest(self, mission: str, cx: sqlite3.Connection | None = None) -> dict[str, Any]:
         """Read a signed state; verify the full chain with ``verify`` at startup."""
         if cx is None:
-            with sqlite3.connect(self.path) as connection:
+            with closing(sqlite3.connect(self.path)) as connection:
                 return self.latest(mission, connection)
         row = cx.execute(
             "SELECT seq,body,hash,signature FROM events WHERE mission=? ORDER BY seq DESC LIMIT 1", (mission,)
@@ -235,7 +235,7 @@ class Journal:
 
     def missions(self) -> list[dict[str, Any]]:
         """Return the latest state of each submitted mission."""
-        with sqlite3.connect(self.path) as cx:
+        with closing(sqlite3.connect(self.path)) as cx:
             ids = [
                 row[0]
                 for row in cx.execute(
@@ -247,7 +247,7 @@ class Journal:
     def verify(self) -> dict[str, Any]:
         """Verify integrity, every signature, chain order and active configuration."""
         previous, count = "0" * 64, 0
-        with sqlite3.connect(self.path) as cx:
+        with closing(sqlite3.connect(self.path)) as cx:
             if cx.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
                 raise ValueError("SQLite integrity check failed")
             for seq, mission, raw, hashed, signature in cx.execute("SELECT * FROM events ORDER BY seq"):
@@ -295,7 +295,7 @@ class Journal:
             # rows. configure() uses the same lock, so files and rows agree.
             with self.transaction():
                 self.verify()
-                with sqlite3.connect(self.path) as source, sqlite3.connect(temporary) as dest:
+                with closing(sqlite3.connect(self.path)) as source, closing(sqlite3.connect(temporary)) as dest:
                     source.backup(dest)
                 files = {name: (self.root / name).read_bytes() for name in ("config.json", "identity.key", "api.token")}
                 files["journal.sqlite3"] = temporary.read_bytes()

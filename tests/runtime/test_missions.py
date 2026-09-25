@@ -318,6 +318,36 @@ def test_recovery_detects_corruption_and_never_overwrites(journal: Journal, tmp_
         restored.verify()
 
 
+def test_journal_closes_connections_after_recovery_and_rollback(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    connections: list[sqlite3.Connection] = []
+    connect = sqlite3.connect
+
+    def tracked_connect(*args: Any, **kwargs: Any) -> sqlite3.Connection:
+        connection = connect(*args, **kwargs)
+        connections.append(connection)
+        return connection
+
+    monkeypatch.setattr(sqlite3, "connect", tracked_connect)
+    journal = Journal.initialize(tmp_path / "agent")
+    journal.submit(mission("forecast"))
+    before = journal.verify()
+    journal.missions()
+    with pytest.raises(RuntimeError, match="rollback"):
+        with journal.transaction() as cx:
+            cx.execute("DELETE FROM events")
+            raise RuntimeError("rollback")
+    assert journal.verify() == before
+    archive = tmp_path / "backup.zip"
+    journal.backup(archive)
+    assert Journal.restore(archive, tmp_path / "restored").verify() == before
+    assert not list(journal.root.glob("backup-*.sqlite3"))
+    for connection in connections:
+        with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+            connection.execute("SELECT 1")
+
+
 def test_configuration_tamper_fails_closed(journal: Journal) -> None:
     cfg_path = journal.root / "config.json"
     data = json.loads(cfg_path.read_bytes())

@@ -23,6 +23,8 @@ The preceding state is recoverable from `checkpoint-2026-09-25-v1.2.1`, includin
   with `ENABLE_GRADIO=false`; the service acceptance test requires actual startup and graceful shutdown.
 - Windows initialization, restoration and private writes now apply owner-only ACLs; permission
   failures stop before secret bytes are written. POSIX private modes remain unchanged.
+  Journal connections close explicitly after reads, transactions and backup snapshots, including
+  rollback paths, so Windows recovery can remove temporary databases without open-handle failures.
 - Smoke Test runs automatically on Linux, macOS and Windows, across Python 3.11, 3.12 and 3.13.
   It checks the operator runtime, legacy imports, an offline simulation and SQLite integrity.
   Artifacts include the OS and Python version. Main-commit smoke success is required before publication.
