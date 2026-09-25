@@ -359,6 +359,9 @@ jobs:
         # severe supply-chain issues. High/Moderate advisories frequently surface in
         # transient transitive dependencies and are tracked separately via Dependabot.
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=critical
+      - name: Install the locked Insight Chromium runtime
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: npx playwright install --with-deps chromium
       - name: Run insight browser tests
         env:
           CI: 'true'
@@ -992,6 +995,9 @@ jobs:
         # Keep the audit gate strict on critical CVEs while avoiding flaky failures
         # from transient high/medium advisories that Dependabot already reports.
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 audit --production --audit-level=critical
+      - name: Install the locked Insight Chromium runtime
+        working-directory: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+        run: npx playwright install --with-deps chromium
       - name: Run insight browser tests
         env:
           CI: 'true'
