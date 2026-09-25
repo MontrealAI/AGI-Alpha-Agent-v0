@@ -2,6 +2,20 @@
 
 # Hosting Instructions
 
+## Current release publishing (1.4.0 onward)
+
+The public workspace is <https://montrealai.github.io/AGI-Alpha-Agent-v0/>. In repository settings choose
+**Pages → Build and deployment → Source → GitHub Actions**. Do not configure another workflow template.
+Pushes to `main` run the complete acceptance, packaging, Pages deployment and public browser validation.
+For a manual run, choose **Actions → 📚 Docs → Run workflow → main**. The Docs entry point now reuses that
+same guarded workflow, and publishes an unpublished version only after every required check passes.
+Existing releases remain unchanged. No `gh-pages` branch or extra admin token is required once Pages is
+enabled. See the [workspace publishing and recovery guide](agent/PAGES_GUIDE.md#publish-or-refresh-the-public-site).
+
+The build and branch-publishing instructions below are retained for historical reference and personal
+forks. Commands using `mkdocs gh-deploy` require branch-based Pages settings; they do not update this
+repository's Actions-based public deployment.
+
 This project uses [MkDocs](https://www.mkdocs.org/) to build the static documentation.
 The generated site is hosted at <https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v1/>.
 

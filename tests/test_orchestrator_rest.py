@@ -12,7 +12,6 @@ pytest.importorskip("fastapi", reason="fastapi is required for REST API tests")
 from fastapi.testclient import TestClient  # noqa: E402
 
 from alpha_factory_v1.backend.api_server import build_rest as _build_rest
-from alpha_factory_v1.backend import orchestrator
 
 os.environ.setdefault("API_TOKEN", "test-token")
 
@@ -48,6 +47,11 @@ class TestRestAPI(unittest.TestCase):
         )()
         mem_stub = type("Mem", (), {"vector": vector})()
         runner = DummyRunner(DummyAgent())
+        # Match build_rest's current package attribute. Other lifecycle tests
+        # load both legacy backend.orchestrator and the qualified module; an
+        # import retained at collection time can refer to the previous alias.
+        from alpha_factory_v1.backend import orchestrator
+
         with mock.patch.object(orchestrator, "mem", mem_stub):
             app = _build_rest({"dummy": runner})
             self.assertIsNotNone(app)

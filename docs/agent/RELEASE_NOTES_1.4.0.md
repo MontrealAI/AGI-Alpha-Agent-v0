@@ -47,6 +47,10 @@ Pages. Public acceptance verifies that tested version before release publication
 source, wheel, source distribution, browser ZIP, site archive, guides, validation evidence, manifest and
 SHA-256 checksums. Published 1.3.0 and earlier release assets are unchanged.
 
+The manual **📚 Docs** entry point uses that same guarded release workflow, repairing the legacy literal
+Docker-tag failure and avoiding competing branch-based deployments. Pages requires **Source: GitHub
+Actions**; no additional template or admin token is needed after the one-time repository setting.
+
 ## Upgrade and boundaries
 
 Follow OPERATIONS.md to pause, verify and back up your existing private agent state. Install 1.4.0 into a

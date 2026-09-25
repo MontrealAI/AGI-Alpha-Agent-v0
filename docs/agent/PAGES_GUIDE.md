@@ -102,3 +102,20 @@ then visit `http://localhost:8000`. Do not open the HTML with `file://`; workers
 The browser distribution ZIP remains the separate full Insight application. To roll back public Pages,
 redeploy a previously tested immutable site archive; retain the previous release and do not move its tag.
 The release workflow deploys the exact tested site artifact and validates the public URL before publishing.
+
+## Publish or refresh the public site
+
+Repository maintainers set **Settings → Pages → Build and deployment → Source → GitHub Actions** once.
+There is no need to configure the suggested Static HTML or Jekyll templates. A push to `main` runs the
+release acceptance workflow automatically. For a manual refresh, open **Actions → 📚 Docs → Run workflow**,
+select `main` and confirm. This entry point calls the same acceptance and publication workflow, including
+the complete tests, packaged site, Pages deployment and public browser checks. A branch run validates a
+candidate without deploying it. The shared concurrency group serializes main runs, and the Pages job
+serializes deployments. An existing published release is never overwritten.
+
+Wait for the full workflow to finish. The site is deployed only after its prerequisite checks pass;
+publication follows the public checks. Failures retain logs and evidence for diagnosis. In particular,
+the older `invalid tag "$SANDBOX_IMAGE"` Docs failure came from a duplicated legacy Docker action input;
+the maintained Docs entry point now uses the release workflow's tested Docker build. The preserved
+`mkdocs gh-deploy` scripts are legacy helpers for forks configured to publish from a branch, not the
+publishing path for this repository's Actions-based Pages site.
