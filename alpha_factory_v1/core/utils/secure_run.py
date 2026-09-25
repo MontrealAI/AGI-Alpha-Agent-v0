@@ -23,13 +23,15 @@ class SandboxUnavailable(RuntimeError):
     """No supported isolation backend is available; host execution is forbidden."""
 
 
-def _bounded_run(cmd: Sequence[str], timeout: int) -> subprocess.CompletedProcess[str]:
+def _bounded_run(
+    cmd: Sequence[str], timeout: int, *, env: dict[str, str] | None = None
+) -> subprocess.CompletedProcess[str]:
     """Drain both pipes concurrently, keeping at most 1 MiB in memory."""
     limit = 1024**2
     outputs = [bytearray(), bytearray()]
     lock = threading.Lock()
     overflow = threading.Event()
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env) as process:
 
         def drain(stream: BinaryIO, index: int) -> None:
             while chunk := stream.read(8192):
@@ -152,7 +154,11 @@ def secure_run(cmd: Sequence[str]) -> subprocess.CompletedProcess[str]:
                 *command,
             ]
         try:
-            return _bounded_run(full_cmd, timeout)
+            # Docker does not forward its client's environment into the
+            # container. Firejail does, so never give it service credentials,
+            # Python startup hooks, loader variables or operator configuration.
+            sandbox_env = None if docker else {"PATH": os.defpath, "LANG": "C.UTF-8", "HOME": str(stage)}
+            return _bounded_run(full_cmd, timeout, env=sandbox_env)
         except subprocess.TimeoutExpired as exc:
             raise SandboxTimeout("sandbox exceeded its 120 second timeout") from exc
         finally:

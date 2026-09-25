@@ -96,6 +96,8 @@ the evaluator. Network is disabled, root is read-only, execution is non-root, ca
 and CPU/memory/process/time/output limits apply. Docker is the release-tested backend. The retained
 Firejail compatibility path is not covered by the Docker acceptance evidence. Use a dedicated,
 maintained host for untrusted code; container isolation is not a claim of perfect containment.
+The optional Firejail launcher receives only a fixed executable path, locale and temporary home;
+it never inherits provider credentials, Python startup hooks or other service environment variables.
 
 A provided `candidate` bypasses generation. Otherwise generation requires the configured model.
 `examples` are model-visible; `heldout` answers are not. All held-out cases must pass, and results are
