@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """End-to-end test for the aiga_meta_evolution service."""
 import os
+from pathlib import Path
+import socket
 import subprocess
 import sys
 import time
@@ -13,17 +15,22 @@ ENTRYPOINT = "alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.p
 
 
 @pytest.mark.e2e
-@pytest.mark.xfail(reason="service start unstable in CI")
-def test_aiga_service_health() -> None:
+def test_aiga_service_health(tmp_path: Path) -> None:
     env = os.environ.copy()
     env["OPENAI_API_KEY"] = ""
-    env.setdefault("API_PORT", "8000")
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        port = listener.getsockname()[1]
+    env["API_PORT"] = str(port)
+    env["CHECKPOINT_DIR"] = str(tmp_path / "checkpoints")
+    env["ENABLE_GRADIO"] = "false"
 
     proc = subprocess.Popen([sys.executable, ENTRYPOINT], env=env)
     try:
-        url = "http://localhost:8000/health"
+        url = f"http://127.0.0.1:{port}/health"
         resp = None
         for _ in range(100):
+            assert proc.poll() is None, "service exited before becoming healthy"
             try:
                 r = requests.get(url, timeout=2)
                 if r.status_code == 200:
@@ -36,7 +43,12 @@ def test_aiga_service_health() -> None:
         data = resp.json()
     finally:
         proc.terminate()
-        proc.wait(timeout=5)
+        try:
+            proc.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(timeout=5)
+            pytest.fail("service did not shut down gracefully")
 
     assert "status" in data
     assert "generations" in data
