@@ -14,6 +14,8 @@ with exact source, restored Git history, checksums and recovery instructions.
   environments; keep benchmark and coverage artifacts separate for each Python version.
 - Wait for the final PostgreSQL TCP server, restore test environment variables after use, and fail
   an established integration if persistence breaks. Compile meme mining with supported module resolution.
+- Align the documentation gRPC hashes and versions with the shared compiler environment; require
+  dependency consistency before building the gallery.
 - Require all repository hooks with installed browser dependencies and retain their full report.
   Run the PostgreSQL and locked TypeScript integration checks without skips.
 - Derive package names, release notes, manifests and annotated tags from the declared project version.

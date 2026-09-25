@@ -354,6 +354,7 @@ jobs:
       - name: Install the historical documentation environment
         run: |
           bash scripts/ci_install_python_baseline.sh --include-docs-lock
+          python -m pip check
           python -m playwright install --with-deps chromium
       - name: Build the historical sandbox preflight image
         run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
