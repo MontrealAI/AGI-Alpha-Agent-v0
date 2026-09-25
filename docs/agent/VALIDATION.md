@@ -62,7 +62,8 @@ Both browser projects have dependency audit gates, with JSON reports retained in
 The Insight audit includes its entire npm graph, including build tools and bundled browser libraries;
 its prior production-only audit omitted those development-labelled dependencies. The repaired dashboard
 audit covers production dependencies. Other legacy development environments can still have advisories;
-this is not a claim that every historical dependency is clear.
+this is not a claim that every historical dependency is clear. The [local full-graph audit](release-evidence/browser-dependencies.json)
+records the exact lockfile hash, Node/npm versions and zero advisories; release CI independently reruns it.
 
 The Python coverage gate retains the repository's existing scope: demos, legacy backend agents/memory
 and temporary test copies are excluded in both collection and reporting. The earlier expanded report
