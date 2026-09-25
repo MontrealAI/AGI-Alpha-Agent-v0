@@ -1,67 +1,25 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Verify published README badges
+name: Inspect Pages publishing configuration
 on:
   push:
     branches: [release/refresh-ci-health-1.3.0]
 permissions:
   contents: read
-  actions: read
+  pages: read
 jobs:
-  badges:
+  inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - name: Verify actual main checks, public SVG images and preserved release
+      - name: Read current settings and public response
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python - <<'PYTHON'
-          import base64
-          import concurrent.futures
-          import datetime
-          import json
-          import pathlib
-          import re
-          import subprocess
-          import xml.etree.ElementTree as ET
-          repo = "MontrealAI/AGI-Alpha-Agent-v0"
-          expected = "ed9fb4285eb47e31fabcd6043882dc8ee6e943dd"
-          def api(path):
-              return json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"], text=True))
-          assert api("git/ref/heads/main")["object"]["sha"] == expected
-          workflows = ["pr-ci.yml", "ci.yml", "smoke.yml", "ci-health.yml", "agent-release.yml"]
-          checks = {}
-          for workflow in workflows:
-              run = api(f"actions/workflows/{workflow}/runs?branch=main&per_page=10")["workflow_runs"][0]
-              assert run["head_sha"] == expected and run["conclusion"] == "success", run
-              checks[workflow] = {"run": run["html_url"], "sha": run["head_sha"], "conclusion": run["conclusion"]}
-          latest = api("releases/latest")
-          assert latest["id"] == 396684813 and latest["tag_name"] == "v1.3.0"
-          assert len(latest["assets"]) == 13 and all(item["digest"].startswith("sha256:") for item in latest["assets"])
-          readme = base64.b64decode(api(f"contents/README.md?ref={expected}")["content"]).decode()
-          urls = re.findall(r'\[!\[[^]]*\]\((https://[^)]+)\)\]', readme)
-          assert len(urls) == 7, urls
-          folder = pathlib.Path("badge-evidence")
-          folder.mkdir()
-          def probe(item):
-              index, url = item
-              assert url.startswith(("https://github.com/", "https://img.shields.io/")), url
-              data = subprocess.check_output(["curl", "--fail", "--silent", "--show-error", "--max-time", "30", url])
-              title = ET.fromstring(data).findtext("{http://www.w3.org/2000/svg}title")
-              (folder / f"badge-{index}.svg").write_bytes(data)
-              return {"url": url, "title": title}
-          images = list(concurrent.futures.ThreadPoolExecutor(max_workers=4).map(probe, enumerate(urls)))
-          report = {"verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "commit": expected, "checks": checks, "badges": images, "release": {"url": latest["html_url"], "assets": {item["name"]:item["digest"] for item in latest["assets"]}}}
-          (folder / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
-          print(json.dumps(report, indent=2), flush=True)
-          statuses = [image for image in images if "/actions/workflows/" in image["url"] or "/check-runs/" in image["url"]]
-          assert len(statuses) == 5, statuses
-          assert all(image["title"].endswith((" - passing", ": passing")) for image in statuses), statuses
-          assert next(image["title"] for image in images if "/v/release/" in image["url"]) == "release: v1.3.0"
-          PYTHON
+          mkdir -p evidence
+          gh api repos/MontrealAI/AGI-Alpha-Agent-v0/pages > evidence/pages.json || true
+          curl -sSL -D evidence/headers.txt --max-time 60 https://montrealai.github.io/AGI-Alpha-Agent-v0/ -o evidence/index.html
+          cat evidence/pages.json
+          cat evidence/headers.txt
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
-        if: always()
         with:
-          name: public-readme-badge-verification
-          path: badge-evidence/
-          if-no-files-found: error
+          name: pages-current-configuration
+          path: evidence/
