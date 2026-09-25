@@ -44,6 +44,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
