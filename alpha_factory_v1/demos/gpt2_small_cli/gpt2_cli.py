@@ -18,41 +18,33 @@ from pathlib import Path
 
 
 MODEL_NAME = "124M"
-MODEL_DIR = Path(__file__).resolve().parent / "models"
+MODEL_DIR = Path.home() / ".cache" / "agialpha" / "models"
 
 
 def ensure_model() -> Path:
-    """Ensure the checkpoint files are available and converted."""
-    dest = MODEL_DIR / MODEL_NAME
-    if not dest.exists():
-        script = Path(__file__).resolve().parents[2] / "scripts" / "download_gpt2_small.py"
-        subprocess.run([sys.executable, str(script), str(MODEL_DIR), "--model", MODEL_NAME], check=True)
+    """Download and verify the Hugging Face checkpoint into a user cache."""
+    from .model_download import download_hf_gpt2
 
-    pt_file = dest / "pytorch_model.bin"
-    if not pt_file.exists():
-        try:
-            from transformers.models.gpt2.convert_gpt2_original_tf_checkpoint_to_pytorch import (
-                convert_gpt2_checkpoint_to_pytorch,
-            )
-        except Exception as exc:  # pragma: no cover - optional dependency
-            print(f"Warning: {exc}. Using fallback Hugging Face model")
-            return Path()
-
-        ckpt = dest / "model.ckpt"
-        convert_gpt2_checkpoint_to_pytorch(str(ckpt), str(dest / "hparams.json"), str(dest))
+    dest = MODEL_DIR / "gpt2"
+    download_hf_gpt2(dest)
     return dest
 
 
-def generate(prompt: str, max_length: int, model_path: Path | None = None) -> str:
+def generate(prompt: str, max_length: int, model_path: Path | None = None, *, offline: bool = False) -> str:
     """Generate text from the prompt using GPT‑2."""
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    source = model_path if model_path and model_path.exists() else "gpt2"
+    if not prompt.strip() or max_length < 1:
+        raise ValueError("A non-empty prompt and positive max-length are required")
+    if model_path is not None and not model_path.is_dir():
+        raise ValueError(f"Model directory does not exist: {model_path}")
+    source = str(model_path) if model_path is not None else "gpt2"
+    options = {"local_files_only": True} if offline else {}
     if hasattr(AutoTokenizer, "from_pretrained"):
-        tokenizer = AutoTokenizer.from_pretrained(source)
+        tokenizer = AutoTokenizer.from_pretrained(source, **options)
     else:  # compatibility with tests
         tokenizer = AutoTokenizer(source)
-    model = AutoModelForCausalLM.from_pretrained(source)
+    model = AutoModelForCausalLM.from_pretrained(source, **options)
     inputs = tokenizer(prompt, return_tensors="pt")
     tokens = model.generate(
         **inputs,
@@ -67,10 +59,22 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Run a small GPT-2 generation demo")
     parser.add_argument("--prompt", default="Hello, world!", help="Input prompt")
     parser.add_argument("--max-length", type=int, default=50, help="Maximum output length")
+    parser.add_argument("--model-path", type=Path, help="Existing Hugging Face model directory")
+    parser.add_argument("--offline", action="store_true", help="Never download model or tokenizer files")
     args = parser.parse_args(argv)
-    model_path = ensure_model()
-    output = generate(args.prompt, args.max_length, model_path if model_path else None)
-    print(output)
+    if not args.prompt.strip() or args.max_length < 1:
+        parser.error("Provide a non-empty prompt and a positive --max-length")
+    try:
+        model_path = args.model_path
+        if model_path is None:
+            model_path = MODEL_DIR / "gpt2" if args.offline else ensure_model()
+        print(generate(args.prompt, args.max_length, model_path, offline=args.offline))
+    except (ImportError, OSError, ValueError, RuntimeError) as exc:
+        parser.exit(
+            1,
+            f"GPT-2 could not start: {exc}\nInstall torch and transformers; "
+            "use --model-path with cached weights for offline use.\n",
+        )
 
 
 if __name__ == "__main__":

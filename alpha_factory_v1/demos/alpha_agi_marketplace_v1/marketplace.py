@@ -81,6 +81,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     if not sample_job.exists():
         sample_job = Path(__file__).resolve().parent / "examples" / "sample_job.json"
     ap.add_argument("job_file", nargs="?", default=str(sample_job))
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Validate and print the bundled job without contacting a server"
+    )
     ap.add_argument("--host", default=DEFAULT_HOST, help="Orchestrator host")
     ap.add_argument("--port", type=int, default=DEFAULT_PORT, help="Orchestrator port")
     return ap.parse_args(argv)
@@ -88,6 +91,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+    if args.dry_run:
+        job = load_job(args.job_file)
+        if not isinstance(job, dict) or not isinstance(job.get("agent"), str) or not job["agent"]:
+            raise ValueError("Job must be an object with a non-empty agent name")
+        print(json.dumps({"mode": "dry-run", "job": job}, indent=2))
+        return
     submit_job(args.job_file, args.host, args.port)
     print(f"Queued job {args.job_file} → {args.host}:{args.port}")
 

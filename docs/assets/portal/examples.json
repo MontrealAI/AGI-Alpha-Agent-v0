@@ -1,0 +1,129 @@
+{
+  "allocation": {
+    "goal": "Choose the highest-value sample allocation under the stated constraints.",
+    "work": {
+      "kind": "allocation",
+      "items": [
+        {
+          "id": "A",
+          "cost": 6,
+          "value": 12,
+          "risk": 3
+        },
+        {
+          "id": "B",
+          "cost": 5,
+          "value": 11,
+          "risk": 1
+        },
+        {
+          "id": "C",
+          "cost": 5,
+          "value": 11,
+          "risk": 2
+        }
+      ],
+      "budget": 10,
+      "max_risk": 5,
+      "unit": "sample planning units"
+    }
+  },
+  "research": {
+    "goal": "Compare sample pilot outcomes with the evidence needed for production.",
+    "work": {
+      "kind": "research",
+      "sources": [
+        {
+          "id": "pilot",
+          "title": "Sample pilot evidence",
+          "text": "The pilot processed 120 requests over one week. Nine requests required manual review. No long-term reliability result was established."
+        },
+        {
+          "id": "cost",
+          "title": "Sample cost evidence",
+          "text": "Measured compute cost was 24 planning units. Review time was not measured. Revenue was not observed."
+        }
+      ]
+    }
+  },
+  "schedule": {
+    "goal": "Reduce sample job-shop makespan while preserving operation order and machine exclusivity.",
+    "work": {
+      "kind": "schedule",
+      "jobs": [
+        {
+          "id": "A",
+          "due": 16,
+          "operations": [
+            {
+              "machine": "mill",
+              "duration": 3
+            },
+            {
+              "machine": "lathe",
+              "duration": 6
+            }
+          ]
+        },
+        {
+          "id": "B",
+          "due": 16,
+          "operations": [
+            {
+              "machine": "lathe",
+              "duration": 2
+            },
+            {
+              "machine": "mill",
+              "duration": 5
+            }
+          ]
+        },
+        {
+          "id": "C",
+          "due": 20,
+          "operations": [
+            {
+              "machine": "mill",
+              "duration": 2
+            },
+            {
+              "machine": "lathe",
+              "duration": 3
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "forecast": {
+    "goal": "Select on sample training observations and measure untouched temporal holdout error.",
+    "work": {
+      "kind": "forecast",
+      "observations": [
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        26.0,
+        28.0,
+        30.0,
+        32.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0
+      ],
+      "holdout": 4,
+      "horizon": 3,
+      "season": 1,
+      "unit": "sample observed units"
+    }
+  }
+}

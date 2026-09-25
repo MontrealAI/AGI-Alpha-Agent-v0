@@ -1,10 +1,35 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Identity curriculum. Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.
+
+**Prerequisites:** Core Python dependencies for the fixture; Docker is required to evaluate any generated program.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run meta_agentic_agi_v3
+```
+
+**Expected result:** Two scored identity generations and a lineage database.
+
+**Scope:** The offline fixture is not AZR model training. Cloud providers are explicit and can incur cost.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 
 # **Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**
+
 
 Identical to **v1** plus **two synergistic upgrades** 
 1. *Statistical‑physics wrapper* — logs & minimises **Gibbs / variational free‑energy** for every candidate agent. 
@@ -119,7 +144,7 @@ micromamba activate alpha_factory
 pip install -r requirements.txt   # ≤ 60 MiB wheels
 
 # 3️⃣ Run – open‑weights default (no API key)
-python src/main.py --provider mistral:7b-instruct.gguf --curriculum azr
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3 --provider stub --gens 2
 
 #  …or switch to GPT‑4o
 OPENAI_API_KEY=sk-... python src/main.py --provider openai:gpt-4o --curriculum azr

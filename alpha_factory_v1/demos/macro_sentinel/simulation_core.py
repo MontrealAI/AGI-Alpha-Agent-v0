@@ -180,7 +180,7 @@ class MonteCarloSimulator:
         """Return median, VaR 5 % and stress 1 % rows for UI tables."""
         data = list(s)
         if np is not None and pd is not None:
-            quant = np.percentile(data, [50, 95, 99])
+            quant = np.percentile(data, [50, 5, 1])
             return pd.DataFrame(
                 {
                     "Scenario": ["Median", "VaR 5 %", "Stress 1 %"],
@@ -193,7 +193,7 @@ class MonteCarloSimulator:
         def pct(p: float) -> float:
             return data[int(n * p / 100)] if n else 0
 
-        quant = [pct(50), pct(95), pct(99)]
+        quant = [pct(50), pct(5), pct(1)]
         return [
             {"Scenario": "Median", "ES factor": round(quant[0], 3)},
             {"Scenario": "VaR 5 %", "ES factor": round(quant[1], 3)},

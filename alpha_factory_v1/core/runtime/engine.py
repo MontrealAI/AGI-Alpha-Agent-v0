@@ -9,7 +9,7 @@ from typing import Any
 
 from .models import Allocation, Forecast, Mission, Research, Schedule, Coding
 from .provider import synthesize, generate_code
-from .store import Conflict, Journal, digest, public_error
+from .store import Conflict, Journal, canonical, digest, public_error
 from . import work
 
 
@@ -22,6 +22,10 @@ def verify_export(artifact: dict[str, Any], trusted_public_key: str) -> dict[str
         raise ValueError("export schema or trusted identity mismatch")
     receipt = artifact["receipt"]
     body = receipt["body"]
+    if "canonical_body" in receipt and receipt["canonical_body"] != canonical(body).decode():
+        raise ValueError("export canonical body mismatch")
+    if "canonical_result" in receipt and receipt["canonical_result"] != canonical(body["document"]["result"]).decode():
+        raise ValueError("export canonical result mismatch")
     if digest(body) != receipt["hash"] or body["identity"] != f"urn:agialpha:ed25519:{trusted_public_key}":
         raise ValueError("export content or identity mismatch")
     Ed25519PublicKey.from_public_bytes(bytes.fromhex(trusted_public_key)).verify(
@@ -270,5 +274,11 @@ class Engine:
         return {
             "schema": 1,
             "public_key": self.journal.public,
-            "receipt": {"body": json.loads(row[0]), "hash": row[1], "signature": row[2]},
+            "receipt": {
+                "body": json.loads(row[0]),
+                "canonical_body": row[0],
+                "canonical_result": canonical(record["result"]).decode(),
+                "hash": row[1],
+                "signature": row[2],
+            },
         }

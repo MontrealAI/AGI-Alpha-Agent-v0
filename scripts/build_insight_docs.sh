@@ -197,13 +197,9 @@ copy_assets() {
         cp -a "$src"/* "$dest/"
     done
 
-    # Copy Pyodide runtime files for the gallery (only when missing)
-    wasm_src="$BROWSER_DIR/wasm"
-    pyodide_dest="docs/assets/pyodide"
-    mkdir -p "$pyodide_dest"
-    if [[ ! -f "$pyodide_dest/pyodide.asm.wasm" || ! -f "$pyodide_dest/pyodide.js" ]]; then
-        cp -a "$wasm_src"/pyodide.* "$pyodide_dest/"
-    fi
+    # Verify complete runtime bytes, including the JS engine and Python stdlib.
+    python scripts/prepare_gallery_python.py
+
 }
 copy_assets
 

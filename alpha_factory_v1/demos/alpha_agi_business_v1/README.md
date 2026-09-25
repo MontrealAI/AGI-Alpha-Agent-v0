@@ -1,4 +1,28 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline sample. Ranks bundled business opportunities; service agents publish illustrative business events.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run alpha_agi_business_v1
+```
+
+**Expected result:** Best alpha opportunity and its sample score.
+
+**Scope:** No company incorporation, registration, funding or actual trade is performed.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -183,6 +207,7 @@ git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
 cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/alpha_agi_business_v1
 
 # easiest path – auto-installs dependencies and opens the docs
+
 python start_alpha_business.py
 
 # automatically queue the highest scoring demo opportunity
@@ -201,6 +226,8 @@ python run_business_v1_local.py --bridge --runtime-port 6001
 python run_business_v1_local.py --bridge --open-ui
 # Set `ALPHA_OPPS_FILE` to use a custom opportunity list
 # ALPHA_OPPS_FILE=examples/my_alpha.json python run_business_v1_local.py --bridge
+
+```
 
 ```bash
 # Optional configuration
@@ -369,6 +396,7 @@ See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) for detailed deployment tips.
   curl -X POST http://localhost:6001/v1/agents/search_memory \
        -H "Content-Type: application/json" \
        -d '{"query": "market trend", "limit": 5}'
+  ```
 - `fetch_logs` (return recent orchestrator log lines)
 - `check_health` (orchestrator health status)
 - `submit_job` (to post a custom job payload to any orchestrator agent)

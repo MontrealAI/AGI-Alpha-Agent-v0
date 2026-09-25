@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.3.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.4.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -113,3 +113,17 @@ included in the historical-CI publication gate. AIGA's direct-file startup test 
 service failure into a skip. README preservation permits CI badge query maintenance and the exact
 live main-commit Health/Smoke/Integration image URLs. It rejects static passing replacements, forced Health colors,
 unrelated checks or branches, and any removed flywheel or other historical text.
+
+
+## Version 1.4.0 additions
+
+The release additionally requires the complete demo catalog, actual optional CPU research backends and
+lineage UIs, every canonical/mirrored legacy replay interaction, same-origin Python execution, preserved
+Insight Plotly/tree behavior, independent browser-algorithm tests and the complete Pages workspace.
+The latter includes edited inputs, native mission validation, review/export/import, explicit memory,
+tamper rejection, native Ed25519 exports, cancellation, mobile layouts and an offline root reload.
+Full-asset acceptance requires actual local model generation both online and after an offline reload.
+
+The same tested site is retained as a checksummed release archive, deployed through GitHub Pages and
+verified at the public HTTPS URL before publication. The manifest binds source, version and tested commit.
+See [demo validation](DEMO_VALIDATION.md) and [Pages operation and recovery](PAGES_GUIDE.md).

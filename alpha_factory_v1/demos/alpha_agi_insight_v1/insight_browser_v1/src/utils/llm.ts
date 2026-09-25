@@ -3,6 +3,9 @@ type Generator = (prompt: string, options: Record<string, unknown>) => Promise<a
 let localModel: Promise<Generator> | undefined;
 let useGpu = false;
 let apiKey = '';
+let apiModel = '';
+export function setApiModel(model: string): void { apiModel = model.trim(); }
+export function getApiModel(): string { return apiModel; }
 export const llmEvents = new EventTarget();
 export const LLM_LOAD_START = 'llm-load-start';
 export const LLM_LOAD_END = 'llm-load-end';
@@ -72,11 +75,12 @@ async function loadLocal(): Promise<Generator> {
 export async function chat(prompt: string): Promise<string> {
   if (!prompt.trim() || prompt.length > 4096) throw new Error('Enter a prompt of 1–4096 characters.');
   if (!runOffline && apiKey) {
+    if (!apiModel || apiModel.length > 128) throw new Error('Enter the model ID available in your OpenAI account.');
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       signal: AbortSignal.timeout(60000),
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ model: 'gpt-3.5-turbo', messages: [{ role: 'user', content: prompt }], max_tokens: 256 }),
+      body: JSON.stringify({ model: apiModel, messages: [{ role: 'user', content: prompt }], max_completion_tokens: 256 }),
     });
     if (!resp.ok) throw new Error(`Model provider returned HTTP ${resp.status}`);
     const data = await resp.json();

@@ -2,6 +2,11 @@
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 # Alpha‑Factory v1 👁️✨ — **Interactive Demo & Agent Gallery**
+
+> **Current launch reference (1.3.1):** use the [complete demo catalog](README.md).
+> This original overview is preserved as design history. Its deployment and
+> capability claims must be read alongside each demo’s current mode and limits.
+
 *Out‑learn | Out‑think | Out‑design | Out‑strategise | Out‑execute*
 
 > “Intelligence is **experience** distilled through relentless self‑play.” — inspired by Sutton & Silver’s *Era of Experience* 

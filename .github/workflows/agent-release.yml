@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0]
   workflow_dispatch:
 permissions:
   contents: read
@@ -144,6 +144,8 @@ jobs:
           mkdir -p evidence
           # The full suite owns shared browser assets and cleans them after use.
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
+      - name: Execute the complete catalog finite launch contracts
+        run: python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
@@ -371,10 +373,19 @@ jobs:
         run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
       - name: Verify exact inherited CSP script hashes
         run: python -m pytest --noconftest -o addopts= tests/security/test_csp.py -q
+      - name: Verify independent browser algorithm contracts
+        run: node --test tests/browser/portal_engine.test.mjs
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
       - name: Verify every rebuilt demo page
         run: python scripts/verify_demo_pages.py
+      - name: Verify every legacy demo interaction, mirror and offline cache
+        run: python -m scripts.validate_gallery_catalog --site site --output evidence/gallery-catalog
+      - name: Verify the complete Pages workspace and signed agent handoff
+        run: |
+          model_args=()
+          if [[ "${{ matrix.assets }}" == "full" ]]; then model_args+=(--model); fi
+          python -m scripts.validate_pages_workspace --site site --output evidence/pages-workspace "${model_args[@]}"
       - name: Verify the rebuilt gallery simulation and offline recovery
         run: |
           model_args=()
@@ -386,6 +397,16 @@ jobs:
           name: gallery-${{ matrix.assets }}
           path: evidence/
           if-no-files-found: warn
+      - name: Archive the exact tested full site
+        if: matrix.assets == 'full'
+        run: python -m scripts.package_pages_site --site site --output pages-distribution/site.tar.gz
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: matrix.assets == 'full'
+        with:
+          name: pages-distribution
+          path: pages-distribution/site.tar.gz
+          compression-level: 0
+          if-no-files-found: error
       - name: Retain the tested full browser distribution
         if: matrix.assets == 'full'
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -393,6 +414,37 @@ jobs:
           name: browser-distribution
           path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/insight_browser.zip
           compression-level: 0
+          if-no-files-found: error
+
+  native-demos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-demo-verified.lock
+      - name: Install the isolated hash-locked CPU demo environment
+        run: |
+          python -m pip install --require-hashes -r requirements-demo-verified.lock
+          python -m pip install --no-deps -e .
+          python -m pip check
+      - name: Fetch and verify official native GPT-2 weights
+        run: python -m alpha_factory_v1.demos.gpt2_small_cli.model_download "$RUNNER_TEMP/gpt2"
+      - name: Require actual native research execution and all lineage UIs
+        env:
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: python -m scripts.validate_native_demos --model "$RUNNER_TEMP/gpt2" --output evidence/native-demos.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: native-demos
+          path: evidence/
           if-no-files-found: error
 
   historical-ci:
@@ -423,7 +475,7 @@ jobs:
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery, quality, historical-ci]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, quality, historical-ci]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -450,8 +502,67 @@ jobs:
           path: release/
           if-no-files-found: error
 
-  publish:
+  pages:
     needs: [package, historical-ci]
+    if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: pages-distribution
+          path: pages-distribution
+      - name: Recover the tested site without rebuilding
+        run: |
+          mkdir site
+          tar -xzf pages-distribution/site.tar.gz -C site
+          python - <<'PYTHON'
+          import json, os, pathlib
+          manifest = json.loads(pathlib.Path("site/release.json").read_text())
+          assert manifest["commit"] == os.environ["GITHUB_SHA"]
+          PYTHON
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+        with:
+          token: ${{ secrets.ADMIN_GITHUB_TOKEN || github.token }}
+          enablement: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          path: site
+      - name: Deploy the tested artifact
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+      - name: Verify public commit and user workflows
+        run: |
+          python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install playwright==1.54.0
+          python -m playwright install --with-deps chromium
+          python -m scripts.wait_for_pages_release --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --commit "$GITHUB_SHA" --output evidence/public-pages/release.json
+          python -m scripts.validate_pages_workspace --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --model --output evidence/public-pages
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: public-pages
+          path: evidence/
+          if-no-files-found: warn
+
+  publish:
+    needs: [package, historical-ci, pages]
     if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -465,6 +576,15 @@ jobs:
         with:
           name: release-package
           path: release
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: public-pages
+          path: public-evidence
+      - name: Include public acceptance in the release evidence and checksums
+        run: |
+          python -m scripts.finalize_pages_release --evidence public-evidence
+          cd release
+          sha256sum -c SHA256SUMS
       - name: Publish only after re-downloading and verifying draft assets
         env:
           GH_TOKEN: ${{ github.token }}

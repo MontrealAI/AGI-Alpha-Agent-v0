@@ -1,4 +1,28 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Research planning. Runs a small MuZero-style planner in a Gymnasium environment.
+
+**Prerequisites:** torch, gymnasium[classic-control], Gradio and the demo requirements.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run muzero_planning
+```
+
+**Expected result:** Local dashboard on port 7861; stop with Ctrl+C.
+
+**Scope:** Small randomly initialized model unless trained; solving CartPole is not guaranteed.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
@@ -11,6 +35,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
 -->
 
 # 🌟 **Mastery Without a Rule‑Book** — watch MuZero think in real time
+
 
 > “An agent needn’t be told the rules of Go, Chess or cart‑balancing gravity;  
 > it can conjure the laws for itself and still prevail.”  

@@ -1,182 +1,763 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alpha‑Factory Demo Gallery</title>
-  <link rel="stylesheet" href="stylesheets/cards.css">
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #f7f7f7; }
-    h1 { text-align: center; margin-bottom: 1rem; }
-    p.subtitle { text-align: center; margin-bottom: 2rem; }
-    a.demo-card { text-decoration: none; color: inherit; }
-    .demo-card h3 { margin-top: 0.5rem; text-align: center; }
-    .search-input { display: block; margin: 0 auto 1.5rem; padding: 0.5rem; width: min(300px, 80%); font-size: 1rem; }
-  </style>
-</head>
-<body>
-  <h1>Alpha‑Factory Demo Gallery</h1>
-  <p class="subtitle">Select a demo to explore detailed instructions and watch it unfold in real time.</p>
-  <p class="subtitle"><a href="alpha_factory_v1/demos/index.html">Open Subdirectory Gallery</a></p>
-    <input id="search-input" class="search-input" type="text"
-           placeholder="Search demos..." aria-label="Search demos">
-  <div class="demo-grid">
-    <a class="demo-card" href="aiga_meta_evolution/" target="_blank" rel="noopener noreferrer" data-summary="🌌 algorithms that invent algorithms — ai‑ga meta‑evolution demo ai‑ga meta‑evolution demo alpha‑factory v1 👁️✨ — multi‑agent agentic α‑agi" title="AI‑GA Meta‑Evolution Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI">
-      <img src="aiga_meta_evolution/assets/preview.svg" alt="🌌 Algorithms That Invent Algorithms — AI‑GA Meta‑Evolution Demo" loading="lazy" title="🌌 Algorithms That Invent Algorithms — &lt;br&gt;**AI‑GA Meta‑Evolution Demo**">
-      <h3>🌌 Algorithms That Invent Algorithms — &lt;br&gt;**AI‑GA Meta‑Evolution Demo**</h3>
-      <p class='demo-desc'>AI‑GA Meta‑Evolution Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#161c19" />
+        <meta
+            name="description"
+            content="The $AGIALPHA Agent workspace. Research evidence, optimize resources, plan schedules and test forecasts in your browser. Explore every original demo and operate your own agent."
+        />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <title>$AGIALPHA · From ambition to evidence</title>
+        <link rel="icon" href="assets/portal/mark.svg" type="image/svg+xml" />
+        <link rel="stylesheet" href="assets/portal/portal.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#workbench">Skip to workspace</a>
+        <header class="topbar">
+            <a class="brand" href="#home" aria-label="AGIALPHA home"
+                ><span class="mark">α</span
+                ><span
+                    >AGI<span class="brand-light">ALPHA</span
+                    ><small>THE AGENT WORKSPACE</small></span
+                ></a
+            >
+            <nav aria-label="Main navigation">
+                <a href="#workbench">Workspace</a><a href="#explore">Explore</a
+                ><a href="#operate">Your agent</a
+                ><a href="agent/OPERATIONS/">Docs ↗</a>
+            </nav>
+            <a
+                class="release-link"
+                href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest"
+                >v1.4.0 <span>↗</span></a
+            >
+        </header>
+        <main>
+            <section class="hero wrap" id="home">
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span class="signal"></span> OPEN SOURCE · HUMAN
+                        DIRECTED
+                    </p>
+                    <h1>Turn ambition<br />into <em>evidence.</em></h1>
+                    <p class="intro">
+                        A workspace for the whole loop. Find a useful problem,
+                        explore better answers, inspect the evidence, and build
+                        on what works.
+                    </p>
+                    <div class="actions">
+                        <a class="button primary" href="#workbench"
+                            >Start a mission <span>↗</span></a
+                        ><a class="button ghost" href="#explore"
+                            >Explore the demos <span>↓</span></a
+                        >
+                    </div>
+                    <p class="quiet">
+                        No account. No API key. Your first mission runs here.
+                    </p>
+                </div>
+                <div
+                    class="flywheel"
+                    aria-label="The original six stage project vision"
+                >
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+                    <div class="orbit orbit-three"></div>
+                    <div class="wheel-center">
+                        <span>α</span><small>THE COMPOUNDING LOOP</small>
+                    </div>
+                    <div
+                        class="wheel-nodes"
+                        role="group"
+                        aria-label="Explore the project flywheel"
+                    >
+                        <button
+                            class="wheel-node n0"
+                            data-stage="0"
+                            aria-pressed="true"
+                        >
+                            <small>01</small> Identify
+                        </button>
+                        <button
+                            class="wheel-node n1"
+                            data-stage="1"
+                            aria-pressed="false"
+                        >
+                            <small>02</small> Learn
+                        </button>
+                        <button
+                            class="wheel-node n2"
+                            data-stage="2"
+                            aria-pressed="false"
+                        >
+                            <small>03</small> Think
+                        </button>
+                        <button
+                            class="wheel-node n3"
+                            data-stage="3"
+                            aria-pressed="false"
+                        >
+                            <small>04</small> Design
+                        </button>
+                        <button
+                            class="wheel-node n4"
+                            data-stage="4"
+                            aria-pressed="false"
+                        >
+                            <small>05</small> Strategise
+                        </button>
+                        <button
+                            class="wheel-node n5"
+                            data-stage="5"
+                            aria-pressed="false"
+                        >
+                            <small>06</small> Execute
+                        </button>
+                    </div>
+                    <p id="wheel-caption" aria-live="polite">
+                        Identify · Give the mission a goal and bounded, explicit
+                        inputs.
+                    </p>
+                </div>
+            </section>
+            <div class="capability-strip">
+                <div class="wrap">
+                    <span><b>04</b> browser workflows</span
+                    ><span><b>24</b> original demos + 2 resources</span
+                    ><span><b>01</b> connected local agent</span
+                    ><a href="agent/CAPABILITIES/"
+                        >What works &amp; its limits ↗</a
+                    >
+                </div>
+            </div>
+            <section
+                class="workspace wrap"
+                id="workbench"
+                aria-labelledby="workspace-title"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">01 / MAKE SOMETHING USEFUL</p>
+                        <h2 id="workspace-title">Your mission starts here.</h2>
+                    </div>
+                    <p>
+                        Try the example. Replace it with your own inputs.<br />Every
+                        result comes with its method and limits.
+                    </p>
+                </div>
+                <div class="workspace-shell">
+                    <div class="mission-sidebar">
+                        <p class="small-label">CHOOSE A WORKFLOW</p>
+                        <div
+                            role="group"
+                            aria-label="Mission types"
+                            class="mission-types"
+                        >
+                            <button
+                                data-kind="allocation"
+                                class="mission-type"
+                                aria-pressed="true"
+                            >
+                                <span>↗</span><b>Allocate resources</b
+                                ><small
+                                    >Find the best feasible combination</small
+                                >
+                            </button>
+                            <button
+                                data-kind="research"
+                                class="mission-type"
+                                aria-pressed="false"
+                            >
+                                <span>⌕</span><b>Research evidence</b
+                                ><small>Ground a brief in your sources</small>
+                            </button>
+                            <button
+                                data-kind="schedule"
+                                class="mission-type"
+                                aria-pressed="false"
+                            >
+                                <span>▤</span><b>Plan a schedule</b
+                                ><small>Respect sequence and capacity</small>
+                            </button>
+                            <button
+                                data-kind="forecast"
+                                class="mission-type"
+                                aria-pressed="false"
+                            >
+                                <span>∿</span><b>Test a forecast</b
+                                ><small>Measure on unseen observations</small>
+                            </button>
+                        </div>
+                        <div class="sidebar-note">
+                            <span class="signal"></span
+                            ><b>Runs on your device</b>
+                            <p>
+                                Bounded algorithms. No model or cloud service is
+                                called by these four workflows.
+                            </p>
+                            <a href="#ai-studio">Try real local AI ↓</a>
+                        </div>
+                    </div>
+                    <div class="mission-main">
+                        <div class="workspace-toolbar">
+                            <span id="method-chip" class="chip"
+                                >Exact bounded search</span
+                            ><button
+                                id="reset-example"
+                                class="text-button"
+                                type="button"
+                            >
+                                Reset example</button
+                            ><label class="text-button import-label"
+                                >Import mission<input
+                                    id="mission-import"
+                                    type="file"
+                                    accept=".json,application/json"
+                            /></label>
+                        </div>
+                        <form id="mission-form">
+                            <label class="field-label" for="mission-goal"
+                                >What would a useful result look like?</label
+                            ><input
+                                id="mission-goal"
+                                maxlength="2000"
+                                required
+                            />
+                            <p id="mission-help" class="helper"></p>
+                            <div id="mission-fields"></div>
+                            <details class="advanced">
+                                <summary>
+                                    Advanced · edit native mission JSON
+                                </summary>
+                                <label for="mission-json"
+                                    >Changes here replace the fields when you
+                                    select Apply.</label
+                                ><textarea
+                                    id="mission-json"
+                                    rows="12"
+                                    spellcheck="false"
+                                ></textarea
+                                ><button
+                                    id="apply-json"
+                                    type="button"
+                                    class="button subtle"
+                                >
+                                    Apply JSON
+                                </button>
+                            </details>
+                            <div class="actions run-actions">
+                                <button
+                                    id="run-mission"
+                                    class="button primary"
+                                    type="submit"
+                                >
+                                    Run mission <span>↗</span></button
+                                ><button
+                                    id="stop-mission"
+                                    class="button danger"
+                                    type="button"
+                                    hidden
+                                >
+                                    Stop</button
+                                ><button
+                                    id="export-mission"
+                                    class="button subtle"
+                                    type="button"
+                                >
+                                    Download inputs
+                                </button>
+                            </div>
+                        </form>
+                        <p
+                            id="mission-status"
+                            class="status"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Ready. The example uses sample planning units; edit
+                            them for your problem.
+                        </p>
+                    </div>
+                </div>
+                <section
+                    id="mission-result"
+                    class="result-panel"
+                    aria-labelledby="result-title"
+                    hidden
+                >
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">
+                                RESULT / READY FOR YOUR REVIEW
+                            </p>
+                            <h3 id="result-title">
+                                An answer you can inspect.
+                            </h3>
+                        </div>
+                        <span class="chip" id="result-method"></span>
+                    </div>
+                    <p id="result-summary"></p>
+                    <div id="result-metrics" class="metric-grid"></div>
+                    <div id="result-chart" class="result-chart"></div>
+                    <div id="result-table" class="table-wrap"></div>
+                    <div class="evidence-grid">
+                        <div>
+                            <h4>What was checked</h4>
+                            <ul id="result-checks"></ul>
+                        </div>
+                        <div>
+                            <h4>What this result means</h4>
+                            <p id="result-limits"></p>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>Inspect the complete evidence</summary>
+                        <pre id="result-json" tabindex="0"></pre>
+                    </details>
+                    <div class="review-row">
+                        <label for="review-note"
+                            >Your review note<input
+                                id="review-note"
+                                maxlength="1000"
+                                placeholder="What did you check? What needs another pass?" /></label
+                        ><label class="remember"
+                            ><input id="remember-result" type="checkbox" /> Save
+                            this reviewed mission on this device</label
+                        ><button id="approve-result" class="button primary">
+                            Approve &amp; export report</button
+                        ><button id="reject-result" class="button subtle">
+                            Reject result
+                        </button>
+                    </div>
+                    <p class="helper">
+                        Browser reports contain a SHA-256 integrity digest and
+                        your review, not a trusted agent signature. Use your
+                        local agent for signed identity, durable journals and
+                        verified $AGIALPHA receipts.
+                    </p>
+                </section>
+                <details class="history-panel">
+                    <summary>
+                        Mission memory <span id="history-count">0 saved</span>
+                    </summary>
+                    <p>
+                        Only missions you explicitly save stay in this browser.
+                        Reload saved inputs to improve a decision. Export
+                        important work before clearing browser data.
+                    </p>
+                    <div id="history-list"></div>
+                    <button id="clear-history" class="text-button">
+                        Clear saved mission memory
+                    </button>
+                    <p id="storage-status" role="status"></p>
+                </details>
+            </section>
+            <section class="ai-section" id="ai-studio">
+                <div class="wrap ai-grid">
+                    <div>
+                        <p class="eyebrow">02 / EXPLORE LOCAL INTELLIGENCE</p>
+                        <h2>A small model.<br />On your machine.</h2>
+                        <p>
+                            Try actual GPT-2 text generation in this browser.
+                            The model downloads only when you ask, then
+                            generates locally. It is a text-completion research
+                            baseline; it can be wrong and is not a reasoning
+                            assistant.
+                        </p>
+                        <a class="text-link" href="alpha_agi_insight_v1/"
+                            >Open the full Insight simulation studio ↗</a
+                        >
+                    </div>
+                    <div class="ai-console">
+                        <div class="console-top">
+                            <span><i class="signal"></i> LOCAL MODEL LAB</span
+                            ><span>GPT-2 · q8 · WASM</span>
+                        </div>
+                        <label for="ai-prompt">Continue this text</label
+                        ><textarea id="ai-prompt" rows="3" maxlength="2048">
+A useful way to evaluate an idea is</textarea
+                        >
+                        <div class="actions">
+                            <button id="ai-generate" class="button lime">
+                                Load model &amp; generate ↗</button
+                            ><button id="ai-stop" class="button subtle" hidden>
+                                Stop
+                            </button>
+                        </div>
+                        <p id="ai-status" role="status">
+                            First use downloads about 128 MB of model weights
+                            plus the runtime. Prompts stay on this device.
+                        </p>
+                        <pre id="ai-output" aria-live="polite" tabindex="0">
+Your model output will appear here.</pre
+                        >
+                    </div>
+                </div>
+            </section>
+            <section class="wrap explore" id="explore">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">03 / FOLLOW YOUR CURIOSITY</p>
+                        <h2>One project. Many experiments.</h2>
+                    </div>
+                    <p>
+                        Every original demo, preserved and explained.<br />Browser
+                        sample replays are labeled separately from native
+                        backends.
+                    </p>
+                </div>
+                <div class="gallery-toolbar">
+                    <label for="search-input">Find a demo</label
+                    ><input
+                        id="search-input"
+                        type="search"
+                        placeholder="Search planning, business, governance…"
+                        aria-label="Search demos"
+                    />
+                    <p id="result-count" role="status" aria-live="polite"></p>
+                </div>
+                <p id="no-results" hidden>
+                    No matching demos. Clear the search to see all entries.
+                </p>
+                <div class="demo-grid">
+    <a class="demo-card" href="aiga_meta_evolution/" rel="noopener noreferrer" data-summary="ai-ga meta-evolution research training: evolves small networks in a curriculum environment." title="Research training: Evolves small networks in a curriculum environment.">
+      <img src="aiga_meta_evolution/assets/preview.svg" alt="AI-GA meta-evolution" loading="lazy" title="AI-GA meta-evolution">
+      <h3>AI-GA meta-evolution</h3>
+      <p class='demo-desc'>Research training: Evolves small networks in a curriculum environment.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_business_2_v1/" target="_blank" rel="noopener noreferrer" data-summary="large‑scale α‑agi business 👁️✨ ($agialpha) demo – “infinite bloom 3.0” global markets seep trillions in latent opportunity — alpha in the broadest sense: pricing dislocations • supply‑chain inefficiencies • novel drug targets • policy loopholes • unexplored material designs. alpha‑factory v1 turns that raw potential into deployable breakthroughs, autonomously." title="Global markets seep trillions in latent opportunity — alpha in the broadest sense: pricing dislocations • supply‑chain inefficiencies • novel drug targets • policy loopholes • unexplored material designs. Alpha‑Factory v1 turns that raw potential into deployable breakthroughs, autonomously.">
-      <img src="alpha_agi_business_2_v1/assets/preview.svg" alt="Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – “Infinite Bloom 3.0”" loading="lazy" title="Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – **“Infinite Bloom 3.0”**">
-      <h3>Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – **“Infinite Bloom 3.0”**</h3>
-      <p class='demo-desc'>Global markets seep trillions in latent opportunity — alpha in the broadest sense: pricing dislocations • supply‑chain inefficiencies • novel drug targets • policy loopholes • unexplored material designs. Alpha‑Factory v1 turns that raw potential into deployable breakthroughs, autonomously.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_business_2_v1/" rel="noopener noreferrer" data-summary="business v2 local service: runs planning, research and optional commentary agents in the legacy orchestrator." title="Local service: Runs planning, research and optional commentary agents in the legacy orchestrator.">
+      <img src="alpha_agi_business_2_v1/assets/preview.svg" alt="Business v2" loading="lazy" title="Business v2">
+      <h3>Business v2</h3>
+      <p class='demo-desc'>Local service: Runs planning, research and optional commentary agents in the legacy orchestrator.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_business_3_v1/" target="_blank" rel="noopener noreferrer" data-summary="🏛️ large‑scale α‑agi business 3 👁️✨ — omega‑grade edition alpha‑factory v1 → ω‑lattice v0 transmuting cosmological free‑energy gradients into compounding cash‑flows." title="Alpha‑Factory v1 → Ω‑Lattice v0 Transmuting cosmological free‑energy gradients into compounding cash‑flows.">
-      <img src="alpha_agi_business_3_v1/assets/preview.svg" alt="🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — Omega‑Grade Edition" loading="lazy" title="🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — **Omega‑Grade Edition**">
-      <h3>🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — **Omega‑Grade Edition**</h3>
-      <p class='demo-desc'>Alpha‑Factory v1 → Ω‑Lattice v0 Transmuting cosmological free‑energy gradients into compounding cash‑flows.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_business_3_v1/" rel="noopener noreferrer" data-summary="business v3 simulation: runs a bounded multi-agent business cycle with local fallback results." title="Simulation: Runs a bounded multi-agent business cycle with local fallback results.">
+      <img src="alpha_agi_business_3_v1/assets/preview.svg" alt="Business v3" loading="lazy" title="Business v3">
+      <h3>Business v3</h3>
+      <p class='demo-desc'>Simulation: Runs a bounded multi-agent business cycle with local fallback results.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_business_v1/" target="_blank" rel="noopener noreferrer" data-summary="alpha agi business v1 large‑scale α‑agi business 👁️✨ $agialpha using alpha‑factory v1 multi‑agent stack, on‑chain incentives &amp; antifragile safety‑loops." title="Large‑Scale α‑AGI Business 👁️✨ $AGIALPHA using Alpha‑Factory v1 multi‑agent stack, on‑chain incentives &amp; antifragile safety‑loops.">
-      <img src="alpha_agi_business_v1/assets/preview.svg" alt="Alpha Agi Business V1" loading="lazy" title="Alpha Agi Business V1">
-      <h3>Alpha Agi Business V1</h3>
-      <p class='demo-desc'>Large‑Scale α‑AGI Business 👁️✨ $AGIALPHA using Alpha‑Factory v1 multi‑agent stack, on‑chain incentives &amp; antifragile safety‑loops.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_business_v1/" rel="noopener noreferrer" data-summary="business v1 offline sample: ranks bundled business opportunities; service agents publish illustrative business events." title="Offline sample: Ranks bundled business opportunities; service agents publish illustrative business events.">
+      <img src="alpha_agi_business_v1/assets/preview.svg" alt="Business v1" loading="lazy" title="Business v1">
+      <h3>Business v1</h3>
+      <p class='demo-desc'>Offline sample: Ranks bundled business opportunities; service agents publish illustrative business events.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_insight_v0/" target="_blank" rel="noopener noreferrer" data-summary="α‑agi insight 👁️✨ — beyond human foresight — official demo (zero data) the α‑agi insight demo predicts which industry sector is most likely to be transformed by artificial general intelligence. it runs a small" title="The α‑AGI Insight demo predicts which industry sector is most likely to be transformed by Artificial General Intelligence. It runs a small">
-      <img src="alpha_agi_insight_v0/assets/preview.svg" alt="α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (Zero Data)" loading="lazy" title="α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (Zero Data)">
-      <h3>α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (Zero Data)</h3>
-      <p class='demo-desc'>The α‑AGI Insight demo predicts which industry sector is most likely to be transformed by Artificial General Intelligence. It runs a small</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_insight_v0/" rel="noopener noreferrer" data-summary="insight v0 offline simulation: searches a toy sector-scoring landscape." title="Offline simulation: Searches a toy sector-scoring landscape.">
+      <img src="alpha_agi_insight_v0/assets/preview.svg" alt="Insight v0" loading="lazy" title="Insight v0">
+      <h3>Insight v0</h3>
+      <p class='demo-desc'>Offline simulation: Searches a toy sector-scoring landscape.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_insight_v1/" target="_blank" rel="noopener noreferrer" data-summary="α‑agi insight v1 — beyond human foresight 🎖️ α-agi insight 👁️✨ — beyond human foresight version 1.1 (2025-07-15)" title="🎖️ α-AGI Insight 👁️✨ — Beyond Human Foresight Version 1.1 (2025-07-15)">
-      <img src="alpha_agi_insight_v1/assets/preview.svg" alt="α‑AGI Insight v1 — Beyond Human Foresight" loading="lazy" title="α‑AGI Insight v1 — Beyond Human Foresight">
-      <h3>α‑AGI Insight v1 — Beyond Human Foresight</h3>
-      <p class='demo-desc'>🎖️ α-AGI Insight 👁️✨ — Beyond Human Foresight Version 1.1 (2025-07-15)</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_insight_v1/" rel="noopener noreferrer" data-summary="insight v1 browser + simulation: explores scenarios and pareto search; optional browser gpt-2 performs real local text completion." title="Browser + simulation: Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.">
+      <img src="alpha_agi_insight_v1/assets/preview.svg" alt="Insight v1" loading="lazy" title="Insight v1">
+      <h3>Insight v1</h3>
+      <p class='demo-desc'>Browser + simulation: Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_agi_marketplace_v1/" target="_blank" rel="noopener noreferrer" data-summary="alpha agi marketplace v1 large‑scale α‑agi marketplace 👁️✨ $agialpha hunt exploitable alpha 🎯 and convert it into tangible value 💎." title="Large‑Scale α‑AGI Marketplace 👁️✨ $AGIALPHA hunt exploitable alpha 🎯 and convert it into tangible value 💎.">
-      <img src="alpha_agi_marketplace_v1/assets/preview.svg" alt="Alpha Agi Marketplace V1" loading="lazy" title="Alpha Agi Marketplace V1">
-      <h3>Alpha Agi Marketplace V1</h3>
-      <p class='demo-desc'>Large‑Scale α‑AGI Marketplace 👁️✨ $AGIALPHA hunt exploitable alpha 🎯 and convert it into tangible value 💎.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_agi_marketplace_v1/" rel="noopener noreferrer" data-summary="marketplace local api client: validates a bundled job and can submit it to a configured legacy orchestrator." title="Local API client: Validates a bundled job and can submit it to a configured legacy orchestrator.">
+      <img src="alpha_agi_marketplace_v1/assets/preview.svg" alt="Marketplace" loading="lazy" title="Marketplace">
+      <h3>Marketplace</h3>
+      <p class='demo-desc'>Local API client: Validates a bundled job and can submit it to a configured legacy orchestrator.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="alpha_asi_world_model/" target="_blank" rel="noopener noreferrer" data-summary="alpha asi world model use the offline/openai api toggle below the chart to run locally or with your own api key. keys never leave your browser. readme  ░α-asi world-model demo ░  alpha-factory v1 👁️✨" title="Use the Offline/OpenAI API toggle below the chart to run locally or with your own API key. Keys never leave your browser. README  ░α-ASI World-Model Demo ░  Alpha-Factory v1 👁️✨">
-      <img src="alpha_asi_world_model/assets/preview.svg" alt="Alpha Asi World Model" loading="lazy" title="Alpha Asi World Model">
-      <h3>Alpha Asi World Model</h3>
-      <p class='demo-desc'>Use the Offline/OpenAI API toggle below the chart to run locally or with your own API key. Keys never leave your browser. README  ░α-ASI World-Model Demo ░  Alpha-Factory v1 👁️✨</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="alpha_asi_world_model/" rel="noopener noreferrer" data-summary="asi world model research training: explores generated grid worlds using a small learner and local api." title="Research training: Explores generated grid worlds using a small learner and local API.">
+      <img src="alpha_asi_world_model/assets/preview.svg" alt="ASI world model" loading="lazy" title="ASI world model">
+      <h3>ASI world model</h3>
+      <p class='demo-desc'>Research training: Explores generated grid worlds using a small learner and local API.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="cross_industry_alpha_factory/" target="_blank" rel="noopener noreferrer" data-summary="👁️ alpha-factory v1 — cross-industry agentic α-agi demo current demo version: 1.0.0. out-learn • out-think • out-design • out-strategise • out-execute" title="Current demo version: 1.0.0. Out-learn • Out-think • Out-design • Out-strategise • Out-execute">
-      <img src="cross_industry_alpha_factory/assets/preview.svg" alt="👁️ Alpha-Factory v1 — Cross-Industry AGENTIC α-AGI Demo" loading="lazy" title="👁️ Alpha-Factory v1 — Cross-Industry **AGENTIC α-AGI** Demo">
-      <h3>👁️ Alpha-Factory v1 — Cross-Industry **AGENTIC α-AGI** Demo</h3>
-      <p class='demo-desc'>Current demo version: 1.0.0. Out-learn • Out-think • Out-design • Out-strategise • Out-execute</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="demos/alpha_super_planner_v1/" rel="noopener noreferrer" data-summary="super planner interface illustration: shows the stages and progress display of a planning interface." title="Interface illustration: Shows the stages and progress display of a planning interface.">
+      <img src="alpha_super_planner_v1/assets/preview.svg" alt="Super Planner" loading="lazy" title="Super Planner">
+      <h3>Super Planner</h3>
+      <p class='demo-desc'>Interface illustration: Shows the stages and progress display of a planning interface.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="era_of_experience/" target="_blank" rel="noopener noreferrer" data-summary="era of experience era‑of‑experience demo alpha‑factory v1 👁️✨ — multi‑agent agentic α‑agi" title="Era‑of‑Experience Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI">
-      <img src="era_of_experience/assets/preview.svg" alt="Era Of Experience" loading="lazy" title="Era Of Experience">
-      <h3>Era Of Experience</h3>
-      <p class='demo-desc'>Era‑of‑Experience Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="cross_industry_alpha_factory/" rel="noopener noreferrer" data-summary="cross-industry discovery offline sample: selects reproducible examples from the bundled opportunity catalog." title="Offline sample: Selects reproducible examples from the bundled opportunity catalog.">
+      <img src="cross_industry_alpha_factory/assets/preview.svg" alt="Cross-industry discovery" loading="lazy" title="Cross-industry discovery">
+      <h3>Cross-industry discovery</h3>
+      <p class='demo-desc'>Offline sample: Selects reproducible examples from the bundled opportunity catalog.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="finance_alpha/" target="_blank" rel="noopener noreferrer" data-summary="alpha‑factory demos 📊 welcome! these short demos let anyone – even if you’ve never touched a terminal – spin up alpha‑factory, watch a live trade, and explore the" title="Welcome! These short demos let anyone – even if you’ve never touched a terminal – spin up Alpha‑Factory, watch a live trade, and explore the">
-      <img src="finance_alpha/assets/preview.svg" alt="Alpha‑Factory Demos 📊" loading="lazy" title="Alpha‑Factory Demos 📊">
-      <h3>Alpha‑Factory Demos 📊</h3>
-      <p class='demo-desc'>Welcome! These short demos let anyone – even if you’ve never touched a terminal – spin up Alpha‑Factory, watch a live trade, and explore the</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="era_of_experience/" rel="noopener noreferrer" data-summary="era of experience offline sample: extracts simple signals from bundled historical csv samples." title="Offline sample: Extracts simple signals from bundled historical CSV samples.">
+      <img src="era_of_experience/assets/preview.svg" alt="Era of Experience" loading="lazy" title="Era of Experience">
+      <h3>Era of Experience</h3>
+      <p class='demo-desc'>Offline sample: Extracts simple signals from bundled historical CSV samples.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="macro_sentinel/" target="_blank" rel="noopener noreferrer" data-summary="🌐 macro‑sentinel · alpha‑factory v1 👁️✨ cross‑asset macro risk radar powered by multi‑agent α‑agi tl;dr   spin up a self‑healing stack that ingests macro telemetry, runs a monte‑carlo risk engine, sizes an es hedge, and explains its reasoning—all behind a gradio dashboard." title="Cross‑asset macro risk radar powered by multi‑agent α‑AGI TL;DR   Spin up a self‑healing stack that ingests macro telemetry, runs a Monte‑Carlo risk engine, sizes an ES hedge, and explains its reasoning—all behind a Gradio dashboard.">
-      <img src="macro_sentinel/assets/preview.svg" alt="🌐 Macro‑Sentinel · Alpha‑Factory v1 👁️✨" loading="lazy" title="🌐 Macro‑Sentinel · Alpha‑Factory v1 👁️✨">
-      <h3>🌐 Macro‑Sentinel · Alpha‑Factory v1 👁️✨</h3>
-      <p class='demo-desc'>Cross‑asset macro risk radar powered by multi‑agent α‑AGI TL;DR   Spin up a self‑healing stack that ingests macro telemetry, runs a Monte‑Carlo risk engine, sizes an ES hedge, and explains its reasoning—all behind a Gradio dashboard.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="finance_alpha/" rel="noopener noreferrer" data-summary="finance alpha deployment example: provides paper-market agent and legacy service integration examples." title="Deployment example: Provides paper-market agent and legacy service integration examples.">
+      <img src="finance_alpha/assets/preview.svg" alt="Finance Alpha" loading="lazy" title="Finance Alpha">
+      <h3>Finance Alpha</h3>
+      <p class='demo-desc'>Deployment example: Provides paper-market agent and legacy service integration examples.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="meta_agentic_agi/" target="_blank" rel="noopener noreferrer" data-summary="meta‑agentic α‑agi 👁️✨ demo – production‑grade v0.1.0 official definition – meta-agentic (adj.) describes an agent whose primary role is to create, select, evaluate, or re‑configure other agents and the rules governing their interactions, thereby exercising second‑order agency over a population of first‑order agents." title="Official definition – Meta-Agentic (adj.) Describes an agent whose primary role is to create, select, evaluate, or re‑configure other agents and the rules governing their interactions, thereby exercising second‑order agency over a population of first‑order agents.">
-      <img src="meta_agentic_agi/assets/preview.svg" alt="Meta‑Agentic α‑AGI 👁️✨ Demo – Production‑Grade v0.1.0" loading="lazy" title="Meta‑Agentic α‑AGI 👁️✨ Demo – **Production‑Grade v0.1.0**">
-      <h3>Meta‑Agentic α‑AGI 👁️✨ Demo – **Production‑Grade v0.1.0**</h3>
-      <p class='demo-desc'>Official definition – Meta-Agentic (adj.) Describes an agent whose primary role is to create, select, evaluate, or re‑configure other agents and the rules governing their interactions, thereby exercising second‑order agency over a population of first‑order agents.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="demos/gpt2_small_cli/" rel="noopener noreferrer" data-summary="gpt-2 cli local model: generates text with the actual gpt-2 124m model." title="Local model: Generates text with the actual GPT-2 124M model.">
+      <img src="gpt2_small_cli/assets/preview.svg" alt="GPT-2 CLI" loading="lazy" title="GPT-2 CLI">
+      <h3>GPT-2 CLI</h3>
+      <p class='demo-desc'>Local model: Generates text with the actual GPT-2 124M model.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="meta_agentic_agi_v2/" target="_blank" rel="noopener noreferrer" data-summary="meta‑agentic α‑agi 👁️✨ demo v2 – production‑grade v0.1.0 identical to v1 plus a statistical-physics wrapper that logs and minimises gibbs / variational free-energy for each candidate agent during the evolutionary search. metric toggle: configs/default.yml → physicsmetric: freeenergy" title="Identical to v1 plus a statistical-physics wrapper that logs and minimises Gibbs / variational free-energy for each candidate agent during the evolutionary search. Metric toggle: configs/default.yml → physicsmetric: freeenergy">
-      <img src="meta_agentic_agi_v2/assets/preview.svg" alt="Meta‑Agentic α‑AGI 👁️✨ Demo v2 – Production‑Grade v0.1.0" loading="lazy" title="Meta‑Agentic α‑AGI 👁️✨ Demo v2 – **Production‑Grade v0.1.0**">
-      <h3>Meta‑Agentic α‑AGI 👁️✨ Demo v2 – **Production‑Grade v0.1.0**</h3>
-      <p class='demo-desc'>Identical to v1 plus a statistical-physics wrapper that logs and minimises Gibbs / variational free-energy for each candidate agent during the evolutionary search. Metric toggle: configs/default.yml → physicsmetric: freeenergy</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="macro_sentinel/" rel="noopener noreferrer" data-summary="macro sentinel offline simulation: computes monte carlo risk metrics from bundled macro samples." title="Offline simulation: Computes Monte Carlo risk metrics from bundled macro samples.">
+      <img src="macro_sentinel/assets/preview.svg" alt="Macro Sentinel" loading="lazy" title="Macro Sentinel">
+      <h3>Macro Sentinel</h3>
+      <p class='demo-desc'>Offline simulation: Computes Monte Carlo risk metrics from bundled macro samples.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="meta_agentic_agi_v3/" target="_blank" rel="noopener noreferrer" data-summary="meta‑agentic α‑agi 👁️✨ demo v3 — azr‑powered “alpha‑factory v1” (production‑grade v0.3.0) identical to v1 plus two synergistic upgrades 1. statistical‑physics wrapper — logs &amp; minimises gibbs / variational free‑energy for every candidate agent." title="Identical to v1 plus two synergistic upgrades 1. Statistical‑physics wrapper — logs &amp; minimises Gibbs / variational free‑energy for every candidate agent.">
-      <img src="meta_agentic_agi_v3/assets/preview.svg" alt="Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)" loading="lazy" title="**Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**">
-      <h3>**Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**</h3>
-      <p class='demo-desc'>Identical to v1 plus two synergistic upgrades 1. Statistical‑physics wrapper — logs &amp; minimises Gibbs / variational free‑energy for every candidate agent.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="meta_agentic_agi/" rel="noopener noreferrer" data-summary="meta-agentic v1 synthetic evaluation: runs provider-driven code proposals, synthetic fitness and sqlite lineage." title="Synthetic evaluation: Runs provider-driven code proposals, synthetic fitness and SQLite lineage.">
+      <img src="meta_agentic_agi/assets/preview.svg" alt="Meta-Agentic v1" loading="lazy" title="Meta-Agentic v1">
+      <h3>Meta-Agentic v1</h3>
+      <p class='demo-desc'>Synthetic evaluation: Runs provider-driven code proposals, synthetic fitness and SQLite lineage.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="meta_agentic_tree_search_v0/" target="_blank" rel="noopener noreferrer" data-summary="meta‑agentic tree search (mats) demo — v0 abstract: we pioneer meta-agentic tree search (mats), a novel framework for autonomous multi-agent decision optimization in complex strategic domains. mats enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through recursive agent-to-agent interactions. in this second-order agentic scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. this recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook. status: experimental · proof‑of‑concept · alpha" title="Abstract: We pioneer Meta-Agentic Tree Search (MATS), a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through recursive agent-to-agent interactions. In this second-order agentic scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook. Status: Experimental · Proof‑of‑Concept · Alpha">
-      <img src="meta_agentic_tree_search_v0/assets/preview.svg" alt="Meta‑Agentic Tree Search (MATS) Demo — v0" loading="lazy" title="Meta‑Agentic Tree Search (MATS) Demo — v0">
-      <h3>Meta‑Agentic Tree Search (MATS) Demo — v0</h3>
-      <p class='demo-desc'>Abstract: We pioneer Meta-Agentic Tree Search (MATS), a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through recursive agent-to-agent interactions. In this second-order agentic scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook. Status: Experimental · Proof‑of‑Concept · Alpha</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="meta_agentic_agi_v2/" rel="noopener noreferrer" data-summary="meta-agentic v2 synthetic evaluation: runs provider-driven code proposals, synthetic fitness and sqlite lineage." title="Synthetic evaluation: Runs provider-driven code proposals, synthetic fitness and SQLite lineage.">
+      <img src="meta_agentic_agi_v2/assets/preview.svg" alt="Meta-Agentic v2" loading="lazy" title="Meta-Agentic v2">
+      <h3>Meta-Agentic v2</h3>
+      <p class='demo-desc'>Synthetic evaluation: Runs provider-driven code proposals, synthetic fitness and SQLite lineage.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="muzero_planning/" target="_blank" rel="noopener noreferrer" data-summary="🌟 mastery without a rule‑book — watch muzero think in real time muzero planning demo alpha‑factory v1 👁️✨ — multi‑agent agentic α‑agi" title="MuZero Planning Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI">
-      <img src="muzero_planning/assets/preview.svg" alt="🌟 Mastery Without a Rule‑Book — watch MuZero think in real time" loading="lazy" title="🌟 **Mastery Without a Rule‑Book** — watch MuZero think in real time">
-      <h3>🌟 **Mastery Without a Rule‑Book** — watch MuZero think in real time</h3>
-      <p class='demo-desc'>MuZero Planning Demo Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="meta_agentic_agi_v3/" rel="noopener noreferrer" data-summary="meta-agentic v3 identity curriculum: exercises proposal, validation, scoring and persistent lineage on a fixed identity task." title="Identity curriculum: Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.">
+      <img src="meta_agentic_agi_v3/assets/preview.svg" alt="Meta-Agentic v3" loading="lazy" title="Meta-Agentic v3">
+      <h3>Meta-Agentic v3</h3>
+      <p class='demo-desc'>Identity curriculum: Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="muzeromctsllmagent_v0/" target="_blank" rel="noopener noreferrer" data-summary="muzero mcts llm agent demo this folder contains a prototype integration of a monte carlo tree search (mcts) agent with language model guidance. run installandlaunch.sh to build the environment and start the demo in your browser. 1. ensure python 3.11+ is installed." title="This folder contains a prototype integration of a Monte Carlo Tree Search (MCTS) agent with language model guidance. Run installandlaunch.sh to build the environment and start the demo in your browser. 1. Ensure Python 3.11+ is installed.">
-      <img src="muzeromctsllmagent_v0/assets/preview.svg" alt="MuZero MCTS LLM Agent Demo" loading="lazy" title="MuZero MCTS LLM Agent Demo">
-      <h3>MuZero MCTS LLM Agent Demo</h3>
-      <p class='demo-desc'>This folder contains a prototype integration of a Monte Carlo Tree Search (MCTS) agent with language model guidance. Run installandlaunch.sh to build the environment and start the demo in your browser. 1. Ensure Python 3.11+ is installed.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="meta_agentic_tree_search_v0/" rel="noopener noreferrer" data-summary="meta-agentic tree search offline simulation: searches a small integer policy landscape." title="Offline simulation: Searches a small integer policy landscape.">
+      <img src="meta_agentic_tree_search_v0/assets/preview.svg" alt="Meta-Agentic tree search" loading="lazy" title="Meta-Agentic tree search">
+      <h3>Meta-Agentic tree search</h3>
+      <p class='demo-desc'>Offline simulation: Searches a small integer policy landscape.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="omni_factory_demo/" target="_blank" rel="noopener noreferrer" data-summary="omni-factory: an open-ended multi-agent simulation for smart city resilience (omni-epic + alpha-factory v1) run the full demo interactively in [google colab](colabomnifactorydemo.ipynb). to verify local prerequisites before launching the demo, run:" title="Run the full demo interactively in [Google Colab](colabomnifactorydemo.ipynb). To verify local prerequisites before launching the demo, run:">
-      <img src="omni_factory_demo/assets/preview.svg" alt="OMNI-Factory: An Open-Ended Multi-Agent Simulation for Smart City Resilience (OMNI-EPIC + Alpha-Factory v1)" loading="lazy" title="OMNI-Factory: An Open-Ended Multi-Agent Simulation for Smart City Resilience (OMNI-EPIC + Alpha-Factory v1)">
-      <h3>OMNI-Factory: An Open-Ended Multi-Agent Simulation for Smart City Resilience (OMNI-EPIC + Alpha-Factory v1)</h3>
-      <p class='demo-desc'>Run the full demo interactively in [Google Colab](colabomnifactorydemo.ipynb). To verify local prerequisites before launching the demo, run:</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="muzero_planning/" rel="noopener noreferrer" data-summary="muzero planning research planning: runs a small muzero-style planner in a gymnasium environment." title="Research planning: Runs a small MuZero-style planner in a Gymnasium environment.">
+      <img src="muzero_planning/assets/preview.svg" alt="MuZero planning" loading="lazy" title="MuZero planning">
+      <h3>MuZero planning</h3>
+      <p class='demo-desc'>Research planning: Runs a small MuZero-style planner in a Gymnasium environment.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="self_healing_repo/" target="_blank" rel="noopener noreferrer" data-summary="🔧 self‑healing repo — when ci fails, agents patch use the mode toggle in the demo to switch between the offline pyodide simulation and openai api mode. any key entered is kept in memory only. self‑healing repo demo" title="Use the mode toggle in the demo to switch between the offline Pyodide simulation and OpenAI API mode. Any key entered is kept in memory only. Self‑Healing Repo Demo">
-      <img src="self_healing_repo/assets/preview.svg" alt="🔧 Self‑Healing Repo — when CI fails, agents patch" loading="lazy" title="🔧 **Self‑Healing Repo** — when CI fails, agents patch">
-      <h3>🔧 **Self‑Healing Repo** — when CI fails, agents patch</h3>
-      <p class='demo-desc'>Use the mode toggle in the demo to switch between the offline Pyodide simulation and OpenAI API mode. Any key entered is kept in memory only. Self‑Healing Repo Demo</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="muzeromctsllmagent_v0/" rel="noopener noreferrer" data-summary="muzero mcts llm concept deployment template: preserves the original combined planning and model-integration concept." title="Deployment template: Preserves the original combined planning and model-integration concept.">
+      <img src="muzeromctsllmagent_v0/assets/preview.svg" alt="MuZero MCTS LLM concept" loading="lazy" title="MuZero MCTS LLM concept">
+      <h3>MuZero MCTS LLM concept</h3>
+      <p class='demo-desc'>Deployment template: Preserves the original combined planning and model-integration concept.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="solving_agi_governance/" target="_blank" rel="noopener noreferrer" data-summary="solving α-agi governance [![open in colab]][colab-notebook] choose offline or openai api using the toggle under the chart. the demo stores your api key only for the current session. minimal conditions for stable, antifragile multi-agent order" title="Choose Offline or OpenAI API using the toggle under the chart. The demo stores your API key only for the current session. Minimal Conditions for Stable, Antifragile Multi-Agent Order">
-      <img src="solving_agi_governance/assets/preview.svg" alt="Solving α-AGI Governance [![Open In Colab]][colab-notebook]" loading="lazy" title="Solving **α-AGI Governance** [![Open In Colab]][colab-notebook]">
-      <h3>Solving **α-AGI Governance** [![Open In Colab]][colab-notebook]</h3>
-      <p class='demo-desc'>Choose Offline or OpenAI API using the toggle under the chart. The demo stores your API key only for the current session. Minimal Conditions for Stable, Antifragile Multi-Agent Order</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="omni_factory_demo/" rel="noopener noreferrer" data-summary="omni smart city offline simulation: runs bounded smart-city episodes with local accounting." title="Offline simulation: Runs bounded smart-city episodes with local accounting.">
+      <img src="omni_factory_demo/assets/preview.svg" alt="OMNI smart city" loading="lazy" title="OMNI smart city">
+      <h3>OMNI smart city</h3>
+      <p class='demo-desc'>Offline simulation: Runs bounded smart-city episodes with local accounting.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="sovereign_agentic_agialpha_agent_v0/" target="_blank" rel="noopener noreferrer" data-summary="sovereign agentic agi alpha agent demo a minimal showcase of a self-directed agent with token-gated access. run ./deploysovereignagenticagialphaagentv0.sh to build and launch the containerized environment." title="A minimal showcase of a self-directed agent with token-gated access. Run ./deploysovereignagenticagialphaagentv0.sh to build and launch the containerized environment.">
-      <img src="sovereign_agentic_agialpha_agent_v0/assets/preview.svg" alt="Sovereign Agentic AGI Alpha Agent Demo" loading="lazy" title="Sovereign Agentic AGI Alpha Agent Demo">
-      <h3>Sovereign Agentic AGI Alpha Agent Demo</h3>
-      <p class='demo-desc'>A minimal showcase of a self-directed agent with token-gated access. Run ./deploysovereignagenticagialphaagentv0.sh to build and launch the containerized environment.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="demos/presentation/" rel="noopener noreferrer" data-summary="presentation assets reference: preserved slide deck and pdf for the original demo vision." title="Reference: Preserved slide deck and PDF for the original demo vision.">
+      <img src="presentation/assets/preview.svg" alt="Presentation assets" loading="lazy" title="Presentation assets">
+      <h3>Presentation assets</h3>
+      <p class='demo-desc'>Reference: Preserved slide deck and PDF for the original demo vision.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-    <a class="demo-card" href="utils/" target="_blank" rel="noopener noreferrer" data-summary="demo utilities this directory holds helper utilities shared across demos, such as disclaimer.py which exposes the standard project disclaimer." title="This directory holds helper utilities shared across demos, such as disclaimer.py which exposes the standard project disclaimer.">
-      <img src="utils/assets/preview.svg" alt="Demo Utilities" loading="lazy" title="Demo Utilities">
-      <h3>Demo Utilities</h3>
-      <p class='demo-desc'>This directory holds helper utilities shared across demos, such as disclaimer.py which exposes the standard project disclaimer.</p>
-      <button class='launch' type='button'>Launch Demo</button>
+    <a class="demo-card" href="self_healing_repo/" rel="noopener noreferrer" data-summary="repo-healer bounded repair: provides repository-specific triage and isolated repair evaluation." title="Bounded repair: Provides repository-specific triage and isolated repair evaluation.">
+      <img src="self_healing_repo/assets/preview.svg" alt="Repo-Healer" loading="lazy" title="Repo-Healer">
+      <h3>Repo-Healer</h3>
+      <p class='demo-desc'>Bounded repair: Provides repository-specific triage and isolated repair evaluation.</p>
+      <span class='launch'>Open demo and guide</span>
     </a>
-  </div>
-  <p class="snippet"><a href="DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a></p>
-  <script>
-    const input = document.getElementById('search-input');
-    const cards = document.querySelectorAll('.demo-card');
-    input.addEventListener('input', () => {
-      const term = input.value.toLowerCase();
-      cards.forEach(c => {
-        const text = c.querySelector('h3').textContent.toLowerCase() + ' ' + (c.dataset.summary || '');
-        c.style.display = text.includes(term) ? 'block' : 'none';
-      });
-    });
-  </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(() => console.warn('Service worker registration failed'));
-    }
-  </script>
-</body>
+    <a class="demo-card" href="solving_agi_governance/" rel="noopener noreferrer" data-summary="governance simulation offline simulation: runs a bounded stochastic cooperation model." title="Offline simulation: Runs a bounded stochastic cooperation model.">
+      <img src="solving_agi_governance/assets/preview.svg" alt="Governance simulation" loading="lazy" title="Governance simulation">
+      <h3>Governance simulation</h3>
+      <p class='demo-desc'>Offline simulation: Runs a bounded stochastic cooperation model.</p>
+      <span class='launch'>Open demo and guide</span>
+    </a>
+    <a class="demo-card" href="sovereign_agentic_agialpha_agent_v0/" rel="noopener noreferrer" data-summary="sovereign agent concept deployment template: preserves the original wallet-gated agent deployment concept." title="Deployment template: Preserves the original wallet-gated agent deployment concept.">
+      <img src="sovereign_agentic_agialpha_agent_v0/assets/preview.svg" alt="Sovereign agent concept" loading="lazy" title="Sovereign agent concept">
+      <h3>Sovereign agent concept</h3>
+      <p class='demo-desc'>Deployment template: Preserves the original wallet-gated agent deployment concept.</p>
+      <span class='launch'>Open demo and guide</span>
+    </a>
+    <a class="demo-card" href="utils/" rel="noopener noreferrer" data-summary="shared demo utilities library: shared notices and isolated demo code evaluation helpers." title="Library: Shared notices and isolated demo code evaluation helpers.">
+      <img src="utils/assets/preview.svg" alt="Shared demo utilities" loading="lazy" title="Shared demo utilities">
+      <h3>Shared demo utilities</h3>
+      <p class='demo-desc'>Library: Shared notices and isolated demo code evaluation helpers.</p>
+      <span class='launch'>Open demo and guide</span>
+    </a>
+</div>
+            </section>
+            <section class="wrap operate" id="operate">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">04 / TAKE THE NEXT STEP</p>
+                        <h2>Make it your agent.</h2>
+                    </div>
+                    <p>
+                        Keep browser exploration light.<br />Move reviewed work
+                        to a persistent, controlled runtime.
+                    </p>
+                </div>
+                <div class="operator-grid">
+                    <article>
+                        <span class="card-number">01</span>
+                        <h3>Install the verified release</h3>
+                        <p>
+                            Download the wheel, installer, locked dependencies
+                            and checksums from the same release. Python
+                            3.11–3.13 is supported.
+                        </p>
+                        <a
+                            class="button primary"
+                            href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest"
+                            >Get the release ↗</a
+                        >
+                    </article>
+                    <article>
+                        <span class="card-number">02</span>
+                        <h3>Open your local console</h3>
+                        <label for="platform">Your operating system</label
+                        ><select id="platform">
+                            <option value="unix">macOS / Linux</option>
+                            <option value="windows">Windows PowerShell</option>
+                        </select>
+                        <pre id="install-commands" tabindex="0"></pre>
+                        <button id="copy-install" class="text-button">
+                            Copy commands
+                        </button>
+                        <p id="copy-status" role="status"></p>
+                        <a href="agent/OPERATIONS/"
+                            >Step-by-step installation &amp; recovery ↗</a
+                        >
+                    </article>
+                    <article>
+                        <span class="card-number">03</span>
+                        <h3>Close the loop with confidence</h3>
+                        <p>
+                            Import your downloaded mission in the console.
+                            Execute it, inspect evidence and approve a signed
+                            result. Configure models, isolated coding and wallet
+                            identity deliberately.
+                        </p>
+                        <p>
+                            $AGIALPHA receipts connect approved work to recorded
+                            value. The agent checks payments and records
+                            reinvestment earmarks. Spending stays under your
+                            control.
+                        </p>
+                        <a href="agent/OPERATIONS/#wallet-and-agialpha-receipts"
+                            >Identity &amp; payment setup ↗</a
+                        >
+                    </article>
+                </div>
+            </section>
+            <section class="wrap signed-result" aria-labelledby="signed-title">
+                <details>
+                    <summary id="signed-title">
+                        Verify a signed result from your agent
+                    </summary>
+                    <p>
+                        Check an exported agent result here, without uploading
+                        it. Obtain the agent’s public key through a trusted
+                        channel; copying a key from an unknown file does not
+                        establish identity.
+                    </p>
+                    <div class="fields-row">
+                        <label
+                            >Agent export JSON<input
+                                id="signed-file"
+                                type="file"
+                                accept=".json,application/json" /></label
+                        ><label
+                            >Trusted agent public key<input
+                                id="trusted-key"
+                                maxlength="64"
+                                spellcheck="false"
+                                placeholder="64 lowercase hexadecimal characters"
+                        /></label>
+                    </div>
+                    <button id="verify-signed" class="button primary">
+                        Verify signature &amp; result
+                    </button>
+                    <p id="signed-status" role="status">
+                        Supports v1.4.0 exports. Verification does not establish
+                        the truth of sources or mainnet settlement.
+                    </p>
+                    <pre id="signed-output" tabindex="0" hidden></pre>
+                </details>
+            </section>
+            <section class="wrap vision" id="vision">
+                <div>
+                    <p class="eyebrow">THE ORIGINAL VISION, KEPT IN VIEW</p>
+                    <h2>Ambitious by design.<br />Accountable in use.</h2>
+                    <p>
+                        Identify → Learn → Think → Design → Strategise →
+                        Execute. The flywheel connects evidence, useful work,
+                        human review and memory. The original diagrams,
+                        research, examples and historical implementations remain
+                        available.
+                    </p>
+                    <p>
+                        This release provides bounded tools toward that vision.
+                        AGI, autonomous profit and open-ended self-improvement
+                        remain aspirations, not demonstrated capabilities.
+                    </p>
+                    <a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0#readme"
+                        >Read the original vision &amp; flywheels ↗</a
+                    >
+                </div>
+                <div class="evidence-card">
+                    <h3>Know what you are running.</h3>
+                    <a href="agent/CAPABILITIES/"
+                        >Capability &amp; boundary matrix <span>↗</span></a
+                    ><a href="agent/DEMO_VALIDATION/"
+                        >Demo and browser test evidence <span>↗</span></a
+                    ><a href="agent/VALIDATION/"
+                        >Agent acceptance evidence <span>↗</span></a
+                    ><a href="agent/PAGES_GUIDE/"
+                        >Workspace guide, privacy &amp; recovery
+                        <span>↗</span></a
+                    ><a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml"
+                        >Live acceptance checks <span>↗</span></a
+                    >
+                    <p class="token-label">
+                        CANONICAL $AGIALPHA · ETHEREUM · 18 DECIMALS
+                    </p>
+                    <code class="token-address"
+                        >0xa61a3b3a130a9c20768eebf97e21515a6046a1fa</code
+                    >
+                    <p class="helper">
+                        This is the $AGIALPHA project, separate from AGI Jobs.
+                    </p>
+                </div>
+            </section>
+        </main>
+        <footer class="wrap">
+            <a class="brand" href="#home"
+                ><span class="mark">α</span> AGIALPHA</a
+            >
+            <p>Open research. Useful work. Human control.</p>
+            <nav aria-label="Footer">
+                <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0"
+                    >GitHub ↗</a
+                ><a href="demos/TERMS_AND_CONDITIONS/">Terms</a
+                ><a href="DISCLAIMER_SNIPPET/"
+                    >See docs/DISCLAIMER_SNIPPET.md</a
+                >
+            </nav>
+            <small>v1.4.0 · Apache-2.0 · Montréal</small>
+        </footer>
+        <noscript
+            ><p class="wrap">
+                Enable JavaScript for interactive missions. All demo guides,
+                release downloads and the operator manual remain available
+                through the links above.
+            </p></noscript
+        >
+        <script type="module" src="assets/portal/portal.mjs"></script>
+    </body>
 </html>

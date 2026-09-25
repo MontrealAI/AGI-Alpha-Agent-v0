@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "release": "1.4.0",
+  "entries": [
+    {
+      "id": "aiga_meta_evolution",
+      "title": "AI-GA meta-evolution",
+      "mode": "Research training",
+      "summary": "Evolves small networks in a curriculum environment.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.aiga_meta_evolution.meta_evolver",
+        "--gens",
+        "1"
+      ],
+      "expected": "Champion genome and generation history; missing torch is explicitly reported as a stub.",
+      "prerequisites": "numpy, torch, gymnasium and pandas for actual training.",
+      "limitations": "Small research environment; optional bridge adapters are not proof of open-ended intelligence.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_business_2_v1",
+      "title": "Business v2",
+      "mode": "Local service",
+      "summary": "Runs planning, research and optional commentary agents in the legacy orchestrator.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_business_2_v1.alpha_agi_business_2_v1"
+      ],
+      "expected": "Long-running orchestrator; stop with Ctrl+C. Configure its API_TOKEN and NEO4J_PASSWORD first.",
+      "prerequisites": "Repository dependencies and legacy orchestrator configuration; see the local README.",
+      "limitations": "Planning/research messages are fixtures. The compatibility SDK is not a live market-data integration.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_business_3_v1",
+      "title": "Business v3",
+      "mode": "Simulation",
+      "summary": "Runs a bounded multi-agent business cycle with local fallback results.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_business_3_v1",
+        "--cycles",
+        "1"
+      ],
+      "expected": "One completed business cycle and its audit output.",
+      "prerequisites": "Repository demo dependencies; optional model/ADK services must be configured separately.",
+      "limitations": "The local fallback is simulated; no fundraising or real-world execution is established.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_business_v1",
+      "title": "Business v1",
+      "mode": "Offline sample",
+      "summary": "Ranks bundled business opportunities; service agents publish illustrative business events.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_business_v1.examples.find_best_alpha"
+      ],
+      "expected": "Best alpha opportunity and its sample score.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "No company incorporation, registration, funding or actual trade is performed.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_insight_v0",
+      "title": "Insight v0",
+      "mode": "Offline simulation",
+      "summary": "Searches a toy sector-scoring landscape.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_insight_v0",
+        "--offline",
+        "--episodes",
+        "3",
+        "--seed",
+        "42"
+      ],
+      "expected": "Three episodes, best sector and a ranked table.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Scores are simulated, not forecasts or calibrated investment probabilities.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_insight_v1",
+      "title": "Insight v1",
+      "mode": "Browser + simulation",
+      "summary": "Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_insight_v1",
+        "simulate",
+        "--offline",
+        "--horizon",
+        "1",
+        "--sectors",
+        "2",
+        "--pop-size",
+        "2",
+        "--generations",
+        "1",
+        "--export",
+        "json"
+      ],
+      "expected": "JSON scenario results. Browser mode also offers replay, local model and operator controls.",
+      "prerequisites": "Core dependencies for CLI; modern browser for the published interactive page.",
+      "limitations": "Simulated scenarios are not validated future predictions. GPT-2 is a small completion model.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "alpha_agi_marketplace_v1",
+      "title": "Marketplace",
+      "mode": "Local API client",
+      "summary": "Validates a bundled job and can submit it to a configured legacy orchestrator.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace",
+        "--dry-run"
+      ],
+      "expected": "A dry-run JSON job; remove --dry-run only after starting the documented local API.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "This is an API client and job fixture, not a deployed exchange or token settlement service.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "alpha_asi_world_model",
+      "title": "ASI world model",
+      "mode": "Research training",
+      "summary": "Explores generated grid worlds using a small learner and local API.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo",
+        "--demo",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "7860"
+      ],
+      "expected": "Local web service on port 7860; stop with Ctrl+C.",
+      "prerequisites": "torch, numpy, FastAPI and the demo requirements; CPU training can be slow.",
+      "limitations": "Grid-world research only; ASI and generalization beyond the tested environments are not established.",
+      "smoke": false,
+      "environment": {
+        "NO_LLM": "1",
+        "ALPHA_ASI_MAX_STEPS": "100"
+      }
+    },
+    {
+      "id": "alpha_super_planner_v1",
+      "title": "Super Planner",
+      "mode": "Interface illustration",
+      "summary": "Shows the stages and progress display of a planning interface.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.alpha_super_planner_v1"
+      ],
+      "expected": "Five progress stages and Plan Complete.",
+      "prerequisites": "Python and rich.",
+      "limitations": "The displayed stages are scripted; this demo does not compute a plan.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "cross_industry_alpha_factory",
+      "title": "Cross-industry discovery",
+      "mode": "Offline sample",
+      "summary": "Selects reproducible examples from the bundled opportunity catalog.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.cross_industry_alpha_factory.cross_alpha_discovery_stub",
+        "--num",
+        "2",
+        "--seed",
+        "42",
+        "--no-log"
+      ],
+      "expected": "Two JSON sample opportunities; no ledger written.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Examples are canned; optional external generation is separate from verified discovery.",
+      "smoke": true,
+      "environment": {
+        "OPENAI_API_KEY": ""
+      }
+    },
+    {
+      "id": "era_of_experience",
+      "title": "Era of Experience",
+      "mode": "Offline sample",
+      "summary": "Extracts simple signals from bundled historical CSV samples.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.era_of_experience.alpha_report"
+      ],
+      "expected": "Yield-curve and supply-chain sample signals with a heuristic selection.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Static historical samples, not current market data or recommendations.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "finance_alpha",
+      "title": "Finance Alpha",
+      "mode": "Deployment example",
+      "summary": "Provides paper-market agent and legacy service integration examples.",
+      "command": [],
+      "expected": "Use the browser sample or follow the Docker guide for the legacy service.",
+      "prerequisites": "Docker, curl, jq and access to the documented container image for the legacy launcher.",
+      "limitations": "The gallery uses sample traces. Live exchange connectivity and real P&L are not certified by the demo tests.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "gpt2_small_cli",
+      "title": "GPT-2 CLI",
+      "mode": "Local model",
+      "summary": "Generates text with the actual GPT-2 124M model.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.gpt2_small_cli",
+        "--prompt",
+        "The_future_of_AI",
+        "--max-length",
+        "30"
+      ],
+      "expected": "Generated text after the model has loaded.",
+      "prerequisites": "torch, transformers and roughly 550 MB model storage; first download requires network. Use --model-path PATH --offline with cached weights.",
+      "limitations": "CPU latency varies; this is a completion model, not an instruction-following assistant.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "macro_sentinel",
+      "title": "Macro Sentinel",
+      "mode": "Offline simulation",
+      "summary": "Computes Monte Carlo risk metrics from bundled macro samples.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.macro_sentinel",
+        "--paths",
+        "500",
+        "--horizon",
+        "5",
+        "--seed",
+        "42"
+      ],
+      "expected": "JSON sample size and lower-tail VaR/CVaR.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Historical sample inputs and illustrative assumptions; no orders or hedge transactions.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "meta_agentic_agi",
+      "title": "Meta-Agentic v1",
+      "mode": "Synthetic evaluation",
+      "summary": "Runs provider-driven code proposals, synthetic fitness and SQLite lineage.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.meta_agentic_agi.meta_agentic_agi_demo",
+        "--gens",
+        "3",
+        "--provider",
+        "mock:echo"
+      ],
+      "expected": "Three generations saved to lineage.sqlite; repeat runs append safely.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "The mock provider and pseudo-accuracy are explicitly synthetic, not measured task performance.",
+      "smoke": true,
+      "environment": {
+        "METAAGI_DB": "{output}/lineage.sqlite"
+      }
+    },
+    {
+      "id": "meta_agentic_agi_v2",
+      "title": "Meta-Agentic v2",
+      "mode": "Synthetic evaluation",
+      "summary": "Runs provider-driven code proposals, synthetic fitness and SQLite lineage.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.meta_agentic_agi_v2.meta_agentic_agi_demo_v2",
+        "--gens",
+        "3",
+        "--provider",
+        "mock:echo"
+      ],
+      "expected": "Three generations saved to lineage.sqlite; repeat runs append safely.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "The mock provider and pseudo-accuracy are explicitly synthetic, not measured task performance.",
+      "smoke": true,
+      "environment": {
+        "METAAGI_DB": "{output}/lineage.sqlite"
+      }
+    },
+    {
+      "id": "meta_agentic_agi_v3",
+      "title": "Meta-Agentic v3",
+      "mode": "Identity curriculum",
+      "summary": "Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3",
+        "--provider",
+        "stub",
+        "--gens",
+        "2",
+        "--pop_size",
+        "2",
+        "--db",
+        "{output}/lineage.sqlite"
+      ],
+      "expected": "Two scored identity generations and a lineage database.",
+      "prerequisites": "Core Python dependencies for the fixture; Docker is required to evaluate any generated program.",
+      "limitations": "The offline fixture is not AZR model training. Cloud providers are explicit and can incur cost.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "meta_agentic_tree_search_v0",
+      "title": "Meta-Agentic tree search",
+      "mode": "Offline simulation",
+      "summary": "Searches a small integer policy landscape.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo",
+        "--episodes",
+        "3",
+        "--seed",
+        "42"
+      ],
+      "expected": "Three logged search episodes and the best candidate.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Toy reward landscape; optional model rewriters do not establish trading alpha.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "muzero_planning",
+      "title": "MuZero planning",
+      "mode": "Research planning",
+      "summary": "Runs a small MuZero-style planner in a Gymnasium environment.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.muzero_planning",
+        "--episodes",
+        "3",
+        "--port",
+        "7861"
+      ],
+      "expected": "Local dashboard on port 7861; stop with Ctrl+C.",
+      "prerequisites": "torch, gymnasium[classic-control], Gradio and the demo requirements.",
+      "limitations": "Small randomly initialized model unless trained; solving CartPole is not guaranteed.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "muzeromctsllmagent_v0",
+      "title": "MuZero MCTS LLM concept",
+      "mode": "Deployment template",
+      "summary": "Preserves the original combined planning and model-integration concept.",
+      "command": [],
+      "expected": "Open the browser illustration. Read the source before using the preserved installer.",
+      "prerequisites": "The original installer requires obsolete optional packages and is not a validated install path.",
+      "limitations": "Use muzero_planning for maintained planning and the Agent operator for supported model/identity controls; original assets remain.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "omni_factory_demo",
+      "title": "OMNI smart city",
+      "mode": "Offline simulation",
+      "summary": "Runs bounded smart-city episodes with local accounting.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.omni_factory_demo",
+        "--max-episodes",
+        "2",
+        "--dry-run"
+      ],
+      "expected": "Two episode outcomes; no token issuance. Simulation failure is reported as a nonzero exit.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "Simplified numeric city model, not a Unity digital twin. Local ledger entries are not on-chain AGIALPHA.",
+      "smoke": true,
+      "environment": {
+        "OMNI_LEDGER_PATH": "{output}/omni.sqlite",
+        "OMNI_MAX_SIM_MINUTES": "5",
+        "OPENAI_API_KEY": "",
+        "NEO4J_PASSWORD": "demo-local-only"
+      }
+    },
+    {
+      "id": "presentation",
+      "title": "Presentation assets",
+      "mode": "Reference",
+      "summary": "Preserved slide deck and PDF for the original demo vision.",
+      "command": [],
+      "expected": "Open the PDF or PPTX linked in this directory.",
+      "prerequisites": "A PDF or PowerPoint viewer.",
+      "limitations": "Slides describe the original vision; use this catalog for tested behavior.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "self_healing_repo",
+      "title": "Repo-Healer",
+      "mode": "Bounded repair",
+      "summary": "Provides repository-specific triage and isolated repair evaluation.",
+      "command": [],
+      "expected": "Follow the README benchmark commands. Review proposed repairs before applying them.",
+      "prerequisites": "Repository development dependencies and Docker for sandbox execution.",
+      "limitations": "Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "solving_agi_governance",
+      "title": "Governance simulation",
+      "mode": "Offline simulation",
+      "summary": "Runs a bounded stochastic cooperation model.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.solving_agi_governance.governance_sim",
+        "--agents",
+        "10",
+        "--rounds",
+        "5",
+        "--seed",
+        "42"
+      ],
+      "expected": "Mean cooperation for the selected seed and assumptions.",
+      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "limitations": "A simulation is not a proof of unique equilibrium, a security audit or an on-chain deployment.",
+      "smoke": true,
+      "environment": {}
+    },
+    {
+      "id": "sovereign_agentic_agialpha_agent_v0",
+      "title": "Sovereign agent concept",
+      "mode": "Deployment template",
+      "summary": "Preserves the original wallet-gated agent deployment concept.",
+      "command": [],
+      "expected": "Use the maintained alpha-agent operator guide for current identity, local model and AGIALPHA receipt controls.",
+      "prerequisites": "Legacy Solana/Phantom scripts remain for historical reference; they are not the canonical Ethereum AGIALPHA integration.",
+      "limitations": "Do not treat the old wallet UI or balance lookup as authenticated ownership. The current operator requires signed control and verified receipts.",
+      "smoke": false,
+      "environment": {}
+    },
+    {
+      "id": "utils",
+      "title": "Shared demo utilities",
+      "mode": "Library",
+      "summary": "Shared notices and isolated demo code evaluation helpers.",
+      "command": [],
+      "expected": "Import utilities as documented; this is not an independent agent.",
+      "prerequisites": "Python 3.11–3.13.",
+      "limitations": "Supporting code, not a runnable business demo.",
+      "smoke": false,
+      "environment": {}
+    }
+  ]
+}

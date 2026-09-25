@@ -5,7 +5,7 @@ import pytest
 
 requests_mock = pytest.importorskip("requests_mock")
 
-import scripts.download_hf_gpt2 as dg
+from alpha_factory_v1.demos.gpt2_small_cli import model_download as dg
 
 
 def test_base_url_env(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -1,9 +1,34 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline simulation. Runs bounded smart-city episodes with local accounting.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run omni_factory_demo
+```
+
+**Expected result:** Two episode outcomes; no token issuance. Simulation failure is reported as a nonzero exit.
+
+**Scope:** Simplified numeric city model, not a Unity digital twin. Local ledger entries are not on-chain AGIALPHA.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
 # OMNI-Factory: An Open-Ended Multi-Agent Simulation for Smart City Resilience (OMNI-EPIC + Alpha-Factory v1)
+
 [![Colab](https://img.shields.io/badge/Try-on-Colab-yellow?logo=googlecolab)](colab_omni_factory_demo.ipynb)
 Run the full demo interactively in [Google Colab](colab_omni_factory_demo.ipynb).
 

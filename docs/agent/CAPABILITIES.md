@@ -17,7 +17,7 @@ The design document explicitly calls its forecast a toy model and its architectu
 The implementation historically mixed real algorithms and integrations with synthetic fitness, no-op
 SDK compatibility classes, random market fixtures and ambitious future claims.
 
-Version 1.3.0 connects a usable bounded agent around the original roles and algorithms. The supported
+Version 1.4.0 connects a usable bounded agent around the original roles and algorithms. The supported
 entry point is `alpha-agent` (also `alpha-factory mission`). Its state, policy, identity, evidence,
 operator review, memory and payment receipts share one signed persistent journal. Existing launchers,
 interfaces, experiments, assets and documentation remain available.
@@ -76,3 +76,22 @@ This completes the browser model integration, not the research aspiration of gen
 AIGA's direct-file service launcher is covered by a required health/startup/shutdown test. Its provider
 fallback uses a local HTTP fixture in that test; real-model acceptance is reported separately for the
 supported operator runtime and the browser ONNX baseline.
+
+
+## Browser workspace and complete demo catalog (1.4.0)
+
+The GitHub Pages home now supports four actual bounded workflows with editable inputs, worker
+cancellation, disclosed methods, independent constraint/citation checks, human review, portable reports
+and optional device-local memory. Native mission JSON imports into the installed agent. The page also
+verifies current Ed25519 exports against an independently supplied key using original canonical bytes,
+including float results and large nanosecond timestamps. It does not claim to verify current chain state.
+
+Actual local GPT-2 ONNX generation runs in a separate worker and survives an offline reload after
+installation. It is an exploratory text-completion model; it does not power the four algorithmic workflows.
+The original Insight presentation, its three Plotly charts, tree and logs remain accessible alongside the
+modern Insight studio. A complete, pinned same-origin Pyodide runtime powers explicit Python examples.
+
+All 26 demo directories have current guides and one shared launch catalog. Fourteen finite offline launch
+contracts, actual CPU AIGA/MuZero, three Streamlit lineage interfaces, offline native GPT-2, 42 shared
+browser replay pages and the distinct preserved Insight presentation receive dedicated acceptance checks.
+Read [demo evidence and scope](DEMO_VALIDATION.md) before treating any simulation as an integration.

@@ -1,117 +1,161 @@
 /* Basic reset and typography */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-  color: #333;
-  background: #fdfdfd;
-  line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    color: #333;
+    background: #fdfdfd;
+    line-height: 1.6;
 }
 header {
-  background: #f5f5f5;
-  padding: 2rem 1rem 1.5rem;
-  text-align: center;
-  border-bottom: 2px solid #e0e0e0;
+    background: #f5f5f5;
+    padding: 2rem 1rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
 }
 header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 600;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
 }
 header .eye {
-  display: inline-block;
-  position: relative;
-  top: 0.1em;
+    display: inline-block;
+    position: relative;
+    top: 0.1em;
 }
 header .tagline {
-  margin: 0.5rem auto 0;
-  max-width: 800px;
-  font-size: 1rem;
-  color: #555;
+    margin: 0.5rem auto 0;
+    max-width: 800px;
+    font-size: 1rem;
+    color: #555;
 }
 main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
 }
 section {
-  margin: 2.5rem 0;
+    margin: 2.5rem 0;
 }
 section h2 {
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem;
-  color: #222;
-  border-left: 4px solid #4a90e2;
-  padding-left: 0.5rem;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+    color: #222;
+    border-left: 4px solid #4a90e2;
+    padding-left: 0.5rem;
 }
 section p {
-  font-size: 0.95rem;
-  margin: 0 0 1.2rem;
+    font-size: 0.95rem;
+    margin: 0 0 1.2rem;
 }
 .chart {
-  width: 100%;
-  max-width: 100%;
-  height: 420px;
-  /* The chart will resize responsively via Plotly config */
+    width: 100%;
+    max-width: 100%;
+    height: 420px;
+    /* The chart will resize responsively via Plotly config */
 }
 #pareto-chart {
-  height: 450px; /* slightly taller for clarity */
+    height: 450px; /* slightly taller for clarity */
 }
 .logs {
-  background: #111;
-  color: #eee;
-  font-family: "Courier New", Courier, monospace;
-  padding: 1rem;
-  margin-top: 0.5rem;
-  max-height: 200px;
-  overflow-y: auto;
-  border-radius: 4px;
+    background: #111;
+    color: #eee;
+    font-family: "Courier New", Courier, monospace;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 4px;
 }
 #toggle-logs {
-  background: #4a90e2;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.8rem;
-  font-size: 0.9rem;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-bottom: 0.5rem;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
 }
 #toggle-logs:hover {
-  background: #4078c0;
+    background: #4078c0;
 }
 .hidden {
-  display: none;
+    display: none;
 }
 
 /* Tree search diagram */
 #tree-container {
-  width: 100%;
-  height: 420px;
-  margin-bottom: 1rem;
+    width: 100%;
+    height: 420px;
+    margin-bottom: 1rem;
 }
 .node circle {
-  fill: #1f77b4;
-  stroke: #fff;
-  stroke-width: 1.5px;
+    fill: #1f77b4;
+    stroke: #fff;
+    stroke-width: 1.5px;
 }
 .node text {
-  font-size: 0.8rem;
-  fill: #333;
+    font-size: 0.8rem;
+    fill: #333;
 }
 .link {
-  fill: none;
-  stroke: #555;
-  stroke-width: 2px;
+    fill: none;
+    stroke: #555;
+    stroke-width: 2px;
 }
 footer {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #888;
-  padding: 1.5rem 0;
-  background: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+    padding: 1.5rem 0;
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
 }
 footer a {
-  color: inherit;
+    color: inherit;
+}
+
+.current-guide {
+    padding: 18px 24px;
+    background: #edf4e4;
+    border-bottom: 1px solid #c6d8b7;
+    font-size: 0.86rem;
+}
+.current-guide a {
+    display: inline-block;
+    margin: 5px 8px 0 0;
+}
+#legacy-status {
+    padding: 12px 24px;
+    margin: 0;
+}
+button {
+    min-height: 44px;
+}
+body {
+    overflow-wrap: anywhere;
+}
+.chart {
+    max-width: 100%;
+}
+#tree-container {
+    overflow: auto;
+}
+details {
+    margin: 20px;
+}
+td,
+th {
+    padding: 7px;
+    text-align: left;
+}
+pre {
+    white-space: pre-wrap;
+}
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }

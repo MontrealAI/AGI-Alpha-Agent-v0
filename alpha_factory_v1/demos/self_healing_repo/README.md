@@ -1,6 +1,31 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Bounded repair. Provides repository-specific triage and isolated repair evaluation.
+
+**Prerequisites:** Repository development dependencies and Docker for sandbox execution.
+
+From the repository root after [installation](../README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos show self_healing_repo
+```
+
+**Expected result:** Follow the README benchmark commands. Review proposed repairs before applying them.
+
+**Scope:** Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.
+
+The [catalog](../README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+
 # Self-Healing Repo / Repo-Healer v1
+
 
 Repo-Healer v1 is a **bounded CI repair capability for this repository** (`AGI-Alpha-Agent-v0`).
 The legacy UI demo and `sample_broken_calc` fixture still exist, but they are no longer the production repair path.

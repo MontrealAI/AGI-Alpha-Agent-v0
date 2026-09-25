@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
+import zipfile
 
 import pytest
 
-from scripts import publish_agent_release
+from scripts import finalize_pages_release, publish_agent_release
 
 
 @pytest.mark.parametrize("version", ["1.2.0", "1.2.1"])
@@ -57,3 +59,41 @@ def test_invalid_package_version_cannot_publish(
     monkeypatch.setattr(publish_agent_release.subprocess, "run", no_github_access)
     with pytest.raises(ValueError, match="package version differs"):
         publish_agent_release.main()
+
+
+@pytest.mark.parametrize("problem", [None, "commit", "asset"])
+def test_public_evidence_requires_same_commit_and_intact_package(tmp_path: Path, problem: str | None) -> None:
+    folder = tmp_path / "release"
+    evidence = tmp_path / "evidence"
+    folder.mkdir()
+    (evidence / "public-pages").mkdir(parents=True)
+    manifest = {"version": "1.4.0", "commit": "a" * 40, "release_gates": []}
+    (folder / "release-manifest.json").write_text(json.dumps(manifest))
+    archive_path = folder / "alpha-agent-v1.4.0-validation.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        archive.writestr("existing.txt", "existing evidence")
+    (folder / "source.zip").write_bytes(b"immutable source fixture")
+    checksums = [f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}" for p in sorted(folder.iterdir())]
+    (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n")
+    url = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+    public = {**manifest, "url": url}
+    if problem == "commit":
+        public["commit"] = "b" * 40
+    if problem == "asset":
+        (folder / "source.zip").write_bytes(b"corrupted source fixture")
+    (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
+    (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
+    before = {p.name: p.read_bytes() for p in folder.iterdir()}
+    if problem:
+        with pytest.raises(ValueError):
+            finalize_pages_release.finalize(folder, evidence)
+        assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
+        return
+    finalize_pages_release.finalize(folder, evidence)
+    assert (folder / "source.zip").read_bytes() == before["source.zip"]
+    with zipfile.ZipFile(archive_path) as archive:
+        assert archive.read("existing.txt") == b"existing evidence"
+        assert json.loads(archive.read("public-pages/release.json"))["commit"] == manifest["commit"]
+    for line in (folder / "SHA256SUMS").read_text().splitlines():
+        digest, name = line.split("  ", 1)
+        assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest

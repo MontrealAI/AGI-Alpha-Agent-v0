@@ -6,18 +6,42 @@
 
 [Launch Demo](../meta_agentic_tree_search_v0/index.html){.md-button}
 
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Offline simulation. Searches a small integer policy landscape.
+
+**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run meta_agentic_tree_search_v0
+```
+
+**Expected result:** Three logged search episodes and the best candidate.
+
+**Scope:** Toy reward landscape; optional model rewriters do not establish trading alpha.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
-# Meta‑Agentic Tree Search (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/MATS) Demo — v0
+
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/colab_meta_agentic_tree_search.ipynb)
 
-**Abstract:** We pioneer **Meta-Agentic Tree Search (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/MATS)**, a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through **recursive agent-to-agent interactions**. In this **second-order agentic** scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook.
+**Abstract:** We pioneer **Meta-Agentic Tree Search (MATS)**, a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through **recursive agent-to-agent interactions**. In this **second-order agentic** scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook.
 
 > **Status:** Experimental · Proof‑of‑Concept · Alpha  
 > **Location:** `alpha_factory_v1/demos/meta_agentic_tree_search_v0`  
-> **Goal:** Showcase how recursive agent‑to‑agent rewrites — navigated with a best‑first tree policy — can rapidly surface high‑value trading policies that exploit AGI‑driven discontinuities (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/“AGI Alpha”).
+> **Goal:** Showcase how recursive agent‑to‑agent rewrites — navigated with a best‑first tree policy — can rapidly surface high‑value trading policies that exploit AGI‑driven discontinuities (“AGI Alpha”).
 
 ## 1 Why this demo exists
 Financial edges sourced from AGI inflection points decay in hours or days. Classical research pipelines are too slow.  
@@ -35,38 +59,38 @@ root population
 Each edge = “one agent improves another”; backpropagation = “which rewrite path maximises risk‑adjusted α”.
 
 ## 3 Formal definition
-*(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/verbatim from specification for precision)*  
+*(verbatim from specification for precision)*  
 
-> **Meta‑Agentic Tree Search (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/MATS)**  
+> **Meta‑Agentic Tree Search (MATS)**  
 > Let **E** be a partially‑observable, stochastic environment parameterised by state vector *s* and reward function *R*.  
-> Let **𝒜₀** = {a₁,…,aₙ} be a population of base agents, each with policy πᵢ(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/·|θᵢ).  
-> **Meta‑agents** are higher-order policies **Π : (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/𝒜₀, 𝒮, 𝒭) → 𝒜₀′** that rewrite or re‑parameterise base agents to maximise a meta‑objective **J**.  
-> A search node **v** is the tuple (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/𝒜ₖ, Σₖ) where 𝒜ₖ is the current agent pool after *k* rewrites and Σₖ their cumulative performance statistics.  
-> The tree policy **T** selects the next node via a best‑first acquisition criterion (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/e.g. UCB over expected α).  
+> Let **𝒜₀** = {a₁,…,aₙ} be a population of base agents, each with policy πᵢ(·|θᵢ).  
+> **Meta‑agents** are higher-order policies **Π : (𝒜₀, 𝒮, 𝒭) → 𝒜₀′** that rewrite or re‑parameterise base agents to maximise a meta‑objective **J**.  
+> A search node **v** is the tuple (𝒜ₖ, Σₖ) where 𝒜ₖ is the current agent pool after *k* rewrites and Σₖ their cumulative performance statistics.  
+> The tree policy **T** selects the next node via a best‑first acquisition criterion (e.g. UCB over expected α).  
 > Terminal nodes are reached when Δα < ε or depth ≥ d\*.  
-> **Output**: argmax₍ᵥ∈𝒱_leaf₎ J(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/v).
+> **Output**: argmax₍ᵥ∈𝒱_leaf₎ J(v).
 
-## 4 Minimal algorithm (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/reference implementation)
+## 4 Minimal algorithm (reference implementation)
 ```python
-def MATS(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/root_agents, env, horizon_days):
-    tree = Tree(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/Node(root_agents))
+def MATS(root_agents, env, horizon_days):
+    tree = Tree(Node(root_agents))
     while resources_left():
-        node = tree.select(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/best_first)                       # ← UCB / Thompson
-        improved = meta_rewrite(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/node.agents, env)           # ← gradient, evo, code‑gen
-        reward = rollouts(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/improved, env, horizon_days)      # ← risk‑adj α
-        child = Node(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/improved, reward)
-        tree.add_child(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/node, child)
-        tree.backprop(https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/child)
+        node = tree.select(best_first)                       # ← UCB / Thompson
+        improved = meta_rewrite(node.agents, env)           # ← gradient, evo, code‑gen
+        reward = rollouts(improved, env, horizon_days)      # ← risk‑adj α
+        child = Node(improved, reward)
+        tree.add_child(node, child)
+        tree.backprop(child)
     return tree.best_leaf().agents
 ```
 
 ### Design knobs
-| Component          | Options (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/demo default) |
+| Component          | Options (demo default) |
 |--------------------|------------------------|
-| `best_first`       | UCB1, TS, ε‑greedy (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/UCB1) |
-| `meta_rewrite`     | PPO fine‑tune, CMA‑ES, GPT‑4 code‑gen (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/PPO) |
-| Reward             | IRR, CumPnL/√Var, Sharpe (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/IRR) |
-| Environment        | Toy number-line env (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/default), limit‑order‑book sim, OpenAI Gym trading env |
+| `best_first`       | UCB1, TS, ε‑greedy (UCB1) |
+| `meta_rewrite`     | PPO fine‑tune, CMA‑ES, GPT‑4 code‑gen (PPO) |
+| Reward             | IRR, CumPnL/√Var, Sharpe (IRR) |
+| Environment        | Toy number-line env (default), limit‑order‑book sim, OpenAI Gym trading env |
 
 ### 4.1 · OpenAI/ADK rewrite option
 When the optional `openai-agents` and `google-adk` packages are installed the
@@ -86,7 +110,7 @@ When the optional `openai` package is also present, `openai_rewrite` uses
 `OPENAI_API_KEY` environment variable to activate this behaviour.  Without a
 key or in fully offline environments the routine simply increments the
 proposed policy elements so the rest of the demo keeps working.  You can
-override the model used by setting ``OPENAI_MODEL`` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/defaults to ``gpt-4o``).
+override the model used by setting ``OPENAI_MODEL`` (defaults to ``gpt-4o``).
 Output from the model is processed via the ``_parse_numbers`` helper which
 extracts integers from free‑form text and validates their length so the search
 loop remains stable even when the LLM response contains extra commentary. When
@@ -155,7 +179,7 @@ remains reproducible anywhere. When running offline you can still invoke
 mats-bridge --episodes 3 --target 4 --model gpt-4o
 python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0.openai_agents_bridge --episodes 3 --target 4
 ```
-Enable the optional ADK gateway with ``--enable-adk`` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/or set
+Enable the optional ADK gateway with ``--enable-adk`` (or set
 ``ALPHA_FACTORY_ENABLE_ADK=true``) to expose the agent over the A2A protocol.
 This prints a short completion summary after executing the demo loop.
 
@@ -205,10 +229,10 @@ WHEELHOUSE=/tmp/wheels pip install -r requirements.txt
 
 The repository's setup script automatically uses a `wheels/` directory
 in the project root when present, so placing your pre-built wheels there
-also works. Set `WHEELHOUSE=/tmp/wheels` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/or `$(pwd)/wheels`) before running
+also works. Set `WHEELHOUSE=/tmp/wheels` (or `$(pwd)/wheels`) before running
 `../../../check_env.py --auto-install` or `pytest` so the command installs from
 the local cache. See
-[docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/OFFLINE_SETUP.md) for a summary.
+[docs/OFFLINE_SETUP.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/OFFLINE_SETUP.md) for a summary.
 
 To regenerate the pinned lock file after editing `requirements.txt`, install
 [`pip-tools`](https://pypi.org/project/pip-tools/) and run:
@@ -229,11 +253,11 @@ command line:
 - ``MATS_REWRITER`` – set in ``.env`` to force the rewrite engine to ``random``,
   ``openai`` or ``anthropic``.
 - ``OPENAI_MODEL`` – default model used by the OpenAI rewriter and bridge
-  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/defaults to ``gpt-4o``).
+  (defaults to ``gpt-4o``).
 - ``ANTHROPIC_MODEL`` – model name for the Anthropic rewriter
-  (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/defaults to ``claude-3-opus-20240229``).
+  (defaults to ``claude-3-opus-20240229``).
 - ``MCP_ENDPOINT`` – optional URL for Model Context Protocol logging.
-- ``MCP_TIMEOUT_SEC`` – timeout in seconds for MCP requests (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/defaults to ``10``).
+- ``MCP_TIMEOUT_SEC`` – timeout in seconds for MCP requests (defaults to ``10``).
 
 Setting ``MCP_ENDPOINT`` enables prompt logging via the Model Context Protocol
 for later audit.
@@ -251,7 +275,7 @@ configured, falling back to the offline rewriter otherwise.
 
 Add ``--enable-adk`` to the command above to start the optional ADK
 gateway for remote control via the A2A protocol.
-The default environment is a simple number‑line task defined in `mats/env.py` where each agent must approach a target integer. Pass `--target 7` (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/for example) to experiment with different goals.
+The default environment is a simple number‑line task defined in `mats/env.py` where each agent must approach a target integer. Pass `--target 7` (for example) to experiment with different goals.
 Use `--seed 42` to reproduce a specific search trajectory.
 
 > **Tip:** Replay real tick data with:
@@ -260,6 +284,7 @@ Use `--seed 42` to reproduce a specific search trajectory.
 ## 6 Repository layout
 ```
 meta_agentic_tree_search_v0/
+├── README.md                ← you are here
 ├── run_demo.py              ← entry‑point wrapper
 ├── mats/                    ← core library
 │   ├── tree.py
@@ -273,7 +298,7 @@ meta_agentic_tree_search_v0/
 ## 7 Walk‑through of the demo episode
 1. Bootstrap 4 vanilla PPO agents trading a synthetic GPU‑demand proxy.  
 2. Tree search explores ~300 rewrite paths within the 30‑second budget.  
-3. Best leaf realises a 3.1 % IRR over a 10‑day horizon (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/toy setting).  
+3. Best leaf realises a 3.1 % IRR over a 10‑day horizon (toy setting).  
 4. Log files + tensorboard summaries land in `./logs/`.
 
 ## 8 Extending this prototype
@@ -290,7 +315,7 @@ market data sequence. It serves as a stub for wiring real brokerage feeds into
 the search loop while keeping the demo runnable completely offline.
 
 ## 9 Safety & governance guard‑rails
-* Sandboxed code‑gen (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/`firejail + seccomp + tmpfs`)  
+* Sandboxed code‑gen (`firejail + seccomp + tmpfs`)  
 * Hard VaR budget enforced by `RiskGovernor`  
 * CI tests for deterministic replay to detect edge drift  
 
@@ -300,7 +325,7 @@ the search loop while keeping the demo runnable completely offline.
 * **Self‑Referential Improvement in RL**, Müller et al., arXiv 2025  
 
 ## 11 License
-Apache 2.0 – see [LICENSE](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/LICENSE).
+Apache 2.0 – see `LICENSE`.
 
 ---
 *This README belongs to the AGI‑Alpha‑Agent project.*

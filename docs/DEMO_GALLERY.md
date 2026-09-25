@@ -2,6 +2,11 @@
 
 # Demo Gallery
 
+> **Current launch reference (1.3.1):** use the [complete demo catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
+> This original overview is preserved as design history. Its deployment and
+> capability claims must be read alongside each demo’s current mode and limits.
+
+
 The following table summarises each available demo. Click the folder name to view the README and follow the start command to launch locally.
 
 | # | Folder | Emoji | Lightning Pitch | Alpha Contribution | Start Locally |

@@ -11,6 +11,7 @@ compatibility.
 from __future__ import annotations
 
 import html
+import json
 import os
 import re
 import sys
@@ -128,13 +129,20 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
     else:
         link = f"demos/{md_file.stem}/"
     summary = extract_summary(lines, title)
+    catalog_path = REPO_ROOT / "alpha_factory_v1" / "demos" / "catalog.json"
+    if catalog_path.is_file():
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        entry = next((entry for entry in catalog["entries"] if entry["id"] == md_file.stem), None)
+        if entry:
+            title = entry["title"]
+            summary = entry["mode"] + ": " + entry["summary"]
     return title, preview, link, summary
 
 
 def collect_entries() -> list[tuple[str, str, str, str]]:
     entries: list[tuple[str, str, str, str]] = []
     for page in sorted(DEMOS_DIR.glob("*.md")):
-        if page.name.lower() == "readme.md":
+        if page.name.lower() in {"readme.md", "terms_and_conditions.md"}:
             continue
         entries.append(parse_page(page))
     return entries
@@ -201,11 +209,14 @@ def build_html(
 </head>
 <body>
   <h1>Alpha‑Factory Demo Gallery</h1>
-  <p class=\"subtitle\">Select a demo to explore detailed instructions and watch it unfold in real time.</p>
+  <p class=\"subtitle\">Choose a demo below. Legacy charts replay bundled samples;
+    each guide explains what runs locally.</p>
   {subdir}
     <input id=\"search-input\" class=\"search-input\" type=\"text\"
            placeholder=\"Search demos...\" aria-label=\"Search demos\">
-  <div class=\"demo-grid\">"""
+  <p id=\"result-count\" role=\"status\" aria-live=\"polite\"></p>
+  <p id=\"no-results\" hidden>No matching demos. Clear the search to see all entries.</p>
+  <main class=\"demo-grid\">"""
     subdir_html = (
         f'<p class="subtitle"><a href="{prefix}alpha_factory_v1/demos/index.html">Open Subdirectory Gallery</a></p>'
         if subdir_link
@@ -224,7 +235,7 @@ def build_html(
         title_attr = html.escape(summary or title)
         lines.append(
             '    <a class="demo-card" '
-            f'href="{html.escape(full_link)}" target="_blank" '
+            f'href="{html.escape(full_link)}" '
             'rel="noopener noreferrer" '
             f'data-summary="{summary_attr}" '
             f'title="{title_attr}">'
@@ -260,9 +271,9 @@ def build_html(
         lines.append(f"      <h3>{html.escape(title)}</h3>")
         if summary:
             lines.append(f"      <p class='demo-desc'>{html.escape(summary)}</p>")
-        lines.append("      <p class='launch'>Launch Demo</p>")
+        lines.append("      <span class='launch'>Open demo and guide</span>")
         lines.append("    </a>")
-    lines.append("  </div>")
+    lines.append("  </main>")
     if home_link:
         home_href = f"{prefix}index.html"
         lines.append(f'  <p><a href="{home_href}">\u2b05\ufe0f Back to Home</a></p>')
@@ -276,24 +287,24 @@ def build_html(
     lines.append(
         "        const text = c.querySelector('h3').textContent.toLowerCase() + ' ' + (c.dataset.summary || '');"
     )
-    lines.append("        c.style.display = text.includes(term) ? 'block' : 'none';")
+    lines.append("        c.hidden = !text.includes(term);")
     lines.append("      });")
+    lines.append("      const count = [...cards].filter(card => !card.hidden).length;")
+    lines.append("      document.getElementById('result-count').textContent = `${count} of ${cards.length} entries`;")
+    lines.append("      document.getElementById('no-results').hidden = count !== 0;")
     lines.append("    });")
+    lines.append("    input.dispatchEvent(new Event('input'));")
     lines.append("  </script>")
     lines.append("  <script>")
     lines.append("    if ('serviceWorker' in navigator) {")
     lines.append(
-        f"      navigator.serviceWorker.register('{prefix}assets/service-worker.js')"
+        f"      navigator.serviceWorker.register('{prefix}service-worker.js')"
         ".catch(() => console.warn('Service worker registration failed'));"
     )
     lines.append("    }")
     lines.append("  </script>")
     lines.append("</body>\n</html>\n")
     html_out = "\n".join(lines)
-    html_out = html_out.replace(
-        "<p class='launch'>Launch Demo</p>",
-        "<button class='launch' type='button'>Launch Demo</button>",
-    )
     return html_out
 
 
@@ -301,12 +312,17 @@ def main() -> None:
     print(DISCLAIMER, file=sys.stderr)
     entries = collect_entries()
 
-    index_html = build_html(
-        entries,
-        prefix="",
-        home_link=False,
-        subdir_link="alpha_factory_v1/demos/index.html",
-    )
+    gallery = build_html(entries, home_link=False)
+    cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
+    template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
+    version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
+    index_html = index_html.replace("{{VERSION}}", version)
+    examples = {
+        kind: json.loads((REPO_ROOT / f"examples/missions/{kind}.json").read_text())
+        for kind in ("allocation", "research", "schedule", "forecast")
+    }
+    (REPO_ROOT / "docs/assets/portal/examples.json").write_text(json.dumps(examples, indent=2) + "\n")
     INDEX_FILE.write_text(index_html, encoding="utf-8")
 
     gallery_redirect = (

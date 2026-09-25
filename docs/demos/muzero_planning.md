@@ -6,6 +6,30 @@
 
 [Launch Demo](../muzero_planning/index.html){.md-button}
 
+<!-- CURRENT-DEMO:START -->
+## Current runnable path — 1.4.0
+
+**Mode:** Research planning. Runs a small MuZero-style planner in a Gymnasium environment.
+
+**Prerequisites:** torch, gymnasium[classic-control], Gradio and the demo requirements.
+
+From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+
+```bash
+python -m alpha_factory_v1.demos run muzero_planning
+```
+
+**Expected result:** Local dashboard on port 7861; stop with Ctrl+C.
+
+**Scope:** Small randomly initialized model unless trained; solving CartPole is not guaranteed.
+
+The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
+Browser charts for legacy demos are labeled sample replays. Original research
+narratives and advanced scripts below are preserved; they do not expand the tested
+scope stated here.
+<!-- CURRENT-DEMO:END -->
+
+This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
 
 
@@ -16,7 +40,7 @@ Each demo package exposes its own `__version__` constant. The value marks the re
   © 2025 MONTREAL.AI   Apache‑2.0 License
 -->
 
-# 🌟 **Mastery Without a Rule‑Book** — watch MuZero think in real time
+
 
 > “An agent needn’t be told the rules of Go, Chess or cart‑balancing gravity;  
 > it can conjure the laws for itself and still prevail.”  
@@ -47,7 +71,7 @@ cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/muzero_planning
 
 The script prints the local URL and, when possible, automatically opens it in
 your default browser. Automatic browser opening is currently supported only
-on Linux (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/using `xdg-open`) and macOS (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/using `open`).
+on Linux (using `xdg-open`) and macOS (using `open`).
 
 Alternatively run natively:
 
@@ -83,7 +107,7 @@ python -m alpha_factory_v1.demos.muzero_planning --env MountainCar-v0 \
 ```
 
 
-1. **Docker Desktop** builds the container (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/~45 s on first run).
+1. **Docker Desktop** builds the container (~45 s on first run).
 2. **Open <http://localhost:${HOST_PORT:-7861}>** and press **“▶ Run MuZero”**.
 3. Watch the live video feed, reward ticker and optional commentary.
 
@@ -129,7 +153,7 @@ cross‑process collaboration.
 
 ---
 
-## 🎓 Colab (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/two clicks)
+## 🎓 Colab (two clicks)
 
 [![Open In Colab][colab-badge]][colab-notebook]
 
@@ -182,7 +206,7 @@ Run `pre-commit run --files alpha_factory_v1/demos/muzero_planning` before commi
 
 ## 🤝 Credits
 
-* **DeepMind** for the research masterpiece (https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/muzero_planning/2020).  
+* **DeepMind** for the research masterpiece (2020).  
 * **Montreal.AI** for distilling it into an afternoon playground.  
 * The open‑source community powering every dependency.
 
