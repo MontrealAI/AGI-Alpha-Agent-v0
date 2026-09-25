@@ -1,25 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Inspect Pages publishing configuration
+name: Configure Pages through the connected repository
 on:
   push:
     branches: [release/refresh-ci-health-1.3.0]
 permissions:
   contents: read
-  pages: read
+  pages: write
 jobs:
-  inspect:
+  configure:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Read current settings and public response
+      - name: Configure Actions publishing with the existing repository token
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+        with:
+          enablement: true
+      - name: Verify the resulting Pages configuration
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p evidence
-          gh api repos/MontrealAI/AGI-Alpha-Agent-v0/pages > evidence/pages.json || true
-          curl -sSL -D evidence/headers.txt --max-time 60 https://montrealai.github.io/AGI-Alpha-Agent-v0/ -o evidence/index.html
-          cat evidence/pages.json
-          cat evidence/headers.txt
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
-        with:
-          name: pages-current-configuration
-          path: evidence/
+        run: gh api repos/MontrealAI/AGI-Alpha-Agent-v0/pages --jq '{html_url, build_type, status, https_enforced}'
