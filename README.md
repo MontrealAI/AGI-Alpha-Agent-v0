@@ -1,5 +1,11 @@
 # $AGIALPHA Agent — release status
 
+**Version 1.7.0 adds Nova-Seeds Proof Bloom: five connected, evidence-gated experiences.**
+[Enter the foundry](https://montrealai.github.io/AGI-Alpha-Agent-v0/bloom/) to turn a claim into native jobs,
+replay returned evidence, review exact artifacts, promote a scoped capability and reuse it in the next mission.
+Explore Nova-Seeds, Sovereign Bloom, the Alpha Business Ω-Lattice, Invention Automation and Proof Debt → AGI Jobs.
+The [Proof Bloom field guide](docs/agent/PROOF_BLOOM.md) explains the proof protocol, native return path and recovery.
+
 **Version 1.6.0 adds the connected Insight Atlas and a refined GitHub Pages experience.**
 Explore the [Living Treasure Map, Second-Order Agency lab and Alpha under trial](https://montrealai.github.io/AGI-Alpha-Agent-v0/insight/):
 exact scenario allocations, inspectable architecture comparisons, native research exports and replay-verified recovery.

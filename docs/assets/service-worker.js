@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-ce0aeaa2973b5402";
+const CACHE = "agialpha-gallery-501283010ecbbc1f";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -84,6 +84,7 @@ const ASSETS = [
   "../alpha_factory_v1/demos/alpha_asi_world_model/assets/style.css",
   "../alpha_factory_v1/demos/alpha_asi_world_model/index.html",
   "../alpha_factory_v1/demos/ascension/index.html",
+  "../alpha_factory_v1/demos/bloom/index.html",
   "../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/logs.json",
   "../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/preview.svg",
   "../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/script.js",
@@ -175,6 +176,11 @@ const ASSETS = [
   "../assets/ascension/lab.mjs",
   "../assets/ascension/scenarios.json",
   "../assets/ascension/worker.mjs",
+  "../assets/bloom/bloom.css",
+  "../assets/bloom/bloom.mjs",
+  "../assets/bloom/engine.mjs",
+  "../assets/bloom/home.css",
+  "../assets/bloom/playbooks.json",
   "../assets/chart-provenance.json",
   "../assets/chart.min.js",
   "../assets/insight/atlas.css",
@@ -192,6 +198,7 @@ const ASSETS = [
   "../assets/portal/verify-export.mjs",
   "../assets/pyodide_demo.js",
   "../assets/replay_chart.js",
+  "../bloom/index.html",
   "../cross_industry_alpha_factory/assets/logs.json",
   "../cross_industry_alpha_factory/assets/preview.svg",
   "../cross_industry_alpha_factory/assets/script.js",

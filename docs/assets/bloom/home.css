@@ -1,0 +1,118 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+.bloom-feature {
+    display: grid;
+    grid-template-columns: 0.8fr 1.3fr;
+    align-items: center;
+    gap: 70px;
+    background: #10281f;
+    color: #f1eddf;
+    margin: 64px auto;
+    padding: 65px;
+    border: 1px solid #bfaa7150;
+    position: relative;
+    overflow: hidden;
+}
+.bloom-feature h2 {
+    font:
+        58px/1.06 Georgia,
+        serif;
+    letter-spacing: -2px;
+    margin: 15px 0 22px;
+}
+.bloom-feature h2 em {
+    color: #dec48c;
+}
+.bloom-feature-copy > p:not(.eyebrow) {
+    max-width: 550px;
+    color: #c6d1c0;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 26px;
+}
+.bloom-feature .eyebrow {
+    color: #ddc28b;
+    font-size: 10px;
+}
+.bloom-feature .button.primary {
+    background: #debd78;
+    color: #122d20;
+    border-color: #debd78;
+}
+.bloom-paths {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+.bloom-paths a {
+    font-size: 10px;
+    color: #d0dac7;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.bloom-emblem {
+    height: 330px;
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+.bloom-emblem span {
+    font:
+        150px Georgia,
+        serif;
+    color: #ebd7a7;
+    z-index: 1;
+    text-shadow: 0 10px 30px #0008;
+}
+.bloom-emblem i {
+    position: absolute;
+    width: 185px;
+    height: 280px;
+    border: 1px solid #d9bd77;
+    transform: rotate(0deg);
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px #d7b8720f;
+}
+.bloom-emblem i:nth-of-type(2) {
+    transform: rotate(60deg);
+}
+.bloom-emblem i:nth-of-type(3) {
+    transform: rotate(-60deg);
+}
+@media (max-width: 1000px) {
+    .bloom-feature {
+        gap: 30px;
+        padding: 42px;
+        margin: 40px 24px;
+    }
+    .bloom-feature h2 {
+        font-size: 45px;
+    }
+}
+@media (max-width: 650px) {
+    .bloom-feature {
+        grid-template-columns: 1fr;
+        padding: 30px;
+        margin: 30px 18px;
+        gap: 15px;
+    }
+    .bloom-emblem {
+        height: 180px;
+    }
+    .bloom-emblem i {
+        width: 115px;
+        height: 175px;
+    }
+    .bloom-emblem span {
+        font-size: 90px;
+    }
+    .bloom-feature h2 {
+        font-size: 39px;
+    }
+    .bloom-feature-copy > p:not(.eyebrow) {
+        font-size: 12px;
+    }
+    .bloom-paths {
+        gap: 12px;
+    }
+}

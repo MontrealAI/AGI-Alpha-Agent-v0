@@ -22,6 +22,7 @@ def finalize(folder: Path, evidence: Path) -> None:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
     ascension = None
     insight = None
+    bloom = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -57,6 +58,39 @@ def finalize(folder: Path, evidence: Path) -> None:
             or {item.get("id") for item in insight.get("scenarios", [])} != {"energy", "science", "enterprise"}
         ):
             raise ValueError("Insight Atlas must pass every required journey on the canonical public site")
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 7, 0):
+        bloom = json.loads((evidence / "public-pages" / "proof-bloom" / "proof-bloom.json").read_text(encoding="utf-8"))
+        bloom_required = {
+            "all-five-experiences",
+            "original-gallery-preserved",
+            "baseline-and-stress-computed",
+            "native-missions-executed-and-signed-returns",
+            "signature-key-and-input-binding",
+            "self-declared-verdict-rejected",
+            "tampered-and-stale-return-rejected",
+            "reviewed-failure-remains-hold",
+            "exact-benchmark-reuse-needs-fresh-probes",
+            "transitive-revocation",
+            "unchanged-recovery-roundtrip",
+            "tampered-history-rejected-atomically",
+            "jobspec-download-sha256",
+            "keyboard-focus-preserved",
+            "input-text-escaped",
+            "mirrored-page",
+            "offline-recovery-and-execution",
+            "mobile-no-overflow",
+            "axe-wcag-a-aa-no-violations",
+        }
+        if (
+            bloom.get("schema") != "agialpha.bloom.acceptance.v1"
+            or bloom.get("passed") is not True
+            or bloom.get("origin") != url
+            or bloom.get("browser_errors") != []
+            or not bloom_required.issubset(bloom.get("checks", []))
+            or {item.get("id") for item in bloom.get("experiences", [])}
+            != {"nova", "sovereign", "omega", "invention", "proof"}
+        ):
+            raise ValueError("Proof Bloom must pass every required journey on the canonical public site")
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -73,6 +107,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if bloom:
+        manifest["public_proof_bloom"] = bloom
+        manifest["release_gates"].append(
+            "public Proof Bloom jobs, native signed returns, reviewed gates, transitive revocation and offline recovery"
+        )
     if insight:
         manifest["public_insight_atlas"] = insight
         manifest["release_gates"].append(
