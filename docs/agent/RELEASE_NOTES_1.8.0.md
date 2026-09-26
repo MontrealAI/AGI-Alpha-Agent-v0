@@ -22,3 +22,8 @@ Release acceptance includes cross-runtime equality, failure/ablation/cost gates,
 ZIP replay, manuscript checksums, real browser downloads, offline/mobile/accessibility checks, and all previous
 native, container, legacy demo, local model, chain and public deployment gates. The final release manifest contains
 the evidence from the exact published commit.
+
+The operator API now measures actual request bytes, rejects ambiguous framing and declared-length
+mismatches, and bounds upload time before any state mutation. All early rejections keep response security
+headers. Current operating, recovery, capability and readiness guides now describe the same 1.8.0 release
+and the final manuscript, with tested deployment scope and research obligations stated explicitly.

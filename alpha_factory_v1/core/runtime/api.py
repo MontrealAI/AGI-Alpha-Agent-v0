@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import secrets
 from pathlib import Path
 from typing import Any, Literal
@@ -11,10 +12,100 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import Field
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from .engine import Engine
 from .models import Mission, StrictModel
 from .store import Conflict, Journal
+
+
+MAX_REQUEST_BYTES = 512 * 1024
+BODY_TIMEOUT_SECONDS = 15.0
+SECURITY_HEADERS = {
+    b"cache-control": b"no-store",
+    b"x-content-type-options": b"nosniff",
+    b"referrer-policy": b"no-referrer",
+    b"content-security-policy": (
+        b"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
+        b"connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+    ),
+}
+
+
+class RequestBoundary:
+    """Bound actual incoming bytes and time before a mutation reaches the application."""
+
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        async def secure_send(message: Message) -> None:
+            if message["type"] == "http.response.start":
+                headers = [(k, v) for k, v in message.get("headers", []) if k.lower() not in SECURITY_HEADERS]
+                message = {**message, "headers": [*headers, *SECURITY_HEADERS.items()]}
+            await send(message)
+
+        async def reject(status: int, error: str) -> None:
+            await JSONResponse({"error": error}, status_code=status)(scope, receive, secure_send)
+
+        if scope["method"] not in {"POST", "PUT", "PATCH"}:
+            await self.app(scope, receive, secure_send)
+            return
+        lengths = [v for k, v in scope["headers"] if k.lower() == b"content-length"]
+        if len(lengths) > 1 or any(k.lower() == b"transfer-encoding" for k, _ in scope["headers"]):
+            await reject(400, "Ambiguous request framing")
+            return
+        if not lengths or not lengths[0].isdigit():
+            await reject(411, "Valid Content-Length required")
+            return
+        if len(lengths[0]) > 20 or int(lengths[0]) > MAX_REQUEST_BYTES:
+            await reject(413, "Request exceeds 512 KiB")
+            return
+        request = Request(scope)
+        origin = request.headers.get("origin")
+        if origin and origin != str(request.base_url).rstrip("/"):
+            await reject(403, "Cross-origin mutation denied")
+            return
+        chunks: list[bytes] = []
+        received = 0
+        try:
+            async with asyncio.timeout(BODY_TIMEOUT_SECONDS):
+                while True:
+                    message = await receive()
+                    if message["type"] == "http.disconnect":
+                        return
+                    chunk = message.get("body", b"")
+                    received += len(chunk)
+                    if received > MAX_REQUEST_BYTES:
+                        await reject(413, "Request exceeds 512 KiB")
+                        return
+                    if received > int(lengths[0]):
+                        await reject(400, "Request length mismatch")
+                        return
+                    chunks.append(chunk)
+                    if not message.get("more_body", False):
+                        break
+        except TimeoutError:
+            await reject(408, "Request body timed out")
+            return
+        if received != int(lengths[0]):
+            await reject(400, "Request length mismatch")
+            return
+        body = b"".join(chunks)
+        delivered = False
+
+        async def replay_receive() -> Message:
+            nonlocal delivered
+            if not delivered:
+                delivered = True
+                return {"type": "http.request", "body": body, "more_body": False}
+            return await receive()
+
+        await self.app(scope, replay_receive, secure_send)
 
 
 class Review(StrictModel):
@@ -37,33 +128,13 @@ def create_app(journal: Journal) -> FastAPI:
     engine = Engine(journal)
     app = FastAPI(title="$AGIALPHA Agent", docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]", "testserver"])
+    app.add_middleware(RequestBoundary)
     token = (journal.root / "api.token").read_text().strip()
     static = Path(__file__).with_name("web")
 
     def authorize(authorization: str = Header(default="")) -> None:
         if not secrets.compare_digest(authorization, f"Bearer {token}"):
             raise HTTPException(401, "Access token required")
-
-    @app.middleware("http")
-    async def protect(request: Request, call_next: Any) -> Any:
-        if request.method in {"POST", "PUT", "PATCH"}:
-            length = request.headers.get("content-length")
-            if length is None or not length.isdigit():
-                return JSONResponse({"error": "Content-Length required"}, status_code=411)
-            if int(length) > 512 * 1024:
-                return JSONResponse({"error": "Request exceeds 512 KiB"}, status_code=413)
-            origin = request.headers.get("origin")
-            if origin and origin != str(request.base_url).rstrip("/"):
-                return JSONResponse({"error": "Cross-origin mutation denied"}, status_code=403)
-        response = await call_next(request)
-        response.headers["Cache-Control"] = "no-store"
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["Referrer-Policy"] = "no-referrer"
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
-            "connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
-        )
-        return response
 
     @app.exception_handler(Conflict)
     async def conflict_handler(_request: Request, exc: Conflict) -> JSONResponse:

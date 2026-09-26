@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.6.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
+Current release: **1.8.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
 
 ## Install from a release
 
@@ -54,6 +54,44 @@ to `run` for idempotent retry; reusing that UUID with different input fails.
 A mission moves through `queued → running → review → completed/rejected`. Seven recorded roles are
 planning, research, strategy, market, codegen, safety and memory. Arithmetic gains use the units supplied
 by the operator; the market stage leaves realized revenue empty until a separate payment is verified.
+
+## Final-manuscript transfer and evidence
+
+The Compounding Lab's native commands require no identity initialization or provider credentials:
+
+```sh
+alpha-agent transfer-run --scenario seasonal --output transfer-run.json
+alpha-agent transfer-verify transfer-run.json
+alpha-agent transfer-docket transfer-run.json --output transfer-docket.zip
+alpha-agent transfer-verify transfer-docket.zip
+```
+
+Use a new output path for every run; existing files are never overwritten. The same JSON imports into
+[the browser lab](../compounding/index.html), and browser exports replay natively. Follow the
+[field guide](COMPOUNDING_LAB.md) for custom inputs, review timing and the positive, regime-change and
+no-archive experiments. An imported review retains its original timing provenance; performing a new
+browser review requires new measurements. Local acceptance never supplies missing independent evidence.
+The release includes the original paper and `alpha-agent-v1.8.0-manuscript.zip` with all figures and provenance.
+
+## Service monitoring and request boundaries
+
+`GET /healthz` reports process liveness only. A successful liveness response does not verify the journal,
+prove provider availability or imply that a paused agent can execute. Use the authenticated operator
+console/status response or `alpha-agent --home ./agent-state doctor` to inspect the verified journal,
+control state and configured capabilities. Run a representative mission after changing an environment
+or provider. Keep model and code execution explicitly configured; missing dependencies fail visibly.
+
+The local API requires one valid `Content-Length` for mutations. It counts the actual body bytes before
+parsing or changing state, with a 512 KiB limit and a 15-second body-read deadline. Ambiguous framing,
+length mismatches and disconnected uploads do not create work. Status 400 means invalid framing/length,
+411 requires a valid length, 413 means oversized input, and 408 means an incomplete upload timed out.
+These rejections keep the same no-store, nosniff and Content Security Policy headers as normal responses.
+This deadline covers upload time, not the separately bounded mission execution budget.
+
+On an execution failure, inspect the retained mission before retrying. Use the original request ID for
+idempotent submission; recover an abandoned mission through its explicit recovery command. Never delete
+or repair signed journal records by hand. Keep recovery archives and an independent journal-head checkpoint.
+The [release readiness guide](RELEASE_READINESS.md) defines the supported deployment profile and rollback.
 
 ## Configure inference and code
 
@@ -184,7 +222,7 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.6.0.
+version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.8.0.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -208,8 +246,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.6.0 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.6.0
+docker build --target agent-runtime -t agialpha-agent:1.8.0 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.8.0
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 
@@ -235,7 +273,7 @@ omits the optional historical browser model. The previous manual compiler is ret
 
 ## Full browser text generation
 
-The release includes `alpha-agent-v1.6.0-browser.zip`, the complete tested browser distribution.
+The release includes `alpha-agent-v1.8.0-browser.zip`, the complete tested browser distribution.
 Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
 `python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
 Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.

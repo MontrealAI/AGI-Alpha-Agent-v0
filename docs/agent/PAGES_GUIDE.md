@@ -137,3 +137,16 @@ The [Insight Atlas](../insight/index.html) connects twelve opportunity frontiers
 and a claim/evidence explorer. Choose an expedition, compare architectures, replay its evidence and save the
 recovery file. All computations run locally; the opportunity envelope and task fixtures are explicit assumptions.
 See the [field guide](INSIGHT_ATLAS.md) for exact methods, native mission exports, privacy and recovery.
+
+## Proof Bloom and the Compounding Lab
+
+[Proof Bloom](../bloom/index.html) makes a claim into a job plan, executes or imports returned work,
+requires artifact-bound review and preserves capability lineage. Its five experiences cover Nova-Seeds,
+Sovereign Bloom, the Ω-Lattice, Invention Automation and Proof Debt. The
+[field guide](PROOF_BLOOM.md) explains native signed returns and transitive revocation.
+
+[The Compounding Lab](../compounding/index.html) asks whether a frozen learned policy improves different
+future tasks. Follow Design → Freeze → Compare → Review → Evidence Docket. Try all three scenarios,
+inspect raw predictions and costs, and export both the replayable JSON and full dossier. The
+[field guide](COMPOUNDING_LAB.md) explains native replay and the manuscript's remaining proof obligations.
+These guided experiences run locally, support mobile and keyboard use, and recover offline after installation.
