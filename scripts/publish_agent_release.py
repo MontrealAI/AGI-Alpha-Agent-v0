@@ -14,6 +14,7 @@ import tempfile
 import tomllib
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from scripts.release_context import require_current_main
 
 
 def gh(*args: str) -> str:
@@ -40,6 +41,7 @@ def main() -> None:
     if prior and not prior["draft"]:
         print(f"{tag} is already public; its tag and assets remain unchanged: {prior['html_url']}")
         return
+    require_current_main()
     ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True)
     if ref.returncode == 0:
         obj = json.loads(ref.stdout)["object"]
@@ -107,6 +109,8 @@ def main() -> None:
                 != hashlib.sha256((Path(temp) / path.name).read_bytes()).digest()
             ):
                 raise ValueError(f"uploaded asset checksum mismatch: {path.name}")
+    # Upload and re-download can take minutes; recheck immediately before visibility.
+    require_current_main()
     gh(
         "api",
         "--method",

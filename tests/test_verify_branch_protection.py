@@ -60,8 +60,8 @@ def test_verification_succeeds_without_requests_dependency(monkeypatch):
         "required_status_checks": {
             "strict": True,
             "contexts": [
-                "✅ PR CI / Lint (ruff)",
-                "✅ PR CI / Smoke tests",
+                "Lint (ruff)",
+                "Smoke tests",
             ],
             "required_check_runs": [],
         }
@@ -85,3 +85,18 @@ def test_script_does_not_import_requests() -> None:
         elif isinstance(node, ast.ImportFrom):
             module = node.module or ""
             assert module != "requests" and not module.startswith("requests.")
+
+
+def test_required_names_match_real_workflow_jobs() -> None:
+    import yaml
+
+    workflow = yaml.safe_load(Path(".github/workflows/pr-ci.yml").read_text())
+    job_names = {job.get("name", ident) for ident, job in workflow["jobs"].items()}
+    configured = set(json.loads(Path("scripts/required_checks.json").read_text()))
+    assert configured == set(verify_branch_protection.DEFAULT_REQUIRED_CHECKS)
+    assert configured <= job_names
+
+
+def test_current_check_objects_are_recognized() -> None:
+    protection = {"required_status_checks": {"strict": True, "checks": [{"context": "Lint (ruff)", "app_id": 15368}]}}
+    assert verify_branch_protection._required_contexts(protection) == {"Lint (ruff)"}

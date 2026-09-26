@@ -1,6 +1,8 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.5.0 brings the white paper to life in the connected Ascension Lab.** Explore the
+**Version 1.5.1 hardens the connected Ascension Lab and local operator release.**
+Patched cryptography, complete operator dependency auditing and stricter publication/CI controls
+are documented in the [release readiness guide](docs/agent/RELEASE_READINESS.md). Explore the
 [new flagship missions](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/) and
 [implementation map](docs/agent/WHITEPAPER_IMPLEMENTATION.md): Insight, encrypted Nova-Seeds, funding curves,
 Sovereign schedules, Council settlement and Architect policy search. The governance observatory makes
@@ -24,6 +26,9 @@ AGI/ASI, economic and compliance aspirations are not release guarantees. This is
 
 [![Release](https://img.shields.io/github/v/release/MontrealAI/AGI-Alpha-Agent-v0)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest)
 [![Release acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml/badge.svg?branch=main&event=push)](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml?query=branch%3Amain+event%3Apush)
+
+For repository administrators, [current protection instructions](docs/agent/RELEASE_READINESS.md#repository-administration)
+use the actual check names `Lint (ruff)` and `Smoke tests`.
 
 CI badges show live results and open their supporting checks. Health, Integration and Smoke read the
 current main commit's watchdog and complete matrix results directly. [Badge meanings and troubleshooting](docs/CI_STATUS.md)

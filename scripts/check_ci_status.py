@@ -16,6 +16,7 @@ import base64
 import binascii
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -84,15 +85,34 @@ def _latest_run(
     token: str | None,
     *,
     branch: str | None = None,
+    commit: str | None = None,
 ) -> Mapping[str, object]:
-    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?per_page=1"
+    query = "per_page=100"
     if branch:
-        url = f"{url}&branch={quote(branch)}"
-    payload = _github_request(url, token)
-    runs = payload.get("workflow_runs") or []
+        query += f"&branch={quote(branch, safe='')}"
+    if commit:
+        if not re.fullmatch(r"[0-9a-f]{40}", commit):
+            raise ValueError("commit must be a complete lowercase SHA")
+        query += f"&head_sha={commit}"
+    url = f"{API_ROOT}/repos/{repo}/actions/workflows/{workflow}/runs?{query}"
+
+    def matching(payload: Mapping[str, object], *, check_path: bool = False) -> list[Mapping[str, object]]:
+        return [
+            run
+            for run in payload.get("workflow_runs", [])
+            if (not branch or run.get("head_branch") == branch)
+            and (not commit or run.get("head_sha") == commit)
+            and (not check_path or run.get("path") == f".github/workflows/{workflow}")
+        ]
+
+    runs = matching(_github_request(url, token))
+    if not runs and commit:
+        # The workflow-list endpoint can briefly serve an older response. Verify
+        # the repository-list result independently; never accept that older SHA.
+        runs = matching(_github_request(f"{API_ROOT}/repos/{repo}/actions/runs?{query}", token), check_path=True)
     if not runs:
-        raise RuntimeError(f"No runs found for workflow '{workflow}' in repo {repo}")
-    return runs[0]
+        raise RuntimeError(f"No runs found for workflow '{workflow}' in repo {repo} at {commit or branch}")
+    return max(runs, key=lambda run: (int(run["id"]), int(run.get("run_attempt", 1))))
 
 
 def _can_rerun(run: Mapping[str, object]) -> bool:
@@ -457,6 +477,7 @@ def verify_workflows(
     token: str | None,
     *,
     branch: str | None = None,
+    commit: str | None = None,
     wait_seconds: float = 0,
     poll_interval: float = 15,
     pending_grace_seconds: float = 0,
@@ -477,7 +498,7 @@ def verify_workflows(
 
         for workflow in workflows:
             try:
-                run = _latest_run(repo, workflow, token, branch=branch)
+                run = _latest_run(repo, workflow, token, branch=branch, commit=commit)
             except (urllib.error.URLError, RuntimeError, json.JSONDecodeError) as exc:  # noqa: PERF203
                 hint = ""
                 if isinstance(exc, urllib.error.HTTPError):
@@ -494,7 +515,7 @@ def verify_workflows(
             status = run.get("status")
             age_seconds = _run_age_seconds(run, now=now)
 
-            if conclusion == "success":
+            if conclusion == "success" and status == "completed":
                 print(f"✅ {workflow} → success ({status})")
                 continue
 
@@ -513,15 +534,14 @@ def verify_workflows(
                     icon = "🔁" if dispatched else "⚠️"
                     print(f"{icon} {workflow} → {outcome} ({rerun_status})")
 
-                if rerun_status == "dispatched":
+                if rerun_status == "dispatched" and remaining > 0:
                     waiting = True
-                    remaining = max(remaining, poll_interval)
                     continue
 
             is_pending = status in {"queued", "in_progress", "pending"}
             within_grace = age_seconds is None or age_seconds <= pending_grace_seconds
 
-            if is_pending and (remaining > 0 or within_grace):
+            if is_pending and remaining > 0:
                 waiting = True
                 grace_hint = "within grace" if within_grace else f"waiting {remaining:.0f}s"
                 age_hint = "age=?" if age_seconds is None else f"age={age_seconds / 60:.1f}m"
@@ -587,9 +607,7 @@ def main(argv: list[str] | None = None) -> int:
         "--pending-grace-minutes",
         type=float,
         default=0,
-        help=(
-            "Treat queued/pending runs younger than this many minutes as acceptable even if they have not finished yet"
-        ),
+        help=("Label young pending runs as within grace while waiting; unfinished checks still fail at the deadline"),
     )
     parser.add_argument(
         "--rerun-failed",
@@ -634,11 +652,17 @@ def main(argv: list[str] | None = None) -> int:
         help=("Branch to evaluate workflow health for. Defaults to $GITHUB_REF_NAME when available, otherwise 'main'."),
     )
     parser.add_argument(
+        "--commit",
+        help="Require this exact commit SHA; stale or unrelated runs cannot establish health",
+    )
+    parser.add_argument(
         "--include-self",
         action="store_true",
         help="Include the currently running workflow when resolving targets (default: skip self-monitoring).",
     )
     args = parser.parse_args(argv)
+    if args.commit and not re.fullmatch(r"[0-9a-f]{40}", args.commit):
+        parser.error("--commit must be a complete lowercase SHA")
 
     token = (
         args.token
@@ -685,6 +709,7 @@ def main(argv: list[str] | None = None) -> int:
         workflows,
         token,
         branch=branch,
+        commit=args.commit,
         wait_seconds=wait_seconds,
         poll_interval=poll_interval,
         pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),
@@ -740,6 +765,7 @@ def main(argv: list[str] | None = None) -> int:
             workflows,
             token,
             branch=branch,
+            commit=args.commit,
             wait_seconds=wait_seconds,
             poll_interval=poll_interval,
             pending_grace_seconds=max(0.0, args.pending_grace_minutes * 60),

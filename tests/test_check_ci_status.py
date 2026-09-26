@@ -1,6 +1,69 @@
 import json
+from datetime import datetime, timezone
+
+import pytest
 
 from scripts import check_ci_status
+
+
+def test_exact_commit_rejects_stale_endpoint_and_uses_verified_fallback(monkeypatch):
+    correct = dict(id=2, run_attempt=1, head_sha="a" * 40, head_branch="main", path=".github/workflows/ci.yml")
+    stale = {**correct, "id": 1, "head_sha": "b" * 40, "conclusion": "success"}
+    calls = []
+
+    def request(url, token):
+        calls.append(url)
+        assert "head_sha=" + "a" * 40 in url
+        if "/workflows/" in url:
+            return {"workflow_runs": [stale]}
+        return {"workflow_runs": [stale, correct, {**correct, "id": 3, "path": ".github/workflows/other.yml"}]}
+
+    monkeypatch.setattr(check_ci_status, "_github_request", request)
+    assert check_ci_status._latest_run("owner/repo", "ci.yml", None, branch="main", commit="a" * 40) == correct
+    assert len(calls) == 2
+
+
+def test_no_matching_commit_cannot_pass(monkeypatch):
+    monkeypatch.setattr(
+        check_ci_status,
+        "_github_request",
+        lambda *args: {"workflow_runs": [{"id": 1, "head_sha": "b" * 40, "conclusion": "success"}]},
+    )
+    failures, _ = check_ci_status.verify_workflows("owner/repo", ["ci.yml"], None, commit="a" * 40)
+    assert failures and "No runs found" in failures[0]
+
+
+@pytest.mark.parametrize("conclusion", [None, "success"])
+def test_pending_never_passes_when_wait_budget_expires(monkeypatch, conclusion):
+    pending = dict(id=1, status="in_progress", conclusion=conclusion, created_at=datetime.now(timezone.utc).isoformat())
+    monkeypatch.setattr(check_ci_status, "_latest_run", lambda *args, **kwargs: pending)
+    sleeps = []
+    monkeypatch.setattr(check_ci_status.time, "sleep", sleeps.append)
+    failures, _ = check_ci_status.verify_workflows(
+        "owner/repo", ["ci.yml"], None, wait_seconds=2, poll_interval=1, pending_grace_seconds=2700
+    )
+    assert failures
+    assert sleeps == [1, 1]
+
+
+def test_rerun_cannot_extend_watchdog_deadline(monkeypatch):
+    failed = dict(id=1, status="completed", conclusion="failure", rerun_url="https://example.test")
+    monkeypatch.setattr(check_ci_status, "_latest_run", lambda *args, **kwargs: failed)
+    retries = []
+    monkeypatch.setattr(check_ci_status, "_rerun_workflow", lambda *args: retries.append(args) or "dispatched")
+    sleeps = []
+    monkeypatch.setattr(check_ci_status.time, "sleep", sleeps.append)
+    failures, _ = check_ci_status.verify_workflows(
+        "owner/repo", ["ci.yml"], None, wait_seconds=2, poll_interval=1, rerun_failed=True
+    )
+    assert failures and len(retries) == 1 and sleeps == [1, 1]
+
+
+def test_latest_attempt_is_selected_without_hiding_failures(monkeypatch):
+    passed = dict(id=1, run_attempt=1, head_sha="a" * 40, head_branch="main", conclusion="success")
+    failed = {**passed, "id": 2, "conclusion": "failure"}
+    monkeypatch.setattr(check_ci_status, "_github_request", lambda *args: {"workflow_runs": [passed, failed]})
+    assert check_ci_status._latest_run("owner/repo", "ci.yml", None, branch="main", commit="a" * 40) == failed
 
 
 def test_workflow_filename_from_env_prefers_run_metadata(monkeypatch):

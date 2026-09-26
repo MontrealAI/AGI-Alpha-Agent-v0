@@ -23,8 +23,8 @@ API_VERSION = "2022-11-28"
 GITHUB_ACTIONS_APP_ID = 15368
 
 DEFAULT_REQUIRED_CHECKS = [
-    "✅ PR CI / Lint (ruff)",
-    "✅ PR CI / Smoke tests",
+    "Lint (ruff)",
+    "Smoke tests",
 ]
 DEFAULT_REQUIRED_CHECKS_PATH = Path("scripts/required_checks.json")
 
@@ -125,7 +125,7 @@ def _required_contexts(protection: dict[str, Any]) -> set[str]:
     contexts: set[str] = set()
     status_checks = protection.get("required_status_checks") or {}
     contexts.update(status_checks.get("contexts") or [])
-    for check in status_checks.get("required_check_runs") or []:
+    for check in (status_checks.get("checks") or []) + (status_checks.get("required_check_runs") or []):
         context = check.get("context")
         if context:
             contexts.add(context)
