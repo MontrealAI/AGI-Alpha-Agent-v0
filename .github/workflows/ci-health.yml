@@ -61,9 +61,8 @@ jobs:
             fi
           fi
 
-          echo "CI_EVAL_BRANCH=$eval_branch" >> "$GITHUB_ENV"
-          echo "CI_POLICY_BRANCH=$policy_branch" >> "$GITHUB_ENV"
-          echo "CI_EVAL_SHA=$eval_sha" >> "$GITHUB_ENV"
+          printf 'CI_EVAL_BRANCH=%s\nCI_POLICY_BRANCH=%s\nCI_EVAL_SHA=%s\n' \
+            "$eval_branch" "$policy_branch" "$eval_sha" >> "$GITHUB_ENV"
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0

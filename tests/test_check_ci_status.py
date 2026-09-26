@@ -117,6 +117,46 @@ def test_main_disables_mutations_without_write_permission(monkeypatch, capsys):
     assert "read-only mode" in output
 
 
+@pytest.mark.parametrize("current", [True, False, None])
+def test_superseded_or_unverifiable_commit_cannot_remediate(monkeypatch, current):
+    monkeypatch.setattr(check_ci_status, "_actions_write_capability", lambda *args: (True, "write allowed"))
+    monkeypatch.setattr(check_ci_status, "_workflow_filename_from_env", lambda *args: None)
+
+    def request(url, token):
+        assert url.endswith("/git/ref/heads/feature%2Ftest")
+        if current is None:
+            raise check_ci_status.urllib.error.URLError("temporary failure")
+        return {"object": {"sha": ("a" if current else "b") * 40}}
+
+    def verify(repo, workflows, token, **kwargs):
+        assert kwargs["rerun_failed"] is (current is True)
+        assert kwargs["commit"] == "a" * 40
+        # No matching run would ordinarily trigger dispatch-missing. The
+        # superseded/unverifiable case must leave the current build untouched.
+        return (["missing"], {}) if current is not True else ([], {"pr-ci.yml": {"conclusion": "success"}})
+
+    monkeypatch.setattr(check_ci_status, "_github_request", request)
+    monkeypatch.setattr(check_ci_status, "verify_workflows", verify)
+    monkeypatch.setattr(check_ci_status, "_dispatch_workflow", lambda *args: pytest.fail("unexpected dispatch"))
+    result = check_ci_status.main(
+        [
+            "--repo",
+            "owner/repo",
+            "--branch",
+            "feature/test",
+            "--commit",
+            "a" * 40,
+            "--workflow",
+            "pr-ci.yml",
+            "--rerun-failed",
+            "--cancel-stale",
+            "--dispatch-missing",
+            "--once",
+        ]
+    )
+    assert result == (0 if current is True else 1)
+
+
 def test_actions_write_capability_detects_fork(monkeypatch, tmp_path):
     event_payload = {
         "pull_request": {
@@ -271,3 +311,63 @@ def test_workflow_run_context_disables_dispatch(monkeypatch, tmp_path):
 
     assert exit_code == 1
     assert dispatch_calls == []
+
+
+def test_branch_move_during_check_cannot_retry_an_old_run(monkeypatch):
+    monkeypatch.setattr(check_ci_status, "_actions_write_capability", lambda *args: (True, "write allowed"))
+    monkeypatch.setattr(check_ci_status, "_workflow_filename_from_env", lambda *args: None)
+    heads = iter(["a" * 40, "b" * 40])
+    monkeypatch.setattr(check_ci_status, "_github_request", lambda *args: {"object": {"sha": next(heads)}})
+    failed = dict(
+        id=1,
+        head_sha="a" * 40,
+        head_branch="main",
+        status="completed",
+        conclusion="failure",
+        rerun_url="exists",
+        run_attempt=1,
+    )
+    monkeypatch.setattr(check_ci_status, "_latest_run", lambda *args, **kwargs: failed)
+    monkeypatch.setattr(
+        check_ci_status.urllib.request, "urlopen", lambda *args, **kwargs: pytest.fail("unexpected mutation")
+    )
+    assert (
+        check_ci_status.main(
+            [
+                "--repo",
+                "owner/repo",
+                "--token",
+                "fixture",
+                "--branch",
+                "main",
+                "--commit",
+                "a" * 40,
+                "--rerun-failed",
+                "--once",
+            ]
+        )
+        == 1
+    )
+
+
+def test_automatic_retry_cannot_loop_through_workflow_run_events(monkeypatch):
+    monkeypatch.setattr(check_ci_status, "_github_request", lambda *args: pytest.fail("unexpected retry lookup"))
+    run = dict(id=1, run_attempt=2, rerun_url="exists", head_branch="main", head_sha="a" * 40)
+    assert "retry budget exhausted" in check_ci_status._rerun_workflow("owner/repo", run, "fixture")
+
+
+def test_one_current_commit_retry_still_works(monkeypatch):
+    from contextlib import nullcontext
+
+    monkeypatch.setattr(check_ci_status, "_github_request", lambda *args: {"object": {"sha": "a" * 40}})
+    posts = []
+
+    def post(request, **kwargs):
+        assert request.method == "POST" and request.full_url.endswith("/actions/runs/1/rerun")
+        posts.append(request.full_url)
+        return nullcontext()
+
+    monkeypatch.setattr(check_ci_status.urllib.request, "urlopen", post)
+    run = dict(id=1, run_attempt=1, rerun_url="exists", head_branch="main", head_sha="a" * 40)
+    assert check_ci_status._rerun_workflow("owner/repo", run, "fixture") == "dispatched"
+    assert len(posts) == 1
