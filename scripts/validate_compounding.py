@@ -95,6 +95,9 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             result["checks"].append("exact-198-page-manuscript")
             for scenario in ("seasonal", "shift", "ablation"):
                 click(page, f'[data-scenario="{scenario}"]')
+                expect(page.locator("#prediction-chart")).to_have_attribute(
+                    "aria-label", "Forecast comparison appears after execution"
+                )
                 click(page, "#freeze")
                 expect(page.locator("#policy-name")).to_contain_text("period 5")
                 click(page, "#compare")
@@ -206,6 +209,9 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.locator("#call-cost").press("Tab")
             ready(page)
             expect(page.locator("#export-run")).to_be_disabled()
+            expect(page.locator("#prediction-chart")).to_have_attribute(
+                "aria-label", "Forecast comparison appears after execution"
+            )
             click(page, "#freeze")
             click(page, "#compare")
             review(page)

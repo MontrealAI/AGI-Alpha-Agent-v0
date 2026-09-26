@@ -1,6 +1,6 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.8.0 aligns the project with the latest 198-page AGI ALPHA manuscript.**
+**Version 1.8.1 aligns the project with the latest 198-page AGI ALPHA manuscript.**
 [Read the manuscript](docs/manuscript/index.md) and [implementation map](docs/agent/MANUSCRIPT_ALIGNMENT.md).
 Enter [the Compounding Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/) to learn and freeze a capability,
 test genuinely different future tasks, inspect four comparator arms, account for learning and review costs, and

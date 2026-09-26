@@ -51,6 +51,10 @@ function download(name, data, type = "application/json") {
 function chart() {
     const target = $("#prediction-chart");
     if (!report) {
+        target.setAttribute(
+            "aria-label",
+            "Forecast comparison appears after execution",
+        );
         target.replaceChildren(
             Object.assign(document.createElement("p"), {
                 textContent: "Freeze a policy, then test the next mission.",

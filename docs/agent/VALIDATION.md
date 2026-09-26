@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.8.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.8.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -200,3 +200,9 @@ Use the matching release manifest and validation archive for final counts and sk
 The previous candidate at `2afee418e1142becd4baa94a282b83b648ade359` passed 1,176 regression tests with
 54 optional skips, 4 expected failures and 82.83% coverage before the additional request-boundary tests.
 The final release reruns the complete matrix on its own commit; a prior candidate does not authorize it.
+
+## Version 1.8.1 accessibility correction
+
+Changing a Compounding Lab scenario or its costs now clears both the visible forecast and its accessible
+description. Browser acceptance asserts that no prior prediction survives either reset. The same
+minimal/full-gallery and public HTTPS checks remain required before publication.
