@@ -1,5 +1,13 @@
 # $AGIALPHA Agent — release status
 
+**Version 1.8.0 aligns the project with the latest 198-page AGI ALPHA manuscript.**
+[Read the manuscript](docs/manuscript/index.md) and [implementation map](docs/agent/MANUSCRIPT_ALIGNMENT.md).
+Enter [the Compounding Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/) to learn and freeze a capability,
+test genuinely different future tasks, inspect four comparator arms, account for learning and review costs, and
+export the complete Evidence Docket. Positive transfer, regime failure and archive ablation are computed locally.
+Independent validation and broader manuscript promotion remain explicit proof obligations.
+Use the [field guide](docs/agent/COMPOUNDING_LAB.md) or `alpha-agent transfer-run --output run.json`.
+
 **Version 1.7.0 adds Nova-Seeds Proof Bloom: five connected, evidence-gated experiences.**
 [Enter the foundry](https://montrealai.github.io/AGI-Alpha-Agent-v0/bloom/) to turn a claim into native jobs,
 replay returned evidence, review exact artifacts, promote a scoped capability and reuse it in the next mission.

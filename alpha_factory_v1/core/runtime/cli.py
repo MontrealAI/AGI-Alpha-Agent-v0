@@ -64,6 +64,22 @@ def parser() -> argparse.ArgumentParser:
     settle.add_argument("id")
     settle.add_argument("--transaction", required=True)
     settle.add_argument("--log-index", type=int, required=True)
+    transfer = commands.add_parser("transfer-run", help="Freeze a policy and measure held-out future tasks")
+    transfer.add_argument("--scenario", choices=["seasonal", "shift", "ablation"], default="seasonal")
+    transfer.add_argument("--seed", type=int, default=37)
+    transfer.add_argument("--spec", type=Path)
+    transfer.add_argument("--output", type=Path, required=True)
+    for name in ("transfer-verify", "transfer-review", "transfer-docket"):
+        command = commands.add_parser(name, help="Replay, review or export a manuscript Evidence Docket")
+        command.add_argument("file", type=Path)
+        if name != "transfer-verify":
+            command.add_argument("--output", type=Path, required=True)
+        if name == "transfer-review":
+            command.add_argument("--decision", choices=["accept", "reject", "repair"], required=True)
+            command.add_argument("--reviewer", required=True)
+            command.add_argument("--reason", required=True)
+            command.add_argument("--control-ms", type=int, required=True)
+            command.add_argument("--treatment-ms", type=int, required=True)
     return root
 
 
@@ -72,7 +88,36 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         result: Any
-        if args.command == "init":
+        if args.command.startswith("transfer-"):
+            from . import transfer
+
+            if args.command == "transfer-run":
+                if args.spec and args.spec.stat().st_size > transfer.MAX_BYTES:
+                    raise ValueError("Transfer specification exceeds size limit")
+                spec = (
+                    transfer.parse(args.spec.read_text()) if args.spec else transfer.example(args.scenario, args.seed)
+                )
+                report = transfer.run(spec)
+                private_write(args.output, transfer.canonical(report).encode())
+                result = {"output": str(args.output.resolve()), **transfer.verify(report)}
+            else:
+                if args.file.stat().st_size > transfer.MAX_BYTES * 3:
+                    raise ValueError("Transfer input exceeds size limit")
+                if args.command == "transfer-verify" and args.file.suffix.lower() == ".zip":
+                    result = transfer.verify_docket(args.file.read_bytes())
+                else:
+                    report = transfer.parse(args.file.read_text())
+                    result = transfer.verify(report)
+                    if args.command == "transfer-review":
+                        report = transfer.review_run(
+                            report, args.decision, args.reviewer, args.reason, args.control_ms, args.treatment_ms
+                        )
+                        private_write(args.output, transfer.canonical(report).encode())
+                        result = {"output": str(args.output.resolve()), **transfer.verify(report)}
+                    elif args.command == "transfer-docket":
+                        private_write(args.output, transfer.export_docket(report))
+                        result = {"output": str(args.output.resolve()), **result}
+        elif args.command == "init":
             config = RuntimeConfig.model_validate_json(args.config.read_bytes()) if args.config else RuntimeConfig()
             journal = Journal.initialize(args.home, config)
             result = {**journal.verify(), "home": str(journal.root), "token_file": str(journal.root / "api.token")}

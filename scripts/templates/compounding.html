@@ -1,0 +1,634 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#10281f" />
+        <meta
+            name="description"
+            content="The Compounding Lab. Freeze a learned capability, test future tasks, account for costs, and export a replayable Evidence Docket."
+        />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <title>The Compounding Lab · AGI Alpha</title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/compounding/lab.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#laboratory">Skip to the experiment</a>
+        <header class="masthead wrap">
+            <a class="brand" href="../"
+                ><span class="mark">α</span
+                ><span
+                    >AGI ALPHA<small>THE META-AGENTIC FRONTIER</small></span
+                ></a
+            >
+            <nav aria-label="Main navigation">
+                <a href="../bloom/">Proof Bloom</a
+                ><a href="../insight/">Insight Atlas</a
+                ><a href="../#explore">All demos</a
+                ><a href="../manuscript/">The manuscript ↗</a>
+            </nav>
+            <span class="edition">v{{VERSION}} / RESEARCH EDITION</span>
+        </header>
+        <main>
+            <section class="hero wrap" aria-labelledby="hero-title">
+                <div>
+                    <p class="eyebrow">
+                        <span class="spark"></span> THE COMPOUNDING LAB ·
+                        FUTURE-TASK TRANSFER
+                    </p>
+                    <h1 id="hero-title">
+                        Proof, carried<br /><em>forward.</em>
+                    </h1>
+                    <p class="lead">
+                        An invention matters when the next mission becomes
+                        better. Learn something once. Freeze it. Put it to work
+                        on a future it has never seen.
+                    </p>
+                    <div class="actions">
+                        <a class="button gold" href="#laboratory"
+                            >Begin the experiment <span>↗</span></a
+                        ><a
+                            class="text-link"
+                            href="../manuscript/AGI_ALPHA_Unified_Publication_Final.pdf"
+                            >Read the 198-page manuscript ↗</a
+                        >
+                    </div>
+                    <p class="hero-note">
+                        Real local computation. Inspectable predictions. No
+                        account or API key.
+                    </p>
+                </div>
+                <div class="sculpture" aria-hidden="true">
+                    <svg viewBox="0 0 600 500">
+                        <defs>
+                            <linearGradient
+                                id="metal"
+                                x1="0"
+                                x2="1"
+                                y1="1"
+                                y2="0"
+                            >
+                                <stop stop-color="#4f604f" />
+                                <stop offset=".4" stop-color="#ac8e52" />
+                                <stop offset=".7" stop-color="#f7e6ac" />
+                                <stop offset="1" stop-color="#90783d" />
+                            </linearGradient>
+                            <radialGradient id="light">
+                                <stop stop-color="#b5b788" stop-opacity=".15" />
+                                <stop
+                                    offset="1"
+                                    stop-color="#b5b788"
+                                    stop-opacity="0"
+                                />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="310" cy="220" r="250" fill="url(#light)" />
+                        <g fill="none" stroke="url(#metal)">
+                            <path
+                                d="M88 435 Q310 465 514 432 M112 423 Q310 450 495 420"
+                                opacity=".4"
+                            />
+                            <path
+                                d="M293 435 C380 330 167 304 294 180 C332 136 361 90 321 34"
+                                stroke-width="6"
+                            />
+                            <path
+                                d="M306 435 C240 341 431 283 302 164 C266 130 244 101 270 62"
+                                stroke-width="4"
+                            />
+                            <path
+                                d="M306 393 C203 347 126 332 111 245 C206 248 292 316 306 393Z"
+                                stroke-width="2"
+                            />
+                            <path
+                                d="M301 343 C403 311 472 229 467 155 C376 172 312 250 301 343Z"
+                                stroke-width="2"
+                            />
+                            <path
+                                d="M292 249 C195 247 151 168 170 107 C251 131 281 185 292 249Z"
+                                stroke-width="2"
+                            />
+                            <path
+                                d="M311 192 C389 163 414 112 399 59 C331 78 315 137 311 192Z"
+                                stroke-width="2"
+                            />
+                            <path
+                                d="M111 245 Q240 280 306 393 M467 155 Q400 240 301 343 M170 107 Q229 170 292 249 M399 59 Q372 123 311 192"
+                            />
+                            <g opacity=".35">
+                                <path
+                                    d="M143 295 L275 345 M176 332 L288 369 M181 263 L251 321 M435 227 L333 279 M400 271 L318 304 M388 184 L337 255 M185 168 L269 212 M208 211 L281 233 M236 147 L261 191 M378 117 L323 162"
+                                />
+                            </g>
+                            <ellipse
+                                cx="300"
+                                cy="444"
+                                rx="128"
+                                ry="12"
+                                opacity=".35"
+                            />
+                        </g>
+                        <g fill="#dfc58a">
+                            <circle cx="321" cy="34" r="5" />
+                            <circle cx="270" cy="62" r="3" />
+                            <circle cx="111" cy="245" r="4" />
+                            <circle cx="467" cy="155" r="4" />
+                            <circle cx="170" cy="107" r="4" />
+                            <circle cx="399" cy="59" r="4" />
+                        </g>
+                        <g
+                            fill="#acb6a7"
+                            font-family="monospace"
+                            font-size="10"
+                            letter-spacing="2"
+                        >
+                            <text x="34" y="222">LEARN</text>
+                            <text x="485" y="143">TEST</text>
+                            <text x="350" y="25">CARRY FORWARD</text>
+                        </g>
+                    </svg>
+                    <p>A capability is a hypothesis about future usefulness.</p>
+                </div>
+            </section>
+            <section class="thesis">
+                <div class="wrap thesis-grid">
+                    <p class="eyebrow">
+                        FROM THE MANUSCRIPT<br />TO A FALSIFIABLE EXPERIMENT
+                    </p>
+                    <p>
+                        What survives one mission<br />must
+                        <em>earn its place in the next.</em>
+                    </p>
+                    <span
+                        >Training and future tasks are separate.<br />The policy
+                        makes the predictions.<br />Failure remains part of the
+                        record.</span
+                    >
+                </div>
+            </section>
+            <section
+                class="lab wrap"
+                id="laboratory"
+                aria-labelledby="lab-title"
+                aria-busy="true"
+            >
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">01 / DESIGN THE TRIAL</p>
+                        <h2 id="lab-title">
+                            Make progress <em>measurable.</em>
+                        </h2>
+                    </div>
+                    <p>
+                        Choose a future. The same learning process faces a
+                        different test. Every figure below is computed on your
+                        device.
+                    </p>
+                </div>
+                <div
+                    class="scenario-grid"
+                    role="group"
+                    aria-label="Experiment scenario"
+                >
+                    <button
+                        class="scenario active"
+                        data-scenario="seasonal"
+                        aria-pressed="true"
+                    >
+                        <span>01 / CONTINUITY</span
+                        ><strong>A pattern worth keeping</strong
+                        ><small
+                            >A learned seasonal policy meets new series with
+                            changed scale, phase and level.</small
+                        ><b>Test transfer ↗</b></button
+                    ><button
+                        class="scenario"
+                        data-scenario="shift"
+                        aria-pressed="false"
+                    >
+                        <span>02 / DISCONTINUITY</span
+                        ><strong>When the world changes</strong
+                        ><small
+                            >The seasonal past gives way to a trend. Useful
+                            memory can become a liability.</small
+                        ><b>Test failure ↗</b></button
+                    ><button
+                        class="scenario"
+                        data-scenario="ablation"
+                        aria-pressed="false"
+                    >
+                        <span>03 / COUNTERFACTUAL</span
+                        ><strong>A future without memory</strong
+                        ><small
+                            >Remove the archive and compare identical policies.
+                            Is the lift really from reuse?</small
+                        ><b>Test the cause ↗</b>
+                    </button>
+                </div>
+                <div class="setup-row">
+                    <label
+                        >Future task seed<input
+                            id="task-seed"
+                            type="number"
+                            min="1"
+                            max="9999"
+                            value="37" /></label
+                    ><label
+                        >Cost per forecast call <span>(modeled milliunits)</span
+                        ><input
+                            id="call-cost"
+                            type="number"
+                            min="0"
+                            max="10000000"
+                            value="20" /></label
+                    ><label
+                        >Human review cost <span>(milliunits / second)</span
+                        ><input
+                            id="human-cost"
+                            type="number"
+                            min="0"
+                            max="10000000"
+                            value="10" /></label
+                    ><button id="freeze" class="button dark">
+                        Freeze the capability <span>→</span>
+                    </button>
+                </div>
+                <details class="input-detail">
+                    <summary>
+                        Use your own series, inspect assumptions, or import a
+                        native run
+                    </summary>
+                    <p>
+                        Provide 20–64 integer training observations and 2–8
+                        distinct future tasks. Each task has a calibration
+                        prefix and a held-out suffix. The learner only receives
+                        training data. Public fixtures are disclosed, not a
+                        secret benchmark.
+                    </p>
+                    <label for="spec-json">Experiment specification</label
+                    ><textarea
+                        id="spec-json"
+                        spellcheck="false"
+                        rows="12"
+                    ></textarea>
+                    <div class="actions">
+                        <button class="button pale" id="apply-spec">
+                            Apply custom specification</button
+                        ><button class="button pale" id="download-spec">
+                            Download specification</button
+                        ><label class="file-button"
+                            >Import verified run
+                            <input
+                                id="import-run"
+                                type="file"
+                                accept=".json,application/json"
+                        /></label>
+                    </div>
+                </details>
+                <p
+                    id="lab-status"
+                    class="status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Preparing your experiment…
+                </p>
+                <div class="experiment-grid">
+                    <article class="passport">
+                        <p class="eyebrow">02 / CAPABILITY PASSPORT</p>
+                        <div class="passport-icon" aria-hidden="true">
+                            α<span>↗</span>
+                        </div>
+                        <h3 id="policy-name">
+                            A policy, waiting<br />to be learned.
+                        </h3>
+                        <p id="policy-note">
+                            Forty observations from Mandate A. Ten candidate
+                            policies. No future-task answers.
+                        </p>
+                        <dl>
+                            <div>
+                                <dt>Training commitment</dt>
+                                <dd id="training-hash">Not frozen</dd>
+                            </div>
+                            <div>
+                                <dt>Capability commitment</dt>
+                                <dd id="capability-hash">Not frozen</dd>
+                            </div>
+                            <div>
+                                <dt>Prior learning cost</dt>
+                                <dd id="training-cost">
+                                    Charged in full to treatment
+                                </dd>
+                            </div>
+                        </dl>
+                        <button id="compare" class="button gold" disabled>
+                            Run the future tasks <span>↗</span>
+                        </button>
+                        <p class="micro">
+                            The frozen policy actually drives predictions. No
+                            expected-answer lookup.
+                        </p>
+                    </article>
+                    <article class="results">
+                        <div class="result-heading">
+                            <div>
+                                <p class="eyebrow">03 / FUTURE TASKS</p>
+                                <h3>Does the advantage travel?</h3>
+                            </div>
+                            <span id="run-state" class="pill"
+                                >AWAITING EXECUTION</span
+                            >
+                        </div>
+                        <div class="metrics">
+                            <div>
+                                <span>Gain before human review</span
+                                ><strong id="gain">—</strong
+                                ><small
+                                    >Modeled units, after learning, validation
+                                    and coordination</small
+                                >
+                            </div>
+                            <div>
+                                <span>Tasks improved</span
+                                ><strong id="wins">—</strong
+                                ><small
+                                    >Against the current-stack comparator</small
+                                >
+                            </div>
+                        </div>
+                        <div class="chart-head">
+                            <label for="task-view"
+                                >Inspect a task
+                                <select id="task-view" disabled></select></label
+                            ><span class="legend"
+                                ><i class="actual"></i>Actual
+                                <i class="control"></i>Current stack
+                                <i class="treatment"></i>With memory</span
+                            >
+                        </div>
+                        <div
+                            id="prediction-chart"
+                            class="chart"
+                            role="img"
+                            aria-label="Forecast comparison appears after execution"
+                        >
+                            <p>Freeze a policy, then test the next mission.</p>
+                        </div>
+                        <div class="table-scroll">
+                            <table>
+                                <caption>
+                                    Comparators · lower prediction error is
+                                    better
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Arm</th>
+                                        <th scope="col">
+                                            Total absolute error
+                                        </th>
+                                        <th scope="col">Forecast calls</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="baseline-rows">
+                                    <tr>
+                                        <td colspan="3">
+                                            Results will appear after execution.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="micro">
+                            B0: last value · B3: fixed trend · B5:
+                            calibration-only selection · B6: frozen memory. B1,
+                            B2 and B4 remain unmeasured. These are deterministic
+                            local baselines, not an LLM leaderboard.
+                        </p>
+                        <details>
+                            <summary>
+                                Inspect every prediction and the cost ledger
+                            </summary>
+                            <pre id="raw-results">No run yet.</pre>
+                        </details>
+                    </article>
+                </div>
+                <section class="review-panel" aria-labelledby="review-title">
+                    <div>
+                        <p class="eyebrow">04 / REVIEW THE EVIDENCE</p>
+                        <h3 id="review-title">
+                            Your judgment.<br /><em>An explicit record.</em>
+                        </h3>
+                        <p>
+                            Inspect both arms. The timers record elapsed review
+                            time, not verified human attention. Review attaches
+                            to this exact run. Imported reviews stay in the
+                            docket; start fresh timers to record a new review.
+                        </p>
+                        <div class="timers">
+                            <button
+                                id="timer-control"
+                                class="button pale"
+                                disabled
+                            >
+                                Review current stack</button
+                            ><output id="time-control">Not recorded</output
+                            ><button
+                                id="timer-treatment"
+                                class="button pale"
+                                disabled
+                            >
+                                Review treatment</button
+                            ><output id="time-treatment">Not recorded</output>
+                        </div>
+                    </div>
+                    <div class="review-form">
+                        <label
+                            >Reviewer name<input
+                                id="reviewer"
+                                maxlength="100"
+                                placeholder="Your name or operator identifier" /></label
+                        ><label
+                            >Decision rationale<textarea
+                                id="review-reason"
+                                rows="3"
+                                maxlength="500"
+                                placeholder="What did the evidence establish? What remains uncertain?"
+                            ></textarea>
+                        </label>
+                        <div class="actions">
+                            <button
+                                id="accept"
+                                data-verdict="accept"
+                                class="button dark"
+                                disabled
+                            >
+                                Accept local claim</button
+                            ><button
+                                id="repair"
+                                data-verdict="repair"
+                                class="button pale"
+                                disabled
+                            >
+                                Needs repair</button
+                            ><button
+                                id="reject"
+                                data-verdict="reject"
+                                class="button pale"
+                                disabled
+                            >
+                                Reject
+                            </button>
+                        </div>
+                        <p class="micro">
+                            Acceptance cannot override a loss, excessive
+                            forecast error or a missing archive.
+                        </p>
+                    </div>
+                </section>
+                <div class="verdict-grid">
+                    <article>
+                        <p class="eyebrow">BOUNDED TRANSFER</p>
+                        <h3 id="local-verdict">HOLD</h3>
+                        <p id="local-note">
+                            Execute and review the evidence before accepting a
+                            local claim.
+                        </p>
+                        <strong id="adjusted-gain"
+                            >Human review cost is pending.</strong
+                        >
+                    </article>
+                    <article class="wide-gate">
+                        <p class="eyebrow">MANUSCRIPT PROMOTION</p>
+                        <h3>HOLD <span>Broader evidence remains open</span></h3>
+                        <p>
+                            Strongest-agent comparisons, independent validation,
+                            multi-agent scaling, calibrated α-WU and delayed
+                            real-world outcomes are still required.
+                        </p>
+                        <a href="../agent/MANUSCRIPT_ALIGNMENT/"
+                            >Explore the implementation map ↗</a
+                        >
+                    </article>
+                </div>
+                <section class="contact">
+                    <div>
+                        <p class="eyebrow">EVIDENCE CONTACT INDEX</p>
+                        <h3 id="eci-level">Awaiting execution</h3>
+                        <p>
+                            Local replay establishes reproducibility.
+                            Independent replay requires an independent process
+                            and reviewer.
+                        </p>
+                    </div>
+                    <ol aria-label="Manuscript evidence contact ladder">
+                        <li><b>E0</b>Simulated</li>
+                        <li><b>E1</b>Probed</li>
+                        <li id="eci-executed"><b>E2</b>Executed</li>
+                        <li><b>E3</b>Independent replay</li>
+                        <li><b>E4</b>Stressed</li>
+                        <li><b>E5</b>External validation</li>
+                    </ol>
+                </section>
+                <section class="docket">
+                    <div>
+                        <p class="eyebrow">05 / TAKE THE EVIDENCE WITH YOU</p>
+                        <h2>
+                            A complete record.<br /><em>Even when it fails.</em>
+                        </h2>
+                        <p>
+                            Thirteen manuscript sections. Raw tasks and
+                            predictions, baselines, cost and safety ledgers,
+                            capability, reviewer record, replay and calibration
+                            status. Each file has a SHA-256 checksum.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="actions">
+                            <button
+                                id="export-docket"
+                                class="button gold"
+                                disabled
+                            >
+                                Download Evidence Docket
+                                <span>↓ ZIP</span></button
+                            ><button
+                                id="export-run"
+                                class="button outline"
+                                disabled
+                            >
+                                Export run JSON
+                            </button>
+                        </div>
+                        <details>
+                            <summary>Replay it with the native agent</summary>
+                            <pre>
+alpha-agent transfer-verify run.json
+alpha-agent transfer-verify evidence-docket.zip
+alpha-agent transfer-run --spec spec.json --output run.json</pre
+                            >
+                            <p>
+                                The same inputs and frozen policy replay in
+                                Python and JavaScript. A matching hash is not a
+                                signature or proof of independence.
+                            </p>
+                        </details>
+                    </div>
+                </section>
+                <noscript
+                    ><p>
+                        This interactive experiment requires JavaScript. The
+                        manuscript and field guide remain available without it.
+                    </p></noscript
+                >
+            </section>
+            <section class="reading wrap">
+                <p class="eyebrow">THE RESEARCH CONTINUES</p>
+                <h2>
+                    Intelligence organizations.<br /><em
+                        >Evidence before elevation.</em
+                    >
+                </h2>
+                <p>
+                    This lab implements a bounded part of the 198-page
+                    <cite
+                        >AGI ALPHA: A Scalable Substrate for Intelligence
+                        Organizations</cite
+                    >
+                    manuscript. Explore the theory, the implementation map and
+                    the remaining proof obligations.
+                </p>
+                <div class="actions">
+                    <a class="text-link" href="../manuscript/"
+                        >Read the latest manuscript ↗</a
+                    ><a class="text-link" href="../agent/COMPOUNDING_LAB/"
+                        >Open the field guide ↗</a
+                    ><a class="text-link" href="../bloom/"
+                        >Return to Proof Bloom ↗</a
+                    >
+                </div>
+            </section>
+        </main>
+        <footer class="wrap">
+            <a class="brand" href="../"><span class="mark">α</span> AGI ALPHA</a
+            ><span>OPEN POSSIBILITY. ACCOUNTABLE PROGRESS.</span
+            ><a href="../DISCLAIMER_SNIPPET/" title="docs/DISCLAIMER_SNIPPET.md"
+                >Research disclaimer</a
+            >
+        </footer>
+        <script type="module" src="../assets/compounding/lab.mjs"></script>
+    </body>
+</html>

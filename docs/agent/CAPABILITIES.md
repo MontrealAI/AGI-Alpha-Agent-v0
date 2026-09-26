@@ -17,7 +17,7 @@ The design document explicitly calls its forecast a toy model and its architectu
 The implementation historically mixed real algorithms and integrations with synthetic fitness, no-op
 SDK compatibility classes, random market fixtures and ambitious future claims.
 
-Version 1.6.0 connects a usable bounded agent around the original roles and algorithms. The supported
+Version 1.8.0 connects a usable bounded agent around the original roles and algorithms. The supported
 entry point is `alpha-agent` (also `alpha-factory mission`). Its state, policy, identity, evidence,
 operator review, memory and payment receipts share one signed persistent journal. Existing launchers,
 interfaces, experiments, assets and documentation remain available.
@@ -30,14 +30,19 @@ interfaces, experiments, assets and documentation remain available.
 | Forecasting | Train-only policy selection, separate temporal holdout, measured error and future estimates | Simple last/mean/drift/seasonal policies; not economic prediction or guaranteed returns |
 | Code generation | Model-generated or supplied Python `solve` candidate, isolated evaluation, host-owned expected outputs, all cases required | Explicit opt-in and Docker required; no host/Firejail fallback, package installation, automatic merge or deployment |
 | Safety | Independent arithmetic/precedence/citation checks; explicit human review bound to revision and artifact hash | Code correctness applies only to supplied cases; no formal verification or security certification |
+| Capability transfer | A-only learning, frozen policy, actual future-task predictions, four measured comparator arms, explicit costs and reciprocal Python/browser replay | Synthetic bounded tasks; full learning cost charged; B1/B2/B4 and independent outcomes remain unmeasured |
+| Evidence Docket | All 13 manuscript sections, raw tasks/predictions, cost/safety ledgers, action-reason trace, review, checksums and ZIP verification | ECI E2 local execution; no automatic E3/E4/E5 upgrade or calibrated α-WU claim |
 | Memory | Approved matching allocations/schedules seed later search; parent recorded and constraints checked again | No autonomous model weight training or general self-improvement claim |
 | Identity | Ed25519 signatures and a hash-chained journal; optional EIP-191 wallet-control proof | Local-key identity is not ENS ownership, KYC, SPIFFE or reputation attestation |
 | $AGIALPHA | Pinned token bytecode/chain/decimals, invoice before payment, confirmed canonical ERC20 receipt, replay protection | Real local EVM tested; mainnet requires configured trusted RPC, independent bytecode pin and finalized blocks |
 | Reinvestment | Integer allocation of confirmed receipts to an auditable local earmark | No automatic spending, treasury custody or executed buyback/burn claim |
-| Controls | Persistent pause, bounded evaluations/time/output, local bearer-authenticated console, idempotency, compare-and-swap reviews | Single-operator local service; remote exposure requires a separately operated secure access layer |
+| Controls | Persistent pause, bounded evaluations/time/output, local bearer-authenticated console, measured request-size/time bounds, idempotency, compare-and-swap reviews | Single-operator local service; remote exposure requires a separately operated secure access layer |
 | Recovery | Consistent SQLite backup plus config/key/token, checksums, signature verification, restore to a new directory | Backup contains secrets; signatures cannot protect against theft of the signing key or rollback without an external checkpoint |
 | Original contracts | Preserved Solidity components; exact shipped/test-source comparison and original contract suite | Tests are not an independent security audit; no mainnet deployment or migration performed |
 | Original demos | All retained; browser/contract/Python regression checks included | Optional heavy integrations, provider keys, hardware and external services remain conditional |
+
+The latest [manuscript implementation map](MANUSCRIPT_ALIGNMENT.md) links the final paper to native code,
+Proof Bloom, the Compounding Lab, release acceptance and each remaining research obligation.
 
 ## Explicit research and integration boundaries
 

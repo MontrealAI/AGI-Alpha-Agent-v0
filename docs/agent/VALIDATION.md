@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.6.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.8.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -176,3 +176,27 @@ and public HTTPS acceptance retain screenshots and `insight-atlas.json` in the v
 
 The release finalizer refuses publication without every required public Atlas journey. Results establish
 local model behavior; economic hypotheses remain unverified. See [the field guide](INSIGHT_ATLAS.md).
+
+## Final-manuscript acceptance (1.8.0)
+
+The manuscript gate checks the original 198-page PDF, canonical Markdown and all 31 referenced figures
+against immutable SHA-256 commitments and the pinned upstream revision. Release assets contain the paper,
+source manifest and complete manuscript archive. The implementation map separates local engineering
+results from claims requiring independent, stressed or delayed real-world evidence.
+
+Compounding Lab acceptance covers positive transfer, changed-regime failure, no-archive ablation, full
+prior-learning and validation-call accounting, human review, imported timing provenance, fresh re-review,
+strict JSON/ZIP replay, unknown-field and prediction tampering, mobile 320/390 px, keyboard access,
+WCAG A/AA automated checks and real offline recovery. Native Python and browser JavaScript implementations
+must agree exactly. Both gallery configurations and the final public HTTPS site must pass.
+
+The native request-boundary tests send independently specified ASGI headers and body chunks. They verify
+that oversized, falsely declared, duplicate-framed, incomplete and timed-out uploads leave no mission or
+journal mutation. Valid fragmented JSON still creates the requested mission. Authentication, hostile-host
+and early rejection responses retain the security headers. These tests complement actual container and
+browser integration, rather than claiming a formal penetration test.
+
+Use the matching release manifest and validation archive for final counts and skipped-test details.
+The previous candidate at `2afee418e1142becd4baa94a282b83b648ade359` passed 1,176 regression tests with
+54 optional skips, 4 expected failures and 82.83% coverage before the additional request-boundary tests.
+The final release reruns the complete matrix on its own commit; a prior candidate does not authorize it.

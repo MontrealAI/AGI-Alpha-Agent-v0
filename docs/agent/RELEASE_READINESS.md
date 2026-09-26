@@ -1,15 +1,19 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.6.0
+# Release readiness — 1.8.0 manuscript edition
 
-This release supports a useful, bounded agent on a private operator machine and a self-contained
-browser research workspace. It does not establish general intelligence or a production autonomous
-economy. Assess it against your workload and the evidence below, rather than an unqualified “10/10”.
+The supported deployment profile is a private, single-operator agent with a persistent signed journal,
+plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
+specification. Installation, execution, review, evidence export, recovery and publication have explicit
+acceptance gates. The [manuscript map](MANUSCRIPT_ALIGNMENT.md) records implemented behavior and the
+research obligations that still need external evidence.
 
 ## Choose a starting point
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Measure whether a learned capability helps new tasks | [Compounding Lab](../compounding/index.html) | Frozen policy, four measured arms, learning/review costs, negative controls and a complete Evidence Docket |
+| Turn a claim into reviewed work and retained capability | [Proof Bloom](../bloom/index.html) | Claim → jobs → evidence → review → promotion → memory, with revocation and native signed returns |
 | Explore opportunities and test an agent firm | [Insight Atlas](../insight/index.html), choose an expedition | Exact scenario ledger, training/holdout comparisons, claim dossiers and replayable capability history |
 | Explore the original white-paper vision | [Ascension Lab](../ascension/index.html), choose a scenario, select Discover | Computed portfolio/schedule, encrypted recovery capsule, modeled economics and downloadable evidence |
 | Solve a bounded task with your own inputs | [Browser workspace](../index.html), choose a mission and edit its data | Checked research, allocation, schedule or forecast; explicit review and export |
@@ -26,15 +30,17 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Area | Required evidence | Practical limit |
 |---|---|---|
 | Correctness | Independent algorithm/accounting tests, full Python regression, strict types, Solidity checks | Bounded input domains and finite tests; no general correctness proof |
-| Security controls | Authentication/origin checks, private files, signed journal, tamper tests, real Docker isolation | Private single-operator host; not a public multi-tenant service or perfect sandbox |
+| Security controls | Authentication/origin checks, measured 512 KiB request limit and 15-second body deadline, private files, signed journal, tamper tests, real Docker isolation | Private single-operator host; not a public multi-tenant service or perfect sandbox |
 | Dependencies | Hash-locked installation, full operator Python advisory audit, existing browser audits | A dated advisory snapshot; historical environments and host OS need separate maintenance |
 | Recovery | Signed backup/restore, pause, corruption detection, persistent container restart | Backups contain secrets; archive limit 256 MiB; independent checkpoints detect rollback |
 | User experience | Real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
 | Delivery | Same tested source/site, exact-commit CI, immutable tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; freshness checks cannot make separate API writes atomic |
+| Manuscript fidelity | Original 198-page PDF, canonical Markdown and 31 figures checked against a pinned source commit | A paper is a research specification, not proof that every proposed scientific capability has been established |
+| Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.6.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.8.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Prior releases remain immutable recovery checkpoints.
@@ -43,15 +49,16 @@ audits block publication. Prior releases remain immutable recovery checkpoints.
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.6.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.8.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
 4. Stop the old process before using the restored home. Resume deliberately and test representative missions. For rollback, stop the
    new process and restore the pre-upgrade backup into another new home with the prior environment.
 
-There is no journal schema migration in this release. Existing Ed25519 identities and Nova-Seed formats
-remain compatible. Do not run two versions on the same home or discard your pre-upgrade backup.
+There is no journal schema migration in this release. Existing Ed25519 identities, Nova-Seed formats
+and v1 Bloom Chronicle events remain compatible. The transfer protocol uses a separate versioned JSON
+format and does not rewrite native mission history. Do not run two versions on the same home or discard your pre-upgrade backup.
 Exact commands, Windows paths and container operations are in [the operator guide](OPERATIONS.md).
 
 ## Boundaries that still require separate evidence
@@ -60,7 +67,8 @@ The Ascension economics, Council and governance are browser protocol simulations
 local-EVM payments; this release has not demonstrated mainnet operation, deployed minting authority,
 live DEX activity or an independently audited production token economy. Paper-level AGI/ASI, formal
 invariants and physical/economic guarantees remain research claims; the
-[implementation map](WHITEPAPER_IMPLEMENTATION.md) records the mathematical corrections and missing evidence.
+[latest manuscript map](MANUSCRIPT_ALIGNMENT.md) records the remaining obligations; the
+[original white-paper map](WHITEPAPER_IMPLEMENTATION.md) retains its mathematical corrections.
 
 Long-running service reliability, public internet exposure, additional browsers, comprehensive
 accessibility conformance and organization-specific load targets have not been qualified by these
