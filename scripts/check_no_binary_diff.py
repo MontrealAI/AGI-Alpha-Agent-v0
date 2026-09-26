@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Fail if the Git diff includes binary file changes."""
+
 from __future__ import annotations
 
 import json

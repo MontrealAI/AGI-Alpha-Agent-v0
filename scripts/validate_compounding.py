@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Execute the manuscript transfer journey and replay its actual browser downloads."""
+
 from __future__ import annotations
 
 import argparse

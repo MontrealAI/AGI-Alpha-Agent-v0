@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Include successful public Pages acceptance in an unpublished release package."""
+
 from __future__ import annotations
 
 import argparse

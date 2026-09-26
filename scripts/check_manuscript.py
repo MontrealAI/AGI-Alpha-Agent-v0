@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Verify the owner-supplied publication against immutable upstream commitments."""
+
 from __future__ import annotations
 
 import hashlib

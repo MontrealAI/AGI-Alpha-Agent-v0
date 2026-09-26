@@ -5,6 +5,7 @@ The learner receives Mandate A only. A frozen forecasting policy, not an answer
 oracle, predicts new Mandate B tasks. Integer fixed-point arithmetic is shared
 with the browser implementation so every reported prediction can be replayed.
 """
+
 from __future__ import annotations
 
 import hashlib
