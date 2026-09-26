@@ -8,8 +8,8 @@ from scripts import verify_branch_protection
 
 
 EXPECTED_REQUIRED_CHECKS = [
-    "✅ PR CI / Lint (ruff)",
-    "✅ PR CI / Smoke tests",
+    "Lint (ruff)",
+    "Smoke tests",
 ]
 
 
