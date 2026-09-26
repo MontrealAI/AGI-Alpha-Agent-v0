@@ -1,0 +1,855 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <meta name="theme-color" content="#eeece6" />
+        <meta
+            name="description"
+            content="Insight Atlas: explore a living opportunity map, redesign an agent firm, and put every alpha claim on trial. Editable scenarios, actual planning algorithms and replayable evidence, on your device."
+        />
+        <title>Insight Atlas · AGI Alpha</title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/insight/atlas.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/insight/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#atlas">Skip to the interactive Atlas</a>
+        <header class="masthead">
+            <a class="wordmark" href="../"
+                ><span class="alpha-mark">α</span
+                ><span>AGI Alpha<small>THE INSIGHT ATLAS</small></span></a
+            >
+            <nav aria-label="Project navigation">
+                <a href="../ascension/">Ascension Lab</a
+                ><a href="../#explore">All demos</a
+                ><a href="../agent/INSIGHT_ATLAS/">Field guide ↗</a>
+            </nav>
+            <span class="edition">EDITION 1.6.0</span>
+        </header>
+        <main>
+            <section class="atlas-intro wrap">
+                <div>
+                    <p class="eyebrow">
+                        <span class="status-dot"></span> META-AGENTIC α–AGI / AN
+                        OPEN FRONTIER
+                    </p>
+                    <h1>
+                        See the possibility.<br /><em>Prove the advantage.</em>
+                    </h1>
+                </div>
+                <div class="intro-copy">
+                    <p>
+                        A living atlas of what could be.<br />A working
+                        laboratory for what holds up.
+                    </p>
+                    <p class="muted">
+                        Explore the opportunity. Redesign the system. Follow
+                        every claim back to its evidence.
+                    </p>
+                    <a href="#atlas" class="text-link"
+                        >Begin your expedition <span>↘</span></a
+                    >
+                </div>
+            </section>
+            <section
+                id="atlas"
+                class="atlas-shell wrap"
+                aria-label="Insight Atlas workspace"
+            >
+                <div class="workspace-bar">
+                    <div class="scenario-select">
+                        <label for="scenario-picker">YOUR EXPEDITION</label
+                        ><select
+                            id="scenario-picker"
+                            aria-describedby="scenario-question"
+                        ></select>
+                    </div>
+                    <p id="scenario-question"></p>
+                    <button
+                        id="guide-toggle"
+                        class="small-button"
+                        aria-expanded="false"
+                        aria-controls="field-notes"
+                    >
+                        A 3-minute field guide <span>↗</span>
+                    </button>
+                </div>
+                <aside id="field-notes" class="field-notes" hidden>
+                    <div>
+                        <span>01 / LOOK</span>
+                        <h2>Give possibility a shape.</h2>
+                        <p>
+                            Select a sector, inspect its hypotheses and change
+                            the scenario envelope. The allocation is exact; the
+                            dollars are an assumption.
+                        </p>
+                    </div>
+                    <div>
+                        <span>02 / TEST</span>
+                        <h2>Change the system itself.</h2>
+                        <p>
+                            Compare a first-order baseline with a different
+                            agent firm. Test capacity, independent review and
+                            budget. Explore 18 architectures.
+                        </p>
+                    </div>
+                    <div>
+                        <span>03 / PROVE</span>
+                        <h2>Make the next step reviewable.</h2>
+                        <p>
+                            Replay the evidence, record your review and export a
+                            recovery file. Turn unresolved claims into concrete
+                            validation briefs.
+                        </p>
+                    </div>
+                </aside>
+                <div class="mode-bar">
+                    <nav aria-label="Atlas views">
+                        <button data-view="map" aria-current="page">
+                            <span>01</span> Living treasure map</button
+                        ><button data-view="agency">
+                            <span>02</span> Second-order agency</button
+                        ><button data-view="ontology">
+                            <span>03</span> Alpha under trial
+                        </button>
+                    </nav>
+                    <span class="local-badge"
+                        ><i></i> PRIVATE · ON YOUR DEVICE</span
+                    >
+                </div>
+                <p
+                    id="atlas-status"
+                    class="status-line"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Opening the Atlas…
+                </p>
+
+                <section data-panel="map" aria-labelledby="map-title">
+                    <div class="map-layout">
+                        <div class="cosmos">
+                            <div class="cosmos-heading">
+                                <div>
+                                    <p class="eyebrow">
+                                        THE LIVING TREASURE MAP
+                                    </p>
+                                    <h2 id="map-title">
+                                        Twelve frontiers.<br /><em
+                                            >One connected possibility.</em
+                                        >
+                                    </h2>
+                                </div>
+                                <span class="figure-number">FIG. 01 / α</span>
+                            </div>
+                            <div class="constellation" id="constellation">
+                                <svg
+                                    id="sector-links"
+                                    viewBox="0 0 800 530"
+                                    preserveAspectRatio="none"
+                                    aria-hidden="true"
+                                ></svg>
+                                <div class="atlas-core" aria-hidden="true">
+                                    <span>α</span><small>INSIGHT</small>
+                                </div>
+                                <div id="sector-nodes"></div>
+                            </div>
+                            <div class="cosmos-footer">
+                                <span
+                                    ><i class="gold-dot"></i> Select a frontier
+                                    to reveal its claims</span
+                                ><button id="reveal-next" class="dark-button">
+                                    Explore next frontier ↗
+                                </button>
+                            </div>
+                        </div>
+                        <aside
+                            class="sector-inspector"
+                            aria-labelledby="sector-title"
+                        >
+                            <div class="inspector-top">
+                                <span class="eyebrow" id="sector-number"
+                                    >FRONTIER 01 / 12</span
+                                ><span id="sector-glyph" aria-hidden="true"
+                                    >↯</span
+                                >
+                            </div>
+                            <h3 id="sector-title">Energy</h3>
+                            <p id="sector-description"></p>
+                            <div class="sector-value">
+                                <span id="sector-amount"></span
+                                ><small>ILLUSTRATIVE SCENARIO ALLOCATION</small>
+                            </div>
+                            <div class="inspector-detail">
+                                <span>Share of the envelope</span
+                                ><b id="sector-share"></b>
+                            </div>
+                            <div class="inspector-detail">
+                                <span>Open hypotheses</span
+                                ><b id="sector-claims-count"></b>
+                            </div>
+                            <div id="sector-claims"></div>
+                            <button id="inspect-claims" class="button ink">
+                                Put these claims on trial <span>↗</span>
+                            </button>
+                            <p class="fine-print">
+                                A reference is a starting point. None of these
+                                economic claims has independent validation in
+                                this demo.
+                            </p>
+                        </aside>
+                    </div>
+                    <div class="envelope-strip">
+                        <div>
+                            <span class="eyebrow"
+                                >IMAGINE THE SCALE. KEEP THE ASSUMPTION
+                                VISIBLE.</span
+                            >
+                            <p>
+                                <strong id="envelope-label"
+                                    >$15 quadrillion</strong
+                                ><span>Illustrative opportunity envelope</span>
+                            </p>
+                        </div>
+                        <form id="envelope-form">
+                            <label for="envelope"
+                                >Scenario size · USD quadrillions</label
+                            >
+                            <div class="input-action">
+                                <input
+                                    id="envelope"
+                                    inputmode="decimal"
+                                    value="15"
+                                    maxlength="10"
+                                    required
+                                /><button class="small-button" type="submit">
+                                    Reallocate ↗
+                                </button>
+                            </div>
+                        </form>
+                        <p class="fine-print">
+                            Not a valuation, forecast or promised return. Exact
+                            allocations always sum to the envelope. Verified
+                            economic value here: <b>$0.</b>
+                        </p>
+                    </div>
+                    <details class="data-drawer">
+                        <summary>
+                            See the complete allocation ledger
+                            <span>12 sectors · exact dollars</span>
+                        </summary>
+                        <div
+                            id="allocation-table"
+                            class="table-scroll"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Exact sector allocation ledger"
+                        ></div>
+                    </details>
+                    <div class="bridge">
+                        <p>
+                            <span class="eyebrow">POSSIBILITY → CAPABILITY</span
+                            ><strong
+                                >The map asks what could matter.<br />The
+                                laboratory asks what works.</strong
+                            >
+                        </p>
+                        <button class="button ink" data-open="agency">
+                            Design the agent firm <span>→</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section
+                    data-panel="agency"
+                    aria-labelledby="agency-title"
+                    hidden
+                >
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">
+                                SECOND-ORDER AGENCY / THE ARCHITECT'S LABORATORY
+                            </p>
+                            <h2 id="agency-title">
+                                Don’t just execute.<br /><em
+                                    >Redesign the conditions.</em
+                                >
+                            </h2>
+                        </div>
+                        <p>
+                            First-order agents work inside a system. Here, you
+                            change its capacity, reviewer independence and proof
+                            gates—then measure the consequences.
+                        </p>
+                    </div>
+                    <div class="agency-layout">
+                        <aside class="control-panel">
+                            <h3>Your agent firm</h3>
+                            <p class="muted">
+                                Both architectures face the same budget,
+                                horizon, operator capacity and fault model.
+                            </p>
+                            <form id="architecture-form">
+                                <div class="control-pair">
+                                    <label
+                                        >Execution agents<input
+                                            id="agents"
+                                            name="agents"
+                                            type="number"
+                                            min="1"
+                                            max="8"
+                                            value="4"
+                                            required /></label
+                                    ><label
+                                        >Validators<input
+                                            id="validators"
+                                            name="validators"
+                                            type="number"
+                                            min="1"
+                                            max="6"
+                                            value="4"
+                                            required
+                                    /></label>
+                                </div>
+                                <div class="control-pair">
+                                    <label
+                                        >Independent groups<input
+                                            id="groups"
+                                            name="groups"
+                                            type="number"
+                                            min="1"
+                                            max="6"
+                                            value="4"
+                                            required /></label
+                                    ><label
+                                        >Unanimous quorum<input
+                                            id="quorum"
+                                            name="quorum"
+                                            type="number"
+                                            min="1"
+                                            max="3"
+                                            value="2"
+                                            required
+                                    /></label>
+                                </div>
+                                <label
+                                    >Budget · planning credits<input
+                                        id="budget"
+                                        name="budget"
+                                        type="number"
+                                        min="100"
+                                        max="5000"
+                                        value="1800"
+                                        required
+                                /></label>
+                                <div class="control-pair">
+                                    <label
+                                        >Horizon · minutes<input
+                                            id="horizon"
+                                            name="horizon"
+                                            type="number"
+                                            min="30"
+                                            max="240"
+                                            value="120"
+                                            required /></label
+                                    ><label
+                                        >Operator reviews<input
+                                            id="operator_slots"
+                                            name="operator_slots"
+                                            type="number"
+                                            min="0"
+                                            max="40"
+                                            value="24"
+                                            required
+                                    /></label>
+                                </div>
+                                <label
+                                    >Fault stress test<select
+                                        id="fault_groups"
+                                        name="fault_groups"
+                                    >
+                                        <option value="1">
+                                            One group accepts invalid work
+                                        </option>
+                                        <option value="0">
+                                            All groups follow ground truth
+                                        </option>
+                                    </select></label
+                                >
+                                <button class="button ink" type="submit">
+                                    Run the comparison <span>↗</span>
+                                </button>
+                            </form>
+                            <button
+                                id="search-architectures"
+                                class="button outline"
+                            >
+                                Explore 18 architectures <span>⌘</span>
+                            </button>
+                            <p class="fine-print">
+                                Model assumptions: one task per worker at a
+                                time; distinct reviewer groups; unanimous votes;
+                                one operator taking 2 minutes per accepted
+                                review. Credits reserve the full job.
+                            </p>
+                        </aside>
+                        <div class="agency-results">
+                            <div class="result-heading">
+                                <span class="eyebrow"
+                                    >BASELINE → YOUR ARCHITECTURE</span
+                                ><label
+                                    >Evaluation set<select id="split">
+                                        <option value="holdout">
+                                            Holdout · separate fixtures
+                                        </option>
+                                        <option value="training">
+                                            Training · search objective
+                                        </option>
+                                    </select></label
+                                >
+                            </div>
+                            <div
+                                id="comparison-cards"
+                                class="metric-grid"
+                            ></div>
+                            <p
+                                id="comparison-explanation"
+                                class="result-explanation"
+                            ></p>
+                            <div class="chart-card">
+                                <div class="chart-title">
+                                    <h3>Every task leaves a trace.</h3>
+                                    <span id="timeline-caption"></span>
+                                </div>
+                                <div
+                                    id="task-timeline"
+                                    class="task-timeline"
+                                ></div>
+                                <p class="fine-print">
+                                    Length shows time from arrival to final
+                                    decision. Solid marks are valid and on time;
+                                    open marks expose late, blocked or rejected
+                                    work. The table below records exact timings
+                                    and votes.
+                                </p>
+                            </div>
+                            <div id="search-results" class="chart-card" hidden>
+                                <div class="chart-title">
+                                    <h3>The architecture frontier</h3>
+                                    <span>18 candidates · training only</span>
+                                </div>
+                                <svg
+                                    id="frontier-chart"
+                                    viewBox="0 0 700 260"
+                                    role="img"
+                                    aria-label="Architecture candidates: reserved credits horizontally, useful training outputs vertically"
+                                ></svg>
+                                <p id="search-explanation"></p>
+                                <button id="apply-search" class="small-button">
+                                    Apply the selected architecture ↗
+                                </button>
+                                <details>
+                                    <summary>Compare every candidate</summary>
+                                    <div
+                                        id="search-table"
+                                        class="table-scroll"
+                                        tabindex="0"
+                                        role="region"
+                                        aria-label="Architecture search results"
+                                    ></div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                    <details class="data-drawer">
+                        <summary>
+                            Open the complete task ledger
+                            <span
+                                >Timings · reviewers · truth labels ·
+                                decisions</span
+                            >
+                        </summary>
+                        <div
+                            id="task-table"
+                            class="table-scroll"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Task ledger"
+                        ></div>
+                    </details>
+                    <div class="proof-section">
+                        <div>
+                            <p class="eyebrow">
+                                ONLY VALIDATED CAPABILITY COMPOUNDS
+                            </p>
+                            <h3>Make the result answerable.</h3>
+                            <p>
+                                Replay binds this model result to your exact
+                                scenario and architecture. Promotion records
+                                your review of a <b>local model benchmark</b>;
+                                it does not certify real-world performance or
+                                economic claims.
+                            </p>
+                            <button id="build-proof" class="button ink">
+                                Build &amp; replay evidence <span>↗</span>
+                            </button>
+                            <div class="proof-actions">
+                                <button
+                                    id="download-proof"
+                                    class="text-button"
+                                    disabled
+                                >
+                                    Download evidence ↓</button
+                                ><label class="file-label"
+                                    >Verify a bundle<input
+                                        id="proof-import"
+                                        type="file"
+                                        accept=".json,application/json"
+                                /></label>
+                            </div>
+                        </div>
+                        <div id="proof-gates" class="proof-gates"></div>
+                    </div>
+                    <div id="review-panel" class="review-panel" hidden>
+                        <div>
+                            <h3>Your review, on the record.</h3>
+                            <p id="proof-summary"></p>
+                            <label for="review-note"
+                                >What did you check, and what remains
+                                uncertain?</label
+                            ><textarea
+                                id="review-note"
+                                rows="3"
+                                minlength="12"
+                                maxlength="500"
+                                placeholder="I checked the holdout trace and reviewer independence. These fixture results still need a representative operational pilot."
+                            ></textarea>
+                        </div>
+                        <button id="promote" class="button ink">
+                            Record modeled capability <span>+</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section
+                    data-panel="ontology"
+                    aria-labelledby="ontology-title"
+                    hidden
+                >
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">
+                                THE ALPHA ONTOLOGY / A CLAIM UNDER TRIAL
+                            </p>
+                            <h2 id="ontology-title">
+                                Every possibility.<br /><em
+                                    >A burden of proof.</em
+                                >
+                            </h2>
+                        </div>
+                        <p>
+                            Follow a hypothesis through its sector, references
+                            and missing evidence. Create a validation brief that
+                            someone can actually execute.
+                        </p>
+                    </div>
+                    <div class="claim-toolbar">
+                        <label
+                            >Search the claims<input
+                                id="claim-search"
+                                type="search"
+                                placeholder="Try evidence, energy, review…" /></label
+                        ><label
+                            >Frontier<select id="claim-sector">
+                                <option value="all">All frontiers</option>
+                            </select></label
+                        ><button id="new-claim" class="small-button">
+                            Add your hypothesis +
+                        </button>
+                    </div>
+                    <div class="ontology-layout">
+                        <div id="claim-list" class="claim-list"></div>
+                        <article class="claim-dossier" id="claim-dossier">
+                            <p class="eyebrow">
+                                SELECT A CLAIM TO INSPECT ITS EVIDENCE
+                            </p>
+                        </article>
+                    </div>
+                    <form id="claim-form" class="claim-editor" hidden>
+                        <h3>Put your own hypothesis on the map.</h3>
+                        <p>
+                            Use an observable outcome and a test someone else
+                            can reproduce. Existing source excerpts are context,
+                            not verification.
+                        </p>
+                        <div class="control-pair">
+                            <label
+                                >Short title<input
+                                    name="title"
+                                    maxlength="120"
+                                    minlength="3"
+                                    required /></label
+                            ><label
+                                >Sector<select
+                                    name="sector"
+                                    id="new-sector"
+                                ></select
+                            ></label>
+                        </div>
+                        <label
+                            >Falsifiable hypothesis<textarea
+                                name="hypothesis"
+                                maxlength="700"
+                                minlength="3"
+                                required
+                                rows="2"
+                            ></textarea>
+                        </label>
+                        <div class="control-pair">
+                            <label
+                                >What will you measure?<input
+                                    name="metric"
+                                    maxlength="160"
+                                    minlength="3"
+                                    required /></label
+                            ><label
+                                >Acceptance criterion<input
+                                    name="target"
+                                    maxlength="200"
+                                    minlength="3"
+                                    required
+                            /></label>
+                        </div>
+                        <label
+                            >Required evidence and controls<textarea
+                                name="evidence_needed"
+                                maxlength="800"
+                                minlength="3"
+                                required
+                                rows="2"
+                            ></textarea>
+                        </label>
+                        <div class="button-row">
+                            <button type="submit" class="button ink">
+                                Add the claim <span>+</span></button
+                            ><button
+                                id="cancel-claim"
+                                type="button"
+                                class="small-button"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                    <div class="ontology-footer">
+                        <p>
+                            <b>Proof debt becomes an executable brief.</b>
+                            Export a research mission for your local α-Agent, or
+                            a full dossier with typed nodes and edges. Briefs
+                            are unassigned and unfunded; this page does not post
+                            jobs or make wallet transactions.
+                        </p>
+                        <div class="button-row">
+                            <button id="download-dossier" class="button ink">
+                                Export the full dossier ↓</button
+                            ><a href="../#operate" class="text-link"
+                                >Run your own agent ↗</a
+                            >
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    class="chronicle-section"
+                    aria-labelledby="chronicle-title"
+                >
+                    <div class="chronicle-heading">
+                        <div>
+                            <p class="eyebrow">THE CAPABILITY CHRONICLE</p>
+                            <h2 id="chronicle-title">
+                                Keep what earned its place.
+                            </h2>
+                        </div>
+                        <span id="chronicle-count"
+                            >0 active modeled capabilities</span
+                        >
+                    </div>
+                    <div id="chronicle-events" class="chronicle-events">
+                        <p>
+                            No capabilities promoted yet. Run a comparison,
+                            replay the evidence, then record your review.
+                        </p>
+                    </div>
+                    <p class="fine-print">
+                        Hash-linked, replayable local history. Hashes detect
+                        changes relative to a trusted copy; they do not
+                        establish identity or external certification. Export
+                        your work before closing this tab.
+                    </p>
+                </section>
+                <div class="workspace-footer">
+                    <div class="button-row">
+                        <button id="save-workspace" class="button ink">
+                            Save expedition &amp; recovery file ↓</button
+                        ><label class="file-label"
+                            >Restore expedition<input
+                                id="workspace-import"
+                                type="file"
+                                accept=".json,application/json"
+                        /></label>
+                    </div>
+                    <div class="button-row">
+                        <button id="download-inputs" class="text-button">
+                            Download editable inputs ↓</button
+                        ><label class="file-label"
+                            >Import inputs<input
+                                id="scenario-import"
+                                type="file"
+                                accept=".json,application/json" /></label
+                        ><button id="reset-atlas" class="text-button">
+                            Reset current scenario
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section class="continuum wrap">
+                <div>
+                    <p class="eyebrow">
+                        A LARGER VISION. A TRACEABLE NEXT STEP.
+                    </p>
+                    <h2>
+                        Insight is the beginning.<br /><em
+                            >Ascension is the loop.</em
+                        >
+                    </h2>
+                    <p>
+                        Continue into the white-paper laboratory: encrypted
+                        Nova-Seeds, modeled funding and settlement, agent
+                        orchestration, governance and the Architect.
+                    </p>
+                    <a class="button ink" href="../ascension/"
+                        >Enter the Ascension Lab <span>↗</span></a
+                    >
+                </div>
+                <div class="continuum-art" aria-hidden="true">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><span>α</span>
+                </div>
+            </section>
+            <section class="methods wrap">
+                <details>
+                    <summary>
+                        Methods, boundaries &amp; original inspiration
+                        <span
+                            >Read the evidence, not just the interface ↗</span
+                        >
+                    </summary>
+                    <div class="methods-grid">
+                        <div>
+                            <h3>What runs here</h3>
+                            <p>
+                                Exact integer allocation, deterministic event
+                                scheduling, bounded architecture search, typed
+                                claim graphs, SHA-256 evidence replay and
+                                recoverable local history. No API key, account,
+                                hidden server or third-party telemetry.
+                            </p>
+                            <p>
+                                The planning engine does not generate forecasts
+                                or use a language model.
+                                <a href="../#workbench"
+                                    >The original workspace</a
+                                >
+                                includes browser inference;
+                                <a href="../agent/OPERATIONS/"
+                                    >the native operator</a
+                                >
+                                supports local model missions.
+                            </p>
+                        </div>
+                        <div>
+                            <h3>What remains a hypothesis</h3>
+                            <p>
+                                The $15 quadrillion figure is an editable
+                                illustration. Task fixtures are synthetic and
+                                public; the holdout is separate, not secret.
+                                Reviewer independence and validity labels are
+                                model assumptions. Passing a fixture does not
+                                demonstrate AGI, investment returns, or live
+                                $AGIALPHA settlement.
+                            </p>
+                            <p>
+                                Token mechanics remain inspectable simulations
+                                in <a href="../ascension/">Ascension</a>. This
+                                project is the $AGIALPHA agent project, distinct
+                                from AGI Jobs.
+                            </p>
+                        </div>
+                        <div>
+                            <h3>The original frontiers</h3>
+                            <p>
+                                <a
+                                    href="https://montrealai.github.io/goalos-v67-alpha-agi-insight-living-treasure-map-masterclass-interface.html"
+                                    >Living Treasure Map ↗</a
+                                >
+                            </p>
+                            <p>
+                                <a
+                                    href="https://montrealai.github.io/goalos-v65-second-order-agency-economic-reality-interactive-masterclass-interface.html"
+                                    >Second-Order Agency ↗</a
+                                >
+                            </p>
+                            <p>
+                                <a
+                                    href="https://montrealai.github.io/goalos-v62-agi-native-bloomberg-terminal-asi-sovereign-ontology-nexus-interface.html"
+                                    >Alpha Ontology HyperTerminal ↗</a
+                                >
+                            </p>
+                            <p>
+                                <a href="https://agialpha.com/"
+                                    >AGI Alpha · visual inspiration ↗</a
+                                >
+                            </p>
+                            <p>
+                                <a href="../agent/INSIGHT_ATLAS/"
+                                    >Implementation, source provenance &amp;
+                                    recovery guide ↗</a
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+        </main>
+        <footer class="page-footer wrap">
+            <a class="wordmark" href="../"
+                ><span class="alpha-mark">α</span> AGI Alpha</a
+            ><span>OPEN POSSIBILITY. ACCOUNTABLE PROGRESS.</span
+            ><a
+                href="../DISCLAIMER_SNIPPET/"
+                title="See docs/DISCLAIMER_SNIPPET.md"
+                >Research disclaimer</a
+            ><a href="../">Back to Gallery</a>
+        </footer>
+        <noscript
+            ><p class="noscript">
+                Enable JavaScript for the interactive Atlas. The
+                <a href="../agent/INSIGHT_ATLAS/">field guide</a> and original
+                project remain available without it.
+            </p></noscript
+        >
+        <script type="module" src="../assets/insight/atlas.mjs"></script>
+    </body>
+</html>

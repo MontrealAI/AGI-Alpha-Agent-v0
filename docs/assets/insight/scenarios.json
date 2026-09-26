@@ -1,0 +1,1562 @@
+[
+    {
+        "schema": "agialpha.insight.scenario.v1",
+        "id": "energy",
+        "title": "Energy × compute",
+        "question": "Can coordinated energy and compute planning improve useful work within a fixed review budget?",
+        "envelope_usd": "15000000000000000",
+        "weights_bps": {
+            "Energy": 1300,
+            "Compute": 1200,
+            "Science": 1200,
+            "Health": 1100,
+            "Materials": 900,
+            "Robotics": 800,
+            "Finance": 700,
+            "Climate": 700,
+            "Machine labor": 700,
+            "Infrastructure": 600,
+            "Education": 400,
+            "Governance": 400
+        },
+        "sources": [
+            {
+                "id": "concept",
+                "title": "Original α-AGI Insight experience",
+                "kind": "public-reference",
+                "url": "https://montrealai.github.io/goalos-v67-alpha-agi-insight-living-treasure-map-masterclass-interface.html",
+                "text": "The original interactive interface presents a $15 quadrillion illustrative scenario envelope, sector opportunities, proof debt and a claim boundary. It is a concept reference; it does not establish a realized economic valuation."
+            },
+            {
+                "id": "fixture",
+                "title": "Energy × compute: synthetic planning fixture",
+                "kind": "synthetic",
+                "text": "This scenario contains authored hypotheses and deterministic task fixtures. Task validity is known benchmark ground truth. Durations, deadlines, prices and reviewer failure domains are assumptions, not measured operational performance. Training and holdout IDs are disjoint, but both fixture sets are public."
+            }
+        ],
+        "claims": [
+            {
+                "id": "energy-1",
+                "sector": "Energy",
+                "title": "Recover stranded energy",
+                "hypothesis": "Flexible computing could use otherwise curtailed energy without increasing peak demand.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "MWh of curtailment avoided",
+                "target": "Reduce curtailment against a matched baseline without increasing peak draw.",
+                "evidence_needed": "Meter generation, demand and workload completion across matched periods; publish the counterfactual and grid constraints."
+            },
+            {
+                "id": "energy-2",
+                "sector": "Compute",
+                "title": "Schedule useful compute",
+                "hypothesis": "Deadline-aware placement could improve completed compute work per planning credit.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Valid on-time tasks per credit",
+                "target": "Improve on-time valid output at the same budget without accepting invalid tasks.",
+                "evidence_needed": "Compare an untouched workload against the baseline; include full scheduling traces, energy and reviewer time."
+            },
+            {
+                "id": "energy-3",
+                "sector": "Materials",
+                "title": "Extend battery life",
+                "hypothesis": "Maintenance informed by measured degradation could reduce storage replacement cost.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Cycles to capacity threshold",
+                "target": "Demonstrate a longer measured cycle life under matched temperature and load.",
+                "evidence_needed": "Run matched cell tests with raw telemetry, intervention logs and independent replication."
+            },
+            {
+                "id": "energy-4",
+                "sector": "Climate",
+                "title": "Account for marginal emissions",
+                "hypothesis": "Load shifting could reduce marginal emissions while meeting service deadlines.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Measured kg CO2e per completed task",
+                "target": "Lower marginal emissions with equivalent service quality.",
+                "evidence_needed": "Use timestamped grid and load measurements; disclose emissions factors and uncertainty."
+            },
+            {
+                "id": "energy-5",
+                "sector": "Infrastructure",
+                "title": "Clear the interconnection queue",
+                "hypothesis": "A shared evidence dossier could reduce avoidable review cycles.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Days and review hours to a complete application",
+                "target": "Reduce missing-evidence rework without weakening requirements.",
+                "evidence_needed": "Measure review outcomes before and after deployment, controlling for project complexity."
+            },
+            {
+                "id": "energy-6",
+                "sector": "Governance",
+                "title": "Separate the validators",
+                "hypothesis": "Reviewers with distinct failure domains could resist a single compromised group.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Invalid outputs accepted",
+                "target": "Accept zero injected invalid cases in a specified test set.",
+                "evidence_needed": "Document reviewer independence, inject faults and publish every acceptance and rejection."
+            }
+        ],
+        "workload": {
+            "training": [
+                {
+                    "id": "training-01",
+                    "arrival": 0,
+                    "minutes": 6,
+                    "review_minutes": 2,
+                    "due": 45,
+                    "valid": true
+                },
+                {
+                    "id": "training-02",
+                    "arrival": 0,
+                    "minutes": 13,
+                    "review_minutes": 5,
+                    "due": 56,
+                    "valid": true
+                },
+                {
+                    "id": "training-03",
+                    "arrival": 0,
+                    "minutes": 20,
+                    "review_minutes": 2,
+                    "due": 67,
+                    "valid": false
+                },
+                {
+                    "id": "training-04",
+                    "arrival": 0,
+                    "minutes": 10,
+                    "review_minutes": 5,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-05",
+                    "arrival": 5,
+                    "minutes": 17,
+                    "review_minutes": 2,
+                    "due": 67,
+                    "valid": true
+                },
+                {
+                    "id": "training-06",
+                    "arrival": 5,
+                    "minutes": 7,
+                    "review_minutes": 5,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-07",
+                    "arrival": 5,
+                    "minutes": 14,
+                    "review_minutes": 2,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-08",
+                    "arrival": 5,
+                    "minutes": 21,
+                    "review_minutes": 5,
+                    "due": 73,
+                    "valid": false
+                },
+                {
+                    "id": "training-09",
+                    "arrival": 10,
+                    "minutes": 11,
+                    "review_minutes": 2,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-10",
+                    "arrival": 10,
+                    "minutes": 18,
+                    "review_minutes": 5,
+                    "due": 73,
+                    "valid": true
+                },
+                {
+                    "id": "training-11",
+                    "arrival": 10,
+                    "minutes": 8,
+                    "review_minutes": 2,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "training-12",
+                    "arrival": 10,
+                    "minutes": 15,
+                    "review_minutes": 5,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-13",
+                    "arrival": 15,
+                    "minutes": 22,
+                    "review_minutes": 2,
+                    "due": 84,
+                    "valid": false
+                },
+                {
+                    "id": "training-14",
+                    "arrival": 15,
+                    "minutes": 12,
+                    "review_minutes": 5,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-15",
+                    "arrival": 15,
+                    "minutes": 19,
+                    "review_minutes": 2,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-16",
+                    "arrival": 15,
+                    "minutes": 9,
+                    "review_minutes": 5,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "training-17",
+                    "arrival": 20,
+                    "minutes": 16,
+                    "review_minutes": 2,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-18",
+                    "arrival": 20,
+                    "minutes": 6,
+                    "review_minutes": 5,
+                    "due": 90,
+                    "valid": false
+                },
+                {
+                    "id": "training-19",
+                    "arrival": 20,
+                    "minutes": 13,
+                    "review_minutes": 2,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-20",
+                    "arrival": 20,
+                    "minutes": 20,
+                    "review_minutes": 5,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-21",
+                    "arrival": 25,
+                    "minutes": 10,
+                    "review_minutes": 2,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-22",
+                    "arrival": 25,
+                    "minutes": 17,
+                    "review_minutes": 5,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-23",
+                    "arrival": 25,
+                    "minutes": 7,
+                    "review_minutes": 2,
+                    "due": 96,
+                    "valid": false
+                },
+                {
+                    "id": "training-24",
+                    "arrival": 25,
+                    "minutes": 14,
+                    "review_minutes": 5,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-25",
+                    "arrival": 30,
+                    "minutes": 21,
+                    "review_minutes": 2,
+                    "due": 96,
+                    "valid": true
+                },
+                {
+                    "id": "training-26",
+                    "arrival": 30,
+                    "minutes": 11,
+                    "review_minutes": 5,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-27",
+                    "arrival": 30,
+                    "minutes": 18,
+                    "review_minutes": 2,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "training-28",
+                    "arrival": 30,
+                    "minutes": 8,
+                    "review_minutes": 5,
+                    "due": 75,
+                    "valid": false
+                }
+            ],
+            "holdout": [
+                {
+                    "id": "holdout-01",
+                    "arrival": 0,
+                    "minutes": 19,
+                    "review_minutes": 5,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-02",
+                    "arrival": 0,
+                    "minutes": 9,
+                    "review_minutes": 2,
+                    "due": 46,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-03",
+                    "arrival": 0,
+                    "minutes": 16,
+                    "review_minutes": 5,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-04",
+                    "arrival": 0,
+                    "minutes": 6,
+                    "review_minutes": 2,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-05",
+                    "arrival": 5,
+                    "minutes": 13,
+                    "review_minutes": 5,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-06",
+                    "arrival": 5,
+                    "minutes": 20,
+                    "review_minutes": 2,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-07",
+                    "arrival": 5,
+                    "minutes": 10,
+                    "review_minutes": 5,
+                    "due": 52,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-08",
+                    "arrival": 5,
+                    "minutes": 17,
+                    "review_minutes": 2,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-09",
+                    "arrival": 10,
+                    "minutes": 7,
+                    "review_minutes": 5,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-10",
+                    "arrival": 10,
+                    "minutes": 14,
+                    "review_minutes": 2,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-11",
+                    "arrival": 10,
+                    "minutes": 21,
+                    "review_minutes": 5,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-12",
+                    "arrival": 10,
+                    "minutes": 11,
+                    "review_minutes": 2,
+                    "due": 58,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-13",
+                    "arrival": 15,
+                    "minutes": 18,
+                    "review_minutes": 5,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-14",
+                    "arrival": 15,
+                    "minutes": 8,
+                    "review_minutes": 2,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-15",
+                    "arrival": 15,
+                    "minutes": 15,
+                    "review_minutes": 5,
+                    "due": 69,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-16",
+                    "arrival": 15,
+                    "minutes": 22,
+                    "review_minutes": 2,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-17",
+                    "arrival": 20,
+                    "minutes": 12,
+                    "review_minutes": 5,
+                    "due": 69,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-18",
+                    "arrival": 20,
+                    "minutes": 19,
+                    "review_minutes": 2,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-19",
+                    "arrival": 20,
+                    "minutes": 9,
+                    "review_minutes": 5,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-20",
+                    "arrival": 20,
+                    "minutes": 16,
+                    "review_minutes": 2,
+                    "due": 75,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-21",
+                    "arrival": 25,
+                    "minutes": 6,
+                    "review_minutes": 5,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-22",
+                    "arrival": 25,
+                    "minutes": 13,
+                    "review_minutes": 2,
+                    "due": 75,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-23",
+                    "arrival": 25,
+                    "minutes": 20,
+                    "review_minutes": 5,
+                    "due": 86,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-24",
+                    "arrival": 25,
+                    "minutes": 10,
+                    "review_minutes": 2,
+                    "due": 70,
+                    "valid": true
+                }
+            ]
+        }
+    },
+    {
+        "schema": "agialpha.insight.scenario.v1",
+        "id": "science",
+        "title": "Science × discovery",
+        "question": "Which research workflow produces more reviewable results without hiding validation work?",
+        "envelope_usd": "15000000000000000",
+        "weights_bps": {
+            "Energy": 1300,
+            "Compute": 1200,
+            "Science": 1200,
+            "Health": 1100,
+            "Materials": 900,
+            "Robotics": 800,
+            "Finance": 700,
+            "Climate": 700,
+            "Machine labor": 700,
+            "Infrastructure": 600,
+            "Education": 400,
+            "Governance": 400
+        },
+        "sources": [
+            {
+                "id": "concept",
+                "title": "Original α-AGI Insight experience",
+                "kind": "public-reference",
+                "url": "https://montrealai.github.io/goalos-v67-alpha-agi-insight-living-treasure-map-masterclass-interface.html",
+                "text": "The original interactive interface presents a $15 quadrillion illustrative scenario envelope, sector opportunities, proof debt and a claim boundary. It is a concept reference; it does not establish a realized economic valuation."
+            },
+            {
+                "id": "fixture",
+                "title": "Science × discovery: synthetic planning fixture",
+                "kind": "synthetic",
+                "text": "This scenario contains authored hypotheses and deterministic task fixtures. Task validity is known benchmark ground truth. Durations, deadlines, prices and reviewer failure domains are assumptions, not measured operational performance. Training and holdout IDs are disjoint, but both fixture sets are public."
+            }
+        ],
+        "claims": [
+            {
+                "id": "science-1",
+                "sector": "Science",
+                "title": "Make experiments replayable",
+                "hypothesis": "Structured experiment records could reduce time to reproduce a reported result.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Independent replication time",
+                "target": "Improve replication time without reducing coverage of negative outcomes.",
+                "evidence_needed": "Provide raw data, a preregistered method, environment lock and blinded replication."
+            },
+            {
+                "id": "science-2",
+                "sector": "Health",
+                "title": "Triage evidence safely",
+                "hypothesis": "Evidence-linked review could help specialists find unsupported health claims sooner.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Missed unsupported claims",
+                "target": "Reduce misses on a blinded, specialist-reviewed set.",
+                "evidence_needed": "Use a licensed, de-identified test set and independent clinical review; measure harms and false positives."
+            },
+            {
+                "id": "science-3",
+                "sector": "Materials",
+                "title": "Prioritize candidate materials",
+                "hypothesis": "Budgeted experiments could identify more qualifying materials per laboratory hour.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Replicated candidates per lab hour",
+                "target": "Improve replicated yield over a prespecified baseline.",
+                "evidence_needed": "Run controlled experiments with calibration, failed candidates, raw results and independent reproduction."
+            },
+            {
+                "id": "science-4",
+                "sector": "Compute",
+                "title": "Budget the reasoning loop",
+                "hypothesis": "Explicit compute and review budgets could improve research throughput.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Verified on-time tasks",
+                "target": "Meet or exceed baseline output under the same resource limits.",
+                "evidence_needed": "Hold out workload cases before tuning; record compute, reviewer effort and failure cases."
+            },
+            {
+                "id": "science-5",
+                "sector": "Education",
+                "title": "Transfer usable knowledge",
+                "hypothesis": "Evidence-backed learning material could improve demonstrated task performance.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Held-out task accuracy",
+                "target": "Improve post-training task performance against a randomized control.",
+                "evidence_needed": "Preregister outcomes; use consented participants, randomized groups and blinded grading."
+            },
+            {
+                "id": "science-6",
+                "sector": "Governance",
+                "title": "Preserve negative results",
+                "hypothesis": "A reviewable Chronicle could prevent failed results from silently re-entering production.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Previously rejected results reaccepted",
+                "target": "Zero unreviewed reintroductions in a defined replay exercise.",
+                "evidence_needed": "Test revocation, restoration, replay and conflicts; include tampered history and stale evidence."
+            }
+        ],
+        "workload": {
+            "training": [
+                {
+                    "id": "training-01",
+                    "arrival": 0,
+                    "minutes": 9,
+                    "review_minutes": 3,
+                    "due": 45,
+                    "valid": true
+                },
+                {
+                    "id": "training-02",
+                    "arrival": 0,
+                    "minutes": 16,
+                    "review_minutes": 6,
+                    "due": 56,
+                    "valid": true
+                },
+                {
+                    "id": "training-03",
+                    "arrival": 0,
+                    "minutes": 6,
+                    "review_minutes": 3,
+                    "due": 67,
+                    "valid": false
+                },
+                {
+                    "id": "training-04",
+                    "arrival": 0,
+                    "minutes": 13,
+                    "review_minutes": 6,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-05",
+                    "arrival": 5,
+                    "minutes": 20,
+                    "review_minutes": 3,
+                    "due": 67,
+                    "valid": true
+                },
+                {
+                    "id": "training-06",
+                    "arrival": 5,
+                    "minutes": 10,
+                    "review_minutes": 6,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-07",
+                    "arrival": 5,
+                    "minutes": 17,
+                    "review_minutes": 3,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-08",
+                    "arrival": 5,
+                    "minutes": 7,
+                    "review_minutes": 6,
+                    "due": 73,
+                    "valid": false
+                },
+                {
+                    "id": "training-09",
+                    "arrival": 10,
+                    "minutes": 14,
+                    "review_minutes": 3,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-10",
+                    "arrival": 10,
+                    "minutes": 21,
+                    "review_minutes": 6,
+                    "due": 73,
+                    "valid": true
+                },
+                {
+                    "id": "training-11",
+                    "arrival": 10,
+                    "minutes": 11,
+                    "review_minutes": 3,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "training-12",
+                    "arrival": 10,
+                    "minutes": 18,
+                    "review_minutes": 6,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-13",
+                    "arrival": 15,
+                    "minutes": 8,
+                    "review_minutes": 3,
+                    "due": 84,
+                    "valid": false
+                },
+                {
+                    "id": "training-14",
+                    "arrival": 15,
+                    "minutes": 15,
+                    "review_minutes": 6,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-15",
+                    "arrival": 15,
+                    "minutes": 22,
+                    "review_minutes": 3,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-16",
+                    "arrival": 15,
+                    "minutes": 12,
+                    "review_minutes": 6,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "training-17",
+                    "arrival": 20,
+                    "minutes": 19,
+                    "review_minutes": 3,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-18",
+                    "arrival": 20,
+                    "minutes": 9,
+                    "review_minutes": 6,
+                    "due": 90,
+                    "valid": false
+                },
+                {
+                    "id": "training-19",
+                    "arrival": 20,
+                    "minutes": 16,
+                    "review_minutes": 3,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-20",
+                    "arrival": 20,
+                    "minutes": 6,
+                    "review_minutes": 6,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-21",
+                    "arrival": 25,
+                    "minutes": 13,
+                    "review_minutes": 3,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-22",
+                    "arrival": 25,
+                    "minutes": 20,
+                    "review_minutes": 6,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-23",
+                    "arrival": 25,
+                    "minutes": 10,
+                    "review_minutes": 3,
+                    "due": 96,
+                    "valid": false
+                },
+                {
+                    "id": "training-24",
+                    "arrival": 25,
+                    "minutes": 17,
+                    "review_minutes": 6,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-25",
+                    "arrival": 30,
+                    "minutes": 7,
+                    "review_minutes": 3,
+                    "due": 96,
+                    "valid": true
+                },
+                {
+                    "id": "training-26",
+                    "arrival": 30,
+                    "minutes": 14,
+                    "review_minutes": 6,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-27",
+                    "arrival": 30,
+                    "minutes": 21,
+                    "review_minutes": 3,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "training-28",
+                    "arrival": 30,
+                    "minutes": 11,
+                    "review_minutes": 6,
+                    "due": 75,
+                    "valid": false
+                }
+            ],
+            "holdout": [
+                {
+                    "id": "holdout-01",
+                    "arrival": 0,
+                    "minutes": 22,
+                    "review_minutes": 6,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-02",
+                    "arrival": 0,
+                    "minutes": 12,
+                    "review_minutes": 3,
+                    "due": 46,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-03",
+                    "arrival": 0,
+                    "minutes": 19,
+                    "review_minutes": 6,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-04",
+                    "arrival": 0,
+                    "minutes": 9,
+                    "review_minutes": 3,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-05",
+                    "arrival": 5,
+                    "minutes": 16,
+                    "review_minutes": 6,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-06",
+                    "arrival": 5,
+                    "minutes": 6,
+                    "review_minutes": 3,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-07",
+                    "arrival": 5,
+                    "minutes": 13,
+                    "review_minutes": 6,
+                    "due": 52,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-08",
+                    "arrival": 5,
+                    "minutes": 20,
+                    "review_minutes": 3,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-09",
+                    "arrival": 10,
+                    "minutes": 10,
+                    "review_minutes": 6,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-10",
+                    "arrival": 10,
+                    "minutes": 17,
+                    "review_minutes": 3,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-11",
+                    "arrival": 10,
+                    "minutes": 7,
+                    "review_minutes": 6,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-12",
+                    "arrival": 10,
+                    "minutes": 14,
+                    "review_minutes": 3,
+                    "due": 58,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-13",
+                    "arrival": 15,
+                    "minutes": 21,
+                    "review_minutes": 6,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-14",
+                    "arrival": 15,
+                    "minutes": 11,
+                    "review_minutes": 3,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-15",
+                    "arrival": 15,
+                    "minutes": 18,
+                    "review_minutes": 6,
+                    "due": 69,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-16",
+                    "arrival": 15,
+                    "minutes": 8,
+                    "review_minutes": 3,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-17",
+                    "arrival": 20,
+                    "minutes": 15,
+                    "review_minutes": 6,
+                    "due": 69,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-18",
+                    "arrival": 20,
+                    "minutes": 22,
+                    "review_minutes": 3,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-19",
+                    "arrival": 20,
+                    "minutes": 12,
+                    "review_minutes": 6,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-20",
+                    "arrival": 20,
+                    "minutes": 19,
+                    "review_minutes": 3,
+                    "due": 75,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-21",
+                    "arrival": 25,
+                    "minutes": 9,
+                    "review_minutes": 6,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-22",
+                    "arrival": 25,
+                    "minutes": 16,
+                    "review_minutes": 3,
+                    "due": 75,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-23",
+                    "arrival": 25,
+                    "minutes": 6,
+                    "review_minutes": 6,
+                    "due": 86,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-24",
+                    "arrival": 25,
+                    "minutes": 13,
+                    "review_minutes": 3,
+                    "due": 70,
+                    "valid": true
+                }
+            ]
+        }
+    },
+    {
+        "schema": "agialpha.insight.scenario.v1",
+        "id": "enterprise",
+        "title": "Enterprise × machine labor",
+        "question": "Can a redesigned agent firm clear a service queue while retaining independent checks and human control?",
+        "envelope_usd": "15000000000000000",
+        "weights_bps": {
+            "Energy": 1300,
+            "Compute": 1200,
+            "Science": 1200,
+            "Health": 1100,
+            "Materials": 900,
+            "Robotics": 800,
+            "Finance": 700,
+            "Climate": 700,
+            "Machine labor": 700,
+            "Infrastructure": 600,
+            "Education": 400,
+            "Governance": 400
+        },
+        "sources": [
+            {
+                "id": "concept",
+                "title": "Original α-AGI Insight experience",
+                "kind": "public-reference",
+                "url": "https://montrealai.github.io/goalos-v67-alpha-agi-insight-living-treasure-map-masterclass-interface.html",
+                "text": "The original interactive interface presents a $15 quadrillion illustrative scenario envelope, sector opportunities, proof debt and a claim boundary. It is a concept reference; it does not establish a realized economic valuation."
+            },
+            {
+                "id": "fixture",
+                "title": "Enterprise × machine labor: synthetic planning fixture",
+                "kind": "synthetic",
+                "text": "This scenario contains authored hypotheses and deterministic task fixtures. Task validity is known benchmark ground truth. Durations, deadlines, prices and reviewer failure domains are assumptions, not measured operational performance. Training and holdout IDs are disjoint, but both fixture sets are public."
+            }
+        ],
+        "claims": [
+            {
+                "id": "enterprise-1",
+                "sector": "Machine labor",
+                "title": "Deliver reviewable work",
+                "hypothesis": "Separating execution and review could increase useful service throughput.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "On-time valid work orders",
+                "target": "Improve output at the same credit budget with zero injected-invalid acceptances.",
+                "evidence_needed": "Use representative service tasks, held-out ground truth and auditable reviewer assignments."
+            },
+            {
+                "id": "enterprise-2",
+                "sector": "Robotics",
+                "title": "Plan safe handoffs",
+                "hypothesis": "Explicit human review capacity could reduce unsafe automation handoffs.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Unreviewed actions released",
+                "target": "Release zero actions lacking required review.",
+                "evidence_needed": "Exercise failure scenarios with independent safety review before any physical deployment."
+            },
+            {
+                "id": "enterprise-3",
+                "sector": "Finance",
+                "title": "Account for full cost",
+                "hypothesis": "Including verification overhead could improve the accuracy of project costing.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Forecast versus measured total cost",
+                "target": "Keep cost error within a preregistered tolerance.",
+                "evidence_needed": "Measure labor, compute, review, insurance and settlement costs; report uncertainty and losses."
+            },
+            {
+                "id": "enterprise-4",
+                "sector": "Infrastructure",
+                "title": "Reduce queue bottlenecks",
+                "hypothesis": "Capacity-aware routing could lower deadline misses during workload bursts.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Missed deadlines",
+                "target": "Reduce misses without increasing the budget or weakening the quorum.",
+                "evidence_needed": "Replay burst workloads and an untouched holdout; preserve all task-level timings."
+            },
+            {
+                "id": "enterprise-5",
+                "sector": "Education",
+                "title": "Make operators effective",
+                "hypothesis": "Guided explanations could reduce operator errors during recovery.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Recovery errors per operator",
+                "target": "Improve successful recovery on an unfamiliar scenario.",
+                "evidence_needed": "Run usability sessions with task completion, error counts, accessibility checks and participant feedback."
+            },
+            {
+                "id": "enterprise-6",
+                "sector": "Governance",
+                "title": "Gate capability promotion",
+                "hypothesis": "Replay plus explicit operator review could stop stale results entering the Chronicle.",
+                "source_ids": ["concept", "fixture"],
+                "metric": "Stale or altered bundles promoted",
+                "target": "Reject every stale and tampered bundle in a declared test set.",
+                "evidence_needed": "Change inputs, results and history; verify rejection and document the limits of local hashes."
+            }
+        ],
+        "workload": {
+            "training": [
+                {
+                    "id": "training-01",
+                    "arrival": 0,
+                    "minutes": 12,
+                    "review_minutes": 4,
+                    "due": 45,
+                    "valid": true
+                },
+                {
+                    "id": "training-02",
+                    "arrival": 0,
+                    "minutes": 19,
+                    "review_minutes": 7,
+                    "due": 56,
+                    "valid": true
+                },
+                {
+                    "id": "training-03",
+                    "arrival": 0,
+                    "minutes": 9,
+                    "review_minutes": 4,
+                    "due": 67,
+                    "valid": false
+                },
+                {
+                    "id": "training-04",
+                    "arrival": 0,
+                    "minutes": 16,
+                    "review_minutes": 7,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-05",
+                    "arrival": 5,
+                    "minutes": 6,
+                    "review_minutes": 4,
+                    "due": 67,
+                    "valid": true
+                },
+                {
+                    "id": "training-06",
+                    "arrival": 5,
+                    "minutes": 13,
+                    "review_minutes": 7,
+                    "due": 51,
+                    "valid": true
+                },
+                {
+                    "id": "training-07",
+                    "arrival": 5,
+                    "minutes": 20,
+                    "review_minutes": 4,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-08",
+                    "arrival": 5,
+                    "minutes": 10,
+                    "review_minutes": 7,
+                    "due": 73,
+                    "valid": false
+                },
+                {
+                    "id": "training-09",
+                    "arrival": 10,
+                    "minutes": 17,
+                    "review_minutes": 4,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "training-10",
+                    "arrival": 10,
+                    "minutes": 7,
+                    "review_minutes": 7,
+                    "due": 73,
+                    "valid": true
+                },
+                {
+                    "id": "training-11",
+                    "arrival": 10,
+                    "minutes": 14,
+                    "review_minutes": 4,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "training-12",
+                    "arrival": 10,
+                    "minutes": 21,
+                    "review_minutes": 7,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-13",
+                    "arrival": 15,
+                    "minutes": 11,
+                    "review_minutes": 4,
+                    "due": 84,
+                    "valid": false
+                },
+                {
+                    "id": "training-14",
+                    "arrival": 15,
+                    "minutes": 18,
+                    "review_minutes": 7,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "training-15",
+                    "arrival": 15,
+                    "minutes": 8,
+                    "review_minutes": 4,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-16",
+                    "arrival": 15,
+                    "minutes": 15,
+                    "review_minutes": 7,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "training-17",
+                    "arrival": 20,
+                    "minutes": 22,
+                    "review_minutes": 4,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "training-18",
+                    "arrival": 20,
+                    "minutes": 12,
+                    "review_minutes": 7,
+                    "due": 90,
+                    "valid": false
+                },
+                {
+                    "id": "training-19",
+                    "arrival": 20,
+                    "minutes": 19,
+                    "review_minutes": 4,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-20",
+                    "arrival": 20,
+                    "minutes": 9,
+                    "review_minutes": 7,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-21",
+                    "arrival": 25,
+                    "minutes": 16,
+                    "review_minutes": 4,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "training-22",
+                    "arrival": 25,
+                    "minutes": 6,
+                    "review_minutes": 7,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "training-23",
+                    "arrival": 25,
+                    "minutes": 13,
+                    "review_minutes": 4,
+                    "due": 96,
+                    "valid": false
+                },
+                {
+                    "id": "training-24",
+                    "arrival": 25,
+                    "minutes": 20,
+                    "review_minutes": 7,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-25",
+                    "arrival": 30,
+                    "minutes": 10,
+                    "review_minutes": 4,
+                    "due": 96,
+                    "valid": true
+                },
+                {
+                    "id": "training-26",
+                    "arrival": 30,
+                    "minutes": 17,
+                    "review_minutes": 7,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "training-27",
+                    "arrival": 30,
+                    "minutes": 7,
+                    "review_minutes": 4,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "training-28",
+                    "arrival": 30,
+                    "minutes": 14,
+                    "review_minutes": 7,
+                    "due": 75,
+                    "valid": false
+                }
+            ],
+            "holdout": [
+                {
+                    "id": "holdout-01",
+                    "arrival": 0,
+                    "minutes": 8,
+                    "review_minutes": 7,
+                    "due": 62,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-02",
+                    "arrival": 0,
+                    "minutes": 15,
+                    "review_minutes": 4,
+                    "due": 46,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-03",
+                    "arrival": 0,
+                    "minutes": 22,
+                    "review_minutes": 7,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-04",
+                    "arrival": 0,
+                    "minutes": 12,
+                    "review_minutes": 4,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-05",
+                    "arrival": 5,
+                    "minutes": 19,
+                    "review_minutes": 7,
+                    "due": 57,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-06",
+                    "arrival": 5,
+                    "minutes": 9,
+                    "review_minutes": 4,
+                    "due": 68,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-07",
+                    "arrival": 5,
+                    "minutes": 16,
+                    "review_minutes": 7,
+                    "due": 52,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-08",
+                    "arrival": 5,
+                    "minutes": 6,
+                    "review_minutes": 4,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-09",
+                    "arrival": 10,
+                    "minutes": 13,
+                    "review_minutes": 7,
+                    "due": 79,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-10",
+                    "arrival": 10,
+                    "minutes": 20,
+                    "review_minutes": 4,
+                    "due": 63,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-11",
+                    "arrival": 10,
+                    "minutes": 10,
+                    "review_minutes": 7,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-12",
+                    "arrival": 10,
+                    "minutes": 17,
+                    "review_minutes": 4,
+                    "due": 58,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-13",
+                    "arrival": 15,
+                    "minutes": 7,
+                    "review_minutes": 7,
+                    "due": 74,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-14",
+                    "arrival": 15,
+                    "minutes": 14,
+                    "review_minutes": 4,
+                    "due": 85,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-15",
+                    "arrival": 15,
+                    "minutes": 21,
+                    "review_minutes": 7,
+                    "due": 69,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-16",
+                    "arrival": 15,
+                    "minutes": 11,
+                    "review_minutes": 4,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-17",
+                    "arrival": 20,
+                    "minutes": 18,
+                    "review_minutes": 7,
+                    "due": 69,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-18",
+                    "arrival": 20,
+                    "minutes": 8,
+                    "review_minutes": 4,
+                    "due": 80,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-19",
+                    "arrival": 20,
+                    "minutes": 15,
+                    "review_minutes": 7,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-20",
+                    "arrival": 20,
+                    "minutes": 22,
+                    "review_minutes": 4,
+                    "due": 75,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-21",
+                    "arrival": 25,
+                    "minutes": 12,
+                    "review_minutes": 7,
+                    "due": 91,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-22",
+                    "arrival": 25,
+                    "minutes": 19,
+                    "review_minutes": 4,
+                    "due": 75,
+                    "valid": false
+                },
+                {
+                    "id": "holdout-23",
+                    "arrival": 25,
+                    "minutes": 9,
+                    "review_minutes": 7,
+                    "due": 86,
+                    "valid": true
+                },
+                {
+                    "id": "holdout-24",
+                    "arrival": 25,
+                    "minutes": 16,
+                    "review_minutes": 4,
+                    "due": 70,
+                    "valid": true
+                }
+            ]
+        }
+    }
+]

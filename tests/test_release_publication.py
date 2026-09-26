@@ -158,6 +158,13 @@ def test_invalid_package_version_cannot_publish(
         ("1.5.0", "ascension"),
         ("1.5.0", "paper"),
         ("1.5.0", "origin"),
+        ("1.6.0", None),
+        ("1.6.0", "atlas-failed"),
+        ("1.6.0", "atlas-origin"),
+        ("1.6.0", "atlas-check"),
+        ("1.6.0", "atlas-scenario"),
+        ("1.6.0", "atlas-browser"),
+        ("1.6.0", "atlas-schema"),
     ],
 )
 def test_public_evidence_requires_same_commit_and_intact_package(
@@ -183,7 +190,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         (folder / "source.zip").write_bytes(b"corrupted source fixture")
     (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
     (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
-    if version == "1.5.0":
+    if version in {"1.5.0", "1.6.0"}:
         ascension_dir = evidence / "public-pages" / "ascension"
         ascension_dir.mkdir()
         (ascension_dir / "ascension.json").write_text(
@@ -191,12 +198,53 @@ def test_public_evidence_requires_same_commit_and_intact_package(
                 {
                     "origin": "https://example.test/" if problem == "origin" else url,
                     "passed": problem != "ascension",
-                    "paper_sha256": "altered"
-                    if problem == "paper"
-                    else "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa",
+                    "paper_sha256": (
+                        "altered"
+                        if problem == "paper"
+                        else "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa"
+                    ),
                 }
             )
         )
+    if version == "1.6.0":
+        atlas_dir = evidence / "public-pages" / "insight-atlas"
+        atlas_dir.mkdir()
+        atlas = {
+            "schema": "agialpha.insight.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "scenarios": [{"id": name} for name in ("energy", "science", "enterprise")],
+            "browser_errors": [],
+            "checks": [
+                "all-three-scenarios",
+                "stale-proof-rejected",
+                "tampered-proof-rejected",
+                "unsafe-quorum-blocked",
+                "native-mission-schema",
+                "native-research-execution-and-signed-export",
+                "reviewed-design-reuse-requires-fresh-evidence",
+                "recovery-replays-promotions",
+                "tampered-history-rejected",
+                "revocation-survives-recovery",
+                "mirrored-page",
+                "offline-reload-recovery-and-replay",
+                "axe-wcag-a-aa-no-violations",
+                "keyboard-selection-retains-focus",
+            ],
+        }
+        if problem == "atlas-failed":
+            atlas["passed"] = False
+        elif problem == "atlas-origin":
+            atlas["origin"] = "https://example.test/"
+        elif problem == "atlas-check":
+            atlas["checks"].remove("tampered-proof-rejected")
+        elif problem == "atlas-scenario":
+            atlas["scenarios"].pop()
+        elif problem == "atlas-browser":
+            atlas["browser_errors"] = ["uncaught error"]
+        elif problem == "atlas-schema":
+            atlas["schema"] = "declared-pass-only"
+        (atlas_dir / "insight-atlas.json").write_text(json.dumps(atlas))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -204,6 +252,8 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
         return
     finalize_pages_release.finalize(folder, evidence)
+    if version == "1.6.0":
+        assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"

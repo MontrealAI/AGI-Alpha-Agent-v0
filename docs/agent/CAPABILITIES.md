@@ -17,7 +17,7 @@ The design document explicitly calls its forecast a toy model and its architectu
 The implementation historically mixed real algorithms and integrations with synthetic fitness, no-op
 SDK compatibility classes, random market fixtures and ambitious future claims.
 
-Version 1.5.2 connects a usable bounded agent around the original roles and algorithms. The supported
+Version 1.6.0 connects a usable bounded agent around the original roles and algorithms. The supported
 entry point is `alpha-agent` (also `alpha-factory mission`). Its state, policy, identity, evidence,
 operator review, memory and payment receipts share one signed persistent journal. Existing launchers,
 interfaces, experiments, assets and documentation remain available.

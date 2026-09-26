@@ -1,6 +1,9 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.5.2 corrects live CI Health reporting for the Ascension Lab and local operator release.**
+**Version 1.6.0 adds the connected Insight Atlas and a refined GitHub Pages experience.**
+Explore the [Living Treasure Map, Second-Order Agency lab and Alpha under trial](https://montrealai.github.io/AGI-Alpha-Agent-v0/insight/):
+exact scenario allocations, inspectable architecture comparisons, native research exports and replay-verified recovery.
+The [Atlas field guide](docs/agent/INSIGHT_ATLAS.md) explains the calculations, evidence gates and limits.
 Patched cryptography, complete operator dependency auditing and stricter publication/CI controls
 are documented in the [release readiness guide](docs/agent/RELEASE_READINESS.md). Explore the
 [new flagship missions](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/) and

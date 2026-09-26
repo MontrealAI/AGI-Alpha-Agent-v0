@@ -21,12 +21,42 @@ def finalize(folder: Path, evidence: Path) -> None:
     if workspace["origin"] != url or not workspace["model_required"] or public["url"] != url:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
     ascension = None
+    insight = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
             raise ValueError("Ascension must pass on the canonical public site")
         if ascension.get("paper_sha256") != "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa":
             raise ValueError("Public white paper differs from the preserved original")
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 6, 0):
+        insight = json.loads(
+            (evidence / "public-pages" / "insight-atlas" / "insight-atlas.json").read_text(encoding="utf-8")
+        )
+        required = {
+            "all-three-scenarios",
+            "stale-proof-rejected",
+            "tampered-proof-rejected",
+            "unsafe-quorum-blocked",
+            "native-mission-schema",
+            "native-research-execution-and-signed-export",
+            "reviewed-design-reuse-requires-fresh-evidence",
+            "recovery-replays-promotions",
+            "tampered-history-rejected",
+            "revocation-survives-recovery",
+            "mirrored-page",
+            "offline-reload-recovery-and-replay",
+            "axe-wcag-a-aa-no-violations",
+            "keyboard-selection-retains-focus",
+        }
+        if (
+            insight.get("schema") != "agialpha.insight.acceptance.v1"
+            or insight.get("passed") is not True
+            or insight.get("origin") != url
+            or insight.get("browser_errors") != []
+            or not required.issubset(insight.get("checks", []))
+            or {item.get("id") for item in insight.get("scenarios", [])} != {"energy", "science", "enterprise"}
+        ):
+            raise ValueError("Insight Atlas must pass every required journey on the canonical public site")
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -43,6 +73,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if insight:
+        manifest["public_insight_atlas"] = insight
+        manifest["release_gates"].append(
+            "public Insight Atlas, native exports, adversarial proof checks and offline recovery"
+        )
     if ascension:
         manifest["public_ascension"] = ascension
         manifest["release_gates"].append(

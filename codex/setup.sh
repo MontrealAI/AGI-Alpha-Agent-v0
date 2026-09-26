@@ -51,10 +51,6 @@ if [[ -z "$current_pre_commit" || "$current_pre_commit" != "$required_pre_commit
   $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit=="$required_pre_commit"
 fi
 
-# Install package in editable mode
-$PYTHON -m pip install --quiet "${wheel_opts[@]}" -e .
-
-
 # When FULL_INSTALL=1, install the fully pinned dependencies from the
 # deterministic lock file. This path also supports offline installs via a
 # wheelhouse. Otherwise install a minimal set of runtime packages for fast
@@ -164,6 +160,12 @@ else
   mapfile -t packages < <(printf '%s\n' "${packages[@]}" | sort -u)
   $PYTHON -m pip install --quiet "${wheel_opts[@]}" "${packages[@]}"
 fi
+
+# Apply the current package requirements after the historical development locks.
+# Installing the editable package first let the legacy lock silently downgrade
+# its required cryptography version; pip check then correctly rejected setup.
+# Release/operator installs remain pinned by requirements-agent.lock.
+$PYTHON -m pip install --quiet "${wheel_opts[@]}" -e .
 
 # Validate environment and install any remaining deps
 check_env_opts=()

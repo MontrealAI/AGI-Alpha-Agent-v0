@@ -130,3 +130,10 @@ encryption recovery, accounting rules, equation corrections and test commands.
 
 The original workspace below, every demo and the six-stage flywheel remain available. The new lab runs
 locally in your browser. Its economic and governance controls are explicitly labeled simulations.
+
+## Insight Atlas
+
+The [Insight Atlas](../insight/index.html) connects twelve opportunity frontiers, second-order agent-firm design
+and a claim/evidence explorer. Choose an expedition, compare architectures, replay its evidence and save the
+recovery file. All computations run locally; the opportunity envelope and task fixtures are explicit assumptions.
+See the [field guide](INSIGHT_ATLAS.md) for exact methods, native mission exports, privacy and recovery.

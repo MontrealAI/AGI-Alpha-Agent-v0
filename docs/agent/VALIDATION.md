@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.5.2 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.6.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -162,3 +162,17 @@ watchdog invocations attached to one commit. Earlier failures kept that image re
 watchdog run passed. Health now uses GitHub's latest workflow badge on main. The original check
 records remain available, and exact-commit acceptance still gates deployment and publication.
 The follow-up release repeats the full acceptance pipeline and public SVG verification.
+
+## Version 1.6.0 Insight Atlas acceptance
+
+`tests/browser/insight_engine.test.mjs` covers exact integer allocations, bounded inputs, scheduling resource
+exclusivity, independent quorum votes, training-only selection, holdout checks, forged/stale proof rejection,
+reviewed Chronicle promotion, revocation, recovery and typed-graph integrity.
+
+`python -m scripts.validate_insight_atlas` exercises all three expeditions, eighteen native research mission
+exports, actual evidence/recovery downloads, unsafe architectures, duplicate and stale promotion, malicious
+source URLs and text, four viewport widths, mirrors and offline reload/recovery/replay. Minimal/full builds
+and public HTTPS acceptance retain screenshots and `insight-atlas.json` in the validation archive.
+
+The release finalizer refuses publication without every required public Atlas journey. Results establish
+local model behavior; economic hypotheses remain unverified. See [the field guide](INSIGHT_ATLAS.md).

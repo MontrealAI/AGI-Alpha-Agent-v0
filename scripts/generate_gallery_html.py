@@ -331,6 +331,12 @@ def main() -> None:
         (REPO_ROOT / "scripts/templates/ascension.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
         encoding="utf-8",
     )
+    insight = REPO_ROOT / "docs/insight/index.html"
+    insight.parent.mkdir(parents=True, exist_ok=True)
+    insight.write_text(
+        (REPO_ROOT / "scripts/templates/insight.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
+        encoding="utf-8",
+    )
     # Publish the unchanged original paper, without maintaining a second binary source.
     shutil.copyfile(
         REPO_ROOT / "whitepaper_v0.1.0-alphav15.pdf", REPO_ROOT / "docs/assets/whitepaper_v0.1.0-alphav15.pdf"
