@@ -21,7 +21,7 @@ jobs:
           folder = pathlib.Path("first-model-attempt")
           folder.mkdir()
           def fetch(path):
-              return subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"])
+              return subprocess.check_output(["gh", "api", "--allow-escape-sequences", f"repos/{repo}/{path}"])
           job = json.loads(fetch("actions/jobs/108335557405"))
           artifact = json.loads(fetch("actions/artifacts/10897003736"))
           assert job["conclusion"] == "failure"
