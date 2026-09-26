@@ -1,3 +1,10 @@
+## 1.7.0 — Nova-Seeds Proof Bloom
+
+Five connected guided experiences turn claims into bounded native Missions, replayed ProofBundles,
+explicit reviews and reversible Chronicle capability. The foundry adds exact benchmark reuse,
+transitive revocation, signed native returns, portable recovery and a new flagship Pages experience.
+See [release notes](agent/RELEASE_NOTES_1.7.0.md) and the [field guide](agent/PROOF_BLOOM.md).
+
 ## 1.4.0 — usable browser workspace and complete demo catalog
 
 A new GitHub Pages workspace connects checked browser missions, local ONNX generation, reviewed exports,

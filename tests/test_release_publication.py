@@ -159,6 +159,13 @@ def test_invalid_package_version_cannot_publish(
         ("1.5.0", "paper"),
         ("1.5.0", "origin"),
         ("1.6.0", None),
+        ("1.7.0", None),
+        ("1.7.0", "bloom-failed"),
+        ("1.7.0", "bloom-origin"),
+        ("1.7.0", "bloom-check"),
+        ("1.7.0", "bloom-experience"),
+        ("1.7.0", "bloom-browser"),
+        ("1.7.0", "bloom-schema"),
         ("1.6.0", "atlas-failed"),
         ("1.6.0", "atlas-origin"),
         ("1.6.0", "atlas-check"),
@@ -190,7 +197,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         (folder / "source.zip").write_bytes(b"corrupted source fixture")
     (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
     (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
-    if version in {"1.5.0", "1.6.0"}:
+    if version in {"1.5.0", "1.6.0", "1.7.0"}:
         ascension_dir = evidence / "public-pages" / "ascension"
         ascension_dir.mkdir()
         (ascension_dir / "ascension.json").write_text(
@@ -206,7 +213,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
                 }
             )
         )
-    if version == "1.6.0":
+    if version in {"1.6.0", "1.7.0"}:
         atlas_dir = evidence / "public-pages" / "insight-atlas"
         atlas_dir.mkdir()
         atlas = {
@@ -245,6 +252,50 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "atlas-schema":
             atlas["schema"] = "declared-pass-only"
         (atlas_dir / "insight-atlas.json").write_text(json.dumps(atlas))
+    if version == "1.7.0":
+        bloom_dir = evidence / "public-pages" / "proof-bloom"
+        bloom_dir.mkdir()
+        bloom = {
+            "schema": "agialpha.bloom.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "experiences": [{"id": name} for name in ("nova", "sovereign", "omega", "invention", "proof")],
+            "browser_errors": [],
+            "checks": [
+                "all-five-experiences",
+                "original-gallery-preserved",
+                "baseline-and-stress-computed",
+                "native-missions-executed-and-signed-returns",
+                "signature-key-and-input-binding",
+                "self-declared-verdict-rejected",
+                "tampered-and-stale-return-rejected",
+                "reviewed-failure-remains-hold",
+                "exact-benchmark-reuse-needs-fresh-probes",
+                "transitive-revocation",
+                "unchanged-recovery-roundtrip",
+                "tampered-history-rejected-atomically",
+                "jobspec-download-sha256",
+                "keyboard-focus-preserved",
+                "input-text-escaped",
+                "mirrored-page",
+                "offline-recovery-and-execution",
+                "mobile-no-overflow",
+                "axe-wcag-a-aa-no-violations",
+            ],
+        }
+        if problem == "bloom-failed":
+            bloom["passed"] = False
+        elif problem == "bloom-origin":
+            bloom["origin"] = "https://example.test/"
+        elif problem == "bloom-check":
+            bloom["checks"].remove("signature-key-and-input-binding")
+        elif problem == "bloom-experience":
+            bloom["experiences"].pop()
+        elif problem == "bloom-browser":
+            bloom["browser_errors"] = ["uncaught error"]
+        elif problem == "bloom-schema":
+            bloom["schema"] = "self-declared-pass"
+        (bloom_dir / "proof-bloom.json").write_text(json.dumps(bloom))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -252,8 +303,10 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
         return
     finalize_pages_release.finalize(folder, evidence)
-    if version == "1.6.0":
+    if version in {"1.6.0", "1.7.0"}:
         assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
+    if version == "1.7.0":
+        assert json.loads((folder / "release-manifest.json").read_text())["public_proof_bloom"]["passed"]
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"

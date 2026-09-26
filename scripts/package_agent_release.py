@@ -73,6 +73,7 @@ def main() -> None:
         "docs/agent/PAGES_GUIDE.md",
         "docs/agent/WHITEPAPER_IMPLEMENTATION.md",
         "docs/agent/INSIGHT_ATLAS.md",
+        "docs/agent/PROOF_BLOOM.md",
         "docs/agent/RELEASE_READINESS.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
@@ -132,6 +133,7 @@ def main() -> None:
             "real browser ONNX generation online and offline",
             "complete browser workspace, native handoff and Ed25519 verification",
             "Insight Atlas exact allocation, architecture search, evidence replay and Chronicle recovery",
+            "Proof Bloom jobs, native signed returns, reviewed gates, capability reuse and transitive revocation",
             "native CPU demos and Streamlit lineage UIs",
             "complete demo catalog and every browser replay",
             "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",

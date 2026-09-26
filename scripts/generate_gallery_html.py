@@ -337,6 +337,12 @@ def main() -> None:
         (REPO_ROOT / "scripts/templates/insight.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
         encoding="utf-8",
     )
+    bloom = REPO_ROOT / "docs/bloom/index.html"
+    bloom.parent.mkdir(parents=True, exist_ok=True)
+    bloom.write_text(
+        (REPO_ROOT / "scripts/templates/bloom.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
+        encoding="utf-8",
+    )
     # Publish the unchanged original paper, without maintaining a second binary source.
     shutil.copyfile(
         REPO_ROOT / "whitepaper_v0.1.0-alphav15.pdf", REPO_ROOT / "docs/assets/whitepaper_v0.1.0-alphav15.pdf"

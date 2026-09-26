@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -398,7 +398,7 @@ jobs:
       - name: Verify independent browser algorithm contracts
         run: |
           npm ci --prefix tests/browser --ignore-scripts
-          node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs
+          node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
       - name: Verify every rebuilt demo page
@@ -414,6 +414,8 @@ jobs:
         run: python -m scripts.validate_ascension --site site --output evidence/ascension
       - name: Verify Insight Atlas scenarios, proof controls, native exports and recovery
         run: python -m scripts.validate_insight_atlas --site site --output evidence/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Verify five Proof Bloom experiences, signed returns and capability recovery
+        run: python -m scripts.validate_proof_bloom --site site --output evidence/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify the rebuilt gallery simulation and offline recovery
         run: |
           model_args=()
@@ -592,6 +594,7 @@ jobs:
           python -m scripts.validate_ascension --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension
           npm ci --prefix tests/browser --ignore-scripts
           python -m scripts.validate_insight_atlas --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_proof_bloom --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

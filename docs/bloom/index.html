@@ -1,0 +1,729 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#10281f" />
+        <meta
+            name="description"
+            content="Nova-Seeds Proof Bloom. Turn unsupported claims into executable jobs, replayed evidence and reviewed capability. Five guided experiences. One accountable proof engine."
+        />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <title>Proof Bloom · Nova-Seeds · AGI Alpha</title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/bloom/bloom.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/bloom/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#foundry">Skip to Proof Bloom workspace</a>
+        <header class="masthead wrap">
+            <a class="brand" href="../"
+                ><span class="mark">α</span
+                ><span
+                    >AGI ALPHA<small>THE META-AGENTIC FRONTIER</small></span
+                ></a
+            >
+            <nav aria-label="Main navigation">
+                <a href="../insight/">Insight Atlas</a
+                ><a href="../ascension/">Ascension Lab</a
+                ><a href="../#explore">All demos</a
+                ><a href="../agent/PROOF_BLOOM/">Field guide ↗</a>
+            </nav>
+            <span class="edition">v1.7.0 / RESEARCH EDITION</span>
+        </header>
+        <main>
+            <section class="hero wrap" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span class="spark"></span> NOVA-SEEDS · THE PROOF BLOOM
+                        CONSOLE
+                    </p>
+                    <h1 id="hero-title">
+                        Potential is a seed.<br />Proof is the <em>bloom.</em>
+                    </h1>
+                    <p class="lead">
+                        Let ambition become something you can build on. Turn a
+                        claim into useful work, challenge the evidence, and
+                        carry what survives into the next mission.
+                    </p>
+                    <div class="actions">
+                        <a class="button gold" href="#foundry"
+                            >Enter the foundry <span>↗</span></a
+                        ><button
+                            class="button outline"
+                            id="guide-toggle"
+                            aria-expanded="false"
+                            aria-controls="guide"
+                        >
+                            A 3-minute guided journey
+                        </button>
+                    </div>
+                    <p class="hero-note">
+                        No account. No API key. Real bounded computation, on
+                        your device.
+                    </p>
+                </div>
+                <div class="seed-art" aria-hidden="true">
+                    <svg viewBox="0 0 560 510" class="seed-sculpture">
+                        <defs>
+                            <radialGradient id="bloom-aura">
+                                <stop stop-color="#c9ad68" stop-opacity=".26" />
+                                <stop
+                                    offset="1"
+                                    stop-color="#c9ad68"
+                                    stop-opacity="0"
+                                />
+                            </radialGradient>
+                            <linearGradient
+                                id="bloom-metal"
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="1"
+                            >
+                                <stop stop-color="#fff0c2" />
+                                <stop offset=".36" stop-color="#cfaa61" />
+                                <stop offset=".68" stop-color="#716042" />
+                                <stop offset="1" stop-color="#ead19b" />
+                            </linearGradient>
+                        </defs>
+                        <circle
+                            cx="280"
+                            cy="249"
+                            r="240"
+                            fill="url(#bloom-aura)"
+                        />
+                        <g class="orbital" fill="none" stroke="#cfb778">
+                            <ellipse
+                                cx="280"
+                                cy="249"
+                                rx="215"
+                                ry="70"
+                                transform="rotate(-24 280 249)"
+                                opacity=".45"
+                            />
+                            <ellipse
+                                cx="280"
+                                cy="249"
+                                rx="180"
+                                ry="220"
+                                transform="rotate(35 280 249)"
+                                opacity=".2"
+                            />
+                            <ellipse
+                                cx="280"
+                                cy="249"
+                                rx="180"
+                                ry="220"
+                                transform="rotate(-35 280 249)"
+                                opacity=".2"
+                            />
+                            <circle
+                                cx="280"
+                                cy="249"
+                                r="184"
+                                stroke-dasharray="1 12"
+                                opacity=".7"
+                            />
+                        </g>
+                        <g
+                            fill="url(#bloom-metal)"
+                            stroke="#e2c891"
+                            stroke-width=".7"
+                        >
+                            <path
+                                d="M280 90 C208 154 199 233 280 350 C361 233 352 154 280 90Z"
+                            />
+                            <path
+                                d="M280 350 C124 300 119 202 160 143 C235 164 298 239 280 350Z"
+                                opacity=".8"
+                            />
+                            <path
+                                d="M280 350 C436 300 441 202 400 143 C325 164 262 239 280 350Z"
+                                opacity=".8"
+                            />
+                            <path
+                                d="M280 350 C148 375 100 306 96 232 C187 221 252 269 280 350Z"
+                                opacity=".65"
+                            />
+                            <path
+                                d="M280 350 C412 375 460 306 464 232 C373 221 308 269 280 350Z"
+                                opacity=".65"
+                            />
+                        </g>
+                        <g
+                            fill="none"
+                            stroke="#fff1c5"
+                            stroke-width=".6"
+                            opacity=".5"
+                        >
+                            <path
+                                d="M280 90V350M160 143Q193 255 280 350M400 143Q367 255 280 350M96 232Q181 284 280 350M464 232Q379 284 280 350"
+                            />
+                            <path d="M280 350V414M216 426H344" />
+                        </g>
+                        <circle
+                            cx="280"
+                            cy="275"
+                            r="41"
+                            fill="#18372a"
+                            stroke="#dbc384"
+                        />
+                        <text
+                            x="280"
+                            y="294"
+                            text-anchor="middle"
+                            fill="#efdfb4"
+                            font-size="60"
+                            font-family="Georgia,serif"
+                        >
+                            α
+                        </text>
+                        <g
+                            fill="#eadcb9"
+                            font-size="10"
+                            letter-spacing="2"
+                            font-family="Arial,sans-serif"
+                        >
+                            <text x="24" y="406">POTENTIAL → PROOF</text>
+                            <text x="346" y="99">ONLY THE VALIDATED</text>
+                            <text x="346" y="115">CAN COMPOUND.</text>
+                            <text x="280" y="458" text-anchor="middle">
+                                FIG. 01 / A CAPABILITY IN BLOOM
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+            <div class="principle-strip">
+                <div class="wrap">
+                    <span><b>05</b> guided experiences</span
+                    ><span><b>03</b> executable proof jobs</span
+                    ><span><b>01</b> accountable memory</span
+                    ><span>Vision → work → evidence → capability</span>
+                </div>
+            </div>
+            <section
+                id="guide"
+                class="guide wrap"
+                hidden
+                aria-label="Guided journey"
+            >
+                <div>
+                    <b>01 / Set a boundary</b>
+                    <p>
+                        Choose an experience. Edit the objective, claim and
+                        bounded inputs. Compile three jobs with explicit
+                        acceptance rules.
+                    </p>
+                </div>
+                <div>
+                    <b>02 / Put it to the test</b>
+                    <p>
+                        Run the jobs. Inspect baseline and stress results.
+                        Record an accept, reject or repair decision for each
+                        exact return.
+                    </p>
+                </div>
+                <div>
+                    <b>03 / Build on what survives</b>
+                    <p>
+                        Promote a scoped capability. Seed the next mission with
+                        one reusable benchmark. Revoke a foundation to see its
+                        descendants close.
+                    </p>
+                </div>
+            </section>
+            <section
+                class="workbench wrap"
+                id="foundry"
+                aria-labelledby="foundry-title"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">THE LIVING CAPABILITY FOUNDRY</p>
+                        <h2 id="foundry-title">
+                            Ambition, <em>under trial.</em>
+                        </h2>
+                    </div>
+                    <span class="privacy"
+                        ><i></i> PRIVATE · ON YOUR DEVICE</span
+                    >
+                </div>
+                <div
+                    class="experience-nav"
+                    role="group"
+                    aria-label="Guided experiences"
+                >
+                    <button data-experience="nova" aria-pressed="true">
+                        <span>01</span> Nova-Seeds
+                    </button>
+                    <button data-experience="sovereign" aria-pressed="false">
+                        <span>02</span> Sovereign Bloom
+                    </button>
+                    <button data-experience="omega" aria-pressed="false">
+                        <span>03</span> Ω-Lattice
+                    </button>
+                    <button data-experience="invention" aria-pressed="false">
+                        <span>04</span> Invention Machine
+                    </button>
+                    <button data-experience="proof" aria-pressed="false">
+                        <span>05</span> Proof Debt → Jobs
+                    </button>
+                </div>
+                <p
+                    id="bloom-status"
+                    class="status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Opening the foundry…
+                </p>
+                <div id="bloom" aria-busy="true">
+                    <div class="progress-rail" aria-label="Proof lifecycle">
+                        <div>
+                            <small>CLAIM</small
+                            ><strong id="claim-state">Potential</strong>
+                        </div>
+                        <span>→</span>
+                        <div>
+                            <small>PROOF DEBT</small
+                            ><strong id="debt-count">3 open jobs</strong>
+                        </div>
+                        <span>→</span>
+                        <div>
+                            <small>GATE</small
+                            ><strong id="gate-state">Chronicle HOLD</strong>
+                        </div>
+                        <span>→</span>
+                        <div>
+                            <small>MEMORY</small
+                            ><strong id="memory-count">0 active</strong>
+                        </div>
+                    </div>
+                    <nav class="view-nav" aria-label="Workspace views">
+                        <button data-view="seed" aria-current="page">
+                            01 Seed &amp; jobs</button
+                        ><button data-view="docket">02 Evidence docket</button
+                        ><button data-view="chronicle">
+                            03 Chronicle &amp; leverage
+                        </button>
+                    </nav>
+                    <section data-panel="seed" aria-labelledby="seed-title">
+                        <div class="seed-layout">
+                            <aside class="editorial">
+                                <p class="eyebrow" id="playbook-edition"></p>
+                                <h3 id="seed-title"></h3>
+                                <p id="playbook-description"></p>
+                                <div class="scope-note">
+                                    <span>THE CORE RULE</span>
+                                    <p>
+                                        The LLM drafts. The jobs test. The
+                                        reviewer decides.
+                                    </p>
+                                    <small
+                                        >The visionary claim stays unproven.
+                                        Promotion covers the computation and
+                                        supplied inputs only.</small
+                                    >
+                                </div>
+                                <p class="fine">
+                                    The presets contain illustrative inputs.
+                                    Replace them with your own evidence to make
+                                    this workspace useful to your mission.
+                                </p>
+                            </aside>
+                            <div class="surface">
+                                <label for="objective">Mission objective</label
+                                ><textarea
+                                    id="objective"
+                                    rows="3"
+                                    maxlength="2000"
+                                ></textarea
+                                ><label for="claim"
+                                    >Visionary claim under trial</label
+                                ><textarea
+                                    id="claim"
+                                    rows="2"
+                                    maxlength="2000"
+                                ></textarea>
+                                <div class="input-pair">
+                                    <div>
+                                        <label for="shock"
+                                            >Stress intensity (%)</label
+                                        ><input
+                                            id="shock"
+                                            type="number"
+                                            min="10"
+                                            max="50"
+                                            step="1"
+                                            value="20"
+                                        />
+                                    </div>
+                                    <div>
+                                        <p class="field-label">
+                                            Proof boundaries
+                                        </p>
+                                        <p
+                                            id="stress-description"
+                                            class="fine"
+                                        ></p>
+                                    </div>
+                                </div>
+                                <details>
+                                    <summary>
+                                        Edit bounded inputs or import a native
+                                        Mission
+                                    </summary>
+                                    <p class="fine">
+                                        Allocation, scheduling, forecasting or
+                                        source research. Insight Atlas research
+                                        exports work here too.
+                                    </p>
+                                    <label for="mission-json"
+                                        >Mission JSON</label
+                                    ><textarea
+                                        id="mission-json"
+                                        class="code"
+                                        rows="12"
+                                        spellcheck="false"
+                                    ></textarea
+                                    ><label
+                                        class="file-label"
+                                        for="mission-import"
+                                        >Import Mission JSON<input
+                                            id="mission-import"
+                                            type="file"
+                                            accept="application/json,.json"
+                                    /></label>
+                                </details>
+                                <button id="compile-seed" class="button ink">
+                                    Compile proof jobs <span>→</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="queue-heading">
+                            <div>
+                                <p class="eyebrow">
+                                    UNSUPPORTED OUTPUT BECOMES EXECUTABLE WORK
+                                </p>
+                                <h3>Your proof debt, <em>made useful.</em></h3>
+                            </div>
+                            <button id="run-all" class="button ink">
+                                Run pending jobs ↗
+                            </button>
+                        </div>
+                        <div id="job-grid" class="job-grid"></div>
+                        <p class="fine">
+                            Execution creates candidate evidence. It never
+                            accepts a review or promotes a capability for you.
+                        </p>
+                    </section>
+                    <section
+                        data-panel="docket"
+                        hidden
+                        aria-labelledby="docket-title"
+                    >
+                        <div class="queue-heading">
+                            <div>
+                                <p class="eyebrow">
+                                    EVIDENCE DOCKET / PROOF BLOOM PROTOCOL
+                                </p>
+                                <h3 id="docket-title">
+                                    A claim earns its <em>place.</em>
+                                </h3>
+                            </div>
+                            <button id="download-dossier" class="button light">
+                                Export complete dossier ↓
+                            </button>
+                        </div>
+                        <div id="gate-grid" class="gate-grid"></div>
+                        <div class="docket-layout">
+                            <div class="surface">
+                                <label for="job-picker"
+                                    >Inspect a proof job</label
+                                ><select id="job-picker">
+                                    <option value="source">
+                                        01 · Trace the claim
+                                    </option>
+                                    <option value="benchmark">
+                                        02 · Measure the capability
+                                    </option>
+                                    <option value="stress">
+                                        03 · Challenge the advantage
+                                    </option>
+                                </select>
+                                <div id="result-view"></div>
+                                <div class="actions small">
+                                    <button id="run-job" class="button ink">
+                                        Run this job</button
+                                    ><button
+                                        id="download-bundle"
+                                        class="button light"
+                                    >
+                                        ProofBundle ↓</button
+                                    ><button
+                                        id="download-mission"
+                                        class="button light"
+                                    >
+                                        Native Mission ↓</button
+                                    ><button
+                                        id="download-spec"
+                                        class="button light"
+                                    >
+                                        JobSpec ↓
+                                    </button>
+                                </div>
+                                <details>
+                                    <summary>
+                                        Return work from an agent or human
+                                    </summary>
+                                    <p class="fine">
+                                        Import a ProofBundle to replay it here,
+                                        or return an approved native agent
+                                        receipt with an independently obtained
+                                        public key. Native approval is attached
+                                        separately from the local benchmark.
+                                    </p>
+                                    <label
+                                        class="file-label"
+                                        for="bundle-import"
+                                        >Import ProofBundle<input
+                                            id="bundle-import"
+                                            type="file"
+                                            accept="application/json,.json" /></label
+                                    ><label for="trusted-key"
+                                        >Trusted agent public key · 64 hex
+                                        characters</label
+                                    ><input
+                                        id="trusted-key"
+                                        class="code"
+                                        maxlength="64"
+                                        autocomplete="off"
+                                        spellcheck="false"
+                                    />
+                                    <button id="pin-key" class="button light">
+                                        Pin this agent key
+                                    </button>
+                                    <label
+                                        class="file-label"
+                                        for="native-import"
+                                        >Import signed native return<input
+                                            id="native-import"
+                                            type="file"
+                                            accept="application/json,.json"
+                                    /></label>
+                                    <p class="fine">
+                                        A JobSpecURI remains unset until you
+                                        publish the exact specification to a
+                                        real content store. Plans are
+                                        unpublished and unfunded.
+                                    </p>
+                                </details>
+                            </div>
+                            <aside class="review-surface">
+                                <p class="eyebrow">THE REVIEWER'S DESK</p>
+                                <h3>Make the decision <em>explicit.</em></h3>
+                                <p class="fine">
+                                    Review the actual result and its limits.
+                                    Your local reviewer name is a record, not an
+                                    authenticated external identity.
+                                </p>
+                                <label for="reviewer"
+                                    >Reviewer name or role</label
+                                ><input
+                                    id="reviewer"
+                                    maxlength="80"
+                                    placeholder="Research reviewer"
+                                /><label for="review-decision">Decision</label
+                                ><select id="review-decision">
+                                    <option value="accept">
+                                        Accept within the stated scope
+                                    </option>
+                                    <option value="repair">
+                                        Request repair
+                                    </option>
+                                    <option value="reject">
+                                        Reject the returned evidence
+                                    </option></select
+                                ><label for="review-note"
+                                    >Reason and scope · at least 12
+                                    characters</label
+                                ><textarea
+                                    id="review-note"
+                                    rows="4"
+                                    maxlength="1000"
+                                    placeholder="What did you inspect? What does this evidence establish?"
+                                ></textarea
+                                ><button id="save-review" class="button ink">
+                                    Record this review
+                                </button>
+                                <p id="review-summary" class="fine"></p>
+                                <div class="promotion">
+                                    <span class="eyebrow"
+                                        >CAPABILITY PROMOTION GATE</span
+                                    >
+                                    <p id="promotion-reason">
+                                        Complete all three accepted reviews and
+                                        proof gates.
+                                    </p>
+                                    <button id="promote" class="button gold">
+                                        Promote to Chronicle ↗
+                                    </button>
+                                </div>
+                            </aside>
+                        </div>
+                    </section>
+                    <section
+                        data-panel="chronicle"
+                        hidden
+                        aria-labelledby="chronicle-title"
+                    >
+                        <div class="queue-heading">
+                            <div>
+                                <p class="eyebrow">
+                                    THE MEMORY OF WHAT SURVIVED VALIDATION
+                                </p>
+                                <h3 id="chronicle-title">
+                                    From one invention <em>to the next.</em>
+                                </h3>
+                            </div>
+                            <button id="save-workspace" class="button light">
+                                Save recovery file ↓
+                            </button>
+                        </div>
+                        <div class="leverage-summary">
+                            <div>
+                                <span id="reused-count">0</span>
+                                <p>
+                                    unchanged benchmarks reused<br />in this
+                                    mission
+                                </p>
+                            </div>
+                            <div>
+                                <span id="fresh-count">3</span>
+                                <p>jobs that need<br />fresh evidence</p>
+                            </div>
+                            <p>
+                                Leverage means carrying an exact, reviewed
+                                result forward. New inputs need new proof.
+                                Revoking a foundation also closes every
+                                dependent capability.
+                            </p>
+                        </div>
+                        <div id="chronicle-list" class="chronicle-list"></div>
+                        <div class="recovery surface">
+                            <div>
+                                <h4>Take your evidence with you.</h4>
+                                <p class="fine">
+                                    The recovery file includes exact inputs,
+                                    returns, decisions and a replayed hash
+                                    chain. Local reviews are self-recorded. A
+                                    new device requires you to pin native agent
+                                    keys again.
+                                </p>
+                            </div>
+                            <div>
+                                <label class="file-label" for="workspace-import"
+                                    >Restore recovery JSON<input
+                                        id="workspace-import"
+                                        type="file"
+                                        accept="application/json,.json"
+                                /></label>
+                                <p class="fine" id="storage-state">
+                                    Your workspace is saved locally after each
+                                    successful action.
+                                </p>
+                                <button id="start-fresh" class="button light">
+                                    Save &amp; start fresh
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+            <section class="closing wrap">
+                <p class="eyebrow">
+                    A CIVILIZATION-SCALE VISION. A VERIFIABLE NEXT STEP.
+                </p>
+                <h2>
+                    Let the next possibility<br />begin with
+                    <em>what survived.</em>
+                </h2>
+                <div class="actions">
+                    <a href="../insight/" class="button outline"
+                        >Discover the Insight Atlas ↗</a
+                    ><a href="../ascension/" class="button outline"
+                        >Explore Ascension Lab ↗</a
+                    >
+                </div>
+                <details>
+                    <summary>
+                        Original visions, implementation &amp; provenance
+                    </summary>
+                    <p>
+                        Inspired by the five GoalOS interfaces:
+                        <a
+                            href="https://montrealai.github.io/goalos-v49-nova-seeds-proof-singularity-console-standalone.html"
+                            >Nova-Seeds Proof Bloom</a
+                        >,
+                        <a
+                            href="https://montrealai.github.io/goalos-v50-nova-seeds-sovereign-bloom-engine-interface.html"
+                            >Sovereign Bloom</a
+                        >,
+                        <a
+                            href="https://montrealai.github.io/goalos-v48-alpha-business-omega-lattice-sovereign-foundry-interface.html"
+                            >Ω-Lattice</a
+                        >,
+                        <a
+                            href="https://montrealai.github.io/goalos-v43-invention-automation-machine-interface.html"
+                            >Invention Automation</a
+                        >, and
+                        <a
+                            href="https://montrealai.github.io/goalos-v41-proof-debt-to-agi-jobs-interface.html"
+                            >Proof Debt → AGI Jobs</a
+                        >. Visual direction inspired by
+                        <a href="https://agialpha.com/">AGI Alpha</a>.
+                    </p>
+                    <p>
+                        RSI, ECI and Move-37 are transparent local gate labels
+                        here. This implementation does not claim compatibility
+                        with an external Evidence Docket 6.1 or an on-chain
+                        settlement protocol.
+                        <a href="../agent/PROOF_BLOOM/"
+                            >Read the implementation and recovery guide ↗</a
+                        >
+                    </p>
+                </details>
+            </section>
+        </main>
+        <footer class="wrap">
+            <a class="brand" href="../"><span class="mark">α</span> AGI ALPHA</a
+            ><span>OPEN POSSIBILITY. ACCOUNTABLE PROGRESS.</span
+            ><a
+                href="../DISCLAIMER_SNIPPET/"
+                title="See docs/DISCLAIMER_SNIPPET.md"
+                >Research disclaimer</a
+            ><a href="../">Back to Gallery</a>
+        </footer>
+        <noscript
+            ><p class="wrap">
+                JavaScript enables bounded job execution. Read the
+                <a href="../agent/PROOF_BLOOM/">Proof Bloom field guide</a> for
+                the workflow and source provenance.
+            </p></noscript
+        >
+        <script type="module" src="../assets/bloom/bloom.mjs"></script>
+    </body>
+</html>
