@@ -81,9 +81,11 @@ def validate(site: Path, output: Path, public_url: str | None = None) -> dict[st
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.on(
                 "response",
-                lambda response: failures.append(response.url)
-                if response.status >= 400 and ("ascension" in response.url or "whitepaper" in response.url)
-                else None,
+                lambda response: (
+                    failures.append(response.url)
+                    if response.status >= 400 and ("ascension" in response.url or "whitepaper" in response.url)
+                    else None
+                ),
             )
             page.goto(origin)
             expect(page.get_by_role("link", name="Launch Ascension")).to_be_visible()
@@ -221,12 +223,29 @@ def validate(site: Path, output: Path, public_url: str | None = None) -> dict[st
             expect(page.locator("#policy-list .policy-card")).to_have_count(20)
             page.locator('[data-panel="architect"]').scroll_into_view_if_needed()
             page.screenshot(path=str(output / "architect-desktop.png"))
+            # Hold the real worker request until the user has selected a different panel.
+            # No computed evidence is mocked; this makes the observed completion race deterministic.
+            inspect(
+                page,
+                "window.__ascensionPost = Worker.prototype.postMessage;"
+                "Worker.prototype.postMessage = function(message, ...rest) {"
+                "if (message.kind === 'analysis') {"
+                "window.__resumeAscension = () => window.__ascensionPost.call(this, message, ...rest);"
+                "} else { return window.__ascensionPost.call(this, message, ...rest); }}; true",
+            )
             page.locator("[data-policy]").first.click()
             expect(page.locator("#download-seed")).to_be_disabled()
             expect(page.locator("#settlement-results")).to_be_hidden()
             assert page.locator("#scenario-budget").input_value() == "60"
             report["checks"].append("20 policy variants and fresh-cycle invalidation")
             page.locator('[data-step="governance"]').click()
+            inspect(
+                page,
+                "Worker.prototype.postMessage = window.__ascensionPost; window.__resumeAscension(); true",
+            )
+            expect(page.locator("#lab-status")).to_contain_text("New policy applied", timeout=30000)
+            expect(page.locator('[data-panel="governance"]')).to_be_visible()
+            report["checks"].append("delayed policy replay preserves latest navigation")
             expect(page.locator("#risk-conclusion")).to_contain_text("0.393045")
             expect(page.locator("#strategy-note")).to_contain_text("V/C = 50%")
             page.locator("#game-kind").select_option("rps")

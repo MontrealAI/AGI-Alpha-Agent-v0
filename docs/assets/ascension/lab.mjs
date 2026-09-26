@@ -1096,7 +1096,8 @@ $("restore-plan").addEventListener(
     guarded(async () => {
         if (!recovered) throw new Error("Recover a seed first.");
         await chooseScenario(recovered.scenario);
-        showStep("insight");
+        // A user may explore another panel while the real worker is running.
+        if (activeStep === "insight") showStep("insight");
     }),
 );
 $("market-lots").addEventListener("input", renderMarket);
@@ -1216,7 +1217,8 @@ $("policy-list").addEventListener(
             budget: policy.budget,
             risk_limit: policy.risk_limit,
         });
-        showStep("insight");
+        // Completion must not undo a navigation choice made after this request.
+        if (activeStep === "insight") showStep("insight");
         status(
             "New policy applied. The portfolio was recomputed; seed, funding and review start a fresh cycle.",
         );
