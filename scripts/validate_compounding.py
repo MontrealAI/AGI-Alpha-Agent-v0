@@ -227,9 +227,10 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 (output / "accessibility.json").write_text(json.dumps(audit, indent=2))
                 assert audit["violations"] == [], audit["violations"]
                 result["checks"].append("axe-wcag-a-aa-no-violations")
-            page.set_viewport_size({"width": 390, "height": 844})
-            assert inspect(page, "document.documentElement.scrollWidth <= innerWidth"), "Mobile horizontal overflow"
-            page.screenshot(path=str(output / "compounding-mobile.png"), full_page=True)
+            for width in (390, 320):
+                page.set_viewport_size({"width": width, "height": 844})
+                assert inspect(page, "document.documentElement.scrollWidth <= innerWidth"), "Mobile horizontal overflow"
+                page.screenshot(path=str(output / f"compounding-mobile-{width}.png"), full_page=True)
             result["checks"].append("mobile-no-overflow")
             # Recovery and execution must work with the real installed service worker offline.
             wait_for(page, "navigator.serviceWorker.controller !== null")

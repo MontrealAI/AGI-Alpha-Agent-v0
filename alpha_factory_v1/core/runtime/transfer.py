@@ -39,18 +39,19 @@ SECTIONS = [
 def canonical(value: Any) -> str:
     """Encode bounded interoperable JSON without non-finite numbers."""
 
+    # Exact built-in types are part of the JSON protocol; subclasses are not accepted.
     def check(item: Any, depth: int = 0) -> None:
         if depth > 20:
             raise ValueError("Document nesting exceeds 20 levels")
         if item is None or type(item) in (str, bool):
             return
-        if type(item) is int and abs(item) <= 2**53 - 1:
+        if type(item) is int and abs(item) <= 2**53 - 1:  # noqa: E721 - require exact protocol types
             return
-        if type(item) is list:
+        if type(item) is list:  # noqa: E721 - require exact protocol types
             for part in item:
                 check(part, depth + 1)
             return
-        if type(item) is dict and all(type(key) is str for key in item):
+        if type(item) is dict and all(type(key) is str for key in item):  # noqa: E721 - require exact protocol types
             for part in item.values():
                 check(part, depth + 1)
             return
@@ -91,17 +92,17 @@ def parse(raw: str) -> dict[str, Any]:
 
 
 def fields(value: Any, expected: str) -> None:
-    if type(value) is not dict or set(value) != set(expected.split()):
+    if type(value) is not dict or set(value) != set(expected.split()):  # noqa: E721 - require exact protocol types
         raise ValueError(f"Expected exactly these fields: {expected}")
 
 
 def integer(value: Any, lower: int, upper: int) -> None:
-    if type(value) is not int or not lower <= value <= upper:
+    if type(value) is not int or not lower <= value <= upper:  # noqa: E721 - require exact protocol types
         raise ValueError(f"Expected an integer from {lower} to {upper}")
 
 
 def series(value: Any, minimum: int, maximum: int) -> None:
-    if type(value) is not list or not minimum <= len(value) <= maximum:
+    if type(value) is not list or not minimum <= len(value) <= maximum:  # noqa: E721 - require exact protocol types
         raise ValueError("Invalid series length")
     for item in value:
         integer(item, -10_000, 10_000)
@@ -210,11 +211,11 @@ def validate_spec(spec: dict[str, Any]) -> None:
         raise ValueError("Invalid experiment schema or scenario")
     integer(spec["seed"], 1, 9999)
     series(spec["training"], 20, 64)
-    if type(spec["archive_enabled"]) is not bool:
+    if type(spec["archive_enabled"]) is not bool:  # noqa: E721 - require exact protocol types
         raise ValueError("archive_enabled must be boolean")
     for key in ("call_cost_milli", "human_cost_milli_per_second", "coordination_cost_milli", "risk_limit_milli"):
         integer(spec[key], 0, 10_000_000)
-    if type(spec["tasks"]) is not list or not 2 <= len(spec["tasks"]) <= 8:
+    if type(spec["tasks"]) is not list or not 2 <= len(spec["tasks"]) <= 8:  # noqa: E721 - require exact protocol types
         raise ValueError("Provide two to eight future tasks")
     identifiers: set[str] = set()
     commitments: set[str] = {digest(spec["training"])}
@@ -466,7 +467,10 @@ def docket_files(report: dict[str, Any]) -> dict[str, str]:
                 "training_cost": "all A selection calls charged to B6; no amortization",
                 "unmeasured": ["energy", "monetary compute cost", "active human attention"],
                 "execution_accounting": core["execution_accounting"],
-                "replay_and_baseline_work": "creation includes all baselines and one charged full replay; later UI preparation, exports and replays are outside this timing",
+                "replay_and_baseline_work": (
+                    "creation includes all baselines and one charged full replay; "
+                    "later UI preparation, exports and replays are outside this timing"
+                ),
             }
         ),
         "09_safety_ledgers/safety.json": render(

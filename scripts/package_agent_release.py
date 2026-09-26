@@ -146,7 +146,8 @@ def main() -> None:
             "complete browser workspace, native handoff and Ed25519 verification",
             "Insight Atlas exact allocation, architecture search, evidence replay and Chronicle recovery",
             "Proof Bloom jobs, native signed returns, reviewed gates, capability reuse and transitive revocation",
-            "Compounding Lab future-task transfer, costs, human review, native/browser replay and complete Evidence Docket",
+            "Compounding Lab future-task transfer, costs, human review, native/browser replay "
+            "and complete Evidence Docket",
             "byte-identical latest 198-page manuscript and pinned source manifest",
             "native CPU demos and Streamlit lineage UIs",
             "complete demo catalog and every browser replay",
