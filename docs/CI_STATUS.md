@@ -32,7 +32,9 @@ groups. An unrelated PR check can no longer cancel an active scheduled/main heal
 The watchdog retains its existing rerun, missing-run detection and branch-protection checks.
 It requires the intended upstream commit (or current scheduled-run commit), checks the returned SHA
 and branch, and rejects stale results. A pending run is never a pass, including when a grace or waiting
-period expires. Automatic reruns do not extend the bounded wait indefinitely.
+period expires. Automatic reruns do not extend the bounded wait indefinitely. Remediation rechecks the current
+branch commit before acting, and each run permits at most one automatic retry. An event known to be
+superseded is left read-only so it cannot restart an older workflow and cancel the current build.
 Branch-protection verification requires the configured admin token; its absence is reported as
 a warning, not evidence that repository protection has been verified.
 

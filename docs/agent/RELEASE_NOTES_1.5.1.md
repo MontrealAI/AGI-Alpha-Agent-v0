@@ -11,7 +11,8 @@ operation. All original demos, flywheels, the white paper and earlier releases r
 - Verify current main immediately before Pages deployment, before release mutation, and again after
   uploading and re-downloading assets. Superseded runs cannot intentionally publish an older candidate.
 - Bind CI Health to the intended commit; reject stale API results and prevent pending workflows or
-  unsuccessful reruns from being reported as passing when their waiting period expires.
+  unsuccessful reruns from being reported as passing when their waiting period expires. Automatic
+  remediation requires the current branch commit and permits only one retry per run.
 - Correct branch-protection context names to the actual GitHub check runs and document the remaining
   administrator setup. Release gating does not imply main is protected from direct pushes.
 - Refresh current installation/container/browser instructions and add a release-readiness guide

@@ -123,12 +123,32 @@ def _can_rerun(run: Mapping[str, object]) -> bool:
     return bool(run.get("rerun_url"))
 
 
+def _target_is_current(repo: str, branch: str, commit: str, token: str | None) -> bool:
+    """Check immediately before remediation; unavailable provenance is not permission."""
+    try:
+        target = _github_request(f"{API_ROOT}/repos/{repo}/git/ref/heads/{quote(branch, safe='')}", token)
+    except (urllib.error.URLError, json.JSONDecodeError):
+        return False
+    obj = target.get("object")
+    return isinstance(obj, dict) and obj.get("sha") == commit
+
+
 def _rerun_workflow(repo: str, run: Mapping[str, object], token: str | None) -> str:
     if not token:
         return "GITHUB_TOKEN (or GH_TOKEN) is required to rerun workflows"
 
     if not _can_rerun(run):
         return "rerun not supported for this workflow run (missing rerun_url)"
+
+    if int(run.get("run_attempt", 1)) >= 2:
+        return "automatic retry budget exhausted; inspect the failure before a manual retry"
+    branch, commit = run.get("head_branch"), run.get("head_sha")
+    if (
+        not isinstance(branch, str)
+        or not isinstance(commit, str)
+        or not _target_is_current(repo, branch, commit, token)
+    ):
+        return "superseded or unverifiable commit; rerun disabled"
 
     run_id = run.get("id")
     if not run_id:
@@ -693,6 +713,13 @@ def main(argv: list[str] | None = None) -> int:
         actions_write_allowed = False
         actions_reason = "forced read-only mode"
 
+    # A workflow_run event can arrive after a new push. Retrying that old run
+    # can cancel the current build through the workflow's concurrency group.
+    if actions_write_allowed and args.commit and (args.rerun_failed or args.cancel_stale or args.dispatch_missing):
+        if not _target_is_current(args.repo, branch, args.commit, token):
+            actions_write_allowed = False
+            actions_reason = "target commit was superseded or cannot be verified; remediation disabled"
+
     if args.rerun_failed or args.cancel_stale or args.dispatch_missing:
         if not actions_write_allowed:
             print(
@@ -731,6 +758,9 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if age_seconds is None or age_seconds < stale_threshold:
                 continue
+            if args.commit and not _target_is_current(args.repo, branch, args.commit, token):
+                print(f"⚠️ skip cancel for superseded or unverifiable target {args.commit}")
+                continue
             ok, message = _cancel_run(args.repo, int(run["id"]), token)
             outcome = "✅" if ok else "❌"
             print(f"{outcome} cancel {workflow} run {run['id']}: {message}")
@@ -747,6 +777,9 @@ def main(argv: list[str] | None = None) -> int:
     dispatched: set[str] = set()
     if args.dispatch_missing and dispatch_targets:
         for workflow in sorted(dispatch_targets):
+            if args.commit and not _target_is_current(args.repo, branch, args.commit, token):
+                print(f"⚠️ skip dispatch for superseded or unverifiable target {args.commit}")
+                continue
             if not _workflow_supports_dispatch(workflow):
                 print(f"⚠️ dispatch {workflow}: workflow_dispatch not configured; skipping")
                 continue
