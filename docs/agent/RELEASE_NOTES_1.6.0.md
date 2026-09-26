@@ -15,12 +15,17 @@ connected working browser experience, with a refined visual design inspired by a
   evidence remains mandatory.
 - An ivory-and-obsidian homepage and Atlas, sculptural metallic details, keyboard controls, reduced-motion
   support, responsive data views and offline use after caching. The original flywheel and demos remain.
+- Recovery downloads automatically compact large histories to stay within the import limit. Evidence
+  promotion checks the complete recovery envelope before recording a capability. Regression tests now
+  restore the exact downloaded bytes, including three-capability histories and offline revocation recovery.
 - Contributor setup applies current package requirements after historical development locks, fixing the
   cryptography downgrade that previously made `pip check` fail.
 - The browser lint hook publishes its installation checksum atomically, preventing concurrent
   pre-commit batches from falsely reporting a stale installation. A deterministic concurrency test
   reproduces the original failure; genuinely stale installations still fail. The
   [original failed hook report](release-evidence/insight-lint-race.json) is preserved with its artifact digest.
+- The lint hook passes quoted absolute paths directly to ESLint, avoiding the GNU-only `realpath`
+  option that failed the macOS smoke gate. Paths with spaces and the concurrent first-use case are tested.
 
 ## Verification and artifacts
 

@@ -41,7 +41,7 @@ fi
 cd "$BROWSER_DIR"
 args=()
 for f in "$@"; do
-    args+=("$(realpath --relative-to=. "$ROOT/$f")")
+    args+=("$ROOT/$f")
 done
 eslint_bin="$BROWSER_DIR/node_modules/.bin/eslint"
 if [[ ! -x "$eslint_bin" ]]; then

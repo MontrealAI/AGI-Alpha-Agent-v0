@@ -105,6 +105,10 @@ Revocation preserves the original evidence and review. Recovery verifies the com
 recomputes every promoted bundle, including revoked ones, before replacing the workspace.
 
 The portable format is bounded to 250 KB and 20 events; large inputs can reach the byte limit sooner.
+Downloads retain readable indentation when it fits, and use compact JSON for larger documents so the
+exact downloaded bytes remain importable. Promotion and revocation check the complete recovery envelope,
+including its scenario and digest, before committing history. Recovery acceptance reimports the saved
+file unchanged; it does not reserialize the download before testing it.
 If an additional event exceeds a bound, it is rejected and the current workspace stays intact. Save the
 current expedition, then start a separate expedition for more experiments. A local hash chain cannot
 prevent someone rewriting an entire file and all hashes. Retain a trusted copy/digest separately when

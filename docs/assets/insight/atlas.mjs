@@ -2,6 +2,8 @@
 import {
     SECTORS,
     DEFAULT_CONFIG,
+    MAX_PORTABLE_BYTES,
+    serializePortableJSON,
     validateScenario,
     validateConfig,
     allocateEnvelope,
@@ -106,7 +108,7 @@ let busy = false;
 
 function download(name, value) {
     const url = URL.createObjectURL(
-        new Blob([JSON.stringify(value, null, 2) + "\n"], {
+        new Blob([serializePortableJSON(value)], {
             type: "application/json",
         }),
     );
@@ -119,7 +121,7 @@ function download(name, value) {
 async function readFile(input) {
     const file = input.files[0];
     if (!file) throw new Error("Choose a JSON file.");
-    if (file.size > 250000)
+    if (file.size > MAX_PORTABLE_BYTES)
         throw new Error("Choose a JSON document smaller than 250 KB.");
     try {
         return JSON.parse(await file.text());
@@ -713,11 +715,15 @@ async function renderChronicle() {
             const revoke = node("button", "Revoke capability", "small-button");
             revoke.addEventListener("click", () =>
                 action(async () => {
-                    chronicle = await appendChronicle(chronicle, {
-                        action: "revoke",
-                        digest: event.digest,
-                        note: "Operator revoked this local modeled capability; original evidence remains in history.",
-                    });
+                    chronicle = await appendChronicle(
+                        chronicle,
+                        {
+                            action: "revoke",
+                            digest: event.digest,
+                            note: "Operator revoked this local modeled capability; original evidence remains in history.",
+                        },
+                        { scenario, config },
+                    );
                     await renderChronicle();
                     status(
                         "Capability revoked. Its evidence and original review remain in the Chronicle.",

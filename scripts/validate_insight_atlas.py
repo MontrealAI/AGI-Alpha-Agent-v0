@@ -25,15 +25,19 @@ def downloaded(page: Page, selector: str, output: Path) -> dict[str, Any]:
     with page.expect_download() as event:
         page.locator(selector).click()
     event.value.save_as(output)
+    assert output.stat().st_size <= 250000, "Downloaded JSON must fit the browser's unchanged import limit"
     result: dict[str, Any] = json.loads(output.read_text())
     return result
 
 
-def upload(page: Page, selector: str, value: dict[str, Any]) -> None:
+def upload(page: Page, selector: str, value: dict[str, Any] | Path) -> None:
     """Exercise the file input with a bounded JSON document."""
-    page.locator(selector).set_input_files(
-        {"name": "validation.json", "mimeType": "application/json", "buffer": json.dumps(value).encode()}
-    )
+    if isinstance(value, Path):
+        page.locator(selector).set_input_files(str(value))
+    else:
+        page.locator(selector).set_input_files(
+            {"name": "validation.json", "mimeType": "application/json", "buffer": json.dumps(value).encode()}
+        )
     wait_for(page, "!document.querySelector('#atlas').hasAttribute('aria-busy')")
 
 
@@ -160,7 +164,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             expect(page.locator("#budget")).to_have_value("1500")
             expect(page.locator("#review-panel")).to_be_hidden()
             expect(page.locator("#download-proof")).to_be_disabled()
-            upload(page, "#workspace-import", recovery)
+            upload(page, "#workspace-import", output / "recovery.json")
             report["checks"].extend(
                 [
                     "all-three-scenarios",
@@ -168,6 +172,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                     "native-research-execution-and-signed-export",
                     "duplicate-promotion-rejected",
                     "reviewed-design-reuse-requires-fresh-evidence",
+                    "downloaded-recovery-bytes-reimported",
                     "existing-flywheel-and-26-entries-preserved",
                 ]
             )
@@ -207,7 +212,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.get_by_role("button", name="Reallocate").click()
             expect(page.locator("#atlas-status")).to_contain_text("Enter 0")
             expect(page.locator("#allocation-table tbody tr").last).to_contain_text("$15,001,000,000,000,000")
-            upload(page, "#workspace-import", recovery)
+            upload(page, "#workspace-import", output / "recovery.json")
             expect(page.locator("#atlas-status")).to_contain_text("Expedition restored")
             expect(page.locator("#chronicle-count")).to_have_text("3 active modeled capabilities")
             bad_recovery = json.loads(json.dumps(recovery))
@@ -217,8 +222,8 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             expect(page.locator("#chronicle-count")).to_have_text("3 active modeled capabilities")
             page.get_by_role("button", name="Revoke capability").first.click()
             expect(page.locator("#chronicle-count")).to_have_text("2 active modeled capabilities")
-            revoked = downloaded(page, "#save-workspace", output / "recovery-revoked.json")
-            upload(page, "#workspace-import", revoked)
+            downloaded(page, "#save-workspace", output / "recovery-revoked.json")
+            upload(page, "#workspace-import", output / "recovery-revoked.json")
             expect(page.locator("#chronicle-count")).to_have_text("2 active modeled capabilities")
             page.locator("#scenario-picker").select_option("science")
             page.locator("#scenario-picker").select_option("restored")
@@ -293,7 +298,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             context.set_offline(True)
             page.reload(wait_until="networkidle")
             wait_for(page, "document.documentElement.dataset.atlasReady === 'true'")
-            upload(page, "#workspace-import", revoked)
+            upload(page, "#workspace-import", output / "recovery-revoked.json")
             expect(page.locator("#chronicle-count")).to_have_text("2 active modeled capabilities")
             page.get_by_role("button", name="02 Second-order agency").click()
             page.locator("#build-proof").click()

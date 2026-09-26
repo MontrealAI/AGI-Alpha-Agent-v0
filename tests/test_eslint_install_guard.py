@@ -66,6 +66,34 @@ def test_existing_stale_installation_remains_blocked(hook: tuple[Path, Path, dic
     assert not Path(env["ESLINT_LOG"]).exists()
 
 
+def test_lint_paths_do_not_require_gnu_realpath(hook: tuple[Path, Path, dict[str, str]]) -> None:
+    script, browser, env = hook
+    binaries = browser / "node_modules/.bin"
+    realpath = binaries / "realpath"
+    realpath.write_text("#!/bin/bash\necho 'GNU realpath is unavailable' >&2\nexit 1\n")
+    realpath.chmod(0o755)
+    linter = binaries / "eslint"
+    linter.write_text('#!/bin/bash\nprintf "%s\\0" "$@" > "$ESLINT_LOG"\n')
+    target = browser / "file with spaces.js"
+    target.write_text("export const answer = 42;\n")
+    result = subprocess.run(
+        ["bash", str(script), str(target.relative_to(script.parent))],
+        cwd=script.parent,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert result.returncode == 0, result.stderr
+    assert Path(env["ESLINT_LOG"]).read_bytes().split(b"\0") == [
+        b"--no-warn-ignored",
+        b"--config",
+        b"eslint.config.js",
+        os.fsencode(target),
+        b"",
+    ]
+
+
 def test_parallel_first_use_never_exposes_partial_stamp(hook: tuple[Path, Path, dict[str, str]]) -> None:
     script, browser, env = hook
     opened = script.parent / "writer-opened"

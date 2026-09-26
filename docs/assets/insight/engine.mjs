@@ -3,6 +3,16 @@
 import { canonicalJSON, hashObject } from "../ascension/crypto.mjs";
 
 export const ENGINE = "insight-atlas/1.0.0";
+export const MAX_PORTABLE_BYTES = 250000;
+
+export function serializePortableJSON(value) {
+    const compact = canonicalJSON(value);
+    const readable = JSON.stringify(value, null, 2) + "\n";
+    return new TextEncoder().encode(readable).length <= MAX_PORTABLE_BYTES
+        ? readable
+        : compact;
+}
+
 export const SECTORS = [
     "Energy",
     "Compute",
@@ -752,6 +762,12 @@ export async function appendChronicle(
     };
     chronicle.events.push({ ...body, hash: await hashObject(body) });
     await verifyChronicle(chronicle);
+    if (expectedInput)
+        await exportWorkspace(
+            expectedInput.scenario,
+            expectedInput.config,
+            chronicle,
+        );
     return chronicle;
 }
 
@@ -763,7 +779,9 @@ export async function exportWorkspace(scenario, config, chronicle) {
         config: validateConfig(config),
         chronicle,
     };
-    return { ...body, digest: await hashObject(body) };
+    const workspace = { ...body, digest: await hashObject(body) };
+    serializePortableJSON(workspace);
+    return workspace;
 }
 
 export async function restoreWorkspace(value) {
