@@ -1,16 +1,38 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Release verification checkpoint
+name: Stop superseded integration only
 on:
   push:
     branches: [release/refresh-ci-health-1.3.0]
-permissions: {}
+permissions:
+  contents: read
+  actions: write
 jobs:
-  checkpoint:
+  stop-superseded:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Record pending final release verification
+      - name: Cancel only the known superseded run before publication
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          echo 'Superseded candidate stopped; temporary actions-write permission removed.'
-          echo 'Final commit: 4f77ca26e578a7efd5da5f4f9e43fdbcd12b6564.'
-          echo 'Publication and independent verification are still pending; this is not acceptance evidence.'
+          python - <<'PYTHON'
+          import json, subprocess
+          repo = 'MontrealAI/AGI-Alpha-Agent-v0'
+          old = '272b580d7b1433da962635d7a9c6dd81c96862bf'
+          expected_main = '4f77ca26e578a7efd5da5f4f9e43fdbcd12b6564'
+          run_id = 36211581341
+          def api(path):
+              return json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/{path}'], text=True))
+          assert expected_main != old
+          assert api('git/ref/heads/main')['object']['sha'] == expected_main
+          run = api(f'actions/runs/{run_id}')
+          assert run['head_sha'] == old and run['head_branch'] == 'main'
+          assert run['path'] == '.github/workflows/ci.yml'
+          if run['status'] == 'completed':
+              print('Superseded run already completed:', run['conclusion'])
+          else:
+              jobs = api(f'actions/runs/{run_id}/jobs?per_page=100')['jobs']
+              assert not any(j['name'] in {'pages', 'publish'} and j['status'] == 'in_progress' for j in jobs)
+              subprocess.run(['gh', 'api', '--method', 'POST', f'repos/{repo}/actions/runs/{run_id}/force-cancel'], check=True)
+              print('Cancelled superseded acceptance only:', run_id, old)
+          PYTHON
