@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.5.1 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.5.2 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -154,3 +154,11 @@ when the bounded waiting period expires. All check failures remain visible.
 
 See [release readiness](RELEASE_READINESS.md) for supported operation, remaining research boundaries,
 maintenance and the clean-environment upgrade/recovery procedure.
+
+## Version 1.5.2 badge correction
+
+Independent public verification after 1.5.1 found that the Health check-runs image aggregated several
+watchdog invocations attached to one commit. Earlier failures kept that image red after a newer
+watchdog run passed. Health now uses GitHub's latest workflow badge on main. The original check
+records remain available, and exact-commit acceptance still gates deployment and publication.
+The follow-up release repeats the full acceptance pipeline and public SVG verification.

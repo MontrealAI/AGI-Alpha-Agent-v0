@@ -1,6 +1,6 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.5.1 hardens the connected Ascension Lab and local operator release.**
+**Version 1.5.2 corrects live CI Health reporting for the Ascension Lab and local operator release.**
 Patched cryptography, complete operator dependency auditing and stricter publication/CI controls
 are documented in the [release readiness guide](docs/agent/RELEASE_READINESS.md). Explore the
 [new flagship missions](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/) and
@@ -30,8 +30,8 @@ AGI/ASI, economic and compliance aspirations are not release guarantees. This is
 For repository administrators, [current protection instructions](docs/agent/RELEASE_READINESS.md#repository-administration)
 use the actual check names `Lint (ruff)` and `Smoke tests`.
 
-CI badges show live results and open their supporting checks. Health, Integration and Smoke read the
-current main commit's watchdog and complete matrix results directly. [Badge meanings and troubleshooting](docs/CI_STATUS.md)
+CI badges show live results and open their supporting checks. Health follows the latest watchdog workflow
+on main; Integration and Smoke read the current main commit's complete matrix results. [Badge meanings and troubleshooting](docs/CI_STATUS.md)
 explain the scope of each check and where to find release evidence.
 
 Smoke tests now run automatically across Linux, macOS and Windows on Python 3.11–3.13.
@@ -60,7 +60,7 @@ This project intentionally avoids reliance on Chainlink VRF or similar third-par
 [![PR CI](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml/badge.svg?branch=main&event=push)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml?query=branch%3Amain+event%3Apush)
 [![🚀 Integration CI — Insight Demo](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Integration%20matrix&label=Integration%20CI&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain)
 [![🔥 Smoke Test](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=Smoke%20matrix&label=Smoke%20Test&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain)
-[![🩺 CI Health](https://img.shields.io/github/check-runs/MontrealAI/AGI-Alpha-Agent-v0/main?nameFilter=CI%20watchdog&label=CI%20Health&logo=github)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain)
+[![🩺 CI Health](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml/badge.svg?branch=main)](https://github.com/montrealai/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain)
 
 The CI matrix is pinned to the canonical `$AGIALPHA` token contract (`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa`, **18 decimals**). Each workflow calls `python scripts/check_agialpha_config.py` to fail fast if the address, decimals, or workflow environment variables drift away from [`token.config.js`](token.config.js) or the Solidity constants. Run the same helper locally before dispatching CI to keep badges green and avoid PR surprises.
 
