@@ -13,7 +13,10 @@ import pytest
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "run_eslint.sh"
-pytestmark = pytest.mark.skipif(os.name == "nt" or not shutil.which("bash"), reason="POSIX shell hook")
+pytestmark = [
+    pytest.mark.smoke,
+    pytest.mark.skipif(os.name == "nt" or not shutil.which("bash"), reason="POSIX shell hook"),
+]
 
 
 @pytest.fixture
