@@ -140,11 +140,44 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 capture_output=True,
                 text=True,
             )
-            native_report = transfer.parse(native.read_text())
-            page.locator("#import-run").set_input_files(str(native))
+            native_reviewed = output / "native-reviewed.json"
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "alpha_factory_v1.core.runtime.cli",
+                    "transfer-review",
+                    str(native),
+                    "--decision",
+                    "accept",
+                    "--reviewer",
+                    "Automated native acceptance",
+                    "--reason",
+                    "Acceptance fixture with illustrative reported durations, not independent human review",
+                    "--control-ms",
+                    "123000",
+                    "--treatment-ms",
+                    "456000",
+                    "--output",
+                    str(native_reviewed),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            native_report = transfer.parse(native_reviewed.read_text())
+            page.locator("#import-run").set_input_files(str(native_reviewed))
             ready(page)
             expect(page.locator("#lab-status")).to_contain_text("Imported run")
             result["checks"].append("native-cli-browser-handoff")
+            expect(page.locator("#accept")).to_be_disabled()
+            page.reload(wait_until="networkidle")
+            ready(page)
+            expect(page.locator("#accept")).to_be_disabled()
+            unchanged = output / "recovered-native-review.json"
+            download(page, "#export-run", unchanged)
+            assert transfer.parse(unchanged.read_text()) == native_report
+            result["checks"].append("imported-review-keeps-timing-provenance")
             for kind in ("prediction", "stale-review", "unknown-field"):
                 changed = deepcopy(native_report)
                 if kind == "prediction":
@@ -160,6 +193,14 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 download(page, "#export-run", preserved)
                 assert transfer.parse(preserved.read_text()) == native_report
             result["checks"].append("tampered-and-stale-import-rejected-atomically")
+            review(page)
+            measured = output / "browser-reviewed.json"
+            download(page, "#export-run", measured)
+            measured_report = transfer.parse(measured.read_text())
+            assert measured_report["review"]["timing_source"] == "browser-elapsed"
+            assert measured_report["review"]["control_ms"] != 123000
+            assert measured_report["review"]["treatment_ms"] != 456000
+            transfer.verify(measured_report)
             # Custom high cost must invalidate the prior review and close local acceptance.
             page.locator("#call-cost").fill("10000")
             page.locator("#call-cost").press("Tab")

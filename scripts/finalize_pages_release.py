@@ -106,6 +106,7 @@ def finalize(folder: Path, evidence: Path) -> None:
             "archive-ablation-zero-gain",
             "eci-e2-no-independent-claim",
             "native-cli-browser-handoff",
+            "imported-review-keeps-timing-provenance",
             "tampered-and-stale-import-rejected-atomically",
             "cost-overhead-closes-gate",
             "changed-inputs-clear-review",

@@ -468,10 +468,8 @@ $("#import-run").addEventListener("change", () => {
         report = candidate;
         capability = candidate.core.capability;
         started = { control: null, treatment: null };
-        timers = {
-            control: candidate.review?.control_ms ?? null,
-            treatment: candidate.review?.treatment_ms ?? null,
-        };
+        // Preserve the imported review, but a new decision needs new measurements.
+        timers = { control: null, treatment: null };
         if (candidate.review) {
             $("#reviewer").value = candidate.review.reviewer;
             $("#review-reason").value = candidate.review.reason;
@@ -496,10 +494,7 @@ await perform(async () => {
                 throw new Error("Saved inputs differ from run");
             report = state.report;
             capability = report.core.capability;
-            timers = {
-                control: report.review?.control_ms ?? null,
-                treatment: report.review?.treatment_ms ?? null,
-            };
+            timers = { control: null, treatment: null };
             if (report.review) {
                 $("#reviewer").value = report.review.reviewer;
                 $("#review-reason").value = report.review.reason;

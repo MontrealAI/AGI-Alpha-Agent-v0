@@ -14,6 +14,8 @@ improve work on a different Mandate B after its costs are counted?**
 Changed inputs clear the frozen capability, results and reviews. Failed computations cannot be accepted by changing
 a status field. A review is bound to the exact run digest. Imports replay before replacing the current workspace.
 The last valid run survives reload and can execute offline after the gallery cache has installed.
+Imported and recovered reviews keep their original timing provenance. A new browser review requires fresh timers
+for both arms; it cannot relabel another review's reported durations as newly measured browser time.
 
 ## What the learner actually does
 
