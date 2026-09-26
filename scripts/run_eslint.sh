@@ -31,7 +31,12 @@ if [[ -f "$CHECK_FILE" ]]; then
         exit 1
     fi
 else
-    echo "$expected_checksum" > "$CHECK_FILE"
+    # pre-commit runs file batches concurrently. Publish the complete stamp with
+    # an atomic rename so another batch cannot mistake an empty write for drift.
+    checksum_tmp="$(mktemp "${CHECK_FILE}.XXXXXX")"
+    trap 'rm -f "$checksum_tmp"' EXIT
+    echo "$expected_checksum" > "$checksum_tmp"
+    mv "$checksum_tmp" "$CHECK_FILE"
 fi
 cd "$BROWSER_DIR"
 args=()
