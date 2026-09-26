@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.5.2
+# Release readiness — 1.6.0
 
 This release supports a useful, bounded agent on a private operator machine and a self-contained
 browser research workspace. It does not establish general intelligence or a production autonomous
@@ -10,6 +10,7 @@ economy. Assess it against your workload and the evidence below, rather than an 
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Explore opportunities and test an agent firm | [Insight Atlas](../insight/index.html), choose an expedition | Exact scenario ledger, training/holdout comparisons, claim dossiers and replayable capability history |
 | Explore the original white-paper vision | [Ascension Lab](../ascension/index.html), choose a scenario, select Discover | Computed portfolio/schedule, encrypted recovery capsule, modeled economics and downloadable evidence |
 | Solve a bounded task with your own inputs | [Browser workspace](../index.html), choose a mission and edit its data | Checked research, allocation, schedule or forecast; explicit review and export |
 | Keep a persistent identity, private journal and operator controls | [Install the agent](OPERATIONS.md) from the matching release assets | Five native mission kinds, signed evidence, recovery, optional inference and verified payment receipts |
@@ -33,7 +34,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.5.2). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.6.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Prior releases remain immutable recovery checkpoints.
@@ -42,14 +43,14 @@ audits block publication. Prior releases remain immutable recovery checkpoints.
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.5.2 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.6.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
 4. Stop the old process before using the restored home. Resume deliberately and test representative missions. For rollback, stop the
    new process and restore the pre-upgrade backup into another new home with the prior environment.
 
-There is no journal schema migration in this patch. Existing Ed25519 identities and Nova-Seed formats
+There is no journal schema migration in this release. Existing Ed25519 identities and Nova-Seed formats
 remain compatible. Do not run two versions on the same home or discard your pre-upgrade backup.
 Exact commands, Windows paths and container operations are in [the operator guide](OPERATIONS.md).
 

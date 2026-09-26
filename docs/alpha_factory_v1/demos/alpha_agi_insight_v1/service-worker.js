@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-ceab0d6ecefe42a9";
+const CACHE = "agialpha-gallery-dca79cba6d5ac4a4";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -100,6 +100,7 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/finance_alpha/assets/style.css",
   "../../../alpha_factory_v1/demos/finance_alpha/index.html",
   "../../../alpha_factory_v1/demos/index.html",
+  "../../../alpha_factory_v1/demos/insight/index.html",
   "../../../alpha_factory_v1/demos/macro_sentinel/assets/logs.json",
   "../../../alpha_factory_v1/demos/macro_sentinel/assets/preview.svg",
   "../../../alpha_factory_v1/demos/macro_sentinel/assets/script.js",
@@ -176,6 +177,11 @@ const ASSETS = [
   "../../../assets/ascension/worker.mjs",
   "../../../assets/chart-provenance.json",
   "../../../assets/chart.min.js",
+  "../../../assets/insight/atlas.css",
+  "../../../assets/insight/atlas.mjs",
+  "../../../assets/insight/engine.mjs",
+  "../../../assets/insight/home.css",
+  "../../../assets/insight/scenarios.json",
   "../../../assets/portal/examples.json",
   "../../../assets/portal/mark.svg",
   "../../../assets/portal/mission-engine.mjs",
@@ -206,6 +212,7 @@ const ASSETS = [
   "../../../gallery.html",
   "../../../gpt2_small_cli/assets/preview.svg",
   "../../../index.html",
+  "../../../insight/index.html",
   "../../../macro_sentinel/assets/logs.json",
   "../../../macro_sentinel/assets/preview.svg",
   "../../../macro_sentinel/assets/script.js",
