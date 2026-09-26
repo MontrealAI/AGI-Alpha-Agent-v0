@@ -5,6 +5,8 @@ import fs from "node:fs";
 import {
     SECTORS,
     DEFAULT_CONFIG,
+    MAX_PORTABLE_BYTES,
+    serializePortableJSON,
     allocateEnvelope,
     quadrillionsToDollars,
     validateScenario,
@@ -315,6 +317,99 @@ test("Chronicle requires review, rejects duplication and tampering, preserves re
     assert.deepEqual(await restoreWorkspace(recovery), recovery);
     recovery.scenario.question = "Tampered scenario question.";
     await assert.rejects(() => restoreWorkspace(recovery), /digest mismatch/);
+});
+
+test("downloaded recovery bytes remain importable after multiple promotions", async () => {
+    let chronicle = emptyChronicle();
+    for (const scenario of scenarios) {
+        const bundle = await buildEvidence(scenario, DEFAULT_CONFIG);
+        chronicle = await appendChronicle(
+            chronicle,
+            {
+                action: "promote",
+                bundle,
+                note: "Checked reviewer independence and the complete holdout results.",
+            },
+            { scenario, config: DEFAULT_CONFIG },
+        );
+    }
+    const workspace = await exportWorkspace(
+        scenarios[2],
+        DEFAULT_CONFIG,
+        chronicle,
+    );
+    assert.ok(
+        Buffer.byteLength(JSON.stringify(workspace, null, 2)) >
+            MAX_PORTABLE_BYTES,
+    );
+    const downloaded = serializePortableJSON(workspace);
+    assert.ok(Buffer.byteLength(downloaded) <= MAX_PORTABLE_BYTES);
+    assert.deepEqual(await restoreWorkspace(JSON.parse(downloaded)), workspace);
+    assert.equal(
+        serializePortableJSON({ small: true }),
+        '{\n  "small": true\n}\n',
+    );
+    const boundary = { text: "x".repeat(MAX_PORTABLE_BYTES - 11) };
+    assert.equal(
+        Buffer.byteLength(serializePortableJSON(boundary)),
+        MAX_PORTABLE_BYTES,
+    );
+    assert.throws(
+        () => serializePortableJSON({ text: "é".repeat(125000) }),
+        /250 KB/,
+    );
+});
+
+test("promotion cannot strand a history that fits alone but exceeds the recovery envelope", async () => {
+    let chronicle = emptyChronicle();
+    for (let i = 0; i < 4; i++) {
+        const config = { ...DEFAULT_CONFIG, budget: 1800 + i };
+        const bundle = await buildEvidence(scenarios[0], config);
+        chronicle = await appendChronicle(
+            chronicle,
+            {
+                action: "promote",
+                bundle,
+                note: "Checked the complete holdout and all negative controls.",
+            },
+            { scenario: scenarios[0], config },
+        );
+    }
+    const scenario = clone(scenarios[0]);
+    for (let i = 0; i < 4; i++)
+        scenario.sources.push({
+            id: `extra-${i}`,
+            title: "Additional context",
+            kind: "user-supplied",
+            text: "x".repeat(4000),
+        });
+    const bundle = await buildEvidence(scenario, DEFAULT_CONFIG);
+    const event = {
+        action: "promote",
+        bundle,
+        note: "Checked the expanded source context and all holdout results.",
+    };
+    const standalone = await appendChronicle(chronicle, event);
+    assert.equal((await verifyChronicle(standalone)).active.length, 5);
+    await assert.rejects(
+        () => exportWorkspace(scenario, DEFAULT_CONFIG, standalone),
+        /250 KB/,
+    );
+    const before = clone(chronicle);
+    await assert.rejects(
+        () =>
+            appendChronicle(chronicle, event, {
+                scenario,
+                config: DEFAULT_CONFIG,
+            }),
+        /250 KB/,
+    );
+    assert.deepEqual(chronicle, before);
+    const saved = await exportWorkspace(scenario, DEFAULT_CONFIG, chronicle);
+    assert.deepEqual(
+        await restoreWorkspace(JSON.parse(serializePortableJSON(saved))),
+        saved,
+    );
 });
 
 test("dossiers maintain typed graph referential integrity and produce honest executable research inputs", () => {
