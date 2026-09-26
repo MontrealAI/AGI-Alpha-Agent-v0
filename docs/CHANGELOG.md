@@ -1,3 +1,15 @@
+## 1.8.1 — Accessible experiment resets
+
+Compounding Lab now clears stale prediction descriptions when scenarios or costs change.
+Browser acceptance checks both resets, alongside the existing manuscript, replay and release gates.
+See [release notes](agent/RELEASE_NOTES_1.8.1.md).
+
+## 1.8.0 — Final manuscript and Compounding Lab
+
+The original 198-page manuscript, source provenance and all figures accompany the new future-task
+transfer experiment, complete Evidence Dockets and hardened native API.
+See [release notes](agent/RELEASE_NOTES_1.8.0.md) and the [implementation map](agent/MANUSCRIPT_ALIGNMENT.md).
+
 ## 1.7.0 — Nova-Seeds Proof Bloom
 
 Five connected guided experiences turn claims into bounded native Missions, replayed ProofBundles,
