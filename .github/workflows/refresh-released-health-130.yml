@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Preserve initial model runner diagnostics
+name: Verify published Pages release and badges
 on:
   push:
     branches: [release/refresh-ci-health-1.3.0]
@@ -7,55 +7,119 @@ permissions:
   contents: read
   actions: read
 jobs:
-  preserve:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
-      - name: Copy and verify the original failed job evidence
+      - name: Verify public badges, exact release, public commit and preserved checkpoint
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python - <<'PYTHON'
-          import datetime, hashlib, json, pathlib, subprocess, zipfile
+          import base64, concurrent.futures, datetime, hashlib, json, pathlib, re, subprocess, time
+          import xml.etree.ElementTree as ET
           repo = "MontrealAI/AGI-Alpha-Agent-v0"
-          folder = pathlib.Path("first-model-attempt")
+          expected = "845a8b26adadcb83219436d62861afc4a6b97f78"
+          baseline = {"CAPABILITIES.md":"sha256:d73147a8ee5bd7e0ecb81877556fefe8d854e879dabf56deaa22f4245fccbc16","OPERATIONS.md":"sha256:236d48207619516803be0325543ad706771ad3b4e441f802f1d297ce7c46b343","RELEASE_NOTES_1.3.0.md":"sha256:46a8f21253731adde4f366abce95d6c1195d987f87fe12905384b8f368ca5a96","VALIDATION.md":"sha256:010a8efa374b9b5c0a4a889699b7e9093cdbb67911afd0ef359cfd9df31e7d16","alpha-agent-v1.3.0-browser.zip":"sha256:240a9e77fa8bc4103a8c4f9b2dfa174b7970ca16e91f6dfd1a8ba9ddbbbba6ff","alpha-agent-v1.3.0-source.zip":"sha256:ac133da5805f7b55eb0ce3d5f85a563591e74bd8f78c9acdfceead2c68b4a890","alpha-agent-v1.3.0-validation.zip":"sha256:103e233ca18ccbd3943f5b698dbd512d75f1ed1096b268d50c89a195afb99b7a","alpha_factory_v1-1.3.0-py3-none-any.whl":"sha256:e41ead5500d0cd3aac4ab2773141f2b33da59b721291618fab587ffcf37d0362","alpha_factory_v1-1.3.0.tar.gz":"sha256:70614389234a76f9d5dde47e73f3208d5042a59f351b7ec6b8ff9983d0987317","install_agent.py":"sha256:e885c72590036239f05dc0fbb283fa4388ec976bf16f9f9136c1e38b30ff5b80","release-manifest.json":"sha256:61bc6798558ac33db5e57063b93500dad89e827a0ad9ca7873b731564eddb6fa","requirements-agent.lock":"sha256:379740bbca5e3cef7e8dfcceee487dec18b5c86aeac511c7ad80a4b7ff17d85c","SHA256SUMS":"sha256:9c05273f76cd4d153335fb9cabcfeab21464e4f4496e5865bf035751960db8e9"}
+          baseline_140 = {"alpha-agent-v1.4.0-browser.zip":"sha256:b235df50d6b619c2299532699a8c731a13e7bd16576dc8faaf5197157c03fc24","alpha-agent-v1.4.0-site.tar.gz":"sha256:80fc6ecb3318e208aaa658d38bf7d4158c7ee96138c1f5ada6686bd2d95278a9","alpha-agent-v1.4.0-source.zip":"sha256:d57ceb698c953c4b3c103f6e117dc744af5e32672734a14af940b5f9ba37c014","alpha-agent-v1.4.0-validation.zip":"sha256:752bfbb6830084f8429f684bcb53e904ef0f892d2ecdb2087e2abf963f7a7ae5","alpha_factory_v1-1.4.0-py3-none-any.whl":"sha256:0803d8b4393ce3750d7425e71401bf0eb5e2aed441fca6a683e5bac0bfa74b58","alpha_factory_v1-1.4.0.tar.gz":"sha256:b3376d6de220712bb81605f31cbea760a42841efa0744a00b8c6ce5a91d98e2f","CAPABILITIES.md":"sha256:a196e30f25b56e8024a06f82b2af8e4ee36fa43ecb0645fd3c1c4aa9a29a1201","DEMO_VALIDATION.md":"sha256:1ae44e1a9fcaf77b2321439c4005a39b51a6b30f5526fedbef41a6552e76b251","install_agent.py":"sha256:e885c72590036239f05dc0fbb283fa4388ec976bf16f9f9136c1e38b30ff5b80","OPERATIONS.md":"sha256:236d48207619516803be0325543ad706771ad3b4e441f802f1d297ce7c46b343","PAGES_GUIDE.md":"sha256:8563873a9411440f986b689cd7cd2cff0902ee9bc95387d54b38cbfe05101856","release-manifest.json":"sha256:401fb9bc769e0e0800455fe6e1a873260d5d2b5207e3689bf8b88cafb0a6ca78","RELEASE_NOTES_1.4.0.md":"sha256:648fc70cbef193abd87758891b7f6705f4e67d17f19176df96778b05761c31a0","requirements-agent.lock":"sha256:379740bbca5e3cef7e8dfcceee487dec18b5c86aeac511c7ad80a4b7ff17d85c","SHA256SUMS":"sha256:61737477ed38af006ad5fe3e80705c1ff55997881d5feffcb5ac3e12329d356c","VALIDATION.md":"sha256:f7c6ecbbc1c0ce40a4b5e99e055d15049bbe0c484db9756bd80989a1e63868e0"}
+          baseline_150 = {"alpha-agent-v1.5.0-browser.zip":"sha256:b82121a455a47a5c9de9b3258afd51fafe4cd2e149adf9ad39f95c94ac1b8513","alpha-agent-v1.5.0-site.tar.gz":"sha256:368ad90d970f054fdaec2076b70169e0397533936fe28f928b6888a7a4f0594a","alpha-agent-v1.5.0-source.zip":"sha256:b42c1ed38cdb7db29c6d36ea75a7e764eafd18339ecf8b59d78959f0a6a2b6cf","alpha-agent-v1.5.0-validation.zip":"sha256:3f7d883726007332df3e0f818e504a1e9c2ebcac3ab4ab3d8c52a468a8759ad8","alpha_factory_v1-1.5.0-py3-none-any.whl":"sha256:ba9d3df6a4c971f9b3ca0476e89ce8f206e5d4056e96cacec285c58e54e87e73","alpha_factory_v1-1.5.0.tar.gz":"sha256:0fcf1e1539103881537f08c59ad7b33f4a647f885a95a632a42ac5b899ed61b2","CAPABILITIES.md":"sha256:a196e30f25b56e8024a06f82b2af8e4ee36fa43ecb0645fd3c1c4aa9a29a1201","DEMO_VALIDATION.md":"sha256:9b8aebf2eeb2d96c1611093adf2324ad320eaef601351e891b08ef517478ed75","install_agent.py":"sha256:e885c72590036239f05dc0fbb283fa4388ec976bf16f9f9136c1e38b30ff5b80","OPERATIONS.md":"sha256:236d48207619516803be0325543ad706771ad3b4e441f802f1d297ce7c46b343","PAGES_GUIDE.md":"sha256:95f8fb78ca917f72a4e953aa5d6c753c396bac8458392ba6155f37485806d398","release-manifest.json":"sha256:00ca0d9d221f820aec99c1234755df1d29f678a0f123a19dfafa18c8ac795b22","RELEASE_NOTES_1.5.0.md":"sha256:7489e9b3e6309465ba7660a9781a48d545e3b0b3f061b6f5d6e4ff867146eb1c","requirements-agent.lock":"sha256:379740bbca5e3cef7e8dfcceee487dec18b5c86aeac511c7ad80a4b7ff17d85c","SHA256SUMS":"sha256:645b9394a98c4a0ef3b3df56b9a8226329ef1e321c004c27f1158345cd5e046f","VALIDATION.md":"sha256:a3a0850d6286c7abfb5c87c87f961dac4c91a385126394c78404847cfad3cae0","WHITEPAPER_IMPLEMENTATION.md":"sha256:a89d989b1d4ecc432382d3c0f0f9bbdc36c303f56fe304e8ade2ea739d5a5e92"}
+          baseline_151 = {"alpha-agent-v1.5.1-browser.zip":"sha256:01eca7b3029765c1b70761d074e77790c4aa598db302d542e06a081852190355","alpha-agent-v1.5.1-site.tar.gz":"sha256:a9186fe66190b366f842177bf9cbe71886f9abca92058bd7fb5847e228e04268","alpha-agent-v1.5.1-source.zip":"sha256:7686561b091f08b2dfbd39660c43b975bb1b60bc7dc6bcc724a708711b689c01","alpha-agent-v1.5.1-validation.zip":"sha256:d1839211a035302b682be9de91596d7338a65e9514764c9d6c92345fe81cdcbf","alpha_factory_v1-1.5.1-py3-none-any.whl":"sha256:f7257b354eb9beccac3bdf714c05607bdeca4abc2a28edf7304b0367cafb4c5a","alpha_factory_v1-1.5.1.tar.gz":"sha256:693795263d854b50b5693ccbe7b9347e54994ab38579d1c5fac6c2c942757dfb","CAPABILITIES.md":"sha256:4e3a6acab6b3b1196299660b4460ddfdd2d54102473a597979602ab43f8b3961","DEMO_VALIDATION.md":"sha256:9b8aebf2eeb2d96c1611093adf2324ad320eaef601351e891b08ef517478ed75","install_agent.py":"sha256:e885c72590036239f05dc0fbb283fa4388ec976bf16f9f9136c1e38b30ff5b80","OPERATIONS.md":"sha256:0b03792a0bb810a49b1500962220d1b573f0cc4003f314117dd05fa4b47bdc3a","PAGES_GUIDE.md":"sha256:3af7a5fd94241d10b131db013f09c3550131689333f66fd9eb071c67ac7981ad","release-manifest.json":"sha256:84b2edf31f14d748b694990af0d170cb157292350ee4b95a30a63f4cfde14ef9","RELEASE_NOTES_1.5.1.md":"sha256:49bcdfe807c78cecfe0863994de9e62a241eac104f84506245bac616ca67c2ce","RELEASE_READINESS.md":"sha256:dc7c81bfca137792d4d5e02c9c98000289fa99d389ba6ba89e0cc160881ec69e","requirements-agent.lock":"sha256:807e9de36cff92e1cecd7a6f1d651760f66ea4f8346dd799a139269f48c75790","SHA256SUMS":"sha256:28aa7552271c17ae3366c8c5899e3b64431981f69274413ac064c971cd4df6f5","VALIDATION.md":"sha256:28ec779ff16fa2abd9cd57f22c8537156794939a781d31f4739848a9cad490e3","WHITEPAPER_IMPLEMENTATION.md":"sha256:a89d989b1d4ecc432382d3c0f0f9bbdc36c303f56fe304e8ade2ea739d5a5e92"}
+          folder = pathlib.Path("publication-evidence")
           folder.mkdir()
-          def fetch(path):
-              return subprocess.check_output(["gh", "api", "--allow-escape-sequences", f"repos/{repo}/{path}"])
-          job = json.loads(fetch("actions/jobs/108335557405"))
-          artifact = json.loads(fetch("actions/artifacts/10897003736"))
-          assert job["conclusion"] == "failure"
-          assert job["head_sha"] == "845a8b26adadcb83219436d62861afc4a6b97f78"
-          assert artifact["name"] == "real-model"
-          data = fetch("actions/artifacts/10897003736/zip")
-          digest = "sha256:" + hashlib.sha256(data).hexdigest()
-          assert digest == artifact["digest"] == "sha256:22eaf12047eb2baa7b272ec55ea5ac656f4a1237e6dc4a836989a5076fc733b7"
-          (folder / "original-real-model.zip").write_bytes(data)
-          logs = fetch("actions/jobs/108335557405/logs")
-          assert b"SandboxUnavailable" in logs and b"host execution is forbidden" in logs
-          (folder / "original-job.log").write_bytes(logs)
-          (folder / "original-job.json").write_text(json.dumps(job, indent=2) + "\n")
-          (folder / "original-artifact.json").write_text(json.dumps(artifact, indent=2) + "\n")
-          with zipfile.ZipFile(folder / "original-real-model.zip") as archive:
-              assert archive.namelist() == ["sandbox-image.txt"], archive.namelist()
-              sandbox = archive.read("sandbox-image.txt").decode().strip()
-          report = {
-              "captured_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-              "commit": job["head_sha"],
-              "original_run": job["run_id"],
-              "original_job": job["id"],
-              "original_artifact": artifact["id"],
-              "artifact_sha256": digest,
-              "log_sha256": hashlib.sha256(logs).hexdigest(),
-              "sandbox_image": sandbox,
-              "reason": "Docker availability probe failed closed after the image pull; host execution was refused.",
-              "passed": True,
-          }
-          (folder / "preservation.json").write_text(json.dumps(report, indent=2) + "\n")
+          def api(path):
+              return json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/{path}"], text=True))
+          assert api("git/ref/heads/main")["object"]["sha"] == expected
+          checks = {}
+          for workflow in ["pr-ci.yml", "ci.yml", "smoke.yml", "ci-health.yml", "agent-release.yml"]:
+              runs = api(f"actions/workflows/{workflow}/runs?branch=main&per_page=50")["workflow_runs"]
+              matching = [r for r in runs if r["head_sha"] == expected and (workflow == "ci-health.yml" or r["event"] == "push")]
+              assert matching, workflow
+              run = max(matching, key=lambda r: r["id"])
+              assert run["status"] == "completed" and run["conclusion"] == "success", run
+              checks[workflow] = {"run": run["html_url"], "sha": run["head_sha"], "conclusion": run["conclusion"], "attempt": run["run_attempt"]}
+          latest = api("releases/latest")
+          assert latest["tag_name"] == "v1.5.2" and not latest["draft"] and not latest["prerelease"]
+          tag = api("git/ref/tags/v1.5.2")["object"]
+          assert tag["type"] == "tag"
+          assert api("git/tags/" + tag["sha"])["object"]["sha"] == expected
+          previous = api("releases/tags/v1.3.0")
+          assert {a["name"]: a["digest"] for a in previous["assets"]} == baseline
+          previous_140 = api("releases/tags/v1.4.0")
+          assert {a["name"]: a["digest"] for a in previous_140["assets"]} == baseline_140
+          previous_150 = api("releases/tags/v1.5.0")
+          assert {a["name"]: a["digest"] for a in previous_150["assets"]} == baseline_150
+          previous_151 = api("releases/tags/v1.5.1")
+          assert {a["name"]: a["digest"] for a in previous_151["assets"]} == baseline_151
+          subprocess.run(["gh", "release", "download", "v1.5.2", "--repo", repo, "--dir", str(folder), "--pattern", "SHA256SUMS", "--pattern", "release-manifest.json", "--pattern", "requirements-agent.lock", "--pattern", "alpha-agent-v1.5.2-validation.zip"], check=True)
+          checksums = dict(line.split("  ", 1)[::-1] for line in (folder / "SHA256SUMS").read_text().splitlines())
+          assets = {a["name"]: a for a in latest["assets"]}
+          assert len(assets) == 18 and {"WHITEPAPER_IMPLEMENTATION.md", "RELEASE_READINESS.md"}.issubset(assets), sorted(assets)
+          assert set(assets) == set(checksums) | {"SHA256SUMS"}
+          assert all(assets[name]["digest"] == "sha256:" + digest for name, digest in checksums.items())
+          for name in ["SHA256SUMS", "release-manifest.json", "requirements-agent.lock", "alpha-agent-v1.5.2-validation.zip"]:
+              assert assets[name]["digest"] == "sha256:" + hashlib.sha256((folder / name).read_bytes()).hexdigest()
+          import zipfile
+          with zipfile.ZipFile(folder / "alpha-agent-v1.5.2-validation.zip") as archive:
+              audit_summary = json.loads(archive.read("python-dependencies/summary.json"))
+              audit_report = json.loads(archive.read("python-dependencies/pip-audit.json"))
+              model_evidence = json.loads(archive.read("real-model/real-inference.json"))
+          assert model_evidence["model_sha256"] == "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597"
+          assert model_evidence["inference"]["mode"] == "local_inference"
+          assert model_evidence["coding"]["inference"]["mode"] == "local_inference"
+          assert model_evidence["coding"]["result"]["accuracy"] == 1.0
+          assert model_evidence["recovery"]["valid"] is True
+          assert model_evidence["verified_quote_count"] > 0
+          assert audit_summary["passed"] and audit_summary["commit"] == expected
+          assert audit_summary["packages"] == 41 and audit_summary["exit_code"] == 0
+          assert audit_summary["lock_sha256"] == hashlib.sha256((folder / "requirements-agent.lock").read_bytes()).hexdigest()
+          assert len(audit_report["dependencies"]) == 41
+          assert all(d.get("vulns") == [] and not d.get("skip_reason") for d in audit_report["dependencies"])
+          assert next(d["version"] for d in audit_report["dependencies"] if d["name"] == "cryptography") == "50.0.1"
+          manifest = json.loads((folder / "release-manifest.json").read_text())
+          assert manifest["commit"] == expected and manifest["version"] == "1.5.2"
+          assert manifest["public_pages"]["commit"] == expected
+          assert manifest["public_ascension"]["passed"] is True
+          assert manifest["public_ascension"]["paper_sha256"] == "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa"
+          assert len(manifest["public_ascension"]["scenarios"]) == 3
+          url = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+          public = json.loads(subprocess.check_output(["curl", "--fail", "--silent", "--show-error", "--max-time", "30", url + "release.json"]))
+          assert public["commit"] == expected and public["version"] == "1.5.2" and public["url"] == url
+          readme = base64.b64decode(api(f"contents/README.md?ref={expected}")["content"]).decode()
+          urls = re.findall(r'\[!\[[^]]*\]\((https://[^)]+)\)\]', readme)
+          assert len(urls) == 7, urls
+          def probe(item):
+              index, badge_url = item
+              assert badge_url.startswith(("https://github.com/", "https://img.shields.io/")), badge_url
+              data = subprocess.check_output(["curl", "--fail", "--silent", "--show-error", "--max-time", "30", badge_url])
+              title = ET.fromstring(data).findtext("{http://www.w3.org/2000/svg}title")
+              (folder / f"badge-{index}.svg").write_bytes(data)
+              return {"url": badge_url, "title": title}
+          for attempt in range(21):
+              with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+                  images = list(pool.map(probe, enumerate(urls)))
+              statuses = [i for i in images if "/actions/workflows/" in i["url"] or "/check-runs/" in i["url"]]
+              assert len(statuses) == 5
+              release_title = next(i["title"] for i in images if "/v/release/" in i["url"])
+              if all(i["title"].endswith((" - passing", ": passing")) for i in statuses) and release_title == "release: v1.5.2":
+                  break
+              print(json.dumps({"waiting_for_badge_cache": attempt, "badges": images}), flush=True)
+              if attempt == 20:
+                  raise AssertionError("Public badges do not reflect the verified commit")
+              time.sleep(30)
+          report = {"verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "commit": expected, "checks": checks, "badges": images, "public_pages": public, "release": {"url": latest["html_url"], "assets": {n:a["digest"] for n,a in assets.items()}}, "previous_release": {"url": previous["html_url"], "unchanged_assets": len(baseline)}}
+          report["python_dependencies"] = audit_summary
+          report["model_acceptance"] = {"sha256": model_evidence["model_sha256"], "quotes": model_evidence["verified_quote_count"], "coding_accuracy": model_evidence["coding"]["result"]["accuracy"], "recovery_valid": model_evidence["recovery"]["valid"], "run_attempt": checks["agent-release.yml"]["attempt"], "original_failure_preserved": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/36218643697"}
+          report["preserved_150"] = {"url": previous_150["html_url"], "unchanged_assets": len(baseline_150)}
+          report["preserved_140"] = {"url": previous_140["html_url"], "unchanged_assets": len(baseline_140)}
+          report["preserved_151"] = {"url": previous_151["html_url"], "unchanged_assets": len(baseline_151)}
+          report["ascension"] = manifest["public_ascension"]
+          (folder / "verification.json").write_text(json.dumps(report, indent=2) + "\n")
           print(json.dumps(report, indent=2), flush=True)
           PYTHON
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
         with:
-          name: original-model-failure-152
-          path: first-model-attempt/
+          name: public-pages-release-verification
+          path: publication-evidence/
           if-no-files-found: error
+
