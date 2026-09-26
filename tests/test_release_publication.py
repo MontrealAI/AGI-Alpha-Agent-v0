@@ -160,6 +160,19 @@ def test_invalid_package_version_cannot_publish(
         ("1.5.0", "origin"),
         ("1.6.0", None),
         ("1.7.0", None),
+        *[
+            ("1.8.0", problem)
+            for problem in (
+                None,
+                "transfer-failed",
+                "transfer-origin",
+                "transfer-check",
+                "transfer-scenario",
+                "transfer-browser",
+                "transfer-schema",
+                "transfer-manuscript",
+            )
+        ],
         ("1.7.0", "bloom-failed"),
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
@@ -197,7 +210,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         (folder / "source.zip").write_bytes(b"corrupted source fixture")
     (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
     (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
-    if version in {"1.5.0", "1.6.0", "1.7.0"}:
+    if version in {"1.5.0", "1.6.0", "1.7.0", "1.8.0"}:
         ascension_dir = evidence / "public-pages" / "ascension"
         ascension_dir.mkdir()
         (ascension_dir / "ascension.json").write_text(
@@ -213,7 +226,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
                 }
             )
         )
-    if version in {"1.6.0", "1.7.0"}:
+    if version in {"1.6.0", "1.7.0", "1.8.0"}:
         atlas_dir = evidence / "public-pages" / "insight-atlas"
         atlas_dir.mkdir()
         atlas = {
@@ -252,7 +265,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "atlas-schema":
             atlas["schema"] = "declared-pass-only"
         (atlas_dir / "insight-atlas.json").write_text(json.dumps(atlas))
-    if version == "1.7.0":
+    if version in {"1.7.0", "1.8.0"}:
         bloom_dir = evidence / "public-pages" / "proof-bloom"
         bloom_dir.mkdir()
         bloom = {
@@ -296,6 +309,50 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "bloom-schema":
             bloom["schema"] = "self-declared-pass"
         (bloom_dir / "proof-bloom.json").write_text(json.dumps(bloom))
+    if version == "1.8.0":
+        target = evidence / "public-pages" / "compounding"
+        target.mkdir()
+        transfer = {
+            "schema": "agialpha.transfer.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "scenarios": [{"id": name} for name in ("seasonal", "shift", "ablation")],
+            "browser_errors": [],
+            "manuscript_sha256": "4b290d5a8232364b8808c0af8a96e7c9b152afd7ac3f5ba05668a538e073791a",
+            "checks": [
+                "exact-198-page-manuscript",
+                "all-three-scenarios",
+                "python-javascript-exact-replay",
+                "complete-docket-zip-replay",
+                "review-does-not-override-loss",
+                "archive-ablation-zero-gain",
+                "eci-e2-no-independent-claim",
+                "native-cli-browser-handoff",
+                "tampered-and-stale-import-rejected-atomically",
+                "cost-overhead-closes-gate",
+                "changed-inputs-clear-review",
+                "keyboard-focus-preserved",
+                "axe-wcag-a-aa-no-violations",
+                "mobile-no-overflow",
+                "offline-recovery-and-execution",
+                "mirrored-page",
+            ],
+        }
+        if problem == "transfer-failed":
+            transfer["passed"] = False
+        elif problem == "transfer-origin":
+            transfer["origin"] = "https://example.test/"
+        elif problem == "transfer-check":
+            transfer["checks"].remove("complete-docket-zip-replay")
+        elif problem == "transfer-scenario":
+            transfer["scenarios"].pop()
+        elif problem == "transfer-browser":
+            transfer["browser_errors"] = ["uncaught error"]
+        elif problem == "transfer-schema":
+            transfer["schema"] = "declared-pass"
+        elif problem == "transfer-manuscript":
+            transfer["manuscript_sha256"] = "0" * 64
+        (target / "compounding.json").write_text(json.dumps(transfer))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -303,9 +360,9 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
         return
     finalize_pages_release.finalize(folder, evidence)
-    if version in {"1.6.0", "1.7.0"}:
+    if version in {"1.6.0", "1.7.0", "1.8.0"}:
         assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
-    if version == "1.7.0":
+    if version in {"1.7.0", "1.8.0"}:
         assert json.loads((folder / "release-manifest.json").read_text())["public_proof_bloom"]["passed"]
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:

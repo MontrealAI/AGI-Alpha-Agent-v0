@@ -482,6 +482,12 @@ async function inspectDocket(seed, bundles, reviews, pins, active) {
         },
         {
             id: "ECI",
+            name: "Evidence Contact Index · E2",
+            passed: rows.every((row) => row.replay),
+            rule: "E2 records executed local work. Local replay and signed receipts do not establish independent replay (E3), independently stressed evidence (E4), or external validation (E5).",
+        },
+        {
+            id: "ADVANTAGE",
             name: "Executed advantage",
             passed: (rows[1].measurement?.delta ?? 0) > 0,
             rule: "The executed benchmark improves on its declared baseline; quotations establish retrieval only.",
@@ -504,6 +510,12 @@ async function inspectDocket(seed, bundles, reviews, pins, active) {
         seed_hash: plan.seed_hash,
         rows,
         gates,
+        evidence_contact: {
+            level: rows.every((row) => row.replay) ? "E2" : "pending",
+            name: "Evidence Contact Index",
+            independent_replay: false,
+            external_validation: false,
+        },
         promotable: gates.every((gate) => gate.passed),
         visionary_claim: {
             text: seed.claim,

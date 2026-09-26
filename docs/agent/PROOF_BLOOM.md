@@ -33,7 +33,8 @@ Reviewer names are self-recorded operator labels. They are not authenticated ext
 | Gate | Implementation |
 | --- | --- |
 | RSI: replay + review | All three returns replay against exact job inputs and all three explicit local reviews accept them |
-| ECI: executed advantage | The benchmark improves over the declared baseline; research requires matching exact quotations |
+| ECI: Evidence Contact Index | All required work executed locally: E2. Independent replay and external validation remain pending |
+| Advantage | The benchmark improves over the declared baseline; research requires matching exact quotations |
 | Move-37: challenge + persistence | The acceptance rule also passes the disclosed stress probe |
 | Lineage | Every prerequisite capability is active |
 
@@ -42,7 +43,8 @@ Allocation and scheduling use exact bounded enumeration. Forecast selection neve
 changes only that holdout. Research verifies every quoted passage against its supplied source.
 Research's nonzero quotation count is a retrieval result, not proof of a claim's truth or economic advantage.
 
-These are definitions of this implementation, not claims of a universal RSI, ECI, Move-37 or Evidence Docket 6.1 standard.
+ECI follows the latest manuscript terminology. RSI and Move-37 remain bounded local gates, not the full research protocol.
+The [Compounding Lab](COMPOUNDING_LAB.md) adds held-out future-task comparisons and the manuscript's complete Evidence Docket directory contract.
 The portable protocol is explicitly named `agialpha.bloom.v1`.
 
 ## Native agents, humans and signed returns

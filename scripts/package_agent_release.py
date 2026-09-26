@@ -19,6 +19,7 @@ import zipfile
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 from scripts.check_agent_preservation import BADGE_MAINTENANCE
+from scripts.check_manuscript import verify as verify_manuscript
 
 
 def main() -> None:
@@ -33,6 +34,7 @@ def main() -> None:
         raise ValueError("release version must be major.minor.patch")
     sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
+    manuscript_hashes = verify_manuscript()
     subprocess.run(
         [
             "git",
@@ -74,10 +76,19 @@ def main() -> None:
         "docs/agent/WHITEPAPER_IMPLEMENTATION.md",
         "docs/agent/INSIGHT_ATLAS.md",
         "docs/agent/PROOF_BLOOM.md",
+        "docs/agent/COMPOUNDING_LAB.md",
+        "docs/agent/MANUSCRIPT_ALIGNMENT.md",
+        "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.pdf",
+        "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.md",
+        "docs/manuscript/source-manifest.json",
         "docs/agent/RELEASE_READINESS.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)
+    with zipfile.ZipFile(output / f"alpha-agent-v{version}-manuscript.zip", "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(Path("docs/manuscript").rglob("*")):
+            if path.is_file():
+                archive.write(path, path.relative_to("docs/manuscript"))
     browser_source = args.evidence / "browser-distribution" / "insight_browser.zip"
     browser_target = output / f"alpha-agent-v{version}-browser.zip"
     model_manifest = json.loads(Path("scripts/browser_model_manifest.json").read_text(encoding="utf-8"))
@@ -108,6 +119,7 @@ def main() -> None:
             archive.write(path, "local/" + path.name)
     manifest = {
         "version": version,
+        "manuscript": {"pages": 198, "files": manuscript_hashes},
         "commit": sha,
         "baseline": "ac9b112a44670f67d53fc3d188ef73fa16e90894",
         "repository": "MontrealAI/AGI-Alpha-Agent-v0",
@@ -134,6 +146,8 @@ def main() -> None:
             "complete browser workspace, native handoff and Ed25519 verification",
             "Insight Atlas exact allocation, architecture search, evidence replay and Chronicle recovery",
             "Proof Bloom jobs, native signed returns, reviewed gates, capability reuse and transitive revocation",
+            "Compounding Lab future-task transfer, costs, human review, native/browser replay and complete Evidence Docket",
+            "byte-identical latest 198-page manuscript and pinned source manifest",
             "native CPU demos and Streamlit lineage UIs",
             "complete demo catalog and every browser replay",
             "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",

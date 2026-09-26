@@ -23,6 +23,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     ascension = None
     insight = None
     bloom = None
+    compounding = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -91,6 +92,39 @@ def finalize(folder: Path, evidence: Path) -> None:
             != {"nova", "sovereign", "omega", "invention", "proof"}
         ):
             raise ValueError("Proof Bloom must pass every required journey on the canonical public site")
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 8, 0):
+        compounding = json.loads(
+            (evidence / "public-pages" / "compounding" / "compounding.json").read_text(encoding="utf-8")
+        )
+        required_transfer = {
+            "exact-198-page-manuscript",
+            "all-three-scenarios",
+            "python-javascript-exact-replay",
+            "complete-docket-zip-replay",
+            "review-does-not-override-loss",
+            "archive-ablation-zero-gain",
+            "eci-e2-no-independent-claim",
+            "native-cli-browser-handoff",
+            "tampered-and-stale-import-rejected-atomically",
+            "cost-overhead-closes-gate",
+            "changed-inputs-clear-review",
+            "keyboard-focus-preserved",
+            "axe-wcag-a-aa-no-violations",
+            "mobile-no-overflow",
+            "offline-recovery-and-execution",
+            "mirrored-page",
+        }
+        if (
+            compounding.get("schema") != "agialpha.transfer.acceptance.v1"
+            or compounding.get("passed") is not True
+            or compounding.get("origin") != url
+            or compounding.get("browser_errors") != []
+            or compounding.get("manuscript_sha256")
+            != "4b290d5a8232364b8808c0af8a96e7c9b152afd7ac3f5ba05668a538e073791a"
+            or not required_transfer.issubset(compounding.get("checks", []))
+            or {item.get("id") for item in compounding.get("scenarios", [])} != {"seasonal", "shift", "ablation"}
+        ):
+            raise ValueError("Compounding Lab and exact manuscript must pass on the canonical public site")
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -107,6 +141,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if compounding:
+        manifest["public_compounding"] = compounding
+        manifest["release_gates"].append(
+            "public future-task transfer, native/browser dossier replay, failure gates and exact 198-page manuscript"
+        )
     if bloom:
         manifest["public_proof_bloom"] = bloom
         manifest["release_gates"].append(
