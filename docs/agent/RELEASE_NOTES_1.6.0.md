@@ -11,7 +11,8 @@ connected working browser experience, with a refined visual design inspired by a
   and full dossier exports. References remain distinct from independent verification.
 - Evidence bound to exact inputs and recomputed before promotion; unsafe, stale, altered and duplicate
   results are rejected. Reviewed modeled capabilities enter a hash-linked Chronicle with revocation and
-  portable, replay-verified recovery.
+  portable, replay-verified recovery. Reuse a reviewed architecture under current resource limits; fresh
+  evidence remains mandatory.
 - An ivory-and-obsidian homepage and Atlas, sculptural metallic details, keyboard controls, reduced-motion
   support, responsive data views and offline use after caching. The original flywheel and demos remain.
 - Contributor setup applies current package requirements after historical development locks, fixing the

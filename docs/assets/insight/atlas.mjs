@@ -90,6 +90,7 @@ const positions = [
     [61, 61],
 ];
 let library = [];
+const customScenarios = new Map();
 let scenario;
 let config = clone(DEFAULT_CONFIG);
 let comparison;
@@ -681,6 +682,34 @@ async function renderChronicle() {
             content,
         );
         if (event.action === "promote" && active) {
+            const actions = node("div", "", "chronicle-actions");
+            const reuse = node(
+                "button",
+                "Reuse reviewed design",
+                "small-button",
+            );
+            reuse.addEventListener("click", () =>
+                action(() => {
+                    if (envelopeDirty)
+                        throw new Error(
+                            "Apply the pending envelope before reusing a design.",
+                        );
+                    const saved = chronicle.bundles[event.digest].config;
+                    config = validateConfig({
+                        ...readConfig(),
+                        agents: saved.agents,
+                        validators: saved.validators,
+                        groups: saved.groups,
+                        quorum: saved.quorum,
+                    });
+                    writeConfig();
+                    updateComparison();
+                    openView("agency");
+                    status(
+                        "Reviewed architecture reused. Your current budget, horizon, operator capacity and fault test remain in force. Fresh evidence is required for these inputs.",
+                    );
+                }),
+            );
             const revoke = node("button", "Revoke capability", "small-button");
             revoke.addEventListener("click", () =>
                 action(async () => {
@@ -695,7 +724,8 @@ async function renderChronicle() {
                     );
                 }),
             );
-            row.append(revoke);
+            actions.append(reuse, revoke);
+            row.append(actions);
         }
         events.append(row);
     }
@@ -739,9 +769,9 @@ async function initialize() {
         $("#guide-toggle").setAttribute("aria-expanded", String(!panel.hidden));
     });
     $("#scenario-picker").addEventListener("change", () => {
-        const choice = library.find(
-            (item) => item.id === $("#scenario-picker").value,
-        );
+        const key = $("#scenario-picker").value;
+        const choice =
+            library.find((item) => item.id === key) || customScenarios.get(key);
         if (choice) useScenario(choice);
     });
     $("#reveal-next").addEventListener("click", () => {
@@ -973,6 +1003,7 @@ async function initialize() {
                 $("#scenario-picker").append(option);
             }
             option.textContent = `Imported: ${value.title}`;
+            customScenarios.set("imported", clone(value));
             $("#scenario-picker").value = "imported";
             status(
                 "Scenario imported and validated. Existing Chronicle history was preserved.",
@@ -1010,6 +1041,7 @@ async function initialize() {
                 $("#scenario-picker").append(option);
             }
             option.textContent = `Restored: ${scenario.title}`;
+            customScenarios.set("restored", clone(scenario));
             $("#scenario-picker").value = "restored";
             status(
                 "Expedition restored. Every promoted capability was independently recomputed and the history chain verified.",

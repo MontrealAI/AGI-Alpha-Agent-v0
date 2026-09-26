@@ -38,6 +38,8 @@ def finalize(folder: Path, evidence: Path) -> None:
             "tampered-proof-rejected",
             "unsafe-quorum-blocked",
             "native-mission-schema",
+            "native-research-execution-and-signed-export",
+            "reviewed-design-reuse-requires-fresh-evidence",
             "recovery-replays-promotions",
             "tampered-history-rejected",
             "revocation-survives-recovery",

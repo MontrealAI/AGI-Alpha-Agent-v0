@@ -20,7 +20,9 @@ flywheels, white paper, workspace and all 26 catalog entries remain available.
 5. **Build & replay evidence**. Read failed gates and task-level timings. A one-vote quorum with a faulty
    validator group exposes unsafe acceptances. Capacity and budget shortages remain visible.
 6. If every model gate passes, write what you checked and what remains uncertain. Record the modeled
-   capability in the Chronicle. This does not validate the economic hypotheses.
+   capability in the Chronicle. Reuse a reviewed design in another comparison while retaining your current
+   budget, horizon, operator capacity and fault model; fresh evidence is always required. This does not
+   validate the economic hypotheses.
 7. Open **Alpha under trial**. Search claims, inspect references and acceptance criteria, add a falsifiable
    hypothesis, and export a validation brief or native research mission.
 8. **Save expedition & recovery file** before closing the tab. This retains inputs, architecture, reviews,
@@ -162,7 +164,8 @@ python -m scripts.validate_insight_atlas --site site --output evidence/insight-a
 The independent engine tests cover exact conservation, invalid inputs, resource exclusivity, vote-group
 separation, holdout isolation, the Pareto frontier, forged/stale evidence, duplicate promotion, revocation,
 recovery and graph integrity. Real Chromium acceptance exercises all three scenarios, all 18 native
-mission exports, negative proof cases, safe text rendering, exact envelope changes, search, custom claims,
+mission exports, execution and signed-result verification for one native research mission per expedition,
+reviewed-design reuse without stale approval, negative proof cases, safe text rendering, exact envelope changes, search, custom claims,
 four viewport sizes, canonical/mirrored paths and offline reload/recovery/replay. It retains actual
 downloads, screenshots and `insight-atlas.json` with individual check names and scenario digests.
 

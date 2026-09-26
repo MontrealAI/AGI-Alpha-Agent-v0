@@ -2328,3 +2328,20 @@ td:last-child {
     flex-shrink: 0;
     white-space: nowrap;
 }
+
+.chronicle-actions {
+    display: grid;
+    gap: 8px;
+}
+.chronicle-actions button {
+    width: 100%;
+}
+@media (max-width: 560px) {
+    .chronicle-actions {
+        grid-column: 2;
+        justify-self: start;
+    }
+    .chronicle-actions button {
+        grid-column: auto;
+    }
+}

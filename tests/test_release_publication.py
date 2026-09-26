@@ -221,6 +221,8 @@ def test_public_evidence_requires_same_commit_and_intact_package(
                 "tampered-proof-rejected",
                 "unsafe-quorum-blocked",
                 "native-mission-schema",
+                "native-research-execution-and-signed-export",
+                "reviewed-design-reuse-requires-fresh-evidence",
                 "recovery-replays-promotions",
                 "tampered-history-rejected",
                 "revocation-survives-recovery",

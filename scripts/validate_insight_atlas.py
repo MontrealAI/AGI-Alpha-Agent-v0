@@ -7,12 +7,15 @@ from functools import partial
 from http.server import ThreadingHTTPServer
 import json
 from pathlib import Path
+import tempfile
 from threading import Thread
 from typing import Any
 
 from playwright.sync_api import Page, expect, sync_playwright
 
 from alpha_factory_v1.core.runtime.models import Mission
+from alpha_factory_v1.core.runtime.engine import Engine, verify_export
+from alpha_factory_v1.core.runtime.store import Journal, digest
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 from scripts.validate_ascension import Handler, inspect, wait_for
 
@@ -62,7 +65,9 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
         inspect(page, axe_script.read_text() + ";true")
         result = inspect(
             page,
-            "axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}}).then(r=>({violations:r.violations,incomplete:r.incomplete.map(i=>({id:i.id,nodes:i.nodes.map(n=>n.target)}))}))",
+            "axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})"
+            ".then(r=>({violations:r.violations,"
+            "incomplete:r.incomplete.map(i=>({id:i.id,nodes:i.nodes.map(n=>n.target)}))}))",
         )
         accessibility.append({"view": label, **result})
         assert not result["violations"], result["violations"]
@@ -120,6 +125,22 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                     Mission.model_validate(mission)
                 mission = downloaded(page, "#download-mission", output / f"{scenario}-mission.json")
                 Mission.model_validate(mission)
+                with tempfile.TemporaryDirectory(prefix="atlas-native-") as temporary:
+                    journal = Journal.initialize(Path(temporary) / "agent")
+                    engine = Engine(journal)
+                    submitted = journal.submit(Mission.model_validate(mission))
+                    record = engine.execute(submitted["id"])
+                    assert record["state"] == "review", record
+                    engine.review(
+                        record["id"],
+                        record["revision"],
+                        digest(record["result"]),
+                        True,
+                        "Inspected the exported Atlas source excerpts and bounded research result.",
+                    )
+                    signed = engine.export(record["id"])
+                    assert verify_export(signed, journal.public)["valid"]
+                    (output / f"{scenario}-native-signed.json").write_text(json.dumps(signed, indent=2) + "\n")
                 assert dossier["economic_value_verified_usd"] == "0"
                 report["scenarios"].append(
                     {
@@ -131,11 +152,22 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 )
             expect(page.locator("#chronicle-count")).to_have_text("3 active modeled capabilities")
             recovery = downloaded(page, "#save-workspace", output / "recovery.json")
+            page.get_by_role("button", name="02 Second-order agency").click()
+            page.locator("#budget").fill("1500")
+            page.locator("#agents").fill("7")
+            page.get_by_role("button", name="Reuse reviewed design").first.click()
+            expect(page.locator("#agents")).to_have_value("4")
+            expect(page.locator("#budget")).to_have_value("1500")
+            expect(page.locator("#review-panel")).to_be_hidden()
+            expect(page.locator("#download-proof")).to_be_disabled()
+            upload(page, "#workspace-import", recovery)
             report["checks"].extend(
                 [
                     "all-three-scenarios",
                     "native-mission-schema",
+                    "native-research-execution-and-signed-export",
                     "duplicate-promotion-rejected",
+                    "reviewed-design-reuse-requires-fresh-evidence",
                     "existing-flywheel-and-26-entries-preserved",
                 ]
             )
@@ -188,6 +220,16 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             revoked = downloaded(page, "#save-workspace", output / "recovery-revoked.json")
             upload(page, "#workspace-import", revoked)
             expect(page.locator("#chronicle-count")).to_have_text("2 active modeled capabilities")
+            page.locator("#scenario-picker").select_option("science")
+            page.locator("#scenario-picker").select_option("restored")
+            expect(page.locator("#scenario-question")).to_have_text(recovery["scenario"]["question"])
+            custom = json.loads(json.dumps(recovery["scenario"]))
+            custom["title"] = "Imported operator scenario"
+            custom["question"] = "Can this imported scenario be selected again without losing its inputs?"
+            upload(page, "#scenario-import", custom)
+            page.locator("#scenario-picker").select_option("science")
+            page.locator("#scenario-picker").select_option("imported")
+            expect(page.locator("#scenario-question")).to_have_text(custom["question"])
             report["checks"].extend(
                 [
                     "exact-envelope-ledger",
@@ -195,6 +237,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                     "recovery-replays-promotions",
                     "tampered-history-rejected",
                     "revocation-survives-recovery",
+                    "custom-expedition-reselection",
                 ]
             )
 
