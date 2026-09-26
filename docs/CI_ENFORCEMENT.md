@@ -5,8 +5,8 @@ Use this checklist to keep CI truthful, minimal, and reviewer-friendly.
 1. **Canonical PR gate**
    - Keep **✅ PR CI** as the only required PR workflow.
    - Required checks on `main`:
-     - `✅ PR CI / Lint (ruff)`
-     - `✅ PR CI / Smoke tests`
+     - `Lint (ruff)`
+     - `Smoke tests`
 
 2. **Branch protection settings**
    - Enable **Require status checks to pass before merging**.

@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.5.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.5.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -133,3 +133,24 @@ Full-asset acceptance requires actual local model generation both online and aft
 The same tested site is retained as a checksummed release archive, deployed through GitHub Pages and
 verified at the public HTTPS URL before publication. The manifest binds source, version and tested commit.
 See [demo validation](DEMO_VALIDATION.md) and [Pages operation and recovery](PAGES_GUIDE.md).
+
+## Version 1.5.1 hardening
+
+The operator Python dependency gate checks every package in `requirements-agent.lock` using
+`pip-audit==2.10.1` and the current PyPI advisory feed. Missing packages, version mismatches, duplicate
+records, skipped checks, reported advisories and scanner failure block the release. The archive includes
+`python-dependencies/pip-audit.json` and a dated summary with the exact lock SHA-256. This scope does
+not include every preserved historical dependency environment or the host operating system.
+
+The operator and CPU demo locks now use `cryptography==50.0.1`. Runtime acceptance rechecks signed
+identity, evidence, exports, corruption rejection and recovery on Python 3.11–3.13. Publication tests
+reject a stale main commit before any release mutation and again after uploading/re-downloading assets.
+A matching check immediately precedes Pages deployment. These checks reduce publication races; GitHub
+branch updates and deployment visibility are separate API operations, not one atomic transaction.
+
+The CI watchdog now requires the intended SHA, rejects stale endpoint responses, and independently
+checks the repository run list when needed. Pending runs and unsuccessful reruns cannot report a pass
+when the bounded waiting period expires. All check failures remain visible.
+
+See [release readiness](RELEASE_READINESS.md) for supported operation, remaining research boundaries,
+maintenance and the clean-environment upgrade/recovery procedure.

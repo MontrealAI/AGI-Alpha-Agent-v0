@@ -37,8 +37,8 @@ The merge-surface Ruff step now resolves tracked Python targets via `scripts/ruf
 
 Configure `main` branch protection with these required checks:
 
-- `✅ PR CI / Lint (ruff)`
-- `✅ PR CI / Smoke tests`
+- `Lint (ruff)`
+- `Smoke tests`
 
 Keep **Require branches to be up to date** enabled.
 

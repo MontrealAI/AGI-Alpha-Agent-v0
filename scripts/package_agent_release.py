@@ -72,6 +72,7 @@ def main() -> None:
         "docs/agent/DEMO_VALIDATION.md",
         "docs/agent/PAGES_GUIDE.md",
         "docs/agent/WHITEPAPER_IMPLEMENTATION.md",
+        "docs/agent/RELEASE_READINESS.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     ):
         shutil.copy2(name, output / Path(name).name)
@@ -135,6 +136,7 @@ def main() -> None:
             "Solidity tests with shipped identity logic",
             "real local EVM payments",
             "clean wheel installation",
+            "complete operator Python advisory audit with exact lock digest",
             "source preservation",
         ],
         "limits": [

@@ -6,11 +6,96 @@ from __future__ import annotations
 import json
 import hashlib
 from pathlib import Path
+import subprocess
 import zipfile
 
 import pytest
 
-from scripts import finalize_pages_release, publish_agent_release
+from scripts import finalize_pages_release, publish_agent_release, release_context
+
+
+@pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
+def test_remote_main_must_still_match_before_publication(monkeypatch, head, kind) -> None:
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "check_output",
+        lambda *args, **kwargs: json.dumps({"ref": "refs/heads/main", "object": {"sha": head, "type": kind}}),
+    )
+    if head == "a" * 40 and kind == "commit":
+        assert release_context.require_current_main() == head
+    else:
+        with pytest.raises(RuntimeError, match="Superseded"):
+            release_context.require_current_main()
+
+
+@pytest.mark.parametrize(
+    "variable,value", [("GITHUB_REPOSITORY", "other/repo"), ("GITHUB_REF", "refs/tags/v1.5.1"), ("GITHUB_SHA", "bad")]
+)
+def test_unauthorized_context_fails_before_network(monkeypatch, variable, value) -> None:
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setenv(variable, value)
+    monkeypatch.setattr(
+        release_context.subprocess, "check_output", lambda *args, **kwargs: pytest.fail("network access")
+    )
+    with pytest.raises(ValueError):
+        release_context.require_current_main()
+
+
+@pytest.mark.parametrize("superseded_at", [1, 2])
+def test_superseded_run_cannot_publish_even_if_main_moves_during_upload(tmp_path, monkeypatch, superseded_at) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    folder = tmp_path / "release"
+    folder.mkdir()
+    (folder / "release-manifest.json").write_text(json.dumps({"commit": "a" * 40, "version": "1.5.1"}))
+    (folder / "RELEASE_NOTES_1.5.1.md").write_text("Verified fixture")
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.5.1"\n')
+    calls = []
+    checks = []
+
+    def context():
+        checks.append(True)
+        if len(checks) == superseded_at:
+            raise RuntimeError("Superseded release run")
+        return "a" * 40
+
+    def github(*args):
+        calls.append(args)
+        if args[:2] == ("release", "download"):
+            dest = Path(args[-1])
+            for path in folder.iterdir():
+                (dest / path.name).write_bytes(path.read_bytes())
+            return ""
+        if args[0] == "api":
+            assert len(args) == 2 and "/releases?" in args[1], "Unexpected API mutation"
+            return json.dumps(
+                [{"id": 1, "tag_name": "v1.5.1", "draft": True, "assets": [{"name": p.name} for p in folder.iterdir()]}]
+            )
+        assert args[:2] == ("release", "upload")
+        return ""
+
+    monkeypatch.setattr(publish_agent_release, "require_current_main", context)
+    monkeypatch.setattr(publish_agent_release, "gh", github)
+    monkeypatch.setattr(
+        publish_agent_release.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            [], 0, json.dumps({"object": {"type": "commit", "sha": "a" * 40}})
+        ),
+    )
+    with pytest.raises(RuntimeError, match="Superseded"):
+        publish_agent_release.main()
+    assert len(checks) == superseded_at
+    assert not any("PATCH" in call for call in calls)
+    if superseded_at == 1:
+        assert len(calls) == 1
 
 
 @pytest.mark.parametrize("version", ["1.2.0", "1.2.1"])

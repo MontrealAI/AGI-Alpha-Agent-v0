@@ -2,6 +2,8 @@
 
 # Operate the $AGIALPHA Agent
 
+Current release: **1.5.1**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
+
 ## Install from a release
 
 Use Python 3.11, 3.12 or 3.13. Download the wheel, `requirements-agent.lock`, `SHA256SUMS` and
@@ -182,7 +184,7 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 to 1.3.0.
+version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.5.1.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -206,8 +208,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.3.0 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.3.0
+docker build --target agent-runtime -t agialpha-agent:1.5.1 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.5.1
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 
@@ -231,9 +233,9 @@ build, prefetch the dependencies and browser assets before disconnecting; `FETCH
 omits the optional historical browser model. The previous manual compiler is retained verbatim in
 `build/manual_build_legacy.py.txt` as historical source, not the active build path.
 
-## Full browser text generation (1.3.0)
+## Full browser text generation
 
-The release includes `alpha-agent-v1.3.0-browser.zip`, the complete tested browser distribution.
+The release includes `alpha-agent-v1.5.1-browser.zip`, the complete tested browser distribution.
 Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
 `python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
 Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.

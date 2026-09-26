@@ -49,7 +49,7 @@ public key obtained independently through a trusted channel. The browser checks 
 Ed25519 signature, identity, completed state, approved result hash and agreement between displayed and
 signed content. v1.4.0 exports include the original canonical bytes so Python floating-point formatting
 and nanosecond timestamps cannot be changed by JavaScript number conversion. Previous exports remain
-verifiable by `alpha-agent verify-export`; re-export with v1.4.0 for browser verification.
+verifiable by `alpha-agent verify-export`; re-export with v1.4.0 or later for browser verification.
 
 The file and public key stay on your device. Signature verification establishes integrity relative to
 that supplied key, not the real-world identity of an unknown signer, source truth, latest journal state
@@ -111,7 +111,8 @@ release acceptance workflow automatically. For a manual refresh, open **Actions 
 select `main` and confirm. This entry point calls the same acceptance and publication workflow, including
 the complete tests, packaged site, Pages deployment and public browser checks. A branch run validates a
 candidate without deploying it. The shared concurrency group serializes main runs, and the Pages job
-serializes deployments. An existing published release is never overwritten.
+serializes deployments. An existing published release is never overwritten. A freshness check rejects a run whose tested commit
+has been superseded on main immediately before deployment and release publication.
 
 Wait for the full workflow to finish. The site is deployed only after its prerequisite checks pass;
 publication follows the public checks. Failures retain logs and evidence for diagnosis. In particular,

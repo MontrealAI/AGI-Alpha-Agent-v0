@@ -30,6 +30,9 @@ requiring attention, not just a broken main build.
 Health runs from distinct events, upstream workflows and source branches use separate concurrency
 groups. An unrelated PR check can no longer cancel an active scheduled/main health check.
 The watchdog retains its existing rerun, missing-run detection and branch-protection checks.
+It requires the intended upstream commit (or current scheduled-run commit), checks the returned SHA
+and branch, and rejects stale results. A pending run is never a pass, including when a grace or waiting
+period expires. Automatic reruns do not extend the bounded wait indefinitely.
 Branch-protection verification requires the configured admin token; its absence is reported as
 a warning, not evidence that repository protection has been verified.
 

@@ -21,6 +21,27 @@ env:
   NO_DISCLAIMER: '1'
 
 jobs:
+  dependency-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Audit every pinned operator package against current advisories
+        run: |
+          python -m pip install pip-audit==2.10.1
+          python -m scripts.audit_agent_dependencies
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: python-dependencies
+          path: evidence/python-dependencies/
+          if-no-files-found: error
+
   runtime:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -45,7 +66,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
@@ -478,7 +499,7 @@ jobs:
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, quality, historical-ci]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, quality, historical-ci, dependency-audit]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -547,6 +568,10 @@ jobs:
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: site
+      - name: Reject superseded main before deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m scripts.release_context
       - name: Deploy the tested artifact
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
