@@ -17,6 +17,10 @@ connected working browser experience, with a refined visual design inspired by a
   support, responsive data views and offline use after caching. The original flywheel and demos remain.
 - Contributor setup applies current package requirements after historical development locks, fixing the
   cryptography downgrade that previously made `pip check` fail.
+- The browser lint hook publishes its installation checksum atomically, preventing concurrent
+  pre-commit batches from falsely reporting a stale installation. A deterministic concurrency test
+  reproduces the original failure; genuinely stale installations still fail. The
+  [original failed hook report](release-evidence/insight-lint-race.json) is preserved with its artifact digest.
 
 ## Verification and artifacts
 

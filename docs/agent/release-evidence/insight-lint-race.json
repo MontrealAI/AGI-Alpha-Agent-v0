@@ -1,0 +1,32 @@
+{
+  "schema": "agialpha.insight.lint-race.v1",
+  "recorded_at": "2026-09-26T14:25:51.718212+00:00",
+  "failed_main_commit": "f71769ea82ce038d320d3afabd2a4a9b85be164a",
+  "run": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/36247828924",
+  "job_id": 108420200397,
+  "artifact": {
+    "id": 10907613319,
+    "name": "quality",
+    "sha256": "0668ff4d16def025c25449b513b8165e56d84c1eac69e765a04f8806b51214e8"
+  },
+  "precommit_status": {
+    "passed": false,
+    "exit_code": 1
+  },
+  "precommit_report": "[INFO] Initializing environment for https://github.com/psf/black.\n[INFO] Initializing environment for https://github.com/astral-sh/ruff-pre-commit.\n[INFO] Initializing environment for https://github.com/pycqa/flake8.\n[INFO] Initializing environment for https://github.com/semgrep/semgrep.\n[INFO] Initializing environment for https://github.com/semgrep/semgrep:setuptools>=75,<81.\n[INFO] Initializing environment for https://github.com/shellcheck-py/shellcheck-py.\n[INFO] Initializing environment for https://github.com/rhysd/actionlint.\n[INFO] Initializing environment for local.\n[INFO] Installing environment for https://github.com/psf/black.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for https://github.com/astral-sh/ruff-pre-commit.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for https://github.com/pycqa/flake8.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for https://github.com/semgrep/semgrep.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for https://github.com/shellcheck-py/shellcheck-py.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for https://github.com/rhysd/actionlint.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\n[INFO] Installing environment for local.\n[INFO] Once installed this environment will be reused.\n[INFO] This may take a few minutes...\nblack....................................................................Passed\nruff.....................................................................Passed\nruff-format..............................................................Passed\nflake8...................................................................Passed\nsemgrep..................................................................Passed\nshellcheck...............................................................Passed\nLint GitHub Actions workflow files.......................................Passed\nVerify protobuf files are up to date.....................................Passed\nVerify environment docs and runbook checklist............................Passed\nDetect private text in commit............................................Passed\nVerify required Python packages are installed............................Passed\nEnsure scripts import disclaimer helper..................................Passed\nVerify demo gallery preview assets exist.................................Passed\nVerify HTML pages reference the disclaimer snippet.......................Passed\nBlock binary diffs.......................................................Passed\nUpdate workflow action versions..........................................Passed\nValidate Python syntax with py_compile...................................Passed\nLint Insight Browser with ESLint.........................................Failed\n- hook id: eslint-insight-browser\n- exit code: 1\n\nerror: Insight Browser node_modules out of date. Run npm ci in /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1.\n\n",
+  "precommit_patch": "",
+  "cause": "Concurrent pre-commit batches could observe the installation checksum after truncation/creation but before its complete write.",
+  "fix": "Write a private temporary file in the same directory, then atomically rename it into place. Existing stale stamps still fail.",
+  "regression": {
+    "file": "tests/test_eslint_install_guard.py",
+    "before_fix": {
+      "passed": 1,
+      "failed": 1
+    },
+    "after_fix": {
+      "passed": 2,
+      "failed": 0
+    },
+    "method": "Pause one checksum write after its destination opens and run a second lint batch during that interval."
+  }
+}
