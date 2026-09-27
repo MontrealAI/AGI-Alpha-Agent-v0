@@ -68,10 +68,10 @@ def check_python() -> bool:
 
     if sys.version_info >= MAX_PY:
         banner(
-            f"Python {sys.version.split()[0]} is newer than tested; proceeding",
-            "YELLOW",
+            f"Python {PY_RANGE} required; this interpreter is outside the supported range",
+            "RED",
         )
-        return True
+        return False
 
     banner(f"Python {sys.version.split()[0]} detected", "GREEN")
     return True
@@ -89,10 +89,10 @@ def check_docker_daemon() -> bool:
     if not shutil.which("docker"):
         return False
     try:
-        subprocess.run(["docker", "info"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["docker", "info"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=20)
         banner("docker daemon reachable", "GREEN")
         return True
-    except (subprocess.CalledProcessError, OSError):
+    except (subprocess.SubprocessError, OSError):
         banner("docker daemon not running", "RED")
         return False
 
@@ -107,6 +107,7 @@ def check_docker_compose() -> bool:
             check=True,
             capture_output=True,
             text=True,
+            timeout=20,
         )
         output = str(getattr(result, "stdout", "")).strip()
         banner("docker compose available", "GREEN")
@@ -120,7 +121,7 @@ def check_docker_compose() -> bool:
                 banner("docker compose >=2.20 required for current demo profiles", "RED")
                 return False
         return True
-    except (subprocess.CalledProcessError, OSError):
+    except (subprocess.SubprocessError, OSError):
         banner("docker compose missing", "RED")
         return False
 
@@ -131,7 +132,7 @@ def check_node() -> bool:
         banner("node missing", "RED")
         return False
     try:
-        out = subprocess.check_output(["node", "--version"], text=True).strip()
+        out = subprocess.check_output(["node", "--version"], text=True, timeout=10).strip()
     except Exception:
         banner("failed to run node --version", "RED")
         return False
@@ -152,6 +153,7 @@ def check_patch_in_sandbox(image: str = DEFAULT_SANDBOX_IMAGE) -> bool:
             ["docker", "run", "--rm", image, "test", "-x", "/usr/bin/patch"],
             capture_output=True,
             text=True,
+            timeout=30,
         )
     except Exception as exc:  # pragma: no cover - unexpected failure
         banner(f"Failed to start {image}: {exc}", "RED")
@@ -290,6 +292,7 @@ def main(argv: list[str] | None = None) -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description=f"Validate environment (Python {PY_RANGE})")
+    parser.add_argument("--profile", choices=("agent", "legacy"), default="legacy")
     parser.add_argument("--offline", action="store_true", help="Skip network checks")
     parser.add_argument(
         "--skip-optional",
@@ -301,6 +304,25 @@ def main(argv: list[str] | None = None) -> None:
     banner(f"Alpha-Factory Preflight Check ({PY_RANGE})", "YELLOW")
     ok = True
     ok &= check_python()
+    if args.profile == "agent":
+        for package in (
+            "cryptography",
+            "fastapi",
+            "httpx",
+            "numpy",
+            "pydantic",
+            "pydantic_settings",
+            "yaml",
+            "uvicorn",
+            "prometheus_client",
+        ):
+            ok &= check_pkg(package)
+        banner("Agent profile: no Docker, Node, API key or network is needed for the four non-code mission kinds")
+        banner("Code needs Docker; Ascension and payment commands need the chain dependencies", "YELLOW")
+        if not ok:
+            banner("Install requirements-agent.lock in a separate environment and rerun this check", "RED")
+            raise SystemExit(1)
+        return
     ok &= check_cmd("docker")
     ok &= check_cmd("git")
     ok &= check_node()

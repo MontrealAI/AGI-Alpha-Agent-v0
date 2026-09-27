@@ -1,4 +1,4 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 # `alpha_factory_v1/scripts` — Zero‑to‑Alpha in *One* Command ⚡️
@@ -6,18 +6,21 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 > **Module of [Alpha‑Factory v1 👁️✨](../README.md)** — the multi‑agent, cross‑industry α‑AGI that
 > *Out‑learns · Out‑thinks · Out‑designs · Out‑strategises · Out‑executes*
 
-This folder contains the **turn‑key installer** that transforms any Docker‑enabled
-machine into a fully running **Alpha‑Factory** — with self‑tests, live trace‑graph
-and offline fallback — **in ≈ 60 seconds.**
+**Current operating guide: [Alpha-Factory 1.12.0](../../docs/agent/FACTORY_GUIDE.md).**
+Use the private operator runtime for native missions. This folder also preserves the larger research
+image/Compose installer. Build times depend on dependencies, host resources and network availability.
+It never patches tests, silently pulls a model, or overwrites an existing environment file.
 
 ---
 
-## 🚀 Quick start (default profile)
+## 🚀 Quick start (research profile)
+
+Run all paths below from the repository root. For native missions, use the factory guide above.
 
 For an all‑in‑one setup run:
 
 ```bash
-./scripts/one_click_install.sh
+./alpha_factory_v1/scripts/one_click_install.sh
 ```
 
 This performs the preflight checks and deploys the full stack.
@@ -26,21 +29,20 @@ If you prefer to execute the steps manually:
 
 ```bash
 # 0 · validate prerequisites (Docker, Docker Compose, Git)
-python3 scripts/preflight.py
+python3 alpha_factory_v1/scripts/preflight.py
 
 # 1 · make the installer executable
-chmod +x scripts/install_alpha_factory_pro.sh
+chmod +x alpha_factory_v1/scripts/install_alpha_factory_pro.sh
 
 # 2 · launch the stack (clone + build + run + smoke‑test)
-./scripts/install_alpha_factory_pro.sh --bootstrap --deploy --open
+./alpha_factory_v1/scripts/install_alpha_factory_pro.sh --bootstrap --deploy --open
 
 # 3 · open the UI (auto with --open)
-open http://localhost:8088        # Trace‑graph
+open http://localhost:3000        # Trace UI
 open http://localhost:8000/docs   # Interactive API
 ```
 
-> **Cloud‑free?** If `OPENAI_API_KEY` is missing, the installer automatically pulls the
-> **Φ‑2** model from Ollama and sets `LLM_PROVIDER=ollama` for you.
+> **Cloud-free?** Configure an actually installed local provider deliberately. Missing a cloud key never triggers an implicit model download.
 
 ---
 
@@ -49,13 +51,13 @@ open http://localhost:8000/docs   # Interactive API
 | Flag | Effect | Default |
 |------|--------|---------|
 | `--all` | Enable UI, trace‑graph and tests | off |
-| `--ui / --no-ui` | Force include / exclude React UI | auto (on if TTY) |
-| `--trace` | Bundle live WebSocket trace hub | off |
-| `--tests` | Copy tests & dev tools into image | off |
+| `--ui / --no-ui` | Force include / exclude React UI | on |
+| `--trace` | Retained; the legacy image already contains the trace service | included |
+| `--tests` | Additional image/version smoke check; full regression remains a separate gate | off |
 | `--no-cache` | Pass `--no-cache` to `docker build` | off |
 | `--bootstrap` | Clone repo if `alpha_factory_v1/` absent | off |
-| `--deploy` | Build **and** run docker‑compose stack + pytest | off (build‑only) |
-| `--alpha <name>` | Pre‑enable finance strategy (e.g. `btc_gld`) | none |
+| `--deploy` | Validate configured secrets, build Compose services and wait for health | off (build-only) |
+| `--alpha <name>` | Retained integration flag; fails clearly when no strategy registry exists | none |
 | `--open` | Launch web UI in browser after deploy | off |
 
 **TL;DR:** `--deploy` turns a static image build into a live, self‑tested stack.
@@ -64,15 +66,15 @@ open http://localhost:8000/docs   # Interactive API
 
 ## 🧐 What the script actually does (Deploy path)
 
-1. **Bootstrap** – shallow‑clones repo when requested.
-2. **Hot‑fix** – patches the one failing test until upstream merge lands.
-3. **Secrets** – copies `.env.sample` → `.env`; appends local model fallback if no key.
-4. **Strategy toggle** – uses `yq` (or `sed`) to switch `config/alpha_factory.yml`.
-5. **Compose build** – honours optional `cuda` profile for GPU nodes.
-6. **Health check** – runs `pytest -q /app/tests` inside the orchestrator container.
-7. **Success banner** with clickable URLs.
+1. **Bootstrap** — retain a complete checkout in a new `factory-source` directory when needed.
+2. **Source integrity** — build from the repository root without editing tests or configuration.
+3. **Secrets** — create a private sample `.env` only when absent, then stop for configuration.
+4. **Configuration** — reject missing/default credentials and unsupported strategy selection before launch.
+5. **Compose build** — use the real Dockerfile arguments and explicit Compose path.
+6. **Health check** — wait at most 180 seconds for services and verify authenticated API health.
+7. **Success** — report the API and UI URLs; `--open` opens the UI when requested.
 
-All steps are idempotent; re‑running the script is safe.
+Build-only mode never starts services. Re-running deployment rebuilds/restarts services while retaining volumes and the existing `.env`. Inspect the configured services and exposure before deployment; this research stack is distinct from the private operator profile.
 
 ---
 
@@ -80,9 +82,9 @@ All steps are idempotent; re‑running the script is safe.
 
 | Goal | Command |
 |------|---------|
-| Rebuild backend after code change | `docker compose build backend && docker compose up -d backend` |
+| Rebuild backend after code change | `docker compose -f alpha_factory_v1/docker-compose.yml build orchestrator` |
 | Import latest Grafana dashboard | `python scripts/import_dashboard.py alpha_factory_v1/dashboards/alpha_factory_overview.json` |
-| Switch to GPU runtime | `PROFILE=cuda ./scripts/install_alpha_factory_pro.sh --deploy` |
+| Switch to GPU runtime | `PROFILE=cuda ./alpha_factory_v1/scripts/install_alpha_factory_pro.sh --deploy` |
 | Follow live logs | `docker compose logs -f orchestrator ui` |
 | Clean up containers & volumes | `docker compose down -v --remove-orphans` |
 
@@ -151,8 +153,8 @@ When working on an air‑gapped machine build wheels ahead of time and tell
         run: python check_env.py --auto-install --wheelhouse /path/to/wheels
       - name: Build & smoke‑test α‑Factory
         run: |
-          chmod +x alpha_factory_v1/scripts/install_alpha_factory_pro.sh
-          alpha_factory_v1/scripts/install_alpha_factory_pro.sh --deploy --no-ui
+          chmod +x alpha_factory_v1/alpha_factory_v1/scripts/install_alpha_factory_pro.sh
+          alpha_factory_v1/alpha_factory_v1/scripts/install_alpha_factory_pro.sh --deploy --no-ui
       - name: Run tests
         run: |
           WHEELHOUSE=/path/to/wheels pytest -q

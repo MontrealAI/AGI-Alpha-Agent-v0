@@ -23,6 +23,25 @@ def parser() -> argparse.ArgumentParser:
     root.add_argument("--home", type=Path, default=Path.home() / ".local/share/agialpha-agent")
     root.add_argument("--version", action="version", version=__version__)
     commands = root.add_subparsers(dest="command", required=True)
+    samples = commands.add_parser("examples", help="List or copy the five editable, packaged mission examples")
+    samples.add_argument("--output", type=Path, help="Create a NEW directory; existing files are never overwritten")
+    for name in ("ascension-compile", "ascension-check"):
+        command = commands.add_parser(name, help="Compile or verify exact on-chain FusionPlan commitments offline")
+        command.add_argument("file", type=Path)
+        if name == "ascension-compile":
+            command.add_argument("--output", type=Path, required=True)
+    handoff = commands.add_parser("ascension-deliver", help="Bind an approved native mission to a FusionPlan job")
+    handoff.add_argument("file", type=Path, help="Verified compiled FusionPlan")
+    handoff.add_argument("--index", type=int, required=True)
+    handoff.add_argument("--mission", required=True)
+    handoff.add_argument("--output", type=Path, required=True)
+    inspect = commands.add_parser(
+        "ascension-verify-delivery", help="Verify exact delivery bytes against a trusted key/root"
+    )
+    inspect.add_argument("file", type=Path)
+    inspect.add_argument("--public-key", required=True)
+    inspect.add_argument("--plan-root", required=True)
+    inspect.add_argument("--replay-code", action="store_true", help="Permit code benchmark replay in isolated Docker")
     initialize = commands.add_parser("init", help="Create a new private identity and journal")
     initialize.add_argument("--config", type=Path)
     run = commands.add_parser("run", help="Execute a mission file and stop at review")
@@ -88,7 +107,44 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         result: Any
-        if args.command.startswith("transfer-"):
+        if args.command == "examples":
+            from .samples import examples
+
+            result = examples(args.output)
+        elif args.command.startswith("ascension-"):
+            from . import ascension
+
+            limit = (
+                ascension.MAX_DELIVERY_BYTES
+                if args.command == "ascension-verify-delivery"
+                else ascension.MAX_PLAN_BYTES
+            )
+            with args.file.open("rb") as source:
+                data = source.read(limit + 1)
+            document = ascension.parse(data, limit)
+            if args.command == "ascension-compile":
+                compiled = ascension.compile_plan(document)
+                private_write(args.output, canonical(compiled))
+                result = {"output": str(args.output.resolve()), **ascension.verify_plan(compiled)}
+            elif args.command == "ascension-check":
+                result = ascension.verify_plan(document)
+            elif args.command == "ascension-deliver":
+                journal = Journal(args.home)
+                delivered = ascension.delivery(journal, document, args.index, args.mission)
+                private_write(args.output, delivered)
+                result = {
+                    "output": str(args.output.resolve()),
+                    "planRoot": document["planRoot"],
+                    "jobIndex": args.index,
+                    "resultHash": "0x" + ascension.keccak(delivered).hex(),
+                    "publicKey": journal.public,
+                    "onChainSubmitted": False,
+                }
+            else:
+                result = ascension.verify_delivery(
+                    data, args.public_key, args.plan_root, allow_code_replay=args.replay_code
+                )
+        elif args.command.startswith("transfer-"):
             from . import transfer
 
             if args.command == "transfer-run":

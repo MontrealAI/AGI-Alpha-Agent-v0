@@ -67,6 +67,15 @@ The downloadable snapshot contains the encrypted capsule, actual native result, 
 plan/proofs, contract source hashes, transaction hashes, blocks, gas, decoded events and accounting.
 The native journal identity is ephemeral local evidence, not independently trusted reviewer identity.
 
+## Native agent handoff
+
+Version 1.12.0 adds installed Python commands for compiling/checking FusionPlans and preparing/verifying
+reviewed native delivery files. Python, JavaScript and Solidity commitments are cross-checked, and an
+acceptance case settles the exact signed native file bytes. Follow the [factory guide](FACTORY_GUIDE.md)
+for `ascension-compile`, `ascension-check`, `ascension-deliver` and `ascension-verify-delivery`.
+The handoff is offline: it does not submit transactions, assert ENS ownership or substitute local review
+for validator votes. Pin the trusted signer, root and actual on-chain job independently.
+
 ## Reproduce the end-to-end run
 
 Use the repository’s supported Python environment and Node **22.17.1**. The canonical runtime is installed

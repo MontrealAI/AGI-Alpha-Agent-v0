@@ -16,7 +16,13 @@ from . import __version__
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Return command line arguments for the launcher."""
-    ap = argparse.ArgumentParser(description="Alpha-Factory launcher")
+    ap = argparse.ArgumentParser(
+        description="Alpha-Factory launcher: persistent missions and the preserved research orchestrator",
+        epilog=(
+            "Recommended: alpha-factory mission --help; alpha-factory mission examples; "
+            "alpha-factory demos list. Existing flags below launch the research orchestrator."
+        ),
+    )
     ap.add_argument("--dev", action="store_true", help="Enable dev mode")
     ap.add_argument("--env-file", help="Load environment variables from file")
     ap.add_argument("--preflight", action="store_true", help="Run environment checks and exit")
@@ -73,6 +79,10 @@ def run(show_disclaimer: bool = True) -> None:
         from .core.runtime.cli import main
 
         raise SystemExit(main(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "demos":
+        from .demos.catalog import main as demos_main
+
+        raise SystemExit(demos_main(sys.argv[2:]))
     args = parse_args()
     if show_disclaimer:
         print_disclaimer()

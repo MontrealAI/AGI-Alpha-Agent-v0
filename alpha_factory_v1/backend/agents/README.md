@@ -1,12 +1,20 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 # Alpha‑Factory v1 👁️✨ — Backend α‑AGI Agents Suite
+
+**Current guide — 1.12.0.** This directory preserves the domain-agent research suite and all its
+architecture diagrams. The private operator runtime is `alpha-factory mission`; start with the
+[factory guide](../../../docs/agent/FACTORY_GUIDE.md) and [Ascension protocol](../../../docs/agent/ASCENSION_PROTOCOL.md).
+Industry directives below describe intended domains, not demonstrated medical, financial, security
+or general-intelligence performance. Optional stubs and SDK integrations require separate validation.
+The maintained [demo catalog](../../demos/README.md) records the real mode of every example.
+
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk.
 *Out‑learn · Out‑think · Out‑design · Out‑strategise · Out‑execute*
 
 > Welcome, pioneer. You are gazing at the **command deck** of **Alpha‑Factory v1** — a cross‑industry swarm of autonomous α‑AGI Agents forged to harvest hidden alpha from every corner of the economy and alchemise it into value.  
-> Each agent below is a self‑improving specialist orchestrated through the **OpenAI Agents SDK**, Google’s **ADK**, the **A2A** protocol, and Anthropic’s **Model Context Protocol**. All artefacts are container‑portable, cryptographically signed, and **antifragile by design**.
+> Each agent below is a self‑improving specialist orchestrated through the **OpenAI Agents SDK**, Google’s **ADK**, the **A2A** protocol, and Anthropic’s **Model Context Protocol**. The design targets portable, attributable artefacts and measurable adaptation; native receipts are signed, while each optional integration needs its own evidence.
 
 Definitions of the α‑AGI Agent:
 
@@ -173,19 +181,19 @@ graph TD
 ---
 | # | Agent File | Emoji | Prime Directive | Status | Heavy Deps | Key ENV Vars |
 |---|------------|-------|-----------------|--------|-----------|--------------|
-| 1 | `finance_agent.py` | 💰 | Multi-factor alpha, OMS bridge, RL execution | **Prod** | `pandas`, `ccxt` | `ALPHA_UNIVERSE` |
-| 2 | `biotech_agent.py` | 🧬 | CRISPR design, UniProt KG RAG | **Prod** | `faiss`, `rdkit`, `openai` | `OPENAI_API_KEY` |
-| 3 | `manufacturing_agent.py` | ⚙ | Job-shop scheduling, ESG budgets | **Prod** | `ortools`, `pandas` | `MF_SHOP_TOPIC` |
-| 4 | `policy_agent.py` | 📜 | Statute diff, ISO‑37301 tagging | **Prod** | `faiss` | `STATUTE_DIR` |
-| 5 | `energy_agent.py` | 🔋 | Demand-response bidding | **Beta** | `numpy` | `EN_DATA_ROOT` |
-| 6 | `supply_chain_agent.py` | 📦 | VRP routing, ETA prediction | **Beta** | `networkx` | `SC_DB_DSN` |
-| 7 | `retail_demand_agent.py` | 🛍 | Forecast & reorder planning | **Beta** | `lightgbm` | `RETAIL_DB_DSN` |
-| 8 | `cyber_threat_agent.py` | 🛡 | CVE triage & patch planner | **Beta** | `lightgbm` | `CTI_FEED_URL` |
-| 9 | `climate_risk_agent.py` | 🌎 | Emission stress-tests | **Beta** | `xarray` | `NOAA_TOKEN` |
-|10 | `drug_design_agent.py` | 💊 | Scaffold-hopping, ADMET | **Incub** | `rdkit`, `openai` | `CHEMBL_KEY` |
-|11 | `smart_contract_agent.py` | ⛓ | Solidity audit & gas optimization | **Beta** | `slither`, `mythril` | `ETH_NODE` |
-|12 | `talent_match_agent.py` | 🧑 | Recruiting pipeline optimiser | **Beta** | `faiss` | `TM_EVENTS_TOPIC` |
-|13 | `ping_agent.py` | 📶 | Health check & metrics | **Prod** | none | none |
+| 1 | `finance_agent.py` | 💰 | Multi-factor alpha, OMS bridge, RL execution | Research integration | `pandas`, `ccxt` | `ALPHA_UNIVERSE` |
+| 2 | `biotech_agent.py` | 🧬 | CRISPR design, UniProt KG RAG | Research integration | `faiss`, `rdkit`, `openai` | `OPENAI_API_KEY` |
+| 3 | `manufacturing_agent.py` | ⚙ | Job-shop scheduling, ESG budgets | Research integration | `ortools`, `pandas` | `MF_SHOP_TOPIC` |
+| 4 | `policy_agent.py` | 📜 | Statute diff, ISO‑37301 tagging | Research integration | `faiss` | `STATUTE_DIR` |
+| 5 | `energy_agent.py` | 🔋 | Demand-response bidding | Experimental | `numpy` | `EN_DATA_ROOT` |
+| 6 | `supply_chain_agent.py` | 📦 | VRP routing, ETA prediction | Experimental | `networkx` | `SC_DB_DSN` |
+| 7 | `retail_demand_agent.py` | 🛍 | Forecast & reorder planning | Experimental | `lightgbm` | `RETAIL_DB_DSN` |
+| 8 | `cyber_threat_agent.py` | 🛡 | CVE triage & patch planner | Experimental | `lightgbm` | `CTI_FEED_URL` |
+| 9 | `climate_risk_agent.py` | 🌎 | Emission stress-tests | Experimental | `xarray` | `NOAA_TOKEN` |
+|10 | `drug_design_agent.py` | 💊 | Scaffold-hopping, ADMET | Incubation | `rdkit`, `openai` | `CHEMBL_KEY` |
+|11 | `smart_contract_agent.py` | ⛓ | Solidity audit & gas optimization | Experimental | `slither`, `mythril` | `ETH_NODE` |
+|12 | `talent_match_agent.py` | 🧑 | Recruiting pipeline optimiser | Experimental | `faiss` | `TM_EVENTS_TOPIC` |
+|13 | `ping_agent.py` | 📶 | Health check & metrics | Research integration | none | none |
 
 <a name="4"></a>
 ## 4 · Demo Showcase 🎮  
@@ -193,18 +201,18 @@ graph TD
 
 | # | Folder | Emoji | Lightning Pitch | CLI |
 |---|--------|-------|-----------------|-----|
-| 1 | `aiga_meta_evolution` | 🧬 | Agents evolve new agents; AI-GA playground. | `af demo meta` |
-| 2 | `business_builder_v1` | 🏢 | Incorporates a digital-first company E2E. | `af demo biz1` |
-| 3 | `business_iter_v1` | 🔄 | Iterates biz-model from live market data. | `af demo biz2` |
-| 4 | `capital_stack_v1` | 💸 | Optimises fund-raise & cap-table. | `af demo cap` |
-| 5 | `agent_marketplace_v1` | 🌐 | P2P agent marketplace. | `af demo market` |
-| 6 | `asi_world_model` | 🌌 | MuZero++ world-model showcase. | `af demo asi` |
-| 7 | `cross_industry_pipeline` | ⚙ | End-to-end cross-industry pipeline. | `af demo pipeline` |
-| 8 | `era_of_experience` | 📚 | Autobiographical memory tutor. | `af demo era` |
-| 9 | `fin_momentum_bot` | 💹 | Live momentum + risk parity. | `af demo fin` |
-|10 | `macro_sentinel` | 🛰 | Macro data watcher for tail risk. | `af demo macro` |
-|11 | `muzero_planner` | ♟ | Tree-search planner with MuZero++ core. | `af demo plan` |
-|12 | `self_healing_repo` | 🩹 | Repo-Healer v1: bounded repair for Tier-1 failures; diagnose-only for protected surfaces. | `af demo heal` |
+| 1 | `aiga_meta_evolution` | 🧬 | Agents evolve new agents; AI-GA playground. | `alpha-factory demos show aiga_meta_evolution` |
+| 2 | `alpha_agi_business_v1` | 🏢 | Ranks bundled business opportunities; no legal incorporation. | `alpha-factory demos show alpha_agi_business_v1` |
+| 3 | `alpha_agi_business_2_v1` | 🔄 | Iterates biz-model from live market data. | `alpha-factory demos show alpha_agi_business_2_v1` |
+| 4 | `alpha_agi_business_3_v1` | 💸 | Optimises fund-raise & cap-table. | `alpha-factory demos show alpha_agi_business_3_v1` |
+| 5 | `alpha_agi_marketplace_v1` | 🌐 | P2P agent marketplace. | `alpha-factory demos show alpha_agi_marketplace_v1` |
+| 6 | `alpha_asi_world_model` | 🌌 | MuZero++ world-model showcase. | `alpha-factory demos show alpha_asi_world_model` |
+| 7 | `cross_industry_alpha_factory` | ⚙ | End-to-end cross-industry pipeline. | `alpha-factory demos show cross_industry_alpha_factory` |
+| 8 | `era_of_experience` | 📚 | Autobiographical memory tutor. | `alpha-factory demos show era_of_experience` |
+| 9 | `finance_alpha` | 💹 | Paper-market and broker integration example. | `alpha-factory demos show finance_alpha` |
+|10 | `macro_sentinel` | 🛰 | Macro data watcher for tail risk. | `alpha-factory demos show macro_sentinel` |
+|11 | `muzero_planning` | ♟ | Tree-search planner with MuZero++ core. | `alpha-factory demos show muzero_planning` |
+|12 | `self_healing_repo` | 🩹 | Repo-Healer v1: bounded repair for Tier-1 failures; diagnose-only for protected surfaces. | `alpha-factory demos show self_healing_repo` |
 ---
 
 <a name="5"></a>
@@ -212,18 +220,19 @@ graph TD
 
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1
-pip install -r requirements.lock         # full‑fat install
-python -m backend.orchestrator
+cd AGI-Alpha-Agent-v0
+python -m alpha_factory_v1.demos list
+python -m alpha_factory_v1.demos show alpha_agi_business_2_v1
 ```
 
-*No GPU?* The orchestrator falls back to `ggml/llama‑3‑8B‑Q4`.  
-*No OpenAI key?* Agents switch to SBERT + heuristics.
+Install the environment stated in the selected catalog entry. No installed local model is assumed; heuristics and stub output must not be interpreted as provider execution.
 
 ---
 
 <a name="6"></a>
-## 6 · Per‑Agent Playbooks 📘  
+## 6 · Per‑Agent Playbooks 📘
+
+These preserved snippets illustrate desired domain APIs. They are not verified current entry points; use the catalog and the actual module signatures before extending them.
 
 <details><summary>Finance 💰</summary>
 
@@ -252,9 +261,9 @@ Use the bundled `edge_runner.py` utility for minimal, offline-capable setups.
 
 | Target | Command | Highlights |
 |--------|---------|------------|
-| **Docker Compose** | `docker compose up orchestrator` | Kafka + Prometheus |
-| **Helm (K8s)** | `helm install af ./charts/alpha-factory` | HPA, PodMonitor |
-| **AWS Fargate** | `./infra/deploy_fargate.sh` | Spot ready |
+| **Docker Compose** | `docker compose -f alpha_factory_v1/docker-compose.yml config` | Inspect before deploying; configure secrets |
+| **Helm (K8s)** | `helm lint alpha_factory_v1/helm/alpha-factory` | Preserved chart; configure before install |
+| **AWS Fargate** | Architecture target | No Fargate script is shipped |
 | **Edge/Offline** | `python edge_runner.py --agents finance,manufacturing` | SQLite |
 
 ---
@@ -310,7 +319,7 @@ pip install my_super_agent
 
 ```toml
 [project.entry-points."alpha_factory.agents"]
-super = my_pkg.super_agent:MySuperAgent
+super = "my_pkg.super_agent:MySuperAgent"
 ```
 
 Next boot, your agent auto‑registers & appears on `/capabilities`.

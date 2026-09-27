@@ -1,9 +1,13 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 # Alpha-Factory Backend
 
-This directory contains the production backend services for the Alpha-Factory stack. The primary entry point is `orchestrator.py`, which bootstraps agents, exposes REST and gRPC interfaces, and integrates optional components when the corresponding dependencies are installed.
+This directory preserves the research backend services for the Alpha-Factory stack. The primary entry point is `orchestrator.py`, which bootstraps agents, exposes REST and gRPC interfaces, and integrates optional components when the corresponding dependencies are installed.
+
+The maintained private-operator runtime is [core/runtime](../core/runtime/), launched with
+`alpha-factory mission`. See the [factory guide](../../docs/agent/FACTORY_GUIDE.md) for current setup,
+Ascension handoffs and the distinction between native work and optional domain integrations.
 
 ## Key Modules
 
@@ -34,11 +38,10 @@ The orchestrator honours several variables to tune runtime behaviour:
 ## Running Locally
 
 ```bash
-cd alpha_factory_v1
-python -m backend.orchestrator --dev
+python -m alpha_factory_v1 --dev --enabled planning,research
 ```
 
-This starts the orchestrator in development mode, using in-memory stubs for Kafka and databases. Agents can be triggered via the REST interface at `http://localhost:8000`.
+Run from the repository root in the separate research environment after configuring the required secrets. Development mode supports in-memory fallbacks; optional brokers/providers may still use their configured services. Agents can be triggered via the REST interface at `http://localhost:8000`.
 
 ## Notes
 

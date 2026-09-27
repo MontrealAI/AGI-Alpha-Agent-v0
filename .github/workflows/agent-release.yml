@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -69,14 +69,18 @@ jobs:
           python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
+          python -m scripts.check_factory_readiness > evidence/factory-preservation.json
       - name: Build and exercise wheel outside the repository
         run: |
           python -m build --wheel --no-isolation --outdir wheel-dist
           python -m pip install --no-deps wheel-dist/*.whl
-          mission="$PWD/examples/missions/allocation.json"
           cd "$RUNNER_TEMP"
           alpha-agent --home installed-agent init
-          alpha-agent --home installed-agent run "$mission" > installed-result.json
+          alpha-factory mission examples --output installed-missions
+          alpha-factory mission --home installed-agent run installed-missions/allocation.json > installed-result.json
+          alpha-agent ascension-compile installed-missions/ascension-jobs.json --output installed-plan.json
+          alpha-agent ascension-check installed-plan.json
+          python -m alpha_factory_v1.scripts.preflight --profile agent --offline
           alpha-agent --home installed-agent verify
           python - <<'PY'
           import json
@@ -181,6 +185,7 @@ jobs:
           python scripts/ruff_targets.py --run
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
+          python -m scripts.check_factory_readiness > evidence/factory-preservation.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -253,6 +258,7 @@ jobs:
           python -m scripts.check_ascension_protocol
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
+          python -m scripts.check_factory_readiness > evidence/factory-preservation.json
           python -m scripts.validate_agent_chain --output evidence/local-evm.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()

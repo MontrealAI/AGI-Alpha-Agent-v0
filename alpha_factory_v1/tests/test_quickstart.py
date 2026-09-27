@@ -2,6 +2,7 @@
 import os
 import sys
 import unittest
+import tempfile
 from pathlib import Path, PureWindowsPath
 from unittest import mock
 
@@ -28,30 +29,30 @@ class QuickstartUtilsTest(unittest.TestCase):
             self.assertEqual(quickstart._venv_pip(path), path / "Scripts" / "pip.exe")
 
     def test_create_venv_runs_commands_when_missing(self):
-        with mock.patch("subprocess.check_call") as cc:
-            venv = Path("/tmp/qsvenv")
-            if venv.exists():
-                import shutil
+        with tempfile.TemporaryDirectory() as temp:
+            venv = Path(temp) / "new environment"
 
-                shutil.rmtree(venv)
-            quickstart._create_venv(venv)
-            pip = quickstart._venv_pip(venv)
-            req = Path("alpha_factory_v1/requirements.lock")
-            if not req.exists():
-                req = Path("alpha_factory_v1/requirements.txt")
-            self.assertEqual(cc.call_args_list[0].args[0][:3], [sys.executable, "-m", "venv"])
-            self.assertIn(str(venv), cc.call_args_list[0].args[0])
+            def execute(command):
+                if command[:3] == [sys.executable, "-m", "venv"]:
+                    venv.mkdir()
+
+            with mock.patch("subprocess.check_call", side_effect=execute) as cc:
+                quickstart._create_venv(venv)
             called = [call.args[0] for call in cc.call_args_list]
-            self.assertIn([str(pip), "install", "-U", "pip"], called)
-            self.assertIn([str(pip), "install", "-r", str(req)], called)
+            self.assertEqual(called[0], [sys.executable, "-m", "venv", str(venv)])
+            self.assertIn("--require-hashes", called[1])
+            self.assertEqual(called[2], [str(quickstart._venv_python(venv)), "-m", "pip", "check"])
+            self.assertNotIn("-U", called[1])
 
     def test_create_venv_skips_when_exists(self):
-        with mock.patch("subprocess.check_call") as cc:
-            venv = Path("/tmp/exists")
-            venv.mkdir(exist_ok=True)
-            quickstart._create_venv(venv)
-            cc.assert_not_called()
-            venv.rmdir()
+        with tempfile.TemporaryDirectory() as temp:
+            venv = Path(temp)
+            py = quickstart._venv_python(venv)
+            py.parent.mkdir()
+            py.touch()
+            with mock.patch("subprocess.check_call") as cc:
+                quickstart._create_venv(venv)
+            cc.assert_called_once_with([str(py), "-m", "pip", "check"])
 
 
 if __name__ == "__main__":

@@ -1,3 +1,11 @@
+**Version 1.12.0 updates the complete Alpha-Factory package entry point.**
+
+[Start with Alpha-Factory](alpha_factory_v1/README.md) or the [factory guide](docs/agent/FACTORY_GUIDE.md):
+packaged editable missions, cross-platform setup, exact FusionPlans and signed reviewed-work handoffs.
+All original diagrams and media remain. See [release notes](docs/agent/RELEASE_NOTES_1.12.0.md).
+
+---
+
 # α-AGI Ascension — executable protocol
 
 **Version 1.11.0 connects the Ascension vision to a tested Solidity lifecycle.**
