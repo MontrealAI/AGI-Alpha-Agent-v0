@@ -1,0 +1,945 @@
+{
+  "schema": "agialpha.ascension.local-evm.v1",
+  "mode": "local EVM acceptance",
+  "chainId": "31337",
+  "limitations": [
+    "ENS and AGIALPHA are test fixtures; no mainnet transaction or external capital.",
+    "Distinct local test signers are not independent organizations or real-world outcome certification.",
+    "The native allocation uses supplied scenario assumptions; forecast accuracy and economic value are unmeasured.",
+    "Artifact URIs are explicitly unpublished; the JSON report carries the actual delivered bytes.",
+    "Successor mint records lineage; it starts without risk approval and does not demonstrate improved capability."
+  ],
+  "contracts": {
+    "access": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "seed": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "oracle": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    "jobs": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    "mark": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+  },
+  "sources": {
+    "AscensionAccess.sol": "de1f06c46d767e433356daa22dcbd039b6ca79c88d44bee4de70d5116c9b9a6e",
+    "AscensionJobMarket.sol": "188c0baccb17cb02a51f3536eec1fa3f277ddcb72998b3c8938de4bd7a37ab4c",
+    "AscensionMark.sol": "7811b8a54ab31f01714cdcbb3203668217848ea1eb6129965cbf784abe0f2646",
+    "AscensionRiskOracle.sol": "68bf116ea4e5e1233c54b9c0a14507ae992528c893ff081a892512a7289c5458",
+    "AscensionToken.sol": "45e09fe98cf243ba6d4b8dd4cb6b0f5d2205f2f0529f5eef8916e6208994a95d",
+    "NovaSeed.sol": "d5ba49b4dd662ac4764065f0ebf03ca708c4aefc5fde1d08f7319620addf9896"
+  },
+  "scenario": "resilient-city",
+  "plan": {
+    "schema": "agialpha.ascension.fusion-plan.v1",
+    "token": "AGIALPHA",
+    "decimals": 18,
+    "planRoot": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+    "totalBounty": "100000000000000000000",
+    "jobs": [
+      {
+        "index": 0,
+        "spec": {
+          "goal": "Choose an energy resilience pilot portfolio from supplied public planning assumptions.",
+          "successMetric": "Replay the supplied allocation and verify every budget, risk and objective calculation.",
+          "bounty": "100000000000000000000",
+          "duration": 86400,
+          "priceWeight": 6000
+        },
+        "leaf": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+        "proof": []
+      }
+    ]
+  },
+  "capsule": {
+    "schema": "agialpha.novaseed.sealed.v1",
+    "cipher": "AES-256-GCM",
+    "kdf": "PBKDF2-HMAC-SHA256",
+    "iterations": 600000,
+    "salt": "lL+Ovt+4TNgT39DagQTfrg==",
+    "iv": "uR8v/P9lkOY82+5i",
+    "commitment": "47fc3c40812f8418305fb19db7155912bf1793db42262fbd2f7dd028f1194d05",
+    "ciphertext": "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"
+  },
+  "nativeDelivery": {
+    "schema": "agialpha.ascension.native-delivery.v1",
+    "nativeResult": {
+      "error": null,
+      "execution_config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+      "lease_expires_ns": 1790514749958440000,
+      "request": {
+        "generations": 12,
+        "goal": "Allocate the city's energy resilience pilot budget using the supplied cost, benefit and implementation-risk assumptions.",
+        "population": 20,
+        "seed": 42,
+        "work": {
+          "budget": 100,
+          "items": [
+            {
+              "cost": 55,
+              "id": "district-storage",
+              "risk": 5,
+              "value": 80
+            },
+            {
+              "cost": 30,
+              "id": "heat-recovery",
+              "risk": 3,
+              "value": 61
+            },
+            {
+              "cost": 25,
+              "id": "demand-response",
+              "risk": 2,
+              "value": 57
+            },
+            {
+              "cost": 20,
+              "id": "leak-detection",
+              "risk": 2,
+              "value": 43
+            },
+            {
+              "cost": 25,
+              "id": "cooling-control",
+              "risk": 2,
+              "value": 49
+            },
+            {
+              "cost": 40,
+              "id": "logistics",
+              "risk": 4,
+              "value": 62
+            },
+            {
+              "cost": 35,
+              "id": "urban-digital-twin",
+              "risk": 3,
+              "value": 50
+            }
+          ],
+          "kind": "allocation",
+          "max_risk": 12,
+          "unit": "modeled resilience points"
+        }
+      },
+      "request_hash": "af6de92fcf6e2e3c3dca16681fd2e672a42752ce1945e84f4d4a13e1478faa8c",
+      "stages": [
+        {
+          "detail": {
+            "config_hash": "9fc98c9276ff2faecdc99c0120f5e8975e076fc705d92fb20497ffed8347eb0a",
+            "evaluation_limit": 10000,
+            "goal": "Allocate the city's energy resilience pilot budget using the supplied cost, benefit and implementation-risk assumptions.",
+            "input_hash": "af6de92fcf6e2e3c3dca16681fd2e672a42752ce1945e84f4d4a13e1478faa8c",
+            "kind": "allocation",
+            "wall_seconds_limit": 600
+          },
+          "role": "planning"
+        },
+        {
+          "detail": {
+            "input_provenance": "operator-supplied",
+            "parent": null,
+            "parent_digest": null
+          },
+          "role": "research"
+        },
+        {
+          "detail": {
+            "inference": null,
+            "method": "MATS NSGA-II with feasible decoding and exhaustive verification"
+          },
+          "role": "strategy"
+        },
+        {
+          "detail": {
+            "objective_improvement": 0,
+            "realized_revenue": null,
+            "token_settlement": "not_recorded",
+            "unit": "modeled resilience points"
+          },
+          "role": "market"
+        },
+        {
+          "detail": {
+            "artifact_type": "application/json",
+            "execution": "built-in analytical tools; no model-generated code executed",
+            "result_hash": "154e555cbf4f37872c642579fd935955aee3fc17c7d56bf8e8cb4d9f938f71c7"
+          },
+          "role": "codegen"
+        },
+        {
+          "detail": {
+            "checks": [
+              "budget and risk limits",
+              "unique input items",
+              "independent integer totals"
+            ],
+            "passed": true,
+            "result_hash": "154e555cbf4f37872c642579fd935955aee3fc17c7d56bf8e8cb4d9f938f71c7",
+            "semantic_review_required": false
+          },
+          "role": "safety"
+        },
+        {
+          "detail": {
+            "archive": "signed mission journal",
+            "learning_eligible_after_approval": true
+          },
+          "role": "memory"
+        }
+      ],
+      "state": "review",
+      "result": {
+        "method": "MATS NSGA-II with feasible decoding and exhaustive verification",
+        "selected": [
+          "heat-recovery",
+          "demand-response",
+          "leak-detection",
+          "cooling-control"
+        ],
+        "value": 210,
+        "cost": 100,
+        "risk": 9,
+        "baseline_value": 210,
+        "improvement": 0,
+        "optimal_value": 210,
+        "optimality_proven": true,
+        "evaluations": 608,
+        "unit": "modeled resilience points",
+        "pareto": [
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "leak-detection",
+              "cooling-control"
+            ],
+            "objectives": [
+              -210,
+              100,
+              9
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "leak-detection",
+              "cooling-control"
+            ],
+            "objectives": [
+              -210,
+              100,
+              9
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "logistics"
+            ],
+            "objectives": [
+              -180,
+              95,
+              9
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "logistics"
+            ],
+            "objectives": [
+              -162,
+              85,
+              8
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -168,
+              90,
+              8
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "logistics"
+            ],
+            "objectives": [
+              -162,
+              85,
+              8
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -168,
+              90,
+              8
+            ]
+          },
+          {
+            "selected": [
+              "heat-recovery",
+              "demand-response",
+              "logistics"
+            ],
+            "objectives": [
+              -180,
+              95,
+              9
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          },
+          {
+            "selected": [
+              "demand-response",
+              "leak-detection",
+              "urban-digital-twin"
+            ],
+            "objectives": [
+              -150,
+              80,
+              7
+            ]
+          }
+        ],
+        "limits": "Values and risks are supplied planning assumptions; objective improvement is not realized income."
+      },
+      "verification": {
+        "passed": true,
+        "checks": [
+          "budget and risk limits",
+          "unique input items",
+          "independent integer totals"
+        ],
+        "result_hash": "154e555cbf4f37872c642579fd935955aee3fc17c7d56bf8e8cb4d9f938f71c7",
+        "semantic_review_required": false
+      },
+      "inference": null,
+      "elapsed_seconds": 0.044459,
+      "id": "e5b3eb47-14fb-43b7-9202-3167784511bb",
+      "revision": 11,
+      "digest": "544714f9a73adcd1513ef762d8a3f410947a9fc98631b41fb15362cb8d534a83"
+    },
+    "verifiedJournal": {
+      "valid": true,
+      "events": 11,
+      "head": "544714f9a73adcd1513ef762d8a3f410947a9fc98631b41fb15362cb8d534a83",
+      "identity": "urn:agialpha:ed25519:0c4136c0ada490aa1abfbf12d4b15d8a6e4ea40dcdcd41ffb32c0897ec0a8d3c"
+    }
+  },
+  "resultHash": "0xa215f991cf1c4199a1817098113b8593e4921acc8257b580e0977bfb87729bef",
+  "capsuleHash": "0xbbfdf3210f70f16384a4417dd03ba52ed8b6819cf9a3d949edbe40cf7e377e74",
+  "steps": [
+    {
+      "stage": "Nova-Seed",
+      "transactionHash": "0x8acd35726635c0fcbcaffdfb360cf952fed2b4a68ea230a692686937f047db83",
+      "block": 71,
+      "gasUsed": "268867",
+      "status": 1,
+      "events": [
+        {
+          "contract": "NovaSeed",
+          "event": "Transfer",
+          "args": {
+            "from": "0x0000000000000000000000000000000000000000",
+            "to": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "tokenId": "1"
+          }
+        },
+        {
+          "contract": "NovaSeed",
+          "event": "MetadataUpdate",
+          "args": {
+            "_tokenId": "1"
+          }
+        },
+        {
+          "contract": "NovaSeed",
+          "event": "SeedSealed",
+          "args": {
+            "seedId": "1",
+            "creator": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "capsuleHash": "0xbbfdf3210f70f16384a4417dd03ba52ed8b6819cf9a3d949edbe40cf7e377e74",
+            "planRoot": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+            "parent": "0",
+            "evidenceHash": "0x32850351d15d19a129e0d3b2b1d1a2351c59904759fa03a28b8fff876ced4304"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Risk oracle",
+      "transactionHash": "0x6828b5087a6b78ac6e4a38fdb2ecb197f56f922f0dd216634eaa321b835fc0ae",
+      "block": 72,
+      "gasUsed": "87429",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Oracle",
+          "event": "ReviewOpened",
+          "args": {
+            "seedId": "1",
+            "round": "1",
+            "owner": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "until": "1791118959"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Risk oracle",
+      "transactionHash": "0x7c54e26ee44578960f1a5a202aa0f2cd5907a9b973f286f87c1e984fe3764687",
+      "block": 73,
+      "gasUsed": "147498",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Oracle",
+          "event": "RiskAttested",
+          "args": {
+            "seedId": "1",
+            "round": "1",
+            "validator": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "riskBps": "1000",
+            "admitted": true,
+            "evidenceHash": "0x32850351d15d19a129e0d3b2b1d1a2351c59904759fa03a28b8fff876ced4304"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Risk oracle",
+      "transactionHash": "0xae2de38cbd91b00c818078cd4e322455b5150194997ac8594b3889a08b61cd9d",
+      "block": 74,
+      "gasUsed": "130398",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Oracle",
+          "event": "RiskAttested",
+          "args": {
+            "seedId": "1",
+            "round": "1",
+            "validator": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "riskBps": "1000",
+            "admitted": true,
+            "evidenceHash": "0x32850351d15d19a129e0d3b2b1d1a2351c59904759fa03a28b8fff876ced4304"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "MARK",
+      "transactionHash": "0x5c4228ea2742bd8e040192eae9abbf501f7c325d2b158af2b700865452a39e24",
+      "block": 75,
+      "gasUsed": "199467",
+      "status": 1,
+      "events": [
+        {
+          "contract": "MARK",
+          "event": "MarketOpened",
+          "args": {
+            "id": "1",
+            "business": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "base": "2000000000000000000",
+            "slope": "100000000000000000",
+            "target": "100000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "MARK",
+      "transactionHash": "0x18f32a0607aa73badb1a231cf133f73cb05cba1634b83344c95e197b02582ee1",
+      "block": 76,
+      "gasUsed": "181372",
+      "status": 1,
+      "events": [
+        {
+          "contract": "MARK",
+          "event": "Traded",
+          "args": {
+            "id": "1",
+            "account": "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "buy": true,
+            "lots": "40",
+            "value": "158000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Sovereign",
+      "transactionHash": "0x6c7be4365e6fb7cd53535d815a1815ab7034010787ad8efb3b863eb520df4c50",
+      "block": 77,
+      "gasUsed": "107514",
+      "status": 1,
+      "events": [
+        {
+          "contract": "MARK",
+          "event": "Bloomed",
+          "args": {
+            "id": "1",
+            "businessNode": "0x31c4ca61bbfca972b07dbc91632692e62d47bc5958f4687b7b8a88dff89ff216",
+            "planRoot": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+            "funding": "158000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "α-Job",
+      "transactionHash": "0x3ddd1825b0e44d49f002f4f4ce829a4ebb3f0268ed7262632b0fa7a2675829b5",
+      "block": 78,
+      "gasUsed": "601337",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "JobPosted",
+          "args": {
+            "id": "1",
+            "business": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "specHash": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+            "goal": "Choose an energy resilience pilot portfolio from supplied public planning assumptions.",
+            "successMetric": "Replay the supplied allocation and verify every budget, risk and objective calculation.",
+            "bounty": "100000000000000000000",
+            "auctionEnd": "1790514225",
+            "reviewEnd": "1790859825"
+          }
+        },
+        {
+          "contract": "MARK",
+          "event": "MissionRouted",
+          "args": {
+            "id": "1",
+            "index": "0",
+            "jobId": "1",
+            "leaf": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Auction",
+      "transactionHash": "0x6a6964263f61824547c62341b3827528ca9b49ee0acd051d36fea92a7e04638b",
+      "block": 79,
+      "gasUsed": "172827",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "BidPlaced",
+          "args": {
+            "id": "1",
+            "agent": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "price": "70000000000000000000",
+            "duration": "86000",
+            "reputation": "0"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Auction",
+      "transactionHash": "0xd5ae1abb99ee9519ae01fc473adb3b9768da039ef4db6ef487a30eda40309041",
+      "block": 80,
+      "gasUsed": "155715",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "BidPlaced",
+          "args": {
+            "id": "1",
+            "agent": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "price": "80000000000000000000",
+            "duration": "1000",
+            "reputation": "0"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Auction",
+      "transactionHash": "0x0abec753eec034d03eeb4ad99faa52616f0371420699da61e61105683cd92085",
+      "block": 82,
+      "gasUsed": "82395",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "Assigned",
+          "args": {
+            "id": "1",
+            "agent": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "price": "80000000000000000000",
+            "due": "1790515226"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Delivery",
+      "transactionHash": "0x44bf458373c2b3787a295fd7707addcd9f64b6607b44fbdf6719c4825a1b9b09",
+      "block": 83,
+      "gasUsed": "71126",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "Delivered",
+          "args": {
+            "id": "1",
+            "resultHash": "0xa215f991cf1c4199a1817098113b8593e4921acc8257b580e0977bfb87729bef",
+            "resultURI": "ipfs://local-demo-only-not-published"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Validation",
+      "transactionHash": "0x9d95fc5c529449e84405f4387abae881684358938a3b6c6035a3a002ee39d7eb",
+      "block": 84,
+      "gasUsed": "86567",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "Validated",
+          "args": {
+            "id": "1",
+            "validator": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "approved": true,
+            "resultHash": "0xa215f991cf1c4199a1817098113b8593e4921acc8257b580e0977bfb87729bef",
+            "evidence": "0x32850351d15d19a129e0d3b2b1d1a2351c59904759fa03a28b8fff876ced4304"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Validation",
+      "transactionHash": "0xa82e3c351d2e3d2c7ba452200dd78982df28212dc0bd1b50ca3ec63b28a19db1",
+      "block": 85,
+      "gasUsed": "230716",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "Validated",
+          "args": {
+            "id": "1",
+            "validator": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "approved": true,
+            "resultHash": "0xa215f991cf1c4199a1817098113b8593e4921acc8257b580e0977bfb87729bef",
+            "evidence": "0x32850351d15d19a129e0d3b2b1d1a2351c59904759fa03a28b8fff876ced4304"
+          }
+        },
+        {
+          "contract": "Marketplace",
+          "event": "Payout",
+          "args": {
+            "id": "1",
+            "recipient": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "gross": "76000000000000000000",
+            "burned": "760000000000000000"
+          }
+        },
+        {
+          "contract": "Marketplace",
+          "event": "Payout",
+          "args": {
+            "id": "1",
+            "recipient": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "gross": "2000000000000000000",
+            "burned": "20000000000000000"
+          }
+        },
+        {
+          "contract": "Marketplace",
+          "event": "Payout",
+          "args": {
+            "id": "1",
+            "recipient": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "gross": "2000000000000000000",
+            "burned": "20000000000000000"
+          }
+        },
+        {
+          "contract": "Marketplace",
+          "event": "Closed",
+          "args": {
+            "id": "1",
+            "state": "4",
+            "refundable": "20000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Recovery",
+      "transactionHash": "0x7883073bfec4fc1b848cf15c4d66049e63ac6dd84fdf3c61255aa02d27f993e4",
+      "block": 86,
+      "gasUsed": "113893",
+      "status": 1,
+      "events": [
+        {
+          "contract": "Marketplace",
+          "event": "RefundClaimed",
+          "args": {
+            "id": "1",
+            "client": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "amount": "20000000000000000000"
+          }
+        },
+        {
+          "contract": "MARK",
+          "event": "MissionCollected",
+          "args": {
+            "id": "1",
+            "jobId": "1",
+            "refund": "20000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Recovery",
+      "transactionHash": "0x2306b2a617399a1f1c8ae689f689bb377fee19f45a9d041f5f9c10697aceca66",
+      "block": 87,
+      "gasUsed": "44891",
+      "status": 1,
+      "events": [
+        {
+          "contract": "MARK",
+          "event": "CampaignClosed",
+          "args": {
+            "id": "1",
+            "unused": "78000000000000000000",
+            "supply": "40"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Recovery",
+      "transactionHash": "0x8c6d2be7ff9b6114f8ef3856a750da9812a3a8e416c48594b821baf06a8c3ca5",
+      "block": 88,
+      "gasUsed": "49783",
+      "status": 1,
+      "events": [
+        {
+          "contract": "MARK",
+          "event": "CapitalReturned",
+          "args": {
+            "id": "1",
+            "account": "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "amount": "78000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "stage": "Evolution candidate",
+      "transactionHash": "0xc4449ce3bc58aeb171ec403f770849784f09947924e056e0cbd444f2671f5a90",
+      "block": 89,
+      "gasUsed": "256920",
+      "status": 1,
+      "events": [
+        {
+          "contract": "NovaSeed",
+          "event": "Transfer",
+          "args": {
+            "from": "0x0000000000000000000000000000000000000000",
+            "to": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "tokenId": "2"
+          }
+        },
+        {
+          "contract": "NovaSeed",
+          "event": "MetadataUpdate",
+          "args": {
+            "_tokenId": "2"
+          }
+        },
+        {
+          "contract": "NovaSeed",
+          "event": "SeedSealed",
+          "args": {
+            "seedId": "2",
+            "creator": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "capsuleHash": "0xbbfdf3210f70f16384a4417dd03ba52ed8b6819cf9a3d949edbe40cf7e377e74",
+            "planRoot": "0x1f02e464353270adf32fdd8f113aeedae9dabe132f64eba98a79abd9b3a29180",
+            "parent": "1",
+            "evidenceHash": "0xa215f991cf1c4199a1817098113b8593e4921acc8257b580e0977bfb87729bef"
+          }
+        }
+      ]
+    }
+  ],
+  "accounting": {
+    "token": "AGIALPHA",
+    "decimals": 18,
+    "funded": "158000000000000000000",
+    "grossJobPrice": "80000000000000000000",
+    "workerNet": "75240000000000000000",
+    "validatorsNet": "3960000000000000000",
+    "burned": "800000000000000000",
+    "refunded": "78000000000000000000",
+    "remainingTreasury": "0"
+  },
+  "checks": {
+    "encryptedCapsuleRecovered": true,
+    "nativeJournalVerified": true,
+    "quorumRequired": true,
+    "artifactBound": true,
+    "planBound": true,
+    "totalSupplyReduced": true,
+    "reserveConserved": true,
+    "successorRequiresNewReview": true
+  }
+}

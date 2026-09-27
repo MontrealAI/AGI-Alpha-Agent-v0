@@ -1,0 +1,246 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+        />
+        <meta
+            name="description"
+            content="Inspect the executable Ascension protocol: encrypted ERC-721 Nova-Seeds, validator-gated MARK funding, FusionPlan treasury, ENS auctions and exact AGIALPHA settlement."
+        />
+        <title>
+            Ascension Protocol · From foresight to accountable execution
+        </title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/ascension-protocol/desk.css" />
+        <link
+            rel="canonical"
+            href="https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/"
+        />
+    </head>
+    <body>
+        <a class="skip" href="#main">Skip to protocol desk</a>
+        <header>
+            <a class="brand" href="../"><span>α</span>AGIALPHA</a>
+            <nav aria-label="Project navigation">
+                <a href="../ascension/">Ascension Lab</a
+                ><a href="../bloom/">Proof Bloom</a
+                ><a href="../agent/ASCENSION_PROTOCOL/">Protocol guide ↗</a>
+            </nav>
+        </header>
+        <main id="main">
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">
+                        α-AGI Ascension · Powered by $AGIALPHA
+                    </p>
+                    <h1>
+                        Foresight.<br />Committed.<br /><em>Accountable.</em>
+                    </h1>
+                    <p>
+                        Follow one real local execution from an encrypted
+                        Nova-Seed to a funded enterprise, a competitive job
+                        auction and validator-gated payment.
+                    </p>
+                    <a href="#evidence">Inspect the transaction trail ↓</a>
+                </div>
+                <div class="hero-aside">
+                    <span class="badge">LOCAL EVM · NO LIVE FUNDS</span>
+                    <p class="eyebrow">The resilient city</p>
+                    <strong>A plan that must<br />earn its payout.</strong>
+                    <p>
+                        A constrained energy-resilience portfolio becomes an
+                        immutable mission. The native agent solves it; the
+                        contracts enforce who may execute, who may validate and
+                        where every token goes.
+                    </p>
+                    <a
+                        href="../assets/ascension-protocol/receipt.json"
+                        download="ascension-local-evm-evidence.json"
+                        >Download complete evidence ↗</a
+                    >
+                </div>
+            </section>
+            <div class="metrics" aria-label="Recorded settlement in AGIALPHA">
+                <div class="metric">
+                    <span>Funded</span><strong id="funded">—</strong
+                    ><small>$AGIALPHA committed</small>
+                </div>
+                <div class="metric">
+                    <span>Executor receives</span
+                    ><strong id="workerNet">—</strong
+                    ><small>After review share and burn</small>
+                </div>
+                <div class="metric">
+                    <span>Supply destroyed</span><strong id="burned">—</strong
+                    ><small>1% of each payout</small>
+                </div>
+                <div class="metric">
+                    <span>Capital returned</span><strong id="refunded">—</strong
+                    ><small>Unused funding, fully recovered</small>
+                </div>
+            </div>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Understand the rules</p>
+                    <h2>
+                        Change the assumptions.<br />Inspect the consequence.
+                    </h2>
+                </div>
+                <p>
+                    These calculators use exact integer arithmetic. The evidence
+                    below records a fixed EVM run; changing an input here does
+                    not change that history.
+                </p>
+            </div>
+            <div class="work-grid">
+                <section class="panel">
+                    <h3>MARK · Funding curve</h3>
+                    <div class="fields">
+                        <label
+                            >Outstanding lots<input
+                                id="supply"
+                                type="number"
+                                min="0"
+                                max="1000000"
+                                value="0" /></label
+                        ><label
+                            >Lots to buy<input
+                                id="lots"
+                                type="number"
+                                min="1"
+                                max="1000000"
+                                value="40" /></label
+                        ><label
+                            >First-lot price ($AGIALPHA)<input
+                                id="base"
+                                inputmode="decimal"
+                                value="2" /></label
+                        ><label
+                            >Price rise per lot ($AGIALPHA)<input
+                                id="slope"
+                                inputmode="decimal"
+                                value="0.1"
+                        /></label>
+                    </div>
+                    <output id="quote" aria-live="polite"></output>
+                    <p id="quote-note" class="note"></p>
+                </section>
+                <section class="panel">
+                    <h3>Marketplace · Competitive allocation</h3>
+                    <div class="fields">
+                        <label
+                            >Candidate price ($AGIALPHA)<input
+                                id="bid-price"
+                                inputmode="decimal"
+                                value="80" /></label
+                        ><label
+                            >Promised delivery (seconds)<input
+                                id="bid-time"
+                                type="number"
+                                min="1"
+                                max="86400"
+                                value="1000" /></label
+                        ><label
+                            >Earned reputation (0–10,000)<input
+                                id="reputation"
+                                type="number"
+                                min="0"
+                                max="10000"
+                                value="0" /></label
+                        ><label
+                            >Price weight (basis points)<input
+                                id="price-weight"
+                                type="number"
+                                min="0"
+                                max="10000"
+                                value="6000"
+                        /></label>
+                    </div>
+                    <output id="auction-score" aria-live="polite"></output>
+                    <p id="auction-note" class="note"></p>
+                </section>
+            </div>
+            <section id="evidence">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">A complete chain of evidence</p>
+                        <h2>From seed to settlement.</h2>
+                    </div>
+                    <p>
+                        Actual transaction receipts and emitted events from the
+                        shipped contracts. ENS, tokens and validator signers are
+                        controlled local fixtures.
+                    </p>
+                </div>
+                <div id="native-result" class="result"></div>
+                <p id="status" role="status">Loading the local EVM evidence…</p>
+                <div class="trace-layout">
+                    <aside class="trace-controls">
+                        <label
+                            >Inspect a protocol stage<select id="stage">
+                                <option value="all">Entire lifecycle</option>
+                                <option>Nova-Seed</option>
+                                <option>Risk oracle</option>
+                                <option>MARK</option>
+                                <option>Sovereign</option>
+                                <option>α-Job</option>
+                                <option>Auction</option>
+                                <option>Delivery</option>
+                                <option>Validation</option>
+                                <option>Recovery</option>
+                                <option>Evolution candidate</option>
+                            </select></label
+                        >
+                        <p id="stage-detail"></p>
+                        <small id="trace-count"></small>
+                        <p>
+                            <a
+                                href="../agent/ASCENSION_PROTOCOL/#reproduce-the-end-to-end-run"
+                                >Reproduce the run ↗</a
+                            >
+                        </p>
+                        <p>
+                            <a
+                                href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/contracts/ascension"
+                                >Read the contracts ↗</a
+                            >
+                        </p>
+                    </aside>
+                    <div id="trace"></div>
+                </div>
+            </section>
+            <section class="boundary">
+                <p class="eyebrow">What this evidence establishes</p>
+                <h2>Executable rules. Explicit limits.</h2>
+                <ul id="boundaries"></ul>
+                <p class="note">
+                    A transaction receipt establishes local execution. It does
+                    not establish predictive accuracy, independent reviewer
+                    judgment, legal compliance or mainnet readiness. The
+                    original research vision and all previous demos remain
+                    available.
+                </p>
+            </section>
+            <p><a href="../index.html">⬅️ Back to Gallery</a></p>
+        </main>
+        <footer>
+            <span
+                >α-AGI Ascension · Insight → Nova-Seeds → MARK → Sovereign →
+                Marketplace</span
+            ><a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
+        </footer>
+        <script
+            type="module"
+            src="../assets/ascension-protocol/desk.mjs"
+        ></script>
+    </body>
+</html>

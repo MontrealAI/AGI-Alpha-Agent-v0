@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-c560a8eab92e3881";
-const RELEASE = "1.10.1";
+const CACHE = "agialpha-gallery-f78d9193542b7e89";
+const RELEASE = "1.11.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -171,7 +171,11 @@ const ASSETS = [
   "./alpha_factory_v1/demos/studio/index.html",
   "./alpha_factory_v1/index.html",
   "./alpha_super_planner_v1/assets/preview.svg",
+  "./ascension-protocol/index.html",
   "./ascension/index.html",
+  "./assets/ascension-protocol/desk.css",
+  "./assets/ascension-protocol/desk.mjs",
+  "./assets/ascension-protocol/receipt.json",
   "./assets/ascension/crypto.mjs",
   "./assets/ascension/engine.mjs",
   "./assets/ascension/home.css",

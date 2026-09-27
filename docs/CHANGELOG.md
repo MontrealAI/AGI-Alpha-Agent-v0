@@ -1,3 +1,11 @@
+## 1.11.0 — 2026-09-27
+
+Add an integrated Ascension Solidity reference suite: ERC-721 Nova-Seeds, expiring validator risk oracle,
+MARK curve AMM, plan-bound Sovereign treasury, ENS/stake-gated auctions, reserved reviewer capacity,
+artifact-bound validation, exact $AGIALPHA payout burns, failure recovery and successor lineage.
+Add a native-agent/local-EVM acceptance run, public transaction desk and continuous validation.
+All existing contracts, papers, demos and capabilities remain. See [the protocol guide](agent/ASCENSION_PROTOCOL.md).
+
 # Version 1.10.1 — Operator reliability audit
 
 - Remove the legacy wheel signature bypass and unify signing/verification formats.

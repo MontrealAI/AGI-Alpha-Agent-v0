@@ -15,6 +15,10 @@ The paper is preserved byte-for-byte. Its SHA-256 is
 `fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa`.
 The site build copies that canonical repository file; there is no separately edited PDF.
 
+Version 1.11.0 additionally supplies the [executable on-chain reference protocol](ASCENSION_PROTOCOL.md)
+and [Protocol Desk](../ascension-protocol/index.html). The original browser lab and its simulation boundaries
+below remain unchanged; the new suite adds actual local EVM NFT, oracle, treasury, auction and settlement execution.
+
 ## Start with a useful mission
 
 1. Choose **The resilient city**. Inspect the seven opportunities and change cost, benefit or risk assumptions.
