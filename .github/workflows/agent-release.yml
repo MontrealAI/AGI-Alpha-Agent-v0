@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -249,6 +249,8 @@ jobs:
         run: |
           npm ci --prefix tests/contracts
           npm test --prefix tests/contracts | tee evidence/contracts.txt
+          npm run ascension:demo --prefix tests/contracts
+          python -m scripts.check_ascension_protocol
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.validate_agent_chain --output evidence/local-evm.json
@@ -422,6 +424,8 @@ jobs:
           python -m scripts.validate_pages_workspace --site site --output evidence/pages-workspace "${model_args[@]}"
       - name: Verify the complete white-paper Ascension journey and recovery
         run: python -m scripts.validate_ascension --site site --output evidence/ascension
+      - name: Verify the Ascension protocol desk and local EVM evidence
+        run: python -m scripts.validate_ascension_protocol --site site --output evidence/ascension-protocol/browser
       - name: Verify Insight Atlas scenarios, proof controls, native exports and recovery
         run: python -m scripts.validate_insight_atlas --site site --output evidence/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify five Proof Bloom experiences, signed returns and capability recovery
@@ -606,6 +610,7 @@ jobs:
           python -m scripts.wait_for_pages_release --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --commit "$GITHUB_SHA" --output evidence/public-pages/release.json
           python -m scripts.validate_pages_workspace --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --model --output evidence/public-pages
           python -m scripts.validate_ascension --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension
+          python -m scripts.validate_ascension_protocol --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension-protocol
           npm ci --prefix tests/browser --ignore-scripts
           python -m scripts.validate_insight_atlas --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_proof_bloom --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js

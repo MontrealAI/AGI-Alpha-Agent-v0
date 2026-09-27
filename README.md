@@ -1,3 +1,14 @@
+# α-AGI Ascension — executable protocol
+
+**Version 1.11.0 connects the Ascension vision to a tested Solidity lifecycle.**
+[Open the Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/):
+cryptosealed ERC-721 Nova-Seeds, a validator risk oracle, MARK’s funding AMM, plan-restricted Sovereign
+treasuries and reputation-weighted job auctions with exact $AGIALPHA settlement and 1% payout burns.
+The native agent runs the delivered mission; local EVM receipts expose the entire sequence and capital recovery.
+[Read the implementation and reproduction guide](docs/agent/ASCENSION_PROTOCOL.md) and
+[release notes](docs/agent/RELEASE_NOTES_1.11.0.md). This additive suite preserves all existing contracts,
+research and demos. Local execution is verified; live deployment and independent commissioning remain outstanding.
+
 # $AGIALPHA Agent — release status
 
 **Version 1.10.1 strengthens signature verification, operator reliability and recovery.**
