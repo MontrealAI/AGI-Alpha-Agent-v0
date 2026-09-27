@@ -1,0 +1,1452 @@
+[
+  {
+    "schema": "agialpha.business3.scenario.v1",
+    "id": "industrial",
+    "title": "An enterprise transformation portfolio",
+    "provenance": {
+      "kind": "constructed",
+      "note": "Illustrative whole-USD operating assumptions over three years, not historical returns or live market data. Evidence scores are supplied screening assumptions, not independent validation."
+    },
+    "policy": {
+      "budgetUsd": 1200000,
+      "staffDays": 500,
+      "reviewMinutes": 400,
+      "jobBudgetTokens": 4000,
+      "maxProjects": 5,
+      "maxPerSector": 2,
+      "discountBps": 800,
+      "benefitHaircutBps": 2500,
+      "costOverrunBps": 1000,
+      "minEvidenceBps": 6500,
+      "minDownsideNpvUsd": 0
+    },
+    "projects": [
+      {
+        "id": "heat-recovery",
+        "name": "Industrial heat recovery",
+        "sector": "energy",
+        "costUsd": 320000,
+        "staffDays": 90,
+        "cashflowsUsd": [
+          150000,
+          180000,
+          190000
+        ],
+        "evidenceBps": 8500,
+        "reviewMinutes": 70,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute the three-year cash-flow case; verify heat-meter baselines and a feasible commissioning plan.",
+        "sources": [
+          "Constructed planning fixture for industrial heat recovery; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "flexible-load",
+        "name": "Flexible facility load",
+        "sector": "energy",
+        "costUsd": 190000,
+        "staffDays": 60,
+        "cashflowsUsd": [
+          100000,
+          120000,
+          125000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 60,
+        "bountyTokens": 500,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Replay supplied interval loads; show peak reduction without violating process operating windows.",
+        "sources": [
+          "Constructed planning fixture for flexible facility load; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "line-automation",
+        "name": "Production-line automation",
+        "sector": "manufacturing",
+        "costUsd": 420000,
+        "staffDays": 180,
+        "cashflowsUsd": [
+          210000,
+          260000,
+          285000
+        ],
+        "evidenceBps": 8200,
+        "reviewMinutes": 100,
+        "bountyTokens": 900,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the throughput and staffing model and test the proposed line schedule against downtime constraints.",
+        "sources": [
+          "Constructed planning fixture for production-line automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quality-sensors",
+        "name": "In-line quality sensing",
+        "sector": "manufacturing",
+        "costUsd": 160000,
+        "staffDays": 75,
+        "cashflowsUsd": [
+          75000,
+          95000,
+          115000
+        ],
+        "evidenceBps": 8300,
+        "reviewMinutes": 65,
+        "bountyTokens": 500,
+        "durationDays": 30,
+        "requires": [
+          "line-automation"
+        ],
+        "excludes": [],
+        "metric": "Verify the defect baseline, sampling method and integration dependency on the automated line.",
+        "sources": [
+          "Constructed planning fixture for in-line quality sensing; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "route-optimization",
+        "name": "Fleet route optimization",
+        "sector": "logistics",
+        "costUsd": 130000,
+        "staffDays": 55,
+        "cashflowsUsd": [
+          70000,
+          80000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 65,
+        "bountyTokens": 400,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce routing results on supplied stops and vehicle limits; report distance and service-window violations.",
+        "sources": [
+          "Constructed planning fixture for fleet route optimization; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "cold-chain",
+        "name": "Cold-chain reliability",
+        "sector": "logistics",
+        "costUsd": 260000,
+        "staffDays": 95,
+        "cashflowsUsd": [
+          120000,
+          170000,
+          190000
+        ],
+        "evidenceBps": 7800,
+        "reviewMinutes": 75,
+        "bountyTokens": 700,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Audit spoilage assumptions and verify the proposed monitoring and exception-response workflow.",
+        "sources": [
+          "Constructed planning fixture for cold-chain reliability; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "materials-reuse",
+        "name": "Materials recovery process",
+        "sector": "materials",
+        "costUsd": 180000,
+        "staffDays": 80,
+        "cashflowsUsd": [
+          100000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 6900,
+        "reviewMinutes": 100,
+        "bountyTokens": 650,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute mass balance and unit economics from the supplied process records; identify unverified yield assumptions.",
+        "sources": [
+          "Constructed planning fixture for materials recovery process; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "bio-assay",
+        "name": "Assay automation study",
+        "sector": "biotech",
+        "costUsd": 330000,
+        "staffDays": 130,
+        "cashflowsUsd": [
+          70000,
+          240000,
+          310000
+        ],
+        "evidenceBps": 5500,
+        "reviewMinutes": 160,
+        "bountyTokens": 1200,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Design an independently reviewable benchmark; report sample handling limits and avoid clinical efficacy claims.",
+        "sources": [
+          "Constructed planning fixture for assay automation study; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "carbon-audit",
+        "name": "Carbon reporting automation",
+        "sector": "policy",
+        "costUsd": 90000,
+        "staffDays": 45,
+        "cashflowsUsd": [
+          60000,
+          65000,
+          75000
+        ],
+        "evidenceBps": 8800,
+        "reviewMinutes": 80,
+        "bountyTokens": 450,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Trace each reported figure to the supplied source ledger and list jurisdiction-specific review still required.",
+        "sources": [
+          "Constructed planning fixture for carbon reporting automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "research-triage",
+        "name": "Technical literature triage",
+        "sector": "research",
+        "costUsd": 80000,
+        "staffDays": 50,
+        "cashflowsUsd": [
+          50000,
+          70000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 100,
+        "bountyTokens": 500,
+        "durationDays": 14,
+        "requires": [],
+        "excludes": [],
+        "metric": "Return source-linked technical findings, exclusions and reproducible retrieval evaluation over the supplied corpus.",
+        "sources": [
+          "Constructed planning fixture for technical literature triage; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "working-capital",
+        "name": "Working-capital controls",
+        "sector": "finance",
+        "costUsd": 240000,
+        "staffDays": 40,
+        "cashflowsUsd": [
+          120000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 50,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute cash-conversion assumptions and stress payment delays; enumerate reconciliation controls.",
+        "sources": [
+          "Constructed planning fixture for working-capital controls; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quantum-study",
+        "name": "Quantum error-correction study",
+        "sector": "quantum",
+        "costUsd": 500000,
+        "staffDays": 220,
+        "cashflowsUsd": [
+          0,
+          80000,
+          450000
+        ],
+        "evidenceBps": 3000,
+        "reviewMinutes": 200,
+        "bountyTokens": 1500,
+        "durationDays": 90,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the supplied simulator baseline and compare overhead on held-out circuits; do not infer hardware advantage.",
+        "sources": [
+          "Constructed planning fixture for quantum error-correction study; replace with independently reviewed source records."
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.business3.scenario.v1",
+    "id": "lean-budget",
+    "title": "Deploy with only USD 600,000",
+    "provenance": {
+      "kind": "constructed",
+      "note": "Illustrative whole-USD operating assumptions over three years, not historical returns or live market data. Evidence scores are supplied screening assumptions, not independent validation."
+    },
+    "policy": {
+      "budgetUsd": 600000,
+      "staffDays": 500,
+      "reviewMinutes": 400,
+      "jobBudgetTokens": 4000,
+      "maxProjects": 5,
+      "maxPerSector": 2,
+      "discountBps": 800,
+      "benefitHaircutBps": 2500,
+      "costOverrunBps": 1000,
+      "minEvidenceBps": 6500,
+      "minDownsideNpvUsd": 0
+    },
+    "projects": [
+      {
+        "id": "heat-recovery",
+        "name": "Industrial heat recovery",
+        "sector": "energy",
+        "costUsd": 320000,
+        "staffDays": 90,
+        "cashflowsUsd": [
+          150000,
+          180000,
+          190000
+        ],
+        "evidenceBps": 8500,
+        "reviewMinutes": 70,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute the three-year cash-flow case; verify heat-meter baselines and a feasible commissioning plan.",
+        "sources": [
+          "Constructed planning fixture for industrial heat recovery; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "flexible-load",
+        "name": "Flexible facility load",
+        "sector": "energy",
+        "costUsd": 190000,
+        "staffDays": 60,
+        "cashflowsUsd": [
+          100000,
+          120000,
+          125000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 60,
+        "bountyTokens": 500,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Replay supplied interval loads; show peak reduction without violating process operating windows.",
+        "sources": [
+          "Constructed planning fixture for flexible facility load; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "line-automation",
+        "name": "Production-line automation",
+        "sector": "manufacturing",
+        "costUsd": 420000,
+        "staffDays": 180,
+        "cashflowsUsd": [
+          210000,
+          260000,
+          285000
+        ],
+        "evidenceBps": 8200,
+        "reviewMinutes": 100,
+        "bountyTokens": 900,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the throughput and staffing model and test the proposed line schedule against downtime constraints.",
+        "sources": [
+          "Constructed planning fixture for production-line automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quality-sensors",
+        "name": "In-line quality sensing",
+        "sector": "manufacturing",
+        "costUsd": 160000,
+        "staffDays": 75,
+        "cashflowsUsd": [
+          75000,
+          95000,
+          115000
+        ],
+        "evidenceBps": 8300,
+        "reviewMinutes": 65,
+        "bountyTokens": 500,
+        "durationDays": 30,
+        "requires": [
+          "line-automation"
+        ],
+        "excludes": [],
+        "metric": "Verify the defect baseline, sampling method and integration dependency on the automated line.",
+        "sources": [
+          "Constructed planning fixture for in-line quality sensing; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "route-optimization",
+        "name": "Fleet route optimization",
+        "sector": "logistics",
+        "costUsd": 130000,
+        "staffDays": 55,
+        "cashflowsUsd": [
+          70000,
+          80000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 65,
+        "bountyTokens": 400,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce routing results on supplied stops and vehicle limits; report distance and service-window violations.",
+        "sources": [
+          "Constructed planning fixture for fleet route optimization; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "cold-chain",
+        "name": "Cold-chain reliability",
+        "sector": "logistics",
+        "costUsd": 260000,
+        "staffDays": 95,
+        "cashflowsUsd": [
+          120000,
+          170000,
+          190000
+        ],
+        "evidenceBps": 7800,
+        "reviewMinutes": 75,
+        "bountyTokens": 700,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Audit spoilage assumptions and verify the proposed monitoring and exception-response workflow.",
+        "sources": [
+          "Constructed planning fixture for cold-chain reliability; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "materials-reuse",
+        "name": "Materials recovery process",
+        "sector": "materials",
+        "costUsd": 180000,
+        "staffDays": 80,
+        "cashflowsUsd": [
+          100000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 6900,
+        "reviewMinutes": 100,
+        "bountyTokens": 650,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute mass balance and unit economics from the supplied process records; identify unverified yield assumptions.",
+        "sources": [
+          "Constructed planning fixture for materials recovery process; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "bio-assay",
+        "name": "Assay automation study",
+        "sector": "biotech",
+        "costUsd": 330000,
+        "staffDays": 130,
+        "cashflowsUsd": [
+          70000,
+          240000,
+          310000
+        ],
+        "evidenceBps": 5500,
+        "reviewMinutes": 160,
+        "bountyTokens": 1200,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Design an independently reviewable benchmark; report sample handling limits and avoid clinical efficacy claims.",
+        "sources": [
+          "Constructed planning fixture for assay automation study; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "carbon-audit",
+        "name": "Carbon reporting automation",
+        "sector": "policy",
+        "costUsd": 90000,
+        "staffDays": 45,
+        "cashflowsUsd": [
+          60000,
+          65000,
+          75000
+        ],
+        "evidenceBps": 8800,
+        "reviewMinutes": 80,
+        "bountyTokens": 450,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Trace each reported figure to the supplied source ledger and list jurisdiction-specific review still required.",
+        "sources": [
+          "Constructed planning fixture for carbon reporting automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "research-triage",
+        "name": "Technical literature triage",
+        "sector": "research",
+        "costUsd": 80000,
+        "staffDays": 50,
+        "cashflowsUsd": [
+          50000,
+          70000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 100,
+        "bountyTokens": 500,
+        "durationDays": 14,
+        "requires": [],
+        "excludes": [],
+        "metric": "Return source-linked technical findings, exclusions and reproducible retrieval evaluation over the supplied corpus.",
+        "sources": [
+          "Constructed planning fixture for technical literature triage; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "working-capital",
+        "name": "Working-capital controls",
+        "sector": "finance",
+        "costUsd": 240000,
+        "staffDays": 40,
+        "cashflowsUsd": [
+          120000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 50,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute cash-conversion assumptions and stress payment delays; enumerate reconciliation controls.",
+        "sources": [
+          "Constructed planning fixture for working-capital controls; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quantum-study",
+        "name": "Quantum error-correction study",
+        "sector": "quantum",
+        "costUsd": 500000,
+        "staffDays": 220,
+        "cashflowsUsd": [
+          0,
+          80000,
+          450000
+        ],
+        "evidenceBps": 3000,
+        "reviewMinutes": 200,
+        "bountyTokens": 1500,
+        "durationDays": 90,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the supplied simulator baseline and compare overhead on held-out circuits; do not infer hardware advantage.",
+        "sources": [
+          "Constructed planning fixture for quantum error-correction study; replace with independently reviewed source records."
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.business3.scenario.v1",
+    "id": "review-bottleneck",
+    "title": "Reserve independent review before funding",
+    "provenance": {
+      "kind": "constructed",
+      "note": "Illustrative whole-USD operating assumptions over three years, not historical returns or live market data. Evidence scores are supplied screening assumptions, not independent validation."
+    },
+    "policy": {
+      "budgetUsd": 1200000,
+      "staffDays": 500,
+      "reviewMinutes": 150,
+      "jobBudgetTokens": 4000,
+      "maxProjects": 5,
+      "maxPerSector": 2,
+      "discountBps": 800,
+      "benefitHaircutBps": 2500,
+      "costOverrunBps": 1000,
+      "minEvidenceBps": 6500,
+      "minDownsideNpvUsd": 0
+    },
+    "projects": [
+      {
+        "id": "heat-recovery",
+        "name": "Industrial heat recovery",
+        "sector": "energy",
+        "costUsd": 320000,
+        "staffDays": 90,
+        "cashflowsUsd": [
+          150000,
+          180000,
+          190000
+        ],
+        "evidenceBps": 8500,
+        "reviewMinutes": 70,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute the three-year cash-flow case; verify heat-meter baselines and a feasible commissioning plan.",
+        "sources": [
+          "Constructed planning fixture for industrial heat recovery; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "flexible-load",
+        "name": "Flexible facility load",
+        "sector": "energy",
+        "costUsd": 190000,
+        "staffDays": 60,
+        "cashflowsUsd": [
+          100000,
+          120000,
+          125000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 60,
+        "bountyTokens": 500,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Replay supplied interval loads; show peak reduction without violating process operating windows.",
+        "sources": [
+          "Constructed planning fixture for flexible facility load; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "line-automation",
+        "name": "Production-line automation",
+        "sector": "manufacturing",
+        "costUsd": 420000,
+        "staffDays": 180,
+        "cashflowsUsd": [
+          210000,
+          260000,
+          285000
+        ],
+        "evidenceBps": 8200,
+        "reviewMinutes": 100,
+        "bountyTokens": 900,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the throughput and staffing model and test the proposed line schedule against downtime constraints.",
+        "sources": [
+          "Constructed planning fixture for production-line automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quality-sensors",
+        "name": "In-line quality sensing",
+        "sector": "manufacturing",
+        "costUsd": 160000,
+        "staffDays": 75,
+        "cashflowsUsd": [
+          75000,
+          95000,
+          115000
+        ],
+        "evidenceBps": 8300,
+        "reviewMinutes": 65,
+        "bountyTokens": 500,
+        "durationDays": 30,
+        "requires": [
+          "line-automation"
+        ],
+        "excludes": [],
+        "metric": "Verify the defect baseline, sampling method and integration dependency on the automated line.",
+        "sources": [
+          "Constructed planning fixture for in-line quality sensing; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "route-optimization",
+        "name": "Fleet route optimization",
+        "sector": "logistics",
+        "costUsd": 130000,
+        "staffDays": 55,
+        "cashflowsUsd": [
+          70000,
+          80000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 65,
+        "bountyTokens": 400,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce routing results on supplied stops and vehicle limits; report distance and service-window violations.",
+        "sources": [
+          "Constructed planning fixture for fleet route optimization; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "cold-chain",
+        "name": "Cold-chain reliability",
+        "sector": "logistics",
+        "costUsd": 260000,
+        "staffDays": 95,
+        "cashflowsUsd": [
+          120000,
+          170000,
+          190000
+        ],
+        "evidenceBps": 7800,
+        "reviewMinutes": 75,
+        "bountyTokens": 700,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Audit spoilage assumptions and verify the proposed monitoring and exception-response workflow.",
+        "sources": [
+          "Constructed planning fixture for cold-chain reliability; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "materials-reuse",
+        "name": "Materials recovery process",
+        "sector": "materials",
+        "costUsd": 180000,
+        "staffDays": 80,
+        "cashflowsUsd": [
+          100000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 6900,
+        "reviewMinutes": 100,
+        "bountyTokens": 650,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute mass balance and unit economics from the supplied process records; identify unverified yield assumptions.",
+        "sources": [
+          "Constructed planning fixture for materials recovery process; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "bio-assay",
+        "name": "Assay automation study",
+        "sector": "biotech",
+        "costUsd": 330000,
+        "staffDays": 130,
+        "cashflowsUsd": [
+          70000,
+          240000,
+          310000
+        ],
+        "evidenceBps": 5500,
+        "reviewMinutes": 160,
+        "bountyTokens": 1200,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Design an independently reviewable benchmark; report sample handling limits and avoid clinical efficacy claims.",
+        "sources": [
+          "Constructed planning fixture for assay automation study; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "carbon-audit",
+        "name": "Carbon reporting automation",
+        "sector": "policy",
+        "costUsd": 90000,
+        "staffDays": 45,
+        "cashflowsUsd": [
+          60000,
+          65000,
+          75000
+        ],
+        "evidenceBps": 8800,
+        "reviewMinutes": 80,
+        "bountyTokens": 450,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Trace each reported figure to the supplied source ledger and list jurisdiction-specific review still required.",
+        "sources": [
+          "Constructed planning fixture for carbon reporting automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "research-triage",
+        "name": "Technical literature triage",
+        "sector": "research",
+        "costUsd": 80000,
+        "staffDays": 50,
+        "cashflowsUsd": [
+          50000,
+          70000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 100,
+        "bountyTokens": 500,
+        "durationDays": 14,
+        "requires": [],
+        "excludes": [],
+        "metric": "Return source-linked technical findings, exclusions and reproducible retrieval evaluation over the supplied corpus.",
+        "sources": [
+          "Constructed planning fixture for technical literature triage; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "working-capital",
+        "name": "Working-capital controls",
+        "sector": "finance",
+        "costUsd": 240000,
+        "staffDays": 40,
+        "cashflowsUsd": [
+          120000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 50,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute cash-conversion assumptions and stress payment delays; enumerate reconciliation controls.",
+        "sources": [
+          "Constructed planning fixture for working-capital controls; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quantum-study",
+        "name": "Quantum error-correction study",
+        "sector": "quantum",
+        "costUsd": 500000,
+        "staffDays": 220,
+        "cashflowsUsd": [
+          0,
+          80000,
+          450000
+        ],
+        "evidenceBps": 3000,
+        "reviewMinutes": 200,
+        "bountyTokens": 1500,
+        "durationDays": 90,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the supplied simulator baseline and compare overhead on held-out circuits; do not infer hardware advantage.",
+        "sources": [
+          "Constructed planning fixture for quantum error-correction study; replace with independently reviewed source records."
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.business3.scenario.v1",
+    "id": "severe-downside",
+    "title": "Plan through a severe downside",
+    "provenance": {
+      "kind": "constructed",
+      "note": "Illustrative whole-USD operating assumptions over three years, not historical returns or live market data. Evidence scores are supplied screening assumptions, not independent validation."
+    },
+    "policy": {
+      "budgetUsd": 1200000,
+      "staffDays": 500,
+      "reviewMinutes": 400,
+      "jobBudgetTokens": 4000,
+      "maxProjects": 5,
+      "maxPerSector": 2,
+      "discountBps": 800,
+      "benefitHaircutBps": 5000,
+      "costOverrunBps": 2500,
+      "minEvidenceBps": 6500,
+      "minDownsideNpvUsd": 0
+    },
+    "projects": [
+      {
+        "id": "heat-recovery",
+        "name": "Industrial heat recovery",
+        "sector": "energy",
+        "costUsd": 320000,
+        "staffDays": 90,
+        "cashflowsUsd": [
+          150000,
+          180000,
+          190000
+        ],
+        "evidenceBps": 8500,
+        "reviewMinutes": 70,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute the three-year cash-flow case; verify heat-meter baselines and a feasible commissioning plan.",
+        "sources": [
+          "Constructed planning fixture for industrial heat recovery; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "flexible-load",
+        "name": "Flexible facility load",
+        "sector": "energy",
+        "costUsd": 190000,
+        "staffDays": 60,
+        "cashflowsUsd": [
+          100000,
+          120000,
+          125000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 60,
+        "bountyTokens": 500,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Replay supplied interval loads; show peak reduction without violating process operating windows.",
+        "sources": [
+          "Constructed planning fixture for flexible facility load; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "line-automation",
+        "name": "Production-line automation",
+        "sector": "manufacturing",
+        "costUsd": 420000,
+        "staffDays": 180,
+        "cashflowsUsd": [
+          210000,
+          260000,
+          285000
+        ],
+        "evidenceBps": 8200,
+        "reviewMinutes": 100,
+        "bountyTokens": 900,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the throughput and staffing model and test the proposed line schedule against downtime constraints.",
+        "sources": [
+          "Constructed planning fixture for production-line automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quality-sensors",
+        "name": "In-line quality sensing",
+        "sector": "manufacturing",
+        "costUsd": 160000,
+        "staffDays": 75,
+        "cashflowsUsd": [
+          75000,
+          95000,
+          115000
+        ],
+        "evidenceBps": 8300,
+        "reviewMinutes": 65,
+        "bountyTokens": 500,
+        "durationDays": 30,
+        "requires": [
+          "line-automation"
+        ],
+        "excludes": [],
+        "metric": "Verify the defect baseline, sampling method and integration dependency on the automated line.",
+        "sources": [
+          "Constructed planning fixture for in-line quality sensing; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "route-optimization",
+        "name": "Fleet route optimization",
+        "sector": "logistics",
+        "costUsd": 130000,
+        "staffDays": 55,
+        "cashflowsUsd": [
+          70000,
+          80000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 65,
+        "bountyTokens": 400,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce routing results on supplied stops and vehicle limits; report distance and service-window violations.",
+        "sources": [
+          "Constructed planning fixture for fleet route optimization; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "cold-chain",
+        "name": "Cold-chain reliability",
+        "sector": "logistics",
+        "costUsd": 260000,
+        "staffDays": 95,
+        "cashflowsUsd": [
+          120000,
+          170000,
+          190000
+        ],
+        "evidenceBps": 7800,
+        "reviewMinutes": 75,
+        "bountyTokens": 700,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Audit spoilage assumptions and verify the proposed monitoring and exception-response workflow.",
+        "sources": [
+          "Constructed planning fixture for cold-chain reliability; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "materials-reuse",
+        "name": "Materials recovery process",
+        "sector": "materials",
+        "costUsd": 180000,
+        "staffDays": 80,
+        "cashflowsUsd": [
+          100000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 6900,
+        "reviewMinutes": 100,
+        "bountyTokens": 650,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute mass balance and unit economics from the supplied process records; identify unverified yield assumptions.",
+        "sources": [
+          "Constructed planning fixture for materials recovery process; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "bio-assay",
+        "name": "Assay automation study",
+        "sector": "biotech",
+        "costUsd": 330000,
+        "staffDays": 130,
+        "cashflowsUsd": [
+          70000,
+          240000,
+          310000
+        ],
+        "evidenceBps": 5500,
+        "reviewMinutes": 160,
+        "bountyTokens": 1200,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Design an independently reviewable benchmark; report sample handling limits and avoid clinical efficacy claims.",
+        "sources": [
+          "Constructed planning fixture for assay automation study; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "carbon-audit",
+        "name": "Carbon reporting automation",
+        "sector": "policy",
+        "costUsd": 90000,
+        "staffDays": 45,
+        "cashflowsUsd": [
+          60000,
+          65000,
+          75000
+        ],
+        "evidenceBps": 8800,
+        "reviewMinutes": 80,
+        "bountyTokens": 450,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Trace each reported figure to the supplied source ledger and list jurisdiction-specific review still required.",
+        "sources": [
+          "Constructed planning fixture for carbon reporting automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "research-triage",
+        "name": "Technical literature triage",
+        "sector": "research",
+        "costUsd": 80000,
+        "staffDays": 50,
+        "cashflowsUsd": [
+          50000,
+          70000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 100,
+        "bountyTokens": 500,
+        "durationDays": 14,
+        "requires": [],
+        "excludes": [],
+        "metric": "Return source-linked technical findings, exclusions and reproducible retrieval evaluation over the supplied corpus.",
+        "sources": [
+          "Constructed planning fixture for technical literature triage; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "working-capital",
+        "name": "Working-capital controls",
+        "sector": "finance",
+        "costUsd": 240000,
+        "staffDays": 40,
+        "cashflowsUsd": [
+          120000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 50,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute cash-conversion assumptions and stress payment delays; enumerate reconciliation controls.",
+        "sources": [
+          "Constructed planning fixture for working-capital controls; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quantum-study",
+        "name": "Quantum error-correction study",
+        "sector": "quantum",
+        "costUsd": 500000,
+        "staffDays": 220,
+        "cashflowsUsd": [
+          0,
+          80000,
+          450000
+        ],
+        "evidenceBps": 3000,
+        "reviewMinutes": 200,
+        "bountyTokens": 1500,
+        "durationDays": 90,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the supplied simulator baseline and compare overhead on held-out circuits; do not infer hardware advantage.",
+        "sources": [
+          "Constructed planning fixture for quantum error-correction study; replace with independently reviewed source records."
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.business3.scenario.v1",
+    "id": "evidence-first",
+    "title": "Admit only strongly supported inputs",
+    "provenance": {
+      "kind": "constructed",
+      "note": "Illustrative whole-USD operating assumptions over three years, not historical returns or live market data. Evidence scores are supplied screening assumptions, not independent validation."
+    },
+    "policy": {
+      "budgetUsd": 1200000,
+      "staffDays": 500,
+      "reviewMinutes": 400,
+      "jobBudgetTokens": 4000,
+      "maxProjects": 5,
+      "maxPerSector": 2,
+      "discountBps": 800,
+      "benefitHaircutBps": 2500,
+      "costOverrunBps": 1000,
+      "minEvidenceBps": 8500,
+      "minDownsideNpvUsd": 0
+    },
+    "projects": [
+      {
+        "id": "heat-recovery",
+        "name": "Industrial heat recovery",
+        "sector": "energy",
+        "costUsd": 320000,
+        "staffDays": 90,
+        "cashflowsUsd": [
+          150000,
+          180000,
+          190000
+        ],
+        "evidenceBps": 8500,
+        "reviewMinutes": 70,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute the three-year cash-flow case; verify heat-meter baselines and a feasible commissioning plan.",
+        "sources": [
+          "Constructed planning fixture for industrial heat recovery; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "flexible-load",
+        "name": "Flexible facility load",
+        "sector": "energy",
+        "costUsd": 190000,
+        "staffDays": 60,
+        "cashflowsUsd": [
+          100000,
+          120000,
+          125000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 60,
+        "bountyTokens": 500,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Replay supplied interval loads; show peak reduction without violating process operating windows.",
+        "sources": [
+          "Constructed planning fixture for flexible facility load; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "line-automation",
+        "name": "Production-line automation",
+        "sector": "manufacturing",
+        "costUsd": 420000,
+        "staffDays": 180,
+        "cashflowsUsd": [
+          210000,
+          260000,
+          285000
+        ],
+        "evidenceBps": 8200,
+        "reviewMinutes": 100,
+        "bountyTokens": 900,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the throughput and staffing model and test the proposed line schedule against downtime constraints.",
+        "sources": [
+          "Constructed planning fixture for production-line automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quality-sensors",
+        "name": "In-line quality sensing",
+        "sector": "manufacturing",
+        "costUsd": 160000,
+        "staffDays": 75,
+        "cashflowsUsd": [
+          75000,
+          95000,
+          115000
+        ],
+        "evidenceBps": 8300,
+        "reviewMinutes": 65,
+        "bountyTokens": 500,
+        "durationDays": 30,
+        "requires": [
+          "line-automation"
+        ],
+        "excludes": [],
+        "metric": "Verify the defect baseline, sampling method and integration dependency on the automated line.",
+        "sources": [
+          "Constructed planning fixture for in-line quality sensing; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "route-optimization",
+        "name": "Fleet route optimization",
+        "sector": "logistics",
+        "costUsd": 130000,
+        "staffDays": 55,
+        "cashflowsUsd": [
+          70000,
+          80000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 65,
+        "bountyTokens": 400,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce routing results on supplied stops and vehicle limits; report distance and service-window violations.",
+        "sources": [
+          "Constructed planning fixture for fleet route optimization; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "cold-chain",
+        "name": "Cold-chain reliability",
+        "sector": "logistics",
+        "costUsd": 260000,
+        "staffDays": 95,
+        "cashflowsUsd": [
+          120000,
+          170000,
+          190000
+        ],
+        "evidenceBps": 7800,
+        "reviewMinutes": 75,
+        "bountyTokens": 700,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Audit spoilage assumptions and verify the proposed monitoring and exception-response workflow.",
+        "sources": [
+          "Constructed planning fixture for cold-chain reliability; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "materials-reuse",
+        "name": "Materials recovery process",
+        "sector": "materials",
+        "costUsd": 180000,
+        "staffDays": 80,
+        "cashflowsUsd": [
+          100000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 6900,
+        "reviewMinutes": 100,
+        "bountyTokens": 650,
+        "durationDays": 45,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute mass balance and unit economics from the supplied process records; identify unverified yield assumptions.",
+        "sources": [
+          "Constructed planning fixture for materials recovery process; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "bio-assay",
+        "name": "Assay automation study",
+        "sector": "biotech",
+        "costUsd": 330000,
+        "staffDays": 130,
+        "cashflowsUsd": [
+          70000,
+          240000,
+          310000
+        ],
+        "evidenceBps": 5500,
+        "reviewMinutes": 160,
+        "bountyTokens": 1200,
+        "durationDays": 60,
+        "requires": [],
+        "excludes": [],
+        "metric": "Design an independently reviewable benchmark; report sample handling limits and avoid clinical efficacy claims.",
+        "sources": [
+          "Constructed planning fixture for assay automation study; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "carbon-audit",
+        "name": "Carbon reporting automation",
+        "sector": "policy",
+        "costUsd": 90000,
+        "staffDays": 45,
+        "cashflowsUsd": [
+          60000,
+          65000,
+          75000
+        ],
+        "evidenceBps": 8800,
+        "reviewMinutes": 80,
+        "bountyTokens": 450,
+        "durationDays": 21,
+        "requires": [],
+        "excludes": [],
+        "metric": "Trace each reported figure to the supplied source ledger and list jurisdiction-specific review still required.",
+        "sources": [
+          "Constructed planning fixture for carbon reporting automation; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "research-triage",
+        "name": "Technical literature triage",
+        "sector": "research",
+        "costUsd": 80000,
+        "staffDays": 50,
+        "cashflowsUsd": [
+          50000,
+          70000,
+          90000
+        ],
+        "evidenceBps": 8000,
+        "reviewMinutes": 100,
+        "bountyTokens": 500,
+        "durationDays": 14,
+        "requires": [],
+        "excludes": [],
+        "metric": "Return source-linked technical findings, exclusions and reproducible retrieval evaluation over the supplied corpus.",
+        "sources": [
+          "Constructed planning fixture for technical literature triage; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "working-capital",
+        "name": "Working-capital controls",
+        "sector": "finance",
+        "costUsd": 240000,
+        "staffDays": 40,
+        "cashflowsUsd": [
+          120000,
+          130000,
+          140000
+        ],
+        "evidenceBps": 9000,
+        "reviewMinutes": 50,
+        "bountyTokens": 800,
+        "durationDays": 30,
+        "requires": [],
+        "excludes": [],
+        "metric": "Recompute cash-conversion assumptions and stress payment delays; enumerate reconciliation controls.",
+        "sources": [
+          "Constructed planning fixture for working-capital controls; replace with independently reviewed source records."
+        ]
+      },
+      {
+        "id": "quantum-study",
+        "name": "Quantum error-correction study",
+        "sector": "quantum",
+        "costUsd": 500000,
+        "staffDays": 220,
+        "cashflowsUsd": [
+          0,
+          80000,
+          450000
+        ],
+        "evidenceBps": 3000,
+        "reviewMinutes": 200,
+        "bountyTokens": 1500,
+        "durationDays": 90,
+        "requires": [],
+        "excludes": [],
+        "metric": "Reproduce the supplied simulator baseline and compare overhead on held-out circuits; do not infer hardware advantage.",
+        "sources": [
+          "Constructed planning fixture for quantum error-correction study; replace with independently reviewed source records."
+        ]
+      }
+    ]
+  }
+]

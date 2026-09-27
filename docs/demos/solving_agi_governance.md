@@ -7,7 +7,7 @@
 [Launch Demo](../solving_agi_governance/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.12.2
+## Current runnable path — 1.13.0
 
 **Mode:** Offline simulation. Runs a bounded stochastic cooperation model.
 

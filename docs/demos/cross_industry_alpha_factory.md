@@ -7,7 +7,7 @@
 [Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.12.2
+## Current runnable path — 1.13.0
 
 **Mode:** Offline sample. Selects reproducible examples from the bundled opportunity catalog.
 

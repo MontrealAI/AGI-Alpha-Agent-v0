@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-5ff03cf9a322457b";
-const RELEASE = "1.12.2";
+const CACHE = "agialpha-gallery-2e9f0193bca3ad07";
+const RELEASE = "1.13.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -189,6 +189,12 @@ const ASSETS = [
   "./assets/bloom/engine.mjs",
   "./assets/bloom/home.css",
   "./assets/bloom/playbooks.json",
+  "./assets/business3/artifacts.mjs",
+  "./assets/business3/engine.mjs",
+  "./assets/business3/scenarios.json",
+  "./assets/business3/studio.css",
+  "./assets/business3/studio.mjs",
+  "./assets/business3/worker.mjs",
   "./assets/chart-provenance.json",
   "./assets/chart.min.js",
   "./assets/compounding/engine.mjs",

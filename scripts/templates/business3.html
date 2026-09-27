@@ -1,0 +1,461 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="Build a reviewable enterprise portfolio: capital, staff, risk and reviewer capacity, with reproducible evidence and Ascension jobs."
+        />
+        <title>Business 3 · Ω-Lattice Enterprise Studio · $AGIALPHA</title>
+        <link rel="stylesheet" href="../stylesheets/cards.css" />
+        <link rel="stylesheet" href="../stylesheets/demo_base.css" />
+        <link
+            rel="stylesheet"
+            href="../assets/business3/studio.css?v={{VERSION}}"
+        />
+    </head>
+    <body class="business3-page">
+        <a class="b3-skip" href="#b3-controls">Skip to enterprise controls</a>
+        <main id="b3-app">
+            <nav class="b3-nav" aria-label="Business 3 navigation">
+                <a class="b3-brand" href="../"
+                    ><span aria-hidden="true">α</span> MONTREAL.AI
+                    <small>ENTERPRISE SYSTEMS</small></a
+                >
+                <div>
+                    <a href="../agent/DEMOS/">Demo guide</a
+                    ><a href="../ascension-protocol/">Ascension protocol ↗</a>
+                </div>
+            </nav>
+            <header class="b3-hero">
+                <div>
+                    <p class="b3-eyebrow">
+                        BUSINESS 3 / Ω-LATTICE / {{VERSION}}
+                    </p>
+                    <h1>
+                        Opportunity is abundant.<br /><em
+                            >Execution is selective.</em
+                        >
+                    </h1>
+                    <p class="b3-lede">
+                        Turn a constellation of ideas into a portfolio worth
+                        pursuing. Reserve capital, people and independent
+                        review. Challenge the downside. Leave with a plan you
+                        can inspect.
+                    </p>
+                    <div class="b3-hero-actions">
+                        <a class="b3-primary" href="#b3-controls"
+                            >Build your enterprise plan
+                            <span aria-hidden="true">↓</span></a
+                        ><a href="#b3-lifecycle">Follow the full vision</a>
+                    </div>
+                    <p class="b3-small">
+                        Runs in your browser. No account, API key or wallet
+                        required.
+                    </p>
+                </div>
+                <div
+                    class="b3-constellation"
+                    aria-label="Nine business sectors connected through a constrained enterprise plan"
+                >
+                    <svg
+                        viewBox="0 0 460 400"
+                        role="img"
+                        aria-labelledby="b3-art-title"
+                    >
+                        <title id="b3-art-title">
+                            An enterprise constellation: opportunities converge
+                            on a reviewed plan
+                        </title>
+                        <defs>
+                            <radialGradient id="b3-glow">
+                                <stop stop-color="#b7a66e" stop-opacity=".22" />
+                                <stop
+                                    offset="1"
+                                    stop-color="#b7a66e"
+                                    stop-opacity="0"
+                                />
+                            </radialGradient>
+                        </defs>
+                        <circle
+                            cx="230"
+                            cy="200"
+                            r="180"
+                            fill="url(#b3-glow)"
+                        />
+                        <g fill="none" stroke="#675f45">
+                            <ellipse
+                                cx="230"
+                                cy="200"
+                                rx="172"
+                                ry="116"
+                                transform="rotate(-30 230 200)"
+                            />
+                            <ellipse
+                                cx="230"
+                                cy="200"
+                                rx="166"
+                                ry="112"
+                                transform="rotate(36 230 200)"
+                            />
+                            <circle cx="230" cy="200" r="68" />
+                            <path
+                                d="M230 132V40M285 165L380 80M290 232L398 290M207 264L175 360M167 180L60 145"
+                            />
+                        </g>
+                        <g fill="#e4d198">
+                            <circle cx="230" cy="40" r="5" />
+                            <circle cx="380" cy="80" r="4" />
+                            <circle cx="398" cy="290" r="5" />
+                            <circle cx="175" cy="360" r="4" />
+                            <circle cx="60" cy="145" r="5" />
+                            <circle cx="119" cy="304" r="3" />
+                            <circle cx="339" cy="278" r="3" />
+                        </g>
+                        <text
+                            x="230"
+                            y="219"
+                            text-anchor="middle"
+                            fill="#f4e8bd"
+                            font-family="Georgia,serif"
+                            font-size="66"
+                        >
+                            Ω
+                        </text>
+                        <g
+                            fill="#c6c9c7"
+                            font-family="Arial,sans-serif"
+                            font-size="10"
+                            letter-spacing="2"
+                        >
+                            <text x="230" y="22" text-anchor="middle">
+                                INSIGHT
+                            </text>
+                            <text x="356" y="61">CAPITAL</text>
+                            <text x="335" y="316">EVIDENCE</text>
+                            <text x="120" y="386">GOVERNANCE</text>
+                            <text x="22" y="125">EXECUTION</text>
+                        </g>
+                    </svg>
+                    <div class="b3-art-caption">
+                        <span>12 opportunities</span><span>9 sectors</span
+                        ><span>11 analysis roles</span>
+                    </div>
+                </div>
+            </header>
+            <div class="b3-context">
+                <span class="b3-dot" aria-hidden="true"></span>
+                <p>
+                    <strong>Constructed examples. Real calculations.</strong>
+                    Built-in cash flows and evidence scores are illustrative
+                    inputs. Import your own source-backed assumptions to
+                    investigate a real decision. Every result remains subject to
+                    independent review.
+                </p>
+            </div>
+            <section
+                class="b3-workspace"
+                id="b3-controls"
+                aria-labelledby="b3-control-title"
+            >
+                <div class="b3-section-title">
+                    <div>
+                        <p class="b3-eyebrow">01 / SHAPE THE ENTERPRISE</p>
+                        <h2 id="b3-control-title">
+                            Define what you can commit.
+                        </h2>
+                    </div>
+                    <div class="b3-file-actions">
+                        <label class="b3-file-button" for="b3-import"
+                            >Import scenario or dossier<input
+                                id="b3-import"
+                                type="file"
+                                accept="application/json,.json" /></label
+                        ><button id="b3-save" type="button">
+                            Save draft locally</button
+                        ><button id="b3-restore" type="button" disabled>
+                            Restore draft</button
+                        ><button id="b3-clear" type="button">
+                            Clear saved draft
+                        </button>
+                    </div>
+                </div>
+                <form id="b3-form">
+                    <div class="b3-input-layout">
+                        <aside
+                            class="b3-panel b3-policy"
+                            aria-label="Portfolio constraints"
+                        >
+                            <label class="b3-field"
+                                >Choose a starting case<select
+                                    id="b3-case"
+                                    disabled
+                                >
+                                    <option>Loading cases…</option>
+                                </select></label
+                            >
+                            <p id="b3-case-note" class="b3-small"></p>
+                            <div class="b3-fields" id="b3-policy-fields"></div>
+                            <p class="b3-small">
+                                Capital reserves include your cost-overrun
+                                assumption. AGIALPHA bounties use a separate
+                                budget; no exchange rate is assumed.
+                            </p>
+                            <button
+                                class="b3-primary"
+                                id="b3-run"
+                                type="submit"
+                                disabled
+                            >
+                                Calculate the portfolio
+                                <span aria-hidden="true">↗</span></button
+                            ><button id="b3-cancel" type="button" disabled>
+                                Cancel calculation
+                            </button>
+                        </aside>
+                        <div class="b3-panel b3-opportunities">
+                            <div class="b3-panel-heading">
+                                <div>
+                                    <p class="b3-eyebrow">
+                                        THE OPPORTUNITY SET
+                                    </p>
+                                    <h3 id="b3-project-title">
+                                        Candidate ventures
+                                    </h3>
+                                </div>
+                                <span
+                                    id="b3-candidate-count"
+                                    class="b3-pill"
+                                ></span>
+                            </div>
+                            <p class="b3-small">
+                                Edit any candidate. Cash flows are annual net
+                                operating amounts after running costs, over
+                                three years. Capital is paid at the start.
+                            </p>
+                            <div id="b3-projects"></div>
+                        </div>
+                    </div>
+                    <details class="b3-advanced">
+                        <summary>
+                            Advanced: edit the complete scenario JSON
+                        </summary>
+                        <label for="b3-json"
+                            >Scenario, provenance, dependencies, exclusions and
+                            success metrics</label
+                        >
+                        <p class="b3-small">
+                            Up to 16 projects. JSON edits replace the form on
+                            the next calculation. A percentage uses basis points
+                            in JSON: 8% = 800.
+                        </p>
+                        <textarea
+                            id="b3-json"
+                            rows="16"
+                            spellcheck="false"
+                        ></textarea>
+                    </details>
+                </form>
+                <p id="b3-status" role="status" aria-live="polite">
+                    Loading the local enterprise workspace…
+                </p>
+                <noscript
+                    ><p>
+                        Enable JavaScript for this workspace, or use the Python
+                        CLI described in the
+                        <a href="../demos/alpha_agi_business_3_v1/"
+                            >demo guide</a
+                        >.
+                    </p></noscript
+                >
+            </section>
+            <section
+                id="b3-results"
+                hidden
+                aria-labelledby="b3-result-title"
+                tabindex="-1"
+            >
+                <div class="b3-section-title">
+                    <div>
+                        <p class="b3-eyebrow">02 / CHALLENGE THE DECISION</p>
+                        <h2 id="b3-result-title">
+                            A plan with its assumptions attached.
+                        </h2>
+                    </div>
+                    <span id="b3-verdict" class="b3-pill"></span>
+                </div>
+                <p id="b3-summary" class="b3-result-summary"></p>
+                <div id="b3-metrics" class="b3-metrics"></div>
+                <div class="b3-result-grid">
+                    <section class="b3-panel">
+                        <h3>Selected ventures</h3>
+                        <div id="b3-selected"></div>
+                    </section>
+                    <section class="b3-panel">
+                        <h3>Resources reserved</h3>
+                        <div id="b3-resources"></div>
+                        <p class="b3-small" id="b3-method"></p>
+                        <p class="b3-small" id="b3-comparison"></p>
+                    </section>
+                </div>
+                <div class="b3-panel b3-stress">
+                    <h3>Keep the selection. Worsen the conditions.</h3>
+                    <p class="b3-small">
+                        These are deterministic stress scenarios, not estimated
+                        probabilities. The portfolio is held fixed; adverse
+                        results remain visible.
+                    </p>
+                    <div
+                        class="b3-table-scroll"
+                        tabindex="0"
+                        role="region"
+                        aria-label="Scrollable portfolio stress results"
+                    >
+                        <table>
+                            <caption class="b3-visually-hidden">
+                                Stress results for the selected portfolio
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Scenario</th>
+                                    <th scope="col">NPV / USD</th>
+                                    <th scope="col">Capital / USD</th>
+                                    <th scope="col">Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody id="b3-sensitivity"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="b3-section-title">
+                    <div>
+                        <p class="b3-eyebrow">03 / MAKE THE WORK REVIEWABLE</p>
+                        <h2>Every job has a measurable finish line.</h2>
+                    </div>
+                    <span class="b3-pill">UNSUBMITTED</span>
+                </div>
+                <div id="b3-jobs" class="b3-jobs"></div>
+                <details class="b3-advanced">
+                    <summary>
+                        Inspect all 11 analysis roles and screened candidates
+                    </summary>
+                    <p class="b3-small">
+                        These are deterministic analysis roles, not 11
+                        independent AI reviewers. Evidence scores are supplied
+                        assumptions.
+                    </p>
+                    <div id="b3-roles"></div>
+                    <div id="b3-screened"></div>
+                </details>
+                <section
+                    class="b3-export b3-panel"
+                    aria-labelledby="b3-export-title"
+                >
+                    <div>
+                        <p class="b3-eyebrow">
+                            04 / TAKE THE EVIDENCE WITH YOU
+                        </p>
+                        <h3 id="b3-export-title">
+                            A portable enterprise dossier.
+                        </h3>
+                        <p>
+                            Download the inputs, decision brief, selected
+                            projects, exact job specifications, seed draft and
+                            checksums. Recompute the dossier in Python or import
+                            it here to verify it.
+                        </p>
+                        <p class="b3-small b3-hash" id="b3-hash"></p>
+                    </div>
+                    <div class="b3-export-actions">
+                        <button
+                            id="b3-download"
+                            type="button"
+                            class="b3-primary"
+                            disabled
+                        >
+                            Download evidence bundle · ZIP</button
+                        ><button id="b3-download-json" type="button" disabled>
+                            Download dossier · JSON</button
+                        ><button id="b3-download-jobs" type="button" disabled>
+                            Download jobs · JSON</button
+                        ><a href="../agent/ASCENSION_PROTOCOL/"
+                            >Compile the FusionPlan and inspect the protocol
+                            ↗</a
+                        >
+                    </div>
+                </section>
+            </section>
+            <section
+                id="b3-lifecycle"
+                class="b3-lifecycle"
+                aria-labelledby="b3-lifecycle-title"
+            >
+                <p class="b3-eyebrow">THE ASCENSION LIFECYCLE</p>
+                <h2 id="b3-lifecycle-title">
+                    From insight to an accountable enterprise.
+                </h2>
+                <div class="b3-lifecycle-grid">
+                    <a href="../insight/"
+                        ><small>01 / INSIGHT</small>
+                        <h3>Investigate the opportunity</h3>
+                        <p>
+                            Challenge evidence and assumptions before selecting
+                            a venture.
+                        </p></a
+                    ><a href="../ascension/"
+                        ><small>02 / NOVA-SEED</small>
+                        <h3>Commit the plan</h3>
+                        <p>
+                            Explore encrypted recovery and seed lineage. This
+                            workspace exports an unminted draft.
+                        </p></a
+                    ><a href="../ascension-protocol/"
+                        ><small>03 / MARK + SOVEREIGN</small>
+                        <h3>Gate funding and routing</h3>
+                        <p>
+                            Inspect risk admission, plan-restricted treasury and
+                            indexed jobs in the local-EVM reference.
+                        </p></a
+                    ><a href="../ascension-protocol/"
+                        ><small>04 / AGENTS + VALIDATORS</small>
+                        <h3>Prove delivery, then settle</h3>
+                        <p>
+                            Inspect stake and ENS roles, reputation-weighted
+                            auctions, review, slashing and 1% payout burn.
+                        </p></a
+                    ><a href="../compounding/"
+                        ><small>05 / SUCCESSOR</small>
+                        <h3>Test what improves</h3>
+                        <p>
+                            Evaluate retained experience on held-out work.
+                            Promote successors only after review.
+                        </p></a
+                    >
+                </div>
+                <p class="b3-small">
+                    The reference contracts are undeployed. Browser planning
+                    does not mint an ERC-721, establish ENS ownership, provide
+                    regulatory approval or create a live autonomous enterprise.
+                </p>
+            </section>
+            <footer class="b3-footer">
+                <span>Ω-Lattice · Business 3 · Powered by $AGIALPHA</span
+                ><a href="../demos/alpha_agi_business_3_v1/"
+                    >Methods, source and original flowcharts</a
+                ><a href="../DISCLAIMER_SNIPPET/">Project notice</a>
+            </footer>
+        </main>
+        <section
+            id="b3-legacy"
+            aria-label="Preserved original research presentation"
+        >
+            {{LEGACY}}
+        </section>
+        <script
+            type="module"
+            src="../assets/business3/studio.mjs?v={{VERSION}}"
+        ></script>
+    </body>
+</html>

@@ -1,135 +1,215 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
+# 🏛️ Large-Scale α-AGI Business 3 👁️✨ — Ω-Lattice Enterprise Studio
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.12.2
+## Current runnable path — 1.13.0
 
-**Mode:** Simulation. Runs a bounded multi-agent business cycle with local fallback results.
+**Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
+and export reviewable Ascension jobs.
 
-**Prerequisites:** Repository demo dependencies; optional model/ADK services must be configured separately.
-
-After [installation](../README.md#start-locally):
+**Prerequisites:** Python 3.11–3.13. The planner uses only the standard library; the browser needs no account,
+wallet or API key. The installed operator environment also provides FusionPlan compilation.
 
 ```bash
 python -m alpha_factory_v1.demos check alpha_agi_business_3_v1
-python -m alpha_factory_v1.demos run alpha_agi_business_3_v1
+python -m alpha_factory_v1.demos run alpha_agi_business_3_v1 --output-dir my-business-runs
 ```
 
-**Expected result:** One completed business cycle and its audit output.
+**Expected result:** Seven retained evidence files, an exact portfolio comparison, and unsubmitted
+jobs with a goal, success metric and $AGIALPHA bounty.
 
-**Scope:** The local fallback is simulated; no fundraising or real-world execution is established.
-
-The [catalog](../README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+**Scope:** Built-in inputs are constructed assumptions. Calculations do not approve investments,
+change model weights, mint seeds or submit transactions. Independent review remains necessary.
 <!-- CURRENT-DEMO:END -->
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
+**[Open Enterprise Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_business_3_v1/)** ·
+[Full demo walkthrough](../../../docs/agent/DEMOS.md) ·
+[Ascension protocol](../../../docs/agent/ASCENSION_PROTOCOL.md) ·
+[Original research archive](RESEARCH_ARCHIVE.md)
 
+## Obtain a useful first result
 
+1. Open Enterprise Studio and choose **An enterprise transformation portfolio**.
+2. Review the 12 candidate ventures across nine sectors. Expand a venture to edit its costs,
+   annual net operating cash flows, staff effort, evidence score, review time and job bounty.
+3. Set your capital ceiling, staffing, independent-review capacity and separate AGIALPHA job budget.
+   Choose downside assumptions and an evidence threshold.
+4. Select **Calculate the portfolio**. Compare the exact selection with the greedy baseline,
+   inspect the adverse scenarios, and review every proposed job's success metric.
+5. Download the **evidence bundle**. Import its `dossier.json` here or verify it with Python.
 
-# 🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — **Omega‑Grade Edition**  
+The five built-in cases deliberately expose different decisions:
 
-> **Alpha‑Factory v1 → Ω‑Lattice v0**  
-> _Transmuting cosmological free‑energy gradients into compounding cash‑flows._
+| Case | What changes | What to inspect |
+|---|---|---|
+| `industrial` | USD 1.2M, 500 staff days, 400 review minutes | Exact allocation and opportunity cost versus greedy ranking |
+| `lean-budget` | USD 600,000 capital ceiling | Which smaller ventures jointly fit the budget |
+| `review-bottleneck` | Only 150 independent-review minutes | Fewer admitted ventures even when capital remains |
+| `severe-downside` | 50% adverse cash-flow shock; 25% capital overrun | A hold decision with zero jobs when no positive-value plan qualifies |
+| `evidence-first` | 85% supplied evidence threshold | Rejection of attractive but insufficiently supported inputs |
 
-> **Epistemic Status** • This README is a **reference implementation** of concepts crossing the
-Planck, Boltzmann, Nash and Basel III scales.  Every number is **back‑tested, unit‑tested,
-formal‑verified** and hash‑anchored on‑chain.  You may safely ship it into a
-high‑stakes prod cluster right now.
+These are constructed planning cases, not market data or measured returns. Evidence scores are supplied
+screening assumptions, not validator votes. Use public, licensed or constructed source records for your own cases.
 
-> **Definition**: An **α‑AGI Business** 👁️✨ (`<name>.alpha.agi.eth`) is an antifragile, self‑governing multi‑agent  👁️✨ (`<name>.alpha.agent.agi.eth`) enterprise that continuously hunts latent “**alpha**” opportunities across domains and transforms them into sustainable value under a secure, auditable governance framework.
+## Run locally or from the release wheel
 
----
+Use the [release installer](../../../docs/agent/START_HERE.md) for a complete operator environment.
+From a source checkout, the default planner requires only Python 3.11–3.13 and runs from the repository root:
 
-## 🛠 Requirements
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_business_3_v1 --list
+python -m alpha_factory_v1.demos.alpha_agi_business_3_v1 --case industrial --output my-business-runs
+```
 
-- **Python ≥3.11**
-- [`openai-agents`](https://openai.github.io/openai-agents-python/) `==0.0.17` is mandatory for online mode.
-- [`llama-cpp-python`](https://pypi.org/project/llama-cpp-python/) and [`ctransformers`](https://pypi.org/project/ctransformers/) enable the offline fallback.
-- Run `python check_env.py --auto-install` to fetch missing packages, or supply `--wheelhouse <dir>` when installing offline.
-  See [alpha_factory_v1/scripts/README.md](../../scripts/README.md#offline-setup) for details on building and using a wheelhouse.
+The installed console command is equivalent:
 
-## 📚 Table of Contents
-0. [Executive Summary](#0)
-1. [From Path‑Integral Finance to Ω‑Lattice](#1)
-2. [Right‑Game 2.0 — Programmable Co‑opetition](#2)
-3. [Role Architecture 🏛️](#3)
-4. [Multi‑Scale Energy‑Landscape Diagram](#4)
-5. [Ω‑Agents Catalogue (11 / 11)](#5)
-6. [90 s Live Quantum‑Loop Demo](#6)
-7. [Algorithmic Anatomy — Zero‑Entropy Pipeline](#7)
-8. [Deployment Recipes](#8)  
-   8.1 [Docker One‑liner](#8.1) • 8.2 [Helm / K8s](#8.2) • 8.3 [Bare‑Metal Python](#8.3)
-9. [Safety, Audit & Governance Matrix](#9)
-10. [Self‑Improvement Gödel‑Looper](#10)
-11. [Legal & Conceptual Shield 🛡️](#11)
-12. [References & Further Reading](#12)
+```bash
+alpha-agi-business-3-v1 --case industrial --output my-business-runs
+```
 
----
+On Windows, run the same commands in PowerShell using the Python environment you installed.
+Quote paths that contain spaces. The CLI prints the exact verification and FusionPlan commands for its output.
 
-<a id="0"></a>
-## 0 · Executive Summary
-**Ω‑Lattice v0** upgrades the Alpha‑Factory paradigm to handle **all computable
-free‑energy** sources:
+To use your own assumptions, edit the exported `scenario.json`, preserve its schema and provenance fields,
+and run:
 
-* **Financial** — mis‑priced derivatives, basis trades, liquidity shocks.  
-* **Physical** — grid load imbalance, material science design‑space.  
-* **Informational** — citation flows, policy phase‑lags, supply‑chain blind‑spots.
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_business_3_v1 --input scenario.json --output revised-business-runs
+python -m alpha_factory_v1.demos.alpha_agi_business_3_v1 --verify path/to/dossier.json
+```
 
-Every opportunity is expressed as a **Boltzmann‑weighted path integral**; Ω‑Agents
-sample trajectories that minimise **instantaneous free‑energy**
-\(\mathcal F\) while satisfying **Basel‑III + EU AI‑Act** safety surfaces.
+`--json` prints the full machine-readable dossier. `--verify` recomputes all decisions and jobs without
+creating output files. It rejects a forged result even when its author recalculates its SHA-256 hash.
+A hash establishes content integrity, not the truth of its inputs or the identity of a reviewer.
 
----
+### Keep and recover your work
 
-<a id="1"></a>
-## 1 · From Path‑Integral Finance to Ω‑Lattice
+Each CLI run creates a directory named by the complete dossier hash. Running identical inputs verifies and
+reuses identical files; changed inputs create a separate directory. Existing or partial work is never overwritten.
+If a run was interrupted or an output was edited, retain it and choose a different output directory.
 
-We generalise the classical free‑energy functional to an **action**
-over trajectories:
+The browser offers explicit **Save draft locally**, **Restore draft** and **Clear saved draft** controls.
+Only this workspace's saved draft is cleared. Device storage can be unavailable; calculation and downloads
+still work. Export files for portable backups. After the site has fully loaded once and its offline cache is ready,
+the workspace can recalculate offline. A first visit requires access to the hosted assets.
 
-\[
-\boxed{
-\mathcal S[\sigma(t)] \;=\;
-\int_{t_0}^{t_1}
-\bigl(
-\langle E_{\text{payoff}}\rangle_{\sigma(t)}
--
-\beta^{-1}(t)\,H\!\bigl[\sigma(t)\bigr]
-\bigr)\,dt
-}
-\]
+| File | Purpose |
+|---|---|
+| `scenario.json` | Normalized inputs, provenance, assumptions and constraints |
+| `dossier.json` | Complete decisions, alternatives, role analysis, jobs and SHA-256 commitment |
+| `decision-brief.md` | Readable decision, resource reservations, methods and review requirements |
+| `selected-projects.csv` | Selected project capital, NPV, staffing, review time and bounties |
+| `jobs.json` | Exact ordered specifications accepted by `alpha-agent ascension-compile` |
+| `seed-draft.json` | Dossier/job content commitments; explicitly unminted and unencrypted |
+| `SHA256SUMS` | Hashes of the other six files |
 
-Minimising **Σ e<sup>−𝒮</sup>** yields a *Feynman‑like propagator* guiding Ω‑Agents toward
-the lowest‑entropy cash‑flows.
+## What the calculation actually does
 
-* **β(t)** — live market temperature from cross‑asset implied vol.  
-* **H** — strategic entropy approximated by a **Rényi‑2** estimator for heavy tails.  
-* Path integral solved via **Stochastic Neural ODE**.
+The optimizer enumerates every subset of **1–16 candidates** and maximizes three-year expected NPV subject to:
+capital **including contingency**, staffing, review minutes, a separate job-token budget, project and sector limits,
+evidence thresholds, dependencies, exclusions and the declared downside-NPV floor. A no-investment portfolio
+is eligible when the constraints permit it. If no subset qualifies, the result is explicitly infeasible.
 
----
+Cash flows are whole USD at each year end; capital is paid at the start. There is no terminal value.
+Each discounted cash flow is rounded down to whole USD, and stressed capital is rounded up.
+A downside cash-flow shock reduces positive cash flows and increases the magnitude of negative cash flows.
+Percentages use integer basis points in JSON (`800` means 8%). Python uses integer arithmetic; the browser
+uses `BigInt` for the same intermediate calculations.
 
-<a id="2"></a>
-## 2 · Right‑Game 2.0 — Programmable Co‑opetition
+Ties favor higher downside NPV, then lower stressed capital, staff days, review minutes and bounties, then
+lexicographic project IDs. The greedy baseline ranks standalone expected NPV and includes dependency closure;
+it is a comparison heuristic, not an independent external benchmark. Stress scenarios hold the selected portfolio
+fixed and retain negative outcomes. No value is described as physical energy, regulatory compliance or proven alpha.
 
-Brandenburger‑Nalebuff’s PART moves become **on‑chain opcodes**:
+All 11 original role names remain represented: Finance, Biotech, Materials, Policy, Energy, Manufacturing,
+Logistics, Research, Quantum, Safety and Gödel. They are transparent deterministic analysis roles;
+they are not 11 independent AI reviewers. The original research loop remains separately available below.
 
-| Lever | Opcode | Runtime Effect |
-|-------|--------|----------------|
-| **Players** | `ADD_PLAYER(addr, stake)` | Mints stake‑weighted micro‑state |
-| **Added‑Value** | `SET_PAYOFF(fn)` | Hot‑swaps payoff Hamiltonian |
-| **Rules** | `PATCH_RULE(hash)` | Versioned DAO proposal → auto‑audit |
-| **Tactics** | `TIMELOCK(sig,Δt)` | Cryptographic commitment, unlock after Δt |
+## Carry the plan into Ascension
 
-Ω‑Lattice demo triggers opcode flux whenever
-\(|Δ\beta| > 0.5\) per minute (extreme regime).
+| Stage | Business 3 output or next step | Enforced boundary |
+|---|---|---|
+| Insight | Source-linked candidates, evidence admission and exact constrained selection | Supplied assumptions remain unverified until independently reviewed |
+| Nova-Seed | `seed-draft.json` binds the dossier and ordered jobs | A draft commitment; no ERC-721 is minted and no data is encrypted here |
+| FusionPlan | Compile `jobs.json` with the maintained operator CLI | Exact goals, success metrics, bounties, deadlines and indexed Merkle proofs |
+| MARK → Sovereign | Inspect the existing [Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) | Local-EVM risk oracle, funding, plan treasury and once-only job routing |
+| Agents → validators | Execute native missions and bind reviewed evidence using the [protocol guide](../../../docs/agent/ASCENSION_PROTOCOL.md) | Staked ENS fixture roles, reputation-weighted auctions and evidence-bound settlement in the reference contracts |
+| Payout | Each dossier shows a 1% burn preview in AGIALPHA base units | No payment occurs in the planner; actual reference settlement requires contract validation |
+| Successor | Continue through [Proof Bloom](https://montrealai.github.io/AGI-Alpha-Agent-v0/bloom/) and [Compounding Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/) | Fresh evidence, held-out evaluation and review; no automatic model-weight approval |
 
----
+For a nonempty job list in an installed operator environment:
 
-<a id="3"></a>
-## 3 · Role Architecture 🏛️
+```bash
+alpha-agent ascension-compile path/to/jobs.json --output fusion-plan.json
+alpha-agent ascension-check fusion-plan.json
+```
+
+This produces a real commitment for the shipped Solidity specification. It does not deploy or fund a contract.
+The reference contracts are undeployed; a live enterprise requires independently commissioned identities,
+reviewers, data, infrastructure and deployment. Goal/metric/bounty bindings must be reviewed before that step.
+
+## Docker: one finite run with retained output
+
+From the repository root, with Docker running:
+
+```bash
+bash alpha_factory_v1/demos/alpha_agi_business_3_v1/run_business_3_demo.sh --case industrial --output-dir my-business-runs
+```
+
+The helper builds from the correct repository context, runs without network access, forwards no credentials,
+uses a read-only container filesystem and writes evidence to your host directory. It works without an interactive
+terminal. `--help` does not require Docker or build anything. The minimal image contains the standard-library
+enterprise planner; optional legacy SDK integrations belong in a separately configured source environment.
+
+For a direct build and named output volume:
+
+```bash
+docker build -t alpha_business_v3:1.13.0 -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges -v business3-evidence:/output alpha_business_v3:1.13.0
+```
+
+CI builds and runs this exact Dockerfile with network disabled and verifies the produced dossier. The resolved
+base image is recorded in its evidence. Pin `BASE_IMAGE` to your reviewed digest when reproducing a deployment.
+
+## Colab and optional research integrations
+
+[Open the corrected Colab notebook](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/colab_alpha_agi_business_3_demo.ipynb).
+It runs the finite planner, verifies the saved dossier and offers a ZIP download without requesting credentials.
+
+The original research API and `alpha_agi_business_3_v1.py` remain. Use an explicit research launch:
+
+```bash
+alpha-agi-business-3-v1 --legacy-loop --cycles 1 --interval 0
+alpha-agi-business-3-v1 --legacy-loop --help
+```
+
+Its synthetic ΔG is dimensionless. Posting is a log illustration. Empty or unverified model proposals are rejected;
+there is no built-in Gödel proof solver and no trained weights are modified. Negative cycles, non-finite intervals
+and invalid ports are rejected. Importing the module never constructs an A2A socket. Reused clients are closed
+once at the end of the loop; the caller's environment is restored afterward.
+
+Model commentary is opt-in: `--commentary openai` uses the real `agents.Agent` / `Runner` SDK with your configured
+`OPENAI_API_KEY` and `MODEL_NAME`, a bounded call and tracing disabled. It does not use the repository's
+`openai_agents` stub. Provider failures are explicit. `--commentary local --llama-model-path /path/model.gguf`
+uses separately installed local-model extras. Model weights are not downloaded by this demo. Use environment
+variables for credentials; the compatibility `--openai-api-key` flag remains but can expose a key in shell history.
+
+ADK/A2A are preserved research adapter hooks, not commissioned integrations. A2A or ADK configuration is used
+only with explicit host/port flags or `--enable-integrations`. An unavailable requested adapter is an error.
+Their mock lifecycle tests do not establish compatibility with a deployed external service. No optional service
+or provider is required for the maintained enterprise planner.
+
+The [original notebook](research_loop_archive.ipynb) is also retained as a labeled research archive.
+
+## Original flowcharts and presentations
+
+The three original Mermaid blocks below are retained exactly. They express the research architecture,
+not evidence that every pictured physical model, agent or formal verifier exists in this release.
+The complete original prose, tables, speculative claims and deployment sketches remain in the
+[research archive](RESEARCH_ARCHIVE.md), clearly separated from current operating instructions.
+
+### Original role architecture
 
 ```mermaid
 %% GitHub-compatible Mermaid
@@ -167,19 +247,7 @@ flowchart LR
     ORC --> LDB
 ```
 
-| Entity | Responsibility | Key Interface |
-|--------|----------------|---------------|
-| **Business** | Bundle α‑jobs, fund bounties | `POST /alpha_job` |
-| **Agent** | Solve jobs, post proofs | `tool()` (OpenAI Agents SDK) |
-| **Orchestrator** | Route jobs, enforce β‑schedule | A2A + MCP |
-| **Ledger‑Bot** | Settle \$AGIALPHA mint/burn | Solana program |
-| **Safety Ω** | Runtime sandboxes, entropy caps | seccomp‑BPF |
-| **Gödel Looper** | Self‑distillation under formal proof | μ‑recursive verif |
-
----
-
-<a id="4"></a>
-## 4 · Multi‑Scale Energy‑Landscape Diagram
+### Original energy-landscape vision
 
 ```mermaid
 flowchart TB
@@ -201,207 +269,7 @@ flowchart TB
   classDef agent fill:#cffafe,stroke:#0369a1;
 ```
 
-Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harvest.
-
----
-
-<a id="5"></a>
-## 5 · Ω‑Agents Catalogue (11 / 11)
-
-| ENS | Core Novelty | Physics Role | Verified Scarcity Claim |
-|-----|--------------|-------------|-------------------------|
-| `fin.alpha.agent.agi.eth` | CVaR 99 % RL‑HF | Computes ΔH<sub>misprice</sub> | Sharpe 3.1 back‑test |
-| `bio.alpha.agent.agi.eth` | KG‑RAG on UniProt | Reduces entropy via high‑info datapoints | 3 CRISPR patents neutralised |
-| `mat.alpha.agent.agi.eth` | Diffusion‑MCTS for material space | Lowers enthalpy of catalyst design | DOE grant pre‑empt |
-| `pol.alpha.agent.agi.eth` | Law QA + GAN red‑line | Captures policy phase‑lags | 37‑jurisdiction coverage |
-| `ene.alpha.agent.agi.eth` | Grid DR RL‑HF | Sets β(t) from load | Demoed 14 % bill cut |
-| `mfg.alpha.agent.agi.eth` | CP‑SAT job‑shop | Converts ΔG to throughput | 6 % OEE lift |
-| `log.alpha.agent.agi.eth` | VRP‑RL for logistics | Entropy compression | 12 % route savings |
-| `res.alpha.agent.agi.eth` | Literature ablation design | Orthogonal signals | 0.78 MI F1 gain |
-| `qec.alpha.agent.agi.eth` | Real‑time surface‑code optimiser | Quantum error entropy ↓ | 14 % qubit overhead cut |
-| `safe.alpha.agent.agi.eth` | KL‑alignment sentinel | Bounds entropy prod. | Zero severe incidents |
-| `gdl.alpha.agent.agi.eth` | Gödel Looper | Formal provability | 99.8 % proof success |
-
----
-
-<a id="6"></a>
-## 6 · 90 s Live Quantum‑Loop Demo
-
-| t (s) | Trigger | Agent(s) | Δ𝒮 drop | Outcome |
-|-------|---------|----------|---------|---------|
-| 0 | `docker run ghcr.io/montrealai/omega-lattice:latest` | Orchestrator | — | Dashboard online |
-| 9 | BTC‑vol spike | `fin`, `ene` | −2.3×10⁻² J/bit | β slashed; α‑job #1201 posted |
-| 23 | PubMed flood | `bio`, `res` | −3.9×10⁻² J/bit | ΔG −2.1 → job solved |
-| 41 | EU carbon leak | `pol` | −1.2×10⁻² J/bit | Rule patch auto‑audited |
-| 60 | Factory outage | `mfg`, `log` | −4.7×10⁻² J/bit | OEE +4 %; VaR unchanged |
-| 90 | Epoch close | `ledger‑bot` | — | \$AGIALPHA yield +7.9 % |
-
----
-
-<a id="7"></a>
-## 7 · Algorithmic Anatomy — Zero‑Entropy Pipeline
-
-```python
-# core outline (simplified)
-bundle   = orchestrator.collect_signals()
-ΔH       = fin_agent.latent_work(bundle)
-ΔS       = res_agent.entropy(bundle)
-β        = ene_agent.market_temperature()
-ΔG       = ΔH - ΔS/β
-if ΔG < 0:
-    orchestrator.post_alpha_job(bundle.id, ΔG)
-
-# Gödel Looper self-proof
-if gdl_agent.provable(weight_update):
-    model.commit(weight_update)
-```
-
-Offline mode → `ene_agent` resorts to GARCH / Kalman to estimate β.
-
----
-
-<a id="8"></a>
-## 8 · Deployment Recipes
-
-<a id="8.1"></a>
-### 8.1 Docker One‑liner
-
-```bash
-docker run alpha_business_v3:latest
-```
-You can also build the demo locally using the provided Dockerfile.
-Run the command from the repository root so the `.dockerignore` rules
-trim the build context:
-```bash
-docker build -t alpha_business_v3:latest \
-    -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
-```
-
-<a id="8.2"></a>
-### 8.2 Helm / K8s
-
-```bash
-helm repo add omega https://montrealai.github.io/charts
-helm install omega-lattice omega/omega-lattice \
-     --set resources.gpu=true \
-     --set openai.apiKey="$OPENAI_API_KEY"
-```
-
-<a id="8.3"></a>
-### 8.3 Bare‑Metal Python
-
-```bash
-python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-alpha-agi-business-3-v1
-```
-
-Offline mode activates automatically when `OPENAI_API_KEY` is unset.
-
-### 8.4 Colab Notebook
-
-Use our interactive Google Colab to run the pipeline without local setup:
-
-```
-https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/colab_alpha_agi_business_3_demo.ipynb
-```
-
-
-No `OPENAI_API_KEY`? Set `LLAMA_MODEL_PATH` to a local `.gguf` weight – for
-example **Llama‑3‑8B.gguf** – to enable offline inference.
-
-#### Quick Local Demo
-
-Run the standalone script directly to simulate one Ω‑Lattice cycle:
-
-```bash
-alpha-agi-business-3-v1 --loglevel info
-```
-If the **OpenAI Agents SDK** is installed, each cycle emits a concise LLM
-comment on the computed ΔG. Without it the demo uses an offline placeholder.
-You can also run the Dockerised version:
-```bash
-./run_business_3_demo.sh
-# builds `alpha_business_v3:latest` using `Dockerfile` in this folder
-```
-
-#### Example Session
-
-```bash
-$ alpha-agi-business-3-v1 --cycles 1 --loglevel info
-2025-06-11 17:16:10 INFO     | ΔH=0.027 ΔS=0.008 β=1.04 → ΔG=0.019
-2025-06-11 17:16:10 INFO     | LLM: LLM offline
-2025-06-11 17:16:10 INFO     | [Model] New weights committed (Gödel-proof verified)
-```
-
-#### Environment Setup
-
-- `OPENAI_API_KEY` – optional. When set, the demo uses OpenAI Agents to
-  generate a short LLM comment. Leave it unset to run in fully offline mode.
-- `LOCAL_LLM_URL` – optional. Base URL for the local fallback model.
-  Defaults to `http://ollama:11434/v1`.
-- Each variable can also be passed via command-line flags
-  (`--openai-api-key`, `--local-llm-url`, `--adk-host`,
-  `--a2a-port`, `--a2a-host`, `--llama-model-path`, `--llama-n-ctx`).
-- Python ≥3.11 with packages from `requirements.txt` installed. The
-  `run_business_3_demo.sh` helper now builds a Docker image that includes
-  `openai_agents` by default.
-- Copy `.env.example` in this folder to `.env` and adjust the values before running.
-- Before launching the demo, load the variables with `set -a; source .env; set +a` (use the PowerShell equivalent on Windows).
-- Run `python check_env.py --auto-install` after sourcing so optional dependencies install correctly.
-- `ADK_HOST` – optional. URL of the ADK gateway to forward cycle summaries.
-- `A2A_PORT` – enable gRPC A2A messages when set to a port number.
-- `A2A_HOST` – host for the A2A gRPC server. Defaults to `localhost`.
-- `LLAMA_N_CTX` – context-window size for local models. Defaults to `2048`.
-- `LLAMA_MODEL_PATH` – path to a local `.gguf` weight file.
-
-#### Offline Usage
-
-Set `LLAMA_MODEL_PATH` to a local `.gguf` model and install either
-[`llama-cpp-python`](https://pypi.org/project/llama-cpp-python/) or
-[`ctransformers`](https://pypi.org/project/ctransformers/) so inference works
-without internet access.
-
-```bash
-LLAMA_MODEL_PATH=/path/model.gguf alpha-agi-business-3-v1
-```
-
-#### Dependency Checks
-
-Commonly missing packages include `numpy`, `pandas` and `openai-agents`.
-Run `python check_env.py --auto-install` to ensure these are installed.
-When offline, pass `--wheelhouse <dir>` so `check_env.py` can use local
-wheels. The demo requires either network access or a wheelhouse containing
-the required packages.
-
-#### Minimal Example
-
-Install the demo with a local model and run one cycle:
-
-```bash
-pip install -r requirements.txt llama-cpp-python
-LLAMA_MODEL_PATH=/path/model.gguf alpha-agi-business-3-v1
-```
-
-The `openai-agents` package is optional in this setup.
-
----
-
-<a id="9"></a>
-## 9 · Safety, Audit & Governance Matrix
-
-| Layer | Guard | Tooling | Audit Hash |
-|-------|-------|---------|-----------|
-| Alignment | KL‑shield | Logit lens + PPO‑penalty | `b3e7...` |
-| Sandbox | seccomp‑BPF | AppArmor strict | `5ac2...` |
-| Observability | OpenTelemetry | Grafana / Loki | `8f4d...` |
-| Governance | DAO vote | Quadratic funding | `9da1...` |
-| Ledger | Merkle root | Solana notariser | Broadcast hourly |
-
----
-
-<a id="10"></a>
-## 10 · Self‑Improvement Gödel‑Looper
+### Original self-improvement vision
 
 ```mermaid
 graph TD
@@ -412,31 +280,17 @@ graph TD
   D --> B
 ```
 
-Only weight updates that **preserve alignment axioms** flow back.
+[Original PDF presentation](presentation/OMEGA_GRADE_Business_3_v0.pdf) ·
+[Original PowerPoint presentation](presentation/OMEGA_GRADE_Business_3_v0.pptx)
 
----
+## Verification and limits
 
-<a id="11"></a>
-## 11 · Legal & Conceptual Shield 🛡️
+The release gates cover exact Python/browser agreement, all exported bytes, actual-wheel launches,
+resource and evidence admission, job compilation, forged-result rejection, output preservation, Docker execution,
+mobile layouts, keyboard access, WCAG A/AA checks, offline recovery and both gallery routes.
+See [demo validation](../../../docs/agent/DEMO_VALIDATION.md) and the matching release's validation archive.
 
-Inherited **2017 Multi‑Agent AI DAO** prior‑art:
-
-* Blocks patent trolls on multi‑agent + token primitives.  
-* Provides DAO‑first wrapper for fractional resource ownership.  
-* Time‑stamped blueprint proves freedom‑to‑operate.
-
----
-
-<a id="12"></a>
-## 12 · References & Further Reading
-
-1. A. Brandenburger & B. Nalebuff, *The Right Game*, HBR 1996.  
-2. F. Wilczek, *QCD & Gauge Symmetry*, Rev. Mod. Phys.  
-3. OpenAI, *A Practical Guide to Building Agents*, 2025.  
-4. M. Liang et al., *Stochastic Neural ODEs*, ICML 2024.  
-5. Google, *ADK Docs*, 2025.  
-
----
-
-*Forged by the MONTREAL.AI Agentic Ω‑Lattice team — bending entropy to will.*  
-Questions → **discord.gg/montrealai**
+The maintained scope is a reproducible decision tool and a handoff to the existing local-EVM reference.
+This does not establish general AGI, autonomous fundraising, predictive superiority, legal clearance,
+physical free-energy optimization or a commissioned mainnet business. The original factory content and all
+original diagram/media bytes remain preserved.

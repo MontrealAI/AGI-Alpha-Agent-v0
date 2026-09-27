@@ -140,7 +140,7 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
     studio_path = REPO_ROOT / "docs/assets/studio/cases.json"
     if studio_path.is_file():
         for case in json.loads(studio_path.read_text()):
-            if md_file.stem in case["legacy"]:
+            if md_file.stem in case["legacy"] and md_file.stem != "alpha_agi_business_3_v1":
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
                 link = f'studio/?case={case["id"]}'
@@ -326,6 +326,9 @@ def main() -> None:
         "scripts.generate_decision_studio" if __package__ else "generate_decision_studio"
     )
     studio_generator.build(REPO_ROOT)
+    business3 = importlib.import_module("scripts.generate_business3" if __package__ else "generate_business3")
+    if (REPO_ROOT / "scripts/templates/business3.html").is_file():
+        business3.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)
