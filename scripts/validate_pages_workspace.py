@@ -84,7 +84,9 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
                 page.locator(f'[data-kind="{kind}"]').click()
                 page.locator("#run-mission").click()
                 page.locator("#mission-result").wait_for(state="visible")
-                data = json.loads(page.locator("#result-json").text_content())
+                result_text = page.locator("#result-json").text_content()
+                assert result_text is not None
+                data = json.loads(result_text)
                 assert data["kind"] == kind and data["checks"]
                 native = json.loads(page.locator("#mission-json").input_value())
                 Mission.model_validate(native)
@@ -93,7 +95,9 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
             page.get_by_label("Budget", exact=True).fill("60000")
             page.locator("#run-mission").click()
             page.locator("#mission-result").wait_for(state="visible")
-            changed = json.loads(page.locator("#result-json").text_content())
+            changed_text = page.locator("#result-json").text_content()
+            assert changed_text is not None
+            changed = json.loads(changed_text)
             assert changed["evidence"]["totals"]["value"] == 56000
             page.locator("#approve-result").click()
             page.locator("#mission-status").filter(has_text="Add a review note").wait_for()
@@ -110,7 +114,7 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
             page.locator("#history-count").filter(has_text="1 saved").wait_for()
             page.locator(".history-panel summary").click()
             page.get_by_role("button", name="Load inputs", exact=True).click()
-            expect(page.get_by_label("Budget", exact=True)).to_have_value("6")
+            expect(page.get_by_label("Budget", exact=True)).to_have_value("60000")
             with page.expect_download() as download:
                 page.locator("#export-mission").click()
             native_path = output / "native-mission.json"

@@ -782,7 +782,12 @@ $("ai-generate").addEventListener("click", () => {
     });
 });
 try {
-    const response = await fetch(new URL("./examples.json", import.meta.url));
+    const examplesUrl = new URL("./examples.json", import.meta.url);
+    examplesUrl.searchParams.set(
+        "v",
+        document.querySelector('meta[name="application-version"]').content,
+    );
+    const response = await fetch(examplesUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     examples = await response.json();
     loadMission(examples.allocation);

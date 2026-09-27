@@ -10,6 +10,7 @@ from pathlib import Path
 TEMPLATE = """/* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
 const CACHE = __CACHE__;
+const RELEASE = __RELEASE__;
 const ASSETS = __ASSETS__;
 const URLS = new Set(ASSETS.map(path => new URL(path, self.location.href).href));
 self.addEventListener('install', event => {
@@ -25,6 +26,10 @@ self.addEventListener('fetch', event => {
   const normalized = new URL(event.request.url);
   if (event.request.mode === 'navigate') {
     if (normalized.pathname.endsWith('/')) normalized.pathname += 'index.html';
+    normalized.search = '';
+  } else if (normalized.search) {
+    // A newer HTML release must bypass an older worker's cached application assets.
+    if (normalized.search !== '?v=' + RELEASE) return;
     normalized.search = '';
   }
   const key = normalized.href;
@@ -82,6 +87,9 @@ def gather_assets(docs_dir: Path) -> list[str]:
 
 def build(docs_dir: Path) -> str:
     """Write root and compatibility workers with a digest of the actual bytes."""
+    release = json.loads((Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/catalog.json").read_text())[
+        "release"
+    ]
     assets = gather_assets(docs_dir)
     digest = hashlib.sha256()
     for asset in assets:
@@ -94,8 +102,10 @@ def build(docs_dir: Path) -> str:
         (docs_dir / "alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js", "../../../"),
     ]:
         destination.parent.mkdir(parents=True, exist_ok=True)
-        script = TEMPLATE.replace("__CACHE__", json.dumps(version)).replace(
-            "__ASSETS__", json.dumps([prefix + asset for asset in assets], indent=2)
+        script = (
+            TEMPLATE.replace("__RELEASE__", json.dumps(release))
+            .replace("__CACHE__", json.dumps(version))
+            .replace("__ASSETS__", json.dumps([prefix + asset for asset in assets], indent=2))
         )
         destination.write_text(script, encoding="utf-8")
     return version

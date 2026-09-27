@@ -13,6 +13,25 @@ from .models import Mission, Research, Coding, RuntimeConfig
 from .store import digest
 
 
+def response_format(config: RuntimeConfig, name: str, properties: dict[str, Any]) -> dict[str, Any]:
+    """Constrain decoding only when the operator enables provider schema support."""
+    if config.llm_response_format == "json_object":
+        return {"type": "json_object"}
+    return {
+        "type": "json_schema",
+        "json_schema": {
+            "name": name,
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": properties,
+                "required": list(properties),
+                "additionalProperties": False,
+            },
+        },
+    }
+
+
 def synthesize(mission: Mission, config: RuntimeConfig) -> tuple[dict[str, Any], dict[str, Any]]:
     """Ask the configured model for findings, then require exact source quotes.
 
@@ -29,7 +48,27 @@ def synthesize(mission: Mission, config: RuntimeConfig) -> tuple[dict[str, Any],
         "model": config.llm_model,
         "temperature": 0,
         "max_tokens": config.max_output_tokens,
-        "response_format": {"type": "json_object"},
+        "response_format": response_format(
+            config,
+            "research_findings",
+            {
+                "findings": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "claim": {"type": "string"},
+                            "source_id": {"type": "string", "enum": [s.id for s in mission.work.sources]},
+                            "quote": {"type": "string"},
+                        },
+                        "required": ["claim", "source_id", "quote"],
+                        "additionalProperties": False,
+                    },
+                }
+            },
+        ),
         "messages": [
             {
                 "role": "system",
@@ -68,7 +107,11 @@ def generate_code(mission: Mission, config: RuntimeConfig) -> tuple[str, dict[st
         "model": config.llm_model,
         "temperature": 0,
         "max_tokens": config.max_output_tokens,
-        "response_format": {"type": "json_object"},
+        "response_format": response_format(
+            config,
+            "code_candidate",
+            {"code_lines": {"type": "array", "minItems": 1, "maxItems": 2500, "items": {"type": "string"}}},
+        ),
         "messages": [
             {
                 "role": "system",

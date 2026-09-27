@@ -14,7 +14,75 @@ from typing import Any
 from playwright.sync_api import expect, sync_playwright
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
-from scripts.validate_ascension import Handler
+from scripts.validate_ascension import Handler, wait_for, inspect
+
+
+def validate_cache_upgrade(site: Path) -> None:
+    """Upgrade an actual v1.8.1 worker and its cached portal to the current site."""
+    previous = "6ee044b678397e6fa8ed2bd9b299741a19be54fa"
+    inherited = {
+        path: subprocess.check_output(["git", "show", f"{previous}:docs/{path}"])
+        for path in ("index.html", "service-worker.js", "assets/portal/portal.css", "assets/portal/portal.mjs")
+    }
+    state = {"old": True}
+
+    class UpgradeHandler(Handler):
+        def do_GET(self) -> None:
+            relative = self.path.split("?", 1)[0].removeprefix("/project/") or "index.html"
+            if state["old"] and relative in inherited:
+                payload = inherited[relative]
+                self.send_response(200)
+                self.send_header(
+                    "Content-Type",
+                    (
+                        "text/html"
+                        if relative.endswith("html")
+                        else "text/css" if relative.endswith("css") else "text/javascript"
+                    ),
+                )
+                self.send_header("Content-Length", str(len(payload)))
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                self.wfile.write(payload)
+            else:
+                super().do_GET()
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(UpgradeHandler, directory=str(site.resolve())))
+    Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            context = browser.new_context(reduced_motion="reduce")
+            context.route("https://**", lambda route: route.abort())
+            page = context.new_page()
+            origin = f"http://127.0.0.1:{server.server_port}/project/"
+            page.goto(origin)
+            wait_for(page, "navigator.serviceWorker.controller !== null")
+            page.reload()
+            assert page.locator(".decision-card").count() == 0
+            state["old"] = False
+            page.reload()
+            wait_for(
+                page,
+                "document.querySelector('.decision-card') && "
+                "getComputedStyle(document.querySelector('.decision-card')).display === 'flex'",
+            )
+            current_cache = (site / "service-worker.js").read_text().split('const CACHE = "')[1].split('"')[0]
+            wait_for(
+                page, f"caches.keys().then(names => names.length === 1 && names.includes({json.dumps(current_cache)}))"
+            )
+            page.reload()
+            expect(page.locator("#result-count")).to_contain_text("37 of 37")
+            page.get_by_role("searchbox", name="Search demos").fill("supplier")
+            inspect(page, "navigator.serviceWorker.dispatchEvent(new Event('controllerchange'))")
+            expect(page.get_by_role("status", name="Workspace update")).to_be_visible()
+            expect(page.get_by_role("searchbox", name="Search demos")).to_have_value("supplier")
+            page.get_by_role("button", name="Reload updated workspace").click()
+            expect(page.locator("#result-count")).to_contain_text("37 of 37")
+            browser.close()
+    finally:
+        server.shutdown()
+        server.server_close()
 
 
 def validate(site: Path, output: Path, public_url: str | None = None, axe_script: Path | None = None) -> dict[str, Any]:
@@ -29,6 +97,8 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
         server = ThreadingHTTPServer(("127.0.0.1", 0), partial(Handler, directory=str(site.resolve())))
         Thread(target=server.serve_forever, daemon=True).start()
         origin = f"http://127.0.0.1:{server.server_port}/project/"
+    if not public_url:
+        validate_cache_upgrade(site)
     cases = json.loads(Path("docs/assets/studio/cases.json").read_text())
     errors: list[str] = []
     failures: list[str] = []
@@ -41,7 +111,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.on("response", lambda response: failures.append(response.url) if response.status >= 400 else None)
             page.goto(origin + "studio/?case=capital")
-            page.wait_for_function("document.documentElement.dataset.studioReady === 'true'")
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             page.screenshot(path=str(output / "studio-desktop.png"), full_page=True)
             for case in cases:
                 page.locator(f'[data-case="{case["id"]}"]').click()
@@ -109,7 +179,10 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 {
                     "name": "supply.csv",
                     "mimeType": "text/csv",
-                    "buffer": b"id,name,unit_cost,setup_cost,capacity,lead_days,ontime_percent\na,Only supplier,100,0,80,10,99\n",
+                    "buffer": (
+                        b"id,name,unit_cost,setup_cost,capacity,lead_days,ontime_percent\n"
+                        b"a,Only supplier,100,0,80,10,99\n"
+                    ),
                 }
             )
             page.locator("#run").click()
@@ -118,7 +191,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.locator("#parameter-demand").fill("55")
             page.locator("#save").click()
             page.reload()
-            page.wait_for_function("document.documentElement.dataset.studioReady === 'true'")
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             page.locator("#restore").click()
             expect(page.locator("#parameter-demand")).to_have_value("55")
             expect(page.locator("#results")).to_be_visible()
@@ -157,18 +230,18 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 "href", "../studio/?case=capital"
             )
             page.goto(origin + "alpha_factory_v1/demos/studio/?case=energy")
-            page.wait_for_function("document.documentElement.dataset.studioReady === 'true'")
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             expect(page.locator("#case-art")).to_have_attribute("src", origin + "assets/studio/previews/energy.svg")
             page.locator("#run").click()
             expect(page.locator("#verdict")).to_have_text("PLAN")
             page.goto(origin + "studio/?case=energy")
-            page.wait_for_function("document.documentElement.dataset.studioReady === 'true'")
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             page.evaluate("() => navigator.serviceWorker.ready")
             page.reload()
-            page.wait_for_function("navigator.serviceWorker.controller !== null")
+            wait_for(page, "navigator.serviceWorker.controller !== null")
             context.set_offline(True)
             page.reload()
-            page.wait_for_function("document.documentElement.dataset.studioReady === 'true'")
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             page.locator("#run").click()
             expect(page.locator("#results")).to_be_visible()
             expect(page.locator("#verdict")).to_have_text("PLAN")
@@ -195,6 +268,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             "practical-catalog-search",
             "legacy-route-bridge",
             "offline-recalculation",
+            "v1.8.1-cache-upgrade" if not public_url else "public-current-assets",
         ],
         "browser_errors": errors,
         "http_failures": failures,

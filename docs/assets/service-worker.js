@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-b1960ed3c227614f";
+const CACHE = "agialpha-gallery-c942546bceb93182";
+const RELEASE = "1.9.0";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -193,6 +194,8 @@ const ASSETS = [
   "../assets/insight/engine.mjs",
   "../assets/insight/home.css",
   "../assets/insight/scenarios.json",
+  "../assets/portal/cache-refresh.css",
+  "../assets/portal/cache-refresh.js",
   "../assets/portal/examples.json",
   "../assets/portal/mark.svg",
   "../assets/portal/mission-engine.mjs",
@@ -331,6 +334,10 @@ self.addEventListener('fetch', event => {
   const normalized = new URL(event.request.url);
   if (event.request.mode === 'navigate') {
     if (normalized.pathname.endsWith('/')) normalized.pathname += 'index.html';
+    normalized.search = '';
+  } else if (normalized.search) {
+    // A newer HTML release must bypass an older worker's cached application assets.
+    if (normalized.search !== '?v=' + RELEASE) return;
     normalized.search = '';
   }
   const key = normalized.href;

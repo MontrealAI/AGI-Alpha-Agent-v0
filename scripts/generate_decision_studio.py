@@ -54,7 +54,8 @@ def preview(case: dict[str, Any], index: int) -> str:
             x = 38 + i * 44
             height = item["cost"] / maximum * 185
             shapes.append(
-                f'<rect x="{x}" y="{270-height:.1f}" width="28" height="{height:.1f}" rx="2" fill="{accent}" opacity="{.55+i*.035:.2f}"/>'
+                f'<rect x="{x}" y="{270 - height:.1f}" width="28" height="{height:.1f}" '
+                f'rx="2" fill="{accent}" opacity="{.55 + i * .035:.2f}"/>'
             )
             shapes.append(f'<text x="{x}" y="289" class="tiny">{i+1:02}</text>')
     elif kind == "schedule":
@@ -65,7 +66,8 @@ def preview(case: dict[str, Any], index: int) -> str:
             shapes.append(f'<text x="30" y="{y+18}" class="tiny">{html.escape(resource.upper())}</text>')
             for j in range(4):
                 shapes.append(
-                    f'<rect x="{155+j*94+(i%2)*16}" y="{y}" width="{60+(i+j)%3*10}" height="28" rx="2" fill="{accent}" opacity="{.4+j*.15}"/>'
+                    f'<rect x="{155 + j * 94 + (i % 2) * 16}" y="{y}" width="{60 + (i + j) % 3 * 10}" '
+                    f'height="28" rx="2" fill="{accent}" opacity="{.4 + j * .15}"/>'
                 )
     elif kind == "inventory":
         label = "DEMAND HISTORY / INPUT OBSERVATIONS"
@@ -75,7 +77,8 @@ def preview(case: dict[str, Any], index: int) -> str:
         shapes.append(f'<polyline points="{points}" fill="none" stroke="{accent}" stroke-width="2.5"/>')
         x = 30 + (len(values) - case["input"]["parameters"]["holdout"]) / len(values) * 540
         shapes.append(
-            f'<rect x="{x}" y="80" width="{570-x}" height="205" fill="{accent}" opacity=".08"/><text x="{x}" y="304" class="tiny">HOLDOUT</text>'
+            f'<rect x="{x}" y="80" width="{570 - x}" height="205" fill="{accent}" opacity=".08"/>'
+            f'<text x="{x}" y="304" class="tiny">HOLDOUT</text>'
         )
     elif kind == "energy":
         label = "FACILITY LOAD / SOLAR INPUTS"
@@ -89,16 +92,21 @@ def preview(case: dict[str, Any], index: int) -> str:
         for i, item in enumerate(case["input"]["datasets"]["suppliers"]):
             y = 82 + i * 34
             shapes.append(
-                f'<text x="30" y="{y+14}" class="tiny">{html.escape(item["id"].upper())}</text><rect x="125" y="{y}" width="{item["capacity"]*9}" height="20" rx="2" fill="{accent}" opacity="{.45+i*.1}"/><text x="{135+item["capacity"]*9}" y="{y+15}" class="tiny">{item["capacity"]}</text>'
+                f'<text x="30" y="{y + 14}" class="tiny">{html.escape(item["id"].upper())}</text>'
+                f'<rect x="125" y="{y}" width="{item["capacity"] * 9}" height="20" rx="2" '
+                f'fill="{accent}" opacity="{.45 + i * .1}"/>'
+                f'<text x="{135 + item["capacity"] * 9}" y="{y + 15}" class="tiny">{item["capacity"]}</text>'
             )
     elif kind == "benchmark":
         label = "CALIBRATION / TEST PARTITIONS"
         for i in range(100):
             shapes.append(
-                f'<rect x="{40+(i%20)*26}" y="{108+(i//20)*30}" width="18" height="18" rx="2" fill="{accent if i<40 else "#91c4ae"}" opacity=".85"/>'
+                f'<rect x="{40 + (i % 20) * 26}" y="{108 + (i // 20) * 30}" width="18" height="18" '
+                f'rx="2" fill="{accent if i < 40 else "#91c4ae"}" opacity=".85"/>'
             )
         shapes.append(
-            '<text x="40" y="294" class="tiny">40 CALIBRATION</text><text x="345" y="294" class="tiny">60 TEST CASES</text>'
+            '<text x="40" y="294" class="tiny">40 CALIBRATION</text>'
+            '<text x="345" y="294" class="tiny">60 TEST CASES</text>'
         )
     else:
         label = "CLAIM → EVIDENCE → SCOPED WORK"
@@ -107,7 +115,10 @@ def preview(case: dict[str, Any], index: int) -> str:
             if i < 3:
                 shapes.append(f'<path d="M {x+92} 177 H {x+135}" stroke="{accent}" stroke-opacity=".5"/>')
             shapes.append(
-                f'<rect x="{x}" y="127" width="92" height="98" rx="4" fill="none" stroke="{accent}" stroke-opacity=".6"/><text x="{x+13}" y="158" fill="{accent}" font-size="26" font-family="Georgia">{i+1:02}</text><text x="{x+9}" y="200" class="tiny">{name}</text>'
+                f'<rect x="{x}" y="127" width="92" height="98" rx="4" fill="none" '
+                f'stroke="{accent}" stroke-opacity=".6"/>'
+                f'<text x="{x + 13}" y="158" fill="{accent}" font-size="26" font-family="Georgia">{i + 1:02}</text>'
+                f'<text x="{x + 9}" y="200" class="tiny">{name}</text>'
             )
         shapes.append('<text x="35" y="285" class="tiny">PROMOTION REQUIRES INDEPENDENT REVIEW</text>')
     return (
@@ -121,7 +132,8 @@ def preview(case: dict[str, Any], index: int) -> str:
         f'<text x="30" y="35" class="tiny">{index+1:02} / DECISION STUDIO</text>'
         '<path d="M30 54 H570" stroke="#436251" stroke-opacity=".6"/>'
         + "".join(shapes)
-        + f'<text x="30" y="338" class="tiny">{label}</text><text x="544" y="339" font-family="Georgia" font-size="24" fill="{accent}">α</text></svg>\n'
+        + f'<text x="30" y="338" class="tiny">{label}</text>'
+        + f'<text x="544" y="339" font-family="Georgia" font-size="24" fill="{accent}">α</text></svg>\n'
     )
 
 

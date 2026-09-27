@@ -122,6 +122,13 @@ variable named by `llm_key_env` (default `ALPHA_AGENT_LLM_KEY`). This explicitly
 sources, or code goals/examples, to that provider. The model name must exist at that endpoint. Provider
 errors and malformed or ungrounded results fail visibly; they do not become simulated success.
 
+For servers supporting strict Chat Completions JSON schemas, including the pinned llama.cpp
+release used by acceptance, set `llm_response_format: "json_schema"` in the configuration.
+This constrains the research finding and code candidate structures during decoding. The default
+`json_object` mode preserves compatibility with existing providers and signed configurations.
+Both modes still validate the returned structure, exact quotations and execution results;
+schema compliance does not establish the truth of a claim. Unsupported schema requests fail visibly.
+
 Code missions additionally require `allow_code_execution: true` and Docker. Pull the sandbox image
 before execution, record its digest, and set `ALPHA_SANDBOX_IMAGE` to that digest for reproducibility:
 

@@ -76,6 +76,7 @@ def main() -> None:
                 cfg = RuntimeConfig(
                     llm_url=f"http://127.0.0.1:{port}/v1",
                     llm_model="qwen3-4b-pinned",
+                    llm_response_format="json_schema",
                     llm_key_env="ALPHA_AGENT_VALIDATION_UNUSED",
                     llm_timeout=240,
                     max_output_tokens=900,

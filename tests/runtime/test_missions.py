@@ -497,18 +497,66 @@ def test_coding_never_uses_host_without_sandbox(tmp_path: Path, monkeypatch: pyt
     assert journal.latest(ident)["state"] == "failed"
 
 
-def test_code_generation_withholds_benchmark_answers(monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize("schema_mode", [False, True])
+def test_code_generation_withholds_benchmark_answers(monkeypatch: pytest.MonkeyPatch, schema_mode: bool) -> None:
     from alpha_factory_v1.core.runtime.provider import generate_code
 
     def completion(payload: dict, config: RuntimeConfig) -> tuple[dict, dict]:
         prompt = json.loads(payload["messages"][1]["content"])
         assert set(prompt) == {"goal", "examples"}
         assert "heldout" not in json.dumps(payload)
+        if schema_mode:
+            schema = payload["response_format"]["json_schema"]["schema"]
+            assert schema["required"] == ["code_lines"]
+            assert schema["additionalProperties"] is False
+        else:
+            assert payload["response_format"] == {"type": "json_object"}
         return {"code": "def solve(values): return sum(x*x for x in values)"}, {"mode": "explicit fixture"}
 
     monkeypatch.setattr("alpha_factory_v1.core.runtime.provider.complete_json", completion)
-    code, _ = generate_code(mission("code"), RuntimeConfig(llm_url="http://127.0.0.1:9999/v1", llm_model="fixture"))
+    cfg = RuntimeConfig(
+        llm_url="http://127.0.0.1:9999/v1",
+        llm_model="fixture",
+        llm_response_format="json_schema" if schema_mode else "json_object",
+    )
+    code, _ = generate_code(mission("code"), cfg)
     assert code.startswith("def solve")
+
+
+def test_schema_mode_keeps_research_validation(monkeypatch: pytest.MonkeyPatch) -> None:
+    from alpha_factory_v1.core.runtime.provider import synthesize
+
+    request = mission("research")
+
+    def malformed(payload: dict, config: RuntimeConfig) -> tuple[dict, dict]:
+        schema = payload["response_format"]["json_schema"]["schema"]
+        item = schema["properties"]["findings"]["items"]
+        assert item["required"] == ["claim", "source_id", "quote"]
+        assert item["additionalProperties"] is False
+        assert item["properties"]["source_id"]["enum"] == [s.id for s in request.work.sources]
+        return {"findings": [{"claim": "Unsubstantiated"}]}, {}
+
+    monkeypatch.setattr("alpha_factory_v1.core.runtime.provider.complete_json", malformed)
+    cfg = RuntimeConfig(llm_url="http://127.0.0.1:9999/v1", llm_model="fixture", llm_response_format="json_schema")
+    with pytest.raises(ValueError, match="invalid model finding structure"):
+        synthesize(request, cfg)
+
+
+def test_schema_setting_preserves_existing_signed_configurations(tmp_path: Path) -> None:
+    cfg = RuntimeConfig()
+    assert "llm_response_format" not in cfg.model_dump()
+    folder = tmp_path / "agent"
+    journal = Journal.initialize(folder, cfg)
+    original = (folder / "config.json").read_bytes()
+    assert "llm_response_format" not in json.loads(original)
+    reopened = Journal(folder)
+    result = Engine(reopened).execute(reopened.submit(mission("allocation"))["id"])
+    assert result["state"] == "review"
+    assert (folder / "config.json").read_bytes() == original
+    journal.control(True)
+    journal.configure(cfg.model_copy(update={"llm_response_format": "json_schema"}))
+    assert json.loads((folder / "config.json").read_bytes())["llm_response_format"] == "json_schema"
+    assert Journal(folder).verify()["valid"]
 
 
 def test_portable_export_requires_trusted_identity_and_intact_content(journal: Journal) -> None:
