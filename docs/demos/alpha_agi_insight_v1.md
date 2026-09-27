@@ -7,17 +7,20 @@
 [Launch Demo](../alpha_agi_insight_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Browser + simulation. Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.
 
-**Prerequisites:** Core dependencies for CLI; modern browser for the published interactive page.
+**Prerequisites:** Python 3.11–3.13; Click and core dependencies for CLI; modern browser for the published interactive page.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_agi_insight_v1
 python -m alpha_factory_v1.demos run alpha_agi_insight_v1
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** JSON scenario results. Browser mode also offers replay, local model and operator controls.
 

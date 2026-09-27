@@ -4,15 +4,16 @@
 
 ![preview](../gpt2_small_cli/assets/preview.svg){.demo-preview}
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Local model. Generates text with the actual GPT-2 124M model.
 
 **Prerequisites:** torch, transformers and roughly 550 MB model storage; first download requires network. Use --model-path PATH --offline with cached weights.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check gpt2_small_cli
 python -m alpha_factory_v1.demos run gpt2_small_cli
 ```
 

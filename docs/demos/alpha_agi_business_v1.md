@@ -7,17 +7,20 @@
 [Launch Demo](../alpha_agi_business_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Offline sample. Ranks bundled business opportunities; service agents publish illustrative business events.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_agi_business_v1
 python -m alpha_factory_v1.demos run alpha_agi_business_v1
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Best alpha opportunity and its sample score.
 

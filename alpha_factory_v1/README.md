@@ -4,11 +4,12 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 # Alpha‑Factory v1 👁️✨ — Multi‑Agent **AGENTIC** α‑AGI
 
-**Version 1.12.1 · maintained Python package and full architecture.**
+**Version 1.12.2 · maintained Python package and full architecture.**
 
 [Start here](../docs/agent/START_HERE.md) · [Factory guide](../docs/agent/FACTORY_GUIDE.md) · [Operator guide](../docs/agent/OPERATIONS.md)
 · [Live workspace](https://montrealai.github.io/AGI-Alpha-Agent-v0/)
 · [Ascension protocol](../docs/agent/ASCENSION_PROTOCOL.md) · [All 26 catalog entries](demos/README.md)
+· [Demo walkthrough and prerequisite checks](../docs/agent/DEMOS.md)
 
 Alpha-Factory connects opportunity analysis, bounded mission execution, review, retained evidence and
 validator-gated enterprise funding. The architecture and original flowcharts below remain intact.
@@ -449,7 +450,7 @@ the broader research stack and cloud charts need their own configuration and com
 | Target | Existing entry point | Scope |
 |---|---|---|
 | **Private operator** | `alpha-agent --home ./agent-state serve` | Authenticated loopback console; signed state and recovery |
-| **Operator container** | `docker build --target agent-runtime -t agialpha-agent:1.12.1 -f alpha_factory_v1/Dockerfile .` | [Persistent volume and upgrade commands](../docs/agent/OPERATIONS.md) |
+| **Operator container** | `docker build --target agent-runtime -t agialpha-agent:1.12.2 -f alpha_factory_v1/Dockerfile .` | [Persistent volume and upgrade commands](../docs/agent/OPERATIONS.md) |
 | **Research Compose** | `docker compose -f alpha_factory_v1/docker-compose.yml config` | Inspect configuration first; supply a separate `.env` and deployment-specific services |
 | **Helm (K8s)** | `helm lint alpha_factory_v1/helm/alpha-factory` | Preserved chart; review values, secrets, images and exposure before installing |
 | **AWS Fargate** | Architecture target | No `infra/deploy_fargate.sh` is shipped; do not run the old proposed command |

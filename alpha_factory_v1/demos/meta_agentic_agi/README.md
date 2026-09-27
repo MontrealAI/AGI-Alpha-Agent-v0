@@ -1,17 +1,20 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Synthetic evaluation. Runs provider-driven code proposals, synthetic fitness and SQLite lineage.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check meta_agentic_agi
 python -m alpha_factory_v1.demos run meta_agentic_agi
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Three generations saved to lineage.sqlite; repeat runs append safely.
 

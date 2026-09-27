@@ -7,15 +7,16 @@
 [Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Simulation. Runs a bounded multi-agent business cycle with local fallback results.
 
 **Prerequisites:** Repository demo dependencies; optional model/ADK services must be configured separately.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_agi_business_3_v1
 python -m alpha_factory_v1.demos run alpha_agi_business_3_v1
 ```
 

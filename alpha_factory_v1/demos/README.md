@@ -2,9 +2,13 @@
 
 # AGIALPHA demo catalog
 
-**Current package: 1.12.1.** [Start with the factory guide](../../../docs/agent/FACTORY_GUIDE.md),
+**Current package: 1.12.2.** [Start with the factory guide](../../../docs/agent/FACTORY_GUIDE.md),
 [Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) and native FusionPlan/evidence commands.
 All 26 entries below remain available; their individual execution modes still apply.
+
+**New to the demos?** Use the [step-by-step demo walkthrough](../../../docs/agent/DEMOS.md)
+to choose a browser experience, run a local example, and follow Insight → Nova-Seeds → MARK →
+Sovereign → Jobs → validator-gated settlement. This plural `demos` directory is the canonical catalog.
 
 **Introduced in 1.5.0:** [Launch the Ascension Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/).
 Explore the white paper end to end with three editable flagship scenarios, encrypted Nova-Seed recovery,
@@ -23,21 +27,33 @@ Legacy Solana concepts remain preserved as historical deployment templates.
 
 ## Start locally
 
-Use Python 3.11–3.13 from a source checkout. In an activated virtual environment:
+Use Python 3.11–3.13. An installed release wheel includes the catalog and sample data;
+follow the [release installer](../../../docs/agent/START_HERE.md#1-install-one-release).
+For a source checkout, use an activated virtual environment:
 
 ```bash
 python -m pip install --require-hashes -r requirements-agent.lock
 python -m pip install --no-deps -e .
 python -m alpha_factory_v1.demos list
 python -m alpha_factory_v1.demos show solving_agi_governance
+python -m alpha_factory_v1.demos check solving_agi_governance
 python -m alpha_factory_v1.demos run solving_agi_governance
 ```
 
 Run these setup commands from the repository root. Optional training, UI and model
 packages are listed per demo; the launcher never installs packages automatically.
-`show` does not start a service or contact a provider. `run` prints its mode,
+`show` does not start a service or contact a provider. `check NAME --json` reports
+declared module/file presence without importing optional backends, downloading or writing state;
+it does not verify model weights, service configuration or provider access. `run` checks those
+prerequisites and prints its mode,
 command, expected result and output directory before executing it. Finite examples
 exit by themselves. Stop services with **Ctrl+C**.
+
+All 14 finite catalog commands use explicit offline settings and are tested from the built wheel
+outside the source tree with Python network calls blocked. Bundled inputs are resolved from the
+installation; output-directory configuration cannot select a paid tree-search provider. Child
+OpenAI/Anthropic keys and tracing are disabled for these finite commands; your shell settings are retained.
+Advanced standalone commands keep their separately documented options. The launcher is not a sandbox.
 
 Local state goes to `demo-runs/DEMO_NAME/`; select another directory with
 `run DEMO_NAME --output-dir PATH`. Copy that directory to back it up. To restart

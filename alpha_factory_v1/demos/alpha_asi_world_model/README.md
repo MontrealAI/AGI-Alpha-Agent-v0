@@ -1,15 +1,16 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Research training. Explores generated grid worlds using a small learner and local API.
 
 **Prerequisites:** torch, numpy, FastAPI and the demo requirements; CPU training can be slow.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_asi_world_model
 python -m alpha_factory_v1.demos run alpha_asi_world_model
 ```
 

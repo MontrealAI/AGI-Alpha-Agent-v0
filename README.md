@@ -1,3 +1,9 @@
+**Version 1.12.2 makes installed demos reliable and easier to explore.**
+Run all preserved experiments through the canonical [`alpha_factory_v1/demos`](alpha_factory_v1/demos/README.md)
+catalog, check prerequisites before launch, and follow the [complete demo walkthrough](docs/agent/DEMOS.md).
+The release packages the original sample data and tests all 14 finite commands outside the source tree.
+[Release notes](docs/agent/RELEASE_NOTES_1.12.2.md). All original content, flowcharts and media remain.
+
 **Version 1.12.1 completes release delivery and evidence integrity.**
 
 [Start here](docs/agent/START_HERE.md): verified installation, packaged operating guides,

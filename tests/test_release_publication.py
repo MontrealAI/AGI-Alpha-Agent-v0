@@ -533,7 +533,9 @@ def test_release_guides_have_working_flattened_links_and_preserve_the_manuscript
     root = Path(__file__).resolve().parents[1]
     version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
     package_agent_release.copy_release_documents(root, tmp_path, version, "a" * 40)
-    assert {"START_HERE.md", "FACTORY_GUIDE.md", "ASCENSION_PROTOCOL.md"}.issubset({p.name for p in tmp_path.iterdir()})
+    assert {"START_HERE.md", "FACTORY_GUIDE.md", "DEMOS.md", "ASCENSION_PROTOCOL.md"}.issubset(
+        {p.name for p in tmp_path.iterdir()}
+    )
     for name in ("AGI_ALPHA_Unified_Publication_Final.md", "AGI_ALPHA_Unified_Publication_Final.pdf"):
         assert (tmp_path / name).read_bytes() == (root / "docs/manuscript" / name).read_bytes()
     for source in root.joinpath("docs/agent").glob("*.md"):

@@ -7,15 +7,16 @@
 [Launch Demo](../muzero_planning/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Research planning. Runs a small MuZero-style planner in a Gymnasium environment.
 
 **Prerequisites:** torch, gymnasium[classic-control], Gradio and the demo requirements.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check muzero_planning
 python -m alpha_factory_v1.demos run muzero_planning
 ```
 

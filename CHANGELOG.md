@@ -1,3 +1,11 @@
+## 1.12.2 — 2026-09-27
+
+- Package all six demo CSV samples and 11 unchanged Insight scenario fixtures; run all 14 finite demos from the wheel outside the repository with Python network calls blocked.
+- Add read-only prerequisite checks, fail before launching incomplete installs, prevent output-directory module shadowing, and report output errors without losing data.
+- Pin finite offline examples to packaged inputs and provider-free settings; retain all advanced launch paths and parent credentials.
+- Add a complete demo walkthrough, refresh all 26 additive launch sections, and extend the installed-wheel acceptance matrix across Python 3.11–3.13.
+- Preserve every original demo, diagram, media asset and manuscript; retain the existing native/operator and local-EVM release gates.
+
 ## 1.12.1 — 2026-09-27
 
 - Reject contradictory signed approvals and boolean/float aliases in native result verification.

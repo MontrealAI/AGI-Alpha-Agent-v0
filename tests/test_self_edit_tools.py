@@ -72,3 +72,21 @@ def test_filetools_adk_tasks(temp_file: Path) -> None:
     out = adk.replace_task(path=str(temp_file), pattern="X", repl="Y")
     assert out == {"count": 1}
     assert temp_file.read_text() == "a\nY\nc"
+
+
+def test_plain_file_tools_survive_unavailable_optional_sdk_transport(temp_file: Path, monkeypatch) -> None:
+    import builtins
+    import runpy
+
+    original_import = builtins.__import__
+
+    def import_without_transport(name, *args, **kwargs):
+        if name == "agents":
+            raise ImportError("optional SDK transport extra is unavailable")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", import_without_transport)
+    namespace = runpy.run_path(str(REPO_ROOT / "core/self_edit/tools.py"))
+    temp_file.write_text("offline file tools remain available\n")
+    assert namespace["_HAVE_AGENTS"] is False
+    assert namespace["view"](temp_file) == "offline file tools remain available"

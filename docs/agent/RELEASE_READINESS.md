@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.12.1 manuscript edition
+# Release readiness — 1.12.2 manuscript edition
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
 plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
@@ -39,22 +39,22 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Dependencies | Hash-locked installation, full operator Python advisory audit, existing browser audits | A dated advisory snapshot; historical environments and host OS need separate maintenance |
 | Recovery | Signed backup/restore, pause, corruption detection, persistent container restart | Backups contain secrets; archive limit 256 MiB; independent checkpoints detect rollback |
 | User experience | Real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
-| Delivery | Same tested source/site, exact-commit CI, immutable tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; freshness checks cannot make separate API writes atomic |
+| Delivery | Same tested source/site, exact-commit CI, versioned tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; checksums do not establish GitHub-enforced release immutability or make separate API writes atomic |
 | Manuscript fidelity | Original 198-page PDF, canonical Markdown and 31 figures checked against a pinned source commit | A paper is a research specification, not proof that every proposed scientific capability has been established |
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.12.1). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.12.2). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
-audits block publication. Prior releases remain immutable recovery checkpoints.
+audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
 
 ## Upgrade without losing your work
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.12.1 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.12.2 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

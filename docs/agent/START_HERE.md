@@ -64,6 +64,7 @@ Stop the console with **Ctrl+C**.
 - Edit the copied examples: research, allocation, scheduling, forecasting or code. Code evaluation
   requires explicit permission and an isolated Docker runtime.
 - Use the [factory guide](FACTORY_GUIDE.md) for reviewed native work, FusionPlans and signed delivery.
+- Use the [demo walkthrough](DEMOS.md) for all browser experiences and the preserved local experiments.
 - Use [operations and recovery](OPERATIONS.md) before upgrades, backup, restore or provider configuration.
 - Use the [Ascension protocol guide](ASCENSION_PROTOCOL.md) for the local-EVM enterprise lifecycle.
 - Inspect the release's `release-manifest.json` and `alpha-agent-v…-validation.zip` for exact acceptance

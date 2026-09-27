@@ -7,17 +7,20 @@
 [Launch Demo](../omni_factory_demo/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Offline simulation. Runs bounded smart-city episodes with local accounting.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check omni_factory_demo
 python -m alpha_factory_v1.demos run omni_factory_demo
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Two episode outcomes; no token issuance. Simulation failure is reported as a nonzero exit.
 
