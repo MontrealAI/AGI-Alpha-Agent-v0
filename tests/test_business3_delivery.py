@@ -6,6 +6,7 @@ from copy import deepcopy
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -17,6 +18,33 @@ from scripts import business3_evidence as evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 DEMO = ROOT / "alpha_factory_v1/demos/alpha_agi_business_3_v1"
+
+
+def test_documentation_generator_runs_without_an_installed_package(tmp_path: Path) -> None:
+    """The historical gallery calls scripts directly from a clean source checkout."""
+    for relative in (
+        "scripts/generate_business3.py",
+        "scripts/templates/business3.html",
+        "scripts/templates/business3-legacy.html",
+        "alpha_factory_v1/demos/catalog.json",
+        "alpha_factory_v1/demos/alpha_agi_business_3_v1/scenarios.json",
+    ):
+        target = tmp_path / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, target)
+    (tmp_path / "docs/alpha_agi_business_3_v1").mkdir(parents=True)
+    (tmp_path / "docs/assets/business3").mkdir(parents=True)
+    result = subprocess.run(
+        [sys.executable, "-I", "-S", str(tmp_path / "scripts/generate_business3.py")],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
+    page = (tmp_path / "docs/alpha_agi_business_3_v1/index.html").read_text()
+    assert 'id="b3-app"' in page and 'id="chart"' in page and "{{LEGACY}}" not in page
+    assert (tmp_path / "docs/assets/business3/scenarios.json").read_bytes() == (DEMO / "scenarios.json").read_bytes()
 
 
 def test_notebook_executes_all_maintained_cells_against_actual_checkout(tmp_path: Path) -> None:

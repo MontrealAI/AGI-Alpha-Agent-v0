@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
