@@ -161,7 +161,7 @@ python alpha_factory_v1/quickstart.py --profile agent --venv .venv-operator -- -
 
 `--preflight` performs checks only. The agent profile needs neither Docker nor Node for its four
 non-code mission kinds. A new environment installs its chosen hash-locked requirements and runs
-`pip check`; an incomplete bootstrap is rejected on retry. Choose a new path or inspect and remove
+`pip check`; an incomplete bootstrap or changed lock digest is rejected on retry. Choose a new path or inspect and remove
 only that failed environment yourself. Existing unmarked environments are retained and checked.
 `--skip-preflight` is an explicit operator choice; a failed check never silently starts a service.
 Relative mission, home and output paths resolve from the invoking directory. No `.env` is overwritten.

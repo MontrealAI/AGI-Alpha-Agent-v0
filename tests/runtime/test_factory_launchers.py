@@ -69,6 +69,7 @@ def test_offline_without_wheels_never_installs(tmp_path: Path) -> None:
 def test_interrupted_install_is_retained_and_cannot_be_reused(tmp_path: Path) -> None:
     venv = tmp_path / "environment"
     requirements = tmp_path / "requirements-agent.lock"
+    requirements.write_text("example==1.0 --hash=sha256:fixture\n")
     wheels = tmp_path / "wheels"
     wheels.mkdir()
     calls = []
@@ -93,6 +94,34 @@ def test_interrupted_install_is_retained_and_cannot_be_reused(tmp_path: Path) ->
         with pytest.raises(ValueError, match="Partial"):
             quickstart._create_venv(venv, requirements, wheels)
         call.assert_not_called()
+
+
+def test_completed_environment_rejects_lock_drift_without_installing(tmp_path: Path) -> None:
+    import hashlib
+
+    venv = tmp_path / "environment"
+    py = quickstart._venv_python(venv)
+    py.parent.mkdir(parents=True)
+    py.touch()
+    requirements = tmp_path / "requirements-agent.lock"
+    original = b"example==1.0 --hash=sha256:old\n"
+    requirements.write_bytes(original)
+    marker = venv / ".alpha-factory-bootstrap.json"
+    marker.write_text(
+        json.dumps(
+            {"requirements": requirements.name, "lock_sha256": hashlib.sha256(original).hexdigest(), "complete": True}
+        )
+    )
+    with mock.patch("subprocess.check_call") as call:
+        quickstart._create_venv(venv, requirements)
+        call.assert_called_once()
+    requirements.write_bytes(b"example==2.0 --hash=sha256:new\n")
+    before = marker.read_bytes()
+    with mock.patch("subprocess.check_call") as call:
+        with pytest.raises(ValueError, match="changed-lock"):
+            quickstart._create_venv(venv, requirements)
+        call.assert_not_called()
+    assert marker.read_bytes() == before
 
 
 @pytest.mark.parametrize(

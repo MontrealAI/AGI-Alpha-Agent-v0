@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -24,24 +25,25 @@ def _venv_pip(venv: Path) -> Path:
 def _create_venv(venv: Path, requirements: Path | None = None, wheelhouse: Path | None = None) -> None:
     """Install one locked profile into a new environment; retain failed evidence."""
     requirements = requirements or Path(__file__).resolve().with_name("requirements.lock")
+    manifest = {"requirements": requirements.name, "lock_sha256": hashlib.sha256(requirements.read_bytes()).hexdigest()}
     marker = venv / ".alpha-factory-bootstrap.json"
     if venv.exists():
         if not _venv_python(venv).is_file():
             raise ValueError("Existing environment has no interpreter; choose a new --venv path")
         if marker.exists():
             state = json.loads(marker.read_text(encoding="utf-8"))
-            if state != {"requirements": requirements.name, "complete": True}:
-                raise ValueError("Partial or different-profile environment; choose a new --venv path")
+            if state != {**manifest, "complete": True}:
+                raise ValueError("Partial, changed-lock or different-profile environment; choose a new --venv path")
         subprocess.check_call([str(_venv_python(venv)), "-m", "pip", "check"])
         return
     subprocess.check_call([sys.executable, "-m", "venv", str(venv)])
-    marker.write_text(json.dumps({"requirements": requirements.name, "complete": False}), encoding="utf-8")
+    marker.write_text(json.dumps({**manifest, "complete": False}), encoding="utf-8")
     command = [str(_venv_python(venv)), "-m", "pip", "install", "--require-hashes", "-r", str(requirements)]
     if wheelhouse:
         command += ["--no-index", "--find-links", str(wheelhouse)]
     subprocess.check_call(command)
     subprocess.check_call([str(_venv_python(venv)), "-m", "pip", "check"])
-    marker.write_text(json.dumps({"requirements": requirements.name, "complete": True}), encoding="utf-8")
+    marker.write_text(json.dumps({**manifest, "complete": True}), encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:

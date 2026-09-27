@@ -23,7 +23,7 @@ several seeds; chain binding must be observed separately. See the [Ascension gui
 Bash and Python source launchers share one implementation. Source paths resolve correctly, Python
 3.11–3.13 is supported consistently, and the maintained agent has a preflight that needs no Node or
 Docker for non-code work. Check-only mode never installs. New environments install hashed dependencies;
-partial installations and failed preflight checks stop visibly. Existing user state is never replaced.
+partial installations, changed lock digests and failed preflight checks stop visibly. Existing user state is never replaced.
 
 The full research architecture, industry-agent suite, 26-entry catalog, manuscript and original
 flowcharts remain. Current execution modes and links distinguish tested runtime behavior from optional
