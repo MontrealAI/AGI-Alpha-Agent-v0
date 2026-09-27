@@ -37,7 +37,9 @@ def validate_cache_upgrade(site: Path) -> None:
                     (
                         "text/html"
                         if relative.endswith("html")
-                        else "text/css" if relative.endswith("css") else "text/javascript"
+                        else "text/css"
+                        if relative.endswith("css")
+                        else "text/javascript"
                     ),
                 )
                 self.send_header("Content-Length", str(len(payload)))

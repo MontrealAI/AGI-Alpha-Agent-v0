@@ -132,7 +132,9 @@ class Mission(StrictModel):
             else (
                 self.work.items
                 if isinstance(self.work, Allocation)
-                else self.work.jobs if isinstance(self.work, Schedule) else []
+                else self.work.jobs
+                if isinstance(self.work, Schedule)
+                else []
             )
         )
         ids = [r.id for r in records]
