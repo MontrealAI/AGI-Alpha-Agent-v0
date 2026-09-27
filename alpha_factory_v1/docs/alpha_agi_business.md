@@ -1,8 +1,18 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 
 # α‑AGI Business 👁️✨ — Canonical Blueprint v1.0
+
+> **Current implementation — 1.12.0.** This is the preserved research blueprint, including its
+> original diagrams, proposed APIs, historical maturity labels and performance/architecture targets.
+> Those targets are not production measurements or compliance certificates. Use the
+> [factory guide](../../docs/agent/FACTORY_GUIDE.md), [operator commands](../../docs/agent/OPERATIONS.md)
+> and [executable Ascension map](../../docs/agent/ASCENSION_PROTOCOL.md) for current behavior.
+> The supported token is canonical Ethereum $AGIALPHA; historical Solana and ENS examples below
+> are design history, not deployment instructions. Canonical ENS labels are single lowercase labels;
+> underscores and multiple sublabels in original diagrams are illustrative and fail the live role gate.
+
 
 > **Mission (Variant 1 — Autonomous Cross‑Industry Alpha Hunter)**  
 > *An **α‑AGI Business** is a fully‑autonomous enterprise (`<name>.alpha.agi.eth`) that hunts latent “**alpha**” across every industry and **transmutes** it into compounding value by out‑learning, out‑thinking, out‑designing, out‑strategising and out‑executing all competition.*

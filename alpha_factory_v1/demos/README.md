@@ -2,7 +2,11 @@
 
 # AGIALPHA demo catalog
 
-**New in 1.5.0:** [Launch the Ascension Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/).
+**Current package: 1.12.0.** [Start with the factory guide](../../../docs/agent/FACTORY_GUIDE.md),
+[Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) and native FusionPlan/evidence commands.
+All 26 entries below remain available; their individual execution modes still apply.
+
+**Introduced in 1.5.0:** [Launch the Ascension Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/).
 Explore the white paper end to end with three editable flagship scenarios, encrypted Nova-Seed recovery,
 computed FusionPlans, exact modeled funding/settlement and an interactive governance observatory.
 The [implementation guide](../../../docs/agent/WHITEPAPER_IMPLEMENTATION.md) maps each mechanism to code,

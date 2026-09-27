@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import unittest
 import sys
+import subprocess
 import tempfile
 from pathlib import Path
 from unittest import mock
@@ -37,7 +38,9 @@ class PreflightTest(unittest.TestCase):
             with mock.patch("subprocess.run") as run:
                 run.return_value = mock.Mock(returncode=0)
                 self.assertTrue(preflight.check_docker_daemon())
-            with mock.patch("subprocess.run", side_effect=Exception):
+            with mock.patch("subprocess.run", side_effect=OSError("Docker unavailable")):
+                self.assertFalse(preflight.check_docker_daemon())
+            with mock.patch("subprocess.run", side_effect=subprocess.TimeoutExpired("docker info", 20)):
                 self.assertFalse(preflight.check_docker_daemon())
 
     def test_check_docker_compose(self) -> None:
@@ -47,7 +50,9 @@ class PreflightTest(unittest.TestCase):
             with mock.patch("subprocess.run") as run:
                 run.return_value = mock.Mock(returncode=0)
                 self.assertTrue(preflight.check_docker_compose())
-            with mock.patch("subprocess.run", side_effect=Exception):
+            with mock.patch("subprocess.run", side_effect=OSError("Compose unavailable")):
+                self.assertFalse(preflight.check_docker_compose())
+            with mock.patch("subprocess.run", side_effect=subprocess.TimeoutExpired("docker compose", 20)):
                 self.assertFalse(preflight.check_docker_compose())
 
     def test_check_pkg(self) -> None:
@@ -75,6 +80,10 @@ class PreflightTest(unittest.TestCase):
             preflight,
             check_python=lambda: True,
             check_cmd=lambda cmd: True,
+            check_node=lambda: True,
+            check_patch_in_sandbox=lambda: True,
+            check_openai_agents_version=lambda: True,
+            check_network=lambda: True,
             check_docker_daemon=lambda: True,
             check_docker_compose=lambda: True,
             check_pkg=lambda pkg, optional=False: True,
@@ -86,6 +95,8 @@ class PreflightTest(unittest.TestCase):
             preflight,
             check_python=lambda: False,
             check_cmd=lambda cmd: False,
+            check_node=lambda: False,
+            check_patch_in_sandbox=lambda: False,
             check_docker_daemon=lambda: False,
             check_docker_compose=lambda: False,
             check_pkg=lambda pkg, optional=False: False,
@@ -101,6 +112,9 @@ class PreflightTest(unittest.TestCase):
             preflight,
             check_python=lambda: True,
             check_cmd=lambda cmd: True,
+            check_node=lambda: True,
+            check_patch_in_sandbox=lambda: True,
+            check_openai_agents_version=lambda: True,
             check_docker_daemon=lambda: True,
             check_docker_compose=lambda: True,
             check_pkg=lambda pkg, optional=False: True,

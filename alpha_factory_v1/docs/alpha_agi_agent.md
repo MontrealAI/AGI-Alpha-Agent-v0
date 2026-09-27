@@ -1,8 +1,18 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 
 # α‑AGI Agent 👁️✨ — Canonical Specification v1.1
+
+> **Current implementation — 1.12.0.** This is the preserved research blueprint, including its
+> original diagrams, proposed APIs, historical maturity labels and performance/architecture targets.
+> Those targets are not production measurements or compliance certificates. Use the
+> [factory guide](../../docs/agent/FACTORY_GUIDE.md), [operator commands](../../docs/agent/OPERATIONS.md)
+> and [executable Ascension map](../../docs/agent/ASCENSION_PROTOCOL.md) for current behavior.
+> The supported token is canonical Ethereum $AGIALPHA; historical Solana and ENS examples below
+> are design history, not deployment instructions. Canonical ENS labels are single lowercase labels;
+> underscores and multiple sublabels in original diagrams are illustrative and fail the live role gate.
+
 
 > **Like a keystone species in a digital ecosystem**, the agentic **α‑AGI Agent** (`<name>.alpha.agent.agi.eth`) is an autonomously evolving orchestrator that executes α‑Jobs end-to-end for **α‑AGI Businesses** (`<name>.alpha.agi.eth`), fueled by **\$AGIALPHA** and guided by validator feedback and on-chain reputation to amplify the network’s collective intelligence and value with unprecedented efficiency.
 

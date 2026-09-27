@@ -1,3 +1,10 @@
+## 1.12.0 — 2026-09-27
+
+- Updated the Alpha-Factory entry point, operating guide, deployment paths and scope labels while preserving original flowcharts and media.
+- Added packaged examples and a native Ascension handoff: exact FusionPlan commitments, tamper checks, reviewed-result binding and externally anchored signature verification.
+- Unified cross-platform launchers, corrected source paths and Python support, added an operator-only preflight, and made failed/partial installations stop visibly.
+- Added native/JavaScript/Solidity interoperability and package preservation acceptance gates. No journal or contract migration.
+
 ## 1.11.0 — 2026-09-27
 
 Add an integrated Ascension Solidity reference suite: ERC-721 Nova-Seeds, expiring validator risk oracle,

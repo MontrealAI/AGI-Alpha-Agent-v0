@@ -1,8 +1,55 @@
-[See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
+[See docs/DISCLAIMER_SNIPPET.md](../docs/DISCLAIMER_SNIPPET.md)
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 
 
 # Alpha‑Factory v1 👁️✨ — Multi‑Agent **AGENTIC** α‑AGI
+
+**Version 1.12.0 · maintained Python package and full architecture.**
+
+[Start here](../docs/agent/FACTORY_GUIDE.md) · [Operator guide](../docs/agent/OPERATIONS.md)
+· [Live workspace](https://montrealai.github.io/AGI-Alpha-Agent-v0/)
+· [Ascension protocol](../docs/agent/ASCENSION_PROTOCOL.md) · [All 26 catalog entries](demos/README.md)
+
+Alpha-Factory connects opportunity analysis, bounded mission execution, review, retained evidence and
+validator-gated enterprise funding. The architecture and original flowcharts below remain intact.
+Choose the execution profile that matches your goal:
+
+| I want to… | Start here | What actually runs |
+|---|---|---|
+| Try a useful decision immediately | [Decision Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/studio/) | Editable scenarios, checked calculations and downloadable dossiers |
+| Run my own research, allocation, schedule or forecast | `alpha-factory mission --help` | Persistent native engine, signed journal, independent arithmetic checks, operator review |
+| Generate or evaluate code | [Code configuration](../docs/agent/OPERATIONS.md#configure-inference-and-code) | Explicitly enabled Docker execution with resource/network limits |
+| Compile a venture plan and hand off reviewed work | `alpha-factory mission ascension-compile --help` | Exact Solidity-compatible Merkle commitments and signed delivery files |
+| Inspect funding, jobs, validators and burn accounting | [Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) | Recorded local-EVM transactions; editable exact calculators |
+| Measure capability transfer before promotion | [Compounding Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/) | Held-out tasks, controls, cost accounting and replayable evidence |
+| Explore the original multi-agent experiments | `alpha-factory demos list` | All preserved demos, each with its mode, prerequisites and limits |
+
+**Operating scope.** The maintained deployment profile is a private, single-operator runtime. The
+Ascension contracts are a tested, undeployed reference protocol. The domain-agent constellation, world
+models, industry integrations and federation below include research implementations and optional
+services. No installation alone establishes general intelligence, real-world profitability, independent
+validators, regulatory compliance or readiness for unattended mainnet operation.
+
+```mermaid
+flowchart TD
+    I["Insight: attributable opportunity"] --> P["FusionPlan: goal, metric, bounty"]
+    P --> N["Nova-Seed: encrypted genome commitment"]
+    N --> G{"Validator risk approval"}
+    G -->|Approved| M["MARK: funding and plan treasury"]
+    G -->|Revise| I
+    M --> J["Sovereign: route committed jobs"]
+    J --> A["Agent: execute and export evidence"]
+    A --> V{"Validators review exact result"}
+    V -->|Accept| S["Settlement: AGIALPHA and 1% burn"]
+    V -->|Reject or expire| R["Slash or recover by contract rules"]
+    S --> E["Evaluate successor and retained capability"]
+    E --> I
+```
+
+The [factory guide](../docs/agent/FACTORY_GUIDE.md) maps each stage to code, commands and evidence.
+Local operator review and an Ed25519 signature are distinct from ENS admission and on-chain votes.
+
+
 
 **Out‑learn · Out‑think · Out‑design · Out‑strategise · Out‑execute**
 
@@ -13,11 +60,11 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 Global markets seep *USD ✧ trillions/yr* in latent opportunity — “alpha” in the broadest sense:  
 <kbd>pricing dislocations • supply‑chain entropy • novel drug targets • policy loopholes • undiscovered materials</kbd>.
 
-**Alpha‑Factory v1** is an antifragile constellation of self‑improving Agentic α‑AGI Agents 👁️✨ orchestrated to **spot live alpha across any industry and transmute it into compounding value**.
+**The Alpha‑Factory v1 vision** is an antifragile constellation of self‑improving Agentic α‑AGI Agents 👁️✨ orchestrated to **spot live alpha across any industry and transmute it into compounding value**.
 
 **Definition**: An **α‑AGI Business** 👁️✨ is an on‑chain autonomous enterprise (`<name>.alpha.agi.eth`) that unleashes a swarm of self‑improving agentic **α‑AGI agents** 👁️✨ (`<name>.alpha.agent.agi.eth`) to hunt down inefficiencies across any domain and transmute them into **$AGIALPHA**.
 
-Built atop **OpenAI Agents SDK**, **Google ADK**, **A2A protocol**, and Anthropic’s **Model Context Protocol**, the stack runs cloud‑native *or* air‑gapped, hot‑swapping between frontier LLMs and distilled local models.
+Research integrations include **OpenAI Agents SDK**, **Google ADK**, **A2A protocol**, and Anthropic’s **Model Context Protocol**, with separately configured cloud or local models. The maintained runtime needs none of these optional SDKs for its four non-code mission types.
 
 ## Disclaimer
 This repository is a conceptual research prototype. References to "AGI" and
@@ -52,8 +99,8 @@ of a real general intelligence. Use at your own risk.
 * **Experience‑First Loop** — Sense → *Imagine* (MuZero‑style latent planning) → Act → Adapt.  
 * **AI‑GA Autogenesis** — The factory meta‑evolves new agents and curricula inspired by Clune’s *AI‑Generating Algorithms*.  
 * **Graceful Degradation** — GPU‑less? No cloud key? Agents fall back to distilled local models & heuristics.  
-* **Zero‑Trust Core** — SPIFFE identities, signed artefacts, guard‑rails, exhaustive audit logs.  
-* **Polyglot Value** — Everything is normalised to a common *alpha Δ∑USD* lens.
+* **Zero‑Trust Design** — signed artefacts and audit logs in the native runtime; SPIFFE and additional guards are deployment-specific architecture targets.
+* **Explicit Value Units** — keep measured task units, modeled benefit, token amounts and realized revenue separate; the architecture explores a common *alpha Δ∑USD* lens.
 
 ---
 
@@ -150,20 +197,20 @@ flowchart TD
     FIN -.->|Prometheus| GRAFANA{{"📊"}}
 ```
 
-| # | Agent | Path | Prime Directive | Status | Key Env Vars |
+| # | Agent | Path | Prime Directive | Research maturity (historical) | Key Env Vars |
 |---|-------|------|-----------------|--------|--------------|
-| 1 | **Finance** 💰 | `finance_agent.py` | Multi‑factor alpha & RL execution | **Prod** | `BROKER_DSN` |
-| 2 | **Biotech** 🧬 | `biotech_agent.py` | CRISPR & assay proposals | **Prod** | `OPENAI_API_KEY` |
-| 3 | **Manufacturing** ⚙️ | `manufacturing_agent.py` | CP‑SAT optimiser | **Prod** | `SCHED_HORIZON` |
-| 4 | **Policy** 📜 | `policy_agent.py` | Statute QA & diffs | **Prod** | `STATUTE_CORPUS_DIR` |
-| 5 | **Energy** 🔋 | `energy_agent.py` | Spot‑vs‑forward arbitrage | **Beta** | `ISO_TOKEN` |
-| 6 | **Supply‑Chain** 📦 | `supply_chain_agent.py` | Stochastic MILP routing | **Beta** | `SC_DB_DSN` |
-| 7 | **Retail Demand** 🛍️ | `retail_demand_agent.py` | SKU forecast & pricing | **Beta** | `POS_DB_DSN` |
-| 8 | **Cyber‑Sec** 🛡️ | `cyber_threat_agent.py` | Predict & patch CVEs | **Beta** | `VT_API_KEY` |
-| 9 | **Climate Risk** 🌎 | `climate_risk_agent.py` | ESG stress tests | **Beta** | `NOAA_TOKEN` |
-|10 | **Drug‑Design** 💊 | `drug_design_agent.py` | Diffusion + docking | **Incub** | `CHEMBL_KEY` |
-|11 | **Smart‑Contract** ⛓️ | `smart_contract_agent.py` | Formal verification | **Incub** | `ETH_RPC_URL` |
-|12 | **Talent‑Match** 🧑‍💻 | `talent_match_agent.py` | Auto‑bounty hiring | **Incub** | — |
+| 1 | **Finance** 💰 | `finance_agent.py` | Multi‑factor alpha & RL execution | Research integration | `BROKER_DSN` |
+| 2 | **Biotech** 🧬 | `biotech_agent.py` | CRISPR & assay proposals | Research integration | `OPENAI_API_KEY` |
+| 3 | **Manufacturing** ⚙️ | `manufacturing_agent.py` | CP‑SAT optimiser | Research integration | `SCHED_HORIZON` |
+| 4 | **Policy** 📜 | `policy_agent.py` | Statute QA & diffs | Research integration | `STATUTE_CORPUS_DIR` |
+| 5 | **Energy** 🔋 | `energy_agent.py` | Spot‑vs‑forward arbitrage | Experimental | `ISO_TOKEN` |
+| 6 | **Supply‑Chain** 📦 | `supply_chain_agent.py` | Stochastic MILP routing | Experimental | `SC_DB_DSN` |
+| 7 | **Retail Demand** 🛍️ | `retail_demand_agent.py` | SKU forecast & pricing | Experimental | `POS_DB_DSN` |
+| 8 | **Cyber‑Sec** 🛡️ | `cyber_threat_agent.py` | Predict & patch CVEs | Experimental | `VT_API_KEY` |
+| 9 | **Climate Risk** 🌎 | `climate_risk_agent.py` | ESG stress tests | Experimental | `NOAA_TOKEN` |
+|10 | **Drug‑Design** 💊 | `drug_design_agent.py` | Diffusion + docking | Incubation | `CHEMBL_KEY` |
+|11 | **Smart‑Contract** ⛓️ | `smart_contract_agent.py` | Formal verification | Incubation | `ETH_RPC_URL` |
+|12 | **Talent‑Match** 🧑‍💻 | `talent_match_agent.py` | Auto‑bounty hiring | Incubation | — |
 
 ```mermaid
 %% Legend
@@ -252,38 +299,40 @@ sequenceDiagram
 
 | # | Folder | Emoji | Lightning Pitch | Alpha Contribution | Start Locally |
 |---|--------|-------|-----------------|--------------------|---------------|
-|1|`aiga_meta_evolution`|🧬|Agents *evolve* new agents; genetic tests auto‑score fitness.|Expands strategy space, surfacing fringe alpha.|`cd alpha_factory_v1/demos/aiga_meta_evolution && ./run_aiga_demo.sh`|
-|2|`alpha_agi_business_v1`|🏦|Auto‑incorporates a digital‑first company end‑to‑end.|Shows AGI turning ideas → registered business.|`./alpha_factory_v1/demos/alpha_agi_business_v1/run_business_v1_demo.sh [--pull] [--gpu]` (docs: `http://localhost:8000/docs`)|
-|3|`alpha_agi_business_2_v1`|🏗|Iterates business model with live market data RAG.|Continuous adaptation → durable competitive alpha.|`./alpha_factory_v1/demos/alpha_agi_business_2_v1/run_business_2_demo.sh`|
-|4|`alpha_agi_business_3_v1`|📊|Financial forecasting & fundraising agent swarm.|Optimises capital stack for ROI alpha.|`./alpha_factory_v1/demos/alpha_agi_business_3_v1/run_business_3_demo.sh`|
-|5|`alpha_agi_marketplace_v1`|🛒|Peer‑to‑peer agent marketplace simulating price discovery.|Validates micro‑alpha extraction via agent barter.|`docker compose -f demos/docker-compose.marketplace.yml up`|
-|6|`alpha_asi_world_model`|🌌|Scales MuZero‑style world‑model to an open‑ended grid‑world.|Stress‑tests anticipatory planning for ASI scenarios.|`docker compose -f demos/docker-compose.asi_world.yml up`|
-|7|`cross_industry_alpha_factory`|🌐|Full pipeline: ingest → plan → act across 4 verticals.|Proof that one orchestrator handles multi‑domain alpha.|`./alpha_factory_v1/demos/cross_industry_alpha_factory/deploy_alpha_factory_cross_industry_demo.sh`|
-|8|`era_of_experience`|🏛|Lifelong RL stack blending real & synthetic experience streams.|Showcases sensor-motor tools, grounded rewards & non-human reasoning.|`cd alpha_factory_v1/demos/era_of_experience && ./run_experience_demo.sh`|
-|9|`finance_alpha`|💹|Live momentum + risk‑parity bot on Binance test‑net.|Generates real P&L; stress‑tested against CVaR.|`./alpha_factory_v1/demos/finance_alpha/deploy_alpha_factory_demo.sh`|
-|10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
-|11|`muzero_planning`|♟|MuZero in 60 s; online world‑model with MCTS.|Distills planning research into a one‑command demo.|`./alpha_factory_v1/demos/muzero_planning/run_muzero_demo.sh`|
-|12|`self_healing_repo`|🩹|Repo-Healer v1 runs bounded triage + targeted repair for this repo.|Maintains pipeline uptime alpha.|`docker compose -f demos/docker-compose.selfheal.yml up`|
+|1|`aiga_meta_evolution`|🧬|Agents *evolve* new agents; genetic tests auto‑score fitness.|Expands strategy space, surfacing fringe alpha.|`alpha-factory demos show aiga_meta_evolution`|
+|2|`alpha_agi_business_v1`|🏦|Ranks bundled business opportunities; illustrates a company workflow.|Shows idea → proposal; does not legally register a business.|`alpha-factory demos show alpha_agi_business_v1`|
+|3|`alpha_agi_business_2_v1`|🏗|Runs a local business-agent service with optional provider commentary.|Continuous adaptation → durable competitive alpha.|`alpha-factory demos show alpha_agi_business_2_v1`|
+|4|`alpha_agi_business_3_v1`|📊|Runs a bounded business-cycle simulation with local fallback results.|Optimises capital stack for ROI alpha.|`alpha-factory demos show alpha_agi_business_3_v1`|
+|5|`alpha_agi_marketplace_v1`|🛒|Peer‑to‑peer agent marketplace simulating price discovery.|Validates micro‑alpha extraction via agent barter.|`alpha-factory demos show alpha_agi_marketplace_v1`|
+|6|`alpha_asi_world_model`|🌌|Scales MuZero‑style world‑model to an open‑ended grid‑world.|Stress‑tests anticipatory planning for ASI scenarios.|`alpha-factory demos show alpha_asi_world_model`|
+|7|`cross_industry_alpha_factory`|🌐|Full pipeline: ingest → plan → act across 4 verticals.|Proof that one orchestrator handles multi‑domain alpha.|`alpha-factory demos show cross_industry_alpha_factory`|
+|8|`era_of_experience`|🏛|Lifelong RL stack blending real & synthetic experience streams.|Showcases sensor-motor tools, grounded rewards & non-human reasoning.|`alpha-factory demos show era_of_experience`|
+|9|`finance_alpha`|💹|Paper-market and legacy broker integration example.|Illustrates risk controls; realized P&L is not established by release evidence.|`alpha-factory demos show finance_alpha`|
+|10|`macro_sentinel`|🌐|Monte Carlo risk simulation over bundled macro inputs.|Quantifies modeled tail risk under supplied assumptions.|`alpha-factory demos show macro_sentinel`|
+|11|`muzero_planning`|♟|MuZero in 60 s; online world‑model with MCTS.|Distills planning research into a one‑command demo.|`alpha-factory demos show muzero_planning`|
+|12|`self_healing_repo`|🩹|Repo-Healer v1 runs bounded triage + targeted repair for this repo.|Maintains pipeline uptime alpha.|`alpha-factory demos show self_healing_repo`|
 
-> **Colab?** Each folder ships an `*.ipynb` that mirrors the Docker flow with free GPUs.
+> **Colab?** Some demos include notebooks. Check each catalog entry for its actual assets, dependencies and execution mode.
 
-### Demo Stability
+### Demo execution modes
+
+The [catalog](demos/README.md) is the maintained launch inventory; these are the original showcase entries.
 | Demo | Purpose | Stability |
 |------|---------|-----------|
-|[aiga_meta_evolution](demos/aiga_meta_evolution/README.md)|Agents evolve new agents|Incub|
-|[alpha_agi_business_v1](demos/alpha_agi_business_v1/README.md)|Auto-incorporates a digital-first company|Prod|
-|[alpha_agi_business_2_v1](demos/alpha_agi_business_2_v1/README.md)|Market-adaptive business iteration|Beta|
-|[alpha_agi_business_3_v1](demos/alpha_agi_business_3_v1/README.md)|Fundraising agent swarm for forecasting|Prod|
-|[alpha_agi_marketplace_v1](demos/alpha_agi_marketplace_v1/README.md)|Peer-to-peer agent marketplace|Prod|
-|[alpha_asi_world_model](demos/alpha_asi_world_model/README.md)|Open-ended world model training|Beta|
-|[cross_industry_alpha_factory](demos/cross_industry_alpha_factory/README.md)|Pipeline across multiple verticals|Prod|
-|[era_of_experience](demos/era_of_experience/README.md)|Autobiographical memory RL playground|Incub|
-|[finance_alpha](demos/finance_alpha/README.md)|Momentum and risk-parity bot|Beta|
-|[macro_sentinel](demos/macro_sentinel/README.md)|News scanner with futures hedging|Beta|
-|[muzero_planning](demos/muzero_planning/README.md)|Minimal MuZero planning demo|Beta|
+|[aiga_meta_evolution](demos/aiga_meta_evolution/README.md)|Small-network evolution|Research training|
+|[alpha_agi_business_v1](demos/alpha_agi_business_v1/README.md)|Bundled opportunity-ranking sample|Offline sample|
+|[alpha_agi_business_2_v1](demos/alpha_agi_business_2_v1/README.md)|Business-agent orchestration|Local service|
+|[alpha_agi_business_3_v1](demos/alpha_agi_business_3_v1/README.md)|Bounded business cycle|Simulation|
+|[alpha_agi_marketplace_v1](demos/alpha_agi_marketplace_v1/README.md)|Bundled job validation and API client|Local API client|
+|[alpha_asi_world_model](demos/alpha_asi_world_model/README.md)|Generated grid-world training|Research training|
+|[cross_industry_alpha_factory](demos/cross_industry_alpha_factory/README.md)|Bundled cross-industry opportunities|Offline sample|
+|[era_of_experience](demos/era_of_experience/README.md)|Signals from bundled CSV history|Offline sample|
+|[finance_alpha](demos/finance_alpha/README.md)|Paper-market broker example|Deployment example|
+|[macro_sentinel](demos/macro_sentinel/README.md)|Monte Carlo macro-risk model|Offline simulation|
+|[muzero_planning](demos/muzero_planning/README.md)|Small MuZero-style planner|Research planning|
 |[self_healing_repo](demos/self_healing_repo/README.md)|Bounded Repo-Healer v1 for Tier-1 CI failures + structured diagnosis|Beta|
-|[meta_agentic_tree_search_v0](demos/meta_agentic_tree_search_v0/README.md)|Recursive agent tree search|Incub|
-|[alpha_agi_insight_v0](demos/alpha_agi_insight_v0/README.md)|Sector ranking via zero-data search|Beta|
+|[meta_agentic_tree_search_v0](demos/meta_agentic_tree_search_v0/README.md)|Integer-policy search|Offline simulation|
+|[alpha_agi_insight_v0](demos/alpha_agi_insight_v0/README.md)|Toy sector-score search|Offline simulation|
 
 ### 4.1 · [α-ASI World-Model Demo 👁️✨](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_asi_world_model)
 
@@ -356,39 +405,55 @@ Cells with \(Δ\mathcal F < 0\) glow 🔵 on Grafana; Ω‑Agents race to harves
 ---
 
 <a name="6-5-minute-quick-start"></a>
-## 6 · 5‑Minute Quick‑Start 🚀
+## 6 · 5-Minute Quick-Start 🚀
+
+From the repository root, use Python 3.11–3.13 in a dedicated virtual environment.
+The examples also ship inside the wheel, so an installed agent works from any directory.
+
 ```bash
 git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1
-./quickstart.sh --preflight
-
-# optional: point to an external Kafka broker
-export ALPHA_KAFKA_BROKER=localhost:9092
-echo "PORT=8000" > .env
-echo "LOGLEVEL=info" >> .env
-chmod 600 alpha_factory_v1/.env
-./quickstart.sh  # automatically loads .env
-open http://localhost:8000/docs
+cd AGI-Alpha-Agent-v0
+python3 -m venv .venv-agent
+source .venv-agent/bin/activate
+python -m pip install --require-hashes -r requirements-agent.lock
+python -m pip install --no-deps -e .
+python -m alpha_factory_v1.scripts.preflight --profile agent --offline
+alpha-factory mission examples --output my-missions
+alpha-factory mission --home ./agent-state init
+alpha-factory mission --home ./agent-state run my-missions/allocation.json
+alpha-factory mission --home ./agent-state serve
 ```
 
-No GPU → falls back to GGML Llama‑3‑8B‑Q4.
-No `OPENAI_API_KEY` → switches to local SBERT + heuristics.
-`OPENAI_TIMEOUT_SEC` sets the OpenAI API request timeout in seconds (default 30).
+Open **http://127.0.0.1:8765**, read the access token from `agent-state/api.token`, and
+inspect the result before approving or rejecting it. Stop the server with **Ctrl+C**.
+Existing mission/example directories are never overwritten. No cloud key or GPU is required.
+For Windows, use `python -m venv .venv-agent` and `.venv-agent\Scripts\Activate.ps1`.
+
+Research without a configured provider extracts source passages. It does not silently pretend to run
+an LLM. Allocation, scheduling and forecasting use local algorithms. Configure models, Docker and
+payment verification explicitly in the [operator guide](../docs/agent/OPERATIONS.md).
+
+The preserved source launcher now supports `--profile agent` and `--profile legacy` (the historical
+default). `python alpha_factory_v1/quickstart.py --profile agent --preflight --offline` only checks;
+it never installs packages or creates a home. `--wheelhouse PATH` enables local-only installation.
+The [factory guide](../docs/agent/FACTORY_GUIDE.md) includes exact source, wheel, offline and recovery paths.
 
 ---
 
 <a name="7-deployment-recipes"></a>
-## 7 · Deployment Recipes 🍳
-The repository ships with an `edge_runner.py` script for portable,
-offline deployments. It forwards to the Python module and supports
-extra flags such as `--cycle`, `--loglevel` and `--version`.
+## 7 · Deployment Recipes 🍳
 
-| Target | Command | Notes |
-|--------|---------|-------|
-| **Docker Compose** | `docker compose up -d` | Kafka, Prometheus, Grafana |
-| **Helm (K8s)** | `helm install af charts/alpha-factory` | SPIFFE, HPA |
-| **AWS Fargate** | `./infra/deploy_fargate.sh` | SQS shim for Kafka |
-| **IoT Edge** | `python edge_runner.py --agents manufacturing,energy` | Jetson Nano |
+Run paths below from the repository root. The native profile is qualified for a private operator host;
+the broader research stack and cloud charts need their own configuration and commissioning.
+
+| Target | Existing entry point | Scope |
+|---|---|---|
+| **Private operator** | `alpha-agent --home ./agent-state serve` | Authenticated loopback console; signed state and recovery |
+| **Operator container** | `docker build --target agent-runtime -t agialpha-agent:1.12.0 -f alpha_factory_v1/Dockerfile .` | [Persistent volume and upgrade commands](../docs/agent/OPERATIONS.md) |
+| **Research Compose** | `docker compose -f alpha_factory_v1/docker-compose.yml config` | Inspect configuration first; supply a separate `.env` and deployment-specific services |
+| **Helm (K8s)** | `helm lint alpha_factory_v1/helm/alpha-factory` | Preserved chart; review values, secrets, images and exposure before installing |
+| **AWS Fargate** | Architecture target | No `infra/deploy_fargate.sh` is shipped; do not run the old proposed command |
+| **Edge / offline** | `python edge_runner.py --help` | Preserved research runner; no automatic hardware-performance guarantee |
 
 ---
 
@@ -396,8 +461,8 @@ extra flags such as `--cycle`, `--loglevel` and `--version`.
 ## 8 · Governance & Compliance ⚖️
 
 * **MCP envelopes** (SHA‑256, ISO‑8601, policy hash)  
-* **Red‑Team Suite** fuzzes prompts & actions  
-* **Attestations** — W3C Verifiable Credentials at every Actuator call
+* **Adversarial checks** exercise tampering, malformed input, permissions, deadlines and recovery; broader prompt/action fuzzing remains an extension target.
+* **Attestation design** — historical W3C credential hooks are optional. Native mission receipts use Ed25519; Ascension uses independent on-chain role and vote checks.
 
 ---
 
@@ -406,9 +471,9 @@ extra flags such as `--cycle`, `--loglevel` and `--version`.
 
 | Signal | Sink | Example |
 |--------|------|---------|
-| Metrics | Prometheus | `alpha_pnl_realised_usd` |
+| Metrics | Prometheus | Inspect the enabled service metrics; financial values need an actual data source |
 | Traces | OpenTelemetry | `trace_id` |
-| Dashboards | Grafana | `alpha-factory/trade-lifecycle.json` |
+| Dashboards | Grafana | `docs/grafana/dashboards/alpha_factory_overview.json` |
 | Config | `docs/prometheus.yml` | Prometheus & Grafana defaults |
 
 Docker Compose mounts `docs/prometheus.yml` and the Grafana provisioning files
@@ -419,21 +484,23 @@ so metrics are available out-of-the-box.
 <a name="10-extending-the-mesh"></a>
 ## 10 · Extending the Mesh 🔌
 ```python
-from backend.agents.base import AgentBase
+from alpha_factory_v1.backend.agents.base import AgentBase
 
 class MySuperAgent(AgentBase):
     NAME = "super"
     CAPABILITIES = ["telemetry_fusion"]
     COMPLIANCE_TAGS = ["gdpr_minimal"]
 
-    async def run_cycle(self):
+    async def step(self):
         ...
 
-# setup.py entrypoint
-[project.entry-points."alpha_factory.agents"]
-super = my_pkg.super_agent:MySuperAgent
 ```
-`pip install .` → orchestrator hot‑loads at next boot.
+
+```toml
+[project.entry-points."alpha_factory.agents"]
+super = "my_pkg.super_agent:MySuperAgent"
+```
+Install a trusted plugin in the research environment and restart to discover it. Signed wheel loading is separately configured; see the [contributor guide](../AGENTS.md#wheel-signing). This plugin API does not change the five native mission schemas.
 
 ---
 
