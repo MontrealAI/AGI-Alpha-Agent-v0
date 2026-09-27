@@ -338,7 +338,7 @@ def simulate(
 
     # evaluate forecast accuracy on the Sector-Shock-10 dataset
     try:
-        repo_root = Path(str(resources.files("alpha_factory_v1")))
+        repo_root = Path(str(resources.files("alpha_factory_v1.demos.alpha_agi_insight_v1")))
         if not (repo_root / "data" / "sector_shock_10").exists():
             raise FileNotFoundError
     except Exception:  # pragma: no cover - fallback for editable installs

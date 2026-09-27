@@ -1,16 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 """Validate the whole inventory and execute its finite offline launch contracts."""
+
 from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 import sqlite3
 import subprocess
 import tempfile
 import time
 
-from alpha_factory_v1.demos.catalog import REPO_ROOT, command_for, entries, environment_for
+from alpha_factory_v1.demos.catalog import REPO_ROOT, command_for, entries, environment_for, prerequisites_for
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 
@@ -29,6 +31,20 @@ def validate_inventory() -> list[str]:
         for field in ("title", "mode", "summary", "expected", "prerequisites", "limitations"):
             if not entry[field]:
                 raise ValueError(f"Missing {field}: {entry['id']}")
+        modules = entry["required_modules"]
+        if not isinstance(modules, list) or any(
+            not isinstance(name, str) or not re.fullmatch(r"[A-Za-z_]\w*", name) for name in modules
+        ):
+            raise ValueError(f"Invalid prerequisite modules: {entry['id']}")
+        if not isinstance(entry["offline"], bool):
+            raise ValueError(f"Invalid offline setting: {entry['id']}")
+        assets = entry["assets"]
+        if not isinstance(assets, list) or any(not isinstance(name, str) for name in assets):
+            raise ValueError(f"Invalid bundled files: {entry['id']}")
+        for name in assets:
+            path = (base / name).resolve()
+            if not path.is_relative_to(base) or not path.is_file():
+                raise ValueError(f"Missing or external bundled file: {entry['id']}: {name}")
         if entry["command"]:
             command = entry["command"]
             if command[:2] != ["python", "-m"]:
@@ -45,11 +61,14 @@ def smoke() -> list[dict[str, object]]:
     for entry in entries():
         if not entry["smoke"]:
             continue
+        prerequisites = prerequisites_for(entry)
+        if not prerequisites["passed"]:
+            raise ValueError(f"Missing demo prerequisites: {prerequisites}")
         started = time.monotonic()
         with tempfile.TemporaryDirectory(prefix="demo-catalog-") as temp:
             output = Path(temp)
             environment = environment_for(entry, output)
-            environment.update(OPENAI_API_KEY="", ANTHROPIC_API_KEY="", NO_LLM="1", NO_DISCLAIMER="1")
+            environment["NO_DISCLAIMER"] = "1"
             command = command_for(entry, output)
             count = 2 if entry["id"] in {"meta_agentic_agi", "meta_agentic_agi_v2"} else 1
             results = [

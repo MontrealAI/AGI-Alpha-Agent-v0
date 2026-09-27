@@ -7,17 +7,20 @@
 [Launch Demo](../solving_agi_governance/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Offline simulation. Runs a bounded stochastic cooperation model.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check solving_agi_governance
 python -m alpha_factory_v1.demos run solving_agi_governance
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Mean cooperation for the selected seed and assumptions.
 

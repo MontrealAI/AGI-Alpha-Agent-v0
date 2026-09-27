@@ -1,15 +1,16 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Local service. Runs planning, research and optional commentary agents in the legacy orchestrator.
 
 **Prerequisites:** Repository dependencies and legacy orchestrator configuration; see the local README.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_agi_business_2_v1
 python -m alpha_factory_v1.demos run alpha_agi_business_2_v1
 ```
 

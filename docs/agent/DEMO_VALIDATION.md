@@ -1,6 +1,11 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Demo validation and honest execution modes — 1.5.0
+# Demo validation and honest execution modes — 1.12.2
+
+Start with the [demo walkthrough](DEMOS.md) for installation, prerequisite checks, browser experiences
+and the complete Ascension lifecycle. The release retains all 26 entries and tests the 14 finite offline
+commands from the actual wheel outside the repository. All six CSV samples and 11 Insight scenario
+fixtures are checked byte-for-byte against their source data.
 
 The new [Ascension Lab](../ascension/index.html) adds three interactive flagship scenarios and a governance
 observatory alongside the preserved 26-entry catalog. Its [implementation guide](WHITEPAPER_IMPLEMENTATION.md)
@@ -16,6 +21,9 @@ historical claims are retained; the current guide defines what is supported and 
 | Gate | What must actually execute | Evidence |
 | --- | --- | --- |
 | Catalog | Exact 26-directory coverage; 14 finite commands, with repeat runs preserving v1/v2 SQLite history | `demo-catalog.json` in regression artifacts |
+| Installed demos | All 14 finite commands from the wheel with Python network calls blocked, inherited provider keys disabled and sample bytes preserved | `test_demo_distribution.py` in regression JUnit |
+| Launcher boundaries | Output-directory module shadowing rejected, malformed output paths reported, missing modules/data stop before launch; prerequisite check has no launch/state side effects | Runtime JUnit on Python 3.11, 3.12 and 3.13 |
+| Minimal wheel | Installed Governance, Macro Sentinel and Era commands execute outside the checkout with only operator dependencies | Runtime workflow on Python 3.11, 3.12 and 3.13 |
 | Native CPU | Real Torch AIGA generation/checkpoint, multilayer Hebbian paths, MuZero planning/step bound, three actual Streamlit AppTests, offline GPT-2 weights | `native-demos.json` |
 | Browser algorithms | 50 independent allocation-oracle cases, strict inputs, temporal leakage rejection, exact quotations and schedule invariants | Node test output |
 | Legacy pages | 42 canonical/mirrored replays, data tables, search, mobile layout, explicit API error, real same-origin Pyodide, preserved Insight Plotly/tree/replay | `gallery-catalog.json` and screenshots |
@@ -66,6 +74,7 @@ From a source checkout, install the documented development environment, then:
 
 ```sh
 python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
+python -m scripts.run_local_tests tests/test_demo_distribution.py -q
 node --test tests/browser/portal_engine.test.mjs
 bash scripts/build_gallery_site.sh
 python -m scripts.validate_gallery_catalog --site site --output evidence/gallery-catalog

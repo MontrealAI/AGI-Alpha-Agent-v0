@@ -7,15 +7,16 @@
 [Launch Demo](../alpha_asi_world_model/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Research training. Explores generated grid worlds using a small learner and local API.
 
 **Prerequisites:** torch, numpy, FastAPI and the demo requirements; CPU training can be slow.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_asi_world_model
 python -m alpha_factory_v1.demos run alpha_asi_world_model
 ```
 

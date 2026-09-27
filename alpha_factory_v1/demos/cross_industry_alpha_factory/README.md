@@ -1,17 +1,20 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Offline sample. Selects reproducible examples from the bundled opportunity catalog.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check cross_industry_alpha_factory
 python -m alpha_factory_v1.demos run cross_industry_alpha_factory
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Two JSON sample opportunities; no ledger written.
 

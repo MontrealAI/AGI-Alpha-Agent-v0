@@ -4,17 +4,20 @@
 
 ![preview](../alpha_super_planner_v1/assets/preview.svg){.demo-preview}
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Interface illustration. Shows the stages and progress display of a planning interface.
 
 **Prerequisites:** Python and rich.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check alpha_super_planner_v1
 python -m alpha_factory_v1.demos run alpha_super_planner_v1
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Five progress stages and Plan Complete.
 

@@ -7,15 +7,16 @@
 [Launch Demo](../aiga_meta_evolution/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 
 **Prerequisites:** numpy, torch, gymnasium and pandas for actual training.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check aiga_meta_evolution
 python -m alpha_factory_v1.demos run aiga_meta_evolution
 ```
 

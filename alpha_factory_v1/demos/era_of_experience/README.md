@@ -1,16 +1,19 @@
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Offline sample. Extracts simple signals from bundled historical CSV samples.
 
-**Prerequisites:** Python 3.11–3.13; source checkout and installed project dependencies.
+**Prerequisites:** Python 3.11–3.13; installed project dependencies.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check era_of_experience
 python -m alpha_factory_v1.demos run era_of_experience
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Yield-curve and supply-chain sample signals with a heuristic selection.
 

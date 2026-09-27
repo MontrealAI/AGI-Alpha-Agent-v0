@@ -7,17 +7,20 @@
 [Launch Demo](../meta_agentic_agi_v3/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Identity curriculum. Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.
 
 **Prerequisites:** Core Python dependencies for the fixture; Docker is required to evaluate any generated program.
 
-From the repository root after [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check meta_agentic_agi_v3
 python -m alpha_factory_v1.demos run meta_agentic_agi_v3
 ```
+
+The catalog command uses bundled inputs and explicit offline defaults.
 
 **Expected result:** Two scored identity generations and a lineage database.
 

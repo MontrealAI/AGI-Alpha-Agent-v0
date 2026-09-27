@@ -4,7 +4,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 # Documentation Overview
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk.
 
-Start with the [1.12.1 factory guide](../../docs/agent/FACTORY_GUIDE.md),
+Start with the [1.12.2 factory guide](../../docs/agent/FACTORY_GUIDE.md),
 [operator runbook](../../docs/agent/OPERATIONS.md), [Ascension protocol](../../docs/agent/ASCENSION_PROTOCOL.md)
 and [release evidence](../../docs/agent/RELEASE_READINESS.md). All original reference diagrams remain.
 

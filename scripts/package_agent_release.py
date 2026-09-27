@@ -31,6 +31,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "scripts/install_agent.py",
         "docs/agent/START_HERE.md",
         "docs/agent/FACTORY_GUIDE.md",
+        "docs/agent/DEMOS.md",
         "docs/agent/ASCENSION_PROTOCOL.md",
         "docs/agent/OPERATIONS.md",
         "docs/agent/CAPABILITIES.md",

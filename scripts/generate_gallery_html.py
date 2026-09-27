@@ -220,6 +220,7 @@ def build_html(
   <h1>Alpha‑Factory Demo Gallery</h1>
   <p class=\"subtitle\">Choose a practical workspace. Edit inputs, calculate decisions and export a reviewable plan;
     original research implementations remain linked inside.</p>
+  <p class=\"subtitle\"><a href=\"{prefix}agent/DEMOS/\">Get started: browser and local demo walkthrough</a></p>
   {subdir}
     <input id=\"search-input\" class=\"search-input\" type=\"text\"
            placeholder=\"Search demos...\" aria-label=\"Search demos\">

@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -82,6 +82,10 @@ jobs:
           alpha-agent ascension-check installed-plan.json
           python -m alpha_factory_v1.scripts.preflight --profile agent --offline
           alpha-agent --home installed-agent verify
+          for demo in solving_agi_governance macro_sentinel era_of_experience; do
+            python -m alpha_factory_v1.demos check "$demo" --json
+            python -m alpha_factory_v1.demos run "$demo" --output-dir "installed-demos/$demo"
+          done
           python - <<'PY'
           import json
           from pathlib import Path

@@ -1,15 +1,16 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.5.0
+## Current runnable path — 1.12.2
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 
 **Prerequisites:** numpy, torch, gymnasium and pandas for actual training.
 
-From the repository root after [installation](../README.md#start-locally):
+After [installation](../README.md#start-locally):
 
 ```bash
+python -m alpha_factory_v1.demos check aiga_meta_evolution
 python -m alpha_factory_v1.demos run aiga_meta_evolution
 ```
 

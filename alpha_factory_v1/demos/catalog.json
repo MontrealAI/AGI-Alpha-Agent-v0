@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.12.1",
+  "release": "1.12.2",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -18,7 +18,15 @@
       "prerequisites": "numpy, torch, gymnasium and pandas for actual training.",
       "limitations": "Small research environment; optional bridge adapters are not proof of open-ended intelligence.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "numpy",
+        "torch",
+        "gymnasium",
+        "pandas"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "alpha_agi_business_2_v1",
@@ -34,7 +42,14 @@
       "prerequisites": "Repository dependencies and legacy orchestrator configuration; see the local README.",
       "limitations": "Planning/research messages are fixtures. The compatibility SDK is not a live market-data integration.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "fastapi",
+        "pydantic",
+        "yaml"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "alpha_agi_business_3_v1",
@@ -52,7 +67,13 @@
       "prerequisites": "Repository demo dependencies; optional model/ADK services must be configured separately.",
       "limitations": "The local fallback is simulated; no fundraising or real-world execution is established.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "yaml",
+        "numpy"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "alpha_agi_business_v1",
@@ -68,7 +89,12 @@
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "No company incorporation, registration, funding or actual trade is performed.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [
+        "alpha_agi_business_v1/examples/alpha_opportunities.json"
+      ],
+      "offline": true
     },
     {
       "id": "alpha_agi_insight_v0",
@@ -89,7 +115,10 @@
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "Scores are simulated, not forecasts or calibrated investment probabilities.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "alpha_agi_insight_v1",
@@ -114,10 +143,32 @@
         "json"
       ],
       "expected": "JSON scenario results. Browser mode also offers replay, local model and operator controls.",
-      "prerequisites": "Core dependencies for CLI; modern browser for the published interactive page.",
+      "prerequisites": "Python 3.11–3.13; Click and core dependencies for CLI; modern browser for the published interactive page.",
       "limitations": "Simulated scenarios are not validated future predictions. GPT-2 is a small completion model.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "click",
+        "numpy",
+        "yaml",
+        "fastapi",
+        "pydantic",
+        "prometheus_client"
+      ],
+      "assets": [
+        "alpha_agi_insight_v1/data/sector_shock_10/sample_prediction.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_01.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_02.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_03.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_04.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_05.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_06.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_07.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_08.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_09.json",
+        "alpha_agi_insight_v1/data/sector_shock_10/scenario_10.json"
+      ],
+      "offline": true
     },
     {
       "id": "alpha_agi_marketplace_v1",
@@ -128,13 +179,19 @@
         "python",
         "-m",
         "alpha_factory_v1.demos.alpha_agi_marketplace_v1.marketplace",
+        "{demo}/examples/sample_job.json",
         "--dry-run"
       ],
       "expected": "A dry-run JSON job; remove --dry-run only after starting the documented local API.",
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "This is an API client and job fixture, not a deployed exchange or token settlement service.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [
+        "alpha_agi_marketplace_v1/examples/sample_job.json"
+      ],
+      "offline": true
     },
     {
       "id": "alpha_asi_world_model",
@@ -158,7 +215,14 @@
       "environment": {
         "NO_LLM": "1",
         "ALPHA_ASI_MAX_STEPS": "100"
-      }
+      },
+      "required_modules": [
+        "torch",
+        "numpy",
+        "fastapi"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "alpha_super_planner_v1",
@@ -174,7 +238,12 @@
       "prerequisites": "Python and rich.",
       "limitations": "The displayed stages are scripted; this demo does not compute a plan.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "rich"
+      ],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "cross_industry_alpha_factory",
@@ -197,7 +266,10 @@
       "smoke": true,
       "environment": {
         "OPENAI_API_KEY": ""
-      }
+      },
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "era_of_experience",
@@ -207,13 +279,21 @@
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.era_of_experience.alpha_report"
+        "alpha_factory_v1.demos.era_of_experience.alpha_report",
+        "--data-dir",
+        "{demos}/macro_sentinel/offline_samples"
       ],
       "expected": "Yield-curve and supply-chain sample signals with a heuristic selection.",
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "Static historical samples, not current market data or recommendations.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [
+        "macro_sentinel/offline_samples/yield_curve.csv",
+        "macro_sentinel/offline_samples/stable_flows.csv"
+      ],
+      "offline": true
     },
     {
       "id": "finance_alpha",
@@ -225,7 +305,10 @@
       "prerequisites": "Docker, curl, jq and access to the documented container image for the legacy launcher.",
       "limitations": "The gallery uses sample traces. Live exchange connectivity and real P&L are not certified by the demo tests.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "gpt2_small_cli",
@@ -245,7 +328,13 @@
       "prerequisites": "torch, transformers and roughly 550 MB model storage; first download requires network. Use --model-path PATH --offline with cached weights.",
       "limitations": "CPU latency varies; this is a completion model, not an instruction-following assistant.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "torch",
+        "transformers"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "macro_sentinel",
@@ -267,7 +356,17 @@
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "Historical sample inputs and illustrative assumptions; no orders or hedge transactions.",
       "smoke": true,
-      "environment": {}
+      "environment": {
+        "OFFLINE_DATA_DIR": "{demo}/offline_samples"
+      },
+      "required_modules": [],
+      "assets": [
+        "macro_sentinel/offline_samples/fed_speeches.csv",
+        "macro_sentinel/offline_samples/yield_curve.csv",
+        "macro_sentinel/offline_samples/stable_flows.csv",
+        "macro_sentinel/offline_samples/cme_settles.csv"
+      ],
+      "offline": true
     },
     {
       "id": "meta_agentic_agi",
@@ -289,7 +388,10 @@
       "smoke": true,
       "environment": {
         "METAAGI_DB": "{output}/lineage.sqlite"
-      }
+      },
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "meta_agentic_agi_v2",
@@ -311,7 +413,10 @@
       "smoke": true,
       "environment": {
         "METAAGI_DB": "{output}/lineage.sqlite"
-      }
+      },
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "meta_agentic_agi_v3",
@@ -335,7 +440,10 @@
       "prerequisites": "Core Python dependencies for the fixture; Docker is required to evaluate any generated program.",
       "limitations": "The offline fixture is not AZR model training. Cloud providers are explicit and can incur cost.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "meta_agentic_tree_search_v0",
@@ -349,13 +457,24 @@
         "--episodes",
         "3",
         "--seed",
-        "42"
+        "42",
+        "--config",
+        "{demo}/configs/default.yaml",
+        "--rewriter",
+        "random"
       ],
       "expected": "Three logged search episodes and the best candidate.",
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "Toy reward landscape; optional model rewriters do not establish trading alpha.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "yaml"
+      ],
+      "assets": [
+        "meta_agentic_tree_search_v0/configs/default.yaml"
+      ],
+      "offline": true
     },
     {
       "id": "muzero_planning",
@@ -375,7 +494,15 @@
       "prerequisites": "torch, gymnasium[classic-control], Gradio and the demo requirements.",
       "limitations": "Small randomly initialized model unless trained; solving CartPole is not guaranteed.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [
+        "torch",
+        "numpy",
+        "gymnasium",
+        "gradio"
+      ],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "muzeromctsllmagent_v0",
@@ -387,7 +514,10 @@
       "prerequisites": "The original installer requires obsolete optional packages and is not a validated install path.",
       "limitations": "Use muzero_planning for maintained planning and the Agent operator for supported model/identity controls; original assets remain.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "omni_factory_demo",
@@ -411,7 +541,10 @@
         "OMNI_MAX_SIM_MINUTES": "5",
         "OPENAI_API_KEY": "",
         "NEO4J_PASSWORD": "demo-local-only"
-      }
+      },
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "presentation",
@@ -423,7 +556,10 @@
       "prerequisites": "A PDF or PowerPoint viewer.",
       "limitations": "Slides describe the original vision; use this catalog for tested behavior.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "self_healing_repo",
@@ -435,7 +571,10 @@
       "prerequisites": "Repository development dependencies and Docker for sandbox execution.",
       "limitations": "Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "solving_agi_governance",
@@ -457,7 +596,10 @@
       "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
       "limitations": "A simulation is not a proof of unique equilibrium, a security audit or an on-chain deployment.",
       "smoke": true,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": true
     },
     {
       "id": "sovereign_agentic_agialpha_agent_v0",
@@ -469,7 +611,10 @@
       "prerequisites": "Legacy Solana/Phantom scripts remain for historical reference; they are not the canonical Ethereum AGIALPHA integration.",
       "limitations": "Do not treat the old wallet UI or balance lookup as authenticated ownership. The current operator requires signed control and verified receipts.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     },
     {
       "id": "utils",
@@ -481,7 +626,10 @@
       "prerequisites": "Python 3.11–3.13.",
       "limitations": "Supporting code, not a runnable business demo.",
       "smoke": false,
-      "environment": {}
+      "environment": {},
+      "required_modules": [],
+      "assets": [],
+      "offline": false
     }
   ]
 }

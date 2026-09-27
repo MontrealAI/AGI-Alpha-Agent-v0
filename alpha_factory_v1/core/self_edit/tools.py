@@ -12,7 +12,7 @@ try:  # pragma: no cover - optional dependency
     from agents import function_tool, RunContextWrapper
 
     _HAVE_AGENTS = True
-except ModuleNotFoundError:  # pragma: no cover - stub fallbacks
+except ImportError:  # pragma: no cover - unavailable optional SDK or its transport extras
     T = TypeVar("T", bound=Callable[..., Any])
 
     def function_tool(*_dargs: Any, **_dkwargs: Any) -> Callable[[T], T]:
