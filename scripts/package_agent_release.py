@@ -69,6 +69,8 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str) 
             if parsed.scheme or parsed.netloc or not parsed.path:
                 return match.group(0)
             destination = (source.parent / parsed.path).resolve()
+            if destination == root / "docs/assets/whitepaper_v0.1.0-alphav15.pdf":
+                destination = root / "whitepaper_v0.1.0-alphav15.pdf"
             if not destination.is_relative_to(root) or not destination.exists():
                 raise ValueError(f"Broken release guide link: {name}: {link}")
             relative = destination.relative_to(root).as_posix()

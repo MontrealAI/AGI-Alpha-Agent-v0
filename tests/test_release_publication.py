@@ -547,6 +547,9 @@ def test_release_guides_have_working_flattened_links_and_preserve_the_manuscript
                 assert (tmp_path / parsed.path).is_file(), (source.name, link)
     release_notes = (tmp_path / f"RELEASE_NOTES_{version}.md").read_text()
     assert f"/blob/{'a' * 40}/docs/agent/START_HERE.md" in release_notes
+    paper_guide = (tmp_path / "WHITEPAPER_IMPLEMENTATION.md").read_text()
+    assert f"/blob/{'a' * 40}/whitepaper_v0.1.0-alphav15.pdf" in paper_guide
+    assert "../assets/whitepaper_v0.1.0-alphav15.pdf" not in paper_guide
 
 
 @pytest.mark.parametrize("staged", [False, True])
