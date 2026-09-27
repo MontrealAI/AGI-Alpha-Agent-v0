@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.10.0 manuscript edition
+# Release readiness — 1.10.1 manuscript edition
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
 plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
@@ -41,7 +41,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.10.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.10.1). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Prior releases remain immutable recovery checkpoints.
@@ -50,7 +50,7 @@ audits block publication. Prior releases remain immutable recovery checkpoints.
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.10.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.10.1 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
@@ -78,7 +78,7 @@ backups maintained; review new advisories and preserve a tested rollback path fo
 
 ## Repository administration
 
-The September 26, 2026 audit found main branch protection disabled and no repository rulesets. The
+The September 27, 2026 audit found main branch protection disabled and no repository rulesets. The
 release workflow still gates deployment and publication, but that does not protect direct pushes.
 The connected repository API supports the code/release work and does not expose administration writes;
 the separate browser session requires sign-in. An administrator must enable the repository rule.

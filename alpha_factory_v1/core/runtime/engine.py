@@ -201,21 +201,24 @@ class Engine:
             except Exception as exc:
                 # Do not journal provider messages: they can include credentials,
                 # source excerpts or upstream response bodies. CLI logs show type.
-                current = self.journal.latest(ident)
-                if current["state"] == "running":
+                try:
                     self.journal.transition(
                         ident,
-                        current["revision"],
+                        record["revision"],
                         {"running"},
                         "failed",
                         require_ready=False,
                         fields={
                             "error": type(exc).__name__,
                             "message": public_error(exc),
-                            "failure_stage": len(current.get("stages", [])),
+                            "failure_stage": len(record.get("stages", [])),
                             "failed_result": result,
                         },
                     )
+                except Conflict:
+                    # Recovery may already have started another attempt. Only
+                    # this worker's last revision may receive its failure.
+                    pass
                 raise
         finally:
             self.lock.release()
@@ -256,7 +259,7 @@ class Engine:
         self.journal.verify()
         record = self.journal.latest(ident)
         if record["state"] == "running" and time.time_ns() < record["lease_expires_ns"]:
-            raise Conflict("worker lease is still active; pause it or wait for expiry")
+            raise Conflict("worker lease is still active; wait for expiry before recovery")
         return self.journal.transition(
             ident, record["revision"], {"failed", "running"}, "queued", fields={"recovered_from": record["digest"]}
         )

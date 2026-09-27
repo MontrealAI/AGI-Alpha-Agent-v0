@@ -30,7 +30,7 @@ Please report security vulnerabilities as described in our [Security Policy](SEC
 - The project expects `pre-commit` **4.2.0**. CI installs the same version with
   `pip install pre-commit==4.2.0`.
 - Run `python alpha_factory_v1/scripts/preflight.py` to validate these tools.
- - Run `./codex/setup.sh` to install project dependencies and set up the git
+ - Run `FULL_INSTALL=1 ./codex/setup.sh` to install the locked development dependencies and set up the git
   hooks. The script attempts to install `pre-commit` automatically. If
   `pre-commit` isn't found, run `pip install pre-commit==4.2.0` and re-run the script.
 - The first `pre-commit run` may take several minutes as it builds tool environments.
@@ -65,7 +65,7 @@ Python must report 3.11–3.13 and Docker Compose must be at least 2.20 for the 
 - The script `alpha_factory_v1/scripts/preflight.py` enforces this requirement.
 - It verifies the optional `openai_agents` package is at least version `0.0.17`
   when installed.
-- Run `./codex/setup.sh` from the repository root to install the project in editable mode with minimal runtime dependencies. The script installs `pre-commit` and sets up the git hook automatically. Execute it before contributing so all relative paths resolve correctly.
+- Run `FULL_INSTALL=1 ./codex/setup.sh` from the repository root to install the locked development dependencies and the current project in editable mode. The script installs `pre-commit` and sets up the git hook automatically. Execute it before contributing so all relative paths resolve correctly.
 - After installation, run `pre-commit run --all-files` once to verify formatting and hooks.
 - Run `pre-commit run --files <paths>` to verify only your modifications quickly.
 ### Offline Setup
@@ -175,7 +175,7 @@ Follow these steps when installing without internet access:
 - **Never commit** `.env` or other secrets. See
   [`alpha_factory_v1/scripts/README.md`](alpha_factory_v1/scripts/README.md)
   for additional guidance.
-- Verify `.env` is ignored by running `git status` (it should appear untracked).
+- Verify `.env` is ignored with `git check-ignore .env`; normal `git status` should omit it.
   The repository's `.gitignore` already includes `.env`.
 - Run `python tools/check_env_table.py` to ensure the table below matches
   `alpha_factory_v1/.env.sample`.
@@ -372,7 +372,7 @@ Repository owners may also launch the general build and unit test pipeline:
    requirement.
 
 ### Deploy to Kind
-The **Deploy — Kind** workflow provisions a local kind cluster, builds the Insight demo image, installs the Helm chart with default values, applies Terraform from `infrastructure/terraform` using the local backend and waits for pods to become ready. Repository settings mark this workflow as **required**.
+The **Deploy — Kind** workflow provisions a local kind cluster, builds the Insight demo image, installs the Helm chart with default values, applies Terraform from `infrastructure/terraform` using the local backend and waits for pods to become ready. This is a separate manually dispatched integration workflow. Current release gates and repository protection requirements are documented in [release readiness](docs/agent/RELEASE_READINESS.md).
 
 1. Navigate to "Actions → 🚀 Deploy — Kind".
 2. Click "Run workflow" to launch the deployment.
@@ -423,53 +423,53 @@ preserved `mkdocs gh-deploy` helpers are for historical branch-based deployments
 For detailed troubleshooting steps, see [`alpha_factory_v1/scripts/README.md`](alpha_factory_v1/scripts/README.md).
 
 ### Wheel Signing
-All agent wheels must be signed with the project's ED25519 key before they are
-loaded from `$AGENT_HOT_DIR`. **OpenSSL** must be installed to sign and verify
-wheels. Install it with `brew install openssl` on macOS or grab the
-[OpenSSL Windows binaries](https://slproweb.com/products/Win32OpenSSL.html).
 
-1. **Generate the key** and capture the base64 public key:
-   ```bash
-   openssl genpkey -algorithm ed25519 -out agent_signing.key
-   openssl pkey -in agent_signing.key -pubout -outform DER | base64 -w0
-   ```
-   Store `agent_signing.key` **outside** the repository and never commit it.
+The historical plugin signature format is **Ed25519 over the complete wheel bytes**. The trusted
+`AGENT_WHEEL_PUBKEY` contains base64 of the **raw 32-byte public key**; `<wheel>.whl.sig` contains base64
+of the 64-byte signature. Do not use a DER-encoded key or sign a SHA-512 digest: those are different
+formats. The verifier CLI and plugin loader now enforce the same format. A registry signature entry
+is an additional restriction and never bypasses cryptographic verification.
 
-2. **Store the public key** in the `AGENT_WHEEL_PUBKEY` environment variable so
-   `alpha_factory_v1/backend/agents/__init__.py` can verify signatures.
+Keep the signing key outside the repository. Generate an Ed25519 PEM key with OpenSSL:
 
-3. **Sign `<wheel>.whl` to create `<wheel>.whl.sig`:**
-   ```bash
-   openssl dgst -sha512 -binary <wheel>.whl |
-     openssl pkeyutl -sign -inkey agent_signing.key |
-     base64 -w0 > <wheel>.whl.sig
-   ```
-   Keep `<wheel>.whl.sig` next to the wheel inside `$AGENT_HOT_DIR`.
-
-4. **Add the signature** file to the repository and include the base64 value in
-   `_WHEEL_SIGS` within `alpha_factory_v1/backend/agents/__init__.py`. Wheels
-   without a valid signature are ignored at runtime.
-
-### Verify the wheel
-Verify that `<wheel>.whl.sig` matches the wheel:
-
-```bash
-openssl dgst -sha512 -binary <wheel>.whl |
-  openssl pkeyutl -verify -pubin -inkey "$AGENT_WHEEL_PUBKEY" -sigfile <wheel>.whl.sig
+```sh
+openssl genpkey -algorithm ed25519 -out /private/location/agent_signing.key
 ```
 
-Alternatively run the bundled helper:
+Save the following as `sign_agent_wheel.py` outside the repository. It uses the installed `cryptography`
+package, signs only the requested wheel, refuses an existing signature file and prints only the public key:
 
-```bash
+```python
+import base64
+from pathlib import Path
+import sys
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat, load_pem_private_key
+
+key = load_pem_private_key(Path(sys.argv[1]).read_bytes(), password=None)
+if not isinstance(key, Ed25519PrivateKey):
+    raise ValueError("An Ed25519 signing key is required")
+wheel = Path(sys.argv[2])
+signature = base64.b64encode(key.sign(wheel.read_bytes())).decode("ascii")
+with Path(str(wheel) + ".sig").open("x", encoding="ascii") as output:
+    output.write(signature + "\n")
+print(base64.b64encode(key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)).decode("ascii"))
+```
+
+Run it, then configure the printed public key through a trusted channel:
+
+```sh
+python sign_agent_wheel.py /private/location/agent_signing.key path/to/agent.whl
+export AGENT_WHEEL_PUBKEY='BASE64_PUBLIC_KEY_PRINTED_ABOVE'
 verify-wheel-sig path/to/agent.whl
 ```
 
-On Windows PowerShell:
+On Windows, use your private Windows key path and set the same value with
+`$env:AGENT_WHEEL_PUBKEY = 'BASE64_PUBLIC_KEY_PRINTED_ABOVE'`; the Python signer and verifier commands
+are otherwise the same. Verification requires `cryptography`, not an OpenSSL subprocess.
 
-```powershell
-Get-Content <wheel>.whl -Encoding Byte |
-  openssl dgst -sha512 -binary |
-  openssl pkeyutl -verify -pubin -inkey $env:AGENT_WHEEL_PUBKEY -sigfile <wheel>.whl.sig
-```
-
-The orchestrator validates signatures against `_WHEEL_PUBKEY` in `alpha_factory_v1/backend/agents/__init__.py`.
+The verifier exits 0 for a valid signature, 2 for failed verification and 1 for invalid usage or a
+missing wheel. Test a modified copy to confirm rejection. A valid signature identifies a trusted signer
+and binds the exact bytes; it does not establish package safety, dependency compatibility or operational
+fitness. The historical hot-load integration requires separate testing and is outside the private
+`alpha-agent` release profile. Never add a failed signature to a registry to authorize it.

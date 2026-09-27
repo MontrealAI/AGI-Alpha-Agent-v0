@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from typing import Any
@@ -142,25 +143,37 @@ def generate_code(mission: Mission, config: RuntimeConfig) -> tuple[str, dict[st
     return result["code"], evidence
 
 
-def complete_json(payload: dict[str, Any], config: RuntimeConfig) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Request a bounded JSON completion and retain provider provenance."""
+async def _response(payload: dict[str, Any], config: RuntimeConfig, local: bool) -> bytearray:
+    """Close the request on a total deadline, even if a peer keeps sending bytes."""
     headers = {"Content-Type": "application/json"}
     key = os.getenv(config.llm_key_env)
     if key:
         headers["Authorization"] = f"Bearer {key}"
     # Environment proxies remain usable for remote endpoints. Loopback providers
     # must stay on the operator's machine even when the environment has a proxy.
+    try:
+        async with asyncio.timeout(config.llm_timeout):
+            async with httpx.AsyncClient(
+                timeout=config.llm_timeout, follow_redirects=False, trust_env=not local
+            ) as client:
+                async with client.stream(
+                    "POST", config.llm_url.rstrip("/") + "/chat/completions", json=payload, headers=headers
+                ) as response:
+                    response.raise_for_status()
+                    raw = bytearray()
+                    async for chunk in response.aiter_bytes():
+                        if len(raw) + len(chunk) > 1024**2:
+                            raise ValueError("inference response exceeds 1 MiB")
+                        raw.extend(chunk)
+                    return raw
+    except (TimeoutError, httpx.TimeoutException) as exc:
+        raise TimeoutError("inference response exceeded its configured deadline") from exc
+
+
+def complete_json(payload: dict[str, Any], config: RuntimeConfig) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Request a bounded JSON completion and retain provider provenance."""
     local = httpx.URL(config.llm_url).host in {"localhost", "127.0.0.1", "::1"}
-    with httpx.Client(timeout=config.llm_timeout, follow_redirects=False, trust_env=not local) as client:
-        with client.stream(
-            "POST", config.llm_url.rstrip("/") + "/chat/completions", json=payload, headers=headers
-        ) as response:
-            response.raise_for_status()
-            raw = bytearray()
-            for chunk in response.iter_bytes():
-                raw.extend(chunk)
-                if len(raw) > 1024**2:
-                    raise ValueError("inference response exceeds 1 MiB")
+    raw = asyncio.run(_response(payload, config, local))
     body = json.loads(raw)
     choice = body["choices"][0]
     if choice.get("finish_reason") != "stop":

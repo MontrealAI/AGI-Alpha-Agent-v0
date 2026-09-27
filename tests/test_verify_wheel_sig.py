@@ -12,6 +12,9 @@ import unittest
 from unittest import mock
 from pathlib import Path
 
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
 from alpha_factory_v1.backend import agents as agents_mod
 from alpha_factory_v1.scripts import verify_wheel_sig
 
@@ -45,34 +48,14 @@ version = "0.0.1"
             os.chdir(cwd)
         self.wheel_path = wheel_dir / wheel_name
 
-        self.key_path = self.pkg_dir / "signing.key"
-        subprocess.run(
-            ["openssl", "genpkey", "-algorithm", "ed25519", "-out", str(self.key_path)],
-            check=True,
-        )
-        pub_bytes = subprocess.check_output(
-            ["openssl", "pkey", "-in", str(self.key_path), "-pubout", "-outform", "DER"]
-        )
-        self.pub_b64 = base64.b64encode(pub_bytes).decode()
-
-        sig_cmd = (
-            f"openssl dgst -sha512 -binary {self.wheel_path} | "
-            f"openssl pkeyutl -sign -inkey {self.key_path} | base64 -w0"
-        )
-        try:
-            sig_b64 = subprocess.check_output(["sh", "-c", sig_cmd], stderr=subprocess.STDOUT).decode()
-        except subprocess.CalledProcessError:
-            self.skipTest("ed25519 signatures unsupported")
+        key = Ed25519PrivateKey.generate()
+        public = key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+        self.pub_b64 = base64.b64encode(public).decode()
+        sig_b64 = base64.b64encode(key.sign(self.wheel_path.read_bytes())).decode()
         self.sig_path = self.wheel_path.with_suffix(self.wheel_path.suffix + ".sig")
         self.sig_path.write_text(sig_b64)
         self.orig_pub = agents_mod._WHEEL_PUBKEY
         agents_mod._WHEEL_PUBKEY = self.pub_b64
-
-        try:
-            if not verify_wheel_sig.verify(self.wheel_path):
-                self.skipTest("ed25519 verification unsupported")
-        except subprocess.CalledProcessError:
-            self.skipTest("ed25519 verification unsupported")
 
     def tearDown(self) -> None:
         agents_mod._WHEEL_PUBKEY = self.orig_pub
