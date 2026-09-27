@@ -4,7 +4,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 # α‑AGI Agent 👁️✨ — Canonical Specification v1.1
 
-> **Current implementation — 1.12.0.** This is the preserved research blueprint, including its
+> **Current implementation — 1.12.1.** This is the preserved research blueprint, including its
 > original diagrams, proposed APIs, historical maturity labels and performance/architecture targets.
 > Those targets are not production measurements or compliance certificates. Use the
 > [factory guide](../../docs/agent/FACTORY_GUIDE.md), [operator commands](../../docs/agent/OPERATIONS.md)

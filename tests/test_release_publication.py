@@ -6,12 +6,17 @@ from __future__ import annotations
 import json
 import hashlib
 from pathlib import Path
+import re
 import subprocess
+import sys
+import tomllib
+from urllib.parse import urlsplit
 import zipfile
 
 import pytest
 
 from scripts import finalize_pages_release, publish_agent_release, release_context
+from scripts import ascension_protocol_evidence, package_agent_release
 
 
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
@@ -207,6 +212,22 @@ def test_invalid_package_version_cannot_publish(
             )
         ],
         ("1.7.0", "bloom-failed"),
+        *[
+            ("1.12.1", problem)
+            for problem in (
+                None,
+                "protocol-failed",
+                "protocol-boolean",
+                "protocol-origin",
+                "protocol-commit",
+                "protocol-version",
+                "protocol-schema",
+                "protocol-check",
+                "protocol-asset",
+                "protocol-browser",
+                "protocol-http",
+            )
+        ],
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
         ("1.7.0", "bloom-experience"),
@@ -387,7 +408,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "transfer-manuscript":
             transfer["manuscript_sha256"] = "0" * 64
         (target / "compounding.json").write_text(json.dumps(transfer))
-    if version == "1.10.0":
+    if tuple(map(int, version.split("."))) >= (1, 10, 0):
         target = evidence / "public-pages" / "decision-studio"
         target.mkdir()
         studio = {
@@ -451,6 +472,36 @@ def test_public_evidence_requires_same_commit_and_intact_package(
             key, value = changes[problem]
             studio[key] = value
         (target / "decision-studio.json").write_text(json.dumps(studio))
+    if tuple(map(int, version.split("."))) >= (1, 12, 1):
+        target = evidence / "public-pages" / "ascension-protocol"
+        target.mkdir()
+        protocol = {
+            "schema": ascension_protocol_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(ascension_protocol_evidence.CHECKS),
+            "asset_sha256": ascension_protocol_evidence.asset_hashes(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "protocol-failed": ("passed", False),
+            "protocol-boolean": ("passed", 1),
+            "protocol-origin": ("origin", "https://example.test/"),
+            "protocol-commit": ("commit", "b" * 40),
+            "protocol-version": ("version", "1.12.0"),
+            "protocol-schema": ("schema", "unverified"),
+            "protocol-check": ("checks", []),
+            "protocol-asset": ("asset_sha256", {}),
+            "protocol-browser": ("browser_errors", ["uncaught"]),
+            "protocol-http": ("http_failures", ["404"]),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            protocol[key] = value
+        (target / "report.json").write_text(json.dumps(protocol))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -462,11 +513,13 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
     if tuple(map(int, version.split("."))) >= (1, 7, 0):
         assert json.loads((folder / "release-manifest.json").read_text())["public_proof_bloom"]["passed"]
-    if version == "1.10.0":
+    if tuple(map(int, version.split("."))) >= (1, 10, 0):
         assert (
             json.loads((folder / "release-manifest.json").read_text())["public_decision_studio"]["commit"]
             == manifest["commit"]
         )
+    if tuple(map(int, version.split("."))) >= (1, 12, 1):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_ascension_protocol"] == protocol
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"
@@ -474,3 +527,48 @@ def test_public_evidence_requires_same_commit_and_intact_package(
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         digest, name = line.split("  ", 1)
         assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest
+
+
+def test_release_guides_have_working_flattened_links_and_preserve_the_manuscript(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+    package_agent_release.copy_release_documents(root, tmp_path, version, "a" * 40)
+    assert {"START_HERE.md", "FACTORY_GUIDE.md", "ASCENSION_PROTOCOL.md"}.issubset({p.name for p in tmp_path.iterdir()})
+    for name in ("AGI_ALPHA_Unified_Publication_Final.md", "AGI_ALPHA_Unified_Publication_Final.pdf"):
+        assert (tmp_path / name).read_bytes() == (root / "docs/manuscript" / name).read_bytes()
+    for source in root.joinpath("docs/agent").glob("*.md"):
+        copied = tmp_path / source.name
+        if not copied.exists():
+            continue
+        text = re.sub(r"```.*?```", "", copied.read_text(), flags=re.S)
+        for link in re.findall(r"\]\(([^\s)]+)\)", text):
+            parsed = urlsplit(link)
+            if not parsed.scheme and parsed.path:
+                assert (tmp_path / parsed.path).is_file(), (source.name, link)
+    release_notes = (tmp_path / f"RELEASE_NOTES_{version}.md").read_text()
+    assert f"/blob/{'a' * 40}/docs/agent/START_HERE.md" in release_notes
+    paper_guide = (tmp_path / "WHITEPAPER_IMPLEMENTATION.md").read_text()
+    assert f"/blob/{'a' * 40}/whitepaper_v0.1.0-alphav15.pdf" in paper_guide
+    assert "../assets/whitepaper_v0.1.0-alphav15.pdf" not in paper_guide
+
+
+@pytest.mark.parametrize("staged", [False, True])
+def test_release_packaging_refuses_dirty_source_before_creating_assets(
+    tmp_path: Path, monkeypatch, staged: bool
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    subprocess.run(["git", "init", "-q"], check=True)
+    source = tmp_path / "source.txt"
+    source.write_text("committed version")
+    subprocess.run(["git", "add", "source.txt"], check=True)
+    subprocess.run(
+        ["git", "-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.test", "commit", "-qm", "Fixture"],
+        check=True,
+    )
+    source.write_text("uncommitted version")
+    if staged:
+        subprocess.run(["git", "add", "source.txt"], check=True)
+    monkeypatch.setattr(sys, "argv", ["package", "--output", "release", "--evidence", "evidence"])
+    with pytest.raises(subprocess.CalledProcessError):
+        package_agent_release.main()
+    assert not (tmp_path / "release").exists()

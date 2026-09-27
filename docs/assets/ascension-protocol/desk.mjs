@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { curveQuote, tokenUnits, tokenDecimal } from "../ascension/engine.mjs";
+import { curveQuote, tokenUnits, tokenDecimal } from "../ascension/engine.mjs?v=1.12.1";
 const $ = (id) => document.getElementById(id);
 let report;
 const descriptions = {
@@ -119,7 +119,9 @@ function auction() {
     }
 }
 async function start() {
-    const response = await fetch("../assets/ascension-protocol/receipt.json");
+    const evidence = new URL("./receipt.json", import.meta.url);
+    evidence.search = new URL(import.meta.url).search;
+    const response = await fetch(evidence);
     if (!response.ok)
         throw Error("The transaction evidence could not be loaded.");
     report = await response.json();
@@ -163,4 +165,6 @@ start().catch((error) => {
     $("status").setAttribute("role", "alert");
 });
 if ("serviceWorker" in navigator)
-    navigator.serviceWorker.register("../service-worker.js").catch(() => {});
+    navigator.serviceWorker
+        .register(new URL("../../service-worker.js", import.meta.url))
+        .catch(() => {});

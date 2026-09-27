@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 import zipfile
 
+from scripts.ascension_protocol_evidence import verify_report as verify_protocol_report
+
 
 def finalize(folder: Path, evidence: Path) -> None:
     """Bind public evidence to the packaged commit and refresh package checksums."""
@@ -26,6 +28,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     bloom = None
     compounding = None
     studio = None
+    protocol = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -178,6 +181,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             or len(studio.get("cases", [])) != 11
         ):
             raise ValueError("Decision Studio must pass every public journey for the exact packaged commit and version")
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 12, 1):
+        protocol = json.loads(
+            (evidence / "public-pages" / "ascension-protocol" / "report.json").read_text(encoding="utf-8")
+        )
+        verify_protocol_report(protocol, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -194,6 +202,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if protocol:
+        manifest["public_ascension_protocol"] = protocol
+        manifest["release_gates"].append(
+            "public Ascension protocol exact assets, evidence download, mirrored routes, accessibility and offline use"
+        )
     if studio:
         manifest["public_decision_studio"] = studio
         manifest["release_gates"].append(
