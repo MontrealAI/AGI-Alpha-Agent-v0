@@ -50,9 +50,11 @@ def check() -> dict[str, object]:
         examples[source.name] = hashlib.sha256(source.read_bytes()).hexdigest()
     for name in (
         "alpha_factory_v1/README.md",
+        "alpha_factory_v1/demos/README.md",
         "alpha_factory_v1/docs/README.md",
         "alpha_factory_v1/backend/README.md",
         "docs/agent/FACTORY_GUIDE.md",
+        "docs/agent/DEMOS.md",
     ):
         source = ROOT / name
         text = re.sub(r"```.*?```", "", source.read_text(encoding="utf-8"), flags=re.S)
