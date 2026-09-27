@@ -7,7 +7,11 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/build-insight-bundle.yml'
       - 'docs/alpha_agi_insight_v1/**'
+      - 'docs/assets/studio/cases.json'
+      - 'scripts/generate_decision_studio.py'
+      - 'scripts/templates/studio.html'
       - 'alpha_factory_v1/demos/alpha_agi_insight_v1/**'
       - 'package.json'
       - 'package-lock.json'
@@ -91,6 +95,9 @@ jobs:
             --exclude='assets/wasm_llm/**' \
             --exclude='assets/pyodide/**' \
             "${GITHUB_WORKSPACE}/${{ env.INSIGHT_BROWSER_DIR }}/dist/" "$GITHUB_WORKSPACE/${{ env.DOCS_BUNDLE_DIR }}/"
+
+      - name: Restore generated practical workspace links
+        run: python scripts/generate_decision_studio.py
 
       - name: Require committed generated assets on source pushes
         if: github.event_name != 'workflow_dispatch'
