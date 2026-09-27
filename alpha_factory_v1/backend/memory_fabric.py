@@ -513,7 +513,7 @@ class _GraphStore:
             self._init_networkx()
 
     def _init_neo4j(self) -> None:
-        if "GraphDatabase" not in globals():
+        if "GraphDatabase" not in globals() or not CFG.NEO4J_URI:
             return
         try:
             self._driver = GraphDatabase.driver(CFG.NEO4J_URI, auth=(CFG.NEO4J_USER, CFG.NEO4J_PASSWORD))

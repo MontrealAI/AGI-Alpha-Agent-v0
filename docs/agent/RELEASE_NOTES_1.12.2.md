@@ -22,6 +22,9 @@ Use the [release installation walkthrough](START_HERE.md) to install matching, c
 - Finite catalog commands disable OpenAI/Anthropic keys and tracing in the child. Tree search uses
   its bundled configuration and random rewriter; Marketplace uses its bundled job; Macro and Era
   use their packaged CSV paths. Parent credentials and advanced standalone options are unchanged.
+- Offline children also disable remote Neo4j/PostgreSQL storage, preventing optional memory imports
+  from probing a default or inherited database. An empty Neo4j URI selects local storage without
+  constructing a driver. Explicitly configured service launches keep their existing connection path.
 - Plain self-edit file helpers remain usable when the optional Agents SDK raises an import error
   for unavailable transport extras. This fallback does not claim provider execution.
 
@@ -33,7 +36,9 @@ map. It is included in release documents and the complete operator-guide archive
 
 The runtime matrix tests launcher boundaries on Python 3.11–3.13 and runs installed Governance,
 Macro Sentinel and Era commands with minimal operator dependencies. Full regression additionally
-exercises all 14 finite wheel commands. Native CPU, browser/model, contracts, signed evidence,
+exercises all 14 finite wheel commands. A required Python 3.11/3.12 matrix repeats them with the complete
+backend dependencies, inherited database settings and no test-only integration shortcuts.
+Native CPU, browser/model, contracts, signed evidence,
 containers, dependency audits, strict documentation and publication acceptance remain required.
 Exact outcomes are recorded in the matching release validation archive.
 

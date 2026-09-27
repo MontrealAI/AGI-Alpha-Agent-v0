@@ -43,9 +43,10 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     guard.mkdir()
     attempted = tmp_path / "network-attempt.txt"
     (guard / "sitecustomize.py").write_text(
-        "import socket\nfrom pathlib import Path\n"
+        "import socket\nfrom pathlib import Path\nfrom traceback import format_stack\n"
         "def blocked(*args, **kwargs):\n"
-        f"    Path({str(attempted)!r}).write_text('unexpected network attempt')\n"
+        f"    with Path({str(attempted)!r}).open('a') as log:\n"
+        "        log.write(''.join(format_stack(limit=32)) + '\\n')\n"
         "    raise RuntimeError('offline wheel acceptance forbids network access')\n"
         "socket.create_connection = blocked\nsocket.getaddrinfo = blocked\n"
         "socket.socket.connect = blocked\nsocket.socket.connect_ex = blocked\n"
@@ -58,7 +59,12 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
         "NO_DISCLAIMER": "1",
         "OPENAI_API_KEY": "offline-demo-must-not-use-this",
         "ANTHROPIC_API_KEY": "offline-demo-must-not-use-this",
+        "NEO4J_URI": "bolt://offline-demo.invalid:7687",
+        "PGHOST": "offline-demo.invalid",
     }
+    # Exercise a normal user launch even when the surrounding suite disables integrations.
+    environment.pop("PYTEST_CURRENT_TEST", None)
+    environment.pop("PYTEST_NET_OFF", None)
     probe = subprocess.run(
         [sys.executable, "-P", "-c", "import alpha_factory_v1; print(alpha_factory_v1.__file__)"],
         cwd=tmp_path,
@@ -68,6 +74,7 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
         timeout=30,
     )
     assert probe.returncode == 0 and Path(probe.stdout.strip()).is_relative_to(installed)
+    assert not attempted.exists(), attempted.read_text()
     entries = json.loads((installed / "alpha_factory_v1/demos/catalog.json").read_text())["entries"]
     finite = [entry for entry in entries if entry["smoke"]]
     assert len(entries) == 26 and len(finite) == 14
@@ -91,4 +98,4 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
         )
         assert result.returncode == 0, f"{entry['id']}: {result.stdout}\n{result.stderr}"
         assert "offline data missing" not in result.stdout
-        assert not attempted.exists(), f"{entry['id']} attempted network access"
+        assert not attempted.exists(), f"{entry['id']} attempted network access:\n{attempted.read_text()}"
