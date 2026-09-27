@@ -165,7 +165,11 @@ def test_invalid_or_unbounded_scenarios_are_rejected(change: str) -> None:
         engine.solve(source)
 
 
-@pytest.mark.parametrize("data", [b'{"a":1,"a":2}', b'{"x":NaN}', b'{"x":Infinity}', b'"\xff"', b" " * 256001])
+@pytest.mark.parametrize(
+    "data",
+    [b'{"a":1,"a":2}', b'{"x":NaN}', b'{"x":Infinity}', b'"\xff"', b" " * 256001],
+    ids=["duplicate-key", "nan", "infinity", "invalid-utf8", "oversized"],
+)
 def test_json_boundary_rejects_ambiguous_data(data: bytes) -> None:
     with pytest.raises(ValueError):
         engine.parse(data)
