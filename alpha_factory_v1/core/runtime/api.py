@@ -133,7 +133,7 @@ def create_app(journal: Journal) -> FastAPI:
     static = Path(__file__).with_name("web")
 
     def authorize(authorization: str = Header(default="")) -> None:
-        if not secrets.compare_digest(authorization, f"Bearer {token}"):
+        if not secrets.compare_digest(authorization.encode("utf-8"), f"Bearer {token}".encode("utf-8")):
             raise HTTPException(401, "Access token required")
 
     @app.exception_handler(Conflict)

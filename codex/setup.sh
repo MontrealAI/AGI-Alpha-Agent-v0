@@ -42,13 +42,14 @@ fi
 
 # Ensure pre-commit 4.2.0 is available for git hooks
 required_pre_commit=4.2.0
-current_pre_commit=""
-if command -v pre-commit >/dev/null; then
-  current_pre_commit=$(pre-commit --version | awk '{print $2}')
-fi
+current_pre_commit=$($PYTHON -m pre_commit --version 2>/dev/null | awk '{print $2}' || true)
 if [[ -z "$current_pre_commit" || "$current_pre_commit" != "$required_pre_commit" ]]; then
   echo "Installing pre-commit==$required_pre_commit" >&2
-  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit=="$required_pre_commit"
+  # Bootstrap the same hook dependencies as requirements-dev.lock. Otherwise a
+  # fresh pre-commit install can leave an incompatible newer filelock behind
+  # when the historical locked environment is applied below.
+  $PYTHON -m pip install --quiet "${wheel_opts[@]}" pre-commit=="$required_pre_commit" \
+    virtualenv==20.32.0 filelock==3.18.0
 fi
 
 # When FULL_INSTALL=1, install the fully pinned dependencies from the
@@ -161,12 +162,6 @@ else
   $PYTHON -m pip install --quiet "${wheel_opts[@]}" "${packages[@]}"
 fi
 
-# Apply the current package requirements after the historical development locks.
-# Installing the editable package first let the legacy lock silently downgrade
-# its required cryptography version; pip check then correctly rejected setup.
-# Release/operator installs remain pinned by requirements-agent.lock.
-$PYTHON -m pip install --quiet "${wheel_opts[@]}" -e .
-
 # Validate environment and install any remaining deps
 check_env_opts=()
 if [[ -n "${WHEELHOUSE:-}" ]]; then
@@ -177,6 +172,11 @@ fi
 # replace a pinned install with an unbounded second dependency resolution.
 $PYTHON check_env.py --auto-install "${check_env_opts[@]}"
 
+# Apply current package requirements after every historical dependency installer,
+# including check_env.py, which can install requirements-core.txt on a fresh host.
+# Release/operator installs remain pinned by requirements-agent.lock.
+$PYTHON -m pip install --quiet "${wheel_opts[@]}" -e .
+
 # Verify all dependencies are satisfied and abort on issues
 $PYTHON -m pip check
 
@@ -186,7 +186,5 @@ if [[ "${FETCH_BROWSER_ASSETS:-1}" != "0" ]]; then
   $PYTHON scripts/fetch_assets.py
 fi
 
-# Set up pre-commit hooks if available
-if command -v pre-commit >/dev/null; then
-  pre-commit install
-fi
+# Set up hooks with the selected Python environment
+$PYTHON -m pre_commit install

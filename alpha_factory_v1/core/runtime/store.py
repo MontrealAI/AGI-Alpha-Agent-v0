@@ -22,6 +22,8 @@ from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption,
 
 from .models import Mission, RuntimeConfig
 
+MAX_RECOVERY_BYTES = 256 * 1024**2
+
 
 def canonical(value: Any) -> bytes:
     """Encode finite JSON consistently for hashes and signatures."""
@@ -290,6 +292,7 @@ class Journal:
         self.verify()
         target = Path(destination).resolve()
         temporary = self.root / f"backup-{uuid.uuid4()}.sqlite3"
+        created = False
         try:
             # Hold the writer lock while another connection snapshots committed
             # rows. configure() uses the same lock, so files and rows agree.
@@ -297,19 +300,37 @@ class Journal:
                 self.verify()
                 with closing(sqlite3.connect(self.path)) as source, closing(sqlite3.connect(temporary)) as dest:
                     source.backup(dest)
+                private_paths = [self.root / name for name in ("config.json", "identity.key", "api.token")]
+                if sum(path.stat().st_size for path in [temporary, *private_paths]) > MAX_RECOVERY_BYTES:
+                    raise ValueError("recovery archive exceeds 256 MiB limit")
                 files = {name: (self.root / name).read_bytes() for name in ("config.json", "identity.key", "api.token")}
                 files["journal.sqlite3"] = temporary.read_bytes()
             manifest = {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}
-            private_write(target, b"")
-            with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-                for name, data in files.items():
-                    archive.writestr(name, data)
-                archive.writestr("manifest.json", canonical(manifest))
+            manifest_bytes = canonical(manifest)
+            if sum(len(data) for data in files.values()) + len(manifest_bytes) > MAX_RECOVERY_BYTES:
+                raise ValueError("recovery archive exceeds 256 MiB limit")
+            descriptor = os.open(target, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
+            created = True
+            with os.fdopen(descriptor, "w+b") as stream:
+                if os.name == "nt":
+                    restrict_access(target)
+                with zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+                    for name, data in files.items():
+                        archive.writestr(name, data)
+                    archive.writestr("manifest.json", manifest_bytes)
+                stream.flush()
+                os.fsync(stream.fileno())
+                stream.seek(0)
+                checksum = hashlib.file_digest(stream, "sha256").hexdigest()
             return {
                 "path": str(target),
-                "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+                "sha256": checksum,
                 "contains_private_key": True,
             }
+        except BaseException:
+            if created:
+                target.unlink(missing_ok=True)
+            raise
         finally:
             temporary.unlink(missing_ok=True)
 
@@ -321,7 +342,7 @@ class Journal:
         with zipfile.ZipFile(backup) as archive:
             if set(archive.namelist()) != expected or len(archive.infolist()) != len(expected):
                 raise ValueError("unexpected or duplicate recovery archive members")
-            if sum(info.file_size for info in archive.infolist()) > 256 * 1024**2:
+            if sum(info.file_size for info in archive.infolist()) > MAX_RECOVERY_BYTES:
                 raise ValueError("recovery archive exceeds 256 MiB limit")
             files = {name: archive.read(name) for name in expected}
         manifest = json.loads(files.pop("manifest.json"))

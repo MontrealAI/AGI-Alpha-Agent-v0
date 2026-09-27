@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.10.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
+Current release: **1.10.1**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
 
 ## Install from a release
 
@@ -71,7 +71,7 @@ Use a new output path for every run; existing files are never overwritten. The s
 [field guide](COMPOUNDING_LAB.md) for custom inputs, review timing and the positive, regime-change and
 no-archive experiments. An imported review retains its original timing provenance; performing a new
 browser review requires new measurements. Local acceptance never supplies missing independent evidence.
-The release includes the original paper and `alpha-agent-v1.10.0-manuscript.zip` with all figures and provenance.
+The release includes the original paper and `alpha-agent-v1.10.1-manuscript.zip` with all figures and provenance.
 
 ## Service monitoring and request boundaries
 
@@ -121,6 +121,10 @@ For a remote endpoint use HTTPS, set `allow_remote_llm: true`, and put its crede
 variable named by `llm_key_env` (default `ALPHA_AGENT_LLM_KEY`). This explicitly permits sending mission
 sources, or code goals/examples, to that provider. The model name must exist at that endpoint. Provider
 errors and malformed or ungrounded results fail visibly; they do not become simulated success.
+`llm_timeout` (1–300 seconds) bounds the entire provider request, including connection, response headers
+and body consumption. A provider that keeps sending small fragments cannot extend that deadline.
+Timeouts close the connection and leave a failed mission for explicit recovery; there is no automatic
+provider retry or duplicate paid request.
 
 For servers supporting strict Chat Completions JSON schemas, including the pinned llama.cpp
 release used by acceptance, set `llm_response_format: "json_schema"` in the configuration.
@@ -204,7 +208,10 @@ These mechanics have real local-EVM acceptance evidence; mainnet operation is no
 
 `pause` persists across restarts and blocks execution, review and receipt recording. Search checks pause
 at bounded checkpoints; a current model request or isolated execution can finish before control returns.
-A mission has a 600-second work budget; an abandoned running lease expires after 660 seconds.
+A mission has a 600-second work budget checked between stages and during search; an abandoned running
+lease expires after 660 seconds. Inference and isolated execution have their own request/run deadlines.
+Pausing does not immediately revoke a running lease. Wait for expiry before recovering abandoned work.
+A late result or failure from an expired worker cannot change the replacement attempt.
 Changing configuration during work invalidates its result even if the operator resumes immediately.
 The mission records a failure; restart the process, then recover and execute it under the new policy.
 To recover, inspect its error/stages, correct configuration if needed, then use `recover UUID` and
@@ -218,8 +225,11 @@ alpha-agent --home ./restored-state restore ./private-backup.zip
 alpha-agent --home ./restored-state verify
 ```
 
-Restore currently accepts archives up to 256 MiB uncompressed. Check backup size and test recovery
-before depending on an archive; retain the original state directory for larger journals.
+Backup and restore share a 256 MiB uncompressed archive limit, including the manifest. Backup refuses
+oversized state before creating the destination and removes its own partial archive if writing fails;
+an existing destination is never overwritten or removed. Success is reported only after the archive
+is closed, flushed to disk and checksummed. Test recovery before relying on an archive, and retain
+the original state directory for journals larger than this supported recovery limit.
 
 Backups contain the identity key and token. Encrypt them with your normal backup system, store separately,
 and retain the reported SHA-256 and journal head in an independent trusted location. Restore never
@@ -229,7 +239,7 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.10.0.
+version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.10.1.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -253,8 +263,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.10.0 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.10.0
+docker build --target agent-runtime -t agialpha-agent:1.10.1 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.10.1
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 
@@ -280,7 +290,7 @@ omits the optional historical browser model. The previous manual compiler is ret
 
 ## Full browser text generation
 
-The release includes `alpha-agent-v1.10.0-browser.zip`, the complete tested browser distribution.
+The release includes `alpha-agent-v1.10.1-browser.zip`, the complete tested browser distribution.
 Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
 `python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
 Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.

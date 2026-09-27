@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.10.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.10.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -222,3 +222,26 @@ staffing, non-transferable shift capacity, backlog conservation, coverage caps, 
 repeated prerequisites and UTF-8 input bounds. Browser acceptance checks staffing failure, keyboard focus
 and archived dossier replay. The finalizer rejects public Studio evidence with missing journeys, cases,
 browser failures or any mismatch in origin, source commit, release version or calculation version.
+
+## Version 1.10.1 operator boundary audit
+
+`tests/runtime/test_execution_boundaries.py` uses two real engine instances and an expired lease to
+check that late success and late failure cannot alter a replacement attempt. A loopback HTTP server
+exercises a stalled body, a body that continually sends fragments, successful JSON completion and
+connection closure at the configured deadline. These are transport and lifecycle tests, not a claim
+of model quality; the separate real-model gate still performs generation, review and signed export.
+
+The same suite checks malformed authorization, refusal of a backup beyond the restore size limit,
+cleanup after a partial archive write and preservation of an existing destination. Standard recovery
+tests continue to verify identity, signatures and journal contents after restore. The patch preserves
+the Decision Studio calculation version and requires all existing public browser acceptance checks.
+
+Release acceptance also runs `FULL_INSTALL=1 FETCH_BROWSER_ASSETS=0 bash codex/setup.sh` in a fresh
+virtual environment and requires `pip check`. This complements the separate hashed operator installer
+and avoids relying on packages retained from previous developer sessions. Source version, package
+version and catalog release must agree even when no installed distribution metadata is available.
+
+Wheel verification now uses real Ed25519 signatures in both the loader and CLI tests. An unchanged
+allowlist entry cannot authorize changed wheel bytes, another public key, an invalid signature or
+malformed base64. The four CLI tests execute without the previous OpenSSL-related skips. This verifies
+the signature boundary; it does not qualify the historical hot-load integration for production use.

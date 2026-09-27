@@ -1,4 +1,15 @@
-# Version 1.10.0 — Operational planning audit
+# Version 1.10.1 — Operator reliability audit
+
+- Remove the legacy wheel signature bypass and unify signing/verification formats.
+
+- Bound the full inference request, including continuously trickling responses.
+- Fence late worker failures from recovered replacement work.
+- Return normal authentication denial for malformed authorization values.
+- Enforce recoverable backup size, partial-write cleanup and completed-archive flushes.
+- Keep Decision Studio calculations and existing dossiers compatible.
+- See [release notes](agent/RELEASE_NOTES_1.10.1.md) and the [operator guide](agent/OPERATIONS.md).
+
+## Version 1.10.0 — Operational planning audit
 
 - Replace inventory-based service capacity with per-shift staffing, backlog, caps and cost accounting.
 - Prioritize job commitments, expose deadline slack, and keep infeasible schedules on HOLD.

@@ -14,6 +14,23 @@ import pytest
 from scripts import finalize_pages_release, publish_agent_release, release_context
 
 
+def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
+    import importlib.metadata
+    import runpy
+    import tomllib
+
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+
+    def missing_distribution(_name: str) -> str:
+        raise importlib.metadata.PackageNotFoundError
+
+    monkeypatch.setattr(importlib.metadata, "version", missing_distribution)
+    package = runpy.run_path(str(root / "alpha_factory_v1/__init__.py"))
+    assert package["__version__"] == version
+    assert json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text())["release"] == version
+
+
 @pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
 def test_remote_main_must_still_match_before_publication(monkeypatch, head, kind) -> None:
     monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)

@@ -28,22 +28,17 @@ def verify_wheel(path: Path) -> bool:
     if ed25519 is None:
         logger.error("cryptography library required for signature checks")
         return False
-    allowlisted = False
     try:
         sig_b64 = sig_path.read_text().strip()
         expected = sigs.get(path.name)
         if expected and expected != sig_b64:
             logger.error("Signature mismatch for %s", path.name)
             return False
-        allowlisted = expected == sig_b64 if expected else False
-        pub_bytes = base64.b64decode(pubkey)
-        signature = base64.b64decode(sig_b64)
+        pub_bytes = base64.b64decode(pubkey, validate=True)
+        signature = base64.b64decode(sig_b64, validate=True)
         ed25519.Ed25519PublicKey.from_public_bytes(pub_bytes).verify(signature, path.read_bytes())
         return True
     except InvalidSignature:
-        if allowlisted:
-            logger.warning("Signature verification failed but allowlisted for %s", path.name)
-            return True
         logger.error("Invalid signature for %s", path.name)
     except Exception:  # noqa: BLE001
         logger.exception("Signature verification failed for %s", path.name)

@@ -1,5 +1,12 @@
 # $AGIALPHA Agent — release status
 
+**Version 1.10.1 strengthens signature verification, operator reliability and recovery.**
+Legacy plugin signatures must verify even when listed in the registry. Inference has a total response deadline,
+expired workers cannot invalidate replacement work, and backup creation enforces its recovery limits.
+Use the current [operator guide](docs/agent/OPERATIONS.md), [release scope](docs/agent/RELEASE_READINESS.md)
+and [release notes](docs/agent/RELEASE_NOTES_1.10.1.md). The Decision Studio calculation policy remains 1.10.0,
+so existing replayable decisions retain their exact results.
+
 **Version 1.10.0 turns operational examples into reviewable staffing, delivery and decision plans.**
 Open the [Decision Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/studio/) for eleven editable operating cases:
 capital allocation, invention portfolios, supplier resilience, delivery scheduling, demand planning, service staffing, microgrid dispatch,

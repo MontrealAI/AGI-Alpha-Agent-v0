@@ -103,7 +103,8 @@ practical application layer; it does not relabel the old synthetic fitness or re
 ## Files, replay and automation
 
 The input schema is `agialpha.decision.v1`; new reports use `agialpha.decision.report.v2` and bind
-`calculation_version: "1.10.0"`. Original `agialpha.decision.report.v1` dossiers replay through the archived
+`calculation_version: "1.10.0"`, including in release 1.10.1: the operator reliability patch does not
+change decision calculations or invalidate 1.10.0 dossiers. Original `agialpha.decision.report.v1` dossiers replay through the archived
 1.9.0 calculation policy and show that version beside the method. Recalculating those inputs uses the
 current policy and produces a new report. Unsupported versions fail explicitly. Reports include all
 input records, results, checks, limits and scoped jobs. Importing a report recomputes it and rejects
