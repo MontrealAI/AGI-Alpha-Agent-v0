@@ -335,6 +335,11 @@ def main() -> None:
     cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
     template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
+    if protocol_template.is_file():
+        (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(
+            protocol_template.read_text(encoding="utf-8").replace("{{VERSION}}", version), encoding="utf-8"
+        )
     index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
     index_html = index_html.replace("{{VERSION}}", version)
     index_html = index_html.replace("{{DECISION_CARDS}}", studio_generator.cards(REPO_ROOT))

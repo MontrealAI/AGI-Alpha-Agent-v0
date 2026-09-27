@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { curveQuote, tokenUnits, tokenDecimal } from "../ascension/engine.mjs?v=1.12.2";
+import { curveQuote, tokenUnits, tokenDecimal } from "../ascension/engine.mjs?v=1.13.0";
 const $ = (id) => document.getElementById(id);
 let report;
 const descriptions = {

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+from html.parser import HTMLParser
 from pathlib import Path
 import re
 import subprocess
@@ -34,6 +35,38 @@ def test_source_version_and_catalog_match_the_release_without_installed_metadata
     package = runpy.run_path(str(root / "alpha_factory_v1/__init__.py"))
     assert package["__version__"] == version
     assert json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text())["release"] == version
+
+
+def test_every_current_workspace_uses_the_release_version() -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+
+    class VersionParser(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__()
+            self.versions: list[str | None] = []
+
+        def handle_starttag(self, tag, attrs) -> None:
+            values = dict(attrs)
+            if tag == "meta" and values.get("name") == "application-version":
+                self.versions.append(values.get("content"))
+
+    for name in (
+        "",
+        "studio/",
+        "ascension/",
+        "ascension-protocol/",
+        "insight/",
+        "bloom/",
+        "compounding/",
+        "alpha_agi_business_3_v1/",
+        "alpha_factory_v1/demos/ascension-protocol/",
+        "alpha_factory_v1/demos/alpha_agi_business_3_v1/",
+    ):
+        page = root / "docs" / name / "index.html"
+        parser = VersionParser()
+        parser.feed(page.read_text())
+        assert parser.versions == [version], f"Stale release metadata in {page}"
 
 
 @pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
