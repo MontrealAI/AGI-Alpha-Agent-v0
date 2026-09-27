@@ -98,12 +98,17 @@ def test_offline_settings_do_not_modify_parent_credentials(tmp_path, monkeypatch
     monkeypatch.setenv("OPENAI_API_KEY", "parent-only")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "parent-only")
     monkeypatch.setenv("AF_TRACING", "true")
+    monkeypatch.setenv("NEO4J_URI", "bolt://parent-database.invalid:7687")
+    monkeypatch.setenv("PGHOST", "parent-database.invalid")
     result = catalog.environment_for(entry("meta_agentic_tree_search_v0"), tmp_path)
     assert result["OPENAI_API_KEY"] == result["ANTHROPIC_API_KEY"] == ""
     assert result["NO_LLM"] == result["HF_HUB_OFFLINE"] == result["PYTHONSAFEPATH"] == "1"
     assert result["AF_TRACING"] == "false"
     assert result["OPENAI_AGENTS_DISABLE_TRACING"] == "true"
+    assert result["NEO4J_URI"] == result["PGHOST"] == ""
     assert os.environ["OPENAI_API_KEY"] == "parent-only"
+    assert os.environ["NEO4J_URI"] == "bolt://parent-database.invalid:7687"
+    assert os.environ["PGHOST"] == "parent-database.invalid"
     assert all(Path(path).is_absolute() for path in result["PYTHONPATH"].split(os.pathsep))
 
 

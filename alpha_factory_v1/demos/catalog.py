@@ -55,6 +55,8 @@ def environment_for(entry: dict[str, Any], output: Path) -> dict[str, str]:
             OPENAI_AGENTS_DISABLE_TRACING="true",
             HF_HUB_OFFLINE="1",
             TRANSFORMERS_OFFLINE="1",
+            NEO4J_URI="",
+            PGHOST="",
         )
     env.update({key: resolve_setting(value, entry, output) for key, value in entry["environment"].items()})
     paths = [str(REPO_ROOT)]

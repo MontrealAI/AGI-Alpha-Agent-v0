@@ -22,6 +22,7 @@ historical claims are retained; the current guide defines what is supported and 
 | --- | --- | --- |
 | Catalog | Exact 26-directory coverage; 14 finite commands, with repeat runs preserving v1/v2 SQLite history | `demo-catalog.json` in regression artifacts |
 | Installed demos | All 14 finite commands from the wheel with Python network calls blocked, inherited provider keys disabled and sample bytes preserved | `test_demo_distribution.py` in regression JUnit |
+| Full backend wheel | All 14 finite wheel commands with backend extras installed, inherited database settings disabled and test-only environment shortcuts removed | `demo-distribution-3.11` / `demo-distribution-3.12` JUnit |
 | Launcher boundaries | Output-directory module shadowing rejected, malformed output paths reported, missing modules/data stop before launch; prerequisite check has no launch/state side effects | Runtime JUnit on Python 3.11, 3.12 and 3.13 |
 | Minimal wheel | Installed Governance, Macro Sentinel and Era commands execute outside the checkout with only operator dependencies | Runtime workflow on Python 3.11, 3.12 and 3.13 |
 | Native CPU | Real Torch AIGA generation/checkpoint, multilayer Hebbian paths, MuZero planning/step bound, three actual Streamlit AppTests, offline GPT-2 weights | `native-demos.json` |

@@ -59,8 +59,12 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
         "NO_DISCLAIMER": "1",
         "OPENAI_API_KEY": "offline-demo-must-not-use-this",
         "ANTHROPIC_API_KEY": "offline-demo-must-not-use-this",
+        "NEO4J_URI": "bolt://offline-demo.invalid:7687",
+        "PGHOST": "offline-demo.invalid",
     }
+    # Exercise a normal user launch even when the surrounding suite disables integrations.
     environment.pop("PYTEST_CURRENT_TEST", None)
+    environment.pop("PYTEST_NET_OFF", None)
     probe = subprocess.run(
         [sys.executable, "-P", "-c", "import alpha_factory_v1; print(alpha_factory_v1.__file__)"],
         cwd=tmp_path,

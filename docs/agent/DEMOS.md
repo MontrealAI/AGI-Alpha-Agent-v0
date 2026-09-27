@@ -77,9 +77,11 @@ accounts. Follow the entry's guide for those integrations. The launcher never in
 Some examples need additional modules such as Rich or Click beyond the base operator environment.
 
 The 14 finite catalog examples use explicit offline defaults. Their child processes disable configured
-OpenAI/Anthropic keys and tracing; tree search uses the bundled configuration and random rewriter.
+OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses the bundled
+configuration and random rewriter.
 Your shell credentials are unchanged. The release tests run all 14 from the wheel with Python network
-calls blocked. This verifies those launch contracts; the launcher is not a network or code sandbox.
+calls blocked, including Python 3.11/3.12 environments with the full backend dependencies and inherited
+database settings. This verifies those launch contracts; the launcher is not a network or code sandbox.
 Advanced standalone commands and optional services retain their separately documented behavior.
 
 Output defaults to `demo-runs/NAME/`. Relative directories resolve from the directory where you launch.
