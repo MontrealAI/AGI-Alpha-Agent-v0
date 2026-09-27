@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.9.0 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.10.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -214,3 +214,11 @@ held-out isolation, evidence holds, CSV handling and replay tampering. The brows
 eleven cases, downloads their dossiers and verifies each through the standalone CLI. It checks real editing,
 imports, infeasibility, save/restore/clear, four export types, mobile layout, automated accessibility and offline
 recalculation. These checks run on both build profiles and the exact deployed public site before publication.
+
+## Version 1.10.0 operational audit
+
+Additional oracles check deadline-feasible schedules against faster late alternatives, productive-time
+staffing, non-transferable shift capacity, backlog conservation, coverage caps, numeric evidence boundaries,
+repeated prerequisites and UTF-8 input bounds. Browser acceptance checks staffing failure, keyboard focus
+and archived dossier replay. The finalizer rejects public Studio evidence with missing journeys, cases,
+browser failures or any mismatch in origin, source commit, release version or calculation version.

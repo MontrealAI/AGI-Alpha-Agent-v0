@@ -131,6 +131,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 )
                 downloaded: dict[str, Any] = json.loads(target.read_text())
                 assert downloaded["input"] == case["input"]
+                assert downloaded["calculation_version"] == "1.10.0"
                 records.append(
                     {
                         "id": case["id"],
@@ -138,7 +139,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                         "metrics": downloaded["output"]["metrics"],
                     }
                 )
-                if case["id"] in {"capital", "delivery", "proof", "energy"}:
+                if case["id"] in {"capital", "delivery", "proof", "energy", "service"}:
                     page.locator("#results-title").scroll_into_view_if_needed()
                     page.screenshot(path=str(output / f'{case["id"]}-results.png'))
                 if axe_script:
@@ -147,6 +148,31 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                         "async () => (await axe.run(document, {runOnly: ['wcag2a','wcag2aa','wcag21aa']})).violations"
                     )
                     assert not violations, json.dumps(violations)
+            # Staffing is a distinct executable workflow, with visible caps and forward backlog.
+            page.locator('[data-case="service"]').click()
+            page.locator("#run").click()
+            expect(page.locator("#verdict")).to_have_text("PLAN")
+            expect(page.locator("#supporting-tables")).to_contain_text("Forecast validation")
+            page.get_by_label("coverage row 1 Additional staff cap", exact=True).fill("0")
+            expect(page.locator("#results")).to_be_hidden()
+            page.locator("#run").click()
+            expect(page.locator("#verdict")).to_have_text("HOLD")
+            expect(page.locator("#jobs")).to_contain_text("Resolve uncovered service demand")
+            # Paging an editable table preserves its expanded state and keyboard position.
+            page.locator('[data-case="inventory"]').click()
+            page.get_by_role("button", name="Next rows", exact=True).click()
+            expect(page.get_by_label("demand row 13 ID", exact=True)).to_be_focused()
+            page.get_by_role("button", name="Remove demand row 13", exact=True).click()
+            expect(page.get_by_label("demand row 13 ID", exact=True)).to_be_focused()
+            page.get_by_role("button", name="Add row", exact=True).click()
+            expect(page.get_by_label("demand row 84 ID", exact=True)).to_be_focused()
+            # Existing released reports replay with their archived policy and explicit version.
+            legacy = Path("tests/fixtures/decision-studio/service-1.9.json").read_bytes()
+            page.locator("#import").set_input_files(
+                {"name": "legacy.json", "mimeType": "application/json", "buffer": legacy}
+            )
+            expect(page.locator("#status")).to_contain_text("replayed successfully")
+            expect(page.locator("#method")).to_contain_text("1.9.0 (archived replay)")
             # An edit must immediately revoke the old chart and exportable result.
             page.locator('[data-case="capital"]').click()
             page.locator("#run").click()
@@ -208,7 +234,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             expect(page.locator("#restore")).to_be_disabled()
             # Keyboard, mobile, no horizontal page overflow, and responsive result tables.
             page.set_viewport_size({"width": 390, "height": 844})
-            for case in ("capital", "delivery", "inventory", "proof"):
+            for case in ("capital", "delivery", "inventory", "proof", "service"):
                 page.locator(f'[data-case="{case}"]').click()
                 page.locator("#run").click()
                 expect(page.locator("#results")).to_be_visible()
@@ -255,9 +281,16 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             server.server_close()
     report: dict[str, Any] = {
         "schema": "agialpha.decision.acceptance.v1",
+        "origin": origin,
+        "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+        "version": json.loads(Path("alpha_factory_v1/demos/catalog.json").read_text())["release"],
+        "calculation_version": "1.10.0",
         "cases": records,
         "checks": [
             "all-case-calculations",
+            "staffing-cap-and-backlog-hold",
+            "editable-table-keyboard-focus",
+            "archived-dossier-replay",
             "downloaded-dossier-cli-replay",
             "edited-input-invalidation",
             "worker-cancellation",

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { brief, csv, SCHEMA } from "./engine.mjs";
+import { brief, csv, SCHEMA, REPORT_SCHEMA } from "./engine.mjs";
 import {
     parameters,
     fields,
@@ -123,12 +123,20 @@ function createControl(key, value, label, onChange) {
     });
     return node;
 }
-function renderDatasets() {
+function renderDatasets(focus = null) {
+    const open = Object.fromEntries(
+        [...$("datasets").querySelectorAll("details[data-dataset]")].map(
+            (s) => [s.dataset.dataset, s.open],
+        ),
+    );
     $("datasets").replaceChildren();
     for (const [name, records] of Object.entries(current.datasets)) {
         const section = make("details", undefined, "dataset");
+        section.dataset.dataset = name;
         section.open =
-            Object.keys(current.datasets).length === 1 || name === "claims";
+            open[name] ??
+            (Object.keys(current.datasets).length === 1 ||
+                ["claims", "coverage"].includes(name));
         section.append(
             make(
                 "summary",
@@ -183,7 +191,7 @@ function renderDatasets() {
             invalidate(
                 "New row added. Complete its fields before calculating.",
             );
-            renderDatasets();
+            renderDatasets({ name, row: records.length - 1 });
         });
         upload.addEventListener(
             "change",
@@ -233,6 +241,7 @@ function renderDatasets() {
         records.slice(offset, offset + 12).forEach((r, visibleIndex) => {
             const i = offset + visibleIndex;
             const row = make("tr");
+            row.dataset.index = i;
             columns.forEach((k) => {
                 const td = make("td");
                 td.append(
@@ -257,7 +266,7 @@ function renderDatasets() {
             remove.addEventListener("click", () => {
                 records.splice(i, 1);
                 invalidate("Row removed. Recalculate the decision.");
-                renderDatasets();
+                renderDatasets({ name, row: Math.min(i, records.length - 1) });
             });
             td.append(remove);
             row.append(td);
@@ -278,17 +287,26 @@ function renderDatasets() {
             next.disabled = offset + 12 >= records.length;
             previous.addEventListener("click", () => {
                 offsets[name] = offset - 12;
-                renderDatasets();
+                renderDatasets({ name, row: offsets[name] });
             });
             next.addEventListener("click", () => {
                 offsets[name] = offset + 12;
-                renderDatasets();
+                renderDatasets({ name, row: offsets[name] });
             });
             pager.append(previous, count, next);
             body.append(pager);
         }
         section.append(body);
         $("datasets").append(section);
+    }
+    if (focus) {
+        const section = [...$("datasets").children].find(
+            (s) => s.dataset.dataset === focus.name,
+        );
+        section.open = true;
+        section
+            .querySelector(`tr[data-index="${focus.row}"] [data-key]`)
+            ?.focus();
     }
 }
 function load(input, updateURL = true) {
@@ -297,7 +315,8 @@ function load(input, updateURL = true) {
     );
     current = structuredClone(input);
     offsets = {};
-    const entry = cases.find((c) => c.id === input.id),
+    $("datasets").replaceChildren();
+    const entry = cases.find((c) => c.id === input.id && c.kind === input.kind),
         fallback = cases.find((c) => c.kind === input.kind);
     const meta = entry || fallback;
     $("case-title").textContent = input.title;
@@ -418,6 +437,30 @@ function plot() {
                 format(f * d.makespan),
             ),
         );
+    } else if (i.kind === "service") {
+        title(
+            "Coverage by shift · required staff (solid), proposed staff (dashed)",
+        );
+        axis();
+        const series = [
+            d.shifts.map((r) => r.required_staff),
+            d.shifts.map((r) => r.available_staff + r.extra),
+        ];
+        const max = Math.max(1, ...series.flat());
+        series.forEach((values, n) =>
+            el("polyline", {
+                points: values
+                    .map(
+                        (v, k) =>
+                            `${70 + (k / Math.max(1, values.length - 1)) * 740},${265 - (v / max) * 210}`,
+                    )
+                    .join(" "),
+                class: n ? "secondary" : "line",
+            }),
+        );
+        el("text", { x: 15, y: 60 }, format(max));
+        el("text", { x: 70, y: 290 }, "First shift");
+        el("text", { x: 815, y: 290, "text-anchor": "end" }, "Last shift");
     } else if (i.kind === "inventory") {
         title("Untouched holdout · observed (solid) and predicted (dashed)");
         axis();
@@ -548,7 +591,37 @@ function render() {
     });
     table.append(body);
     $("result-table").replaceChildren(table);
-    $("method").textContent = o.method;
+    $("method").textContent =
+        `${o.method} · Calculation version ${report.calculation_version || "1.9.0 (archived replay)"}`;
+    $("supporting-tables").replaceChildren();
+    for (const section of o.detail.tables || []) {
+        const wrapper = make("section"),
+            scroll = make("div", undefined, "table-scroll");
+        wrapper.append(make("h4", section.title));
+        scroll.tabIndex = 0;
+        scroll.setAttribute("role", "region");
+        scroll.setAttribute("aria-label", section.title);
+        const table = make("table"),
+            head = make("thead"),
+            row = make("tr"),
+            body = make("tbody");
+        for (const label of section.headers) {
+            const cell = make("th", label);
+            cell.scope = "col";
+            row.append(cell);
+        }
+        head.append(row);
+        table.append(head);
+        for (const record of section.rows) {
+            const row = make("tr");
+            record.forEach((value) => row.append(make("td", format(value))));
+            body.append(row);
+        }
+        table.append(body);
+        scroll.append(table);
+        wrapper.append(scroll);
+        $("supporting-tables").append(wrapper);
+    }
     $("checks").replaceChildren(...o.checks.map((x) => make("li", x)));
     $("limits").textContent = o.limits;
     $("details").textContent = JSON.stringify(o.detail, null, 2);
@@ -586,10 +659,13 @@ function render() {
             track,
             make(
                 "strong",
-                s.value === null ? "Infeasible" : format(s.value),
+                s.value === null
+                    ? "Infeasible"
+                    : `${format(s.value)} ${s.unit || (current.kind === "procurement" ? "USD" : "")}${s.feasible === false ? " · shortfall" : ""}`,
                 "stress-value",
             ),
         );
+        if (s.note) row.append(make("small", s.note));
         if (s.selected)
             row.title = `Selected: ${s.selected.join(", ") || "none"}`;
         $("stress-bars").append(row);
@@ -692,7 +768,11 @@ $("import").addEventListener(
         if (readEpoch !== epoch) return;
         const value = JSON.parse(source);
         invalidate("Replaying the imported dossier…");
-        if (value.schema === "agialpha.decision.report.v1")
+        if (
+            ["agialpha.decision.report.v1", REPORT_SCHEMA].includes(
+                value.schema,
+            )
+        )
             calculate({ report: value }, true);
         else if (value.schema === SCHEMA) calculate({ input: value }, true);
         else

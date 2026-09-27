@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Decision support over explicit inputs. No network, model, wallet or external execution.
-import { runMission } from "../portal/mission-engine.mjs";
-import { verify as verifyLegacy } from "./engine-1.9.mjs";
-import { planSchedule, planService } from "./planning.mjs";
-export const REPORT_SCHEMA = "agialpha.decision.report.v2";
-export const CALCULATION_VERSION = "1.10.0";
+import { runMission } from "./mission-engine-1.9.mjs";
 
 export const SCHEMA = "agialpha.decision.v1";
 const fail = (message) => {
@@ -46,7 +42,7 @@ const rows = (x, name, keys, max = 100) => {
     x.forEach((r) => exactKeys(r, keys, name));
     if (keys.includes("id")) {
         x.forEach((r) => {
-            if (typeof r.id !== "string" || !/^[A-Za-z0-9_-]{1,64}$/.test(r.id))
+            if (!/^[A-Za-z0-9_-]{1,64}$/.test(r.id))
                 fail(
                     `${name}: IDs need 1–64 letters, digits, hyphens or underscores.`,
                 );
@@ -137,14 +133,12 @@ function portfolio(input) {
                 fail(`Unknown or self dependency: ${id}.`);
         }),
     );
-    const closures = new Map(),
-        visiting = new Set();
+    const closures = new Map(), visiting = new Set();
     const closure = (i) => {
         if (closures.has(i)) return closures.get(i);
         if (visiting.has(i)) fail("Project dependencies contain a cycle.");
         visiting.add(i);
-        const mask =
-            (1 << i) | deps[i].reduce((m, id) => m | closure(ids.get(id)), 0);
+        const mask = (1 << i) | deps[i].reduce((m, id) => m | closure(ids.get(id)), 0);
         visiting.delete(i);
         closures.set(i, mask);
         return mask;
@@ -218,7 +212,6 @@ function portfolio(input) {
             x = evaluate(p.budget, scaled).best;
         return {
             scenario: `Benefits at ${scaled}%`,
-            unit: "USD NPV",
             value: x.npv / 100,
             selected: items
                 .filter((_, i) => x.mask & (1 << i))
@@ -401,7 +394,6 @@ function procurement(input, stress = true) {
               return [
                   {
                       scenario: `${r.name} unavailable`,
-                      unit: "USD",
                       value: x.detail.feasible ? x.detail.cost : null,
                       feasible: x.detail.feasible,
                   },
@@ -490,191 +482,28 @@ function schedule(input) {
             fail(`All ${r.job} operations must share the same due time.`);
         j.operations.push({ machine: r.resource, duration: r.duration });
     });
-    if (jobs.length > 7 || jobs.some((j) => j.operations.length > 12))
-        fail("Schedule supports at most 7 jobs and 12 operations per job.");
-    const e = planSchedule(jobs, p.deadline);
-    const feasible = e.violation_hours === 0;
+    const r = runMission({
+            goal: input.title,
+            work: { kind: "schedule", jobs, unit: "hours" },
+        }),
+        e = r.evidence;
+    const deadlineMet = e.makespan <= p.deadline;
     return result(
-        "Deadline-aware exhaustive job-priority search",
-        feasible ? "PLAN" : "HOLD",
-        `${feasible ? "All job due times and the delivery window are met." : "No deadline-feasible order exists within this scheduling policy."} Priority: ${e.order.join(" → ")}. ${e.late_jobs} late jobs; ${e.window_overrun} hours beyond the delivery window.`,
-        [
-            ["Makespan", e.makespan, "hours"],
-            ["Total job lateness", e.tardiness, "hours"],
-            ["Late jobs", e.late_jobs, "jobs"],
-            ["Feasible priority orders", e.feasible_orders, "orders"],
-        ],
-        ["Job", "Operation", "Resource", "Start (hours)", "Finish (hours)"],
-        e.operations.map((op) => [
-            op.job,
-            op.sequence + 1,
-            op.machine,
-            op.start,
-            op.end,
-        ]),
-        {
-            ...e,
-            deadline: p.deadline,
-            tables: [
-                {
-                    title: "Job commitments",
-                    headers: [
-                        "Job",
-                        "Completion (hours)",
-                        "Due (hours)",
-                        "Slack (hours)",
-                        "State",
-                    ],
-                    rows: e.commitments.map((j) => [
-                        j.id,
-                        j.completion,
-                        j.due,
-                        j.slack,
-                        j.slack < 0 ? "LATE" : "ON TIME",
-                    ]),
-                },
-            ],
-        },
-        [
-            `All ${e.examined_orders} job-priority permutations compared; ${e.feasible_orders} meet every deadline.`,
-            "Objective: minimize total job lateness plus delivery-window overrun, then makespan.",
-            "Operation durations, precedence, resource non-overlap and completion times independently reconciled.",
-            `Input-order baseline: ${e.baseline_makespan} hours; ${e.baseline_tardiness} hours of job lateness.`,
-        ],
-        "Best within a serial job-priority policy, not all possible job-shop schedules. A HOLD is not a proof of global infeasibility. Hours are elapsed work hours from a common zero; shifts, setup, breaks, releases and equipment constraints require separate validation.",
+        r.method,
+        deadlineMet && e.tardiness === 0 ? "PLAN" : "HOLD",
+        `${r.summary} ${deadlineMet ? "Delivery window met." : "Delivery window exceeded."} Total lateness: ${e.tardiness} hours.`,
+        [...r.metrics.map(([k, v]) => [k, v, "hours"])],
+        r.headers,
+        r.rows,
+        { ...e, deadline: p.deadline },
+        r.checks,
+        r.limits +
+            " Hours are elapsed work hours from a common zero; shifts, breaks and setup changes must be included in durations.",
         [
             job(
-                feasible ? "RELEASE-SCHEDULE" : "RESOLVE-DEADLINES",
-                feasible
-                    ? "Authorize resource reservations"
-                    : "Resolve the missed commitments",
-                feasible
-                    ? "Confirm durations, resource availability and shift calendars before issuing the schedule."
-                    : "Review the late-job table. Confirm due dates, add capacity or evaluate a richer scheduling policy; recalculate before reserving resources.",
-            ),
-        ],
-    );
-}
-
-function service(input) {
-    const { parameters: p, datasets: d } = input;
-    params(p, {
-        holdout: [2, 100],
-        season: [1, 100],
-        handle_minutes: [1, 480],
-        shift_hours: [1, 24],
-        shrinkage_percent: [0, 95],
-        occupancy_percent: [1, 100],
-        reserve_percent: [0, 100],
-        backlog: [0, 1e7],
-        clear_backlog_periods: [1, 30],
-    });
-    exactKeys(d, ["demand", "coverage"], "Datasets");
-    const series = rows(d.demand, "Demand", ["id", "units"], 1000);
-    series.forEach((r) => number(r.units, "Observed cases", 0, 1e7));
-    const coverage = rows(
-        d.coverage,
-        "Coverage",
-        ["id", "available_staff", "extra_limit", "extra_shift_cost"],
-        30,
-    );
-    coverage.forEach((r) => {
-        number(r.available_staff, "Available staff", 0, 100000);
-        number(r.extra_limit, "Additional staff limit", 0, 100000);
-        number(r.extra_shift_cost, "Additional shift cost", 0, 100000);
-    });
-    if (p.clear_backlog_periods > coverage.length)
-        fail("Backlog clearance must fall within the coverage horizon.");
-    const forecast = runMission({
-        goal: input.title,
-        work: {
-            kind: "forecast",
-            observations: series.map((r) => r.units),
-            holdout: p.holdout,
-            season: p.season,
-            horizon: coverage.length,
-            unit: "service cases per shift",
-        },
-    });
-    const e = forecast.evidence,
-        plan = planService(p, coverage, e.future);
-    const reliable = e.holdout_mae <= e.baseline_mae,
-        feasible = !plan.shortfall_periods;
-    return result(
-        "Training-only forecast selection + per-shift workload and staffing reconciliation",
-        feasible && reliable ? "PLAN" : "HOLD",
-        `${plan.extra_shifts} additional staff shifts proposed at ${plan.cost} USD. ${plan.shortfall_periods} shifts miss the workload target; ${plan.ending_backlog} cases remain. ${reliable ? "" : "The forecast underperformed the last-value holdout baseline."}`,
-        [
-            ["Peak additional staff", plan.peak_extra, "people / shift"],
-            ["Additional staffing cost", plan.cost, "USD"],
-            ["Shifts below target", plan.shortfall_periods, "shifts"],
-            ["Ending backlog", plan.ending_backlog, "cases"],
-        ],
-        [
-            "Shift",
-            "Forecast cases",
-            "Buffered arrivals",
-            "Start backlog",
-            "Work target",
-            "Existing staff",
-            "Add staff",
-            "Capacity (cases)",
-            "Uncovered target",
-            "End backlog",
-            "Extra cost (USD)",
-        ],
-        plan.shifts.map((r) => [
-            r.id,
-            r.forecast,
-            r.arrivals,
-            r.start_backlog,
-            r.target,
-            r.available_staff,
-            r.extra,
-            r.capacity,
-            r.shortfall,
-            r.end_backlog,
-            r.cost,
-        ]),
-        {
-            ...e,
-            ...plan,
-            tables: [
-                {
-                    title: "Forecast validation",
-                    headers: forecast.headers,
-                    rows: forecast.rows,
-                },
-            ],
-            sensitivity: [-20, 0, 20].map((change) => {
-                const trial = planService(
-                    p,
-                    coverage,
-                    e.future.map((x) => Math.max(0, x) * (1 + change / 100)),
-                );
-                return {
-                    scenario: `Demand ${change >= 0 ? "+" : ""}${change}%`,
-                    value: trial.cost,
-                    unit: "USD",
-                    feasible: !trial.shortfall_periods,
-                    note: `${trial.shortfall_periods} shifts below target; ${trial.ending_backlog} cases remain`,
-                };
-            }),
-        },
-        [
-            ...forecast.checks,
-            "Backlog flows forward; idle capacity cannot be carried to another shift.",
-            "Additional staff never exceeds each shift's limit; cost includes every proposed additional staff shift.",
-            `Productive minutes per person: ${plan.productive_minutes}; holdout MAE ${e.holdout_mae.toFixed(2)} versus last-value ${e.baseline_mae.toFixed(2)} cases.`,
-        ],
-        "Aggregate workload planning, not a queueing or response-time guarantee. Each coverage row is one shift with the same duration as each historical period. Shrinkage removes unavailable time; occupancy limits the share spent handling cases. The reserve is an explicit demand scenario, not a confidence interval. Staff are interchangeable; breaks, skills, hiring lead time and labor constraints need a roster review. Only incremental shift cost is included. The rule adds the minimum staff needed for that shift's target; it is not a multi-period cost optimizer.",
-        [
-            job(
-                feasible ? "CONFIRM-ROSTER" : "RESOLVE-COVERAGE",
-                feasible
-                    ? "Confirm the staffing roster"
-                    : "Resolve uncovered service demand",
-                "Validate handling time, shift coverage, shrinkage and demand; reserve qualified staff within the stated caps and resolve every uncovered target before scheduling.",
+                "RELEASE-SCHEDULE",
+                "Authorize the resource reservation",
+                "Confirm durations, resource availability, shift calendars and all due times before issuing the schedule.",
             ),
         ],
     );
@@ -729,7 +558,6 @@ function inventory(input) {
             lead_demand: demand,
             sensitivity: [-20, 0, 20].map((x) => ({
                 scenario: `Lead demand ${x >= 0 ? "+" : ""}${x}%`,
-                unit: "units to order",
                 value: Math.max(
                     0,
                     Math.ceil(demand * (1 + x / 100) + p.safety_units) -
@@ -982,20 +810,7 @@ function evidence(input) {
                 source.text.includes(r.quote)
             );
         // The exact quote must contain the asserted number as a numeric token. This is traceability, not semantic verification.
-        const numbers = [
-            ...r.quote.matchAll(
-                /[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
-            ),
-        ]
-            .filter(
-                (m) =>
-                    !/[\p{L}\p{N}_.+,−-]/u.test(r.quote[m.index - 1] || " ") &&
-                    !/[\p{L}\p{N}_+−-]/u.test(
-                        r.quote[m.index + m[0].length] || " ",
-                    ) &&
-                    !/^[.,]\d/.test(r.quote.slice(m.index + m[0].length)),
-            )
-            .map((m) => Number(m[0].replaceAll(",", "")));
+        const numbers = (r.quote.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
         let state = "MET",
             reason =
                 "Threshold met in operator-supplied evidence; source truth and interpretation require review.";
@@ -1159,7 +974,6 @@ const engines = {
     procurement,
     schedule,
     inventory,
-    service,
     energy,
     evidence,
     benchmark,
@@ -1179,38 +993,20 @@ export function solve(raw) {
         ],
         "Scenario",
     );
-    if (
-        input.schema !== SCHEMA ||
-        typeof input.kind !== "string" ||
-        !Object.hasOwn(engines, input.kind)
-    )
+    if (input.schema !== SCHEMA || !Object.hasOwn(engines, input.kind))
         fail("Unsupported decision schema or workflow.");
     text(input.id, "Scenario ID", 80);
     text(input.title, "Title", 160);
     text(input.provenance, "Provenance", 1000);
-    if (new TextEncoder().encode(JSON.stringify(input)).byteLength > 256000)
+    if (JSON.stringify(input).length > 256000)
         fail("Scenario exceeds the 256 KB input limit.");
     const output = engines[input.kind](input);
-    return {
-        schema: REPORT_SCHEMA,
-        calculation_version: CALCULATION_VERSION,
-        input,
-        output,
-    };
+    return { schema: "agialpha.decision.report.v1", input, output };
 }
 export function verify(report) {
-    if (report?.schema === "agialpha.decision.report.v1")
-        return verifyLegacy(report);
-    exactKeys(
-        report,
-        ["schema", "calculation_version", "input", "output"],
-        "Report",
-    );
-    if (
-        report.schema !== REPORT_SCHEMA ||
-        report.calculation_version !== CALCULATION_VERSION
-    )
-        fail("Unsupported report schema or calculation version.");
+    exactKeys(report, ["schema", "input", "output"], "Report");
+    if (report.schema !== "agialpha.decision.report.v1")
+        fail("Unsupported report schema.");
     const replay = solve(report.input);
     if (canonical(replay.output) !== canonical(report.output))
         fail("Report failed replay: results differ from the supplied inputs.");

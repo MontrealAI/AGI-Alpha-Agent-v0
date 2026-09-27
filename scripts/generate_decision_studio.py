@@ -69,7 +69,7 @@ def preview(case: dict[str, Any], index: int) -> str:
                     f'<rect x="{155 + j * 94 + (i % 2) * 16}" y="{y}" width="{60 + (i + j) % 3 * 10}" '
                     f'height="28" rx="2" fill="{accent}" opacity="{.4 + j * .15}"/>'
                 )
-    elif kind == "inventory":
+    elif kind in {"inventory", "service"}:
         label = "DEMAND HISTORY / INPUT OBSERVATIONS"
         values = [r["units"] for r in case["input"]["datasets"]["demand"]]
         maximum = max(values)

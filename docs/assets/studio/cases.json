@@ -1057,28 +1057,30 @@
   },
   {
     "id": "service",
-    "title": "Service capacity forecast",
-    "kind": "inventory",
+    "title": "Service staffing & backlog desk",
+    "kind": "service",
     "category": "Run operations",
-    "question": "How much service capacity is needed for the next seven days?",
-    "deliverable": "Demand forecast \u00b7 capacity gap \u00b7 out-of-sample error",
+    "question": "Which shifts need extra staff, what will they cost, and can the backlog be cleared?",
+    "deliverable": "Shift-by-shift staffing \u00b7 coverage caps \u00b7 backlog flow \u00b7 incremental cost",
     "legacy": [
       "era_of_experience"
     ],
     "input": {
       "schema": "agialpha.decision.v1",
       "id": "service",
-      "title": "Service capacity forecast",
-      "kind": "inventory",
+      "title": "Service staffing & backlog desk",
+      "kind": "service",
       "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
       "parameters": {
         "holdout": 14,
         "season": 7,
-        "lead_periods": 7,
-        "on_hand": 1150,
-        "on_order": 100,
-        "safety_units": 200,
-        "unit_cost": 35
+        "handle_minutes": 12,
+        "shift_hours": 8,
+        "shrinkage_percent": 25,
+        "occupancy_percent": 85,
+        "reserve_percent": 10,
+        "backlog": 120,
+        "clear_backlog_periods": 3
       },
       "datasets": {
         "demand": [
@@ -1417,6 +1419,50 @@
           {
             "id": "day_084",
             "units": 266
+          }
+        ],
+        "coverage": [
+          {
+            "id": "next_day_1",
+            "available_staff": 11,
+            "extra_limit": 5,
+            "extra_shift_cost": 240
+          },
+          {
+            "id": "next_day_2",
+            "available_staff": 11,
+            "extra_limit": 5,
+            "extra_shift_cost": 240
+          },
+          {
+            "id": "next_day_3",
+            "available_staff": 12,
+            "extra_limit": 5,
+            "extra_shift_cost": 240
+          },
+          {
+            "id": "next_day_4",
+            "available_staff": 10,
+            "extra_limit": 5,
+            "extra_shift_cost": 240
+          },
+          {
+            "id": "next_day_5",
+            "available_staff": 12,
+            "extra_limit": 5,
+            "extra_shift_cost": 240
+          },
+          {
+            "id": "next_day_6",
+            "available_staff": 9,
+            "extra_limit": 5,
+            "extra_shift_cost": 300
+          },
+          {
+            "id": "next_day_7",
+            "available_staff": 8,
+            "extra_limit": 5,
+            "extra_shift_cost": 300
           }
         ]
       }

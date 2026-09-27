@@ -1,4 +1,12 @@
-# Version 1.9.0 — Practical decision workspaces
+# Version 1.10.0 — Operational planning audit
+
+- Replace inventory-based service capacity with per-shift staffing, backlog, caps and cost accounting.
+- Prioritize job commitments, expose deadline slack, and keep infeasible schedules on HOLD.
+- Harden evidence numbers, prerequisite traversal, input bounds and versioned dossier replay.
+- Preserve keyboard focus and bind public Studio acceptance to the exact release commit.
+- See [release notes](agent/RELEASE_NOTES_1.10.0.md) and the [method guide](agent/DECISION_STUDIO.md).
+
+## Version 1.9.0 — Practical decision workspaces
 
 - Replace public toy examples with eleven editable, useful operational cases and seven calculation engines.
 - Connect all 26 original entries to practical workspaces with distinct previews; preserve original implementations.

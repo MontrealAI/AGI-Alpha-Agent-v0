@@ -25,6 +25,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     insight = None
     bloom = None
     compounding = None
+    studio = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -127,6 +128,56 @@ def finalize(folder: Path, evidence: Path) -> None:
             or {item.get("id") for item in compounding.get("scenarios", [])} != {"seasonal", "shift", "ablation"}
         ):
             raise ValueError("Compounding Lab and exact manuscript must pass on the canonical public site")
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 10, 0):
+        studio = json.loads(
+            (evidence / "public-pages" / "decision-studio" / "decision-studio.json").read_text(encoding="utf-8")
+        )
+        required_studio = {
+            "all-case-calculations",
+            "downloaded-dossier-cli-replay",
+            "edited-input-invalidation",
+            "worker-cancellation",
+            "forgery-rejection",
+            "csv-import-infeasibility",
+            "explicit-save-restore-clear",
+            "all-artifact-downloads",
+            "mobile-no-overflow",
+            "accessible-controls",
+            "practical-catalog-search",
+            "legacy-route-bridge",
+            "offline-recalculation",
+            "public-current-assets",
+            "staffing-cap-and-backlog-hold",
+            "editable-table-keyboard-focus",
+            "archived-dossier-replay",
+        }
+        if (
+            studio.get("schema") != "agialpha.decision.acceptance.v1"
+            or studio.get("passed") is not True
+            or studio.get("origin") != url
+            or studio.get("commit") != manifest["commit"]
+            or studio.get("version") != manifest["version"]
+            or studio.get("calculation_version") != "1.10.0"
+            or studio.get("browser_errors") != []
+            or studio.get("http_failures") != []
+            or not required_studio.issubset(studio.get("checks", []))
+            or {item.get("id") for item in studio.get("cases", [])}
+            != {
+                "capital",
+                "invention",
+                "supply",
+                "delivery",
+                "launch",
+                "inventory",
+                "service",
+                "energy",
+                "proof",
+                "nova",
+                "agency",
+            }
+            or len(studio.get("cases", [])) != 11
+        ):
+            raise ValueError("Decision Studio must pass every public journey for the exact packaged commit and version")
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -143,6 +194,12 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if studio:
+        manifest["public_decision_studio"] = studio
+        manifest["release_gates"].append(
+            "public Decision Studio staffing, deadline-aware plans, archived replay, exports, "
+            "accessibility and offline use"
+        )
     if compounding:
         manifest["public_compounding"] = compounding
         manifest["release_gates"].append(
