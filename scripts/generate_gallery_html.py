@@ -140,7 +140,7 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
     studio_path = REPO_ROOT / "docs/assets/studio/cases.json"
     if studio_path.is_file():
         for case in json.loads(studio_path.read_text()):
-            if md_file.stem in case["legacy"]:
+            if md_file.stem in case["legacy"] and md_file.stem != "alpha_agi_business_3_v1":
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
                 link = f'studio/?case={case["id"]}'
@@ -326,12 +326,20 @@ def main() -> None:
         "scripts.generate_decision_studio" if __package__ else "generate_decision_studio"
     )
     studio_generator.build(REPO_ROOT)
+    business3 = importlib.import_module("scripts.generate_business3" if __package__ else "generate_business3")
+    if (REPO_ROOT / "scripts/templates/business3.html").is_file():
+        business3.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)
     cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
     template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
+    if protocol_template.is_file():
+        (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(
+            protocol_template.read_text(encoding="utf-8").replace("{{VERSION}}", version), encoding="utf-8"
+        )
     index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
     index_html = index_html.replace("{{VERSION}}", version)
     index_html = index_html.replace("{{DECISION_CARDS}}", studio_generator.cards(REPO_ROOT))

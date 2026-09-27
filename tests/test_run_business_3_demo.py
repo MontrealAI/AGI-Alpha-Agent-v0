@@ -34,4 +34,5 @@ def test_run_business_3_demo_help(tmp_path: Path) -> None:
         text=True,
     )
     assert result.returncode == 0
-    assert log_file.read_text()
+    assert "Usage:" in result.stdout
+    assert not log_file.exists(), "Help must not build or run a container"

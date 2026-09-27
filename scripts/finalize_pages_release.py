@@ -10,6 +10,7 @@ from pathlib import Path
 import zipfile
 
 from scripts.ascension_protocol_evidence import verify_report as verify_protocol_report
+from scripts.business3_evidence import verify_report as verify_business3_report
 
 
 def finalize(folder: Path, evidence: Path) -> None:
@@ -29,6 +30,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     compounding = None
     studio = None
     protocol = None
+    business3 = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -186,6 +188,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             (evidence / "public-pages" / "ascension-protocol" / "report.json").read_text(encoding="utf-8")
         )
         verify_protocol_report(protocol, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 13, 0):
+        business3 = json.loads((evidence / "public-pages" / "business3" / "business3.json").read_text(encoding="utf-8"))
+        verify_business3_report(business3, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -202,6 +207,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if business3:
+        manifest["public_business3"] = business3
+        manifest["release_gates"].append(
+            "public Business 3 exact decisions, seven-file exports, Ascension jobs, accessibility and offline recovery"
+        )
     if protocol:
         manifest["public_ascension_protocol"] = protocol
         manifest["release_gates"].append(

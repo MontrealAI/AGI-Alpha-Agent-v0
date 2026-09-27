@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -66,7 +66,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_business3_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
@@ -82,7 +82,7 @@ jobs:
           alpha-agent ascension-check installed-plan.json
           python -m alpha_factory_v1.scripts.preflight --profile agent --offline
           alpha-agent --home installed-agent verify
-          for demo in solving_agi_governance macro_sentinel era_of_experience; do
+          for demo in solving_agi_governance macro_sentinel era_of_experience alpha_agi_business_3_v1; do
             python -m alpha_factory_v1.demos check "$demo" --json
             python -m alpha_factory_v1.demos run "$demo" --output-dir "installed-demos/$demo"
           done
@@ -101,6 +101,26 @@ jobs:
           export ALPHA_SANDBOX_IMAGE
           printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
           python -m scripts.validate_agent_sandbox --output evidence/sandbox.json
+      - name: Build and verify the offline Business 3 container
+        if: matrix.python == '3.12'
+        run: |
+          image=$(cat evidence/sandbox-image.txt)
+          docker build --build-arg "BASE_IMAGE=$image" -t business3-acceptance -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
+          mkdir -p "$RUNNER_TEMP/business3-container"
+          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 64 --memory 512m --cpus 2 --tmpfs /tmp:rw,noexec,nosuid,size=32m --user "$(id -u):$(id -g)" -v "$RUNNER_TEMP/business3-container:/output" business3-acceptance --case industrial --output /output
+          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 64 --memory 512m --user "$(id -u):$(id -g)" -v "$RUNNER_TEMP/business3-container:/output:ro" business3-acceptance --list
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from alpha_factory_v1.demos.alpha_agi_business_3_v1.enterprise import read_json, verify, artifacts
+          root = Path(os.environ["RUNNER_TEMP"]) / "business3-container"
+          paths = list(root.glob("*/dossier.json"))
+          assert len(paths) == 1
+          report = verify(read_json(paths[0], 2_000_000))
+          assert report["result"]["portfolio"]["expectedNpvUsd"] == 648579
+          assert {p.name: p.read_bytes() for p in paths[0].parent.iterdir()} == artifacts(report)
+          Path("evidence/business3-container.json").write_text(json.dumps({"passed": True, "dossier_sha256": report["sha256"], "network": "none", "read_only_root": True, "files": 7}) + "\n")
+          PY
       - name: Verify the operator container and persistent restart
         if: matrix.python == '3.12'
         run: |
@@ -185,6 +205,7 @@ jobs:
       - name: Strict types and repository checks
         run: |
           python -m mypy --config-file mypy-runtime.ini
+          python -m mypy --config-file mypy-business3.ini
           python -m mypy --config-file mypy.ini
           python scripts/ruff_targets.py --run
           python -m scripts.check_agent_preservation > evidence/preservation.json
@@ -421,6 +442,8 @@ jobs:
         run: |
           npm ci --prefix tests/browser --ignore-scripts
           node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs
+      - name: Require exact Business 3 Python and browser calculations and exports
+        run: python -m scripts.validate_business3_core --output evidence/business3-core
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
       - name: Verify every rebuilt demo page
@@ -444,6 +467,8 @@ jobs:
         run: python -m scripts.validate_compounding --site site --output evidence/compounding --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify practical decisions, exported work products and replay
         run: python -m scripts.validate_decision_studio --site site --output evidence/decision-studio --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Verify Business 3 decisions, evidence, jobs, recovery and accessibility
+        run: python -m scripts.validate_business3 --site site --output evidence/business3-browser --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify the rebuilt gallery simulation and offline recovery
         run: |
           model_args=()
@@ -658,6 +683,7 @@ jobs:
           python -m scripts.validate_proof_bloom --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_compounding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/compounding --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_decision_studio --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/decision-studio --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_business3 --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/business3 --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

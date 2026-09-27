@@ -2,7 +2,7 @@
 
 # AGIALPHA demo catalog
 
-**Current package: 1.12.2.** [Start with the factory guide](../../docs/agent/FACTORY_GUIDE.md),
+**Current package: 1.13.0.** [Start with the factory guide](../../docs/agent/FACTORY_GUIDE.md),
 [Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) and native FusionPlan/evidence commands.
 All 26 entries below remain available; their individual execution modes still apply.
 

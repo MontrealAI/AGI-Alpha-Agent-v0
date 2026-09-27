@@ -3,37 +3,51 @@
 # NOTE: This demo is a research prototype and does not implement real AGI.
 """Self-contained Ω‑Lattice business demo.
 
-This module showcases a minimal zero‑entropy pipeline suitable for
-production‑grade environments.  The orchestration loop computes a
-Gibbs‑inspired :math:`ΔG` metric using three toy agents.  When
-``ΔG < 0`` an alpha job is posted.  A final Gödel‑Looper step then
-verifies and commits a (mock) weight update.
+The preserved research loop computes a dimensionless, Gibbs-inspired toy score.
+Signals and job posting are illustrative; no physical free energy, on-chain job,
+formal proof or trained weight change is produced. The enterprise CLI is the
+maintained default. Integrations here require explicit opt-in.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import argparse
 import logging
+import math
 import asyncio
 import os
 import hashlib
 import json
 import random
 import time
-from typing import Any, cast
+from typing import Any, Callable, cast
 
 from alpha_factory_v1.common.utils import local_llm
 
 log = logging.getLogger(__name__)
 
-try:  # optional OpenAI Agents integration
-    from openai_agents import OpenAIAgent
-except ImportError:  # pragma: no cover - offline fallback
-    try:  # fall back to the new package name
-        from agents import OpenAIAgent
-    except ImportError:
-        OpenAIAgent = None
+
+class OpenAIAgent:
+    """Compatibility adapter using the real SDK, never the repository's stub."""
+
+    def __init__(self, model: str, api_key: str | None) -> None:
+        self.model = model
+        self.api_key = api_key
+
+    async def __call__(self, prompt: str) -> str:
+        from agents import Agent, Runner, RunConfig, OpenAIResponsesModel
+        from openai import AsyncOpenAI
+
+        async with AsyncOpenAI(api_key=self.api_key, timeout=20, max_retries=0) as client:
+            agent = Agent(
+                name="Business 3 research commentator",
+                instructions="Explain the supplied toy score. Do not claim real-world returns or validated AGI.",
+                model=OpenAIResponsesModel(model=self.model, openai_client=client),
+            )
+            result = await Runner.run(agent, prompt, max_turns=1, run_config=RunConfig(tracing_disabled=True))
+            return str(result.final_output)
+
 
 try:  # optional Google ADK client
     from google_adk import Client as ADKClient
@@ -45,24 +59,10 @@ except Exception:  # pragma: no cover - offline fallback
 
 try:  # optional A2A message socket
     from a2a import A2ASocket
-
-    try:
-        _port = int(os.getenv("A2A_PORT", "0"))
-    except ValueError:  # pragma: no cover - invalid env var
-        log.warning("Invalid A2A_PORT=%r", os.getenv("A2A_PORT"))
-        _A2A = None
-    else:
-        if _port > 0:
-            _A2A = A2ASocket(
-                host=os.getenv("A2A_HOST", "localhost"),
-                port=_port,
-                app_id="alpha_business_v3",
-            )
-        else:
-            _A2A = None
 except Exception:  # pragma: no cover - missing dependency
     A2ASocket = None
-    _A2A = None
+
+_A2A: Any | None = None
 
 
 @dataclass(slots=True)
@@ -120,17 +120,23 @@ class AgentEne:
 
     def market_temperature(self, bundle: dict[str, Any]) -> float:
         """Estimate current market temperature."""
-        return float(bundle.get("market_temp", random.uniform(0.9, 1.1)))
+        return float(bundle.get("market_temp", 1.0))
 
 
 @dataclass(slots=True)
 class AgentGdl:
-    """Gödel‑Looper guardian."""
+    """Fail-closed research verifier hook, not a built-in formal proof system."""
+
+    verifier: Callable[[dict[str, Any]], bool] | None = None
 
     def provable(self, weight_update: dict[str, Any]) -> bool:
-        """Validate a weight update via formal proof."""
-
-        return True
+        """Reject absent evidence or absent verification, including empty updates."""
+        if not weight_update or self.verifier is None:
+            return False
+        try:
+            return self.verifier(weight_update) is True
+        except Exception:
+            return False
 
 
 async def _llm_comment(delta_g: float) -> str:
@@ -138,9 +144,7 @@ async def _llm_comment(delta_g: float) -> str:
 
     prompt = f"In one sentence, comment on ΔG={delta_g:.4f} for the business."
 
-    # When the OpenAI Agents SDK is missing the shim in
-    # ``alpha_factory_v1.backend`` exposes a non-callable placeholder.
-    # Guard against that scenario as well so offline tests succeed.
+    # Preserve compatibility with explicitly injected research adapters.
     if OpenAIAgent is None or not callable(OpenAIAgent):
         return cast(str, local_llm.chat(prompt))
 
@@ -152,20 +156,25 @@ async def _llm_comment(delta_g: float) -> str:
         api_key=os.getenv("OPENAI_API_KEY"),
     )
     try:
-        return cast(str, await agent(prompt))
-    except Exception as exc:  # pragma: no cover - network failures
-        log.warning("LLM comment failed: %s", exc)
-        return "LLM error"
+        return cast(str, await asyncio.wait_for(agent(prompt), timeout=30))
+    except Exception as exc:  # pragma: no cover - provider failures
+        raise RuntimeError(
+            f"Requested model commentary failed ({type(exc).__name__}); no fallback was substituted"
+        ) from exc
 
 
 @dataclass(slots=True)
 class Model:
-    """Persisted model whose weights evolve over time."""
+    """In-memory research proposals; no trained model weights are represented."""
+
+    proposals: list[dict[str, Any]] = field(default_factory=list)
 
     def commit(self, weight_update: dict[str, Any]) -> None:
-        """Commit the supplied weights after verification."""
-
-        log.info("[Model] New weights committed (Gödel-proof verified)")
+        """Retain an explicitly checked nonempty proposal without claiming training."""
+        if not weight_update:
+            raise ValueError("An empty proposal is not a model update")
+        self.proposals.append(json.loads(json.dumps(weight_update, allow_nan=False)))
+        log.info("[Model] Research proposal retained in memory; no trained weights changed")
 
 
 async def _close_adk_client(client: Any | None) -> None:
@@ -203,47 +212,60 @@ async def run_cycle_async(
     model: Model,
     adk_client: Any | None = None,
     a2a_socket: Any | None = None,
+    *,
+    commentary: bool = True,
+    close_adk: bool = True,
+    require_model: bool = False,
 ) -> None:
     """Execute one evaluation + commitment cycle."""
 
-    bundle = orchestrator.collect_signals()
-    delta_h = fin_agent.latent_work(bundle)
-    delta_s = res_agent.entropy(bundle)
-    beta = ene_agent.market_temperature(bundle)
-    if abs(beta) < 1e-9:
-        log.warning("β is zero; skipping cycle")
-        return
-    delta_g = delta_h - (delta_s / beta)
+    try:
+        bundle = orchestrator.collect_signals()
+        delta_h = fin_agent.latent_work(bundle)
+        delta_s = res_agent.entropy(bundle)
+        beta = ene_agent.market_temperature(bundle)
+        if not all(math.isfinite(value) for value in (delta_h, delta_s, beta)) or beta <= 0:
+            raise ValueError("Research inputs must be finite and beta must be positive")
+        delta_g = delta_h - (delta_s / beta)
+        if not math.isfinite(delta_g):
+            raise ValueError("Research score overflowed; use bounded finite inputs")
 
-    log.info("ΔH=%s ΔS=%s β=%s → ΔG=%s", delta_h, delta_s, beta, delta_g)
+        log.info("ΔH=%s ΔS=%s β=%s → ΔG=%s", delta_h, delta_s, beta, delta_g)
 
-    comment = await _llm_comment(delta_g)
-    log.info("LLM: %s", comment)
+        comment = await _llm_comment(delta_g) if commentary else "Model commentary not requested"
+        if require_model and comment.startswith("[offline]"):
+            raise RuntimeError(
+                "Requested local model did not load; install its runtime and verify the local weight path"
+            )
+        log.info("LLM: %s", comment)
 
-    if a2a_socket is not None:
-        try:
-            a2a_socket.sendjson({"delta_g": delta_g})
-        except Exception:  # pragma: no cover - best effort
-            log.warning("A2A send failed", exc_info=True)
+        if a2a_socket is not None:
+            try:
+                a2a_socket.sendjson({"delta_g": delta_g})
+            except Exception:  # pragma: no cover - best effort
+                log.warning("A2A send failed", exc_info=True)
 
-    if adk_client is not None:
-        try:
-            if asyncio.iscoroutinefunction(getattr(adk_client, "run", None)):
-                await adk_client.run(comment)
-            elif hasattr(adk_client, "run"):
-                await asyncio.to_thread(adk_client.run, comment)
-        except Exception:  # pragma: no cover - best effort
-            log.warning("ADK client error", exc_info=True)
-        finally:
+        if adk_client is not None:
+            try:
+                if asyncio.iscoroutinefunction(getattr(adk_client, "run", None)):
+                    await adk_client.run(comment)
+                elif hasattr(adk_client, "run"):
+                    await asyncio.to_thread(adk_client.run, comment)
+            except Exception:  # pragma: no cover - best effort
+                log.warning("ADK client error", exc_info=True)
+
+        if delta_g < 0:
+            bundle_hash = hashlib.sha256(json.dumps(bundle, sort_keys=True).encode()).hexdigest()[:8]
+            orchestrator.post_alpha_job(bundle_hash, delta_g)
+
+        weight_update: dict[str, Any] = {}
+        if gdl_agent.provable(weight_update):
+            model.commit(weight_update)
+        else:
+            log.info("[Godel] No independently verified update; model change blocked")
+    finally:
+        if close_adk:
             await _close_adk_client(adk_client)
-
-    if delta_g < 0:
-        bundle_hash = hashlib.sha256(json.dumps(bundle, sort_keys=True).encode()).hexdigest()[:8]
-        orchestrator.post_alpha_job(bundle_hash, delta_g)
-
-    weight_update: dict[str, Any] = {}
-    if gdl_agent.provable(weight_update):
-        model.commit(weight_update)
 
 
 def run_cycle(
@@ -255,7 +277,7 @@ def run_cycle(
     model: Model,
     adk_client: Any | None = None,
     a2a_socket: Any | None = None,
-) -> None:
+) -> asyncio.Task[None] | None:
     """Execute one evaluation cycle, creating an event loop if required."""
 
     try:
@@ -264,7 +286,7 @@ def run_cycle(
         running_loop = None
 
     if running_loop is not None:
-        running_loop.create_task(
+        return running_loop.create_task(
             run_cycle_async(
                 orchestrator,
                 fin_agent,
@@ -276,7 +298,6 @@ def run_cycle(
                 a2a_socket,
             )
         )
-        return
 
     asyncio.run(
         run_cycle_async(
@@ -292,23 +313,15 @@ def run_cycle(
     )
 
 
-async def main(argv: list[str] | None = None) -> None:
+async def _main(argv: list[str] | None = None) -> None:
     """Entry point for command line execution."""
 
-    try:  # auto-verify environment when available
-        import importlib
-
-        _check_env = importlib.import_module("check_env")
-    except Exception:  # pragma: no cover - optional dependency
-        _check_env = None
-    if _check_env and hasattr(_check_env, "main"):
-        try:
-            _check_env.main([])
-        except Exception:  # pragma: no cover - best effort
-            log.warning("check_env.main failed", exc_info=True)
-
-    ap = argparse.ArgumentParser(description="Run the Ω‑Lattice business demo")
-    ap.add_argument("--loglevel", default="INFO", help="Logging level")
+    ap = argparse.ArgumentParser(description="Preserved Ω-Lattice research loop; signals and job posting are simulated")
+    ap.add_argument("--loglevel", default="INFO", type=str.upper, choices=["DEBUG", "INFO", "WARNING", "ERROR"])
+    ap.add_argument(
+        "--commentary", choices=["none", "local", "openai"], default="none", help="Explicit optional inference"
+    )
+    ap.add_argument("--enable-integrations", action="store_true", help="Enable configured ADK/A2A research adapters")
     ap.add_argument(
         "--cycles",
         type=int,
@@ -330,6 +343,23 @@ async def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--openai-api-key", help="OpenAI API key")
     args = ap.parse_args(argv)
 
+    if args.cycles < 0 or args.cycles > 1_000_000:
+        ap.error("--cycles must be 0 (explicit continuous mode) through 1000000")
+    if not math.isfinite(args.interval) or not 0 <= args.interval <= 3600:
+        ap.error("--interval must be finite and between 0 and 3600 seconds")
+    if args.a2a_port is not None and not 0 <= args.a2a_port <= 65535:
+        ap.error("--a2a-port must be 0 through 65535")
+    if args.llama_n_ctx is not None and not 1 <= args.llama_n_ctx <= 131072:
+        ap.error("--llama-n-ctx must be 1 through 131072")
+    if args.openai_api_key is not None:
+        args.commentary = "openai"
+    if args.commentary == "openai" and not (args.openai_api_key or os.getenv("OPENAI_API_KEY")):
+        ap.error("OpenAI commentary requires OPENAI_API_KEY")
+    if args.commentary == "local" and not (args.llama_model_path or os.getenv("LLAMA_MODEL_PATH")):
+        ap.error("Local commentary requires an existing --llama-model-path")
+
+    if args.commentary == "local":
+        os.environ["OPENAI_API_KEY"] = ""
     if args.openai_api_key is not None:
         os.environ["OPENAI_API_KEY"] = args.openai_api_key
     if args.local_llm_url is not None:
@@ -348,12 +378,21 @@ async def main(argv: list[str] | None = None) -> None:
     global _A2A
     if args.a2a_port is not None:
         port = args.a2a_port
-    else:
+    elif args.enable_integrations:
         try:
             port = int(os.getenv("A2A_PORT", "0"))
         except ValueError:  # pragma: no cover - invalid env var
             log.warning("Invalid A2A_PORT=%r", os.getenv("A2A_PORT"))
             port = 0
+    else:
+        port = 0
+    if not 0 <= port <= 65535:
+        ap.error("A2A_PORT must be 0 through 65535")
+    if port and A2ASocket is None:
+        ap.error("The requested A2A research adapter is not installed")
+    adk_host = args.adk_host or (os.getenv("ADK_HOST") if args.enable_integrations else None)
+    if adk_host and ADKClient is None:
+        ap.error("The requested ADK research adapter is not installed")
     if port > 0 and A2ASocket is not None:
         host = args.a2a_host or os.getenv("A2A_HOST", "localhost")
         _A2A = A2ASocket(host=host, port=port, app_id="alpha_business_v3")
@@ -374,16 +413,13 @@ async def main(argv: list[str] | None = None) -> None:
     gdl_agent = AgentGdl()
     model = Model()
 
-    if a2a_socket:
-        try:
-            a2a_socket.start()
-        except Exception:  # pragma: no cover - best effort
-            log.warning("Failed to start A2A socket", exc_info=True)
-
-    adk_client = ADKClient(os.getenv("ADK_HOST", "http://localhost:9000")) if ADKClient else None
+    adk_client = None
 
     cycle = 0
     try:
+        adk_client = ADKClient(adk_host) if adk_host and ADKClient else None
+        if a2a_socket:
+            a2a_socket.start()
         while True:
             await run_cycle_async(
                 orchestrator,
@@ -394,6 +430,9 @@ async def main(argv: list[str] | None = None) -> None:
                 model,
                 adk_client,
                 a2a_socket,
+                commentary=args.commentary != "none",
+                close_adk=False,
+                require_model=args.commentary == "local",
             )
             cycle += 1
             if args.cycles and cycle >= args.cycles:
@@ -407,6 +446,20 @@ async def main(argv: list[str] | None = None) -> None:
                 log.warning("Failed to stop A2A socket", exc_info=True)
         if adk_client is not None:
             await _close_adk_client(adk_client)
+
+
+async def main(argv: list[str] | None = None) -> None:
+    """Run explicit research integrations while restoring the caller's settings."""
+    keys = ("OPENAI_API_KEY", "LOCAL_LLM_URL", "LLAMA_MODEL_PATH", "LLAMA_N_CTX", "ADK_HOST", "A2A_HOST", "A2A_PORT")
+    previous = {key: os.environ.get(key) for key in keys}
+    try:
+        await _main(argv)
+    finally:
+        for key, value in previous.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 if __name__ == "__main__":  # pragma: no cover - manual execution

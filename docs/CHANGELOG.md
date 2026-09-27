@@ -1,3 +1,11 @@
+## 1.13.0 — 2026-09-27
+
+- Deliver Business 3 Enterprise Studio: exact constrained portfolio planning, five editable cases, downside stress and seven portable evidence files with Python/browser parity.
+- Export reviewable goal/metric/bounty jobs accepted by Ascension; preserve the existing full lifecycle and clearly distinguish unsubmitted plans from deployed enterprises.
+- Repair the Python and console entry points, offline container launcher and executable Colab notebook; add Business 3 to all 15 finite installed-wheel launch contracts.
+- Make optional research inference and integrations explicit, restore caller settings, close clients correctly and reject unsupported proof or model-update claims.
+- Preserve original flowcharts, PDF/PPTX and historical research material; require exact public assets, notebook execution, real Docker isolation, accessibility and offline acceptance before publication.
+
 ## 1.12.2 — 2026-09-27
 
 - Package all six demo CSV samples and 11 unchanged Insight scenario fixtures; run all 14 finite demos from the wheel outside the repository with Python network calls blocked.

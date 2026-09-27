@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.12.2.** The canonical directory is
+**Version 1.13.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -14,6 +14,7 @@ computed results and modeled assumptions. Export work you want to retain.
 
 | Your question | Open | What to inspect |
 |---|---|---|
+| Which enterprise projects fit capital, staff and reviewer capacity? | [Business 3 Enterprise Studio](../alpha_agi_business_3_v1/index.html) | Exact portfolio, downside stress, evidence bundle and Ascension job specs |
 | What should I do with a constrained budget or schedule? | [Decision Studio](../studio/index.html) | Edit a case, compare feasible plans and export its dossier |
 | Which opportunity deserves further investigation? | [Insight Atlas](../insight/index.html) | Scenario assumptions, holdout results and claim evidence |
 | How does a claim become reviewed work? | [Proof Bloom](../bloom/index.html) | Jobs, exact evidence, review, promotion and revocation |
@@ -59,6 +60,9 @@ prints cooperation-model results and exits. It illustrates governance dynamics; 
 validator votes. Try `macro_sentinel` for risk calculations over bundled macro samples, or
 `era_of_experience` for a short sample-data report. Replace the name in `show`, `check` and `run`.
 
+For enterprise project selection, run `alpha_agi_business_3_v1` or follow the
+[Business 3 guide](BUSINESS3.md). Its bounded default requires only Python and exports seven evidence files.
+
 For useful work on your own records, continue with the [native mission walkthrough](FACTORY_GUIDE.md#install-and-obtain-a-first-result).
 It produces a signed, reviewable journal using research, allocation, schedule, forecast or isolated code missions.
 
@@ -76,10 +80,10 @@ or the entry has no standalone CLI. It does not exercise model weights, GPU supp
 accounts. Follow the entry's guide for those integrations. The launcher never installs packages.
 Some examples need additional modules such as Rich or Click beyond the base operator environment.
 
-The 14 finite catalog examples use explicit offline defaults. Their child processes disable configured
+The 15 finite catalog examples use explicit offline defaults. Their child processes disable configured
 OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses the bundled
 configuration and random rewriter.
-Your shell credentials are unchanged. The release tests run all 14 from the wheel with Python network
+Your shell credentials are unchanged. The release tests run all 15 from the wheel with Python network
 calls blocked, including Python 3.11/3.12 environments with the full backend dependencies and inherited
 database settings. This verifies those launch contracts; the launcher is not a network or code sandbox.
 Advanced standalone commands and optional services retain their separately documented behavior.

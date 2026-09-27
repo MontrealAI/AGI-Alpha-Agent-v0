@@ -1,8 +1,9 @@
-**Version 1.12.2 makes installed demos reliable and easier to explore.**
+**Version 1.13.0 makes installed demos reliable and easier to explore.**
 Run all preserved experiments through the canonical [`alpha_factory_v1/demos`](alpha_factory_v1/demos/README.md)
 catalog, check prerequisites before launch, and follow the [complete demo walkthrough](docs/agent/DEMOS.md).
-The release packages the original sample data and tests all 14 finite commands outside the source tree.
-[Release notes](docs/agent/RELEASE_NOTES_1.12.2.md). All original content, flowcharts and media remain.
+Business 3 adds [an editable enterprise planner](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_business_3_v1/)
+with exact portfolios, stress tests and portable evidence. The release packages the original sample data and tests all 15 finite commands outside the source tree.
+[Release notes](docs/agent/RELEASE_NOTES_1.13.0.md). All original content, flowcharts and media remain.
 
 **Version 1.12.1 completes release delivery and evidence integrity.**
 

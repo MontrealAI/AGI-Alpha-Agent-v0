@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.12.2",
+  "release": "1.13.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -53,27 +53,28 @@
     },
     {
       "id": "alpha_agi_business_3_v1",
-      "title": "Business v3",
-      "mode": "Simulation",
-      "summary": "Runs a bounded multi-agent business cycle with local fallback results.",
+      "title": "Business 3 Enterprise Studio",
+      "mode": "Reproducible planning",
+      "summary": "Select a constrained enterprise portfolio, stress the downside and export reviewable Ascension jobs.",
       "command": [
         "python",
         "-m",
         "alpha_factory_v1.demos.alpha_agi_business_3_v1",
-        "--cycles",
-        "1"
+        "--case",
+        "industrial",
+        "--output",
+        "{output}"
       ],
-      "expected": "One completed business cycle and its audit output.",
-      "prerequisites": "Repository demo dependencies; optional model/ADK services must be configured separately.",
-      "limitations": "The local fallback is simulated; no fundraising or real-world execution is established.",
-      "smoke": false,
+      "expected": "Seven retained evidence files, an exact portfolio comparison and unsubmitted goal/metric/bounty jobs.",
+      "prerequisites": "Python 3.11–3.13; the enterprise planner uses only the standard library. The operator environment adds FusionPlan compilation.",
+      "limitations": "Built-in assumptions are constructed; real inputs need independent review. No funds, contracts or model weights are changed.",
+      "smoke": true,
       "environment": {},
-      "required_modules": [
-        "yaml",
-        "numpy"
+      "required_modules": [],
+      "assets": [
+        "alpha_agi_business_3_v1/scenarios.json"
       ],
-      "assets": [],
-      "offline": false
+      "offline": true
     },
     {
       "id": "alpha_agi_business_v1",

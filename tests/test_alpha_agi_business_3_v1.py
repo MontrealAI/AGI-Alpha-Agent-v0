@@ -154,7 +154,7 @@ def test_run_cycle_async_logs_delta_g(monkeypatch: pytest.MonkeyPatch, caplog: p
 
 
 def test_main_subprocess(tmp_path: Path) -> None:
-    """Running the demo via ``python -m`` should output the ΔG message."""
+    """The maintained module entry point must produce an actual enterprise dossier."""
     stub = tmp_path / "check_env.py"
     stub.write_text("def main(args=None):\n    pass\n")
     env = os.environ.copy()
@@ -165,30 +165,42 @@ def test_main_subprocess(tmp_path: Path) -> None:
             sys.executable,
             "-m",
             "alpha_factory_v1.demos.alpha_agi_business_3_v1",
-            "--cycles",
-            "1",
+            "--case",
+            "industrial",
+            "--output",
+            str(tmp_path / "results"),
         ],
         capture_output=True,
         text=True,
         env=env,
     )
     assert result.returncode == 0, result.stderr
+    assert len(list((tmp_path / "results").glob("*/dossier.json"))) == 1
 
 
 def test_cli_entrypoint(tmp_path: Path) -> None:
-    """Running the ``alpha-agi-business-3-v1`` script should output the ΔG message."""
+    """The console-entry module must execute rather than silently importing and exiting."""
     stub = tmp_path / "check_env.py"
     stub.write_text("def main(args=None):\n    pass\n")
     env = os.environ.copy()
     env["OPENAI_API_KEY"] = "dummy"
     env["PYTHONPATH"] = f"{tmp_path}:{STUB_DIR}:{ROOT}:{env.get('PYTHONPATH', '')}"
     result = subprocess.run(
-        [sys.executable, "-m", "alpha_factory_v1.demos.alpha_agi_business_3_v1.cli", "--cycles", "1"],
+        [
+            sys.executable,
+            "-m",
+            "alpha_factory_v1.demos.alpha_agi_business_3_v1.cli",
+            "--case",
+            "industrial",
+            "--output",
+            str(tmp_path / "results"),
+        ],
         capture_output=True,
         text=True,
         env=env,
     )
     assert result.returncode == 0, result.stderr
+    assert len(list((tmp_path / "results").glob("*/dossier.json"))) == 1
 
 
 def test_main_stops_a2a(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -220,7 +232,7 @@ def test_main_stops_a2a(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(mod, "_llm_comment", _llm)
 
-    asyncio.run(mod.main(["--cycles", "1", "--interval", "0"]))
+    asyncio.run(mod.main(["--cycles", "1", "--interval", "0", "--enable-integrations"]))
 
     assert dummy.started
     assert dummy.stopped
@@ -549,7 +561,7 @@ def test_main_closes_adk_client(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr(mod, "_llm_comment", _llm)
 
-    asyncio.run(mod.main(["--cycles", "1", "--interval", "0"]))
+    asyncio.run(mod.main(["--cycles", "2", "--interval", "0", "--adk-host", "http://test-adk", "--a2a-port", "1234"]))
 
     assert mod._A2A is dummy_sock
     assert mod._A2A.stopped
@@ -607,3 +619,120 @@ def test_run_cycle_creates_task(monkeypatch: pytest.MonkeyPatch) -> None:
     assert dummy_loop.coro is not None
     assert getattr(dummy_loop.coro, "cr_code", None) is dummy_cycle.__code__
     dummy_loop.coro.close()
+
+
+def test_import_never_opens_inherited_a2a_port(monkeypatch: pytest.MonkeyPatch) -> None:
+    dummy = types.ModuleType("a2a")
+    dummy.A2ASocket = mock.Mock(side_effect=AssertionError("Import opened a socket"))
+    monkeypatch.setitem(sys.modules, "a2a", dummy)
+    monkeypatch.setenv("A2A_PORT", "12345")
+    monkeypatch.delitem(sys.modules, MODULE, raising=False)
+    mod = importlib.import_module(MODULE)
+    assert mod._A2A is None
+    dummy.A2ASocket.assert_not_called()
+
+
+def test_verifier_fails_closed_and_model_retains_only_nonempty_proposals() -> None:
+    mod = importlib.import_module(MODULE)
+    assert mod.AgentGdl().provable({"proposal": 1}) is False
+    assert mod.AgentGdl(lambda _: True).provable({}) is False
+    assert mod.AgentGdl(lambda _: 1).provable({"proposal": 1}) is False
+    assert mod.AgentGdl(lambda _: True).provable({"proposal": 1}) is True
+    assert mod.AgentGdl(lambda _: 1 / 0).provable({"proposal": 1}) is False
+    model = mod.Model()
+    with pytest.raises(ValueError, match="empty"):
+        model.commit({})
+    proposal = {"candidate": [1, 2]}
+    model.commit(proposal)
+    proposal["candidate"].append(3)
+    assert model.proposals == [{"candidate": [1, 2]}]
+
+
+def test_default_research_run_ignores_inherited_integrations(monkeypatch: pytest.MonkeyPatch) -> None:
+    mod = importlib.import_module(MODULE)
+    for key, value in {"A2A_PORT": "12345", "ADK_HOST": "https://unused.invalid", "OPENAI_API_KEY": "unused"}.items():
+        monkeypatch.setenv(key, value)
+    forbidden = mock.Mock(side_effect=AssertionError("Integration ran without opt-in"))
+    monkeypatch.setattr(mod, "ADKClient", forbidden)
+    monkeypatch.setattr(mod, "A2ASocket", forbidden)
+    monkeypatch.setattr(mod, "_llm_comment", forbidden)
+    asyncio.run(mod.main(["--cycles", "2", "--interval", "0"]))
+    forbidden.assert_not_called()
+
+
+def test_research_main_restores_environment_even_when_cycle_fails(monkeypatch: pytest.MonkeyPatch) -> None:
+    mod = importlib.import_module(MODULE)
+    monkeypatch.setenv("OPENAI_API_KEY", "original")
+    monkeypatch.delenv("LLAMA_N_CTX", raising=False)
+
+    async def fail(*_args, **_kwargs):
+        assert os.environ["OPENAI_API_KEY"] == "temporary"
+        raise RuntimeError("requested failure")
+
+    monkeypatch.setattr(mod, "run_cycle_async", fail)
+    with pytest.raises(RuntimeError, match="requested failure"):
+        asyncio.run(mod.main(["--openai-api-key", "temporary", "--llama-n-ctx", "256"]))
+    assert os.environ["OPENAI_API_KEY"] == "original"
+    assert "LLAMA_N_CTX" not in os.environ
+
+
+def test_adk_client_is_live_for_every_cycle_and_closed_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    mod = importlib.import_module(MODULE)
+    events = []
+
+    class Client:
+        def __init__(self, _host):
+            self.closed = False
+
+        async def run(self, _message):
+            assert not self.closed
+            events.append("run")
+
+        async def close(self):
+            assert not self.closed
+            self.closed = True
+            events.append("close")
+
+    monkeypatch.setattr(mod, "ADKClient", Client)
+    asyncio.run(mod.main(["--cycles", "3", "--interval", "0", "--adk-host", "local-fixture"]))
+    assert events == ["run", "run", "run", "close"]
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [["--cycles", "-1"], ["--interval", "nan"], ["--interval", "-1"], ["--a2a-port", "65536"], ["--llama-n-ctx", "0"]],
+)
+def test_invalid_research_options_fail_before_inference(monkeypatch: pytest.MonkeyPatch, arguments: list[str]) -> None:
+    mod = importlib.import_module(MODULE)
+    forbidden = mock.Mock(side_effect=AssertionError("Invalid settings executed"))
+    monkeypatch.setattr(mod, "run_cycle_async", forbidden)
+    with pytest.raises(SystemExit) as exc:
+        asyncio.run(mod.main(arguments))
+    assert exc.value.code == 2
+    forbidden.assert_not_called()
+
+
+def test_requested_local_model_failure_is_not_reported_as_success(monkeypatch: pytest.MonkeyPatch) -> None:
+    mod = importlib.import_module(MODULE)
+    monkeypatch.setattr(mod.local_llm, "chat", lambda _: "[offline] unavailable")
+    with pytest.raises(RuntimeError, match="did not load"):
+        asyncio.run(mod.main(["--commentary", "local", "--llama-model-path", "/missing/model.gguf"]))
+
+
+def test_standalone_cycle_closes_owned_client_when_requested_model_fails(monkeypatch: pytest.MonkeyPatch) -> None:
+    mod = importlib.import_module(MODULE)
+    client = types.SimpleNamespace(close=mock.AsyncMock())
+    monkeypatch.setattr(mod, "_llm_comment", mock.AsyncMock(side_effect=RuntimeError("provider failure")))
+    with pytest.raises(RuntimeError, match="provider failure"):
+        asyncio.run(
+            mod.run_cycle_async(
+                mod.Orchestrator(),
+                mod.AgentFin(),
+                mod.AgentRes(),
+                mod.AgentEne(),
+                mod.AgentGdl(),
+                mod.Model(),
+                adk_client=client,
+            )
+        )
+    client.close.assert_awaited_once()

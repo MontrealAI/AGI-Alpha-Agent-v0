@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+from html.parser import HTMLParser
 from pathlib import Path
 import re
 import subprocess
@@ -16,7 +17,7 @@ import zipfile
 import pytest
 
 from scripts import finalize_pages_release, publish_agent_release, release_context
-from scripts import ascension_protocol_evidence, package_agent_release
+from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence
 
 
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
@@ -34,6 +35,38 @@ def test_source_version_and_catalog_match_the_release_without_installed_metadata
     package = runpy.run_path(str(root / "alpha_factory_v1/__init__.py"))
     assert package["__version__"] == version
     assert json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text())["release"] == version
+
+
+def test_every_current_workspace_uses_the_release_version() -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+
+    class VersionParser(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__()
+            self.versions: list[str | None] = []
+
+        def handle_starttag(self, tag, attrs) -> None:
+            values = dict(attrs)
+            if tag == "meta" and values.get("name") == "application-version":
+                self.versions.append(values.get("content"))
+
+    for name in (
+        "",
+        "studio/",
+        "ascension/",
+        "ascension-protocol/",
+        "insight/",
+        "bloom/",
+        "compounding/",
+        "alpha_agi_business_3_v1/",
+        "alpha_factory_v1/demos/ascension-protocol/",
+        "alpha_factory_v1/demos/alpha_agi_business_3_v1/",
+    ):
+        page = root / "docs" / name / "index.html"
+        parser = VersionParser()
+        parser.feed(page.read_text())
+        assert parser.versions == [version], f"Stale release metadata in {page}"
 
 
 @pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
@@ -227,6 +260,10 @@ def test_invalid_package_version_cannot_publish(
                 "protocol-browser",
                 "protocol-http",
             )
+        ],
+        *[
+            ("1.13.0", problem)
+            for problem in (None, "business3-failed", "business3-check", "business3-asset", "business3-cases")
         ],
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
@@ -502,6 +539,31 @@ def test_public_evidence_requires_same_commit_and_intact_package(
             key, value = changes[problem]
             protocol[key] = value
         (target / "report.json").write_text(json.dumps(protocol))
+    if tuple(map(int, version.split("."))) >= (1, 13, 0):
+        target = evidence / "public-pages" / "business3"
+        target.mkdir()
+        business3 = {
+            "schema": business3_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(business3_evidence.CHECKS),
+            "assets": business3_evidence.asset_hashes(),
+            "cases": business3_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "business3-failed": ("passed", False),
+            "business3-check": ("checks", []),
+            "business3-asset": ("assets", {}),
+            "business3-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            business3[key] = value
+        (target / "business3.json").write_text(json.dumps(business3))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -520,6 +582,8 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         )
     if tuple(map(int, version.split("."))) >= (1, 12, 1):
         assert json.loads((folder / "release-manifest.json").read_text())["public_ascension_protocol"] == protocol
+    if tuple(map(int, version.split("."))) >= (1, 13, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_business3"] == business3
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"
