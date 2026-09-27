@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -505,6 +505,38 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  demo-distribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Free disk space for the complete backend dependency set
+        run: bash scripts/ci_free_disk.sh
+      - name: Install the historical backend and development locks
+        run: |
+          bash scripts/ci_install_python_baseline.sh --include-backend-lock
+          python scripts/check_python_deps.py
+          python check_env.py --auto-install --demo macro_sentinel
+      - name: Run every finite wheel demo with Python network access blocked
+        run: |
+          mkdir -p evidence
+          python -m pytest --noconftest -o addopts= tests/test_demo_distribution.py -q --junitxml=evidence/demo-distribution.xml
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: demo-distribution-${{ matrix.python }}
+          path: evidence/
+          if-no-files-found: warn
+
   historical-ci:
     runs-on: ubuntu-latest
     timeout-minutes: 55
@@ -533,7 +565,7 @@ jobs:
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, quality, historical-ci, dependency-audit]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, demo-distribution, quality, historical-ci, dependency-audit]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
