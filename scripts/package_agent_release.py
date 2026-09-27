@@ -77,6 +77,7 @@ def main() -> None:
         "docs/agent/INSIGHT_ATLAS.md",
         "docs/agent/PROOF_BLOOM.md",
         "docs/agent/COMPOUNDING_LAB.md",
+        "docs/agent/DECISION_STUDIO.md",
         "docs/agent/MANUSCRIPT_ALIGNMENT.md",
         "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.pdf",
         "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.md",
@@ -151,6 +152,8 @@ def main() -> None:
             "byte-identical latest 198-page manuscript and pinned source manifest",
             "native CPU demos and Streamlit lineage UIs",
             "complete demo catalog and every browser replay",
+            "Decision Studio calculation oracles, versioned replay, staffing coverage, "
+            "deadlines and public offline journeys",
             "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",
             "Solidity tests with shipped identity logic",
             "real local EVM payments",

@@ -17,7 +17,7 @@ The design document explicitly calls its forecast a toy model and its architectu
 The implementation historically mixed real algorithms and integrations with synthetic fitness, no-op
 SDK compatibility classes, random market fixtures and ambitious future claims.
 
-Version 1.9.0 connects a usable bounded agent around the original roles and algorithms. The supported
+Version 1.10.0 connects a usable bounded agent around the original roles and algorithms. The supported
 entry point is `alpha-agent` (also `alpha-factory mission`). Its state, policy, identity, evidence,
 operator review, memory and payment receipts share one signed persistent journal. Existing launchers,
 interfaces, experiments, assets and documentation remain available.
@@ -101,8 +101,11 @@ contracts, actual CPU AIGA/MuZero, three Streamlit lineage interfaces, offline n
 browser replay pages and the distinct preserved Insight presentation receive dedicated acceptance checks.
 Read [demo evidence and scope](DEMO_VALIDATION.md) before treating any simulation as an integration.
 
-## Practical decisions in version 1.9.0
+## Practical decisions in version 1.10.0
 
-The [Decision Studio](DECISION_STUDIO.md) adds seven local calculation engines across eleven operational cases.
+The [Decision Studio](DECISION_STUDIO.md) provides eight local calculation engines across eleven operational cases.
 They accept explicit inputs and produce useful work products; they do not represent external agent execution.
 All 26 preserved demo entries route to the relevant workspace, with original source guides retained.
+
+Service staffing now accounts for shift coverage and backlog. Scheduling prioritizes deadline feasibility.
+Versioned dossiers retain replay of the archived 1.9.0 policy. See the [1.10.0 notes](RELEASE_NOTES_1.10.0.md).

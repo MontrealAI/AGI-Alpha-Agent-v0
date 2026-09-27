@@ -173,6 +173,22 @@ def test_invalid_package_version_cannot_publish(
                 "transfer-manuscript",
             )
         ],
+        *[
+            ("1.10.0", problem)
+            for problem in (
+                None,
+                "studio-failed",
+                "studio-origin",
+                "studio-check",
+                "studio-case",
+                "studio-browser",
+                "studio-http",
+                "studio-schema",
+                "studio-commit",
+                "studio-version",
+                "studio-calculation",
+            )
+        ],
         ("1.7.0", "bloom-failed"),
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
@@ -210,7 +226,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         (folder / "source.zip").write_bytes(b"corrupted source fixture")
     (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
     (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
-    if version in {"1.5.0", "1.6.0", "1.7.0", "1.8.0"}:
+    if tuple(map(int, version.split("."))) >= (1, 5, 0):
         ascension_dir = evidence / "public-pages" / "ascension"
         ascension_dir.mkdir()
         (ascension_dir / "ascension.json").write_text(
@@ -226,7 +242,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
                 }
             )
         )
-    if version in {"1.6.0", "1.7.0", "1.8.0"}:
+    if tuple(map(int, version.split("."))) >= (1, 6, 0):
         atlas_dir = evidence / "public-pages" / "insight-atlas"
         atlas_dir.mkdir()
         atlas = {
@@ -265,7 +281,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "atlas-schema":
             atlas["schema"] = "declared-pass-only"
         (atlas_dir / "insight-atlas.json").write_text(json.dumps(atlas))
-    if version in {"1.7.0", "1.8.0"}:
+    if tuple(map(int, version.split("."))) >= (1, 7, 0):
         bloom_dir = evidence / "public-pages" / "proof-bloom"
         bloom_dir.mkdir()
         bloom = {
@@ -309,7 +325,7 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "bloom-schema":
             bloom["schema"] = "self-declared-pass"
         (bloom_dir / "proof-bloom.json").write_text(json.dumps(bloom))
-    if version == "1.8.0":
+    if tuple(map(int, version.split("."))) >= (1, 8, 0):
         target = evidence / "public-pages" / "compounding"
         target.mkdir()
         transfer = {
@@ -354,6 +370,70 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         elif problem == "transfer-manuscript":
             transfer["manuscript_sha256"] = "0" * 64
         (target / "compounding.json").write_text(json.dumps(transfer))
+    if version == "1.10.0":
+        target = evidence / "public-pages" / "decision-studio"
+        target.mkdir()
+        studio = {
+            "schema": "agialpha.decision.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "commit": manifest["commit"],
+            "version": version,
+            "calculation_version": "1.10.0",
+            "browser_errors": [],
+            "http_failures": [],
+            "cases": [
+                {"id": name}
+                for name in (
+                    "capital",
+                    "invention",
+                    "supply",
+                    "delivery",
+                    "launch",
+                    "inventory",
+                    "service",
+                    "energy",
+                    "proof",
+                    "nova",
+                    "agency",
+                )
+            ],
+            "checks": [
+                "all-case-calculations",
+                "downloaded-dossier-cli-replay",
+                "edited-input-invalidation",
+                "worker-cancellation",
+                "forgery-rejection",
+                "csv-import-infeasibility",
+                "explicit-save-restore-clear",
+                "all-artifact-downloads",
+                "mobile-no-overflow",
+                "accessible-controls",
+                "practical-catalog-search",
+                "legacy-route-bridge",
+                "offline-recalculation",
+                "public-current-assets",
+                "staffing-cap-and-backlog-hold",
+                "editable-table-keyboard-focus",
+                "archived-dossier-replay",
+            ],
+        }
+        changes = {
+            "studio-failed": ("passed", False),
+            "studio-origin": ("origin", "https://example.test/"),
+            "studio-check": ("checks", []),
+            "studio-case": ("cases", []),
+            "studio-browser": ("browser_errors", ["uncaught"]),
+            "studio-http": ("http_failures", ["404"]),
+            "studio-schema": ("schema", "unverified"),
+            "studio-commit": ("commit", "b" * 40),
+            "studio-version": ("version", "1.9.0"),
+            "studio-calculation": ("calculation_version", "1.9.0"),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            studio[key] = value
+        (target / "decision-studio.json").write_text(json.dumps(studio))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -361,10 +441,15 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
         return
     finalize_pages_release.finalize(folder, evidence)
-    if version in {"1.6.0", "1.7.0", "1.8.0"}:
+    if tuple(map(int, version.split("."))) >= (1, 6, 0):
         assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
-    if version in {"1.7.0", "1.8.0"}:
+    if tuple(map(int, version.split("."))) >= (1, 7, 0):
         assert json.loads((folder / "release-manifest.json").read_text())["public_proof_bloom"]["passed"]
+    if version == "1.10.0":
+        assert (
+            json.loads((folder / "release-manifest.json").read_text())["public_decision_studio"]["commit"]
+            == manifest["commit"]
+        )
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"

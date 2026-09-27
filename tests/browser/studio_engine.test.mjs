@@ -231,7 +231,8 @@ test("delivery plan respects precedence and single-resource capacity", () => {
     const input = scenario("delivery"),
         r = solve(input),
         ops = r.output.detail.operations;
-    assert.equal(r.output.detail.makespan, 66);
+    assert.equal(r.output.detail.makespan, 76);
+    assert.equal(r.output.detail.tardiness, 20);
     assert.equal(r.output.detail.baseline_makespan, 90);
     assert.equal(r.output.verdict, "HOLD");
     for (const [i, a] of ops.entries())
@@ -359,4 +360,238 @@ test("CSV result downloads neutralize spreadsheet formulas while keeping numeric
     assert.ok(out.includes("' +1"));
     assert.ok(out.includes("'@x"));
     assert.ok(out.includes('"-5"'));
+});
+
+test("deadline-feasible schedule wins over a faster late schedule", () => {
+    const input = scenario("delivery");
+    input.parameters.deadline = 30;
+    input.datasets.operations = [
+        { id: "b1", job: "B", resource: "M1", duration: 2, due: 30 },
+        { id: "b2", job: "B", resource: "M2", duration: 3, due: 30 },
+        { id: "a1", job: "A", resource: "M1", duration: 10, due: 20 },
+        { id: "a2", job: "A", resource: "M2", duration: 10, due: 20 },
+    ];
+    const r = solve(input).output;
+    assert.equal(r.verdict, "PLAN");
+    assert.deepEqual(r.detail.order, ["A", "B"]);
+    assert.equal(r.detail.makespan, 23);
+    assert.equal(r.detail.tardiness, 0);
+    assert.equal(r.detail.feasible_orders, 1);
+    // B first finishes everything sooner, but A misses its hour-20 commitment.
+    assert.equal(r.detail.baseline_makespan, 22);
+    assert.equal(r.detail.baseline_tardiness, 2);
+    input.parameters.deadline = 22;
+    assert.equal(solve(input).output.verdict, "HOLD");
+});
+
+test("schedule objective agrees with an independently enumerated policy oracle", () => {
+    const input = scenario("delivery");
+    input.datasets.operations = [
+        { id: "a1", job: "A", resource: "M1", duration: 5, due: 9 },
+        { id: "a2", job: "A", resource: "M2", duration: 4, due: 9 },
+        { id: "b1", job: "B", resource: "M2", duration: 2, due: 5 },
+        { id: "b2", job: "B", resource: "M1", duration: 3, due: 5 },
+        { id: "c1", job: "C", resource: "M1", duration: 1, due: 10 },
+    ];
+    input.parameters.deadline = 13;
+    const scores = [];
+    for (const order of ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]) {
+        const machines = {},
+            ends = {};
+        for (const id of order)
+            for (const op of input.datasets.operations.filter(
+                (r) => r.job === id,
+            )) {
+                ends[id] =
+                    Math.max(ends[id] || 0, machines[op.resource] || 0) +
+                    op.duration;
+                machines[op.resource] = ends[id];
+            }
+        const end = Math.max(...Object.values(ends));
+        const late = Object.keys(ends).reduce(
+            (n, id) =>
+                n +
+                Math.max(
+                    0,
+                    ends[id] -
+                        input.datasets.operations.find((r) => r.job === id).due,
+                ),
+            0,
+        );
+        scores.push([late + Math.max(0, end - 13), end]);
+    }
+    scores.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const actual = solve(input).output.detail;
+    assert.deepEqual([actual.violation_hours, actual.makespan], scores[0]);
+});
+
+test("service staffing accounts for productive time, backlog, caps and per-shift costs", () => {
+    const input = scenario("service");
+    input.datasets.demand = Array.from({ length: 21 }, (_, i) => ({
+        id: `d${i}`,
+        units: 30,
+    }));
+    input.datasets.coverage = [
+        {
+            id: "day1",
+            available_staff: 1,
+            extra_limit: 1,
+            extra_shift_cost: 120,
+        },
+        {
+            id: "day2",
+            available_staff: 1,
+            extra_limit: 0,
+            extra_shift_cost: 150,
+        },
+    ];
+    input.parameters = {
+        holdout: 7,
+        season: 7,
+        handle_minutes: 10,
+        shift_hours: 8,
+        shrinkage_percent: 50,
+        occupancy_percent: 100,
+        reserve_percent: 0,
+        backlog: 18,
+        clear_backlog_periods: 2,
+    };
+    const r = solve(input).output,
+        d = r.detail;
+    // Each person can handle 24 cases. Day 1 needs 39 cases: add one staff, clear all 18 old cases.
+    // Day 2 has only 24 slots for 30 new cases: six cases remain; day-1 spare time cannot transfer.
+    assert.deepEqual(
+        d.shifts.map((r) => [r.extra, r.capacity, r.end_backlog]),
+        [
+            [1, 48, 0],
+            [0, 24, 6],
+        ],
+    );
+    assert.equal(d.productive_minutes, 240);
+    assert.equal(d.cost, 120);
+    assert.equal(d.shortfall_periods, 1);
+    assert.equal(r.verdict, "HOLD");
+    input.datasets.coverage[1].extra_limit = 1;
+    const repaired = solve(input).output;
+    assert.equal(repaired.verdict, "PLAN");
+    assert.equal(repaired.detail.cost, 270);
+    assert.equal(repaired.detail.ending_backlog, 0);
+});
+
+test("service reserve shocks expose coverage shortfalls instead of suggesting cheaper success", () => {
+    const r = solve(scenario("service")).output;
+    assert.equal(r.detail.cost, 7920);
+    assert.equal(r.detail.ending_backlog, 0);
+    assert.equal(r.detail.sensitivity.at(-1).feasible, false);
+    assert.match(r.detail.sensitivity.at(-1).note, /shifts below target/);
+});
+
+test("service forecast selection remains independent of holdout labels", () => {
+    const input = scenario("service"),
+        before = solve(input).output.detail;
+    input.datasets.demand
+        .slice(-input.parameters.holdout)
+        .forEach((r) => (r.units += 1000));
+    const after = solve(input).output.detail;
+    assert.deepEqual(after.training_scores, before.training_scores);
+    assert.deepEqual(after.holdout_predictions, before.holdout_predictions);
+    assert.equal(solve(input).output.verdict, "HOLD");
+});
+
+test("repeated dependency edges have bounded traversal and preserve closure", () => {
+    const input = scenario("capital");
+    input.datasets.projects = Array.from({ length: 18 }, (_, i) => ({
+        id: `p${i}`,
+        name: `Project ${i}`,
+        cost: 1,
+        annual_benefit: 2,
+        annual_cost: 0,
+        staff_days: 1,
+        requires: i
+            ? Array(15)
+                  .fill(`p${i - 1}`)
+                  .join(",")
+            : "",
+    }));
+    input.parameters = {
+        budget: 18,
+        staff_days: 18,
+        years: 1,
+        discount_percent: 0,
+        benefit_percent: 100,
+    };
+    assert.equal(solve(input).output.detail.selected.length, 18);
+    input.datasets.projects[0].requires = "p17";
+    assert.throws(() => solve(input), /cycle/);
+});
+
+test("evidence numeric binding cannot confuse thousands, exponents or partial tokens", () => {
+    const input = scenario("proof");
+    const claim = input.datasets.claims[0];
+    input.datasets.claims = [claim];
+    claim.threshold = -10000;
+    claim.direction = ">=";
+    for (const [quote, observed, state] of [
+        ["Value: 1,000.", 1000, "MET"],
+        ["Value: 1,000.", 1, "UNBOUND"],
+        ["Value: 1,000.", 0, "UNBOUND"],
+        ["Value: 1e3.", 1000, "MET"],
+        ["Value: 1e3.", 3, "UNBOUND"],
+        ["Value: -12.5.", -12.5, "MET"],
+        ["Value: −12.", 12, "UNBOUND"],
+        ["Value: x123.", 123, "UNBOUND"],
+        ["Value: 1,23.", 23, "UNBOUND"],
+    ]) {
+        claim.quote = quote;
+        claim.observed = observed;
+        input.datasets.sources.find((r) => r.id === claim.source_id).text =
+            quote;
+        assert.equal(
+            solve(input).output.detail.decisions[0].state,
+            state,
+            quote + " / " + observed,
+        );
+    }
+});
+
+test("report version is bound and legacy dossiers replay with the archived policy", async () => {
+    const legacy = await import("../../docs/assets/studio/engine-1.9.mjs");
+    const old = legacy.solve(scenario("delivery"));
+    assert.equal(old.output.detail.makespan, 66);
+    assert.deepEqual(verify(old), old);
+    const current = solve(old.input);
+    assert.equal(current.calculation_version, "1.10.0");
+    assert.equal(current.output.detail.makespan, 76);
+    current.calculation_version = "unavailable";
+    assert.throws(() => verify(current), /version/);
+    old.output.detail.makespan = 76;
+    assert.throws(() => verify(old), /failed replay/);
+});
+
+test("identifiers must be strings and scenario limits count UTF-8 bytes", () => {
+    const input = scenario("capital");
+    input.datasets.projects[0].id = 123;
+    assert.throws(() => solve(input), /IDs/);
+    const evidence = scenario("proof");
+    evidence.datasets.sources = Array.from({ length: 8 }, (_, i) => ({
+        id: `s${i}`,
+        title: "Source",
+        text: "漢".repeat(12000),
+    }));
+    assert.ok(JSON.stringify(evidence).length < 256000);
+    assert.throws(() => solve(evidence), /256 KB/);
+});
+
+test("an actual previously exported service dossier retains its original inventory policy", () => {
+    const archived = JSON.parse(
+        fs.readFileSync(
+            new URL(
+                "../fixtures/decision-studio/service-1.9.json",
+                import.meta.url,
+            ),
+        ),
+    );
+    assert.equal(archived.input.kind, "inventory");
+    assert.deepEqual(verify(archived), archived);
+    assert.equal(archived.output.detail.reorder, 1194);
 });

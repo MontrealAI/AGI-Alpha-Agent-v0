@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.9.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
+Current release: **1.10.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
 
 ## Install from a release
 
@@ -71,7 +71,7 @@ Use a new output path for every run; existing files are never overwritten. The s
 [field guide](COMPOUNDING_LAB.md) for custom inputs, review timing and the positive, regime-change and
 no-archive experiments. An imported review retains its original timing provenance; performing a new
 browser review requires new measurements. Local acceptance never supplies missing independent evidence.
-The release includes the original paper and `alpha-agent-v1.9.0-manuscript.zip` with all figures and provenance.
+The release includes the original paper and `alpha-agent-v1.10.0-manuscript.zip` with all figures and provenance.
 
 ## Service monitoring and request boundaries
 
@@ -229,7 +229,7 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.9.0.
+version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.10.0.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -253,8 +253,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.9.0 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.9.0
+docker build --target agent-runtime -t agialpha-agent:1.10.0 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.10.0
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 
@@ -280,7 +280,7 @@ omits the optional historical browser model. The previous manual compiler is ret
 
 ## Full browser text generation
 
-The release includes `alpha-agent-v1.9.0-browser.zip`, the complete tested browser distribution.
+The release includes `alpha-agent-v1.10.0-browser.zip`, the complete tested browser distribution.
 Verify its entry in `SHA256SUMS`, extract it into a new directory and serve it with
 `python -m http.server 8080 --bind 127.0.0.1 --directory <extracted-directory>`.
 Open `http://127.0.0.1:8080`; no npm build is needed for that release asset.

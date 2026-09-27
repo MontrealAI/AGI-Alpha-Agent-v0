@@ -17,7 +17,7 @@ measurements. Replace them with your records and review the assumptions before a
 | Factory delivery control | Ordered operations, resources, durations and due times | Resource schedule, job-priority order, makespan and lateness |
 | Product launch room | Shared design, engineering and QA operations | Delivery sequence and resource calendar |
 | Demand & replenishment desk | Chronological demand, stock, open orders and lead time | Holdout comparison, order-up-to target and replenishment quantity |
-| Service capacity forecast | Demand history, available capacity and reserve | Future capacity gap with separate historical error |
+| Service staffing & backlog desk | Case history, handling time, shift coverage, staff caps and costs | Per-shift additional staff, uncovered workload, backlog and incremental cost |
 | Microgrid dispatch console | Hourly load, solar, tariffs, import limits and storage | Feasible 24-hour dispatch with reconciled energy and costs |
 | Proof Debt → AGI Jobs | Numeric criteria, exact source quotations, age and owners | Evidence docket, unresolved claims and scoped proof-job plans |
 | Nova-Seeds pilot gate | Pilot thresholds, evidence and missing observations | Explicit promotion holds and proof backlog |
@@ -41,6 +41,21 @@ practical application layer; it does not relabel the old synthetic fitness or re
 5. Export the **Decision brief**, **Row-level plan**, **Replayable dossier** and **Proof job plans**.
    The jobs describe acceptance work; no purchase order or marketplace job is submitted.
 
+## A staffing decision you can inspect
+
+1. Open **Service staffing & backlog desk**. Each historical observation is one shift's incoming cases;
+   each Coverage row is one future shift. Replace both tables using their CSV templates.
+2. The constructed example uses 12 minutes per case, an eight-hour shift, 25% unavailable time and
+   85% handling occupancy: **306 productive minutes, or 25.5 case-equivalents per person per shift**.
+   A 10% arrival reserve and 120 existing cases are included; the backlog target is three shifts.
+3. Calculate the plan. It proposes **31 additional staff shifts costing 7,920 USD**, with at most five
+   additional people in any shift. The row table reconciles incoming work, staff, capacity and backlog.
+4. Set the first shift's additional staff cap to zero. Recalculate: the uncovered workload stays on
+   **HOLD** and the backlog flows forward. Spare time on another day cannot retroactively cover it.
+5. Inspect the +20% demand shock. It exceeds the stated staffing caps, so its cost is labeled with a
+   shortfall rather than presented as an adequate plan. The forecast validation table remains separate
+   from the proposed roster. Review handling time, skills, calendars and response-time requirements.
+
 ## What each engine actually computes
 
 - **Portfolio:** enumerates every subset of at most 18 indivisible projects; enforces budget, staff
@@ -53,14 +68,24 @@ practical application layer; it does not relabel the old synthetic fitness or re
   Outage reallocation assumes other quoted capacities remain available.
 - **Schedule:** exhaustively compares up to 7! job-priority permutations using the existing serial
   scheduling policy. Each job preserves its operation order; a resource has unit capacity. The objective
-  is makespan, then total lateness. This is not a global optimum over all job-shop schedules. Due dates
-  are not silently relaxed: any late job or exceeded overall window keeps the plan on HOLD. Calendars,
+  minimizes total job lateness plus delivery-window overrun, then makespan. All deadline-feasible orders
+  outrank all violating orders. The commitment table includes due times, completions and slack. This is
+  not a global optimum over all job-shop schedules, and HOLD does not establish global infeasibility.
+  Any late job or exceeded overall window keeps the plan on HOLD. Calendars,
   setup and breaks must be included in the supplied durations.
 - **Inventory:** selects last/mean/drift/seasonal forecasts on expanding training windows only. A final
   temporal holdout measures error; it does not select the model. Future estimates refit the frozen policy
   to all observations. Replenishment is `max(0, ceil(lead demand + reserve) - on hand - on order)`.
   Negative forecast demand is clamped to zero only for stock calculation. A worse-than-baseline holdout
   result stays on HOLD. The reserve is operator supplied, not a calibrated service-level guarantee.
+- **Service staffing:** uses the same training-only forecast selection, then plans each future shift
+  independently. Productive minutes per person are `shift hours × 60 × (1 − shrinkage) × occupancy`.
+  Buffered arrivals round up; completed case capacity rounds down. The work target includes current
+  arrivals and an equal-share clearance of the remaining backlog before its target shift. It adds the
+  minimum whole staff needed for that target, capped by that shift's available extras. Actual remaining
+  backlog carries to the next shift; excess capacity does not. Any uncovered target or worse-than-baseline
+  forecast holdout keeps the plan on HOLD. This is an aggregate workload rule, not a queueing/SLA guarantee
+  or a multi-period cost optimizer. Staffing costs cover additional shifts only.
 - **Energy:** dynamic programming on a 1 kWh state grid, up to 100 kWh and 48 one-hour intervals.
   Charging losses round conservatively; discharge is ideal. Power, capacity, import limits, curtailment
   and per-hour energy balance are checked. Terminal storage must be at least its initial level. There
@@ -77,8 +102,11 @@ practical application layer; it does not relabel the old synthetic fitness or re
 
 ## Files, replay and automation
 
-The input schema is `agialpha.decision.v1`; reports use `agialpha.decision.report.v1`. Reports include
-all input records, results, checks, limits and scoped jobs. Importing a report recomputes it and rejects
+The input schema is `agialpha.decision.v1`; new reports use `agialpha.decision.report.v2` and bind
+`calculation_version: "1.10.0"`. Original `agialpha.decision.report.v1` dossiers replay through the archived
+1.9.0 calculation policy and show that version beside the method. Recalculating those inputs uses the
+current policy and produces a new report. Unsupported versions fail explicitly. Reports include all
+input records, results, checks, limits and scoped jobs. Importing a report recomputes it and rejects
 any differing output. This establishes reproducibility, not source authenticity or a cryptographic
 signature. A fully rewritten input and correctly recomputed report is a different scenario.
 

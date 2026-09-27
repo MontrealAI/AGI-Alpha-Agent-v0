@@ -1,8 +1,8 @@
 # $AGIALPHA Agent — release status
 
-**Version 1.9.0 replaces the public toy examples with practical decision workspaces.**
+**Version 1.10.0 turns operational examples into reviewable staffing, delivery and decision plans.**
 Open the [Decision Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/studio/) for eleven editable operating cases:
-capital allocation, invention portfolios, supplier resilience, delivery scheduling, demand planning, microgrid dispatch,
+capital allocation, invention portfolios, supplier resilience, delivery scheduling, demand planning, service staffing, microgrid dispatch,
 proof debt, Nova-Seeds pilot review and second-order pipeline trials. Import your records, calculate constrained choices,
 and export a decision brief, row-level plan, proof backlog and replayable dossier.
 All 26 original catalog entries lead to a relevant workspace and retain their research implementation links.
