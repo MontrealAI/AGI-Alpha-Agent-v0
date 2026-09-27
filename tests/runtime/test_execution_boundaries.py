@@ -98,7 +98,8 @@ def test_provider_enforces_total_response_deadline(mode: str) -> None:
                         return
                 self.wfile.write(body)
                 self.wfile.flush()
-            except (BrokenPipeError, ConnectionResetError):
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                # Windows reports an aborted connection when the deadline closes it.
                 disconnected.set()
 
         def log_message(self, _format: str, *args: Any) -> None:
