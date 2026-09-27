@@ -1,5 +1,13 @@
 # $AGIALPHA Agent — release status
 
+**Version 1.9.0 replaces the public toy examples with practical decision workspaces.**
+Open the [Decision Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/studio/) for eleven editable operating cases:
+capital allocation, invention portfolios, supplier resilience, delivery scheduling, demand planning, microgrid dispatch,
+proof debt, Nova-Seeds pilot review and second-order pipeline trials. Import your records, calculate constrained choices,
+and export a decision brief, row-level plan, proof backlog and replayable dossier.
+All 26 original catalog entries lead to a relevant workspace and retain their research implementation links.
+See [methods, input contracts and a five-minute walkthrough](docs/agent/DECISION_STUDIO.md).
+
 **Version 1.8.1 aligns the project with the latest 198-page AGI ALPHA manuscript.**
 [Read the manuscript](docs/manuscript/index.md) and [implementation map](docs/agent/MANUSCRIPT_ALIGNMENT.md).
 Enter [the Compounding Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/compounding/) to learn and freeze a capability,

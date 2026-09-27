@@ -1,29 +1,71 @@
 {
-  "goal": "Choose the highest-value sample allocation under the stated constraints.",
+  "goal": "Select an operations-improvement portfolio under a 900000 USD capital budget and 24 residual-risk points. Value is assumed annual net operating benefit, not realized revenue.",
   "work": {
     "kind": "allocation",
+    "budget": 900000,
+    "max_risk": 24,
+    "unit": "USD; value = modeled annual net benefit",
     "items": [
       {
-        "id": "A",
-        "cost": 6,
-        "value": 12,
+        "id": "heat_recovery",
+        "cost": 260000,
+        "value": 156000,
         "risk": 3
       },
       {
-        "id": "B",
-        "cost": 5,
-        "value": 11,
+        "id": "quality_inspection",
+        "cost": 220000,
+        "value": 178000,
+        "risk": 7
+      },
+      {
+        "id": "maintenance",
+        "cost": 185000,
+        "value": 148000,
+        "risk": 6
+      },
+      {
+        "id": "inventory_integration",
+        "cost": 125000,
+        "value": 97000,
+        "risk": 4
+      },
+      {
+        "id": "packaging_cell",
+        "cost": 320000,
+        "value": 160000,
+        "risk": 5
+      },
+      {
+        "id": "water_reuse",
+        "cost": 210000,
+        "value": 86000,
+        "risk": 2
+      },
+      {
+        "id": "quote_automation",
+        "cost": 95000,
+        "value": 67000,
+        "risk": 5
+      },
+      {
+        "id": "operator_training",
+        "cost": 60000,
+        "value": 56000,
         "risk": 1
       },
       {
-        "id": "C",
-        "cost": 5,
-        "value": 11,
+        "id": "rooftop_solar",
+        "cost": 380000,
+        "value": 106000,
         "risk": 2
+      },
+      {
+        "id": "material_handling",
+        "cost": 175000,
+        "value": 83000,
+        "risk": 3
       }
-    ],
-    "budget": 10,
-    "max_risk": 5,
-    "unit": "sample planning units"
+    ]
   }
 }

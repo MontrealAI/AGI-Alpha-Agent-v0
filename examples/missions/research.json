@@ -1,17 +1,27 @@
 {
-  "goal": "Compare sample pilot outcomes with the evidence needed for production.",
+  "goal": "Evaluate whether the support automation pilot justifies production rollout: compare resolution quality, escalation burden, complete costs, security and independent replication evidence.",
   "work": {
     "kind": "research",
     "sources": [
       {
         "id": "pilot",
-        "title": "Sample pilot evidence",
-        "text": "The pilot processed 120 requests over one week. Nine requests required manual review. No long-term reliability result was established."
+        "title": "Constructed support pilot \u2014 outcome register",
+        "text": "The pilot processed 1200 customer requests across 20 business days. Reviewers accepted 1116 resolutions. Eighteen critical requests were incorrectly resolved without escalation. Sixty-six additional requests required correction. Median response time was 240 milliseconds. The pilot used a curated request set and did not establish production reliability."
       },
       {
         "id": "cost",
-        "title": "Sample cost evidence",
-        "text": "Measured compute cost was 24 planning units. Review time was not measured. Revenue was not observed."
+        "title": "Constructed cost and review ledger",
+        "text": "Compute cost for the pilot was 96 USD. Fourteen hours of human review at 75 USD per hour cost 1050 USD. Integration work required 80 hours at 100 USD per hour. The prior manual process averaged six minutes per request. Ongoing monitoring and incident costs have not been measured. No realized revenue or net cost saving was observed."
+      },
+      {
+        "id": "security",
+        "title": "Constructed security assessment",
+        "text": "Security review found three unresolved issues: document permissions were not propagated, exported traces included personal data, and retrieval accepted unsigned sources. Production rollout remains blocked pending remediation and re-test. No independent penetration test has been completed."
+      },
+      {
+        "id": "replication",
+        "title": "Constructed replication and deployment register",
+        "text": "Independent replications completed: zero. A future trial must freeze the pipeline before collecting a separate test set. Production acceptance requires audited critical-error rates, full operating costs and a rollback drill. The current evidence supports a bounded pilot only."
       }
     ]
   }

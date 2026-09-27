@@ -6,7 +6,7 @@ from __future__ import annotations
 import math
 from typing import Annotated, Literal, Any
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, SerializerFunctionWrapHandler, model_serializer, model_validator
 
 
 class StrictModel(BaseModel):
@@ -172,6 +172,7 @@ class RuntimeConfig(StrictModel):
     name: str = Field(default="alpha-agent", pattern=r"^[A-Za-z0-9_-]{1,64}$")
     llm_url: str = ""
     llm_model: str = ""
+    llm_response_format: Literal["json_object", "json_schema"] = "json_object"
     llm_key_env: str = Field(default="ALPHA_AGENT_LLM_KEY", pattern=r"^[A-Z][A-Z0-9_]{0,80}$")
     llm_timeout: int = Field(default=120, ge=1, le=300)
     max_output_tokens: int = Field(default=1200, ge=64, le=4096)
@@ -180,6 +181,14 @@ class RuntimeConfig(StrictModel):
     allow_remote_llm: bool = False
     allow_code_execution: bool = False
     chain: ChainConfig | None = None
+
+    @model_serializer(mode="wrap")
+    def compatible_config(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        """Keep existing signed configuration hashes stable in the default mode."""
+        data: dict[str, Any] = handler(self)
+        if self.llm_response_format == "json_object":
+            data.pop("llm_response_format", None)
+        return data
 
     @model_validator(mode="after")
     def validate_provider(self) -> RuntimeConfig:

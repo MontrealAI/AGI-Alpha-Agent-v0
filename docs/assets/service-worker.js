@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-48629487914306cd";
+const CACHE = "agialpha-gallery-c942546bceb93182";
+const RELEASE = "1.9.0";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -167,6 +168,7 @@ const ASSETS = [
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/script.js",
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/style.css",
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/index.html",
+  "../alpha_factory_v1/demos/studio/index.html",
   "../alpha_factory_v1/index.html",
   "../alpha_super_planner_v1/assets/preview.svg",
   "../ascension/index.html",
@@ -192,6 +194,8 @@ const ASSETS = [
   "../assets/insight/engine.mjs",
   "../assets/insight/home.css",
   "../assets/insight/scenarios.json",
+  "../assets/portal/cache-refresh.css",
+  "../assets/portal/cache-refresh.js",
   "../assets/portal/examples.json",
   "../assets/portal/mark.svg",
   "../assets/portal/mission-engine.mjs",
@@ -202,6 +206,23 @@ const ASSETS = [
   "../assets/portal/verify-export.mjs",
   "../assets/pyodide_demo.js",
   "../assets/replay_chart.js",
+  "../assets/studio/cases.json",
+  "../assets/studio/engine.mjs",
+  "../assets/studio/fields.mjs",
+  "../assets/studio/previews/agency.svg",
+  "../assets/studio/previews/capital.svg",
+  "../assets/studio/previews/delivery.svg",
+  "../assets/studio/previews/energy.svg",
+  "../assets/studio/previews/invention.svg",
+  "../assets/studio/previews/inventory.svg",
+  "../assets/studio/previews/launch.svg",
+  "../assets/studio/previews/nova.svg",
+  "../assets/studio/previews/proof.svg",
+  "../assets/studio/previews/service.svg",
+  "../assets/studio/previews/supply.svg",
+  "../assets/studio/studio.css",
+  "../assets/studio/studio.mjs",
+  "../assets/studio/worker.mjs",
   "../bloom/index.html",
   "../compounding/index.html",
   "../cross_industry_alpha_factory/assets/logs.json",
@@ -290,6 +311,7 @@ const ASSETS = [
   "../sovereign_agentic_agialpha_agent_v0/assets/script.js",
   "../sovereign_agentic_agialpha_agent_v0/assets/style.css",
   "../sovereign_agentic_agialpha_agent_v0/index.html",
+  "../studio/index.html",
   "../stylesheets/cards.css",
   "../stylesheets/demo_base.css",
   "../utils/assets/logs.json",
@@ -312,6 +334,10 @@ self.addEventListener('fetch', event => {
   const normalized = new URL(event.request.url);
   if (event.request.mode === 'navigate') {
     if (normalized.pathname.endsWith('/')) normalized.pathname += 'index.html';
+    normalized.search = '';
+  } else if (normalized.search) {
+    // A newer HTML release must bypass an older worker's cached application assets.
+    if (normalized.search !== '?v=' + RELEASE) return;
     normalized.search = '';
   }
   const key = normalized.href;

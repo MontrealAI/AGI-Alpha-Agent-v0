@@ -684,7 +684,7 @@ for (const button of document.querySelectorAll(".wheel-node"))
         $("wheel-caption").textContent =
             `${button.textContent.trim().replace(/^\d+\s*/, "")} · ${wheelDescriptions[Number(button.dataset.stage)]}`;
     });
-const cards = [...document.querySelectorAll(".demo-card")];
+const cards = [...document.querySelectorAll(".demo-card, .decision-card")];
 $("search-input").addEventListener("input", () => {
     const term = $("search-input").value.toLowerCase().trim();
     for (const card of cards)
@@ -782,7 +782,12 @@ $("ai-generate").addEventListener("click", () => {
     });
 });
 try {
-    const response = await fetch(new URL("./examples.json", import.meta.url));
+    const examplesUrl = new URL("./examples.json", import.meta.url);
+    examplesUrl.searchParams.set(
+        "v",
+        document.querySelector('meta[name="application-version"]').content,
+    );
+    const response = await fetch(examplesUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     examples = await response.json();
     loadMission(examples.allocation);
