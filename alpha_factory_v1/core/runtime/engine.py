@@ -18,7 +18,12 @@ def verify_export(artifact: dict[str, Any], trusted_public_key: str) -> dict[str
     import base64
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
-    if artifact.get("schema") != 1 or artifact.get("public_key") != trusted_public_key:
+    if (
+        not isinstance(artifact.get("schema"), int)
+        or isinstance(artifact["schema"], bool)
+        or artifact["schema"] != 1
+        or artifact.get("public_key") != trusted_public_key
+    ):
         raise ValueError("export schema or trusted identity mismatch")
     receipt = artifact["receipt"]
     body = receipt["body"]
@@ -32,7 +37,11 @@ def verify_export(artifact: dict[str, Any], trusted_public_key: str) -> dict[str
         base64.b64decode(receipt["signature"], validate=True), bytes.fromhex(receipt["hash"])
     )
     document = body["document"]
-    if document["state"] != "completed" or document["review"]["result_hash"] != digest(document["result"]):
+    if (
+        document["state"] != "completed"
+        or document["review"]["approved"] is not True
+        or document["review"]["result_hash"] != digest(document["result"])
+    ):
         raise ValueError("export is not an approved intact result")
     return {"valid": True, "identity": body["identity"], "mission": body["mission"], "hash": receipt["hash"]}
 

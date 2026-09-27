@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -616,8 +616,8 @@ jobs:
           python -m scripts.wait_for_pages_release --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --commit "$GITHUB_SHA" --output evidence/public-pages/release.json
           python -m scripts.validate_pages_workspace --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --model --output evidence/public-pages
           python -m scripts.validate_ascension --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension
-          python -m scripts.validate_ascension_protocol --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension-protocol
           npm ci --prefix tests/browser --ignore-scripts
+          python -m scripts.validate_ascension_protocol --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension-protocol
           python -m scripts.validate_insight_atlas --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_proof_bloom --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_compounding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/compounding --axe-script tests/browser/node_modules/axe-core/axe.min.js

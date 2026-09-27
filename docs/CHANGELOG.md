@@ -1,3 +1,10 @@
+## 1.12.1 — 2026-09-27
+
+- Reject contradictory signed approvals and boolean/float aliases in native result verification.
+- Repair the mirrored Protocol Desk and require exact published assets, receipt downloads, keyboard/accessibility and offline acceptance.
+- Include starting, factory and protocol guides in release assets and a linked operator-guide archive; reject dirty tracked release sources.
+- Bind public protocol acceptance to the exact release commit/version and retain all original paths, diagrams, media and manuscript bytes.
+
 ## 1.12.0 — 2026-09-27
 
 - Updated the Alpha-Factory entry point, operating guide, deployment paths and scope labels while preserving original flowcharts and media.

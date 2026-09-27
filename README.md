@@ -1,3 +1,11 @@
+**Version 1.12.1 completes release delivery and evidence integrity.**
+
+[Start here](docs/agent/START_HERE.md): verified installation, packaged operating guides,
+strict approved receipts and an Ascension Protocol Desk that works on both preserved routes.
+[Release notes](docs/agent/RELEASE_NOTES_1.12.1.md). All original diagrams and media remain.
+
+---
+
 **Version 1.12.0 updates the complete Alpha-Factory package entry point.**
 
 [Start with Alpha-Factory](alpha_factory_v1/README.md) or the [factory guide](docs/agent/FACTORY_GUIDE.md):

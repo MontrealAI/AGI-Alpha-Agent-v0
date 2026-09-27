@@ -298,8 +298,15 @@ def verify_result(mission: Mission, result: dict[str, Any]) -> dict[str, Any]:
     elif isinstance(work, Allocation):
         selected = result["selected"]
         items = {item.id: item for item in work.items}
-        if len(selected) != len(set(selected)) or any(ident not in items for ident in selected):
+        if (
+            not isinstance(selected, list)
+            or any(not isinstance(ident, str) for ident in selected)
+            or len(selected) != len(set(selected))
+            or any(ident not in items for ident in selected)
+        ):
             raise ValueError("allocation has duplicate or unknown items")
+        if any(not isinstance(result[key], int) or isinstance(result[key], bool) for key in ("cost", "value", "risk")):
+            raise ValueError("allocation totals must be integers, not booleans or floats")
         totals = {key: sum(getattr(items[ident], key) for ident in selected) for key in ("cost", "value", "risk")}
         if totals["cost"] > work.budget or totals["risk"] > work.max_risk:
             raise ValueError("allocation exceeds a constraint")
@@ -307,6 +314,12 @@ def verify_result(mission: Mission, result: dict[str, Any]) -> dict[str, Any]:
             raise ValueError("allocation totals are incorrect")
         checks += ["budget and risk limits", "unique input items", "independent integer totals"]
     elif isinstance(work, Schedule):
+        if any(not isinstance(result[key], int) or isinstance(result[key], bool) for key in ("makespan", "tardiness")):
+            raise ValueError("schedule metrics must be integers, not booleans or floats")
+        if any(
+            not isinstance(op["operation"], int) or isinstance(op["operation"], bool) for op in result["operations"]
+        ):
+            raise ValueError("schedule operation indices must be integers, not booleans or floats")
         ops = {(op["job"], op["operation"]): op for op in result["operations"]}
         expected_count = sum(len(job.operations) for job in work.jobs)
         if len(ops) != expected_count or len(result["operations"]) != expected_count:
@@ -332,6 +345,13 @@ def verify_result(mission: Mission, result: dict[str, Any]) -> dict[str, Any]:
             raise ValueError("schedule metrics are incorrect")
         checks += ["all operations exactly once", "machine exclusivity", "job precedence", "duration and makespan"]
     elif isinstance(work, Coding):
+        if (
+            not isinstance(result["case_count"], int)
+            or isinstance(result["case_count"], bool)
+            or not isinstance(result["accuracy"], (int, float))
+            or isinstance(result["accuracy"], bool)
+        ):
+            raise ValueError("code case count and accuracy must be numeric, not booleans")
         if digest(result["code"]) != result["code_hash"]:
             raise ValueError("code artifact hash mismatch")
         if work.candidate and work.candidate != result["code"]:

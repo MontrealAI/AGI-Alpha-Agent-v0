@@ -3,7 +3,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 
 # Alpha‑Factory v1 👁️✨ — Backend α‑AGI Agents Suite
 
-**Current guide — 1.12.0.** This directory preserves the domain-agent research suite and all its
+**Current guide — 1.12.1.** This directory preserves the domain-agent research suite and all its
 architecture diagrams. The private operator runtime is `alpha-factory mission`; start with the
 [factory guide](../../../docs/agent/FACTORY_GUIDE.md) and [Ascension protocol](../../../docs/agent/ASCENSION_PROTOCOL.md).
 Industry directives below describe intended domains, not demonstrated medical, financial, security

@@ -6,7 +6,7 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 > **Module of [Alpha‑Factory v1 👁️✨](../README.md)** — the multi‑agent, cross‑industry α‑AGI that
 > *Out‑learns · Out‑thinks · Out‑designs · Out‑strategises · Out‑executes*
 
-**Current operating guide: [Alpha-Factory 1.12.0](../../docs/agent/FACTORY_GUIDE.md).**
+**Current operating guide: [Alpha-Factory 1.12.1](../../docs/agent/FACTORY_GUIDE.md).**
 Use the private operator runtime for native missions. This folder also preserves the larger research
 image/Compose installer. Build times depend on dependencies, host resources and network availability.
 It never patches tests, silently pulls a model, or overwrites an existing environment file.
