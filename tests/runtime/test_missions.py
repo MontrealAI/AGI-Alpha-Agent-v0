@@ -121,7 +121,22 @@ def test_complete_lifecycle_and_portable_signature(journal: Journal, kind: str) 
 
 
 def test_allocation_reports_real_objective_values(journal: Journal) -> None:
-    result = Engine(journal).execute(journal.submit(mission("allocation"))["id"])["result"]
+    request = Mission.model_validate(
+        {
+            "goal": "Check the two-constraint oracle",
+            "work": {
+                "kind": "allocation",
+                "budget": 10,
+                "max_risk": 5,
+                "items": [
+                    {"id": "A", "cost": 6, "value": 12, "risk": 3},
+                    {"id": "B", "cost": 5, "value": 11, "risk": 1},
+                    {"id": "C", "cost": 5, "value": 11, "risk": 2},
+                ],
+            },
+        }
+    )
+    result = Engine(journal).execute(journal.submit(request)["id"])["result"]
     assert result["selected"] == ["B", "C"]
     assert result["cost"] == 10 and result["value"] == 22 and result["risk"] == 3
     assert result["optimality_proven"] and result["optimal_value"] == 22
@@ -381,7 +396,7 @@ def test_forecast_selection_cannot_see_holdout(journal: Journal) -> None:
     a = engine.execute(journal.submit(first)["id"])["result"]
     b = engine.execute(journal.submit(Mission.model_validate(second))["id"])["result"]
     assert a["training_scores"] == b["training_scores"] and a["policy"] == b["policy"]
-    assert a["holdout_mae"] == 0 and b["holdout_mae"] > 0
+    assert b["holdout_mae"] > a["holdout_mae"]
 
 
 def test_failed_provider_is_not_replaced_with_simulated_success(

@@ -1389,3 +1389,127 @@ footer > small {
     overflow-wrap: anywhere;
     margin-top: 16px;
 }
+
+/* Practical workspaces: task first, with a distinct preview and deliverable. */
+.decision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+.decision-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    background: #fffef8;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+.decision-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px #092e2814;
+}
+.decision-card img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5/3;
+    object-fit: cover;
+    display: block;
+}
+.decision-card-copy {
+    padding: 23px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.decision-kicker {
+    font-size: 9px !important;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #755d2d !important;
+    margin: 0 0 12px !important;
+}
+.decision-card h3 {
+    font:
+        27px/1.15 Georgia,
+        serif;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin: 0 0 13px;
+}
+.decision-card p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 0 0 17px;
+}
+.decision-card small {
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--muted);
+    display: block;
+    margin: auto 0 18px;
+}
+.decision-launch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    border-top: 1px solid var(--line);
+    padding-top: 15px;
+}
+.decision-launch b {
+    font-size: 20px;
+    font-weight: 400;
+}
+.research-heading {
+    padding: 65px 0 25px;
+}
+.research-heading h3 {
+    font:
+        34px Georgia,
+        serif;
+    font-weight: 400;
+    margin: 0 0 15px;
+}
+.research-heading p:not(.eyebrow) {
+    font-size: 13px;
+    color: var(--muted);
+}
+.demo-card img {
+    object-fit: cover;
+    background: #0a3029;
+}
+.decision-card[hidden] {
+    display: none;
+}
+@media (max-width: 1000px) {
+    .decision-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 620px) {
+    .decision-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+    .decision-card-copy {
+        padding: 22px;
+    }
+    .research-heading {
+        padding-top: 40px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .decision-card {
+        transition: none;
+    }
+    .decision-card:hover {
+        transform: none;
+    }
+}

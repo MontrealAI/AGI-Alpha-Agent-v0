@@ -1,3 +1,11 @@
+# Version 1.9.0 — Practical decision workspaces
+
+- Replace public toy examples with eleven editable, useful operational cases and seven calculation engines.
+- Connect all 26 original entries to practical workspaces with distinct previews; preserve original implementations.
+- Add CSV inputs, decision briefs, plans, proof-job backlogs, verified dossiers and a matching Node CLI.
+- Expand native mission defaults and require browser export/replay, accessibility, mobile and offline acceptance.
+- Document exact algorithms, bounds, constructed data and evidence limits in the [studio guide](agent/DECISION_STUDIO.md).
+
 ## 1.8.1 — Accessible experiment resets
 
 Compounding Lab now clears stale prediction descriptions when scenarios or costs change.

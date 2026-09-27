@@ -1,0 +1,258 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+            name="description"
+            content="Practical decision workspaces: capital allocation, procurement, delivery, demand, energy and proof. Use your inputs and export replayable decisions."
+        />
+        <title>Decision Studio · AGI Alpha</title>
+        <link
+            rel="icon"
+            href="../assets/portal/mark.svg"
+            type="image/svg+xml"
+        />
+        <link rel="stylesheet" href="../assets/studio/studio.css" />
+        <script type="module" src="../assets/studio/studio.mjs"></script>
+    </head>
+    <body>
+        <a class="skip" href="#workspace">Skip to workspace</a>
+        <header class="mast">
+            <a class="brand" href="../"
+                ><span class="monogram">α</span
+                ><span>AGI ALPHA<small>DECISION STUDIO</small></span></a
+            >
+            <nav aria-label="Primary">
+                <a href="../#explore">All workspaces</a
+                ><a href="../bloom/">Proof Bloom</a
+                ><a href="../compounding/">Compounding Lab</a
+                ><a href="../agent/DECISION_STUDIO/">Method guide</a>
+            </nav>
+            <span class="edition">EDITION {{VERSION}}</span>
+        </header>
+        <main>
+            <section class="introduction">
+                <p class="eyebrow">FROM AMBITION TO A DECISION YOU CAN USE</p>
+                <h1>Make the next move<br /><em>worth making.</em></h1>
+                <p>
+                    Bring a real constraint. Compare the options.<br />Leave
+                    with a plan, the evidence, and the work still to do.
+                </p>
+                <div class="principles">
+                    <span>01 <b>Your inputs</b></span
+                    ><span>02 <b>Computed trade-offs</b></span
+                    ><span>03 <b>Reviewable outputs</b></span>
+                </div>
+            </section>
+            <div class="studio-shell" id="workspace">
+                <aside class="case-nav">
+                    <p class="eyebrow">CHOOSE YOUR DECISION</p>
+                    <div id="case-list"></div>
+                    <div class="local-note">
+                        <span class="live-dot"></span><b>Runs on this device</b>
+                        <p>
+                            No account or API key. No external action is taken.
+                            Save or export only when you choose.
+                        </p>
+                    </div>
+                </aside>
+                <div class="workbench" aria-busy="false">
+                    <section class="case-header">
+                        <div>
+                            <p class="eyebrow" id="case-category"></p>
+                            <h2 id="case-title"></h2>
+                            <p id="case-question"></p>
+                            <p id="case-basis" class="case-basis"></p>
+                            <p class="deliverable" id="case-deliverable"></p>
+                        </div>
+                        <img id="case-art" alt="" width="360" height="240" />
+                    </section>
+                    <div class="workflow-guide">
+                        <p>
+                            <b>1. Set the decision</b
+                            ><span
+                                >Edit the constraints and tables below, or
+                                import your data.</span
+                            >
+                        </p>
+                        <p>
+                            <b>2. Calculate &amp; inspect</b
+                            ><span
+                                >See feasible choices, trade-offs, checks and
+                                unresolved work.</span
+                            >
+                        </p>
+                        <p>
+                            <b>3. Take the work forward</b
+                            ><span
+                                >Export a decision brief, row-level plan and
+                                replayable dossier.</span
+                            >
+                        </p>
+                    </div>
+                    <div class="command-bar">
+                        <button class="primary" id="run">
+                            Calculate plan
+                            <span aria-hidden="true">↗</span></button
+                        ><button id="stop" hidden>Stop calculation</button
+                        ><button id="reset">Reset this case</button
+                        ><label class="file-button"
+                            >Import dossier<input
+                                id="import"
+                                type="file"
+                                accept=".json,application/json" /></label
+                        ><button id="save">Save inputs</button
+                        ><button id="restore" disabled>
+                            Restore saved inputs</button
+                        ><button id="clear" disabled>Clear saved inputs</button>
+                    </div>
+                    <p id="status" role="status" aria-live="polite">
+                        Loading workspaces…
+                    </p>
+                    <details class="provenance">
+                        <summary>Where these inputs come from</summary>
+                        <p id="provenance"></p>
+                        <p>
+                            You can replace every input. These examples
+                            demonstrate calculations; they are not measurements
+                            of a real deployment.
+                        </p>
+                    </details>
+                    <section
+                        class="input-section"
+                        aria-labelledby="input-heading"
+                    >
+                        <div class="section-title">
+                            <span class="step-number">01</span>
+                            <div>
+                                <p class="eyebrow">DEFINE THE BOUNDARIES</p>
+                                <h3 id="input-heading">
+                                    The decision is yours.
+                                </h3>
+                            </div>
+                        </div>
+                        <div id="parameters" class="parameter-grid"></div>
+                        <div id="datasets"></div>
+                    </section>
+                    <section
+                        id="results"
+                        class="results"
+                        hidden
+                        aria-labelledby="results-title"
+                    >
+                        <div class="section-title">
+                            <span class="step-number">02</span>
+                            <div>
+                                <p class="eyebrow">
+                                    CALCULATED FROM YOUR INPUTS
+                                </p>
+                                <h3 id="results-title" tabindex="-1">
+                                    Your decision dossier.
+                                </h3>
+                            </div>
+                            <span id="verdict" class="verdict"></span>
+                        </div>
+                        <p id="result-summary" class="result-summary"></p>
+                        <div id="metrics" class="metrics"></div>
+                        <div id="visual" class="visual"></div>
+                        <div
+                            id="result-table"
+                            class="table-wrap"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Decision results table"
+                        ></div>
+                        <section id="sensitivity" hidden>
+                            <h4>What changes under stress?</h4>
+                            <div id="stress-bars"></div>
+                        </section>
+                        <div class="evidence-grid">
+                            <section>
+                                <h4>What was checked</h4>
+                                <p id="method"></p>
+                                <ul id="checks"></ul>
+                            </section>
+                            <section>
+                                <h4>What this result depends on</h4>
+                                <p id="limits"></p>
+                            </section>
+                        </div>
+                        <section class="job-section">
+                            <p class="eyebrow">PROOF DEBT → SCOPED WORK</p>
+                            <h4>Before you act.</h4>
+                            <p>
+                                These are exportable work plans. They have not
+                                been submitted to a marketplace or assigned to
+                                an external agent.
+                            </p>
+                            <div id="jobs"></div>
+                        </section>
+                        <section class="handoff">
+                            <div>
+                                <p class="eyebrow">03 / TAKE IT WITH YOU</p>
+                                <h4>A decision you can take forward.</h4>
+                                <p>
+                                    JSON reports include every input and
+                                    calculation. Import one here to recompute
+                                    and verify it. Replaying a report checks
+                                    arithmetic, not source authenticity.
+                                </p>
+                            </div>
+                            <div class="export-actions">
+                                <button id="export-brief" class="primary">
+                                    Decision brief · Markdown</button
+                                ><button id="export-csv">
+                                    Row-level plan · CSV</button
+                                ><button id="export-report">
+                                    Replayable dossier · JSON</button
+                                ><button id="export-jobs">
+                                    Proof job plans · JSON
+                                </button>
+                            </div>
+                        </section>
+                        <details>
+                            <summary>Inspect calculation details</summary>
+                            <pre id="details" tabindex="0"></pre>
+                        </details>
+                    </section>
+                    <section class="continuation">
+                        <div>
+                            <h3>Keep the proof attached.</h3>
+                            <p>
+                                Use Proof Bloom for signed evidence returns and
+                                reviewed capability promotion. Use the
+                                Compounding Lab for the manuscript’s cross-task
+                                transfer experiment.
+                            </p>
+                            <a href="../bloom/">Continue to Proof Bloom ↗</a
+                            ><a href="../compounding/"
+                                >Open the Compounding Lab ↗</a
+                            >
+                        </div>
+                        <details>
+                            <summary>Original research implementations</summary>
+                            <p>
+                                This workspace supplies a practical decision
+                                workflow. The original implementations and their
+                                limitations remain available below.
+                            </p>
+                            <ul id="legacy-links"></ul>
+                        </details>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <a class="brand" href="../" aria-label="Back to Gallery">α / AGI ALPHA</a>
+            <p>Ambitious ideas. Explicit assumptions. Reviewable work.</p>
+            <a href="../DISCLAIMER_SNIPPET/">See docs/DISCLAIMER_SNIPPET.md</a>
+        </footer>
+        <noscript
+            >This workspace requires JavaScript for local computation. The
+            method guide and original research documentation remain
+            readable.</noscript
+        >
+    </body>
+</html>

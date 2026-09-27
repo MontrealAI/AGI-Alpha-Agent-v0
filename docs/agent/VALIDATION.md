@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.8.1 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.9.0 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -206,3 +206,11 @@ The final release reruns the complete matrix on its own commit; a prior candidat
 Changing a Compounding Lab scenario or its costs now clears both the visible forecast and its accessible
 description. Browser acceptance asserts that no prior prediction survives either reset. The same
 minimal/full-gallery and public HTTPS checks remain required before publication.
+
+## Version 1.9.0 decision acceptance
+
+Independent JavaScript tests exercise portfolio/procurement oracles, energy accounting, resource conflicts,
+held-out isolation, evidence holds, CSV handling and replay tampering. The browser validator calculates all
+eleven cases, downloads their dossiers and verifies each through the standalone CLI. It checks real editing,
+imports, infeasibility, save/restore/clear, four export types, mobile layout, automated accessibility and offline
+recalculation. These checks run on both build profiles and the exact deployed public site before publication.

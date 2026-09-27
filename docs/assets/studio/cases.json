@@ -1,0 +1,2723 @@
+[
+  {
+    "id": "capital",
+    "title": "\u03a9-Lattice capital committee",
+    "kind": "portfolio",
+    "category": "Build a business",
+    "question": "Which investments fit a $1.2M budget and 500 staff days?",
+    "deliverable": "Investment slate \u00b7 cash-flow model \u00b7 downside sensitivity",
+    "legacy": [
+      "alpha_agi_business_3_v1",
+      "alpha_agi_business_v1",
+      "cross_industry_alpha_factory",
+      "finance_alpha"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "capital",
+      "title": "\u03a9-Lattice capital committee",
+      "kind": "portfolio",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "budget": 1200000,
+        "staff_days": 500,
+        "years": 5,
+        "discount_percent": 10,
+        "benefit_percent": 100
+      },
+      "datasets": {
+        "projects": [
+          {
+            "id": "data",
+            "name": "Data foundation",
+            "cost": 180000,
+            "annual_benefit": 105000,
+            "annual_cost": 18000,
+            "staff_days": 100,
+            "requires": ""
+          },
+          {
+            "id": "quality",
+            "name": "Vision quality inspection",
+            "cost": 220000,
+            "annual_benefit": 210000,
+            "annual_cost": 32000,
+            "staff_days": 140,
+            "requires": "data"
+          },
+          {
+            "id": "energy",
+            "name": "Heat recovery",
+            "cost": 260000,
+            "annual_benefit": 170000,
+            "annual_cost": 14000,
+            "staff_days": 75,
+            "requires": ""
+          },
+          {
+            "id": "planning",
+            "name": "Production scheduling",
+            "cost": 145000,
+            "annual_benefit": 135000,
+            "annual_cost": 22000,
+            "staff_days": 85,
+            "requires": "data"
+          },
+          {
+            "id": "maintenance",
+            "name": "Predictive maintenance",
+            "cost": 185000,
+            "annual_benefit": 175000,
+            "annual_cost": 27000,
+            "staff_days": 100,
+            "requires": "data"
+          },
+          {
+            "id": "packaging",
+            "name": "Packaging cell",
+            "cost": 320000,
+            "annual_benefit": 190000,
+            "annual_cost": 30000,
+            "staff_days": 115,
+            "requires": ""
+          },
+          {
+            "id": "water",
+            "name": "Water reuse",
+            "cost": 210000,
+            "annual_benefit": 98000,
+            "annual_cost": 12000,
+            "staff_days": 70,
+            "requires": ""
+          },
+          {
+            "id": "inventory",
+            "name": "Inventory integration",
+            "cost": 125000,
+            "annual_benefit": 116000,
+            "annual_cost": 19000,
+            "staff_days": 60,
+            "requires": "data"
+          },
+          {
+            "id": "sales",
+            "name": "Quote automation",
+            "cost": 95000,
+            "annual_benefit": 88000,
+            "annual_cost": 21000,
+            "staff_days": 50,
+            "requires": "data"
+          },
+          {
+            "id": "training",
+            "name": "Operator training",
+            "cost": 60000,
+            "annual_benefit": 62000,
+            "annual_cost": 6000,
+            "staff_days": 45,
+            "requires": ""
+          },
+          {
+            "id": "solar",
+            "name": "Rooftop solar",
+            "cost": 380000,
+            "annual_benefit": 114000,
+            "annual_cost": 8000,
+            "staff_days": 40,
+            "requires": ""
+          },
+          {
+            "id": "safety",
+            "name": "Material handling",
+            "cost": 175000,
+            "annual_benefit": 100000,
+            "annual_cost": 17000,
+            "staff_days": 55,
+            "requires": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "invention",
+    "title": "Invention to operating value",
+    "kind": "portfolio",
+    "category": "Build a business",
+    "question": "Which inventions justify the cost of developing and operating them?",
+    "deliverable": "Development portfolio \u00b7 prerequisite map \u00b7 verification jobs",
+    "legacy": [
+      "alpha_agi_business_2_v1",
+      "aiga_meta_evolution"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "invention",
+      "title": "Invention to operating value",
+      "kind": "portfolio",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "budget": 600000,
+        "staff_days": 350,
+        "years": 3,
+        "discount_percent": 15,
+        "benefit_percent": 80
+      },
+      "datasets": {
+        "projects": [
+          {
+            "id": "sensor",
+            "name": "Low-cost sensor platform",
+            "cost": 110000,
+            "annual_benefit": 40000,
+            "annual_cost": 12000,
+            "staff_days": 85,
+            "requires": ""
+          },
+          {
+            "id": "leak",
+            "name": "Leak detection system",
+            "cost": 95000,
+            "annual_benefit": 130000,
+            "annual_cost": 20000,
+            "staff_days": 65,
+            "requires": "sensor"
+          },
+          {
+            "id": "thermal",
+            "name": "Thermal control retrofit",
+            "cost": 150000,
+            "annual_benefit": 170000,
+            "annual_cost": 30000,
+            "staff_days": 90,
+            "requires": "sensor"
+          },
+          {
+            "id": "twin",
+            "name": "Process simulation",
+            "cost": 180000,
+            "annual_benefit": 150000,
+            "annual_cost": 25000,
+            "staff_days": 100,
+            "requires": ""
+          },
+          {
+            "id": "optimizer",
+            "name": "Closed-loop optimization",
+            "cost": 140000,
+            "annual_benefit": 190000,
+            "annual_cost": 40000,
+            "staff_days": 95,
+            "requires": "twin"
+          },
+          {
+            "id": "materials",
+            "name": "Recycled material process",
+            "cost": 210000,
+            "annual_benefit": 155000,
+            "annual_cost": 20000,
+            "staff_days": 120,
+            "requires": ""
+          },
+          {
+            "id": "inspection",
+            "name": "Inline defect detector",
+            "cost": 160000,
+            "annual_benefit": 175000,
+            "annual_cost": 38000,
+            "staff_days": 85,
+            "requires": "sensor"
+          },
+          {
+            "id": "routing",
+            "name": "Routing invention",
+            "cost": 85000,
+            "annual_benefit": 95000,
+            "annual_cost": 18000,
+            "staff_days": 50,
+            "requires": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "supply",
+    "title": "Supplier resilience desk",
+    "kind": "procurement",
+    "category": "Run operations",
+    "question": "How should 60 batches be sourced when no supplier may exceed 45%?",
+    "deliverable": "Order allocation \u00b7 landed costs \u00b7 supplier-outage stress test",
+    "legacy": [
+      "alpha_agi_marketplace_v1",
+      "muzero_planning"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "supply",
+      "title": "Supplier resilience desk",
+      "kind": "procurement",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "demand": 60,
+        "max_share_percent": 45,
+        "lead_days": 21,
+        "min_ontime_percent": 92,
+        "min_suppliers": 3
+      },
+      "datasets": {
+        "suppliers": [
+          {
+            "id": "north",
+            "name": "Northworks",
+            "unit_cost": 1280,
+            "setup_cost": 1200,
+            "capacity": 30,
+            "lead_days": 12,
+            "ontime_percent": 98
+          },
+          {
+            "id": "river",
+            "name": "River Components",
+            "unit_cost": 1190,
+            "setup_cost": 2200,
+            "capacity": 25,
+            "lead_days": 18,
+            "ontime_percent": 96
+          },
+          {
+            "id": "atlas",
+            "name": "Atlas Industrial",
+            "unit_cost": 1060,
+            "setup_cost": 3500,
+            "capacity": 40,
+            "lead_days": 28,
+            "ontime_percent": 94
+          },
+          {
+            "id": "local",
+            "name": "Local Precision",
+            "unit_cost": 1460,
+            "setup_cost": 350,
+            "capacity": 18,
+            "lead_days": 5,
+            "ontime_percent": 99
+          },
+          {
+            "id": "coast",
+            "name": "Coastal Supply",
+            "unit_cost": 1140,
+            "setup_cost": 1800,
+            "capacity": 32,
+            "lead_days": 20,
+            "ontime_percent": 93
+          },
+          {
+            "id": "reserve",
+            "name": "Reserve Fabrication",
+            "unit_cost": 1580,
+            "setup_cost": 800,
+            "capacity": 20,
+            "lead_days": 10,
+            "ontime_percent": 97
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "delivery",
+    "title": "Factory delivery control",
+    "kind": "schedule",
+    "category": "Run operations",
+    "question": "Can seven customer orders share four resources and meet the delivery window?",
+    "deliverable": "Resource-by-hour schedule \u00b7 lateness report \u00b7 priority order",
+    "legacy": [
+      "alpha_super_planner_v1",
+      "alpha_asi_world_model",
+      "meta_agentic_tree_search_v0"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "delivery",
+      "title": "Factory delivery control",
+      "kind": "schedule",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "deadline": 90
+      },
+      "datasets": {
+        "operations": [
+          {
+            "id": "pump_1",
+            "job": "pump",
+            "resource": "engineering",
+            "duration": 5,
+            "due": 38
+          },
+          {
+            "id": "pump_2",
+            "job": "pump",
+            "resource": "fabrication",
+            "duration": 12,
+            "due": 38
+          },
+          {
+            "id": "pump_3",
+            "job": "pump",
+            "resource": "assembly",
+            "duration": 8,
+            "due": 38
+          },
+          {
+            "id": "pump_4",
+            "job": "pump",
+            "resource": "inspection",
+            "duration": 3,
+            "due": 38
+          },
+          {
+            "id": "valve_1",
+            "job": "valve",
+            "resource": "engineering",
+            "duration": 3,
+            "due": 27
+          },
+          {
+            "id": "valve_2",
+            "job": "valve",
+            "resource": "fabrication",
+            "duration": 7,
+            "due": 27
+          },
+          {
+            "id": "valve_3",
+            "job": "valve",
+            "resource": "assembly",
+            "duration": 5,
+            "due": 27
+          },
+          {
+            "id": "valve_4",
+            "job": "valve",
+            "resource": "inspection",
+            "duration": 2,
+            "due": 27
+          },
+          {
+            "id": "heat_exchanger_1",
+            "job": "heat_exchanger",
+            "resource": "engineering",
+            "duration": 7,
+            "due": 52
+          },
+          {
+            "id": "heat_exchanger_2",
+            "job": "heat_exchanger",
+            "resource": "fabrication",
+            "duration": 16,
+            "due": 52
+          },
+          {
+            "id": "heat_exchanger_3",
+            "job": "heat_exchanger",
+            "resource": "assembly",
+            "duration": 10,
+            "due": 52
+          },
+          {
+            "id": "heat_exchanger_4",
+            "job": "heat_exchanger",
+            "resource": "inspection",
+            "duration": 4,
+            "due": 52
+          },
+          {
+            "id": "sensor_rack_1",
+            "job": "sensor_rack",
+            "resource": "engineering",
+            "duration": 4,
+            "due": 35
+          },
+          {
+            "id": "sensor_rack_2",
+            "job": "sensor_rack",
+            "resource": "assembly",
+            "duration": 8,
+            "due": 35
+          },
+          {
+            "id": "sensor_rack_3",
+            "job": "sensor_rack",
+            "resource": "inspection",
+            "duration": 4,
+            "due": 35
+          },
+          {
+            "id": "control_panel_1",
+            "job": "control_panel",
+            "resource": "engineering",
+            "duration": 6,
+            "due": 46
+          },
+          {
+            "id": "control_panel_2",
+            "job": "control_panel",
+            "resource": "assembly",
+            "duration": 11,
+            "due": 46
+          },
+          {
+            "id": "control_panel_3",
+            "job": "control_panel",
+            "resource": "inspection",
+            "duration": 5,
+            "due": 46
+          },
+          {
+            "id": "compressor_1",
+            "job": "compressor",
+            "resource": "fabrication",
+            "duration": 9,
+            "due": 65
+          },
+          {
+            "id": "compressor_2",
+            "job": "compressor",
+            "resource": "assembly",
+            "duration": 12,
+            "due": 65
+          },
+          {
+            "id": "compressor_3",
+            "job": "compressor",
+            "resource": "inspection",
+            "duration": 5,
+            "due": 65
+          },
+          {
+            "id": "retrofit_1",
+            "job": "retrofit",
+            "resource": "engineering",
+            "duration": 5,
+            "due": 60
+          },
+          {
+            "id": "retrofit_2",
+            "job": "retrofit",
+            "resource": "fabrication",
+            "duration": 6,
+            "due": 60
+          },
+          {
+            "id": "retrofit_3",
+            "job": "retrofit",
+            "resource": "assembly",
+            "duration": 6,
+            "due": 60
+          },
+          {
+            "id": "retrofit_4",
+            "job": "retrofit",
+            "resource": "inspection",
+            "duration": 3,
+            "due": 60
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "launch",
+    "title": "Product launch room",
+    "kind": "schedule",
+    "category": "Run operations",
+    "question": "What delivery order fits a shared design, engineering and QA team?",
+    "deliverable": "Launch sequence \u00b7 resource calendar \u00b7 bottleneck analysis",
+    "legacy": [
+      "muzeromctsllmagent_v0",
+      "self_healing_repo"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "launch",
+      "title": "Product launch room",
+      "kind": "schedule",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "deadline": 80
+      },
+      "datasets": {
+        "operations": [
+          {
+            "id": "search_1",
+            "job": "search",
+            "resource": "design",
+            "duration": 5,
+            "due": 48
+          },
+          {
+            "id": "search_2",
+            "job": "search",
+            "resource": "backend",
+            "duration": 12,
+            "due": 48
+          },
+          {
+            "id": "search_3",
+            "job": "search",
+            "resource": "frontend",
+            "duration": 7,
+            "due": 48
+          },
+          {
+            "id": "search_4",
+            "job": "search",
+            "resource": "qa",
+            "duration": 6,
+            "due": 48
+          },
+          {
+            "id": "billing_1",
+            "job": "billing",
+            "resource": "design",
+            "duration": 4,
+            "due": 58
+          },
+          {
+            "id": "billing_2",
+            "job": "billing",
+            "resource": "backend",
+            "duration": 16,
+            "due": 58
+          },
+          {
+            "id": "billing_3",
+            "job": "billing",
+            "resource": "frontend",
+            "duration": 8,
+            "due": 58
+          },
+          {
+            "id": "billing_4",
+            "job": "billing",
+            "resource": "qa",
+            "duration": 8,
+            "due": 58
+          },
+          {
+            "id": "onboarding_1",
+            "job": "onboarding",
+            "resource": "design",
+            "duration": 8,
+            "due": 44
+          },
+          {
+            "id": "onboarding_2",
+            "job": "onboarding",
+            "resource": "frontend",
+            "duration": 14,
+            "due": 44
+          },
+          {
+            "id": "onboarding_3",
+            "job": "onboarding",
+            "resource": "qa",
+            "duration": 5,
+            "due": 44
+          },
+          {
+            "id": "export_1",
+            "job": "export",
+            "resource": "backend",
+            "duration": 10,
+            "due": 50
+          },
+          {
+            "id": "export_2",
+            "job": "export",
+            "resource": "frontend",
+            "duration": 5,
+            "due": 50
+          },
+          {
+            "id": "export_3",
+            "job": "export",
+            "resource": "qa",
+            "duration": 4,
+            "due": 50
+          },
+          {
+            "id": "accessibility_1",
+            "job": "accessibility",
+            "resource": "design",
+            "duration": 4,
+            "due": 65
+          },
+          {
+            "id": "accessibility_2",
+            "job": "accessibility",
+            "resource": "frontend",
+            "duration": 10,
+            "due": 65
+          },
+          {
+            "id": "accessibility_3",
+            "job": "accessibility",
+            "resource": "qa",
+            "duration": 8,
+            "due": 65
+          },
+          {
+            "id": "audit_1",
+            "job": "audit",
+            "resource": "backend",
+            "duration": 9,
+            "due": 65
+          },
+          {
+            "id": "audit_2",
+            "job": "audit",
+            "resource": "qa",
+            "duration": 6,
+            "due": 65
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "inventory",
+    "title": "Demand & replenishment desk",
+    "kind": "inventory",
+    "category": "Run operations",
+    "question": "How much stock should be ordered for a two-week supplier lead time?",
+    "deliverable": "Holdout evaluation \u00b7 replenishment quantity \u00b7 demand stress test",
+    "legacy": [
+      "alpha_agi_insight_v0",
+      "alpha_agi_insight_v1",
+      "macro_sentinel"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "inventory",
+      "title": "Demand & replenishment desk",
+      "kind": "inventory",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "holdout": 14,
+        "season": 7,
+        "lead_periods": 14,
+        "on_hand": 1600,
+        "on_order": 450,
+        "safety_units": 420,
+        "unit_cost": 24
+      },
+      "datasets": {
+        "demand": [
+          {
+            "id": "day_001",
+            "units": 177
+          },
+          {
+            "id": "day_002",
+            "units": 193
+          },
+          {
+            "id": "day_003",
+            "units": 197
+          },
+          {
+            "id": "day_004",
+            "units": 199
+          },
+          {
+            "id": "day_005",
+            "units": 217
+          },
+          {
+            "id": "day_006",
+            "units": 154
+          },
+          {
+            "id": "day_007",
+            "units": 124
+          },
+          {
+            "id": "day_008",
+            "units": 188
+          },
+          {
+            "id": "day_009",
+            "units": 190
+          },
+          {
+            "id": "day_010",
+            "units": 196
+          },
+          {
+            "id": "day_011",
+            "units": 214
+          },
+          {
+            "id": "day_012",
+            "units": 220
+          },
+          {
+            "id": "day_013",
+            "units": 152
+          },
+          {
+            "id": "day_014",
+            "units": 139
+          },
+          {
+            "id": "day_015",
+            "units": 187
+          },
+          {
+            "id": "day_016",
+            "units": 201
+          },
+          {
+            "id": "day_017",
+            "units": 193
+          },
+          {
+            "id": "day_018",
+            "units": 214
+          },
+          {
+            "id": "day_019",
+            "units": 234
+          },
+          {
+            "id": "day_020",
+            "units": 155
+          },
+          {
+            "id": "day_021",
+            "units": 138
+          },
+          {
+            "id": "day_022",
+            "units": 201
+          },
+          {
+            "id": "day_023",
+            "units": 200
+          },
+          {
+            "id": "day_024",
+            "units": 204
+          },
+          {
+            "id": "day_025",
+            "units": 210
+          },
+          {
+            "id": "day_026",
+            "units": 234
+          },
+          {
+            "id": "day_027",
+            "units": 169
+          },
+          {
+            "id": "day_028",
+            "units": 140
+          },
+          {
+            "id": "day_029",
+            "units": 200
+          },
+          {
+            "id": "day_030",
+            "units": 214
+          },
+          {
+            "id": "day_031",
+            "units": 203
+          },
+          {
+            "id": "day_032",
+            "units": 222
+          },
+          {
+            "id": "day_033",
+            "units": 230
+          },
+          {
+            "id": "day_034",
+            "units": 169
+          },
+          {
+            "id": "day_035",
+            "units": 155
+          },
+          {
+            "id": "day_036",
+            "units": 202
+          },
+          {
+            "id": "day_037",
+            "units": 213
+          },
+          {
+            "id": "day_038",
+            "units": 218
+          },
+          {
+            "id": "day_039",
+            "units": 220
+          },
+          {
+            "id": "day_040",
+            "units": 242
+          },
+          {
+            "id": "day_041",
+            "units": 166
+          },
+          {
+            "id": "day_042",
+            "units": 154
+          },
+          {
+            "id": "day_043",
+            "units": 217
+          },
+          {
+            "id": "day_044",
+            "units": 215
+          },
+          {
+            "id": "day_045",
+            "units": 216
+          },
+          {
+            "id": "day_046",
+            "units": 235
+          },
+          {
+            "id": "day_047",
+            "units": 240
+          },
+          {
+            "id": "day_048",
+            "units": 177
+          },
+          {
+            "id": "day_049",
+            "units": 151
+          },
+          {
+            "id": "day_050",
+            "units": 216
+          },
+          {
+            "id": "day_051",
+            "units": 230
+          },
+          {
+            "id": "day_052",
+            "units": 219
+          },
+          {
+            "id": "day_053",
+            "units": 233
+          },
+          {
+            "id": "day_054",
+            "units": 255
+          },
+          {
+            "id": "day_055",
+            "units": 176
+          },
+          {
+            "id": "day_056",
+            "units": 162
+          },
+          {
+            "id": "day_057",
+            "units": 213
+          },
+          {
+            "id": "day_058",
+            "units": 230
+          },
+          {
+            "id": "day_059",
+            "units": 233
+          },
+          {
+            "id": "day_060",
+            "units": 236
+          },
+          {
+            "id": "day_061",
+            "units": 254
+          },
+          {
+            "id": "day_062",
+            "units": 190
+          },
+          {
+            "id": "day_063",
+            "units": 161
+          },
+          {
+            "id": "day_064",
+            "units": 224
+          },
+          {
+            "id": "day_065",
+            "units": 226
+          },
+          {
+            "id": "day_066",
+            "units": 233
+          },
+          {
+            "id": "day_067",
+            "units": 250
+          },
+          {
+            "id": "day_068",
+            "units": 256
+          },
+          {
+            "id": "day_069",
+            "units": 189
+          },
+          {
+            "id": "day_070",
+            "units": 175
+          },
+          {
+            "id": "day_071",
+            "units": 223
+          },
+          {
+            "id": "day_072",
+            "units": 238
+          },
+          {
+            "id": "day_073",
+            "units": 229
+          },
+          {
+            "id": "day_074",
+            "units": 250
+          },
+          {
+            "id": "day_075",
+            "units": 271
+          },
+          {
+            "id": "day_076",
+            "units": 191
+          },
+          {
+            "id": "day_077",
+            "units": 174
+          },
+          {
+            "id": "day_078",
+            "units": 238
+          },
+          {
+            "id": "day_079",
+            "units": 236
+          },
+          {
+            "id": "day_080",
+            "units": 241
+          },
+          {
+            "id": "day_081",
+            "units": 247
+          },
+          {
+            "id": "day_082",
+            "units": 270
+          },
+          {
+            "id": "day_083",
+            "units": 206
+          },
+          {
+            "id": "day_084",
+            "units": 176
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "service",
+    "title": "Service capacity forecast",
+    "kind": "inventory",
+    "category": "Run operations",
+    "question": "How much service capacity is needed for the next seven days?",
+    "deliverable": "Demand forecast \u00b7 capacity gap \u00b7 out-of-sample error",
+    "legacy": [
+      "era_of_experience"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "service",
+      "title": "Service capacity forecast",
+      "kind": "inventory",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "holdout": 14,
+        "season": 7,
+        "lead_periods": 7,
+        "on_hand": 1150,
+        "on_order": 100,
+        "safety_units": 200,
+        "unit_cost": 35
+      },
+      "datasets": {
+        "demand": [
+          {
+            "id": "day_001",
+            "units": 237
+          },
+          {
+            "id": "day_002",
+            "units": 253
+          },
+          {
+            "id": "day_003",
+            "units": 257
+          },
+          {
+            "id": "day_004",
+            "units": 259
+          },
+          {
+            "id": "day_005",
+            "units": 277
+          },
+          {
+            "id": "day_006",
+            "units": 214
+          },
+          {
+            "id": "day_007",
+            "units": 184
+          },
+          {
+            "id": "day_008",
+            "units": 248
+          },
+          {
+            "id": "day_009",
+            "units": 250
+          },
+          {
+            "id": "day_010",
+            "units": 256
+          },
+          {
+            "id": "day_011",
+            "units": 274
+          },
+          {
+            "id": "day_012",
+            "units": 280
+          },
+          {
+            "id": "day_013",
+            "units": 212
+          },
+          {
+            "id": "day_014",
+            "units": 199
+          },
+          {
+            "id": "day_015",
+            "units": 247
+          },
+          {
+            "id": "day_016",
+            "units": 261
+          },
+          {
+            "id": "day_017",
+            "units": 253
+          },
+          {
+            "id": "day_018",
+            "units": 274
+          },
+          {
+            "id": "day_019",
+            "units": 294
+          },
+          {
+            "id": "day_020",
+            "units": 215
+          },
+          {
+            "id": "day_021",
+            "units": 198
+          },
+          {
+            "id": "day_022",
+            "units": 261
+          },
+          {
+            "id": "day_023",
+            "units": 260
+          },
+          {
+            "id": "day_024",
+            "units": 264
+          },
+          {
+            "id": "day_025",
+            "units": 270
+          },
+          {
+            "id": "day_026",
+            "units": 294
+          },
+          {
+            "id": "day_027",
+            "units": 229
+          },
+          {
+            "id": "day_028",
+            "units": 200
+          },
+          {
+            "id": "day_029",
+            "units": 260
+          },
+          {
+            "id": "day_030",
+            "units": 274
+          },
+          {
+            "id": "day_031",
+            "units": 263
+          },
+          {
+            "id": "day_032",
+            "units": 282
+          },
+          {
+            "id": "day_033",
+            "units": 290
+          },
+          {
+            "id": "day_034",
+            "units": 229
+          },
+          {
+            "id": "day_035",
+            "units": 215
+          },
+          {
+            "id": "day_036",
+            "units": 262
+          },
+          {
+            "id": "day_037",
+            "units": 273
+          },
+          {
+            "id": "day_038",
+            "units": 278
+          },
+          {
+            "id": "day_039",
+            "units": 280
+          },
+          {
+            "id": "day_040",
+            "units": 302
+          },
+          {
+            "id": "day_041",
+            "units": 226
+          },
+          {
+            "id": "day_042",
+            "units": 214
+          },
+          {
+            "id": "day_043",
+            "units": 277
+          },
+          {
+            "id": "day_044",
+            "units": 275
+          },
+          {
+            "id": "day_045",
+            "units": 276
+          },
+          {
+            "id": "day_046",
+            "units": 295
+          },
+          {
+            "id": "day_047",
+            "units": 300
+          },
+          {
+            "id": "day_048",
+            "units": 237
+          },
+          {
+            "id": "day_049",
+            "units": 211
+          },
+          {
+            "id": "day_050",
+            "units": 276
+          },
+          {
+            "id": "day_051",
+            "units": 290
+          },
+          {
+            "id": "day_052",
+            "units": 279
+          },
+          {
+            "id": "day_053",
+            "units": 293
+          },
+          {
+            "id": "day_054",
+            "units": 315
+          },
+          {
+            "id": "day_055",
+            "units": 236
+          },
+          {
+            "id": "day_056",
+            "units": 222
+          },
+          {
+            "id": "day_057",
+            "units": 273
+          },
+          {
+            "id": "day_058",
+            "units": 290
+          },
+          {
+            "id": "day_059",
+            "units": 293
+          },
+          {
+            "id": "day_060",
+            "units": 296
+          },
+          {
+            "id": "day_061",
+            "units": 314
+          },
+          {
+            "id": "day_062",
+            "units": 250
+          },
+          {
+            "id": "day_063",
+            "units": 221
+          },
+          {
+            "id": "day_064",
+            "units": 314
+          },
+          {
+            "id": "day_065",
+            "units": 316
+          },
+          {
+            "id": "day_066",
+            "units": 323
+          },
+          {
+            "id": "day_067",
+            "units": 340
+          },
+          {
+            "id": "day_068",
+            "units": 346
+          },
+          {
+            "id": "day_069",
+            "units": 279
+          },
+          {
+            "id": "day_070",
+            "units": 265
+          },
+          {
+            "id": "day_071",
+            "units": 313
+          },
+          {
+            "id": "day_072",
+            "units": 328
+          },
+          {
+            "id": "day_073",
+            "units": 319
+          },
+          {
+            "id": "day_074",
+            "units": 340
+          },
+          {
+            "id": "day_075",
+            "units": 361
+          },
+          {
+            "id": "day_076",
+            "units": 281
+          },
+          {
+            "id": "day_077",
+            "units": 264
+          },
+          {
+            "id": "day_078",
+            "units": 328
+          },
+          {
+            "id": "day_079",
+            "units": 326
+          },
+          {
+            "id": "day_080",
+            "units": 331
+          },
+          {
+            "id": "day_081",
+            "units": 337
+          },
+          {
+            "id": "day_082",
+            "units": 360
+          },
+          {
+            "id": "day_083",
+            "units": 296
+          },
+          {
+            "id": "day_084",
+            "units": 266
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "energy",
+    "title": "Microgrid dispatch console",
+    "kind": "energy",
+    "category": "Run operations",
+    "question": "When should a battery charge while serving a facility across peak tariffs?",
+    "deliverable": "24-hour dispatch \u00b7 energy balance \u00b7 tariff cost comparison",
+    "legacy": [
+      "omni_factory_demo"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "energy",
+      "title": "Microgrid dispatch console",
+      "kind": "energy",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "capacity_kwh": 60,
+        "power_kw": 20,
+        "initial_kwh": 10,
+        "charge_efficiency_percent": 90,
+        "degradation_cents": 3
+      },
+      "datasets": {
+        "hours": [
+          {
+            "id": "00_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "01_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "02_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "03_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "04_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "05_00",
+            "load_kwh": 16,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "06_00",
+            "load_kwh": 25,
+            "solar_kwh": 3,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "07_00",
+            "load_kwh": 25,
+            "solar_kwh": 8,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "08_00",
+            "load_kwh": 25,
+            "solar_kwh": 18,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "09_00",
+            "load_kwh": 38,
+            "solar_kwh": 30,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "10_00",
+            "load_kwh": 38,
+            "solar_kwh": 42,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "11_00",
+            "load_kwh": 38,
+            "solar_kwh": 50,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "12_00",
+            "load_kwh": 38,
+            "solar_kwh": 55,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "13_00",
+            "load_kwh": 38,
+            "solar_kwh": 48,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "14_00",
+            "load_kwh": 38,
+            "solar_kwh": 36,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "15_00",
+            "load_kwh": 38,
+            "solar_kwh": 23,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "16_00",
+            "load_kwh": 38,
+            "solar_kwh": 12,
+            "tariff_cents": 42,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "17_00",
+            "load_kwh": 42,
+            "solar_kwh": 4,
+            "tariff_cents": 42,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "18_00",
+            "load_kwh": 42,
+            "solar_kwh": 0,
+            "tariff_cents": 42,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "19_00",
+            "load_kwh": 42,
+            "solar_kwh": 0,
+            "tariff_cents": 42,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "20_00",
+            "load_kwh": 42,
+            "solar_kwh": 0,
+            "tariff_cents": 42,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "21_00",
+            "load_kwh": 23,
+            "solar_kwh": 0,
+            "tariff_cents": 22,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "22_00",
+            "load_kwh": 23,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          },
+          {
+            "id": "23_00",
+            "load_kwh": 23,
+            "solar_kwh": 0,
+            "tariff_cents": 10,
+            "grid_limit_kwh": 60
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "proof",
+    "title": "Proof Debt \u2192 AGI Jobs",
+    "kind": "evidence",
+    "category": "Prove a claim",
+    "question": "Which claims survive the evidence, and what exactly must be proved next?",
+    "deliverable": "Evidence docket \u00b7 assigned proof backlog \u00b7 acceptance criteria",
+    "legacy": [
+      "gpt2_small_cli",
+      "solving_agi_governance",
+      "utils"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "proof",
+      "title": "Proof Debt \u2192 AGI Jobs",
+      "kind": "evidence",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "max_age_days": 30
+      },
+      "datasets": {
+        "claims": [
+          {
+            "id": "accuracy",
+            "claim": "At least 1100 correct outputs",
+            "direction": ">=",
+            "threshold": 1100,
+            "observed": 1116,
+            "unit": "cases",
+            "source_id": "pilot",
+            "quote": "Correct outputs: 1116.",
+            "age_days": 7,
+            "owner": "Evaluation lead"
+          },
+          {
+            "id": "misses",
+            "claim": "No more than 10 critical misses",
+            "direction": "<=",
+            "threshold": 10,
+            "observed": 18,
+            "unit": "cases",
+            "source_id": "pilot",
+            "quote": "Critical misses: 18.",
+            "age_days": 7,
+            "owner": "Safety reviewer"
+          },
+          {
+            "id": "latency",
+            "claim": "Response time at most 300 ms",
+            "direction": "<=",
+            "threshold": 300,
+            "observed": 240,
+            "unit": "milliseconds",
+            "source_id": "pilot",
+            "quote": "Median response time: 240 milliseconds.",
+            "age_days": 7,
+            "owner": "Operations lead"
+          },
+          {
+            "id": "cost",
+            "claim": "Compute cost at most 100 USD",
+            "direction": "<=",
+            "threshold": 100,
+            "observed": 96,
+            "unit": "USD",
+            "source_id": "pilot",
+            "quote": "Total compute cost: 96 USD.",
+            "age_days": 7,
+            "owner": "Finance reviewer"
+          },
+          {
+            "id": "review",
+            "claim": "Review time measured and below 12 hours",
+            "direction": "<=",
+            "threshold": 12,
+            "observed": 14,
+            "unit": "hours",
+            "source_id": "pilot",
+            "quote": "Human review consumed 14 hours.",
+            "age_days": 7,
+            "owner": "Evaluation lead"
+          },
+          {
+            "id": "replicate",
+            "claim": "At least 2 independent replications",
+            "direction": ">=",
+            "threshold": 2,
+            "observed": 0,
+            "unit": "replications",
+            "source_id": "replication",
+            "quote": "Independent replications completed: 0.",
+            "age_days": 15,
+            "owner": "Independent reviewer"
+          },
+          {
+            "id": "security",
+            "claim": "No unresolved security findings",
+            "direction": "<=",
+            "threshold": 0,
+            "observed": 3,
+            "unit": "findings",
+            "source_id": "replication",
+            "quote": "Security review findings unresolved: 3.",
+            "age_days": 15,
+            "owner": "Security reviewer"
+          },
+          {
+            "id": "revenue",
+            "claim": "Observed monthly net benefit",
+            "direction": ">=",
+            "threshold": 5000,
+            "observed": null,
+            "unit": "USD",
+            "source_id": "",
+            "quote": "",
+            "age_days": 0,
+            "owner": "Finance reviewer"
+          }
+        ],
+        "sources": [
+          {
+            "id": "pilot",
+            "title": "Constructed pilot observation log",
+            "text": "The pilot evaluated 1200 cases. Correct outputs: 1116. Critical misses: 18. Median response time: 240 milliseconds. Total compute cost: 96 USD. Human review consumed 14 hours. This constructed log has no external attestation."
+          },
+          {
+            "id": "replication",
+            "title": "Constructed independent review register",
+            "text": "Independent replications completed: 0. Security review findings unresolved: 3. Production service-level agreement: not established."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "nova",
+    "title": "Nova-Seeds pilot gate",
+    "kind": "evidence",
+    "category": "Prove a claim",
+    "question": "Is a promising capability ready for an independently reviewed pilot?",
+    "deliverable": "Promotion hold reasons \u00b7 proof jobs \u00b7 attributable evidence docket",
+    "legacy": [
+      "sovereign_agentic_agialpha_agent_v0",
+      "presentation"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "nova",
+      "title": "Nova-Seeds pilot gate",
+      "kind": "evidence",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "max_age_days": 14
+      },
+      "datasets": {
+        "claims": [
+          {
+            "id": "accuracy",
+            "claim": "Nova-Seed capability meets the pilot quality threshold",
+            "direction": ">=",
+            "threshold": 1100,
+            "observed": 1116,
+            "unit": "cases",
+            "source_id": "pilot",
+            "quote": "Correct outputs: 1116.",
+            "age_days": 7,
+            "owner": "Evaluation lead"
+          },
+          {
+            "id": "misses",
+            "claim": "No more than 10 critical misses",
+            "direction": "<=",
+            "threshold": 10,
+            "observed": 18,
+            "unit": "cases",
+            "source_id": "pilot",
+            "quote": "Critical misses: 18.",
+            "age_days": 7,
+            "owner": "Safety reviewer"
+          },
+          {
+            "id": "latency",
+            "claim": "Response time at most 300 ms",
+            "direction": "<=",
+            "threshold": 300,
+            "observed": 240,
+            "unit": "milliseconds",
+            "source_id": "pilot",
+            "quote": "Median response time: 240 milliseconds.",
+            "age_days": 7,
+            "owner": "Operations lead"
+          },
+          {
+            "id": "cost",
+            "claim": "Compute cost at most 100 USD",
+            "direction": "<=",
+            "threshold": 100,
+            "observed": 96,
+            "unit": "USD",
+            "source_id": "pilot",
+            "quote": "Total compute cost: 96 USD.",
+            "age_days": 7,
+            "owner": "Finance reviewer"
+          },
+          {
+            "id": "review",
+            "claim": "Review time measured and below 12 hours",
+            "direction": "<=",
+            "threshold": 12,
+            "observed": 14,
+            "unit": "hours",
+            "source_id": "pilot",
+            "quote": "Human review consumed 14 hours.",
+            "age_days": 7,
+            "owner": "Evaluation lead"
+          },
+          {
+            "id": "replicate",
+            "claim": "At least 2 independent replications",
+            "direction": ">=",
+            "threshold": 2,
+            "observed": 0,
+            "unit": "replications",
+            "source_id": "replication",
+            "quote": "Independent replications completed: 0.",
+            "age_days": 15,
+            "owner": "Independent reviewer"
+          },
+          {
+            "id": "security",
+            "claim": "No unresolved security findings",
+            "direction": "<=",
+            "threshold": 0,
+            "observed": 3,
+            "unit": "findings",
+            "source_id": "replication",
+            "quote": "Security review findings unresolved: 3.",
+            "age_days": 15,
+            "owner": "Security reviewer"
+          },
+          {
+            "id": "revenue",
+            "claim": "Nova-Seed produces observed net operating benefit",
+            "direction": ">=",
+            "threshold": 5000,
+            "observed": null,
+            "unit": "USD",
+            "source_id": "",
+            "quote": "",
+            "age_days": 0,
+            "owner": "Finance reviewer"
+          }
+        ],
+        "sources": [
+          {
+            "id": "pilot",
+            "title": "Constructed pilot observation log",
+            "text": "The pilot evaluated 1200 cases. Correct outputs: 1116. Critical misses: 18. Median response time: 240 milliseconds. Total compute cost: 96 USD. Human review consumed 14 hours. This constructed log has no external attestation."
+          },
+          {
+            "id": "replication",
+            "title": "Constructed independent review register",
+            "text": "Independent replications completed: 0. Security review findings unresolved: 3. Production service-level agreement: not established."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "agency",
+    "title": "Second-order agency trial",
+    "kind": "benchmark",
+    "category": "Prove a claim",
+    "question": "Does redesigning the review pipeline improve outcomes after all stated costs?",
+    "deliverable": "Frozen selection \u00b7 confusion matrices \u00b7 costed held-out comparison",
+    "legacy": [
+      "meta_agentic_agi",
+      "meta_agentic_agi_v2",
+      "meta_agentic_agi_v3"
+    ],
+    "input": {
+      "schema": "agialpha.decision.v1",
+      "id": "agency",
+      "title": "Second-order agency trial",
+      "kind": "benchmark",
+      "provenance": "Constructed operational case for reproducible planning, not a claim about a real company. Replace the inputs with your own records; nothing is sent to a provider.",
+      "parameters": {
+        "false_negative_cost": 5000,
+        "false_positive_cost": 800,
+        "baseline_cost": 20,
+        "pipeline_a_cost": 65,
+        "pipeline_b_cost": 35,
+        "min_test_cases": 50
+      },
+      "datasets": {
+        "cases": [
+          {
+            "id": "case_001",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_002",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_003",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_004",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_005",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_006",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_007",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_008",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_009",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_010",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_011",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_012",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_013",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_014",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_015",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_016",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_017",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_018",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_019",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_020",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_021",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_022",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_023",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_024",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_025",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_026",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_027",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_028",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_029",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_030",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_031",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_032",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_033",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_034",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_035",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_036",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_037",
+            "partition": "calibration",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_038",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_039",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_040",
+            "partition": "calibration",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_041",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_042",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_043",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_044",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_045",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_046",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_047",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_048",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_049",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_050",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_051",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_052",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_053",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_054",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_055",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_056",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_057",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_058",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_059",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_060",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_061",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_062",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_063",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_064",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_065",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_066",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_067",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_068",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_069",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_070",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_071",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_072",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_073",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_074",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_075",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_076",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_077",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_078",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_079",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_080",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_081",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_082",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_083",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_084",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_085",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_086",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_087",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_088",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_089",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_090",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_091",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_092",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 0,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_093",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_094",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_095",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_096",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_097",
+            "partition": "test",
+            "truth": 1,
+            "baseline": 1,
+            "pipeline_a": 1,
+            "pipeline_b": 1
+          },
+          {
+            "id": "case_098",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_099",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 1,
+            "pipeline_a": 0,
+            "pipeline_b": 0
+          },
+          {
+            "id": "case_100",
+            "partition": "test",
+            "truth": 0,
+            "baseline": 0,
+            "pipeline_a": 0,
+            "pipeline_b": 1
+          }
+        ]
+      }
+    }
+  }
+]

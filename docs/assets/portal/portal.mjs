@@ -684,7 +684,7 @@ for (const button of document.querySelectorAll(".wheel-node"))
         $("wheel-caption").textContent =
             `${button.textContent.trim().replace(/^\d+\s*/, "")} · ${wheelDescriptions[Number(button.dataset.stage)]}`;
     });
-const cards = [...document.querySelectorAll(".demo-card")];
+const cards = [...document.querySelectorAll(".demo-card, .decision-card")];
 $("search-input").addEventListener("input", () => {
     const term = $("search-input").value.toLowerCase().trim();
     for (const card of cards)

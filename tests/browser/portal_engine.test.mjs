@@ -77,10 +77,10 @@ test("changing holdout cannot change the selected policy or its holdout predicti
     request.work.observations.splice(
         -request.work.holdout,
         request.work.holdout,
-        200,
-        -30,
-        75,
-        5,
+        ...Array.from(
+            { length: request.work.holdout },
+            (_, i) => 1000 + i * 37,
+        ),
     );
     const after = runMission(request);
     assert.equal(before.evidence.selected, after.evidence.selected);
@@ -115,8 +115,8 @@ test("research quotes remain exact and no matching evidence is labeled as such",
 });
 test("job-shop schedule has independent precedence and capacity checks", () => {
     const result = runMission(examples.schedule);
-    assert.equal(result.evidence.makespan, 18);
-    assert.equal(result.evidence.baseline_makespan, 21);
+    assert.equal(result.evidence.makespan, 66);
+    assert.equal(result.evidence.baseline_makespan, 90);
     for (const job of examples.schedule.work.jobs) {
         const ops = result.evidence.operations
             .filter((op) => op.job === job.id)

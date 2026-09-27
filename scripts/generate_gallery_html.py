@@ -135,9 +135,17 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
         entry = next((entry for entry in catalog["entries"] if entry["id"] == md_file.stem), None)
         if entry:
-            title = entry["title"]
+            title = str(entry["title"])
             summary = entry["mode"] + ": " + entry["summary"]
-    return title, preview, link, summary
+    studio_path = REPO_ROOT / "docs/assets/studio/cases.json"
+    if studio_path.is_file():
+        for case in json.loads(studio_path.read_text()):
+            if md_file.stem in case["legacy"]:
+                preview = f'assets/studio/previews/{case["id"]}.svg'
+                summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
+                link = f'studio/?case={case["id"]}'
+                break
+    return str(title), preview, link, summary
 
 
 def collect_entries() -> list[tuple[str, str, str, str]]:
@@ -210,8 +218,8 @@ def build_html(
 </head>
 <body>
   <h1>Alpha‑Factory Demo Gallery</h1>
-  <p class=\"subtitle\">Choose a demo below. Legacy charts replay bundled samples;
-    each guide explains what runs locally.</p>
+  <p class=\"subtitle\">Choose a practical workspace. Edit inputs, calculate decisions and export a reviewable plan;
+    original research implementations remain linked inside.</p>
   {subdir}
     <input id=\"search-input\" class=\"search-input\" type=\"text\"
            placeholder=\"Search demos...\" aria-label=\"Search demos\">
@@ -272,7 +280,7 @@ def build_html(
         lines.append(f"      <h3>{html.escape(title)}</h3>")
         if summary:
             lines.append(f"      <p class='demo-desc'>{html.escape(summary)}</p>")
-        lines.append("      <span class='launch'>Open demo and guide</span>")
+        lines.append("      <span class='launch'>Open practical workspace ↗</span>")
         lines.append("    </a>")
     lines.append("  </main>")
     if home_link:
@@ -311,6 +319,12 @@ def build_html(
 
 def main() -> None:
     print(DISCLAIMER, file=sys.stderr)
+    import importlib
+
+    studio_generator = importlib.import_module(
+        "scripts.generate_decision_studio" if __package__ else "generate_decision_studio"
+    )
+    studio_generator.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)
@@ -319,6 +333,7 @@ def main() -> None:
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
     index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
     index_html = index_html.replace("{{VERSION}}", version)
+    index_html = index_html.replace("{{DECISION_CARDS}}", studio_generator.cards(REPO_ROOT))
     examples = {
         kind: json.loads((REPO_ROOT / f"examples/missions/{kind}.json").read_text())
         for kind in ("allocation", "research", "schedule", "forecast")

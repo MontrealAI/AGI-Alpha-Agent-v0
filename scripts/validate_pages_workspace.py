@@ -90,11 +90,11 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
                 Mission.model_validate(native)
                 report["missions"].append({"kind": kind, "method": data["method"], "metrics": data["metrics"]})
             page.locator('[data-kind="allocation"]').click()
-            page.get_by_label("Budget", exact=True).fill("6")
+            page.get_by_label("Budget", exact=True).fill("60000")
             page.locator("#run-mission").click()
             page.locator("#mission-result").wait_for(state="visible")
             changed = json.loads(page.locator("#result-json").text_content())
-            assert changed["evidence"]["totals"]["value"] == 12
+            assert changed["evidence"]["totals"]["value"] == 56000
             page.locator("#approve-result").click()
             page.locator("#mission-status").filter(has_text="Add a review note").wait_for()
             page.locator("#review-note").fill("Checked the budget and exact integer totals against my inputs.")
@@ -104,7 +104,7 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
             browser_artifact = output / "reviewed-browser-report.json"
             download.value.save_as(browser_artifact)
             saved = json.loads(browser_artifact.read_text())
-            assert saved["payload"]["request"]["work"]["budget"] == 6
+            assert saved["payload"]["request"]["work"]["budget"] == 60000
             Mission.model_validate(saved["payload"]["request"])
             page.reload()
             page.locator("#history-count").filter(has_text="1 saved").wait_for()
@@ -126,7 +126,7 @@ def validate(site: Path, output: Path, model: bool = False, public_url: str | No
             report["review_export_import_memory_and_tamper_detection"] = True
 
             # Untrusted source content must be rendered as text, not executable markup.
-            request = {
+            request: dict[str, Any] = {
                 "goal": "Review source evidence",
                 "work": {
                     "kind": "research",
