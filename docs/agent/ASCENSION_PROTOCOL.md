@@ -139,6 +139,7 @@ are principal refunds and are not burned. Tiny base-unit amounts can round the b
 Anyone may award an ended auction, expire undelivered/unreviewed work, collect a treasury refund and close
 an eligible campaign. Only the recorded client/lot holder can claim its funds. An unawarded auction can
 be processed even after its horizon; all bids then expire and escrow returns without an agent slash.
+Constructors and one-time bindings reject cross-wired access, seed, oracle, marketplace and MARK modules.
 No admin key can withdraw a treasury or fabricate validator votes. Governance can still deny new work
 through admission decisions; one-time oracle/market bindings must be checked before operation.
 

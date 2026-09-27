@@ -16,6 +16,64 @@ describe("Ascension: Nova-Seed → MARK → Sovereign → jobs", function () {
     beforeEach(async () => {
         f = await fixture();
     });
+    it("rejects cross-wired protocol modules before they can accept capital", async () => {
+        const access2 = await (
+            await ethers.getContractFactory("AscensionAccess")
+        ).deploy(f.ens.target, f.wrapper.target, f.governor.address);
+        const seed2 = await (
+            await ethers.getContractFactory("NovaSeed")
+        ).deploy(access2.target);
+        await expect(
+            (await ethers.getContractFactory("AscensionRiskOracle")).deploy(
+                access2.target,
+                f.seed.target,
+                units("10"),
+                2,
+                2000,
+                f.governor.address,
+            ),
+        ).to.be.revertedWith("seed/access mismatch");
+        await expect(
+            (await ethers.getContractFactory("AscensionJobMarket")).deploy(
+                access2.target,
+                f.oracle.target,
+                units("10"),
+                f.governor.address,
+            ),
+        ).to.be.revertedWith("oracle/access mismatch");
+        await expect(
+            (await ethers.getContractFactory("AscensionMark")).deploy(
+                seed2.target,
+                f.access.target,
+                f.oracle.target,
+                f.jobs.target,
+            ),
+        ).to.be.revertedWith("protocol graph mismatch");
+        const otherOracle = await (
+            await ethers.getContractFactory("AscensionRiskOracle")
+        ).deploy(
+            f.access.target,
+            f.seed.target,
+            units("10"),
+            2,
+            2000,
+            f.governor.address,
+        );
+        await expect(
+            otherOracle.bindMarketplace(f.jobs.target),
+        ).to.be.revertedWith("marketplace/oracle mismatch");
+        const otherJobs = await (
+            await ethers.getContractFactory("AscensionJobMarket")
+        ).deploy(
+            f.access.target,
+            f.oracle.target,
+            units("10"),
+            f.governor.address,
+        );
+        await expect(otherJobs.bindMark(f.mark.target)).to.be.revertedWith(
+            "MARK/marketplace mismatch",
+        );
+    });
     it("executes the complete immutable plan, burns every payout and refunds unused capital exactly", async () => {
         const { id, plan } = await f.campaign();
         expect(await f.seed.ownerOf(id)).to.equal(f.business.address);

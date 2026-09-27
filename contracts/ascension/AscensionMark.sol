@@ -44,6 +44,9 @@ contract AscensionMark is AscensionToken, ReentrancyGuard {
     event CapitalReturned(uint256 indexed id, address indexed account, uint256 amount);
 
     constructor(NovaSeed seed_, AscensionAccess access_, AscensionRiskOracle oracle_, AscensionJobMarket jobs_) {
+        require(address(seed_.access()) == address(access_) && address(oracle_.access()) == address(access_) &&
+            address(jobs_.access()) == address(access_) && address(oracle_.seed()) == address(seed_) &&
+            address(jobs_.oracle()) == address(oracle_), "protocol graph mismatch");
         seed = seed_; access = access_; oracle = oracle_; jobs = jobs_;
     }
     function open(uint256 id, uint96 base, uint96 slope, uint32 maxLots, uint96 target,

@@ -7,6 +7,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./NovaSeed.sol";
 import "./AscensionToken.sol";
 
+interface IAscensionJobBinding {
+    function oracle() external view returns (address);
+    function access() external view returns (address);
+}
+
 /// @notice Staked, live-ENS validators attest to a specific seed owner and immutable plan; approvals expire.
 contract AscensionRiskOracle is AscensionToken, Ownable2Step, ReentrancyGuard {
     using SafeERC20 for IERC20;
@@ -35,10 +40,13 @@ contract AscensionRiskOracle is AscensionToken, Ownable2Step, ReentrancyGuard {
     constructor(AscensionAccess access_, NovaSeed seed_, uint256 minimum_, uint16 quorum_, uint16 risk_,
         address governor) Ownable(governor) {
         require(minimum_ > 0 && quorum_ >= 2 && quorum_ <= 15 && risk_ <= 10000, "oracle parameters");
+        require(address(seed_.access()) == address(access_), "seed/access mismatch");
         access = access_; seed = seed_; minimumStake = minimum_; quorum = quorum_; maximumRiskBps = risk_;
     }
     function bindMarketplace(address value) external onlyOwner {
         require(marketplace == address(0) && value.code.length > 0, "binding is one-time");
+        require(IAscensionJobBinding(value).oracle() == address(this) &&
+            IAscensionJobBinding(value).access() == address(access), "marketplace/oracle mismatch");
         marketplace = value;
         emit MarketplaceBound(value);
     }

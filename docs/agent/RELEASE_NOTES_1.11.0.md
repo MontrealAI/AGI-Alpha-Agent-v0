@@ -13,6 +13,7 @@ an inspectable local-EVM lifecycle, preserving every existing contract and exper
   classifying submitted work as a proven failure. Membership revocation is rechecked before payment.
 - The native allocation executor, encrypted seed, on-chain lifecycle and accounting run together on a
   local EVM. The Protocol Desk exposes the receipts and includes editable exact-arithmetic calculators.
+- Constructor and binding checks reject inconsistent protocol modules before they can accept capital.
 - New acceptance gates exercise the contracts, native execution, public evidence and browser desk.
 
 [Implementation, arithmetic, recovery and reproduction guide](ASCENSION_PROTOCOL.md).

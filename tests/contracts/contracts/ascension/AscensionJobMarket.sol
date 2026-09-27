@@ -6,6 +6,12 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./AscensionRiskOracle.sol";
 
+interface IAscensionMarkBinding {
+    function jobs() external view returns (address);
+    function oracle() external view returns (address);
+    function access() external view returns (address);
+}
+
 /// @notice Bounded reputation-weighted auctions with locked collateral, artifact-bound review and exact payouts.
 contract AscensionJobMarket is AscensionToken, Ownable2Step, ReentrancyGuard {
     using SafeERC20 for IERC20;
@@ -63,10 +69,14 @@ contract AscensionJobMarket is AscensionToken, Ownable2Step, ReentrancyGuard {
     constructor(AscensionAccess access_, AscensionRiskOracle oracle_, uint256 minimum_, address governor)
         Ownable(governor) {
         require(minimum_ > 0 && minimum_ <= type(uint96).max, "minimum stake");
+        require(address(oracle_.access()) == address(access_), "oracle/access mismatch");
         access = access_; oracle = oracle_; minimumStake = minimum_;
     }
     function bindMark(address value) external onlyOwner {
         require(mark == address(0) && value.code.length > 0, "binding is one-time");
+        require(IAscensionMarkBinding(value).jobs() == address(this) &&
+            IAscensionMarkBinding(value).oracle() == address(oracle) &&
+            IAscensionMarkBinding(value).access() == address(access), "MARK/marketplace mismatch");
         mark = value; emit MarkBound(value);
     }
     function deposit(uint256 amount) external nonReentrant {
