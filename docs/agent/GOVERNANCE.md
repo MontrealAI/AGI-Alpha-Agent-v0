@@ -4,7 +4,7 @@
 
 Open the [browser workbench](../solving_agi_governance/index.html) or run the standard-library
 CLI on Python 3.11–3.13. No credentials, wallet, provider, database or GPU are required.
-The complete [demo guide](../../alpha_factory_v1/demos/solving_agi_governance/README.md)
+The complete [demo guide](../demos/solving_agi_governance.md)
 contains formulas, schema limits, recovery instructions, original research and the preserved simulator.
 
 ```bash

@@ -52,9 +52,9 @@ def run_sim(
         raise ValueError("rounds must be an integer from 1 through 1000000")
     if agents * rounds > 100_000_000:
         raise ValueError("Simulation exceeds 100000000 agent updates; reduce agents or rounds")
-    if type(delta) not in (int, float) or not math.isfinite(delta) or not 0.0 <= delta <= 1.0:
+    if type(delta) not in (int, float) or not 0.0 <= delta <= 1.0 or not math.isfinite(delta):
         raise ValueError("delta must be between 0 and 1")
-    if type(stake) not in (int, float) or not math.isfinite(stake) or not 0 <= stake <= 1_000_000:
+    if type(stake) not in (int, float) or not 0 <= stake <= 1_000_000 or not math.isfinite(stake):
         raise ValueError("stake must be finite and between 0 and 1000000")
     if seed is not None and type(seed) is not int:
         raise ValueError("seed must be an integer")

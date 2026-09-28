@@ -279,3 +279,18 @@ def test_legacy_rejects_invalid_or_unbounded_work(kwargs: dict) -> None:
     values.update(kwargs)
     with pytest.raises(ValueError):
         run_sim(**values)
+
+
+def test_portable_brief_keeps_untrusted_html_and_markdown_literal(scenario: dict) -> None:
+    scenario["title"] = "<img src=x onerror=attack>"
+    scenario["note"] = "[a link](javascript:attack) **claim**"
+    brief = wb.brief(wb.evaluate(scenario))
+    assert scenario["title"] not in brief and "[a link]" not in brief and "**claim**" not in brief
+    assert "\\<img" in brief and "\\[a link\\]" in brief
+
+
+def test_legacy_large_integer_fails_as_input_error() -> None:
+    with pytest.raises(ValueError):
+        run_sim(10, 20, 10**500, 1)
+    with pytest.raises(ValueError):
+        run_sim(10, 20, 0.8, 10**500)

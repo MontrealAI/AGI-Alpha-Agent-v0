@@ -8,8 +8,8 @@ import {
     artifacts,
     REPORT_SCHEMA,
     MAX_BYTES,
-} from "./engine.mjs";
-import { zipFiles } from "../compounding/engine.mjs";
+} from "./engine.mjs?v=1.14.0";
+import { zipFiles } from "../compounding/engine.mjs?v=1.14.0";
 const $ = (id) => document.getElementById(id);
 const STORE = "agialpha.governance.draft.v1";
 let scenario,
@@ -604,7 +604,9 @@ $("gov-download").addEventListener("click", () => exportFile("zip"));
 $("gov-dossier").addEventListener("click", () => exportFile("dossier"));
 $("gov-download-jobs").addEventListener("click", () => exportFile("jobs"));
 try {
-    const response = await fetch(new URL("./scenarios.json", import.meta.url));
+    const response = await fetch(
+        new URL("./scenarios.json?v=1.14.0", import.meta.url),
+    );
     if (!response.ok) throw Error(`Cases could not load (${response.status})`);
     cases = parse(await response.text());
     cases.forEach(validate);

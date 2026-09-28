@@ -23,7 +23,8 @@ def validate(output: Path) -> dict[str, Any]:
     for index in range(120):
         case = deepcopy(cases[0])
         case["id"] = f"parity-{index}"
-        case["title"] = "Unicode parity: α 🌌 é"
+        case["title"] = "Unicode parity: α 🌌 é <img src=x>"
+        case["note"] = "[untrusted](javascript:attack) **claim**"
         case["incentives"].update(
             discountBps=[0, 1, 4999, 5000, 8000, 9999][index % 6],
             detectionBps=[0, 1, 5000, 9999, 10000][index % 5],
@@ -50,7 +51,7 @@ globalThis.crypto ??= webcrypto;
 const cases=JSON.parse(readFileSync(0,'utf8')), results=[];
 for(let i=0;i<cases.length;i++){{
   const report=await evaluate(cases[i]);
-  results.push({{report,files:i<5?await artifacts(report):null}});
+  results.push({{report,files:i<6?await artifacts(report):null}});
 }}
 for(const bad of ['{{"x":1,"x":2}}','{{"x":NaN}}','{{"x":Infinity}}']){{
   let rejected=false;
@@ -77,7 +78,7 @@ process.stdout.write(JSON.stringify(results));
         native = evaluate(case)
         if native != item["report"]:
             raise ValueError(f"Python/browser calculation mismatch: {case['id']}")
-        if index < 5:
+        if index < 6:
             native_files = {name: data.decode("utf-8") for name, data in artifacts(native).items()}
             if native_files != item["files"]:
                 different = [name for name in native_files if native_files[name] != item["files"].get(name)]
@@ -91,7 +92,7 @@ process.stdout.write(JSON.stringify(results));
         "passed": True,
         "cases": records,
         "exact_calculation_cases": len(cases),
-        "exact_export_bundles": 5,
+        "exact_export_bundles": 6,
         "job_specs_compile": True,
         "duplicate_and_nonfinite_json_rejected": True,
         "forged_approval_rejected": True,
@@ -107,5 +108,5 @@ if __name__ == "__main__":
     result = validate(parser.parse_args().output)
     print(
         f"Verified {result['exact_calculation_cases']} exact Python/browser decisions, "
-        "five identical export bundles and Ascension jobs"
+        "six identical export bundles and Ascension jobs"
     )

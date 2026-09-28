@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Exact integer counterpart of solving_agi_governance/workbench.py.
-import model from "./constants.mjs";
+import model from "./constants.mjs?v=1.14.0";
 export const SCHEMA = "agialpha.governance.scenario.v1";
 export const REPORT_SCHEMA = "agialpha.governance.dossier.v1";
 export const MAX_BYTES = 256000;
@@ -288,13 +288,16 @@ export async function verify(report) {
         );
     return expected;
 }
+function markdownText(value) {
+    return value.replace(/([\\`*_{}\[\]<>()#+.!|])/g, "\\$1");
+}
 export function brief(report) {
     const { input: source, result } = report;
     const lines = [
-        `# ${source.title}`,
+        `# ${markdownText(source.title)}`,
         "",
         `Status: ${result.status}`,
-        `Source note: ${source.note}`,
+        `Source note: ${markdownText(source.note)}`,
         "",
     ];
     for (const gate of result.gates)

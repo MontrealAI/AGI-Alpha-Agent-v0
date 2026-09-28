@@ -18,7 +18,7 @@ try:
     from openai_agents import Agent, AgentRuntime, Tool
 
     HAS_OAI = True
-except ModuleNotFoundError:  # pragma: no cover - optional dep
+except ImportError:  # pragma: no cover - optional or incompatible runtime
     HAS_OAI = False
 
 

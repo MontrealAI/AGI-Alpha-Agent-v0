@@ -291,9 +291,20 @@ def verify(report: Any) -> dict[str, Any]:
     return expected
 
 
+def markdown_text(value: str) -> str:
+    """Keep supplied text literal in portable Markdown, including HTML and links."""
+    return re.sub(r"([\\`*_{}\[\]<>()#+.!|])", r"\\\1", value)
+
+
 def brief(report: dict[str, Any]) -> str:
     source, result = report["input"], report["result"]
-    lines = [f"# {source['title']}", "", f"Status: {result['status']}", f"Source note: {source['note']}", ""]
+    lines = [
+        f"# {markdown_text(source['title'])}",
+        "",
+        f"Status: {result['status']}",
+        f"Source note: {markdown_text(source['note'])}",
+        "",
+    ]
     for gate in result["gates"]:
         lines += [
             f"- {'PASS (model)' if gate['passed'] else 'BLOCKED'}: {gate['title']}",

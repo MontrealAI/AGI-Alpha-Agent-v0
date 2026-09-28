@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import runpy
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,6 +23,10 @@ def build(root: Path = ROOT) -> None:
     assets = root / "docs/assets/governance"
     assets.mkdir(parents=True, exist_ok=True)
     (assets / "scenarios.json").write_bytes((demo / "scenarios.json").read_bytes())
+    for name in ("engine.mjs", "workbench.mjs"):
+        module = assets / name
+        if module.is_file():
+            module.write_text(re.sub(r"\?v=\d+\.\d+\.\d+", "?v=" + version, module.read_text()))
     model = runpy.run_path(str(demo / "workbench.py"))
     data = {"bounds": model["BOUNDS"], "gates": model["GATES"], "scope": model["SCOPE"]}
     (assets / "constants.mjs").write_text(
