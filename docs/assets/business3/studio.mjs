@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { validate, parse, REPORT_SCHEMA } from "./engine.mjs?v=1.13.0";
-import { zipFiles } from "../compounding/engine.mjs?v=1.13.0";
+import { validate, parse, REPORT_SCHEMA } from "./engine.mjs?v=1.13.1";
+import { zipFiles } from "../compounding/engine.mjs?v=1.13.1";
 const $ = (id) => document.getElementById(id),
     clone = (value) => structuredClone(value);
-const money = (value) => "$" + value.toLocaleString("en-US"),
+const money = (value) =>
+        (value < 0 ? "−$" : "$") + Math.abs(value).toLocaleString("en-US"),
     num = (value) => value.toLocaleString("en-US");
 const STORAGE = "agialpha.business3.draft.v1";
 const policyFields = [
@@ -179,6 +180,56 @@ function metrics(result) {
         $("b3-metrics").append(card);
     }
 }
+function renderOpportunity(value) {
+    const host = $("b3-opportunity-chart"),
+        chosen = new Set(value.result.portfolio?.projectIds || []),
+        projects = new Map(value.input.projects.map((p) => [p.id, p])),
+        rows = [...value.result.analysis].sort(
+            (a, b) =>
+                b.expectedNpvUsd - a.expectedNpvUsd || a.id.localeCompare(b.id),
+        ),
+        values = rows.flatMap((r) => [r.expectedNpvUsd, r.downsideNpvUsd]),
+        low = Math.min(0, ...values),
+        high = Math.max(0, ...values),
+        span = Math.max(high - low, 1),
+        zero = (-low / span) * 100;
+    host.replaceChildren();
+    for (const row of rows) {
+        const item = node("li", undefined, "b3-value-row"),
+            label = node("div", undefined, "b3-value-label"),
+            plot = node("div", undefined, "b3-value-plot"),
+            amounts = node("div", undefined, "b3-value-amounts"),
+            state = chosen.has(row.id)
+                ? "Selected"
+                : row.evidenceEligible
+                  ? "Not selected"
+                  : "Below evidence threshold";
+        item.dataset.projectId = row.id;
+        item.dataset.selected = String(chosen.has(row.id));
+        label.append(
+            node("strong", projects.get(row.id).name),
+            node("span", state),
+        );
+        plot.setAttribute("aria-hidden", "true");
+        plot.style.setProperty("--b3-zero", `${zero}%`);
+        for (const [key, name, className] of [
+            ["expectedNpvUsd", "Expected", "b3-expected"],
+            ["downsideNpvUsd", "Downside", "b3-downside"],
+        ]) {
+            const bar = node("span", undefined, `b3-value-bar ${className}`),
+                amount = row[key];
+            bar.style.left = `${((Math.min(0, amount) - low) / span) * 100}%`;
+            bar.style.width = `${(Math.abs(amount) / span) * 100}%`;
+            bar.dataset.value = String(amount);
+            plot.append(bar);
+            amounts.append(
+                node("span", `${name}: ${money(amount)}`, className),
+            );
+        }
+        item.append(label, plot, amounts);
+        host.append(item);
+    }
+}
 function renderResult(value) {
     report = value;
     const r = value.result,
@@ -194,6 +245,7 @@ function renderResult(value) {
               ? "No portfolio meets every declared constraint. Nothing is approved or queued. Review the budget, downside floor, dependencies and review capacity."
               : "Holding capital is the best feasible result under these assumptions. No jobs are created. Change the assumptions only when evidence supports the change.";
     metrics(r);
+    renderOpportunity(value);
     $("b3-selected").replaceChildren();
     for (const id of p?.projectIds || []) {
         const item = byId.get(id),
@@ -317,7 +369,7 @@ function calculate({ input, text, verify = false } = {}) {
             ? "Recomputing the imported dossier…"
             : "Evaluating every bounded portfolio against your constraints…",
     );
-    worker = new Worker(new URL("./worker.mjs?v=1.13.0", import.meta.url), {
+    worker = new Worker(new URL("./worker.mjs?v=1.13.1", import.meta.url), {
         type: "module",
     });
     worker.onerror = () => {
@@ -460,7 +512,7 @@ $("b3-download-jobs").addEventListener("click", () => {
 });
 try {
     const response = await fetch(
-        new URL("./scenarios.json?v=1.13.0", import.meta.url),
+        new URL("./scenarios.json?v=1.13.1", import.meta.url),
     );
     if (!response.ok)
         throw Error(`Cases unavailable (HTTP ${response.status})`);

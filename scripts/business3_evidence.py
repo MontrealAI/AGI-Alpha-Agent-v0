@@ -14,6 +14,13 @@ ASSETS = (
     "alpha_agi_business_3_v1/index.html",
     "assets/compounding/engine.mjs",
     "alpha_factory_v1/demos/alpha_agi_business_3_v1/index.html",
+    "alpha_agi_business_3_v1/assets/script.js",
+    "alpha_agi_business_3_v1/assets/style.css",
+    "alpha_agi_business_3_v1/assets/logs.json",
+    "alpha_agi_business_3_v1/assets/preview.svg",
+    "alpha_factory_v1/demos/alpha_agi_business_3_v1/assets/script.js",
+    "assets/replay_chart.js",
+    "assets/pyodide_demo.js",
     *(
         f"assets/business3/{name}"
         for name in ("studio.css", "studio.mjs", "engine.mjs", "worker.mjs", "artifacts.mjs", "scenarios.json")
@@ -38,6 +45,9 @@ CHECKS = frozenset(
         "axe-wcag-a-aa-no-violations",
         "offline-recalculation",
         "exact-current-assets",
+        "candidate-chart-exact-values",
+        "original-replay-preserved",
+        "research-section-responsive",
     }
 )
 

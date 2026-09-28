@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta name="application-version" content="1.13.0" />
+        <meta name="application-version" content="1.13.1" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="../../../stylesheets/demo_base.css" />
         <link
             rel="stylesheet"
-            href="../../../assets/business3/studio.css?v=1.13.0"
+            href="../../../assets/business3/studio.css?v=1.13.1"
         />
     </head>
     <body class="business3-page">
@@ -33,7 +33,7 @@
             <header class="b3-hero">
                 <div>
                     <p class="b3-eyebrow">
-                        BUSINESS 3 / Ω-LATTICE / 1.13.0
+                        BUSINESS 3 / Ω-LATTICE / 1.13.1
                     </p>
                     <h1>
                         Opportunity is abundant.<br /><em
@@ -301,6 +301,40 @@
                         <p class="b3-small" id="b3-comparison"></p>
                     </section>
                 </div>
+                <section
+                    class="b3-panel b3-opportunity"
+                    aria-labelledby="b3-opportunity-title"
+                >
+                    <p class="b3-eyebrow">THE OPPORTUNITY LANDSCAPE</p>
+                    <h3 id="b3-opportunity-title">See what earns a place.</h3>
+                    <p class="b3-small">
+                        Compare each candidate's three-year expected and
+                        policy-downside NPV in whole USD. Every bar shares the
+                        same scale. These are standalone values from your
+                        inputs; the portfolio also has to satisfy shared
+                        budgets, dependencies and review capacity.
+                    </p>
+                    <div class="b3-chart-legend">
+                        <span
+                            ><i class="b3-expected-key" aria-hidden="true"></i
+                            >Expected NPV</span
+                        >
+                        <span
+                            ><i class="b3-downside-key" aria-hidden="true"></i
+                            >Downside NPV</span
+                        ><span>← Loss / zero / value →</span>
+                    </div>
+                    <ol
+                        id="b3-opportunity-chart"
+                        aria-label="Candidate values and selection"
+                    ></ol>
+                    <p class="b3-small">
+                        Selected means included in this calculated portfolio;
+                        independent approval is still required. An unselected
+                        candidate can be attractive on its own and still fail
+                        the combined constraints.
+                    </p>
+                </section>
                 <div class="b3-panel b3-stress">
                     <h3>Keep the selection. Worsen the conditions.</h3>
                     <p class="b3-small">
@@ -452,37 +486,167 @@
             id="b3-legacy"
             aria-label="Preserved original research presentation"
         >
-            
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Ω-Lattice capital committee</h2><p>Which investments fit a $1.2M budget and 500 staff days?</p><p style="font-size:12px">Investment slate · cash-flow model · downside sensitivity</p><a href="../../../studio/?case=capital" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
-<!-- decision-studio-bridge:end -->
-<h1>🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — **Omega‑Grade Edition**</h1>
-<img class='preview' src='assets/preview.svg' alt='🏛️ Large‑Scale α‑AGI Business 3 👁️✨ — Omega‑Grade Edition'>
-
-<p><a href='../../../demos/alpha_agi_business_3_v1'>Detailed instructions</a></p>
-<p class='snippet'><a href='../../../DISCLAIMER_SNIPPET'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
-<div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
+            <!-- SPDX-License-Identifier: Apache-2.0 -->
+<div class="b3-research-heading">
+    <div>
+        <p class="b3-eyebrow">THE RESEARCH COLLECTION / Ω-LATTICE</p>
+        <h2 id="b3-research-title">Trace the idea. Inspect the evidence.</h2>
+        <p class="b3-lede">
+            Explore the architecture behind Business 3, replay the original
+            experiment, and return to the enterprise plan with a clear
+            distinction between a hypothesis and a result.
+        </p>
+    </div>
+    <a
+        class="b3-original-art"
+        href="assets/preview.svg"
+        aria-label="Open the original Business 3 alpha artwork"
+    >
+        <img
+            class="preview"
+            src="assets/preview.svg"
+            width="144"
+            height="144"
+            alt="Original Business 3 alpha artwork"
+        />
+        <span>ORIGINAL ARTWORK ↗</span>
+    </a>
 </div>
-<canvas id="chart"></canvas>
-<pre id="logs-panel"></pre>
+<div class="b3-research-links">
+    <a
+        href="../../../demos/alpha_agi_business_3_v1#original-flowcharts-and-presentations"
+    >
+        <small>01 / ARCHITECTURE</small>
+        <h3>Follow the original flowcharts.</h3>
+        <p>
+            Role orchestration, the energy-landscape vision and the research
+            loop. Original diagrams and presentations retained.
+        </p>
+        <span>Explore the architecture ↗</span>
+    </a>
+    <a
+        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_business_3_v1/RESEARCH_ARCHIVE.md"
+    >
+        <small>02 / RESEARCH RECORD</small>
+        <h3>Read the founding thesis.</h3>
+        <p>
+            Large-Scale α-AGI Business 3 — Omega-Grade Edition. The original
+            prose, tables and speculative models, in context.
+        </p>
+        <span>Open the research archive ↗</span>
+    </a>
+    <!-- decision-studio-bridge:start -->
+    <a
+        class="decision-bridge"
+        href="../../../studio/?case=capital"
+        aria-label="Practical decision workspace: Ω-Lattice capital committee"
+    >
+        <small>03 / ANOTHER DECISION LENS</small>
+        <h3>Ω-Lattice capital committee</h3>
+        <p>
+            Which investments fit a $1.2M budget and 500 staff days? Compare the
+            investment slate, cash-flow model and downside sensitivity.
+        </p>
+        <span>Open editable workspace ↗</span>
+    </a>
+    <!-- decision-studio-bridge:end -->
+</div>
+<section class="b3-replay" aria-labelledby="b3-replay-title">
+    <div class="b3-replay-heading">
+        <div>
+            <p class="b3-eyebrow">ORIGINAL EXPERIMENT / INTERACTIVE REPLAY</p>
+            <h3 id="b3-replay-title">
+                A trace is the beginning of an inquiry.
+            </h3>
+            <p>
+                The original ten-step sample is preserved below. Its values are
+                synthetic and unitless; they do not measure profit, energy,
+                intelligence or enterprise performance.
+            </p>
+        </div>
+        <a href="#b3-controls">Return to your plan ↑</a>
+    </div>
+    <div id="mode-control" role="group" aria-label="Research replay controls">
+        <button id="offline-mode" type="button" aria-label="Run demo offline">
+            Replay bundled sample
+        </button>
+        <button id="online-mode" type="button" aria-label="Use OpenAI API">
+            Generate with OpenAI…
+        </button>
+    </div>
+    <div class="b3-replay-layout">
+        <figure class="b3-replay-figure">
+            <figcaption>
+                <strong>Synthetic trajectory</strong
+                ><span>UNITLESS VALUES / REPLAY STEPS</span>
+            </figcaption>
+            <div class="b3-replay-canvas">
+                <canvas
+                    id="chart"
+                    role="img"
+                    aria-label="Synthetic unitless values by replay step. Exact values are available in the chart data table."
+                ></canvas>
+            </div>
+        </figure>
+        <aside
+            class="b3-replay-reading"
+            aria-label="How to interpret this replay"
+        >
+            <p class="b3-eyebrow">READ THE TRACE</p>
+            <h4>What does the line establish?</h4>
+            <p>
+                Only the values in the selected sample. Shape alone cannot
+                demonstrate economic value or a successful intervention.
+            </p>
+            <h4>What would establish a result?</h4>
+            <p>
+                Source-backed assumptions, an explicit success metric, a
+                reproducible run and independent review.
+            </p>
+            <a href="../../../agent/BUSINESS3">Inspect the current method ↗</a>
+        </aside>
+    </div>
+    <details class="b3-replay-record">
+        <summary>Inspect the original event log and exact chart values</summary>
+        <pre id="logs-panel"></pre>
+    </details>
+    <p class="b3-replay-note">
+        Bundled replay needs no credentials. The optional Python example
+        downloads its runtime on first use; OpenAI generation requires your
+        explicit choice and a paid API key. Neither runs the enterprise planner.
+    </p>
+</section>
+<details class="b3-research-notice">
+    <summary>Research scope and project notice</summary>
+    <p class="snippet">
+        <a href="../../../DISCLAIMER_SNIPPET">See docs/DISCLAIMER_SNIPPET.md</a> This
+        repository is a conceptual research prototype. References to "AGI" and
+        "superintelligence" describe aspirational goals and do not indicate the
+        presence of a real general intelligence. Use at your own risk. Nothing
+        herein constitutes financial advice. MontrealAI and the maintainers
+        accept no liability for losses incurred from using this software.
+    </p>
+</details>
+<div class="b3-research-footer">
+    <span>Original media. Preserved research. Reviewable decisions.</span>
+    <a href="../../../demos/alpha_agi_business_3_v1">Detailed instructions ↗</a
+    ><a href="../../../index.html">Back to Gallery ↗</a>
+</div>
 <script src="../../../assets/chart.min.js"></script>
 <script type="module" src="../../../assets/pyodide_demo.js"></script>
 <script type="module" src="assets/script.js"></script>
-<p><a href="../../../index.html">⬅️ Back to Gallery</a></p>
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css" />
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
+            console.warn("Service worker registration failed");
+        });
+    }
 </script>
         </section>
         <script
             type="module"
-            src="../../../assets/business3/studio.mjs?v=1.13.0"
+            src="../../../assets/business3/studio.mjs?v=1.13.1"
         ></script>
     </body>
 </html>
