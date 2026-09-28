@@ -252,11 +252,16 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             assert page.locator(".decision-card:visible, .demo-card:visible").count() == 0
             page.get_by_role("searchbox", name="Search demos").fill("Supplier resilience")
             assert page.locator(".decision-card:visible").count() == 1
-            # Original routes expose the actionable workflow before their historical replay.
+            # The original capital workflow remains reachable in the research collection.
             page.goto(origin + "alpha_agi_business_3_v1/")
-            expect(page.get_by_role("link", name="Open editable workspace")).to_have_attribute(
-                "href", "../studio/?case=capital"
+            capital_bridge = page.get_by_role(
+                "link", name="Practical decision workspace: Ω-Lattice capital committee", exact=True
             )
+            expect(capital_bridge).to_be_visible()
+            expect(capital_bridge).to_have_attribute("href", "../studio/?case=capital")
+            capital_bridge.click()
+            wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
+            expect(page.locator('#case-list [data-case="capital"]')).to_have_attribute("aria-current", "true")
             page.goto(origin + "alpha_factory_v1/demos/studio/?case=energy")
             wait_for(page, "document.documentElement.dataset.studioReady === 'true'")
             expect(page.locator("#case-art")).to_have_attribute("src", origin + "assets/studio/previews/energy.svg")
