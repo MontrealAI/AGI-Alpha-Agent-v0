@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.13.0
+## Current runnable path — 1.13.1
 
 **Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
 and export reviewable Ascension jobs.
@@ -108,6 +108,18 @@ the workspace can recalculate offline. A first visit requires access to the host
 | `seed-draft.json` | Dossier/job content commitments; explicitly unminted and unencrypted |
 | `SHA256SUMS` | Hashes of the other six files |
 
+## Read the decision visuals and research collection
+
+After calculation, **See what earns a place** compares every candidate's expected and policy-downside NPV
+on one common scale, including negative values. Each row identifies selection or insufficient evidence and
+prints both exact USD amounts. Standalone value does not override portfolio constraints or dependencies.
+Changing inputs clears the result until you recalculate.
+
+The **Research collection** retains the original artwork at a compact size, with direct access to the
+flowcharts, founding research and capital-committee workspace. The original synthetic replay remains available
+with explicit unitless axes. Expand **Inspect the original event log and exact chart values** to inspect its
+unchanged source records. Optional OpenAI and Python controls remain explicit, separate research tools.
+
 ## What the calculation actually does
 
 The optimizer enumerates every subset of **1–16 candidates** and maximizes three-year expected NPV subject to:
@@ -169,8 +181,8 @@ enterprise planner; optional legacy SDK integrations belong in a separately conf
 For a direct build and named output volume:
 
 ```bash
-docker build -t alpha_business_v3:1.13.0 -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
-docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges -v business3-evidence:/output alpha_business_v3:1.13.0
+docker build -t alpha_business_v3:1.13.1 -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges -v business3-evidence:/output alpha_business_v3:1.13.1
 ```
 
 CI builds and runs this exact Dockerfile with network disabled and verifies the produced dossier. The resolved

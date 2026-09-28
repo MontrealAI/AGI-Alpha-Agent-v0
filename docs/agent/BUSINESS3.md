@@ -2,7 +2,7 @@
 
 # Business 3 — a plan with its assumptions attached
 
-**Release 1.13.0.** [Open Enterprise Studio](../alpha_agi_business_3_v1/index.html),
+**Release 1.13.1.** [Open Enterprise Studio](../alpha_agi_business_3_v1/index.html),
 choose a case and select **Calculate the portfolio**. No account, wallet or API key is needed.
 Change capital, staffing, review time, job budget and downside assumptions; then calculate again.
 Expand a candidate to edit its costs, three annual cash flows, resource needs and evidence score.
@@ -98,3 +98,15 @@ Release acceptance requires exact Python/browser parity, real output verificatio
 notebook execution, a real container run, both browser routes, keyboard accessibility, mobile layout,
 explicit recovery, offline recalculation and rejection of tampered evidence. The public receipt is bound
 to the exact release commit, version, asset bytes and five recomputed cases.
+
+## Read the decision visuals and research collection
+
+After calculation, **See what earns a place** compares every candidate's expected and policy-downside NPV
+on one common scale, including negative values. Each row identifies selection or insufficient evidence and
+prints both exact USD amounts. Standalone value does not override portfolio constraints or dependencies.
+Changing inputs clears the result until you recalculate.
+
+The **Research collection** retains the original artwork at a compact size, with direct access to the
+flowcharts, founding research and capital-committee workspace. The original synthetic replay remains available
+with explicit unitless axes. Expand **Inspect the original event log and exact chart values** to inspect its
+unchanged source records. Optional OpenAI and Python controls remain explicit, separate research tools.

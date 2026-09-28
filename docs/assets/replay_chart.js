@@ -59,7 +59,7 @@ function ensureExperimentTabs(experiments, onSelect) {
   });
 }
 
-export async function replayChart({logsUrl, chartId = 'chart', logElId = 'logs-panel', label = 'Demo Metric', color = 'blue'}) {
+export async function replayChart({logsUrl, chartId = 'chart', logElId = 'logs-panel', label = 'Demo Metric', color = 'blue', chartOptions = {}}) {
   try {
     const res = await fetch(logsUrl);
     if (!res.ok) throw new Error(`Sample data returned HTTP ${res.status}`);
@@ -70,7 +70,7 @@ export async function replayChart({logsUrl, chartId = 'chart', logElId = 'logs-p
     const chart = new Chart(ctx, {
       type: 'line',
       data: { labels: [], datasets: [{ label, data: [], fill: false, borderColor: color }] },
-      options: { animation: false, responsive: true, maintainAspectRatio: false }
+      options: { animation: false, responsive: true, maintainAspectRatio: false, ...chartOptions }
     });
     const logEl = document.getElementById(logElId);
     setupPyodideDemo(chart, logEl, experiments, (activeId) => {

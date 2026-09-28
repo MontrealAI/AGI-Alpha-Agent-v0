@@ -32,7 +32,7 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 root_dir="$(cd "$script_dir/../../.." && pwd)"
 mkdir -p "$output_dir"
 output_dir="$(cd "$output_dir" && pwd)"
-image="alpha_business_v3:1.13.0"
+image="alpha_business_v3:1.13.1"
 docker build -t "$image" -f "$script_dir/Dockerfile" "$root_dir"
 docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
   --pids-limit 64 --memory 512m --cpus 2 --tmpfs /tmp:rw,noexec,nosuid,size=32m \

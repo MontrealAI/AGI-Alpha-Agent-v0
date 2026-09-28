@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_insight_v0/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.13.0
+## Current runnable path — 1.13.1
 
 **Mode:** Offline simulation. Searches a toy sector-scoring landscape.
 

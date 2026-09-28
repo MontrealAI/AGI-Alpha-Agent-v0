@@ -55,6 +55,8 @@ def validate(site: Path, output: Path) -> dict[str, object]:
                 page.goto(origin + file.relative_to(site).as_posix())
                 page.get_by_role("status").filter(has_text="Bundled sample replay").wait_for(timeout=15000)
                 page.get_by_role("button", name="Replay bundled sample offline").click()
+                if page.locator(".b3-replay-record").count():
+                    page.locator(".b3-replay-record > summary").click()
                 assert page.locator("table tbody tr").count() > 0
                 assert page.locator("#logs-panel").inner_text().strip()
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1")

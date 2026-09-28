@@ -1,3 +1,7 @@
+## 1.13.1 — 2026-09-28
+
+Business 3 now presents a compact research collection, a styled original replay with explicit units, and a dossier-backed candidate value landscape. Original diagrams, media and controls are retained. Browser release gates verify the new visuals and original data.
+
 ## 1.13.0 — 2026-09-27
 
 - Deliver Business 3 Enterprise Studio: exact constrained portfolio planning, five editable cases, downside stress and seven portable evidence files with Python/browser parity.

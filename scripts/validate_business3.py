@@ -70,6 +70,23 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 download.value.save_as(dossier)
                 report = verify(read_json(dossier, 2_000_000))
                 assert report["input"]["id"] == case["id"]
+                plotted = page.locator("#b3-opportunity-chart > li").evaluate_all(
+                    "rows => rows.map(row => ({id: row.dataset.projectId, selected: row.dataset.selected === 'true', "
+                    "expected: Number(row.querySelector('.b3-value-bar.b3-expected').dataset.value), "
+                    "downside: Number(row.querySelector('.b3-value-bar.b3-downside').dataset.value)}))"
+                )
+                selected = set((report["result"]["portfolio"] or {}).get("projectIds", []))
+                expected = [
+                    {
+                        "id": row["id"],
+                        "selected": row["id"] in selected,
+                        "expected": row["expectedNpvUsd"],
+                        "downside": row["downsideNpvUsd"],
+                    }
+                    for row in sorted(report["result"]["analysis"], key=lambda row: (-row["expectedNpvUsd"], row["id"]))
+                ]
+                assert plotted == expected, case["id"]
+                assert page.locator("#b3-opportunity-chart").inner_text().count("Expected:") == len(expected)
                 with page.expect_download() as archive:
                     page.locator("#b3-download").click()
                 archive_path = output / f"{case['id']}.zip"
@@ -87,6 +104,7 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.locator("#b3-run").click()
             expect(page.locator("#b3-verdict")).to_have_text("HOLD NO POSITIVE VALUE", timeout=30000)
             expect(page.locator("#b3-download-jobs")).to_be_disabled()
+            assert page.locator('#b3-opportunity-chart [data-selected="true"]').count() == 0
             forged = read_json(output / "industrial.json", 2_000_000)
             forged["result"]["approval"] = "APPROVED"
             forged["sha256"] = digest({k: v for k, v in forged.items() if k != "sha256"})
@@ -131,10 +149,28 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
             page.wait_for_function("document.documentElement.dataset.business3Ready === 'true'")
             page.locator("#b3-run").click()
             expect(page.locator("#b3-download")).to_be_enabled(timeout=30000)
-            for width in (1440, 390):
+            page.get_by_role("button", name="Replay bundled sample offline").click()
+            original = read_json(ROOT / "docs/alpha_agi_business_3_v1/assets/logs.json")
+            replay = page.evaluate(
+                "() => { const c = Chart.getChart(document.getElementById('chart')); "
+                "return {steps: c.data.labels, values: c.data.datasets[0].data, "
+                "label: c.data.datasets[0].label, axis: c.options.scales.y.title.text}; }"
+            )
+            assert replay["steps"] == original["steps"] and replay["values"] == original["values"]
+            assert "unitless" in replay["label"] and "unitless" in replay["axis"]
+            page.locator(".b3-replay-record > summary").click()
+            assert page.locator("#logs-panel").inner_text().splitlines() == original["logs"]
+            page.get_by_text("View chart data as a table", exact=True).click()
+            assert page.locator(".b3-replay-record table tbody tr").count() == len(original["values"])
+            page.locator(".b3-replay-record > summary").click()
+            for width in (1440, 390, 320):
                 page.set_viewport_size({"width": width, "height": 1000 if width == 1440 else 844})
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1")
+                assert page.locator("#b3-legacy img.preview").bounding_box()["width"] <= 144
+                assert page.locator("#chart").bounding_box()["height"] >= 200
                 page.screenshot(path=str(output / f"enterprise-{width}.png"), full_page=True)
+                page.locator("#b3-legacy").screenshot(path=str(output / f"research-{width}.png"))
+                page.locator(".b3-opportunity").screenshot(path=str(output / f"opportunity-{width}.png"))
                 if axe_script:
                     page.add_script_tag(path=str(axe_script.resolve()))
                     violations = page.evaluate(
