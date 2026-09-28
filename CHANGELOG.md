@@ -1,5 +1,13 @@
 ## 1.13.1 — 2026-09-28
 
+## 1.14.0 — Governance Workbench
+
+- Add nine inspectable proposal gates, five adversarial cases and exact Python/browser replay.
+- Export five-file evidence bundles and input-bound Ascension verification jobs.
+- Correct the legacy update-rate explanation and repair optional-runtime fallback.
+- Preserve original manuscripts, diagrams, presentations and archived research content.
+
+
 Business 3 now presents a compact research collection, a styled original replay with explicit units, and a dossier-backed candidate value landscape. Original diagrams, media and controls are retained. Browser release gates verify the new visuals and original data.
 
 ## 1.13.0 — 2026-09-27

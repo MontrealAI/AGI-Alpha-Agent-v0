@@ -1,3 +1,8 @@
+**Version 1.14.0 adds a complete Governance Workbench.**
+[Review a proposal](https://montrealai.github.io/AGI-Alpha-Agent-v0/solving_agi_governance/), inspect nine conditional gates, challenge adversarial cases, and export reproducible evidence with input-bound validator jobs.
+The original manuscripts, diagrams, simulator and research presentation remain available.
+[Operating guide](docs/agent/GOVERNANCE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.14.0.md).
+
 **Version 1.13.1 brings Business 3's research and decision visuals together.**
 Run all preserved experiments through the canonical [`alpha_factory_v1/demos`](alpha_factory_v1/demos/README.md)
 catalog, check prerequisites before launch, and follow the [complete demo walkthrough](docs/agent/DEMOS.md).

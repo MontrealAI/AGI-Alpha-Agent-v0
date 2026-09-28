@@ -2,7 +2,7 @@
 
 # AGIALPHA demo catalog
 
-**Current package: 1.13.1.** [Start with the factory guide](../../docs/agent/FACTORY_GUIDE.md),
+**Current package: 1.14.0.** [Start with the factory guide](../../docs/agent/FACTORY_GUIDE.md),
 [Protocol Desk](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension-protocol/) and native FusionPlan/evidence commands.
 All 26 entries below remain available; their individual execution modes still apply.
 
@@ -87,7 +87,7 @@ no existing run is deleted. Model caches remain separate.
 | [OMNI smart city](omni_factory_demo/README.md) | Offline simulation | Runs bounded smart-city episodes with local accounting. |
 | [Presentation assets](presentation/README.md) | Reference | Preserved slide deck and PDF for the original demo vision. |
 | [Repo-Healer](self_healing_repo/README.md) | Bounded repair | Provides repository-specific triage and isolated repair evaluation. |
-| [Governance simulation](solving_agi_governance/README.md) | Offline simulation | Runs a bounded stochastic cooperation model. |
+| [Governance Workbench](solving_agi_governance/README.md) | Offline governance review | Inspect nine proposal gates and export reproducible evidence and validator jobs. |
 | [Sovereign agent concept](sovereign_agentic_agialpha_agent_v0/README.md) | Deployment template | Preserves the original wallet-gated agent deployment concept. |
 | [Shared demo utilities](utils/README.md) | Library | Shared notices and isolated demo code evaluation helpers. |
 

@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_marketplace_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.13.1
+## Current runnable path — 1.14.0
 
 **Mode:** Local API client. Validates a bundled job and can submit it to a configured legacy orchestrator.
 

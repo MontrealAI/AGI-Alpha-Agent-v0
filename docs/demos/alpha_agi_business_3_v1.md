@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.13.1
+## Current runnable path — 1.14.0
 
 **Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
 and export reviewable Ascension jobs.
@@ -181,8 +181,8 @@ enterprise planner; optional legacy SDK integrations belong in a separately conf
 For a direct build and named output volume:
 
 ```bash
-docker build -t alpha_business_v3:1.13.1 -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
-docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges -v business3-evidence:/output alpha_business_v3:1.13.1
+docker build -t alpha_business_v3:1.14.0 -f alpha_factory_v1/demos/alpha_agi_business_3_v1/Dockerfile .
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges -v business3-evidence:/output alpha_business_v3:1.14.0
 ```
 
 CI builds and runs this exact Dockerfile with network disabled and verifies the produced dossier. The resolved

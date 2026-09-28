@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.13.1.** The canonical directory is
+**Version 1.14.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -14,6 +14,7 @@ computed results and modeled assumptions. Export work you want to retain.
 
 | Your question | Open | What to inspect |
 |---|---|---|
+| Should a governance proposal advance to independent review? | [Governance Workbench](../solving_agi_governance/index.html) | Nine gates, adversarial cases, exact dossier and verification jobs |
 | Which enterprise projects fit capital, staff and reviewer capacity? | [Business 3 Enterprise Studio](../alpha_agi_business_3_v1/index.html) | Exact portfolio, downside stress, evidence bundle and Ascension job specs |
 | What should I do with a constrained budget or schedule? | [Decision Studio](../studio/index.html) | Edit a case, compare feasible plans and export its dossier |
 | Which opportunity deserves further investigation? | [Insight Atlas](../insight/index.html) | Scenario assumptions, holdout results and claim evidence |
@@ -46,7 +47,7 @@ python -m pip install --no-deps -e .
 On Windows PowerShell, use `python -m venv .venv-agent` and then
 `.\.venv-agent\Scripts\Activate.ps1`. The remaining commands are the same.
 
-Now inspect and run a bounded governance simulation:
+Now inspect and run a bounded governance review:
 
 ```bash
 python -m alpha_factory_v1.demos list
@@ -55,9 +56,9 @@ python -m alpha_factory_v1.demos check solving_agi_governance
 python -m alpha_factory_v1.demos run solving_agi_governance --output-dir my-demo-runs/governance
 ```
 
-The command prints the execution mode, expected result, command and output directory. The simulation
-prints cooperation-model results and exits. It illustrates governance dynamics; it does not submit
-validator votes. Try `macro_sentinel` for risk calculations over bundled macro samples, or
+The command prints the execution mode, expected result, command and output directory. The review
+prints nine gate decisions and saves five evidence files, including unsubmitted validator jobs.
+See the [governance guide](GOVERNANCE.md) for replay and model assumptions. Try `macro_sentinel` for risk calculations over bundled macro samples, or
 `era_of_experience` for a short sample-data report. Replace the name in `show`, `check` and `run`.
 
 For enterprise project selection, run `alpha_agi_business_3_v1` or follow the

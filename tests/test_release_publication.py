@@ -17,7 +17,7 @@ import zipfile
 import pytest
 
 from scripts import finalize_pages_release, publish_agent_release, release_context
-from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence
+from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence, governance_evidence
 
 
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
@@ -60,6 +60,8 @@ def test_every_current_workspace_uses_the_release_version() -> None:
         "bloom/",
         "compounding/",
         "alpha_agi_business_3_v1/",
+        "solving_agi_governance/",
+        "alpha_factory_v1/demos/solving_agi_governance/",
         "alpha_factory_v1/demos/ascension-protocol/",
         "alpha_factory_v1/demos/alpha_agi_business_3_v1/",
     ):
@@ -264,6 +266,10 @@ def test_invalid_package_version_cannot_publish(
         *[
             ("1.13.0", problem)
             for problem in (None, "business3-failed", "business3-check", "business3-asset", "business3-cases")
+        ],
+        *[
+            ("1.14.0", problem)
+            for problem in (None, "governance-failed", "governance-check", "governance-asset", "governance-cases")
         ],
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
@@ -564,6 +570,31 @@ def test_public_evidence_requires_same_commit_and_intact_package(
             key, value = changes[problem]
             business3[key] = value
         (target / "business3.json").write_text(json.dumps(business3))
+    if tuple(map(int, version.split("."))) >= (1, 14, 0):
+        target = evidence / "public-pages" / "governance"
+        target.mkdir()
+        governance = {
+            "schema": governance_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(governance_evidence.CHECKS),
+            "assets": governance_evidence.asset_hashes(),
+            "cases": governance_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "governance-failed": ("passed", False),
+            "governance-check": ("checks", []),
+            "governance-asset": ("assets", {}),
+            "governance-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            governance[key] = value
+        (target / "governance.json").write_text(json.dumps(governance))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -584,6 +615,8 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert json.loads((folder / "release-manifest.json").read_text())["public_ascension_protocol"] == protocol
     if tuple(map(int, version.split("."))) >= (1, 13, 0):
         assert json.loads((folder / "release-manifest.json").read_text())["public_business3"] == business3
+    if tuple(map(int, version.split("."))) >= (1, 14, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_governance"] == governance
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"
