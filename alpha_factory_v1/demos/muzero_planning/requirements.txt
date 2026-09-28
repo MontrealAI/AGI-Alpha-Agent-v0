@@ -7,3 +7,7 @@ gradio==6.28.0
 pandas==2.3.1
 # Gradio creates an HTTP client at import; support configured SOCKS proxies.
 httpx[socks]>=0.28,<1
+# NetworkX 3.7 dropped Python 3.11; keep one compatible lock for 3.11–3.13.
+networkx==3.6.1
+# Python 3.13 removed stdlib audioop, imported by Gradio's audio components.
+audioop-lts==0.2.2; python_version >= "3.13"
