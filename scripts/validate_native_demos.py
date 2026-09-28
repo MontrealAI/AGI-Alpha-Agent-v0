@@ -9,6 +9,7 @@ import math
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 from alpha_factory_v1.demos.catalog import REPO_ROOT, command_for, entries, environment_for
@@ -65,6 +66,31 @@ def validate(model: Path | None = None) -> dict[str, object]:
                     text=True,
                     timeout=90,
                 )
+                if entry["id"] == "meta_agentic_agi_v3":
+                    # The catalog now launches the finite Curriculum Lab. Exercise
+                    # the preserved provider/stub lineage producer separately so
+                    # its real Streamlit viewer remains covered as well.
+                    subprocess.run(
+                        [
+                            sys.executable,
+                            "-m",
+                            "alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3",
+                            "--provider",
+                            "stub",
+                            "--gens",
+                            "1",
+                            "--pop_size",
+                            "1",
+                            "--db",
+                            str(destination / "lineage.sqlite"),
+                        ],
+                        cwd=destination,
+                        env=environment_for(entry, destination),
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                        timeout=90,
+                    )
                 os.environ["METAAGI_DB"] = str(destination / "lineage.sqlite")
                 app = AppTest.from_file(
                     str(REPO_ROOT / "alpha_factory_v1/demos" / entry["id"] / "ui/lineage_app.py"), default_timeout=30

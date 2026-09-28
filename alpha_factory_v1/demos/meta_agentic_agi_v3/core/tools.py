@@ -1,43 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"""
-tools.py – Unified Tooling Orchestrator (v1.0.0)
-===============================================
+"""Legacy tool registry and optional telemetry adapters.
 
-This module powers the **Meta‑Agentic α‑AGI** demo shipped with **Alpha‑Factory v1**.
-
-It exposes *all* side‑effect‑bearing capabilities (aka **tools**) that can be called
-by any agent – regardless of back‑end model provider (OpenAI, Anthropic, open‑weights,
-etc.) – via structured *function‑calling* interfaces.
-
-Key design goals
-----------------
-• **Schema‑first registry**: every tool declares an _executable JSON Schema_
-  covering its inputs **and** outputs.  This enables:
-  – runtime validation  – self‑documenting UIs  – zero‑copy OpenAI/Anthropic
-  function‑calling  – automatic type hints.
-
-• **Provider‑agnostic LLM bridge**: the module works *with* or *without*
-  proprietary API keys.  It supports:
-  ``OPENAI_API_KEY`` • ``ANTHROPIC_API_KEY`` • Hugging Face inference end‑points
-  • local models via ``llama‑cpp``.  Pick via ``LLM_PROVIDER`` env‑var.
-
-• **Sandboxed user‑code exec**: default is deterministic `RestrictedPython`
-  with CPU‑time & memory caps – flipped to trusted mode via ``TOOLS_TRUSTED=1``.
-
-• **Multi‑objective telemetry**: every call stores a Pareto vector:
-  latency • token‑in • token‑out • USD • gCO₂e • custom app score.  Data is
-  written either to `sqlite://tools_invocations.sqlite` or to Postgres
-  (`TOOLS_DB_URL`).  A lightweight FastAPI server (optional) exposes lineage
-  & real‑time dashboards (auto‑enabled under ``TOOLS_UI=1``).
-
-• **Hot‑reload**: drop any `*.py` file in `tools_ext/` – it is discovered
-  on‑the‑fly (useful during evolutionary search).
-
-• **Zero hard deps**: imports are **lazy** and errors degrade gracefully.
-  (`pip install alpha-factory-tools[all]` pulls recommended extras).
-
-Apache‑2.0 © 2025 MONTREAL.AI
+Generated Python uses the shared Docker boundary; environment flags never enable
+host execution. Extension discovery is explicit. Cost/carbon values are heuristic
+estimates. Optional integrations require their own dependencies and validation.
 """
 
 from __future__ import annotations
@@ -52,7 +19,7 @@ from typing import Any, Awaitable, Callable, Dict, Optional, Union, List
 
 ROOT_DIR = Path(__file__).resolve().parent
 TOOLS_DIR = ROOT_DIR / "tools_ext"
-TOOLS_DIR.mkdir(exist_ok=True)
+
 
 DB_URL = os.getenv("TOOLS_DB_URL", f"sqlite:///{ROOT_DIR/'tools_invocations.sqlite'}")
 SANDBOX_TRUSTED = bool(int(os.getenv("TOOLS_TRUSTED", "0")))
@@ -108,14 +75,12 @@ def _init_db():
         )
 
 
-_init_db()
-
-
 def _log_invocation(row: Dict[str, Any]) -> None:
     """Write a single row to DB – non‑blocking via thread executor"""
     import concurrent.futures, functools
     from sqlalchemy import text
 
+    _init_db()
     engine = _get_engine()
 
     def _write():
@@ -300,30 +265,10 @@ async def web_search(query: str, top_k: int = 10) -> List[Dict[str, str]]:
     }
 )
 async def sandbox_exec(code: str) -> str:
-    """
-    🐍 Execute Python code (**trusted** with `TOOLS_TRUSTED=1`, else Restric­ted).
-    Returns captured stdout & the repr() of last expression.
-    """
-    import io, contextlib, traceback, textwrap
+    """Execute generated Python in Docker; no host fallback or trust-env bypass."""
+    from ..isolation import run_python
 
-    buf = io.StringIO()
-    try:
-        if SANDBOX_TRUSTED:
-            loc: Dict[str, Any] = {}
-            with contextlib.redirect_stdout(buf):
-                exec(textwrap.dedent(code), {}, loc)
-            if "_" in loc:
-                buf.write(repr(loc["_"]))
-        else:
-            RP = importlib.import_module("RestrictedPython")
-            compiled = RP.compile_restricted_exec(textwrap.dedent(code))
-            policy = importlib.import_module("RestrictedPython.Guards")
-            sec_builtins = RP.Guards.safe_builtins.copy()
-            sec_builtins.update({"print": lambda *a, **k: print(*a, file=buf, **k)})
-            exec(compiled, {"__builtins__": sec_builtins}, {})
-    except Exception as e:
-        buf.write("ERROR: " + traceback.format_exc(limit=2))
-    return buf.getvalue()
+    return await asyncio.to_thread(run_python, code)
 
 
 @register(
@@ -367,7 +312,7 @@ def _discover_tools():
             _LOGGER.warning("Failed loading %s – %s", mod_name, e)
 
 
-_discover_tools()
+# Extensions are executable local code: discover only through an explicit call.
 
 ###############################################################################
 # Provider‑agnostic LLM function‑spec helper
@@ -427,7 +372,7 @@ if os.getenv("TOOLS_UI") == "1":
                 return [Invocation(**dict(r)) for r in rows]
 
         def _launch_server():
-            uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("TOOLS_UI_PORT", "8000")))
+            uvicorn.run(app, host="127.0.0.1", port=int(os.getenv("TOOLS_UI_PORT", "8000")))
 
         # Fire up server in background
         asyncio.get_event_loop().create_task(asyncio.to_thread(_launch_server))

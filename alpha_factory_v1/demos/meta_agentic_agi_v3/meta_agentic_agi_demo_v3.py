@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """
-Meta-Agentic α-AGI Demo v3 — Production Grade
+Meta-Agentic α-AGI Demo v3 — Legacy Provider Experiment
 ============================================
 
 A *single* entry-point that can launch as:
@@ -161,6 +161,8 @@ class StubProvider(BaseProvider):
     name = "stub"
 
     def chat(self, system: str, user: str, **kw) -> str:  # type: ignore[override]
+        if "AZR-Solver" in system:
+            return json.dumps(json.loads(user)["input"], separators=(",", ":"))
         if "Proposer" in system:
             return (
                 "```python # program\ndef main(x):\n    return x\n```\n"
@@ -313,8 +315,8 @@ async def evolutionary_search(
         LOG.error("AZR engine missing - did you pull sub-module? %s", exc)
         raise
 
-    if generations < 1 or pop_size < 1:
-        raise ValueError("generations and population size must be positive")
+    if not 1 <= generations <= 100 or not 1 <= pop_size <= 32:
+        raise ValueError("generations must be 1–100 and population size 1–32")
     azr = curriculum_factory(fm)
     rng = random.Random(2025)
 
@@ -367,7 +369,8 @@ async def evolutionary_search(
                 code = "\n".join(code.strip().splitlines()[1:-1])
             # ensure we only keep the code part
             if "def agent" not in code:
-                code = "def agent(x):\n    return x"
+                db.event("invalid_candidate", {"gen": gen, "reason": "Missing agent function"})
+                continue
             offspring.append(Candidate(code.strip()))
 
         # --- Evaluate on AZR tasks --------------------------------------------- #
@@ -510,7 +513,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "-p",
         "--provider",
-        help="provider spec " "(openai[:model] | anthropic[:model] | local[:/path/model.gguf] | stub)",
+        default="stub",
+        help="provider spec (default: stub) " "(openai[:model] | anthropic[:model] | local[:/path/model.gguf] | stub)",
     )
     p.add_argument("-g", "--gens", type=int, default=int(os.getenv("ALPHA_N_GEN", 8)))
     p.add_argument("-n", "--pop_size", type=int, default=int(os.getenv("ALPHA_POP_SIZE", 6)))
@@ -531,6 +535,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.mode == "streamlit":
+        run_streamlit(args)
+        return
     fm = auto_provider(args.provider)
     LOG.info("Using provider: %s", fm.name)
     db = LineageDB(args.db)

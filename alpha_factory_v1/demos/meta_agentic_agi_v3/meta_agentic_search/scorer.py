@@ -1,58 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # -*- coding: utf-8 -*-
-"""
-scorer.py — Meta‑Agentic α‑AGI / Alpha‑Factory v1 👁️✨
-=====================================================
-Production‑grade, multi‑objective scorer for automated agent design search.
---------------------------------------------------------------------------
+"""Legacy objective aggregation, Pareto comparison and optional lineage export.
 
-This module replaces the original minimal scorer with a comprehensive, extensible
-framework that evaluates candidate *agentic systems* across **multiple, orthogonal
-objectives** and records a fully queryable *lineage graph* of every evaluation run.
-
-Key capabilities
-================
-1. **Multi‑objective evaluation**
-   *   Default objectives: task_accuracy, cost, latency, novelty, risk_score.
-   *   Pluggable via simple `@objective` decorator — define any differentiable or
-       heuristic metric.
-   *   Pareto frontier maintenance & hyper‑volume calculation.
-
-2. **Model‑provider abstraction**
-   *   Works *out‑of‑the‑box* with OpenAI, Anthropic, or any open‑weights model
-       (e.g. Ollama/llama‑3, vLLM, LM‑Studio) — *no API key required* if
-       `--provider open_weights`.
-   *   Automatic cost & token accounting.
-
-3. **Lineage tracking & visualisation**
-   *   Every candidate agent, evaluation artefact, and derived agent forms a node
-       in a `networkx` *directed acyclic hyper‑graph*.
-   *   Callable `LineageTracker.export("run.svg")` renders an interactive SVG with
-       GraphViz, embeddable in docs or served via the included `flask` viewer.
-
-4. **Industrial‑grade engineering**
-   *   100% *type‑hinted*, **pytest**‑ready, black‑formatted, pylint‑clean.
-   *   Stateless pure functions where practical (supports Ray / Dask massive‑parallel).
-   *   Fails closed: any objective returning `nan` or raising propagates to an
-       `EvaluationError`, safely skipping but logging details.
-
-CLI
----
-```
-python scorer.py \
-    --candidates /path/to/agents.json \
-    --val_data /path/to/val.pkl \
-    --objectives task_accuracy cost latency \
-    --provider openai \
-    --model gpt-4o-2024-05-13
-```
-
-A `.scores.json` (detailed) and `.pareto.json` (frontier) are written alongside, plus
-`lineage.svg` under the output directory.
-
-License
--------
-Apache‑2.0 © 2025 Montreal.AI — Contributed under the Alpha‑Factory v1 project.
+Callable candidates are trusted local Python functions, not JSON-loaded programs.
+Provider and graph integrations require optional dependencies. The finite
+curriculum lab supplies the reproducible, independently evaluated default workflow.
 """
 from __future__ import annotations
 
@@ -66,7 +18,6 @@ from pathlib import Path
 from statistics import mean
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Sequence
 
-import networkx as nx
 
 # Fallback optional imports
 try:
@@ -216,7 +167,9 @@ def _risk(obj: Mapping[str, Any]) -> float:  # noqa: D401 — lower risk preferr
 
 class LineageTracker:
     def __init__(self):
-        self.graph: nx.DiGraph = nx.DiGraph()
+        import networkx as nx
+
+        self.graph = nx.DiGraph()
 
     # ------------------------------------------------------------------
     def add_evaluation(
@@ -232,6 +185,7 @@ class LineageTracker:
     # ------------------------------------------------------------------
     def export(self, path: str | os.PathLike[str]) -> None:
         import importlib.util
+        import networkx as nx
 
         if importlib.util.find_spec("pydot") is None:
             raise RuntimeError("`pip install pydot` required for export")
@@ -282,6 +236,8 @@ class MultiObjectiveScorer:
                 except Exception as exc:  # noqa: BLE001
                     raise EvaluationError(name) from exc
 
+        if not any(scores.values()):
+            raise ValueError("At least one validation task is required")
         meta["latency"] = time.perf_counter() - start
         agg = {k: mean(v) for k, v in scores.items()}
         cid = candidate.get("id", str(uuid.uuid4())[:8])
@@ -295,33 +251,30 @@ class MultiObjectiveScorer:
 
 
 def compute_pareto(results: List[TaskResult], maximize: Sequence[str]):
-    """Return list of non‑dominated TaskResult indices."""
-    front: List[int] = []
-    for i, res_i in enumerate(results):
-        dominated = False
-        for j, res_j in enumerate(results):
-            if i == j:
-                continue
-            if all(
-                (
-                    res_j.objective_values[o] >= res_i.objective_values[o]
-                    if o in maximize
-                    else res_j.objective_values[o] <= res_i.objective_values[o]
-                )
-                for o in maximize
-            ) and any(
-                (
-                    res_j.objective_values[o] > res_i.objective_values[o]
-                    if o in maximize
-                    else res_j.objective_values[o] < res_i.objective_values[o]
-                )
-                for o in maximize
-            ):
-                dominated = True
-                break
-        if not dominated:
-            front.append(i)
-    return front
+    """Return nondominated indices, maximizing named and minimizing other metrics."""
+    if not results:
+        return []
+    fields = set(results[0].objective_values)
+    if not set(maximize).issubset(fields) or any(set(r.objective_values) != fields for r in results):
+        raise ValueError("Pareto comparisons require matching objective fields")
+    import math
+
+    if any(not math.isfinite(v) for r in results for v in r.objective_values.values()):
+        raise ValueError("Pareto objectives must be finite")
+
+    def oriented(result):
+        return [result.objective_values[k] * (1 if k in maximize else -1) for k in sorted(fields)]
+
+    vectors = [oriented(result) for result in results]
+    return [
+        i
+        for i, a in enumerate(vectors)
+        if not any(
+            all(y >= x for x, y in zip(a, b)) and any(y > x for x, y in zip(a, b))
+            for j, b in enumerate(vectors)
+            if i != j
+        )
+    ]
 
 
 ###############################################################

@@ -1,0 +1,92 @@
+[
+  {
+    "schema": "agialpha.curriculum.scenario.v1",
+    "id": "balanced",
+    "title": "A curriculum that can challenge its solver",
+    "note": "Synthetic integer programs. A meta-agent expands the solver grammar and search budget using training evidence only.",
+    "seed": 37,
+    "rounds": 10,
+    "tasksPerRound": 12,
+    "maxDepth": 2,
+    "families": [
+      "arithmetic",
+      "nonlinear",
+      "remainder"
+    ],
+    "positiveExamples": false,
+    "temperature": 100,
+    "policy": {
+      "minAccuracyBps": 8000,
+      "minFamilyBps": 6250,
+      "minGainBps": 500,
+      "maxMeanOperations": 500
+    }
+  },
+  {
+    "schema": "agialpha.curriculum.scenario.v1",
+    "id": "coverage-trap",
+    "title": "When the curriculum misses an entire skill",
+    "note": "Synthetic integer programs. A meta-agent expands the solver grammar and search budget using training evidence only.",
+    "seed": 37,
+    "rounds": 10,
+    "tasksPerRound": 12,
+    "maxDepth": 2,
+    "families": [
+      "arithmetic"
+    ],
+    "positiveExamples": false,
+    "temperature": 100,
+    "policy": {
+      "minAccuracyBps": 8000,
+      "minFamilyBps": 6250,
+      "minGainBps": 500,
+      "maxMeanOperations": 500
+    }
+  },
+  {
+    "schema": "agialpha.curriculum.scenario.v1",
+    "id": "resource-limit",
+    "title": "Accuracy has a resource cost",
+    "note": "Synthetic integer programs. A meta-agent expands the solver grammar and search budget using training evidence only.",
+    "seed": 37,
+    "rounds": 10,
+    "tasksPerRound": 12,
+    "maxDepth": 2,
+    "families": [
+      "arithmetic",
+      "nonlinear",
+      "remainder"
+    ],
+    "positiveExamples": false,
+    "temperature": 100,
+    "policy": {
+      "minAccuracyBps": 8000,
+      "minFamilyBps": 6250,
+      "minGainBps": 500,
+      "maxMeanOperations": 20
+    }
+  },
+  {
+    "schema": "agialpha.curriculum.scenario.v1",
+    "id": "deep-composition",
+    "title": "Composing more difficult programs",
+    "note": "Synthetic integer programs. A meta-agent expands the solver grammar and search budget using training evidence only.",
+    "seed": 91,
+    "rounds": 12,
+    "tasksPerRound": 12,
+    "maxDepth": 3,
+    "families": [
+      "arithmetic",
+      "nonlinear",
+      "remainder"
+    ],
+    "positiveExamples": false,
+    "temperature": 100,
+    "policy": {
+      "minAccuracyBps": 8000,
+      "minFamilyBps": 6250,
+      "minGainBps": 500,
+      "maxMeanOperations": 500
+    }
+  }
+]

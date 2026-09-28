@@ -1,0 +1,247 @@
+
+# Meta‑Agentic α‑AGI – Default Configuration (v1.0.0, 2025‑05‑05)
+# ---------------------------------------------------------------------------
+# Self‑contained boot‑strap file for the Alpha‑Factory v1 👁️✨ demo.
+# Launch via:
+#
+#     python -m alpha_factory_v1.demos.meta_agentic_agi.app --config ./configs/default.yml
+#
+# Design Objectives
+# -----------------
+# • End‑to‑end Alpha discovery & conversion across industries.
+# • Model‑provider agnostic   (OpenAI, Anthropic, open‑weights).
+# • Multi‑objective optimiser (reward, latency, $USD, gCO₂e, risk).
+# • Full lineage capture & interactive Streamlit UI.
+# • Zero‑setup for hobbyists  (optional local open‑weights models).
+# ---------------------------------------------------------------------------
+
+version: 1.0.0
+project: alpha_factory_v1.meta_agentic_agi
+
+##############################################################################
+# GLOBAL                                                                     #
+##############################################################################
+global:
+  run_id: ${env:ALPHA_RUN_ID:${now:%Y%m%d-%H%M%S}}
+  objective: >
+    OUT‑LEARN | OUT‑THINK | OUT‑DESIGN | OUT‑STRATEGISE | OUT‑EXECUTE
+  sandbox_trusted: ${env:TOOLS_TRUSTED:0}
+  call_timeout_sec: 90
+  lineage_db: ${env:ALPHA_LINEAGE_DB:sqlite:///lineage.sqlite}
+  locale: ${env:ALPHA_LOCALE:en_US}
+  currency: ${env:ALPHA_CCY:USD}
+
+##############################################################################
+# PROVIDERS                                                                  #
+##############################################################################
+# Ordered preference list – auto‑fallback if provider not available.
+providers:
+  - id: openai
+    enabled: ${env:OPENAI_API_KEY:false}
+    class: alpha_factory_v1.providers.openai:OpenAIProvider
+    params:
+      model: gpt-4o-2024-05-13
+      max_tokens: 4096
+      temperature: 0.3
+
+  - id: anthropic
+    enabled: ${env:ANTHROPIC_API_KEY:false}
+    class: alpha_factory_v1.providers.anthropic:AnthropicProvider
+    params:
+      model: claude-3-opus-2024-04-30
+      max_tokens: 4096
+      temperature: 0.3
+
+  - id: local
+    # Out‑of‑the‑box open‑weights fallback (no API key required).
+    enabled: true
+    class: alpha_factory_v1.providers.local:VLLMProvider
+    params:
+      model_path: ${env:LOCAL_MODEL_PATH:meta-llama/Meta-Llama-3-70B-Instruct}
+      gpu_memory_gb: ${env:GPU_MEM_GB:48}
+      max_tokens: 4096
+      temperature: 0.3
+
+provider_selection:
+  strategy: ordered
+  order:
+    - openai
+    - anthropic
+    - local
+
+##############################################################################
+# MULTI‑OBJECTIVE SEARCH                                                     #
+##############################################################################
+search:
+  class_path: alpha_factory_v1.meta_agentic_agi.search.NSGA2Search
+  pop_size: ${env:ALPHA_POP_SIZE:24}
+  n_generations: ${env:ALPHA_N_GEN:50}
+  objectives:
+    # weight > 0 maximises; weight < 0 minimises
+    reward:        {weight: 0.5}
+    sharpe_ratio:  {weight: 0.2}
+    latency_ms:    {weight: -0.1}
+    usd_cost:      {weight: -0.1}
+    gco2e:         {weight: -0.1}
+  constraints:
+    max_position_size: ${env:ALPHA_MAX_POS:500000}   # 500k USD
+    max_usd_per_task:  ${env:ALPHA_MAX_TASK_COST:0.10}
+    max_gco2e_per_task: 1.0
+  archive_path: results/pareto_front_${global.run_id}.json
+  seed: ${env:ALPHA_SEED:42}
+
+##############################################################################
+# ORCHESTRATOR                                                               #
+##############################################################################
+orchestrator:
+  class_path: alpha_factory_v1.meta_agentic_agi.core.Orchestrator
+  max_concurrency: ${env:ALPHA_CONCURRENCY:8}
+  scheduling_policy: priority_round_robin
+  agent_selection_strategy: ucb1           # explore / exploit
+
+##############################################################################
+# AGENTS                                                                     #
+##############################################################################
+agents:
+  - id: researcher
+    description: >
+      Continuously scan scientific literature, patents, and market data
+      to surface novel alpha opportunities & build knowledge graphs.
+    role: research
+    provider_pref: [openai, local]
+    tools: [web_search, market_data, sandbox_exec]
+    memory: vector
+    max_context: 32000
+
+  - id: analyst
+    description: >
+      Quant‑analyst agent – formalises hypotheses, constructs features,
+      and estimates risk‑adjusted returns.
+    role: analysis
+    provider_pref: [anthropic, openai, local]
+    tools: [stats, sandbox_exec]
+    memory: vector
+    max_context: 32000
+
+  - id: strategist
+    description: >
+      Synthesises multi‑step exploitation strategies, decomposes into
+      executable plans and allocates capital subject to constraints.
+    role: planning
+    provider_pref: [openai, anthropic, local]
+    tools: [stats, market_data, sandbox_exec]
+    memory: relational
+    max_context: 16000
+
+  - id: designer
+    description: >
+      Generates / evolves specialised sub‑agents & tooling code, tests
+      them in‑silico, and promotes high‑fitness variants.
+    role: design
+    provider_pref: [local, openai]
+    tools: [sandbox_exec]
+    memory: code
+    max_context: 64000
+
+  - id: executor
+    description: >
+      Executes live trades / transactions, monitors slippage, and logs
+      realised P&L along with contextual tags for lineage.
+    role: execution
+    provider_pref: [openai, local]
+    tools: [market_data, broker_api, stats, sandbox_exec]
+    memory: relational
+    max_context: 8000
+    hard_limits:
+      max_notional_usd: ${env:ALPHA_MAX_NOTIONAL:1000000}
+
+  - id: auditor
+    description: >
+      Oversees all agent actions for compliance, risk, and ethical
+      alignment. Holds veto power with circuit‑breaker authority.
+    role: oversight
+    provider_pref: [anthropic, openai]
+    tools: []
+    memory: vector
+    max_context: 16000
+    hard_constraints:
+      enforce_least_privilege: true
+      deny_external_calls:
+        - '*.darkweb.*'
+
+##############################################################################
+# TOOLING                                                                    #
+##############################################################################
+tooling:
+  discovery_dirs:
+    - alpha_factory_v1/demos/meta_agentic_agi/tools_ext
+  hot_reload: true
+  cost_heuristics:
+    usd_per_cpu_sec: 2.5e-5
+    gco2_per_cpu_sec: 0.42
+  sandbox:
+    policy: ${global.sandbox_trusted ? 'trusted' : 'restricted'}
+    cpu_time_limit_sec: 5
+    memory_limit_mb: 2048
+
+##############################################################################
+# DATA SOURCES & THIRD‑PARTY INTEGRATIONS                                    #
+##############################################################################
+integrations:
+  market_data:
+    provider: polygon
+    api_key: ${env:POLYGON_API_KEY:null}
+  broker_api:
+    provider: alpaca
+    api_key: ${env:ALPACA_KEY_ID:null}
+    api_secret: ${env:ALPACA_SECRET_KEY:null}
+    paper: ${env:ALPACA_PAPER:1}
+
+##############################################################################
+# LINEAGE & TELEMETRY                                                        #
+##############################################################################
+lineage:
+  store: ${global.lineage_db}
+  capture:
+    inputs: true
+    outputs: true
+    cost: true
+    emissions: true
+    error_traceback: true
+  ui:
+    enabled: ${global.ui.enabled:true}
+    route: /lineage
+
+##############################################################################
+# UI                                                                         #
+##############################################################################
+ui:
+  dashboard:
+    class_path: alpha_factory_v1.meta_agentic_agi.ui.app:run
+    host: ${global.ui.host}
+    port: ${global.ui.port}
+    theme: ${global.ui.theme}
+    auto_open_browser: true
+    refresh_sec: 2
+
+##############################################################################
+# AUTONOMY GUARDRAILS                                                        #
+##############################################################################
+guardrails:
+  human_in_the_loop:
+    enable_approval_for:
+      - transactions > 50000
+      - code_exec with external network
+  circuit_breaker:
+    max_failed_tasks: 3
+    cool_down_sec: 300
+  risk_limits:
+    daily_VaR_95_pct: 0.02          # 2% of NAV
+
+##############################################################################
+# EXPORTS                                                                    #
+##############################################################################
+export:
+  artefacts_dir: artefacts/${global.run_id}
+  persist_models: false
+  persist_data: true

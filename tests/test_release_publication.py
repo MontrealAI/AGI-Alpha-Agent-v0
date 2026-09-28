@@ -19,7 +19,7 @@ import pytest
 from scripts import finalize_pages_release, publish_agent_release, release_context
 from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence, governance_evidence
 from scripts import discovery_evidence
-from scripts import experience_evidence, mats_evidence
+from scripts import experience_evidence, mats_evidence, curriculum_evidence
 
 
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
@@ -284,6 +284,10 @@ def test_invalid_package_version_cannot_publish(
             for problem in (None, "experience-failed", "experience-check", "experience-asset", "experience-cases")
         ],
         *[("1.17.0", problem) for problem in (None, "mats-failed", "mats-check", "mats-asset", "mats-cases")],
+        *[
+            ("1.18.0", problem)
+            for problem in (None, "curriculum-failed", "curriculum-check", "curriculum-asset", "curriculum-cases")
+        ],
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
         ("1.7.0", "bloom-experience"),
@@ -683,6 +687,31 @@ def test_public_evidence_requires_same_commit_and_intact_package(
             key, value = changes[problem]
             mats[key] = value
         (target / "mats.json").write_text(json.dumps(mats))
+    if tuple(map(int, version.split("."))) >= (1, 18, 0):
+        target = evidence / "public-pages" / "curriculum"
+        target.mkdir()
+        curriculum = {
+            "schema": curriculum_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(curriculum_evidence.CHECKS),
+            "assets": curriculum_evidence.asset_hashes(),
+            "cases": curriculum_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "curriculum-failed": ("passed", False),
+            "curriculum-check": ("checks", []),
+            "curriculum-asset": ("assets", {}),
+            "curriculum-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            curriculum[key] = value
+        (target / "curriculum.json").write_text(json.dumps(curriculum))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):
@@ -709,6 +738,8 @@ def test_public_evidence_requires_same_commit_and_intact_package(
         assert json.loads((folder / "release-manifest.json").read_text())["public_experience"] == experience
     if tuple(map(int, version.split("."))) >= (1, 17, 0):
         assert json.loads((folder / "release-manifest.json").read_text())["public_mats"] == mats
+    if tuple(map(int, version.split("."))) >= (1, 18, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_curriculum"] == curriculum
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"

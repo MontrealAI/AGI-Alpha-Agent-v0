@@ -49,7 +49,7 @@ def build_page(demo: Path) -> str:
             if candidate.exists():
                 preview = f"../{demo.name}/assets/{candidate.name}"
                 break
-    if demo.name in {"era_of_experience", "meta_agentic_tree_search_v0"}:
+    if demo.name in {"era_of_experience", "meta_agentic_tree_search_v0", "meta_agentic_agi_v3"}:
         preview = f"../{demo.name}/assets/lab-preview.svg"
     if not preview:
         preview = DEFAULT_PREVIEW
@@ -83,7 +83,11 @@ def build_page(demo: Path) -> str:
             continue
         if "DISCLAIMER_SNIPPET.md" in stripped:
             continue
-        if demo.name in {"era_of_experience", "meta_agentic_tree_search_v0"} and stripped.startswith("![preview]("):
+        if demo.name in {
+            "era_of_experience",
+            "meta_agentic_tree_search_v0",
+            "meta_agentic_agi_v3",
+        } and stripped.startswith("![preview]("):
             continue
         if not removed_title and TITLE_RE.match(stripped):
             removed_title = True

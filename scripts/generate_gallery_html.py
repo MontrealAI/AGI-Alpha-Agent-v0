@@ -155,6 +155,7 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
                 "alpha_agi_insight_v0",
                 "era_of_experience",
                 "meta_agentic_tree_search_v0",
+                "meta_agentic_agi_v3",
             }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
@@ -166,6 +167,8 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
         preview = "assets/experience/preview.svg"
     if md_file.stem == "meta_agentic_tree_search_v0":
         preview = "assets/mats/preview.svg"
+    if md_file.stem == "meta_agentic_agi_v3":
+        preview = "assets/curriculum/preview.svg"
     return str(title), preview, link, summary
 
 
@@ -362,6 +365,9 @@ def main() -> None:
     mats = importlib.import_module("scripts.generate_mats" if __package__ else "generate_mats")
     if (REPO_ROOT / "scripts/templates/mats.html").is_file():
         mats.build(REPO_ROOT)
+    curriculum = importlib.import_module("scripts.generate_curriculum" if __package__ else "generate_curriculum")
+    if (REPO_ROOT / "scripts/templates/curriculum.html").is_file():
+        curriculum.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)

@@ -26,7 +26,7 @@ import math
 import sqlite3
 import time
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Iterable, List, Sequence
 
@@ -109,7 +109,7 @@ def _cx(path: Path | str, readonly: bool = False):
     path      : DB file path
     readonly  : open in read-only mode (sets PRAGMA accordingly)
     """
-    uri = f"file:{Path(path).absolute()}?mode={'ro' if readonly else 'rw'}"
+    uri = Path(path).absolute().as_uri() + f"?mode={'ro' if readonly else 'rwc'}"
     conn = sqlite3.connect(uri, uri=True, check_same_thread=False)
     if not readonly:
         conn.execute(_SCHEMA)
@@ -558,7 +558,11 @@ if __name__ == "__main__":  # pragma: no cover
 # everything is executed in a *temp* dir.
 
 from tempfile import TemporaryDirectory
-import pytest  # type: ignore
+
+try:
+    import pytest  # type: ignore
+except ImportError:  # Embedded self-tests are optional; archive users need only stdlib.
+    pytest = None
 
 
 # ---------- doctest examples ---------------------------------------
@@ -568,9 +572,10 @@ def _example_candidate() -> Candidate:  # pragma: no cover
 
     >>> from datetime import datetime
     >>> c = _example_candidate()
-    >>> db = ':memory:'
-    >>> insert(c, db)
-    >>> load(db)[0].id == c.id
+    >>> with TemporaryDirectory() as directory:
+    ...     db = Path(directory) / 'example.sqlite'
+    ...     insert(c, db)
+    ...     load(db)[0].id == c.id
     True
     """
     return Candidate(
@@ -583,10 +588,13 @@ def _example_candidate() -> Candidate:  # pragma: no cover
 
 
 # ---------- pytest --------------------------------------------------
-@pytest.fixture()
 def tmpdb():
     with TemporaryDirectory() as td:
         yield Path(td) / "lineage.sqlite"
+
+
+if pytest is not None:
+    tmpdb = pytest.fixture()(tmpdb)
 
 
 def test_roundtrip(tmpdb):

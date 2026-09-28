@@ -1,25 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-"""
-fm.py – Foundation‑Model Abstraction Layer (v0.1.0)
-===================================================
+"""Legacy provider-qualified synchronous completion adapter.
 
-One façade to access **any** supported foundation‑model backend with identical
-call‑signatures and unified accounting.
-
-Highlights
-----------
-• **Provider‑agnostic routing** – string like ``"openai:gpt-4o"`` is parsed
-  into an SDK call *or* a local fallback (Llama‑cpp, etc.).
-• **Model‑Context‑Protocol ready** – automatic windowing / streaming helpers
-  for 128 k‑token+ rolls and partial‑response yield.
-• **Cost & carbon telemetry** – estimate USD and g CO₂e per request (inline or
-  batched), exported as JSON for the Alpha‑Factory lineage UI.
-• **Hardened** – exponential‑back‑off retries, circuit‑breaker, and graceful
-  degradation when a provider SDK or API‑key is missing.
-• Zero hard dependencies – all provider SDKs are imported **lazily** and only
-  when requested.
-
-Apache‑2.0 © 2025 MONTREAL.AI
+Optional SDKs initialize only on explicit construction. Responses include estimated
+token, cost and carbon metadata; these are not measured billing or emissions.
+Streaming, MCP and context-window management are not implemented by this adapter.
 """
 
 from __future__ import annotations
@@ -141,6 +125,8 @@ class FoundationModel:
         self.stream = bool(stream)
         self.context_window = int(context_window)
         self.retries = max(1, int(retries))
+        if self.stream:
+            raise ValueError("Streaming is not supported by this text-returning compatibility adapter")
         self._init_client()
 
     # ------------------------------------------------------------------ #
@@ -182,9 +168,11 @@ class FoundationModel:
             stream=overrides.get("stream", self.stream),
         )
 
+        if params["stream"]:
+            raise ValueError("Streaming requires a separate streaming adapter")
         attempt = 0
         start_ms = _now_ms()
-        while attempt <= self.retries:
+        while attempt < self.retries:
             try:
                 # provider‑specific invocation
                 if self.provider == "mistral":
@@ -196,6 +184,22 @@ class FoundationModel:
                         stop=["</s>"],
                     )
                     text = res["choices"][0]["text"]
+                elif self.provider == "anthropic":
+                    system = "\n".join(m["content"] for m in messages if m["role"] == "system")
+                    res = self.client.messages.create(
+                        system=system, messages=[m for m in messages if m["role"] != "system"], **params
+                    )
+                    text = "".join(block.text for block in res.content if hasattr(block, "text"))
+                elif self.provider == "google":
+                    prompt = "\n".join(f"{m['role']}: {m['content']}" for m in messages)
+                    res = self.client.generate_content(
+                        prompt,
+                        generation_config={
+                            "temperature": params["temperature"],
+                            "max_output_tokens": params["max_tokens"],
+                        },
+                    )
+                    text = res.text
                 else:
                     chat_fn = meta["chat_func"]
                     res = chat_fn(self.client, messages=messages, **params)
@@ -216,12 +220,13 @@ class FoundationModel:
                     "cost_usd": usd,
                     "gco2e": _gco2e(usd),
                     "latency_ms": _now_ms() - start_ms,
+                    "accounting": "heuristic estimate, not measured billing or emissions",
                 }
                 return {"text": text, "usage": usage}
 
             except Exception as exc:
                 attempt += 1
-                if attempt > self.retries:
+                if attempt >= self.retries:
                     raise RuntimeError(f"Completion failed after {self.retries} attempts: {exc}") from exc
                 backoff = 2**attempt
                 _LOGGER.warning(

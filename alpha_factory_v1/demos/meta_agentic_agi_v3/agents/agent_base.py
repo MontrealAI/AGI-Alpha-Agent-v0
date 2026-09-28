@@ -1,32 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-"""
-agent_base.py – Meta‑Agentic α‑AGI substrate (v0.4.0)
-=====================================================
+"""Legacy provider-backed agent primitives and append-only local lineage.
 
-This module is the production‑grade *nucleus* for all first‑order agents and meta‑agents
-inside **Alpha‑Factory v1**.  It is designed to be *provider‑agnostic*, *antifragile*,
-and *self‑auditing* while remaining dependency‑light so it can run on a laptop, inside
-an air‑gapped enclave, or in a hyperscale cluster.
-
-Key capabilities
-----------------
-• **Universal LM adapter** – Access OpenAI, Anthropic, Google Gemini, or any local
-  GGUF model via llama‑cpp with *one* uniform interface (`LMClient`).  Providers can
-  be hot‑swapped at runtime by changing an env‑var or kwargs.
-• **True multi‑objective optimisation** – Latency, dollar cost, carbon, and a custom
-  risk score are tracked for *every* call.  Objectives are combined via a weighted
-  vector that can be set per‑agent or inherited from a parent meta‑agent.
-• **Lineage & provenance** – Every call, decision, and self‑reflection step is pushed
-  to an append‑only JSONL ledger (`lineage/…`).  A tiny Flask+HTMX viewer is shipped
-  so non‑technical stakeholders can follow the chain of thought in near real‑time.
-• **Antifragile back‑off & self‑heal** – Transient failures trigger exponential
-  back‑off with jitter; repeated provider faults auto‑migrate the agent to a standby
-  backend.  Optional *shadow* execution allows a cheaper model to validate expensive
-  completions.
-• **Sandbox hardening** – All dynamic code is executed in a restricted namespace;
-  `resource` limits and a wall‑clock *kill‑switch* prevent runaway loops.
-
-Apache‑2.0 © 2025 MONTREAL.AI
+Provider calls use a token-rate limiter and finite retry count. Metrics and risk
+are illustrative heuristics. Generated Python always uses the repository Docker
+boundary; this module does not promise automatic provider failover or perfect isolation.
 """
 
 from __future__ import annotations
@@ -68,11 +45,23 @@ def _str_tkn(text: str) -> int:
 # ---------------------------------------------------------------------------
 class RateLimiter:
     def __init__(self, tps: float = 3.0):
+        if not math.isfinite(tps) or tps <= 0:
+            raise ValueError("Token rate must be positive and finite")
         self._tps = float(tps)
         self._allow = self._tps
         self._last = time.perf_counter()
 
     def acquire(self, cost: float = 1.0):
+        if not math.isfinite(cost) or cost <= 0:
+            raise ValueError("Token cost must be positive and finite")
+        # A request may exceed one second of capacity; debit chunks, not an impossible bucket.
+        if cost > self._tps:
+            remaining = cost
+            while remaining > 0:
+                chunk = min(remaining, self._tps)
+                self.acquire(chunk)
+                remaining -= chunk
+            return
         while True:
             now = time.perf_counter()
             elapsed = now - self._last
@@ -146,7 +135,7 @@ class LMClient:
 
     # .................................
     def chat(self, msgs: List[Dict[str, str]], **kw) -> str:
-        merged = dict(temperature=self.temperature, max_tokens=self.max_tokens, **kw)
+        merged = {"temperature": self.temperature, "max_tokens": self.max_tokens, **kw}
         attempts = 0
         while True:
             GLOBAL_LIMITER.acquire(_str_tkn(json.dumps(msgs)))
@@ -167,6 +156,8 @@ class LMClient:
                     return out["choices"][0]["text"].strip()
             except Exception as e:
                 attempts += 1
+                if attempts >= 3:
+                    raise RuntimeError("Provider failed after three attempts") from e
                 wait = min(60, 2**attempts)
                 LOGGER.warning("LM error %s; retry in %.1fs", e, wait)
                 time.sleep(wait)
@@ -262,12 +253,11 @@ class Agent:
 # Sandbox utilities for dynamic code exec (optional)
 # ---------------------------------------------------------------------------
 class SafeExec:
-    """Run untrusted Python under CPU/ram limits using a restricted sandbox.
+    """Compatibility adapter for the shared Docker isolation boundary.
 
-    The code executes with :mod:`RestrictedPython` if installed.  When the
-    package is unavailable, a tiny ``__builtins__`` dictionary containing only
-    ``print``, ``range`` and ``len`` is provided.  Dangerous functions such as
-    ``open`` or ``__import__`` are therefore inaccessible.
+    The legacy cpu_sec/mem_mb arguments are retained. Effective limits are the
+    repository sandbox's 120 seconds, 2 GiB, no network and read-only filesystem.
+    Host resource limits are never modified.
     """
 
     def __init__(self, cpu_sec: int = 2, mem_mb: int = 128):
@@ -275,31 +265,15 @@ class SafeExec:
         self.mem_mb = mem_mb
 
     def __enter__(self):
-        if resource:
-            resource.setrlimit(resource.RLIMIT_CPU, (self.cpu_sec, self.cpu_sec))
-            resource.setrlimit(resource.RLIMIT_AS, (self.mem_mb * 1024 * 1024, self.mem_mb * 1024 * 1024))
         return self
 
     def __exit__(self, exc_type, exc, tb):
-        if signal:
-            resource.setrlimit(resource.RLIMIT_CPU, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
-        return False  # do not suppress
+        return False
 
     def run(self, code: str, func_name: str, *args, **kw):
-        """Execute ``code`` safely and run ``func_name`` with ``args``."""
-        loc: Dict[str, Any] = {}
-        with self:
-            try:
-                RP = importlib.import_module("RestrictedPython")
-                compiled = RP.compile_restricted_exec(code)
-                sec_builtins = RP.Guards.safe_builtins.copy()
-                exec(compiled, {"__builtins__": sec_builtins}, loc)
-            except Exception:
-                safe_builtins = {"print": print, "range": range, "len": len}
-                exec(compile(code, "<sandbox>", "exec"), {"__builtins__": safe_builtins}, loc)
-        if func_name not in loc:
-            raise AttributeError(f"{func_name} not found")
-        return loc[func_name](*args, **kw)
+        from ..isolation import run_python
+
+        return json.loads(run_python(code, func_name, args, kw))
 
 
 # ---------------------------------------------------------------------------
@@ -326,9 +300,11 @@ def serve_lineage(path: pathlib.Path, port: int = 8000):
     def log():
         if not path.exists():
             return "(no events yet)"
-        return flask.escape(path.read_text("utf-8"))
+        from markupsafe import escape
 
-    th = threading.Thread(target=app.run, kwargs=dict(port=port, host="0.0.0.0", debug=False))
+        return escape(path.read_text("utf-8"))
+
+    th = threading.Thread(target=app.run, kwargs=dict(port=port, host="127.0.0.1", debug=False))
     th.daemon = True
     th.start()
     LOGGER.info("Lineage viewer at http://localhost:%d", port)
