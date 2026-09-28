@@ -118,18 +118,23 @@ Let `R` be the cooperative reward, `T` the one-shot temptation, `P` the subseque
 punishment payoff, `q` the probability of detecting a unilateral deviation, `s` its
 slashable stake in the same utility units, and `δ < 1` the future discount factor.
 
-The cooperative path has value `R / (1−δ)`. A deviation has value
-`T−q·s + δP / (1−δ)`. The workbench checks:
+The cooperative path has value `R / (1−δ)`. With probability `q`, a one-shot deviation
+is detected, incurs a single slash and triggers punishment. Otherwise, the deviator
+returns to the cooperative path. Its expected value is
+`T−q·s + δ[qP+(1−q)R] / (1−δ)`. The workbench checks:
 
 ```text
-R ≥ (1−δ)(T−q·s) + δP
+R ≥ (1−δ)(T−q·s) + δ[qP+(1−q)R]
 ```
 
-This assumes infinite repeated play, stationary payoffs, risk-neutral agents,
-credible grim-trigger punishment and a single slash on unilateral deviation.
-Punishment-path credibility is assumed, not proved. Monitoring errors, collusion,
+This assumes infinite repeated play, stationary payoffs and public detection probability,
+risk-neutral agents, no false positives and credible grim-trigger punishment after detection.
+Punishment-path credibility is assumed, not proved. Private signals, false positives, collusion,
 forgiveness, finite horizons and competing strategies require additional models.
 Passing this inequality establishes neither a unique equilibrium nor antifragility.
+
+At `q = 0`, a profitable deviation cannot be deterred by patience or an unenforceable
+stake. At `q = 1`, the condition reduces to `R ≥ (1−δ)(T−s) + δP`.
 
 Basis-point inputs and integer payoffs make the reported margin exact. The browser
 uses `BigInt` where products exceed safe numeric precision. The chart changes δ

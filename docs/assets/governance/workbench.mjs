@@ -272,8 +272,9 @@ function chart(source) {
         discountBps: d,
     } = source.incentives;
     const deviation = t - (q * s) / 10000,
-        low = Math.min(r, deviation, p),
-        high = Math.max(r, deviation, p),
+        continuation = (q * p + (10000 - q) * r) / 10000,
+        low = Math.min(r, deviation, continuation),
+        high = Math.max(r, deviation, continuation),
         padding = Math.max(1, (high - low) * 0.15);
     const y = (n) =>
             190 - ((n - low + padding) / (high - low + 2 * padding)) * 145,
@@ -283,7 +284,7 @@ function chart(source) {
     svg.setAttribute("role", "img");
     svg.setAttribute(
         "aria-label",
-        `Cooperative reward ${r}; deviation alternative ${deviation} at delta zero and ${p} at delta one. Current incentive margin ${(Number(report.result.incentives.marginNumerator) / 1e8).toFixed(2)} utility units.`,
+        `Cooperative reward ${r}; deviation alternative ${deviation} at delta zero and ${continuation} at delta one. Current incentive margin ${(Number(report.result.incentives.marginNumerator) / 1e8).toFixed(2)} utility units.`,
     );
     const append = (tag, attrs, text) => {
         const node = document.createElementNS(svg.namespaceURI, tag);
@@ -292,7 +293,7 @@ function chart(source) {
         if (text !== undefined) node.textContent = text;
         svg.append(node);
     };
-    for (const value of [...new Set([r, deviation, p])]) {
+    for (const value of [...new Set([r, deviation, continuation])]) {
         append("line", {
             x1: 48,
             y1: y(value),
@@ -321,7 +322,7 @@ function chart(source) {
         fill: "none",
     });
     append("path", {
-        d: `M48 ${y(deviation)}L408 ${y(p)}`,
+        d: `M48 ${y(deviation)}L408 ${y(continuation)}`,
         stroke: "#9a4b2c",
         "stroke-width": 3,
         fill: "none",
@@ -336,7 +337,7 @@ function chart(source) {
     });
     append("circle", {
         cx: x(d / 10000),
-        cy: y((1 - d / 10000) * deviation + (d / 10000) * p),
+        cy: y((1 - d / 10000) * deviation + (d / 10000) * continuation),
         r: 5,
         fill: "#9a4b2c",
     });

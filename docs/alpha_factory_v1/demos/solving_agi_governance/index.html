@@ -352,9 +352,11 @@
                         <h3>When does patience pay?</h3>
                         <p class="gov-small">
                             The cooperative reward stays fixed. The alternative
-                            line shows the one-shot deviation followed by
-                            punishment, weighted by future value δ. Cooperation
-                            passes when its reward is at least as large.
+                            line shows a one-shot deviation, followed by
+                            punishment if detected or cooperation if undetected.
+                            These futures are weighted by detection q and future
+                            value δ. Cooperation passes when its reward is at
+                            least as large.
                         </p>
                         <div id="gov-incentive-chart"></div>
                         <p id="gov-incentive-detail" class="gov-small"></p>
@@ -422,12 +424,15 @@
                         <h3>A condition, not a universal theorem.</h3>
                         <p>
                             The model checks
-                            <code>R ≥ (1−δ)(T−q·s) + δP</code> for infinite
-                            repeated play, stationary payoffs, risk-neutral
-                            agents and credible grim-trigger punishment. A
-                            detected unilateral deviation is slashed once.
-                            Enforcement, monitoring and punishment credibility
-                            are assumptions.
+                            <code>R ≥ (1−δ)(T−q·s) + δ[qP+(1−q)R]</code> for
+                            infinite repeated play, stationary payoffs,
+                            risk-neutral agents and credible grim-trigger
+                            punishment. Public detection has a fixed probability
+                            q and no false positives. A detected unilateral
+                            deviation is slashed once and triggers punishment;
+                            an undetected deviation returns to cooperation.
+                            Enforcement and punishment credibility are
+                            assumptions.
                         </p>
                         <p>
                             The original simulator’s

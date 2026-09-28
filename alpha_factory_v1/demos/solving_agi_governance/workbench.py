@@ -222,7 +222,7 @@ def evaluate(source: Any) -> dict[str, Any]:
     margin = (
         i["reward"] * BPS**2
         - (BPS - i["discountBps"]) * (i["temptation"] * BPS - i["detectionBps"] * i["stake"])
-        - i["discountBps"] * i["punishment"] * BPS
+        - i["discountBps"] * (i["detectionBps"] * i["punishment"] + (BPS - i["detectionBps"]) * i["reward"])
     )
     exposure = r["perActionFemto"] * r["actions"]
     bound = min(FEMTO, exposure)
@@ -266,7 +266,7 @@ def evaluate(source: Any) -> dict[str, Any]:
         "incentives": {
             "marginNumerator": str(margin),
             "marginDenominator": BPS**2,
-            "condition": "R >= (1-delta)*(T-detection*stake) + delta*P",
+            "condition": "R >= (1-delta)*(T-detection*stake) + delta*(detection*P+(1-detection)*R)",
         },
         "risk": {
             "exposureFemto": str(exposure),
@@ -314,8 +314,9 @@ def brief(report: dict[str, Any]) -> str:
         "",
         f"Unsubmitted verification bounties: {result['reservedBountyTokens']} AGIALPHA.",
         "",
-        "Model: infinite repeated play, stationary payoffs, risk-neutral agents, credible grim-trigger punishment, "
-        "and detected unilateral deviation slashed once. It is a conditional incentive check, not uniqueness.",
+        "Model: infinite repeated play, stationary payoffs and public detection probability, risk-neutral agents, "
+        "and no false positives. A detected unilateral deviation is slashed once and triggers credible grim-trigger "
+        "punishment; an undetected deviation returns to cooperation. It is a conditional incentive check, not uniqueness.",
         "Risk: min(1, action count × per-action upper bound). No independence assumption or unverified mitigation credit.",
         "The supplied identity roster, risk bounds, policy hashes and clock still need authoritative verification.",
         "",

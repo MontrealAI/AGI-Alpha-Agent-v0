@@ -44,9 +44,11 @@ Compilation does not post jobs, escrow rewards or authorize a policy change. The
 
 ## Assumptions and safe interpretation
 
-The repeated-game condition assumes stationary payoffs, infinite play, risk-neutral agents,
-credible grim-trigger punishment and an enforceable one-time slash for a detected unilateral
-deviation. It does not prove a unique equilibrium. In the original simulator, `--delta` is a
+The repeated-game condition assumes stationary payoffs and public detection probability,
+infinite play, risk-neutral agents and no false positives. A detected unilateral deviation
+incurs an enforceable one-time slash and credible grim-trigger punishment; an undetected
+deviation returns to cooperation. With zero detection, patience or stake cannot deter a
+profitable deviation. This does not prove a unique equilibrium. In the original simulator, `--delta` is a
 numerical update rate; its valid seeded results remain unchanged.
 
 Aggregate risk uses `min(1, Np)` without assuming independence. Per-action bounds are supplied,

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import builtins
+from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -41,12 +42,45 @@ def test_constructed_cases_have_specific_explanations_and_bound_jobs() -> None:
 
 
 def test_incentive_equality_and_one_basis_point_boundary(scenario: dict) -> None:
-    scenario["incentives"].update(reward=3, temptation=5, punishment=1, stake=0, discountBps=5000)
+    scenario["incentives"].update(reward=3, temptation=5, punishment=1, stake=0, discountBps=5000, detectionBps=10000)
     assert wb.evaluate(scenario)["result"]["incentives"]["marginNumerator"] == "0"
     scenario["incentives"]["discountBps"] = 4999
     result = wb.evaluate(scenario)["result"]
     assert int(result["incentives"]["marginNumerator"]) < 0
     assert not next(g for g in result["gates"] if g["id"] == "incentives")["passed"]
+
+
+@pytest.mark.parametrize("detection", [0, 1, 5000, 9999, 10000])
+@pytest.mark.parametrize("discount", [0, 5000, 9999])
+@pytest.mark.parametrize("stake", [0, 150])
+def test_incentives_match_detected_and_undetected_value_streams(
+    scenario: dict, detection: int, discount: int, stake: int
+) -> None:
+    scenario["incentives"].update(detectionBps=detection, discountBps=discount, stake=stake)
+    i = scenario["incentives"]
+    q, delta = Fraction(detection, 10000), Fraction(discount, 10000)
+    cooperative_value = Fraction(i["reward"], 1 - delta)
+    detected_value = i["temptation"] - stake + delta * Fraction(i["punishment"], 1 - delta)
+    undetected_value = i["temptation"] + delta * cooperative_value
+    expected_deviation_value = q * detected_value + (1 - q) * undetected_value
+    result = wb.evaluate(scenario)["result"]
+    actual = result["incentives"]
+    assert Fraction(int(actual["marginNumerator"]), actual["marginDenominator"]) == (
+        cooperative_value - expected_deviation_value
+    ) * (1 - delta)
+    assert next(g for g in result["gates"] if g["id"] == "incentives")["passed"] == (
+        cooperative_value >= expected_deviation_value
+    )
+
+
+def test_unobserved_and_partly_observed_deviations_are_not_always_punished(scenario: dict) -> None:
+    scenario["incentives"].update(stake=100000, discountBps=9999, detectionBps=0)
+    result = wb.evaluate(scenario)["result"]
+    assert int(result["incentives"]["marginNumerator"]) < 0
+    assert not next(g for g in result["gates"] if g["id"] == "incentives")["passed"]
+    # Perfect monitoring yields equality here; 10% detection leaves deviation profitable.
+    scenario["incentives"].update(reward=3, temptation=5, punishment=1, stake=0, discountBps=5000, detectionBps=1000)
+    assert wb.evaluate(scenario)["result"]["incentives"]["marginNumerator"] == "-90000000"
 
 
 def test_high_discount_alone_is_insufficient(scenario: dict) -> None:

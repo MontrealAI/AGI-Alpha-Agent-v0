@@ -210,7 +210,9 @@ export async function evaluate(source) {
         (10000n - BigInt(i.discountBps)) *
             (BigInt(i.temptation) * 10000n -
                 BigInt(i.detectionBps) * BigInt(i.stake)) -
-        BigInt(i.discountBps) * BigInt(i.punishment) * 10000n;
+        BigInt(i.discountBps) *
+            (BigInt(i.detectionBps) * BigInt(i.punishment) +
+                (10000n - BigInt(i.detectionBps)) * BigInt(i.reward));
     const exposure = BigInt(r.perActionFemto) * BigInt(r.actions),
         bound = exposure < BigInt(FEMTO) ? Number(exposure) : FEMTO;
     const unlock = u.queuedAt + u.delaySeconds;
@@ -259,7 +261,8 @@ export async function evaluate(source) {
         incentives: {
             marginNumerator: String(margin),
             marginDenominator: 100000000,
-            condition: "R >= (1-delta)*(T-detection*stake) + delta*P",
+            condition:
+                "R >= (1-delta)*(T-detection*stake) + delta*(detection*P+(1-detection)*R)",
         },
         risk: {
             exposureFemto: String(exposure),
@@ -309,7 +312,7 @@ export function brief(report) {
         "",
         `Unsubmitted verification bounties: ${result.reservedBountyTokens} AGIALPHA.`,
         "",
-        "Model: infinite repeated play, stationary payoffs, risk-neutral agents, credible grim-trigger punishment, and detected unilateral deviation slashed once. It is a conditional incentive check, not uniqueness.",
+        "Model: infinite repeated play, stationary payoffs and public detection probability, risk-neutral agents, and no false positives. A detected unilateral deviation is slashed once and triggers credible grim-trigger punishment; an undetected deviation returns to cooperation. It is a conditional incentive check, not uniqueness.",
         "Risk: min(1, action count × per-action upper bound). No independence assumption or unverified mitigation credit.",
         "The supplied identity roster, risk bounds, policy hashes and clock still need authoritative verification.",
         "",

@@ -84,6 +84,27 @@ def validate(site: Path, output: Path, public_url: str | None = None, axe_script
                 records.append({"id": case["id"], "sha256": report["sha256"], "status": report["result"]["status"]})
             page.locator("#gov-import").set_input_files(output / "accountable-upgrade.json")
             expect(page.locator("#gov-status")).to_contain_text("independently recomputed")
+            expect(page.locator("#gov-incentive-chart svg")).to_have_attribute(
+                "aria-label",
+                "Cooperative reward 300; deviation alternative 365 at delta zero and 120 at delta one. "
+                "Current incentive margin 131.00 utility units.",
+            )
+            page.locator("#gov-detectionBps").fill("0")
+            page.locator("#gov-discountBps").fill("99.99")
+            page.locator("#gov-stake").fill("100000")
+            page.locator("#gov-run").click()
+            expect(page.locator("#gov-verdict")).to_have_text("BLOCKED")
+            expect(page.locator("#gov-incentive-chart svg")).to_have_attribute(
+                "aria-label",
+                "Cooperative reward 300; deviation alternative 500 at delta zero and 300 at delta one. "
+                "Current incentive margin -0.02 utility units.",
+            )
+            with page.expect_download() as undetected:
+                page.locator("#gov-dossier").click()
+            undetected_path = output / "zero-detection.json"
+            undetected.value.save_as(undetected_path)
+            undetected_result = verify(read_json(undetected_path))["result"]
+            assert {g["id"] for g in undetected_result["gates"] if not g["passed"]} == {"incentives"}
             page.locator("#gov-discountBps").fill("20")
             expect(page.locator("#gov-results")).to_be_hidden()
             expect(page.locator("#gov-download")).to_be_disabled()

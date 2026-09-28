@@ -30,6 +30,7 @@ CHECKS = frozenset(
         "downloaded-dossier-native-replay",
         "five-file-zip-exact-bytes",
         "input-bound-ascension-jobs",
+        "detection-conditioned-incentives-and-chart",
         "stale-exports-disabled",
         "edited-json-requires-apply",
         "rehash-forgery-rejected",
