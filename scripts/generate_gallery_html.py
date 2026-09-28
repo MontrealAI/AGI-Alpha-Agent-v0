@@ -33,6 +33,16 @@ DISCLAIMER_HEADING_RE = re.compile(
 PREVIEW_RE = re.compile(r"!\[preview\]\(([^)]+)\)")
 
 
+def version_application_assets(docs_dir: Path, version: str) -> None:
+    """Keep local module, worker and data URLs compatible with the release cache."""
+    local_url = re.compile(r"([\"'])(\.{1,2}/[^\"'\\\s?]+\?v=)\d+\.\d+\.\d+\1")
+    for module in (docs_dir / "assets").rglob("*.mjs"):
+        original = module.read_text(encoding="utf-8")
+        updated = local_url.sub(lambda match: match[1] + match[2] + version + match[1], original)
+        if updated != original:
+            module.write_text(updated, encoding="utf-8")
+
+
 def clean_text(text: str) -> str:
     """Return *text* with markdown emphasis and HTML tags stripped."""
     # Unescape HTML entities first
@@ -140,11 +150,16 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
     studio_path = REPO_ROOT / "docs/assets/studio/cases.json"
     if studio_path.is_file():
         for case in json.loads(studio_path.read_text()):
-            if md_file.stem in case["legacy"] and md_file.stem != "alpha_agi_business_3_v1":
+            if md_file.stem in case["legacy"] and md_file.stem not in {
+                "alpha_agi_business_3_v1",
+                "alpha_agi_insight_v0",
+            }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
                 link = f'studio/?case={case["id"]}'
                 break
+    if md_file.stem == "alpha_agi_insight_v0":
+        preview = "assets/discovery/preview.svg"
     return str(title), preview, link, summary
 
 
@@ -332,12 +347,16 @@ def main() -> None:
     governance = importlib.import_module("scripts.generate_governance" if __package__ else "generate_governance")
     if (REPO_ROOT / "scripts/templates/governance.html").is_file():
         governance.build(REPO_ROOT)
+    discovery = importlib.import_module("scripts.generate_discovery" if __package__ else "generate_discovery")
+    if (REPO_ROOT / "scripts/templates/discovery.html").is_file():
+        discovery.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)
     cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
     template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    version_application_assets(REPO_ROOT / "docs", version)
     protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
     if protocol_template.is_file():
         (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(

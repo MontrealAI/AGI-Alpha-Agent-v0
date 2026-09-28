@@ -13,6 +13,7 @@ the official demo.
 from __future__ import annotations
 
 import os
+import sys
 from typing import List
 
 if __package__ is None:  # pragma: no cover - allow direct execution
@@ -27,8 +28,15 @@ from .official_demo_final import main as _run_final
 
 def main(argv: List[str] | None = None) -> None:
     """Run the official demo in strict offline mode."""
-    os.environ.setdefault("ALPHA_AGI_OFFLINE", "true")
-    _run_final(["--offline", *(argv or [])])
+    previous = os.environ.get("ALPHA_AGI_OFFLINE")
+    try:
+        os.environ["ALPHA_AGI_OFFLINE"] = "true"
+        _run_final(["--offline", *(sys.argv[1:] if argv is None else argv)])
+    finally:
+        if previous is None:
+            os.environ.pop("ALPHA_AGI_OFFLINE", None)
+        else:
+            os.environ["ALPHA_AGI_OFFLINE"] = previous
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -4,12 +4,7 @@
 # and do not indicate the presence of a real general intelligence.
 # Use at your own risk. Nothing herein constitutes financial advice.
 # MontrealAI and the maintainers accept no liability for losses incurred.
-"""Launch the α‑AGI Insight official demo.
-
-This helper ensures the environment is verified before delegating to the
-package entry point. It mirrors ``run_demo.py`` but automatically passes
-``--verify-env`` so users always receive a dependency check.
-"""
+"""Preserved Insight launcher; local execution is default and provider/runtime use is explicit."""
 from __future__ import annotations
 
 import importlib
@@ -26,7 +21,6 @@ from . import __main__, insight_demo
 
 def main(argv: List[str] | None = None) -> None:
     """Run the α‑AGI Insight demo with environment validation."""
-    insight_demo.verify_environment()
     __main__.main(argv)
 
 

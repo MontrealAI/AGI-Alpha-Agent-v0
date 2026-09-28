@@ -1,53 +1,44 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# References to "AGI" and "superintelligence" describe aspirational goals
-# and do not indicate the presence of a real general intelligence.
-# Use at your own risk. Nothing herein constitutes financial advice.
-# MontrealAI and the maintainers accept no liability for losses incurred.
-"""Command line entrypoint for the α‑AGI Insight demo.
-
-This tiny wrapper lets users run ``python -m alpha_factory_v1.demos.alpha_agi_insight_v0``
-directly.  By default it delegates to :mod:`openai_agents_bridge` so the demo
-can be controlled via the OpenAI Agents runtime when available.  Use
-``--offline`` to force the simpler command line interface from
-``insight_demo.py``.
-"""
+"""Launch discovery by default; retain all explicit legacy search options."""
 from __future__ import annotations
-
-import argparse
-from . import insight_demo
-from ... import get_version
-from ...utils.disclaimer import print_disclaimer
-import os
+import sys
 
 
-def main(argv: list[str] | None = None) -> None:
-    print_disclaimer()
-
-    parser = argparse.ArgumentParser(description="Run the α‑AGI Insight demo")
-    parser.add_argument(
-        "--offline",
-        action="store_true",
-        help="Run the basic CLI without the OpenAI Agents runtime",
-    )
-    parser.add_argument(
+def main(argv: list[str] | None = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    legacy = {
         "--version",
-        action="version",
-        version=f"%(prog)s {get_version()}",
-        help="Show package version and exit",
-    )
-    args, remainder = parser.parse_known_args(argv)
+        "--legacy",
+        "--episodes",
+        "--target",
+        "--exploration",
+        "--seed",
+        "--rewriter",
+        "--model",
+        "--sectors",
+        "--list-sectors",
+        "--log-dir",
+        "--config",
+        "--offline",
+        "--skip-verify",
+        "--verify-env",
+        "--no-banner",
+        "--dashboard",
+        "--runtime",
+        "--enable-adk",
+        "--adk-host",
+        "--adk-port",
+    }
+    if any(arg.split("=", 1)[0] in legacy for arg in args):
+        from .official_demo_final import main as launch
 
-    # Soften noisy logs from the wider Alpha‑Factory environment.
-    os.environ.setdefault("LOGLEVEL", "WARNING")
+        launch([arg for arg in args if arg != "--legacy"])
+        return 0
+    from .discovery_cli import main as discovery
 
-    if args.offline:
-        insight_demo.main(remainder)
-    else:
-        from . import openai_agents_bridge
-
-        openai_agents_bridge.main(remainder)
+    return discovery(args)
 
 
-if __name__ == "__main__":  # pragma: no cover
-    main()
+if __name__ == "__main__":
+    raise SystemExit(main())
