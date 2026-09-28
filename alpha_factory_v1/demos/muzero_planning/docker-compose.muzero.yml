@@ -1,30 +1,32 @@
-version: "3.9"
-
 services:
   orchestrator:
     build:
-      context: ../../..             # repository root
-      dockerfile: alpha_factory_v1/Dockerfile      # uses existing image recipe
-    image: alpha_factory_orchestrator:muzero
+      context: ../../..
+      dockerfile: alpha_factory_v1/demos/muzero_planning/Dockerfile
+    image: alpha_factory_muzero:2.0.0
     user: "1001:1001"
-    env_file: ./config.env
-    command: >-
-      sh -c "pip install --no-cache-dir -r /app/demo/requirements.txt && \
-             python /app/demo/agent_muzero_entrypoint.py"
-    volumes:
-      - ./:/app/demo:ro
-    ports:
-      - "${HOST_PORT:-7861}:7861"  # allow custom external port
-    depends_on:
-      - ollama
-
-  ollama:
-    image: ollama/ollama:latest
-    tty: true
+    init: true
+    command: ["python", "-m", "alpha_factory_v1.demos.muzero_planning", "--host", "0.0.0.0", "--port", "7861"]
     environment:
-      - OLLAMA_MODELS=mixtral:instruct
-    volumes:
-      - ollama_models:/root/.ollama
-
-volumes:
-  ollama_models:
+      GRADIO_ANALYTICS_ENABLED: "False"
+      MUZERO_ENV_ID: "${MUZERO_ENV_ID:-MiniChoice-v0}"
+      MUZERO_EPISODES: "${MUZERO_EPISODES:-32}"
+      HOME: /tmp
+      GRADIO_TEMP_DIR: /tmp/gradio
+      MPLCONFIGDIR: /tmp/matplotlib
+    ports:
+      - "127.0.0.1:${HOST_PORT:-7861}:7861"
+    read_only: true
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 2g
+    cpus: 2
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7861/__live', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      start_period: 30s
+      retries: 3

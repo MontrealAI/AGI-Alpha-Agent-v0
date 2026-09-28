@@ -1,3 +1,5 @@
+> **1.19.0 — MuZero Planning Lab.** Train a small neural world model, inspect reward-aware tree search and compare measured baselines. [Start the lab](alpha_factory_v1/demos/muzero_planning/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.19.0.md). Original flowcharts and research remain preserved.
+
 > **1.18.0 — Meta-Agentic AGI v3 Curriculum Lab.** Generate tasks, evolve bounded solvers, inspect lineage and independently review the frozen candidate. [Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_agi_v3/) · [Operating guide](docs/agent/CURRICULUM_LAB.md). Original flowcharts and research are preserved.
 
 **Version 1.17.0 adds the MATS Search Lab.**

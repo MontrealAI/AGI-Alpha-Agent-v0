@@ -1,7 +1,9 @@
-# MuZero Planning demo dependencies
-# Reuse the main project requirements and add RL extras
--r ../../requirements.txt
-torch>=2.2
-# Gymnasium classic control environments
-gymnasium[classic-control]>=0.29
-gradio>=4.35
+# MuZero dashboard and CPU research experiment; separate from the full factory.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.0+cpu
+numpy==2.2.6
+gymnasium[classic-control]==1.2.0
+gradio==6.28.0
+pandas==2.3.1
+# Gradio creates an HTTP client at import; support configured SOCKS proxies.
+httpx[socks]>=0.28,<1
