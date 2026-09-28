@@ -1,39 +1,539 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Meta‑Agentic Tree Search (MATS) Demo — v0</title>
-<link rel='stylesheet' href='../../../stylesheets/cards.css'>
-<link rel='stylesheet' href='../../../stylesheets/demo_base.css'>
-</head>
-<body>
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Factory delivery control</h2><p>Can seven customer orders share four resources and meet the delivery window?</p><p style="font-size:12px">Resource-by-hour schedule · lateness report · priority order</p><a href="../../../studio/?case=delivery" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
-<!-- decision-studio-bridge:end -->
-<h1>Meta‑Agentic Tree Search (MATS) Demo — v0</h1>
-<img class='preview' src='assets/preview.svg' alt='Meta‑Agentic Tree Search (MATS) Demo — v0'>
-
-<p><a href='../../../demos/meta_agentic_tree_search_v0'>Detailed instructions</a></p>
-<p class='snippet'><a href='../../../DISCLAIMER_SNIPPET'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
-<div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
-</div>
-<canvas id="chart"></canvas>
-<pre id="logs-panel"></pre>
-<script src="../../../assets/chart.min.js"></script>
-<script type="module" src="../../../assets/pyodide_demo.js"></script>
-<script type="module" src="assets/script.js"></script>
-<p><a href="../../../index.html">⬅️ Back to Gallery</a></p>
-<link rel="stylesheet" href="assets/style.css">
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
-</script>
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="application-version" content="1.17.0" />
+        <meta
+            name="description"
+            content="Explore reproducible meta-agentic tree search, inspect competing workflow designs, and export independently verifiable review evidence."
+        />
+        <title>MATS · Search Lab</title>
+        <link rel="stylesheet" href="../../../assets/mats/lab.css?v=1.17.0" />
+    </head>
+    <body>
+        <a class="skip" href="#workspace">Skip to the search workspace</a>
+        <header class="topbar">
+            <a class="brand" href="../" aria-label="Back to Gallery"
+                ><span aria-hidden="true">α</span> ALPHA FACTORY</a
+            >
+            <nav aria-label="Main navigation">
+                <a href="../../../demos/meta_agentic_tree_search_v0"
+                    >Operating guide</a
+                ><a href="research.html">Original research ↗</a>
+            </nav>
+            <span class="version">v1.17.0</span>
+        </header>
+        <main>
+            <section class="hero" aria-labelledby="title">
+                <div>
+                    <p class="eyebrow">META-AGENTIC TREE SEARCH / SEARCH LAB</p>
+                    <h1 id="title">
+                        Explore the paths.<br /><em>Make the choice.</em>
+                    </h1>
+                    <p class="intro">
+                        Let specialist policies compete. Follow each rewrite.
+                        Challenge the best workflow before it becomes a
+                        decision.
+                    </p>
+                    <p class="hero-note">
+                        Editable models · Reproducible search · Independent
+                        review
+                    </p>
+                    <a class="hero-link" href="#workspace"
+                        >Explore a search <span aria-hidden="true">↓</span></a
+                    >
+                </div>
+                <div class="hero-art" aria-hidden="true">
+                    <svg viewBox="0 0 440 340">
+                        <defs>
+                            <linearGradient id="glow" x2="1" y2="1">
+                                <stop stop-color="#c3aeef" />
+                                <stop offset="1" stop-color="#d9bd83" />
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="#5c5278" stroke-width="1.4">
+                            <path
+                                d="M220 38 110 120 48 208M110 120 155 208M220 38 325 120 255 208M325 120 387 208M155 208 115 280M155 208 192 280M255 208 285 280"
+                            />
+                        </g>
+                        <path
+                            d="M220 38 325 120 255 208 285 280"
+                            fill="none"
+                            stroke="url(#glow)"
+                            stroke-width="3"
+                        />
+                        <g fill="#252237" stroke="#736586">
+                            <circle cx="220" cy="38" r="11" />
+                            <circle cx="110" cy="120" r="9" />
+                            <circle cx="48" cy="208" r="6" />
+                            <circle cx="155" cy="208" r="8" />
+                            <circle cx="387" cy="208" r="6" />
+                            <circle cx="115" cy="280" r="5" />
+                            <circle cx="192" cy="280" r="5" />
+                        </g>
+                        <g fill="#d9bd83">
+                            <circle cx="325" cy="120" r="9" />
+                            <circle cx="255" cy="208" r="8" />
+                            <circle cx="285" cy="280" r="7" />
+                        </g>
+                        <g
+                            fill="#e6def0"
+                            font-family="Arial,sans-serif"
+                            font-size="10"
+                            letter-spacing="2"
+                        >
+                            <text x="245" y="40">SELECT</text>
+                            <text x="337" y="108">REWRITE</text>
+                            <text x="273" y="206">TEST</text>
+                            <text x="301" y="283">REVIEW</text>
+                        </g>
+                    </svg>
+                    <p>
+                        A better score is a proposal.<br /><strong
+                            >Evidence makes it reviewable.</strong
+                        >
+                    </p>
+                </div>
+            </section>
+            <section class="orientation" aria-label="How this lab works">
+                <p>
+                    <b>01</b
+                    ><span
+                        ><strong>Search</strong>Competing rewrites share a
+                        finite budget.</span
+                    >
+                </p>
+                <p>
+                    <b>02</b
+                    ><span
+                        ><strong>Challenge</strong>Freeze the design. Use
+                        separate workloads.</span
+                    >
+                </p>
+                <p>
+                    <b>03</b
+                    ><span
+                        ><strong>Review</strong>Export the complete reasoning
+                        trail.</span
+                    >
+                </p>
+            </section>
+            <div id="error" class="error" role="alert" hidden></div>
+            <section
+                id="workspace"
+                class="workspace"
+                aria-label="Search workspace"
+            >
+                <aside class="controls">
+                    <p class="eyebrow">THE EXPERIMENT</p>
+                    <h2>Choose the problem.</h2>
+                    <label
+                        >Planning case<select
+                            id="case"
+                            aria-describedby="case-note"
+                        ></select
+                    ></label>
+                    <p id="case-note" class="muted"></p>
+                    <div class="pair">
+                        <label
+                            >Search iterations<input
+                                id="iterations"
+                                type="number"
+                                min="1"
+                                max="240"
+                                step="1"
+                                value="120" /></label
+                        ><label
+                            >Rewrite depth<input
+                                id="depth"
+                                type="number"
+                                min="1"
+                                max="6"
+                                step="1"
+                                value="4"
+                        /></label>
+                    </div>
+                    <label
+                        >Reproducible seed<input
+                            id="seed"
+                            type="number"
+                            min="1"
+                            max="4294967295"
+                            step="1"
+                            value="42" /></label
+                    ><label class="checkbox"
+                        ><input id="auditOracle" type="checkbox" checked /><span
+                            >Audit against every design</span
+                        ></label
+                    >
+                    <p class="hint">
+                        The exhaustive audit uses additional compute. It never
+                        chooses the candidate.
+                    </p>
+                    <details>
+                        <summary>Search and evaluation settings</summary>
+                        <label
+                            >Exploration strength<input
+                                id="exploration"
+                                type="number"
+                                min="0"
+                                max="4"
+                                step="0.01"
+                                value="1.4" /></label
+                        ><label
+                            >Training workloads per design<input
+                                id="trainingSamples"
+                                type="number"
+                                min="4"
+                                max="64"
+                                step="1"
+                                value="24" /></label
+                        ><label
+                            >Held-out workloads<input
+                                id="evaluationSamples"
+                                type="number"
+                                min="20"
+                                max="128"
+                                step="1"
+                                value="80" /></label
+                        ><label
+                            >Escaped-defect penalty<input
+                                id="escapePenalty"
+                                type="number"
+                                min="0"
+                                max="100000"
+                                step="1"
+                                value="5000"
+                        /></label>
+                    </details>
+                    <button id="run" class="primary" type="button" disabled>
+                        Run search <span aria-hidden="true">↗</span>
+                    </button>
+                    <p
+                        id="notice"
+                        class="notice"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Loading the local search engine…
+                    </p>
+                    <div class="settings">
+                        <button id="save" type="button" disabled>
+                            Save settings</button
+                        ><button id="restore" type="button">
+                            Restore saved</button
+                        ><button id="clear" type="button">Clear saved</button>
+                    </div>
+                    <p class="hint">
+                        Settings stay in this browser only when you choose Save.
+                    </p>
+                </aside>
+                <div class="results">
+                    <div class="result-heading">
+                        <div>
+                            <p class="eyebrow">THE RESULT</p>
+                            <h2 id="result-title">A design worth examining.</h2>
+                        </div>
+                        <span id="status" class="badge">Awaiting search</span>
+                    </div>
+                    <p id="result-note">
+                        The active workflow remains the baseline. Every
+                        candidate is unapproved.
+                    </p>
+                    <div class="metrics">
+                        <article>
+                            <span>Held-out utility gain</span
+                            ><strong id="gain">—</strong
+                            ><small>per simulated workload</small>
+                        </article>
+                        <article>
+                            <span>Designs evaluated</span
+                            ><strong id="evaluated">—</strong
+                            ><small id="space">within the supplied model</small>
+                        </article>
+                        <article>
+                            <span>Gap to exhaustive best</span
+                            ><strong id="gap">—</strong
+                            ><small>training utility per workload</small>
+                        </article>
+                    </div>
+                    <section class="panel">
+                        <div class="section-heading">
+                            <div>
+                                <p class="eyebrow">THE SEARCH TREE</p>
+                                <h3>See how the choice emerged.</h3>
+                            </div>
+                            <span id="iteration-label" class="counter"
+                                >0 / 0</span
+                            >
+                        </div>
+                        <p class="muted">
+                            The map shows actual expanded nodes. The highlighted
+                            route received this iteration’s rollout score; dots
+                            show competing workflow designs.
+                        </p>
+                        <svg
+                            id="tree"
+                            viewBox="0 0 760 330"
+                            role="img"
+                            aria-labelledby="tree-title tree-description"
+                        >
+                            <title id="tree-title">Expanded search tree</title>
+                            <desc id="tree-description">
+                                Run the search to inspect competing rewrites.
+                            </desc></svg
+                        ><label class="sr-only" for="iteration"
+                            >Search iteration</label
+                        >
+                        <div class="scrubber">
+                            <button
+                                id="previous"
+                                type="button"
+                                aria-label="Previous search iteration"
+                            >
+                                ←</button
+                            ><input
+                                id="iteration"
+                                type="range"
+                                min="1"
+                                max="1"
+                                value="1"
+                                disabled
+                            /><button
+                                id="next"
+                                type="button"
+                                aria-label="Next search iteration"
+                            >
+                                →
+                            </button>
+                        </div>
+                        <p id="iteration-detail" class="trace-note">
+                            Selection → expansion → rollout → one
+                            backpropagation per visited node.
+                        </p>
+                        <details>
+                            <summary>
+                                Inspect node statistics and the rollout
+                            </summary>
+                            <label
+                                >Expanded node<select id="node"></select
+                            ></label>
+                            <p id="node-detail" class="mono"></p>
+                            <div
+                                class="table-scroll"
+                                tabindex="0"
+                                role="region"
+                                aria-label="Rollout workflow"
+                            >
+                                <table>
+                                    <caption>
+                                        Policy evaluated in this iteration
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Stage</th>
+                                            <th scope="col">
+                                                Selected model choice
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rollout-policy"></tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </section>
+                    <section class="panel">
+                        <div class="section-heading">
+                            <div>
+                                <p class="eyebrow">INDEPENDENT CHALLENGE</p>
+                                <h3>Improvement has conditions.</h3>
+                            </div>
+                            <span class="badge neutral"
+                                >Baseline stays active</span
+                            >
+                        </div>
+                        <p class="muted">
+                            Paired, held-out workloads compare the frozen
+                            candidate with the baseline. These checks test
+                            supplied assumptions; they do not authorize
+                            deployment.
+                        </p>
+                        <div id="gates" class="gates"></div>
+                        <div
+                            class="table-scroll"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Held-out comparison"
+                        >
+                            <table>
+                                <caption>
+                                    Baseline versus candidate · held-out model
+                                    results
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Measure</th>
+                                        <th scope="col">Baseline</th>
+                                        <th scope="col">Candidate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="comparison"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <section class="panel">
+                        <p class="eyebrow">THE PROPOSED WORKFLOW</p>
+                        <h3>One choice per specialist.</h3>
+                        <div
+                            class="table-scroll"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Proposed workflow"
+                        >
+                            <table>
+                                <caption>
+                                    Active baseline and unapproved candidate
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            Stage / rewriting specialist
+                                        </th>
+                                        <th scope="col">Baseline</th>
+                                        <th scope="col">Candidate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="policy"></tbody>
+                            </table>
+                        </div>
+                        <details>
+                            <summary>
+                                Inspect a held-out workload and its schedule
+                            </summary>
+                            <label
+                                >Workload<input
+                                    id="episode"
+                                    type="range"
+                                    min="1"
+                                    max="1"
+                                    value="1"
+                            /></label>
+                            <p id="episode-detail" class="muted"></p>
+                            <div
+                                class="table-scroll"
+                                tabindex="0"
+                                role="region"
+                                aria-label="Candidate schedule"
+                            >
+                                <table>
+                                    <caption>
+                                        Candidate resource schedule · minutes
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Stage</th>
+                                            <th scope="col">Pool / lane</th>
+                                            <th scope="col">Start → finish</th>
+                                            <th scope="col">Rework</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="schedule"></tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </section>
+                    <section class="panel evidence">
+                        <p class="eyebrow">TAKE THE EVIDENCE WITH YOU</p>
+                        <h3>A result you can reproduce.</h3>
+                        <p>
+                            Download the scenario, full search tree and trace,
+                            unapproved policy proposal, review brief,
+                            unsubmitted $AGIALPHA job, and checksums.
+                        </p>
+                        <div class="actions">
+                            <button
+                                id="export"
+                                class="primary"
+                                type="button"
+                                disabled
+                            >
+                                Download review bundle</button
+                            ><button id="download" type="button" disabled>
+                                Download run JSON</button
+                            ><label class="upload"
+                                >Import scenario or run<input
+                                    id="import"
+                                    type="file"
+                                    accept=".json,application/json"
+                            /></label>
+                        </div>
+                        <p id="hash" class="mono">
+                            A SHA-256 fingerprint identifies the exact run.
+                        </p>
+                        <p class="hint">
+                            Import recomputes every result. A matching checksum
+                            alone is not accepted as evidence or validator
+                            approval.
+                        </p>
+                    </section>
+                </div>
+            </section>
+            <section class="editor panel">
+                <details>
+                    <summary>Edit the workflow model and review gates</summary>
+                    <p>
+                        Change the resource pools, ordered dependency graph,
+                        model choices, objective or review limits. At most 1,024
+                        complete designs are supported. All durations, defects
+                        and costs are synthetic inputs.
+                    </p>
+                    <label for="json">Scenario JSON</label
+                    ><textarea id="json" rows="20" spellcheck="false"></textarea
+                    ><button id="apply" type="button" class="primary">
+                        Apply and run this model
+                    </button>
+                </details>
+            </section>
+            <section class="scope">
+                <p class="eyebrow">WHAT THIS DEMONSTRATES</p>
+                <h2>Search with an accountable trail.</h2>
+                <p>
+                    Each meta-agent is a named, bounded rewrite operator over
+                    another stage’s policy. A fixed-point UCT rule balances
+                    exploration and observed utility. The simulator schedules
+                    dependencies and finite resource pools, propagates faults,
+                    and charges for detected rework.
+                </p>
+                <p>
+                    This is a synthetic planning laboratory. It does not execute
+                    customer work, train language models, prove real-world
+                    reliability, or submit transactions. A passing candidate
+                    still needs independent, authenticated review and
+                    representative real measurements.
+                </p>
+                <div class="actions">
+                    <a href="../../../demos/meta_agentic_tree_search_v0"
+                        >Read the complete method ↗</a
+                    ><a href="research.html"
+                        >Explore the preserved original demo ↗</a
+                    ><a href="../../../ascension-protocol"
+                        >Review the Ascension protocol ↗</a
+                    >
+                </div>
+            </section>
+        </main>
+        <footer>
+            <a class="brand" href="../">α ALPHA FACTORY</a>
+            <p>
+                Meta-Agentic Tree Search · v1.17.0 · Powered by $AGIALPHA
+            </p>
+            <a href="../../../DISCLAIMER_SNIPPET">See docs/DISCLAIMER_SNIPPET.md</a>
+        </footer>
+        <script
+            type="module"
+            src="../../../assets/mats/lab.mjs?v=1.17.0"
+        ></script>
+    </body>
 </html>

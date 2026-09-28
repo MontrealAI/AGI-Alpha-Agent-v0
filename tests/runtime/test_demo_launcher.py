@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import importlib
 import os
 from pathlib import Path
 import sys
@@ -113,19 +112,21 @@ def test_offline_settings_do_not_modify_parent_credentials(tmp_path, monkeypatch
 
 
 def test_tree_search_ignores_output_directory_provider_configuration(tmp_path, monkeypatch):
-    run_demo = importlib.import_module("alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo")
+    from alpha_factory_v1.demos.meta_agentic_tree_search_v0 import lab_cli
 
     config = tmp_path / "configs" / "default.yaml"
     config.parent.mkdir()
     config.write_text("rewriter: openai\nepisodes: 999\n")
+    (tmp_path / "scenarios.json").write_text("[]")
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("OPENAI_API_KEY", "must-not-be-used")
-    calls = []
-    monkeypatch.setattr(run_demo, "run", lambda *args, **kwargs: calls.append((args, kwargs)))
     command = catalog.command_for(entry("meta_agentic_tree_search_v0"), tmp_path)
-    run_demo.main(command[3:])
-    assert calls[0][0][0] == 3 and calls[0][0][2] == "random"
-    assert calls[0][1]["seed"] == 42
+    assert lab_cli.main(command[3:]) == 0
+    output = next((tmp_path / "search-runs").glob("*/run.json"))
+    report = json.loads(output.read_text())
+    assert report["input"]["id"] == "release-design"
+    assert report["input"]["seed"] == 42
+    assert report["result"]["proposal"]["state"] == "UNAPPROVED"
 
 
 def test_marketplace_dry_run_uses_its_bundled_job(tmp_path, monkeypatch):

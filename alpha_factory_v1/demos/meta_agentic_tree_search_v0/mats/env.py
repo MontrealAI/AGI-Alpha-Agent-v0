@@ -14,7 +14,7 @@ from typing import List
 class NumberLineEnv:
     """Toy environment where agents aim for a target integer."""
 
-    def __init__(self, target: int = 5) -> None:
+    def __init__(self, target: int = 5, rng: random.Random | None = None) -> None:
         """Initialize the environment.
 
         Args:
@@ -22,6 +22,7 @@ class NumberLineEnv:
         """
 
         self.target = target
+        self.rng = rng
 
     def rollout(self, agents: List[int]) -> float:
         """Return a pseudo reward after a single rollout.
@@ -33,7 +34,7 @@ class NumberLineEnv:
             Simulated reward value.
         """
         distance = sum(abs(a - self.target) for a in agents)
-        noise = random.random() * 0.1
+        noise = (self.rng.random() if self.rng is not None else random.random()) * 0.1
         return -distance + noise
 
 
@@ -45,7 +46,7 @@ class LiveBrokerEnv(NumberLineEnv):
         market_data: Optional sequence of prices that override ``target``.
     """
 
-    def __init__(self, target: int = 5, market_data: List[int] | None = None) -> None:
+    def __init__(self, target: int = 5, market_data: List[int] | None = None, rng: random.Random | None = None) -> None:
         """Initialize the environment.
 
         Args:
@@ -53,7 +54,7 @@ class LiveBrokerEnv(NumberLineEnv):
             market_data: Optional price sequence used as live targets.
         """
 
-        super().__init__(target=target)
+        super().__init__(target=target, rng=rng)
         self.market_data = list(market_data) if market_data else []
 
     def rollout(self, agents: List[int]) -> float:

@@ -1,329 +1,197 @@
-[See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
+![preview](../../../docs/assets/mats/preview.svg)
+
+# Meta-Agentic Tree Search · Search Lab
+
+**Explore competing rewrites. Inspect the search. Challenge the chosen design.**
+
+MATS searches a bounded population of workflow policies. Named specialist operators rewrite one
+stage's policy at a time. Selection, expansion, random rollout and backpropagation build a real
+branching tree. Separate workloads test the frozen candidate, and an optional exhaustive audit
+shows the gap to the best design in the supplied training model.
+
+[Open the Search Lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_tree_search_v0/) ·
+[Operating guide](../../../docs/agent/MATS.md) ·
+[Original research and diagrams](RESEARCH_ARCHIVE.md) ·
+[Notebook](colab_meta_agentic_tree_search.ipynb)
+
+[Project notice](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
+## Current runnable path — 1.17.0
 
-**Mode:** Offline simulation. Searches a small integer policy landscape.
-
-**Prerequisites:** Python 3.11–3.13; installed project dependencies.
-
-After [installation](../README.md#start-locally):
+**Mode: Offline search lab.** Python 3.11–3.13; the supported lab uses only the standard library.
+No API key, paid provider, GPU, Docker service or runtime download is required after obtaining the source.
+From the repository root:
 
 ```bash
-python -m alpha_factory_v1.demos check meta_agentic_tree_search_v0
+python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0 --list
+python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0 --case release-design --output search-runs
+python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0 --serve
+```
+
+Open **http://127.0.0.1:7862/meta_agentic_tree_search_v0/**. Stop with Ctrl+C; use `--port 7863` if occupied.
+The installed command is `mats-lab`. The demo catalog runs the same supported workflow:
+
+```bash
 python -m alpha_factory_v1.demos run meta_agentic_tree_search_v0
 ```
 
-The catalog command uses bundled inputs and explicit offline defaults.
+Expected: a 120-iteration branching search, 80 paired held-out workloads, five review gates,
+and six evidence files in a SHA-256-named directory. The bundled release case passes its model gates;
+the proposal remains **unapproved** and the active workflow remains the baseline.
 
-**Expected result:** Three logged search episodes and the best candidate.
-
-**Scope:** Toy reward landscape; optional model rewriters do not establish trading alpha.
-
-The [catalog](../README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+**Scope:** optimization of supplied synthetic workflow models. This is not customer-work execution,
+language-model training, authenticated validator approval, live trading or a transaction submission.
 <!-- CURRENT-DEMO:END -->
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
+## First five minutes
 
-
-# Meta‑Agentic Tree Search (MATS) Demo — v0
-
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/colab_meta_agentic_tree_search.ipynb)
-
-**Abstract:** We pioneer **Meta-Agentic Tree Search (MATS)**, a novel framework for autonomous multi-agent decision optimization in complex strategic domains. MATS enables intelligent agents to collaboratively navigate and optimize high-dimensional strategic search spaces through **recursive agent-to-agent interactions**. In this **second-order agentic** scheme, each agent in the system iteratively refines the intermediate strategies proposed by other agents, yielding a self-improving decision-making process. This recursive optimization mechanism systematically uncovers latent inefficiencies and unexploited opportunities that static or single-agent approaches often overlook.
-
-> **Status:** Experimental · Proof‑of‑Concept · Alpha  
-> **Location:** `alpha_factory_v1/demos/meta_agentic_tree_search_v0`  
-> **Goal:** Showcase how recursive agent‑to‑agent rewrites — navigated with a best‑first tree policy — can rapidly surface high‑value trading policies that exploit AGI‑driven discontinuities (“AGI Alpha”).
-
-## 1 Why this demo exists
-Financial edges sourced from AGI inflection points decay in hours or days. Classical research pipelines are too slow.  
-MATS compresses the idea‑to‑capital cycle by letting agents continuously rewrite each other while a Monte‑Carlo tree search focuses compute on the most promising rewrite trajectories.
-
-## 2 High‑level picture
-```
-root population
-      │  meta‑rewrite
-      ▼
-  ┌─────────────┐   tree policy   ┌───────────────┐
-  │  Node k     ├────────────────►│  Node k+1     │
-  └─────────────┘                 └───────────────┘
-```
-Each edge = “one agent improves another”; backpropagation = “which rewrite path maximises risk‑adjusted α”.
-
-## 3 Formal definition
-*(verbatim from specification for precision)*  
-
-> **Meta‑Agentic Tree Search (MATS)**  
-> Let **E** be a partially‑observable, stochastic environment parameterised by state vector *s* and reward function *R*.  
-> Let **𝒜₀** = {a₁,…,aₙ} be a population of base agents, each with policy πᵢ(·|θᵢ).  
-> **Meta‑agents** are higher-order policies **Π : (𝒜₀, 𝒮, 𝒭) → 𝒜₀′** that rewrite or re‑parameterise base agents to maximise a meta‑objective **J**.  
-> A search node **v** is the tuple (𝒜ₖ, Σₖ) where 𝒜ₖ is the current agent pool after *k* rewrites and Σₖ their cumulative performance statistics.  
-> The tree policy **T** selects the next node via a best‑first acquisition criterion (e.g. UCB over expected α).  
-> Terminal nodes are reached when Δα < ε or depth ≥ d\*.  
-> **Output**: argmax₍ᵥ∈𝒱_leaf₎ J(v).
-
-## 4 Minimal algorithm (reference implementation)
-```python
-def MATS(root_agents, env, horizon_days):
-    tree = Tree(Node(root_agents))
-    while resources_left():
-        node = tree.select(best_first)                       # ← UCB / Thompson
-        improved = meta_rewrite(node.agents, env)           # ← gradient, evo, code‑gen
-        reward = rollouts(improved, env, horizon_days)      # ← risk‑adj α
-        child = Node(improved, reward)
-        tree.add_child(node, child)
-        tree.backprop(child)
-    return tree.best_leaf().agents
-```
-
-### Design knobs
-| Component          | Options (demo default) |
-|--------------------|------------------------|
-| `best_first`       | UCB1, TS, ε‑greedy (UCB1) |
-| `meta_rewrite`     | PPO fine‑tune, CMA‑ES, GPT‑4 code‑gen (PPO) |
-| Reward             | IRR, CumPnL/√Var, Sharpe (IRR) |
-| Environment        | Toy number-line env (default), limit‑order‑book sim, OpenAI Gym trading env |
-
-### 4.1 · OpenAI/ADK rewrite option
-When the optional `openai-agents` and `google-adk` packages are installed the
-demo can leverage a tiny ``RewriterAgent`` built with the OpenAI Agents SDK
-together with the A2A protocol to generate candidate policies.  The agent is
-instantiated directly from :func:`openai_rewrite` and executed once per tree
-step. Enable this behaviour with:
+1. Run **Design a reliable software release**. Compare candidate and baseline time, cost and escaped defects.
+2. Move the iteration slider. Each highlight is an actual selected route; inspect node statistics and rollout choices.
+3. Try **Plan a compatible API migration**. Its bounded search can miss the exhaustive training optimum; the gap is shown.
+4. Try **Expose the unchecked-shortcut trap**. With no defect penalty, cheap shortcuts win the objective but fail review.
+5. Download the review bundle, import `run.json`, and verify it independently:
 
 ```bash
-python run_demo.py --rewriter openai --episodes 500 --model gpt-4o
+python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0 --verify search-runs/<run-sha256>/run.json
 ```
-The script automatically falls back to the offline rewriter when the
-dependencies are unavailable so the notebook remains runnable anywhere.
 
-When the optional `openai` package is also present, `openai_rewrite` uses
-`OpenAI().chat.completions.create` to refine candidate integer policies.  Supply an
-`OPENAI_API_KEY` environment variable to activate this behaviour.  Without a
-key or in fully offline environments the routine simply increments the
-proposed policy elements so the rest of the demo keeps working.  You can
-override the model used by setting ``OPENAI_MODEL`` (defaults to ``gpt-4o``).
-Output from the model is processed via the ``_parse_numbers`` helper which
-extracts integers from free‑form text and validates their length so the search
-loop remains stable even when the LLM response contains extra commentary. When
-the output is malformed or incomplete the helper simply increments the previous
-policy as a safe fallback. The rewrite routine executes the LLM call via a small
-synchronous helper so it functions both with and without an active event loop.
+Replace `<run-sha256>` with the directory printed by your command. Imports accept scenario or complete run
+JSON up to 1 MB. They reject duplicate keys, unknown fields, non-finite numbers, invalid UTF-8, excessive
+nesting and altered results. Recalculating a forged report's checksum does not bypass recomputation.
 
-### 4.2 · Anthropic rewrite option
-When the optional `anthropic` package is installed and an `ANTHROPIC_API_KEY`
-environment variable is configured the demo can use Claude models to refine
-candidate policies via the ``anthropic_rewrite`` helper. Enable this behaviour
-with:
+## What is implemented
 
-```bash
-python run_demo.py --rewriter anthropic --episodes 500 --model claude-3-opus-20240229
+```mermaid
+flowchart TD
+    S["Workflow model and seed"] --> R["Baseline policy population"]
+    R --> A["Select by UCT"]
+    A --> B["Expand a competing rewrite"]
+    B --> C["Roll out remaining rewrites"]
+    C --> D["Simulate training workloads"]
+    D --> E["Backpropagate once per selected node"]
+    E --> A
+    D --> F["Freeze best evaluated design"]
+    F --> H["Held-out paired evaluation"]
+    S --> O["Separate exhaustive training audit"]
+    O --> G["Report search gap"]
+    F --> G
+    H --> V{"Five review gates"}
+    V -->|"Pass"| P["Unapproved proposal for review"]
+    V -->|"Fail"| K["Hold baseline"]
+    P --> K
 ```
-As with the OpenAI path the call automatically falls back to the offline
-rewriter whenever dependencies or API keys are missing so the notebook remains
-fully reproducible.
 
-### 4.3 · OpenAI Agents bridge
-The `openai_agents_bridge.py` script exposes the search loop via the
-**OpenAI Agents SDK** and optionally the **Google ADK** federation layer. Launch
-the bridge to control the demo through API calls or the Agents runtime UI:
+Each policy is a vector of choice indices, one per stage. A meta-agent is a **named bounded rewrite
+operator**, not an independently running language model: it changes one stage's choice. The tree can
+revisit a design through different paths, but a path cannot repeat an ancestor design. Training outcomes
+are cached by complete policy; the report distinguishes iterations, unique evaluations and workload count.
 
-```bash
-mats-bridge --help
-```
-Sample output:
+Selection expands untried rewrites before comparing fully expanded branches. Its UCT value is the mean
+normalized rollout utility plus an exploration bonus. Both engines use a checked-in natural-log table,
+integer square root and one-millionth fixed-point arithmetic, with stable insertion-order ties. This is
+a quantized UCT implementation, not a claim of exact real-arithmetic UCB confidence intervals.
+
+A rollout randomly completes the remaining rewrite depth. Its score is added **once** to each selected
+node. The candidate is the best evaluated complete rollout or baseline by training utility, with
+lexicographic policy-order ties. It is not chosen by an internal-node average, the oracle or held-out results.
+The tree visualization is the expanded tree; rollout-only designs appear in the iteration trace.
+
+The exhaustive oracle evaluates every complete design in the same training model. It runs **after
+candidate selection**, never feeds back into search, and has a separately reported compute cost. Its
+optimum is over the supplied finite model and training samples, not the real world. Turn it off to run
+only bounded search and held-out evaluation.
+
+## The workflow simulator
+
+Stages must appear in topological order. Each stage reserves the earliest available lane in its declared
+resource pool, after its dependencies finish. Among equally available lanes, the earlier lane wins.
+Durations vary from 80% through 120% of the supplied minutes and round upward. Declaration order is the
+scheduler's priority order; the search rewrites stage choices, not task order or pool capacity.
+
+Each stage can introduce a modeled defect. Defects propagate through dependencies. A successful detection
+repairs the current stage's incoming or newly introduced fault and doubles that stage's duration, cost
+and reviewer effort. A defect remaining in any terminal stage counts as an escaped workload defect.
+This simplified model assumes perfect repair after detection; independent branch failures are Boolean,
+not an additive count of individual defects. These assumptions must be replaced and measured before deployment.
+
+Utility per workload is:
+
 ```text
-usage: mats-bridge [-h] [--episodes EPISODES] [--target TARGET]
-                   [--model MODEL] [--rewriter {random,openai,anthropic}]
-                   [--market-data MARKET_DATA] [--enable-adk] [--verify-env]
-
-OpenAI Agents bridge for MATS
-
-options:
-  -h, --help            show this help message and exit
-  --episodes EPISODES   Search episodes when offline
-  --target TARGET       Target integer when offline
-  --model MODEL         Optional model override
-  --rewriter {random,openai,anthropic}
-                        Rewrite strategy to use
-  --market-data MARKET_DATA
-                        CSV file with comma-separated integers for
-                        LiveBrokerEnv
-  --enable-adk          Enable the Google ADK gateway for remote control
-  --verify-env          Check runtime dependencies before launching
-```
-Run a quick environment check with ``--verify-env`` if desired:
-```bash
-mats-bridge --verify-env --episodes 3 --target 4 --model gpt-4o
-```
-Typical invocation:
-```bash
-mats-bridge --verify-env --enable-adk --episodes 3 --target 4 --model gpt-4o
-```
-The bridge exposes a small :func:`verify_env` helper that performs the same
-sanity check programmatically. Call it from Python or rely on the command
-above. If the `openai_agents` package or API keys are missing the bridge
-automatically falls back to running the search loop locally so the notebook
-remains reproducible anywhere. When running offline you can still invoke
-`run_search` directly to verify the helper logic:
-
-```bash
-mats-bridge --episodes 3 --target 4 --model gpt-4o
-python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0.openai_agents_bridge --episodes 3 --target 4
-```
-Enable the optional ADK gateway with ``--enable-adk`` (or set
-``ALPHA_FACTORY_ENABLE_ADK=true``) to expose the agent over the A2A protocol.
-This prints a short completion summary after executing the demo loop.
-
-### 4.4 · Google ADK Integration
-Install the ``google-adk`` package to communicate over the A2A protocol:
-
-```bash
-pip install google-adk
+value − costWeight × totalCost − timeWeight × makespan − escapePenalty × escapedDefect
 ```
 
-Set ``ALPHA_FACTORY_ENABLE_ADK=true`` or pass ``--enable-adk`` to enable the gateway.
-The ADK layer is optional so the demo still runs completely offline.
+Training and evaluation use separate xorshift32 streams, initialized from the chosen seed XOR
+`0x9E3779B9` and `0xA341316C`. Each stage consumes three draws: duration multiplier, defect and detection.
+Baseline and candidate receive the same held-out draws. Evaluation never changes tree statistics or selection.
 
-## 5 Quick start
-```bash
-git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_tree_search_v0
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.lock         # install pinned dependencies
-python ../../../check_env.py --auto-install  # fetch optional extras
-python run_demo.py --verify-env          # optional sanity check
-python run_demo.py --config configs/default.yaml --episodes 500 --target 5 --seed 42 --model gpt-4o
-# or equivalently
-python -m alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo --episodes 500 --target 5
-# installed scripts
-mats-demo --episodes 5
-mats-bridge --episodes 3
-```
-`run_demo.py` prints a per‑episode scoreboard.  Pass `--log-dir logs` to save a
-`scores.csv` file for further analysis. A ready‑to‑run Colab notebook is also
-provided as `colab_meta_agentic_tree_search.ipynb`.
+## Cases and review gates
 
-## Offline Setup
-When installing without network access, first build wheels on a
-machine with connectivity:
+| Case | Decision | Bundled result |
+|---|---|---|
+| `release-design` | Balance implementation, regression, review and packaging | Independent review required |
+| `api-migration` | Coordinate client/server checks with one shared engineering lane | Review required; nonzero search gap |
+| `data-pipeline` | Plan validation and reproducibility work for public data | Independent review required |
+| `proxy-trap` | Detect an objective that rewards unchecked shortcuts | Hold baseline: defect ceiling fails |
+
+| Gate | Comparison |
+|---|---|
+| Held-out gain | Candidate total utility − baseline total utility ≥ minimum gain × workload count |
+| Escaped defects | Candidate escapes × 10,000 ≤ configured basis-point ceiling × workload count |
+| Delivery | Nearest-rank 95th-percentile candidate makespan ≤ deadline |
+| Resource cost | Candidate total cost ≤ mean-cost ceiling × workload count |
+| Reviewer effort | Candidate total reviewer minutes ≤ effort ceiling × workload count |
+
+The comparisons use integers. Display rounding cannot change a gate. Gates are checks on a finite simulation,
+not statistical confidence bounds. Do not tune a model or seed after viewing evaluation and call the result
+independent. A real reviewer needs fresh workloads, representative measurements and authenticated authority.
+
+Limits: 2–6 stages, 2–4 choices per stage, 1–4 resource pools with 1–4 lanes, at most 1,024 complete designs,
+1–240 search iterations, rewrite depth 1–6, 4–64 training workloads and 20–128 held-out workloads.
+
+## Evidence and the Ascension vision
+
+Each immutable export contains `scenario.json`, `run.json`, `policy-proposal.json`, `jobs.json`, `review.md`
+and `SHA256SUMS`. Existing identical exports are reusable; altered or incomplete directories are rejected.
+Use a fresh output directory after an interrupted or modified export. Hashes establish byte identity, not authorship.
+
+The proposal preserves the active baseline. Its input-bound review job carries a goal, success metric and
+$AGIALPHA-denominated bounty and compiles through the repository's existing Ascension planner. It remains
+**unsubmitted and unfunded**. The lab does not mint Nova-Seeds, clear MARK markets, authenticate ENS identities,
+collect validator signatures, transfer funds or activate a Sovereign enterprise. Those require the corresponding
+protocol and deployment components; the search output is reviewable planning evidence for that workflow.
+
+## Preserved research and compatibility
+
+The [complete original README](RESEARCH_ARCHIVE.md), its diagrams and aspirational narrative,
+[original notebook](research_notebook_archive.ipynb), browser replay, configuration, package exports,
+`mats-demo` and `mats-bridge` remain available. The archived narrative is historical, not a list of implemented features.
+In particular, the original PPO, 3.1% IRR, RiskGovernor, Firejail and distributed-worker claims were not
+implemented by the integer demo. The supported lab does not repeat those claims.
+
+The integer example now branches, accumulates rewards once, returns an actual visited leaf, writes valid
+quoted CSV, validates finite inputs and uses a private seeded RNG. Run it explicitly:
 
 ```bash
-pip wheel -r requirements.txt -w /tmp/wheels
+mats-demo --episodes 30 --seed 42 --rewriter random
+mats-bridge --episodes 3 --target 4 --rewriter random
 ```
 
-Copy `/tmp/wheels` to the offline machine and install packages from the
-local wheelhouse:
+Optional OpenAI/Anthropic rewrites are bounded synchronous calls with a 15-second timeout and no retries.
+They fall back visibly to integer mutation when unavailable; `NO_LLM=1` disables provider use. The optional
+Agents SDK coordinator lazily imports the installed SDK, binds the requested parameters and permits at
+most three turns. Model names and account access are deployment settings; provide a currently available
+model with `--model` or the documented environment variables. Live provider and ADK operation require
+separate account/environment validation and are outside the fully offline lab acceptance profile.
 
-```bash
-WHEELHOUSE=/tmp/wheels pip install -r requirements.txt
-```
+`LiveBrokerEnv` is an integer-target replay stub, not a brokerage connector. The supported lab never
+loads provider credentials or makes model calls.
 
-The repository's setup script automatically uses a `wheels/` directory
-in the project root when present, so placing your pre-built wheels there
-also works. Set `WHEELHOUSE=/tmp/wheels` (or `$(pwd)/wheels`) before running
-`../../../check_env.py --auto-install` or `pytest` so the command installs from
-the local cache. See
-[docs/OFFLINE_SETUP.md](../../../docs/OFFLINE_SETUP.md) for a summary.
+## References
 
-To regenerate the pinned lock file after editing `requirements.txt`, install
-[`pip-tools`](https://pypi.org/project/pip-tools/) and run:
+- [Zhou et al., Language Agent Tree Search (ICML 2024)](https://arxiv.org/abs/2310.04406).
+  This work is related context, not a claim that this bounded planner reproduces LATS benchmarks.
+- [OpenAI Agents SDK configuration](https://openai.github.io/openai-agents-python/config/).
+- [Release acceptance and deployment evidence](../../../docs/agent/RELEASE_READINESS.md).
 
-```bash
-pip install pip-tools          # one-time setup
-pip-compile --generate-hashes -o requirements.lock requirements.txt
-```
-
-Run `python scripts/verify_mats_requirements_lock.py` to confirm the lock file
-matches `requirements.txt`.
-
-### Environment variables
-The demo consults a few environment variables when choosing a rewrite strategy
-and model. Set these if you do not pass ``--rewriter`` or ``--model`` on the
-command line:
-
-- ``MATS_REWRITER`` – set in ``.env`` to force the rewrite engine to ``random``,
-  ``openai`` or ``anthropic``.
-- ``OPENAI_MODEL`` – default model used by the OpenAI rewriter and bridge
-  (defaults to ``gpt-4o``).
-- ``ANTHROPIC_MODEL`` – model name for the Anthropic rewriter
-  (defaults to ``claude-3-opus-20240229``).
-- ``MCP_ENDPOINT`` – optional URL for Model Context Protocol logging.
-- ``MCP_TIMEOUT_SEC`` – timeout in seconds for MCP requests (defaults to ``10``).
-
-Setting ``MCP_ENDPOINT`` enables prompt logging via the Model Context Protocol
-for later audit.
-
-If ``MATS_REWRITER`` is unset the script picks ``openai`` when an
-``OPENAI_API_KEY`` is present or ``anthropic`` when ``ANTHROPIC_API_KEY`` is
-configured, falling back to the offline rewriter otherwise.
-
-### Notebook quick start
-1. Click the “Open In Colab” badge at the top of this document.
-2. Execute the first cell to clone the repository and install dependencies.
-3. Optionally provide `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` values in the second cell. Leave the variable unset if you don't have a key.
-4. Run the demo cell to launch the search loop.
-5. Optionally invoke `openai_agents_bridge.py --verify-env` from a new cell to confirm your runtime.
-
-Add ``--enable-adk`` to the command above to start the optional ADK
-gateway for remote control via the A2A protocol.
-The default environment is a simple number‑line task defined in `mats/env.py` where each agent must approach a target integer. Pass `--target 7` (for example) to experiment with different goals.
-Use `--seed 42` to reproduce a specific search trajectory.
-
-> **Tip:** Replay real tick data with:
-> `python run_demo.py --market-data my_feed.csv`
-
-## 6 Repository layout
-```
-meta_agentic_tree_search_v0/
-├── README.md                ← you are here
-├── run_demo.py              ← entry‑point wrapper
-├── mats/                    ← core library
-│   ├── tree.py
-│   ├── meta_rewrite.py
-│   ├── evaluators.py
-│   └── env.py
-└── configs/
-    └── default.yaml
-```
-
-## 7 Walk‑through of the demo episode
-1. Bootstrap 4 vanilla PPO agents trading a synthetic GPU‑demand proxy.  
-2. Tree search explores ~300 rewrite paths within the 30‑second budget.  
-3. Best leaf realises a 3.1 % IRR over a 10‑day horizon (toy setting).  
-4. Log files + tensorboard summaries land in `./logs/`.
-
-## 8 Extending this prototype
-| Goal                           | Hook/function                     |
-|--------------------------------|-----------------------------------|
-| Plug‑in real execution broker  | `mats.env.LiveBrokerEnv`          |
-| Swap rewrite strategy          | Subclass `MetaRewriter`           |
-| Use distributed workers        | `ray tune` launcher               |
-| Custom tree policy             | Implement `acquire()` in `Tree`   |
-| Custom output parser           | `_parse_numbers` helper           |
-
-`LiveBrokerEnv` is a minimal subclass of :class:`NumberLineEnv` that accepts a
-market data sequence. It serves as a stub for wiring real brokerage feeds into
-the search loop while keeping the demo runnable completely offline.
-
-## 9 Safety & governance guard‑rails
-* Sandboxed code‑gen (`firejail + seccomp + tmpfs`)  
-* Hard VaR budget enforced by `RiskGovernor`  
-* CI tests for deterministic replay to detect edge drift  
-
-## 10 References & further reading
-* **Language‑Agent Tree Search**, Jiang et al., ACL 2024  
-* **Best‑First Agentic Tree Search**, Li & Karim, NeurIPS 2024 workshop  
-* **Self‑Referential Improvement in RL**, Müller et al., arXiv 2025  
-
-## 11 License
-Apache 2.0 – see `LICENSE`.
-
----
-*This README belongs to the AGI‑Alpha‑Agent project.*
+Apache-2.0. Existing source-file license notices are preserved.

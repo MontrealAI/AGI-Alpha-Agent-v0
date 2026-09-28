@@ -1,205 +1,117 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Policy rewrite helpers for the MATS demo.
-
-The module provides :func:`meta_rewrite` along with optional OpenAI and
-Anthropic integrations used to tweak integer policies.
-"""
-
+"""Bounded integer rewrites with explicit optional provider calls and offline fallback."""
 from __future__ import annotations
 
-import asyncio
 import importlib.util
 import logging
+import math
 import os
 import random
 import re
 import time
 from typing import List
 
-try:  # pragma: no cover - optional httpx dependency
+try:
     import httpx
-except Exception:  # noqa: BLE001 - optional dependency may be absent
+except ImportError:  # pragma: no cover - optional dependency
     httpx = None
 
 
 def store_sync(messages: list[dict[str, str]]) -> None:
-    """Persist prompts via the Model Context Protocol when configured."""
-
+    """Send bounded prompt records only when an MCP endpoint is explicitly configured."""
     endpoint = os.getenv("MCP_ENDPOINT")
-    timeout = float(os.getenv("MCP_TIMEOUT_SEC", 10))
     if not endpoint or httpx is None:
         return
-    payload = {"messages": messages, "timestamp": time.time()}
     try:
-        httpx.post(f"{endpoint}/context", json=payload, timeout=timeout)
-    except Exception:  # noqa: BLE001 - never raise on logging failures
-        logging.getLogger(__name__).debug("MCP push failed – continuing without persistence", exc_info=True)
+        timeout = float(os.getenv("MCP_TIMEOUT_SEC", "10"))
+        if not math.isfinite(timeout) or not 0 < timeout <= 30:
+            raise ValueError("MCP timeout must be finite and at most 30 seconds")
+        httpx.post(f"{endpoint}/context", json={"messages": messages, "timestamp": time.time()}, timeout=timeout)
+    except Exception:
+        logging.getLogger(__name__).debug("MCP persistence unavailable", exc_info=True)
 
 
-def meta_rewrite(agents: List[int]) -> List[int]:
-    """Return ``agents`` with one element randomly tweaked.
-
-    Args:
-        agents: Current candidate policy.
-
-    Returns:
-        Modified policy list.
-    """
-
-    new_agents = list(agents)
-    idx = random.randrange(len(new_agents))
-    new_agents[idx] += random.choice([-1, 1])
-    return new_agents
+def meta_rewrite(agents: List[int], *, rng: random.Random | None = None) -> List[int]:
+    """Tweak one component; an empty population remains empty."""
+    result = list(agents)
+    if result:
+        source = rng if rng is not None else random
+        index = source.randrange(len(result))
+        result[index] += source.choice([-1, 1])
+    return result
 
 
 def _parse_numbers(text: str, fallback: List[int]) -> List[int]:
-    """Return integers parsed from ``text`` with a fallback.
-
-    Args:
-        text: Raw text containing numbers.
-        fallback: Policy used when parsing fails.
-
-    Returns:
-        List of integers matching the length of ``fallback``.
-    """
-    numbers = [int(n) for n in re.findall(r"-?\d+", text)]
+    """Bound provider text and policy integers; retain the historical increment fallback."""
     if not fallback:
         return []
-    if len(numbers) != len(fallback) or not numbers:
+    tokens = re.findall(r"-?\d+", text) if len(text) <= 10000 else []
+    if len(tokens) != len(fallback) or any(len(token) > 6 for token in tokens):
         return [p + 1 for p in fallback]
-    return numbers
+    numbers = [int(token) for token in tokens]
+    return numbers if all(abs(number) <= 10000 for number in numbers) else [p + 1 for p in fallback]
 
 
-def openai_rewrite(agents: List[int], model: str | None = None) -> List[int]:
-    """Rewrite ``agents`` using the OpenAI Agents SDK when possible.
+def _available(name: str, key: str) -> bool:
+    if os.getenv("NO_LLM") == "1" or not os.getenv(key):
+        return False
+    try:
+        return importlib.util.find_spec(name) is not None
+    except (ValueError, ModuleNotFoundError):
+        return False
 
-    Args:
-        agents: Policy to rewrite.
-        model: Optional model name.
 
-    Returns:
-        Modified policy list.
-
-    Falls back to :func:`meta_rewrite` when dependencies are missing or
-    any error occurs.
-    """
-
-    def _safe_find_spec(module_name: str) -> object | None:
-        try:
-            return importlib.util.find_spec(module_name)
-        except (ValueError, ModuleNotFoundError):
-            return None
-
-    have_oai = _safe_find_spec("openai_agents") is not None
-    have_adk = _safe_find_spec("google_adk") is not None
-    have_openai = _safe_find_spec("openai") is not None
-
-    if have_oai and have_openai and os.getenv("OPENAI_API_KEY"):
-        try:  # pragma: no cover - optional integration
-            from openai_agents import Agent, Tool
+def openai_rewrite(
+    agents: List[int], model: str | None = None, *, target: int = 5, rng: random.Random | None = None
+) -> List[int]:
+    """Perform one synchronous, time-bounded OpenAI call when explicitly selected."""
+    if _available("openai", "OPENAI_API_KEY"):
+        try:  # pragma: no cover - real provider requests are not required by offline tests
             from openai import OpenAI
 
-            oai_model = model or os.getenv("OPENAI_MODEL", "gpt-4o")
-
-            if have_adk:
-                from google_adk import agent2agent
-
-            from typing import Callable, cast, List
-
-            @Tool(name="improve_policy", description="Return an improved integer policy")  # type: ignore[misc]
-            def improve_policy(policy: list[int]) -> list[int]:
-                prompt = f"Given the current integer policy {policy}, suggest a slightly improved list of integers."
-                messages = [
-                    {
-                        "role": "system",
-                        "content": "You rewrite policies for a simple number line game.",
-                    },
-                    {"role": "user", "content": prompt},
-                ]
-                try:
-                    client = OpenAI()
-                    response = client.chat.completions.create(
-                        model=oai_model,
-                        messages=messages,
-                        max_tokens=20,
-                    )
-                    text = response.choices[0].message.content or ""
-                except Exception:
-                    text = ""
-                else:
-                    store_sync(messages + [{"role": "assistant", "content": text}])
-
-                return _parse_numbers(text, policy)
-
-            improve_policy = cast(Callable[[List[int]], List[int]], improve_policy)
-
-            class RewriterAgent(Agent):  # type: ignore[misc]
-                name = "mats_rewriter"
-                tools = [improve_policy]
-
-                async def policy(self, obs: object, _ctx: object) -> list[int]:
-                    cand_obj = obs.get("policy", []) if isinstance(obs, dict) else obs
-                    cand = cast(List[int], cand_obj)
-                    return cast(List[int], improve_policy(cand))
-
-            agent = RewriterAgent()
-
-            async def _run() -> list[int]:
-                result = await agent.policy({"policy": agents}, {})
-                if have_adk:
-                    _ = agent2agent  # pragma: no cover - placeholder use
-                return list(result)
-
-            try:
-                result = asyncio.run(_run())
-            except RuntimeError:
-                # Reuse the running loop when inside async context
-                result = asyncio.get_event_loop().run_until_complete(_run())
-            if result is None:
-                logging.warning("Result is None; falling back to meta_rewrite.")
-                return meta_rewrite(agents)
-            return result
-        except Exception as exc:  # pragma: no cover - safety net
-            logging.warning(f"openai_rewrite fallback due to error: {exc}")
-
-    # Fallback: simple random tweak
-    return meta_rewrite(agents)
+            messages = [
+                {"role": "system", "content": "Return only a JSON array of integers. Do not include explanation."},
+                {"role": "user", "content": f"Improve {agents} toward target {target}, preserving its length."},
+            ]
+            with OpenAI(timeout=15.0, max_retries=0) as client:
+                response = client.chat.completions.create(
+                    model=model or os.getenv("OPENAI_MODEL", "gpt-4o"), messages=messages, max_tokens=128
+                )
+            content = response.choices[0].message.content or ""
+            store_sync(messages + [{"role": "assistant", "content": content}])
+            return _parse_numbers(content, agents)
+        except Exception as exc:
+            logging.getLogger(__name__).warning(
+                "OpenAI rewrite unavailable (%s); using offline mutation", type(exc).__name__
+            )
+    return meta_rewrite(agents, rng=rng)
 
 
-def anthropic_rewrite(agents: List[int], model: str | None = None) -> List[int]:
-    """Rewrite ``agents`` using the Anthropic API when available.
-
-    Args:
-        agents: Policy to rewrite.
-        model: Optional model name.
-
-    Returns:
-        Modified policy list.
-    """
-
-    have_anthropic = importlib.util.find_spec("anthropic") is not None
-    if have_anthropic and os.getenv("ANTHROPIC_API_KEY"):
-        try:  # pragma: no cover - optional integration
+def anthropic_rewrite(
+    agents: List[int], model: str | None = None, *, target: int = 5, rng: random.Random | None = None
+) -> List[int]:
+    """Perform one synchronous, time-bounded Anthropic call when explicitly selected."""
+    if _available("anthropic", "ANTHROPIC_API_KEY"):
+        try:  # pragma: no cover - optional provider
             import anthropic
 
-            claude_model = model or os.getenv("ANTHROPIC_MODEL", "claude-3-opus-20240229")
-            client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-
-            prompt = f"Given the current integer policy {agents}, suggest a slightly improved list of integers."
-
-            messages = [{"role": "user", "content": prompt}]
-            msg = client.messages.create(
-                model=claude_model,
-                max_tokens=20,
-                messages=messages,
-                system="You rewrite policies for a simple number line game.",
+            messages = [
+                {
+                    "role": "user",
+                    "content": f"Return only a JSON integer array improving {agents} toward {target}; preserve its length.",
+                }
+            ]
+            with anthropic.Anthropic(timeout=15.0, max_retries=0) as client:
+                response = client.messages.create(
+                    model=model or os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5"),
+                    max_tokens=128,
+                    messages=messages,
+                )
+            content = "".join(getattr(block, "text", "") for block in response.content)
+            store_sync(messages + [{"role": "assistant", "content": content}])
+            return _parse_numbers(content, agents)
+        except Exception as exc:
+            logging.getLogger(__name__).warning(
+                "Anthropic rewrite unavailable (%s); using offline mutation", type(exc).__name__
             )
-
-            text = msg.content[0].text if getattr(msg, "content", None) else ""
-            store_sync(messages + [{"role": "assistant", "content": text}])
-            result = _parse_numbers(text, agents)
-            return result
-        except Exception as exc:  # pragma: no cover - safety net
-            logging.warning(f"anthropic_rewrite fallback due to error: {exc}")
-
-    return meta_rewrite(agents)
+    return meta_rewrite(agents, rng=rng)

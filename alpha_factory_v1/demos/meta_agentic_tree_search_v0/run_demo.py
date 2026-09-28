@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import importlib.util
 import logging
+import math
 import os
 import random
 import sys
@@ -76,11 +78,24 @@ def run(
     market_data:
         Optional list of integers representing a market price feed.
     """
-    if seed is not None:
-        random.seed(seed)
+    if type(episodes) is not int or not 1 <= episodes <= 10000:
+        raise ValueError("Episodes must be an integer from 1 through 10000")
+    if not math.isfinite(exploration) or exploration < 0:
+        raise ValueError("Exploration must be finite and nonnegative")
+    if type(target) is not int or not -10000 <= target <= 10000:
+        raise ValueError("Target must be an integer from -10000 through 10000")
+    if market_data is not None and (
+        len(market_data) > 10000 or any(type(v) is not int or abs(v) > 10000 for v in market_data)
+    ):
+        raise ValueError("Market replay supports at most 10000 bounded integer targets")
+    rng = random.Random(seed)
 
     root_agents: List[int] = [0, 0, 0, 0]
-    env = LiveBrokerEnv(target=target, market_data=market_data) if market_data else NumberLineEnv(target=target)
+    env = (
+        LiveBrokerEnv(target=target, market_data=market_data, rng=rng)
+        if market_data
+        else NumberLineEnv(target=target, rng=rng)
+    )
     tree = Tree(Node(root_agents), exploration=exploration)
     if rewriter is None:
         rewriter = (
@@ -89,6 +104,8 @@ def run(
             or ("anthropic" if os.getenv("ANTHROPIC_API_KEY") else None)
             or "random"
         )
+    if rewriter not in {"random", "openai", "anthropic"}:
+        raise ValueError("Unknown rewrite strategy")
     from typing import Callable
 
     rewrite_fn: Callable[[List[int]], List[int]]
@@ -96,46 +113,55 @@ def run(
 
         def rewrite_fn(ag: List[int]) -> List[int]:
             """Rewrite agents using the OpenAI model."""
-            return cast(List[int], openai_rewrite(ag, model=model))
+            return cast(List[int], openai_rewrite(ag, model=model, target=target, rng=rng))
 
     elif rewriter == "anthropic":
 
         def rewrite_fn(ag: List[int]) -> List[int]:
             """Rewrite agents using the Anthropic model."""
-            return cast(List[int], anthropic_rewrite(ag, model=model))
+            return cast(List[int], anthropic_rewrite(ag, model=model, target=target, rng=rng))
 
     else:
-        rewrite_fn = meta_rewrite
+        rewrite_fn = lambda ag: meta_rewrite(ag, rng=rng)
     log_fh = None
     if log_dir is not None:
         log_dir.mkdir(parents=True, exist_ok=True)
-        log_fh = open(log_dir / "scores.csv", "w", encoding="utf-8")
-        log_fh.write("episode,candidate,reward\n")
-    for _ in range(episodes):
-        node = tree.select()
-        improved = rewrite_fn(node.agents)
-        reward = evaluate(improved, env)
-        child = Node(improved, reward=reward)
-        tree.add_child(node, child)
-        tree.backprop(child)
-        logger.info("Episode %3d: candidate %s → reward %.3f", _ + 1, improved, reward)
+        log_fh = open(log_dir / "scores.csv", "w", encoding="utf-8", newline="")
+        csv.writer(log_fh).writerow(["episode", "candidate", "reward"])
+    try:
+        for episode in range(episodes):
+            node = tree.select()
+            improved = rewrite_fn(node.agents)
+            reward = evaluate(improved, env)
+            child = Node(improved, reward=reward)
+            tree.add_child(node, child)
+            tree.backprop(child)
+            logger.info("Episode %3d: candidate %s → reward %.3f", episode + 1, improved, reward)
+            if log_fh:
+                csv.writer(log_fh).writerow([episode + 1, improved, f"{reward:.6f}"])
+        best = tree.best_leaf()
+        score = best.reward / (best.visits or 1)
+        logger.info("Best agents: %s score: %.3f", best.agents, score)
         if log_fh:
-            log_fh.write(f"{_+1},{improved},{reward:.6f}\n")
-    best = tree.best_leaf()
-    score = best.reward / (best.visits or 1)
-    logger.info("Best agents: %s score: %.3f", best.agents, score)
-    if log_fh:
-        log_fh.write(f"best,{best.agents},{score:.6f}\n")
-        log_fh.close()
+            csv.writer(log_fh).writerow(["best", best.agents, f"{score:.6f}"])
+    finally:
+        if log_fh:
+            log_fh.close()
 
 
 def load_config(path: Path) -> dict[str, Any]:
     """Load a YAML configuration file with a minimal fallback parser."""
     if not path.exists():
         return {}
-    text = path.read_text(encoding="utf-8")
+    with path.open(encoding="utf-8") as stream:
+        text = stream.read(1_000_001)
+    if len(text) > 1_000_000:
+        raise ValueError("Configuration exceeds 1 MB")
     if yaml:
-        return yaml.safe_load(text) or {}
+        result = yaml.safe_load(text) or {}
+        if not isinstance(result, dict):
+            raise ValueError("Configuration must be a mapping")
+        return result
     cfg: dict[str, object] = {}
     for line in text.splitlines():
         if ":" in line:
@@ -152,7 +178,9 @@ def main(argv: List[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO)
     parser = argparse.ArgumentParser(description="Run the Meta-Agentic Tree Search demo")
     parser.add_argument("--episodes", type=int, help="Number of search iterations")
-    parser.add_argument("--config", type=Path, default=Path("configs/default.yaml"), help="YAML configuration")
+    parser.add_argument(
+        "--config", type=Path, default=Path(__file__).with_name("configs") / "default.yaml", help="YAML configuration"
+    )
     parser.add_argument(
         "--rewriter",
         choices=["random", "openai", "anthropic"],
@@ -177,32 +205,38 @@ def main(argv: List[str] | None = None) -> None:
         help="Check runtime dependencies before running",
     )
     args = parser.parse_args(argv)
-    cfg = load_config(args.config)
+    try:
+        cfg = load_config(args.config)
 
-    market_data: list[int] | None = None
-    if args.market_data:
-        text = args.market_data.read_text(encoding="utf-8")
-        market_data = [int(x) for x in text.split(",") if x.strip()]
+        market_data: list[int] | None = None
+        if args.market_data:
+            with args.market_data.open(encoding="utf-8") as stream:
+                text = stream.read(1_000_001)
+            if len(text) > 1_000_000:
+                raise ValueError("Market replay exceeds 1 MB")
+            market_data = [int(x) for x in text.split(",") if x.strip()]
 
-    if args.verify_env:
-        verify_environment()
-    episodes = args.episodes or int(cfg.get("episodes", 10))
-    exploration = float(cfg.get("exploration", 1.4))
-    rewriter = args.rewriter or cfg.get("rewriter", "random")
-    target = args.target if args.target is not None else int(cfg.get("target", 5))
-    seed = args.seed if args.seed is not None else cfg.get("seed")
-    seed = int(seed) if seed is not None else None
-    model = args.model or cfg.get("model")
-    run(
-        episodes,
-        exploration,
-        rewriter,
-        target=target,
-        seed=seed,
-        log_dir=args.log_dir,
-        model=model,
-        market_data=market_data,
-    )
+        if args.verify_env:
+            verify_environment()
+        episodes = args.episodes if args.episodes is not None else int(cfg.get("episodes", 10))
+        exploration = float(cfg.get("exploration", 1.4))
+        rewriter = args.rewriter or cfg.get("rewriter", "random")
+        target = args.target if args.target is not None else int(cfg.get("target", 5))
+        seed = args.seed if args.seed is not None else cfg.get("seed")
+        seed = int(seed) if seed is not None else None
+        model = args.model or cfg.get("model")
+        run(
+            episodes,
+            exploration,
+            rewriter,
+            target=target,
+            seed=seed,
+            log_dir=args.log_dir,
+            model=model,
+            market_data=market_data,
+        )
+    except (ValueError, OSError, TypeError) as exc:
+        parser.error(str(exc))
 
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry

@@ -296,3 +296,7 @@ governance observatory exposes replicator dynamics, risk corrections, stake/slas
 credits and an eight-day gate. Redesigns the Pages entry point while preserving every original demo and flywheel.
 
 See [release notes](agent/RELEASE_NOTES_1.5.0.md) and [implementation evidence](agent/WHITEPAPER_IMPLEMENTATION.md).
+
+## 1.17.0 — MATS Search Lab
+
+See [release notes](agent/RELEASE_NOTES_1.17.0.md) for bounded branching search, exact browser/native replay, independent gates, preserved research and publication acceptance.
