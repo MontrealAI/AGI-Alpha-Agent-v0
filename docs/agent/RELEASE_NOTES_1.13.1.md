@@ -6,6 +6,10 @@ The historical section beneath Enterprise Studio previously looked disconnected 
 an oversized placeholder artwork, a generic blue chart, unstyled controls and raw event logs dominated the page.
 This release makes that section useful, readable and consistent with the rest of Business 3.
 
+Use the [checksum-verifying installer](START_HERE.md) for matching release assets, or open
+[Enterprise Studio](../alpha_agi_business_3_v1/index.html) directly. The [Business 3 guide](BUSINESS3.md)
+explains the planner, evidence exports and preserved research tools.
+
 - A compact research collection retains the original alpha artwork, architecture links, research archive and capital-committee workspace.
 - The original ten-step replay remains interactive, with explicit unitless axes, a readable dark theme, contextual interpretation and expandable logs and exact values.
 - A new opportunity landscape uses the actual verified dossier to compare every candidate's expected and downside NPV on a common zero-based scale. Selected ventures and evidence-screening failures are identified in text, with exact USD amounts accessible beside each bar.
