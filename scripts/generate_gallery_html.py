@@ -33,6 +33,16 @@ DISCLAIMER_HEADING_RE = re.compile(
 PREVIEW_RE = re.compile(r"!\[preview\]\(([^)]+)\)")
 
 
+def version_application_assets(docs_dir: Path, version: str) -> None:
+    """Keep local module, worker and data URLs compatible with the release cache."""
+    local_url = re.compile(r"([\"'])(\.{1,2}/[^\"'\\\s?]+\?v=)\d+\.\d+\.\d+\1")
+    for module in (docs_dir / "assets").rglob("*.mjs"):
+        original = module.read_text(encoding="utf-8")
+        updated = local_url.sub(lambda match: match[1] + match[2] + version + match[1], original)
+        if updated != original:
+            module.write_text(updated, encoding="utf-8")
+
+
 def clean_text(text: str) -> str:
     """Return *text* with markdown emphasis and HTML tags stripped."""
     # Unescape HTML entities first
@@ -346,6 +356,7 @@ def main() -> None:
     cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
     template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    version_application_assets(REPO_ROOT / "docs", version)
     protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
     if protocol_template.is_file():
         (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(

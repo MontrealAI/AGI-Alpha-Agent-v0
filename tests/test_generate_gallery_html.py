@@ -6,6 +6,30 @@ from scripts import generate_demo_docs as gdd
 from scripts import generate_gallery_html as ggh
 
 
+def test_release_updates_local_module_worker_and_data_urls(tmp_path):
+    assets = tmp_path / "assets" / "workspace"
+    assets.mkdir(parents=True)
+    module = assets / "workbench.mjs"
+    module.write_text(
+        'import { calculate } from "../shared/engine.mjs?v=1.14.0";\n'
+        "new Worker(new URL('./worker.mjs?v=1.14.0', import.meta.url));\n"
+        'fetch(new URL("./scenarios.json?v=1.14.0", import.meta.url));\n'
+        'const external = "https://example.com/engine.mjs?v=1.14.0";\n'
+    )
+    ggh.version_application_assets(tmp_path, "1.15.0")
+    expected = (
+        'import { calculate } from "../shared/engine.mjs?v=1.15.0";\n'
+        "new Worker(new URL('./worker.mjs?v=1.15.0', import.meta.url));\n"
+        'fetch(new URL("./scenarios.json?v=1.15.0", import.meta.url));\n'
+        'const external = "https://example.com/engine.mjs?v=1.14.0";\n'
+    )
+    assert module.read_text() == expected
+    ggh.version_application_assets(tmp_path, "1.15.0")
+    assert module.read_text() == expected
+    ggh.version_application_assets(tmp_path, "1.16.0")
+    assert module.read_text() == expected.replace("v=1.15.0", "v=1.16.0")
+
+
 def test_gallery_html(tmp_path, monkeypatch):
     repo = tmp_path
     demos = repo / "alpha_factory_v1" / "demos" / "demo_b"
