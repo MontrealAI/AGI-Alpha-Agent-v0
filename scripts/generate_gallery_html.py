@@ -153,6 +153,7 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
             if md_file.stem in case["legacy"] and md_file.stem not in {
                 "alpha_agi_business_3_v1",
                 "alpha_agi_insight_v0",
+                "era_of_experience",
             }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
@@ -160,6 +161,8 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
                 break
     if md_file.stem == "alpha_agi_insight_v0":
         preview = "assets/discovery/preview.svg"
+    if md_file.stem == "era_of_experience":
+        preview = "assets/experience/preview.svg"
     return str(title), preview, link, summary
 
 
@@ -350,6 +353,9 @@ def main() -> None:
     discovery = importlib.import_module("scripts.generate_discovery" if __package__ else "generate_discovery")
     if (REPO_ROOT / "scripts/templates/discovery.html").is_file():
         discovery.build(REPO_ROOT)
+    experience = importlib.import_module("scripts.generate_experience" if __package__ else "generate_experience")
+    if (REPO_ROOT / "scripts/templates/experience.html").is_file():
+        experience.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)

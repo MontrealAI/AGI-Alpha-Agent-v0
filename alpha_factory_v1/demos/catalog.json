@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.15.0",
+  "release": "1.16.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -275,25 +275,26 @@
     },
     {
       "id": "era_of_experience",
-      "title": "Era of Experience",
-      "mode": "Offline sample",
-      "summary": "Extracts simple signals from bundled historical CSV samples.",
+      "title": "Era of Experience · Learning Lab",
+      "mode": "Offline learning lab",
+      "summary": "Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.era_of_experience.alpha_report",
-        "--data-dir",
-        "{demos}/macro_sentinel/offline_samples"
+        "alpha_factory_v1.demos.era_of_experience",
+        "--case",
+        "build-routing",
+        "--output",
+        "{output}/experience"
       ],
-      "expected": "Yield-curve and supply-chain sample signals with a heuristic selection.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
-      "limitations": "Static historical samples, not current market data or recommendations.",
+      "expected": "Reproducible training, held-out and retention episodes; six review gates and six evidence files.",
+      "prerequisites": "Python 3.11–3.13; standard library only for the supported lab.",
+      "limitations": "Synthetic contextual-bandit learning. No live sensors, model training, authenticated validator approval or automatic deployment.",
       "smoke": true,
       "environment": {},
       "required_modules": [],
       "assets": [
-        "macro_sentinel/offline_samples/yield_curve.csv",
-        "macro_sentinel/offline_samples/stable_flows.csv"
+        "era_of_experience/scenarios.json"
       ],
       "offline": true
     },

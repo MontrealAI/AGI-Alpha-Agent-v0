@@ -8,11 +8,11 @@ import pytest
 
 
 @pytest.mark.skipif(
-    not Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh").exists(),
+    not Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh").exists(),
     reason="script missing",
 )  # type: ignore[misc]
 def test_experience_launcher(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    script = Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh")
+    script = Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh")
     config = script.parent / "config.env"
     docker_log = tmp_path / "docker.log"
     curl_log = tmp_path / "curl.log"
@@ -74,11 +74,11 @@ def test_experience_launcher(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) ->
 
 
 @pytest.mark.skipif(
-    not Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh").exists(),
+    not Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh").exists(),
     reason="script missing",
 )  # type: ignore[misc]
 def test_experience_launcher_live(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    script = Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh")
+    script = Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh")
     config = script.parent / "config.env"
     docker_log = tmp_path / "docker.log"
     curl_log = tmp_path / "curl.log"
@@ -144,11 +144,11 @@ def test_experience_launcher_live(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
 
 
 @pytest.mark.skipif(
-    not Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh").exists(),
+    not Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh").exists(),
     reason="script missing",
 )  # type: ignore[misc]
 def test_experience_launcher_api_key(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    script = Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh")
+    script = Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh")
     config = script.parent / "config.env"
     docker_log = tmp_path / "docker.log"
     curl_log = tmp_path / "curl.log"
@@ -210,11 +210,11 @@ def test_experience_launcher_api_key(tmp_path: Path, monkeypatch: pytest.MonkeyP
 
 
 @pytest.mark.skipif(
-    not Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh").exists(),
+    not Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh").exists(),
     reason="script missing",
 )  # type: ignore[misc]
 def test_experience_launcher_gpu(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    script = Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh")
+    script = Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh")
     config = script.parent / "config.env"
     docker_log = tmp_path / "docker.log"
     curl_log = tmp_path / "curl.log"
@@ -276,11 +276,11 @@ def test_experience_launcher_gpu(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 
 
 @pytest.mark.skipif(
-    not Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh").exists(),
+    not Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh").exists(),
     reason="script missing",
 )  # type: ignore[misc]
 def test_experience_launcher_env_vars(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    script = Path("alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh")
+    script = Path("alpha_factory_v1/demos/era_of_experience/legacy_run_experience_demo.sh")
     config = script.parent / "config.env"
     docker_log = tmp_path / "docker.log"
     curl_log = tmp_path / "curl.log"

@@ -110,7 +110,10 @@ async def experience_stream() -> AsyncIterator[Dict[str, Any]]:
     learn = ["Duolingo Spanish 10 min", "Khan Academy Calculus 15 min", "Read 'Nature' abstract"]
     health = ["Run 5 km", "Sleep 7 h 45 m", "Cycle 12 km", "Yoga 30 min"]
 
-    period = 1.0 / max(STREAM_RATE, 0.01)
+    rate = float(os.getenv("STREAM_RATE_HZ", str(STREAM_RATE)))
+    if not math.isfinite(rate) or not 0 < rate <= 1000:
+        raise ValueError("STREAM_RATE_HZ must be finite and greater than 0, at most 1000")
+    period = 1.0 / rate
     while True:
         uid += 1
         now = dt.datetime.now(dt.timezone.utc).isoformat()
@@ -170,8 +173,9 @@ def _fitness_reward(evt: Dict[str, Any]) -> float:
     if "Run" in act or "Cycle" in act or "Yoga" in act:
         return 1.0
     if "Sleep" in act:
-        match = re.search(r"\d+(?:\.\d+)?", act)
-        hrs = float(match.group(0)) if match else 0.0  # extract first numeric value
+        match = re.search(r"(\d+(?:\.\d+)?)\s*h", act)
+        minutes = re.search(r"(\d+(?:\.\d+)?)\s*m", act)
+        hrs = (float(match.group(1)) if match else 0.0) + (float(minutes.group(1)) / 60 if minutes else 0.0)
         return max(0, min(1.0, hrs / 8.0))
     return 0.0
 
@@ -179,7 +183,8 @@ def _fitness_reward(evt: Dict[str, Any]) -> float:
 def _education_reward(evt: Dict[str, Any]) -> float:
     if evt["kind"] != "learn":
         return 0.0
-    minutes = int(evt["payload"]["session"].split()[-2])
+    match = re.search(r"(\d+(?:\.\d+)?)\s*min\b", str(evt.get("payload", {}).get("session", "")))
+    minutes = float(match.group(1)) if match else 0.0
     return math.tanh(minutes / 20)  # 0→1 smooth
 
 
@@ -226,16 +231,18 @@ async def main() -> None:
     if gr is None:
         raise RuntimeError("gradio is required for the demo UI; install via 'pip install gradio'")
 
-    evt_queue: asyncio.Queue[Dict[str, Any]] = asyncio.Queue()
+    evt_queue: asyncio.Queue[Dict[str, Any]] = asyncio.Queue(maxsize=128)
 
     async def ingest_loop() -> None:
         async for evt in experience_stream():
-            await evt_queue.put(evt)
             logging.debug("Event %s", evt)
             # agent observes the world
             agent.observe(json.dumps(evt))
             # agent decides whether / how to act
             act = await agent.act()
+            if evt_queue.full():
+                evt_queue.get_nowait()
+            evt_queue.put_nowait({"event": evt, "action": act})
             logging.info("Tool-call » %s", act)
             # mock tool latency
             await asyncio.sleep(0.2)
@@ -248,10 +255,10 @@ async def main() -> None:
         btn = gr.Button("Step once")
 
         async def step_once() -> tuple[list[list[str]], str]:
-            evt = await evt_queue.get()
-            agent.observe(json.dumps(evt))
-            call = await agent.act()
-            return [[json.dumps(m)[:120] for m in agent.memory.recent(10)]], f"**Event:** {evt}\n\n**Action:** {call}"
+            record = await evt_queue.get()
+            return [
+                [json.dumps(m)[:120]] for m in agent.memory.recent(10)
+            ], f"**Event:** {record['event']}\n\n**Action:** {record['action']}"
 
         btn.click(step_once, outputs=[mem_view, log_view])
 
@@ -266,10 +273,15 @@ async def main() -> None:
         uvicorn.Config(gradio_app, host="0.0.0.0", port=PORT, log_level=LOG_LVL.lower(), loop="asyncio")
     )
 
-    await asyncio.gather(
-        ingest_loop(),
-        server.serve(),
-    )
+    tasks = [asyncio.create_task(ingest_loop()), asyncio.create_task(server.serve())]
+    try:
+        done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        for task in done:
+            task.result()
+    finally:
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
 
 
 # ──────────────────────────────── entrypoint ────────────────────────────────
