@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.15.0.** The canonical directory is
+**Version 1.16.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -59,7 +59,7 @@ python -m alpha_factory_v1.demos run solving_agi_governance --output-dir my-demo
 The command prints the execution mode, expected result, command and output directory. The review
 prints nine gate decisions and saves five evidence files, including unsubmitted validator jobs.
 See the [governance guide](GOVERNANCE.md) for replay and model assumptions. Try `macro_sentinel` for risk calculations over bundled macro samples, or
-`era_of_experience` for a short sample-data report. Replace the name in `show`, `check` and `run`.
+`era_of_experience` for a reproducible learning experiment and independent review gates. Replace the name in `show`, `check` and `run`.
 
 For enterprise project selection, run `alpha_agi_business_3_v1` or follow the
 [Business 3 guide](BUSINESS3.md). Its bounded default requires only Python and exports seven evidence files.

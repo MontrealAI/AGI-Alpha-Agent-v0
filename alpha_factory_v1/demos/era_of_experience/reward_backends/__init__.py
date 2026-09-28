@@ -13,7 +13,7 @@ Public helpers
 • ``list_rewards()``             → tuple[str, …]      – immutable view of registered names
 • ``reward_signal(name, s, a, r)`` → float           – invoke *one* backend
 • ``blend(signals, weights=None)`` → float           – weighted aggregation helper
-• ``refresh()``                  – rescan package at runtime (hot‑reload)
+• ``refresh()``                  – rescan package at runtime (new modules)
 
 Implementation highlights
 -------------------------
@@ -28,6 +28,7 @@ from __future__ import annotations
 import importlib
 import inspect
 import logging
+import math
 import pkgutil
 import threading
 import types
@@ -131,9 +132,12 @@ def reward_signal(name: str, state, action, result) -> float:
 
     value = fn(state, action, result)
     try:
-        return float(value)
+        converted = float(value)
     except (TypeError, ValueError):
         raise RuntimeError(f"{name}.reward() returned non‑numeric {value!r}") from None
+    if not math.isfinite(converted) or not 0.0 <= converted <= 1.0:
+        raise RuntimeError(f"{name}.reward() must return a finite value in [0, 1]")
+    return converted
 
 
 def blend(
@@ -155,20 +159,25 @@ def blend(
     if weights is None:
         weights = {k: 1.0 for k in signals}
 
+    if any(not math.isfinite(value) or not 0 <= value <= 1 for value in signals.values()):
+        raise ValueError("Signals must be finite values in [0, 1]")
+    if any(not math.isfinite(value) for value in weights.values()):
+        raise ValueError("Weights must be finite")
+
     # guard common foot‑guns
     negative = [k for k, w in weights.items() if w < 0]
     if negative:
         raise ValueError(f"Negative weights not allowed: {negative}")
 
     total_w = sum(weights.get(k, 0.0) for k in signals)
-    if total_w == 0:
-        raise ValueError("Sum of weights is zero")
+    if not math.isfinite(total_w) or total_w <= 0:
+        raise ValueError("Sum of weights must be finite and greater than zero")
 
     return sum(signals[k] * weights.get(k, 0.0) for k in signals) / total_w
 
 
 def refresh() -> None:
-    """Hot‑reload registry – picks up new or modified back‑ends."""
+    """Rescan the registry for new backends; restart to load modified module code."""
     _scan_package()
 
 

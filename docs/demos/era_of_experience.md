@@ -1,415 +1,220 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# Era of Experience
+# Era of Experience · Experience Lab
 
-![preview](../era_of_experience/assets/preview.svg){.demo-preview}
+![preview](../era_of_experience/assets/lab-preview.svg){.demo-preview}
 
 [Launch Demo](../era_of_experience/index.html){.md-button}
 
+**Learn from consequences. Test the improvement. Keep the baseline until review.**
+
+An agent chooses a response, observes a simulated outcome, and updates a bounded memory.
+A frozen candidate then faces separate held-out and retention evaluations. Every action,
+reward, policy decision and review gate can be reproduced from the exported scenario.
+
+[Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/era_of_experience/) ·
+[Operating guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/EXPERIENCE.md) ·
+[Original research and diagrams](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/RESEARCH_ARCHIVE.md) ·
+[Notebook](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb)
+
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
+## Current runnable path — 1.16.0
 
-**Mode:** Offline sample. Extracts simple signals from bundled historical CSV samples.
-
-**Prerequisites:** Python 3.11–3.13; installed project dependencies.
-
-After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+**Mode: Offline learning lab.** Python 3.11–3.13; the supported lab uses only the standard library.
+No API key, model, Docker service, paid provider, package download or GPU is needed after obtaining the source.
+From the repository root:
 
 ```bash
-python -m alpha_factory_v1.demos check era_of_experience
-python -m alpha_factory_v1.demos run era_of_experience
+python -m alpha_factory_v1.demos.era_of_experience --list
+python -m alpha_factory_v1.demos.era_of_experience --case build-routing --output experience-runs
+python -m alpha_factory_v1.demos.era_of_experience --serve
 ```
 
-The catalog command uses bundled inputs and explicit offline defaults.
+Open **http://127.0.0.1:7860/era_of_experience/** for the same browser lab served from packaged local assets.
+Stop it with Ctrl+C. Use `--port 7861` if 7860 is occupied. The installed console command is `experience-lab`.
+The repository catalog also supports `python -m alpha_factory_v1.demos run era_of_experience`.
 
-**Expected result:** Yield-curve and supply-chain sample signals with a heuristic selection.
+Expected: 240 training interactions, two separate 180-episode evaluation suites, six review gates,
+and six evidence files in a SHA-256-named directory. In the bundled build-routing case all six gates
+pass; the candidate remains **unapproved** and the active policy remains the baseline.
 
-**Scope:** Static historical samples, not current market data or recommendations.
-
-The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+**Scope:** synthetic contextual-bandit learning, with finite memory and evaluation. This is not a
+live sensor integration, LLM training system, general intelligence or permission to deploy a policy.
 <!-- CURRENT-DEMO:END -->
 
+## First five minutes
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
-
-
-<!--
-Era‑of‑Experience Demo
-Alpha‑Factory v1 👁️✨ — Multi‑Agent AGENTIC α‑AGI
-Out‑learn · Out‑think · Out‑strategise · Out‑execute
-© 2025 MONTREAL.AI   Apache‑2.0 License
--->
-
-
-<h1 align="center">🌌 Era of Experience — Your lifelong‑RL playground</h1>
-<p align="center">
- <em>Spin up a self‑improving multi‑agent spine in <strong>one command</strong>.<br>
- Watch it plan, act &amp; learn in real‑time — on your laptop or in the cloud.</em>
-</p>
-
-> “AI will eclipse the limits of human‑authored data only when agents <strong>act, observe, and adapt</strong> in the world.” — David Silver &amp; Richard S. Sutton 
-
-This demo distils that manifesto into <strong>Alpha‑Factory v1</strong>. 
-Within 60 seconds you will witness an agent <em>rewrite its own playbook</em> every few turns, powered by grounded rewards, long‑range memory and model‑agnostic planning — no dedicated GPU required.
-
----
-
-## 🛠 Requirements
-
-- **Docker 24+** with the Compose plugin
-- At least **4 CPU cores** (or a modest GPU) for smooth local runs
-- **Python 3.11 or 3.12** available as `python3` for environment checks
-- Run `python3 ../../../check_env.py --demo era_experience --auto-install` and
-  ensure it completes successfully before starting the Docker stack.
-- *(Optional)* `OPENAI_API_KEY` for cloud LLMs — leave blank to use the built‑in Mixtral via Ollama
-- If running without `run_experience_demo.sh`, install the
-  dependencies from `requirements.txt` and ensure the **OpenAI Agents SDK** is pinned at version `0.0.17`:
-  ```bash
-  pip install -r requirements.txt
-  pip install 'openai-agents==0.0.17'
-  ```
-  `check_env.py` validates the SDK version (see also `alpha_factory_v1/scripts/preflight.py`).
-  Then, you can run the script directly with a command like:
-  ```bash
-  SAMPLE_DATA_DIR=/path/to/csvs python agent_experience_entrypoint.py
-  ```
-
----
-
-## 🚀 Quick‑start (macOS / Windows / Linux)
+1. Choose **Build routing** and inspect the learned actions for documentation, test suites and native extensions.
+2. Move the interaction slider to see the action, completion, incident, cost, proxy and reward for each training step.
+3. Change exploration or memory, then select **Run experiment**. Pending settings disable exports.
+4. Choose **The reward trap**. The shortcut raises reward but breaches the independently measured incident ceiling.
+5. Download the review bundle. Import `run.json` to recompute it, or verify it in Python:
 
 ```bash
-git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/era_of_experience
-python3 ../../../check_env.py --demo era_experience --auto-install
-chmod +x run_experience_demo.sh
-./run_experience_demo.sh      # ← THAT’S IT
-
-```
-Ensure the environment check finishes successfully before starting the Docker stack.
-
-Add `--live` to pull in real sensor feeds (wearables, RSS, etc.):
-
-```bash
-./run_experience_demo.sh --live
+python -m alpha_factory_v1.demos.era_of_experience --verify experience-runs/<run-sha256>/run.json
 ```
 
-1. **Docker Desktop** builds a 300 MB image in ≈ 1 min. 
-2. Your browser opens **http://localhost:7860** featuring 
-  * live trace‑graph 🪄
-  * reward dashboards 📈
-  * interactive chat / tool console 💬
-  * built‑in alpha detectors (yield curve & supply‑chain) 🔍 — they read from
-    `alpha_factory_v1/demos/macro_sentinel/offline_samples/`, and the CSV
-snapshots are already included in the repository
+Use the hash directory printed by your command in place of `<run-sha256>`.
+Import accepts a complete `scenario.json` or `run.json` up to 1 MB. Duplicate keys, unknown fields,
+non-finite values, invalid UTF-8, oversized structures and altered results are rejected.
+A rehashed forgery is also rejected because verification reruns the experiment.
 
-> **Offline/Private mode** — leave `OPENAI_API_KEY=` blank in <code>config.env</code>; the stack falls back to <strong>Ollama ✕ Mixtral‑8x7B</strong> and stays air‑gapped.
+## What the agent actually learns
 
-Customize the dataset directory by exporting `SAMPLE_DATA_DIR` (see
-`config.env.sample`) before launching the script:
+This is a **contextual bandit**, a deliberately bounded form of learning from interaction. Contexts
+cycle in their declared order. Every action is tried once in each context before epsilon-greedy
+selection begins. Exploration samples an action; exploitation chooses the largest observed mean
+reward. Ties use the earlier action in the scenario. Only the selected action's outcome enters memory.
+The learner never reads the environment's success or incident probabilities.
 
-```bash
-SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
-```
-
-### 📒 Interactive notebook demo
-
-Run the self-contained Colab notebook to launch the experience demo without any local setup.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb)
-
-## Offline Setup
-
-When running without internet access:
-
-1. Pre-download `wearable_daily.csv` and `edu_progress.csv` from the
-   <a href="https://github.com/MontrealAI/demo-assets">demo-assets</a> repository.
-2. Place both files in `offline_samples/` before executing
-   <code>./run_experience_demo.sh</code> so the orchestrator can read them.
-3. Build a wheelhouse on an online machine:
-   ```bash
-   pip wheel -r requirements.txt -w /media/wheels
-   ```
-   Copy `/media/wheels` to the offline host.
-4. Run the environment check with the wheelhouse:
-   ```bash
-   python ../../../check_env.py --auto-install --wheelhouse /media/wheels
-   ```
-5. If the environment check still cannot reach PyPI, set `SKIP_ENV_CHECK=1` to
-   skip that step:
-   ```bash
-   SKIP_ENV_CHECK=1 ./run_experience_demo.sh
-   ```
-
-Offline test workflow (after copying `/media/wheels`):
-
-- **Build** the wheel cache on a machine with internet access as shown above.
-- **Set** `WHEELHOUSE=/media/wheels` and run:
-  ```bash
-  python ../../../check_env.py --auto-install --wheelhouse "$WHEELHOUSE"
-  ```
-- **Run** the unit tests with the wheelhouse available:
-  ```bash
-  WHEELHOUSE=$WHEELHOUSE pytest -q
-  ```
-
-
-### 🔧 Configure &amp; advanced usage
-
-1. Copy the sample environment file and tweak as desired:
-
-   ```bash
-   cp config.env.sample config.env
-   $EDITOR config.env      # set OPENAI_API_KEY, MODEL_NAME, PG_PASSWORD, LOGLEVEL, LIVE_FEED, etc.
-   ```
-You may override the path for built-in offline samples by exporting
-`SAMPLE_DATA_DIR` before launching the demo:
-
-```bash
-SAMPLE_DATA_DIR=/path/to/csvs ./run_experience_demo.sh
-```
-
-Sample CSVs (`wearable_daily.csv`, `edu_progress.csv`) are shipped in
-`offline_samples/` so the demo also works without internet access.
-
-2. Enable real-time collectors and metrics with the `--live` flag:
-
-   ```bash
-   ./run_experience_demo.sh --live
-   ```
-
-   (equivalent to setting `LIVE_FEED=1` in `config.env`)
-
-   The orchestrator automatically switches to offline mode whenever
-   `OPENAI_API_KEY` is left empty.
-
-3. Launch Prometheus and Grafana with the `--profile observability` option:
-
-   ```bash
-   docker compose --profile observability up
-   ```
-
-   Or set `COMPOSE_PROFILES=observability` when running
-   `./run_experience_demo.sh`. The Grafana dashboard is available at
-   `http://localhost:3001` (password `experience`).
-
-4. Override service endpoints when customizing deployments:
-
-   - `LLM_BASE_URL` changes the Ollama API base URL when `OPENAI_API_KEY` is unset.
-   - `PG_PASSWORD` sets the TimescaleDB password for the live-feed logger.
-
-   These keys are documented in `config.env.sample` and can be exported on the
-   command line:
-
-   ```bash
-   LLM_BASE_URL=http://my-ollama:11434/v1 PG_PASSWORD=secret \
-       ./run_experience_demo.sh
-   ```
-
-### Environment variables
-
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `OPENAI_API_KEY` | _(empty)_ | API key for hosted models. Offline mode is used when empty. |
-| `MODEL_NAME` | `gpt-4o-mini` | Planner model name. |
-| `TEMPERATURE` | `0.40` | LLM sampling temperature. |
-| `MAX_TOKENS` | `4096` | Token limit for reasoning and tool calls. |
-| `OLLAMA_MODEL` | `mixtral:instruct` | Offline fallback model pulled by Ollama. |
-| `LLM_BASE_URL` | `http://ollama:11434/v1` | Override the local LLM endpoint. |
-| `STREAM_RATE_HZ` | `1` | Synthetic experience events per second. |
-| `LIVE_FEED` | `0` | Set to `1` to mix in real sensor/web data. |
-| `FITNESS_REWARD_WEIGHT` | `0.50` | Weight on `fitness_reward()`. |
-| `EDUCATION_REWARD_WEIGHT` | `0.50` | Weight on `education_reward()`. |
-| `PG_PASSWORD` | `alpha` | TimescaleDB password for the live-feed logger. |
-| `LOGLEVEL` | `INFO` | Logging verbosity. |
-| `PORT` | `7860` | Web UI port. |
-| `CONNECTIVITY_TEST_URL` | `https://example.com` | Probe used to detect internet access. |
-
----
-
-## 🎓 Run on Colab (zero install)
-
-| Notebook | Runtime | Launch |
-|----------|---------|--------|
-| `colab_era_of_experience.ipynb` | CPU / GPU | <a href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/colab_era_of_experience.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a> |
-
-The notebook installs a lean Python stack (&lt; 120 s), exposes Gradio via ngrok and lets you call tools directly from cells. It automatically verifies the runtime with `check_env.py` and runs the unit tests so you can confirm everything works. Example cells illustrate detecting "alpha" opportunities using the offline yield curve **and** a toy supply‑chain flow snapshot.
-
----
-
-## ✨ What’s new & why it matters
-
-| Silver &amp; Sutton’s pillar | How we realise it |
-|---------------------------|--------------------|
-| **Streams of experience** | Infinite generator feeding month‑long synthetic logs |
-| **Sensor‑motor actions** | Tools (`web_search`, `plan_meal`, user chat) mutate state |
-| **Grounded rewards**   | Plug‑ins: <code>fitness_reward</code>, <code>education_reward</code>, <code>curiosity_reward</code>, … (hot‑reloaded) |
-| **Non‑human reasoning**  | Monte‑Carlo Tree Search planner + vector memory — no CoT imitation |
-
-Result: an agent that <strong>evolves faster than you can refresh the page</strong>.
-
----
-
-## 🛠 Architecture in 60 seconds
+The environment samples completion and incident independently using the selected action's model.
+Resource cost and proxy score are declared simulation units. The reward is:
 
 ```text
-┌────────────┐ experience  ┌────────────────┐
-│ Generator │ ────────────▶ │ Orchestrator ⚙ │──┐
-└────────────┘        └────────────────┘ │ tool‑calls
-    ▲               ▲    ▼
- reward│           ┌──────────┐ ┌───────────┐
-    │           │ Planner ♟ │ │ Tools  │
-    └──────────────────────┴──────────┴─────────────┘
+1,000 × completion − cost × costWeight − incident × incidentPenalty + proxy × proxyWeight
 ```
 
-* **OpenAI Agents SDK** — composable tool‑calling, function schemas, memory  
-* **A2A protocol** — future‑proof multi‑agent hand‑offs  
-* **Model Context Protocol** — streaming context for huge traces  
-* **Best‑practice guardrails** from OpenAI *Practical Guide to Building Agents*  
+Memory retains the latest `memoryWindow` rewards **per context and action**, not a global time window.
+Rarely used actions can retain old observations; exploration is needed to revisit them after change.
+This model has immediate rewards and no action-dependent next state. It does not implement MCTS,
+long-horizon credit assignment, a learned world model or neural-network training.
 
----
+```mermaid
+flowchart TD
+    S["Scenario and seed"] --> A["Select action"]
+    M["Bounded observation memory"] --> A
+    A --> E["Simulated environment"]
+    E --> O["Observed outcome and reward"]
+    O --> M
+    M --> P["Freeze candidate policy"]
+    P --> H["Held-out evaluation"]
+    P --> R["Original-environment retention"]
+    H --> G{"Six review gates"}
+    R --> G
+    G -->|"Pass"| V["Independent review required"]
+    G -->|"Fail"| B["Hold baseline"]
+    V --> B
+```
 
-## 🗂 Repo map
+The original architecture drawing and all original narrative are retained in
+[the research archive](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/RESEARCH_ARCHIVE.md). The new diagram describes the implemented loop.
 
-| Path / file | What it does |
-|-------------|--------------|
-| `agent_experience_entrypoint.py` | boots orchestrator + Gradio |
-| `run_experience_demo.sh` | 1‑liner prod launcher (health‑gated) |
-| `docker-compose.experience.yml` | orchestrator + Ollama services |
-| `reward_backends/` | 🍬 Drop‑in reward plug‑ins (auto‑discovery) |
-| `simulation/` | Tiny Gym‑like env stubs (ready to extend) |
-| `stub_agents.py` | Minimal agent classes for OpenAI SDK & ADK workflows |
-| `colab_era_of_experience.ipynb` | Cloud twin notebook |
-| `alpha_report.py` | CLI helper printing current offline alpha signals |
+## Environments and review gates
 
-Run it with local CSVs:
+| Case | Question | Expected bundled outcome |
+|---|---|---|
+| `build-routing` | Which bounded build response works for each queue? | Ready for independent review |
+| `sensor-triage` | Which simulated response resolves each sensor alert? | Ready for independent review |
+| `reward-trap` | Can a proxy hide unsafe shortcuts? | Hold: incident ceiling breached |
+| `environment-shift` | Can finite memory adapt after cache invalidation? | Ready for independent review; inspect retention |
+
+These are constructed cases, not measurements from a deployed service. The complete environment
+and its assumptions are editable under **Edit the environment and review gates**.
+
+| Gate | Exact comparison |
+|---|---|
+| Held-out gain | Candidate total reward − baseline total reward ≥ `minGain × evaluationSteps` |
+| Incidents | Candidate incidents × 10,000 ≤ `maxIncidentBps × evaluationSteps` |
+| Success | Candidate completions × 10,000 ≥ `minSuccessBps × evaluationSteps` |
+| Cost | Candidate total cost ≤ `maxMeanCost × evaluationSteps` |
+| Coverage | Each selected action retains at least `minSamples` training observations in its context |
+| Retention | Candidate − baseline reward on the original environment ≥ `−maxRetentionLoss × evaluationSteps` |
+
+The training seed uses xorshift32; held-out and retention streams start from that seed XOR
+`0x9E3779B9` and `0xA341316C`, respectively (zero maps to one). Each evaluation episode gives the
+baseline and candidate the same random draws. Evaluation never updates memory. All comparisons
+use integer arithmetic; graph rounding does not affect decisions. Python and JavaScript exports
+must match byte for byte.
+
+Do not tune settings or select a seed after inspecting evaluation and call the result independent.
+The included gates are engineering checks on one finite simulation, not confidence bounds.
+An external reviewer needs fresh seeds, representative environments, explicit acceptance criteria,
+and authenticated authority before any deployment. The lab never promotes a policy automatically.
+
+## Evidence and the Ascension vision
+
+The six-file bundle contains:
+
+| File | Purpose |
+|---|---|
+| `scenario.json` | Exact environment, seed, reward and gate settings |
+| `run.json` | Complete training trace, bounded memory, both evaluation traces, gates and SHA-256 |
+| `policy-proposal.json` | Candidate and active baseline, bound to the input hash; state `UNAPPROVED` |
+| `jobs.json` | An input-bound, unsubmitted independent-review job |
+| `review.md` | Human-readable findings and operating boundaries |
+| `SHA256SUMS` | Digests of the other five files |
+
+The job follows goal ↔ success metric ↔ bounty. Its draft bounty is denominated in $AGIALPHA;
+no funds are held or transferred. It can be compiled through the separately operated Ascension path:
 
 ```bash
-python alpha_report.py --data-dir path/to/offline_samples
+alpha-agent ascension-compile experience-runs/<run-sha256>/jobs.json --output fusion-plan.json
 ```
 
----
+See [Ascension protocol](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/ASCENSION_PROTOCOL.md) for Insight → Nova-Seeds → MARK →
+Sovereign → marketplace, staked agent and validator identities, and the 1% payout burn. An exported
+hash is neither a signature nor validator approval. This lab provides the experience and review
+boundary; it does not mint, cryptoseal, trade, attest compliance, submit jobs or settle payouts.
 
-## 🔌 Extending
+Existing hash directories are reused only if every file matches. Incomplete, edited or symlinked
+runs are refused without overwriting them. Choose a new `--output` directory to retain a separate run.
+Browser drafts are saved only when you select **Save settings**; **Clear saved settings** removes them.
+Portable exports remain the recommended record. Browser offline reload works after the complete
+page cache has installed; the local Python server and native CLI need no page cache.
 
-* **Add a reward**
+## Preserved research paths
+
+Nothing in the original research has been removed. These paths remain available with clear scope:
+
+- [Original README, architecture, benchmarks and roadmap](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/RESEARCH_ARCHIVE.md).
+- [Original notebook](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/research_notebook_archive.ipynb), unchanged. The main notebook now exercises the supported lab.
+- [Original browser presentation](https://montrealai.github.io/AGI-Alpha-Agent-v0/era_of_experience/research.html),
+  including the replay chart and links to its sample assets.
+- `alpha_report.py` and `alpha_detection.py`: historical CSV heuristics, not current market intelligence.
+- `reward_backends/`: historical heuristic plugins. The registry now rejects non-finite or out-of-range outputs.
+- `simulation/SimpleExperienceEnv` and `stub_agents.py`: extension sketches, not the new learner.
+- `agent_experience_entrypoint.py`, the Docker Compose file and observability templates: historical optional
+  SDK/service integration. They require porting to a concrete supported provider and real collectors.
+
+The supported shell launcher now starts the local lab:
 
 ```bash
-cp reward_backends/template.py reward_backends/my_reward.py
-$EDITOR reward_backends/my_reward.py   # implement reward()
+./alpha_factory_v1/demos/era_of_experience/run_experience_demo.sh
 ```
 
-* **Register a tool**
+`--legacy` explicitly invokes the byte-preserved historical Docker launcher. It can download images
+and models and uses historical service defaults; absence of an API key does **not** make that path
+air-gapped. Its `--live` flag was a synthetic integration sketch, not real wearable or RSS collection.
+The archived MCTS, live integrations, benchmark and deployment claims are not acceptance evidence for this release.
 
-```python
-from openai_agents import Tool
-
-@Tool(name="place_trade", description="Execute an equity order on Alpaca")
-async def place_trade(ticker:str, qty:int, side:str="BUY"): ...
-```
-
-This demo ships with a minimal example:
-
-```python
-@Tool("detect_yield_curve_alpha", "Assess yield curve inversion using offline data.")
-async def detect_yield_curve_alpha_tool():
-    return {"alpha": detect_yield_curve_alpha()}
-
-@Tool("detect_supply_chain_alpha", "Check for potential supply-chain disruptions using offline data.")
-async def detect_supply_chain_alpha_tool(threshold: float = 50.0):
-    return {"alpha": detect_supply_chain_alpha(threshold)}
-```
-
-* **Run in simulation**
-
-The `simulation` package ships with `SimpleExperienceEnv`, a tiny
-Gym-like environment for experimenting with offline loops:
-
-```python
-from alpha_factory_v1.demos.era_of_experience.simulation import SimpleExperienceEnv
-
-env = SimpleExperienceEnv()
-state = env.reset()
-for _ in range(3):
-    state, reward, done, info = env.step("act")
-    print(state, reward)
-```
-
-* **Prototype a custom agent**
-
-  `stub_agents.py` contains minimal classes
-  (`ExperienceAgent`, `FederatedExperienceAgent`) illustrating how to build
-  on the OpenAI SDK and Google ADK respectively.
-
-
-* **Cluster‑scale**
+## Verification and troubleshooting
 
 ```bash
-docker compose --profile gpu --scale orchestrator=4 up --build
+python -m pytest --noconftest -o addopts= tests/test_experience_lab.py tests/test_experience_delivery.py -q
+python -m scripts.validate_experience_core --output evidence/experience-core
+python -m scripts.validate_experience --site site --output evidence/experience-browser \
+  --axe-script tests/browser/node_modules/axe-core/axe.min.js
 ```
 
-Shared Redis memory + A2A = emergent cooperation.
+The latter two require Node 22.17.1 and the locked browser/development environment; the browser
+check uses the built MkDocs site. Runtime usage itself does not need those tools.
 
----
+| Symptom | Next step |
+|---|---|
+| Python version outside 3.11–3.13 | Create a supported interpreter environment; do not install the legacy SDK to fix the lab |
+| Port already in use | Add `--serve --port 7861`; the server binds only to `127.0.0.1` |
+| Export is disabled | Run changed settings, or apply/discard pending JSON edits |
+| Memory gate fails | Increase training or memory; retained observations, not lifetime visits, count |
+| Shift point exceeds training length | Lower `shiftAt` in the scenario or increase training interactions |
+| Import fails | Use UTF-8 JSON in the exact schema; import `run.json`, not the ZIP or policy proposal |
+| Offline page unavailable | Use the packaged `--serve` command or obtain the complete page online once |
+| Storage is blocked | Use JSON/ZIP exports; saving browser settings is optional |
 
-## 🛡 Security & Compliance
-
-* Non‑root container; no Docker‑in‑Docker. 
-* Secrets isolated in `config.env`, never baked into images. 
-* Opt‑in telemetry only; default is **OFF**. 
-* `/__live` returns **200 OK** for K8s, Traefik, Nginx health probes. 
-* <code>safety_compliance_reward.py</code> penalises violations and rewards self‑correction.
-
----
-
-## 📈 Benchmarks (o3‑mini, 8×CPU vCPU)
-
-| Metric | 1‑agent | 4‑agent swarm |
-|--------|---------|---------------|
-| Decisions / min | 38 | 124 |
-| Avg reward | 0.43 | 0.57 |
-| Latency P50 | 520 ms | 730 ms |
-
-*(Synthetic workload; see `benchmarks/` for scripts)*
-
----
-
-## ✅ Tests
-
-Verify the demo locally with Python's builtin test runner:
-
-```bash
-python -m unittest tests.test_era_experience
-```
-
-Run `python ../../../check_env.py --demo era_experience --auto-install` first and make sure it
-completes successfully before running any tests. Tests will fail if core
-packages such as `numpy` are missing, in addition to optional ones like
-`pytest` and `openai-agents`.
-
----
-
-## 🗺 Road‑map
-
-- [ ] Plug‑and‑play Gym‑Retrowrapper for atari‑style sims 
-- [ ] Vector‑DB eviction policy learning 
-- [ ] Live reward tuning UI 
-- [ ] WASM build for edge devices 
-
----
-
-## 📜 License
-
-Apache 2.0. By using this repo you agree to cite **Montreal.AI Alpha‑Factory** if you build on top.
-
-> **Alpha‑Factory** — forging intelligence that *out‑learns, out‑thinks, out‑executes*.
-
----
-
-**Contributor checklist** — run `pre-commit`, `python ../../../check_env.py --auto-install`, and `pytest -q` before submitting any changes. See [AGENTS.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md) for the full contributor guide.
+Inspired by David Silver and Richard S. Sutton's **Welcome to the Era of Experience** (2025):
+[author's publication page](https://davidstarsilver.wordpress.com/perspectives/) and
+[original chapter](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf).
+The chapter motivates experiential learning; it does not validate this simulator or imply the complete
+research agenda has been achieved. Apache-2.0; original attribution is retained in the archive.
 
 [View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/era_of_experience/README.md)

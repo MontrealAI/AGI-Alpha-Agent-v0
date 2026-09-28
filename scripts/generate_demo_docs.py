@@ -49,6 +49,8 @@ def build_page(demo: Path) -> str:
             if candidate.exists():
                 preview = f"../{demo.name}/assets/{candidate.name}"
                 break
+    if demo.name == "era_of_experience":
+        preview = "../era_of_experience/assets/lab-preview.svg"
     if not preview:
         preview = DEFAULT_PREVIEW
 
@@ -80,6 +82,8 @@ def build_page(demo: Path) -> str:
             cleaned.append(line)
             continue
         if "DISCLAIMER_SNIPPET.md" in stripped:
+            continue
+        if demo.name == "era_of_experience" and stripped.startswith("![preview]("):
             continue
         if not removed_title and TITLE_RE.match(stripped):
             removed_title = True

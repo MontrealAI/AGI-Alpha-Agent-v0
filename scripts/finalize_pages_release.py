@@ -12,6 +12,7 @@ import zipfile
 from scripts.ascension_protocol_evidence import verify_report as verify_protocol_report
 from scripts.business3_evidence import verify_report as verify_business3_report
 from scripts.discovery_evidence import verify_report as verify_discovery_report
+from scripts.experience_evidence import verify_report as verify_experience_report
 from scripts.governance_evidence import verify_report as verify_governance_report
 
 
@@ -35,6 +36,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     business3 = None
     governance = None
     discovery = None
+    experience = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -203,6 +205,11 @@ def finalize(folder: Path, evidence: Path) -> None:
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 15, 0):
         discovery = json.loads((evidence / "public-pages" / "discovery" / "discovery.json").read_text(encoding="utf-8"))
         verify_discovery_report(discovery, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 16, 0):
+        experience = json.loads(
+            (evidence / "public-pages" / "experience" / "experience.json").read_text(encoding="utf-8")
+        )
+        verify_experience_report(experience, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -219,6 +226,12 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if experience:
+        manifest["public_experience"] = experience
+        manifest["release_gates"].append(
+            "public Experience Lab exact learning, six-file exports, independent review gates, "
+            "accessibility and offline replay"
+        )
     if discovery:
         manifest["public_discovery"] = discovery
         manifest["release_gates"].append(

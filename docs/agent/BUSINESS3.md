@@ -2,7 +2,7 @@
 
 # Business 3 — a plan with its assumptions attached
 
-**Release 1.15.0.** [Open Enterprise Studio](../alpha_agi_business_3_v1/index.html),
+**Release 1.16.0.** [Open Enterprise Studio](../alpha_agi_business_3_v1/index.html),
 choose a case and select **Calculate the portfolio**. No account, wallet or API key is needed.
 Change capital, staffing, review time, job budget and downside assumptions; then calculate again.
 Expand a candidate to edit its costs, three annual cash flows, resource needs and evidence score.

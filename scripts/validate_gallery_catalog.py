@@ -29,8 +29,9 @@ def validate(site: Path, output: Path) -> dict[str, object]:
     output.mkdir(parents=True, exist_ok=True)
     pages = sorted(
         page
-        for page in site.rglob("index.html")
-        if "alpha_agi_insight_v1" not in page.parts
+        for page in site.rglob("*.html")
+        if page.name in {"index.html", "research.html"}
+        and "alpha_agi_insight_v1" not in page.parts
         and 'id="chart"' in page.read_text(encoding="utf-8")
         and (page.parent / "assets" / "logs.json").is_file()
     )

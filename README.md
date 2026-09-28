@@ -1,3 +1,7 @@
+**Version 1.16.0 adds the Experience Learning Lab.**
+Act, observe, learn, and challenge a frozen candidate with reproducible outcomes and independent review gates.
+[Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/era_of_experience/) · [Guide](docs/agent/EXPERIENCE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.16.0.md).
+
 **Version 1.15.0 adds the Insight Discovery Workbench.**
 Review cross-sector hypotheses, inspect source assumptions, allocate review time and export reproducible dossiers,
 verification jobs and plaintext Nova-Seed drafts. [Open the workbench](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v0/) ·

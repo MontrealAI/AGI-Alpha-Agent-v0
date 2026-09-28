@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Demo validation and honest execution modes — 1.15.0
+# Demo validation and honest execution modes — 1.16.0
 
 Start with the [demo walkthrough](DEMOS.md) for installation, prerequisite checks, browser experiences
 and the complete Ascension lifecycle. The release retains all 26 entries and tests the 15 finite offline
