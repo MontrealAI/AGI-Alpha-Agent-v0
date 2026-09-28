@@ -140,11 +140,16 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
     studio_path = REPO_ROOT / "docs/assets/studio/cases.json"
     if studio_path.is_file():
         for case in json.loads(studio_path.read_text()):
-            if md_file.stem in case["legacy"] and md_file.stem != "alpha_agi_business_3_v1":
+            if md_file.stem in case["legacy"] and md_file.stem not in {
+                "alpha_agi_business_3_v1",
+                "alpha_agi_insight_v0",
+            }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
                 link = f'studio/?case={case["id"]}'
                 break
+    if md_file.stem == "alpha_agi_insight_v0":
+        preview = "assets/discovery/preview.svg"
     return str(title), preview, link, summary
 
 
@@ -332,6 +337,9 @@ def main() -> None:
     governance = importlib.import_module("scripts.generate_governance" if __package__ else "generate_governance")
     if (REPO_ROOT / "scripts/templates/governance.html").is_file():
         governance.build(REPO_ROOT)
+    discovery = importlib.import_module("scripts.generate_discovery" if __package__ else "generate_discovery")
+    if (REPO_ROOT / "scripts/templates/discovery.html").is_file():
+        discovery.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)

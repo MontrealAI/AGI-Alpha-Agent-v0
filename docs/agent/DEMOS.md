@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.14.0.** The canonical directory is
+**Version 1.15.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.

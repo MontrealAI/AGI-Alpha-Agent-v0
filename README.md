@@ -1,3 +1,9 @@
+**Version 1.15.0 adds the Insight Discovery Workbench.**
+Review cross-sector hypotheses, inspect source assumptions, allocate review time and export reproducible dossiers,
+verification jobs and plaintext Nova-Seed drafts. [Open the workbench](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v0/) ·
+[Guide](docs/agent/DISCOVERY.md) · [Release notes](docs/agent/RELEASE_NOTES_1.15.0.md).
+Original research, diagrams and launchers remain available.
+
 **Version 1.14.0 adds a complete Governance Workbench.**
 [Review a proposal](https://montrealai.github.io/AGI-Alpha-Agent-v0/solving_agi_governance/), inspect nine conditional gates, challenge adversarial cases, and export reproducible evidence with input-bound validator jobs.
 The original manuscripts, diagrams, simulator and research presentation remain available.

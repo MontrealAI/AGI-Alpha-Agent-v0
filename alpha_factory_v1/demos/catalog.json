@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.14.0",
+  "release": "1.15.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -99,26 +99,27 @@
     },
     {
       "id": "alpha_agi_insight_v0",
-      "title": "Insight v0",
-      "mode": "Offline simulation",
-      "summary": "Searches a toy sector-scoring landscape.",
+      "title": "Insight Discovery Workbench",
+      "mode": "Local evidence review",
+      "summary": "Screen cross-sector hypotheses, allocate review time and export input-bound verification jobs and plaintext Nova-Seed drafts.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.alpha_agi_insight_v0",
-        "--offline",
-        "--episodes",
-        "3",
-        "--seed",
-        "42"
+        "alpha_factory_v1.demos.alpha_agi_insight_v0.discovery_cli",
+        "--case",
+        "public-software",
+        "--output",
+        "{output}/insight-review"
       ],
-      "expected": "Three episodes, best sector and a ranked table.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
-      "limitations": "Scores are simulated, not forecasts or calibrated investment probabilities.",
+      "expected": "Reproducible review portfolio and six evidence files; jobs remain unsubmitted.",
+      "prerequisites": "Python 3.11–3.13; source checkout. Discovery uses the standard library.",
+      "limitations": "Synthetic starter assumptions; supplied source coverage is not authentication. Scores are not probabilities or valuations. Drafts are unminted and unfunded.",
       "smoke": true,
       "environment": {},
       "required_modules": [],
-      "assets": [],
+      "assets": [
+        "alpha_agi_insight_v0/scenarios.json"
+      ],
       "offline": true
     },
     {

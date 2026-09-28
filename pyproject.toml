@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alpha-factory-v1"
-version = "1.14.0"
+version = "1.15.0"
 description = "AGIALPHA Agent: evidence-driven missions, evolutionary optimization and operator controls"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -44,6 +44,7 @@ namespaces = true
 [project.scripts]
 alpha-agent = "alpha_factory_v1.core.runtime.cli:main"
 alpha-factory = "alpha_factory_v1.run:run"
+insight-workbench = "alpha_factory_v1.demos.alpha_agi_insight_v0.discovery_cli:main"
 governance-workbench = "alpha_factory_v1.demos.solving_agi_governance.cli:main"
 governance-sim = "alpha_factory_v1.demos.solving_agi_governance.governance_sim:main"
 edge-runner = "alpha_factory_v1.edge_runner:main"

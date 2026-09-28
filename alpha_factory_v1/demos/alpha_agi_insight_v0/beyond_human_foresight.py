@@ -4,14 +4,7 @@
 # and do not indicate the presence of a real general intelligence.
 # Use at your own risk. Nothing herein constitutes financial advice.
 # MontrealAI and the maintainers accept no liability for losses incurred.
-"""Launch the Beyond Human Foresight variant of the α‑AGI Insight demo.
-
-This thin wrapper prints a short banner then delegates to
-:mod:`official_demo_final`, inheriting automatic environment
-verification, optional OpenAI Agents SDK integration and graceful
-offline mode.  The behaviour mirrors ``alpha-agi-insight-final`` while
-providing a flashier startup message.
-"""
+"""Preserved Insight launcher; local execution is default and provider/runtime use is explicit."""
 from __future__ import annotations
 
 from typing import List
@@ -29,7 +22,6 @@ from .openai_agents_bridge import print_banner
 
 def main(argv: List[str] | None = None) -> None:
     """Entry point for the Beyond Human Foresight demo."""
-    print_banner()
     _main(argv)
 
 

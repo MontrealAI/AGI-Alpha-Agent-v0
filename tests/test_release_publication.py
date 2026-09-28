@@ -18,6 +18,7 @@ import pytest
 
 from scripts import finalize_pages_release, publish_agent_release, release_context
 from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence, governance_evidence
+from scripts import discovery_evidence
 
 
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
@@ -60,6 +61,8 @@ def test_every_current_workspace_uses_the_release_version() -> None:
         "bloom/",
         "compounding/",
         "alpha_agi_business_3_v1/",
+        "alpha_agi_insight_v0/",
+        "alpha_factory_v1/demos/alpha_agi_insight_v0/",
         "solving_agi_governance/",
         "alpha_factory_v1/demos/solving_agi_governance/",
         "alpha_factory_v1/demos/ascension-protocol/",
@@ -270,6 +273,10 @@ def test_invalid_package_version_cannot_publish(
         *[
             ("1.14.0", problem)
             for problem in (None, "governance-failed", "governance-check", "governance-asset", "governance-cases")
+        ],
+        *[
+            ("1.15.0", problem)
+            for problem in (None, "discovery-failed", "discovery-check", "discovery-asset", "discovery-cases")
         ],
         ("1.7.0", "bloom-origin"),
         ("1.7.0", "bloom-check"),
@@ -595,6 +602,31 @@ def test_public_evidence_requires_same_commit_and_intact_package(
             key, value = changes[problem]
             governance[key] = value
         (target / "governance.json").write_text(json.dumps(governance))
+    if tuple(map(int, version.split("."))) >= (1, 15, 0):
+        target = evidence / "public-pages" / "discovery"
+        target.mkdir()
+        discovery = {
+            "schema": discovery_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(discovery_evidence.CHECKS),
+            "assets": discovery_evidence.asset_hashes(),
+            "cases": discovery_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "discovery-failed": ("passed", False),
+            "discovery-check": ("checks", []),
+            "discovery-asset": ("assets", {}),
+            "discovery-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            discovery[key] = value
+        (target / "discovery.json").write_text(json.dumps(discovery))
     before = {p.name: p.read_bytes() for p in folder.iterdir()}
     if problem:
         with pytest.raises(ValueError):

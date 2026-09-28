@@ -1,0 +1,1652 @@
+[
+  {
+    "schema": "agialpha.insight.scenario.v1",
+    "id": "public-software",
+    "title": "Where should the next hour of review go?",
+    "note": "Constructed cross-sector opportunities and synthetic source excerpts. All signal ranges, review times and bounties are authored assumptions. No external market data is fetched.",
+    "weights": {
+      "demand": 3000,
+      "feasibility": 3000,
+      "readiness": 2500,
+      "advantage": 1500
+    },
+    "policy": {
+      "reviewMinutes": 60,
+      "minScoreBps": 5000,
+      "minCoverageBps": 10000,
+      "jobBountyTokens": 50
+    },
+    "sources": [
+      {
+        "id": "demand-fixture",
+        "title": "Demand assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic demand ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "feasibility-fixture",
+        "title": "Feasibility assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic feasibility ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "readiness-fixture",
+        "title": "Readiness assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic readiness ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "advantage-fixture",
+        "title": "Advantage assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic advantage ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "api-migration",
+        "sector": "Software infrastructure",
+        "title": "Make API migration reviewable",
+        "thesis": "A failing migration consumes expert attention; verified compatibility tooling can remove repeated work.",
+        "goal": "Build and verify an API compatibility migration kit.",
+        "successMetric": "Run 120 synthetic compatibility cases across the declared API versions; retain every failure and prove zero undocumented behavior changes.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6800,
+            "base": 8000,
+            "high": 8800,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "grid-queue",
+        "sector": "Energy",
+        "title": "Turn grid queues into an evidence map",
+        "thesis": "Public queue tables can support reproducible bottleneck analysis before infrastructure decisions.",
+        "goal": "Reproduce a public grid-queue bottleneck analysis.",
+        "successMetric": "Reconcile 500 synthetic queue records exactly, retain source provenance, and reproduce all tables and constraint classifications with independent review.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6000,
+            "base": 7200,
+            "high": 8000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "materials-repro",
+        "sector": "Scientific discovery",
+        "title": "Make a materials claim reproducible",
+        "thesis": "A reproducible numerical pipeline can expose where a promising scientific claim stops holding.",
+        "goal": "Build a materials-model numerical reproduction.",
+        "successMetric": "Reproduce three declared synthetic benchmark curves within 1 percent, report sensitivity and failed regimes, and retain executable environment instructions.",
+        "reviewMinutes": 35,
+        "signals": {
+          "demand": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "supply-stress",
+        "sector": "Manufacturing",
+        "title": "Stress-test a brittle supply plan",
+        "thesis": "An executable capacity model can expose missed delivery obligations before a planning commitment.",
+        "goal": "Build a supply capacity and recovery stress test.",
+        "successMetric": "Conserve all units across 200 synthetic order events, exercise five capacity shocks, and report late and unfinished obligations without discarding failures.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6900,
+            "base": 8100,
+            "high": 8900,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5600,
+            "base": 6800,
+            "high": 7600,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "clinical-data",
+        "sector": "Healthcare research",
+        "title": "Audit a public research data pipeline",
+        "thesis": "Reproducible dataset validation can improve research quality without making clinical decisions.",
+        "goal": "Build an auditable public research data validation package.",
+        "successMetric": "Pass 80 synthetic schema and provenance checks, reject seeded leakage and missingness faults, and show no patient-level or clinical decision outputs.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 7300,
+            "base": 8500,
+            "high": 9300,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 5900,
+            "base": 7100,
+            "high": 7900,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 4700,
+            "base": 5900,
+            "high": 6700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "learning-evals",
+        "sector": "Education",
+        "title": "Measure learning-tool failure modes",
+        "thesis": "A transparent evaluation pack can reveal unsupported answers and weak transfer before a tool is adopted.",
+        "goal": "Build an independently replayable learning-tool evaluation pack.",
+        "successMetric": "Evaluate 100 authored public-domain or synthetic cases against a frozen rubric, retain all outputs, and report error rates separately from coverage.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5100,
+            "base": 6300,
+            "high": 7100,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "autonomy-leap",
+        "sector": "Cross-sector autonomy",
+        "title": "A bold claim with a missing foundation",
+        "thesis": "A broad autonomy claim deserves a demanding test before its optimistic score influences deployment.",
+        "goal": "Test a cross-sector autonomous-execution claim.",
+        "successMetric": "Execute a preregistered public synthetic task set, retain all attempts and independent judgments, and report useful completions, failures, cost and review minutes.",
+        "reviewMinutes": 15,
+        "signals": {
+          "demand": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "readiness": {
+            "low": 2500,
+            "base": 9500,
+            "high": 10000,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 2500,
+            "base": 9700,
+            "high": 10000,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "transport-audit",
+        "sector": "Transportation",
+        "title": "Expose routing assumptions",
+        "thesis": "A reproducible route planner can make feasibility and robustness inspectable before dispatch.",
+        "goal": "Build a transport routing feasibility audit.",
+        "successMetric": "Recompute 60 synthetic routing instances, prove capacity and time-window conservation, compare a declared baseline and retain infeasible cases.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5000,
+            "base": 6200,
+            "high": 7000,
+            "source": "advantage-fixture"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.insight.scenario.v1",
+    "id": "capacity-shock",
+    "title": "The reviewer has only twenty minutes",
+    "note": "Constructed cross-sector opportunities and synthetic source excerpts. All signal ranges, review times and bounties are authored assumptions. No external market data is fetched.",
+    "weights": {
+      "demand": 3000,
+      "feasibility": 3000,
+      "readiness": 2500,
+      "advantage": 1500
+    },
+    "policy": {
+      "reviewMinutes": 20,
+      "minScoreBps": 5000,
+      "minCoverageBps": 10000,
+      "jobBountyTokens": 50
+    },
+    "sources": [
+      {
+        "id": "demand-fixture",
+        "title": "Demand assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic demand ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "feasibility-fixture",
+        "title": "Feasibility assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic feasibility ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "readiness-fixture",
+        "title": "Readiness assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic readiness ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "advantage-fixture",
+        "title": "Advantage assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic advantage ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "api-migration",
+        "sector": "Software infrastructure",
+        "title": "Make API migration reviewable",
+        "thesis": "A failing migration consumes expert attention; verified compatibility tooling can remove repeated work.",
+        "goal": "Build and verify an API compatibility migration kit.",
+        "successMetric": "Run 120 synthetic compatibility cases across the declared API versions; retain every failure and prove zero undocumented behavior changes.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6800,
+            "base": 8000,
+            "high": 8800,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "grid-queue",
+        "sector": "Energy",
+        "title": "Turn grid queues into an evidence map",
+        "thesis": "Public queue tables can support reproducible bottleneck analysis before infrastructure decisions.",
+        "goal": "Reproduce a public grid-queue bottleneck analysis.",
+        "successMetric": "Reconcile 500 synthetic queue records exactly, retain source provenance, and reproduce all tables and constraint classifications with independent review.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6000,
+            "base": 7200,
+            "high": 8000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "materials-repro",
+        "sector": "Scientific discovery",
+        "title": "Make a materials claim reproducible",
+        "thesis": "A reproducible numerical pipeline can expose where a promising scientific claim stops holding.",
+        "goal": "Build a materials-model numerical reproduction.",
+        "successMetric": "Reproduce three declared synthetic benchmark curves within 1 percent, report sensitivity and failed regimes, and retain executable environment instructions.",
+        "reviewMinutes": 35,
+        "signals": {
+          "demand": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "supply-stress",
+        "sector": "Manufacturing",
+        "title": "Stress-test a brittle supply plan",
+        "thesis": "An executable capacity model can expose missed delivery obligations before a planning commitment.",
+        "goal": "Build a supply capacity and recovery stress test.",
+        "successMetric": "Conserve all units across 200 synthetic order events, exercise five capacity shocks, and report late and unfinished obligations without discarding failures.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6900,
+            "base": 8100,
+            "high": 8900,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5600,
+            "base": 6800,
+            "high": 7600,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "clinical-data",
+        "sector": "Healthcare research",
+        "title": "Audit a public research data pipeline",
+        "thesis": "Reproducible dataset validation can improve research quality without making clinical decisions.",
+        "goal": "Build an auditable public research data validation package.",
+        "successMetric": "Pass 80 synthetic schema and provenance checks, reject seeded leakage and missingness faults, and show no patient-level or clinical decision outputs.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 7300,
+            "base": 8500,
+            "high": 9300,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 5900,
+            "base": 7100,
+            "high": 7900,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 4700,
+            "base": 5900,
+            "high": 6700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "learning-evals",
+        "sector": "Education",
+        "title": "Measure learning-tool failure modes",
+        "thesis": "A transparent evaluation pack can reveal unsupported answers and weak transfer before a tool is adopted.",
+        "goal": "Build an independently replayable learning-tool evaluation pack.",
+        "successMetric": "Evaluate 100 authored public-domain or synthetic cases against a frozen rubric, retain all outputs, and report error rates separately from coverage.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5100,
+            "base": 6300,
+            "high": 7100,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "autonomy-leap",
+        "sector": "Cross-sector autonomy",
+        "title": "A bold claim with a missing foundation",
+        "thesis": "A broad autonomy claim deserves a demanding test before its optimistic score influences deployment.",
+        "goal": "Test a cross-sector autonomous-execution claim.",
+        "successMetric": "Execute a preregistered public synthetic task set, retain all attempts and independent judgments, and report useful completions, failures, cost and review minutes.",
+        "reviewMinutes": 15,
+        "signals": {
+          "demand": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "readiness": {
+            "low": 2500,
+            "base": 9500,
+            "high": 10000,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 2500,
+            "base": 9700,
+            "high": 10000,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "transport-audit",
+        "sector": "Transportation",
+        "title": "Expose routing assumptions",
+        "thesis": "A reproducible route planner can make feasibility and robustness inspectable before dispatch.",
+        "goal": "Build a transport routing feasibility audit.",
+        "successMetric": "Recompute 60 synthetic routing instances, prove capacity and time-window conservation, compare a declared baseline and retain infeasible cases.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5000,
+            "base": 6200,
+            "high": 7000,
+            "source": "advantage-fixture"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.insight.scenario.v1",
+    "id": "evidence-gap",
+    "title": "High scores cannot replace missing sources",
+    "note": "Constructed cross-sector opportunities and synthetic source excerpts. All signal ranges, review times and bounties are authored assumptions. No external market data is fetched.",
+    "weights": {
+      "demand": 3000,
+      "feasibility": 3000,
+      "readiness": 2500,
+      "advantage": 1500
+    },
+    "policy": {
+      "reviewMinutes": 60,
+      "minScoreBps": 5000,
+      "minCoverageBps": 10000,
+      "jobBountyTokens": 50
+    },
+    "sources": [
+      {
+        "id": "demand-fixture",
+        "title": "Demand assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic demand ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "feasibility-fixture",
+        "title": "Feasibility assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic feasibility ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "readiness-fixture",
+        "title": "Readiness assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic readiness ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "advantage-fixture",
+        "title": "Advantage assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic advantage ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "api-migration",
+        "sector": "Software infrastructure",
+        "title": "Make API migration reviewable",
+        "thesis": "A failing migration consumes expert attention; verified compatibility tooling can remove repeated work.",
+        "goal": "Build and verify an API compatibility migration kit.",
+        "successMetric": "Run 120 synthetic compatibility cases across the declared API versions; retain every failure and prove zero undocumented behavior changes.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 6800,
+            "base": 8000,
+            "high": 8800,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "grid-queue",
+        "sector": "Energy",
+        "title": "Turn grid queues into an evidence map",
+        "thesis": "Public queue tables can support reproducible bottleneck analysis before infrastructure decisions.",
+        "goal": "Reproduce a public grid-queue bottleneck analysis.",
+        "successMetric": "Reconcile 500 synthetic queue records exactly, retain source provenance, and reproduce all tables and constraint classifications with independent review.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 6000,
+            "base": 7200,
+            "high": 8000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "materials-repro",
+        "sector": "Scientific discovery",
+        "title": "Make a materials claim reproducible",
+        "thesis": "A reproducible numerical pipeline can expose where a promising scientific claim stops holding.",
+        "goal": "Build a materials-model numerical reproduction.",
+        "successMetric": "Reproduce three declared synthetic benchmark curves within 1 percent, report sensitivity and failed regimes, and retain executable environment instructions.",
+        "reviewMinutes": 35,
+        "signals": {
+          "demand": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "supply-stress",
+        "sector": "Manufacturing",
+        "title": "Stress-test a brittle supply plan",
+        "thesis": "An executable capacity model can expose missed delivery obligations before a planning commitment.",
+        "goal": "Build a supply capacity and recovery stress test.",
+        "successMetric": "Conserve all units across 200 synthetic order events, exercise five capacity shocks, and report late and unfinished obligations without discarding failures.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6900,
+            "base": 8100,
+            "high": 8900,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5600,
+            "base": 6800,
+            "high": 7600,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "clinical-data",
+        "sector": "Healthcare research",
+        "title": "Audit a public research data pipeline",
+        "thesis": "Reproducible dataset validation can improve research quality without making clinical decisions.",
+        "goal": "Build an auditable public research data validation package.",
+        "successMetric": "Pass 80 synthetic schema and provenance checks, reject seeded leakage and missingness faults, and show no patient-level or clinical decision outputs.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 7300,
+            "base": 8500,
+            "high": 9300,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 5900,
+            "base": 7100,
+            "high": 7900,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 4700,
+            "base": 5900,
+            "high": 6700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "learning-evals",
+        "sector": "Education",
+        "title": "Measure learning-tool failure modes",
+        "thesis": "A transparent evaluation pack can reveal unsupported answers and weak transfer before a tool is adopted.",
+        "goal": "Build an independently replayable learning-tool evaluation pack.",
+        "successMetric": "Evaluate 100 authored public-domain or synthetic cases against a frozen rubric, retain all outputs, and report error rates separately from coverage.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5100,
+            "base": 6300,
+            "high": 7100,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "autonomy-leap",
+        "sector": "Cross-sector autonomy",
+        "title": "A bold claim with a missing foundation",
+        "thesis": "A broad autonomy claim deserves a demanding test before its optimistic score influences deployment.",
+        "goal": "Test a cross-sector autonomous-execution claim.",
+        "successMetric": "Execute a preregistered public synthetic task set, retain all attempts and independent judgments, and report useful completions, failures, cost and review minutes.",
+        "reviewMinutes": 15,
+        "signals": {
+          "demand": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "readiness": {
+            "low": 2500,
+            "base": 9500,
+            "high": 10000,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 2500,
+            "base": 9700,
+            "high": 10000,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "transport-audit",
+        "sector": "Transportation",
+        "title": "Expose routing assumptions",
+        "thesis": "A reproducible route planner can make feasibility and robustness inspectable before dispatch.",
+        "goal": "Build a transport routing feasibility audit.",
+        "successMetric": "Recompute 60 synthetic routing instances, prove capacity and time-window conservation, compare a declared baseline and retain infeasible cases.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": ""
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5000,
+            "base": 6200,
+            "high": 7000,
+            "source": "advantage-fixture"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.insight.scenario.v1",
+    "id": "optimism-trap",
+    "title": "The brightest claim has the widest uncertainty",
+    "note": "Constructed cross-sector opportunities and synthetic source excerpts. All signal ranges, review times and bounties are authored assumptions. No external market data is fetched.",
+    "weights": {
+      "demand": 3000,
+      "feasibility": 3000,
+      "readiness": 2500,
+      "advantage": 1500
+    },
+    "policy": {
+      "reviewMinutes": 35,
+      "minScoreBps": 5000,
+      "minCoverageBps": 10000,
+      "jobBountyTokens": 50
+    },
+    "sources": [
+      {
+        "id": "demand-fixture",
+        "title": "Demand assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic demand ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "feasibility-fixture",
+        "title": "Feasibility assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic feasibility ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "readiness-fixture",
+        "title": "Readiness assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic readiness ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "advantage-fixture",
+        "title": "Advantage assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic advantage ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "api-migration",
+        "sector": "Software infrastructure",
+        "title": "Make API migration reviewable",
+        "thesis": "A failing migration consumes expert attention; verified compatibility tooling can remove repeated work.",
+        "goal": "Build and verify an API compatibility migration kit.",
+        "successMetric": "Run 120 synthetic compatibility cases across the declared API versions; retain every failure and prove zero undocumented behavior changes.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6800,
+            "base": 8000,
+            "high": 8800,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "grid-queue",
+        "sector": "Energy",
+        "title": "Turn grid queues into an evidence map",
+        "thesis": "Public queue tables can support reproducible bottleneck analysis before infrastructure decisions.",
+        "goal": "Reproduce a public grid-queue bottleneck analysis.",
+        "successMetric": "Reconcile 500 synthetic queue records exactly, retain source provenance, and reproduce all tables and constraint classifications with independent review.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6000,
+            "base": 7200,
+            "high": 8000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "materials-repro",
+        "sector": "Scientific discovery",
+        "title": "Make a materials claim reproducible",
+        "thesis": "A reproducible numerical pipeline can expose where a promising scientific claim stops holding.",
+        "goal": "Build a materials-model numerical reproduction.",
+        "successMetric": "Reproduce three declared synthetic benchmark curves within 1 percent, report sensitivity and failed regimes, and retain executable environment instructions.",
+        "reviewMinutes": 35,
+        "signals": {
+          "demand": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "supply-stress",
+        "sector": "Manufacturing",
+        "title": "Stress-test a brittle supply plan",
+        "thesis": "An executable capacity model can expose missed delivery obligations before a planning commitment.",
+        "goal": "Build a supply capacity and recovery stress test.",
+        "successMetric": "Conserve all units across 200 synthetic order events, exercise five capacity shocks, and report late and unfinished obligations without discarding failures.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6900,
+            "base": 8100,
+            "high": 8900,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5600,
+            "base": 6800,
+            "high": 7600,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "clinical-data",
+        "sector": "Healthcare research",
+        "title": "Audit a public research data pipeline",
+        "thesis": "Reproducible dataset validation can improve research quality without making clinical decisions.",
+        "goal": "Build an auditable public research data validation package.",
+        "successMetric": "Pass 80 synthetic schema and provenance checks, reject seeded leakage and missingness faults, and show no patient-level or clinical decision outputs.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 7300,
+            "base": 8500,
+            "high": 9300,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 5900,
+            "base": 7100,
+            "high": 7900,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 4700,
+            "base": 5900,
+            "high": 6700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "learning-evals",
+        "sector": "Education",
+        "title": "Measure learning-tool failure modes",
+        "thesis": "A transparent evaluation pack can reveal unsupported answers and weak transfer before a tool is adopted.",
+        "goal": "Build an independently replayable learning-tool evaluation pack.",
+        "successMetric": "Evaluate 100 authored public-domain or synthetic cases against a frozen rubric, retain all outputs, and report error rates separately from coverage.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5100,
+            "base": 6300,
+            "high": 7100,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "autonomy-leap",
+        "sector": "Cross-sector autonomy",
+        "title": "A bold claim with a missing foundation",
+        "thesis": "A broad autonomy claim deserves a demanding test before its optimistic score influences deployment.",
+        "goal": "Test a cross-sector autonomous-execution claim.",
+        "successMetric": "Execute a preregistered public synthetic task set, retain all attempts and independent judgments, and report useful completions, failures, cost and review minutes.",
+        "reviewMinutes": 15,
+        "signals": {
+          "demand": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "readiness": {
+            "low": 2500,
+            "base": 9500,
+            "high": 10000,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 2500,
+            "base": 9700,
+            "high": 10000,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "transport-audit",
+        "sector": "Transportation",
+        "title": "Expose routing assumptions",
+        "thesis": "A reproducible route planner can make feasibility and robustness inspectable before dispatch.",
+        "goal": "Build a transport routing feasibility audit.",
+        "successMetric": "Recompute 60 synthetic routing instances, prove capacity and time-window conservation, compare a declared baseline and retain infeasible cases.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5000,
+            "base": 6200,
+            "high": 7000,
+            "source": "advantage-fixture"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.insight.scenario.v1",
+    "id": "zero-capacity",
+    "title": "No review capacity means no selected ventures",
+    "note": "Constructed cross-sector opportunities and synthetic source excerpts. All signal ranges, review times and bounties are authored assumptions. No external market data is fetched.",
+    "weights": {
+      "demand": 3000,
+      "feasibility": 3000,
+      "readiness": 2500,
+      "advantage": 1500
+    },
+    "policy": {
+      "reviewMinutes": 0,
+      "minScoreBps": 5000,
+      "minCoverageBps": 10000,
+      "jobBountyTokens": 50
+    },
+    "sources": [
+      {
+        "id": "demand-fixture",
+        "title": "Demand assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic demand ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "feasibility-fixture",
+        "title": "Feasibility assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic feasibility ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "readiness-fixture",
+        "title": "Readiness assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic readiness ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      },
+      {
+        "id": "advantage-fixture",
+        "title": "Advantage assumption fixture",
+        "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_insight_v0",
+        "excerpt": "Authored synthetic advantage ranges for exercising the screening algorithm. These scores are not market measurements, forecast probabilities or validated scientific findings. Replace this fixture with a sourced excerpt and independently assess its relevance before real review.",
+        "kind": "synthetic"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "api-migration",
+        "sector": "Software infrastructure",
+        "title": "Make API migration reviewable",
+        "thesis": "A failing migration consumes expert attention; verified compatibility tooling can remove repeated work.",
+        "goal": "Build and verify an API compatibility migration kit.",
+        "successMetric": "Run 120 synthetic compatibility cases across the declared API versions; retain every failure and prove zero undocumented behavior changes.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6800,
+            "base": 8000,
+            "high": 8800,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "grid-queue",
+        "sector": "Energy",
+        "title": "Turn grid queues into an evidence map",
+        "thesis": "Public queue tables can support reproducible bottleneck analysis before infrastructure decisions.",
+        "goal": "Reproduce a public grid-queue bottleneck analysis.",
+        "successMetric": "Reconcile 500 synthetic queue records exactly, retain source provenance, and reproduce all tables and constraint classifications with independent review.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 6600,
+            "base": 7800,
+            "high": 8600,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6000,
+            "base": 7200,
+            "high": 8000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "materials-repro",
+        "sector": "Scientific discovery",
+        "title": "Make a materials claim reproducible",
+        "thesis": "A reproducible numerical pipeline can expose where a promising scientific claim stops holding.",
+        "goal": "Build a materials-model numerical reproduction.",
+        "successMetric": "Reproduce three declared synthetic benchmark curves within 1 percent, report sensitivity and failed regimes, and retain executable environment instructions.",
+        "reviewMinutes": 35,
+        "signals": {
+          "demand": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 5300,
+            "base": 6500,
+            "high": 7300,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "supply-stress",
+        "sector": "Manufacturing",
+        "title": "Stress-test a brittle supply plan",
+        "thesis": "An executable capacity model can expose missed delivery obligations before a planning commitment.",
+        "goal": "Build a supply capacity and recovery stress test.",
+        "successMetric": "Conserve all units across 200 synthetic order events, exercise five capacity shocks, and report late and unfinished obligations without discarding failures.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6900,
+            "base": 8100,
+            "high": 8900,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5600,
+            "base": 6800,
+            "high": 7600,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "clinical-data",
+        "sector": "Healthcare research",
+        "title": "Audit a public research data pipeline",
+        "thesis": "Reproducible dataset validation can improve research quality without making clinical decisions.",
+        "goal": "Build an auditable public research data validation package.",
+        "successMetric": "Pass 80 synthetic schema and provenance checks, reject seeded leakage and missingness faults, and show no patient-level or clinical decision outputs.",
+        "reviewMinutes": 30,
+        "signals": {
+          "demand": {
+            "low": 7300,
+            "base": 8500,
+            "high": 9300,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 5900,
+            "base": 7100,
+            "high": 7900,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 4700,
+            "base": 5900,
+            "high": 6700,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "learning-evals",
+        "sector": "Education",
+        "title": "Measure learning-tool failure modes",
+        "thesis": "A transparent evaluation pack can reveal unsupported answers and weak transfer before a tool is adopted.",
+        "goal": "Build an independently replayable learning-tool evaluation pack.",
+        "successMetric": "Evaluate 100 authored public-domain or synthetic cases against a frozen rubric, retain all outputs, and report error rates separately from coverage.",
+        "reviewMinutes": 20,
+        "signals": {
+          "demand": {
+            "low": 6700,
+            "base": 7900,
+            "high": 8700,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7000,
+            "base": 8200,
+            "high": 9000,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5100,
+            "base": 6300,
+            "high": 7100,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "autonomy-leap",
+        "sector": "Cross-sector autonomy",
+        "title": "A bold claim with a missing foundation",
+        "thesis": "A broad autonomy claim deserves a demanding test before its optimistic score influences deployment.",
+        "goal": "Test a cross-sector autonomous-execution claim.",
+        "successMetric": "Execute a preregistered public synthetic task set, retain all attempts and independent judgments, and report useful completions, failures, cost and review minutes.",
+        "reviewMinutes": 15,
+        "signals": {
+          "demand": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 2500,
+            "base": 9300,
+            "high": 10000,
+            "source": ""
+          },
+          "readiness": {
+            "low": 2500,
+            "base": 9500,
+            "high": 10000,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 2500,
+            "base": 9700,
+            "high": 10000,
+            "source": "advantage-fixture"
+          }
+        }
+      },
+      {
+        "id": "transport-audit",
+        "sector": "Transportation",
+        "title": "Expose routing assumptions",
+        "thesis": "A reproducible route planner can make feasibility and robustness inspectable before dispatch.",
+        "goal": "Build a transport routing feasibility audit.",
+        "successMetric": "Recompute 60 synthetic routing instances, prove capacity and time-window conservation, compare a declared baseline and retain infeasible cases.",
+        "reviewMinutes": 25,
+        "signals": {
+          "demand": {
+            "low": 6200,
+            "base": 7400,
+            "high": 8200,
+            "source": "demand-fixture"
+          },
+          "feasibility": {
+            "low": 7100,
+            "base": 8300,
+            "high": 9100,
+            "source": "feasibility-fixture"
+          },
+          "readiness": {
+            "low": 6400,
+            "base": 7600,
+            "high": 8400,
+            "source": "readiness-fixture"
+          },
+          "advantage": {
+            "low": 5000,
+            "base": 6200,
+            "high": 7000,
+            "source": "advantage-fixture"
+          }
+        }
+      }
+    ]
+  }
+]

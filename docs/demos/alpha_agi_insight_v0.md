@@ -1,115 +1,235 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# α‑AGI Insight 👁️✨ — Beyond Human Foresight — Official Demo (Zero Data)
+# α-AGI Insight · Discovery Workbench
 
 ![preview](../alpha_agi_insight_v0/assets/preview.svg){.demo-preview}
 
 [Launch Demo](../alpha_agi_insight_v0/index.html){.md-button}
 
+**Find the opening. Earn the conviction.** Compare cross-sector hypotheses, expose their assumptions,
+allocate limited review time, and export a reproducible dossier with verification jobs and Nova-Seed drafts.
+Version **1.15.0** preserves the original research presentation, numeric search, launchers and flowcharts.
+
+[Open the browser workbench](https://montrealai.github.io/AGI-Alpha-Agent-v0/alpha_agi_insight_v0/) ·
+[Insight Atlas](https://montrealai.github.io/AGI-Alpha-Agent-v0/insight/) ·
+[Colab notebook](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/colab_alpha_agi_insight_demo.ipynb) ·
+[Original research and flowcharts](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/RESEARCH_ARCHIVE.md)
+
+The browser and Python paths run locally without credentials, a wallet, provider, database or GPU.
+Five clearly labeled synthetic cases make every assumption inspectable. You can replace them with your
+own supplied source excerpts; the tool does not fetch or authenticate those sources.
+Priority scores are not forecast probabilities, valuations or a claim of beyond-human prediction.
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
+## Current runnable path — 1.15.0
 
-**Mode:** Offline simulation. Searches a toy sector-scoring landscape.
-
-**Prerequisites:** Python 3.11–3.13; installed project dependencies.
-
-After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+**Mode:** Local evidence review. **Prerequisites:** Python 3.11–3.13 and a source checkout.
 
 ```bash
 python -m alpha_factory_v1.demos check alpha_agi_insight_v0
-python -m alpha_factory_v1.demos run alpha_agi_insight_v0
+python -m alpha_factory_v1.demos run alpha_agi_insight_v0 --output-dir discovery-runs
 ```
 
-The catalog command uses bundled inputs and explicit offline defaults.
-
-**Expected result:** Three episodes, best sector and a ranked table.
-
-**Scope:** Scores are simulated, not forecasts or calibrated investment probabilities.
-
-The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+**Expected:** A review portfolio and six files in a content-addressed output directory.
+**Scope:** Synthetic assumptions; jobs are unsubmitted; seed drafts are plaintext and unminted.
 <!-- CURRENT-DEMO:END -->
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
+## Start in two minutes
 
-
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/colab_alpha_agi_insight_demo.ipynb)
-
-
-The **α‑AGI Insight** demo predicts which industry sector is most likely to be
-transformed by Artificial General Intelligence. It runs a small
-**Meta‑Agentic Tree Search** (MATS) over a list of sector names. No external
-data is required so the script executes fully offline. Pass a custom sector
-list with ``--sectors`` to experiment with your own domains. When the argument
-points to a text file, each non-empty line is treated as a sector name. The
-demo automatically integrates with the OpenAI Agents runtime and optionally the
-Google ADK gateway whenever credentials are present.
-
-> **Note**
-> Older convenience entry points such as ``alpha-agi-insight`` were removed.
-> Run ``python official_demo_final.py`` (or ``run_demo.py``) directly to launch
-> the demo.
-
-**Quick Start:** run ``python official_demo_final.py --episodes 5`` to launch
-the final production demo with automatic environment selection. The script
-transparently chooses between the hosted runtime and offline mode depending on
-available credentials.
-The demo gracefully falls back to a zero-data offline search whenever API keys
-are absent.
-When running in hosted mode the same command exposes an OpenAI Agents tool and
-an optional Google ADK endpoint for seamless integration with other agent
-orchestrators.
-You may also run ``python official_demo_final.py`` for the same behaviour or
-``python official_demo_production.py`` to verify the environment and enable the
-optional ADK gateway when available. The companion script offers identical
-behaviour and is recommended when deploying the demo in production settings.
-
-### Production Quickstart
-
-Run the officially supported command below to launch the demo with automatic
-environment checks, OpenAI Agents integration when available and graceful
-fallback to offline mode:
+Use Python **3.11–3.13** from a source checkout. The discovery engine uses the standard library only.
 
 ```bash
-python official_demo_final.py --episodes 5
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0 --list
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0 --case public-software --output insight-runs
 ```
 
-### Zero‑Data Quickstart
-
-For a guaranteed offline run with no external dependencies, run the demo
-with the ``--offline`` flag. This sets ``ALPHA_AGI_OFFLINE=true`` before
-delegating to the production script so the search loop never attempts
-network access:
+The default case allocates a 60-minute review budget across eight opportunities. It saves six files
+under `insight-runs/<dossier-sha256>/` and prints the exact verification command. A completed calculation
+exits **0**, including a valid empty portfolio; malformed inputs or altered evidence exit **2**.
+After installing the package, `insight-workbench` is the equivalent console command.
 
 ```bash
-python official_demo_final.py --offline --episodes 5
+insight-workbench --input my-scenario.json --output insight-runs --json
+insight-workbench --verify insight-runs/<dossier-sha256>/dossier.json
 ```
 
-Highlights:
-- Automatic offline fallback when no API key is detected.
-- The environment variable ``ALPHA_AGI_OFFLINE`` is set automatically during
-  offline fallback so submodules consistently detect zero-data mode.
-- Optional OpenAI Agents runtime for hosted execution.
-- Built-in Google ADK gateway support via `--enable-adk`.
-- Runs entirely with zero external data by default.
+`--json` writes only the dossier to stdout. Errors use stderr. Output directories are content-addressed:
+an identical run reuses identical files; partial, altered or symlinked run output is rejected. Use a new
+output directory after investigating an interrupted or modified run.
 
-### Colab Notebook
+## The browser workflow
 
-For an interactive walkthrough open `colab_alpha_agi_insight_demo.ipynb` directly in Google Colab. The badge at the top of this document links to the hosted version. The notebook mirrors the command line interface and is ideal for non‑technical users exploring the demo from a browser.
+1. **Choose a case.** The starter set compares software, energy, materials research, logistics,
+   synthetic clinical data checks, education, autonomy and transport. Every source is labeled synthetic.
+2. **Set review constraints.** Change available minutes, conservative score threshold, required source
+   coverage and proposed job bounty. Weights are integer basis points totaling 10,000.
+3. **Inspect a thesis.** Select its title to see the goal, measurable success metric, low/base/high
+   assumptions and exact supplied excerpts. Missing evidence and capacity deferral have distinct states.
+4. **Edit your own scenario.** Open the complete JSON editor to change opportunities, sources and
+   intervals. Apply or discard pending changes before exporting. No arbitrary code is evaluated.
+5. **Export the review bundle.** The six files below have identical bytes in Python and the browser.
+6. **Return with evidence.** Import a dossier to recompute every score, portfolio choice, job and draft.
+   A modified result fails verification even if someone recomputes its checksum.
 
-For programmatic access launch the companion FastAPI server:
+Save/Restore is explicit, uses this browser's local storage and never clears another workspace's data.
+Export a ZIP for a portable copy. After a successful first load and service-worker installation,
+the workbench supports offline reload and recalculation. Private browsing or blocked storage may prevent
+saved drafts or offline caching; the local Python path remains available.
+
+| Case | Question | Expected behavior |
+|---|---|---|
+| `public-software` | Where should the next hour of review go? | Select a review portfolio within 60 minutes |
+| `capacity-shock` | What if only 20 minutes remain? | Defer eligible opportunities that cannot fit |
+| `evidence-gap` | What if demand excerpts are missing? | Source-coverage gate prevents selection |
+| `optimism-trap` | Can a wide optimistic range justify priority? | Conservative scores govern the 35-minute portfolio |
+| `zero-capacity` | What if there is no review capacity? | Valid empty portfolio; no seed drafts |
+
+## What the engine computes
+
+For each opportunity and each interval endpoint, it computes the exact integer numerator
+`sum(weight[dimension] * signal[dimension][endpoint])`. Divide by **1,000,000** to display a score out
+of 100. The four dimensions are demand, feasibility, readiness and advantage. Supplied source coverage
+is the sum of weights whose signals reference an existing excerpt. It measures reference coverage,
+not source quality, truth, freshness or independence.
+
+Eligibility requires the low score and source coverage to meet the supplied thresholds. Exact 0/1
+knapsack then maximizes the **sum of conservative priority numerators** within the supplied review
+minutes. Each opportunity can be selected once. Ties prefer fewer minutes, then lexicographically
+ordered opportunity IDs. The objective neither models profit nor accounts for cross-opportunity
+correlation or overlapping review effort. Zero-score items need not consume review time.
+
+The landscape ranks by conservative score, base score, then ID. Rank separation means the highest low
+score exceeds every rival high score. The supplied ranges are **not statistical confidence intervals**.
+Selection returns `REVIEW_REQUIRED`; eligible unselected rows return `CAPACITY_DEFERRED`; unmet input
+gates return `EVIDENCE_REQUIRED`. There is no automatic approved state.
+
+## Evidence and Ascension handoff
+
+| File | Purpose |
+|---|---|
+| `scenario.json` | Complete normalized inputs and supplied excerpts |
+| `dossier.json` | Inputs, exact decisions, jobs, drafts and SHA-256 |
+| `jobs.json` | One unsubmitted verification job for every opportunity, bound to the input hash |
+| `nova-seeds.json` | Selected opportunities as plaintext, unminted, unfunded seed drafts |
+| `review-brief.md` | Portable human review summary |
+| `SHA256SUMS` | SHA-256 of the other five exact files |
+
+Every job carries a **goal ↔ success metric ↔ bounty**, a seven-day duration and price weight 5,000.
+Bounties use $AGIALPHA's 18-decimal base units as decimal strings. All opportunity jobs are exported,
+including those deferred or missing evidence, so a reviewer can commission the verification they need.
+The bundle's total proposed bounty covers **all** jobs, not only the selected portfolio. No funds move.
+
+With the installed chain extra or hash-locked operator environment:
 
 ```bash
-python api_server.py --port 8000
+alpha-agent ascension-compile insight-runs/<dossier-sha256>/jobs.json --output fusion-plan.json
 ```
-Send a POST request with a JSON payload like `{"episodes":5}` to `/insight` to
-retrieve the ranked sector list.
 
-## Overview
+The [Ascension protocol guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/ASCENSION_PROTOCOL.md) documents the separately
+operated cryptosealing, ERC-721 Nova-Seed lifecycle, validator risk oracle, MARK funding, Sovereign
+activation, staked ENS agents, validator approval and marketplace settlement with the 1% payout burn.
+This workbench prepares inputs for that lifecycle. It does not encrypt or mint an NFT, authenticate a
+validator, certify compliance, trade, escrow funds, submit jobs or authorize enterprise execution.
+Those gates require their own evidence, authenticated roles and deployment review.
+
+## Input contract and limits
+
+Use an exported `scenario.json` as the complete schema example. Unknown or missing fields fail closed.
+The schema is `agialpha.insight.scenario.v1`; dossiers use `agialpha.insight.dossier.v1`.
+
+| Input | Accepted range |
+|---|---|
+| JSON | UTF-8; at most 1,000,000 bytes and 24 nested levels; no duplicate keys, nonfinite numbers or lone surrogates |
+| Opportunities / sources | 1–24 / 1–32, with unique lowercase ASCII IDs of 1–40 characters |
+| Signal low/base/high | Integer 0–10,000, ordered low ≤ base ≤ high |
+| Weights | Four integers 0–10,000 totaling 10,000 |
+| Review minutes | Capacity 0–2,400; each opportunity 1–2,400 |
+| Minimum score / coverage | Integer basis points 0–10,000 |
+| Job bounty | 1–1,000,000 AGIALPHA per job |
+| Source URLs | HTTPS hostname, no credentials, backslashes or explicit port; never fetched |
+| Text | UTF-8 byte limits: title 160, note 600, sector 80, thesis 500, goal 240, success metric 400, excerpt 1,200, URL 500 |
+
+A signal's source is a supplied source ID or an empty string for missing coverage. Inputs may contain
+Unicode; control characters are rejected in text fields. Decimal strings and booleans are not numbers.
+Integral JSON numbers such as `20.0` normalize to integers for portable exports.
+
+## Preserved numeric search and launchers
+
+The original numeric-target example remains available explicitly:
+
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0 --legacy --offline --episodes 30 --seed 42 --json
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0.insight_demo --episodes 30 --target 3 --seed 42
+bash alpha_factory_v1/demos/alpha_agi_insight_v0/run_insight_demo.sh --offline --episodes 3
+```
+
+It now expands a bounded binary UCB search tree, backpropagates each observation once and ranks sectors
+by their own observed rewards. Sector names map from numeric policies modulo the list length; the
+numbers are **not evidence about those industries**. A local RNG preserves the caller's global state.
+Default seed is 0; episodes are 1–500; exploration is finite 0–10; target is ±10,000.
+Optional logs use a per-run directory with `scores.csv`, `summary.json` and an optional ranking plot.
+
+All original `official_demo*`, `run_demo`, `beyond_human_foresight` and bridge modules remain.
+An API key's presence does not automatically select a provider. Provider rewriting requires explicit
+`--rewriter openai|anthropic` and a model through `--model` or explicit YAML configuration, is limited to 20 calls with 15-second timeouts and no retries,
+and validates the one-step JSON-integer response. If that step is already expanded, the remaining
+unexpanded step is used. Provider errors are surfaced. `--offline`, `ALPHA_AGI_OFFLINE`,
+`ALPHA_TEST_OFFLINE` or `NO_LLM` forbid provider calls. Optional legacy runtime/ADK exposure requires
+`--runtime` and a compatible installed interface; current SDK presence alone does not establish that.
+Dependency verification is opt-in with `--verify-env`; launching never installs packages automatically.
+
+The CLI alone can read a local sector file or `ALPHA_AGI_SECTORS`; the API never resolves filesystem
+paths or ambient sector settings. YAML config accepts only documented settings and requires PyYAML.
+
+## Local dashboard and API
+
+Install the project dependencies for FastAPI/Uvicorn or Streamlit, then:
+
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0 --dashboard
+python -m alpha_factory_v1.demos.alpha_agi_insight_v0.api_server --port 8000
+```
+
+The dashboard opens a discovery view with downloadable evidence; the original search has explicit
+provider controls. The API binds `127.0.0.1` by default:
+
+| Route | Behavior |
+|---|---|
+| `GET /healthz` | Local offline service status |
+| `GET /sectors` | Default numeric-search labels |
+| `POST /discovery` | Bounded scenario JSON → recomputed dossier (1 MB limit) |
+| `POST /insight` | Strict local numeric search (16 KB limit); no providers, model or output paths |
+
+Requests require `application/json`. If `API_TOKEN` is set, send `Authorization: Bearer <token>`.
+Origin-bearing browser requests are rejected. One calculation runs at a time; busy calls receive **429**
+with `Retry-After: 1`. Other errors: **401** authentication, **403** browser origin, **413** body size,
+**415** content type and **422** invalid input. Non-loopback binding requires `--allow-network` and a
+24-character token; use a separately managed TLS/authenticated reverse proxy for remote operation.
+The built-in API is a bounded local service, not a multi-tenant deployment platform.
+
+## Notebook, validation and original material
+
+The maintained notebook pins source to release `v1.15.0`, runs all five cases without provider calls,
+recomputes dossiers and writes a portable bundle. Set `ALPHA_INSIGHT_SOURCE` to a local checkout to
+run fully offline. It checks Python compatibility and fails visibly instead of swallowing install errors.
+The [original notebook](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/research_notebook_archive.ipynb) and [complete original README](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/RESEARCH_ARCHIVE.md)
+remain byte-for-byte archives; their older setup commands and aspirational claims are historical.
+
+Release acceptance checks independent exhaustive portfolio optimality, Python/browser parity,
+input-bound job compilation, altered and rehashed evidence, API boundaries, all browser cases, exact
+ZIP bytes, small screens, keyboard access, WCAG A/AA checks and offline reload. The public report must
+match the packaged commit, version, asset hashes and native case results before release finalization.
+
+```bash
+python -m pytest --noconftest -o addopts= tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py
+python -m scripts.validate_discovery_core
+python -m scripts.validate_discovery --site site --axe-script tests/browser/node_modules/axe-core/axe.min.js
+```
+
+## Original architecture flowchart — preserved
+
+The original diagram below describes the research architecture and future direction; it does not
+assert that the local numeric search or review workbench implements a production autonomous AGI.
 
 ```mermaid
 %% α-AGI Insight — Meta-Agentic Tree Search Architecture (ZERO-DATA Demo)
@@ -155,225 +275,5 @@ flowchart TD
 
     linkStyle default stroke-width:1.5px
 ```
-
-- **Zero Data Dependency**: runs entirely offline by default. The default
-  sector list ships with the package so no external resources are required.
-  It covers Finance, Healthcare, Education, Manufacturing, Transportation,
-  Energy, Retail, Agriculture, Defense and Real Estate.
-- **OpenAI Agents SDK Integration**: seamlessly switches to hosted execution when API credentials are present.
-- **Automatic ADK Support**: optional Google ADK gateway activates when available.
-- **Model Context Protocol Logging**: export `MCP_ENDPOINT` to persist all prompts and replies.
-
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0.insight_demo --episodes 5
-```
-
-### Single Command Launcher
-
-Run the package itself to automatically select the best interface. By default it
-routes through the OpenAI Agents runtime when available and transparently
-degrades to the local CLI otherwise:
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0
-```
-
-Pass ``--offline`` to skip the agent runtime entirely.
-Use ``--skip-verify`` to bypass the startup environment check if desired.
-
-For a quick offline run from anywhere:
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0 --offline --episodes 2
-```
-
-Run the ``run_demo.py`` helper for the same behaviour without specifying the
-module path:
-
-```bash
-python run_demo.py --episodes 2
-```
-
-To expose the demo via the OpenAI Agents runtime (and optional ADK gateway), run
-the ``openai_agents_bridge.py`` helper:
-
-```bash
-python openai_agents_bridge.py --episodes 5
-```
-
-### REST API
-
-Launch a small FastAPI server that exposes the search loop via ``/insight``. The
-service runs entirely offline by default and mirrors the CLI options:
-
-```bash
-python api_server.py --port 8000
-```
-
-Send a POST request with JSON payload ``{"episodes":5}`` to ``/insight`` to
-retrieve the ranking as structured data.
-
-### Streamlit Dashboard
-
-Launch an interactive web dashboard for exploring the demo:
-
-```bash
-python insight_dashboard.py
-```
-
-The dashboard lets you tweak parameters and immediately visualise the ranked
-sector scores in a browser.
-
-### Quick Start Script
-
-Ensure the shell helper is executable by running ``chmod +x run_insight_demo.sh`` if needed.
-Execute ``./run_insight_demo.sh`` from this directory for an instant launch. The
-wrapper delegates to the package entry point so the demo works with or without
-OpenAI API credentials.  Alternatively invoke ``run_demo.py`` directly with
-Python for the same behaviour:
-
-```bash
-python run_demo.py --episodes 5
-```
-
-To always verify dependencies before running, launch the companion
-``official_demo.py`` script instead:
-
-```bash
-python official_demo.py --episodes 5
-```
-
-The helper script ``official_demo.py`` offers the same behaviour when run
-directly:
-
-The standalone ``official_demo_final.py`` wrapper combines environment
-verification with automatic runtime selection. Invoke it directly or via
-``official_demo_final.py`` script:
-
-```bash
-python official_demo_final.py --episodes 5
-```
-For a quick offline run with minimal dependencies:
-
-```bash
-python official_demo_final.py --offline --episodes 2
-```
-Use ``--enable-adk`` to expose the agent via the optional Google ADK gateway.
-Pass ``--list-sectors`` to display the resolved sector list without running the search.
-Use ``--dashboard`` to launch the interactive Streamlit dashboard instead of the CLI.
-Use ``--no-banner`` or set ``ALPHA_AGI_NO_BANNER=true`` to suppress the startup banner when embedding the demo in automated scripts. The same flag also works with ``official_demo_production.py``.
-``--adk-host`` and ``--adk-port`` customise the gateway bind address.
-Use ``--version`` to print the installed package version and exit.
-For production deployments launch ``official_demo_production.py``. This variant
-verifies the environment by default and automatically selects between the hosted
-runtime and the offline CLI. For a splashier startup message run
-``beyond_human_foresight.py`` which displays a short banner before delegating to
-the same production demo:
-
-```bash
-python beyond_human_foresight.py --offline --episodes 2
-```
-To force a fully offline run regardless of environment configuration, launch the
-demo with the ``--offline`` flag which sets ``ALPHA_AGI_OFFLINE=true``
-automatically:
-
-```bash
-python official_demo_final.py --offline --episodes 3
-```
-The arguments mirror ``official_demo_production.py``.
-Use ``--version`` to show the installed package version and exit.
-
-## Usage
-
-The command line interface mirrors the options of the general MATS demo:
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0.insight_demo \
-    --episodes 10 \
-    --rewriter openai \
-    --model gpt-4o \
-    --log-dir logs \
-    --sectors Finance,Healthcare,Energy
-```
-
-Use ``--list-sectors`` to display the resolved sector list without running the
-search. This is helpful when providing custom lists via ``--sectors``.
-
-Set the ``ALPHA_AGI_SECTORS`` environment variable to override the default
-sector list without editing configuration files.  Provide a comma-separated
-string or the path to a text file containing one sector per line.  The
-``openai_agents_bridge`` respects the same variable when launching via the
-Agents runtime so your custom sector lists work in both modes.
-
-Export ``MCP_ENDPOINT`` to capture all prompts and replies for later audit using
-the Model Context Protocol. When unset the logging step is silently skipped.
-
-When optional dependencies such as ``openai`` or ``anthropic`` are not
-installed, the program automatically falls back to a simple offline rewriter so
-the demo remains functional anywhere.  Episode scores are printed to the console
-and optionally written to ``scores.csv`` when ``--log-dir`` is supplied.  The
-path to the log file is displayed after the run completes. When ``matplotlib``
-is available a ``ranking.png`` chart summarizing the sector scores is also
-generated in the log directory.
-
-### Environment Variables
-
-- ``OPENAI_API_KEY`` – enable OpenAI-based rewriting via ``openai_rewrite``.
-- ``ANTHROPIC_API_KEY`` – use ``anthropic_rewrite`` with Claude models.
-- ``OPENAI_MODEL`` – override the OpenAI model (default ``gpt-4o``).
-- ``MATS_REWRITER`` – select the rewrite strategy when unspecified.
-- ``ALPHA_AGI_SECTORS`` – comma-separated sector list or path to a text file.
-- ``MCP_ENDPOINT`` – optional URL for Model Context Protocol logging.
-- ``ALPHA_AGI_EPISODES`` – override the number of search episodes.
-- ``ALPHA_AGI_EXPLORATION`` – set the exploration constant for UCB1.
-- ``ALPHA_AGI_TARGET`` – specify the target sector index.
-- ``ALPHA_AGI_SEED`` – RNG seed for deterministic runs.
-- ``ALPHA_AGI_OFFLINE`` – force offline mode even when OpenAI Agents is available.
-- ``ALPHA_AGI_ENABLE_ADK`` – enable the ADK gateway without ``--enable-adk``.
-- ``ALPHA_AGI_ADK_HOST`` – custom bind host for the ADK gateway.
-- ``ALPHA_AGI_ADK_PORT`` – custom bind port for the ADK gateway.
-- ``ALPHA_AGI_NO_BANNER`` – suppress the startup banner when set to ``true``.
-- ``ALPHA_AGI_SKIP_VERIFY`` – skip environment checks when set to ``true``.
-
-### Graceful Offline Mode
-
-The demo automatically falls back to an offline search strategy whenever the
-required API keys are absent or network access is restricted. Dependency checks
-run automatically at launch.
-
-## OpenAI Agents Bridge
-
-Launch ``openai_agents_bridge.py`` to control the demo via the
-`openai-agents` runtime and optionally the Google ADK A2A protocol:
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0.openai_agents_bridge
-```
-
-Run with ``--enable-adk`` to expose the agent via the optional Google ADK gateway when available. Custom host and
-port may be specified via ``--adk-host`` and ``--adk-port``. The following example launches the runtime with five
-episodes and stores episode metrics in ``scores.csv``:
-
-```bash
-python -m alpha_factory_v1.demos.alpha_agi_insight_v0.openai_agents_bridge \
-    --enable-adk --adk-host 0.0.0.0 --adk-port 9000 --episodes 5 --log-dir logs
-```
-The bridge automatically falls back to offline mode when the optional
-packages or API keys are missing. Use ``--enable-adk`` to expose the agent via
-the optional Google ADK gateway when available. Use ``--list-sectors`` to view
-the resolved sector list without running the search. Pass ``--log-dir`` to store
-episode metrics in ``scores.csv``. Use ``--no-banner`` or set ``ALPHA_AGI_NO_BANNER=true``
-to suppress the startup message in automated scripts. Additional ``--exploration``
-and ``--seed`` arguments mirror the offline CLI options.
-
-### MCP Logging
-
-Set the ``MCP_ENDPOINT`` environment variable to automatically store all
-LLM prompts and replies using the
-[Model Context Protocol](https://www.anthropic.com/news/model-context-protocol).
-This best-effort persistence operates transparently and never blocks the
-search loop.
-For additional command details, run `python official_demo_production.py --help`.
 
 [View README on GitHub](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/alpha_agi_insight_v0/README.md)
