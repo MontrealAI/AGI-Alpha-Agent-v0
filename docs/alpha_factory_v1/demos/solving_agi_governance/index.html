@@ -1,25 +1,600 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Solving α-AGI Governance [![Open In Colab]][colab-notebook]</title>
-<link rel='stylesheet' href='../../../stylesheets/cards.css'>
-<link rel='stylesheet' href='../../../stylesheets/demo_base.css'>
-</head>
-<body>
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Proof Debt → AGI Jobs</h2><p>Which claims survive the evidence, and what exactly must be proved next?</p><p style="font-size:12px">Evidence docket · assigned proof backlog · acceptance criteria</p><a href="../../../studio/?case=proof" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="application-version" content="1.14.0" />
+        <meta
+            name="description"
+            content="Inspect incentives, validator ballots, aggregate risk and upgrade gates. Export a reproducible governance review and unsubmitted verification jobs."
+        />
+        <title>Governance Workbench · α-AGI · $AGIALPHA</title>
+        <link rel="stylesheet" href="../../../stylesheets/cards.css" />
+        <link rel="stylesheet" href="../../../stylesheets/demo_base.css" />
+        <link
+            rel="stylesheet"
+            href="../../../assets/governance/workbench.css?v=1.14.0"
+        />
+    </head>
+    <body class="gov-page">
+        <a class="gov-skip" href="#gov-workbench"
+            >Skip to governance controls</a
+        >
+        <main id="gov-app">
+            <nav class="gov-nav" aria-label="Governance navigation">
+                <a class="gov-brand" href="../"
+                    ><b aria-hidden="true">α</b> MONTREAL.AI
+                    <span>GOVERNANCE SYSTEMS</span></a
+                >
+                <div>
+                    <a href="#gov-research">Research collection</a
+                    ><a href="../../../ascension-protocol">Ascension protocol ↗</a>
+                </div>
+            </nav>
+            <header class="gov-hero">
+                <div>
+                    <p class="gov-kicker">
+                        SOLVING α-AGI GOVERNANCE / 1.14.0
+                    </p>
+                    <h1>Power needs a<br /><em>credible constraint.</em></h1>
+                    <p class="gov-lede">
+                        Before an autonomous enterprise changes the rules, make
+                        the case. Examine its incentives. Count independent
+                        voices. Set a risk budget. Give every unresolved claim a
+                        measurable next step.
+                    </p>
+                    <div class="gov-actions">
+                        <a class="gov-primary" href="#gov-workbench"
+                            >Review a proposal
+                            <span aria-hidden="true">↓</span></a
+                        ><a href="#gov-method">Understand the model</a>
+                    </div>
+                    <p class="gov-small">
+                        Local calculations. No account, API key or wallet
+                        required.
+                    </p>
+                </div>
+                <aside
+                    class="gov-instrument"
+                    aria-label="Governance review path"
+                >
+                    <div class="gov-instrument-head">
+                        <span>PROPOSAL ADMISSION</span
+                        ><span class="gov-light">● LOCAL MODEL</span>
+                    </div>
+                    <svg
+                        viewBox="0 0 400 270"
+                        role="img"
+                        aria-labelledby="gov-art-title"
+                    >
+                        <title id="gov-art-title">
+                            A proposal passes through incentive, voice and
+                            safety checks before independent review; failed
+                            checks return to revision.
+                        </title>
+                        <defs>
+                            <pattern
+                                id="gov-grid"
+                                width="20"
+                                height="20"
+                                patternUnits="userSpaceOnUse"
+                            >
+                                <circle cx="1" cy="1" r="1" fill="#304540" />
+                            </pattern>
+                        </defs>
+                        <rect width="400" height="270" fill="url(#gov-grid)" />
+                        <g fill="none" stroke="#658e7c" stroke-width="1.5">
+                            <path
+                                d="M200 50V90M80 90H320M80 90V125M200 90V125M320 90V125M80 165V205H320V165M200 165V240"
+                            />
+                            <path
+                                d="M320 205H370V50H230"
+                                stroke-dasharray="4 5"
+                            />
+                        </g>
+                        <g fill="#122c26" stroke="#87ac94">
+                            <rect
+                                x="146"
+                                y="15"
+                                width="108"
+                                height="40"
+                                rx="20"
+                            />
+                            <rect
+                                x="26"
+                                y="125"
+                                width="108"
+                                height="40"
+                                rx="5"
+                            />
+                            <rect
+                                x="146"
+                                y="125"
+                                width="108"
+                                height="40"
+                                rx="5"
+                            />
+                            <rect
+                                x="266"
+                                y="125"
+                                width="108"
+                                height="40"
+                                rx="5"
+                            />
+                        </g>
+                        <g
+                            fill="#edeee3"
+                            text-anchor="middle"
+                            font-family="Arial,sans-serif"
+                            font-size="12"
+                        >
+                            <text x="200" y="40">PROPOSAL</text>
+                            <text x="80" y="150">INCENTIVES</text>
+                            <text x="200" y="150">VOICE</text>
+                            <text x="320" y="150">SAFETY</text>
+                            <text x="200" y="260" fill="#dcebb0">
+                                INDEPENDENT REVIEW
+                            </text>
+                            <text x="332" y="38" font-size="10">REVISE</text>
+                        </g>
+                    </svg>
+                    <p>Authority follows evidence.</p>
+                    <div class="gov-instrument-foot">
+                        <span>09 admission gates</span
+                        ><span>00 automatic approvals</span>
+                    </div>
+                </aside>
+            </header>
+            <div class="gov-notice">
+                <span aria-hidden="true">◈</span>
+                <p>
+                    <strong
+                        >Constructed scenarios. Inspectable decisions.</strong
+                    >
+                    Passing the model starts independent review. It does not
+                    approve an upgrade, authenticate a vote, or establish the
+                    safety of an AGI system.
+                </p>
+            </div>
+            <section id="gov-workbench" aria-labelledby="gov-controls-title">
+                <div class="gov-section-heading">
+                    <div>
+                        <p class="gov-kicker">01 / DEFINE THE PROPOSAL</p>
+                        <h2 id="gov-controls-title">
+                            Put the rules under pressure.
+                        </h2>
+                    </div>
+                    <div class="gov-file-actions">
+                        <label class="gov-file" for="gov-import"
+                            >Import JSON<input
+                                id="gov-import"
+                                type="file"
+                                accept="application/json,.json" /></label
+                        ><button id="gov-save" type="button" disabled>
+                            Save draft</button
+                        ><button id="gov-restore" type="button" disabled>
+                            Restore draft</button
+                        ><button id="gov-clear" type="button">
+                            Clear saved draft
+                        </button>
+                    </div>
+                </div>
+                <form id="gov-form">
+                    <div class="gov-case-row">
+                        <label
+                            >Start with a case<select id="gov-case" disabled>
+                                <option>Loading cases…</option>
+                            </select></label
+                        >
+                        <p id="gov-case-note" class="gov-small"></p>
+                    </div>
+                    <div class="gov-control-grid">
+                        <fieldset class="gov-panel">
+                            <legend><span>01</span> Incentive design</legend>
+                            <p class="gov-small">
+                                Cooperate repeatedly, or defect once? Payoffs
+                                and stake share the same utility units.
+                            </p>
+                            <div
+                                id="gov-incentive-fields"
+                                class="gov-fields"
+                            ></div>
+                        </fieldset>
+                        <fieldset class="gov-panel">
+                            <legend><span>02</span> Risk envelope</legend>
+                            <p class="gov-small">
+                                Bound failure across the entire action envelope.
+                                One femto is 10⁻¹⁵ probability.
+                            </p>
+                            <div id="gov-risk-fields" class="gov-fields"></div>
+                        </fieldset>
+                        <fieldset class="gov-panel">
+                            <legend><span>03</span> Release controls</legend>
+                            <p class="gov-small">
+                                The scenario clock is explicit and reproducible.
+                                The minimum modeled waiting period is seven
+                                days.
+                            </p>
+                            <div
+                                id="gov-policy-fields"
+                                class="gov-fields"
+                            ></div>
+                            <label class="gov-check"
+                                ><input id="gov-paused" type="checkbox" />
+                                Emergency pause active</label
+                            >
+                        </fieldset>
+                    </div>
+                    <section
+                        class="gov-panel gov-electorate"
+                        aria-labelledby="gov-electorate-title"
+                    >
+                        <div class="gov-section-heading">
+                            <div>
+                                <p class="gov-kicker">THE VALIDATOR ROSTER</p>
+                                <h3 id="gov-electorate-title">
+                                    A name is not an independent voice.
+                                </h3>
+                            </div>
+                            <span class="gov-tag">SUPPLIED IDENTITIES</span>
+                        </div>
+                        <p class="gov-small">
+                            Eligible validators must meet the stake floor. Each
+                            ballot costs votes² credits. Positive votes support;
+                            negative votes oppose; zero abstains. Known shared
+                            controllers block the proposal.
+                        </p>
+                        <div
+                            class="gov-table-wrap"
+                            role="region"
+                            aria-label="Editable validator roster"
+                            tabindex="0"
+                        >
+                            <table>
+                                <caption class="gov-sr">
+                                    Validator identities, credit allocations and
+                                    ballots
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            Validator / .alpha.club.agi.eth
+                                        </th>
+                                        <th scope="col">Controller</th>
+                                        <th scope="col">Credits</th>
+                                        <th scope="col">Votes</th>
+                                        <th scope="col">Stake / AGIALPHA</th>
+                                        <th scope="col">Eligible</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gov-validators"></tbody>
+                            </table>
+                        </div>
+                        <p class="gov-small">
+                            ENS ownership, credit issuance and identity
+                            independence must be verified against the real
+                            proposal snapshot; this table does not perform that
+                            verification.
+                        </p>
+                    </section>
+                    <details class="gov-advanced">
+                        <summary>
+                            Advanced settings and complete scenario JSON
+                        </summary>
+                        <p>
+                            Change reward, temptation, punishment, queue
+                            timestamps, policy commitments or the complete
+                            validator roster. Apply JSON to update the form.
+                        </p>
+                        <label for="gov-json">Scenario JSON</label
+                        ><textarea
+                            id="gov-json"
+                            rows="12"
+                            spellcheck="false"
+                        ></textarea
+                        ><button type="button" id="gov-apply">
+                            Apply JSON
+                        </button>
+                        <p class="gov-small">
+                            256 KB maximum. Unknown fields, duplicate keys,
+                            invalid units and unsupported schemas are rejected.
+                        </p>
+                    </details>
+                    <div class="gov-run-row">
+                        <button
+                            class="gov-primary"
+                            id="gov-run"
+                            type="submit"
+                            disabled
+                        >
+                            Evaluate all nine gates
+                            <span aria-hidden="true">↗</span>
+                        </button>
+                        <p class="gov-small">
+                            Changing any input makes the previous result stale.
+                        </p>
+                    </div>
+                </form>
+                <p id="gov-status" role="status" aria-live="polite">
+                    Loading the local governance workbench…
+                </p>
+                <noscript
+                    ><p>
+                        Enable JavaScript, or use the offline Python commands in
+                        the
+                        <a href="../../../demos/solving_agi_governance">demo guide</a
+                        >.
+                    </p></noscript
+                >
+            </section>
+            <section
+                id="gov-results"
+                hidden
+                tabindex="-1"
+                aria-labelledby="gov-result-title"
+            >
+                <div class="gov-section-heading">
+                    <div>
+                        <p class="gov-kicker">02 / INSPECT THE DECISION</p>
+                        <h2 id="gov-result-title">
+                            A decision you can challenge.
+                        </h2>
+                    </div>
+                    <span id="gov-verdict" class="gov-tag"></span>
+                </div>
+                <p id="gov-result-summary" class="gov-result-summary"></p>
+                <div id="gov-metrics" class="gov-metrics"></div>
+                <div id="gov-gates" class="gov-gates"></div>
+                <div class="gov-analysis-grid">
+                    <section class="gov-panel">
+                        <p class="gov-kicker">THE INCENTIVE BOUNDARY</p>
+                        <h3>When does patience pay?</h3>
+                        <p class="gov-small">
+                            The cooperative reward stays fixed. The alternative
+                            line shows a one-shot deviation, followed by
+                            punishment if detected or cooperation if undetected.
+                            These futures are weighted by detection q and future
+                            value δ. Cooperation passes when its reward is at
+                            least as large.
+                        </p>
+                        <div id="gov-incentive-chart"></div>
+                        <p id="gov-incentive-detail" class="gov-small"></p>
+                    </section>
+                    <section class="gov-panel">
+                        <p class="gov-kicker">THE COST OF SCALE</p>
+                        <h3>Small per action. Large in aggregate.</h3>
+                        <dl id="gov-risk-detail" class="gov-facts"></dl>
+                        <p class="gov-small">
+                            The union bound uses no independence assumption. It
+                            is an upper bound, not a calibrated failure
+                            probability. Supplied probabilities still require
+                            evidence.
+                        </p>
+                    </section>
+                </div>
+                <div class="gov-section-heading">
+                    <div>
+                        <p class="gov-kicker">03 / TURN CLAIMS INTO WORK</p>
+                        <h2>Nine measurable review jobs.</h2>
+                    </div>
+                    <span class="gov-tag">UNSUBMITTED · $AGIALPHA</span>
+                </div>
+                <p class="gov-small">
+                    Each job binds to this scenario’s SHA-256 commitment and
+                    carries a goal, success metric and bounty. Passing a modeled
+                    gate does not remove the need to verify its assumptions.
+                </p>
+                <div id="gov-jobs" class="gov-jobs"></div>
+                <section class="gov-export">
+                    <div>
+                        <p class="gov-kicker">04 / KEEP THE EVIDENCE</p>
+                        <h3>A review that travels with its assumptions.</h3>
+                        <p>
+                            Download the scenario, complete dossier, review
+                            brief, Ascension job specifications and checksums.
+                            Recompute them in Python or import the dossier here.
+                        </p>
+                        <p id="gov-hash" class="gov-hash"></p>
+                    </div>
+                    <div class="gov-export-actions">
+                        <button
+                            id="gov-download"
+                            class="gov-primary"
+                            type="button"
+                            disabled
+                        >
+                            Download review bundle · ZIP</button
+                        ><button id="gov-dossier" type="button" disabled>
+                            Download dossier · JSON</button
+                        ><button id="gov-download-jobs" type="button" disabled>
+                            Download jobs · JSON</button
+                        ><a href="../../../agent/ASCENSION_PROTOCOL"
+                            >Compile jobs and inspect the protocol ↗</a
+                        >
+                    </div>
+                </section>
+            </section>
+            <section id="gov-method" class="gov-method">
+                <p class="gov-kicker">THE MODEL / THE BOUNDARY</p>
+                <h2>Make the assumptions visible.</h2>
+                <div class="gov-method-grid">
+                    <article>
+                        <span>01 / INCENTIVES</span>
+                        <h3>A condition, not a universal theorem.</h3>
+                        <p>
+                            The model checks
+                            <code>R ≥ (1−δ)(T−q·s) + δ[qP+(1−q)R]</code> for
+                            infinite repeated play, stationary payoffs,
+                            risk-neutral agents and credible grim-trigger
+                            punishment. Public detection has a fixed probability
+                            q and no false positives. A detected unilateral
+                            deviation is slashed once and triggers punishment;
+                            an undetected deviation returns to cooperation.
+                            Enforcement and punishment credibility are
+                            assumptions.
+                        </p>
+                        <p>
+                            The original simulator’s
+                            <code>--delta</code> remains an update rate. It does
+                            not implement this discount factor.
+                        </p>
+                    </article>
+                    <article>
+                        <span>02 / RISK</span>
+                        <h3>Count the whole action envelope.</h3>
+                        <p>
+                            A per-action risk of 10⁻⁹ across 10¹² actions gives
+                            an expected failure count of 1,000 and a union bound
+                            of 1. A total budget of 0.001 requires a per-action
+                            upper bound no larger than 10⁻¹⁵.
+                        </p>
+                        <p>
+                            The manuscript’s Table 4 is a different, normalized
+                            risk score: its rows sum to 0.393045, not 0.215.
+                            Explore the
+                            <a href="../../../ascension#governance"
+                                >original-paper audit</a
+                            >.
+                        </p>
+                    </article>
+                    <article>
+                        <span>03 / AUTHORITY</span>
+                        <h3>Independent review has no shortcut.</h3>
+                        <p>
+                            Credits, names, stakes, timestamps and policy hashes
+                            are supplied inputs. No signature or chain state is
+                            authenticated here. A checksum binds content; it
+                            does not attest that a claim is true.
+                        </p>
+                        <p>
+                            The
+                            <a href="../../../ascension-protocol"
+                                >Ascension protocol laboratory</a
+                            >
+                            demonstrates agent eligibility, validator-gated
+                            delivery, escrow and the 1% payout burn in a
+                            separate local EVM.
+                        </p>
+                    </article>
+                </div>
+            </section>
+            <section id="gov-research" class="gov-research">
+                <div class="gov-section-heading">
+                    <div>
+                        <p class="gov-kicker">
+                            RESEARCH COLLECTION / PRESERVED
+                        </p>
+                        <h2>The original vision, in full.</h2>
+                    </div>
+                    <span class="gov-tag">VINCENT BOUCHER · MONTREAL.AI</span>
+                </div>
+                <p class="gov-lede">
+                    Explore the manuscript, mechanism diagrams, presentation and
+                    original simulator alongside the maintained implementation
+                    and its explicit limits.
+                </p>
+                <div class="gov-research-grid">
+                    <a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/alpha_asi_governance_v13.pdf"
+                        ><span>01 / MANUSCRIPT</span
+                        ><strong>Stable, antifragile multi-agent order</strong
+                        ><small
+                            >Original PDF, including every diagram ↗</small
+                        ></a
+                    ><a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/presentation/Solving_Alpha-AGI_Governance_v0.pdf"
+                        ><span>02 / PRESENTATION</span
+                        ><strong>The governance mechanism stack</strong
+                        ><small>Original presentation PDF ↗</small></a
+                    ><a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/RESEARCH_ARCHIVE.md"
+                        ><span>03 / RESEARCH ARCHIVE</span
+                        ><strong>Every original claim, retained</strong
+                        ><small
+                            >Historical narrative and launch instructions
+                            ↗</small
+                        ></a
+                    ><a
+                        href="https://colab.research.google.com/github/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/colab_solving_agi_governance.ipynb"
+                        ><span>04 / NOTEBOOK</span
+                        ><strong>Run, compare, and replay</strong
+                        ><small>Maintained executable companion ↗</small></a
+                    >
+                </div>
+                <p class="gov-small">
+                    Research claims about unique equilibria, formal
+                    certificates, large experiments and guaranteed antifragility
+                    require evidence beyond this demo. Original PDF, TeX and
+                    PowerPoint files remain unchanged.
+                </p>
+                <details class="gov-original">
+                    <summary>
+                        Open the original sample replay and decision workspace
+                    </summary>
+                    <div class="gov-legacy"><!-- decision-studio-bridge:start -->
+<section
+    class="decision-bridge"
+    aria-label="Practical decision workspace"
+    style="
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 24px;
+        background: #0a3029;
+        color: #f5f5e7;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+        box-sizing: border-box;
+    "
+>
+    <p style="font-size: 11px; letter-spacing: 2px; color: #d9ed9c">
+        PUT THIS IDEA TO WORK
+    </p>
+    <h2 style="font-family: Georgia, serif; font-weight: 400">
+        Proof Debt → AGI Jobs
+    </h2>
+    <p>
+        Which claims survive the evidence, and what exactly must be proved next?
+    </p>
+    <p style="font-size: 12px">
+        Evidence docket · assigned proof backlog · acceptance criteria
+    </p>
+    <a
+        href="../../../studio/?case=proof"
+        style="
+            display: inline-block;
+            padding: 12px 18px;
+            background: #d9ed9c;
+            color: #173b2d;
+            border-radius: 4px;
+            font-weight: bold;
+        "
+        >Open editable workspace ↗</a
+    >
+    <p style="font-size: 11px">
+        The original research presentation is preserved below.
+    </p>
+</section>
 <!-- decision-studio-bridge:end -->
-<h1>Solving **α-AGI Governance** [![Open In Colab]][colab-notebook]</h1>
-<img class='preview' src='assets/preview.svg' alt='Solving α-AGI Governance [![Open In Colab]][colab-notebook]'>
+<h3>Original governance sample replay</h3>
+<img
+    class="preview"
+    src="assets/preview.svg"
+    alt="Original alpha governance illustration"
+/>
 
-<p><a href='../../../demos/solving_agi_governance'>Detailed instructions</a></p>
-<p class='snippet'><a href='../../../DISCLAIMER_SNIPPET'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
+<p><a href="../../../demos/solving_agi_governance">Detailed instructions</a></p>
+<p class="snippet">
+    <a href="../../../DISCLAIMER_SNIPPET">See docs/DISCLAIMER_SNIPPET.md</a> This
+    repository is a conceptual research prototype. References to "AGI" and
+    "superintelligence" describe aspirational goals and do not indicate the
+    presence of a real general intelligence. Use at your own risk. Nothing
+    herein constitutes financial advice. MontrealAI and the maintainers accept
+    no liability for losses incurred from using this software.
+</p>
 <div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
+    <button id="offline-mode" aria-label="Run demo offline">Offline</button>
+    <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
 </div>
 <canvas id="chart"></canvas>
 <pre id="logs-panel"></pre>
@@ -28,11 +603,24 @@
 <script type="module" src="assets/script.js"></script>
 <p><a href="../../../index.html">⬅️ Back to Gallery</a></p>
 <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
-</script>
-</body>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
+            console.warn("Service worker registration failed");
+        });
+    }
+</script></div>
+                </details>
+            </section>
+            <footer class="gov-footer">
+                <span>α-AGI GOVERNANCE / POWERED BY $AGIALPHA</span
+                ><a href="../../../demos/solving_agi_governance"
+                    >Installation, formulas and recovery ↗</a
+                ><a href="../../../DISCLAIMER_SNIPPET">Project notice</a>
+            </footer>
+        </main>
+        <script
+            type="module"
+            src="../../../assets/governance/workbench.mjs?v=1.14.0"
+        ></script>
+    </body>
 </html>

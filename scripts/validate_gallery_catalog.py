@@ -53,6 +53,8 @@ def validate(site: Path, output: Path) -> dict[str, object]:
                 page.on("pageerror", lambda error: errors.append(str(error)))
                 page.on("response", lambda response: failed.append(response.url) if response.status >= 400 else None)
                 page.goto(origin + file.relative_to(site).as_posix())
+                if page.locator(".gov-original").count():
+                    page.locator(".gov-original > summary").click()
                 page.get_by_role("status").filter(has_text="Bundled sample replay").wait_for(timeout=15000)
                 page.get_by_role("button", name="Replay bundled sample offline").click()
                 if page.locator(".b3-replay-record").count():

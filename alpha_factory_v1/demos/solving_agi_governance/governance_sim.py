@@ -1,16 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 #!/usr/bin/env python3
-"""Minimal Monte-Carlo simulation for the governance whitepaper demo.
+"""Legacy mean-field cooperation simulation with a stochastic initial population.
 
-Each agent repeatedly plays a discounted Prisoner's Dilemma with token
-staking. Cooperation dominates once the discount factor ``delta`` is large
-enough (δ ≳ 0.8). The script is intentionally tiny and has **no external
-dependencies**. A ``--verbose`` flag prints progress for longer runs.
+``delta`` is the numerical update rate, not a repeated-game discount factor.
+The outcome depends on the supplied payoff and stake assumptions. This model
+establishes neither a universal cooperation threshold nor a unique equilibrium.
+Use the governance workbench for explicit proposal gates and reproducible evidence.
 """
 from __future__ import annotations
 
 import argparse
 import random
+import math
 import os
 from typing import cast
 
@@ -36,7 +37,7 @@ def run_sim(
     rounds:
         Number of interaction rounds to simulate. Must be positive.
     delta:
-        Discount factor in ``[0, 1]`` controlling update momentum.
+        Numerical update rate in ``[0, 1]`` (legacy flag name).
     stake:
         Penalty applied when an agent defects. Must be non-negative.
     seed:
@@ -45,14 +46,18 @@ def run_sim(
         If ``True`` prints progress every 10%% of the run.
     """
 
-    if agents <= 0:
-        raise ValueError("agents must be positive")
-    if rounds <= 0:
-        raise ValueError("rounds must be positive")
-    if not 0.0 <= delta <= 1.0:
+    if type(agents) is not int or not 1 <= agents <= 100_000:
+        raise ValueError("agents must be an integer from 1 through 100000")
+    if type(rounds) is not int or not 1 <= rounds <= 1_000_000:
+        raise ValueError("rounds must be an integer from 1 through 1000000")
+    if agents * rounds > 100_000_000:
+        raise ValueError("Simulation exceeds 100000000 agent updates; reduce agents or rounds")
+    if type(delta) not in (int, float) or not 0.0 <= delta <= 1.0 or not math.isfinite(delta):
         raise ValueError("delta must be between 0 and 1")
-    if stake < 0:
-        raise ValueError("stake must be non-negative")
+    if type(stake) not in (int, float) or not 0 <= stake <= 1_000_000 or not math.isfinite(stake):
+        raise ValueError("stake must be finite and between 0 and 1000000")
+    if seed is not None and type(seed) is not int:
+        raise ValueError("seed must be an integer")
 
     rng = random.Random(seed)
 
@@ -74,7 +79,7 @@ def summarise_with_agent(mean_coop: float, *, agents: int, rounds: int, delta: f
     """Return a natural-language summary of a simulation result.
 
     If the ``openai`` package and an API key are available, the summary is
-    generated with an LLM via the OpenAI Agents SDK.  Otherwise a simple
+    generated via the optional OpenAI Python client.  Otherwise a simple
     fallback string is returned.
     """
 
@@ -88,13 +93,21 @@ def summarise_with_agent(mean_coop: float, *, agents: int, rounds: int, delta: f
     except Exception:
         return base_msg
 
-    timeout = int(os.getenv("OPENAI_TIMEOUT_SEC", "30"))
+    if not os.getenv("OPENAI_API_KEY"):
+        return base_msg + " (OPENAI_API_KEY not set; using offline summary)"
     try:
+        timeout = int(os.getenv("OPENAI_TIMEOUT_SEC", "30"))
+        if not 1 <= timeout <= 120:
+            return base_msg + " (Invalid summary timeout; using offline summary)"
         client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=timeout)
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "Summarise AGIALPHA governance simulation results."},
+                {
+                    "role": "system",
+                    "content": "Summarise this toy mean-field simulation. Delta is an update rate, not a discount factor. "
+                    "Do not claim unique equilibria, real AGI or validated safety.",
+                },
                 {"role": "user", "content": base_msg},
             ],
             max_tokens=60,
@@ -112,28 +125,33 @@ def summarise_with_agent(mean_coop: float, *, agents: int, rounds: int, delta: f
 
 
 def main(argv: list[str] | None = None) -> None:
-    ap = argparse.ArgumentParser(description="AGIALPHA governance Monte-Carlo demo")
+    ap = argparse.ArgumentParser(description="AGIALPHA legacy mean-field cooperation simulation")
     ap.add_argument("-N", "--agents", type=int, default=100, help="number of agents")
     ap.add_argument("-r", "--rounds", type=int, default=1000, help="simulation rounds")
-    ap.add_argument("--delta", type=float, default=0.8, help="discount factor δ")
+    ap.add_argument(
+        "--delta", type=float, default=0.8, help="numerical update rate (legacy name, not a discount factor)"
+    )
     ap.add_argument("--stake", type=float, default=2.5, help="stake penalty")
     ap.add_argument("--seed", type=int, help="optional RNG seed")
     ap.add_argument("-v", "--verbose", action="store_true", help="print progress")
     ap.add_argument(
         "--summary",
         action="store_true",
-        help="summarise results with OpenAI Agents SDK if available",
+        help="opt in to an OpenAI API summary if credentials are configured",
     )
     args = ap.parse_args(argv)
 
-    coop = run_sim(
-        args.agents,
-        args.rounds,
-        args.delta,
-        args.stake,
-        seed=args.seed,
-        verbose=args.verbose,
-    )
+    try:
+        coop = run_sim(
+            args.agents,
+            args.rounds,
+            args.delta,
+            args.stake,
+            seed=args.seed,
+            verbose=args.verbose,
+        )
+    except ValueError as exc:
+        ap.error(str(exc))
     print(f"mean cooperation ≈ {coop:.3f}")
     if args.summary:
         print(summarise_with_agent(coop, agents=args.agents, rounds=args.rounds, delta=args.delta, stake=args.stake))

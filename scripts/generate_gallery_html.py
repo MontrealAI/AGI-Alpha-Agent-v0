@@ -329,6 +329,9 @@ def main() -> None:
     business3 = importlib.import_module("scripts.generate_business3" if __package__ else "generate_business3")
     if (REPO_ROOT / "scripts/templates/business3.html").is_file():
         business3.build(REPO_ROOT)
+    governance = importlib.import_module("scripts.generate_governance" if __package__ else "generate_governance")
+    if (REPO_ROOT / "scripts/templates/governance.html").is_file():
+        governance.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)

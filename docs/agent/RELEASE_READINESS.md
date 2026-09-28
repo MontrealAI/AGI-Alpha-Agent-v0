@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.13.1 manuscript edition
+# Release readiness — 1.14.0 manuscript edition
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
 plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
@@ -16,6 +16,7 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Review a governance proposal | [Governance Workbench](../solving_agi_governance/index.html) | Nine conditional gates, reproducible dossier and input-bound verification jobs |
 | Make an operational decision with your records | [Decision Studio](../studio/index.html) | Eleven cases, editable data, constrained plans, proof backlogs and replayable dossiers |
 | Measure whether a learned capability helps new tasks | [Compounding Lab](../compounding/index.html) | Frozen policy, four measured arms, learning/review costs, negative controls and a complete Evidence Docket |
 | Turn a claim into reviewed work and retained capability | [Proof Bloom](../bloom/index.html) | Claim → jobs → evidence → review → promotion → memory, with revocation and native signed returns |
@@ -45,7 +46,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.13.1). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.14.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -54,7 +55,7 @@ audits block publication. Retain the matching checksums with prior release asset
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.13.1 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.14.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

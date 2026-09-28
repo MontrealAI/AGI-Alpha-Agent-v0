@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.13.1
+## Current runnable path — 1.14.0
 
 **Mode:** Research planning. Runs a small MuZero-style planner in a Gymnasium environment.
 

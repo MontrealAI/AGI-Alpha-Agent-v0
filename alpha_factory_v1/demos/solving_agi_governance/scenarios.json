@@ -1,0 +1,337 @@
+[
+  {
+    "schema": "agialpha.governance.scenario.v1",
+    "id": "accountable-upgrade",
+    "title": "Accountable upgrade",
+    "note": "Constructed example: supplied identities, payoffs, risk estimates and timestamps. Every source still needs independent review.",
+    "incentives": {
+      "reward": 300,
+      "temptation": 500,
+      "punishment": 100,
+      "discountBps": 8000,
+      "detectionBps": 9000,
+      "stake": 150
+    },
+    "risk": {
+      "perActionFemto": 1000,
+      "actions": 1000000,
+      "budgetFemto": 1000000000000
+    },
+    "policy": {
+      "quorumBps": 6667,
+      "supportBps": 6667,
+      "minStakeTokens": 100,
+      "jobBountyTokens": 50
+    },
+    "upgrade": {
+      "queuedAt": 1800000000,
+      "now": 1800691200,
+      "delaySeconds": 604800,
+      "paused": false,
+      "proposedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "validators": [
+      {
+        "name": "atlas.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 3,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "beacon.alpha.club.agi.eth",
+        "controller": "beacon",
+        "credits": 9,
+        "votes": 2,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "cedar.alpha.club.agi.eth",
+        "controller": "cedar",
+        "credits": 9,
+        "votes": -1,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "delta.alpha.club.agi.eth",
+        "controller": "delta",
+        "credits": 9,
+        "votes": 0,
+        "stakeTokens": 100,
+        "eligible": true
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.governance.scenario.v1",
+    "id": "captured-ballot",
+    "title": "A majority with a shared controller",
+    "note": "Constructed capture attempt: two named validators share one controlling principal. A large vote total does not establish independence.",
+    "incentives": {
+      "reward": 300,
+      "temptation": 500,
+      "punishment": 100,
+      "discountBps": 8000,
+      "detectionBps": 9000,
+      "stake": 150
+    },
+    "risk": {
+      "perActionFemto": 1000,
+      "actions": 1000000,
+      "budgetFemto": 1000000000000
+    },
+    "policy": {
+      "quorumBps": 6667,
+      "supportBps": 6667,
+      "minStakeTokens": 100,
+      "jobBountyTokens": 50
+    },
+    "upgrade": {
+      "queuedAt": 1800000000,
+      "now": 1800691200,
+      "delaySeconds": 604800,
+      "paused": false,
+      "proposedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "validators": [
+      {
+        "name": "atlas.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 3,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "beacon.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 2,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "cedar.alpha.club.agi.eth",
+        "controller": "cedar",
+        "credits": 9,
+        "votes": -1,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "delta.alpha.club.agi.eth",
+        "controller": "delta",
+        "credits": 9,
+        "votes": 0,
+        "stakeTokens": 100,
+        "eligible": true
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.governance.scenario.v1",
+    "id": "weak-deterrence",
+    "title": "When defection still pays",
+    "note": "Constructed incentive failure: patience is low and no stake is slashable. Compare the one-shot deviation with the cooperative path.",
+    "incentives": {
+      "reward": 300,
+      "temptation": 500,
+      "punishment": 100,
+      "discountBps": 2000,
+      "detectionBps": 9000,
+      "stake": 0
+    },
+    "risk": {
+      "perActionFemto": 1000,
+      "actions": 1000000,
+      "budgetFemto": 1000000000000
+    },
+    "policy": {
+      "quorumBps": 6667,
+      "supportBps": 6667,
+      "minStakeTokens": 100,
+      "jobBountyTokens": 50
+    },
+    "upgrade": {
+      "queuedAt": 1800000000,
+      "now": 1800691200,
+      "delaySeconds": 604800,
+      "paused": false,
+      "proposedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "validators": [
+      {
+        "name": "atlas.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 3,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "beacon.alpha.club.agi.eth",
+        "controller": "beacon",
+        "credits": 9,
+        "votes": 2,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "cedar.alpha.club.agi.eth",
+        "controller": "cedar",
+        "credits": 9,
+        "votes": -1,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "delta.alpha.club.agi.eth",
+        "controller": "delta",
+        "credits": 9,
+        "votes": 0,
+        "stakeTokens": 100,
+        "eligible": true
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.governance.scenario.v1",
+    "id": "scale-risk",
+    "title": "A tiny risk at enormous scale",
+    "note": "Constructed scale stress: 10^12 actions at 10^-9 per action exceed a 0.001 total risk budget. The union bound is not an estimated probability.",
+    "incentives": {
+      "reward": 300,
+      "temptation": 500,
+      "punishment": 100,
+      "discountBps": 8000,
+      "detectionBps": 9000,
+      "stake": 150
+    },
+    "risk": {
+      "perActionFemto": 1000000,
+      "actions": 1000000000000,
+      "budgetFemto": 1000000000000
+    },
+    "policy": {
+      "quorumBps": 6667,
+      "supportBps": 6667,
+      "minStakeTokens": 100,
+      "jobBountyTokens": 50
+    },
+    "upgrade": {
+      "queuedAt": 1800000000,
+      "now": 1800691200,
+      "delaySeconds": 604800,
+      "paused": false,
+      "proposedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "validators": [
+      {
+        "name": "atlas.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 3,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "beacon.alpha.club.agi.eth",
+        "controller": "beacon",
+        "credits": 9,
+        "votes": 2,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "cedar.alpha.club.agi.eth",
+        "controller": "cedar",
+        "credits": 9,
+        "votes": -1,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "delta.alpha.club.agi.eth",
+        "controller": "delta",
+        "credits": 9,
+        "votes": 0,
+        "stakeTokens": 100,
+        "eligible": true
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.governance.scenario.v1",
+    "id": "paused-upgrade",
+    "title": "An upgrade that must wait",
+    "note": "Constructed operational hold: the timelock has not elapsed, the policy commitment differs, and an emergency pause is active.",
+    "incentives": {
+      "reward": 300,
+      "temptation": 500,
+      "punishment": 100,
+      "discountBps": 8000,
+      "detectionBps": 9000,
+      "stake": 150
+    },
+    "risk": {
+      "perActionFemto": 1000,
+      "actions": 1000000,
+      "budgetFemto": 1000000000000
+    },
+    "policy": {
+      "quorumBps": 6667,
+      "supportBps": 6667,
+      "minStakeTokens": 100,
+      "jobBountyTokens": 50
+    },
+    "upgrade": {
+      "queuedAt": 1800000000,
+      "now": 1800086400,
+      "delaySeconds": 604800,
+      "paused": true,
+      "proposedPolicyHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "expectedPolicyHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "validators": [
+      {
+        "name": "atlas.alpha.club.agi.eth",
+        "controller": "atlas",
+        "credits": 9,
+        "votes": 3,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "beacon.alpha.club.agi.eth",
+        "controller": "beacon",
+        "credits": 9,
+        "votes": 2,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "cedar.alpha.club.agi.eth",
+        "controller": "cedar",
+        "credits": 9,
+        "votes": -1,
+        "stakeTokens": 100,
+        "eligible": true
+      },
+      {
+        "name": "delta.alpha.club.agi.eth",
+        "controller": "delta",
+        "credits": 9,
+        "votes": 0,
+        "stakeTokens": 100,
+        "eligible": true
+      }
+    ]
+  }
+]

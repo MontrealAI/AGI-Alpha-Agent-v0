@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.13.1",
+  "release": "1.14.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -579,27 +579,27 @@
     },
     {
       "id": "solving_agi_governance",
-      "title": "Governance simulation",
-      "mode": "Offline simulation",
-      "summary": "Runs a bounded stochastic cooperation model.",
+      "title": "Governance Workbench",
+      "mode": "Offline governance review",
+      "summary": "Inspect nine proposal gates and export reproducible evidence and validator jobs.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.solving_agi_governance.governance_sim",
-        "--agents",
-        "10",
-        "--rounds",
-        "5",
-        "--seed",
-        "42"
+        "alpha_factory_v1.demos.solving_agi_governance",
+        "--case",
+        "accountable-upgrade",
+        "--output",
+        "{output}"
       ],
-      "expected": "Mean cooperation for the selected seed and assumptions.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
-      "limitations": "A simulation is not a proof of unique equilibrium, a security audit or an on-chain deployment.",
+      "expected": "REVIEW_REQUIRED and five evidence files; independent review remains required.",
+      "prerequisites": "Python 3.11–3.13; standard library only.",
+      "limitations": "Supplied assumptions are not authenticated votes, calibrated safety evidence or authority to execute. All jobs remain unsubmitted.",
       "smoke": true,
       "environment": {},
       "required_modules": [],
-      "assets": [],
+      "assets": [
+        "solving_agi_governance/scenarios.json"
+      ],
       "offline": true
     },
     {
