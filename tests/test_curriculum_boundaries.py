@@ -6,7 +6,9 @@ import asyncio
 import json
 from pathlib import Path
 import random
+import sqlite3
 import subprocess
+import sys
 from unittest.mock import Mock
 
 import pytest
@@ -15,6 +17,42 @@ from alpha_factory_v1.demos.meta_agentic_agi_v3 import isolation
 from alpha_factory_v1.demos.meta_agentic_agi_v3.core.physics.gibbs import free_energy
 from alpha_factory_v1.demos.meta_agentic_agi_v3.curriculum.azr_engine import AZREngine, Triplet
 from alpha_factory_v1.demos.meta_agentic_agi_v3.businesses import royalty_radar as radar
+
+
+def test_legacy_search_import_requires_no_optional_packages() -> None:
+    root = Path(__file__).resolve().parents[1]
+    code = (
+        f"import sys; sys.path.insert(0, {str(root)!r}); "
+        "from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search.search import _safe_exec"
+    )
+    result = subprocess.run([sys.executable, "-I", "-S", "-c", code], capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0, result.stderr
+
+
+def test_legacy_search_retries_are_bounded(monkeypatch: pytest.MonkeyPatch) -> None:
+    from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search import search
+
+    attempts = Mock(side_effect=RuntimeError("provider unavailable"))
+    delays = []
+    monkeypatch.setattr(search.LLMClient, "_chat_once", attempts)
+    monkeypatch.setattr(search.time, "sleep", delays.append)
+    with pytest.raises(RuntimeError, match="unavailable"):
+        search.LLMClient("openai", "model").chat("test")
+    assert attempts.call_count == 3 and delays == [1, 2]
+
+
+def test_legacy_archive_creates_database_and_preserves_rows(tmp_path: Path) -> None:
+    from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search import archive
+
+    path = tmp_path / "lineage #?.sqlite"
+    candidate = archive._example_candidate()
+    archive.insert(candidate, path)
+    assert archive.load(path)[0].code == candidate.code
+    missing = tmp_path / "missing.sqlite"
+    with pytest.raises(sqlite3.OperationalError):
+        with archive._cx(missing, readonly=True):
+            pass
+    assert not missing.exists()
 
 
 def test_generated_program_never_executes_on_host(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

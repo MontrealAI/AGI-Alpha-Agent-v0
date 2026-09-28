@@ -23,11 +23,7 @@ import sys
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, List, Sequence
-
-import backoff  # pip install backoff
-import numpy as np  # pip install numpy
-from tqdm import tqdm  # pip install tqdm
+from typing import TYPE_CHECKING, Any, List, Sequence
 
 # local helpers
 if not __package__:
@@ -39,7 +35,9 @@ from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search.archive impo
     pareto_front,
     shannon_novelty,
 )
-from alpha_factory_v1.core.archive import Archive
+
+if TYPE_CHECKING:
+    from alpha_factory_v1.core.archive import Archive
 
 ###############################################################################
 # 1 · Config / constants
@@ -105,9 +103,18 @@ class LLMClient:
             raise ValueError("unknown provider: " + self.provider)
 
     # ----------------------------------------------------------------
-    @backoff.on_exception(backoff.expo, Exception, max_tries=3)
     def chat(self, prompt: str, system: str = "", json_mode: bool = False) -> str:
-        """Blocking chat completion."""
+        """Blocking completion with at most three attempts and bounded backoff."""
+        for attempt in range(3):
+            try:
+                return self._chat_once(prompt, system, json_mode)
+            except Exception:
+                if attempt == 2:
+                    raise
+                time.sleep(2**attempt)
+        raise AssertionError("unreachable")
+
+    def _chat_once(self, prompt: str, system: str, json_mode: bool) -> str:
         self._ensure_client()
         if self.provider == "openai":
             resp = self._openai.chat.completions.create(
@@ -269,6 +276,8 @@ def _run_generation(
 
 
 def evolutionary_search(args):
+    from alpha_factory_v1.core.archive import Archive
+
     # 0· prepare task – load a single ARC puzzle for brevity
     task_file = Path(__file__).with_name("sample_task.json")
     with task_file.open() as fh:
