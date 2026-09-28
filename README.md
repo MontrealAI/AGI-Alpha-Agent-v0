@@ -1,3 +1,5 @@
+> **1.18.0 — Meta-Agentic AGI v3 Curriculum Lab.** Generate tasks, evolve bounded solvers, inspect lineage and independently review the frozen candidate. [Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_agi_v3/) · [Operating guide](docs/agent/CURRICULUM_LAB.md). Original flowcharts and research are preserved.
+
 **Version 1.17.0 adds the MATS Search Lab.**
 Explore branching workflow designs, inspect every rollout, audit the search gap, and challenge a frozen candidate against five independent model gates.
 [Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_tree_search_v0/) · [Guide](docs/agent/MATS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.17.0.md).

@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.17.0 manuscript edition
+# Release readiness — 1.18.0 manuscript edition
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
 plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
@@ -46,7 +46,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.17.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.18.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -55,7 +55,7 @@ audits block publication. Retain the matching checksums with prior release asset
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.17.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.18.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
@@ -98,3 +98,7 @@ The current [CI enforcement guide](../CI_ENFORCEMENT.md) and helper use the corr
 An administrator with an existing appropriately scoped token can alternatively run
 `python scripts/verify_branch_protection.py --apply --branch main` and then the same command without
 `--apply` to verify. Do not put a token in source, a command argument or a support transcript.
+
+## Curriculum Lab acceptance
+
+The [Meta-Agentic AGI v3 guide](CURRICULUM_LAB.md) defines the finite grammar and independent review boundary. Release acceptance requires exact Python/JavaScript runs and bundles, answer-leakage and sandbox regressions, royalty accounting checks, wheel launch, mobile/browser accessibility, hostile imports, offline replay, preservation hashes and a public receipt bound to the release commit and exact assets.

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.17.0",
+  "release": "1.18.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -66,7 +66,7 @@
         "{output}"
       ],
       "expected": "Seven retained evidence files, an exact portfolio comparison and unsubmitted goal/metric/bounty jobs.",
-      "prerequisites": "Python 3.11–3.13; the enterprise planner uses only the standard library. The operator environment adds FusionPlan compilation.",
+      "prerequisites": "Python 3.11\u20133.13; the enterprise planner uses only the standard library. The operator environment adds FusionPlan compilation.",
       "limitations": "Built-in assumptions are constructed; real inputs need independent review. No funds, contracts or model weights are changed.",
       "smoke": true,
       "environment": {},
@@ -87,7 +87,7 @@
         "alpha_factory_v1.demos.alpha_agi_business_v1.examples.find_best_alpha"
       ],
       "expected": "Best alpha opportunity and its sample score.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "No company incorporation, registration, funding or actual trade is performed.",
       "smoke": true,
       "environment": {},
@@ -112,7 +112,7 @@
         "{output}/insight-review"
       ],
       "expected": "Reproducible review portfolio and six evidence files; jobs remain unsubmitted.",
-      "prerequisites": "Python 3.11–3.13; source checkout. Discovery uses the standard library.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout. Discovery uses the standard library.",
       "limitations": "Synthetic starter assumptions; supplied source coverage is not authentication. Scores are not probabilities or valuations. Drafts are unminted and unfunded.",
       "smoke": true,
       "environment": {},
@@ -145,7 +145,7 @@
         "json"
       ],
       "expected": "JSON scenario results. Browser mode also offers replay, local model and operator controls.",
-      "prerequisites": "Python 3.11–3.13; Click and core dependencies for CLI; modern browser for the published interactive page.",
+      "prerequisites": "Python 3.11\u20133.13; Click and core dependencies for CLI; modern browser for the published interactive page.",
       "limitations": "Simulated scenarios are not validated future predictions. GPT-2 is a small completion model.",
       "smoke": true,
       "environment": {},
@@ -185,7 +185,7 @@
         "--dry-run"
       ],
       "expected": "A dry-run JSON job; remove --dry-run only after starting the documented local API.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "This is an API client and job fixture, not a deployed exchange or token settlement service.",
       "smoke": true,
       "environment": {},
@@ -263,7 +263,7 @@
         "--no-log"
       ],
       "expected": "Two JSON sample opportunities; no ledger written.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "Examples are canned; optional external generation is separate from verified discovery.",
       "smoke": true,
       "environment": {
@@ -275,7 +275,7 @@
     },
     {
       "id": "era_of_experience",
-      "title": "Era of Experience · Learning Lab",
+      "title": "Era of Experience \u00b7 Learning Lab",
       "mode": "Offline learning lab",
       "summary": "Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence.",
       "command": [
@@ -288,7 +288,7 @@
         "{output}/experience"
       ],
       "expected": "Reproducible training, held-out and retention episodes; six review gates and six evidence files.",
-      "prerequisites": "Python 3.11–3.13; standard library only for the supported lab.",
+      "prerequisites": "Python 3.11\u20133.13; standard library only for the supported lab.",
       "limitations": "Synthetic contextual-bandit learning. No live sensors, model training, authenticated validator approval or automatic deployment.",
       "smoke": true,
       "environment": {},
@@ -356,7 +356,7 @@
         "42"
       ],
       "expected": "JSON sample size and lower-tail VaR/CVaR.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "Historical sample inputs and illustrative assumptions; no orders or hedge transactions.",
       "smoke": true,
       "environment": {
@@ -386,7 +386,7 @@
         "mock:echo"
       ],
       "expected": "Three generations saved to lineage.sqlite; repeat runs append safely.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "The mock provider and pseudo-accuracy are explicitly synthetic, not measured task performance.",
       "smoke": true,
       "environment": {
@@ -411,7 +411,7 @@
         "mock:echo"
       ],
       "expected": "Three generations saved to lineage.sqlite; repeat runs append safely.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "The mock provider and pseudo-accuracy are explicitly synthetic, not measured task performance.",
       "smoke": true,
       "environment": {
@@ -423,34 +423,32 @@
     },
     {
       "id": "meta_agentic_agi_v3",
-      "title": "Meta-Agentic v3",
-      "mode": "Identity curriculum",
-      "summary": "Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.",
+      "title": "Meta-Agentic AGI v3 Curriculum Lab",
+      "mode": "Reproducible program induction",
+      "summary": "Generate tasks, evolve bounded solver configurations and review a frozen candidate on separate tasks.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3",
-        "--provider",
-        "stub",
-        "--gens",
-        "2",
-        "--pop_size",
-        "2",
-        "--db",
-        "{output}/lineage.sqlite"
+        "alpha_factory_v1.demos.meta_agentic_agi_v3",
+        "--case",
+        "balanced",
+        "--output",
+        "{output}"
       ],
-      "expected": "Two scored identity generations and a lineage database.",
-      "prerequisites": "Core Python dependencies for the fixture; Docker is required to evaluate any generated program.",
-      "limitations": "The offline fixture is not AZR model training. Cloud providers are explicit and can incur cost.",
+      "expected": "Six retained evidence files, complete task and solver lineage, and unsubmitted AGIALPHA review jobs.",
+      "prerequisites": "Python 3.11\u20133.13; standard library only for the curriculum lab.",
+      "limitations": "Finite integer grammar, synthetic tasks and heuristic adaptation. No model-weight training, approval or live deployment.",
       "smoke": true,
       "environment": {},
       "required_modules": [],
-      "assets": [],
+      "assets": [
+        "meta_agentic_agi_v3/scenarios.json"
+      ],
       "offline": true
     },
     {
       "id": "meta_agentic_tree_search_v0",
-      "title": "Meta-Agentic Tree Search · Search Lab",
+      "title": "Meta-Agentic Tree Search \u00b7 Search Lab",
       "mode": "Offline search lab",
       "summary": "Explore competing workflow rewrites, resource schedules, held-out review gates and an exhaustive benchmark.",
       "command": [
@@ -463,7 +461,7 @@
         "{output}/search-runs"
       ],
       "expected": "A reproducible search tree, held-out evaluation and six verified review files; candidate remains unapproved.",
-      "prerequisites": "Python 3.11–3.13; the supported lab uses only the standard library.",
+      "prerequisites": "Python 3.11\u20133.13; the supported lab uses only the standard library.",
       "limitations": "Supplied synthetic workflow models. No customer work, language-model training, live trading, authenticated approvals or transactions.",
       "smoke": true,
       "environment": {},
@@ -531,7 +529,7 @@
         "--dry-run"
       ],
       "expected": "Two episode outcomes; no token issuance. Simulation failure is reported as a nonzero exit.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
+      "prerequisites": "Python 3.11\u20133.13; source checkout and installed project dependencies.",
       "limitations": "Simplified numeric city model, not a Unity digital twin. Local ledger entries are not on-chain AGIALPHA.",
       "smoke": true,
       "environment": {
@@ -589,7 +587,7 @@
         "{output}"
       ],
       "expected": "REVIEW_REQUIRED and five evidence files; independent review remains required.",
-      "prerequisites": "Python 3.11–3.13; standard library only.",
+      "prerequisites": "Python 3.11\u20133.13; standard library only.",
       "limitations": "Supplied assumptions are not authenticated votes, calibrated safety evidence or authority to execute. All jobs remain unsubmitted.",
       "smoke": true,
       "environment": {},
@@ -621,7 +619,7 @@
       "summary": "Shared notices and isolated demo code evaluation helpers.",
       "command": [],
       "expected": "Import utilities as documented; this is not an independent agent.",
-      "prerequisites": "Python 3.11–3.13.",
+      "prerequisites": "Python 3.11\u20133.13.",
       "limitations": "Supporting code, not a runnable business demo.",
       "smoke": false,
       "environment": {},

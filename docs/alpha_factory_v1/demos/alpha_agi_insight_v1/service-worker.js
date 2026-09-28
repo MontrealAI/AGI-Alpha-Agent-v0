@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-e4db3baf025c49ad";
-const RELEASE = "1.17.0";
+const CACHE = "agialpha-gallery-969e31c8ee90e15a";
+const RELEASE = "1.18.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -127,6 +127,7 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v2/assets/theme-dark.css",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v2/assets/theme-light.css",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v2/index.html",
+  "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/lab-preview.svg",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/logo.svg",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/logs.json",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/preview.svg",
@@ -202,6 +203,12 @@ const ASSETS = [
   "../../../assets/compounding/engine.mjs",
   "../../../assets/compounding/lab.css",
   "../../../assets/compounding/lab.mjs",
+  "../../../assets/curriculum/constants.mjs",
+  "../../../assets/curriculum/engine.mjs",
+  "../../../assets/curriculum/lab.css",
+  "../../../assets/curriculum/lab.mjs",
+  "../../../assets/curriculum/preview.svg",
+  "../../../assets/curriculum/scenarios.json",
   "../../../assets/discovery/constants.mjs",
   "../../../assets/discovery/engine.mjs",
   "../../../assets/discovery/preview.svg",
@@ -307,6 +314,7 @@ const ASSETS = [
   "../../../meta_agentic_agi_v2/assets/theme-dark.css",
   "../../../meta_agentic_agi_v2/assets/theme-light.css",
   "../../../meta_agentic_agi_v2/index.html",
+  "../../../meta_agentic_agi_v3/assets/lab-preview.svg",
   "../../../meta_agentic_agi_v3/assets/logo.svg",
   "../../../meta_agentic_agi_v3/assets/logs.json",
   "../../../meta_agentic_agi_v3/assets/preview.svg",

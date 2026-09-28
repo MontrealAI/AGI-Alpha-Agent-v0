@@ -1,25 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-"""curriculum.azr_engine
--------------------------
-Absolute‑Zero Reasoner self‑curriculum engine – Production‑grade v0.5.0
+"""Legacy provider-backed propose/validate/solve curriculum.
 
-*Implements the “Absolute Zero” paradigm (Zhao et al., 2025) in a single
-drop‑in module for Alpha‑Factory v1.*
-
-Highlights
-----------
-• Open‑ended **task invention & self‑evaluation** across deduction/abduction/induction.
-• Lightweight **Task‑Relative PPO‑Lite** with multi‑objective reward: *difficulty,
-  novelty, execution‑cost, free‑energy proxy*.
-• **Auditable by design** – every event streamed as structured JSON to the
-  lineage bus.
-• **Vendor‑agnostic** – works with any `core.fm.FMInterface` (OpenAI, Anthropic,
-  llama.cpp gguf, etc.) or fully offline stubs for CI.
-• Zero heavy deps; optional `numpy` and `radon` (for cyclomatic complexity).
-
-The engine exposes a canonical `curriculum_factory(fm)` used by
-`src/orchestrator.py`.  It is *fully functional* with or without API keys;
-just swap the `fm` implementation.
+Generated reference programs are validated in Docker. An independent provider
+response solves deduction tasks without seeing the expected output. Learning
+adjusts a bounded temperature heuristic and replay buffer; it is not PPO or
+model-weight training. The primary offline experience is curriculum_lab.
 """
 
 from __future__ import annotations
@@ -105,6 +90,15 @@ class TaskResult:
     complexity: float  # cyclomatic complexity proxy
 
 
+def _json_equal(left: str, right: str) -> bool:
+    from alpha_factory_v1.demos.alpha_agi_insight_v0.discovery import canonical, parse
+
+    try:
+        return canonical(parse(left.encode())) == canonical(parse(right.encode()))
+    except (ValueError, TypeError):
+        return False
+
+
 def _complexity(py_src: str) -> float:  # noqa: D401
     """Return cyclomatic complexity; fallback to AST node count."""
     if cc_visit:
@@ -158,16 +152,20 @@ class AZREngine:
     )
 
     def __init__(self, fm, *, buffer_max: int = MAX_BUF, logger: Optional[Callable[[str], None]] = None):
+        if not 1 <= buffer_max <= 4096:
+            raise ValueError("buffer_max must be from 1 through 4096")
         self.fm = fm
         self.buffer: List[Triplet] = []
         self.buffer_max = buffer_max
         self.temperature = 0.5
-        self._baseline = 0.0  # moving baseline for REINFORCE
+        self._baseline = 0.0  # moving scalar reward baseline
         self.log = logger or (lambda m: LOG.info(m))
         self._rng = random.Random(RNG_SEED)
 
     # ---------------------------- public API ------------------------
     def propose(self, k: int = 4) -> List[Triplet]:
+        if not 1 <= k <= 32:
+            raise ValueError("Task count must be from 1 through 32")
         prompt = self._build_prompt(k)
         raw = self.fm.chat(
             system="You are AZR‑Proposer, inventing new reasoning tasks.",
@@ -175,17 +173,26 @@ class AZREngine:
             temperature=self.temperature,
             max_tokens=2000,
         )
-        triplets = [t for t in self._parse_triplets(raw) if self._validate(t)]
+        triplets = [t for t in self._parse_triplets(raw)[:k] if self._validate(t)]
         self.log(f"[AZR] proposer: {len(triplets)}/{k} valid; T={self.temperature:.2f}")
         return triplets
 
     def solve(self, tasks: Sequence[Triplet]) -> List[TaskResult]:
         results: List[TaskResult] = []
         for t in tasks:
-            start = time.time()
-            stdout, stderr = _exec_trusted(t.program, t.inp)
-            lat = time.time() - start
-            solved = stderr == "" and stdout.strip() == t.out.strip()
+            start = time.perf_counter()
+            stdout, stderr = "", ""
+            try:
+                stdout = self.fm.chat(
+                    system="You are AZR-Solver. Infer the program output. Return only the JSON answer.",
+                    user=json.dumps({"program": t.program, "input": json.loads(t.inp)}),
+                    temperature=0.0,
+                    max_tokens=256,
+                ).strip()
+                solved = _json_equal(stdout, t.out)
+            except Exception as exc:
+                stderr, solved = str(exc), False
+            lat = time.perf_counter() - start
             complexity = _complexity(t.program)
             results.append(TaskResult(t, solved, lat, stdout, stderr, complexity))
         return results
@@ -203,7 +210,7 @@ class AZREngine:
         beta = 0.1
         self._baseline = (1 - beta) * self._baseline + beta * reward
         adv = reward - self._baseline
-        # PPO‑lite temperature adjust
+        # Bounded heuristic temperature controller (no model-weight update)
         delta = -0.04 if adv > 0 else 0.04
         self.temperature = max(0.1, min(1.0, self.temperature + delta))
 
@@ -227,9 +234,11 @@ class AZREngine:
         ):
             return False
         stdout, stderr = _exec_trusted(t.program, t.inp)
-        return stderr == "" and stdout.strip() == t.out.strip()
+        return stderr == "" and _json_equal(stdout, t.out)
 
     def _add(self, t: Triplet) -> None:
+        if t in self.buffer:
+            return
         self.buffer.append(t)
         if len(self.buffer) > self.buffer_max:
             self.buffer.pop(0)
@@ -274,6 +283,8 @@ if __name__ == "__main__":
 
     class _StubFM:
         def chat(self, system: str, user: str, temperature: float = 0.4, max_tokens: int = 1024) -> str:
+            if "AZR-Solver" in system:
+                return json.dumps(json.loads(user)["input"], separators=(",", ":"))
             # deterministically return identity task
             return """```python # program\ndef main(x):\n    return x\n```\n```json # input\n3```\n```json # output\n3```"""
 

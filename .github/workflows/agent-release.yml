@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -66,7 +66,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
@@ -82,7 +82,7 @@ jobs:
           alpha-agent ascension-check installed-plan.json
           python -m alpha_factory_v1.scripts.preflight --profile agent --offline
           alpha-agent --home installed-agent verify
-          for demo in alpha_agi_insight_v0 solving_agi_governance macro_sentinel era_of_experience meta_agentic_tree_search_v0 alpha_agi_business_3_v1; do
+          for demo in alpha_agi_insight_v0 solving_agi_governance macro_sentinel era_of_experience meta_agentic_tree_search_v0 meta_agentic_agi_v3 alpha_agi_business_3_v1; do
             python -m alpha_factory_v1.demos check "$demo" --json
             python -m alpha_factory_v1.demos run "$demo" --output-dir "installed-demos/$demo"
           done
@@ -210,6 +210,7 @@ jobs:
           python -m mypy --config-file mypy-discovery.ini
           python -m mypy --config-file mypy-experience.ini
           python -m mypy --config-file mypy-mats.ini
+          python -m mypy --config-file mypy-curriculum.ini
           python -m mypy --config-file mypy.ini
           python scripts/ruff_targets.py --run
           python -m scripts.check_agent_preservation > evidence/preservation.json
@@ -452,6 +453,8 @@ jobs:
         run: python -m scripts.validate_discovery_core --output evidence/discovery-core
       - name: Verify exact Experience learning and portable review evidence
         run: python -m scripts.validate_experience_core --output evidence/experience-core
+      - name: Verify native and browser curriculum parity
+        run: python -m scripts.validate_curriculum_core --output evidence/curriculum-core
       - name: Verify exact native and browser MATS search parity
         run: python -m scripts.validate_mats_core --output evidence/mats-core
       - name: Verify exact governance calculations and portable review evidence
@@ -485,6 +488,8 @@ jobs:
         run: python -m scripts.validate_discovery --site site --output evidence/discovery-browser --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Exercise Experience learning, exports, hostile imports and accessible recovery
         run: python -m scripts.validate_experience --site site --output evidence/experience-browser --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Verify curriculum, exports, accessibility and offline recovery
+        run: python -m scripts.validate_curriculum --site site --output evidence/curriculum-browser --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify MATS search, exports, accessibility and offline recovery
         run: python -m scripts.validate_mats --site site --output evidence/mats-browser --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Exercise governance gates, exports, hostile imports and accessible recovery
@@ -706,6 +711,7 @@ jobs:
           python -m scripts.validate_business3 --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/business3 --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_discovery --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/discovery --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_experience --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/experience --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_curriculum --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/curriculum --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_mats --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/mats --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_governance --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/governance --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

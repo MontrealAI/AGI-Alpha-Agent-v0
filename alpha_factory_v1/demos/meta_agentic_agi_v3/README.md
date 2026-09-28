@@ -1,55 +1,147 @@
+![preview](../../../docs/assets/curriculum/preview.svg)
+
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
+# Meta-Agentic AGI v3 — Curriculum Lab
+
+**Teach the teacher. Test the learner.** Generate reasoning tasks, evolve the configuration of an independent
+program solver, then evaluate the frozen winner on separate tasks. Inspect every example, attempted search,
+selection decision, parent/child relationship and review gate.
+
+[Open the browser lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_agi_v3/) ·
+[Operator guide](../../../docs/agent/CURRICULUM_LAB.md) ·
+[Original flowcharts and research](RESEARCH_ARCHIVE.md) ·
+[Original visual replay](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_agi_v3/research.html)
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
 
-**Mode:** Identity curriculum. Exercises proposal, validation, scoring and persistent lineage on a fixed identity task.
+## Start in two minutes
 
-**Prerequisites:** Core Python dependencies for the fixture; Docker is required to evaluate any generated program.
+The browser lab requires no account, key or installation. Choose a question, run the curriculum, inspect a round,
+and download the evidence. Everything is computed locally. Once cached, the public lab can recalculate offline.
 
-After [installation](../README.md#start-locally):
+For Python 3.11–3.13, follow the repository [installation guide](../README.md#start-locally), then:
 
 ```bash
 python -m alpha_factory_v1.demos check meta_agentic_agi_v3
-python -m alpha_factory_v1.demos run meta_agentic_agi_v3
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --list
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --case balanced --output curriculum-runs
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --serve
 ```
 
-The catalog command uses bundled inputs and explicit offline defaults.
+The local browser opens at `http://127.0.0.1:7863/meta_agentic_agi_v3/`; copy the printed address into your browser.
+Stop with **Ctrl+C**. The equivalent installed command is `curriculum-lab`.
+The native core uses only the standard library and never auto-selects cloud credentials.
 
-**Expected result:** Two scored identity generations and a lineage database.
-
-**Scope:** The offline fixture is not AZR model training. Cloud providers are explicit and can incur cost.
-
-The [catalog](../README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
 <!-- CURRENT-DEMO:END -->
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
+## Four questions, four useful experiments
 
+| Case | Question | Default result |
+|---|---|---|
+| `balanced` | Can a meta-agent improve a small solver across three task families? | Eligible for independent review |
+| `coverage-trap` | What if the curriculum only teaches arithmetic? | Held for missing skills |
+| `resource-limit` | What if a correct solver exceeds its operation allowance? | Held for resource cost |
+| `deep-composition` | Can configurations compose three operators? | Eligible for independent review |
 
+Eligibility is not approval. The active solver remains the baseline in every case. Thresholds and seeds must be
+chosen before inspecting review results; repeatedly tuning against the review set invalidates an independent test.
 
-# **Meta‑Agentic α‑AGI 👁️✨ Demo v3 — AZR‑Powered “Alpha‑Factory v1” (Production‑Grade v0.3.0)**
+## What actually runs
 
+```mermaid
+flowchart TD
+    P["Seeded task proposer"] --> V["Reference interpreter"]
+    V --> T["Training examples and inputs"]
+    T --> S["Bounded hypothesis search"]
+    S --> M["Pareto selection and adaptation"]
+    M --> P
+    M --> F["Freeze solver configuration"]
+    F --> E["Separate evaluation tasks"]
+    E --> G["Accuracy, coverage, gain and cost gates"]
+    G --> R["Unapproved proposal and review jobs"]
+```
 
-Identical to **v1** plus **two synergistic upgrades** 
-1. *Statistical‑physics wrapper* — logs & minimises **Gibbs / variational free‑energy** for every candidate agent. 
-2. *Absolute Zero Reasoner (AZR) self‑curriculum* — a **reinforced self‑play engine** that perpetually invents and solves its own tasks, unlocking *open‑ended* cross‑domain reasoning.
+- **Proposer:** generates finite compositions of `inc`, `dec`, `double`, `negate`, `abs`, `square` and `mod3`.
+  It rejects duplicate behaviors within a round and adjusts difficulty and family weights from recent training results.
+  Proposal attempts are capped at 512, so a saturated grammar may produce fewer tasks than requested.
+- **Solver:** enumerates a deterministic grammar using examples only. It never receives the reference program,
+  expected test outputs or task family. The first matching hypothesis predicts separate test inputs.
+- **Meta-agent:** mutates grammar depth, operator palette and hypothesis budget. Pareto selection considers actual
+  correctness and counted interpreter operations; a stated entropy-weighted utility selects among the frontier.
+- **Replay:** retains at most 48 training tasks. Each round compares candidates on the same replay buffer.
+- **Review:** creates a separate random stream only after the final configuration is frozen. Up to eight distinct
+  tasks per family test generalization; each task's actual count and outcome are retained. No review result feeds selection.
+- **Free-energy proxy:** mean operations minus temperature × solved-family Shannon entropy, using shared rounded
+  millinat logarithms. This is a cost/diversity diagnostic, not physical energy, a variational ELBO or a calibrated risk measure.
 
-> **Official definition — Meta‑Agentic (adj.)** 
-> *Describes an agent whose **primary role** is to **create, select, evaluate, or re‑configure other agents** and the rules governing their interactions, thereby exercising **second‑order agency** over a population of first‑order agents.* 
-> *The term was **pioneered by Vincent Boucher, President of MONTREAL.AI**.*
+This implements a bounded form of second-order agency. It does **not** train AZR model weights, implement PPO,
+prove general intelligence, demonstrate financial alpha, or deploy an autonomous enterprise.
+The [Absolute Zero paper](https://arxiv.org/abs/2505.03335) describes model training beyond this lab's tested scope.
 
----
+## Reproduce and retain evidence
 
-## 🚀 Why AZR Matters
-`Absolute Zero Reasoner` (Zhao *et al.* 2025) discards the last human bottleneck: **task curation**. 
-It **proposes**, **validates**, **solves**, and **learns from** its own code‑reasoning problems — then feeds the distilled knowledge back into the evolutionary loop. 
-*Result:* steeper learning curves, bolder exploration, and broad generalisation across math, code, and strategic planning — all while remaining vendor‑agnostic.
+Each run has a SHA-256 named directory containing `scenario.json`, `run.json`, `solver-proposal.json`, `jobs.json`,
+`review.md` and `SHA256SUMS`. Identical reruns reuse an identical bundle. Altered or incomplete existing bundles are
+rejected; use a new output directory after investigating the difference. Copy the whole run directory for backup.
 
----
+```bash
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --input my-scenario.json --output curriculum-runs
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --verify curriculum-runs/RUN_HASH/run.json
+```
+
+Replace `RUN_HASH` with the printed directory name. Verification recomputes the entire experiment, rejecting even
+edited results with a freshly recomputed checksum. Input files must be bounded UTF-8 JSON (1 MB maximum), without
+duplicate keys, non-finite numbers, unknown fields or invalid Unicode. Browser and Python produce identical canonical evidence.
+Checksums prove content consistency, not authorship or validator approval.
+
+The exported review job uses the Ascension `goal` ↔ `successMetric` ↔ `bounty` specification. Its draft bounty is
+100 $AGIALPHA in 18-decimal base units. It can be compiled into a FusionPlan through the existing
+[Ascension runtime](../../../docs/agent/ASCENSION_PROTOCOL.md); no minting, escrow, transfer, auction or approval occurs here.
+
+## Original research, maintained compatibility
+
+All original flowcharts, narrative and references are retained verbatim in [RESEARCH_ARCHIVE.md](RESEARCH_ARCHIVE.md).
+The [original notebook](colab_meta_agentic_agi_v3_original.ipynb), [configuration](configs/research_original.yml),
+visual replay and its assets remain available. Historical production, model-training, broker, sandbox and financial
+claims in those materials are research aspirations, not guarantees of this implementation.
+
+The updated [notebook](colab_meta_agentic_agi_v3.ipynb) runs the same finite core and verifies its exports.
+The original provider experiment is still available:
+
+```bash
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3 --provider stub --gens 2 --db lineage.sqlite
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3 --mode streamlit --db lineage.sqlite
+```
+
+The stub is explicitly an identity fixture. The provider experiment now asks a separate solver for an answer without
+revealing the expected output; temperature adaptation is a heuristic, not PPO. Generated Python in every maintained
+v3 execution path requires a usable Docker sandbox, with the repository's 120-second/2-GiB limits, no network and
+read-only filesystem. `TOOLS_TRUSTED` does not enable host execution. The browser lab needs no Docker.
+Cloud experiments require an explicit provider/model and their optional SDK; they may incur cost and are outside
+this offline release acceptance. The historical YAML configuration is not automatically loaded by the CLI.
+
+The [RoyaltyRadar example](businesses/royalty_radar.py) now performs reproducible mock-count reconciliation using an
+explicit EUR-per-stream assumption, accounts for amounts already paid, and appends a review draft to its audit log.
+It cannot send claims or payments. A native-currency transfer is not an ERC-20 payout.
+
+```bash
+python -m alpha_factory_v1.demos.meta_agentic_agi_v3.businesses.royalty_radar --demo
+```
+
+## Recovery and limits
+
+- **Edited settings:** outputs become unavailable until you apply JSON and rerun. This prevents stale exports.
+- **Saved settings:** Save/Restore/Forget are explicit and local to your browser. No result is silently restored.
+- **Import rejected:** retain the original, read the error, and correct the source scenario. Do not edit the exported run.
+- **Port busy:** add `--port 7864`. The local server serves only bundled assets on loopback, without upload or execution APIs.
+- **No Docker:** use the finite lab or exact identity fixture. Generated programs fail closed.
+- **More ambitious research:** independent datasets, task-specific validation, secure provider integration and validator
+  approval are prerequisites for deployment; this finite grammar does not establish open-ended generalization.
+
+## Preserved vision map
+
+The original research architecture is reproduced unchanged below. The capability boundaries above govern the runnable lab.
 
 ```mermaid
 %% GRAND OPERATIONAL SYNAPSE — Alpha‑Factory v1 (AZR + Free‑Energy + Meta‑Agency)
@@ -115,166 +207,6 @@ classDef tool fill:#fbbc05,color:#000
 classDef val  fill:#1e88e5,color:#fff
 ```
 
-> *“Alpha‑Factory v1 transforms raw data‑streams into deployable solutions that **Out‑Learn · Out‑Think · Out‑Design · Out‑Strategize · Out‑Execute** the market — autonomously.”*
-
----
-
-## 📌 Purpose & Positioning
-This demo operationalises **Automated Design of Agentic Systems (ADAS)** and adds:
-
-* **AZR‑driven open‑ended learning** — tasks invented on‑the‑fly, tuned for maximal learning gain.
-* **True multi‑objective optimisation** — accuracy, cost, latency, risk, carbon **& free‑energy**.
-* **Open‑weights *or* API FMs** — swap GPT‑4o, Claude‑3, Llama‑3, Mistral .gguf at will.
-* **Provable lineage & provenance** — every agent / artefact traceable via the Lineage UI.
-* **Battle‑tested safeguards** — sandboxing, taint‑tracking, chaos‑testing.
-
-Together, they lift **Alpha‑Factory v1** into a *self‑improving*, cross‑industry **Alpha Factory** that systematically 
-> **Out‑Learn · Out‑Think · Out‑Design · Out‑Strategize · Out‑Execute** 
-
-— with zero dependence on any single model or vendor.
-
----
-
-## 1 Quick‑Start 🏁
-```bash
-# 1️⃣ Clone
-git clone https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
-cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/meta_agentic_agi_v3
-
-# 2️⃣ Environment
-micromamba create -n alpha_factory python=3.11 -y
-micromamba activate alpha_factory
-pip install -r requirements.txt   # ≤ 60 MiB wheels
-
-# 3️⃣ Run – open‑weights default (no API key)
-python -m alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_agi_demo_v3 --provider stub --gens 2
-
-#  …or switch to GPT‑4o
-OPENAI_API_KEY=sk-... python src/main.py --provider openai:gpt-4o --curriculum azr
-
-# 4️⃣ UI dashboards
-streamlit run ui/lineage_app.py      # provenance graph
-streamlit run ui/alpha_monitor.py     # live alpha dashboard
-```
-
-For a **one‑click** experience, open [`colab_meta_agentic_agi_v3.ipynb`](colab_meta_agentic_agi_v3.ipynb) on Colab and run each cell in order.
-
-*Hardware:* CPU‑only works (llama‑cpp 4‑bit); GPU speeds things up. 8 GB RAM minimum.
-
----
-
-## 2 Folder Structure 📁
-```text
-meta_agentic_agi/
-├── core/        # provider‑agnostic primitives
-│  ├── fm.py      # unified FM wrapper
-│  ├── prompts.py    # reusable prompt fragments
-│  └── tools.py     # exec sandbox, RAG, vector store
-├── curriculum/     # ← NEW: self‑curriculum engines
-│  └── azr_engine.py  # Absolute Zero abstractions
-├── meta_agentic_search/ # evolutionary loop
-│  ├── archive.py    # stepping‑stone JSONL log
-│  ├── search.py    # NSGA‑II + Reflexion
-│  └── scorer.py    # multi‑objective metrics (+ free‑energy)
-├── agents/
-│  ├── agent_base.py  # runtime interface
-│  └── seeds.py     # bootstrap population
-├── ui/
-│  ├── lineage_app.py  # Streamlit dashboard
-│  ├── alpha_monitor.py # live alpha / risk view
-│  └── assets/
-├── configs/
-│  └── default.yml   # editable in‑UI
-└── src/
-  ├── main.py     # CLI entry‑point
-  └── orchestrator.py # agent scheduler & A2A bus
-```
-
----
-
-## 3 Provider‑Agnostic FM Wrapper ➡ Open‑Weights 🏋️‍♀️
-`configs/default.yml` excerpt:
-```yaml
-provider: mistral:7b-instruct.gguf   # any ollama / llama.cpp id
-context_length: 16_384
-rate_limit_tps: 4
-retry_backoff: 2
-```
-
-| Value             | Note              |
-|-------------------------------|---------------------------------|
-| `openai:gpt-4o`        | needs `OPENAI_API_KEY`     |
-| `anthropic:claude-3-sonnet`  | needs `ANTHROPIC_API_KEY`    |
-| `mistral:7b-instruct.gguf`  | local default via llama‑cpp   |
-
-All chats stream via **MCP** & window‑slide for long contexts.
-
----
-
-## 4 Multi‑Objective Evolution 🎯
-**Objective vector** = `[accuracy, cost, latency, hallu‑risk, carbon, free‑energy]` 
-* NSGA‑II elitist selection 
-* Behaviour descriptor = SHA‑256(AST) 
-* Human‑in‑the‑loop thumbs ↑/↓ (web UI) 
-
----
-
-## 5 Security & Antifragility 🛡
-* Firejail `--seccomp` + 512 MiB cgroup sandbox 
-* Static (`bandit`) + dynamic taint tracking 
-* Live watchdog terminates rogue proc > 30 s CPU 
-* Chaos‑monkey fault injections each epoch 
-* Curriculum filter auto‑drops unsafe proposals 
-
----
-
-## 6 Lineage & Observability 📊
-Run `streamlit run ui/lineage_app.py` → DAG of every agent, prompt, tool‑call, metric, and deployment artefact. 
-OpenTelemetry exporters emit traces; Prometheus scrapes runtime metrics; Grafana dashboards included.
-
----
-
-## 7 Extending 🛠
-1. **New dataset** — drop `foo.pkl` → auto‑RAG ingest. 
-2. **New metric** — subclass `evolution.metrics.BaseMetric`. 
-3. **Custom curriculum** — register engine in `curriculum/__init__.py`. 
-4. **Real exchange adapter** — implement `execution.broker.BaseBroker` (see IBKR stub). 
-
----
-
-## 8 Roadmap 🗺
-- ☑ AZR integration & POET outer‑loop 
-- ☑ Free‑Energy minimisation 
-- ☑ Live alpha demo (NVDA earnings) 
-- ☐ Multimodal (image ↔ code ↔ math) AZR 
-- ☐ Hierarchical meta‑meta search 
-- ☐ Flash‑Infer v3 GPU batched inference 
-- ☐ RL fine‑tune search policy w/ lineage replay 
-
----
-
-## 9 Key References 📚
-* Zhao *et al.* “Absolute Zero: Reinforced Self‑Play Reasoning with Zero Data” (2025)  
-* Hu *et al.* “Automated Design of Agentic Systems” ICLR 2025  
-* Clune “AI‑Generating Algorithms” (2020)  
-* Schrittwieser *et al.* “MuZero” (2020)  
-* Silver & Sutton “Era of Experience” (2025)  
-
----
-
-## 10 Live Alpha Demo 🚀
-
-**Signal:** Anticipated upside surprise in NVIDIA (NVDA) Q1‑FY2026 earnings on **28 May 2025**, driven by record data‑center demand and Blackwell GPU ramp. 
-*Evidence:* 78 % YoY revenue jump to \$39.3 B and guidance for \$43 B next quarter . Deloitte projects continued semiconductor boom via generative‑AI build‑outs .
-
-**Strategy:** 
-1. **Entry window**: T‑10 → T‑2 trading days before earnings. 
-2. **Position**: 40 % capital → 30‑delta call options (30 Jun expiry) + 60 % delta‑one shares. 
-3. **Risk**: Max 2 % account equity; stop‑loss at ATR‑2× below entry; risk manager enforces VaR<1 %. 
-4. **Exit**: 50 % gamma‑scalp on IV crush at T + 1; remainder trail‑stop @ EMA‑21. 
-
-The included `agents/alpha_finder.py` continuously scans news/API feeds and triggers the **ExecutionAgent** when criteria match. Sources are injected into the lineage graph for auditability.
-
----
-
-© 2025 MONTREAL.AI — Apache‑2.0
+Evaluation probes use −8, −6, 6 and 8, disjoint from training probes −5, −2, 0 and 5.
+Reference functions are independently sampled from the same finite grammar and may recur across the two sets;
+this tests a frozen solver configuration on fresh input probes, not transfer to an unseen language or domain.

@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.17.0.** The canonical directory is
+**Version 1.18.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -14,6 +14,7 @@ computed results and modeled assumptions. Export work you want to retain.
 
 | Your question | Open | What to inspect |
 |---|---|---|
+| Can a meta-agent teach a solver without leaking evaluation answers? | [Curriculum Lab](../meta_agentic_agi_v3/index.html) | Adaptive tasks, hypothesis search, lineage, independent gates and verified exports |
 | Which workflow design deserves independent review? | [MATS Search Lab](../meta_agentic_tree_search_v0/index.html) | Branching search, rollouts, oracle gap, held-out schedules and five gates |
 | Should a governance proposal advance to independent review? | [Governance Workbench](../solving_agi_governance/index.html) | Nine gates, adversarial cases, exact dossier and verification jobs |
 | Which enterprise projects fit capital, staff and reviewer capacity? | [Business 3 Enterprise Studio](../alpha_agi_business_3_v1/index.html) | Exact portfolio, downside stress, evidence bundle and Ascension job specs |

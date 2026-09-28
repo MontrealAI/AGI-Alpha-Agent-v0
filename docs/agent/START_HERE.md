@@ -7,6 +7,8 @@ to inspect the result before approval. Start with the allocation example; it nee
 Docker or model download. The [factory guide](FACTORY_GUIDE.md) explains all five mission types and the
 complete Ascension path. Browser-only examples are available in [Decision Studio](../studio/index.html).
 
+For self-generated reasoning tasks and independent solver review, open the [Curriculum Lab](CURRICULUM_LAB.md).
+
 ## 1. Install one release
 
 Use Python **3.11, 3.12 or 3.13**. From one [release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest),

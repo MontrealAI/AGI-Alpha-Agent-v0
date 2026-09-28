@@ -48,6 +48,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/DISCOVERY.md",
         "docs/agent/EXPERIENCE.md",
         "docs/agent/MATS.md",
+        "docs/agent/CURRICULUM_LAB.md",
         "docs/agent/MANUSCRIPT_ALIGNMENT.md",
         "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.pdf",
         "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.md",

@@ -83,12 +83,13 @@ def smoke() -> list[dict[str, object]]:
                     if db.execute("SELECT COUNT(*) FROM lineage").fetchone()[0] != 6:
                         raise AssertionError("Repeated runs did not preserve all six lineage records")
             if entry["id"] == "meta_agentic_agi_v3":
-                with sqlite3.connect(output / "lineage.sqlite") as db:
-                    metrics = [
-                        json.loads(row[0])
-                        for row in db.execute("SELECT metrics FROM agent_lineage WHERE generation > 0")
-                    ]
-                    assert len(metrics) == 2 and all(m == {"correct": 1, "total": 1} for m in metrics)
+                from alpha_factory_v1.demos.meta_agentic_agi_v3.curriculum_lab import read_json, verify
+
+                runs = list(output.glob("*/run.json"))
+                assert len(runs) == 1
+                report = verify(read_json(runs[0]))
+                assert len(report["result"]["history"]) == 10
+                assert report["result"]["proposal"]["status"] == "UNAPPROVED"
             records.append(
                 {
                     "demo": entry["id"],

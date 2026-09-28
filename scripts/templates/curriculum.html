@@ -1,0 +1,468 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+            name="description"
+            content="Evolve a bounded program solver, inspect its curriculum and test its frozen design on separate tasks. Reproducible, local-first Meta-Agentic AGI v3 laboratory."
+        />
+        <title>Curriculum Lab · Meta-Agentic AGI v3</title>
+        <link
+            rel="stylesheet"
+            href="../assets/curriculum/lab.css?v={{VERSION}}"
+        />
+        <script
+            type="module"
+            src="../assets/curriculum/lab.mjs?v={{VERSION}}"
+        ></script>
+    </head>
+    <body>
+        <a class="skip" href="#workspace">Skip to experiment</a>
+        <header class="masthead">
+            <a class="brand" href="../" aria-label="Back to Gallery"
+                ><span class="alpha">α</span> ALPHA FACTORY
+                <span class="edition">LABORATORIES / 03</span></a
+            >
+            <nav aria-label="Primary">
+                <a href="#workspace">Experiment</a><a href="#review">Review</a
+                ><a href="../demos/meta_agentic_agi_v3/"
+                    >Guide <span aria-hidden="true">↗</span></a
+                >
+            </nav>
+        </header>
+        <main>
+            <section class="hero" aria-labelledby="title">
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        META-AGENTIC AGI V3 <span> / </span> CURRICULUM LAB
+                    </p>
+                    <h1 id="title">
+                        Teach the teacher.<br /><em>Test the learner.</em>
+                    </h1>
+                    <p class="lede">
+                        An agent designs the challenges. Another searches for a
+                        solution. A meta-agent chooses what changes next.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button primary" href="#workspace"
+                            >Explore the experiment
+                            <span aria-hidden="true">↓</span></a
+                        ><span class="quiet"
+                            >Runs locally in your browser.<br />No account or
+                            API key.</span
+                        >
+                    </div>
+                </div>
+                <div
+                    class="hero-diagram"
+                    aria-label="Training and independent review process"
+                >
+                    <div class="diagram-top">
+                        <span class="small-label">THE LEARNING LOOP</span
+                        ><span class="live-dot">Bounded by design</span>
+                    </div>
+                    <div class="loop-row">
+                        <div>
+                            <b>01</b><strong>Propose</strong
+                            ><span>Generate integer tasks</span>
+                        </div>
+                        <span class="arrow" aria-hidden="true">→</span>
+                        <div>
+                            <b>02</b><strong>Solve</strong
+                            ><span>Infer from examples</span>
+                        </div>
+                    </div>
+                    <div class="loop-return">
+                        <span aria-hidden="true">↖</span> Meta-agent selects
+                        grammar &amp; search budget
+                        <span aria-hidden="true">↗</span>
+                    </div>
+                    <div class="review-path">
+                        <span class="small-label"
+                            >AFTER SELECTION IS FROZEN</span
+                        ><strong
+                            >Independent task set
+                            <span aria-hidden="true">→</span> Review
+                            gates</strong
+                        ><span
+                            >Baseline stays active until separately
+                            approved.</span
+                        >
+                    </div>
+                </div>
+            </section>
+            <div class="scope-strip">
+                <span>01 / SYNTHETIC TASKS</span
+                ><span>02 / REAL PROGRAM SEARCH</span
+                ><span>03 / REPRODUCIBLE EVIDENCE</span>
+                <p>
+                    A finite research lab. No model weights are trained and no
+                    enterprise is deployed.
+                </p>
+            </div>
+            <section
+                id="workspace"
+                class="workspace"
+                aria-labelledby="experiment-heading"
+            >
+                <aside class="controls">
+                    <p class="eyebrow dark">EXPERIMENT / CONFIGURE</p>
+                    <h2 id="experiment-heading">Start with a question.</h2>
+                    <label for="case">Research question</label
+                    ><select id="case"></select>
+                    <p id="case-note" class="hint"></p>
+                    <div class="control-pair">
+                        <div>
+                            <label for="seed">Random seed</label
+                            ><input
+                                id="seed"
+                                type="number"
+                                min="0"
+                                max="4294967295"
+                                step="1"
+                            />
+                        </div>
+                        <div>
+                            <label for="rounds">Training rounds</label
+                            ><input
+                                id="rounds"
+                                type="number"
+                                min="1"
+                                max="12"
+                                step="1"
+                            />
+                        </div>
+                    </div>
+                    <div class="control-pair">
+                        <div>
+                            <label for="depth">Maximum depth</label
+                            ><select id="depth">
+                                <option value="1">1 operator</option>
+                                <option value="2">2 operators</option>
+                                <option value="3">3 operators</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="temperature">Entropy weight</label
+                            ><input
+                                id="temperature"
+                                type="number"
+                                min="0"
+                                max="1000"
+                                step="1"
+                            />
+                        </div>
+                    </div>
+                    <button id="run" class="button primary full">
+                        Run curriculum
+                        <span aria-hidden="true">↗</span></button
+                    ><button id="reset" class="text-button">
+                        Reset this example
+                    </button>
+                    <details>
+                        <summary>Inputs &amp; reproducibility</summary>
+                        <p class="hint">
+                            Edit the complete scenario. Apply it before running.
+                            Unknown fields and ambiguous JSON are rejected.
+                        </p>
+                        <label for="source">Scenario JSON</label
+                        ><textarea
+                            id="source"
+                            spellcheck="false"
+                            rows="12"
+                        ></textarea
+                        ><button id="apply" class="button secondary full">
+                            Apply JSON</button
+                        ><label class="file-button" for="import"
+                            >Import scenario or run<input
+                                id="import"
+                                type="file"
+                                accept=".json,application/json"
+                        /></label>
+                        <p class="hint">
+                            Up to 1 MB. Imported runs are recomputed before
+                            display.
+                        </p>
+                        <button id="save" class="text-button">
+                            Save settings on this device</button
+                        ><button id="restore" class="text-button">
+                            Restore saved settings</button
+                        ><button id="forget" class="text-button">
+                            Forget saved settings
+                        </button>
+                        <p id="storage-status" class="hint" role="status">
+                            Settings are saved only when you choose.
+                        </p>
+                    </details>
+                    <div class="principle">
+                        <span class="small-label">THE BOUNDARY</span>
+                        <p>
+                            Tasks are data. The lab interprets seven arithmetic
+                            operators; it never executes imported Python.
+                        </p>
+                    </div>
+                </aside>
+                <div class="experiment-body">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow dark">EXPERIMENT / OBSERVE</p>
+                            <h2>Learning, made inspectable.</h2>
+                        </div>
+                        <span class="pill" id="run-state">Starting</span>
+                    </div>
+                    <p
+                        id="status"
+                        class="status"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Preparing the bundled experiment…
+                    </p>
+                    <noscript
+                        ><p>
+                            This interactive lab needs JavaScript. Use the
+                            Python CLI described in the guide for an offline
+                            alternative.
+                        </p></noscript
+                    >
+                    <div id="results" hidden>
+                        <div class="metrics">
+                            <div>
+                                <span>Frozen solver accuracy</span
+                                ><strong id="accuracy">—</strong
+                                ><small>On separate review tasks</small>
+                            </div>
+                            <div>
+                                <span>Gain over baseline</span
+                                ><strong id="gain">—</strong
+                                ><small>Percentage points</small>
+                            </div>
+                            <div>
+                                <span>Mean operations</span
+                                ><strong id="cost">—</strong
+                                ><small>Per held-out task</small>
+                            </div>
+                        </div>
+                        <div class="panel chart-panel">
+                            <div class="panel-heading">
+                                <h3>How the curriculum changes</h3>
+                                <span class="legend"
+                                    ><i></i> Selected solver on current
+                                    tasks</span
+                                >
+                            </div>
+                            <div id="curve" class="chart"></div>
+                            <p class="hint">
+                                Difficulty and tasks change between rounds. This
+                                is a curriculum trace, not a fixed benchmark
+                                learning curve.
+                            </p>
+                        </div>
+                        <div class="panel inspector">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="small-label"
+                                        >OPEN THE BLACK BOX</span
+                                    >
+                                    <h3>What did the solver actually see?</h3>
+                                </div>
+                                <label for="round"
+                                    >Round
+                                    <output id="round-label" for="round"
+                                        >1</output
+                                    ></label
+                                >
+                            </div>
+                            <input
+                                id="round"
+                                type="range"
+                                min="1"
+                                value="1"
+                                max="12"
+                            />
+                            <div id="round-summary" class="round-summary"></div>
+                            <div class="inspector-grid">
+                                <div>
+                                    <label for="task">Generated task</label
+                                    ><select id="task"></select>
+                                    <div id="examples"></div>
+                                </div>
+                                <div>
+                                    <h4>The solver’s answer</h4>
+                                    <div id="solution"></div>
+                                    <details>
+                                        <summary>
+                                            Reveal reference program
+                                        </summary>
+                                        <p id="oracle" class="code"></p>
+                                        <p class="hint">
+                                            The reference is used by the
+                                            evaluator. It is never passed into
+                                            the solver.
+                                        </p>
+                                    </details>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3>Selection &amp; lineage</h3>
+                                <span
+                                    id="lineage-count"
+                                    class="small-label"
+                                ></span>
+                            </div>
+                            <p id="selection-note" class="hint"></p>
+                            <div
+                                class="table-scroll"
+                                tabindex="0"
+                                role="region"
+                                aria-label="Candidate comparison table"
+                            >
+                                <table>
+                                    <caption>
+                                        Candidate configurations for the
+                                        selected round
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Solver</th>
+                                            <th scope="col">Accuracy</th>
+                                            <th scope="col">Operations</th>
+                                            <th scope="col">Entropy</th>
+                                            <th scope="col">F proxy</th>
+                                            <th scope="col">Selection</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="candidates"></tbody>
+                                </table>
+                            </div>
+                            <details>
+                                <summary>
+                                    Inspect complete parent → child lineage
+                                </summary>
+                                <div id="lineage" class="lineage-list"></div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section
+                id="review"
+                class="review-section"
+                aria-labelledby="review-heading"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow dark">
+                            INDEPENDENT REVIEW / AFTER THE FREEZE
+                        </p>
+                        <h2 id="review-heading">
+                            A better score is only the beginning.
+                        </h2>
+                    </div>
+                    <span id="review-state" class="pill">Awaiting run</span>
+                </div>
+                <p class="section-intro">
+                    The chosen solver meets a fresh, separate set of arithmetic,
+                    nonlinear and remainder tasks. These results never influence
+                    selection.
+                </p>
+                <div id="gates" class="gate-grid"></div>
+                <div class="review-grid">
+                    <div class="panel">
+                        <h3>Where does it generalize?</h3>
+                        <div id="families"></div>
+                        <label for="heldout-task">Inspect a held-out task</label
+                        ><select id="heldout-task"></select>
+                        <div id="heldout-detail"></div>
+                    </div>
+                    <div class="panel evidence">
+                        <span class="small-label">THE REVIEW PACKAGE</span>
+                        <h3>Take the evidence with you.</h3>
+                        <p>
+                            Six files: scenario, complete run, solver proposal,
+                            review jobs, readable review, and checksums.
+                        </p>
+                        <button
+                            id="download"
+                            class="button primary full"
+                            disabled
+                        >
+                            Download evidence ZIP
+                            <span aria-hidden="true">↓</span></button
+                        ><button
+                            id="download-run"
+                            class="button secondary full"
+                            disabled
+                        >
+                            Download run JSON
+                        </button>
+                        <p id="export-status" class="hint" role="status">
+                            Run an experiment to enable exports.
+                        </p>
+                        <details>
+                            <summary>Verify with Python</summary>
+                            <pre><code>python -m alpha_factory_v1.demos.meta_agentic_agi_v3 --verify run.json</code></pre>
+                            <p class="hint">
+                                Verification recomputes the complete experiment;
+                                it does not merely compare a supplied checksum.
+                            </p>
+                        </details>
+                        <p class="hint">
+                            The solver proposal is UNAPPROVED. Review jobs carry
+                            goal, success metric and a 100 $AGIALPHA draft
+                            bounty; they are unsubmitted and unfunded.
+                        </p>
+                        <a href="../ascension-protocol/"
+                            >Explore validator-gated settlement
+                            <span aria-hidden="true">↗</span></a
+                        >
+                        <p id="run-hash" class="hash"></p>
+                    </div>
+                </div>
+            </section>
+            <section class="research-section">
+                <div>
+                    <p class="eyebrow dark">RESEARCH / KEPT IN VIEW</p>
+                    <h2>Built on the original vision.</h2>
+                    <p>
+                        Propose, validate, solve and adapt. The lab makes that
+                        loop concrete within a finite grammar. AZR model
+                        training, physical free energy, live trading and
+                        autonomous enterprise deployment remain separate
+                        research and integration work.
+                    </p>
+                </div>
+                <div class="research-links">
+                    <a href="research.html"
+                        >Original visual replay
+                        <span aria-hidden="true">↗</span></a
+                    ><a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_agi_v3/RESEARCH_ARCHIVE.md"
+                        >Original flowcharts &amp; research
+                        <span aria-hidden="true">↗</span></a
+                    ><a href="../demos/meta_agentic_agi_v3/"
+                        >Operator guide &amp; limitations
+                        <span aria-hidden="true">↗</span></a
+                    ><a href="https://arxiv.org/abs/2505.03335"
+                        >Absolute Zero research paper
+                        <span aria-hidden="true">↗</span></a
+                    >
+                </div>
+            </section>
+        </main>
+        <footer>
+            <a class="brand" href="../"
+                ><span class="alpha">α</span> ALPHA FACTORY</a
+            >
+            <p>
+                Meta-Agentic AGI v3 · Release {{VERSION}} ·
+                <a href="../DISCLAIMER_SNIPPET/">Research disclaimer</a>
+                <span class="source-note">docs/DISCLAIMER_SNIPPET.md</span>
+            </p>
+        </footer>
+    </body>
+</html>

@@ -1,85 +1,26 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""royalty_radar.py – Production‑grade α‑AGI Business Module
-───────────────────────────────────────────────────────────────────────────────
-RoyaltyRadar.alpha.agi.eth
-━━━━━━━━━━━━━━━━━━━━━
-Autonomously reconciles music‑streaming royalties, identifies unpaid balances,
-and dispatches cryptographically‑signed claim notices + on‑chain payment
-instructions. Designed as a *plug‑in business* for Alpha‑Factory v1 👁️✨
-(meta_agentic_agi_v3 demo).
+"""RoyaltyRadar: offline reconciliation evidence and a reviewable letter draft.
 
-Key Features
-============
-• **API‑agnostic DSP ingestion** – adapters for Spotify RS, Apple Music, Deezer;
-  mock provider included for offline demos.
-• **Probabilistic gap detection** – Bayes posterior on expected vs paid counts;
-  configurable false‑positive ceiling.
-• **LLM‑generated legal drafts** – professional, jurisdiction‑aware letters
-  (OpenAI / Claude / local Llama‑3) with template fallback if no FM.
-• **Smart‑contract payout** – optional escrow via `$AGIALPHA` ERC‑20; demo mode
-  prints the tx instead of broadcasting.
-• **Sandbox & audit** – any third‑party Python code executes under Firejail
-  seccomp; every artefact merklised in the Alpha‑Factory lineage ledger.
-
-Deployment
-==========
-Drop this file into:
-    alpha_factory_v1/demos/meta_agentic_agi_v3/businesses/royalty_radar.py
-No further changes required – the orchestrator auto‑discovers subclasses of
-`Agent` at boot.
-
-CLI Demo:
-    micromamba activate alpha_factory
-    python royalty_radar.py --cfg ../configs/royalty_radar.yml --demo
-
-Environment variables (optional):
-    OPENAI_API_KEY     Anthropic / Cohere keys also recognised automatically.
-    RPC_URL            JSON‑RPC endpoint for payout (default: demo mode).
-    PRIVATE_KEY        Wallet key for payout tx       (default: demo mode).
+Mock public stream counts and an explicit EUR-per-stream assumption are not
+proof of money owed. No claim is sent and no payment is broadcast. The original
+research narrative remains in royalty_radar.md and the demo research archive.
 """
 from __future__ import annotations
 
-import asyncio, csv, json, os, random, sys, time
+import asyncio
+import csv
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+import json
+import logging
 from pathlib import Path
+import random
 from statistics import mean
-from typing import Dict, List, Sequence
-
-import httpx
-from eth_account import Account  # type: ignore
-from web3 import HTTPProvider, Web3  # type: ignore
-from alpha_factory_v1.utils.token_utils import to_token_units
-
-# Alpha‑Factory primitives (import‑safe even when run standalone)
-try:
-    from core.fm import call_llm
-    from core.tools import sandbox_exec
-    from agents.agent_base import Agent
-    from meta_agentic_search.archive import log_stepstone
-except ModuleNotFoundError:
-    # standalone fallback → minimal stubs
-    def call_llm(prompt: str, model: str, temp: float = 0.2):
-        return "[LLM offline] Please settle €X royalties to wallet 0x…"
-
-    def sandbox_exec(code: str, timeout: int = 3):
-        return {}
-
-    class Agent:
-        def __init__(self, cfg):
-            self.cfg = cfg
-            import logging
-
-            self.logger = logging.getLogger("RoyaltyRadar")
-
-    def log_stepstone(label: str, artefact: dict):
-        Path("stepstones.jsonl").write_text(json.dumps(artefact) + "\n")
+from typing import Any, Sequence
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Configuration dataclass
-# ──────────────────────────────────────────────────────────────────────────────
 @dataclass
 class RoyaltyRadarConfig:
     artist_name: str
@@ -87,193 +28,168 @@ class RoyaltyRadarConfig:
     statement_csv: Path
     payout_wallet: str
     dsp_adapters: Sequence[str] = ("mock",)
-    llm_model: str = "mistral:7b-instruct.gguf"
-    gap_eur_floor: float = 50.0  # ignore penny gaps
-    false_pos_rate: float = 0.05  # max FP tolerated when flagging
+    llm_model: str = "offline-template"
+    gap_eur_floor: float = 50.0
+    false_pos_rate: float = 0.05  # legacy metadata; not a calibrated statistical guarantee
     demo_mode: bool = True
+    eur_per_stream: str = "0.0032"
+    lineage_path: Path = Path("stepstones.jsonl")
 
     @staticmethod
-    def from_yaml(path: str | Path):
+    def from_yaml(path: str | Path) -> RoyaltyRadarConfig:
         import yaml
 
-        raw = yaml.safe_load(Path(path).read_text())
+        source = Path(path).resolve()
+        raw = yaml.safe_load(source.read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise ValueError("Royalty configuration must be an object")
+        statement = Path(raw["statement_csv"]).expanduser()
+        lineage = Path(raw.get("lineage_path", "stepstones.jsonl")).expanduser()
         return RoyaltyRadarConfig(
             artist_name=raw["artist_name"],
             isrc_codes=raw["isrc_codes"],
-            statement_csv=Path(raw["statement_csv"]).expanduser(),
+            statement_csv=statement if statement.is_absolute() else source.parent / statement,
             payout_wallet=raw["payout_wallet"],
             dsp_adapters=raw.get("dsp_adapters", ["mock"]),
-            llm_model=raw.get("llm_model", "mistral:7b-instruct.gguf"),
-            gap_eur_floor=float(raw.get("gap_eur_floor", 50)),
-            false_pos_rate=float(raw.get("false_pos_rate", 0.05)),
-            demo_mode=bool(raw.get("demo_mode", True)),
+            llm_model=raw.get("llm_model", "offline-template"),
+            gap_eur_floor=raw.get("gap_eur_floor", 50),
+            false_pos_rate=raw.get("false_pos_rate", 0.05),
+            demo_mode=raw.get("demo_mode", True),
+            eur_per_stream=str(raw.get("eur_per_stream", "0.0032")),
+            lineage_path=lineage if lineage.is_absolute() else Path.cwd() / lineage,
         )
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# DSP Adapters (extendable): return total stream count for ISRC code
-# ──────────────────────────────────────────────────────────────────────────────
 async def dsp_mock(isrc: str) -> int:
-    random.seed(isrc)
-    return 1_000_000 + random.randint(0, 500_000)
+    return 1_000_000 + random.Random(isrc).randint(0, 500_000)
 
 
-ADAPTERS = {
-    "mock": dsp_mock,
-    # "spotify": dsp_spotify_async,
-    # "apple":  dsp_apple_async,
-}
+ADAPTERS = {"mock": dsp_mock}
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# RoyaltyRadar Agent Implementation
-# ──────────────────────────────────────────────────────────────────────────────
-class RoyaltyRadarBusiness(Agent):
+def _amount(value: Any, name: str) -> Decimal:
+    try:
+        result = Decimal(str(value))
+    except InvalidOperation as exc:
+        raise ValueError(f"{name} must be numeric") from exc
+    if not result.is_finite() or result < 0:
+        raise ValueError(f"{name} must be nonnegative and finite")
+    return result
+
+
+class RoyaltyRadarBusiness:
     LABEL = "RoyaltyRadar.alpha.agi.eth"
 
     def __init__(self, cfg: RoyaltyRadarConfig):
-        super().__init__(cfg.__dict__)
+        if cfg.demo_mode is not True:
+            raise ValueError("Live settlement is not implemented. Use demo_mode: true to prepare evidence for review.")
+        if (
+            not cfg.isrc_codes
+            or isinstance(cfg.isrc_codes, str)
+            or len(cfg.isrc_codes) > 100
+            or len(set(cfg.isrc_codes)) != len(cfg.isrc_codes)
+        ):
+            raise ValueError("Provide 1–100 unique ISRC codes")
+        if not cfg.dsp_adapters or any(a not in ADAPTERS for a in cfg.dsp_adapters):
+            raise ValueError("Unknown or empty DSP adapters")
+        _amount(cfg.eur_per_stream, "eur_per_stream")
+        _amount(cfg.gap_eur_floor, "gap_eur_floor")
         self.cfg = cfg
+        self.logger = logging.getLogger("RoyaltyRadar")
 
-    # ---------------- public description for lineage UI ----------------
     def plan(self) -> str:
-        return (
-            f"Scan {self.cfg.artist_name}'s {len(self.cfg.isrc_codes)} tracks across"
-            f" {', '.join(self.cfg.dsp_adapters)} -> reconcile statements -> claim & pay."
-        )
+        return f"Compare assumed streams for {self.cfg.artist_name}; draft evidence for independent review."
 
-    # ---------------- main orchestration ----------------
-    async def run_async(self):
-        self.logger.info(self.plan())
-
-        # 1 Fetch public counts concurrently
-        tasks = [ADAPTERS[adp](isrc) for isrc in self.cfg.isrc_codes for adp in self.cfg.dsp_adapters]
-        raw_counts = await asyncio.gather(*tasks)
-
-        # Aggregate by ISRC (mean across adapters)
-        public_counts: Dict[str, int] = {
-            isrc: int(mean(raw_counts[i :: len(self.cfg.isrc_codes)])) for i, isrc in enumerate(self.cfg.isrc_codes)
-        }
-        self.logger.debug(f"Public counts → {public_counts}")
-
-        # 2 Parse artist statements
-        paid_counts, paid_eur = _parse_statement(self.cfg.statement_csv, self.cfg.isrc_codes)
-        self.logger.debug(f"Paid counts → {paid_counts}")
-
-        # 3 Bayesian gap estimation (Beta‑Binomial w/ Jeffreys prior)
-        gap_eur: Dict[str, float] = {}
-        for isrc in self.cfg.isrc_codes:
-            n_pub = public_counts[isrc]
-            n_paid = paid_counts.get(isrc, 0)
-            if n_pub <= n_paid:
-                continue
-            # posterior mean of unpaid portion
-            unpaid_mu = (n_pub - n_paid) / (n_pub + 2)
-            euro_gap = unpaid_mu * 0.0032  # €/stream
-            if euro_gap >= self.cfg.gap_eur_floor:
-                gap_eur[isrc] = round(euro_gap, 2)
-
-        total_gap = round(sum(gap_eur.values()), 2)
-        if not gap_eur:
-            self.logger.info("No material gaps discovered – exiting cleanly.")
-            return {"gap_eur": 0}
-        self.logger.info(f"Detected unpaid royalties ≈ €{total_gap}")
-
-        # 4 Craft claim letter
-        letter = call_llm(
-            prompt=_letter_prompt(self.cfg.artist_name, gap_eur, self.cfg.payout_wallet),
-            model=self.cfg.llm_model,
-            temp=0.15,
-        )
-
-        # 5 Record lineage artefact
+    async def run_async(self) -> dict[str, Any]:
+        cfg = self.cfg
+        width = len(cfg.dsp_adapters)
+        values = await asyncio.gather(*(ADAPTERS[a](isrc) for isrc in cfg.isrc_codes for a in cfg.dsp_adapters))
+        if any(type(v) is not int or v < 0 for v in values):
+            raise ValueError("Adapters must return nonnegative integer stream counts")
+        public = {isrc: int(mean(values[i * width : (i + 1) * width])) for i, isrc in enumerate(cfg.isrc_codes)}
+        paid_counts, paid_eur = _parse_statement(cfg.statement_csv, cfg.isrc_codes)
+        rate, floor = _amount(cfg.eur_per_stream, "eur_per_stream"), _amount(cfg.gap_eur_floor, "gap_eur_floor")
+        gaps = {}
+        for isrc in cfg.isrc_codes:
+            estimate = max(Decimal(0), Decimal(public[isrc]) * rate - paid_eur.get(isrc, Decimal(0)))
+            if estimate >= floor and estimate > 0:
+                gaps[isrc] = str(estimate.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+        total = sum((Decimal(v) for v in gaps.values()), Decimal(0))
         artefact = {
             "ts": datetime.now(timezone.utc).isoformat(),
-            "artist": self.cfg.artist_name,
-            "gap_eur": total_gap,
-            "claim_letter": letter,
+            "artist": cfg.artist_name,
+            "gap_eur": str(total.quantize(Decimal("0.01"))),
+            "status": "REVIEW_REQUIRED",
+            "claim_letter": _letter_prompt(cfg.artist_name, gaps, cfg.payout_wallet),
             "evidence": {
-                "public_streams": public_counts,
+                "public_streams": public,
                 "paid_streams": paid_counts,
+                "paid_eur": {k: str(v) for k, v in paid_eur.items()},
+                "eur_per_stream_assumption": str(rate),
+                "adapters": list(cfg.dsp_adapters),
             },
+            "scope": "Illustrative reconciliation, not a debt finding. No calibrated false-positive bound, claim delivery or settlement.",
         }
-        log_stepstone(self.LABEL, artefact)
-
-        # 6 Trigger payout tx (demo‑mode prints only)
-        if self.cfg.demo_mode or not os.getenv("PRIVATE_KEY"):
-            self.logger.info("💸 [DEMO] Wire €%.2f to wallet %s" % (total_gap, self.cfg.payout_wallet))
-        else:
-            _dispatch_payout(total_gap, self.cfg.payout_wallet)
-
+        cfg.lineage_path.parent.mkdir(parents=True, exist_ok=True)
+        with cfg.lineage_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(artefact, ensure_ascii=False, allow_nan=False) + "\n")
         return artefact
 
-    # Alpha‑Factory runtime entry‑point
-    def run(self):
+    def run(self) -> dict[str, Any]:
         return asyncio.run(self.run_async())
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Helper functions
-# ──────────────────────────────────────────────────────────────────────────────
-
-
-def _parse_statement(csv_path: Path, isrc_filter: Sequence[str]):
-    counts: Dict[str, int] = {}
-    euros: Dict[str, float] = {}
-    with csv_path.open() as f:
-        for row in csv.DictReader(f):
+def _parse_statement(csv_path: Path, isrc_filter: Sequence[str]) -> tuple[dict[str, int], dict[str, Decimal]]:
+    counts: dict[str, int] = {}
+    euros: dict[str, Decimal] = {}
+    with csv_path.open(encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        if reader.fieldnames is None or not {"isrc", "streams", "eur"}.issubset(reader.fieldnames):
+            raise ValueError("Statement requires isrc, streams and eur columns")
+        for index, row in enumerate(reader, 2):
+            if index > 100002:
+                raise ValueError("Statement exceeds 100,000 rows")
             if row["isrc"] not in isrc_filter:
                 continue
-            counts[row["isrc"]] = counts.get(row["isrc"], 0) + int(row["streams"])
-            euros[row["isrc"]] = euros.get(row["isrc"], 0) + float(row["eur"])
+            n = int(row["streams"])
+            if n < 0:
+                raise ValueError(f"Negative streams at row {index}")
+            counts[row["isrc"]] = counts.get(row["isrc"], 0) + n
+            euros[row["isrc"]] = euros.get(row["isrc"], Decimal(0)) + _amount(row["eur"], f"EUR at row {index}")
     return counts, euros
 
 
-def _letter_prompt(artist: str, gap: Dict[str, float], wallet: str) -> str:
-    bullets = "\n".join(f"• {k}: €{v}" for k, v in gap.items())
+def _letter_prompt(artist: str, gap: dict[str, str], wallet: str) -> str:
+    bullets = "\n".join(f"- {key}: EUR {value} illustrative discrepancy" for key, value in gap.items())
     return (
-        f"Draft a concise, professional royalty‑recovery notice on behalf of {artist}.\n"
-        f"Unpaid amounts (per ISRC):\n{bullets}\n"
-        f"Request settlement within 14 days to the following ERC‑20 wallet: {wallet}.\n"
-        f"Keep ≤ 200 words; include courteous thank‑you and legal reference to audit logs."
+        f"DRAFT — independent review required\nRe: {artist}\n{bullets or 'No material discrepancy.'}\n"
+        "Please reconcile these supplied counts and rate assumptions against the applicable agreements. "
+        f"The supplied settlement reference is {wallet}; it has not been verified. No payment is requested by this software."
     )
 
 
-def _dispatch_payout(eur_amount: float, wallet: str):
-    rpc = os.getenv("RPC_URL")
-    if not rpc:
-        raise RuntimeError("RPC_URL not set; cannot dispatch on‑chain payout.")
-    w3 = Web3(HTTPProvider(rpc))
-    acct = Account.from_key(os.getenv("PRIVATE_KEY"))
-    token_amt = eur_amount / 1.07  # assume 1 $AGIALPHA ≈ €1.07
-    wei_amt = to_token_units(token_amt)
-    tx = {
-        "to": wallet,
-        "value": wei_amt,
-        "gas": 21000,
-        "gasPrice": w3.eth.gas_price,
-        "nonce": w3.eth.get_transaction_count(acct.address),
-    }
-    signed = acct.sign_transaction(tx)
-    tx_hash = w3.eth.send_raw_transaction(signed.rawTransaction)
-    print("[TX] payout sent →", tx_hash.hex())
+def _dispatch_payout(eur_amount: float, wallet: str) -> None:
+    raise RuntimeError(
+        "No payout adapter is implemented: a native-currency transfer is not an AGIALPHA ERC-20 payment."
+    )
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# CLI for standalone smoke‑test
-# ──────────────────────────────────────────────────────────────────────────────
+def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cfg", type=Path, default=Path(__file__).parents[1] / "configs/royalty_radar.yml")
+    parser.add_argument("--demo", action="store_true", help="Require offline reconciliation")
+    args = parser.parse_args()
+    try:
+        cfg = RoyaltyRadarConfig.from_yaml(args.cfg)
+        if args.demo:
+            cfg.demo_mode = True
+        print(json.dumps(RoyaltyRadarBusiness(cfg).run(), indent=2))
+        return 0
+    except (OSError, ValueError, KeyError) as exc:
+        parser.exit(2, f"RoyaltyRadar: {exc}\n")
+
+
 if __name__ == "__main__":
-    import argparse, logging, yaml, pprint
-
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
-
-    ap = argparse.ArgumentParser(description="RoyaltyRadar quick‑start")
-    ap.add_argument("--cfg", default="../configs/royalty_radar.yml")
-    ap.add_argument("--demo", action="store_true", help="force demo‑mode on")
-    ns = ap.parse_args()
-
-    cfg = RoyaltyRadarConfig.from_yaml(ns.cfg)
-    if ns.demo:
-        cfg.demo_mode = True
-    artefact = RoyaltyRadarBusiness(cfg).run()
-    pprint.pprint(artefact)
+    raise SystemExit(main())

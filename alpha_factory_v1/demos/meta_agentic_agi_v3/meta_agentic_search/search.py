@@ -1,29 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-"""
-search.py – Meta-Agentic α-AGI evolutionary search-loop
-======================================================
+"""Legacy provider-backed evolutionary search over one bundled ARC fixture.
 
-High-level goal
----------------
-Continually **evolve** specialised *first-order* agents that solve a
-target task (ARC by default) while a **meta-agent** (this script)
-orchestrates generation, evaluation, selection and lineage storage.
-
-Design pillars
---------------
-1. **Provider-agnostic LLM** interface – OpenAI / Anthropic / open-weights
-   are switchable via *env* or CLI flag.
-2. **Multi-objective optimisation** (accuracy · latency · cost · carbon
-   · novelty).  Fitness is a *vector* → Pareto ranking (see *archive.py*).
-3. **Lineage first** – every candidate (code + metrics) is persisted to
-   SQLite (through `archive.py`) and visualised live in *Streamlit*.
-4. **Robustness** – hard timeouts, retry / back-off, resumable runs and
-   graceful degradation when API keys are absent (falls back to
-   official open-weights models like *mixtral-8x22B* via `tgi`).
-5. **Zero external deps** beyond *tqdm* + *backoff* when operated in
-   headless mode; pandas/altair only for UI.
-
-Copyright © 2025 MONTREAL.AI – Apache-2.0
+Generated candidates are evaluated through Docker. Accuracy is measured on the
+fixture; cost and carbon are source-length heuristics. This experiment has no
+held-out generalization guarantee. Use curriculum_lab for the maintained finite lab.
 """
 
 from __future__ import annotations
@@ -50,8 +30,15 @@ import numpy as np  # pip install numpy
 from tqdm import tqdm  # pip install tqdm
 
 # local helpers
-sys.path.append(str(Path(__file__).resolve().parent))  # for relative import
-from archive import Candidate, Fitness, insert as db_insert, pareto_front, shannon_novelty
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search.archive import (
+    Candidate,
+    Fitness,
+    insert as db_insert,
+    pareto_front,
+    shannon_novelty,
+)
 from alpha_factory_v1.core.archive import Archive
 
 ###############################################################################
@@ -212,14 +199,10 @@ def _mutate(base_code: str, client: LLMClient) -> str:
 # 4 · Evaluation: accuracy & secondary objectives
 ###############################################################################
 def _safe_exec(code: str, grid_in: list[list[int]]) -> list[list[int]]:
-    """Exec code in isolated namespace and run transform()."""
-    namespace: dict[str, Any] = {}
-    compiled = ast.parse(code, mode="exec")
-    exec(compile(compiled, filename="<agent>", mode="exec"), {}, namespace)
-    if "transform" not in namespace:
-        raise RuntimeError("no `transform` defined")
-    func = namespace["transform"]
-    return func(grid_in)  # type: ignore
+    """Evaluate generated code only within the shared Docker isolation boundary."""
+    from alpha_factory_v1.demos.meta_agentic_agi_v3.isolation import run_python
+
+    return json.loads(run_python(code, "transform", (grid_in,)))
 
 
 def _metric_latency(fn, arg, repeat=1):
@@ -240,7 +223,7 @@ def _evaluate(code: str, task) -> Fitness:
         acc = 1.0 if out == expected else 0.0
     except Exception:
         acc = 0.0
-    lat = _metric_latency(lambda g: _safe_exec(code, g), inp)
+    lat = 0.0 if acc == 0 else _metric_latency(lambda g: _safe_exec(code, g), inp)
     nov = shannon_novelty(code)
     # Cost/carbon quick heuristics (replace with real telemetry if available)
     cost = 0.0001 * len(code)
@@ -313,7 +296,7 @@ def evolutionary_search(args):
         front = pareto_front(pop)
         # pick next parents – top K by crowding distance then scalar tie-break
         if len(front) > POP_SIZE:
-            from archive import crowding_distance
+            from alpha_factory_v1.demos.meta_agentic_agi_v3.meta_agentic_search.archive import crowding_distance
 
             crowding_distance(front)
             front.sort(
