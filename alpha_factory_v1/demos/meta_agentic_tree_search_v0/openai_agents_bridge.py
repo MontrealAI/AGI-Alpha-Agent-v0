@@ -1,151 +1,89 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# NOTE: This demo is a research prototype and does not implement real AGI.
-"""OpenAI Agents SDK bridge for the Meta-Agentic Tree Search demo.
-
-This utility registers a small agent that exposes the tree-search loop via the
-OpenAI Agents runtime.  It gracefully degrades to offline mode when the
-``openai-agents`` package is unavailable or no API key is configured.
-"""
+"""Optional Agents SDK adapter; importing it never initializes clients or tracing."""
 from __future__ import annotations
 
-import os
 import argparse
+import asyncio
 import importlib.util
 import logging
-import sys
+import os
 from pathlib import Path
-from typing import cast
+import sys
+
+if __package__ is None:  # pragma: no cover - direct script entry
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
+    __package__ = "alpha_factory_v1.demos.meta_agentic_tree_search_v0"
+
+from .run_demo import run  # noqa: E402
 
 logger = logging.getLogger(__name__)
-
 DEFAULT_MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o")
+try:
+    has_oai = importlib.util.find_spec("agents") is not None
+except (ImportError, ValueError):
+    has_oai = False
 
 
 def verify_env() -> None:
-    """Best-effort runtime dependency check."""
+    """Run the optional repository environment checker when explicitly requested."""
     try:
         import check_env
 
         check_env.main([])
-    except Exception as exc:  # pragma: no cover - best effort
-        logger.warning("Environment verification failed: %s", exc)
+    except Exception as exc:  # pragma: no cover - optional diagnostic
+        logger.warning("Environment verification failed: %s", type(exc).__name__)
 
 
-if __package__ is None:  # pragma: no cover - allow direct execution
-    # Ensure imports resolve when running the script directly
-    sys.path.append(str(Path(__file__).resolve().parents[3]))
-    __package__ = "alpha_factory_v1.demos.meta_agentic_tree_search_v0"
+async def run_search(
+    episodes: int = 10,
+    target: int = 5,
+    model: str | None = None,
+    rewriter: str | None = None,
+    market_data: list[int] | None = None,
+) -> str:
+    """Run exactly the supplied bounded search without changing environment variables."""
+    await asyncio.to_thread(
+        run,
+        episodes=episodes,
+        target=target,
+        model=model,
+        rewriter=rewriter or "random",
+        market_data=market_data,
+    )
+    return f"completed {episodes} episodes toward target {target}"
 
-try:
-    _spec = importlib.util.find_spec("openai_agents")
-except ValueError:
-    _spec = None
-has_oai = _spec is not None
-if has_oai:
-    import openai_agents
-    from openai_agents import Agent, function_tool
 
-    if hasattr(openai_agents, "AgentRuntime"):
-        from openai_agents import AgentRuntime as _AgentRuntime
-    else:
-        _AgentRuntime = None
+def _run_runtime(
+    episodes: int,
+    target: int,
+    model: str | None = None,
+    rewriter: str | None = None,
+    market_data: list[int] | None = None,
+    enable_adk: bool = False,
+) -> None:
+    from agents import Agent, Runner, RunConfig, function_tool, set_tracing_disabled
+    from agents.models.openai_provider import OpenAIProvider
+    from openai import AsyncOpenAI
 
-    from agents.run import Runner
+    # Import and initialize optional provider components only on this explicit CLI path.
+    set_tracing_disabled(True)
+    completed: str | None = None
 
-    class _FallbackAgentRuntime:
-        def __init__(self, *_: object, **__: object) -> None:
-            self._runner = Runner()
-            self._agent: Agent | None = None
+    @function_tool(name_override="run_search", description_override="Execute the configured bounded integer search")
+    async def execute_search() -> str:
+        nonlocal completed
+        if completed is None:
+            completed = await run_search(episodes, target, model, rewriter, market_data)
+        return completed
 
-        def register(self, agent: Agent) -> None:
-            self._agent = agent
-
-        def run(self) -> None:
-            import asyncio
-
-            if self._agent is None:
-                raise RuntimeError("No agent registered")
-            asyncio.run(self._runner.run(self._agent, ""))
-
-    if _AgentRuntime is None or not hasattr(_AgentRuntime, "run"):
-        AgentRuntime = _FallbackAgentRuntime
-    else:
-        AgentRuntime = _AgentRuntime
-
-    try:
-        from .run_demo import run
-    except ImportError:  # pragma: no cover - direct script execution
-        from alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo import run
-
-    @function_tool(
-        name_override="run_search",
-        description_override="Run the MATS demo for a few episodes",
-    )  # type: ignore[misc]
-    async def run_search(
-        episodes: int = 10,
-        target: int = 5,
-        model: str | None = None,
-        rewriter: str | None = None,
-        market_data: list[int] | None = None,
-    ) -> str:
-        """Execute the search loop and return a summary string."""
-        if model:
-            os.environ.setdefault("OPENAI_MODEL", model)
-        if rewriter:
-            os.environ.setdefault("MATS_REWRITER", rewriter)
-        run(
-            episodes=episodes,
-            target=target,
-            model=model,
-            rewriter=rewriter,
-            market_data=market_data,
-        )
-        return f"completed {episodes} episodes toward target {target}"
-
-    class MATSAgent(Agent):  # type: ignore[misc]
-        """Tiny helper agent wrapping :func:`run_search`."""
-
-        name = "mats_helper"
-        tools = [run_search]
-
-        def __init__(self, market_data: list[int] | None = None) -> None:
-            super().__init__()
-            self.market_data = market_data
-
-        async def policy(self, obs: object, _ctx: object) -> str:
-            episodes = int(obs.get("episodes", 10)) if isinstance(obs, dict) else 10
-            target = int(obs.get("target", 5)) if isinstance(obs, dict) else 5
-            model = obs.get("model") if isinstance(obs, dict) else None
-            rewriter = obs.get("rewriter") if isinstance(obs, dict) else None
-            market_data = (
-                [int(x) for x in obs.get("market_data", [])] if isinstance(obs, dict) and "market_data" in obs else None
-            )
-            if market_data is None:
-                market_data = self.market_data
-            result = await run_search(
-                episodes=episodes,
-                target=target,
-                model=model,
-                rewriter=rewriter,
-                market_data=market_data,
-            )
-            return cast(str, result)
-
-    def _run_runtime(
-        episodes: int,
-        target: int,
-        model: str | None = None,
-        rewriter: str | None = None,
-        market_data: list[int] | None = None,
-    ) -> None:
-        if model:
-            os.environ.setdefault("OPENAI_MODEL", model)
-        if rewriter:
-            os.environ.setdefault("MATS_REWRITER", rewriter)
-        runtime = AgentRuntime(api_key=os.getenv("OPENAI_API_KEY"))
-        agent = MATSAgent(market_data=market_data)
-        runtime.register(agent)
+    agent = Agent(
+        name="mats_helper",
+        model=model or DEFAULT_MODEL_NAME,
+        instructions="Call run_search once, then return its summary. Its configured parameters must not be changed.",
+        tools=[execute_search],
+    )
+    if enable_adk:
         try:
             from alpha_factory_v1.backend import adk_bridge
 
@@ -153,126 +91,75 @@ if has_oai:
                 adk_bridge.auto_register([agent])
                 adk_bridge.maybe_launch()
             else:
-                logger.info("ADK gateway disabled.")
-        except Exception as exc:  # pragma: no cover - ADK optional
-            logger.warning("ADK bridge unavailable: %s", exc)
+                logger.warning("ADK gateway is not enabled in this environment")
+        except Exception as exc:  # pragma: no cover - optional adapter
+            logger.warning("ADK gateway unavailable: %s", type(exc).__name__)
 
-        logger.info("Registered MATSAgent with runtime")
-        runtime.run()
+    async def coordinate() -> None:
+        async with AsyncOpenAI(timeout=15.0, max_retries=0) as client:
+            await Runner.run(
+                agent,
+                "Execute the configured search and return its result.",
+                max_turns=3,
+                run_config=RunConfig(model_provider=OpenAIProvider(openai_client=client), tracing_disabled=True),
+            )
 
-else:
     try:
-        from .run_demo import run
-    except ImportError:  # pragma: no cover - direct script execution
-        from alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo import run
-
-    def _run_search_helper(
-        episodes: int,
-        target: int,
-        model: str | None = None,
-        rewriter: str | None = None,
-        market_data: list[int] | None = None,
-    ) -> str:
-        """Execute the search loop and return a summary string."""
-        if model:
-            os.environ.setdefault("OPENAI_MODEL", model)
-        run(
-            episodes=episodes,
-            target=target,
-            model=model,
-            rewriter=rewriter,
-            market_data=market_data,
-        )
-        return f"completed {episodes} episodes toward target {target}"
-
-    async def run_search(
-        episodes: int = 10,
-        target: int = 5,
-        model: str | None = None,
-        rewriter: str | None = None,
-        market_data: list[int] | None = None,
-    ) -> str:
-        return _run_search_helper(episodes, target, model, rewriter, market_data)
+        asyncio.run(coordinate())
+    except Exception:
+        if completed is None:
+            raise
+        logger.warning("Coordinator response unavailable; keeping the completed search without repeating it")
+    if completed is None:
+        raise RuntimeError("The SDK coordinator did not execute the configured search")
+    logger.info("%s", completed)
 
 
 def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO)
-    parser = argparse.ArgumentParser(description="OpenAI Agents bridge for MATS")
-    parser.add_argument("--episodes", type=int, default=10, help="Search episodes when offline")
-    parser.add_argument("--target", type=int, default=5, help="Target integer when offline")
-    parser.add_argument("--model", type=str, help="Optional model override")
-    parser.add_argument(
-        "--rewriter",
-        choices=["random", "openai", "anthropic"],
-        help="Rewrite strategy to use",
-    )
-    parser.add_argument(
-        "--market-data",
-        type=Path,
-        help="CSV file with comma-separated integers for LiveBrokerEnv",
-    )
-    parser.add_argument(
-        "--enable-adk",
-        action="store_true",
-        help="Enable the Google ADK gateway for remote control",
-    )
-    parser.add_argument(
-        "--verify-env",
-        action="store_true",
-        help="Check runtime dependencies before launching",
-    )
+    parser = argparse.ArgumentParser(description="Optional OpenAI Agents bridge for the preserved integer MATS demo")
+    parser.add_argument("--episodes", type=int, default=10)
+    parser.add_argument("--target", type=int, default=5)
+    parser.add_argument("--model", type=str)
+    parser.add_argument("--rewriter", choices=["random", "openai", "anthropic"])
+    parser.add_argument("--market-data", type=Path, help="Local comma-separated integer target replay")
+    parser.add_argument("--enable-adk", action="store_true", help="Enable the optional configured ADK adapter")
+    parser.add_argument("--verify-env", action="store_true")
     args = parser.parse_args(argv)
-
-    market_data: list[int] | None = None
+    if not 1 <= args.episodes <= 10000 or not -10000 <= args.target <= 10000:
+        parser.error("Use 1–10000 episodes and a target between -10000 and 10000")
+    market_data = None
     if args.market_data:
-        text = args.market_data.read_text(encoding="utf-8")
-        market_data = [int(x) for x in text.split(",") if x.strip()]
-
+        with args.market_data.open(encoding="utf-8") as stream:
+            data = stream.read(1_000_001)
+        if len(data) > 1_000_000:
+            parser.error("Market replay exceeds 1 MB")
+        try:
+            market_data = [int(value) for value in data.split(",") if value.strip()]
+        except ValueError:
+            parser.error("Market replay must contain comma-separated integers")
     if args.verify_env:
         verify_env()
-
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not has_oai or not api_key:
-        logger.info("openai-agents unavailable or OPENAI_API_KEY unset. Running offline demo...")
-        run(
-            episodes=args.episodes,
-            target=args.target,
-            model=args.model,
-            rewriter=args.rewriter,
-            market_data=market_data,
-        )
-        return
-
     if args.enable_adk:
         os.environ.setdefault("ALPHA_FACTORY_ENABLE_ADK", "true")
-
-    try:
-        _run_runtime(
-            args.episodes,
-            args.target,
-            args.model,
-            args.rewriter,
-            market_data,
-        )
-    except Exception as exc:  # pragma: no cover - offline fallback
-        logger.warning("Runtime failed (%s). Falling back to offline demo.", exc)
-        run(
-            episodes=args.episodes,
-            target=args.target,
-            model=args.model,
-            rewriter=args.rewriter,
-            market_data=market_data,
-        )
+    if has_oai and os.getenv("OPENAI_API_KEY") and os.getenv("NO_LLM") != "1":
+        try:
+            _run_runtime(args.episodes, args.target, args.model, args.rewriter, market_data, args.enable_adk)
+            return
+        except Exception as exc:  # pragma: no cover - optional online runtime
+            logger.warning("SDK coordinator unavailable (%s); running the configured offline demo", type(exc).__name__)
+    else:
+        logger.info("SDK coordinator unavailable or disabled. Running offline demo...")
+    run(
+        episodes=args.episodes,
+        target=args.target,
+        model=args.model,
+        rewriter=args.rewriter or "random",
+        market_data=market_data,
+    )
 
 
-__all__ = [
-    "DEFAULT_MODEL_NAME",
-    "has_oai",
-    "run_search",
-    "verify_env",
-    "main",
-]
+__all__ = ["DEFAULT_MODEL_NAME", "has_oai", "run_search", "verify_env", "main"]
 
-
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.16.0",
+  "release": "1.17.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -450,32 +450,27 @@
     },
     {
       "id": "meta_agentic_tree_search_v0",
-      "title": "Meta-Agentic tree search",
-      "mode": "Offline simulation",
-      "summary": "Searches a small integer policy landscape.",
+      "title": "Meta-Agentic Tree Search · Search Lab",
+      "mode": "Offline search lab",
+      "summary": "Explore competing workflow rewrites, resource schedules, held-out review gates and an exhaustive benchmark.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.meta_agentic_tree_search_v0.run_demo",
-        "--episodes",
-        "3",
-        "--seed",
-        "42",
-        "--config",
-        "{demo}/configs/default.yaml",
-        "--rewriter",
-        "random"
+        "alpha_factory_v1.demos.meta_agentic_tree_search_v0",
+        "--case",
+        "release-design",
+        "--output",
+        "{output}/search-runs"
       ],
-      "expected": "Three logged search episodes and the best candidate.",
-      "prerequisites": "Python 3.11–3.13; source checkout and installed project dependencies.",
-      "limitations": "Toy reward landscape; optional model rewriters do not establish trading alpha.",
+      "expected": "A reproducible search tree, held-out evaluation and six verified review files; candidate remains unapproved.",
+      "prerequisites": "Python 3.11–3.13; the supported lab uses only the standard library.",
+      "limitations": "Supplied synthetic workflow models. No customer work, language-model training, live trading, authenticated approvals or transactions.",
       "smoke": true,
       "environment": {},
-      "required_modules": [
-        "yaml"
-      ],
+      "required_modules": [],
       "assets": [
-        "meta_agentic_tree_search_v0/configs/default.yaml"
+        "meta_agentic_tree_search_v0/scenarios.json",
+        "meta_agentic_tree_search_v0/uct_log.json"
       ],
       "offline": true
     },

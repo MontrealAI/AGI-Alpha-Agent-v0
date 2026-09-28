@@ -1,3 +1,8 @@
+**Version 1.17.0 adds the MATS Search Lab.**
+Explore branching workflow designs, inspect every rollout, audit the search gap, and challenge a frozen candidate against five independent model gates.
+[Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_tree_search_v0/) · [Guide](docs/agent/MATS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.17.0.md).
+Original diagrams, notebooks and research remain available in the preserved archive.
+
 **Version 1.16.0 adds the Experience Learning Lab.**
 Act, observe, learn, and challenge a frozen candidate with reproducible outcomes and independent review gates.
 [Open the lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/era_of_experience/) · [Guide](docs/agent/EXPERIENCE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.16.0.md).

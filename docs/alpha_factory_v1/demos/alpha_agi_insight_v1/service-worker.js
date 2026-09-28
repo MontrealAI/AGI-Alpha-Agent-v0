@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-b9cfb1159a90c9ef";
-const RELEASE = "1.16.0";
+const CACHE = "agialpha-gallery-e4db3baf025c49ad";
+const RELEASE = "1.17.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -135,6 +135,7 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/theme-dark.css",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/assets/theme-light.css",
   "../../../alpha_factory_v1/demos/meta_agentic_agi_v3/index.html",
+  "../../../alpha_factory_v1/demos/meta_agentic_tree_search_v0/assets/lab-preview.svg",
   "../../../alpha_factory_v1/demos/meta_agentic_tree_search_v0/assets/logs.json",
   "../../../alpha_factory_v1/demos/meta_agentic_tree_search_v0/assets/preview.svg",
   "../../../alpha_factory_v1/demos/meta_agentic_tree_search_v0/assets/script.js",
@@ -223,6 +224,12 @@ const ASSETS = [
   "../../../assets/insight/engine.mjs",
   "../../../assets/insight/home.css",
   "../../../assets/insight/scenarios.json",
+  "../../../assets/mats/constants.mjs",
+  "../../../assets/mats/engine.mjs",
+  "../../../assets/mats/lab.css",
+  "../../../assets/mats/lab.mjs",
+  "../../../assets/mats/preview.svg",
+  "../../../assets/mats/scenarios.json",
   "../../../assets/portal/cache-refresh.css",
   "../../../assets/portal/cache-refresh.js",
   "../../../assets/portal/examples.json",
@@ -308,6 +315,7 @@ const ASSETS = [
   "../../../meta_agentic_agi_v3/assets/theme-dark.css",
   "../../../meta_agentic_agi_v3/assets/theme-light.css",
   "../../../meta_agentic_agi_v3/index.html",
+  "../../../meta_agentic_tree_search_v0/assets/lab-preview.svg",
   "../../../meta_agentic_tree_search_v0/assets/logs.json",
   "../../../meta_agentic_tree_search_v0/assets/preview.svg",
   "../../../meta_agentic_tree_search_v0/assets/script.js",

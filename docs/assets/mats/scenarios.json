@@ -1,0 +1,853 @@
+[
+  {
+    "schema": "agialpha.mats.scenario.v1",
+    "id": "release-design",
+    "title": "Design a reliable software release",
+    "note": "Synthetic software-delivery model. Durations, cost units, defect rates and review effort are editable assumptions, not measurements or promises.",
+    "seed": 42,
+    "search": {
+      "iterations": 120,
+      "depth": 4,
+      "explorationBps": 14000,
+      "trainingSamples": 24,
+      "evaluationSamples": 80,
+      "auditOracle": true
+    },
+    "objective": {
+      "value": 10000,
+      "costWeight": 5,
+      "timeWeight": 10,
+      "escapePenalty": 5000
+    },
+    "gates": {
+      "minGain": 0,
+      "maxEscapeBps": 1250,
+      "deadline": 150,
+      "maxMeanCost": 380,
+      "maxReviewMinutes": 50,
+      "bountyTokens": 100
+    },
+    "resources": [
+      {
+        "id": "engineering",
+        "label": "Engineering agents",
+        "capacity": 2
+      },
+      {
+        "id": "review",
+        "label": "Review agents",
+        "capacity": 1
+      },
+      {
+        "id": "release",
+        "label": "Release agents",
+        "capacity": 1
+      }
+    ],
+    "stages": [
+      {
+        "id": "implementation",
+        "label": "Implement the change",
+        "metaAgent": "Implementation strategist",
+        "resource": "engineering",
+        "depends": [],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "baseline",
+            "label": "Broad manual implementation",
+            "minutes": 45,
+            "cost": 160,
+            "defectBps": 900,
+            "detectBps": 1000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "scoped",
+            "label": "Scoped implementation with checks",
+            "minutes": 30,
+            "cost": 115,
+            "defectBps": 600,
+            "detectBps": 6000,
+            "reviewMinutes": 6
+          },
+          {
+            "id": "shortcut",
+            "label": "Fast unchecked implementation",
+            "minutes": 10,
+            "cost": 45,
+            "defectBps": 3500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "regression",
+        "label": "Test the contract",
+        "metaAgent": "Test strategist",
+        "resource": "engineering",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "full",
+            "label": "Full regression suite",
+            "minutes": 35,
+            "cost": 90,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 8
+          },
+          {
+            "id": "targeted",
+            "label": "Dependency-focused regression",
+            "minutes": 18,
+            "cost": 55,
+            "defectBps": 0,
+            "detectBps": 8500,
+            "reviewMinutes": 4
+          },
+          {
+            "id": "smoke",
+            "label": "Smoke checks only",
+            "minutes": 5,
+            "cost": 10,
+            "defectBps": 0,
+            "detectBps": 1500,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "review",
+        "label": "Review the evidence",
+        "metaAgent": "Review strategist",
+        "resource": "review",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "manual",
+            "label": "Full evidence review",
+            "minutes": 30,
+            "cost": 120,
+            "defectBps": 0,
+            "detectBps": 9500,
+            "reviewMinutes": 30
+          },
+          {
+            "id": "focused",
+            "label": "Structured evidence review",
+            "minutes": 12,
+            "cost": 60,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "skip",
+            "label": "No independent review step",
+            "minutes": 1,
+            "cost": 0,
+            "defectBps": 0,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "package",
+        "label": "Build the deliverable",
+        "metaAgent": "Release strategist",
+        "resource": "release",
+        "depends": [
+          1,
+          2
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "rebuild",
+            "label": "Rebuild and spot check",
+            "minutes": 15,
+            "cost": 45,
+            "defectBps": 300,
+            "detectBps": 3000,
+            "reviewMinutes": 2
+          },
+          {
+            "id": "reproducible",
+            "label": "Reproducible verified package",
+            "minutes": 8,
+            "cost": 30,
+            "defectBps": 0,
+            "detectBps": 5000,
+            "reviewMinutes": 1
+          },
+          {
+            "id": "reuse",
+            "label": "Reuse an unchecked artifact",
+            "minutes": 2,
+            "cost": 3,
+            "defectBps": 2500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.mats.scenario.v1",
+    "id": "api-migration",
+    "title": "Plan a compatible API migration",
+    "note": "Synthetic API migration with parallel client and server tests competing for one engineering lane. The scheduler respects dependencies and finite resource capacity.",
+    "seed": 91,
+    "search": {
+      "iterations": 180,
+      "depth": 5,
+      "explorationBps": 14000,
+      "trainingSamples": 24,
+      "evaluationSamples": 80,
+      "auditOracle": true
+    },
+    "objective": {
+      "value": 10000,
+      "costWeight": 5,
+      "timeWeight": 10,
+      "escapePenalty": 5000
+    },
+    "gates": {
+      "minGain": 0,
+      "maxEscapeBps": 1250,
+      "deadline": 200,
+      "maxMeanCost": 470,
+      "maxReviewMinutes": 65,
+      "bountyTokens": 100
+    },
+    "resources": [
+      {
+        "id": "engineering",
+        "label": "Engineering agents",
+        "capacity": 1
+      },
+      {
+        "id": "review",
+        "label": "Review agents",
+        "capacity": 1
+      },
+      {
+        "id": "release",
+        "label": "Release agents",
+        "capacity": 1
+      }
+    ],
+    "stages": [
+      {
+        "id": "implementation",
+        "label": "Implement the change",
+        "metaAgent": "Implementation strategist",
+        "resource": "engineering",
+        "depends": [],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "baseline",
+            "label": "Broad manual implementation",
+            "minutes": 45,
+            "cost": 160,
+            "defectBps": 900,
+            "detectBps": 1000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "scoped",
+            "label": "Scoped implementation with checks",
+            "minutes": 30,
+            "cost": 115,
+            "defectBps": 600,
+            "detectBps": 6000,
+            "reviewMinutes": 6
+          },
+          {
+            "id": "shortcut",
+            "label": "Fast unchecked implementation",
+            "minutes": 10,
+            "cost": 45,
+            "defectBps": 3500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "regression",
+        "label": "Test the contract",
+        "metaAgent": "Test strategist",
+        "resource": "engineering",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "full",
+            "label": "Full regression suite",
+            "minutes": 35,
+            "cost": 90,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 8
+          },
+          {
+            "id": "targeted",
+            "label": "Dependency-focused regression",
+            "minutes": 18,
+            "cost": 55,
+            "defectBps": 0,
+            "detectBps": 8500,
+            "reviewMinutes": 4
+          },
+          {
+            "id": "smoke",
+            "label": "Smoke checks only",
+            "minutes": 5,
+            "cost": 10,
+            "defectBps": 0,
+            "detectBps": 1500,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "client-contract",
+        "label": "Verify downstream clients",
+        "metaAgent": "Compatibility strategist",
+        "resource": "engineering",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "full",
+            "label": "Full regression suite",
+            "minutes": 35,
+            "cost": 90,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 8
+          },
+          {
+            "id": "targeted",
+            "label": "Dependency-focused regression",
+            "minutes": 18,
+            "cost": 55,
+            "defectBps": 0,
+            "detectBps": 8500,
+            "reviewMinutes": 4
+          },
+          {
+            "id": "smoke",
+            "label": "Smoke checks only",
+            "minutes": 5,
+            "cost": 10,
+            "defectBps": 0,
+            "detectBps": 1500,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "review",
+        "label": "Review the evidence",
+        "metaAgent": "Review strategist",
+        "resource": "review",
+        "depends": [
+          1,
+          2
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "manual",
+            "label": "Full evidence review",
+            "minutes": 30,
+            "cost": 120,
+            "defectBps": 0,
+            "detectBps": 9500,
+            "reviewMinutes": 30
+          },
+          {
+            "id": "focused",
+            "label": "Structured evidence review",
+            "minutes": 12,
+            "cost": 60,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "skip",
+            "label": "No independent review step",
+            "minutes": 1,
+            "cost": 0,
+            "defectBps": 0,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "package",
+        "label": "Build the deliverable",
+        "metaAgent": "Release strategist",
+        "resource": "release",
+        "depends": [
+          3
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "rebuild",
+            "label": "Rebuild and spot check",
+            "minutes": 15,
+            "cost": 45,
+            "defectBps": 300,
+            "detectBps": 3000,
+            "reviewMinutes": 2
+          },
+          {
+            "id": "reproducible",
+            "label": "Reproducible verified package",
+            "minutes": 8,
+            "cost": 30,
+            "defectBps": 0,
+            "detectBps": 5000,
+            "reviewMinutes": 1
+          },
+          {
+            "id": "reuse",
+            "label": "Reuse an unchecked artifact",
+            "minutes": 2,
+            "cost": 3,
+            "defectBps": 2500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.mats.scenario.v1",
+    "id": "data-pipeline",
+    "title": "Reproduce a public-data pipeline",
+    "note": "Synthetic, public-data workflow design: validate schemas, reproduce transformations, review numerical evidence, then package. Inputs stay local and are not fetched.",
+    "seed": 127,
+    "search": {
+      "iterations": 120,
+      "depth": 4,
+      "explorationBps": 14000,
+      "trainingSamples": 24,
+      "evaluationSamples": 80,
+      "auditOracle": true
+    },
+    "objective": {
+      "value": 10000,
+      "costWeight": 5,
+      "timeWeight": 10,
+      "escapePenalty": 5000
+    },
+    "gates": {
+      "minGain": 0,
+      "maxEscapeBps": 1250,
+      "deadline": 150,
+      "maxMeanCost": 380,
+      "maxReviewMinutes": 50,
+      "bountyTokens": 100
+    },
+    "resources": [
+      {
+        "id": "engineering",
+        "label": "Engineering agents",
+        "capacity": 2
+      },
+      {
+        "id": "review",
+        "label": "Review agents",
+        "capacity": 1
+      },
+      {
+        "id": "release",
+        "label": "Release agents",
+        "capacity": 1
+      }
+    ],
+    "stages": [
+      {
+        "id": "implementation",
+        "label": "Transform the dataset",
+        "metaAgent": "Pipeline strategist",
+        "resource": "engineering",
+        "depends": [],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "baseline",
+            "label": "Broad manual implementation",
+            "minutes": 45,
+            "cost": 160,
+            "defectBps": 900,
+            "detectBps": 1000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "scoped",
+            "label": "Scoped implementation with checks",
+            "minutes": 30,
+            "cost": 115,
+            "defectBps": 600,
+            "detectBps": 6000,
+            "reviewMinutes": 6
+          },
+          {
+            "id": "shortcut",
+            "label": "Fast unchecked implementation",
+            "minutes": 10,
+            "cost": 45,
+            "defectBps": 3500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "regression",
+        "label": "Validate schemas and invariants",
+        "metaAgent": "Schema strategist",
+        "resource": "engineering",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "full",
+            "label": "Full regression suite",
+            "minutes": 35,
+            "cost": 90,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 8
+          },
+          {
+            "id": "targeted",
+            "label": "Dependency-focused regression",
+            "minutes": 18,
+            "cost": 55,
+            "defectBps": 0,
+            "detectBps": 8500,
+            "reviewMinutes": 4
+          },
+          {
+            "id": "smoke",
+            "label": "Smoke checks only",
+            "minutes": 5,
+            "cost": 10,
+            "defectBps": 0,
+            "detectBps": 1500,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "review",
+        "label": "Review numerical evidence",
+        "metaAgent": "Reproducibility strategist",
+        "resource": "review",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "manual",
+            "label": "Full evidence review",
+            "minutes": 30,
+            "cost": 120,
+            "defectBps": 0,
+            "detectBps": 9500,
+            "reviewMinutes": 30
+          },
+          {
+            "id": "focused",
+            "label": "Structured evidence review",
+            "minutes": 12,
+            "cost": 60,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "skip",
+            "label": "No independent review step",
+            "minutes": 1,
+            "cost": 0,
+            "defectBps": 0,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "package",
+        "label": "Package the reproducible dataset",
+        "metaAgent": "Packaging strategist",
+        "resource": "release",
+        "depends": [
+          1,
+          2
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "rebuild",
+            "label": "Rebuild and spot check",
+            "minutes": 15,
+            "cost": 45,
+            "defectBps": 300,
+            "detectBps": 3000,
+            "reviewMinutes": 2
+          },
+          {
+            "id": "reproducible",
+            "label": "Reproducible verified package",
+            "minutes": 8,
+            "cost": 30,
+            "defectBps": 0,
+            "detectBps": 5000,
+            "reviewMinutes": 1
+          },
+          {
+            "id": "reuse",
+            "label": "Reuse an unchecked artifact",
+            "minutes": 2,
+            "cost": 3,
+            "defectBps": 2500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "schema": "agialpha.mats.scenario.v1",
+    "id": "proxy-trap",
+    "title": "Expose the unchecked-shortcut trap",
+    "note": "Deliberately unsafe objective: escaped defects carry no search penalty. A faster, cheaper design can win the objective while failing the independent defect gate.",
+    "seed": 42,
+    "search": {
+      "iterations": 180,
+      "depth": 4,
+      "explorationBps": 14000,
+      "trainingSamples": 24,
+      "evaluationSamples": 80,
+      "auditOracle": true
+    },
+    "objective": {
+      "value": 10000,
+      "costWeight": 5,
+      "timeWeight": 10,
+      "escapePenalty": 0
+    },
+    "gates": {
+      "minGain": 0,
+      "maxEscapeBps": 500,
+      "deadline": 150,
+      "maxMeanCost": 380,
+      "maxReviewMinutes": 50,
+      "bountyTokens": 100
+    },
+    "resources": [
+      {
+        "id": "engineering",
+        "label": "Engineering agents",
+        "capacity": 2
+      },
+      {
+        "id": "review",
+        "label": "Review agents",
+        "capacity": 1
+      },
+      {
+        "id": "release",
+        "label": "Release agents",
+        "capacity": 1
+      }
+    ],
+    "stages": [
+      {
+        "id": "implementation",
+        "label": "Implement the change",
+        "metaAgent": "Implementation strategist",
+        "resource": "engineering",
+        "depends": [],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "baseline",
+            "label": "Broad manual implementation",
+            "minutes": 45,
+            "cost": 160,
+            "defectBps": 900,
+            "detectBps": 1000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "scoped",
+            "label": "Scoped implementation with checks",
+            "minutes": 30,
+            "cost": 115,
+            "defectBps": 600,
+            "detectBps": 6000,
+            "reviewMinutes": 6
+          },
+          {
+            "id": "shortcut",
+            "label": "Fast unchecked implementation",
+            "minutes": 10,
+            "cost": 45,
+            "defectBps": 3500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "regression",
+        "label": "Test the contract",
+        "metaAgent": "Test strategist",
+        "resource": "engineering",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "full",
+            "label": "Full regression suite",
+            "minutes": 35,
+            "cost": 90,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 8
+          },
+          {
+            "id": "targeted",
+            "label": "Dependency-focused regression",
+            "minutes": 18,
+            "cost": 55,
+            "defectBps": 0,
+            "detectBps": 8500,
+            "reviewMinutes": 4
+          },
+          {
+            "id": "smoke",
+            "label": "Smoke checks only",
+            "minutes": 5,
+            "cost": 10,
+            "defectBps": 0,
+            "detectBps": 1500,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "review",
+        "label": "Review the evidence",
+        "metaAgent": "Review strategist",
+        "resource": "review",
+        "depends": [
+          0
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "manual",
+            "label": "Full evidence review",
+            "minutes": 30,
+            "cost": 120,
+            "defectBps": 0,
+            "detectBps": 9500,
+            "reviewMinutes": 30
+          },
+          {
+            "id": "focused",
+            "label": "Structured evidence review",
+            "minutes": 12,
+            "cost": 60,
+            "defectBps": 0,
+            "detectBps": 9000,
+            "reviewMinutes": 12
+          },
+          {
+            "id": "skip",
+            "label": "No independent review step",
+            "minutes": 1,
+            "cost": 0,
+            "defectBps": 0,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      },
+      {
+        "id": "package",
+        "label": "Build the deliverable",
+        "metaAgent": "Release strategist",
+        "resource": "release",
+        "depends": [
+          1,
+          2
+        ],
+        "baseline": 0,
+        "choices": [
+          {
+            "id": "rebuild",
+            "label": "Rebuild and spot check",
+            "minutes": 15,
+            "cost": 45,
+            "defectBps": 300,
+            "detectBps": 3000,
+            "reviewMinutes": 2
+          },
+          {
+            "id": "reproducible",
+            "label": "Reproducible verified package",
+            "minutes": 8,
+            "cost": 30,
+            "defectBps": 0,
+            "detectBps": 5000,
+            "reviewMinutes": 1
+          },
+          {
+            "id": "reuse",
+            "label": "Reuse an unchecked artifact",
+            "minutes": 2,
+            "cost": 3,
+            "defectBps": 2500,
+            "detectBps": 0,
+            "reviewMinutes": 0
+          }
+        ]
+      }
+    ]
+  }
+]

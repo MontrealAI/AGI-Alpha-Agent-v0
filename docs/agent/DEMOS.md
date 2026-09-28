@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.16.0.** The canonical directory is
+**Version 1.17.0.** The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -14,6 +14,7 @@ computed results and modeled assumptions. Export work you want to retain.
 
 | Your question | Open | What to inspect |
 |---|---|---|
+| Which workflow design deserves independent review? | [MATS Search Lab](../meta_agentic_tree_search_v0/index.html) | Branching search, rollouts, oracle gap, held-out schedules and five gates |
 | Should a governance proposal advance to independent review? | [Governance Workbench](../solving_agi_governance/index.html) | Nine gates, adversarial cases, exact dossier and verification jobs |
 | Which enterprise projects fit capital, staff and reviewer capacity? | [Business 3 Enterprise Studio](../alpha_agi_business_3_v1/index.html) | Exact portfolio, downside stress, evidence bundle and Ascension job specs |
 | What should I do with a constrained budget or schedule? | [Decision Studio](../studio/index.html) | Edit a case, compare feasible plans and export its dossier |
@@ -61,6 +62,8 @@ prints nine gate decisions and saves five evidence files, including unsubmitted 
 See the [governance guide](GOVERNANCE.md) for replay and model assumptions. Try `macro_sentinel` for risk calculations over bundled macro samples, or
 `era_of_experience` for a reproducible learning experiment and independent review gates. Replace the name in `show`, `check` and `run`.
 
+For bounded workflow design search, run `meta_agentic_tree_search_v0` or follow the [MATS guide](MATS.md).
+
 For enterprise project selection, run `alpha_agi_business_3_v1` or follow the
 [Business 3 guide](BUSINESS3.md). Its bounded default requires only Python and exports seven evidence files.
 
@@ -82,8 +85,8 @@ accounts. Follow the entry's guide for those integrations. The launcher never in
 Some examples need additional modules such as Rich or Click beyond the base operator environment.
 
 The 15 finite catalog examples use explicit offline defaults. Their child processes disable configured
-OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses the bundled
-configuration and random rewriter.
+OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses its bundled
+synthetic workflow model and reproducible private random stream.
 Your shell credentials are unchanged. The release tests run all 15 from the wheel with Python network
 calls blocked, including Python 3.11/3.12 environments with the full backend dependencies and inherited
 database settings. This verifies those launch contracts; the launcher is not a network or code sandbox.

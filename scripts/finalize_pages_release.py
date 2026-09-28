@@ -13,6 +13,7 @@ from scripts.ascension_protocol_evidence import verify_report as verify_protocol
 from scripts.business3_evidence import verify_report as verify_business3_report
 from scripts.discovery_evidence import verify_report as verify_discovery_report
 from scripts.experience_evidence import verify_report as verify_experience_report
+from scripts.mats_evidence import verify_report as verify_mats_report
 from scripts.governance_evidence import verify_report as verify_governance_report
 
 
@@ -37,6 +38,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     governance = None
     discovery = None
     experience = None
+    mats = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -210,6 +212,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             (evidence / "public-pages" / "experience" / "experience.json").read_text(encoding="utf-8")
         )
         verify_experience_report(experience, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 17, 0):
+        mats = json.loads((evidence / "public-pages" / "mats" / "mats.json").read_text(encoding="utf-8"))
+        verify_mats_report(mats, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -226,6 +231,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if mats:
+        manifest["public_mats"] = mats
+        manifest["release_gates"].append(
+            "public MATS exact tree search, six-file exports, independent gates, accessibility and offline replay"
+        )
     if experience:
         manifest["public_experience"] = experience
         manifest["release_gates"].append(
