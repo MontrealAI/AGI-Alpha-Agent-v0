@@ -22,7 +22,7 @@ bash alpha_factory_v1/demos/muzeromctsllmagent_v0/install_and_launch.sh
    in the repository. The first install needs internet and space for PyTorch.
 2. Open **http://127.0.0.1:7862**. Select **Retrieve, train & compare**.
 3. Inspect retrieved evidence, visits, predicted values and actual action traces.
-   Copy the complete JSON record to reproduce or review the experiment.
+   Select **Download JSON report**, or copy the complete record, to review the experiment.
 
 Stop training with **Stop**; stop the server with **Ctrl+C**. An active local
 model request may take up to its 60-second network timeout. The server binds only
@@ -33,16 +33,30 @@ The installer does not create `agent.py`, `requirements.txt` or a Dockerfile in
 some other project. It retains and reuses its dedicated environment. Run
 `install_and_launch.sh --help` without installing anything.
 
-For an already provisioned environment, or Windows/macOS development:
+For an already provisioned Linux environment or Windows development:
 
 ```bash
 python -m pip install -r alpha_factory_v1/demos/muzero_planning/requirements.txt
 python -m alpha_factory_v1.demos.muzeromctsllmagent_v0
 ```
 
-The portable requirements are pinned at the top level; the fully hashed lock
-is the Linux CPU profile. Other platforms require their own dependency and
-browser validation before deployment. Python `--help` does not import PyTorch.
+For **Apple silicon on macOS 14 or later**, create and activate a Python 3.11–3.13
+virtual environment, then use the macOS profile (PyTorch's macOS wheel does not
+use the `+cpu` suffix):
+
+```bash
+python3 -m venv .venv-mcts-llm
+source .venv-mcts-llm/bin/activate
+python -m pip install -r alpha_factory_v1/demos/muzeromctsllmagent_v0/requirements-macos.txt
+python -m alpha_factory_v1.demos.muzeromctsllmagent_v0
+```
+
+These development requirements are pinned at the top level; the fully hashed
+lock and release acceptance cover Linux x86_64. Native Windows/macOS training and
+browser validation remain required before claiming those platforms are supported
+for deployment. Intel Macs need a separately validated PyTorch build; see
+[PyTorch installation](https://pytorch.org/get-started/locally/).
+Python `--help` does not import PyTorch.
 
 <!-- CURRENT-DEMO:END -->
 
@@ -56,7 +70,9 @@ python -m alpha_factory_v1.demos.muzeromctsllmagent_v0 \
 The command exits after a bounded run and refuses to overwrite `experiment.json`.
 Reports include evidence text and SHA-256 hashes, model mode, validated quotations,
 training losses, four evaluation baselines, root-search statistics, actual
-counterfactual traces, package versions and portable neural weights. Set
+counterfactual traces, package versions, demo version, hashes of the actual planning
+source files and portable neural weights. Source hashes identify code bytes;
+they do not authenticate who supplied them. Set
 `--episodes 0` to inspect untrained behavior. No improvement is fabricated if
 training fails to find the better action.
 
@@ -112,6 +128,7 @@ Gymnasium experiments, see [MuZero Planning Lab](../muzero_planning/README.md).
 | Model produces invalid citations | Retry with a suitable model; invalid advice is never silently accepted. |
 | No training improvement | Inspect losses, visits and baselines; try the default 32 episodes and seed 42. |
 | Output already exists | Choose a new filename; existing reports are preserved. |
+| Run failed in the dashboard | The previous report is cleared and download is disabled. Correct the input or model, then run again. |
 
 ## Scope and preserved research
 

@@ -64,6 +64,8 @@ def validate(output: Path, url: str | None = None) -> None:
                 browser = playwright.chromium.launch()
                 context = browser.new_context(viewport={"width": 1440, "height": 1000})
                 page = context.new_page()
+                from playwright.sync_api import expect
+
                 errors = []
                 page.on("pageerror", lambda error: errors.append(error.stack))
                 # Training and the interface must work even when external browser requests are blocked.
@@ -79,11 +81,33 @@ def validate(output: Path, url: str | None = None) -> None:
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
                 assert page.get_by_text("trained_search", exact=False).count() > 0
-                assert page.get_by_text("immediate", exact=True).count() > 0
+                assert page.get_by_text("immediate · lexical overlap", exact=False).count() > 0
+                assert page.get_by_text("First action 0 · observed total reward 0.3", exact=False).count() > 0
+                download_button = page.get_by_role("button", name="Download JSON report", exact=True)
+                with page.expect_download() as download_info:
+                    download_button.click()
+                download = download_info.value
+                path = output / download.suggested_filename
+                download.save_as(path)
+                record = json.loads(path.read_text())
+                assert record["status"] == "complete" and record["execution"] == "simulation_only"
+                assert len(record["provenance"]["source_sha256"]) == 3
+                assert record["experiment"]["config"]["episodes"] == 4
                 page.screenshot(path=str(output / "desktop.png"), full_page=True)
                 page.set_viewport_size({"width": 390, "height": 844})
                 page.screenshot(path=str(output / "mobile.png"), full_page=True)
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1")
+                # A failed run must replace the previous completion and disable stale exports.
+                question = page.get_by_role("textbox", name="Question about MiniChoice", exact=True)
+                question.fill("")
+                page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
+                page.get_by_text("Run failed.", exact=False).wait_for(timeout=15000)
+                expect(download_button).to_be_disabled()
+                assert page.get_by_text("Complete · review required.", exact=False).count() == 0
+                question.fill("Which first action maximizes delayed reward?")
+                page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
+                page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
+                expect(download_button).to_be_enabled()
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_role("button", name="Stop", exact=True).click()
                 page.get_by_text("Stop requested.", exact=False).wait_for(timeout=15000)
@@ -97,6 +121,9 @@ def validate(output: Path, url: str | None = None) -> None:
                             "evidence_and_counterfactuals": True,
                             "mobile_no_overflow": True,
                             "stop": True,
+                            "json_download": True,
+                            "failure_clears_previous_report": True,
+                            "retry_after_failure": True,
                             "external_browser_requests_blocked": True,
                             "page_errors": errors,
                         },

@@ -1,3 +1,5 @@
+[1.20.1 — Planning lab reliability](agent/RELEASE_NOTES_1.20.1.md): JSON downloads, clear failure recovery, strict input bounds, source provenance and corrected macOS setup.
+
 [1.20.0 — Evidence & Planning Lab](agent/RELEASE_NOTES_1.20.0.md): runnable MuZero/MCTS/LLM integration, exact citation validation, safe local launch and measured simulator comparisons.
 
 [1.19.0 — MuZero Planning Lab](agent/RELEASE_NOTES_1.19.0.md): actual recurrent learning, corrected reward-aware search, measured comparisons, safe checkpoints and verified local/browser/container paths.

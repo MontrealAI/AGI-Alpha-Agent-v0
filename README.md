@@ -1,3 +1,5 @@
+> **1.20.1 — Planning lab reliability.** Download reproducible reports, recover cleanly from failed runs, and follow corrected platform setup. [Lab guide](alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.20.1.md). Existing flowcharts and research are preserved.
+
 > **1.20.0 — Evidence & Planning Lab.** Cited task evidence, optional local-model advice, trained MuZero search and measured action traces. [Start the lab](alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.20.0.md). Original presentation and research preserved.
 
 > **1.19.0 — MuZero Planning Lab.** Train a small neural world model, inspect reward-aware tree search and compare measured baselines. [Start the lab](alpha_factory_v1/demos/muzero_planning/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.19.0.md). Original flowcharts and research remain preserved.

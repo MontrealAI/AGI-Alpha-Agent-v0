@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import model from "./constants.mjs?v=1.20.0";
+import model from "./constants.mjs?v=1.20.1";
 export const SCHEMA = "agialpha.insight.scenario.v1";
 export const REPORT_SCHEMA = "agialpha.insight.dossier.v1";
 export const MAX_BYTES = 1000000;
