@@ -38,3 +38,6 @@ broader autonomous-enterprise, token-settlement or validator-network vision,
 and does not claim AGI or production financial readiness.
 
 [Setup and use the lab](../demos/muzeromctsllmagent_v0.md).
+
+Use [Start here](START_HERE.md) for the main agent installation and supported
+operator workflow.
