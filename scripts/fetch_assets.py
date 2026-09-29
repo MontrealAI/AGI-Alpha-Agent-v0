@@ -9,6 +9,8 @@ Environment variables:
     FETCH_ASSETS_DIR   -- Override the asset download root directory.
     FETCH_ASSETS_ATTEMPTS -- Maximum attempts per file (default 3).
     FETCH_ASSETS_BACKOFF -- Base delay in seconds between retries (default 1).
+    FETCH_ASSETS_SKIP_LLM -- Skip downloading the GPT-2 checkpoint.
+    FETCH_ASSETS_INCLUDE_LLM -- Force GPT-2 downloads in CI environments.
 
 Pyodide runtime files are fetched directly from the official CDN or a user
 specified mirror. The script no longer attempts alternate gateways when a
@@ -42,12 +44,18 @@ HF_GPT2_BASE_URL = os.environ.get("HF_GPT2_BASE_URL", DEFAULT_HF_GPT2_BASE_URL).
 DEFAULT_PYODIDE_BASE_URL = "https://cdn.jsdelivr.net/pyodide/v0.28.0/full"
 PYODIDE_BASE_URL = os.environ.get("PYODIDE_BASE_URL", DEFAULT_PYODIDE_BASE_URL).rstrip("/")
 
+CI_MODE = os.environ.get("CI", "").lower() in {"1", "true", "yes"}
+FETCH_ASSETS_INCLUDE_LLM = os.environ.get("FETCH_ASSETS_INCLUDE_LLM", "").lower() in {
+    "1",
+    "true",
+    "yes",
+}
 # Skip downloading the GPT-2 checkpoint when set (helps keep CI commits small)
 FETCH_ASSETS_SKIP_LLM = os.environ.get("FETCH_ASSETS_SKIP_LLM", "").lower() in {
     "1",
     "true",
     "yes",
-}
+} or (CI_MODE and not FETCH_ASSETS_INCLUDE_LLM)
 # Number of download attempts before giving up
 MAX_ATTEMPTS = int(os.environ.get("FETCH_ASSETS_ATTEMPTS", "3"))
 # Base delay (seconds) for exponential backoff between attempts
@@ -76,7 +84,10 @@ ASSETS = {
 }
 
 if FETCH_ASSETS_SKIP_LLM:
-    print("Skipping wasm_llm assets because FETCH_ASSETS_SKIP_LLM is set.")
+    if CI_MODE and not FETCH_ASSETS_INCLUDE_LLM and not os.environ.get("FETCH_ASSETS_SKIP_LLM"):
+        print("Skipping wasm_llm assets because CI is set. Use FETCH_ASSETS_INCLUDE_LLM=1 to download.")
+    else:
+        print("Skipping wasm_llm assets because FETCH_ASSETS_SKIP_LLM is set.")
     ASSETS = {k: v for k, v in ASSETS.items() if not k.startswith("wasm_llm/")}
 
 CHECKSUMS = {
