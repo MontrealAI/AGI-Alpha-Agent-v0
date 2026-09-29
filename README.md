@@ -1,3 +1,5 @@
+> **1.21.0 — Finance Alpha research terminal.** Audit cash, costs, next-open fills and risk decisions in a local, reproducible paper experiment. [Start here](alpha_factory_v1/demos/finance_alpha/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.21.0.md). Original diagrams and research remain preserved.
+
 > **1.20.1 — Planning lab reliability.** Download reproducible reports, recover cleanly from failed runs, and follow corrected platform setup. [Lab guide](alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.20.1.md). Existing flowcharts and research are preserved.
 
 > **1.20.0 — Evidence & Planning Lab.** Cited task evidence, optional local-model advice, trained MuZero search and measured action traces. [Start the lab](alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.20.0.md). Original presentation and research preserved.

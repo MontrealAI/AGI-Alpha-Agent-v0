@@ -49,7 +49,7 @@ def build_page(demo: Path) -> str:
             if candidate.exists():
                 preview = f"../{demo.name}/assets/{candidate.name}"
                 break
-    if demo.name in {"era_of_experience", "meta_agentic_tree_search_v0", "meta_agentic_agi_v3"}:
+    if demo.name in {"era_of_experience", "meta_agentic_tree_search_v0", "meta_agentic_agi_v3", "finance_alpha"}:
         preview = f"../{demo.name}/assets/lab-preview.svg"
     if not preview:
         preview = DEFAULT_PREVIEW

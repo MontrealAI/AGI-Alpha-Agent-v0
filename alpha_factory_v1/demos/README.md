@@ -75,7 +75,7 @@ no existing run is deleted. Model caches remain separate.
 | [Super Planner](alpha_super_planner_v1/README.md) | Interface illustration | Shows the stages and progress display of a planning interface. |
 | [Cross-industry discovery](cross_industry_alpha_factory/README.md) | Offline sample | Selects reproducible examples from the bundled opportunity catalog. |
 | [Era of Experience](era_of_experience/README.md) | Offline sample | Extracts simple signals from bundled historical CSV samples. |
-| [Finance Alpha](finance_alpha/README.md) | Deployment example | Provides paper-market agent and legacy service integration examples. |
+| [Finance Alpha](finance_alpha/README.md) | Reproducible paper research | Audit next-open fills, cash, trading costs, risk decisions and replayable evidence. |
 | [GPT-2 CLI](gpt2_small_cli/README.md) | Local model | Generates text with the actual GPT-2 124M model. |
 | [Macro Sentinel](macro_sentinel/README.md) | Offline simulation | Computes Monte Carlo risk metrics from bundled macro samples. |
 | [Meta-Agentic v1](meta_agentic_agi/README.md) | Synthetic evaluation | Runs provider-driven code proposals, synthetic fitness and SQLite lineage. |

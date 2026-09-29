@@ -1,23 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 """
-alpha_factory_v1.backend.agents.finance_agent
-=============================================
-α-Factory FinanceAgent (v0.7.0 – 2025-05-02)
+Legacy FinanceAgent compatibility integration (v0.8.0).
 
-Cross-asset autonomous trader with institutional-grade risk controls.
+The supported reproducible research workflow is ``demos.finance_alpha``.
+This agent retains its factor tools, simulated exchange, optional testnet wrapper,
+telemetry and optional mesh registration. It tracks cash, average-cost realized
+P&L and marked equity. Prices must be valid; failures do not supply substitute
+quotes. Risk breaches and uncertain order outcomes halt further orders for review.
 
-▸ Live-mode  : Binance test-net  (requires BINANCE_API_KEY / BINANCE_API_SECRET)
-▸ Sim-mode   : built-in stochastic exchange (zero external deps)
-
-Key features
-------------
-✓ Hybrid multi-factor alpha engine (momentum, reversal, carry, volatility)
-✓ MuZero-lite or heuristic execution planner (torch/lightgbm optional)
-✓ Cornish-Fisher VaR · CVaR · MaxDD hard stops
-✓ Prometheus & MCP telemetry (‘alpha_pnl_realised_usd’, …)
-✓ OpenAI Agents SDK tools (`alpha_signals`, `portfolio_state`)
-✓ Mesh-native registration (Google ADK)
-✓ **Graceful degradation** — never crashes if optional libraries are missing
+The planner executes a heuristic rebalance. Its optional network/regressor objects
+are untrained and are not used to select orders; they do not implement MuZero.
+Risk estimates are research diagnostics, not institutional guarantees. A legacy
+halt does not liquidate positions. Testnet requires explicit opt-in and separately
+validated account reconciliation, symbol filters and restart persistence. The
+agent does not offer a real-money execution mode. Original research claims and
+source are retained in the finance demo archive.
 """
 from __future__ import annotations
 
@@ -26,6 +23,7 @@ import asyncio
 import contextlib
 import json
 import logging
+import math
 
 _log = logging.getLogger("AlphaFactory.FinanceAgent")
 
@@ -165,6 +163,23 @@ class _FinCfg:
     # misc
     prometheus_enabled: bool = bool(int(os.getenv("FIN_PROMETHEUS", "1")))
     adk_mesh: bool = bool(int(os.getenv("ADK_MESH", "0")))
+    broker_mode: str = os.getenv("FIN_BROKER_MODE", "paper")
+
+    def __post_init__(self) -> None:
+        if self.broker_mode not in {"paper", "testnet"}:
+            raise ValueError("FIN_BROKER_MODE must be paper or testnet; real-money mode is unsupported")
+        if (
+            not self.universe
+            or len(set(self.universe)) != len(self.universe)
+            or any(not s.isalnum() for s in self.universe)
+        ):
+            raise ValueError("ALPHA_UNIVERSE must contain distinct alphanumeric symbols")
+        for name in ("start_balance", "var_limit", "cvar_limit", "maxdd_limit", "cycle_sec"):
+            value = getattr(self, name)
+            if not math.isfinite(value) or value <= 0:
+                raise ValueError(f"{name} must be finite and positive")
+        if self.maxdd_limit > 1:
+            raise ValueError("ALPHA_MAX_DD_PCT must be at most 100")
 
 
 # ═════════════════════════ exchange layer ══════════════════════
@@ -172,13 +187,13 @@ class _SimExchange:
     """Tiny random-walk price generator & fill engine (stateful)."""
 
     def __init__(self, seed: int = 42):
-        random.seed(seed)
+        self.rng = random.Random(seed)
         self._p: Dict[str, float] = {}
 
     # ------------------------------
     def price(self, sym: str) -> float:
         px = self._p.get(sym, 100.0)
-        px *= 1.0 + random.gauss(0.0, 0.0015)
+        px *= 1.0 + self.rng.gauss(0.0, 0.0015)
         self._p[sym] = max(px, 0.01)
         return self._p[sym]
 
@@ -200,9 +215,21 @@ class _BinanceBroker:
         return float(self.cli.get_symbol_ticker(symbol=sym)["price"])
 
     def market(self, side: str, qty: float, sym: str) -> float:
-        self.cli.create_order(symbol=sym, side=side, type="MARKET", quantity=qty)
-        px = self.price(sym)
-        return -qty * px if side == "SELL" else qty * px
+        receipt = self.cli.create_order(symbol=sym, side=side, type="MARKET", quantity=qty, newOrderRespType="FULL")
+        if receipt.get("status") != "FILLED" or not math.isclose(float(receipt["executedQty"]), qty, rel_tol=1e-9):
+            raise RuntimeError("Incomplete testnet fill: reconcile the account before restarting")
+        notional = float(receipt["cummulativeQuoteQty"])
+        if not math.isfinite(notional) or notional <= 0 or not sym.endswith("USDT"):
+            raise RuntimeError("Unsupported testnet receipt: reconcile the account before restarting")
+        fees = 0.0
+        if not receipt.get("fills"):
+            raise RuntimeError("Missing testnet fill detail: reconcile the account before restarting")
+        for fill in receipt["fills"]:
+            commission = float(fill["commission"])
+            if not math.isfinite(commission) or commission < 0 or (commission and fill["commissionAsset"] != "USDT"):
+                raise RuntimeError("Non-USDT commission: reconcile the account before restarting")
+            fees += commission
+        return (-notional if side == "SELL" else notional) + fees
 
     # Make sure the asset exists in Test-Net; otherwise create a dummy balance
     def _ensure_testnet_assets(self, universe: Sequence[str]):
@@ -210,7 +237,7 @@ class _BinanceBroker:
             acc = self.cli.get_account()
             assets = {b["asset"] for b in acc["balances"]}
             for sym in universe:
-                base = sym.rstrip("USDT")
+                base = sym.removesuffix("USDT")
                 if base not in assets:
                     self.cli.transfer_spot_to_margin(asset=base, amount="0")
 
@@ -221,25 +248,33 @@ def _pct(a: float, b: float) -> float:
 
 
 def _cf_var(returns: List[float], conf: float = 0.99) -> float:
-    """Cornish-Fisher VaR assuming non-normality when scipy present."""
+    """Lower-return-tail loss VaR; optional Cornish-Fisher with excess kurtosis."""
+    if not 0 < conf < 1 or any(not math.isfinite(r) for r in returns):
+        raise ValueError("Risk requires finite returns and confidence in (0, 1)")
     if len(returns) < 2:
         return 0.0
     mu = statistics.mean(returns)
-    sig = statistics.pstdev(returns) or 1e-9
-    if "np" in globals() and skew and kurtosis and erfcinv:
+    sig = statistics.pstdev(returns)
+    if sig == 0:
+        return max(0.0, -mu)
+    z = statistics.NormalDist().inv_cdf(1 - conf)
+    if np is not None and callable(globals().get("skew")) and callable(globals().get("kurtosis")):
         s = skew(returns)
-        k = kurtosis(returns, fisher=False)
-        z = abs(np.sqrt(2) * erfcinv(2 * (1 - conf)))  # type: ignore[arg-type]
+        k = kurtosis(returns, fisher=True)
         z_cf = z + (z**2 - 1) * s / 6 + (z**3 - 3 * z) * k / 24 - (2 * z**3 - 5 * z) * s**2 / 36
     else:
-        z_cf = 2.326  # 99 %
-    return abs(mu + z_cf * sig)
+        z_cf = z
+    return max(0.0, -(mu + z_cf * sig))
 
 
 def _cvar(returns: List[float], conf: float = 0.99) -> float:
-    cut = max(1, int(len(returns) * (1 - conf)))
+    if not 0 < conf < 1 or any(not math.isfinite(r) for r in returns):
+        raise ValueError("Risk requires finite returns and confidence in (0, 1)")
+    if not returns:
+        return 0.0
+    cut = max(1, math.ceil(len(returns) * (1 - conf) - 1e-12))
     tail = sorted(returns)[:cut]
-    return abs(sum(tail) / len(tail))
+    return max(0.0, -sum(tail) / len(tail))
 
 
 def _maxdd(returns: List[float]) -> float:
@@ -310,10 +345,10 @@ class _Planner:
 
     # ------------------------------
     def rollout(
-        self, portfolio: _Portfolio, prices: Dict[str, float], targets: Dict[str, float]
+        self, portfolio: _Portfolio, prices: Dict[str, float], targets: Dict[str, float], cash: float = 0.0
     ) -> List[Dict[str, Any]]:
         orders: List[Dict[str, Any]] = []
-        port_val = portfolio.value(prices) or 1.0
+        port_val = cash + portfolio.value(prices)
         for sym, w in targets.items():
             tgt_qty = w * port_val / prices[sym]
             delta = tgt_qty - portfolio.qty(sym)
@@ -329,7 +364,7 @@ class _Planner:
 @register
 class FinanceAgent(AgentBase):
     NAME = "finance"
-    VERSION = "0.7.0"
+    VERSION = "0.8.0"
     __version__ = VERSION
 
     def __init__(
@@ -360,12 +395,19 @@ class FinanceAgent(AgentBase):
 
         # ── state ──
         self.portfolio = _Portfolio()
+        self.cash = self.cfg.start_balance
+        self.cost_basis: Dict[str, float] = {}
+        self.realized_pnl = 0.0
+        self.equity_peak = self.cash
+        self.halted = False
         self.factor = _FactorEngine()
         self.history: Dict[str, List[float]] = {s: [] for s in self.cfg.universe}
         self.planner = _Planner(self.cfg.planner_depth)
 
         # ── broker selection ──
-        if "_BnClient" in globals() and self.cfg.key and self.cfg.secret:
+        if self.cfg.broker_mode == "testnet":
+            if "_BnClient" not in globals() or not self.cfg.key or not self.cfg.secret:
+                raise ValueError("Explicit testnet mode requires python-binance and both credentials")
             self.broker: Any = _BinanceBroker(self.cfg.key, self.cfg.secret, self.cfg.universe)
             _log.info("FinanceAgent connected to Binance test-net.")
         else:
@@ -428,32 +470,62 @@ class FinanceAgent(AgentBase):
 
         # 2 · update factors & portfolio risk
         self.factor.update(self.history)
-        flat_ret = [_pct(a, b) for s in self.cfg.universe for a, b in zip(self.history[s][:-1], self.history[s][1:])]
+        equity = self.cash + self.portfolio.value(prices)
+        self.equity_peak = max(self.equity_peak, equity)
+        weights = {s: self.portfolio.qty(s) * prices[s] / equity if equity > 0 else 0.0 for s in prices}
+        count = min(len(h) for h in self.history.values())
+        # Align observations across symbols before aggregating portfolio returns.
+        flat_ret = [
+            sum(weights[s] * _pct(self.history[s][i - 1], self.history[s][i]) for s in prices) for i in range(1, count)
+        ]
         risk = {
-            "var": _cf_var(flat_ret) * self.portfolio.value(prices),
-            "cvar": _cvar(flat_ret) * self.portfolio.value(prices),
-            "maxdd": _maxdd(flat_ret),
+            "var": _cf_var(flat_ret) * max(0.0, equity),
+            "cvar": _cvar(flat_ret) * max(0.0, equity),
+            "maxdd": 1 - equity / self.equity_peak if self.equity_peak > 0 else 1.0,
         }
 
         # 3 · compute target weights (risk-parity style)
-        score_sum = sum(abs(v) for v in self.factor.scores.values()) or 1e-9
-        targets = {s: self.factor.scores[s] / score_sum for s in self.cfg.universe}
+        score_sum = sum(max(0.0, v) for v in self.factor.scores.values()) or 1.0
+        targets = {s: 0.9 * max(0.0, self.factor.scores[s]) / score_sum for s in self.cfg.universe}
 
         # 4 · risk hard-stops
         if (
-            risk["var"] > self.cfg.var_limit
+            self.halted
+            or risk["var"] > self.cfg.var_limit
             or risk["cvar"] > self.cfg.cvar_limit
             or risk["maxdd"] > self.cfg.maxdd_limit
         ):
-            _log.warning("Risk limits breached → no trades this cycle.")
+            self.halted = True
+            _log.warning("Risk limits breached → compatibility agent halted; operator review required.")
             self._publish_state(prices, risk)
             return
 
         # 5 · plan & execute trades
-        orders = self.planner.rollout(self.portfolio, prices, targets)
-        for o in orders:
-            self.broker.market(o["side"], o["qty"], o["sym"])
+        orders = self.planner.rollout(self.portfolio, prices, targets, self.cash)
+        for o in sorted(orders, key=lambda order: order["side"] != "SELL"):
+            if o["side"] == "SELL":
+                o["qty"] = min(o["qty"], self.portfolio.qty(o["sym"]))
+            elif o["qty"] * prices[o["sym"]] > self.cash * 0.98:
+                continue
+            try:
+                cost = self.broker.market(o["side"], o["qty"], o["sym"])
+                if not math.isfinite(cost):
+                    raise ValueError("Invalid fill cost")
+            except Exception:
+                self.halted = True
+                _log.error("Order outcome uncertain; halted. Reconcile before restarting.")
+                raise
+            self.cash -= cost
+            if o["side"] == "BUY":
+                self.cost_basis[o["sym"]] = self.cost_basis.get(o["sym"], 0.0) + cost
+            else:
+                allocated = self.cost_basis.get(o["sym"], 0.0) * o["qty"] / self.portfolio.qty(o["sym"])
+                self.cost_basis[o["sym"]] = self.cost_basis.get(o["sym"], 0.0) - allocated
+                self.realized_pnl += -cost - allocated
             self.portfolio.update(o["sym"], o["qty"] if o["side"] == "BUY" else -o["qty"])
+            if self.cash < 0:
+                self.halted = True
+                raise RuntimeError("Fill exceeded available cash; reconcile before restarting")
             _log.info("Executed %s %s %.4f @ est %.2f USD", o["side"], o["sym"], o["qty"], o["est_fill_px"])
 
         # 6 · telemetry publish
@@ -462,26 +534,33 @@ class FinanceAgent(AgentBase):
     # ────────────────────── helpers ─────────────────────
     def _safe_price(self, sym: str) -> float:
         try:
-            return self.broker.price(sym)
+            price = float(self.broker.price(sym))
+            if not math.isfinite(price) or price <= 0:
+                raise ValueError("Broker price must be finite and positive")
+            return price
         except (AiohttpClientError, asyncio.TimeoutError, OSError) as exc:
-            _log.error("Price fetch failed (%s); fallback last-known.", exc)
-            return self.history[sym][-1] if self.history[sym] else 100.0
+            _log.error("Price fetch failed (%s); cycle aborted without trading on stale prices.", exc)
+            raise
         except Exception as exc:  # pragma: no cover - unexpected
             _log.exception("Unexpected price fetch error: %s", exc)
             raise
 
     def _publish_state(self, prices: Dict[str, float], risk: Dict[str, float]):
-        cash_equiv = self.cfg.start_balance - sum(
-            qty * prices.get(sym, 0.0) for sym, qty in self.portfolio.book().items()
-        )
-        pnl = cash_equiv + self.portfolio.value(prices) - self.cfg.start_balance
-        self.pnl_g.set(pnl)
+        equity = self.cash + self.portfolio.value(prices)
+        pnl = equity - self.cfg.start_balance
+        self.pnl_g.set(self.realized_pnl)
 
         payload = {
             "ts": datetime.now(timezone.utc).isoformat(),
             "prices": prices,
             "book": self.portfolio.book(),
             "pnl": pnl,
+            "pnl_basis": "marked_equity_minus_initial_cash_not_realized_pnl",
+            "realized_pnl": self.realized_pnl,
+            "unrealized_pnl": self.portfolio.value(prices) - sum(self.cost_basis.values()),
+            "cash": self.cash,
+            "equity": equity,
+            "halted": self.halted,
             "risk": risk,
         }
         _publish("fin.state", payload)

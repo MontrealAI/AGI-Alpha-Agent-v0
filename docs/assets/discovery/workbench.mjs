@@ -7,8 +7,8 @@ import {
     evaluate,
     verify,
     artifacts,
-} from "./engine.mjs?v=1.20.1";
-import { zipFiles } from "../compounding/engine.mjs?v=1.20.1";
+} from "./engine.mjs?v=1.21.0";
+import { zipFiles } from "../compounding/engine.mjs?v=1.21.0";
 const $ = (id) => document.getElementById(id),
     key = "agialpha.insight.discovery.draft.v1";
 let cases = [],
