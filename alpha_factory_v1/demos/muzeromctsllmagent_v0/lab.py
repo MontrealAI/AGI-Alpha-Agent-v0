@@ -186,6 +186,10 @@ def run(
         agent.net.eval()
         rows = report["search_after"]
         chosen = max(rows, key=lambda row: (row["visits"], -row["action"]))["action"]
+        for row in rows:
+            if row["visits"] == 0:
+                # Unexpanded children have defaults, not evaluated model predictions.
+                row.update(predicted_reward=None, value=None, q=None)
         outcomes = []
         for first_action in (0, 1):
             obs = agent.reset(seed=seed + 10000)

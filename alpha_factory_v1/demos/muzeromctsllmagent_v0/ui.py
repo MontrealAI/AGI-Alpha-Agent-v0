@@ -45,7 +45,8 @@ def build(args: Any) -> Any:
                 evidence = gr.Dataframe(headers=["Source", "Evidence", "Lexical overlap"], interactive=False, wrap=True)
         gr.Markdown(
             "## 3 · Review the decision\nThe language model is an adviser. Search selects the action. "
-            "A valid quotation does not prove the model's reasoning. Compare predictions with observed returns."
+            "A valid quotation does not prove the model's reasoning. Compare predictions with observed returns. "
+            "Reward/value fields are blank for unvisited branches: no estimate was evaluated."
         )
         advice = gr.JSON(label="Model proposal and validated quotations")
         search = gr.Dataframe(

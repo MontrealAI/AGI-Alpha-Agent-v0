@@ -123,6 +123,9 @@ def test_real_learning_and_counterfactuals():
     assert report["execution"] == "simulation_only" and report["decision"] == "review_required"
     assert [r["observed_return"] for r in report["counterfactuals"]] == [0.3, 1.0]
     assert sum(r["visits"] for r in report["experiment"]["search_after"]) == 32
+    for row in report["experiment"]["search_after"]:
+        if row["visits"] == 0:
+            assert row["predicted_reward"] is None and row["value"] is None and row["q"] is None
     assert set(report["experiment"]["evaluation"]) == {"random", "untrained_search", "trained_policy", "trained_search"}
     json.dumps(report, allow_nan=False)
 
