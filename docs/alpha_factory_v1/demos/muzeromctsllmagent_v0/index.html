@@ -1,38 +1,18 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>MuZero MCTS LLM Agent Demo</title>
-<link rel='stylesheet' href='../../../stylesheets/cards.css'>
-<link rel='stylesheet' href='../../../stylesheets/demo_base.css'>
-</head>
-<body>
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Product launch room</h2><p>What delivery order fits a shared design, engineering and QA team?</p><p style="font-size:12px">Launch sequence · resource calendar · bottleneck analysis</p><a href="../../../studio/?case=launch" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
-<!-- decision-studio-bridge:end -->
-<h1>MuZero MCTS LLM Agent Demo</h1>
-<img class='preview' src='assets/preview.svg' alt='MuZero MCTS LLM Agent Demo'>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MuZero × MCTS × LLM · Evidence & Planning Lab</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,sans-serif;color:#19233e;background:#f4f3ed}*{box-sizing:border-box}body{margin:0}main,nav,footer{max-width:1120px;margin:auto;padding:24px}nav{display:flex;justify-content:space-between;border-bottom:1px solid #ccd0d9}a{color:#373aa0;text-underline-offset:4px}a:focus-visible{outline:3px solid #a75013;outline-offset:5px}.eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#505777}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(2.8rem,7vw,5.6rem);line-height:1.04;max-width:900px;margin:22px 0}h2{font-size:1.5rem}p{line-height:1.7}.lead{max-width:740px;font-size:1.15rem}.pill{display:inline-block;border:1px solid #abb4cb;padding:7px 12px;border-radius:30px;font-size:.8rem}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:42px 0}.card{background:#fff;padding:28px;border:1px solid #d8dbe3;border-radius:14px}.num{font-family:Georgia,serif;font-size:2.5rem;color:#6b69aa}.launch{background:#20253f;color:#fff;padding:32px;border-radius:18px}.launch a{color:#c7d4ff}pre{background:#101529;color:#e3e9ff;padding:22px;overflow:auto;border-radius:9px;line-height:1.8;font-size:.9rem}.button{display:inline-block;background:#d6e3ff;color:#152347!important;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:650}.decision{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:30px 0}.route{padding:26px;border-left:4px solid #716cba;background:#e9e7f3}.route strong{font-size:2rem}.fine{font-size:.85rem;color:#525d74}footer{border-top:1px solid #ccd0d9;margin-top:40px}@media(max-width:700px){.grid,.decision{grid-template-columns:1fr}main,nav,footer{padding:18px}.launch{padding:20px}h1{font-size:3rem}}
+</style></head><body>
 
-<p><a href='../../../demos/muzeromctsllmagent_v0'>Detailed instructions</a></p>
-<p class='snippet'><a href='../../../DISCLAIMER_SNIPPET'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
-<div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
-</div>
-<canvas id="chart"></canvas>
-<pre id="logs-panel"></pre>
-<script src="../../../assets/chart.min.js"></script>
-<script type="module" src="../../../assets/pyodide_demo.js"></script>
-<script type="module" src="assets/script.js"></script>
+<nav aria-label="Primary"><a href="../../../index.html">← Alpha-Factory</a><span>LOCAL RESEARCH LAB</span></nav>
+<main><p class="eyebrow">MuZero × MCTS × LLM</p><h1>An idea is a proposal.<br>A rollout is evidence.</h1>
+<p class="lead">Connect grounded model advice to learned-model search. Train a small neural planner, inspect its decisions, and test both first actions in a real simulator.</p>
+<p><span class="pill">No API key needed</span> <span class="pill">Optional local Ollama</span> <span class="pill">Review before action</span></p>
+<div class="grid"><section class="card"><span class="num">01</span><h2>Retrieve & propose</h2><p>Inspect ranked task facts with source hashes. Optionally ask an installed local model for an action with exact quotations.</p></section><section class="card"><span class="num">02</span><h2>Train & search</h2><p>Learn reward, value and policy from simulator transitions. See where tree search spends its visits and what it predicts.</p></section><section class="card"><span class="num">03</span><h2>Measure & review</h2><p>Compare the proposal with search, actual action traces and four baselines. Export the record for reproducibility.</p></section></div>
+<section class="launch"><p class="eyebrow" style="color:#c0c9e7">START LOCALLY · PYTHON 3.11–3.13</p><h2>Your first experiment</h2><p>From a repository checkout on Linux x86_64, install the hash-locked CPU profile and start the dashboard:</p><pre><code>bash alpha_factory_v1/demos/muzeromctsllmagent_v0/install_and_launch.sh</code></pre><p>Then open <strong>http://127.0.0.1:7862</strong> and choose <strong>Retrieve, train & compare</strong>. First installation downloads dependencies. Stop the server with Ctrl+C.</p><a class="button" href="../../../demos/muzeromctsllmagent_v0">Setup, commands & troubleshooting →</a></section>
+<section><h2>A tiny task with an inspectable answer</h2><p>MiniChoice offers an immediate reward or a two-step path. These are the environment rules, not claimed training results:</p><div class="decision"><div class="route"><p>INITIAL ACTION 0</p><strong>0.3 now</strong><p>The episode ends immediately.</p></div><div class="route"><p>INITIAL ACTION 1</p><strong>1.0 later</strong><p>Reach the second state, then choose action 1. Choosing action 0 there instead yields −0.2.</p></div></div><p class="fine">The local app measures what the trained policy actually does. A model can be wrong. Repeated deterministic episodes do not demonstrate general intelligence or generalization.</p></section>
+<section class="card"><h2>Research preserved. Scope made explicit.</h2><p>This page is a launch guide; neural training runs in the local app. No funds, wallet authorization, token settlements or external actions are involved.</p><p><a href="research.html">Preserved browser illustration</a> · <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/muzeromctsllmagent_v0/archive">Original research archive</a> · <a href="../../../muzero_planning">Explore harder planning environments</a></p></section>
 <p><a href="../../../index.html">⬅️ Back to Gallery</a></p>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../../../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
-</script>
-</body>
-</html>
+</main><footer><p class="fine">Educational MuZero-style integration. <a href="../../../DISCLAIMER_SNIPPET">See docs/DISCLAIMER_SNIPPET.md</a>.</p></footer></body></html>

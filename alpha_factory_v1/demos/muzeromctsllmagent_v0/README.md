@@ -1,47 +1,131 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
+# MuZero × MCTS × LLM · Evidence & Planning Lab
+
+**Retrieve evidence. Propose an action. Train a model. Measure the result.**
+
+A runnable, local integration of cited task evidence, optional Ollama advice and
+learned-model Monte Carlo tree search. Start without an API key or language model.
+The supported task is deliberately small: take **0.3 now**, or learn a two-step
+route to **1.0 later**. All outcomes are simulator rewards, not money.
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
+## Start in three steps
 
-**Mode:** Deployment template. Preserves the original combined planning and model-integration concept.
-
-**Prerequisites:** The original installer requires obsolete optional packages and is not a validated install path.
-
-From the repository root after [installation](../README.md#start-locally):
+From a source checkout on **Linux x86_64**, with **Python 3.11–3.13**:
 
 ```bash
-python -m alpha_factory_v1.demos show muzeromctsllmagent_v0
+bash alpha_factory_v1/demos/muzeromctsllmagent_v0/install_and_launch.sh
 ```
 
-**Expected result:** Open the browser illustration. Read the source before using the preserved installer.
+1. The launcher installs the shared, hash-locked CPU profile into `.venv-mcts-llm`
+   in the repository. The first install needs internet and space for PyTorch.
+2. Open **http://127.0.0.1:7862**. Select **Retrieve, train & compare**.
+3. Inspect retrieved evidence, visits, predicted values and actual action traces.
+   Copy the complete JSON record to reproduce or review the experiment.
 
-**Scope:** Use muzero_planning for maintained planning and the Agent operator for supported model/identity controls; original assets remain.
+Stop training with **Stop**; stop the server with **Ctrl+C**. An active local
+model request may take up to its 60-second network timeout. The server binds only
+loopback, has no public tunnel and makes no inference request unless a model is
+explicitly selected. Run one lab process at a time in a given Python process.
 
-The [catalog](../README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+The installer does not create `agent.py`, `requirements.txt` or a Dockerfile in
+some other project. It retains and reuses its dedicated environment. Run
+`install_and_launch.sh --help` without installing anything.
+
+For an already provisioned environment, or Windows/macOS development:
+
+```bash
+python -m pip install -r alpha_factory_v1/demos/muzero_planning/requirements.txt
+python -m alpha_factory_v1.demos.muzeromctsllmagent_v0
+```
+
+The portable requirements are pinned at the top level; the fully hashed lock
+is the Linux CPU profile. Other platforms require their own dependency and
+browser validation before deployment. Python `--help` does not import PyTorch.
+
 <!-- CURRENT-DEMO:END -->
 
-This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
-Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.
-
-
-# MuZero MCTS LLM Agent Demo
-
-
-This folder contains a prototype integration of a Monte Carlo Tree Search (MCTS) agent with language model guidance. Run `install_and_launch.sh` to build the environment and start the demo in your browser.
-
-## Quick Start
-1. Ensure Python 3.9+ is installed.
-2. Execute `./install_and_launch.sh`.
-3. Visit `http://localhost:8000` to interact with the agent.
-4. Follow on-screen instructions to explore planning outputs.
+## A repeatable command-line experiment
 
 ```bash
-./install_and_launch.sh
+python -m alpha_factory_v1.demos.muzeromctsllmagent_v0 \
+  --headless --episodes 32 --simulations 32 --seed 42 --output experiment.json
 ```
 
-## Notes
-- Requires approximately 2GB RAM and basic Docker support.
-- Provided for research purposes only; not a production trading system.
+The command exits after a bounded run and refuses to overwrite `experiment.json`.
+Reports include evidence text and SHA-256 hashes, model mode, validated quotations,
+training losses, four evaluation baselines, root-search statistics, actual
+counterfactual traces, package versions and portable neural weights. Set
+`--episodes 0` to inspect untrained behavior. No improvement is fabricated if
+training fails to find the better action.
+
+## Add a real local model
+
+Install and run [Ollama](https://docs.ollama.com/), then explicitly install a model
+that fits your hardware. Enter its installed name in the UI, or pass
+`--model YOUR_INSTALLED_MODEL` to the command above. Nothing downloads a model for
+you. Requests use Ollama's `/api/chat` endpoint with a JSON schema, bounded output,
+no redirects and no environment proxies, at `127.0.0.1:11434` only.
+
+The question and retrieved task evidence are sent to that local service. The
+returned action must be 0 or 1; every quotation must occur in its cited source.
+Malformed responses, unavailable models and fabricated citations fail the run
+visibly. There is no pretend LLM fallback. **Quotation validity does not prove
+reasoning correctness.** Search remains the decision maker; model agreement and
+both candidate outcomes are shown for human review.
+
+## Understand the experiment
+
+```mermaid
+flowchart TD
+    Q["Task question"] --> R["Ranked source evidence"]
+    R --> L["Optional local model proposal"]
+    L --> V["Validate action and quotations"]
+    T["Real simulator transitions"] --> M["Train reward, value and policy"]
+    M --> S["Learned-model tree search"]
+    V --> C["Compare proposal and search"]
+    S --> C
+    C --> E["Measure both first actions"]
+    E --> H["Human review and JSON report"]
+```
+
+Retrieval is transparent lexical overlap over four source-linked task facts;
+zero-overlap facts remain labeled context. This is a complete tiny corpus, not
+web research or semantic retrieval. MuZero search uses learned latent dynamics;
+it does not consult real environment transitions inside the tree. Each candidate
+first action is then tested separately in the simulator with the same reset seed
+and trained continuation. Predicted Q and observed return are different quantities.
+
+Random, untrained search, trained policy and trained search are evaluated on the
+same reset seeds. MiniChoice is deterministic: repeated seeds test behavior,
+**not generalization**. The model is retrained from scratch each run. For harder
+Gymnasium experiments, see [MuZero Planning Lab](../muzero_planning/README.md).
+
+## Troubleshooting
+
+| Symptom | Action |
+|---|---|
+| Missing torch, gymnasium or Gradio | Use the dedicated launcher or install the shared requirements. |
+| Port 7862 already occupied | Stop the other instance or pass `--port 7863`. |
+| Ollama request fails | Confirm the service is running and the model is installed; clear the model field for offline mode. |
+| Model produces invalid citations | Retry with a suitable model; invalid advice is never silently accepted. |
+| No training improvement | Inspect losses, visits and baselines; try the default 32 episodes and seed 42. |
+| Output already exists | Choose a new filename; existing reports are preserved. |
+
+## Scope and preserved research
+
+This is an educational integration, not a production trading service, autonomous
+enterprise, achieved AGI, or reproduction of published MuZero benchmark results.
+No wallet signature, balance check, token transfer, settlement, validator network
+or external action is performed. Deployment with real funds or multi-user access
+requires a separately validated authentication, authorization and execution layer.
+
+The [original presentation](muzeromctsllmagentv0.html), original imagery and
+[original research/installer archive](archive/README.original.md) are retained.
+The archive manifest records source hashes and the source commit. Its installer
+is inert text because it generated placeholder planning code and overwrote caller
+files. Embedded provider credentials were redacted from retained copies; this
+does not rotate credentials already present in Git history. The original
+browser balance check was not proof of wallet ownership or server authorization.
+Do not use that historical illustration as an access-control system.

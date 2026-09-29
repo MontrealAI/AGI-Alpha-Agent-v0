@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-import { solve, verify, parse } from "./engine.mjs?v=1.19.0";
-import { artifacts } from "./artifacts.mjs?v=1.19.0";
+import { solve, verify, parse } from "./engine.mjs?v=1.20.0";
+import { artifacts } from "./artifacts.mjs?v=1.20.0";
 self.onmessage = async ({ data }) => {
     try {
         const value =

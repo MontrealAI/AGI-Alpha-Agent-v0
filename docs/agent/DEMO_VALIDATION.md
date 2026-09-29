@@ -62,7 +62,7 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 | [meta_agentic_agi_v3](../demos/meta_agentic_agi_v3.md) | Identity curriculum | Required |
 | [meta_agentic_tree_search_v0](../demos/meta_agentic_tree_search_v0.md) | Offline simulation | Required |
 | [muzero_planning](../demos/muzero_planning.md) | Research planning | Dedicated check or explicit prerequisites |
-| [muzeromctsllmagent_v0](../demos/muzeromctsllmagent_v0.md) | Deployment template | Dedicated check or explicit prerequisites |
+| [muzeromctsllmagent_v0](../demos/muzeromctsllmagent_v0.md) | Research training | MuZero Python matrix and real browser acceptance |
 | [omni_factory_demo](../demos/omni_factory_demo.md) | Offline simulation | Required |
 | [presentation](../demos/presentation.md) | Reference | Dedicated check or explicit prerequisites |
 | [self_healing_repo](../demos/self_healing_repo.md) | Bounded repair | Dedicated check or explicit prerequisites |

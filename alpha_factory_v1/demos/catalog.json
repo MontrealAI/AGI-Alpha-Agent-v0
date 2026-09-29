@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.19.0",
+  "release": "1.20.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -502,18 +502,30 @@
     },
     {
       "id": "muzeromctsllmagent_v0",
-      "title": "MuZero MCTS LLM concept",
-      "mode": "Deployment template",
-      "summary": "Preserves the original combined planning and model-integration concept.",
-      "command": [],
-      "expected": "Open the browser illustration. Read the source before using the preserved installer.",
-      "prerequisites": "The original installer requires obsolete optional packages and is not a validated install path.",
-      "limitations": "Use muzero_planning for maintained planning and the Agent operator for supported model/identity controls; original assets remain.",
+      "title": "MuZero \u00d7 MCTS \u00d7 LLM",
+      "mode": "Research training",
+      "summary": "Retrieve cited evidence, compare optional local-model advice with trained search, and measure simulator outcomes.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.muzeromctsllmagent_v0",
+        "--headless",
+        "--episodes",
+        "4"
+      ],
+      "expected": "Finite learning run with root search, source evidence and measured action traces; no language model by default.",
+      "prerequisites": "Python 3.11\u20133.13 and the dedicated MuZero dependency profile.",
+      "limitations": "Two-step educational simulation. Optional Ollama advice is validated but not trusted as execution authority. No wallet gate or transactions.",
       "smoke": false,
       "environment": {},
-      "required_modules": [],
+      "required_modules": [
+        "torch",
+        "numpy",
+        "gymnasium",
+        "gradio"
+      ],
       "assets": [],
-      "offline": false
+      "offline": true
     },
     {
       "id": "omni_factory_demo",

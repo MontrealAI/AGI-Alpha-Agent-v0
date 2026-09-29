@@ -150,7 +150,7 @@ def build(root: Path = ROOT) -> None:
     studio.write_text((root / "scripts/templates/studio.html").read_text().replace("{{VERSION}}", version))
     for legacy, case in lookup(root).items():
         page = root / "docs" / legacy / "index.html"
-        if legacy == "muzero_planning" and (page.parent / "research.html").is_file():
+        if legacy in {"muzero_planning", "muzeromctsllmagent_v0"} and (page.parent / "research.html").is_file():
             # Keep the historical decision bridge with the preserved presentation.
             page = page.parent / "research.html"
         if not page.is_file():
