@@ -6,8 +6,11 @@ import asyncio
 from dataclasses import asdict, dataclass
 import hashlib
 import json
+from pathlib import Path
 import re
 from typing import Any, Iterator
+
+from . import __version__
 
 
 @dataclass(frozen=True)
@@ -43,7 +46,7 @@ CORPUS = (
 
 def retrieve(query: str) -> list[dict[str, Any]]:
     """Rank the complete small corpus by lexical overlap; keep zero-score context labeled."""
-    if not isinstance(query, str) or not 1 <= len(query.strip()) <= 2000:
+    if not isinstance(query, str) or not query.strip() or len(query) > 2000:
         raise ValueError("Question must contain 1–2000 characters")
     words = set(re.findall(r"[a-z0-9]+", query.lower()))
     results = []
@@ -61,7 +64,7 @@ def validate_advice(data: Any, evidence: list[dict[str, Any]]) -> dict[str, Any]
         raise ValueError("Advice must contain exactly action, rationale and citations")
     if type(data["action"]) is not int or data["action"] not in (0, 1):
         raise ValueError("Advice action must be integer 0 or 1")
-    if not isinstance(data["rationale"], str) or not 1 <= len(data["rationale"].strip()) <= 2000:
+    if not isinstance(data["rationale"], str) or not data["rationale"].strip() or len(data["rationale"]) > 2000:
         raise ValueError("Advice rationale must contain 1–2000 characters")
     citations = data["citations"]
     if not isinstance(citations, list) or not 1 <= len(citations) <= len(evidence):
@@ -210,6 +213,17 @@ def run(
         torch.set_num_threads(previous_threads)
     yield {
         "schema": "muzero-mcts-llm-v1",
+        "provenance": {
+            "demo_version": __version__,
+            "source_sha256": {
+                path.relative_to(Path(__file__).parent.parent).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in (
+                    Path(__file__),
+                    Path(__file__).parent.parent / "muzero_planning/training.py",
+                    Path(__file__).parent.parent / "muzero_planning/minimuzero.py",
+                )
+            },
+        },
         "status": "complete",
         "question": question,
         "evidence": evidence,

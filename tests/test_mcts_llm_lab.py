@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 
 import pytest
 
@@ -34,7 +36,7 @@ def test_retrieval_ranks_and_hashes_real_sources():
     assert all(row["overlap"] == 0 for row in retrieve("unmatchedword"))
 
 
-@pytest.mark.parametrize("question", ["", "  ", "x" * 2001, None])
+@pytest.mark.parametrize("question", ["", "  ", "x" * 2001, " " * 2000 + "x", None])
 def test_question_budget(question):
     with pytest.raises(ValueError):
         retrieve(question)
@@ -48,6 +50,7 @@ def test_exact_citation_required():
         ("action", "1"),
         ("rationale", ""),
         ("rationale", "x" * 2001),
+        ("rationale", " " * 2000 + "x"),
         ("citations", []),
         ("citations", [{"source_id": "invented", "quote": "money"}]),
         ("citations", [{"source_id": "finish", "quote": "not a source quote"}]),
@@ -117,6 +120,11 @@ def test_real_learning_and_counterfactuals():
     pytest.importorskip("torch")
     pytest.importorskip("gymnasium")
     report = list(run(episodes=32, seed=42))[-1]
+    from alpha_factory_v1.demos.muzeromctsllmagent_v0 import __version__
+
+    assert report["provenance"]["demo_version"] == __version__
+    for path, digest in report["provenance"]["source_sha256"].items():
+        assert digest == hashlib.sha256((DEMO.parent / path).read_bytes()).hexdigest()
     assert report["advice"]["mode"] == "disabled"
     assert report["agreement"] is None
     assert report["search_action"] == 1
@@ -165,6 +173,58 @@ def test_launcher_help_does_not_write_caller_files(tmp_path):
     )
     assert result.returncode == 0 and "7862" in result.stdout
     assert list(tmp_path.iterdir()) == []
+
+
+def test_launcher_rejects_unsupported_platform_even_when_optimized(tmp_path):
+    import shlex
+
+    interpreter = tmp_path / "unsupported-python"
+    code = 'import platform,sys; platform.system=lambda: "Darwin"; exec(sys.stdin.read())'
+    interpreter.write_text(f"#!/bin/sh\nexec {shlex.quote(sys.executable)} -c {shlex.quote(code)}\n")
+    interpreter.chmod(0o700)
+    result = subprocess.run(
+        ["bash", str(DEMO / "install_and_launch.sh")],
+        cwd=tmp_path,
+        env={**os.environ, "PYTHON": str(interpreter), "PYTHONOPTIMIZE": "1"},
+        capture_output=True,
+        text=True,
+        timeout=15,
+    )
+    assert result.returncode != 0 and "supports Linux x86_64" in result.stderr
+    assert list(tmp_path.iterdir()) == [interpreter]
+
+
+@pytest.mark.parametrize("seed", [float("inf"), float("nan"), 0.5])
+def test_ui_invalid_input_clears_results_and_exposes_failure(seed):
+    gr = pytest.importorskip("gradio")
+    from alpha_factory_v1.demos.muzeromctsllmagent_v0.ui import build
+
+    demo = build(SimpleNamespace(question="reward?", episodes=0, simulations=4, seed=42, model=""))
+    execute = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "execute")
+    events = execute("reward?", 0, 4, seed, "")
+    assert "Preparing" in next(events)[0]
+    failure = next(events)
+    assert "Run failed" in failure[0]
+    assert failure[3] is None and failure[7] == "" and failure[8]["interactive"] is False
+    with pytest.raises(gr.Error, match="whole numbers"):
+        next(events)
+
+
+def test_macos_profile_tracks_shared_versions_without_linux_torch_suffix():
+    from packaging.requirements import Requirement
+
+    def requirements(path):
+        return {
+            requirement.name: str(requirement)
+            for line in path.read_text().splitlines()
+            if line.strip() and not line.startswith(("#", "--"))
+            for requirement in [Requirement(line)]
+        }
+
+    shared = requirements(DEMO.parent / "muzero_planning/requirements.txt")
+    macos = requirements(DEMO / "requirements-macos.txt")
+    assert macos.pop("torch") == shared.pop("torch").replace("+cpu", "")
+    assert macos == shared
 
 
 def test_archived_originals_and_credential_redaction():

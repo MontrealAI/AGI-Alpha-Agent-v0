@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import inspect
 import json
+import math
 import os
 from typing import Any, Iterator
 
@@ -42,7 +43,7 @@ def build(args: Any) -> Any:
                 gr.Markdown("## 2 · Follow the experiment")
                 status = gr.Markdown("Ready. A fresh model is trained for each run.")
                 curve = gr.LinePlot(x="episode", y="reward", title="Observed training rewards", height=260)
-                evidence = gr.Dataframe(headers=["Source", "Evidence", "Lexical overlap"], interactive=False, wrap=True)
+                evidence = gr.Markdown("", label="Retrieved task evidence")
         gr.Markdown(
             "## 3 · Review the decision\nThe language model is an adviser. Search selects the action. "
             "A valid quotation does not prove the model's reasoning. Compare predictions with observed returns. "
@@ -52,9 +53,7 @@ def build(args: Any) -> Any:
         search = gr.Dataframe(
             headers=["Action", "Prior", "Visits", "Predicted reward", "Value", "Q"], interactive=False
         )
-        outcomes = gr.Dataframe(
-            headers=["First action", "Observed total reward", "Actual action/reward trace"], interactive=False
-        )
+        outcomes = gr.Markdown("", label="Actual first-action rollouts")
         baselines = gr.Dataframe(headers=["Policy", "Mean held-out reward"], interactive=False)
         gr.Markdown(
             "Both first actions use the same reset seed and trained continuation. "
@@ -65,6 +64,25 @@ def build(args: Any) -> Any:
             record = gr.Code(
                 label="Report, source hashes, versions and portable model weights", language="json", interactive=False
             )
+        download = gr.Button("Download JSON report", interactive=False)
+        download.click(
+            fn=None,
+            inputs=record,
+            outputs=None,
+            queue=False,
+            js="""(text) => {
+                const report = JSON.parse(text);
+                if (report.status !== 'complete') return;
+                const url = URL.createObjectURL(new Blob([text + '\\n'], {type: 'application/json'}));
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'muzero-mcts-llm-report.json';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }""",
+        )
         gr.Markdown(
             "**Review required.** This interface has no financial, shell or deployment tools and no wallet access gate. "
             "[Research, setup and preserved presentation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/muzeromctsllmagent_v0)"
@@ -76,39 +94,78 @@ def build(args: Any) -> Any:
             import pandas as pd
 
             # Clear every prior result, including after an invalid new request.
-            yield "Preparing evidence…", pd.DataFrame(columns=["episode", "reward"]), [], None, [], [], [], ""
+            empty: tuple[Any, ...] = (
+                pd.DataFrame(columns=["episode", "reward"]),
+                "",
+                None,
+                [],
+                "",
+                [],
+                "",
+                gr.update(interactive=False),
+            )
+            yield ("Preparing evidence…", *empty)
             try:
                 values = (count, budget, random_seed)
-                if any(isinstance(v, bool) or not isinstance(v, (int, float)) or v != int(v) for v in values):
+                if any(
+                    isinstance(v, bool)
+                    or not isinstance(v, (int, float))
+                    or (isinstance(v, float) and not math.isfinite(v))
+                    or v != int(v)
+                    for v in values
+                ):
                     raise ValueError("Budgets and seed must be whole numbers")
                 for event in run(
                     query, episodes=int(count), simulations=int(budget), seed=int(random_seed), model=local_model
                 ):
                     if event["status"] == "training":
                         frame = pd.DataFrame(event["history"])
-                        yield f"Training **{event['completed']} / {event['total']}**", frame, [], None, [], [], [], ""
+                        yield (
+                            f"Training **{event['completed']} / {event['total']}**",
+                            frame,
+                            "",
+                            None,
+                            [],
+                            "",
+                            [],
+                            "",
+                            gr.update(interactive=False),
+                        )
                     else:
                         experiment = event["experiment"]
                         yield (
                             f"**Complete · review required.** Search chose action **{event['search_action']}**. Model agreement: **{'not requested' if event['agreement'] is None else 'yes' if event['agreement'] else 'no'}**.",
                             pd.DataFrame(experiment["history"], columns=["episode", "reward"]),
-                            [[r["id"], r["text"], r["overlap"]] for r in event["evidence"]],
+                            "\n\n".join(
+                                f"**{r['id']} · lexical overlap {r['overlap']}**\n\n{r['text']}"
+                                for r in event["evidence"]
+                            ),
                             event["advice"],
                             [list(r.values()) for r in experiment["search_after"]],
-                            [
-                                [r["first_action"], r["observed_return"], json.dumps(r["trace"])]
+                            "\n\n".join(
+                                f"**First action {r['first_action']} · observed total reward {r['observed_return']:g}**\n\n"
+                                + "; ".join(
+                                    f"Step {t['step']}: action {t['action']} → {t['reward']:+g}"
+                                    + (" (terminal)" if t["terminated"] else "")
+                                    for t in r["trace"]
+                                )
                                 for r in event["counterfactuals"]
-                            ],
+                            ),
                             [[key, sum(scores) / len(scores)] for key, scores in experiment["evaluation"].items()],
                             json.dumps(event, indent=2, allow_nan=False),
+                            gr.update(interactive=True),
                         )
             except (ValueError, RuntimeError, OSError) as exc:
+                yield (
+                    "**Run failed.** No report was produced. Check the error, adjust the inputs and try again.",
+                    *empty,
+                )
                 raise gr.Error(str(exc)) from exc
 
         event = start.click(
             execute,
             [question, episodes, simulations, seed, model],
-            [status, curve, evidence, advice, search, outcomes, baselines, record],
+            [status, curve, evidence, advice, search, outcomes, baselines, record, download],
             concurrency_limit=1,
             concurrency_id="planning-lab",
         )
