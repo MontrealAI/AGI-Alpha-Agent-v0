@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alpha-factory-v1"
-version = "1.18.0"
+version = "1.19.0"
 description = "AGIALPHA Agent: evidence-driven missions, evolutionary optimization and operator controls"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -33,6 +33,7 @@ namespaces = true
 "alpha_factory_v1" = ["py.typed", "**/*.yaml", "**/*.yml", "**/*.json", "**/*.proto", "**/*.txt", "**/*.md"]
 "alpha_factory_v1.core.runtime" = ["web/*", "examples/*.json"]
 "alpha_factory_v1.demos.macro_sentinel" = ["offline_samples/*.csv"]
+"alpha_factory_v1.demos.muzero_planning" = ["requirements.lock", "Dockerfile", "*.sh", "*.ipynb", "archive/*"]
 "alpha_factory_v1.demos.meta_agentic_agi_v3" = ["configs/*.csv", "web/meta_agentic_agi_v3/*", "web/assets/*/*"]
 "alpha_factory_v1.demos.meta_agentic_tree_search_v0" = ["web/meta_agentic_tree_search_v0/*", "web/assets/*/*"]
 "alpha_factory_v1.demos.era_of_experience" = ["offline_samples/*.csv", "web/era_of_experience/*", "web/assets/*/*"]

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { canonical, digest, verify } from "./engine.mjs?v=1.18.0";
+import { canonical, digest, verify } from "./engine.mjs?v=1.19.0";
 const number = (value) =>
     value.toLocaleString("en-US", { maximumFractionDigits: 0 });
 export function brief(report) {

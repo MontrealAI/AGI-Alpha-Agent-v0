@@ -95,8 +95,20 @@ def main() -> None:
                         raise ValueError(f"{name}: {service} COPY input {source!r} is absent from {context}")
             configurations.add(path)
             consumers.append({"file": name, "service": service, "context": str(context.relative_to(root))})
-    if len(consumers) < 7:
-        raise ValueError("expected the two core and five demo consumers of the shared Dockerfile")
+    # MuZero has a dedicated locked image and its own mandatory Docker/browser
+    # acceptance job. Verify the identities of the remaining shared consumers;
+    # a count alone could hide an accidentally disconnected configuration.
+    expected = {
+        ("alpha_factory_v1/docker-compose.yml", "orchestrator"),
+        ("alpha_factory_v1/docker-compose.override.yml", "orchestrator"),
+        ("alpha_factory_v1/demos/aiga_meta_evolution/docker-compose.aiga.yml", "orchestrator"),
+        ("alpha_factory_v1/demos/era_of_experience/docker-compose.experience.yml", "orchestrator"),
+        ("alpha_factory_v1/demos/macro_sentinel/docker-compose.macro.yml", "orchestrator"),
+        ("alpha_factory_v1/demos/self_healing_repo/docker-compose.selfheal.yml", "orchestrator"),
+    }
+    missing = expected - {(consumer["file"], consumer["service"]) for consumer in consumers}
+    if missing:
+        raise ValueError(f"missing shared Dockerfile consumers: {sorted(missing)}")
     if args.docker_compose:
         # Parse only: never start services, pull images or load operator secrets.
         env = {key: value for key, value in os.environ.items() if key in {"PATH", "HOME", "SYSTEMROOT", "TMPDIR"}}

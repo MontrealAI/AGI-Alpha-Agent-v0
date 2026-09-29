@@ -1,3 +1,5 @@
+[1.19.0 — MuZero Planning Lab](agent/RELEASE_NOTES_1.19.0.md): actual recurrent learning, corrected reward-aware search, measured comparisons, safe checkpoints and verified local/browser/container paths.
+
 [1.18.0 — Curriculum Lab](agent/RELEASE_NOTES_1.18.0.md): independently solved tasks, adaptive curricula, complete lineage, review gates, reproducible evidence and repaired legacy execution/accounting boundaries.
 
 ## 1.13.1 — 2026-09-28

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.18.0",
+  "release": "1.19.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -476,19 +476,19 @@
       "id": "muzero_planning",
       "title": "MuZero planning",
       "mode": "Research planning",
-      "summary": "Runs a small MuZero-style planner in a Gymnasium environment.",
+      "summary": "Train a small neural model and compare learned-model search with measured baselines.",
       "command": [
         "python",
         "-m",
         "alpha_factory_v1.demos.muzero_planning",
         "--episodes",
-        "3",
+        "32",
         "--port",
         "7861"
       ],
-      "expected": "Local dashboard on port 7861; stop with Ctrl+C.",
-      "prerequisites": "torch, gymnasium[classic-control], Gradio and the demo requirements.",
-      "limitations": "Small randomly initialized model unless trained; solving CartPole is not guaranteed.",
+      "expected": "Local training dashboard on port 7861; stop with Ctrl+C.",
+      "prerequisites": "Python 3.11\u20133.13 and the dedicated MuZero dependency lock.",
+      "limitations": "Bounded CPU MuZero-style research; harder environments may not improve. No AGI claim.",
       "smoke": false,
       "environment": {},
       "required_modules": [
@@ -498,7 +498,7 @@
         "gradio"
       ],
       "assets": [],
-      "offline": false
+      "offline": true
     },
     {
       "id": "muzeromctsllmagent_v0",
