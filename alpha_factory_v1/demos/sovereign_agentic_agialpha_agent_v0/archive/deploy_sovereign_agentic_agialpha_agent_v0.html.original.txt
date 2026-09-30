@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>AGI ALPHA AGENT – Official Website</title>
+  <!-- LOAD SOLANA WEB3.JS (for advanced usage token gating) -->
+  <script src="https://unpkg.com/@solana/web3.js@1.76.0/lib/index.iife.js"></script>
+
+  <style>
+  /* GLOBAL RESETS & FONTS */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Open Sans", sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND & THEME (PALE IVORY / GOLD) */
+  body {
+    background: linear-gradient(135deg, rgba(255,250,235,1), rgba(255,245,220,1));
+    color: #333;
+    min-height: 100vh;
+    line-height: 1.4;
+    scroll-behavior: smooth;
+    position: relative;
+  }
+
+  /* FUSED P5 BACKGROUND + ADVANCED ASI SUPRA-HIEROGLYPHS OVERLAY */
+  #p5-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: url("https://ipfs.io/ipfs/QmQ6MogCaNn5xMWkFa2jtvYSoiTJXtapp3unTenD65SDak")
+                center center no-repeat;
+    background-size: cover;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+  }
+  #asi-hieroglyphs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      160deg,
+      transparent 0 10px,
+      rgba(255,205,160,0.05) 10px 20px,
+      transparent 20px 30px,
+      rgba(255,225,200,0.03) 30px 40px
+    );
+    mix-blend-mode: screen;
+  }
+
+  /* MAIN CONTAINER */
+  body > header, main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 2rem auto;
+    background-color: rgba(255,255,255, 0.8);
+    backdrop-filter: blur(5px);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 0 25px rgba(255,255,255,0.5);
+  }
+
+  header {
+    margin-bottom: 2rem;
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+
+  header .agent-image {
+    max-width: 500px;
+    width: 85%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 35px rgba(0,0,0,0.25);
+    margin-bottom: 1.5rem;
+  }
+  header h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #8e6d2a; 
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+  }
+  header p.tagline {
+    font-size: 1.15rem;
+    color: #a28154;
+    margin-bottom: 1.5rem;
+  }
+  header a.cta-button {
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 30px;
+    color: #fff;
+    background: linear-gradient(135deg, #ffd28f, #fbb45c);
+    transition: all 0.4s ease;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+  }
+  header a.cta-button:hover {
+    box-shadow: 0 0 35px rgba(255,255,255,0.5);
+    transform: scale(1.06);
+  }
+
+  main {
+    margin-bottom: 5rem;
+  }
+  main h2 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: #8e6d2a;
+    margin: 1rem 0;
+  }
+  main .code-block {
+    display: inline-block;
+    background: #fff3e0;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #8e6d2a;
+  }
+  main p {
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+  }
+  main p strong {
+    font-weight: 700;
+    color: #8e6d2a;
+  }
+  hr {
+    margin: 2rem 0;
+    border: none;
+    height: 1px;
+    background-color: rgba(142,109,42,0.25);
+  }
+
+  .connect-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 30px;
+    color: #fff;
+    background: linear-gradient(135deg, #ffd28f, #fbb45c);
+    transition: all 0.4s ease;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    cursor: pointer;
+  }
+  .connect-btn:hover {
+    box-shadow: 0 0 35px rgba(255,255,255,0.5);
+    transform: scale(1.06);
+  }
+  #access-message {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #8e6d2a;
+    text-align: center;
+  }
+
+  section {
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+  section.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    header .agent-image {
+      max-width: 300px;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.7rem;
+    }
+    header p.tagline {
+      font-size: 1rem;
+    }
+    header a.cta-button {
+      font-size: 1rem;
+    }
+    main {
+      padding: 1.5rem;
+    }
+  }
+  </style>
+</head>
+
+<body>
+<div id="p5-background"></div>
+<div id="asi-hieroglyphs"></div>
+
+<header>
+  <img class="agent-image"
+       src="https://ipfs.io/ipfs/QmQ6MogCaNn5xMWkFa2jtvYSoiTJXtapp3unTenD65SDak"
+       alt="AGI ALPHA AGENT">
+  <h1>SOVEREIGN AGENTIC AGI ALPHA AGENT</h1>
+  <p class="tagline">Note: This Is A Pre-Alpha Version And Is Currently Under Active Development.</p>
+  <a class="cta-button"
+     href="https://dexscreener.com/solana/8zq3vBuoy66dur6dhrA4aqnrtGg9yZyRAp51BTBpEXj"
+     target="_blank"
+     rel="noopener">
+    Buy $AGIALPHA Tokens
+  </a>
+  <p style="margin-top:1rem; font-size:0.95rem; color:#8e6d2a;">
+    Contract Address (CA):
+    <strong>tWKHzXd5PRmxTF5cMfJkm2Ua3TcjwNNoSRUqx6Apump</strong>
+  </p>
+</header>
+
+<main>
+  <!-- SECTION: Download deploy script (no wallet gating) -->
+  <section id="download">
+    <h2>Download & Deploy the SOVEREIGN AGENTIC AGI ALPHA AGENT (<em>deploy_sovereign_agentic_agialpha_agent_v0.sh</em>) Script</h2>
+    <p>
+      To set up and deploy the Sovereign Agentic AGI ALPHA environment on your own device or server,
+      simply download the script below. <strong>No wallet connection or $AGIALPHA verification is required just to download.</strong>
+    </p>
+    <p>
+      <strong>Step 1:</strong> Click the button below to download
+      <code>deploy_sovereign_agentic_agialpha_agent_v0.sh</code>.
+    </p>
+    <p style="margin-bottom:1.5rem;">
+      <a class="cta-button"
+         href="deploy_sovereign_agentic_agialpha_agent_v0.sh"
+         download>
+        Download Deploy Script
+      </a>
+    </p>
+    <p>
+      <strong>Step 2:</strong> Open a terminal where you saved
+      <code>deploy_sovereign_agentic_agialpha_agent_v0.sh</code> and make it executable (on Linux/macOS):
+    </p>
+    <p class="code-block">chmod +x deploy_sovereign_agentic_agialpha_agent_v0.sh</p>
+    <p>
+      <strong>Step 3:</strong> Run the script:
+    </p>
+    <p class="code-block">./deploy_sovereign_agentic_agialpha_agent_v0.sh</p>
+    <p>This script will:</p>
+    <ul style="margin-left:1rem; margin-bottom:1rem;">
+      <li>Create a <code>sovereign_agent_deploy</code> directory with all necessary files.</li>
+      <li>Build Docker containers (ensuring cryptography is installed and pinned versions of libraries).</li>
+      <li>Prompt you to select a local LLM or use your cloud keys if you have them.</li>
+      <li>Launch a minimal Flask-based web UI at <code>http://localhost:5000</code> for browsing & chat.</li>
+      <li>Attach to the Docker container for a Terminal-based chat (type <code>exit</code> or <code>quit</code> to end).</li>
+    </ul>
+    <p>
+      <strong>Note:</strong> The script includes logic to detect your $AGIALPHA token holdings
+      if you want advanced usage. That token verification is part of the deployment process, not this download.
+    </p>
+    <p>
+      On Windows, use WSL or Git Bash to run the script. Ensure Docker Desktop is installed.
+    </p>
+  </section>
+
+  <hr>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About AGI ALPHA AGENT</h2>
+    <p>
+      <strong>AGI-Alpha-Agent-v0</strong><br>
+      <strong>CA:</strong>
+      <span class="code-block">tWKHzXd5PRmxTF5cMfJkm2Ua3TcjwNNoSRUqx6Apump</span><br>
+      <strong>AGI ALPHA AGENT (ALPHA.AGENT.AGI.Eth) Powered by $AGIALPHA</strong><br>
+      <strong>Seize the Alpha. Transform the world.</strong>
+    </p>
+    <p>
+      <a href="https://www.linkedin.com/in/montrealai/" target="_blank" rel="noopener">
+        Vincent Boucher
+      </a>, an AI pioneer and President of
+      <a href="https://www.montreal.ai/" target="_blank" rel="noopener">MONTREAL.AI</a>
+      and <a href="https://www.quebec.ai/" target="_blank" rel="noopener">QUEBEC.AI</a> since 2003,
+      reshaped the landscape by dominating
+      <a href="https://web.archive.org/web/20170929214241/https://gym.openai.com/read-only.html"
+         target="_blank" rel="noopener">OpenAI Gym</a>
+      with <strong>AI Agents</strong> (#1 worldwide) in 2016 and unveiling the 
+      <a href="https://www.quebecartificialintelligence.com/priorart"
+         target="_blank" rel="noopener">“Multi-Agent AI DAO”</a> blueprint in 2017.
+    </p>
+    <p>
+      Our <strong>SOVEREIGN AGENTIC AGI ALPHA AGENT</strong>, fueled by the strictly-utility
+      <strong>$AGIALPHA</strong> token, now harnesses that visionary foundation
+      to unleash the ultimate alpha signal engine.
+    </p>
+  </section>
+
+  <hr>
+
+    <!-- DISCLAIMERS -->
+    <section id="disclaimers">
+      <h2>Initial Terms & Conditions</h2>
+      <p>
+        <strong>The Emergence of an AGI-Powered Alpha Agent.</strong>
+      </p>
+      <p>
+        <strong>Ticker ($): AGIALPHA</strong>
+      </p>
+      <p>
+        Rooted in the publicly disclosed 2017 “Multi-Agent AI DAO” prior art, the AGI ALPHA AGENT 
+        utilizes $AGIALPHA tokens purely as utility tokens—no equity, no profit-sharing—intended 
+        for the purchase of products/services by the AGI ALPHA AGENT (ALPHA.AGENT.AGI.Eth). 
+        They are not intended for investment or speculative purposes.
+      </p>
+      <p>
+        <strong>1.</strong> <strong>Token Usage</strong>: $AGIALPHA tokens are strictly utility tokens—no equity, 
+        no profit-sharing—intended for the purchase of products/services by the AGI ALPHA AGENT 
+        (ALPHA.AGENT.AGI.Eth). They are not intended for investment or speculative purposes.
+      </p>
+      <p>
+        <strong>2.</strong> <strong>Non-Refundable</strong>: Purchases of $AGIALPHA tokens are final and 
+        non-refundable.
+      </p>
+      <p>
+        <strong>3.</strong> <strong>No Guarantee of Value</strong>: The issuer does not guarantee any specific 
+        value of the $AGIALPHA token in relation to fiat currencies or other cryptocurrencies.
+      </p>
+      <p>
+        <strong>4.</strong> <strong>Regulatory Compliance</strong>: It is the user’s responsibility to 
+        ensure that the purchase and use of $AGIALPHA tokens comply with all applicable laws and regulations.
+      </p>
+      <p>
+        <strong>5.</strong> <strong>User Responsibility</strong>: Users are responsible for complying with 
+        the laws in their own jurisdiction regarding the purchase and use of $AGIALPHA tokens.
+      </p>
+      <p>
+        <strong>OVERRIDING AUTHORITY:</strong> AGI.Eth
+      </p>
+      <p>
+        $AGIALPHA is experimental and part of an ambitious research agenda. Any expectation of profit is unjustified.
+      </p>
+      <p>
+        Materials provided (including $AGIALPHA) are without warranty. By using $AGIALPHA, you agree to 
+        the $AGIALPHA Terms and Conditions.
+      </p>
+      <p>
+        <strong>Changes to Terms:</strong> The issuer may revise these terms at any time, subject to 
+        regulatory compliance. Current Terms & Conditions: 
+        <a href="https://www.montreal.ai/" target="_blank" rel="noopener">https://www.montreal.ai/</a>.
+      </p>
+    </section>
+
+    <hr>
+
+  <!-- FURTHER INFO -->
+  <section id="further-info">
+    <h2>Further Information</h2>
+    <p>
+      <strong>Discord:</strong>
+      <a href="https://discord.gg/montrealai" target="_blank" rel="noopener">
+        https://discord.gg/montrealai
+      </a>
+    </p>
+    <p>
+      <strong>LinkedIn:</strong>
+      <a href="https://www.linkedin.com/in/montrealai/" target="_blank" rel="noopener">
+        https://www.linkedin.com/in/montrealai/
+      </a>
+    </p>
+    <p>
+      <strong>X (AGI ALPHA AGENT):</strong>
+      <a href="https://x.com/agialphaagent" target="_blank" rel="noopener">
+        https://x.com/agialphaagent
+      </a>
+    </p>
+    <p>
+      <strong>X (MONTREAL.AI):</strong>
+      <a href="https://x.com/Montreal_AI" target="_blank" rel="noopener">
+        https://x.com/Montreal_AI
+      </a>
+    </p>
+    <p>
+      <strong>Facebook Page:</strong>
+      <a href="https://www.facebook.com/MontrealAI/" target="_blank" rel="noopener">
+        https://www.facebook.com/MontrealAI/
+      </a>
+    </p>
+    <p>
+      <strong>Facebook Group:</strong>
+      <a href="https://www.facebook.com/groups/MontrealAI" target="_blank" rel="noopener">
+        https://www.facebook.com/groups/MontrealAI
+      </a>
+    </p>
+    <p>
+      <strong>Telegram:</strong>
+      <a href="https://t.me/agialpha" target="_blank" rel="noopener">
+        https://t.me/agialpha
+      </a>
+    </p>
+    <p>
+      <strong>YouTube:</strong>
+      <a href="https://www.youtube.com/montrealai" target="_blank" rel="noopener">
+        https://www.youtube.com/montrealai
+      </a>
+    </p>
+    <p>
+      <strong>Official info about $AGIALPHA</strong> is in the on-chain records of the AGI ALPHA Agent:
+      <a href="https://app.ens.domains/alpha.agent.agi.eth" target="_blank" rel="noopener">
+        https://app.ens.domains/alpha.agent.agi.eth
+      </a>.
+    </p>
+    <p>Pre-Alpha Version — Under Development.</p>
+  </section>
+</main>
+
+<!-- p5.js background -->
+<script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+<script>
+let starCount = 33;
+let stars = [];
+let containerRadius = 300;
+let angle = 0;
+
+function setup() {
+  const cnv = createCanvas(windowWidth, windowHeight, WEBGL);
+  cnv.parent("p5-background");
+  colorMode(HSB, 360, 100, 100);
+  noStroke();
+  for (let i = 0; i < starCount; i++) {
+    stars.push(new Star());
+  }
+}
+
+function draw() {
+  background(0, 0.08);
+  rotateY(angle * 0.001);
+  rotateX(angle * 0.0007);
+  angle += 0.2;
+
+  let zoom = sin(frameCount * 0.002) * 150;
+  translate(0, 0, zoom);
+
+  push();
+  noFill();
+  stroke(50, 0, 100, 20);
+  sphere(containerRadius);
+  pop();
+
+  for (let s of stars) {
+    s.update();
+    s.render();
+  }
+}
+
+class Star {
+  constructor() {
+    let r = random(containerRadius);
+    let theta = random(TWO_PI);
+    let phi = random(PI);
+
+    this.x = r * sin(phi) * cos(theta);
+    this.y = r * sin(phi) * sin(theta);
+    this.z = r * cos(phi);
+
+    this.vx = random(-1,1);
+    this.vy = random(-1,1);
+    this.vz = random(-1,1);
+
+    this.hue = random(360);
+    this.size = random(4,7);
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.z += this.vz;
+
+    let magPos = sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+    if (magPos > containerRadius - this.size) {
+      let nx = this.x / magPos;
+      let ny = this.y / magPos;
+      let nz = this.z / magPos;
+      let dot = this.vx*nx + this.vy*ny + this.vz*nz;
+      this.vx -= 2*dot*nx;
+      this.vy -= 2*dot*ny;
+      this.vz -= 2*dot*nz;
+    }
+  }
+
+  render() {
+    push();
+    translate(this.x, this.y, this.z);
+    fill(this.hue, 80, 100);
+    sphere(this.size);
+    pop();
+
+    this.hue += 0.4;
+    if(this.hue >= 360) this.hue = 0;
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
+<!-- SCROLL REVEAL -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll("section");
+  const observerOpts = { root: null, rootMargin: "0px", threshold: 0.1 };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, observerOpts);
+
+  sections.forEach(sec => observer.observe(sec));
+});
+</script>
+
+<!-- WALLET CONNECT + BALANCE CHECK SCRIPT (for advanced usage gating) -->
+<script>
+const TOKEN_MINT = "tWKHzXd5PRmxTF5cMfJkm2Ua3TcjwNNoSRUqx6Apump";
+const MIN_TOKENS_FOR_AGENT = 1000000; // user needs >=1M to access advanced agent
+const RPC_URL = "https://solana-mainnet.g.alchemy.com/v2/KT1RV46Eoje4kL-SC2pSANHTVm6-wgwF";
+const { Connection, PublicKey } = solanaWeb3;
+
+const agentBtn = document.getElementById("connect-wallet");
+const agentMsg = document.getElementById("access-message");
+
+async function getBalance(pubkeyStr) {
+  const connection = new Connection(RPC_URL, "confirmed");
+  const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+    new PublicKey(pubkeyStr),
+    { programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
+  );
+  let balance = 0;
+  for(const acc of tokenAccounts.value) {
+    const info = acc.account.data.parsed.info;
+    if(info.mint === TOKEN_MINT) {
+      balance += info.tokenAmount.uiAmount;
+    }
+  }
+  return balance;
+}
+
+agentBtn.addEventListener("click", async () => {
+  if(!window.solana || !window.solana.isPhantom) {
+    alert("Phantom Wallet not found! Please install or enable it first.");
+    return;
+  }
+  try {
+    await window.solana.connect();
+    const pubkeyStr = window.solana.publicKey.toString();
+    agentMsg.innerText = `Connected wallet: ${pubkeyStr}\nChecking if >=1M $AGIALPHA...`;
+
+    const bal = await getBalance(pubkeyStr);
+    if(bal >= MIN_TOKENS_FOR_AGENT) {
+      agentMsg.innerText = `🚀 Congratulations! You hold ${bal.toLocaleString()} $AGIALPHA.\nAGI ALPHA AGENT Access Granted.`;
+    } else {
+      agentMsg.innerText = `⛔ You hold ${bal.toLocaleString()} $AGIALPHA, below 1,000,000.\nAccess Denied.`;
+    }
+  } catch(e) {
+    console.error(e);
+    alert("Failed to connect or check balance (agent).");
+  }
+});
+</script>
+</body>
+</html>
+

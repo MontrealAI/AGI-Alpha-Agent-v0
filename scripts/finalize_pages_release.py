@@ -16,6 +16,7 @@ from scripts.experience_evidence import verify_report as verify_experience_repor
 from scripts.mats_evidence import verify_report as verify_mats_report
 from scripts.curriculum_evidence import verify_report as verify_curriculum_report
 from scripts.governance_evidence import verify_report as verify_governance_report
+from scripts.sovereign_evidence import verify_report as verify_sovereign_report
 
 
 def finalize(folder: Path, evidence: Path) -> None:
@@ -41,6 +42,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     experience = None
     mats = None
     curriculum = None
+    sovereign = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -222,6 +224,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             (evidence / "public-pages" / "curriculum" / "curriculum.json").read_text(encoding="utf-8")
         )
         verify_curriculum_report(curriculum, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 22, 0):
+        sovereign = json.loads((evidence / "public-pages" / "sovereign" / "sovereign.json").read_text(encoding="utf-8"))
+        verify_sovereign_report(sovereign, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -238,6 +243,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if sovereign:
+        manifest["public_sovereign"] = sovereign
+        manifest["release_gates"].append("public Sovereign canonical/mirrored galleries, six exact signed fixture downloads and accessibility")
     if curriculum:
         manifest["public_curriculum"] = curriculum
         manifest["release_gates"].append(

@@ -222,6 +222,7 @@ def main() -> None:
             "and complete Evidence Docket",
             "byte-identical latest 198-page manuscript and pinned source manifest",
             "native CPU demos and Streamlit lineage UIs",
+            "Sovereign Python 3.11/3.12/3.13 dependency-gated workflow, signed packets, recovery and Chromium reviews",
             "complete demo catalog and every browser replay",
             "Business 3 exact Python/browser portfolios and exports, notebook, installed wheel and isolated container",
             "Decision Studio calculation oracles, versioned replay, staffing coverage, "

@@ -88,7 +88,7 @@ no existing run is deleted. Model caches remain separate.
 | [Presentation assets](presentation/README.md) | Reference | Preserved slide deck and PDF for the original demo vision. |
 | [Repo-Healer](self_healing_repo/README.md) | Bounded repair | Provides repository-specific triage and isolated repair evaluation. |
 | [Governance Workbench](solving_agi_governance/README.md) | Offline governance review | Inspect nine proposal gates and export reproducible evidence and validator jobs. |
-| [Sovereign agent concept](sovereign_agentic_agialpha_agent_v0/README.md) | Deployment template | Preserves the original wallet-gated agent deployment concept. |
+| [Sovereign Workbench](sovereign_agentic_agialpha_agent_v0/README.md) | Signed, review-gated workflow | Compute a portfolio, schedule and source-bound brief; approve each stage and export signed evidence. |
 | [Shared demo utilities](utils/README.md) | Library | Shared notices and isolated demo code evaluation helpers. |
 
 ## If something goes wrong

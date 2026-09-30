@@ -8,6 +8,13 @@
 
 [1.18.0 — Curriculum Lab](agent/RELEASE_NOTES_1.18.0.md): independently solved tasks, adaptive curricula, complete lineage, review gates, reproducible evidence and repaired legacy execution/accounting boundaries.
 
+## 1.22.0 — Sovereign Workbench
+
+- Added a native, review-gated portfolio/schedule/evidence workflow with signed exports and recovery.
+- Added a local authenticated console, recorded public evidence and explicit operating boundaries.
+- Preserved the complete original deployment, standalone HTML, gallery presentation and diagrams.
+- See [release notes](agent/RELEASE_NOTES_1.22.0.md).
+
 ## 1.13.1 — 2026-09-28
 
 ## 1.14.0 — Governance Workbench
