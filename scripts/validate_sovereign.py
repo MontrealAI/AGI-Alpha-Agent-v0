@@ -52,7 +52,8 @@ def accessibility(page: Any, axe: Path | None) -> None:
     if axe is not None:
         page.evaluate(axe.read_text(encoding="utf-8"))
         violations = page.evaluate(
-            "async () => (await axe.run(document, {runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations"
+            "async () => (await axe.run(document, "
+            "{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations"
         )
         if violations:
             raise AssertionError(json.dumps(violations, indent=2))

@@ -12,6 +12,7 @@ brief. Each stage stops for explicit review, and downstream inputs derive from a
 - Signed complete workflow packets with per-stage receipts and pinned-key verification.
 - Three synthetic examples, a responsive visual console and a public gallery of actual native fixtures.
 - Runnable catalog entry and installed-wheel smoke coverage; native Python 3.11–3.13 and real Chromium gates.
+- Updated the Insight browser brace-expansion override to the patched 2.1.7 release after the current dependency audit detected denial-of-service advisories.
 - Original deployment source and README archived byte for byte, original standalone HTML retained,
   and original gallery presentation preserved as `research.html`.
 
@@ -23,3 +24,5 @@ The supported profile remains a private single operator. The workbench does not 
 independent validator approval, mainnet commissioning or autonomous spending. Example benefits are
 assumptions; no business return, general intelligence or comprehensive production certification is claimed.
 The separate Ascension reference contracts and runtime settlement controls retain their existing scope.
+
+[Start here](START_HERE.md) for the wider agent installation and operator workflow.
