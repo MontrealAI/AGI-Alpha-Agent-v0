@@ -212,6 +212,7 @@ template). The sample file now lists every variable with its default value.
 | `POLYGON_API_KEY` | Polygon market data API | _(none)_ |
 | `ALPACA_KEY_ID` | Alpaca trading API key | _(none)_ |
 | `ALPACA_SECRET_KEY` | Alpaca trading API secret | _(none)_ |
+| `FIN_BROKER_MODE` | Legacy finance broker: paper by default; explicit testnet requires separate validation | `paper` |
 | `BINANCE_API_KEY` | Binance trading API key | _(none)_ |
 | `BINANCE_API_SECRET` | Binance trading API secret | _(none)_ |
 | `IBKR_CLIENT_ID` | Interactive Brokers client ID | _(none)_ |

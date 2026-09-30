@@ -4,7 +4,7 @@
 # ─────────────────────────────────────────────────────────────────────────
 # One‑command demo for Alpha‑Factory v1.
 #
-#   • Pulls the signed CPU‑slim image (offline‑safe Φ‑2 fallback)
+#   • Legacy image integration; image signatures and model fallback are unverified
 #   • Launches the container with a momentum‑pair strategy (BTC / GLD)
 #   • Prints FinanceAgent Positions & P&L via REST
 #   • Points the user to the live trace‑graph UI
@@ -18,10 +18,21 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "${SCRIPT_DIR}/.env" ]; then
-  set -a
-  # shellcheck source=/dev/null
-  . "${SCRIPT_DIR}/.env"
-  set +a
+  # Read literal allowlisted assignments. Never execute a configuration file.
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" == \#* ]] && continue
+    [[ "$line" == *=* ]] || { echo "Expected KEY=value in .env" >&2; exit 2; }
+    key="${line%%=*}"
+    value="${line#*=}"
+    case "$key" in
+      FINANCE_STRATEGY|PORT_API|TRACE_WS_PORT|FIN_CYCLE_SECONDS|FIN_START_BALANCE_USD|FIN_PLANNER_DEPTH|FIN_PROMETHEUS|ALPHA_UNIVERSE|ALPHA_MAX_VAR_USD|ALPHA_MAX_CVAR_USD|ALPHA_MAX_DD_PCT|BINANCE_API_KEY|BINANCE_API_SECRET|ADK_MESH|FIN_BROKER_MODE)
+        if [[ ! -v "$key" ]]; then
+          export "$key=$value"
+        fi
+        ;;
+      *) echo "Unsupported .env assignment; see .env.sample" >&2; exit 2 ;;
+    esac
+  done < "${SCRIPT_DIR}/.env"
 fi
 
 
@@ -31,6 +42,18 @@ TRACE_WS_PORT="${TRACE_WS_PORT:-8088}"
 IMAGE_TAG="${IMAGE_TAG:-cpu-slim-latest}"
 IMAGE="ghcr.io/montrealai/alphafactory_pro:${IMAGE_TAG}"
 CONTAINER="af_demo_${STRATEGY}_${PORT_API}"
+
+echo "Legacy Docker example. For the supported paper lab: python -m alpha_factory_v1.demos.finance_alpha"
+for port in "$PORT_API" "$TRACE_WS_PORT"; do
+  if [[ ! "$port" =~ ^[0-9]{1,5}$ ]] || (( 10#$port < 1 || 10#$port > 65535 )); then
+    echo "Ports must be integers in 1–65535" >&2; exit 2
+  fi
+done
+PORT_API=$((10#$PORT_API))
+TRACE_WS_PORT=$((10#$TRACE_WS_PORT))
+if [[ "$PORT_API" == "$TRACE_WS_PORT" || ! "$STRATEGY" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+  echo "Use distinct ports and an alphanumeric strategy name" >&2; exit 2
+fi
 
 banner() { printf "\033[1;36m%s\033[0m\n" "$*"; }
 
@@ -97,7 +120,7 @@ fi
 
 # ── start container ─────────────────────────────────────────────────────
 banner "🚀  Starting Alpha‑Factory  (strategy: $STRATEGY)"
-DOCKER_ENV=(-e FINANCE_STRATEGY="$STRATEGY" -e TRACE_WS_PORT="$TRACE_WS_PORT")
+DOCKER_ENV=(-e FINANCE_STRATEGY="$STRATEGY" -e TRACE_WS_PORT="$TRACE_WS_PORT" -e FIN_BROKER_MODE="${FIN_BROKER_MODE:-paper}")
 for var in FIN_CYCLE_SECONDS FIN_START_BALANCE_USD FIN_PLANNER_DEPTH FIN_PROMETHEUS \
            ALPHA_UNIVERSE ALPHA_MAX_VAR_USD ALPHA_MAX_CVAR_USD ALPHA_MAX_DD_PCT \
            BINANCE_API_KEY BINANCE_API_SECRET ADK_MESH; do
@@ -108,8 +131,8 @@ done
 
 CID=$(docker run -d --rm --name "$CONTAINER" \
         "${DOCKER_ENV[@]}" \
-       -p "${PORT_API}:8000" \
-       -p "${TRACE_WS_PORT}:${TRACE_WS_PORT}" "$IMAGE")
+       -p "127.0.0.1:${PORT_API}:8000" \
+       -p "127.0.0.1:${TRACE_WS_PORT}:${TRACE_WS_PORT}" "$IMAGE")
 trap 'docker stop "$CID" >/dev/null' EXIT
 
 # ── wait for API health endpoint ────────────────────────────────────────
@@ -133,10 +156,10 @@ fi
 
 # ── query positions & P&L ───────────────────────────────────────────────
 banner "📈  Finance Positions"
-curl -s "http://localhost:${PORT_API}/api/finance/positions" | jq .
+curl -fsS "http://localhost:${PORT_API}/api/finance/positions" | jq .
 
 banner "💰  Finance P&L"
-curl -s "http://localhost:${PORT_API}/api/finance/pnl" | jq .
+curl -fsS "http://localhost:${PORT_API}/api/finance/pnl" | jq .
 
 # ── final instructions ─────────────────────────────────────────────────
 cat <<EOF

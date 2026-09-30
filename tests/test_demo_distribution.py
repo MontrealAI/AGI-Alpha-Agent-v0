@@ -77,7 +77,7 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     assert not attempted.exists(), attempted.read_text()
     entries = json.loads((installed / "alpha_factory_v1/demos/catalog.json").read_text())["entries"]
     finite = [entry for entry in entries if entry["smoke"]]
-    assert len(entries) == 26 and len(finite) == 15
+    assert len(entries) == 26 and len(finite) == 16
     for entry in finite:
         result = subprocess.run(
             [

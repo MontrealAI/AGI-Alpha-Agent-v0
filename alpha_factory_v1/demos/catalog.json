@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.20.1",
+  "release": "1.21.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -300,18 +300,31 @@
     },
     {
       "id": "finance_alpha",
-      "title": "Finance Alpha",
-      "mode": "Deployment example",
-      "summary": "Provides paper-market agent and legacy service integration examples.",
-      "command": [],
-      "expected": "Use the browser sample or follow the Docker guide for the legacy service.",
-      "prerequisites": "Docker, curl, jq and access to the documented container image for the legacy launcher.",
-      "limitations": "The gallery uses sample traces. Live exchange connectivity and real P&L are not certified by the demo tests.",
-      "smoke": false,
+      "title": "Finance Alpha Research Terminal",
+      "mode": "Reproducible paper research",
+      "summary": "Inspect next-open fills, cash, costs and risk decisions; compare strategies and replay every reported result.",
+      "command": [
+        "python",
+        "-m",
+        "alpha_factory_v1.demos.finance_alpha",
+        "--headless",
+        "--case",
+        "crash",
+        "--output",
+        "{output}/finance"
+      ],
+      "expected": "Offline HTML, replayable JSON, prices, trades, equity and a checksum manifest in a new directory.",
+      "prerequisites": "Python 3.11\u20133.13; standard library only for the supported paper lab.",
+      "limitations": "Synthetic or user-supplied unverified price bars; fractional full fills. No live exchange, model inference, real orders or profitability claim.",
+      "smoke": true,
       "environment": {},
       "required_modules": [],
-      "assets": [],
-      "offline": false
+      "assets": [
+        "finance_alpha/web/index.html",
+        "finance_alpha/web/style.css",
+        "finance_alpha/web/app.js"
+      ],
+      "offline": true
     },
     {
       "id": "gpt2_small_cli",

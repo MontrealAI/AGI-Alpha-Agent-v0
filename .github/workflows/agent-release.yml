@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -212,6 +212,7 @@ jobs:
           python -m mypy --config-file mypy-mats.ini
           python -m mypy --config-file mypy-curriculum.ini
           python -m mypy --config-file mypy-muzero.ini
+          python -m mypy --config-file mypy-finance.ini
           python -m mypy --config-file mypy.ini
           python scripts/ruff_targets.py --run
           python -m scripts.check_agent_preservation > evidence/preservation.json
@@ -556,6 +557,46 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  finance-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify paper calculations and report replay without optional integrations
+        run: |
+          python -m pip install pytest==8.4.1 mypy==1.15.0
+          mkdir -p evidence
+          python -m pytest --noconftest -o addopts= tests/test_finance_paper.py -q --junitxml=evidence/finance.xml
+          python -m mypy --config-file mypy-finance.ini
+          python -m alpha_factory_v1.demos.finance_alpha --headless --case crash --output evidence/finance-run
+          python -m alpha_factory_v1.demos.finance_alpha --verify evidence/finance-run/report.json
+      - name: Verify actual browser flows and execute the finance notebook
+        if: matrix.python == '3.12'
+        run: |
+          python -m pip install playwright==1.54.0 nbclient==0.10.2 nbformat==5.10.4 ipykernel==6.29.5
+          python -m playwright install --with-deps chromium
+          python -m scripts.validate_finance --output evidence/finance-browser
+          python - <<'PY'
+          import nbformat
+          from nbclient import NotebookClient
+          notebook = nbformat.read('alpha_factory_v1/demos/finance_alpha/finance_alpha.ipynb', as_version=4)
+          NotebookClient(notebook, timeout=120, kernel_name='python3').execute()
+          nbformat.write(notebook, 'evidence/finance-executed.ipynb')
+          PY
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: finance-lab-${{ matrix.python }}
+          path: evidence/
+          if-no-files-found: error
+
   muzero-lab:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -665,7 +706,7 @@ jobs:
           if-no-files-found: warn
 
   package:
-    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit]
+    needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

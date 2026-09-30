@@ -85,7 +85,7 @@ or the entry has no standalone CLI. It does not exercise model weights, GPU supp
 accounts. Follow the entry's guide for those integrations. The launcher never installs packages.
 Some examples need additional modules such as Rich or Click beyond the base operator environment.
 
-The 15 finite catalog examples use explicit offline defaults. Their child processes disable configured
+The 16 finite catalog examples use explicit offline defaults. Their child processes disable configured
 OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses its bundled
 synthetic workflow model and reproducible private random stream.
 Your shell credentials are unchanged. The release tests run all 15 from the wheel with Python network
