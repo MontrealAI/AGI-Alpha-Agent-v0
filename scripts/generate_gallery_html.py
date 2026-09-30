@@ -157,11 +157,14 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
                 "meta_agentic_tree_search_v0",
                 "meta_agentic_agi_v3",
                 "finance_alpha",
+                "sovereign_agentic_agialpha_agent_v0",
             }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
                 link = f'studio/?case={case["id"]}'
                 break
+    if md_file.stem == "sovereign_agentic_agialpha_agent_v0":
+        preview = "sovereign_agentic_agialpha_agent_v0/assets/lab-preview.svg"
     if md_file.stem == "alpha_agi_insight_v0":
         preview = "assets/discovery/preview.svg"
     if md_file.stem == "era_of_experience":
@@ -373,6 +376,9 @@ def main() -> None:
         curriculum.build(REPO_ROOT)
     finance = importlib.import_module("scripts.generate_finance" if __package__ else "generate_finance")
     finance.build(REPO_ROOT)
+    sovereign = importlib.import_module("scripts.generate_sovereign" if __package__ else "generate_sovereign")
+
+    sovereign.build(REPO_ROOT)
     entries = collect_entries()
 
     gallery = build_html(entries, home_link=False)

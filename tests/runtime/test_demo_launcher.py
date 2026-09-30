@@ -87,8 +87,8 @@ def test_check_json_has_no_launch_or_state_side_effects(tmp_path, monkeypatch, c
     assert list(tmp_path.iterdir()) == []
 
 
-def test_template_check_does_not_claim_a_runnable_backend(capsys):
-    assert catalog.main(["check", "sovereign_agentic_agialpha_agent_v0", "--json"]) == 2
+def test_library_check_does_not_claim_a_runnable_backend(capsys):
+    assert catalog.main(["check", "utils", "--json"]) == 2
     report = json.loads(capsys.readouterr().out)
     assert report["runnable"] is False and report["passed"] is False
 

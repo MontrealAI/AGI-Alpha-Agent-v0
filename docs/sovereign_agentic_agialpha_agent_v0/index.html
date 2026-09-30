@@ -1,38 +1,28 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Sovereign Agentic AGI Alpha Agent Demo</title>
-<link rel='stylesheet' href='../stylesheets/cards.css'>
-<link rel='stylesheet' href='../stylesheets/demo_base.css'>
-</head>
-<body>
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Nova-Seeds pilot gate</h2><p>Is a promising capability ready for an independently reviewed pilot?</p><p style="font-size:12px">Promotion hold reasons · proof jobs · attributable evidence docket</p><a href="../studio/?case=nova" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
-<!-- decision-studio-bridge:end -->
-<h1>Sovereign Agentic AGI Alpha Agent Demo</h1>
-<img class='preview' src='assets/preview.svg' alt='Sovereign Agentic AGI Alpha Agent Demo'>
-
-<p><a href='../demos/sovereign_agentic_agialpha_agent_v0/'>Detailed instructions</a></p>
-<p class='snippet'><a href='../DISCLAIMER_SNIPPET/'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
-<div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
-</div>
-<canvas id="chart"></canvas>
-<pre id="logs-panel"></pre>
-<script src="../assets/chart.min.js"></script>
-<script type="module" src="../assets/pyodide_demo.js"></script>
-<script type="module" src="assets/script.js"></script>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sovereign Workbench · Authority follows evidence</title><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body data-mode="gallery"><a class="skip" href="#workspace">Skip to workspace</a>
+<header><a class="brand" href="https://montrealai.github.io/AGI-Alpha-Agent-v0/">α <span>ALPHA FACTORY<span class="small">SOVEREIGN SYSTEMS</span></span></a><span class="pill" id="mode-label">LOCAL WORKSPACE</span><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0">Operator guide ↗</a></header>
+<main id="workspace"><section class="hero"><div><p class="eyebrow">SOVEREIGN · AGENTIC α-AGI</p><h1>Authority follows<br><em>evidence.</em></h1><p class="lede">Give the agent a bounded mandate. Inspect what it chose, how the work fits together, and why the evidence supports it. You decide what advances.</p></div><div class="hero-aside"><span class="orb" aria-hidden="true">α</span><p>PLAN → EXECUTE → VERIFY → REVIEW</p><small>One mandate. Three linked missions.<br>Every approval binds an exact result.</small></div></section>
+<p class="notice" id="mode-note">Private local workspace. Unlock with the access code printed in your terminal.</p>
+<div id="error" class="error" role="alert" hidden></div><p id="status" role="status" aria-live="polite">Loading examples…</p>
+<section id="unlock" class="panel unlock"><div><p class="eyebrow">YOUR LOCAL CONSOLE</p><h2>Unlock your workspace</h2><p>No wallet or token balance is needed for local research. Your access code stays in this browser tab’s memory.</p></div><form id="unlock-form"><label for="access-code">Local access code</label><input id="access-code" type="password" autocomplete="off" spellcheck="false" required><button type="submit">Unlock workspace</button></form></section>
+<div class="layout"><aside class="panel setup"><p class="eyebrow">01 / MANDATE</p><h2>Choose what matters.</h2>
+<label for="case">Example mandate</label><select id="case"><option value="balanced">Balanced capacity</option><option value="constrained">Constrained capacity</option><option value="expanded">Expanded capacity</option></select>
+<form id="mandate-form"><label for="budget">Resource budget <span id="cost-unit">staff-days</span></label><input id="budget" type="number" min="1" max="10000000" step="1" required><label for="risk">Total risk-point limit</label><input id="risk" type="number" min="0" max="100000" step="1" required><button id="create" type="submit" disabled>Create mandate</button></form>
+<p id="provenance" class="muted"></p><details id="advanced"><summary>Import or inspect a mandate</summary><label for="mandate-file">Import public-input JSON</label><input id="mandate-file" type="file" accept=".json,application/json"><label for="mandate-json">Structured mandate</label><textarea id="mandate-json" rows="12" spellcheck="false"></textarea><button type="button" id="apply-json">Apply edited mandate</button><button type="button" id="download-input">Download mandate JSON</button></details>
+<div id="history-wrap"><label for="history">Saved mandates</label><select id="history"><option value="">No saved mandates</option></select><button id="refresh" type="button" disabled>Refresh retained state</button></div>
+<div class="launch-note"><h3>Run your own workspace</h3><p>Install the repository package, then run:</p><code>python -m alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0</code><p>Open the printed local URL. Stop with Ctrl+C; your signed journal remains available after restart.</p></div></aside>
+<section class="content"><div class="section-head"><div><p class="eyebrow">02 / EXECUTION & REVIEW</p><h2 id="mandate-title">A mandate becomes accountable work.</h2></div><span class="pill" id="workflow-state">NOT STARTED</span></div>
+<div class="flow" id="stage-tabs" role="group" aria-label="Inspect a workflow stage"><button type="button" data-stage="portfolio"><span>01 · PORTFOLIO</span><strong>Choose feasible work</strong><small id="portfolio-state">Waiting</small></button><button type="button" data-stage="schedule"><span>02 · SCHEDULE</span><strong>Resolve shared capacity</strong><small id="schedule-state">Blocked by review</small></button><button type="button" data-stage="brief"><span>03 · EVIDENCE</span><strong>Explain the decision</strong><small id="brief-state">Blocked by review</small></button></div>
+<p id="dependency-note" class="muted">Downstream work uses approved outputs. A rejected result stops this mandate.</p>
+<div id="empty" class="panel empty"><span aria-hidden="true">◇</span><h3>Start with a clear boundary.</h3><p>Choose a scenario or import your own public-input mandate. The agent can calculate and propose; it cannot approve its own work.</p></div>
+<div id="result" hidden><div class="metrics"><article><span>ASSUMED PORTFOLIO VALUE</span><strong id="metric-value">—</strong><small id="value-unit"></small></article><article><span>RESOURCE COMMITMENT</span><strong id="metric-cost">—</strong><small id="budget-remaining"></small></article><article><span>PLANNED COMPLETION</span><strong id="metric-time">—</strong><small id="metric-tardiness"></small></article></div>
+<section class="panel"><div class="section-head"><div><p class="eyebrow" id="stage-kicker">PORTFOLIO SEARCH</p><h3 id="stage-title">Inspect the result</h3></div><span class="pill" id="stage-status"></span></div><div id="stage-visual"></div><div id="stage-detail"></div><details><summary>Execution trace · the seven runtime roles</summary><ol id="trace"></ol></details><details><summary>Exact input, output and result fingerprint</summary><pre id="raw-result"></pre></details></section></div>
+<section class="panel action-panel" id="actions"><div><h3 id="action-title">One explicit step at a time.</h3><p id="action-description">Create a mandate to begin. Execution stops for your review.</p></div><button id="advance" type="button" disabled>Run next stage</button><button id="recover" type="button" hidden>Recover retained work</button><form id="review-form" hidden><label for="review-note">Review note</label><textarea id="review-note" rows="3" maxlength="2000" placeholder="What did you check? Which assumptions still need real-world evidence?" required></textarea><label class="check"><input id="review-check" type="checkbox" required>I inspected this exact result and its assumptions.</label><div class="buttons"><button id="approve" type="submit">Approve this result</button><button id="reject" type="button" class="secondary">Reject and stop mandate</button></div></form><button id="download" type="button" hidden>Download signed evidence packet</button></section>
+<section class="panel identity"><div><p class="eyebrow">03 / ACCOUNTABILITY</p><h3 id="identity-title">Your local signing identity</h3><p id="identity-note">Identity is a local Ed25519 key. It does not establish ENS ownership or independent validator approval.</p><code id="public-key">Unlock the local workspace to inspect its public key.</code></div><button id="copy-key" type="button" disabled>Copy public key</button><div class="buttons" id="control-buttons"><button id="pause" type="button" class="secondary" disabled>Pause execution</button><button id="lock" type="button" class="secondary" disabled>Lock this tab</button></div></section>
+</section></div>
+<section class="boundaries"><div><p class="eyebrow">A COMPLETE, BOUNDED LOOP</p><h2>Autonomy with<br><em>accountability.</em></h2></div><article><h3>Actual computation</h3><p>The native runtime performs evolutionary portfolio search, independently checks feasible allocations, builds resource schedules, and verifies quotations against supplied sources. These are planning tools, not measured business returns.</p></article><article><h3>Reviewed memory</h3><p>Only approved prior allocation and scheduling results can seed later searches. Reuse is recorded in the research trace; it is not proof of general learning or improved future performance.</p></article><article><h3>Explicit authority</h3><p>Local operator review is distinct from an independent validator quorum. Wallet control, ENS identity, on-chain jobs and $AGIALPHA settlement use separately configured and validated runtime integrations. This console never spends funds.</p></article></section>
 <p><a href="../index.html">⬅️ Back to Gallery</a></p>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
-</script>
-</body>
-</html>
+</main><footer><p>Sovereign Workbench · Bounded operational planning. General intelligence and autonomous enterprise returns are not established.</p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/archive">Preserved original deployment and webpage ↗</a> · <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/DISCLAIMER_SNIPPET.md">Disclaimer</a> · <a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/gallery.html">Gallery</a></footer></body></html>
