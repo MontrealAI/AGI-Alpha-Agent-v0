@@ -376,7 +376,8 @@ def main() -> None:
         curriculum.build(REPO_ROOT)
     finance = importlib.import_module("scripts.generate_finance" if __package__ else "generate_finance")
     finance.build(REPO_ROOT)
-    from scripts import generate_sovereign as sovereign
+    sovereign = importlib.import_module("scripts.generate_sovereign" if __package__ else "generate_sovereign")
+
     sovereign.build(REPO_ROOT)
     entries = collect_entries()
 

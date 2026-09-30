@@ -245,7 +245,9 @@ def finalize(folder: Path, evidence: Path) -> None:
     manifest["public_pages"] = public
     if sovereign:
         manifest["public_sovereign"] = sovereign
-        manifest["release_gates"].append("public Sovereign canonical/mirrored galleries, six exact signed fixture downloads and accessibility")
+        manifest["release_gates"].append(
+            "public Sovereign canonical/mirrored galleries, six exact signed fixture downloads and accessibility"
+        )
     if curriculum:
         manifest["public_curriculum"] = curriculum
         manifest["release_gates"].append(

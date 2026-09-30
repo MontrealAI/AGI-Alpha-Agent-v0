@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-a8a6c6ed2743c1be";
-const RELEASE = "1.21.0";
+const CACHE = "agialpha-gallery-229414367564bd2b";
+const RELEASE = "1.22.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -168,6 +168,7 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/solving_agi_governance/assets/script.js",
   "../../../alpha_factory_v1/demos/solving_agi_governance/assets/style.css",
   "../../../alpha_factory_v1/demos/solving_agi_governance/index.html",
+  "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/lab-preview.svg",
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/logs.json",
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/preview.svg",
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/script.js",
@@ -357,6 +358,7 @@ const ASSETS = [
   "../../../solving_agi_governance/assets/script.js",
   "../../../solving_agi_governance/assets/style.css",
   "../../../solving_agi_governance/index.html",
+  "../../../sovereign_agentic_agialpha_agent_v0/assets/lab-preview.svg",
   "../../../sovereign_agentic_agialpha_agent_v0/assets/logs.json",
   "../../../sovereign_agentic_agialpha_agent_v0/assets/preview.svg",
   "../../../sovereign_agentic_agialpha_agent_v0/assets/script.js",
