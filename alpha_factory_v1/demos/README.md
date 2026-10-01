@@ -74,7 +74,7 @@ you want a demo's normal persistent state, such as appended SQLite lineage, to c
 ## Choose an example
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.22.1: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.23.0: 26 entries; 17 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|

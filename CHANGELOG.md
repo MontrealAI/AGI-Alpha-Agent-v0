@@ -1,3 +1,12 @@
+## 1.23.0 — 2026-10-01
+
+- Synchronize all 26 catalog entries, current launch guides and gallery destinations.
+- Add `--new-run` to retain previous evidence; verify all 17 finite demos in both installed-wheel modes.
+- Preserve image rendering, Mermaid diagrams, original source and research artifacts.
+- Retain complete failure-aware validation reports and enforce catalog acceptance in PR CI.
+- Include Sovereign session cleanup and prevent obsolete release runs from blocking publication.
+- See [release notes](docs/agent/RELEASE_NOTES_1.23.0.md) for upgrade steps and qualification boundaries.
+
 ## 1.13.1 — 2026-09-28
 
 ## 1.14.0 — Governance Workbench

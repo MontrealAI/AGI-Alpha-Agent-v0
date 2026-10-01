@@ -15,6 +15,7 @@ import subprocess
 import sys
 import tempfile
 import tomllib
+from typing import cast
 import zipfile
 from urllib.parse import urlsplit
 
@@ -37,6 +38,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/CAPABILITIES.md",
         "docs/agent/VALIDATION.md",
         "docs/agent/DEMO_VALIDATION.md",
+        "docs/agent/DEMO_AUDIT_2026-10-01.md",
         "docs/agent/PAGES_GUIDE.md",
         "docs/agent/WHITEPAPER_IMPLEMENTATION.md",
         "docs/agent/INSIGHT_ATLAS.md",
@@ -175,7 +177,8 @@ def main() -> None:
             raise ValueError("Full browser distribution is incomplete")
         for name, expected in model_manifest["files"].items():
             with browser_archive.open("assets/local-llm/models/gpt2/" + name) as model_file:
-                if hashlib.file_digest(model_file, "sha256").hexdigest() != expected:
+                # Read-mode ZipFile.open returns ZipExtFile, including readinto.
+                if hashlib.file_digest(cast(zipfile.ZipExtFile, model_file), "sha256").hexdigest() != expected:
                     raise ValueError(f"Packaged browser model checksum mismatch: {name}")
     shutil.copy2(browser_source, browser_target)
     site_archive = args.evidence / "pages-distribution" / "site.tar.gz"

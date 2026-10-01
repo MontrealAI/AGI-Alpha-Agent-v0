@@ -11,7 +11,7 @@ review, and binds the next stage to the exact approved result.
 · [Preserved original source](archive/manifest.json)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.22.1
+## Current runnable path — 1.23.0
 
 **Mode:** Signed, review-gated workflow. Actual native planning with durable local operator control.
 
