@@ -6,6 +6,9 @@ The shared demo guides had fallen behind the runnable catalog: they reported con
 counts and described several maintained labs as earlier toy or deployment examples. This release aligns
 the entry points across all 26 entries and adds a read-only prerequisite report for the whole installation.
 
+Follow [Install and run](START_HERE.md) to install matching, checksum-verified release assets into a new
+environment. Activate it, then inspect the catalog:
+
 ```bash
 python -m alpha_factory_v1.demos check --all
 python -m alpha_factory_v1.demos check --all --json
