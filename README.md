@@ -1,3 +1,5 @@
+> **1.22.1 — Sovereign session cleanup.** Locking clears imported drafts and review notes, retains saved mandates, and isolates delayed requests from the next session. [Release notes](docs/agent/RELEASE_NOTES_1.22.1.md).
+
 > **1.22.0 — Sovereign Workbench.** Run a bounded portfolio, schedule and evidence workflow with explicit reviews, a private signed journal and verifiable exports. [Start here](alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.22.0.md). Original source, presentation and diagrams remain preserved.
 
 > **1.21.0 — Finance Alpha research terminal.** Audit cash, costs, next-open fills and risk decisions in a local, reproducible paper experiment. [Start here](alpha_factory_v1/demos/finance_alpha/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.21.0.md). Original diagrams and research remain preserved.

@@ -43,7 +43,7 @@
     $('pause').disabled = !unlocked; $('pause').textContent = control === 'paused' ? 'Resume execution' : 'Pause execution';
     $('lock').disabled = !unlocked; $('copy-key').disabled = !publicKey;
     $('download').hidden = !active || active.state !== 'completed'; $('download').disabled = busy;
-    for (const id of ['case','budget','risk','mandate-file','mandate-json','apply-json','history']) $(id).disabled = busy || (!local && id !== 'case') || (local && !token);
+    for (const id of ['case','budget','risk','mandate-file','mandate-json','apply-json','download-input','history']) $(id).disabled = busy || (!local && id !== 'case') || (local && !token);
     $('unlock').hidden = !local || Boolean(token);
   }
   function table(headers, rows) {
@@ -102,6 +102,9 @@
     });
     $('empty').hidden = Boolean(result); $('result').hidden = !result;
     $('stage-visual').replaceChildren(); $('stage-detail').replaceChildren(); $('trace').replaceChildren();
+    if (!result) {
+      for (const id of ['metric-value','value-unit','metric-cost','budget-remaining','metric-time','metric-tardiness','stage-kicker','stage-title','stage-status','raw-result']) $(id).textContent='';
+    }
     if (result) {
       const spec = active.mandate, portfolio = jobs.portfolio?.result, schedule = jobs.schedule?.result;
       $('metric-value').textContent = portfolio ? fmt(portfolio.value) : '—'; $('value-unit').textContent = spec.value_unit;
@@ -150,6 +153,19 @@
     $('cost-unit').textContent=draft.cost_unit; $('provenance').textContent=draft.provenance;
     $('mandate-json').value=JSON.stringify(draft,null,2); controls();
   }
+  function lockWorkspace() {
+    epoch++; token=''; busy=false; active=null; saved=[]; publicKey=''; control='ready'; view='portfolio';
+    $('access-code').value=''; $('review-note').value=''; $('review-check').checked=false;
+    $('mandate-file').value=''; $('advanced').open=false; $('case').value='balanced';
+    draft=null; creationId=null;
+    for (const id of ['budget','risk','mandate-json']) $(id).value='';
+    for (const id of ['cost-unit','provenance']) $(id).textContent='';
+    if(samples.balanced)applyDraft(samples.balanced);
+    $('history').replaceChildren(node('option','Unlock to restore saved mandates'));
+    $('mode-note').textContent='Private local workspace. Unlock with the access code printed in your terminal.';
+    $('status').textContent='Tab locked. Unsaved inputs and review notes were cleared; the local journal is retained.';
+    clearError(); render(); $('access-code').focus();
+  }
   async function refresh() {
     const generation=epoch; const response=await request('/api/status'); if(generation!==epoch)return;
     const data=response.data; saved=data.workflows; publicKey=data.public_key; control=data.control;
@@ -180,11 +196,13 @@
     view='portfolio'; render(); $('status').textContent='Recorded native execution · synthetic assumptions · all approvals are automated fixtures';
   }
   $('unlock-form').addEventListener('submit',event=>{event.preventDefault();action(async()=>{
+    const generation=epoch;
     token=$('access-code').value.trim(); $('access-code').value='';
-    try{await refresh();$('mode-note').textContent='Local workspace unlocked. Changes persist in your signed journal; new work always stops at review.';}
-    catch(exc){token='';throw exc;}
+    $('status').textContent='Checking local access…'; controls();
+    try{await refresh();if(generation===epoch)$('mode-note').textContent='Local workspace unlocked. Changes persist in your signed journal; new work always stops at review.';}
+    catch(exc){if(generation===epoch)token='';throw exc;}
   });});
-  $('lock').addEventListener('click',()=>{epoch++;token='';busy=false;active=null;saved=[];publicKey='';$('history').replaceChildren(node('option','Unlock to restore saved mandates'));$('status').textContent='Tab locked. The local journal is retained.';clearError();render();});
+  $('lock').addEventListener('click',lockWorkspace);
   $('case').addEventListener('change',()=>{applyDraft(samples[$('case').value]);if(!local)recorded($('case').value);});
   for(const id of ['budget','risk'])$(id).addEventListener('input',()=>{creationId=null;});
   $('mandate-form').addEventListener('submit',event=>{event.preventDefault();action(async()=>{
@@ -204,7 +222,7 @@
   $('refresh').addEventListener('click',()=>action(refresh));
   $('history').addEventListener('change',()=>{const item=saved.find(value=>value.id===$('history').value);if(item)applySnapshot(item);});
   $('pause').addEventListener('click',async()=>{const generation=epoch;try{clearError();await request('/api/control','POST',{state:control==='paused'?'ready':'paused'});if(generation===epoch)await refresh();}catch(exc){if(generation===epoch)error(exc.message);}});
-  $('copy-key').addEventListener('click',()=>action(async()=>{await navigator.clipboard.writeText(publicKey);$('status').textContent='Public key copied. Obtain it through a trusted channel when verifying another operator’s packet.';}));
+  $('copy-key').addEventListener('click',()=>action(async()=>{const generation=epoch;await navigator.clipboard.writeText(publicKey);if(generation===epoch)$('status').textContent='Public key copied. Obtain it through a trusted channel when verifying another operator’s packet.';}));
   $('download').addEventListener('click',()=>action(async()=>{
     const generation=epoch;
     const text=local?(await request(`/api/workflows/${active.id}/export`)).text:recordings[$('case').value].packet_json;
@@ -214,7 +232,7 @@
   $('download-input').addEventListener('click',()=>{if(draft)download(JSON.stringify({...draft,budget:Number($('budget').value),max_risk:Number($('risk').value)},null,2),'sovereign-mandate.json');});
   async function importRaw(raw) {const generation=epoch;const response=await request('/api/validate','POST',raw,true);if(generation!==epoch)return;applyDraft(response.data);$('status').textContent='Mandate validated. Create it to start a new, independent review workflow.';}
   $('apply-json').addEventListener('click',()=>action(()=>importRaw($('mandate-json').value)));
-  $('mandate-file').addEventListener('change',()=>action(async()=>{const file=$('mandate-file').files[0];if(!file)return;if(file.size>262144)throw new Error('Mandate file exceeds 256 KiB.');await importRaw(await file.text());}));
+  $('mandate-file').addEventListener('change',()=>action(async()=>{const generation=epoch;const file=$('mandate-file').files[0];if(!file)return;if(file.size>262144)throw new Error('Mandate file exceeds 256 KiB.');const raw=await file.text();if(generation===epoch)await importRaw(raw);}));
   document.querySelectorAll('[data-stage]').forEach(button=>button.addEventListener('click',()=>{view=button.dataset.stage;$('review-check').checked=false;render();}));
   async function init() {
     samples=await (await fetch('examples.json')).json();applyDraft(samples.balanced);

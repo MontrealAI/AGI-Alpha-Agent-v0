@@ -11,7 +11,7 @@ review, and binds the next stage to the exact approved result.
 · [Preserved original source](archive/manifest.json)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.22.0
+## Current runnable path — 1.22.1
 
 **Mode:** Signed, review-gated workflow. Actual native planning with durable local operator control.
 
@@ -125,8 +125,12 @@ bytes when transporting packets: changing numeric serialization can invalidate a
 
 - **Ctrl+C** stops the server. Restart the same command and use **Saved mandates** to resume.
   Default state is `~/.local/share/agialpha-sovereign`; choose a separate directory with `--home`.
-- **Lock this tab** clears browser access and displayed state. The code is held only in tab memory,
-  never browser storage or URLs. Locking is not token rotation and does not stop a worker.
+- **Lock this tab** clears browser access, imported drafts, unsaved review notes and displayed results,
+  then returns to the public balanced example. Download an unfinished mandate before locking if you
+  want to keep it. Saved mandates remain in the signed journal and can be reopened after unlocking.
+  A pending unlock can also be canceled with **Lock this tab**; earlier responses and file reads cannot
+  alter the next session. The code is held only in tab memory, never browser storage or URLs.
+  Locking is not token rotation and does not stop a worker.
 - **Pause execution** persists across restarts and blocks new execution and review. Resume explicitly.
 - Failed work stays in the signed journal. Refresh, inspect it, then use **Recover retained work**
   and retry. A running mission can only be recovered after its worker lease expires. Rejection stops
