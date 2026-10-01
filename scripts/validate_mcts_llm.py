@@ -78,9 +78,13 @@ def validate(output: Path, url: str | None = None) -> None:
                         else route.abort()
                     ),
                 )
-                page.goto(url, wait_until="networkidle")
+                # Session state keeps a heartbeat connection open; readiness is the
+                # usable interface, not the absence of network activity.
+                page.goto(url, wait_until="domcontentloaded")
                 stop_button = page.get_by_role("button", name="Stop", exact=True)
                 start_button = page.get_by_role("button", name="Retrieve, train & compare", exact=True)
+                expect(start_button).to_be_enabled(timeout=30000)
+                page.get_by_text("Ready. A fresh model is trained for each run.", exact=False).wait_for(timeout=30000)
                 expect(stop_button).to_be_disabled()
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
@@ -167,6 +171,8 @@ def validate(output: Path, url: str | None = None) -> None:
                 except subprocess.TimeoutExpired:
                     child.kill()
                     child.wait()
+            log.seek(0)
+            (output / "server.log").write_text(log.read(), encoding="utf-8")
 
 
 def main() -> None:
