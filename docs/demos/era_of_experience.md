@@ -19,7 +19,7 @@ reward, policy decision and review gate can be reproduced from the exported scen
 
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.16.0
+## Current runnable path — 1.22.1
 
 **Mode: Offline learning lab.** Python 3.11–3.13; the supported lab uses only the standard library.
 No API key, model, Docker service, paid provider, package download or GPU is needed after obtaining the source.

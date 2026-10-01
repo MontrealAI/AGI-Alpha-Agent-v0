@@ -2,6 +2,9 @@
 
 # Demo validation and honest execution modes — 1.22.1
 
+See the [October 1 whole-catalog audit](DEMO_AUDIT_2026-10-01.md) for the latest catalog,
+navigation, preservation and failure-reporting checks and their exact limits.
+
 Start with the [demo walkthrough](DEMOS.md) for installation, prerequisite checks, browser experiences
 and the complete Ascension lifecycle. The release retains all 26 entries and tests the 17 finite offline
 commands from the actual wheel outside the repository. All six CSV samples and 11 Insight scenario
@@ -41,40 +44,55 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 
 ## Inventory
 
-| Directory | Current mode | Finite catalog gate |
-| --- | --- | --- |
-| [aiga_meta_evolution](../demos/aiga_meta_evolution.md) | Research training | Dedicated check or explicit prerequisites |
-| [alpha_agi_business_2_v1](../demos/alpha_agi_business_2_v1.md) | Local service | Dedicated check or explicit prerequisites |
-| [alpha_agi_business_3_v1](../demos/alpha_agi_business_3_v1.md) | Simulation | Dedicated check or explicit prerequisites |
-| [alpha_agi_business_v1](../demos/alpha_agi_business_v1.md) | Offline sample | Required |
-| [alpha_agi_insight_v0](../demos/alpha_agi_insight_v0.md) | Offline simulation | Required |
-| [alpha_agi_insight_v1](../demos/alpha_agi_insight_v1.md) | Browser + simulation | Required |
-| [alpha_agi_marketplace_v1](../demos/alpha_agi_marketplace_v1.md) | Local API client | Required |
-| [alpha_asi_world_model](../demos/alpha_asi_world_model.md) | Research training | Dedicated check or explicit prerequisites |
-| [alpha_super_planner_v1](../demos/alpha_super_planner_v1.md) | Interface illustration | Required |
-| [cross_industry_alpha_factory](../demos/cross_industry_alpha_factory.md) | Offline sample | Required |
-| [era_of_experience](../demos/era_of_experience.md) | Offline sample | Required |
-| [finance_alpha](../demos/finance_alpha.md) | Deployment example | Dedicated check or explicit prerequisites |
-| [gpt2_small_cli](../demos/gpt2_small_cli.md) | Local model | Dedicated check or explicit prerequisites |
-| [macro_sentinel](../demos/macro_sentinel.md) | Offline simulation | Required |
-| [meta_agentic_agi](../demos/meta_agentic_agi.md) | Synthetic evaluation | Required |
-| [meta_agentic_agi_v2](../demos/meta_agentic_agi_v2.md) | Synthetic evaluation | Required |
-| [meta_agentic_agi_v3](../demos/meta_agentic_agi_v3.md) | Identity curriculum | Required |
-| [meta_agentic_tree_search_v0](../demos/meta_agentic_tree_search_v0.md) | Offline simulation | Required |
-| [muzero_planning](../demos/muzero_planning.md) | Research planning | Dedicated check or explicit prerequisites |
-| [muzeromctsllmagent_v0](../demos/muzeromctsllmagent_v0.md) | Research training | MuZero Python matrix and real browser acceptance |
-| [omni_factory_demo](../demos/omni_factory_demo.md) | Offline simulation | Required |
-| [presentation](../demos/presentation.md) | Reference | Dedicated check or explicit prerequisites |
-| [self_healing_repo](../demos/self_healing_repo.md) | Bounded repair | Dedicated check or explicit prerequisites |
-| [solving_agi_governance](../demos/solving_agi_governance.md) | Offline simulation | Required |
-| [sovereign_agentic_agialpha_agent_v0](../demos/sovereign_agentic_agialpha_agent_v0.md) | Signed, review-gated workflow | Native Python matrix, restart/rejection/tamper checks, real Chromium reviews and exact signed gallery downloads |
-| [utils](../demos/utils.md) | Library | Dedicated check or explicit prerequisites |
+<!-- DEMO-INVENTORY:START -->
+**Catalog 1.22.1: 26 entries; 17 finite offline launch checks.**
+
+| Demo | Current mode | What it does | Finite catalog check |
+|---|---|---|---|
+| [AI-GA meta-evolution](../demos/aiga_meta_evolution.md) | Research training | Evolves small networks in a curriculum environment. | Separate acceptance / prerequisites |
+| [Business v2](../demos/alpha_agi_business_2_v1.md) | Local service | Runs planning, research and optional commentary agents in the legacy orchestrator. | Separate acceptance / prerequisites |
+| [Business 3 Enterprise Studio](../demos/alpha_agi_business_3_v1.md) | Reproducible planning | Select a constrained enterprise portfolio, stress the downside and export reviewable Ascension jobs. | Required |
+| [Business v1](../demos/alpha_agi_business_v1.md) | Offline sample | Ranks bundled business opportunities; service agents publish illustrative business events. | Required |
+| [Insight Discovery Workbench](../demos/alpha_agi_insight_v0.md) | Local evidence review | Screen cross-sector hypotheses, allocate review time and export input-bound verification jobs and plaintext Nova-Seed drafts. | Required |
+| [Insight v1](../demos/alpha_agi_insight_v1.md) | Browser + simulation | Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion. | Required |
+| [Marketplace](../demos/alpha_agi_marketplace_v1.md) | Local API client | Validates a bundled job and can submit it to a configured legacy orchestrator. | Required |
+| [ASI world model](../demos/alpha_asi_world_model.md) | Research training | Explores generated grid worlds using a small learner and local API. | Separate acceptance / prerequisites |
+| [Super Planner](../demos/alpha_super_planner_v1.md) | Interface illustration | Shows the stages and progress display of a planning interface. | Required |
+| [Cross-industry discovery](../demos/cross_industry_alpha_factory.md) | Offline sample | Selects reproducible examples from the bundled opportunity catalog. | Required |
+| [Era of Experience · Learning Lab](../demos/era_of_experience.md) | Offline learning lab | Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence. | Required |
+| [Finance Alpha Research Terminal](../demos/finance_alpha.md) | Reproducible paper research | Inspect next-open fills, cash, costs and risk decisions; compare strategies and replay every reported result. | Required |
+| [GPT-2 CLI](../demos/gpt2_small_cli.md) | Local model | Generates text with the actual GPT-2 124M model. | Separate acceptance / prerequisites |
+| [Macro Sentinel](../demos/macro_sentinel.md) | Offline simulation | Computes Monte Carlo risk metrics from bundled macro samples. | Required |
+| [Meta-Agentic v1](../demos/meta_agentic_agi.md) | Synthetic evaluation | Runs provider-driven code proposals, synthetic fitness and SQLite lineage. | Required |
+| [Meta-Agentic v2](../demos/meta_agentic_agi_v2.md) | Synthetic evaluation | Runs provider-driven code proposals, synthetic fitness and SQLite lineage. | Required |
+| [Meta-Agentic AGI v3 Curriculum Lab](../demos/meta_agentic_agi_v3.md) | Reproducible program induction | Generate tasks, evolve bounded solver configurations and review a frozen candidate on separate tasks. | Required |
+| [Meta-Agentic Tree Search · Search Lab](../demos/meta_agentic_tree_search_v0.md) | Offline search lab | Explore competing workflow rewrites, resource schedules, held-out review gates and an exhaustive benchmark. | Required |
+| [MuZero planning](../demos/muzero_planning.md) | Research planning | Train a small neural model and compare learned-model search with measured baselines. | Separate acceptance / prerequisites |
+| [MuZero × MCTS × LLM](../demos/muzeromctsllmagent_v0.md) | Research training | Retrieve cited evidence, compare optional local-model advice with trained search, and measure simulator outcomes. | Separate acceptance / prerequisites |
+| [OMNI smart city](../demos/omni_factory_demo.md) | Offline simulation | Runs bounded smart-city episodes with local accounting. | Required |
+| [Presentation assets](../demos/presentation.md) | Reference | Preserved slide deck and PDF for the original demo vision. | Separate acceptance / prerequisites |
+| [Repo-Healer](../demos/self_healing_repo.md) | Bounded repair | Provides repository-specific triage and isolated repair evaluation. | Separate acceptance / prerequisites |
+| [Governance Workbench](../demos/solving_agi_governance.md) | Offline governance review | Inspect nine proposal gates and export reproducible evidence and validator jobs. | Required |
+| [Sovereign Workbench](../demos/sovereign_agentic_agialpha_agent_v0.md) | Signed, review-gated workflow | Choose a feasible portfolio, schedule approved work, and produce an attributable evidence brief. | Required |
+| [Shared demo utilities](../demos/utils.md) | Library | Shared notices and isolated demo code evaluation helpers. | Separate acceptance / prerequisites |
+<!-- DEMO-INVENTORY:END -->
 
 ## Reproduce
+
+The catalog validator records every finite command, including blocked prerequisites, nonzero exits
+and timeouts, then exits nonzero if any required command did not pass. Its JSON report survives
+individual command failures. The nine entries requiring separate acceptance are listed explicitly;
+inventory coverage is not evidence that those integrations ran. Inventory-only checks set
+`smoke_requested` to false and contain no command results.
+
+When editing catalog descriptions, run `python -m scripts.sync_demo_catalog_docs` to refresh both
+inventory tables and versioned current-launch headings. Validation rejects stale tables or launch
+versions. Historical headings, code examples, research narratives, diagrams and media are retained.
 
 From a source checkout, install the documented development environment, then:
 
 ```sh
+python -m scripts.sync_demo_catalog_docs --check
 python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
 python -m scripts.run_local_tests tests/test_demo_distribution.py -q
 node --test tests/browser/portal_engine.test.mjs

@@ -2,7 +2,7 @@
 
 # Demos — choose a path, run it, inspect the evidence
 
-**Version 1.18.0.** The canonical directory is
+For the current version and execution modes, see the [validated catalog](DEMO_VALIDATION.md). The canonical directory is
 [`alpha_factory_v1/demos`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos).
 All 26 original entries, their research narratives, flowcharts and media remain available.
 Start in the browser for an interactive tour, or run a finite local example below.
@@ -14,6 +14,12 @@ computed results and modeled assumptions. Export work you want to retain.
 
 | Your question | Open | What to inspect |
 |---|---|---|
+| How do I turn a portfolio into approved work and signed evidence? | [Sovereign Workbench](../sovereign_agentic_agialpha_agent_v0/index.html) | Portfolio, schedule, source-bound brief, local reviews and signed downloads |
+| Can I replay every fill, fee and risk decision? | [Finance Alpha](../finance_alpha/index.html) | Next-open execution, cash ledger, strategy comparisons and paper-research exports |
+| How does a model learn to plan? | [MuZero Planning Lab](../muzero_planning/index.html) | Local CPU training, search visits, predicted values and measured baselines |
+| How can retrieved evidence and optional model advice inform search? | [Evidence & Planning Lab](../muzeromctsllmagent_v0/index.html) | Cited evidence, trained search and actual simulator outcomes; local installation required |
+| Does experience improve decisions while respecting review gates? | [Experience Lab](../era_of_experience/index.html) | Training, held-out evaluation, retention checks and an unapproved candidate |
+| Which cross-sector claims deserve limited review time? | [Discovery Workbench](../alpha_agi_insight_v0/index.html) | Source-bound hypotheses, review capacity, verification jobs and Nova-Seed drafts |
 | Can a meta-agent teach a solver without leaking evaluation answers? | [Curriculum Lab](../meta_agentic_agi_v3/index.html) | Adaptive tasks, hypothesis search, lineage, independent gates and verified exports |
 | Which workflow design deserves independent review? | [MATS Search Lab](../meta_agentic_tree_search_v0/index.html) | Branching search, rollouts, oracle gap, held-out schedules and five gates |
 | Should a governance proposal advance to independent review? | [Governance Workbench](../solving_agi_governance/index.html) | Nine gates, adversarial cases, exact dossier and verification jobs |
@@ -62,6 +68,16 @@ The command prints the execution mode, expected result, command and output direc
 prints nine gate decisions and saves five evidence files, including unsubmitted validator jobs.
 See the [governance guide](GOVERNANCE.md) for replay and model assumptions. Try `macro_sentinel` for risk calculations over bundled macro samples, or
 `era_of_experience` for a reproducible learning experiment and independent review gates. Replace the name in `show`, `check` and `run`.
+
+To start a separate experiment while keeping existing results, add `--new-run`:
+
+```sh
+python -m alpha_factory_v1.demos run finance_alpha --new-run
+```
+
+Each invocation gets its own `run-...` folder beneath the normal output directory (or your chosen
+`--output-dir`). The terminal prints its exact location. Keep the default without `--new-run`
+when continuing a demo's persistent history is intentional.
 
 For bounded workflow design search, run `meta_agentic_tree_search_v0` or follow the [MATS guide](MATS.md).
 

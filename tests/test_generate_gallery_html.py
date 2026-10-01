@@ -1,9 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for generate_gallery_html.py."""
 from pathlib import Path
+import pytest
 
 from scripts import generate_demo_docs as gdd
 from scripts import generate_gallery_html as ggh
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["solving_agi_governance", "muzero_planning", "muzeromctsllmagent_v0", "alpha_agi_insight_v1"],
+)
+def test_maintained_demo_card_opens_its_own_experience(name):
+    _, preview, link, summary = ggh.parse_page(ggh.REPO_ROOT / "docs/demos" / f"{name}.md")
+    assert link == f"{name}/"
+    assert not preview.startswith("assets/studio/")
+    assert summary
 
 
 def test_release_updates_local_module_worker_and_data_urls(tmp_path):
