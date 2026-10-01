@@ -79,7 +79,7 @@ def run(show_disclaimer: bool = True) -> None:
         from .core.runtime.cli import main
 
         raise SystemExit(main(sys.argv[2:]))
-    if len(sys.argv) > 1 and sys.argv[1] == "demos":
+    if len(sys.argv) > 1 and sys.argv[1] in {"demo", "demos"}:
         from .demos.catalog import main as demos_main
 
         raise SystemExit(demos_main(sys.argv[2:]))

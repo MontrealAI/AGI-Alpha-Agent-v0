@@ -1,3 +1,10 @@
+## 1.23.1 — 2026-10-01
+
+- Complete catalog-wide read-only preflight with human-readable and JSON reports.
+- Fix stale walkthrough counts and synchronize every current demo heading style.
+- Retain installed-wheel, repeat-run, failure-reporting and visual preservation checks.
+- See [release notes](agent/RELEASE_NOTES_1.23.1.md).
+
 ## 1.23.0 — 2026-10-01
 
 - Synchronize all 26 catalog entries, current launch guides and gallery destinations.

@@ -35,6 +35,7 @@ For a source checkout, use an activated virtual environment:
 python -m pip install --require-hashes -r requirements-agent.lock
 python -m pip install --no-deps -e .
 python -m alpha_factory_v1.demos list
+python -m alpha_factory_v1.demos check --all
 python -m alpha_factory_v1.demos show solving_agi_governance
 python -m alpha_factory_v1.demos check solving_agi_governance
 python -m alpha_factory_v1.demos run solving_agi_governance
@@ -44,7 +45,9 @@ Run these setup commands from the repository root. Optional training, UI and mod
 packages are listed per demo; the launcher never installs packages automatically.
 `show` does not start a service or contact a provider. `check NAME --json` reports
 declared module/file presence without importing optional backends, downloading or writing state;
-it does not verify model weights, service configuration or provider access. `run` checks those
+it does not verify model weights, service configuration or provider access.
+Use `check --all` (or `check --all --json`) to inspect the whole catalog at once.
+Missing prerequisites return exit code 2; the three guide-only entries are listed separately. `run` checks those
 prerequisites and prints its mode,
 command, expected result and output directory before executing it. Finite examples
 exit by themselves. Stop services with **Ctrl+C**.
@@ -74,7 +77,7 @@ you want a demo's normal persistent state, such as appended SQLite lineage, to c
 ## Choose an example
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.23.0: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.23.1: 26 entries; 17 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|

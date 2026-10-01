@@ -234,3 +234,39 @@ def test_archived_originals_and_credential_redaction():
         raw = (archive / entry["archive"]).read_bytes()
         assert hashlib.sha256(raw).hexdigest() == entry["archive_sha256"]
     assert sum(r["credential_redactions"] for r in manifest["files"]) == 3
+
+
+def test_ui_run_and_stop_controls_follow_actual_execution(monkeypatch):
+    gr = pytest.importorskip("gradio")
+    from alpha_factory_v1.demos.muzeromctsllmagent_v0 import ui
+
+    def fake_run(*args, **kwargs):
+        yield {"status": "training", "history": [{"episode": 1, "reward": 0.3}], "completed": 1, "total": 4}
+        yield {
+            "status": "complete",
+            "search_action": 1,
+            "agreement": None,
+            "evidence": [],
+            "advice": None,
+            "counterfactuals": [],
+            "experiment": {"history": [], "search_after": [], "evaluation": {"trained_search": [1.0]}},
+        }
+
+    monkeypatch.setattr(ui, "run", fake_run)
+    demo = ui.build(SimpleNamespace(question="reward?", episodes=4, simulations=4, seed=42, model=""))
+    stop_button = next(
+        block for block in demo.blocks.values() if isinstance(block, gr.Button) and block.value == "Stop"
+    )
+    assert stop_button.interactive is False
+    execute = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "execute")
+    events = list(execute("reward?", 4, 4, 42, ""))
+    for update in events[:-1]:
+        assert update[8]["interactive"] is False
+        assert update[9]["interactive"] is False and update[10]["interactive"] is True
+    assert events[-1][8]["interactive"] is True
+    assert events[-1][9]["interactive"] is True and events[-1][10]["interactive"] is False
+    stop = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "request_stop")
+    stopped = stop()
+    assert stopped[0].startswith("Stop requested.")
+    assert stopped[1]["interactive"] is True
+    assert stopped[2]["interactive"] is False and stopped[3]["interactive"] is False and stopped[4] == ""

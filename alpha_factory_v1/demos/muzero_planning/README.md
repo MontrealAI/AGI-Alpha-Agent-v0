@@ -9,7 +9,7 @@ and compare search with random actions and the network's own policy. Everything 
 No API key, hosted model, Ollama service or public tunnel is required.
 
 <!-- CURRENT-DEMO:START -->
-## Start here
+## Start here — 1.23.1
 
 **Mode:** Bounded MuZero-style research experiment. Demo revision **2.0.0**.
 

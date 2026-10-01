@@ -13,6 +13,26 @@ START = "<!-- DEMO-INVENTORY:START -->"
 END = "<!-- DEMO-INVENTORY:END -->"
 
 
+def render_counts(catalog: dict[str, object]) -> str:
+    """Keep the walkthrough's execution counts tied to the actual catalog."""
+    entries = catalog["entries"]
+    assert isinstance(entries, list)
+    finite = sum(bool(entry["smoke"]) for entry in entries)
+    commands = sum(bool(entry["command"]) for entry in entries)
+    return (
+        f"The catalog contains **{len(entries)} entries: {commands} launch commands "
+        f"and {len(entries) - commands} guide-only entries**.\n"
+        f"The {finite} finite catalog examples use explicit offline defaults. "
+        "Their child processes disable configured\n"
+        "OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses its bundled\n"
+        "synthetic workflow model and reproducible private random stream.\n"
+        f"Your shell credentials are unchanged. The release tests run all {finite} from the wheel with Python network\n"
+        "calls blocked, including Python 3.11/3.12 environments with the full backend dependencies and inherited\n"
+        "database settings. This verifies those launch contracts; the launcher is not a network or code sandbox.\n"
+        "Advanced standalone commands and optional services retain their separately documented behavior."
+    )
+
+
 def render_inventory(root: Path, *, validation: bool = False) -> str:
     """Render execution modes, descriptions and finite-gate coverage from one source."""
     catalog = json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text(encoding="utf-8"))
@@ -53,18 +73,36 @@ def synchronize(root: Path = ROOT, *, check: bool = False) -> list[str]:
         if updated != original:
             updates[path] = updated
     catalog = json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text(encoding="utf-8"))
+    walkthrough = root / "docs/agent/DEMOS.md"
+    if walkthrough.is_file():
+        original = walkthrough.read_text(encoding="utf-8")
+        start, end = "<!-- CATALOG-COUNTS:START -->", "<!-- CATALOG-COUNTS:END -->"
+        if original.count(start) != 1 or original.count(end) != 1 or original.index(start) > original.index(end):
+            raise ValueError("Expected one ordered walkthrough count marker pair")
+        before, _, rest = original.partition(start)
+        _, _, after = rest.partition(end)
+        updated = before + start + "\n" + render_counts(catalog) + "\n" + end + after
+        if updated != original:
+            updates[walkthrough] = updated
     for entry in catalog["entries"]:
         path = root / "alpha_factory_v1/demos" / entry["id"] / "README.md"
         if not path.is_file():
             continue
         original = path.read_text(encoding="utf-8")
+        start, end = "<!-- CURRENT-DEMO:START -->", "<!-- CURRENT-DEMO:END -->"
+        if original.count(start) != 1 or original.count(end) != 1 or original.index(start) > original.index(end):
+            raise ValueError(f"Expected one ordered current guide marker pair: {entry['id']}")
 
         def update_heading(match: re.Match[str]) -> str:
-            section = re.sub(
-                r"\A(\s*## (?:Current runnable path|Start locally) — )\d+\.\d+\.\d+",
+            section, headings = re.subn(
+                r"\A(\s*## (?:Current runnable path|Start locally|Start in two minutes|"
+                r"Start here|Start in three steps) — )"
+                r"\d+\.\d+\.\d+",
                 lambda heading: heading[1] + catalog["release"],
                 match[2],
             )
+            if headings != 1:
+                raise ValueError(f"Expected one current launch heading: {entry['id']}")
             return match[1] + section + match[3]
 
         updated = re.sub(

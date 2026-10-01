@@ -192,3 +192,62 @@ def test_new_run_missing_prerequisites_does_not_create_directories(tmp_path, mon
     output = tmp_path / "unused"
     assert catalog.main(["run", "alpha_super_planner_v1", "--output-dir", str(output), "--new-run"]) == 2
     assert not output.exists()
+
+
+def test_check_all_reports_every_entry_without_launch_download_or_state(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "private-parent-key")
+    monkeypatch.setattr(catalog.subprocess, "run", lambda *a, **k: pytest.fail("unexpected launch"))
+    monkeypatch.setattr(catalog.importlib.util, "find_spec", lambda name: None if name == "torch" else object())
+    before = set(sys.modules)
+    assert catalog.main(["check", "--all", "--json"]) == 2
+    output = capsys.readouterr().out
+    report = json.loads(output)
+    assert report["total"] == 26 and report["runnable"] == 23
+    assert report["guide_only"] == 3 and report["missing"] == 5
+    assert report["ready"] == 18 and report["passed"] is False
+    assert {item["demo"] for item in report["entries"]} == {item["id"] for item in catalog.entries()}
+    assert "private-parent-key" not in output and os.environ["OPENAI_API_KEY"] == "private-parent-key"
+    assert set(sys.modules) == before and list(tmp_path.iterdir()) == []
+
+
+def test_check_all_does_not_count_guides_as_failed_commands(monkeypatch, capsys):
+    monkeypatch.setattr(catalog.importlib.util, "find_spec", lambda name: object())
+    assert catalog.main(["check", "--all"]) == 0
+    output = capsys.readouterr().out
+    assert "23/23 catalog commands ready" in output
+    assert "3 guide-only entries" in output
+    assert "no demo, model, provider or service has been executed" in output
+    for name in ("presentation", "self_healing_repo", "utils"):
+        assert any(line.startswith(name) and "GUIDE ONLY" in line for line in output.splitlines())
+
+
+def test_check_all_reports_incomplete_installation(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(catalog, "DEMOS_ROOT", tmp_path)
+    monkeypatch.setattr(catalog.importlib.util, "find_spec", lambda name: object())
+    assert catalog.main(["check", "--all", "--json"]) == 2
+    report = json.loads(capsys.readouterr().out)
+    macro = next(item for item in report["entries"] if item["demo"] == "macro_sentinel")
+    assert len(macro["missing_assets"]) == 4 and macro["passed"] is False
+
+
+@pytest.mark.parametrize("arguments", [["check"], ["check", "--all", "macro_sentinel"]])
+def test_check_requires_exactly_one_selection(arguments):
+    with pytest.raises(SystemExit) as stopped:
+        catalog.main(arguments)
+    assert stopped.value.code == 2
+
+
+@pytest.mark.parametrize("command", ["demo", "demos"])
+@pytest.mark.parametrize("action", ["show", "info"])
+def test_public_launcher_accepts_documented_inspection_aliases(tmp_path, monkeypatch, capsys, command, action):
+    from alpha_factory_v1 import run
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["alpha-factory", command, action, "finance_alpha"])
+    monkeypatch.setattr(catalog.subprocess, "run", lambda *a, **k: pytest.fail("inspection launched a process"))
+    with pytest.raises(SystemExit) as stopped:
+        run.run()
+    assert stopped.value.code == 0
+    assert "Reproducible paper research" in capsys.readouterr().out
+    assert list(tmp_path.iterdir()) == []

@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.0
+## Current runnable path — 1.23.1
 
 **Mode:** Interface illustration. Shows the stages and progress display of a planning interface.
 
