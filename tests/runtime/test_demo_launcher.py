@@ -236,3 +236,18 @@ def test_check_requires_exactly_one_selection(arguments):
     with pytest.raises(SystemExit) as stopped:
         catalog.main(arguments)
     assert stopped.value.code == 2
+
+
+@pytest.mark.parametrize("command", ["demo", "demos"])
+@pytest.mark.parametrize("action", ["show", "info"])
+def test_public_launcher_accepts_documented_inspection_aliases(tmp_path, monkeypatch, capsys, command, action):
+    from alpha_factory_v1 import run
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["alpha-factory", command, action, "finance_alpha"])
+    monkeypatch.setattr(catalog.subprocess, "run", lambda *a, **k: pytest.fail("inspection launched a process"))
+    with pytest.raises(SystemExit) as stopped:
+        run.run()
+    assert stopped.value.code == 0
+    assert "Reproducible paper research" in capsys.readouterr().out
+    assert list(tmp_path.iterdir()) == []

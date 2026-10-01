@@ -77,7 +77,7 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     assert not attempted.exists(), attempted.read_text()
     entries = json.loads((installed / "alpha_factory_v1/demos/catalog.json").read_text())["entries"]
     checked = subprocess.run(
-        [sys.executable, "-P", "-m", "alpha_factory_v1.demos", "check", "--all", "--json"],
+        [sys.executable, "-P", "-m", "alpha_factory_v1", "demo", "check", "--all", "--json"],
         cwd=tmp_path,
         env=environment,
         capture_output=True,
@@ -90,6 +90,18 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     assert readiness["runnable"] == sum(bool(entry["command"]) for entry in entries)
     assert readiness["passed"] is (checked.returncode == 0)
     assert not any(entry["missing_assets"] for entry in readiness["entries"])
+    assert not (tmp_path / "demo-runs").exists()
+    assert not attempted.exists(), attempted.read_text()
+    inspected = subprocess.run(
+        [sys.executable, "-P", "-m", "alpha_factory_v1", "demo", "info", "finance_alpha"],
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert inspected.returncode == 0, inspected.stderr
+    assert "Reproducible paper research" in inspected.stdout
     assert not (tmp_path / "demo-runs").exists()
     assert not attempted.exists(), attempted.read_text()
     finite = [entry for entry in entries if entry["smoke"]]

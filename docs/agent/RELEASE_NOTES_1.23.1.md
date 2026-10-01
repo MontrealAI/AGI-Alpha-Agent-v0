@@ -24,6 +24,8 @@ require the separate checks described in each guide.
 
 ## Corrections
 
+- Accept the documented `alpha-factory demo` commands and `info` alias. The existing `demos`
+  and `show` forms remain supported; inspecting a command never starts the orchestrator.
 - Merge the remaining catalog-wide prerequisite report and installed-wheel acceptance into the
   published launcher, preserving `--new-run`, output-directory import protection and failure reports.
 - Generate walkthrough counts from the catalog; remove stale references to 15 and 16 finite examples.

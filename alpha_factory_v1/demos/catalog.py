@@ -166,7 +166,7 @@ def main(argv: list[str] | None = None) -> int:
         ("check", "Check declared prerequisites without imports, downloads or writes"),
         ("run", "Run the documented local command"),
     ):
-        child = sub.add_parser(name, help=help_text)
+        child = sub.add_parser(name, help=help_text, aliases=["info"] if name == "show" else [])
         if name == "check":
             selection = child.add_mutually_exclusive_group(required=True)
             selection.add_argument("demo", nargs="?", choices=[entry["id"] for entry in entries()])
@@ -180,6 +180,8 @@ def main(argv: list[str] | None = None) -> int:
                 "--new-run", action="store_true", help="Create a separate run directory and keep every previous result"
             )
     args = parser.parse_args(argv)
+    if args.action == "info":
+        args.action = "show"
     if args.action is None:
         parser.print_help()
         return 0
