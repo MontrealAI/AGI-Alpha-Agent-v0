@@ -1,3 +1,12 @@
+## 1.23.0 — 2026-10-01
+
+- Synchronize all 26 catalog entries, current launch guides and gallery destinations.
+- Add `--new-run` to retain previous evidence; verify all 17 finite demos in both installed-wheel modes.
+- Preserve image rendering, Mermaid diagrams, original source and research artifacts.
+- Retain complete failure-aware validation reports and enforce catalog acceptance in PR CI.
+- Include Sovereign session cleanup and prevent obsolete release runs from blocking publication.
+- See [release notes](agent/RELEASE_NOTES_1.23.0.md) for upgrade steps and qualification boundaries.
+
 [1.21.0 — Finance Alpha research terminal](agent/RELEASE_NOTES_1.21.0.md): next-open paper execution, auditable accounting, risk controls, CSV import, browser reports and exact replay; corrected legacy cash and P&L.
 
 [1.20.1 — Planning lab reliability](agent/RELEASE_NOTES_1.20.1.md): JSON downloads, clear failure recovery, strict input bounds, source provenance and corrected macOS setup.

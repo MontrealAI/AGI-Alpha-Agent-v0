@@ -7,7 +7,7 @@
 [Launch Demo](../meta_agentic_agi/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.22.1
+## Current runnable path — 1.23.0
 
 **Mode:** Synthetic evaluation. Runs provider-driven code proposals, synthetic fitness and SQLite lineage.
 

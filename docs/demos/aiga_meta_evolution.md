@@ -7,7 +7,7 @@
 [Launch Demo](../aiga_meta_evolution/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.22.1
+## Current runnable path — 1.23.0
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 
