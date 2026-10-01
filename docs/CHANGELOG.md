@@ -1,3 +1,19 @@
+## 1.23.1 — 2026-10-01
+
+- Complete catalog-wide read-only preflight with human-readable and JSON reports.
+- Fix stale walkthrough counts and synchronize every current demo heading style.
+- Retain installed-wheel, repeat-run, failure-reporting and visual preservation checks.
+- See [release notes](agent/RELEASE_NOTES_1.23.1.md).
+
+## 1.23.0 — 2026-10-01
+
+- Synchronize all 26 catalog entries, current launch guides and gallery destinations.
+- Add `--new-run` to retain previous evidence; verify all 17 finite demos in both installed-wheel modes.
+- Preserve image rendering, Mermaid diagrams, original source and research artifacts.
+- Retain complete failure-aware validation reports and enforce catalog acceptance in PR CI.
+- Include Sovereign session cleanup and prevent obsolete release runs from blocking publication.
+- See [release notes](agent/RELEASE_NOTES_1.23.0.md) for upgrade steps and qualification boundaries.
+
 [1.21.0 — Finance Alpha research terminal](agent/RELEASE_NOTES_1.21.0.md): next-open paper execution, auditable accounting, risk controls, CSV import, browser reports and exact replay; corrected legacy cash and P&L.
 
 [1.20.1 — Planning lab reliability](agent/RELEASE_NOTES_1.20.1.md): JSON downloads, clear failure recovery, strict input bounds, source provenance and corrected macOS setup.
@@ -7,14 +23,6 @@
 [1.19.0 — MuZero Planning Lab](agent/RELEASE_NOTES_1.19.0.md): actual recurrent learning, corrected reward-aware search, measured comparisons, safe checkpoints and verified local/browser/container paths.
 
 [1.18.0 — Curriculum Lab](agent/RELEASE_NOTES_1.18.0.md): independently solved tasks, adaptive curricula, complete lineage, review gates, reproducible evidence and repaired legacy execution/accounting boundaries.
-
-## 1.23.0 — Complete demo catalog readiness
-
-- Add `check --all` and machine-readable prerequisite reports for all 26 entries without imports, downloads or writes.
-- Align current launch guides, counts, modes and validation boundaries with the runnable catalog.
-- Prevent future drift with a read-only documentation gate, preserving historical research and diagrams.
-- Complete the browser walkthrough and retain all existing launch paths, flowcharts and media.
-- See [release notes](agent/RELEASE_NOTES_1.23.0.md).
 
 ## 1.22.1 — Sovereign session cleanup
 

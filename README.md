@@ -1,4 +1,4 @@
-> **1.23.0 — Complete demo catalog readiness.** Check prerequisites across every demo with `python -m alpha_factory_v1.demos check --all`. Current guides, execution modes and validation boundaries now stay synchronized. [Demo walkthrough](docs/agent/DEMOS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.0.md). Original flowcharts, research and media remain preserved.
+> **1.23.1 — Complete demo catalog and repeatable evidence.** Discover all 26 entries and retain each experiment with `alpha-factory demo run <demo> --new-run`. [Walkthrough](docs/agent/DEMOS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.1.md). All original demos and flowcharts remain.
 
 > **1.22.1 — Sovereign session cleanup.** Locking clears imported drafts and review notes, retains saved mandates, and isolates delayed requests from the next session. [Release notes](docs/agent/RELEASE_NOTES_1.22.1.md).
 

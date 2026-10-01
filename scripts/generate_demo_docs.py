@@ -74,6 +74,7 @@ def build_page(demo: Path) -> str:
     # Preserve commands, diagrams and prose. Rewrite Markdown link destinations
     # only, outside code fences; parentheses in Python and shell are not links.
     github_base = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/"
+    image_base = "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/main/"
     cleaned: list[str] = []
     fence: str | None = None
     removed_title = False
@@ -116,9 +117,10 @@ def build_page(demo: Path) -> str:
                 rel = target.relative_to(REPO_ROOT)
             except ValueError:
                 return match.group(0)
-            return match.group(1) + github_base + rel.as_posix() + (sep + anchor if sep else "") + ")"
+            base = image_base if match.group(1).startswith("![") else github_base
+            return match.group(1) + base + rel.as_posix() + (sep + anchor if sep else "") + ")"
 
-        cleaned.append(re.sub(r"(\]\()([^\s)]+)\)", rewrite, line))
+        cleaned.append(re.sub(r"((?:!\[[^\]\n]*)?\]\()([^\s)]+)\)", rewrite, line))
     readme_text = "\n".join(cleaned).lstrip("\n")
 
     content = [

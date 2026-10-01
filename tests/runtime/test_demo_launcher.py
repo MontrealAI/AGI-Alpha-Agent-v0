@@ -162,6 +162,38 @@ def test_check_does_not_import_native_training_backends(monkeypatch):
     assert set(sys.modules) == before
 
 
+@pytest.mark.parametrize("name", ["finance_alpha", "sovereign_agentic_agialpha_agent_v0"])
+def test_new_runs_preserve_existing_evidence_and_use_separate_directories(tmp_path, monkeypatch, name):
+    monkeypatch.setenv("NO_DISCLAIMER", "1")
+    output = tmp_path / "retained results"
+    args = ["run", name, "--output-dir", str(output)]
+    assert catalog.main(args) == 0
+    original = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    assert original
+    for _ in range(2):
+        assert catalog.main([*args, "--new-run"]) == 0
+    children = list(output.glob("run-*"))
+    assert len(children) == 2 and all(any(p.rglob("*.json")) for p in children)
+    assert all((output / path).read_bytes() == content for path, content in original.items())
+
+
+def test_new_run_does_not_import_parent_output_sitecustomize(tmp_path, monkeypatch, capfd):
+    (tmp_path / "sitecustomize.py").write_text('print("UNTRUSTED_OUTPUT_EXECUTED")\n')
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("PYTHONPATH", ".")
+    monkeypatch.setenv("NO_DISCLAIMER", "1")
+    assert catalog.main(["run", "finance_alpha", "--output-dir", str(tmp_path), "--new-run"]) == 0
+    stdout, stderr = capfd.readouterr()
+    assert "UNTRUSTED_OUTPUT_EXECUTED" not in stdout + stderr
+
+
+def test_new_run_missing_prerequisites_does_not_create_directories(tmp_path, monkeypatch):
+    monkeypatch.setattr(catalog.importlib.util, "find_spec", lambda name: None)
+    output = tmp_path / "unused"
+    assert catalog.main(["run", "alpha_super_planner_v1", "--output-dir", str(output), "--new-run"]) == 2
+    assert not output.exists()
+
+
 def test_check_all_reports_every_entry_without_launch_download_or_state(tmp_path, monkeypatch, capsys):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("OPENAI_API_KEY", "private-parent-key")

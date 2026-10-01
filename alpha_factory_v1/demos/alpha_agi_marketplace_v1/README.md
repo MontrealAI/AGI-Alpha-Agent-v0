@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.0
+## Current runnable path — 1.23.1
 
 **Mode:** Local API client. Validates a bundled job and can submit it to a configured legacy orchestrator.
 

@@ -15,7 +15,7 @@ review, and binds the next stage to the exact approved result.
 · [Preserved original source](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/archive/manifest.json)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.0
+## Current runnable path — 1.23.1
 
 **Mode:** Signed, review-gated workflow. Actual native planning with durable local operator control.
 

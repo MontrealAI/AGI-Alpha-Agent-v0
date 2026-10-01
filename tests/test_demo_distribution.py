@@ -115,3 +115,27 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
         assert result.returncode == 0, f"{entry['id']}: {result.stdout}\n{result.stderr}"
         assert "offline data missing" not in result.stdout
         assert not attempted.exists(), f"{entry['id']} attempted network access:\n{attempted.read_text()}"
+        output = tmp_path / "runs" / entry["id"]
+        retained = {path.relative_to(output): path.read_bytes() for path in output.rglob("*") if path.is_file()}
+        again = subprocess.run(
+            [
+                sys.executable,
+                "-P",
+                "-m",
+                "alpha_factory_v1.demos",
+                "run",
+                entry["id"],
+                "--output-dir",
+                str(output),
+                "--new-run",
+            ],
+            cwd=tmp_path,
+            env=environment,
+            capture_output=True,
+            text=True,
+            timeout=90,
+        )
+        assert again.returncode == 0, f"{entry['id']} new run: {again.stdout}\n{again.stderr}"
+        assert len(list(output.glob("run-*"))) == 1
+        assert all((output / path).read_bytes() == content for path, content in retained.items())
+        assert not attempted.exists(), f"{entry['id']} new run attempted network access:\n{attempted.read_text()}"

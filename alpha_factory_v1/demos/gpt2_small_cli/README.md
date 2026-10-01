@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.0
+## Current runnable path — 1.23.1
 
 **Mode:** Local model. Generates text with the actual GPT-2 124M model.
 

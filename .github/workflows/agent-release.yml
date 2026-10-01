@@ -9,7 +9,10 @@ permissions:
   contents: read
 concurrency:
   group: agent-release-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  # Superseded main commits cannot pass release_context. Cancel their whole run
+  # so a stalled Pages job cannot indefinitely hold the newest release in queue.
+  # The Pages job still serializes deployment, and all acceptance gates remain.
+  cancel-in-progress: true
 
 defaults:
   run:

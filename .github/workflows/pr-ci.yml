@@ -86,3 +86,19 @@ jobs:
             tests/test_config_utils.py \
             tests/test_eslint_install_guard.py \
             tests/test_ping_agent.py -q
+      - name: Verify every catalog entry and its finite launch contract
+        run: |
+          python -m scripts.sync_demo_catalog_docs --check
+          python -m scripts.run_local_tests \
+            tests/test_demo_inventory_docs.py tests/test_demo_validation_report.py \
+            tests/test_generate_demo_docs.py tests/test_generate_gallery_html.py \
+            tests/test_demo_catalog_regressions.py tests/runtime/test_demo_launcher.py \
+            tests/test_demo_quality.py -q
+          python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
+      - name: Retain catalog acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pr-demo-catalog
+          path: evidence/demo-catalog.json
+          if-no-files-found: warn
