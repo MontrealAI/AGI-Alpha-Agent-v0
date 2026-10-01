@@ -7,7 +7,7 @@
 [Launch Demo](../aiga_meta_evolution/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.14.0
+## Current runnable path — 1.22.1
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 
@@ -264,7 +264,7 @@ curl -X POST http://localhost:9000/v1/tasks \
 The optional ADK gateway integrates with the OpenAI Agents SDK bridge and
 underlying LLM providers as shown below.
 
-![Bridge overview](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/aiga_meta_evolution/bridge_overview.svg)
+![Bridge overview](https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/main/alpha_factory_v1/demos/aiga_meta_evolution/bridge_overview.svg)
 
 ## 🔐 API authentication
 

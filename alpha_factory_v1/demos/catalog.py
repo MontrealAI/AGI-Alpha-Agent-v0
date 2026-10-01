@@ -11,6 +11,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import sys
+import tempfile
 from typing import Any
 
 from alpha_factory_v1.utils.disclaimer import print_disclaimer
@@ -43,7 +44,7 @@ def command_for(entry: dict[str, Any], output: Path) -> list[str]:
     ]
 
 
-def environment_for(entry: dict[str, Any], output: Path) -> dict[str, str]:
+def environment_for(entry: dict[str, Any], output: Path, *, state_root: Path | None = None) -> dict[str, str]:
     """Resolve explicitly declared demo settings and keep output outside the source."""
     env = os.environ.copy()
     if entry.get("offline"):
@@ -60,8 +61,11 @@ def environment_for(entry: dict[str, Any], output: Path) -> dict[str, str]:
         )
     env.update({key: resolve_setting(value, entry, output) for key, value in entry["environment"].items()})
     paths = [str(REPO_ROOT)]
+    excluded = {output.resolve()}
+    if state_root is not None:
+        excluded.add(state_root.resolve())
     for path in env.get("PYTHONPATH", "").split(os.pathsep):
-        if path and (resolved := Path(path).resolve()) != output.resolve():
+        if path and (resolved := Path(path).resolve()) not in excluded:
             paths.append(str(resolved))
     env["PYTHONPATH"] = os.pathsep.join(dict.fromkeys(paths))
     env["PYTHONSAFEPATH"] = "1"
@@ -130,6 +134,10 @@ def main(argv: list[str] | None = None) -> int:
             child.add_argument("--json", action="store_true", help="Print machine-readable prerequisite results")
         else:
             child.add_argument("--output-dir", type=Path, help="Directory for this demo's local state")
+        if name == "run":
+            child.add_argument(
+                "--new-run", action="store_true", help="Create a separate run directory and keep every previous result"
+            )
     args = parser.parse_args(argv)
     if args.action is None:
         parser.print_help()
@@ -158,24 +166,33 @@ def main(argv: list[str] | None = None) -> int:
     if not command:
         print("This entry has no supported standalone CLI. Use its browser illustration and guide.")
         return 0 if args.action == "show" else 2
-    print(f"\nCommand: {shlex.join(command)}\nOutput directory: {output.resolve()}", flush=True)
-    if entry["environment"]:
-        print("Demo settings: " + ", ".join(entry["environment"]), flush=True)
-    if args.action == "show":
-        return 0
-    report = prerequisites_for(entry)
-    if not report["passed"]:
-        print_prerequisites(report)
-        return 2
-    print_disclaimer()
+    if args.action == "run":
+        report = prerequisites_for(entry)
+        if not report["passed"]:
+            print_prerequisites(report)
+            return 2
+        print_disclaimer()
     try:
-        output.mkdir(parents=True, exist_ok=True)
-        result = subprocess.run(command, cwd=output, env=environment_for(entry, output), check=False)
+        state_root = output
+        if args.action == "run":
+            output.mkdir(parents=True, exist_ok=True)
+            if args.new_run:
+                output = Path(tempfile.mkdtemp(prefix="run-", dir=output))
+                command = command_for(entry, output)
+        print(f"\nCommand: {shlex.join(command)}\nOutput directory: {output.resolve()}", flush=True)
+        if entry["environment"]:
+            print("Demo settings: " + ", ".join(entry["environment"]), flush=True)
+        if args.action == "show":
+            return 0
+        result = subprocess.run(
+            command, cwd=output, env=environment_for(entry, output, state_root=state_root), check=False
+        )
         if result.returncode:
             print(
                 f"Demo exited with status {result.returncode}. Output retained at {output.resolve()}.", file=sys.stderr
             )
             print(f"See {GALLERY}demos/{entry['id']}/ for this demo's setup and limits.", file=sys.stderr)
+            print("To start a separate experiment without replacing results, add --new-run.", file=sys.stderr)
         return result.returncode
     except KeyboardInterrupt:
         print("\nStopped. Local output is retained.", file=sys.stderr)

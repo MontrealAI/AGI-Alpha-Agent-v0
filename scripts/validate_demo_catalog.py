@@ -11,13 +11,19 @@ import sqlite3
 import subprocess
 import tempfile
 import time
+import sys
+from typing import Any
 
 from alpha_factory_v1.demos.catalog import REPO_ROOT, command_for, entries, environment_for, prerequisites_for
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from scripts.sync_demo_catalog_docs import synchronize
 
 
 def validate_inventory() -> list[str]:
     """Require one current guide and a valid launch module for every directory."""
+    stale = synchronize(REPO_ROOT, check=True)
+    if stale:
+        raise ValueError("Stale demo inventories; run python -m scripts.sync_demo_catalog_docs: " + ", ".join(stale))
     base = REPO_ROOT / "alpha_factory_v1" / "demos"
     actual = {p.name for p in base.iterdir() if p.is_dir() and not p.name.startswith((".", "__"))}
     catalog = entries()
@@ -55,68 +61,95 @@ def validate_inventory() -> list[str]:
     return sorted(actual)
 
 
-def smoke() -> list[dict[str, object]]:
-    """Run finite examples, including repeated lineage writes, with real processes."""
-    records: list[dict[str, object]] = []
+def smoke() -> list[dict[str, Any]]:
+    """Exercise every finite command and retain failures instead of losing the report."""
+    records: list[dict[str, Any]] = []
     for entry in entries():
         if not entry["smoke"]:
             continue
-        prerequisites = prerequisites_for(entry)
-        if not prerequisites["passed"]:
-            raise ValueError(f"Missing demo prerequisites: {prerequisites}")
         started = time.monotonic()
-        with tempfile.TemporaryDirectory(prefix="demo-catalog-") as temp:
-            output = Path(temp)
-            environment = environment_for(entry, output)
-            environment["NO_DISCLAIMER"] = "1"
-            command = command_for(entry, output)
-            count = 2 if entry["id"] in {"meta_agentic_agi", "meta_agentic_agi_v2"} else 1
-            results = [
-                subprocess.run(command, cwd=output, env=environment, capture_output=True, text=True, timeout=90)
-                for _ in range(count)
-            ]
-            for result in results:
-                if result.returncode or not result.stdout.strip() and not result.stderr.strip():
-                    raise RuntimeError(f"{entry['id']} failed: {result.stdout}\n{result.stderr}")
-            if count == 2:
-                with sqlite3.connect(output / "lineage.sqlite") as db:
-                    if db.execute("SELECT COUNT(*) FROM lineage").fetchone()[0] != 6:
-                        raise AssertionError("Repeated runs did not preserve all six lineage records")
-            if entry["id"] == "meta_agentic_agi_v3":
-                from alpha_factory_v1.demos.meta_agentic_agi_v3.curriculum_lab import read_json, verify
+        record: dict[str, Any] = {
+            "demo": entry["id"],
+            "mode": entry["mode"],
+            "runs": 0,
+            "exit_codes": [],
+            "stdout": "",
+            "stderr": "",
+            "status": "failed",
+        }
+        try:
+            prerequisites = prerequisites_for(entry)
+            record["prerequisites"] = prerequisites
+            if not prerequisites["passed"]:
+                record["status"] = "blocked"
+                record["error"] = "Declared modules or bundled files are missing"
+            else:
+                with tempfile.TemporaryDirectory(prefix="demo-catalog-") as temp:
+                    output = Path(temp)
+                    environment = environment_for(entry, output)
+                    environment["NO_DISCLAIMER"] = "1"
+                    command = command_for(entry, output)
+                    count = 2 if entry["id"] in {"meta_agentic_agi", "meta_agentic_agi_v2"} else 1
+                    for _ in range(count):
+                        record["runs"] += 1
+                        result = subprocess.run(
+                            command, cwd=output, env=environment, capture_output=True, text=True, timeout=90
+                        )
+                        record["exit_codes"].append(result.returncode)
+                        record["stdout"], record["stderr"] = result.stdout, result.stderr
+                        if result.returncode or not result.stdout.strip() and not result.stderr.strip():
+                            raise RuntimeError("Command failed or produced no observable output")
+                    if count == 2:
+                        with sqlite3.connect(output / "lineage.sqlite") as db:
+                            if db.execute("SELECT COUNT(*) FROM lineage").fetchone()[0] != 6:
+                                raise AssertionError("Repeated runs did not preserve all six lineage records")
+                    if entry["id"] == "meta_agentic_agi_v3":
+                        from alpha_factory_v1.demos.meta_agentic_agi_v3.curriculum_lab import read_json, verify
 
-                runs = list(output.glob("*/run.json"))
-                assert len(runs) == 1
-                report = verify(read_json(runs[0]))
-                assert len(report["result"]["history"]) == 10
-                assert report["result"]["proposal"]["status"] == "UNAPPROVED"
-            records.append(
-                {
-                    "demo": entry["id"],
-                    "mode": entry["mode"],
-                    "runs": count,
-                    "exit_codes": [result.returncode for result in results],
-                    "seconds": round(time.monotonic() - started, 2),
-                    "stdout": results[-1].stdout,
-                    "stderr": results[-1].stderr,
-                }
-            )
-            print(f"PASS {entry['id']} ({count} run{'s' if count > 1 else ''})", flush=True)
+                        runs = list(output.glob("*/run.json"))
+                        assert len(runs) == 1
+                        report = verify(read_json(runs[0]))
+                        assert len(report["result"]["history"]) == 10
+                        assert report["result"]["proposal"]["status"] == "UNAPPROVED"
+                    record["status"] = "passed"
+        except subprocess.TimeoutExpired as exc:
+            record["status"] = "timeout"
+            record["error"] = "Command exceeded its 90-second finite-launch limit"
+            for key, value in (("stdout", exc.stdout), ("stderr", exc.stderr)):
+                record[key] = value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or ""
+        except (OSError, ValueError, RuntimeError, AssertionError, sqlite3.Error) as exc:
+            record["error"] = str(exc)
+        record["seconds"] = round(time.monotonic() - started, 2)
+        records.append(record)
+        print(f"{record['status'].upper()} {entry['id']} ({record['runs']} runs)", flush=True)
     return records
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     inventory = validate_inventory()
-    report = {"inventory": inventory, "smoke": smoke() if args.smoke else []}
+    results = smoke() if args.smoke else []
+    failed = [record["demo"] for record in results if record["status"] != "passed"]
+    report = {
+        "schema": "agialpha.demo.validation.v2",
+        "inventory": inventory,
+        "smoke": results,
+        "smoke_requested": args.smoke,
+        "passed": not failed,
+        "scope": "Inventory and requested finite launch checks only; not universal production qualification.",
+        "separate_acceptance": [entry["id"] for entry in entries() if not entry["smoke"]],
+    }
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Validated {len(inventory)} catalog entries")
+    print(f"Validated {len(inventory)} catalog entries; exercised {len(results)} finite commands")
+    if failed:
+        print("Finite launch checks did not pass: " + ", ".join(failed), file=sys.stderr)
+    return int(bool(failed))
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

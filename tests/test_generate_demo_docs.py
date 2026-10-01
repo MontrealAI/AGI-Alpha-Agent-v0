@@ -60,4 +60,22 @@ def test_relative_links_converted(tmp_path, monkeypatch):
     text = page.read_text(encoding="utf-8")
     base = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/"
     assert f"[Notebook]({base}alpha_factory_v1/demos/demo_b/colab_demo.ipynb)" in text
-    assert f"![shot]({base}alpha_factory_v1/demos/demo_b/assets/graph.png)" in text
+    raw = "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/main/"
+    assert f"![shot]({raw}alpha_factory_v1/demos/demo_b/assets/graph.png)" in text
+
+
+def test_images_change_destination_without_changing_diagrams_or_code(tmp_path, monkeypatch):
+    demo = tmp_path / "alpha_factory_v1/demos/example"
+    demo.mkdir(parents=True)
+    diagram = '```mermaid\nflowchart LR\n A["Input"] --> B["Review"]\n```'
+    code = '```python\ntext = "![image](local.png)"\n```'
+    (demo / "README.md").write_text(
+        f"# Example\n{diagram}\n{code}\n![plot](assets/plot.svg)\n[Source](assets/plot.svg)\n"
+        "[![Notebook](https://example.com/badge.svg)](demo.ipynb)\n"
+    )
+    monkeypatch.setattr(gdd, "REPO_ROOT", tmp_path)
+    text = gdd.build_page(demo)
+    assert diagram in text and code in text
+    assert "![plot](https://raw.githubusercontent.com/" in text
+    assert "[Source](https://github.com/" in text
+    assert "[![Notebook](https://example.com/badge.svg)](https://github.com/" in text

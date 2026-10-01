@@ -158,6 +158,10 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
                 "meta_agentic_agi_v3",
                 "finance_alpha",
                 "sovereign_agentic_agialpha_agent_v0",
+                "solving_agi_governance",
+                "muzero_planning",
+                "muzeromctsllmagent_v0",
+                "alpha_agi_insight_v1",
             }:
                 preview = f'assets/studio/previews/{case["id"]}.svg'
                 summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
