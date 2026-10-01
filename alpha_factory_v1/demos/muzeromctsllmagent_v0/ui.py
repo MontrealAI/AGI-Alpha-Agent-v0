@@ -38,7 +38,7 @@ def build(args: Any) -> Any:
                     "Errors stop the run; no synthetic model response is substituted."
                 )
                 start = gr.Button("Retrieve, train & compare", variant="primary")
-                stop = gr.Button("Stop")
+                stop = gr.Button("Stop", interactive=False)
             with gr.Column(scale=2):
                 gr.Markdown("## 2 · Follow the experiment")
                 status = gr.Markdown("Ready. A fresh model is trained for each run.")
@@ -104,7 +104,9 @@ def build(args: Any) -> Any:
                 "",
                 gr.update(interactive=False),
             )
-            yield ("Preparing evidence…", *empty)
+            running = (gr.update(interactive=False), gr.update(interactive=True))
+            idle = (gr.update(interactive=True), gr.update(interactive=False))
+            yield ("Preparing evidence…", *empty, *running)
             try:
                 values = (count, budget, random_seed)
                 if any(
@@ -130,6 +132,7 @@ def build(args: Any) -> Any:
                             [],
                             "",
                             gr.update(interactive=False),
+                            *running,
                         )
                     else:
                         experiment = event["experiment"]
@@ -154,24 +157,36 @@ def build(args: Any) -> Any:
                             [[key, sum(scores) / len(scores)] for key, scores in experiment["evaluation"].items()],
                             json.dumps(event, indent=2, allow_nan=False),
                             gr.update(interactive=True),
+                            *idle,
                         )
             except (ValueError, RuntimeError, OSError) as exc:
                 yield (
                     "**Run failed.** No report was produced. Check the error, adjust the inputs and try again.",
                     *empty,
+                    *idle,
                 )
                 raise gr.Error(str(exc)) from exc
 
         event = start.click(
             execute,
             [question, episodes, simulations, seed, model],
-            [status, curve, evidence, advice, search, outcomes, baselines, record, download],
+            [status, curve, evidence, advice, search, outcomes, baselines, record, download, start, stop],
             concurrency_limit=1,
             concurrency_id="planning-lab",
         )
+
+        def request_stop() -> tuple[Any, ...]:
+            return (
+                "Stop requested. Training stops between episodes; an active model request may take up to 60 seconds.",
+                gr.update(interactive=True),
+                gr.update(interactive=False),
+                gr.update(interactive=False),
+                "",
+            )
+
         stop.click(
-            lambda: "Stop requested. Training stops between episodes; an active model request may take up to 60 seconds.",
-            outputs=status,
+            request_stop,
+            outputs=[status, start, stop, download, record],
             cancels=[event],
             queue=False,
         )

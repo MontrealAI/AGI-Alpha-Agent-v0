@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import socket
 import subprocess
 import sys
@@ -78,6 +79,9 @@ def validate(output: Path, url: str | None = None) -> None:
                     ),
                 )
                 page.goto(url, wait_until="networkidle")
+                stop_button = page.get_by_role("button", name="Stop", exact=True)
+                start_button = page.get_by_role("button", name="Retrieve, train & compare", exact=True)
+                expect(stop_button).to_be_disabled()
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
                 assert page.get_by_text("trained_search", exact=False).count() > 0
@@ -108,9 +112,19 @@ def validate(output: Path, url: str | None = None) -> None:
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
                 expect(download_button).to_be_enabled()
-                page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
-                page.get_by_role("button", name="Stop", exact=True).click()
+                expect(stop_button).to_be_disabled()
+                # Stop an actual active run, with enough episodes to observe cancellation.
+                page.get_by_role("slider").first.focus()
+                page.get_by_role("slider").first.press("End")
+                start_button.click()
+                page.get_by_text(re.compile(r"^Training\s+\d+\s*/\s*\d+$")).wait_for(timeout=30000)
+                expect(start_button).to_be_disabled()
+                expect(download_button).to_be_disabled()
+                stop_button.click()
                 page.get_by_text("Stop requested.", exact=False).wait_for(timeout=15000)
+                expect(stop_button).to_be_disabled()
+                expect(start_button).to_be_enabled()
+                expect(download_button).to_be_disabled()
                 assert not errors, errors
                 (output / "browser.json").write_text(
                     json.dumps(
@@ -121,6 +135,8 @@ def validate(output: Path, url: str | None = None) -> None:
                             "evidence_and_counterfactuals": True,
                             "mobile_no_overflow": True,
                             "stop": True,
+                            "stop_requires_active_run": True,
+                            "cancelled_report_disabled": True,
                             "json_download": True,
                             "failure_clears_previous_report": True,
                             "retry_after_failure": True,
