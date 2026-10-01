@@ -8,6 +8,14 @@
 
 [1.18.0 — Curriculum Lab](agent/RELEASE_NOTES_1.18.0.md): independently solved tasks, adaptive curricula, complete lineage, review gates, reproducible evidence and repaired legacy execution/accounting boundaries.
 
+## 1.23.0 — Complete demo catalog readiness
+
+- Add `check --all` and machine-readable prerequisite reports for all 26 entries without imports, downloads or writes.
+- Align current launch guides, counts, modes and validation boundaries with the runnable catalog.
+- Prevent future drift with a read-only documentation gate, preserving historical research and diagrams.
+- Complete the browser walkthrough and retain all existing launch paths, flowcharts and media.
+- See [release notes](agent/RELEASE_NOTES_1.23.0.md).
+
 ## 1.22.1 — Sovereign session cleanup
 
 - Clear imported drafts, review notes, hidden result text and stale controls when locking the local console.

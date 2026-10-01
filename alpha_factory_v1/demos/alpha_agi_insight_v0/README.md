@@ -17,9 +17,10 @@ own supplied source excerpts; the tool does not fetch or authenticate those sour
 Priority scores are not forecast probabilities, valuations or a claim of beyond-human prediction.
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.15.0
+## Current runnable path — 1.23.0
 
-**Mode:** Local evidence review. **Prerequisites:** Python 3.11–3.13 and a source checkout.
+**Mode:** Local evidence review. **Prerequisites:** Python 3.11–3.13 and the installed package or a source checkout.
+Discovery uses only the standard library.
 
 ```bash
 python -m alpha_factory_v1.demos check alpha_agi_insight_v0

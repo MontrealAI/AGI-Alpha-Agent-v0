@@ -20,7 +20,7 @@ shows the gap to the best design in the supplied training model.
 
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.17.0
+## Current runnable path — 1.23.0
 
 **Mode: Offline search lab.** Python 3.11–3.13; the supported lab uses only the standard library.
 No API key, paid provider, GPU, Docker service or runtime download is required after obtaining the source.

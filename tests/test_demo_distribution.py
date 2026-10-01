@@ -76,6 +76,22 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     assert probe.returncode == 0 and Path(probe.stdout.strip()).is_relative_to(installed)
     assert not attempted.exists(), attempted.read_text()
     entries = json.loads((installed / "alpha_factory_v1/demos/catalog.json").read_text())["entries"]
+    checked = subprocess.run(
+        [sys.executable, "-P", "-m", "alpha_factory_v1.demos", "check", "--all", "--json"],
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert checked.returncode in (0, 2), checked.stderr
+    readiness = json.loads(checked.stdout)
+    assert readiness["total"] == len(entries)
+    assert readiness["runnable"] == sum(bool(entry["command"]) for entry in entries)
+    assert readiness["passed"] is (checked.returncode == 0)
+    assert not any(entry["missing_assets"] for entry in readiness["entries"])
+    assert not (tmp_path / "demo-runs").exists()
+    assert not attempted.exists(), attempted.read_text()
     finite = [entry for entry in entries if entry["smoke"]]
     assert len(entries) == 26 and len(finite) == 17
     for entry in finite:

@@ -1,3 +1,5 @@
+> **1.23.0 — Complete demo catalog readiness.** Check prerequisites across every demo with `python -m alpha_factory_v1.demos check --all`. Current guides, execution modes and validation boundaries now stay synchronized. [Demo walkthrough](docs/agent/DEMOS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.0.md). Original flowcharts, research and media remain preserved.
+
 > **1.22.1 — Sovereign session cleanup.** Locking clears imported drafts and review notes, retains saved mandates, and isolates delayed requests from the next session. [Release notes](docs/agent/RELEASE_NOTES_1.22.1.md).
 
 > **1.22.0 — Sovereign Workbench.** Run a bounded portfolio, schedule and evidence workflow with explicit reviews, a private signed journal and verifiable exports. [Start here](alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/README.md) · [Release notes](docs/agent/RELEASE_NOTES_1.22.0.md). Original source, presentation and diagrams remain preserved.

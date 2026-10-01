@@ -14,6 +14,7 @@ import time
 
 from alpha_factory_v1.demos.catalog import REPO_ROOT, command_for, entries, environment_for, prerequisites_for
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from scripts.sync_demo_catalog_docs import synchronize
 
 
 def validate_inventory() -> list[str]:
@@ -52,6 +53,9 @@ def validate_inventory() -> list[str]:
             module = REPO_ROOT.joinpath(*command[2].split("."))
             if not module.with_suffix(".py").is_file() and not (module / "__main__.py").is_file():
                 raise ValueError(f"Missing launch module: {command[2]}")
+    if stale := synchronize(REPO_ROOT, check=True):
+        paths = ", ".join(str(path.relative_to(REPO_ROOT)) for path in stale)
+        raise ValueError(f"Stale catalog guides: {paths}. Run python -m scripts.sync_demo_catalog_docs")
     return sorted(actual)
 
 

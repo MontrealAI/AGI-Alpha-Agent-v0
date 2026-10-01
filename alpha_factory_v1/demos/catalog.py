@@ -113,6 +113,44 @@ def print_prerequisites(report: dict[str, Any]) -> None:
     print(f"Prerequisites: {report['prerequisites']}\nGuide: {report['guide']}\nScope: {report['scope']}")
 
 
+def inventory_prerequisites() -> dict[str, Any]:
+    """Inspect every catalog entry without launching code or creating state."""
+    reports = [prerequisites_for(entry) for entry in entries()]
+    runnable = [report for report in reports if report["runnable"]]
+    ready = sum(report["passed"] for report in runnable)
+    return {
+        "schema": "agialpha.demo.inventory-prerequisites.v1",
+        "release": json.loads(CATALOG.read_text(encoding="utf-8"))["release"],
+        "total": len(reports),
+        "runnable": len(runnable),
+        "ready": ready,
+        "missing": len(runnable) - ready,
+        "guide_only": len(reports) - len(runnable),
+        "passed": bool(runnable) and ready == len(runnable),
+        "scope": "Declared modules and bundled files only; no demo, model, provider or service has been executed.",
+        "entries": reports,
+    }
+
+
+def print_inventory_prerequisites(report: dict[str, Any]) -> None:
+    """Summarize readiness while distinguishing guide-only entries from checks."""
+    print(f"AGIALPHA demo prerequisites — {report['release']}")
+    for item in report["entries"]:
+        if not item["runnable"]:
+            status = "GUIDE ONLY — no catalog launch command"
+        elif item["passed"]:
+            status = "READY — declared modules and files present"
+        else:
+            missing = item["missing_modules"] + item["missing_assets"]
+            status = "MISSING — " + ", ".join(missing)
+        print(f"{item['demo']:<38} {status}")
+    print(
+        f"\n{report['ready']}/{report['runnable']} catalog commands ready; "
+        f"{report['missing']} missing prerequisites; {report['guide_only']} guide-only entries."
+    )
+    print(f"Scope: {report['scope']}\nDetails: python -m alpha_factory_v1.demos check NAME")
+
+
 def main(argv: list[str] | None = None) -> int:
     """List, inspect or launch a documented demo with explicit expectations."""
     parser = argparse.ArgumentParser(description="Explore the AGIALPHA demo catalog")
@@ -125,10 +163,13 @@ def main(argv: list[str] | None = None) -> int:
         ("run", "Run the documented local command"),
     ):
         child = sub.add_parser(name, help=help_text)
-        child.add_argument("demo", choices=[entry["id"] for entry in entries()])
         if name == "check":
+            selection = child.add_mutually_exclusive_group(required=True)
+            selection.add_argument("demo", nargs="?", choices=[entry["id"] for entry in entries()])
+            selection.add_argument("--all", action="store_true", help="Inspect every catalog entry without launching")
             child.add_argument("--json", action="store_true", help="Print machine-readable prerequisite results")
         else:
+            child.add_argument("demo", choices=[entry["id"] for entry in entries()])
             child.add_argument("--output-dir", type=Path, help="Directory for this demo's local state")
     args = parser.parse_args(argv)
     if args.action is None:
@@ -142,6 +183,13 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"{entry['id']:<38} {entry['mode']}")
             print("\nStart: python -m alpha_factory_v1.demos show DEMO_NAME")
         return 0
+    if args.action == "check" and args.all:
+        inventory = inventory_prerequisites()
+        if args.json:
+            print(json.dumps(inventory, indent=2, ensure_ascii=False))
+        else:
+            print_inventory_prerequisites(inventory)
+        return 0 if inventory["passed"] else 2
     entry = next(item for item in entries() if item["id"] == args.demo)
     if args.action == "check":
         report = prerequisites_for(entry)
