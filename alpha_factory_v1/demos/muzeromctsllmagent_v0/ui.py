@@ -2,6 +2,7 @@
 """Loopback-only local interface with explicit progress and reviewable measurements."""
 from __future__ import annotations
 
+from contextlib import closing
 import inspect
 import json
 import math
@@ -17,6 +18,7 @@ def build(args: Any) -> Any:
     import gradio as gr
 
     with gr.Blocks(title="MuZero × MCTS × LLM", analytics_enabled=False, delete_cache=(3600, 3600)) as demo:
+        cancellation = gr.State({"cancelled": False})
         gr.Markdown(
             "# MuZero × MCTS × LLM\n### An idea is a proposal. A rollout is evidence.\n"
             "Explore a two-step decision: take **0.3 now**, or learn the route to **1.0 later**. "
@@ -39,6 +41,7 @@ def build(args: Any) -> Any:
                 )
                 start = gr.Button("Retrieve, train & compare", variant="primary")
                 stop = gr.Button("Stop", interactive=False)
+                gr.Markdown("Stops between episodes. An active local-model request may take up to 60 seconds.")
             with gr.Column(scale=2):
                 gr.Markdown("## 2 · Follow the experiment")
                 status = gr.Markdown("Ready. A fresh model is trained for each run.")
@@ -89,10 +92,13 @@ def build(args: Any) -> Any:
         )
 
         def execute(
-            query: str, count: float, budget: float, random_seed: float, local_model: str
+            query: str, count: float, budget: float, random_seed: float, local_model: str, control: dict[str, bool]
         ) -> Iterator[tuple[Any, ...]]:
             import pandas as pd
 
+            # Gradio supplies the same session-local object to both handlers. Only
+            # this generator writes results, so an in-flight update cannot undo Stop.
+            control["cancelled"] = False
             # Clear every prior result, including after an invalid new request.
             empty: tuple[Any, ...] = (
                 pd.DataFrame(columns=["episode", "reward"]),
@@ -117,49 +123,61 @@ def build(args: Any) -> Any:
                     for v in values
                 ):
                     raise ValueError("Budgets and seed must be whole numbers")
-                for event in run(
-                    query, episodes=int(count), simulations=int(budget), seed=int(random_seed), model=local_model
-                ):
-                    if event["status"] == "training":
-                        frame = pd.DataFrame(event["history"])
-                        yield (
-                            f"Training **{event['completed']} / {event['total']}**",
-                            frame,
-                            "",
-                            None,
-                            [],
-                            "",
-                            [],
-                            "",
-                            gr.update(interactive=False),
-                            *running,
-                        )
-                    else:
-                        experiment = event["experiment"]
-                        yield (
-                            f"**Complete · review required.** Search chose action **{event['search_action']}**. Model agreement: **{'not requested' if event['agreement'] is None else 'yes' if event['agreement'] else 'no'}**.",
-                            pd.DataFrame(experiment["history"], columns=["episode", "reward"]),
-                            "\n\n".join(
-                                f"**{r['id']} · lexical overlap {r['overlap']}**\n\n{r['text']}"
-                                for r in event["evidence"]
-                            ),
-                            event["advice"],
-                            [list(r.values()) for r in experiment["search_after"]],
-                            "\n\n".join(
-                                f"**First action {r['first_action']} · observed total reward {r['observed_return']:g}**\n\n"
-                                + "; ".join(
-                                    f"Step {t['step']}: action {t['action']} → {t['reward']:+g}"
-                                    + (" (terminal)" if t["terminated"] else "")
-                                    for t in r["trace"]
-                                )
-                                for r in event["counterfactuals"]
-                            ),
-                            [[key, sum(scores) / len(scores)] for key, scores in experiment["evaluation"].items()],
-                            json.dumps(event, indent=2, allow_nan=False),
-                            gr.update(interactive=True),
-                            *idle,
-                        )
+                with closing(
+                    run(query, episodes=int(count), simulations=int(budget), seed=int(random_seed), model=local_model)
+                ) as events:
+                    while not control["cancelled"]:
+                        try:
+                            event = next(events)
+                        except StopIteration:
+                            break
+                        if control["cancelled"]:
+                            break
+                        if event["status"] == "training":
+                            frame = pd.DataFrame(event["history"])
+                            yield (
+                                f"Training **{event['completed']} / {event['total']}**",
+                                frame,
+                                "",
+                                None,
+                                [],
+                                "",
+                                [],
+                                "",
+                                gr.update(interactive=False),
+                                *running,
+                            )
+                        else:
+                            experiment = event["experiment"]
+                            yield (
+                                f"**Complete · review required.** Search chose action **{event['search_action']}**. Model agreement: **{'not requested' if event['agreement'] is None else 'yes' if event['agreement'] else 'no'}**.",
+                                pd.DataFrame(experiment["history"], columns=["episode", "reward"]),
+                                "\n\n".join(
+                                    f"**{r['id']} · lexical overlap {r['overlap']}**\n\n{r['text']}"
+                                    for r in event["evidence"]
+                                ),
+                                event["advice"],
+                                [list(r.values()) for r in experiment["search_after"]],
+                                "\n\n".join(
+                                    f"**First action {r['first_action']} · observed total reward {r['observed_return']:g}**\n\n"
+                                    + "; ".join(
+                                        f"Step {t['step']}: action {t['action']} → {t['reward']:+g}"
+                                        + (" (terminal)" if t["terminated"] else "")
+                                        for t in r["trace"]
+                                    )
+                                    for r in event["counterfactuals"]
+                                ),
+                                [[key, sum(scores) / len(scores)] for key, scores in experiment["evaluation"].items()],
+                                json.dumps(event, indent=2, allow_nan=False),
+                                gr.update(interactive=True),
+                                *idle,
+                            )
+                if control["cancelled"]:
+                    yield ("**Stopped.** No report was produced. You can start a fresh run.", *empty, *idle)
             except (ValueError, RuntimeError, OSError) as exc:
+                if control["cancelled"]:
+                    yield ("**Stopped.** No report was produced. You can start a fresh run.", *empty, *idle)
+                    return
                 yield (
                     "**Run failed.** No report was produced. Check the error, adjust the inputs and try again.",
                     *empty,
@@ -167,29 +185,22 @@ def build(args: Any) -> Any:
                 )
                 raise gr.Error(str(exc)) from exc
 
-        event = start.click(
+        start.click(
             execute,
-            [question, episodes, simulations, seed, model],
+            [question, episodes, simulations, seed, model, cancellation],
             [status, curve, evidence, advice, search, outcomes, baselines, record, download, start, stop],
             concurrency_limit=1,
             concurrency_id="planning-lab",
         )
 
-        def request_stop() -> tuple[Any, ...]:
-            return (
-                "Stop requested. Training stops between episodes; an active model request may take up to 60 seconds.",
-                gr.update(interactive=True),
-                gr.update(interactive=False),
-                gr.update(interactive=False),
-                "",
-            )
+        def request_stop(control: dict[str, bool]) -> None:
+            # Do not cancel the Gradio generator or race it with a second result
+            # writer. It acknowledges this flag at the next bounded checkpoint,
+            # closes the training iterator, and only then enables Start again.
+            control["cancelled"] = True
+            gr.Info("Stop requested. Waiting for the current episode or local-model request to finish.")
 
-        stop.click(
-            request_stop,
-            outputs=[status, start, stop, download, record],
-            cancels=[event],
-            queue=False,
-        )
+        stop.click(request_stop, inputs=cancellation, outputs=None, queue=False)
     return demo.queue(max_size=4, default_concurrency_limit=1)
 
 

@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from typing import Any, Iterator
+from typing import Any, Generator
 
 from . import __version__
 
@@ -155,7 +155,7 @@ def run(
     simulations: int = 32,
     seed: int = 42,
     model: str = "",
-) -> Iterator[dict[str, Any]]:
+) -> Generator[dict[str, Any], None, None]:
     """Train, compare first-action proposals, and emit a reproducible review report."""
     from ..muzero_planning.training import Config, experiment
     from ..muzero_planning.minimuzero import MiniMu

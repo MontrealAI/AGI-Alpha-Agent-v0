@@ -78,9 +78,13 @@ def validate(output: Path, url: str | None = None) -> None:
                         else route.abort()
                     ),
                 )
-                page.goto(url, wait_until="networkidle")
+                # Session state keeps a heartbeat connection open; readiness is the
+                # usable interface, not the absence of network activity.
+                page.goto(url, wait_until="domcontentloaded")
                 stop_button = page.get_by_role("button", name="Stop", exact=True)
                 start_button = page.get_by_role("button", name="Retrieve, train & compare", exact=True)
+                expect(start_button).to_be_enabled(timeout=30000)
+                page.get_by_text("Ready. A fresh model is trained for each run.", exact=False).wait_for(timeout=30000)
                 expect(stop_button).to_be_disabled()
                 page.get_by_role("button", name="Retrieve, train & compare", exact=True).click()
                 page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
@@ -116,15 +120,24 @@ def validate(output: Path, url: str | None = None) -> None:
                 # Stop an actual active run, with enough episodes to observe cancellation.
                 page.get_by_role("slider").first.focus()
                 page.get_by_role("slider").first.press("End")
+                for _ in range(3):
+                    start_button.click()
+                    page.get_by_text(re.compile(r"^Training\s+\d+\s*/\s*\d+$")).wait_for(timeout=30000)
+                    expect(start_button).to_be_disabled()
+                    expect(download_button).to_be_disabled()
+                    stop_button.click()
+                    page.get_by_text("Stopped. No report was produced.", exact=False).wait_for(timeout=15000)
+                    expect(stop_button).to_be_disabled()
+                    expect(start_button).to_be_enabled()
+                    expect(download_button).to_be_disabled()
+                    assert page.get_by_text("Complete · review required.", exact=False).count() == 0
+                # A stopped generator must release its slot and permit a fresh complete run.
+                page.get_by_role("slider").first.focus()
+                page.get_by_role("slider").first.press("Home")
                 start_button.click()
-                page.get_by_text(re.compile(r"^Training\s+\d+\s*/\s*\d+$")).wait_for(timeout=30000)
-                expect(start_button).to_be_disabled()
-                expect(download_button).to_be_disabled()
-                stop_button.click()
-                page.get_by_text("Stop requested.", exact=False).wait_for(timeout=15000)
+                page.get_by_text("Complete · review required.", exact=False).wait_for(timeout=120000)
+                expect(download_button).to_be_enabled()
                 expect(stop_button).to_be_disabled()
-                expect(start_button).to_be_enabled()
-                expect(download_button).to_be_disabled()
                 assert not errors, errors
                 (output / "browser.json").write_text(
                     json.dumps(
@@ -137,6 +150,8 @@ def validate(output: Path, url: str | None = None) -> None:
                             "stop": True,
                             "stop_requires_active_run": True,
                             "cancelled_report_disabled": True,
+                            "repeated_cancellation": 3,
+                            "restart_after_cancellation": True,
                             "json_download": True,
                             "failure_clears_previous_report": True,
                             "retry_after_failure": True,
@@ -156,6 +171,8 @@ def validate(output: Path, url: str | None = None) -> None:
                 except subprocess.TimeoutExpired:
                     child.kill()
                     child.wait()
+            log.seek(0)
+            (output / "server.log").write_text(log.read(), encoding="utf-8")
 
 
 def main() -> None:
