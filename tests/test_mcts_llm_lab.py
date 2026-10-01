@@ -201,7 +201,7 @@ def test_ui_invalid_input_clears_results_and_exposes_failure(seed):
 
     demo = build(SimpleNamespace(question="reward?", episodes=0, simulations=4, seed=42, model=""))
     execute = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "execute")
-    events = execute("reward?", 0, 4, seed, "")
+    events = execute("reward?", 0, 4, seed, "", {"cancelled": False})
     assert "Preparing" in next(events)[0]
     failure = next(events)
     assert "Run failed" in failure[0]
@@ -259,14 +259,68 @@ def test_ui_run_and_stop_controls_follow_actual_execution(monkeypatch):
     )
     assert stop_button.interactive is False
     execute = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "execute")
-    events = list(execute("reward?", 4, 4, 42, ""))
+    events = list(execute("reward?", 4, 4, 42, "", {"cancelled": False}))
     for update in events[:-1]:
         assert update[8]["interactive"] is False
         assert update[9]["interactive"] is False and update[10]["interactive"] is True
     assert events[-1][8]["interactive"] is True
     assert events[-1][9]["interactive"] is True and events[-1][10]["interactive"] is False
     stop = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "request_stop")
-    stopped = stop()
-    assert stopped[0].startswith("Stop requested.")
-    assert stopped[1]["interactive"] is True
-    assert stopped[2]["interactive"] is False and stopped[3]["interactive"] is False and stopped[4] == ""
+    control = {"cancelled": False}
+    assert stop(control) is None
+    assert control["cancelled"] is True
+
+
+@pytest.mark.parametrize("checkpoint", ["preparing", "training", "completion", "error"])
+def test_stop_discards_late_results_closes_training_and_allows_restart(monkeypatch, checkpoint):
+    pytest.importorskip("gradio")
+    from alpha_factory_v1.demos.muzeromctsllmagent_v0 import ui
+
+    control = {"cancelled": False}
+    closed = []
+
+    def late_run(*args, **kwargs):
+        try:
+            yield {"status": "training", "history": [], "completed": 1, "total": 4}
+            if checkpoint in {"completion", "error"}:
+                control["cancelled"] = True
+            if checkpoint == "error":
+                raise ValueError("provider failed after cancellation")
+            # This must never be rendered after cancellation, even if next() was in flight.
+            yield {"status": "complete"}
+        finally:
+            closed.append(True)
+
+    monkeypatch.setattr(ui, "run", late_run)
+    demo = ui.build(SimpleNamespace(question="reward?", episodes=4, simulations=4, seed=42, model=""))
+    execute = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "execute")
+    stop = next(block.fn for block in demo.fns.values() if getattr(block.fn, "__name__", "") == "request_stop")
+    events = execute("reward?", 4, 4, 42, "", control)
+    next(events)
+    if checkpoint != "preparing":
+        assert "Training" in next(events)[0]
+    if checkpoint in {"preparing", "training"}:
+        stop(control)
+    stopped = next(events)
+    assert "Stopped." in stopped[0]
+    assert stopped[7] == "" and stopped[8]["interactive"] is False
+    assert stopped[9]["interactive"] is True and stopped[10]["interactive"] is False
+    assert list(events) == []
+    assert closed == ([] if checkpoint == "preparing" else [True])
+    restarted = execute("reward?", 4, 4, 42, "", control)
+    assert "Preparing" in next(restarted)[0]
+    assert control["cancelled"] is False
+    restarted.close()
+
+
+def test_cancellation_state_is_isolated_between_browser_sessions():
+    gr = pytest.importorskip("gradio")
+    from gradio.state_holder import SessionState
+    from alpha_factory_v1.demos.muzeromctsllmagent_v0.ui import build
+
+    demo = build(SimpleNamespace(question="reward?", episodes=4, simulations=4, seed=42, model=""))
+    state = next(block for block in demo.blocks.values() if isinstance(block, gr.State))
+    first, second = SessionState(demo), SessionState(demo)
+    first[state._id]["cancelled"] = True
+    assert first[state._id]["cancelled"] is True
+    assert second[state._id]["cancelled"] is False

@@ -28,6 +28,8 @@ require the separate checks described in each guide.
   and `show` forms remain supported; inspecting a command never starts the orchestrator.
 - Tie planning-lab Start/Stop controls to active execution and clear cancelled exports. Browser
   acceptance waits for actual training before stopping and checks that cancelled results cannot be downloaded.
+  Cancellation is session-local and acknowledged by the training generator before restarting; repeated stop/restart
+  checks prevent in-flight progress updates from restoring cancelled results.
 - Merge the remaining catalog-wide prerequisite report and installed-wheel acceptance into the
   published launcher, preserving `--new-run`, output-directory import protection and failure reports.
 - Generate walkthrough counts from the catalog; remove stale references to 15 and 16 finite examples.
