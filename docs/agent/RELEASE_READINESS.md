@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.22.0 manuscript edition
+# Release readiness — 1.22.1 manuscript edition
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
 durable recovery and independently verifiable exports. Its public page exposes recorded native fixtures;
@@ -56,7 +56,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.22.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.22.1). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -65,7 +65,7 @@ audits block publication. Retain the matching checksums with prior release asset
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.22.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.22.1 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

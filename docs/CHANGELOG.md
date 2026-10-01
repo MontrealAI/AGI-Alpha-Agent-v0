@@ -8,6 +8,14 @@
 
 [1.18.0 — Curriculum Lab](agent/RELEASE_NOTES_1.18.0.md): independently solved tasks, adaptive curricula, complete lineage, review gates, reproducible evidence and repaired legacy execution/accounting boundaries.
 
+## 1.22.1 — Sovereign session cleanup
+
+- Clear imported drafts, review notes, hidden result text and stale controls when locking the local console.
+- Cancel pending unlocks and isolate delayed responses/file reads from the next session.
+- Preserve saved mandates, signed packets, original presentations and flowcharts.
+- Add real Chromium regressions for locking, re-unlocking and retained mandate recovery.
+- See [release notes](agent/RELEASE_NOTES_1.22.1.md).
+
 ## 1.22.0 — Sovereign Workbench
 
 - Added a native, review-gated portfolio/schedule/evidence workflow with signed exports and recovery.

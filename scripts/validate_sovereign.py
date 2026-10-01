@@ -17,7 +17,7 @@ from typing import Any, Iterator
 import uvicorn
 
 from alpha_factory_v1.core.runtime.store import Journal
-from alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0.service import create_app
+from alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0.service import create_app, examples
 from alpha_factory_v1.demos.sovereign_agentic_agialpha_agent_v0.workbench import STAGES, verify_packet
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
@@ -123,6 +123,7 @@ def native(page: Any, journal: Journal, output: Path, axe: Path | None) -> None:
         expect(page.locator("#unlock")).to_be_hidden()
         page.locator("#create").click()
         expect(page.locator("#workflow-state")).to_have_text("READY")
+        expect(page.locator("#history")).to_be_enabled()
         ident = page.locator("#history").input_value()
         for stage in STAGES:
             page.locator("#advance").click()
@@ -197,6 +198,103 @@ def native(page: Any, journal: Journal, output: Path, axe: Path | None) -> None:
         expect(page.locator("#unlock")).to_be_visible()
         expect(page.locator("#public-key")).to_contain_text("Unlock")
         page.unroute("**/api/status")
+        lock_boundary(page, journal, base)
+
+
+def lock_boundary(page: Any, journal: Journal, base: str) -> None:
+    """Discard private tab state and ignore work started before a lock, even after re-unlocking."""
+    from playwright.sync_api import expect
+
+    token = (journal.root / "api.token").read_text().strip()
+
+    def unlock() -> None:
+        page.locator("#access-code").fill(token)
+        page.get_by_role("button", name="Unlock workspace").click()
+        expect(page.locator("#create")).to_be_enabled()
+
+    unlock()
+    spec = examples()["balanced"]
+    marker = "PRIVATE TAB REVIEW FIXTURE"
+    spec.update(title=marker, goal=marker + " goal", provenance=marker + " provenance")
+    if not page.locator("#advanced").evaluate("element => element.open"):
+        page.locator("#advanced summary").click()
+    page.locator("#mandate-json").fill(json.dumps(spec))
+    page.locator("#apply-json").click()
+    expect(page.locator("#status")).to_contain_text("Mandate validated")
+    page.locator("#create").click()
+    expect(page.locator("#workflow-state")).to_have_text("READY")
+    expect(page.locator("#history")).to_be_enabled()
+    ident = page.locator("#history").input_value()
+    page.locator("#advance").click()
+    expect(page.locator("#workflow-state")).to_have_text("REVIEW")
+    page.locator("#review-note").fill(marker + " review")
+    page.locator("#review-check").check()
+    page.locator("#lock").click()
+    expect(page.locator("#download-input")).to_be_disabled()
+    expect(page.locator("#review-note")).to_have_value("")
+    expect(page.locator("#review-check")).not_to_be_checked()
+    assert marker not in page.locator("body").text_content()
+    assert marker not in page.locator("#mandate-json").input_value()
+    expect(page.locator("#raw-result")).to_be_empty()
+    expect(page.locator("#access-code")).to_be_focused()
+    unlock()
+    page.locator("#history").select_option(ident)
+    expect(page.locator("#workflow-state")).to_have_text("REVIEW")
+    expect(page.locator("#mandate-title")).to_have_text(marker)
+    expect(page.locator("#review-note")).to_have_value("")
+    expect(page.locator("#review-check")).not_to_be_checked()
+
+    # A rejected unlock from an earlier epoch must not clear the new session's token.
+    page.locator("#lock").click()
+    pending: list[Any] = []
+    page.route("**/api/status", lambda route: pending.append(route) if not pending else route.continue_())
+    page.locator("#access-code").fill("old-wrong-code")
+    with page.expect_request(base + "/api/status"):
+        page.get_by_role("button", name="Unlock workspace").click()
+    page.locator("#lock").click()
+    unlock()
+    with page.expect_response(base + "/api/status") as response:
+        pending[0].fulfill(status=401, content_type="application/json", body='{"detail":"Old unlock rejected"}')
+    # Drain the old handler before checking the new session's usable controls.
+    response.value.finished()
+    page.evaluate("() => new Promise(requestAnimationFrame)")
+    expect(page.locator("#create")).to_be_enabled()
+    expect(page.locator("#unlock")).to_be_hidden()
+    expect(page.locator("#error")).to_be_hidden()
+    page.unroute("**/api/status")
+
+    # File reading is asynchronous too; a pre-lock import must not enter a new session.
+    page.evaluate(
+        """() => {
+          const original = File.prototype.text;
+          File.prototype.text = function() {
+            return new Promise(resolve => { window.finishOldImport = () => {
+              File.prototype.text = original; resolve('"unused"');
+            }; });
+          };
+        }"""
+    )
+    if not page.locator("#advanced").evaluate("element => element.open"):
+        page.locator("#advanced summary").click()
+    page.locator("#mandate-file").set_input_files(
+        {"name": "old-mandate.json", "mimeType": "application/json", "buffer": b'"unused"'}
+    )
+    page.wait_for_function("typeof window.finishOldImport === 'function'")
+    page.locator("#lock").click()
+    unlock()
+    requests: list[str] = []
+
+    def track_validation(route: Any) -> None:
+        requests.append(route.request.url)
+        route.continue_()
+
+    page.route("**/api/validate", track_validation)
+    page.evaluate("window.finishOldImport()")
+    page.evaluate("() => new Promise(requestAnimationFrame)")
+    assert not requests, "A stale file read reached the new authenticated session"
+    expect(page.locator("#error")).to_be_hidden()
+    expect(page.locator("#mandate-file")).to_have_value("")
+    page.unroute("**/api/validate")
 
 
 def validate(output: Path, url: str | None = None, axe: Path | None = None) -> dict[str, Any]:
