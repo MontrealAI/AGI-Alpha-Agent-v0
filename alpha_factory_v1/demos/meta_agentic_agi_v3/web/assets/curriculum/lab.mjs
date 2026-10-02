@@ -6,8 +6,8 @@ import {
     parse,
     artifacts,
     REPORT_SCHEMA,
-} from "./engine.mjs?v=1.23.1";
-import { zipFiles as zip } from "../compounding/engine.mjs?v=1.23.1";
+} from "./engine.mjs?v=1.23.2";
+import { zipFiles as zip } from "../compounding/engine.mjs?v=1.23.2";
 const $ = (id) => document.getElementById(id),
     KEY = "alpha-curriculum-settings-v1";
 let cases = [],

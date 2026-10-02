@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import json
 import pathlib
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -14,6 +13,7 @@ from dataclasses import dataclass
 from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine
 from .models import FailureBundle, SupportMode, ValidatorClass
+from .workspace import copy_workspace
 
 PYTHON = sys.executable
 
@@ -185,13 +185,7 @@ def run_seeded_benchmark(repo_root: pathlib.Path) -> dict[str, object]:
 
     with tempfile.TemporaryDirectory(prefix="repo-healer-bench-") as tmp:
         work_repo = pathlib.Path(tmp) / "repo"
-        shutil.copytree(
-            repo_root,
-            work_repo,
-            ignore=shutil.ignore_patterns(
-                ".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv", "venv"
-            ),
-        )
+        copy_workspace(repo_root, work_repo)
 
         for case in _build_cases():
             case_path = work_repo / case.target_file

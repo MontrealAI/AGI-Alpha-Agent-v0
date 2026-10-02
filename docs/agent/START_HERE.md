@@ -34,6 +34,9 @@ different versions. If the environment path already exists, choose a new path; y
 is retained. For an offline install, add `--wheelhouse /path/to/compatible-wheels`.
 Download and extract `alpha-agent-v…-operator-guide.zip` for all the linked guides in one folder.
 
+To check downloaded files before installation, add `--check-only`. It validates checksums and paths
+without creating an environment. The [repository guide](REPOSITORY_GUIDE.md) maps the other launch paths.
+
 Activate the environment on macOS or Linux:
 
 ```bash

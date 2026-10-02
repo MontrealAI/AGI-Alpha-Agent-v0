@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -69,7 +69,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_installer.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
@@ -768,6 +768,7 @@ jobs:
         run: |
           python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0
           python -m scripts.package_agent_release --output release --evidence evidence
+          python scripts/install_agent.py --release-dir release --check-only --venv "$RUNNER_TEMP/release-preflight"
           python scripts/install_agent.py --release-dir release --venv "$RUNNER_TEMP/release-install"
           cd release
           sha256sum -c SHA256SUMS

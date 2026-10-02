@@ -1,3 +1,11 @@
+## 1.23.2 — 2026-10-02
+
+- Repair the root Docker quickstart, local binding, persistent memory and non-root API health checks.
+- Add read-only release-installer preflight and actionable, state-preserving failure diagnostics.
+- Refresh current operator guides and add a repository-wide starting-point and support map.
+- Preserve all original files, flowcharts, media and research.
+- See [release notes](agent/RELEASE_NOTES_1.23.2.md).
+
 ## 1.23.1 — 2026-10-01
 
 - Complete catalog-wide read-only preflight with human-readable and JSON reports.

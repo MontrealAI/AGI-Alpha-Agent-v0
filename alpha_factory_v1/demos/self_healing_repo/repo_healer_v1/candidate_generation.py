@@ -6,14 +6,12 @@ from __future__ import annotations
 import difflib
 import pathlib
 import re
-import shutil
 import subprocess
 import tempfile
 from typing import Callable
 
 from .models import FailureBundle, PatchCandidate, ValidatorClass
-
-_IGNORE_DIRS = {".git", ".mypy_cache", ".pytest_cache", "__pycache__", "node_modules", ".venv", "venv"}
+from .workspace import copy_workspace, workspace_files
 
 
 def generate_candidates(repo_root: pathlib.Path, bundle: FailureBundle) -> list[PatchCandidate]:
@@ -43,7 +41,7 @@ def _candidate_from_mutation(
 ) -> PatchCandidate | None:
     with tempfile.TemporaryDirectory(prefix="repo-healer-candidate-") as tmp:
         tmp_repo = pathlib.Path(tmp) / "repo"
-        shutil.copytree(repo_root, tmp_repo, ignore=shutil.ignore_patterns(*_IGNORE_DIRS))
+        copy_workspace(repo_root, tmp_repo)
         changed = mutator(tmp_repo, bundle)
         if not changed:
             return None
@@ -165,15 +163,7 @@ def _is_import_of(line: str, module: str) -> bool:
 
 
 def _iter_files(root: pathlib.Path) -> set[pathlib.Path]:
-    out: set[pathlib.Path] = set()
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        rel = path.relative_to(root)
-        if rel.parts and rel.parts[0] in _IGNORE_DIRS:
-            continue
-        out.add(rel)
-    return out
+    return workspace_files(root)
 
 
 def _diff_between_repos(original: pathlib.Path, modified: pathlib.Path) -> str:
