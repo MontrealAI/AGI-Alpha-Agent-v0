@@ -6,6 +6,8 @@ import time
 
 import pytest
 
+from alpha_factory_v1 import __version__
+
 if not shutil.which("docker"):
     pytest.skip("docker not available", allow_module_level=True)
 
@@ -80,6 +82,10 @@ def test_container_healthcheck(profile: str) -> None:
             )
         else:
             probe += "import os; assert os.getuid() == 10001; assert os.access('/data', os.W_OK)"
+            version = subprocess.check_output(
+                ["docker", "exec", cid, "alpha-factory", "--version"], text=True, timeout=30
+            )
+            assert version.strip() == __version__
         subprocess.run(["docker", "exec", cid, "python", "-c", probe], check=True, timeout=30)
     finally:
         subprocess.run(["docker", "rm", "-f", cid], check=False)

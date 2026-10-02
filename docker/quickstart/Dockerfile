@@ -23,6 +23,8 @@ COPY alpha_factory_v1 /app/alpha_factory_v1
 COPY af_requests /app/af_requests
 COPY openai_agents /app/openai_agents
 COPY docker/quickstart/start.py /app/start.py
+RUN printf '%s\n' '#!/bin/sh' 'exec python -m alpha_factory_v1.run "$@"' > /usr/local/bin/alpha-factory && \
+    chmod 755 /usr/local/bin/alpha-factory
 
 # Provide example environment files
 COPY alpha_factory_v1/.env.sample /app/.env.sample
