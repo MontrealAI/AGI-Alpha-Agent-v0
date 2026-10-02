@@ -4,8 +4,8 @@ import {
     digest,
     parse,
     hashBytes,
-} from "../discovery/engine.mjs?v=1.23.1";
-import constants from "./constants.mjs?v=1.23.1";
+} from "../discovery/engine.mjs?v=1.23.2";
+import constants from "./constants.mjs?v=1.23.2";
 export { canonical, digest, parse };
 export const SCHEMA = "agialpha.curriculum.scenario.v1",
     REPORT_SCHEMA = "agialpha.curriculum.run.v1";

@@ -2,6 +2,11 @@
 
 # Quick Start Guide
 
+For the maintained private agent, start with [your first mission](agent/START_HERE.md).
+For all repository entry points, use the [repository guide](agent/REPOSITORY_GUIDE.md). The tutorial
+below also retains the historical research-stack and Colab paths, whose optional integrations need
+their own configuration.
+
 This tutorial shows how to install the prerequisites, run the Colab notebook and launch the demo either offline or with
 API credentials.
 
@@ -68,7 +73,17 @@ Alternatively build and run the Docker image in one step:
 ./run_quickstart.sh
 ```
 
+Its first run creates a private root `.env` and stops for configuration. Set `API_TOKEN` and
+`NEO4J_PASSWORD`, then rerun. The current helper starts the minimal research API on
+`http://127.0.0.1:8000/docs`, uses the `ping` agent by default and retains memory in the
+`alpha-factory-quickstart-data` volume. Use `--build-only` to build without launching. See the
+[Docker quickstart details](agent/REPOSITORY_GUIDE.md#docker-quickstart-for-the-preserved-research-api).
+
 ### Using the prebuilt Docker image
+
+These are preserved historical image instructions. Current release acceptance qualifies the
+source-built containers and release assets described in [Operations](agent/OPERATIONS.md); it does
+not establish the freshness or provenance of this independent Docker Hub `latest` tag.
 
 ```bash
 docker pull montrealai/alpha-factory:latest

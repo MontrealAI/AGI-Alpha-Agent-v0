@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.10.1 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.23.2 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.

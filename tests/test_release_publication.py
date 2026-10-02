@@ -75,6 +75,18 @@ def test_every_current_workspace_uses_the_release_version() -> None:
         assert parser.versions == [version], f"Stale release metadata in {page}"
 
 
+def test_active_operator_guides_and_asset_examples_match_the_release() -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+    operations = (root / "docs/agent/OPERATIONS.md").read_text()
+    factory = (root / "docs/agent/FACTORY_GUIDE.md").read_text()
+    assert f"Current release: **{version}**" in operations
+    assert f"**Version {version}.**" in factory
+    for asset_version in re.findall(r"alpha-agent-v(\d+\.\d+\.\d+)-(?:manuscript|browser)\.zip", operations):
+        assert asset_version == version, "An active download example points to an older release"
+    assert "docs/agent/REPOSITORY_GUIDE.md" in package_agent_release.release_documents(version)
+
+
 @pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
 def test_remote_main_must_still_match_before_publication(monkeypatch, head, kind) -> None:
     monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)

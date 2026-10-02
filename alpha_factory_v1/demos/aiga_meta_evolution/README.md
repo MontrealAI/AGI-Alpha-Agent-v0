@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.1
+## Current runnable path — 1.23.2
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 

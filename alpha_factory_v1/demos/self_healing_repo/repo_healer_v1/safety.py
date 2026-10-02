@@ -6,6 +6,8 @@ from __future__ import annotations
 import pathlib
 import re
 
+from .workspace import workspace_files
+
 FORBIDDEN_PATH_PATTERNS = (
     re.compile(r"^\.git(/|$)"),
     re.compile(r"^\.github/workflows/"),
@@ -27,7 +29,7 @@ def is_patch_safe(diff: str, repo_root: pathlib.Path, allow_create: set[str] | N
     """Check patch scope restrictions for Repo-Healer v1."""
     allow_create = allow_create or set()
     touched = touched_files_from_diff(diff)
-    existing = {str(p.relative_to(repo_root)) for p in repo_root.rglob("*") if p.is_file() and ".git" not in p.parts}
+    existing = {path.as_posix() for path in workspace_files(repo_root)}
     for path in touched:
         if any(p.search(path) for p in FORBIDDEN_PATH_PATTERNS):
             return False, f"touches protected surface: {path}"

@@ -7,7 +7,7 @@
 [Launch Demo](../self_healing_repo/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.1
+## Current runnable path — 1.23.2
 
 **Mode:** Bounded repair. Provides repository-specific triage and isolated repair evaluation.
 
