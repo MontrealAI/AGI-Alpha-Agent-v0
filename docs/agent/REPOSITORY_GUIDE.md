@@ -16,7 +16,7 @@ flowcharts, media and prior release notes remain available together in this repo
 | Train a small planning model | [MuZero guide](MUZERO.md) or [Evidence & Planning Lab](../demos/muzeromctsllmagent_v0.md) | Native training, measured baselines and retained reports |
 | Operate and recover the agent | [Operator guide](OPERATIONS.md) | Private state, authentication, pause, backup, restore and upgrades |
 | Reproduce the contract reference | [Ascension protocol](ASCENSION_PROTOCOL.md) | Local-EVM lifecycle with explicit fixture boundaries |
-| Contribute to the repository | [Contributor guide](../../AGENTS.md) | Locked development setup, hooks, types and tests |
+| Contribute to the repository | [Contributor guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md) | Locked development setup, hooks, types and tests |
 | Understand the research vision | [Manuscript alignment](MANUSCRIPT_ALIGNMENT.md) | The original manuscript mapped to implementations and remaining research obligations |
 
 The browser examples need no account or API key. The native allocation example needs Python 3.11–3.13;
