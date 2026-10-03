@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import pathlib
+import pytest
 
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.candidate_generation import generate_candidates
 from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.models import FailureBundle, ValidatorClass
+from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1.workspace import WorkspaceError
 
 
 def test_generate_candidates_fixes_missing_import(tmp_path: pathlib.Path) -> None:
@@ -38,6 +40,38 @@ def test_generate_candidates_noop_for_unsupported_class(tmp_path: pathlib.Path) 
 
     bundle = FailureBundle("wf", "job", "step", "1", "abc", validator_class=ValidatorClass.NONE, logs="assert")
     assert generate_candidates(repo, bundle) == []
+
+
+@pytest.mark.parametrize("relative", [False, True])
+def test_candidate_generation_cannot_modify_files_outside_copy(tmp_path: pathlib.Path, relative: bool) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    outside = tmp_path / "outside.py"
+    original = "import definitely_missing_module\n"
+    outside.write_text(original)
+    bundle = FailureBundle(
+        "wf",
+        "job",
+        "imports",
+        "1",
+        "abc",
+        validator_class=ValidatorClass.IMPORT,
+        candidate_files=["../outside.py" if relative else str(outside)],
+        logs="ModuleNotFoundError: definitely_missing_module",
+    )
+    with pytest.raises(WorkspaceError):
+        generate_candidates(repo, bundle)
+    assert outside.read_text() == original
+    assert list(repo.iterdir()) == []
+
+
+@pytest.mark.parametrize("logs", ["permission denied", "signature failed", "temporary failure", "macos ruff"])
+def test_candidate_generation_obeys_triage_before_running_tools(tmp_path: pathlib.Path, monkeypatch, logs: str) -> None:
+    from alpha_factory_v1.demos.self_healing_repo.repo_healer_v1 import candidate_generation
+
+    monkeypatch.setattr(candidate_generation, "_candidate_from_mutation", lambda *args: pytest.fail("unsafe mutation"))
+    bundle = FailureBundle("wf", "job", "step", "1", "abc", validator_class=ValidatorClass.RUFF, logs=logs)
+    assert generate_candidates(tmp_path, bundle) == []
 
 
 def test_generate_candidates_fixes_simple_mypy_literal_regression(tmp_path: pathlib.Path) -> None:

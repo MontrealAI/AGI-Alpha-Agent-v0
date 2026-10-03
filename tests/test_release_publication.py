@@ -172,7 +172,11 @@ def test_superseded_run_cannot_publish_even_if_main_moves_during_upload(tmp_path
 
 
 @pytest.mark.parametrize("version", ["1.2.0", "1.2.1"])
-def test_public_version_is_left_unchanged(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, version: str) -> None:
+@pytest.mark.parametrize("kind", ["commit", "tag"])
+@pytest.mark.parametrize("problem", [None, "commit", "missing", "type"])
+def test_public_version_is_left_unchanged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, version: str, kind: str, problem: str | None
+) -> None:
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("GITHUB_REPOSITORY", "MontrealAI/AGI-Alpha-Agent-v0")
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
@@ -185,16 +189,31 @@ def test_public_version_is_left_unchanged(tmp_path: Path, monkeypatch: pytest.Mo
 
     def read_public_release(*args: str) -> str:
         calls.append(args)
-        assert args == ("api", "repos/MontrealAI/AGI-Alpha-Agent-v0/releases?per_page=100")
-        return json.dumps([{"tag_name": f"v{version}", "draft": False, "html_url": "https://example.test/release"}])
+        assert len(args) == 2 and args[0] == "api", "A public release must only make read requests"
+        if args[1].endswith("/releases?per_page=100"):
+            return json.dumps([{"tag_name": f"v{version}", "draft": False, "html_url": "https://example.test/release"}])
+        target = {"type": "tree" if problem == "type" else "commit", "sha": ("b" if problem == "commit" else "a") * 40}
+        if args[1].endswith(f"/git/ref/tags/v{version}"):
+            if problem == "missing":
+                raise subprocess.CalledProcessError(1, ["gh", *args])
+            return json.dumps({"object": {"type": "tag", "sha": "c" * 40} if kind == "tag" else target})
+        assert kind == "tag" and args[1].endswith("/git/tags/" + "c" * 40)
+        return json.dumps({"object": target})
 
     def no_mutation(*args: object, **kwargs: object) -> None:
         raise AssertionError("An existing public version must not invoke any mutation")
 
     monkeypatch.setattr(publish_agent_release, "gh", read_public_release)
     monkeypatch.setattr(publish_agent_release.subprocess, "run", no_mutation)
-    publish_agent_release.main()
-    assert len(calls) == 1
+    if problem == "missing":
+        with pytest.raises(subprocess.CalledProcessError):
+            publish_agent_release.main()
+    elif problem:
+        with pytest.raises(ValueError, match="existing.*tag"):
+            publish_agent_release.main()
+    else:
+        publish_agent_release.main()
+    assert len(calls) == (3 if kind == "tag" and problem != "missing" else 2)
 
 
 @pytest.mark.parametrize("version", ["1.2.0", "../../other-tag", 121])

@@ -12,11 +12,11 @@ from dataclasses import dataclass
 
 from alpha_factory_v1.demos.self_healing_repo import patcher_core
 
-from .models import FailureBundle, PatchCandidate, RepairReport, SupportMode, ValidatorClass
+from .models import FailureBundle, FailureClass, PatchCandidate, RepairReport, SupportMode, ValidatorClass
 from .safety import is_patch_safe, touched_files_from_diff
 from .triage import triage_bundle
 from .validators import get_plan, run_validator
-from .workspace import copy_workspace
+from .workspace import WorkspaceError, copy_workspace, project_path, workspace_files
 
 
 @dataclass(slots=True)
@@ -40,6 +40,15 @@ class RepoHealerEngine:
         triage = triage_bundle(bundle)
         if triage.support_mode != SupportMode.AUTOPATCH_SAFE or self.options.report_only:
             return RepairReport(False, triage.classification, triage.support_mode, triage.reason, [], 0)
+
+        try:
+            for name in [*bundle.candidate_files, *(signal.path for signal in bundle.annotations if signal.path)]:
+                project_path(self.repo_root, name)
+            workspace_files(self.repo_root)
+        except (WorkspaceError, OSError) as exc:
+            return RepairReport(
+                False, FailureClass.UNSAFE_PROTECTED_SURFACE, SupportMode.UNSAFE_PROTECTED_SURFACE, str(exc), [], 0
+            )
 
         plan = get_plan(triage.validator_class)
         targeted = self._resolve_targeted_command(bundle, triage.validator_class, plan.targeted)
@@ -87,7 +96,17 @@ class RepoHealerEngine:
                 else:
                     success_reason = "targeted validator passed (broader validation skipped by option)"
 
-                self._promote_patch(candidate.diff, isolated_repo)
+                try:
+                    self._promote_patch(candidate.diff, isolated_repo)
+                except (WorkspaceError, OSError) as exc:
+                    return RepairReport(
+                        False,
+                        FailureClass.UNSAFE_PROTECTED_SURFACE,
+                        SupportMode.UNSAFE_PROTECTED_SURFACE,
+                        str(exc),
+                        commands,
+                        attempts,
+                    )
                 return RepairReport(
                     True,
                     triage.classification,
@@ -130,12 +149,15 @@ class RepoHealerEngine:
 
     def _promote_patch(self, diff: str, isolated_repo: pathlib.Path) -> None:
         """Copy touched files from validated isolated repo back to working tree."""
+        copies = []
         for rel in touched_files_from_diff(diff):
-            source = isolated_repo / rel
-            destination = self.repo_root / rel
-            if source.exists():
-                destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(source, destination)
+            source = project_path(isolated_repo, rel)
+            destination = project_path(self.repo_root, rel)
+            if not source.is_file() or not destination.is_file():
+                raise WorkspaceError(f"Promotion requires existing ordinary files: {rel}")
+            copies.append((source, destination))
+        for source, destination in copies:
+            shutil.copy2(source, destination)
 
 
 def write_report(report: RepairReport, out_path: pathlib.Path) -> None:

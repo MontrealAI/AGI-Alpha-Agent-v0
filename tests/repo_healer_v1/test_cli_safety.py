@@ -69,3 +69,47 @@ def test_safety_rejects_dot_git_paths(tmp_path: Path) -> None:
 def test_cli_default_repo_targets_current_repository() -> None:
     expected = Path(__file__).resolve().parents[2]
     assert cli.DEFAULT_REPO_ROOT == expected
+
+
+def test_cli_reports_invalid_candidate_without_mutating_outside_file(tmp_path: Path, monkeypatch) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    outside = tmp_path / "outside.py"
+    outside.write_text("import definitely_missing_module\n")
+    bundle_path = tmp_path / "bundle.json"
+    bundle_path.write_text(
+        json.dumps(
+            {
+                "workflow": "wf",
+                "job": "job",
+                "step": "step",
+                "run_id": "1",
+                "sha": "abc",
+                "validator_class": "import",
+                "candidate_files": [str(outside)],
+                "logs": "ModuleNotFoundError: definitely_missing_module",
+            }
+        )
+    )
+    candidates_path = tmp_path / "candidates.json"
+    candidates_path.write_text("[]")
+    report = tmp_path / "report.json"
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "repo-healer",
+            "--repo",
+            str(repo),
+            "--failure-bundle",
+            str(bundle_path),
+            "--candidates",
+            str(candidates_path),
+            "--report",
+            str(report),
+        ],
+    )
+    assert cli.main() == 1
+    result = json.loads(report.read_text())
+    assert not result["success"] and result["support_mode"] == "UNSAFE_PROTECTED_SURFACE"
+    assert "repository-relative" in result["reason"]
+    assert outside.read_text() == "import definitely_missing_module\n"

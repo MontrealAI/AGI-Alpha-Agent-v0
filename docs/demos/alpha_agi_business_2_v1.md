@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_2_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.23.3
 
 **Mode:** Local service. Runs planning, research and optional commentary agents in the legacy orchestrator.
 

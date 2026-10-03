@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_3_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.23.3
 
 **Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
 and export reviewable Ascension jobs.

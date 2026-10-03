@@ -21,7 +21,7 @@ own supplied source excerpts; the tool does not fetch or authenticate those sour
 Priority scores are not forecast probabilities, valuations or a claim of beyond-human prediction.
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.23.3
 
 **Mode:** Local evidence review. **Prerequisites:** Python 3.11–3.13 and the installed package or a source checkout.
 Discovery uses only the standard library.

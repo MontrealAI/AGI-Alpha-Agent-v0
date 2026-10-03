@@ -1,3 +1,11 @@
+## 1.23.3 — 2026-10-03
+
+- Reject unsafe repair paths, links and special files before mutation and recheck files before promotion.
+- Preserve user backups and restore each original file after a partial patch failure.
+- Require an existing public release tag to match the tested commit before accepting an idempotent rerun.
+- Retain all original files, flowcharts, media and research, with unchanged state formats.
+- See [release notes](agent/RELEASE_NOTES_1.23.3.md).
+
 ## 1.23.2 — 2026-10-02
 
 - Repair the root Docker quickstart, local binding, persistent memory and non-root API health checks.
