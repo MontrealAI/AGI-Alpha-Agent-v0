@@ -11,7 +11,7 @@ a reproducible review and nine measurable, unsubmitted $AGIALPHA verification jo
 · [Original research archive](RESEARCH_ARCHIVE.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.23.3
 
 **Mode:** Offline governance review. Evaluates nine proposal gates and exports reproducible evidence and Ascension job specifications.
 

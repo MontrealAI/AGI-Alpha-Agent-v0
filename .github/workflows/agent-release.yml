@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -275,7 +275,7 @@ jobs:
         run: |
           npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           python -m scripts.validate_insight_cache_update --output evidence/insight-cache-update.json
-          python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
+          python -m scripts.validate_insight_offline --layout --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-offline.json
       - name: Verify the checked-in documentation demo offline
         run: python -m scripts.validate_insight_offline --dist docs/alpha_agi_insight_v1 --output evidence/insight-docs-offline.json
       - name: Manual browser build uses the same offline distribution
@@ -285,7 +285,7 @@ jobs:
           python manual_build.py
           sha256sum -c "$RUNNER_TEMP/insight-build.sha256"
           cd "$GITHUB_WORKSPACE"
-          python -m scripts.validate_insight_offline --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-manual-offline.json
+          python -m scripts.validate_insight_offline --layout --dist alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/dist --output evidence/insight-manual-offline.json
       - name: Shipped contracts and real agent payment lifecycle
         run: |
           npm ci --prefix tests/contracts
@@ -504,7 +504,7 @@ jobs:
         run: |
           model_args=()
           if [[ "${{ matrix.assets }}" == "full" ]]; then model_args+=(--model); fi
-          python -m scripts.validate_insight_offline --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json "${model_args[@]}"
+          python -m scripts.validate_insight_offline --layout --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json "${model_args[@]}"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

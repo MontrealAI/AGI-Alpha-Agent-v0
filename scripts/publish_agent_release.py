@@ -21,6 +21,15 @@ def gh(*args: str) -> str:
     return subprocess.check_output(["gh", *args], text=True)
 
 
+def tag_commit(repo: str, obj: dict[str, str]) -> str:
+    """Require a lightweight commit tag or a one-level annotated commit tag."""
+    if obj["type"] == "tag":
+        obj = json.loads(gh("api", f"repos/{repo}/git/tags/{obj['sha']}"))["object"]
+    if obj["type"] != "commit":
+        raise ValueError("existing tag does not point directly to a commit")
+    return obj["sha"]
+
+
 def main() -> None:
     repo = "MontrealAI/AGI-Alpha-Agent-v0"
     if os.getenv("GITHUB_REPOSITORY") != repo or os.getenv("GITHUB_REF") != "refs/heads/main":
@@ -39,17 +48,16 @@ def main() -> None:
     releases = json.loads(gh("api", f"repos/{repo}/releases?per_page=100"))
     prior = next((item for item in releases if item["tag_name"] == tag), None)
     if prior and not prior["draft"]:
+        obj = json.loads(gh("api", f"repos/{repo}/git/ref/tags/{tag}"))["object"]
+        if tag_commit(repo, obj) != sha:
+            raise ValueError("existing public tag points to a different commit; increment the release version")
         print(f"{tag} is already public; its tag and assets remain unchanged: {prior['html_url']}")
         return
     require_current_main()
     ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True)
     if ref.returncode == 0:
         obj = json.loads(ref.stdout)["object"]
-        target = (
-            json.loads(gh("api", f"repos/{repo}/git/tags/{obj['sha']}"))["object"]["sha"]
-            if obj["type"] == "tag"
-            else obj["sha"]
-        )
+        target = tag_commit(repo, obj)
         if target != sha:
             raise ValueError("existing tag points to a different commit")
     else:

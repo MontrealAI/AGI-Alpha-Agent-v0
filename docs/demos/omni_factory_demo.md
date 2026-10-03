@@ -7,7 +7,7 @@
 [Launch Demo](../omni_factory_demo/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.23.3
 
 **Mode:** Offline simulation. Runs bounded smart-city episodes with local accounting.
 

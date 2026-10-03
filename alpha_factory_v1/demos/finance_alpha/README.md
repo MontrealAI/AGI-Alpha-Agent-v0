@@ -9,7 +9,7 @@ reversal and gap scenarios—or import your own aligned price bars. Every decisi
 fill, risk block and equity mark is available for review. No API key, model, Docker or broker account is needed.
 
 <!-- CURRENT-DEMO:START -->
-## Start locally — 1.23.2
+## Start locally — 1.23.3
 
 From the repository root with **Python 3.11–3.13**, run:
 

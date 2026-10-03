@@ -10,7 +10,7 @@ The supported task is deliberately small: take **0.3 now**, or learn a two-step
 route to **1.0 later**. All outcomes are simulator rewards, not money.
 
 <!-- CURRENT-DEMO:START -->
-## Start in three steps — 1.23.2
+## Start in three steps — 1.23.3
 
 From a source checkout on **Linux x86_64**, with **Python 3.11–3.13**:
 

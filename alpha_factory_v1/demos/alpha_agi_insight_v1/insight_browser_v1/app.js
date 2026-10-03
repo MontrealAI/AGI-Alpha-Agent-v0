@@ -77,7 +77,7 @@ function setupView(){
         .attr('viewBox','0 0 500 500')
         .style('touch-action','none');
   view=svg.append('g');
-  info=svg.append('text').attr('x',20).attr('y',30).attr('fill','#fff')
+  info=svg.append('text').attr('x',250).attr('y',22).attr('text-anchor','middle').attr('fill','currentColor')
   initGestures(svg.node(), view.node ? view.node() : view)
 }
 

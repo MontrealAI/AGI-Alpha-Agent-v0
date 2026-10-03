@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.23.2 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.23.3 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -245,3 +245,25 @@ Wheel verification now uses real Ed25519 signatures in both the loader and CLI t
 allowlist entry cannot authorize changed wheel bytes, another public key, an invalid signature or
 malformed base64. The four CLI tests execute without the previous OpenSSL-related skips. This verifies
 the signature boundary; it does not qualify the historical hot-load integration for production use.
+
+## Version 1.23.3 repair and publication boundaries
+
+Regression tests exercise real GNU patch success and partial-failure rollback, distinct same-stem
+backups, user backup/reject preservation, rejected absolute/traversal paths, symbolic and hard links,
+FIFOs, structured CLI refusals and link replacement before promotion. Candidate generation now obeys
+triage before invoking a mutator. These checks protect the supported ordinary-file repair workspace;
+validator commands remain trusted code, and exclusive access to the checkout is required.
+
+Release rerun tests require an existing public tag to resolve to the exact tested commit, covering
+lightweight and annotated tags. Missing, mismatched and non-commit tags fail without publication
+mutations. Existing public assets are never overwritten. The complete release acceptance matrix
+still runs for the new commit; results from 1.23.2 do not authorize this release.
+
+The initial candidate's npm audit caught the newly reviewed `braces` advisory in the older CSS/lint
+toolchain. The release migrates to Tailwind 4/PostCSS and current compatible lint/theme packages,
+removing that dependency chain. The full-graph audit and real online/offline browser checks remain
+mandatory. MuZero acceptance also checks Start/Stop availability against real training state and
+cancels an active budget, avoiding a race against an already-completed tiny experiment.
+Current Insight source builds and both generated galleries additionally require non-overlapping panels
+and no horizontal page overflow at desktop, mobile and narrow mobile widths after offline reload.
+The separately preserved documentation snapshot retains its original functional acceptance.

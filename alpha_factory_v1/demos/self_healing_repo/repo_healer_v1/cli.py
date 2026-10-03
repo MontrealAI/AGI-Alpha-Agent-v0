@@ -9,7 +9,16 @@ import pathlib
 
 from .candidate_generation import generate_candidates
 from .engine import EngineOptions, RepoHealerEngine, write_report
-from .models import FailureBundle, FailureSignal, PatchCandidate, SupportMode, ValidatorClass
+from .models import (
+    FailureBundle,
+    FailureClass,
+    FailureSignal,
+    PatchCandidate,
+    RepairReport,
+    SupportMode,
+    ValidatorClass,
+)
+from .workspace import WorkspaceError
 
 DEFAULT_REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
 
@@ -44,9 +53,14 @@ def main() -> int:
     )
     bundle = _load_bundle(pathlib.Path(args.failure_bundle))
     candidates = _load_candidates(pathlib.Path(args.candidates))
-    if not candidates and not args.report_only:
-        candidates = generate_candidates(pathlib.Path(args.repo).resolve(), bundle)
-    report = engine.run(bundle, candidates)
+    try:
+        if not candidates and not args.report_only:
+            candidates = generate_candidates(pathlib.Path(args.repo).resolve(), bundle)
+        report = engine.run(bundle, candidates)
+    except (WorkspaceError, OSError) as exc:
+        report = RepairReport(
+            False, FailureClass.UNSAFE_PROTECTED_SURFACE, SupportMode.UNSAFE_PROTECTED_SURFACE, str(exc), [], 0
+        )
     write_report(report, pathlib.Path(args.report))
     print(json.dumps(report.to_dict(), indent=2))
     if args.report_only:

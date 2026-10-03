@@ -66,6 +66,8 @@ function ensureDevPackages() {
     const packages = [
         "esbuild",
         "tailwindcss",
+        "@tailwindcss/postcss",
+        "postcss",
         "workbox-build",
         "@web3-storage/w3up-client",
         "dotenv",
@@ -327,9 +329,15 @@ async function bundle() {
     const d3ExportNames = extractD3NamedImports(await fs.readFile(bundlePath, "utf8"));
     await fs.writeFile(d3ExportsPath, renderD3BridgeModule(d3ExportNames), "utf8");
     await fs.copyFile(d3ExportsPath, d3ExportsAlias).catch(() => {});
-    execSync(`npx tailwindcss -i style.css -o ${OUT_DIR}/style.css --minify`, {
-        stdio: "inherit",
-    });
+    const [{ default: postcss }, { default: tailwindcss }] = await Promise.all([
+        import("postcss"), import("@tailwindcss/postcss"),
+    ]);
+    const stylesheet = await postcss([tailwindcss({ optimize: true })]).process(
+        await fs.readFile("style.css", "utf8"),
+        { from: "style.css", to: `${OUT_DIR}/style.css`, map: false },
+    );
+    for (const warning of stylesheet.warnings()) console.warn(warning.toString());
+    await fs.writeFile(`${OUT_DIR}/style.css`, stylesheet.css, "utf8");
     let outHtml = html;
     const connectSrc =
         [

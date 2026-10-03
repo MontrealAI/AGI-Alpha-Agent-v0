@@ -13,16 +13,17 @@ generate_patch(test_log: str, llm: OpenAIAgent, repo_path: str) -> str
     • Verifies that the diff only touches files that already exist.
 
 apply_patch(patch: str, repo_path: str) -> None
-    • Applies the diff atomically (uses GNU patch).
-    • Creates a `.bak` backup per touched file and rolls back on failure.
+    • Applies the diff using GNU patch, with rollback on patch failure.
+    • Keeps distinct backups in a temporary directory, preserving user backups.
 
 validate_repo(repo_path: str, cmd: Optional[list[str]] = None) -> tuple[int,str]
     • Runs the given command, returning (returncode, combined stdout+stderr).
 
-The trio forms a minimal, production‑ready healing loop while remaining
-agnostic to any higher‑level agent orchestration.
+The trio forms a minimal healing loop for trusted, exclusively owned workspaces.
+Validation commands execute with the caller's permissions; this is not a sandbox.
 
-All file‑system mutations stay **inside `repo_path`** for container safety.
+Patch targets must be ordinary repository files. Untrusted validators require
+separate operating-system isolation.
 """
 
 from __future__ import annotations
@@ -38,6 +39,8 @@ import tempfile
 import textwrap
 from typing import List, Optional, Tuple
 from typing import TYPE_CHECKING
+
+from .repo_healer_v1.workspace import project_path, workspace_files
 
 if TYPE_CHECKING:  # avoid hard dependency unless actually used
     from openai_agents import OpenAIAgent
@@ -56,7 +59,7 @@ def validate_repo(repo_path: str, cmd: Optional[List[str]] = None) -> Tuple[int,
 
 
 def _existing_files(repo: pathlib.Path) -> set[str]:
-    return {str(p.relative_to(repo)) for p in repo.rglob("*") if p.is_file()}
+    return {path.as_posix() for path in workspace_files(repo)}
 
 
 # ────────────────────────── patch logic ─────────────────────────────────────
@@ -143,53 +146,61 @@ def _sanity_check_patch(patch: str, repo_root: pathlib.Path) -> None:
     for line in patch.splitlines():
         if line.startswith(("--- ", "+++ ")):
             path = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            project_path(repo_root, path)
             touched.add(path)
+    if not touched or not _looks_like_diff(patch):
+        raise ValueError("Patch must contain unified diff file headers")
     non_existing = touched - _existing_files(repo_root)
     if non_existing:
         raise ValueError(f"Patch refers to unknown files: {', '.join(non_existing)}")
 
 
 def apply_patch(patch: str, repo_path: str) -> None:
-    """Apply patch atomically with rollback on failure."""
-    repo = pathlib.Path(repo_path)
+    """Apply a patch to ordinary project files, restoring backups on failure."""
+    repo = pathlib.Path(repo_path).resolve(strict=True)
     patch = _normalize_patch(patch)
     _sanity_check_patch(patch, repo)
     if shutil.which("patch") is None:
         raise RuntimeError(
             '`patch` command not found. Install the utility, e.g., "sudo apt-get update && sudo apt-get install -y patch"'
         )
-    backups = {}
-
-    # write patch to temp file
-    with tempfile.NamedTemporaryFile("w+", delete=False) as tf:
-        tf.write(patch)
-        patch_file = tf.name
-
-    try:
-        # back up touched files
-        for line in patch.splitlines():
-            if line.startswith(("--- ", "+++ ")):
-                rel = re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
-                file_path = repo / rel
-                if file_path.exists():
-                    backup = file_path.with_suffix(".bak")
-                    shutil.copy2(file_path, backup)
-                    backups[file_path] = backup
-        # apply
-        code, out = _run(["patch", "-p1", "-i", patch_file], cwd=repo_path)
-        if code != 0:
-            raise RuntimeError(f"patch command failed:\n{out}")
-    except Exception as e:
-        # rollback
-        for orig, bak in backups.items():
-            shutil.move(bak, orig)
-        raise e
-    finally:
-        os.unlink(patch_file)
-        # clean backups if success
-        for bak in backups.values():
-            if bak.exists():
-                os.unlink(bak)
+    touched = sorted(
+        {
+            re.sub(r"^[ab]/", "", line[4:].split("\t")[0])
+            for line in patch.splitlines()
+            if line.startswith(("--- ", "+++ "))
+        }
+    )
+    with tempfile.TemporaryDirectory(prefix="repo-healer-patch-") as temp:
+        storage = pathlib.Path(temp)
+        patch_file = storage / "change.diff"
+        patch_file.write_text(patch, encoding="utf-8")
+        backups: dict[pathlib.Path, pathlib.Path] = {}
+        for index, rel in enumerate(touched):
+            file_path = project_path(repo, rel)
+            backup = storage / f"original-{index}"
+            shutil.copy2(file_path, backup)
+            backups[file_path] = backup
+        try:
+            code, out = _run(
+                [
+                    "patch",
+                    "--batch",
+                    "--forward",
+                    "--no-backup-if-mismatch",
+                    "--reject-file=-",
+                    "-p1",
+                    "-i",
+                    str(patch_file),
+                ],
+                cwd=str(repo),
+            )
+            if code != 0:
+                raise RuntimeError(f"patch command failed:\n{out}")
+        except Exception:
+            for original, backup in backups.items():
+                shutil.copy2(backup, original)
+            raise
 
 
 if __name__ == "__main__":
@@ -207,7 +218,7 @@ if __name__ == "__main__":
 
         def llm(prompt: str) -> str:
             """Offline fallback using the local LLM."""
-            return llm_client.call_local_model([{"role": "user", "content": prompt}])
+            return str(llm_client.call_local_model([{"role": "user", "content": prompt}]))
 
     else:
         llm = OpenAIAgent(
