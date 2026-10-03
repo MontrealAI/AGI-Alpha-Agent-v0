@@ -19,7 +19,7 @@ from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 def validate(output: Path, url: str | None = None) -> None:
     """Use an isolated local server, not an SDK stub or prerecorded completion."""
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import expect, sync_playwright
 
     output.mkdir(parents=True, exist_ok=True)
     child = None
@@ -78,8 +78,10 @@ def validate(output: Path, url: str | None = None) -> None:
                     ),
                 )
                 page.goto(url, wait_until="networkidle")
+                expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
                 page.get_by_role("button", name="Train & compare", exact=True).click()
                 page.get_by_text("Complete.", exact=False).wait_for(timeout=120000)
+                expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
                 assert page.get_by_text("trained_search", exact=False).count() > 0
                 page.get_by_text("Watch the trained agent · bounded episode snapshots", exact=True).click()
                 page.get_by_role("img", name="Start · reward 0", exact=False).first.wait_for()
@@ -87,9 +89,17 @@ def validate(output: Path, url: str | None = None) -> None:
                 page.set_viewport_size({"width": 390, "height": 844})
                 page.screenshot(path=str(output / "mobile.png"), full_page=True)
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1")
+                # Give Stop a real in-flight run, rather than racing a tiny completed experiment.
+                episodes = page.get_by_role("slider").first
+                episodes.press("End")
+                expect(episodes).to_have_value("100")
                 page.get_by_role("button", name="Train & compare", exact=True).click()
+                expect(page.get_by_role("button", name="Stop", exact=True)).to_be_enabled()
+                expect(page.get_by_role("button", name="Train & compare", exact=True)).to_be_disabled()
                 page.get_by_role("button", name="Stop", exact=True).click()
                 page.get_by_text("Stopped.", exact=False).wait_for(timeout=15000)
+                expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
+                expect(page.get_by_role("button", name="Train & compare", exact=True)).to_be_enabled()
                 assert not errors, errors
                 (output / "browser.json").write_text(
                     json.dumps(

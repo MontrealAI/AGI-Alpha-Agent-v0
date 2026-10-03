@@ -1,4 +1,4 @@
-> **1.23.3 — Repair safety and verified release identity.** [Start with a useful result](docs/agent/START_HERE.md) · [Find your way around the repository](docs/agent/REPOSITORY_GUIDE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.3.md). Repairs reject unsafe workspace paths, preserve user backups and verify files before promotion. Original content and flowcharts remain preserved.
+> **1.23.3 — Safer repairs and clearer browser workflows.** [Start with a useful result](docs/agent/START_HERE.md) · [Find your way around the repository](docs/agent/REPOSITORY_GUIDE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.3.md). Responsive Insight panels, refreshed browser dependencies, reliable MuZero controls and safer file-preserving repairs. Original content and flowcharts remain preserved.
 
 > **1.23.1 — Complete demo catalog and repeatable evidence.** Discover all 26 entries and retain each experiment with `alpha-factory demo run <demo> --new-run`. [Walkthrough](docs/agent/DEMOS.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.1.md). All original demos and flowcharts remain.
 

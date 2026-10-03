@@ -258,3 +258,12 @@ Release rerun tests require an existing public tag to resolve to the exact teste
 lightweight and annotated tags. Missing, mismatched and non-commit tags fail without publication
 mutations. Existing public assets are never overwritten. The complete release acceptance matrix
 still runs for the new commit; results from 1.23.2 do not authorize this release.
+
+The initial candidate's npm audit caught the newly reviewed `braces` advisory in the older CSS/lint
+toolchain. The release migrates to Tailwind 4/PostCSS and current compatible lint/theme packages,
+removing that dependency chain. The full-graph audit and real online/offline browser checks remain
+mandatory. MuZero acceptance also checks Start/Stop availability against real training state and
+cancels an active budget, avoiding a race against an already-completed tiny experiment.
+Current Insight source builds and both generated galleries additionally require non-overlapping panels
+and no horizontal page overflow at desktop, mobile and narrow mobile widths after offline reload.
+The separately preserved documentation snapshot retains its original functional acceptance.

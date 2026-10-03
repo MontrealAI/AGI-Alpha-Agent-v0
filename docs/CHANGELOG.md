@@ -1,5 +1,6 @@
 ## 1.23.3 — 2026-10-03
 
+- Refresh the audited Insight build toolchain and correct MuZero Start/Stop availability.
 - Reject unsafe repair paths, links and special files before mutation and recheck files before promotion.
 - Preserve user backups and restore each original file after a partial patch failure.
 - Require an existing public release tag to match the tested commit before accepting an idempotent rerun.

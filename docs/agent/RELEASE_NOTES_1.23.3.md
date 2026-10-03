@@ -17,6 +17,15 @@ Start with the [repository guide](REPOSITORY_GUIDE.md), [first mission](START_HE
   Failed patches restore each original file, including files with the same stem. Existing `.bak`,
   `.orig` and `.rej` files remain untouched. Invalid diffs fail before running the patch utility.
 - Produce a structured unsafe-workspace report when the CLI refuses a repair input.
+- Refresh the Insight CSS/lint toolchain to remove the unpatched `braces` dependency
+  ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)). Compile Tailwind through
+  its maintained PostCSS integration, retain the existing theme configuration and preserve all demo controls.
+- Arrange the standalone Insight simulator panels in a responsive workspace with readable form controls,
+  keyboard focus and theme-aware labels. Preserve its charts, archive, batch simulation, model controls,
+  telemetry, debate arena and exports; require no panel overlap or horizontal page overflow at 1440,
+  390 and 320 pixels after offline reload.
+- Enable MuZero Stop only after a training run starts, disable duplicate starts while it runs, and
+  restore controls on completion/cancellation. Browser acceptance cancels a genuinely active run.
 - Verify that an already-public release tag resolves to the tested commit before treating a rerun
   as complete. Missing, mismatched or non-commit tags fail; published assets are never overwritten.
 - Synchronize current package, catalog, browser metadata and operator guides for 1.23.3.
@@ -30,6 +39,10 @@ audits, Python and installed-wheel matrices, native training, browser workflows,
 full/minimal galleries and public-site acceptance. Uploaded assets are downloaded and verified again.
 The release manifest and validation archive bind the results, skips and expected failures to the exact
 published commit. Previous-release evidence is not reused as authorization.
+
+The full Insight npm graph is audited again, including development tools. Its migrated build must
+pass TypeScript, lint, service-worker update tests and real online/offline simulation. Real MuZero
+training, desktop/mobile layout, cancellation and container acceptance remain required.
 
 All original paths, manuscript bytes, media, README text and Mermaid flowcharts remain protected by
 preservation checks. The 26-entry catalog and its 17 finite launch contracts remain intact.
