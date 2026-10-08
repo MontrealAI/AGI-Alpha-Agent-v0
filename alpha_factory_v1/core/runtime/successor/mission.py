@@ -433,20 +433,26 @@ def challenge(frozen: dict[str, Any], checkpoint: Checkpoint | None = None) -> d
     }
 
 
+def _verifier_environment() -> dict[str, str]:
+    """Retain interpreter discovery and public architecture metadata, never ambient credentials."""
+    # CPython 3.11's platform.machine() on Windows derives its value from these
+    # two PROCESSOR_* variables, including the native architecture under WOW64.
+    # Keep them so the fresh verifier observes the same strictly bound host.
+    allowed = {"PATH", "PYTHONPATH", "SYSTEMROOT", "WINDIR", "PROCESSOR_ARCHITECTURE", "PROCESSOR_ARCHITEW6432"}
+    return {key: value for key, value in os.environ.items() if key in allowed}
+
+
 def examine(frozen: dict[str, Any], checkpoint: Checkpoint | None = None) -> dict[str, Any]:
     """Send the frozen artifact to a fresh local custodian process and return only its report."""
     frozen = copy.deepcopy(frozen)
     validate_frozen(frozen)
     check = checkpoint or (lambda: None)
-    environment = {
-        key: value for key, value in os.environ.items() if key in {"PATH", "PYTHONPATH", "SYSTEMROOT", "WINDIR"}
-    }
     proc = subprocess.Popen(
         [sys.executable, "-m", "alpha_factory_v1.core.runtime.successor.evaluation", "--stdio"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        env=environment,
+        env=_verifier_environment(),
     )
     start = time.monotonic()
     payload: bytes | None = canonical(frozen)

@@ -26,6 +26,7 @@ from alpha_factory_v1.core.runtime.successor.evaluation import (
 from alpha_factory_v1.core.runtime.successor.mission import (
     GrammarSupplier,
     OpenAICompatibleSupplier,
+    _verifier_environment,
     challenge,
     discover,
     examine,
@@ -208,6 +209,45 @@ def test_live_wrong_candidate_is_rejected_by_actual_examination(formation: dict[
     proof = evaluate_frozen(formation["freeze"])
     assert proof["decision"]["local_verdict"] == "FAIL"
     assert any(item["gate"] == "correctness" for item in proof["failures"])
+
+
+@pytest.mark.parametrize("native_architecture", [None, "AMD64"])
+def test_verifier_child_preserves_windows_architecture_without_credentials(
+    monkeypatch: pytest.MonkeyPatch, native_architecture: str | None
+) -> None:
+    monkeypatch.setenv("PROCESSOR_ARCHITECTURE", "x86")
+    if native_architecture is None:
+        monkeypatch.delenv("PROCESSOR_ARCHITEW6432", raising=False)
+    else:
+        monkeypatch.setenv("PROCESSOR_ARCHITEW6432", native_architecture)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-parent-only")
+    monkeypatch.setenv("SUCCESSOR_PRIVATE_VALUE", "test-parent-only")
+    # Exercise CPython's actual Windows detector on every host. Newer Python
+    # versions try WMI first; force its fallback to reproduce Python 3.11.
+    child = """
+import json
+import os
+import platform
+
+def unavailable(*args):
+    raise OSError("exercise Windows environment fallback")
+
+if hasattr(platform, "_wmi_query"):
+    platform._wmi_query = unavailable
+print(json.dumps({
+    "machine": platform._get_machine_win32(),
+    "credential_present": "OPENAI_API_KEY" in os.environ,
+    "private_value_present": "SUCCESSOR_PRIVATE_VALUE" in os.environ,
+}))
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", child], capture_output=True, check=True, timeout=30, env=_verifier_environment()
+    )
+    assert safe_json_loads(result.stdout) == {
+        "machine": native_architecture or "x86",
+        "credential_present": False,
+        "private_value_present": False,
+    }
 
 
 def test_packaged_verifier_process_fresh_data_and_protocol_binding(formation: dict[str, Any], tmp_path: Path) -> None:

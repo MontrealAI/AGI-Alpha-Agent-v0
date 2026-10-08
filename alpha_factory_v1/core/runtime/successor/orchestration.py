@@ -116,7 +116,7 @@ def _source_artifacts() -> list[BehaviorArtifact]:
     paths = sorted(root.glob("*.py")) + [root.parent / name for name in ("models.py", "store.py", "provider.py")]
     return [
         BehaviorArtifact(
-            name=str(path.relative_to(root.parent)).replace("/", ":"),
+            name=path.relative_to(root.parent).as_posix().replace("/", ":"),
             role="source",
             digest=hashlib.sha256(path.read_bytes()).hexdigest(),
         )
