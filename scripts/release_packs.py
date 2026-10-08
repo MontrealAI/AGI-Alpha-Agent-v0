@@ -9,6 +9,7 @@ import json
 import os
 import re
 import stat
+import sys
 import tempfile
 import zipfile
 from collections.abc import Callable, Iterable
@@ -371,25 +372,77 @@ def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | N
     }
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+def main(argv: list[str] | None = None) -> int:
+    """Explain operator options and report expected input failures without a traceback."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog="Use 'restore --help' for offline download instructions or 'pack --help' for maintainer options.",
+    )
     commands = parser.add_subparsers(dest="command", required=True)
-    create = commands.add_parser("pack")
-    create.add_argument("--source", type=Path, required=True)
-    create.add_argument("--output", type=Path, required=True)
-    create.add_argument("--prefix", required=True)
-    create.add_argument("--commit", required=True)
-    create.add_argument("--version", required=True)
-    extract = commands.add_parser("restore")
-    extract.add_argument("--manifest", type=Path, required=True)
-    extract.add_argument("--destination", type=Path, required=True)
-    extract.add_argument("--groups", nargs="+", choices=sorted(GROUPS))
-    args = parser.parse_args()
-    if args.command == "pack":
-        print(pack(args.source, args.output, args.prefix, commit=args.commit, version=args.version))
-    else:
-        print(json.dumps(restore(args.manifest, args.destination, groups=args.groups)))
+    create = commands.add_parser(
+        "pack",
+        help="Create bounded packs from a source directory or ZIP (maintainers)",
+        description="Preserve every source file in bounded packs and record exact source/release identities.",
+    )
+    create.add_argument("--source", type=Path, required=True, help="Ordinary directory or ZIP to preserve")
+    create.add_argument("--output", type=Path, required=True, help="Output directory outside the source")
+    create.add_argument("--prefix", required=True, help="New pack prefix, for example site or browser")
+    create.add_argument("--commit", required=True, help="Full 40-character lowercase source commit SHA")
+    create.add_argument("--version", required=True, help="Release version without v, for example 1.24.0")
+    extract = commands.add_parser(
+        "restore",
+        help="Verify downloaded packs and restore into a new directory",
+        description="Verify pack, chunk and file hashes before promoting the restored directory. No network is used.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Download this helper, the manifest and every selected pack from the same release.\n"
+            "Keep packs beside their manifest and check downloads against trusted SHA256SUMS.\n"
+            "Core supports the first SUCCESSOR rehearsal; older demos may need optional packs.\n\n"
+            "Examples:\n"
+            "  python release_packs.py restore --manifest site-packs.json --destination successor-site --groups core\n"
+            "  python release_packs.py restore --manifest site-packs.json --destination complete-site\n\n"
+            "Omitting --groups restores all four groups. Existing destinations are never replaced.\n"
+            "To add optional groups, download their packs and restore again into a new directory.\n"
+            "After a successful site restore, serve it locally:\n"
+            "  python -m http.server 8080 --bind 127.0.0.1 --directory successor-site\n"
+            "Then open http://127.0.0.1:8080/successor/ and press Ctrl+C to stop the server."
+        ),
+    )
+    extract.add_argument(
+        "--manifest", type=Path, required=True, help="Downloaded site-packs.json or browser-packs.json"
+    )
+    extract.add_argument("--destination", type=Path, required=True, help="New directory to create after verification")
+    extract.add_argument(
+        "--groups",
+        nargs="+",
+        choices=sorted(GROUPS),
+        help="Groups to restore (default: all); core is the smallest start",
+    )
+    args = parser.parse_args(argv)
+    try:
+        if args.command == "pack":
+            print(pack(args.source, args.output, args.prefix, commit=args.commit, version=args.version))
+        else:
+            print(json.dumps(restore(args.manifest, args.destination, groups=args.groups)))
+    except (OSError, ValueError, zipfile.BadZipFile) as exc:
+        print(f"{args.command.capitalize()} stopped: {exc}", file=sys.stderr)
+        if args.command == "restore":
+            print(
+                "Use matching downloads from one release and a new destination. "
+                "Run python release_packs.py restore --help for examples.",
+                file=sys.stderr,
+            )
+        else:
+            print("Partial packs may remain; inspect the error and retry with a new output directory.", file=sys.stderr)
+        return 1
+    except KeyboardInterrupt:
+        print(
+            f"{args.command.capitalize()} interrupted. Inspect the output and retry with a new destination.",
+            file=sys.stderr,
+        )
+        return 130
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

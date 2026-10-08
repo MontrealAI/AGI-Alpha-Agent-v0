@@ -43,10 +43,31 @@ def verify_assets(root: Path) -> tuple[Path, Path]:
 
 def main(argv: list[str] | None = None) -> int:
     """Check or install matching assets, reporting failures without touching old state."""
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release-dir", type=Path, default=Path.cwd())
-    parser.add_argument("--venv", type=Path, default=Path(".venv-agent"))
-    parser.add_argument("--wheelhouse", type=Path)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Download the wheel, requirements-agent.lock and SHA256SUMS from one official release.\n"
+            "Keep them in a separate download folder; the environment destination must be new.\n\n"
+            "Examples (use python3 on macOS/Linux if needed):\n"
+            "  python install_agent.py --release-dir . --venv .venv-agent --check-only\n"
+            "  python install_agent.py --release-dir . --venv .venv-agent\n"
+            "  python install_agent.py --release-dir . --venv .venv-agent --wheelhouse wheels\n\n"
+            "Check-only verifies assets and paths, not dependency-wheel completeness. Offline installs\n"
+            "need every hashed dependency as a wheel compatible with this Python and platform.\n"
+            "A failed or interrupted installation retains its partial environment for diagnosis;\n"
+            "resolve the reported problem and retry with a new --venv directory."
+        ),
+    )
+    parser.add_argument(
+        "--release-dir", type=Path, default=Path.cwd(), help="Folder containing matching release assets (default: .)"
+    )
+    parser.add_argument(
+        "--venv", type=Path, default=Path(".venv-agent"), help="New environment directory (default: .venv-agent)"
+    )
+    parser.add_argument(
+        "--wheelhouse", type=Path, help="Install dependencies only from this local wheel folder; never use an index"
+    )
     parser.add_argument("--check-only", action="store_true", help="Verify inputs without installing or writing files")
     args = parser.parse_args(argv)
     if not (3, 11) <= sys.version_info[:2] < (3, 14):
@@ -78,7 +99,13 @@ def main(argv: list[str] | None = None) -> int:
         phase = "checking installed dependencies"
         subprocess.run([str(python), "-m", "pip", "check"], check=True)
         executable = target / ("Scripts/alpha-agent.exe" if os.name == "nt" else "bin/alpha-agent")
+        phase = "checking the installed command"
         subprocess.run([str(executable), "--version"], check=True)
+    except KeyboardInterrupt:
+        print(f"Installation interrupted while {phase}.", file=sys.stderr)
+        if phase != "checking release inputs":
+            print(f"Partial environment retained at {target}. Retry with a new --venv path.", file=sys.stderr)
+        return 130
     except (OSError, ValueError, subprocess.SubprocessError) as exc:
         detail = (
             f"command exited with status {exc.returncode}"

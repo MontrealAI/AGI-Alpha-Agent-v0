@@ -55,6 +55,11 @@ On Windows PowerShell:
 .\.venv-agent\Scripts\Activate.ps1
 ```
 
+If PowerShell blocks activation, call `.\.venv-agent\Scripts\alpha-agent.exe` in place of
+`alpha-agent`; activation is not required. Confirm `alpha-agent --version` matches the release you
+downloaded. A checksum error or installation failure is a reason to stop and fix the inputs, not to
+reuse a partially installed environment. See [first-run troubleshooting](OPERATIONS.md#troubleshooting-a-first-run).
+
 ## 2. Run and inspect the example
 
 ```bash
@@ -79,6 +84,8 @@ Stop the console with **Ctrl+C**.
 - Use the [demo walkthrough](DEMOS.md) for all browser experiences and the preserved local experiments.
 - Use [operations and recovery](OPERATIONS.md) before upgrades, backup, restore or provider configuration.
 - Use the [Ascension protocol guide](ASCENSION_PROTOCOL.md) for the local-EVM enterprise lifecycle.
+- Use the [contract deployment and migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md)
+  to inspect the deployment plan and rehearse the disposable Hardhat fixture. It is separate from installing this agent.
 - Inspect the release's `release-manifest.json` and `alpha-agent-v…-validation.zip` for exact acceptance
   results. The source, browser, complete site and unchanged manuscript are separate release assets.
 

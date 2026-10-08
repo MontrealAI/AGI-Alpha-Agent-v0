@@ -10,9 +10,14 @@ reassembled by the supplied standard-library Python helper; do not concatenate Z
 
 ## First offline rehearsal
 
+Use Python 3.11–3.13; the restoration helper needs no installed third-party packages. Open a terminal
+in a new download folder. On macOS/Linux use `python3` if `python` is unavailable; Windows uses `python`.
 Download `release_packs.py`, `site-packs.json` and every `site-core-*.zip` from the **same release**.
 Check their SHA-256 values against the release's `SHA256SUMS`, retained through your trusted channel.
 The pack manifest is an integrity inventory, not a new signing key or trust root.
+
+Keep the manifest and its ZIP files together with their original filenames. The helper does not fetch
+missing files. Inspect options with `python release_packs.py restore --help` before starting.
 
 ```sh
 python release_packs.py restore --manifest site-packs.json --destination successor-site --groups core
@@ -23,6 +28,9 @@ Open `http://127.0.0.1:8080/successor/`. Its maintained bounded computation need
 Some older galleries use optional model/media/research files. Their links are preserved; download the
 corresponding packs for those experiences. A cached browser session and a complete model download are
 separate prerequisites from the small first rehearsal.
+
+Leave the terminal running while browsing; press **Ctrl+C** to stop the local server. If port 8080 is
+occupied, use another port in both the command and URL. Keep the server bound to `127.0.0.1` for local use.
 
 ## Complete preservation restore
 
@@ -39,6 +47,22 @@ links, special files, traversal, duplicate entries, encrypted or compressed chun
 unknown schema versions and declared size overruns. An existing destination is never replaced.
 Use a new directory for an upgrade or to add optional packs; retain the prior directory for rollback.
 The complete site deployed by CI is reconstructed from these exact tested packs without rebuilding.
+
+## Troubleshooting and upgrades
+
+| Situation | Recovery |
+|---|---|
+| A pack is missing | Download every ZIP listed for the selected groups from the same release and place it beside the manifest. Keep original filenames. |
+| Size, hash or archive validation fails | Preserve the error, discard only the corrupted download after inspection, and obtain that asset again from the same release. Never edit the manifest to accept it. |
+| The destination exists | Choose a new destination. To add models/media/research, restore all desired groups together into that new directory. |
+| The restored page is blank when opened from disk | Start the localhost server and use its HTTP URL. ES modules and service workers do not work through `file://`. |
+| An optional asset link is unavailable in a core-only restore | Download the corresponding optional packs and perform a new restore. The minimal SUCCESSOR computation itself needs only core. |
+| A new online visit still shows the previous release | Export work first, close other site tabs, and reload after the content-versioned worker update. Keep private evidence outside browser storage. |
+
+Before a website upgrade, export any evidence you need from the browser and keep the prior restored
+directory. Changing the server directory does not migrate or back up browser storage. Verify the new
+workspace before retiring the old files. Each individual distributed file is bounded, but a complete
+restore requires space for the downloaded packs, staged reconstructed files and final restored directory.
 
 ## Reproducibility and source identity
 

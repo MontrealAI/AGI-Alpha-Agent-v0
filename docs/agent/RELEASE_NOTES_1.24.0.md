@@ -2,7 +2,8 @@
 
 # 1.24.0 — SUCCESSOR Ω mission institutions
 
-**Status: implementation candidate; publication requires the existing acceptance workflow.**
+**Publication requires the exact-commit acceptance workflow.** The published release manifest records
+the accepted revision, workflow and evidence; this guide describes the version's behavior and requirements.
 This feature extends the maintained runtime with persistent mission institutions, separately versioned
 candidate/proof/authority records, bounded aggregation search and explicit succession. It is an additive
 progression from Ascension. A software release, a local comparative result, external qualification and
@@ -30,13 +31,23 @@ Start with [the SUCCESSOR guide](SUCCESSOR.md), [the beginner entry point](START
   verification. Historical signed bytes and the documented wheel-signature format remain unchanged.
 - Distribution uses a small native core and bounded browser/site packs. Every published file is checked
   against the **450,000,000-byte** limit, with original content retained and safely reconstructed.
+- Installation, offline restoration and the source setup wizard provide command examples, actionable
+  failures and interruption recovery. The operator guides cover wheel-only examples, Windows execution,
+  checkpoint-aware upgrades and separate private recovery versus portable institution transfer.
+- The [Hardhat deployment guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md)
+  adds a read-only plan and a verified disposable local deployment with compiler/source identities,
+  complete mined receipts and contract bindings. The unavailable legacy Truffle deployment now stops
+  before loading credentials or submitting transactions. External-chain migration remains unsupported.
 
 ## Compatibility and preceding repair work
 
-The candidate is stacked on the open PR #4758 at `d1fb99e629ec1627e7d3876a330797bde79d5ee6`, based on
-main `aab4995ee87f7fb575180931c79b8bf86e26d50d`. That work retains repair-path safety and rollback,
+This version includes PR #4758 at `d1fb99e629ec1627e7d3876a330797bde79d5ee6`, based on
+main `aab4995ee87f7fb575180931c79b8bf86e26d50d`, merged with SUCCESSOR in PR #4759.
+That work retains repair-path safety and rollback,
 public-tag identity checks, Insight dependency/layout corrections and MuZero controls. Its formerly
 stale generated Insight documentation assets are rebuilt from the locked toolchain.
+Repair copies and comparisons also exclude CI's generated `.tmp` browser caches, while continuing to
+reject links and special files in project inputs. Excluded caches cannot become proposed deletions.
 
 The preserved web client updates Vue and `source-map-js` for their production advisories. Insight's
 locked build dependencies use patched `sharp` 0.35.5 and `compression` 1.8.2. Its ONNX installer uses
@@ -57,11 +68,15 @@ weights. Arbitrary generated-code execution retains explicit Docker opt-in and h
 For browser/site packages follow the [pack restoration instructions](SUCCESSOR_PACKAGING.md).
 
 Pause the old agent, verify and privately back up its state, and retain its independent checkpoint.
-Keep the old environment and state directory. Run the candidate with a new home and restore only through
+Keep the old environment and state directory. Run the new version with a new home and restore only through
 the documented explicit workflow. Portable institutional knowledge exports exclude operational grants
 and private signing credentials; they are different from private disaster-recovery backups. Do not run
-two serving versions against one home. To roll back, stop the candidate and restore the previously
-verified backup into a separate home using the retained previous environment, then reassess permission.
+two serving versions against one home. To roll back, stop the new process and restore a verified backup
+into a separate home using the retained previous environment only if the backup satisfies the latest
+independently retained checkpoint. Do not erase later revocations or work by choosing an older checkpoint.
+If current history cannot be restored compatibly, keep the operator stopped. Follow the
+[private recovery procedure](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys)
+before reassessing permission.
 
 ## Validation and limits
 

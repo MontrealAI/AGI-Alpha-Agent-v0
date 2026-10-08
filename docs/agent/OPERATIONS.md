@@ -7,7 +7,8 @@ Current release: **1.24.0**. See [release readiness and deployment scope](RELEAS
 ## Install from a release
 
 Use Python 3.11, 3.12 or 3.13. Download the wheel, `requirements-agent.lock`, `SHA256SUMS` and
-`install_agent.py` from the same official GitHub release into an empty directory. Check the release's
+`install_agent.py` from the same [official GitHub release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest)
+into an empty directory. Check the release's
 commit and provenance before trusting its files. Then:
 
 ```sh
@@ -22,6 +23,14 @@ from `agent-state/api.token`. It is held only in page memory. Keep the state dir
 Choose a sample mission, replace its inputs with your data, execute, inspect the evidence and approve or
 reject. Approval archives a result; it does not trade, send funds or operate equipment.
 
+Stop the console with **Ctrl+C** before continuing in the same terminal. The remaining examples use
+`alpha-agent` from the installed environment. On macOS/Linux activate it with
+`source .venv-agent/bin/activate`; on Windows PowerShell use
+`.\.venv-agent\Scripts\Activate.ps1`. Activation is optional: if PowerShell blocks that script, use
+`.\.venv-agent\Scripts\alpha-agent.exe` directly instead of changing execution policy. Use `python`
+instead of `python3` for the installer on Windows. Confirm the selected installation with
+`alpha-agent --version` and find command options with `alpha-agent --help` or `alpha-agent COMMAND --help`.
+
 The installer refuses an existing virtual environment, verifies wheel/lock checksums, installs all
 runtime dependencies from the hash-locked file, and runs `pip check`. A failed install may leave a partial
 new environment; remove that failed environment or select another path before retrying. The complete
@@ -33,9 +42,15 @@ files or using the network. An invalid or empty `--wheelhouse` fails before envi
 the installation itself verifies whether its hashed dependencies are complete and compatible.
 
 For an offline installation, download dependency wheels on a matching Python/platform with
-`python -m pip download --require-hashes -r requirements-agent.lock -d wheels`, then pass
+`python -m pip download --only-binary=:all: --require-hashes -r requirements-agent.lock -d wheels`, then pass
 `--wheelhouse wheels` to the installer. Do not mix the minimal operator environment with the much larger
-legacy demo/development dependency set.
+legacy demo/development dependency set. Prepare the wheelhouse on an online machine with the same Python
+minor version, operating system and architecture as the destination. Copy it alongside the four release
+assets, then run `python install_agent.py --release-dir . --venv .venv-agent --wheelhouse wheels`.
+This uses local wheels only; a missing or incompatible dependency stops installation.
+
+For the new bounded institution lifecycle, follow [SUCCESSOR Ω](SUCCESSOR.md) and its
+[operator/verifier handbook](SUCCESSOR_OPERATIONS.md). Its built-in mission needs no provider or Docker.
 
 ## Packaged examples and Ascension handoff
 
@@ -46,10 +61,12 @@ Follow the [factory guide](FACTORY_GUIDE.md) for verification, trusted keys/root
 
 ## Mission lifecycle and command line
 
-The source archive contains `examples/missions/{research,allocation,schedule,forecast,code}.json`.
+Copy the five editable examples from the installed wheel into a new directory. The same examples also
+remain under `examples/missions` in the source archive; a checkout is not required for these commands.
 
 ```sh
-alpha-agent --home ./agent-state run examples/missions/allocation.json
+alpha-agent examples --output my-missions
+alpha-agent --home ./agent-state run my-missions/allocation.json
 alpha-agent --home ./agent-state list
 alpha-agent --home ./agent-state show MISSION_UUID
 alpha-agent --home ./agent-state review MISSION_UUID --revision REVISION \
@@ -250,12 +267,34 @@ home. Review configuration and balance, then resume deliberately.
 Install an upgrade into a **new** virtual environment. Pause, back up, and verify before changing the
 service's executable. Keep the prior environment and backup until the new version passes your missions.
 For rollback, stop the new process and restore its pre-upgrade backup into a new home with the previous
-version. Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.24.0.
+version only if it still matches your latest independently retained journal checkpoint. If the new
+version recorded work, revocations or recovery decisions, an older backup must not erase that history
+or reinstate authority. Keep the operator stopped until a compatible, current recovery path is verified.
+For SUCCESSOR state, follow the [checkpoint verification procedure](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys).
+Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.24.0.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
 A local signature detects corruption, not theft of the key, semantic truth or deletion of the newest
 valid journal suffix. Independent backups/checkpoints are necessary for rollback detection.
+
+## Troubleshooting a first run
+
+| What you see | What to do next |
+|---|---|
+| `alpha-agent` is not found or reports another version | Activate the intended environment or call its executable by full path. Run `--version` before using private state. |
+| The installer refuses the destination | Keep the existing environment. Select a new `--venv` path; an interrupted installation may have left a partial new environment. |
+| Release checksum mismatch | Download the wheel, lock and checksums from one release into a new folder. Do not edit checksums to accept a mismatch. |
+| Offline dependency not found | Rebuild the wheelhouse on a matching Python/platform with the hash-locked download command above, then retry at a new environment path. |
+| `examples`, export, backup or restore refuses an existing path | Select a new output or restoration path. Keep prior evidence and private backups. |
+| The operator is paused | Inspect `doctor` and the retained journal before explicitly running `resume`. This does not restore revoked permissions. |
+| The console port is already in use | Stop the existing console with Ctrl+C, or use `alpha-agent --home ./agent-state serve --port 8766` and open `http://127.0.0.1:8766`. |
+| Signature, journal or configuration verification fails | Preserve the affected state. Use the verified recovery procedure; never edit signed rows, hashes or key files to bypass the error. |
+
+For help, retain the command, package version, operating system, error text and request/mission ID.
+Share only a reviewed public export. Do not attach the private home, API token, `.env`, role keys or
+private backup to an issue. See [SUCCESSOR recovery](SUCCESSOR_OPERATIONS.md#interrupt-inspect-resume-and-export)
+for its request-specific continuation commands.
 
 ## Container installation
 

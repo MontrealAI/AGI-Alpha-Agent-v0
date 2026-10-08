@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "compile": "hardhat compile",
     "test": "hardhat test",
+    "deploy:plan": "node scripts/deployment.js",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
     "ascension:demo": "hardhat run scripts/demo.js"
   },
   "devDependencies": {

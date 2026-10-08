@@ -6,8 +6,11 @@ any workflow-provided environment variables so CI fails fast if values drift.
 
 from __future__ import annotations
 
+import json
 import os
 import re
+import shutil
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -16,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TOKEN_CONFIG = ROOT / "token.config.js"
 CONTRACT_CONSTANTS = ROOT / "contracts/v2/Constants.sol"
 TEST_CONSTANTS = ROOT / "tests/contracts/contracts/v2/Constants.sol"
-TRUFFLE_MIGRATION = ROOT / "truffle/migrations/2_deploy_agijobs_v2.js"
+DEPLOYMENT_CHECK = ROOT / "tests/contracts/scripts/check-deployment-config.js"
 WORKFLOWS = (
     ROOT / ".github/workflows/ci.yml",
     ROOT / ".github/workflows/pr-ci.yml",
@@ -80,17 +83,6 @@ def load_contract_constants(path: Path) -> TokenConfig:
     return TokenConfig(address=address, decimals=decimals)
 
 
-def load_truffle_migration(expected: TokenConfig) -> TokenConfig:
-    text = TRUFFLE_MIGRATION.read_text(encoding="utf-8")
-    if not re.search(r"process\.env\.AGIALPHA_ADDRESS\s*\|\|\s*AGIALPHA_ADDRESS", text):
-        raise ValueError("truffle migration must default to AGIALPHA_ADDRESS when env var is unset")
-    if not re.search(r"Number\(process\.env\.AGIALPHA_DECIMALS\s*\|\|\s*AGIALPHA_DECIMALS\)", text):
-        raise ValueError("truffle migration must default to AGIALPHA_DECIMALS when env var is unset")
-    if not re.search(r"agiDecimals\s*!==\s*18", text):
-        raise ValueError("truffle migration AGIALPHA decimal guard must enforce 18 decimals")
-    return TokenConfig(address=expected.address, decimals=expected.decimals)
-
-
 def load_workflow_config(path: Path) -> TokenConfig:
     address = _extract_pattern(
         path,
@@ -105,6 +97,22 @@ def load_workflow_config(path: Path) -> TokenConfig:
         )
     )
     return TokenConfig(address=address, decimals=decimals)
+
+
+def load_deployment_config() -> TokenConfig:
+    """Exercise the provider-free deployment plan and disabled legacy route."""
+    node = shutil.which("node")
+    if not node:
+        raise ValueError("Node.js is required to verify deployment configuration; run nvm use before this check")
+    result = subprocess.run(
+        [node, str(DEPLOYMENT_CHECK)], cwd=ROOT, capture_output=True, text=True, check=False, timeout=30
+    )
+    if result.returncode:
+        raise ValueError(f"Deployment configuration failed: {result.stderr.strip()}")
+    data = json.loads(result.stdout)
+    if data.get("legacyDisabled") is not True or data.get("chainId") != "31337":
+        raise ValueError("Legacy migration must be disabled and the local deployment must use chain 31337")
+    return TokenConfig(address=data["token"]["address"], decimals=data["token"]["decimals"])
 
 
 def _env_config() -> TokenConfig | None:
@@ -136,15 +144,14 @@ def main() -> int:
         test_contract,
         labels=["expected", "tests/contracts/Constants.sol"],
     )
-    truffle = load_truffle_migration(token)
-    compare_configs(CANONICAL_TOKEN, truffle, labels=["expected", TRUFFLE_MIGRATION.name])
+    deployment = load_deployment_config()
+    compare_configs(CANONICAL_TOKEN, deployment, labels=["expected", "Hardhat deployment"])
     compare_configs(token, contract, labels=["token.config.js", "contracts/Constants.sol"])
     compare_configs(
         token,
         test_contract,
         labels=["token.config.js", "tests/contracts/Constants.sol"],
     )
-    compare_configs(token, truffle, labels=["token.config.js", TRUFFLE_MIGRATION.name])
 
     for workflow in WORKFLOWS:
         if workflow.exists():

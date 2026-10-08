@@ -11,11 +11,13 @@ flowcharts, media and prior release notes remain available together in this repo
 | Goal | Entry point | First result |
 |---|---|---|
 | Try the project immediately | [Public workspace](../index.html) | Editable scenarios, computed results and downloadable evidence |
+| Run a bounded two-generation mission | [SUCCESSOR Ω first session](SUCCESSOR.md) | Constructed challengers, fresh evaluation, retained knowledge and explicit proof/authority boundaries |
 | Work privately with your own records | [Start here](START_HERE.md) | Install matching release assets, run an allocation, inspect and review it |
 | Explore a particular experiment | [Complete demo walkthrough](DEMOS.md) | All 26 catalog entries, prerequisites and launch commands |
 | Train a small planning model | [MuZero guide](MUZERO.md) or [Evidence & Planning Lab](../demos/muzeromctsllmagent_v0.md) | Native training, measured baselines and retained reports |
 | Operate and recover the agent | [Operator guide](OPERATIONS.md) | Private state, authentication, pause, backup, restore and upgrades |
 | Reproduce the contract reference | [Ascension protocol](ASCENSION_PROTOCOL.md) | Local-EVM lifecycle with explicit fixture boundaries |
+| Inspect contract deployment or migration | [Hardhat deployment guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed deployment plan, disposable local receipts and external deployment prerequisites |
 | Contribute to the repository | [Contributor guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md) | Locked development setup, hooks, types and tests |
 | Understand the research vision | [Manuscript alignment](MANUSCRIPT_ALIGNMENT.md) | The original manuscript mapped to implementations and remaining research obligations |
 
@@ -79,6 +81,21 @@ exists and contains wheel files; dependency completeness and platform compatibil
 subsequent hashed installation. Invalid inputs fail before environment creation. An interrupted install
 retains its partial new environment for inspection and tells you which phase failed; retry at a new path.
 Keep the existing agent and its backup when upgrading.
+
+## Choose the right upgrade or migration
+
+| What changes | Procedure | State to preserve |
+|---|---|---|
+| Native agent package | Install matching release assets into a new environment; follow [operator upgrades](OPERATIONS.md#stop-recover-and-upgrade) | Private identity, journal, role keys, current configuration and independently retained checkpoints |
+| SUCCESSOR institution transfer | Follow [portable restoration](SUCCESSOR_OPERATIONS.md#portable-export-checkpoint-and-clean-restore) into a new home | Public historical records, separately trusted source key and the matching retained checkpoint; active proof and grants start empty |
+| Private disaster recovery | Follow [private restoration](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys) and verify freshness before resuming | Secret-bearing backup plus a separately retained checkpoint; this archive is never a public export |
+| Downloaded website | Restore matching [release packs](SUCCESSOR_PACKAGING.md) into a new directory, then serve it on localhost | Exported browser evidence and the previous directory; packs are not merged into an existing destination |
+| Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
+
+A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
+native journals require no schema migration for 1.24.0; unknown SUCCESSOR protocol versions are rejected
+instead of silently rewriting signed evidence. Keep state and release environments separate so a
+failed installation cannot replace the working operator.
 
 ## What the release establishes
 

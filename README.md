@@ -1,4 +1,16 @@
-> **SUCCESSOR Ω — 1.24.0 implementation candidate.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
+> **SUCCESSOR Ω — 1.24.0.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md) · [Release notes and acceptance requirements](docs/agent/RELEASE_NOTES_1.24.0.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
+
+**Choose a current launch path:** [browser mission](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/),
+[minimal native installation](docs/agent/START_HERE.md), [operator recovery and upgrades](docs/agent/OPERATIONS.md),
+or [Hardhat deployment and migration guide](tests/contracts/README.md). The
+[repository guide](docs/agent/REPOSITORY_GUIDE.md) explains which dependencies each path needs.
+Publication requires the exact-commit acceptance workflow; use the matching published release assets and manifest.
+
+**Current contract configuration:** Solidity reference contracts pin the canonical `$AGIALPHA` address
+`0xa61a3b3a130a9c20768eebf97e21515a6046a1fa` and 18 decimals. Environment variables do not override those
+Solidity constants. The historical alternate-network override instruction retained below is superseded
+by the [current contract guide](tests/contracts/README.md). Its local fixture is disposable and does not
+deploy to an external chain, migrate real tokens or establish production authority.
 
 > **1.23.3 — Safer repairs and clearer browser workflows.** [Start with a useful result](docs/agent/START_HERE.md) · [Find your way around the repository](docs/agent/REPOSITORY_GUIDE.md) · [Release notes](docs/agent/RELEASE_NOTES_1.23.3.md). Responsive Insight panels, refreshed browser dependencies, reliable MuZero controls and safer file-preserving repairs. Original content and flowcharts remain preserved.
 
