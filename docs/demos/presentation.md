@@ -4,7 +4,7 @@
 
 ![preview](../presentation/assets/preview.svg){.demo-preview}
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.24.0
+## Current runnable path — 1.24.1
 
 **Mode:** Reference. Preserved slide deck and PDF for the original demo vision.
 

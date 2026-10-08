@@ -15,7 +15,7 @@ selection decision, parent/child relationship and review gate.
 
 <!-- CURRENT-DEMO:START -->
 
-## Start in two minutes — 1.24.0
+## Start in two minutes — 1.24.1
 
 The browser lab requires no account, key or installation. Choose a question, run the curriculum, inspect a round,
 and download the evidence. Everything is computed locally. Once cached, the public lab can recalculate offline.

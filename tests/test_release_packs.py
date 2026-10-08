@@ -241,3 +241,25 @@ def test_public_successor_report_cannot_substitute_a_different_revision() -> Non
     ):
         with pytest.raises(ValueError):
             verify_report({**report, key: replacement}, "a" * 40, "1.24.0", "https://site/")
+
+
+@pytest.mark.parametrize("version", ["1.24.1", "1.25.0"])
+def test_successor_publication_requires_homepage_entry_from_the_discoverability_patch(version: str) -> None:
+    from scripts.successor_evidence import REQUIRED_CHECKS, SCHEMA, verify_report
+
+    report = {
+        "schema": SCHEMA,
+        "passed": True,
+        "commit": "a" * 40,
+        "version": version,
+        "origin": "https://site/",
+        "browser_errors": [],
+        "checks": sorted(REQUIRED_CHECKS),
+    }
+    verify_report(report, "a" * 40, version, "https://site/")
+    without_homepage = {**report, "checks": sorted(REQUIRED_CHECKS - {"homepage-entry"})}
+    with pytest.raises(ValueError, match="every required journey"):
+        verify_report(without_homepage, "a" * 40, version, "https://site/")
+    # Published 1.24.0 evidence predates this additional browser journey.
+    legacy = {**without_homepage, "version": "1.24.0"}
+    verify_report(legacy, "a" * 40, "1.24.0", "https://site/")

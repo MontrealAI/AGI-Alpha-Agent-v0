@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.24.0**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
+Current release: **1.24.1**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a launch path.
 
 ## Install from a release
 
@@ -99,7 +99,7 @@ Use a new output path for every run; existing files are never overwritten. The s
 [field guide](COMPOUNDING_LAB.md) for custom inputs, review timing and the positive, regime-change and
 no-archive experiments. An imported review retains its original timing provenance; performing a new
 browser review requires new measurements. Local acceptance never supplies missing independent evidence.
-The release includes the original paper and `alpha-agent-v1.24.0-manuscript.zip` with all figures and provenance.
+The release includes the original paper and `alpha-agent-v1.24.1-manuscript.zip` with all figures and provenance.
 
 ## Service monitoring and request boundaries
 
@@ -271,7 +271,7 @@ version only if it still matches your latest independently retained journal chec
 version recorded work, revocations or recovery decisions, an older backup must not erase that history
 or reinstate authority. Keep the operator stopped until a compatible, current recovery path is verified.
 For SUCCESSOR state, follow the [checkpoint verification procedure](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys).
-Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.24.0.
+Do not have two versions operating on the same home. No journal migration is needed when upgrading from 1.2.0 through 1.24.1.
 Manual config editing, signature failure or a crash during config replacement is a fail-closed integrity
 error: preserve the affected directory and restore a verified backup, rather than rewriting hashes.
 
@@ -314,8 +314,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.24.0 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.24.0
+docker build --target agent-runtime -t agialpha-agent:1.24.1 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.24.1
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 

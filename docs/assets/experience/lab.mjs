@@ -7,8 +7,8 @@ import {
     canonical,
     artifacts,
     REPORT_SCHEMA,
-} from "./engine.mjs?v=1.24.0";
-import { zipFiles } from "../compounding/engine.mjs?v=1.24.0";
+} from "./engine.mjs?v=1.24.1";
+import { zipFiles } from "../compounding/engine.mjs?v=1.24.1";
 const $ = (id) => document.getElementById(id),
     storageKey = "agialpha.experience.settings.v1";
 const fields = [
@@ -429,7 +429,7 @@ $("export").addEventListener("click", async () => {
 state();
 try {
     const response = await fetch(
-        new URL("./scenarios.json?v=1.24.0", import.meta.url),
+        new URL("./scenarios.json?v=1.24.1", import.meta.url),
     );
     if (!response.ok)
         throw Error(

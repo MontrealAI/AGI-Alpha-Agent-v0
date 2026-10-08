@@ -352,6 +352,16 @@ def build_html(
     return html_out
 
 
+def build_portal_html(entries: list[tuple[str, str, str, str]], version: str, decision_cards: str) -> str:
+    """Render the complete homepage from its maintained template and gallery data."""
+    gallery = build_html(entries, home_link=False)
+    cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
+    template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
+    index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
+    index_html = index_html.replace("{{VERSION}}", version)
+    return index_html.replace("{{DECISION_CARDS}}", decision_cards)
+
+
 def main() -> None:
     print(DISCLAIMER, file=sys.stderr)
     import importlib
@@ -385,9 +395,6 @@ def main() -> None:
     sovereign.build(REPO_ROOT)
     entries = collect_entries()
 
-    gallery = build_html(entries, home_link=False)
-    cards = gallery.split('  <main class="demo-grid">', 1)[1].split("  </main>", 1)[0]
-    template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
     version_application_assets(REPO_ROOT / "docs", version)
     protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
@@ -395,9 +402,7 @@ def main() -> None:
         (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(
             protocol_template.read_text(encoding="utf-8").replace("{{VERSION}}", version), encoding="utf-8"
         )
-    index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
-    index_html = index_html.replace("{{VERSION}}", version)
-    index_html = index_html.replace("{{DECISION_CARDS}}", studio_generator.cards(REPO_ROOT))
+    index_html = build_portal_html(entries, version, studio_generator.cards(REPO_ROOT))
     examples = {
         kind: json.loads((REPO_ROOT / f"examples/missions/{kind}.json").read_text())
         for kind in ("allocation", "research", "schedule", "forecast")

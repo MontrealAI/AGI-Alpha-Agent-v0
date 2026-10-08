@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for generate_gallery_html.py."""
 from pathlib import Path
+import re
 import pytest
 
 from scripts import generate_demo_docs as gdd
@@ -73,3 +74,27 @@ def test_gallery_html(tmp_path, monkeypatch):
     assert "Demo B" in out
     assert "demo_b/assets/preview.png" in out
     assert 'href="demos/demo_b/"' in out
+
+
+def test_generated_homepage_retains_successor_discovery_and_existing_workspaces() -> None:
+    entries = [("Fixture demo", "preview.svg", "fixture/", "A retained gallery entry")]
+    decision_cards = '<a href="studio/?case=fixture">Fixture decision</a>'
+    generated = ggh.build_portal_html(entries, "9.8.7", decision_cards)
+    navigation = re.search(r'<nav aria-label="Main navigation">(.*?)</nav>', generated, re.S)
+    assert navigation is not None
+    assert '<a href="successor/">SUCCESSOR Ω</a>' in navigation[1]
+    feature = re.search(
+        r'<section\b[^>]*aria-labelledby="successor-feature-title"[^>]*>(.*?)</section>', generated, re.S
+    )
+    assert feature is not None
+    assert '<h2 id="successor-feature-title">SUCCESSOR Ω</h2>' in feature[1]
+    assert 'href="successor/"' in feature[1] and "Begin SUCCESSOR Ω" in feature[1]
+    assert 'href="agent/SUCCESSOR/"' in feature[1]
+    assert re.search(r'href="ascension/"\s*>Launch Ascension', generated)
+    for route in ("compounding/", "bloom/", "insight/", "ascension-protocol/", "studio/"):
+        assert f'href="{route}"' in navigation[1]
+    assert 'href="fixture/"' in generated and "A retained gallery entry" in generated
+    assert decision_cards in generated
+    assert 'name="application-version" content="9.8.7"' in generated
+    assert "{{" not in generated
+    assert ggh.build_portal_html(entries, "9.8.7", decision_cards) == generated

@@ -7,6 +7,7 @@ from typing import Any
 
 SCHEMA = "agialpha.successor.acceptance.v1"
 REQUIRED_CHECKS = {
+    "homepage-entry",
     "lifecycle",
     "changed-input-stale",
     "cancel-retry",
@@ -22,6 +23,9 @@ REQUIRED_CHECKS = {
 
 def verify_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
     """Require actual matching-site acceptance without interpreting it as external proof."""
+    required = REQUIRED_CHECKS
+    if tuple(map(int, version.split("."))) < (1, 24, 1):
+        required = required - {"homepage-entry"}
     if (
         report.get("schema") != SCHEMA
         or report.get("passed") is not True
@@ -31,6 +35,6 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
         or report.get("browser_errors") != []
         or not isinstance(report.get("checks"), list)
         or not all(isinstance(item, str) for item in report["checks"])
-        or not REQUIRED_CHECKS.issubset(report["checks"])
+        or not required.issubset(report["checks"])
     ):
         raise ValueError("SUCCESSOR must pass every required journey for the exact public release")
