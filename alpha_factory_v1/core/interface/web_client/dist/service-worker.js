@@ -11,7 +11,7 @@ import {ExpirationPlugin} from 'workbox-expiration';
 const CACHE_VERSION = '__CACHE_VERSION__';
 workbox.core.setCacheNameDetails({prefix: CACHE_VERSION});
 
-precacheAndRoute([{"revision":"62b69abec756bb975cf16c3d6dfa6054","url":"workbox-sw.js"},{"revision":"18c85b433c3d03e289f9db0552164f22","url":"manifest.webmanifest"},{"revision":"572cb425467b4d6fe1939cbb1a4679e5","url":"index.html"},{"revision":"e86bb9d7eba6e25530d170e1c6c224e6","url":"icon.svg"}]);
+precacheAndRoute([{"revision":"62b69abec756bb975cf16c3d6dfa6054","url":"workbox-sw.js"},{"revision":"18c85b433c3d03e289f9db0552164f22","url":"manifest.webmanifest"},{"revision":"6f33aa8489dcc310f61d043e9e7893b3","url":"index.html"},{"revision":"e86bb9d7eba6e25530d170e1c6c224e6","url":"icon.svg"},{"revision":"31a28332a5739c7d798936e40cc89fc0","url":"assets/index.DAwkOG1H.css"},{"revision":"392d85689bffa6cdec5454dc68f16422","url":"assets/index-D-bH7Z_k.js"},{"revision":"3e9cb3ea205765685609ede9235de830","url":"assets/index-BUoPmXBX.js"}]);
 
 registerRoute(
   ({request, url}) =>

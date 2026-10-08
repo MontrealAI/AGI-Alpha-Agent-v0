@@ -26,6 +26,8 @@ Start with [the SUCCESSOR guide](SUCCESSOR.md), [the beginner entry point](START
   settled without admitting its candidate. Existing $AGIALPHA economics and Solidity meanings remain.
 - The English/French browser rehearsal uses fixed bounded engines and carries a validated request to the
   installed CLI. Returned evidence is bound to the original request and separately retained trusted key.
+- Imported Ed25519 evidence rejects weak and noncanonical keys or signature components before library
+  verification. Historical signed bytes and the documented wheel-signature format remain unchanged.
 - Distribution uses a small native core and bounded browser/site packs. Every published file is checked
   against the **450,000,000-byte** limit, with original content retained and safely reconstructed.
 
@@ -35,6 +37,11 @@ The candidate is stacked on the open PR #4758 at `d1fb99e629ec1627e7d3876a330797
 main `aab4995ee87f7fb575180931c79b8bf86e26d50d`. That work retains repair-path safety and rollback,
 public-tag identity checks, Insight dependency/layout corrections and MuZero controls. Its formerly
 stale generated Insight documentation assets are rebuilt from the locked toolchain.
+
+The preserved web client updates Vue and `source-map-js` for their production advisories. Insight's
+locked build dependencies use patched `sharp` 0.35.5 and `compression` 1.8.2. Its ONNX installer uses
+`global-agent` 4.1.3 to remove the unpatched `sprintf-js` dependency chain while retaining the existing
+Transformer browser runtime. The existing dependency-audit thresholds remain required.
 
 The five maintained native mission kinds, CLI entry points, Ascension contracts, original demos,
 research, media, diagrams and historical URLs remain available. The complete pre-SUCCESSOR inventory
