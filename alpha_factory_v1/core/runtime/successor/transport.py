@@ -8,10 +8,11 @@ from pathlib import Path
 from typing import Any
 
 from cryptography.exceptions import InvalidSignature
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 from .protocol import RehearsalRequest, canonical, digest, safe_json_loads
+from .signatures import verify_ed25519
 
 MAX_RESULT_BYTES = 2_000_000
 RESULT_SCOPE = "local-native-rehearsal"
@@ -66,7 +67,12 @@ def result_envelope(request: RehearsalRequest, evidence: dict[str, Any], key: Ed
 def verify_result(document: dict[str, Any], request: RehearsalRequest, public_key: str | None = None) -> dict[str, Any]:
     """Verify a return; authenticate only against an independently supplied key."""
     fields = {"schema_version", "kind", "request_hash", "evidence", "evidence_hash", "scope", "signature"}
-    if set(document) != fields or type(document["schema_version"]) is not int or document["schema_version"] != 1:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    if (
+        set(document) != fields
+        or (type(document["schema_version"]) is not int)  # noqa: E721
+        or document["schema_version"] != 1
+    ):
         raise ValueError("unsupported result envelope")
     if document["kind"] != "successor-result" or document["scope"] != RESULT_SCOPE:
         raise ValueError("result has the wrong native execution scope")
@@ -92,9 +98,10 @@ def verify_result(document: dict[str, Any], request: RehearsalRequest, public_ke
         if not all(isinstance(value, str) for value in signature.values()):
             raise ValueError("invalid result signature encoding")
         try:
-            signing_key = Ed25519PublicKey.from_public_bytes(bytes.fromhex(signature["public_key"]))
-            signing_key.verify(
-                base64.b64decode(signature["signature"], validate=True), bytes.fromhex(document["evidence_hash"])
+            verify_ed25519(
+                bytes.fromhex(signature["public_key"]),
+                base64.b64decode(signature["signature"], validate=True),
+                bytes.fromhex(document["evidence_hash"]),
             )
         except (ValueError, InvalidSignature) as exc:
             raise ValueError("invalid result signature") from exc

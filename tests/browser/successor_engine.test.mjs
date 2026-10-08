@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {generateKeyPairSync, sign} from 'node:crypto';
 import {canonical, digest, parseBounded, validateRequest, newRequest, current, beta, candidate, generateCandidates, workload, discover, freeze, evaluate, renew, verifyNative} from '../../docs/assets/successor/engine.mjs';
 
 test('bounded parser refuses ambiguous, oversized, unsafe or deeply nested input', () => {
@@ -61,7 +62,28 @@ test('native file return is request-bound; hashes never create authority', async
     const checked = await verifyNative(request,envelope); assert.equal(checked.authenticity,'unverified'); assert.deepEqual(checked.authority,[]);
     await assert.rejects(verifyNative({...request,seed:request.seed+1},envelope));
     await assert.rejects(verifyNative(request,{...envelope,evidence:{...evidence,result:'PASS'}}));
-    await assert.rejects(verifyNative(request,{...envelope,signature:{public_key:'0'.repeat(64),signature:'A'.repeat(86)+'=='}}));
+    const {publicKey, privateKey} = generateKeyPairSync('ed25519');
+    const public_key = Buffer.from(publicKey.export({format:'jwk'}).x, 'base64url').toString('hex');
+    const validSignature = sign(null, Buffer.from(envelope.evidence_hash, 'hex'), privateKey);
+    const signed = {...envelope,signature:{public_key,signature:validSignature.toString('base64')}};
+    assert.equal((await verifyNative(request, signed)).authenticity, 'unverified');
+    const changed = Buffer.from(validSignature); changed[40] ^= 1;
+    await assert.rejects(verifyNative(request,{...signed,signature:{public_key,signature:changed.toString('base64')}}));
+    const smallOrder = ['00'.repeat(32), '01'+'00'.repeat(31), 'ec'+'ff'.repeat(30)+'7f', '26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05', 'c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a'];
+    for (const encoded of smallOrder) for (const signBit of [0, 128]) {
+        const point = Buffer.from(encoded, 'hex'); point[31] |= signBit;
+        await assert.rejects(verifyNative(request,{...envelope,signature:{public_key:point.toString('hex'),signature:'A'.repeat(86)+'=='}}));
+        const zeroR = Buffer.from(validSignature); point.copy(zeroR, 0);
+        await assert.rejects(verifyNative(request,{...signed,signature:{public_key,signature:zeroR.toString('base64')}}));
+    }
+    for (let seed = 0; seed < 16; seed++) {
+        const bound = {...request, seed}, boundHash = await digest('request', bound);
+        const payload = {...evidence, request:bound, request_hash:boundHash};
+        await assert.rejects(verifyNative(bound,{...envelope,request_hash:boundHash,evidence:payload,evidence_hash:await digest('evidence',payload),signature:{public_key:'0'.repeat(64),signature:'A'.repeat(86)+'=='}}));
+    }
+    const nonCanonicalS = Buffer.from(validSignature); nonCanonicalS.fill(255, 32);
+    await assert.rejects(verifyNative(request,{...signed,signature:{public_key,signature:nonCanonicalS.toString('base64')}}));
+    await assert.rejects(verifyNative(request,{...signed,signature:{public_key:'ed'+'ff'.repeat(30)+'7f',signature:validSignature.toString('base64')}}));
     const scopeAttack = {...evidence,scope:'independent-proof'};
     await assert.rejects(verifyNative(request,{...envelope,evidence:scopeAttack,evidence_hash:await digest('evidence',scopeAttack)}));
 });

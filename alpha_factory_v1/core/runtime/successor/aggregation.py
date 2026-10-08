@@ -16,35 +16,36 @@ BETA = {"version": 1, "engine": "beta-sorted-groupby"}
 
 def validate_events(events: Any) -> list[dict[str, Any]]:
     """Reject the whole input before work; keys use exact Unicode scalar equality."""
-    if type(events) is not list or len(events) > MAX_EVENTS:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    if type(events) is not list or len(events) > MAX_EVENTS:  # noqa: E721
         raise ValueError("events must be a list of at most 20000 records")
     for event in events:
-        if type(event) is not dict or set(event) != EVENT_KEYS:
+        if type(event) is not dict or set(event) != EVENT_KEYS:  # noqa: E721
             raise ValueError("event must contain exactly day, service, duration_us and ok")
         for key in ("day", "service"):
             value = event[key]
-            if type(value) is not str or not 1 <= len(value) <= 64:
+            if type(value) is not str or not 1 <= len(value) <= 64:  # noqa: E721
                 raise ValueError("day and service must contain 1..64 Unicode scalar values")
             if any(0xD800 <= ord(char) <= 0xDFFF for char in value):
                 raise ValueError("surrogate code points are not Unicode scalar values")
-        if type(event["duration_us"]) is not int or not 0 <= event["duration_us"] <= MAX_DURATION_US:
+        if type(event["duration_us"]) is not int or not 0 <= event["duration_us"] <= MAX_DURATION_US:  # noqa: E721
             raise ValueError("duration_us must be an integer in 0..1000000000")
-        if type(event["ok"]) is not bool:
+        if type(event["ok"]) is not bool:  # noqa: E721
             raise ValueError("ok must be Boolean")
     return events
 
 
 def validate_program(program: Any) -> dict[str, Any]:
     """Validate the closed, non-general-purpose composition language."""
-    if type(program) is not dict or set(program) != PROGRAM_KEYS:
+    if type(program) is not dict or set(program) != PROGRAM_KEYS:  # noqa: E721
         raise ValueError("candidate must have exactly version, layout, cache_last and update")
-    if type(program["version"]) is not int or program["version"] != 1:
+    if type(program["version"]) is not int or program["version"] != 1:  # noqa: E721
         raise ValueError("unsupported aggregation program version")
-    if program["layout"] not in ("tuple", "nested") or type(program["layout"]) is not str:
+    if program["layout"] not in ("tuple", "nested") or type(program["layout"]) is not str:  # noqa: E721
         raise ValueError("unsupported grouping layout")
-    if type(program["cache_last"]) is not bool:
+    if type(program["cache_last"]) is not bool:  # noqa: E721
         raise ValueError("cache_last must be Boolean")
-    if program["update"] not in ("branch", "builtin") or type(program["update"]) is not str:
+    if program["update"] not in ("branch", "builtin") or type(program["update"]) is not str:  # noqa: E721
         raise ValueError("unsupported update operator")
     return dict(program)
 
@@ -138,9 +139,9 @@ def aggregate(events: Any, program: dict[str, Any]) -> list[dict[str, Any]]:
 
 def execute(events: Any, artifact: dict[str, Any]) -> list[dict[str, Any]]:
     """Dispatch only exact built-in comparators or validated grammar artifacts."""
-    if artifact == CURRENT and type(artifact.get("version")) is int:
+    if artifact == CURRENT and type(artifact.get("version")) is int:  # noqa: E721
         return current(events)
-    if artifact == BETA and type(artifact.get("version")) is int:
+    if artifact == BETA and type(artifact.get("version")) is int:  # noqa: E721
         return beta(events)
     return aggregate(events, artifact)
 

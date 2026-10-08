@@ -125,18 +125,20 @@ def economics() -> dict[str, Any]:
 
 def validate_frozen(frozen: dict[str, Any]) -> dict[str, Any]:
     """Reject stale behavior, changed comparators or examination terms before execution."""
-    if type(frozen) is not dict or set(frozen) != {"schema_version", "manifest", "release_digest"}:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    if type(frozen) is not dict or set(frozen) != {"schema_version", "manifest", "release_digest"}:  # noqa: E721
         raise ValueError("invalid freeze envelope")
-    if type(frozen["schema_version"]) is not int or frozen["schema_version"] != 1:
+    if type(frozen["schema_version"]) is not int or frozen["schema_version"] != 1:  # noqa: E721
         raise ValueError("unsupported freeze version")
     manifest = frozen["manifest"]
-    if type(manifest) is not dict or set(manifest) != MANIFEST_KEYS:
+    if type(manifest) is not dict or set(manifest) != MANIFEST_KEYS:  # noqa: E721
         raise ValueError("incomplete or unsupported release manifest")
     if digest("release", manifest) != frozen["release_digest"]:
         raise ValueError("freeze commitment mismatch; new release and examination required")
     if manifest["mission"] != "streaming-metrics-v1" or manifest["schema_version"] != 1:
         raise ValueError("unsupported mission manifest")
-    if type(manifest["frozen_at_ms"]) is not int or not 0 <= manifest["frozen_at_ms"] <= time.time_ns() // 1_000_000:
+    frozen_at_ms = manifest["frozen_at_ms"]
+    if type(frozen_at_ms) is not int or not 0 <= frozen_at_ms <= time.time_ns() // 1_000_000:  # noqa: E721
         raise ValueError("invalid or future freeze timestamp")
     validate_program(manifest["program"])
     if manifest["implementation"] != implementation_manifest() or manifest["mission_contract"] != contract():
@@ -145,7 +147,7 @@ def validate_frozen(frozen: dict[str, Any]) -> dict[str, Any]:
     if environment.get("host") != host_environment():
         raise ValueError("operating environment changed; create a new release for requalification")
     maximum = environment.get("max_events")
-    if type(maximum) is not int or not 64 <= maximum <= 20_000:
+    if type(maximum) is not int or not 64 <= maximum <= 20_000:  # noqa: E721
         raise ValueError("invalid environment bound")
     if manifest["proof_protocol"] != proof_protocol(maximum) or manifest["economics"] != economics():
         raise ValueError("unsupported or mutated examination/cost rules")
@@ -154,7 +156,7 @@ def validate_frozen(frozen: dict[str, Any]) -> dict[str, Any]:
     if manifest["tools"] != [] or manifest["policy"] != selection_policy():
         raise ValueError("unsupported tool or policy capability")
     formation = manifest["formation"]
-    if type(formation) is not dict or set(formation) != {
+    if type(formation) is not dict or set(formation) != {  # noqa: E721
         "total_runtime_ns",
         "source_sha256",
         "attempts_digest",
@@ -163,7 +165,8 @@ def validate_frozen(frozen: dict[str, Any]) -> dict[str, Any]:
         "routing",
     }:
         raise ValueError("unsupported formation manifest")
-    if type(formation["total_runtime_ns"]) is not int or not 0 <= formation["total_runtime_ns"] <= 600_000_000_000:
+    total_runtime_ns = formation["total_runtime_ns"]
+    if type(total_runtime_ns) is not int or not 0 <= total_runtime_ns <= 600_000_000_000:  # noqa: E721
         raise ValueError("formation cost must be a nonnegative bounded integer measurement")
     if formation["source_sha256"] != hashlib.sha256((Path(__file__).parent / "mission.py").read_bytes()).hexdigest():
         raise ValueError("formation implementation changed after freeze")
@@ -171,7 +174,7 @@ def validate_frozen(frozen: dict[str, Any]) -> dict[str, Any]:
         r"[0-9a-f]{64}", formation["attempts_digest"]
     ):
         raise ValueError("invalid formation attempts commitment")
-    if type(manifest["memory"]) is not dict or set(manifest["memory"]) != {"admitted", "digest"}:
+    if type(manifest["memory"]) is not dict or set(manifest["memory"]) != {"admitted", "digest"}:  # noqa: E721
         raise ValueError("invalid memory binding")
     if manifest["memory"]["digest"] != digest("memory", manifest["memory"]["admitted"]):
         raise ValueError("memory commitment mismatch")
@@ -311,7 +314,7 @@ def comparative_decision(
     units: list[dict[str, Any]], failures: list[dict[str, Any]], incremental_ns: int, protocol: dict[str, Any]
 ) -> dict[str, Any]:
     """Derive a verdict from measured complete-system units; any wrong output vetoes speed."""
-    if type(incremental_ns) is not int or incremental_ns < 0:
+    if type(incremental_ns) is not int or incremental_ns < 0:  # noqa: E721
         raise ValueError("incremental costs must be nonnegative measured integer units")
     if not units:
         return {
@@ -328,7 +331,7 @@ def comparative_decision(
     for unit in units:
         for name in ("current", "beta", "candidate"):
             timing = unit["systems"][name]["runtime_ns"]
-            if type(timing) is not int or timing < 0:
+            if type(timing) is not int or timing < 0:  # noqa: E721
                 raise ValueError("runtime measurements must be nonnegative integer nanoseconds")
     totals = {
         name: sum(unit["systems"][name]["runtime_ns"] for unit in units) for name in ("current", "beta", "candidate")

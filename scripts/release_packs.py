@@ -245,9 +245,11 @@ def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | N
         or len(packs) > MAX_ENTRIES
     ):
         raise ValueError("Invalid distribution inventory")
-    if type(manifest["total_bytes"]) is not int or not 0 <= manifest["total_bytes"] <= MAX_TOTAL_BYTES:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    if type(manifest["total_bytes"]) is not int or not 0 <= manifest["total_bytes"] <= MAX_TOTAL_BYTES:  # noqa: E721
         raise ValueError("Distribution exceeds extraction limit")
-    if type(manifest["max_asset_bytes"]) is not int or not 4096 <= manifest["max_asset_bytes"] <= MAX_ASSET_BYTES:
+    max_asset_bytes = manifest["max_asset_bytes"]
+    if type(max_asset_bytes) is not int or not 4096 <= max_asset_bytes <= MAX_ASSET_BYTES:  # noqa: E721
         raise ValueError("Invalid distribution size ceiling")
     names: set[str] = set()
     paths: set[str] = set()
@@ -260,7 +262,7 @@ def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | N
         if name.casefold() in paths or file["group"] not in GROUPS:
             raise ValueError("Duplicate file or unknown group")
         paths.add(name.casefold())
-        if type(file["bytes"]) is not int or not 0 <= file["bytes"] <= MAX_TOTAL_BYTES:
+        if type(file["bytes"]) is not int or not 0 <= file["bytes"] <= MAX_TOTAL_BYTES:  # noqa: E721
             raise ValueError("Invalid file size")
         if not isinstance(file["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", file["sha256"]):
             raise ValueError("Invalid file digest")
@@ -271,7 +273,11 @@ def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | N
             if not isinstance(part, dict) or set(part) != {"pack", "member", "bytes", "sha256"}:
                 raise ValueError("Invalid chunk")
             pack_name, member = safe_name(part["pack"]), safe_name(part["member"])
-            if "/" in pack_name or type(part["bytes"]) is not int or not 0 <= part["bytes"] <= MAX_ASSET_BYTES:
+            if (
+                "/" in pack_name
+                or (type(part["bytes"]) is not int)  # noqa: E721
+                or not 0 <= part["bytes"] <= MAX_ASSET_BYTES
+            ):
                 raise ValueError("Invalid pack or chunk size")
             if not isinstance(part["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", part["sha256"]):
                 raise ValueError("Invalid chunk digest")
@@ -299,7 +305,7 @@ def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | N
             names.add(name)
             if any(part["group"] != item["group"] for part in expected[name].values()):
                 raise ValueError("Pack crosses group boundary")
-            if type(item["bytes"]) is not int or not 0 <= item["bytes"] <= manifest["max_asset_bytes"]:
+            if type(item["bytes"]) is not int or not 0 <= item["bytes"] <= manifest["max_asset_bytes"]:  # noqa: E721
                 raise ValueError("Oversized pack")
             if item["group"] not in selected:
                 continue

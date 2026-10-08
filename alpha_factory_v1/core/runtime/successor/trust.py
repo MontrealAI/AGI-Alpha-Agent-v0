@@ -8,11 +8,12 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 from cryptography.exceptions import InvalidSignature
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from pydantic import BaseModel, ConfigDict, Field
 
 from .protocol import canonical, digest
+from .signatures import validate_ed25519_point, verify_ed25519
 
 
 class SignedEnvelope(BaseModel):
@@ -35,8 +36,7 @@ class TrustAnchor:
     independence_attestation: str = ""
 
     def __post_init__(self) -> None:
-        if len(bytes.fromhex(self.public_key)) != 32:
-            raise ValueError("trust key must be a raw Ed25519 public key")
+        validate_ed25519_point(bytes.fromhex(self.public_key))
         if self.provenance == "independent" and not self.independence_attestation:
             raise ValueError("independent trust requires an out-of-band attestation")
 
@@ -66,8 +66,10 @@ class TrustRegistry:
         anchor = self.anchor(envelope.principal, role)
         commitment = digest(domain, {"principal": envelope.principal, "payload": envelope.payload})
         try:
-            Ed25519PublicKey.from_public_bytes(bytes.fromhex(anchor.public_key)).verify(
-                base64.b64decode(envelope.signature, validate=True), bytes.fromhex(commitment)
+            verify_ed25519(
+                bytes.fromhex(anchor.public_key),
+                base64.b64decode(envelope.signature, validate=True),
+                bytes.fromhex(commitment),
             )
         except (InvalidSignature, ValueError) as exc:
             raise ValueError("record signature is invalid") from exc
@@ -117,7 +119,8 @@ class JournalCheckpoint:
     head: str
 
     def __post_init__(self) -> None:
-        if type(self.sequence) is not int or not 1 <= self.sequence <= 2**53 - 1:
+        # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+        if type(self.sequence) is not int or not 1 <= self.sequence <= 2**53 - 1:  # noqa: E721
             raise ValueError("checkpoint sequence must be a bounded positive integer")
         if (
             not isinstance(self.head, str)
@@ -201,7 +204,9 @@ def retained_local_principals(directory: str | Any) -> tuple[TrustRegistry, dict
         role = (
             "controller"
             if principal == "local-controller"
-            else "producer" if principal == "local-producer" else "verifier"
+            else "producer"
+            if principal == "local-producer"
+            else "verifier"
         )
         original = registry.anchor(principal, role)
         anchors[principal] = TrustAnchor(public, original.roles)
@@ -244,7 +249,7 @@ def validate_external_trust_bytes(data: bytes) -> TrustRegistry:
     if not isinstance(value, dict) or set(value) != {"schema_version", "principals"}:
         raise ValueError("destination trust requires schema_version and principals")
     if (
-        type(value["schema_version"]) is not int
+        type(value["schema_version"]) is not int  # noqa: E721
         or value["schema_version"] != 1
         or not isinstance(value["principals"], dict)
     ):

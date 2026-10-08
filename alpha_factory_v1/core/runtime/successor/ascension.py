@@ -19,13 +19,13 @@ from datetime import UTC, datetime
 from typing import Any, Literal
 
 from cryptography.exceptions import InvalidSignature
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from pydantic import Field, model_validator
 
 from .. import ascension as legacy
 from ..models import StrictModel
 from ..store import Journal
 from .protocol import ExecutionAuthorization, JobContract, canonical, digest
+from .signatures import verify_ed25519
 
 TOKEN = "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa"
 TOKEN_DECIMALS = 18
@@ -48,7 +48,8 @@ def uint(value: Any, bits: int, name: str, *, positive: bool = False) -> int:
         and (value == "0" or not value.startswith("0"))
     ):
         number = int(value)
-    elif type(value) is int:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    elif type(value) is int:  # noqa: E721
         number = value
     else:
         raise ValueError(f"{name} requires a canonical unsigned integer")
@@ -85,7 +86,7 @@ def hash32(value: Any) -> str:
 
 def indexed_leaf(index: int, spec: legacy.JobSpec | dict[str, Any]) -> str:
     """Compute the actual uint32 plan-index leaf; never substitute hashSpec(0)."""
-    if type(index) is not int:
+    if type(index) is not int:  # noqa: E721
         raise ValueError("Plan index must be an integer")
     uint(index, 32, "plan index")
     value = legacy.JobSpec.model_validate(spec.model_dump() if isinstance(spec, legacy.JobSpec) else spec)
@@ -318,7 +319,7 @@ def _verified(envelope: dict[str, Any], domain: str, public_key: str) -> dict[st
     if (
         set(envelope) != {"domain", "body", "digest", "public_key", "signature"}
         or not isinstance(envelope["body"], dict)
-        or type(envelope["body"].get("schema_version")) is not int
+        or type(envelope["body"].get("schema_version")) is not int  # noqa: E721
         or envelope["body"]["schema_version"] != 1
     ):
         raise ValueError("Unexpected signed adapter fields")
@@ -327,8 +328,10 @@ def _verified(envelope: dict[str, Any], domain: str, public_key: str) -> dict[st
     if digest(domain, envelope["body"]) != envelope["digest"]:
         raise ValueError("Adapter commitment changed")
     try:
-        Ed25519PublicKey.from_public_bytes(bytes.fromhex(public_key)).verify(
-            base64.b64decode(envelope["signature"], validate=True), bytes.fromhex(envelope["digest"])
+        verify_ed25519(
+            bytes.fromhex(public_key),
+            base64.b64decode(envelope["signature"], validate=True),
+            bytes.fromhex(envelope["digest"]),
         )
     except (InvalidSignature, TypeError, ValueError) as exc:
         raise ValueError("Adapter signature is invalid") from exc
@@ -342,7 +345,7 @@ def _binding(
         if plan is not None or index is not None:
             raise ValueError("Standalone jobs cannot claim a MARK FusionPlan")
         return {"kind": "standalone", "plan_root": None, "plan_index": None, "indexed_leaf": None}
-    if plan is None or type(index) is not int:
+    if plan is None or type(index) is not int:  # noqa: E721
         raise ValueError("MARK jobs require a verified FusionPlan and actual index")
     legacy.verify_plan(plan)
     if not 0 <= index < len(plan["jobs"]) or plan["jobs"][index]["spec"] != spec.model_dump():
@@ -883,9 +886,9 @@ def validate_historical_settlement(record: dict[str, Any]) -> dict[str, Any]:
         "document",
     }:
         raise ValueError("Invalid historical settlement journal body")
-    if type(body["schema"]) is not int or body["schema"] != 1:
+    if type(body["schema"]) is not int or body["schema"] != 1:  # noqa: E721
         raise ValueError("Unsupported historical journal schema")
-    if type(body["sequence"]) is not int or type(body["time_ns"]) is not int:
+    if type(body["sequence"]) is not int or type(body["time_ns"]) is not int:  # noqa: E721
         raise ValueError("Historical journal counters must be exact integers")
     uint(body["sequence"], 53, "journal sequence", positive=True)
     uint(body["time_ns"], 64, "journal timestamp", positive=True)
@@ -902,7 +905,7 @@ def validate_historical_settlement(record: dict[str, Any]) -> dict[str, Any]:
     settlement = document["settlement"]
     if not isinstance(settlement, dict) or canonical(settlement) != canonical(record["settlement"]):
         raise ValueError("Wrapped settlement differs from the exact signed body")
-    if type(settlement.get("schema_version")) is not int or settlement["schema_version"] != 1:
+    if type(settlement.get("schema_version")) is not int or settlement["schema_version"] != 1:  # noqa: E721
         raise ValueError("Unsupported historical settlement schema")
     attribution = settlement.get("chain")
     if not isinstance(attribution, dict) or set(attribution) != {"chain", "market", "job"}:
@@ -913,8 +916,10 @@ def validate_historical_settlement(record: dict[str, Any]) -> dict[str, Any]:
     if body["mission"] != "@successor:ascension:settlement:" + digest("settlement-job", attribution):
         raise ValueError("Historical journal attribution differs from the settlement")
     try:
-        Ed25519PublicKey.from_public_bytes(bytes.fromhex(record["public_key"])).verify(
-            base64.b64decode(record["signature"], validate=True), bytes.fromhex(record["hash"])
+        verify_ed25519(
+            bytes.fromhex(record["public_key"]),
+            base64.b64decode(record["signature"], validate=True),
+            bytes.fromhex(record["hash"]),
         )
     except (InvalidSignature, ValueError) as exc:
         raise ValueError("Historical settlement signature is invalid") from exc

@@ -89,20 +89,30 @@ def validate(
             context = browser.new_context(viewport={"width": 1440, "height": 1050}, reduced_motion="reduce")
             page = context.new_page()
             page.on("pageerror", lambda error: errors.append(str(error)))
-            # The legacy worker is a deliberately old cache fixture; the upgrade uses the real shipped worker.
-            legacy = """const CACHE='agialpha-gallery-successor-upgrade-fixture';
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));"""
-            context.route(
-                "**/service-worker.js", lambda route: route.fulfill(body=legacy, content_type="text/javascript")
-            )
             page.goto(origin + "successor/", wait_until="networkidle")
             report["version"] = page.locator('meta[name="application-version"]').get_attribute("content")
             wait_for(page, "navigator.serviceWorker.controller !== null")
+            # Two actual shipped-worker registrations exercise update/activation across pinned browser versions.
+            # The query URL and old-cache sentinel are explicit test fixtures, not historical execution evidence.
+            inspect(
+                page,
+                "navigator.serviceWorker.register(new URL("
+                "'../service-worker.js?successor-previous-fixture=1',location.href),"
+                "{scope:new URL('./',location.href).pathname}).then(()=>true)",
+            )
+            wait_for(page, "navigator.serviceWorker.controller.scriptURL.includes('successor-previous-fixture=1')")
+            inspect(
+                page,
+                "Promise.all([caches.open('agialpha-gallery-successor-upgrade-fixture'),"
+                "caches.open('successor-unrelated-user-cache')]).then(()=>true)",
+            )
             wait_for(page, "caches.keys().then(k=>k.includes('agialpha-gallery-successor-upgrade-fixture'))")
-            inspect(page, "caches.open('successor-unrelated-user-cache')")
-            context.unroute("**/service-worker.js")
-            inspect(page, "navigator.serviceWorker.getRegistration().then(r=>r.update()).then(()=>true)")
+            inspect(
+                page,
+                "navigator.serviceWorker.register(new URL('../service-worker.js',location.href),"
+                "{scope:new URL('./',location.href).pathname}).then(()=>true)",
+            )
+            wait_for(page, "!navigator.serviceWorker.controller.scriptURL.includes('successor-previous-fixture=1')")
             wait_for(
                 page,
                 "caches.keys().then(k=>!k.includes('agialpha-gallery-successor-upgrade-fixture') && "
@@ -191,10 +201,19 @@ self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));"""
             page.locator("#events").fill("20000")
             page.locator("#candidates").fill("8")
             page.locator("#underwrite").click()
+            # Cancel through the real button after one measured candidate. An observer avoids racing
+            # browser actionability/scrolling against fast bounded work; no production delay is added.
+            inspect(
+                page,
+                "(()=>{const progress=document.querySelector('#progress');"
+                "const observer=new MutationObserver(()=>{if(progress.value>=1){"
+                "observer.disconnect();document.querySelector('#cancel').click();}});"
+                "observer.observe(progress,{attributes:true,attributeFilter:['value']});return true;})()",
+            )
             page.locator("#discover").click()
-            page.locator("#cancel").click()
             expect(page.locator("#status")).to_contain_text("cancelled")
             expect(page.locator("#discover")).to_be_enabled()
+            expect(page.locator("#freeze")).to_be_disabled()
             page.locator("#events").fill("128")
             page.locator("#underwrite").click()
             page.locator("#discover").click()

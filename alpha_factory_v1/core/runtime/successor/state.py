@@ -10,7 +10,6 @@ from decimal import Decimal
 from typing import Any, Literal
 
 from cryptography.exceptions import InvalidSignature
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ..store import Conflict, Journal
@@ -30,6 +29,7 @@ from .protocol import (
     safe_json_loads,
 )
 from .trust import JournalCheckpoint, SignedEnvelope, TrustRegistry
+from .signatures import verify_ed25519
 
 MAX_UNITS = 2**53 - 1
 
@@ -47,7 +47,8 @@ def current(until: str, now: str) -> bool:
 def checked_resources(resources: dict[str, int]) -> None:
     """Reject booleans, negative quantities and quantities unsafe in browsers."""
     if len(resources) > 32 or any(
-        not key or len(key) > 80 or type(value) is not int or not 0 <= value <= MAX_UNITS
+        # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+        not key or len(key) > 80 or type(value) is not int or not 0 <= value <= MAX_UNITS  # noqa: E721
         for key, value in resources.items()
     ):
         raise ValueError("resources require bounded nonnegative integer units")
@@ -1082,8 +1083,10 @@ class SuccessorStore:
         if payload.get("source_identity") != "urn:agialpha:ed25519:" + source_public_key:
             raise ValueError("portable source differs from independently supplied source key")
         try:
-            Ed25519PublicKey.from_public_bytes(bytes.fromhex(source_public_key)).verify(
-                base64.b64decode(package["signature"], validate=True), bytes.fromhex(package["digest"])
+            verify_ed25519(
+                bytes.fromhex(source_public_key),
+                base64.b64decode(package["signature"], validate=True),
+                bytes.fromhex(package["digest"]),
             )
         except (InvalidSignature, ValueError) as exc:
             raise ValueError("portable source signature is invalid") from exc
@@ -1094,7 +1097,8 @@ class SuccessorStore:
         }
         if payload.get("checkpoint") != expected_checkpoint or checkpoint.identity != payload["source_identity"]:
             raise ValueError("portable history differs from the independently retained checkpoint")
-        if type(payload.get("source_revision")) is not int or not 1 <= payload["source_revision"] <= MAX_UNITS:
+        source_revision = payload.get("source_revision")
+        if type(source_revision) is not int or not 1 <= source_revision <= MAX_UNITS:  # noqa: E721
             raise ValueError("portable source revision must be a bounded positive integer")
         if payload["source_revision"] > checkpoint.sequence:
             raise ValueError("portable state is newer than its declared checkpoint")
@@ -1120,7 +1124,7 @@ class SuccessorStore:
         }
         if (
             set(payload) != allowed
-            or type(payload["schema_version"]) is not int
+            or type(payload["schema_version"]) is not int  # noqa: E721
             or payload["schema_version"] != 1
             or payload["kind"] != "successor-portable"
         ):

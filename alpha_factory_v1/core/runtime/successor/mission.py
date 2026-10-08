@@ -144,7 +144,8 @@ class OpenAICompatibleSupplier:
             ],
         }
         proposals, record = complete_json(payload, self.config)
-        if set(proposals) != {"programs"} or type(proposals["programs"]) is not list:
+        # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+        if set(proposals) != {"programs"} or type(proposals["programs"]) is not list:  # noqa: E721
             raise ValueError("provider did not return the closed composition schema")
         programs = [validate_program(program) for program in proposals["programs"]]
         unique = {digest("program", program) for program in programs}
@@ -252,7 +253,7 @@ def discover(
     check()
     provider = supplier or GrammarSupplier()
     programs, provenance = provider.propose(request.seed, request.max_candidates, copy.deepcopy(memory))
-    if type(programs) is not list or not 2 <= len(programs) <= request.max_candidates:
+    if type(programs) is not list or not 2 <= len(programs) <= request.max_candidates:  # noqa: E721
         raise ValueError("supplier exceeded the bounded candidate allowance")
     if len({digest("program", validate_program(program)) for program in programs}) != len(programs):
         raise ValueError("formation requires distinct constructed challengers")

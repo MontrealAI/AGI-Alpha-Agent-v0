@@ -59,19 +59,24 @@ def _validate_json(value: Any, *, max_depth: int = MAX_JSON_DEPTH) -> None:
         if isinstance(item, BaseModel):
             pending.append((item.model_dump(mode="python"), depth))
             continue
-        elif item is None or type(item) is bool:
+        # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+        elif item is None or type(item) is bool:  # noqa: E721
             continue
-        if type(item) is int:
+        if type(item) is int:  # noqa: E721
             if abs(item) > MAX_SAFE_INT:
                 raise ValueError("integer exceeds exact JavaScript-safe range")
-        elif type(item) is str:
+        elif type(item) is str:  # noqa: E721
             if any(0xD800 <= ord(char) <= 0xDFFF for char in item):
                 raise ValueError("surrogate Unicode is not permitted")
-        elif type(item) is list:
+        elif type(item) is list:  # noqa: E721
             pending.extend((child, depth + 1) for child in item)
-        elif type(item) is dict:
+        elif type(item) is dict:  # noqa: E721
             for key, child in item.items():
-                if type(key) is not str or not key or any(ord(char) < 32 or ord(char) > 126 for char in key):
+                if (
+                    (type(key) is not str)  # noqa: E721
+                    or not key
+                    or any(ord(char) < 32 or ord(char) > 126 for char in key)
+                ):
                     raise ValueError("object keys must be nonempty printable ASCII strings")
                 pending.append((child, depth + 1))
         else:
@@ -172,7 +177,7 @@ class StrictModel(BaseModel):
     @classmethod
     def check_wire_values(cls, values: Any) -> Any:
         if isinstance(values, dict):
-            if "schema_version" in values and type(values["schema_version"]) is not int:
+            if "schema_version" in values and type(values["schema_version"]) is not int:  # noqa: E721
                 raise ValueError("schema_version must be an integer")
             _validate_json(values)
         return values

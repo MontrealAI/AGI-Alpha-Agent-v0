@@ -252,6 +252,25 @@ export async function renew(request, discovery, {signal, onProgress = () => {}, 
     }
     return {generation: 2, active_proof: [], authority: [], memory: {permitted: ['configuration-order-hint'], excluded: ['final-cases', 'proof', 'grants']}, primary_metric: 'construction_attempts', interpretation: 'Descriptive matched trials; equal construction counts do not establish compounding.', trials};
 }
+// Canonical encoding and low-order rejection supplement WebCrypto verification.
+// Mathematical torsion encodings: @noble/curves 1.2.0 src/ed25519.ts ED25519_TORSION_SUBGROUP.
+const lowOrderY = new Set([
+    '0000000000000000000000000000000000000000000000000000000000000000',
+    '0100000000000000000000000000000000000000000000000000000000000000',
+    'ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f',
+    '26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05',
+    'c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a',
+]);
+const littleEndian = bytes => BigInt('0x' + [...bytes].reverse().map(v => v.toString(16).padStart(2, '0')).join(''));
+function validatePointEncoding(bytes) {
+    const y = bytes.slice(); y[31] &= 0x7f;
+    const hex = [...y].map(v => v.toString(16).padStart(2, '0')).join('');
+    if (littleEndian(y) >= (1n << 255n) - 19n || lowOrderY.has(hex)) throw Error('Non-canonical or low-order Ed25519 point');
+}
+function validateSignatureEncoding(key, signature) {
+    validatePointEncoding(key); validatePointEncoding(signature.slice(0, 32));
+    if (littleEndian(signature.slice(32)) >= (1n << 252n) + 27742317777372353535851937790883648493n) throw Error('Non-canonical Ed25519 scalar');
+}
 export async function verifyNative(request, envelope) {
     request = validateRequest(request);
     if (!exact(envelope, ['schema_version', 'kind', 'request_hash', 'evidence', 'evidence_hash', 'scope', 'signature']) || envelope.schema_version !== 1 || envelope.kind !== 'successor-result' || envelope.scope !== 'local-native-rehearsal') throw Error('Unsupported native evidence envelope');
@@ -261,8 +280,10 @@ export async function verifyNative(request, envelope) {
     if (envelope.signature !== null) {
         const signature = envelope.signature;
         if (!exact(signature, ['public_key', 'signature']) || !/^[0-9a-f]{64}$/.test(signature.public_key) || !/^[A-Za-z0-9+/]{86}==$/.test(signature.signature)) throw Error('Malformed native signature');
-        const key = await crypto.subtle.importKey('raw', Uint8Array.from(signature.public_key.match(/../g), x => parseInt(x, 16)), {name: 'Ed25519'}, false, ['verify']);
+        const publicBytes = Uint8Array.from(signature.public_key.match(/../g), x => parseInt(x, 16));
         const bytes = Uint8Array.from(atob(signature.signature), c => c.charCodeAt(0));
+        validateSignatureEncoding(publicBytes, bytes);
+        const key = await crypto.subtle.importKey('raw', publicBytes, {name: 'Ed25519'}, false, ['verify']);
         const data = Uint8Array.from(envelope.evidence_hash.match(/../g), x => parseInt(x, 16));
         if (!await crypto.subtle.verify('Ed25519', key, bytes, data)) throw Error('Invalid native signature');
     }

@@ -143,7 +143,8 @@ def test_changed_behavior_or_economics_cannot_reuse_exact_freeze(formation: dict
 def test_rehashed_untrusted_formation_cost_cannot_improve_verdict(formation: dict[str, Any], cost: Any) -> None:
     frozen = copy.deepcopy(formation["freeze"])
     frozen["manifest"]["formation"]["total_runtime_ns"] = cost
-    if type(cost) is float:
+    # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+    if type(cost) is float:  # noqa: E721
         with pytest.raises(ValueError):
             digest("release", frozen["manifest"])
     else:
