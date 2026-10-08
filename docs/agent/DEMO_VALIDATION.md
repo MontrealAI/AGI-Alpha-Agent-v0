@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Demo validation and honest execution modes — 1.23.2
+# Demo validation and honest execution modes — 1.24.0
 
 See the [October 1 whole-catalog audit](DEMO_AUDIT_2026-10-01.md) for the latest catalog,
 navigation, preservation and failure-reporting checks and their exact limits.
@@ -45,7 +45,7 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 ## Inventory
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.23.2: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.24.0: 26 entries; 17 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|

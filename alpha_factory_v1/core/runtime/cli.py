@@ -23,6 +23,9 @@ def parser() -> argparse.ArgumentParser:
     root.add_argument("--home", type=Path, default=Path.home() / ".local/share/agialpha-agent")
     root.add_argument("--version", action="version", version=__version__)
     commands = root.add_subparsers(dest="command", required=True)
+    from .successor.cli import add_commands
+
+    add_commands(commands)
     samples = commands.add_parser("examples", help="List or copy the five editable, packaged mission examples")
     samples.add_argument("--output", type=Path, help="Create a NEW directory; existing files are never overwritten")
     for name in ("ascension-compile", "ascension-check"):
@@ -107,7 +110,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         result: Any
-        if args.command == "examples":
+        if args.command.startswith("successor-"):
+            from .successor.cli import handle
+
+            result = handle(args)
+        elif args.command == "examples":
             from .samples import examples
 
             result = examples(args.output)

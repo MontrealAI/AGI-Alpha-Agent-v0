@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.23.2
+# Repository guide — 1.24.0
 
 Choose a working path before installing dependencies. The maintained private operator, browser workspaces,
 native learning labs and historical service stack have different requirements. Their source, research,

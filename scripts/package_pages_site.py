@@ -1,15 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 """Archive the tested public site and bind it to the source commit and release."""
+
 from __future__ import annotations
 
 import argparse
-from html.parser import HTMLParser
 import json
-from pathlib import Path
 import subprocess
 import tarfile
 import tomllib
+from html.parser import HTMLParser
+from pathlib import Path
 from urllib.parse import unquote, urlsplit
+
+from scripts.release_packs import pack
 
 
 class Links(HTMLParser):
@@ -25,12 +28,12 @@ class Links(HTMLParser):
                 self.urls.append(value)
 
 
-def package(site: Path, output: Path) -> None:
+def package(site: Path, output: Path, *, packs: bool = False) -> None:
     """Fail on broken workspace navigation and disallow links in the deployment archive."""
     site = site.resolve()
     version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-    for entry in (site / "index.html", site / "ascension/index.html"):
+    for entry in (site / "index.html", site / "ascension/index.html", site / "successor/index.html"):
         if not entry.is_file():
             continue
         parser = Links()
@@ -54,6 +57,10 @@ def package(site: Path, output: Path) -> None:
         "build_run": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions",
     }
     (site / "release.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    if packs:
+        result = pack(site, output, "site", commit=commit, version=version)
+        print(json.dumps({**manifest, "packs": str(result)}))
+        return
     output.parent.mkdir(parents=True, exist_ok=True)
     with tarfile.open(output, "w:gz") as archive:
         for file in sorted(site.rglob("*")):
@@ -68,8 +75,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", type=Path, default=Path("site"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--packs", action="store_true", help="Create bounded core and optional packs")
     args = parser.parse_args()
-    package(args.site, args.output)
+    package(args.site, args.output, packs=args.packs)
 
 
 if __name__ == "__main__":

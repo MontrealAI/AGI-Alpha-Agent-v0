@@ -68,7 +68,7 @@ def build_dashboard(config: Any = None) -> Any:
                 steps = gr.Slider(2, 500, value=config.max_steps, step=1, label="Maximum steps per episode")
                 with gr.Row():
                     start = gr.Button("Train & compare", variant="primary")
-                    stop = gr.Button("Stop")
+                    stop = gr.Button("Stop", interactive=False)
             with gr.Column(scale=2):
                 gr.Markdown("### 2 · Follow the learning")
                 status = gr.Markdown("Ready. Choose **Train & compare** to run a real local experiment.")
@@ -119,7 +119,17 @@ def build_dashboard(config: Any = None) -> Any:
                 cfg = Config(env_id, int(random_seed), int(count), int(budget), int(limit))
             except ValueError as exc:
                 raise gr.Error(str(exc)) from exc
-            yield "Preparing held-out baselines…", gr.skip(), [], [], [], None, []
+            yield (
+                "Preparing held-out baselines…",
+                gr.skip(),
+                [],
+                [],
+                [],
+                None,
+                [],
+                gr.Button(interactive=False),
+                gr.Button(interactive=True),
+            )
             for event in experiment(cfg):
                 history = event["history"]
                 frame = pd.DataFrame(
@@ -138,6 +148,8 @@ def build_dashboard(config: Any = None) -> Any:
                         [],
                         None,
                         [],
+                        gr.Button(interactive=False),
+                        gr.Button(interactive=True),
                     )
                 else:
                     rows = [
@@ -153,17 +165,26 @@ def build_dashboard(config: Any = None) -> Any:
                         search_rows,
                         event,
                         preview_episode(event),
+                        gr.Button(interactive=True),
+                        gr.Button(interactive=False),
                     )
 
         event = start.click(
             run,
             [env, episodes, sims, seed, steps],
-            [status, curve, losses, comparison, tree, record, frames],
+            [status, curve, losses, comparison, tree, record, frames, start, stop],
             concurrency_limit=1,
             concurrency_id="muzero-training",
         )
         stop.click(
-            fn=lambda: "Stopped. Completed measurements remain visible.", outputs=status, cancels=[event], queue=False
+            fn=lambda: (
+                "Stopped. Completed measurements remain visible.",
+                gr.Button(interactive=True),
+                gr.Button(interactive=False),
+            ),
+            outputs=[status, start, stop],
+            cancels=[event],
+            queue=False,
         )
     return demo.queue(max_size=4, default_concurrency_limit=1)
 

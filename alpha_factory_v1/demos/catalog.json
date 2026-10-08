@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.23.2",
+  "release": "1.24.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -589,8 +589,8 @@
       "summary": "Provides repository-specific triage and isolated repair evaluation.",
       "command": [],
       "expected": "Follow the README benchmark commands. Review proposed repairs before applying them.",
-      "prerequisites": "Repository development dependencies and Docker for sandbox execution.",
-      "limitations": "Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.",
+      "prerequisites": "Linux, GNU patch, repository development dependencies and a trusted ordinary-file checkout with exclusive access.",
+      "limitations": "Validation commands are trusted code, not an OS sandbox. Arbitrary repair is not guaranteed; the browser trace is illustrative.",
       "smoke": false,
       "environment": {},
       "required_modules": [],

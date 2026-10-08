@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_agi_business_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.24.0
 
 **Mode:** Offline sample. Ranks bundled business opportunities; service agents publish illustrative business events.
 

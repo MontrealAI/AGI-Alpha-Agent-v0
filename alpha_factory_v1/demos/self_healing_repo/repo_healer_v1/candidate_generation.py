@@ -10,12 +10,17 @@ import subprocess
 import tempfile
 from typing import Callable
 
-from .models import FailureBundle, PatchCandidate, ValidatorClass
-from .workspace import copy_workspace, workspace_files
+from .models import FailureBundle, PatchCandidate, SupportMode, ValidatorClass
+from .workspace import copy_workspace, project_path, workspace_files
+from .triage import triage_bundle
 
 
 def generate_candidates(repo_root: pathlib.Path, bundle: FailureBundle) -> list[PatchCandidate]:
     """Return bounded rule-based candidates for supported Tier-1 classes."""
+    if triage_bundle(bundle).support_mode != SupportMode.AUTOPATCH_SAFE:
+        return []
+    for name in [*bundle.candidate_files, *(signal.path for signal in bundle.annotations if signal.path)]:
+        project_path(repo_root, name)
     if bundle.validator_class == ValidatorClass.RUFF:
         candidate = _candidate_from_mutation(repo_root, bundle, _apply_ruff_fix)
         return [candidate] if candidate else []

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-0cba077f27cd6b94";
-const RELEASE = "1.23.2";
+const CACHE = "agialpha-gallery-ed04ce075b470956";
+const RELEASE = "1.24.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -175,6 +175,7 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/style.css",
   "../../../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/index.html",
   "../../../alpha_factory_v1/demos/studio/index.html",
+  "../../../alpha_factory_v1/demos/successor/index.html",
   "../../../alpha_factory_v1/index.html",
   "../../../alpha_super_planner_v1/assets/preview.svg",
   "../../../ascension-protocol/index.html",
@@ -271,6 +272,9 @@ const ASSETS = [
   "../../../assets/studio/studio.css",
   "../../../assets/studio/studio.mjs",
   "../../../assets/studio/worker.mjs",
+  "../../../assets/successor/app.mjs",
+  "../../../assets/successor/engine.mjs",
+  "../../../assets/successor/successor.css",
   "../../../bloom/index.html",
   "../../../compounding/index.html",
   "../../../cross_industry_alpha_factory/assets/logs.json",
@@ -367,6 +371,7 @@ const ASSETS = [
   "../../../studio/index.html",
   "../../../stylesheets/cards.css",
   "../../../stylesheets/demo_base.css",
+  "../../../successor/index.html",
   "../../../utils/assets/logs.json",
   "../../../utils/assets/preview.svg",
   "../../../utils/assets/script.js",

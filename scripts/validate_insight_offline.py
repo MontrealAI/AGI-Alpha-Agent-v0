@@ -21,6 +21,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dist", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--layout", action="store_true", help="Require the current responsive panel layout")
     parser.add_argument(
         "--model", action="store_true", help="Require real local ONNX text generation online and offline"
     )
@@ -127,6 +128,31 @@ def main() -> None:
                 evaluate("window.setLlmOffline(true)")
                 generations.append(evaluate("window.llmChat('The capital of France is')"))
                 assert generations[0] == generations[1], generations
+            layouts = []
+            if args.layout:
+                args.output.parent.mkdir(parents=True, exist_ok=True)
+                for width in (1440, 390, 320):
+                    page.set_viewport_size({"width": width, "height": 1000 if width == 1440 else 844})
+                    boxes = evaluate(
+                        "['controls','canvas','power-panel','analytics-panel','evolution-panel',"
+                        "'simulator-panel','arena-panel'].map(id => { const node=document.getElementById(id);"
+                        "const box=node.getBoundingClientRect(); "
+                        "return {id,x:box.x,y:box.y,width:box.width,height:box.height}; })"
+                    )
+                    assert evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), (width, boxes)
+                    for index, box in enumerate(boxes):
+                        assert box["width"] > 0 and box["height"] > 0, (width, box)
+                        following = index + 1
+                        for other in boxes[following:]:
+                            overlap_x = min(box["x"] + box["width"], other["x"] + other["width"]) - max(
+                                box["x"], other["x"]
+                            )
+                            overlap_y = min(box["y"] + box["height"], other["y"] + other["height"]) - max(
+                                box["y"], other["y"]
+                            )
+                            assert overlap_x <= 1 or overlap_y <= 1, (width, box, other)
+                    page.screenshot(path=str(args.output.with_suffix(f".{width}.png")), full_page=True)
+                    layouts.append({"width": width, "no_overflow": True, "no_panel_overlap": True})
             assert not errors, errors
             evidence = {
                 "passed": True,
@@ -143,6 +169,7 @@ def main() -> None:
                 "page_errors": errors,
                 "local_model_generations": generations,
                 "local_model_verified": args.model,
+                "responsive_panels": layouts,
             }
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(evidence, indent=2) + "\n")

@@ -2,7 +2,7 @@
 
 # Alpha-Factory — from first mission to Ascension evidence
 
-**Version 1.23.2.** Start with a useful result, inspect the evidence, and extend the workflow from there.
+**Version 1.24.0.** Start with a useful result, inspect the evidence, and extend the workflow from there.
 The `alpha_factory_v1` package retains the original domain agents, demos, blueprints and flowcharts.
 Its maintained runtime provides five bounded mission types, a signed persistent journal, explicit review,
 recovery and an authenticated local console. Ascension adds a tested, undeployed enterprise protocol.
@@ -173,7 +173,7 @@ the much larger historical SDK/training environment.
 
 Before upgrade, pause, verify and back up the journal. Keep its identity, head and checksum separately.
 Restore into a **new** home, verify it, then resume deliberately. Never run two processes against the
-same home or manually edit signed records. No journal migration is needed for 1.23.2.
+same home or manually edit signed records. No journal migration is needed for 1.24.0.
 [Recovery commands and troubleshooting](OPERATIONS.md) cover Windows, containers and rollback.
 
 ## Verification and preservation

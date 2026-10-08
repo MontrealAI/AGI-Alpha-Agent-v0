@@ -4,7 +4,7 @@
 
 ![preview](../alpha_super_planner_v1/assets/preview.svg){.demo-preview}
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.24.0
 
 **Mode:** Interface illustration. Shows the stages and progress display of a planning interface.
 

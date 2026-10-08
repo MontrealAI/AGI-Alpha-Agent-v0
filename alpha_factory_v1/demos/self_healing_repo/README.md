@@ -1,11 +1,11 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.24.0
 
 **Mode:** Bounded repair. Provides repository-specific triage and isolated repair evaluation.
 
-**Prerequisites:** Repository development dependencies and Docker for sandbox execution.
+**Prerequisites:** Linux, GNU patch, repository development dependencies and a trusted ordinary-file checkout with exclusive access.
 
 From the repository root after [installation](../README.md#start-locally):
 
@@ -15,7 +15,7 @@ python -m alpha_factory_v1.demos show self_healing_repo
 
 **Expected result:** Follow the README benchmark commands. Review proposed repairs before applying them.
 
-**Scope:** Does not guarantee arbitrary failures can be repaired; the browser trace is illustrative.
+**Scope:** Validation commands are trusted code, not an OS sandbox. Arbitrary repair is not guaranteed; the browser trace is illustrative.
 
 The [catalog](../README.md) explains installation, stopping, backups and recovery.
 Browser charts for legacy demos are labeled sample replays. Original research
@@ -52,6 +52,26 @@ See also `repo_healer_v1/SCRATCHPAD.md` for a concise persisted snapshot used du
    - toy clone behavior implied as the main production path.
 
 ## Tiered support model
+
+### Workspace requirements and recovery
+
+Use a trusted checkout with exclusive access while repair runs. Repo-Healer's temporary copy is
+a project snapshot; validation commands execute with your user permissions and are not an
+operating-system sandbox. Review the failure bundle, reproduction command and proposed diff.
+The bounded Linux repair path requires GNU `patch` and the repository development dependencies.
+Docker applies to the separate sandbox execution path, not to the v1 validator subprocesses.
+
+Repair candidates and annotation paths must be canonical repository-relative names. Absolute paths,
+traversal, option-like names, symbolic links, hard-linked project files and special files are refused.
+Installed environments and caches are excluded consistently from copies and comparisons. Use
+`--report-only` to diagnose an unsupported checkout without modifying project files; the chosen report
+file is still written. Inspect the structured refusal before preparing an ordinary-file working copy.
+Do not delete original links or data simply to make a repair run.
+
+GNU patch runs noninteractively. Distinct temporary backups restore originals if patch application
+fails, preserving existing `.bak`, `.orig` and `.rej` files. Source and destination paths are checked
+again before promotion. Keep a version-control checkpoint or backup: multi-file promotion is not
+crash-atomic, and concurrent writers are unsupported. Review the final diff before committing it.
 
 ### Tier 1 — supported for bounded repair
 

@@ -1,4 +1,5 @@
 const { ethers } = require("hardhat");
+const { requireDisposableLocalNetwork } = require("../../scripts/disposable");
 const path = require("path");
 
 const {
@@ -10,6 +11,7 @@ async function installToken(
   factoryName = "contracts/v2/mocks/MockAGI.sol:MockAGI",
   decimals = AGIALPHA_DECIMALS
 ) {
+  await requireDisposableLocalNetwork();
   const Factory = await ethers.getContractFactory(factoryName);
   const needsArgs = Factory.interface.deploy.inputs.length > 0;
   const instance = needsArgs

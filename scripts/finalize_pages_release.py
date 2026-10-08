@@ -6,17 +6,19 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from pathlib import Path
 import zipfile
+from pathlib import Path
 
 from scripts.ascension_protocol_evidence import verify_report as verify_protocol_report
 from scripts.business3_evidence import verify_report as verify_business3_report
+from scripts.curriculum_evidence import verify_report as verify_curriculum_report
 from scripts.discovery_evidence import verify_report as verify_discovery_report
 from scripts.experience_evidence import verify_report as verify_experience_report
-from scripts.mats_evidence import verify_report as verify_mats_report
-from scripts.curriculum_evidence import verify_report as verify_curriculum_report
 from scripts.governance_evidence import verify_report as verify_governance_report
+from scripts.mats_evidence import verify_report as verify_mats_report
+from scripts.release_packs import require_asset_limits
 from scripts.sovereign_evidence import verify_report as verify_sovereign_report
+from scripts.successor_evidence import verify_report as verify_successor_report
 
 
 def finalize(folder: Path, evidence: Path) -> None:
@@ -43,6 +45,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     mats = None
     curriculum = None
     sovereign = None
+    successor = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -227,6 +230,9 @@ def finalize(folder: Path, evidence: Path) -> None:
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 22, 0):
         sovereign = json.loads((evidence / "public-pages" / "sovereign" / "sovereign.json").read_text(encoding="utf-8"))
         verify_sovereign_report(sovereign, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 24, 0):
+        successor = json.loads((evidence / "public-pages" / "successor" / "successor.json").read_text(encoding="utf-8"))
+        verify_successor_report(successor, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -243,6 +249,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if successor:
+        manifest["public_successor"] = successor
+        manifest["release_gates"].append(
+            "public SUCCESSOR bilingual lifecycle, native handoff, cache upgrade and offline recovery"
+        )
     if sovereign:
         manifest["public_sovereign"] = sovereign
         manifest["release_gates"].append(
@@ -313,6 +324,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             "public Ascension journey, authenticated recovery, exact settlement and offline use"
         )
     manifest["release_gates"].append("public HTTPS Pages workflows and actual offline model generation")
+    manifest["assets"] = [
+        item for item in require_asset_limits(folder) if item["name"] not in {"release-manifest.json", "SHA256SUMS"}
+    ]
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     checksums = []
     for path in sorted(folder.iterdir()):
@@ -320,6 +334,7 @@ def finalize(folder: Path, evidence: Path) -> None:
             with path.open("rb") as stream:
                 checksums.append(f"{hashlib.file_digest(stream, 'sha256').hexdigest()}  {path.name}")
     (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n", encoding="utf-8")
+    require_asset_limits(folder)
 
 
 def main() -> None:

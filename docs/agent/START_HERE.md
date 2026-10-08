@@ -9,6 +9,12 @@ complete Ascension path. Browser-only examples are available in [Decision Studio
 
 For self-generated reasoning tasks and independent solver review, open the [Curriculum Lab](CURRICULUM_LAB.md).
 
+For the new two-generation mission lifecycle, open the bilingual [SUCCESSOR Ω workspace](../successor/index.html)
+or follow [its first-session guide](SUCCESSOR.md). Once installed, run
+`alpha-agent --home successor-state successor-demo --output successor-evidence`.
+It constructs and measures real bounded challengers, preserves usable methods and tests clean restoration.
+Missing independent qualification remains HOLD; a software demonstration grants no production authority.
+
 ## 1. Install one release
 
 Use Python **3.11, 3.12 or 3.13**. From one [release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest),

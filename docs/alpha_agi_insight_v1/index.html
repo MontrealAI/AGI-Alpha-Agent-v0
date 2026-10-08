@@ -39,7 +39,7 @@
         opacity: 1;
       }
     </style>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-Q3FN62B1zp2VrFRd07zp4djKHTYWembnK/7XS60FSY5qj2LEWE7Svq4k/Z58dfDu' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-IijZY07TQk4a/9Ab9LhRuQSxKz8Ss2CqCFZG3TQ3JjfIpldIfekI1bORxpLKamNE' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.openai.com https://api.web3.storage https://w3s.link https://*.w3s.link https://ipfs.io https://dweb.link https://ipfs.io; frame-src 'self' blob:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval' 'sha384-Q3FN62B1zp2VrFRd07zp4djKHTYWembnK/7XS60FSY5qj2LEWE7Svq4k/Z58dfDu' 'sha384-E8swqB1rgmKfkntp22RjfBap5YfJMvGbUVw5y2+djoHjwuDrALqWEe1kasdDBmTm' 'sha384-nGp9JmD6yVQ6HaqjGpHfR1Z2Xe0UEJRt/TjTzGSML1IpWeYxtU6ub0lZvzxM2Z9P' 'sha384-eR8sYzoSk2xJcnjk7RVrsGWKil+DbPgMionlm2xuFpCTJRuyTQ/l6jHF2OY7ZnIL'; style-src 'self' 'unsafe-inline'" />
 </head>
 
   <body class="flex flex-col h-screen">
@@ -49,7 +49,7 @@
 <header class="p-4 bg-base-100/70 backdrop-blur-md">
       <div class="max-w-4xl mx-auto">
         <h1
-          class="text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 \
+          class="text-5xl font-bold bg-linear-to-r from-purple-400 via-pink-500 to-red-500
           bg-clip-text text-transparent animate-gradient"
         >
           α-AGI Insight
@@ -57,7 +57,7 @@
       </div>
     </header>
 
-    <div class="flex flex-1 overflow-hidden">
+    <div id="workspace-main" class="flex flex-1 overflow-hidden">
       <aside id="controls" class="w-64 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" role="region" aria-label="Controls"></aside>
       <main id="canvas" class="flex-1 relative overflow-hidden" role="main"></main>
       <aside id="log" class="w-80 bg-base-100/70 backdrop-blur-md p-4 overflow-y-auto" aria-label="Log" role="region"></aside>
@@ -82,10 +82,10 @@
     </footer>
     <script type="importmap">{"imports":{"d3":"./d3.exports.js"}}</script>
     <script src="assets/d3.v7.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
-    <script>window.SW_HASH = 'sha384-GrquFC+PxSItennKHZAIzAQkbfSXESWotZH89atjY7VZg2RIc4QrB1w1cqa8X3po';</script>
+    <script>window.SW_HASH = 'sha384-kBH9jekFR7S/D3gNNvj8gfdL7lEbSTBekXrl0GmRbDUM2SACmUDM7jo1/fqw+6If';</script>
     <script src="bootstrap.js"></script>
 
-    <script type="module" src="insight.bundle.js" integrity="sha384-xOVYb1XOGlLVQewieponXouRwP7rMeZ4wlx2c9+8zs7eL3zkgH0wOv+G135u0PxV" crossorigin="anonymous"></script>
+    <script type="module" src="insight.bundle.js" integrity="sha384-OlaCHh6hxXJA/pAyROOXFV9R/WK98gMtfeU90yXoxCZsGeASAfZ0jPG8but4qJmh" crossorigin="anonymous"></script>
     <p><a href="../index.html">⬅️ Back to Gallery</a></p>
   <script>window.PINNER_TOKEN=atob('');window.OTEL_ENDPOINT=atob('');window.IPFS_GATEWAY=atob('');</script>
 </body>

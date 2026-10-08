@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss" source(none);
+@config "./tailwind.config.js";
 
 body {
   @apply m-0 font-sans bg-base-200 text-base-content;
@@ -66,3 +65,126 @@ svg {
 #sim-loader.show { @apply flex; }
 #sim-loader .spinner { @apply w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Keep every original panel in the document flow, including on narrow screens. */
+body {
+  display: grid !important;
+  grid-template-columns: 250px minmax(0, 1fr) 310px;
+  grid-template-areas:
+    "header header header"
+    "controls canvas power"
+    "controls canvas analytics"
+    "toolbar legend depth"
+    "evolution simulator simulator"
+    "arena arena arena"
+    "footer footer footer";
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  max-width: 1600px;
+  height: auto !important;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px;
+  line-height: 1.5;
+}
+body > header { grid-area: header; border-radius: 16px; }
+body > header > div { max-width: none; }
+body > header h1 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; }
+#workspace-main { display: contents; }
+#controls { grid-area: controls; }
+#canvas { grid-area: canvas; min-height: 420px; align-self: stretch; display: grid; place-items: center; }
+#power-panel { grid-area: power; }
+#analytics-panel { grid-area: analytics; }
+#evolution-panel { grid-area: evolution; max-height: 380px !important; }
+#simulator-panel { grid-area: simulator; }
+#arena-panel { grid-area: arena; }
+#toolbar { grid-area: toolbar; }
+#legend { grid-area: legend; }
+#depth-legend { grid-area: depth; }
+#disclaimer { grid-area: footer; margin: 8px 0 !important; }
+#log:empty { display: none; }
+body > a { grid-column: 1 / -1; }
+#controls, #canvas, #power-panel, #analytics-panel, #evolution-panel,
+#simulator-panel, #arena-panel, #log:not(:empty) {
+  position: relative !important;
+  inset: auto !important;
+  z-index: auto !important;
+  width: auto !important;
+  min-width: 0;
+  max-width: 100% !important;
+  padding: 18px !important;
+  color: var(--color-base-content) !important;
+  background: var(--color-base-100) !important;
+  border: 1px solid var(--color-base-300);
+  border-radius: 16px;
+  font-size: 14px !important;
+  overflow-wrap: anywhere;
+}
+#controls::before, #power-panel::before, #analytics-panel::before, #evolution-panel::before, #simulator-panel::before {
+  content: attr(aria-label);
+  display: block;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+#canvas svg { width: 100%; max-height: 640px; aspect-ratio: 1; border-radius: 10px; color: var(--color-base-content); }
+#evolution-panel svg { background: #17304a; }
+#evolution-panel table { border-collapse: collapse; font-size: 12px; }
+#evolution-panel th, #evolution-panel td { padding: 4px; white-space: nowrap; text-align: left; }
+#power-panel pre, #analytics-panel pre, #simulator-panel pre { max-width: 100%; overflow: auto; white-space: pre-wrap; }
+#controls label, #power-panel label { display: block; margin-bottom: 10px; }
+input:not([type=checkbox]):not([type=range]), select, textarea {
+  max-width: 100%;
+  min-height: 40px;
+  padding: 7px 9px;
+  border: 1px solid var(--color-base-300);
+  border-radius: 7px;
+  color: var(--color-base-content);
+  background: var(--color-base-200);
+  font: inherit;
+}
+#controls input[type=number], #power-panel input:not([type=checkbox]), #power-panel select, #power-panel textarea { width: 100%; }
+input[type=checkbox] { width: 17px; height: 17px; vertical-align: middle; accent-color: #0891b2; }
+button {
+  min-height: 40px;
+  margin: 4px 4px 4px 0;
+  padding: 7px 11px;
+  border: 1px solid var(--color-base-300);
+  border-radius: 8px;
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { border-color: #0891b2; }
+button:disabled { opacity: .5; cursor: default; }
+button[hidden] { display: none; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid #0891b2; outline-offset: 3px;
+}
+summary { padding: 8px 0; cursor: pointer; font-weight: 600; }
+#drop { margin: 12px 0; padding: 14px; border: 1px dashed var(--color-base-content); border-radius: 8px; }
+#toolbar, #legend, #depth-legend { position: static; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+#simulator-panel label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 4px 10px 4px 0; }
+#simulator-panel input:not([type=range]) { width: 85px; }
+#simulator-panel input[type=range], #simulator-panel progress { display: block; margin: 12px 0; width: 100%; }
+#toast { max-width: calc(100vw - 24px); }
+@media (max-width: 1100px) {
+  body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "header header" "canvas canvas" "controls power" "controls analytics"
+      "toolbar legend" "depth depth" "evolution simulator" "arena arena" "footer footer";
+  }
+}
+@media (max-width: 640px) {
+  body {
+    padding: 12px;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "header" "canvas" "controls" "power" "analytics" "toolbar" "legend"
+      "depth" "simulator" "evolution" "arena" "footer";
+  }
+  #canvas { min-height: 0; padding: 8px !important; }
+  input:not([type=checkbox]):not([type=range]), select, textarea, button { font-size: 16px; min-height: 44px; }
+}

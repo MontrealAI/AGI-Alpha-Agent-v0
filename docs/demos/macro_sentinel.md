@@ -7,7 +7,7 @@
 [Launch Demo](../macro_sentinel/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.2
+## Current runnable path — 1.24.0
 
 **Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
 

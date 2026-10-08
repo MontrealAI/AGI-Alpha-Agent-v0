@@ -1,0 +1,46 @@
+{
+  "schema": "agialpha.successor.ascension.validation.v1",
+  "recorded_at": "2026-10-08T15:47:16.695391+00:00",
+  "scope": "local engineering validation; no external qualification or production authority",
+  "checks": [
+    {
+      "command": "python -m pytest tests/runtime/test_successor_ascension.py tests/runtime/test_ascension_handoff.py -q --no-cov",
+      "passed": 65,
+      "failed": 0
+    },
+    {
+      "command": "npm test (tests/contracts; pinned Node22; ALPHA_PYTHON shared operator environment)",
+      "passed": 71,
+      "failed": 0
+    },
+    {
+      "command": "npx hardhat --network localhost test --no-compile --grep SUCCESSOR",
+      "expected_result": "refused before fixture operations",
+      "observed_exit_code": 1
+    },
+    {
+      "command": "black --check; ruff check; mypy --follow-imports=silent --strict on owned adapter source",
+      "result": "passed"
+    }
+  ],
+  "source_sha256": {
+    "alpha_factory_v1/core/runtime/successor/ascension.py": "dd74e526e2d9c844a823c33dc95d04eeaeda918505bc6ca64e4704e27d4b3f5d",
+    "tests/runtime/test_successor_ascension.py": "de4403117af950634a1aa5f5bb45ecffd94004ab03082657a156692a404ec8f6",
+    "tests/contracts/hardhat.config.js": "db24bcd3a8c91280e2dec0967bd6c161529dcd41fa8d7652bc78ede929d0836b",
+    "tests/contracts/scripts/disposable.js": "3e0ff3862ca9e63547af4d2c7c46b428ff7a4b27f4d0cbc1c4afc602da870e0b",
+    "tests/contracts/scripts/fixture.js": "ae1e98586ce163296ac379a4cecfe55f39cbea4feff7e169632dbe30c2362ff3",
+    "tests/contracts/test/utils/token.js": "55f3fbc8b96ba474d9e2e3b40db3613fd589773def78d54f8538d4ed5c848d94",
+    "tests/contracts/test/ascension/successor-adapter.test.js": "fdf90de7e3ca258481f3c5217f5afec4ff426a8a0707d258b8b27c853239a236",
+    "docs/agent/SUCCESSOR_ASCENSION.md": "6f8082dbbf12e7bd51f8071f1ae6ce3149a9b2e8710efc73332a26f00f78c1c7"
+  },
+  "artifacts": {
+    "accepted-negative-evaluation.json": {
+      "bytes": 10773,
+      "sha256": "064dc858ee77665a0b6049f5a75cd791ba1e2d10286264cd30824cd2cf590929"
+    },
+    "missing-review-quorum.json": {
+      "bytes": 9363,
+      "sha256": "47273812897549ec03ffa7d6707090c657bdc79435647e9e47169989ccd4425c"
+    }
+  }
+}
