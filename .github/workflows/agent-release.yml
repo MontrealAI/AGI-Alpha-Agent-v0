@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003]
+    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -69,8 +69,9 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_installer.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
+          python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
       - name: Build and exercise wheel outside the repository
@@ -85,6 +86,11 @@ jobs:
           alpha-agent ascension-check installed-plan.json
           python -m alpha_factory_v1.scripts.preflight --profile agent --offline
           alpha-agent --home installed-agent verify
+          alpha-agent --home installed-successor successor-demo --output installed-successor-evidence
+          alpha-agent successor-verify installed-successor-evidence/result.json --request installed-successor-evidence/request.json --public-key "$(cat installed-successor-evidence/public-key.txt)" > installed-successor-evidence/verification.json
+          alpha-agent --home installed-successor successor-checkpoint --output installed-successor-evidence/current-checkpoint.json
+          alpha-agent --home restored-successor successor-restore installed-successor-evidence/portable.json --source-public-key "$(cat installed-successor-evidence/public-key.txt)" --checkpoint installed-successor-evidence/checkpoint.json > installed-successor-evidence/restoration.json
+          cp -r installed-successor-evidence "$GITHUB_WORKSPACE/evidence/installed-successor"
           for demo in alpha_agi_insight_v0 solving_agi_governance macro_sentinel era_of_experience meta_agentic_tree_search_v0 meta_agentic_agi_v3 alpha_agi_business_3_v1; do
             python -m alpha_factory_v1.demos check "$demo" --json
             python -m alpha_factory_v1.demos run "$demo" --output-dir "installed-demos/$demo"
@@ -95,6 +101,13 @@ jobs:
           from alpha_factory_v1.core.runtime import api
           assert json.loads(Path('installed-result.json').read_text())['state'] == 'review'
           assert Path(api.__file__).with_name('web').joinpath('index.html').is_file()
+          verification = json.loads(Path('installed-successor-evidence/verification.json').read_text())
+          assert verification['authentication'] == 'trusted-local-signer'
+          assert verification['production_authority'] is False
+          restoration = json.loads(Path('installed-successor-evidence/restoration.json').read_text())
+          assert restoration['status'] == 'restored-stopped'
+          assert restoration['active_proofs'] == restoration['active_grants'] == []
+          assert restoration['serving_release'] is None
           PY
       - name: Pin and exercise real Docker isolation
         if: matrix.python == '3.12'
@@ -208,6 +221,7 @@ jobs:
       - name: Strict types and repository checks
         run: |
           python -m mypy --config-file mypy-runtime.ini
+          python -m mypy --strict --follow-imports=skip scripts/release_packs.py scripts/check_successor_preservation.py scripts/successor_evidence.py
           python -m mypy --config-file mypy-business3.ini
           python -m mypy --config-file mypy-governance.ini
           python -m mypy --config-file mypy-discovery.ini
@@ -220,6 +234,7 @@ jobs:
           python -m mypy --config-file mypy.ini
           python scripts/ruff_targets.py --run
           python -m scripts.check_agent_preservation > evidence/preservation.json
+          python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -254,6 +269,11 @@ jobs:
           mkdir -p evidence
       - name: Real operator browser acceptance
         run: python -m scripts.validate_agent_ui --output evidence/operator-ui
+      - name: SUCCESSOR bilingual lifecycle, native handoff and cache upgrade
+        run: |
+          npm ci --prefix tests/browser --ignore-scripts
+          node --test tests/browser/successor_engine.test.mjs
+          python -m scripts.validate_successor --output evidence/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Historical web client tests
         run: |
           npm ci --prefix alpha_factory_v1/core/interface/web_client
@@ -293,6 +313,7 @@ jobs:
           npm run ascension:demo --prefix tests/contracts
           python -m scripts.check_ascension_protocol
           python -m scripts.check_agent_preservation > evidence/preservation.json
+          python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
           python -m scripts.validate_agent_chain --output evidence/local-evm.json
@@ -452,7 +473,7 @@ jobs:
       - name: Verify independent browser algorithm contracts
         run: |
           npm ci --prefix tests/browser --ignore-scripts
-          node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs
+          node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs tests/browser/successor_engine.test.mjs
       - name: Require exact Business 3 Python and browser calculations and exports
         run: python -m scripts.validate_business3_core --output evidence/business3-core
       - name: Verify exact Insight discovery decisions and portable review evidence
@@ -467,6 +488,8 @@ jobs:
         run: python -m scripts.validate_governance_core --output evidence/governance-core
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
+      - name: Verify SUCCESSOR on the exact rebuilt site
+        run: python -m scripts.validate_successor --site site --output evidence/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify every rebuilt demo page
         run: python scripts/verify_demo_pages.py
       - name: Verify every legacy demo interaction, mirror and offline cache
@@ -513,12 +536,14 @@ jobs:
           if-no-files-found: warn
       - name: Archive the exact tested full site
         if: matrix.assets == 'full'
-        run: python -m scripts.package_pages_site --site site --output pages-distribution/site.tar.gz
+        run: |
+          python -m scripts.package_pages_site --site site --packs --output pages-distribution
+          python -m scripts.release_packs pack --source alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/insight_browser.zip --output browser-distribution --prefix browser --commit "$GITHUB_SHA" --version "$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: matrix.assets == 'full'
         with:
           name: pages-distribution
-          path: pages-distribution/site.tar.gz
+          path: pages-distribution/
           compression-level: 0
           if-no-files-found: error
       - name: Retain the tested full browser distribution
@@ -526,7 +551,7 @@ jobs:
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: browser-distribution
-          path: alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/insight_browser.zip
+          path: browser-distribution/
           compression-level: 0
           if-no-files-found: error
 
@@ -809,8 +834,7 @@ jobs:
           path: pages-distribution
       - name: Recover the tested site without rebuilding
         run: |
-          mkdir site
-          tar -xzf pages-distribution/site.tar.gz -C site
+          python -m scripts.release_packs restore --manifest pages-distribution/site-packs.json --destination site
           python - <<'PYTHON'
           import json, os, pathlib
           manifest = json.loads(pathlib.Path("site/release.json").read_text())
@@ -851,6 +875,7 @@ jobs:
           python -m scripts.validate_mats --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/mats --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_governance --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/governance --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_sovereign --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/sovereign --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_successor --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

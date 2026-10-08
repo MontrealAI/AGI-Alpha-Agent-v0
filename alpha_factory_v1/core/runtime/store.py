@@ -4,18 +4,21 @@
 from __future__ import annotations
 
 import base64
-from contextlib import closing, contextmanager
 import hashlib
 import json
 import os
-from pathlib import Path
 import secrets
+import shutil
 import sqlite3
+import stat
 import subprocess
 import time
-from typing import Any, Iterator
 import uuid
 import zipfile
+from collections.abc import Iterator
+from contextlib import closing, contextmanager
+from pathlib import Path
+from typing import Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat, PublicFormat
@@ -23,6 +26,75 @@ from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption,
 from .models import Mission, RuntimeConfig
 
 MAX_RECOVERY_BYTES = 256 * 1024**2
+SUCCESSOR_PRINCIPAL_FILES = frozenset(
+    {"principals.json", "local-controller.key", "local-producer.key", "local-verifier.key"}
+)
+
+
+def _private_recovery_bytes(path: Path, *, limit: int) -> bytes:
+    """Read private credential bytes from a bounded regular file without following links."""
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+        raise ValueError("recovery credentials must be bounded regular files, not links")
+    if os.name != "nt" and (before.st_mode & 0o077 or before.st_uid != os.getuid()):
+        raise ValueError("recovery credentials must be private to the current account")
+    descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+    with os.fdopen(descriptor, "rb") as stream:
+        opened = os.fstat(stream.fileno())
+        if (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino) or not stat.S_ISREG(opened.st_mode):
+            raise ValueError("recovery credential changed during collection")
+        data = stream.read(limit + 1)
+    if len(data) > limit:
+        raise ValueError("recovery credential exceeds its byte limit")
+    return data
+
+
+def _successor_recovery_files(root: Path) -> dict[str, bytes]:
+    """Collect only the explicitly allowed optional SUCCESSOR disaster-recovery files."""
+    from .successor.trust import validate_external_trust_bytes, validate_local_principal_files
+
+    files: dict[str, bytes] = {}
+    directory = root / "successor-principals"
+    if directory.exists() or directory.is_symlink():
+        info = directory.lstat()
+        if not stat.S_ISDIR(info.st_mode):
+            raise ValueError("local principal recovery directory must not be a link")
+        if os.name != "nt" and (info.st_mode & 0o077 or info.st_uid != os.getuid()):
+            raise ValueError("local principal recovery directory must be private")
+        if {path.name for path in directory.iterdir()} != SUCCESSOR_PRINCIPAL_FILES:
+            raise ValueError("private recovery requires the complete exact local principal file set")
+        local = {
+            name: _private_recovery_bytes(directory / name, limit=16_384 if name == "principals.json" else 32)
+            for name in sorted(SUCCESSOR_PRINCIPAL_FILES)
+        }
+        validate_local_principal_files(local)
+        files.update({"successor-principals/" + name: data for name, data in local.items()})
+    trust = root / "successor-trust.json"
+    if trust.exists() or trust.is_symlink():
+        data = _private_recovery_bytes(trust, limit=131_072)
+        validate_external_trust_bytes(data)
+        files["successor-trust.json"] = data
+    return files
+
+
+def _validate_successor_recovery_files(files: dict[str, bytes]) -> None:
+    """Check the optional extension before creating any restored credential state."""
+    from .successor.trust import validate_external_trust_bytes, validate_local_principal_files
+
+    local = {name.split("/", 1)[1]: data for name, data in files.items() if name.startswith("successor-principals/")}
+    if local:
+        validate_local_principal_files(local)
+    if "successor-trust.json" in files:
+        validate_external_trust_bytes(files["successor-trust.json"])
+
+
+def _recovery_manifest_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate recovery manifest key")
+        result[key] = value
+    return result
 
 
 def canonical(value: Any) -> bytes:
@@ -84,6 +156,7 @@ class Conflict(ValueError):
 def public_error(exc: Exception) -> str:
     """Keep useful operator errors while withholding provider response contents."""
     from pydantic import ValidationError
+
     from alpha_factory_v1.core.utils.secure_run import SandboxUnavailable
 
     if isinstance(exc, ValidationError):
@@ -288,15 +361,15 @@ class Journal:
         self.config = config
 
     def backup(self, destination: str | Path) -> dict[str, Any]:
-        """Create an owner-readable recovery archive including the private key."""
+        """Create a private recovery archive, including any complete SUCCESSOR role identity."""
         self.verify()
-        target = Path(destination).resolve()
+        target = Path(destination).absolute()
         temporary = self.root / f"backup-{uuid.uuid4()}.sqlite3"
         created = False
         try:
             # Hold the writer lock while another connection snapshots committed
             # rows. configure() uses the same lock, so files and rows agree.
-            with self.transaction():
+            with self.transaction() as cx:
                 self.verify()
                 with closing(sqlite3.connect(self.path)) as source, closing(sqlite3.connect(temporary)) as dest:
                     source.backup(dest)
@@ -305,6 +378,13 @@ class Journal:
                     raise ValueError("recovery archive exceeds 256 MiB limit")
                 files = {name: (self.root / name).read_bytes() for name in ("config.json", "identity.key", "api.token")}
                 files["journal.sqlite3"] = temporary.read_bytes()
+                successor_files = _successor_recovery_files(self.root)
+                if (
+                    not successor_files
+                    and cx.execute("SELECT 1 FROM events WHERE mission LIKE '@successor%' LIMIT 1").fetchone()
+                ):
+                    raise ValueError("SUCCESSOR recovery requires retained local principals or explicit public trust")
+                files.update(successor_files)
             manifest = {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}
             manifest_bytes = canonical(manifest)
             if sum(len(data) for data in files.values()) + len(manifest_bytes) > MAX_RECOVERY_BYTES:
@@ -337,21 +417,54 @@ class Journal:
     @classmethod
     def restore(cls, backup: str | Path, destination: str | Path) -> Journal:
         """Restore into a new directory only, then verify signatures and identity."""
-        target = Path(destination).resolve()
-        expected = {"config.json", "identity.key", "api.token", "journal.sqlite3", "manifest.json"}
-        with zipfile.ZipFile(backup) as archive:
-            if set(archive.namelist()) != expected or len(archive.infolist()) != len(expected):
-                raise ValueError("unexpected or duplicate recovery archive members")
-            if sum(info.file_size for info in archive.infolist()) > MAX_RECOVERY_BYTES:
-                raise ValueError("recovery archive exceeds 256 MiB limit")
-            files = {name: archive.read(name) for name in expected}
-        manifest = json.loads(files.pop("manifest.json"))
+        target = Path(destination).absolute()
+        required = {"config.json", "identity.key", "api.token", "journal.sqlite3", "manifest.json"}
+        principals = {"successor-principals/" + name for name in SUCCESSOR_PRINCIPAL_FILES}
+        if Path(backup).is_symlink():
+            raise ValueError("recovery archive must not be a symbolic link")
+        descriptor = os.open(backup, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+        with os.fdopen(descriptor, "rb") as stream:
+            if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                raise ValueError("recovery archive must be a regular file")
+            files = cls._read_recovery_archive(stream, required, principals)
+        manifest = json.loads(files.pop("manifest.json"), object_pairs_hook=_recovery_manifest_pairs)
         if manifest != {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}:
             raise ValueError("recovery archive checksum mismatch")
+        _validate_successor_recovery_files(files)
         target.mkdir(parents=True, exist_ok=False, mode=0o700)
-        restrict_access(target)
-        for name, data in files.items():
-            private_write(target / name, data)
-        journal = cls(target)
-        journal.verify()
-        return journal
+        try:
+            restrict_access(target)
+            if any(name in files for name in principals):
+                directory = target / "successor-principals"
+                directory.mkdir(mode=0o700)
+                restrict_access(directory)
+            for name, data in files.items():
+                private_write(target / name, data)
+            journal = cls(target)
+            journal.verify()
+            return journal
+        except BaseException:
+            shutil.rmtree(target)
+            raise
+
+    @staticmethod
+    def _read_recovery_archive(stream: Any, required: set[str], principals: set[str]) -> dict[str, bytes]:
+        """Read exact allowed regular-file members before creating any restored state."""
+        with zipfile.ZipFile(stream) as archive:
+            present = set(archive.namelist())
+            expected = required | (principals if present.intersection(principals) else set())
+            if "successor-trust.json" in present:
+                expected.add("successor-trust.json")
+            if present != expected or len(archive.infolist()) != len(expected):
+                raise ValueError("unexpected or duplicate recovery archive members")
+            if any(
+                info.is_dir() or stat.S_IFMT(info.external_attr >> 16) not in {0, stat.S_IFREG}
+                for info in archive.infolist()
+            ):
+                raise ValueError("recovery archive members must be regular files, not links")
+            if sum(info.file_size for info in archive.infolist()) > MAX_RECOVERY_BYTES:
+                raise ValueError("recovery archive exceeds 256 MiB limit")
+            if archive.getinfo("manifest.json").file_size > 16_384:
+                raise ValueError("recovery manifest exceeds its byte limit")
+            files = {name: archive.read(name) for name in expected}
+        return files

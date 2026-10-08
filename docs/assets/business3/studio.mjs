@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-import { validate, parse, REPORT_SCHEMA } from "./engine.mjs?v=1.23.3";
-import { zipFiles } from "../compounding/engine.mjs?v=1.23.3";
+import { validate, parse, REPORT_SCHEMA } from "./engine.mjs?v=1.24.0";
+import { zipFiles } from "../compounding/engine.mjs?v=1.24.0";
 const $ = (id) => document.getElementById(id),
     clone = (value) => structuredClone(value);
 const money = (value) =>
@@ -369,7 +369,7 @@ function calculate({ input, text, verify = false } = {}) {
             ? "Recomputing the imported dossier…"
             : "Evaluating every bounded portfolio against your constraints…",
     );
-    worker = new Worker(new URL("./worker.mjs?v=1.23.3", import.meta.url), {
+    worker = new Worker(new URL("./worker.mjs?v=1.24.0", import.meta.url), {
         type: "module",
     });
     worker.onerror = () => {
@@ -512,7 +512,7 @@ $("b3-download-jobs").addEventListener("click", () => {
 });
 try {
     const response = await fetch(
-        new URL("./scenarios.json?v=1.23.3", import.meta.url),
+        new URL("./scenarios.json?v=1.24.0", import.meta.url),
     );
     if (!response.ok)
         throw Error(`Cases unavailable (HTTP ${response.status})`);

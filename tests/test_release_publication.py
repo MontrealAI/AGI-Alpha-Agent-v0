@@ -56,6 +56,8 @@ def test_every_current_workspace_uses_the_release_version() -> None:
     for name in (
         "",
         "studio/",
+        "successor/",
+        "alpha_factory_v1/demos/successor/",
         "ascension/",
         "ascension-protocol/",
         "insight/",

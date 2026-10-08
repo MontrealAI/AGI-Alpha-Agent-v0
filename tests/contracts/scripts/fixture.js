@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 const { ethers } = require("hardhat");
+const { requireDisposableLocalNetwork } = require("./disposable");
 const { installToken } = require("../test/utils/token");
 const { compilePlan } = require("./plan");
 const units = ethers.parseEther;
@@ -24,6 +25,7 @@ async function jump(timestamp) {
     await ethers.provider.send("evm_mine");
 }
 async function fixture() {
+    await requireDisposableLocalNetwork();
     await ethers.provider.send("hardhat_reset", []);
     const [
         governor,

@@ -9,20 +9,21 @@ import hashlib
 import json
 import os
 import re
-from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
 import tomllib
-from typing import cast
 import zipfile
+from pathlib import Path
 from urllib.parse import urlsplit
 
-from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from alpha_factory_v1.utils.disclaimer import DISCLAIMER
 from scripts.check_agent_preservation import BADGE_MAINTENANCE
-from scripts.check_manuscript import verify as verify_manuscript
 from scripts.check_factory_readiness import check as verify_factory
+from scripts.check_manuscript import verify as verify_manuscript
+from scripts.check_successor_preservation import check as verify_successor_preservation
+from scripts.release_packs import digest, require_asset_limits, restore
 
 
 def release_documents(version: str) -> tuple[str, ...]:
@@ -30,6 +31,14 @@ def release_documents(version: str) -> tuple[str, ...]:
     return (
         "requirements-agent.lock",
         "scripts/install_agent.py",
+        "scripts/release_packs.py",
+        "docs/agent/SUCCESSOR.md",
+        "docs/agent/SUCCESSOR_OPERATIONS.md",
+        "docs/agent/SUCCESSOR_ACCEPTANCE.md",
+        "docs/agent/SUCCESSOR_ASCENSION.md",
+        "docs/agent/SUCCESSOR_SOURCES.json",
+        "docs/agent/SUCCESSOR_ARCHITECTURE.md",
+        "docs/agent/SUCCESSOR_PACKAGING.md",
         "docs/agent/START_HERE.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
@@ -74,7 +83,7 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str) 
             shutil.copy2(source, target)
             continue
 
-        def rewrite(match: re.Match[str]) -> str:
+        def rewrite(match: re.Match[str], source: Path = source, name: str = name) -> str:
             link = match.group(1)
             parsed = urlsplit(link)
             if parsed.scheme or parsed.netloc or not parsed.path:
@@ -102,7 +111,7 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str) 
                 + ")"
             )
 
-        sections = re.split(r"(```.*?```)", source.read_text(encoding="utf-8"), flags=re.S)
+        sections = re.split(r"(```.*?```)", source.read_text(encoding="utf-8"), flags=re.DOTALL)
         for index in range(0, len(sections), 2):
             sections[index] = re.sub(r"\]\(([^\s)]+)\)", rewrite, sections[index])
         target.write_text("".join(sections), encoding="utf-8")
@@ -148,6 +157,9 @@ def main() -> None:
         names = archive.namelist()
         assert "alpha_factory_v1/core/runtime/web/index.html" in names
         assert "alpha_factory_v1/core/runtime/cli.py" in names
+        assert "alpha_factory_v1/core/runtime/successor/cli.py" in names
+        assert "alpha_factory_v1/core/runtime/successor/schemas.json" in names
+        assert "alpha_factory_v1/core/runtime/successor/canonical-vectors.json" in names
         assert not any("/node_modules/" in name or "/.venv/" in name for name in names)
     subprocess.run(
         [sys.executable, "-m", "twine", "check", *map(str, output.glob("*.whl")), *map(str, output.glob("*.tar.gz"))],
@@ -163,27 +175,39 @@ def main() -> None:
         for path in sorted(Path("docs/manuscript").rglob("*")):
             if path.is_file():
                 archive.write(path, path.relative_to("docs/manuscript"))
-    browser_source = args.evidence / "browser-distribution" / "insight_browser.zip"
-    browser_target = output / f"alpha-agent-v{version}-browser.zip"
     model_manifest = json.loads(Path("scripts/browser_model_manifest.json").read_text(encoding="utf-8"))
-    with zipfile.ZipFile(browser_source) as browser_archive:
-        required = {
-            "index.html",
-            "service-worker.js",
-            "insight.bundle.js",
-            "assets/local-llm/transformers.min.js",
-            "assets/local-llm/THIRD_PARTY_MODEL_NOTICES.md",
-        }
-        if not required.issubset(browser_archive.namelist()):
-            raise ValueError("Full browser distribution is incomplete")
-        for name, expected in model_manifest["files"].items():
-            with browser_archive.open("assets/local-llm/models/gpt2/" + name) as model_file:
-                # Read-mode ZipFile.open returns ZipExtFile, including readinto.
-                if hashlib.file_digest(cast(zipfile.ZipExtFile, model_file), "sha256").hexdigest() != expected:
-                    raise ValueError(f"Packaged browser model checksum mismatch: {name}")
-    shutil.copy2(browser_source, browser_target)
-    site_archive = args.evidence / "pages-distribution" / "site.tar.gz"
-    shutil.copy2(site_archive, output / f"alpha-agent-v{version}-site.tar.gz")
+    distributions = {}
+    for kind, folder_name in (("browser", "browser-distribution"), ("site", "pages-distribution")):
+        source_folder = args.evidence / folder_name
+        pack_manifest = source_folder / f"{kind}-packs.json"
+        with tempfile.TemporaryDirectory(prefix=f"alpha-{kind}-verify-") as temporary:
+            restored = Path(temporary) / "restored"
+            identity = restore(pack_manifest, restored)
+            if identity["commit"] != sha or identity["version"] != version:
+                raise ValueError(f"{kind} distribution differs from the tested release identity")
+            if kind == "browser":
+                required = {
+                    "index.html",
+                    "service-worker.js",
+                    "insight.bundle.js",
+                    "assets/local-llm/transformers.min.js",
+                    "assets/local-llm/THIRD_PARTY_MODEL_NOTICES.md",
+                }
+                if not all((restored / name).is_file() for name in required):
+                    raise ValueError("Full browser distribution is incomplete")
+                for name, expected in model_manifest["files"].items():
+                    if digest(restored / "assets/local-llm/models/gpt2" / name) != expected:
+                        raise ValueError(f"Packaged browser model checksum mismatch: {name}")
+            else:
+                release = json.loads((restored / "release.json").read_bytes())
+                if release["commit"] != sha or release["version"] != version:
+                    raise ValueError("Site release identity differs from the accepted source")
+        data = json.loads(pack_manifest.read_bytes())
+        for name in [pack_manifest.name, *(item["name"] for item in data["packs"])]:
+            shutil.copy2(source_folder / name, output / name)
+        distributions[kind] = {"manifest": pack_manifest.name, "files": len(data["files"]), "packs": len(data["packs"])}
+    preservation = verify_successor_preservation()
+    (output / "successor-preservation.json").write_text(json.dumps(preservation, indent=2) + "\n", encoding="utf-8")
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(args.evidence.rglob("*")):
             if path.is_file() and not {"browser-distribution", "pages-distribution", "github-pages"}.intersection(
@@ -196,6 +220,9 @@ def main() -> None:
         "version": version,
         "manuscript": {"pages": 198, "files": manuscript_hashes},
         "factory": factory_preservation,
+        "successor_preservation": {key: value for key, value in preservation.items() if key != "inventory"},
+        "distributions": distributions,
+        "maximum_asset_bytes": 450_000_000,
         "commit": sha,
         "baseline": "ac9b112a44670f67d53fc3d188ef73fa16e90894",
         "repository": "MontrealAI/AGI-Alpha-Agent-v0",
@@ -222,15 +249,19 @@ def main() -> None:
             "complete browser workspace, native handoff and Ed25519 verification",
             "Insight Atlas exact allocation, architecture search, evidence replay and Chronicle recovery",
             "Proof Bloom jobs, native signed returns, reviewed gates, capability reuse and transitive revocation",
-            "Compounding Lab future-task transfer, costs, human review, native/browser replay "
-            "and complete Evidence Docket",
+            (
+                "Compounding Lab future-task transfer, costs, human review, native/browser replay "
+                "and complete Evidence Docket"
+            ),
             "byte-identical latest 198-page manuscript and pinned source manifest",
             "native CPU demos and Streamlit lineage UIs",
             "Sovereign Python 3.11/3.12/3.13 dependency-gated workflow, signed packets, recovery and Chromium reviews",
             "complete demo catalog and every browser replay",
             "Business 3 exact Python/browser portfolios and exports, notebook, installed wheel and isolated container",
-            "Decision Studio calculation oracles, versioned replay, staffing coverage, "
-            "deadlines and public offline journeys",
+            (
+                "Decision Studio calculation oracles, versioned replay, staffing coverage, "
+                "deadlines and public offline journeys"
+            ),
             "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",
             "Solidity tests with shipped identity logic",
             "real local EVM payments",
@@ -239,6 +270,9 @@ def main() -> None:
             "clean wheel installation",
             "complete operator Python advisory audit with exact lock digest",
             "source preservation",
+            "SUCCESSOR complete offline lifecycle, strict protocol, authority, succession and settlement adapters",
+            "SUCCESSOR installed-wheel and bilingual browser request/evidence round trip",
+            "complete baseline preservation inventory and bounded verified distribution packs",
         ],
         "limits": [
             "No mainnet transactions",
@@ -247,6 +281,7 @@ def main() -> None:
             "Optional legacy skips do not establish those integrations",
         ],
     }
+    manifest["assets"] = require_asset_limits(output)
     (output / "release-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     lines = []
     for path in sorted(output.iterdir()):
@@ -255,6 +290,7 @@ def main() -> None:
                 checksum = hashlib.file_digest(stream, "sha256").hexdigest()
             lines.append(f"{checksum}  {path.name}")
     (output / "SHA256SUMS").write_text("\n".join(lines) + "\n")
+    require_asset_limits(output)
     print(json.dumps({"commit": sha, "assets": len(lines) + 1, "output": str(output)}))
 
 

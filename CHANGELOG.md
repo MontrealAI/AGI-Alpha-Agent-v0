@@ -1,3 +1,11 @@
+## 1.24.0 — 2026-10-08 (candidate)
+
+- Add the SUCCESSOR Ω bounded mission lifecycle, exact candidate/proof/authority bindings and explicit succession.
+- Preserve Ascension semantics with exact rich-job/market assignment adapters and useful negative-evaluation settlement.
+- Add a bilingual browser/native rehearsal and content-preserving release packs below 450,000,000 bytes per file.
+- Require new lifecycle, preservation, installed-artifact and public-site gates alongside all existing acceptance.
+- See [candidate release notes](docs/agent/RELEASE_NOTES_1.24.0.md) for scope, migration, rollback and qualification limits.
+
 ## 1.23.3 — 2026-10-03
 
 - Refresh the audited Insight build toolchain and correct MuZero Start/Stop availability.

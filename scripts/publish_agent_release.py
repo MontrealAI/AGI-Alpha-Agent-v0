@@ -4,17 +4,17 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
-from pathlib import Path
 import subprocess
 import tempfile
 import tomllib
+from pathlib import Path
 
-from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
+from alpha_factory_v1.utils.disclaimer import DISCLAIMER
 from scripts.release_context import require_current_main
+from scripts.release_packs import digest, require_asset_limits
 
 
 def gh(*args: str) -> str:
@@ -53,8 +53,9 @@ def main() -> None:
             raise ValueError("existing public tag points to a different commit; increment the release version")
         print(f"{tag} is already public; its tag and assets remain unchanged: {prior['html_url']}")
         return
+    require_asset_limits(folder)
     require_current_main()
-    ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True)
+    ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True, check=False)
     if ref.returncode == 0:
         obj = json.loads(ref.stdout)["object"]
         target = tag_commit(repo, obj)
@@ -112,9 +113,11 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="alpha-release-verify-") as temp:
         gh("release", "download", tag, "--repo", repo, "--dir", temp)
         for path in folder.iterdir():
+            downloaded = Path(temp) / path.name
             if (
-                hashlib.sha256(path.read_bytes()).digest()
-                != hashlib.sha256((Path(temp) / path.name).read_bytes()).digest()
+                downloaded.is_symlink()
+                or downloaded.stat().st_size != path.stat().st_size
+                or digest(path) != digest(downloaded)
             ):
                 raise ValueError(f"uploaded asset checksum mismatch: {path.name}")
     # Upload and re-download can take minutes; recheck immediately before visibility.

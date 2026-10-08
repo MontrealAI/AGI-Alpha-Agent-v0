@@ -15,7 +15,7 @@ a reproducible review and nine measurable, unsubmitted $AGIALPHA verification jo
 · [Original research archive](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/solving_agi_governance/RESEARCH_ARCHIVE.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.23.3
+## Current runnable path — 1.24.0
 
 **Mode:** Offline governance review. Evaluates nine proposal gates and exports reproducible evidence and Ascension job specifications.
 
