@@ -101,6 +101,26 @@ def test_install_failure_reports_phase_and_preserves_partial_environment(assets:
     assert "installing hash-locked dependencies" in error and "new --venv path" in error
 
 
+def test_interrupted_install_retains_partial_environment_and_reports_recovery(
+    assets: Path, tmp_path: Path, capsys
+) -> None:
+    target = tmp_path / "interrupted-env"
+
+    def create(path: Path) -> None:
+        path.mkdir()
+        (path / "diagnostic.txt").write_text("retained")
+
+    with (
+        mock.patch.object(install_agent.venv.EnvBuilder, "create", side_effect=create),
+        mock.patch.object(subprocess, "run", side_effect=KeyboardInterrupt),
+    ):
+        assert install_agent.main(["--release-dir", str(assets), "--venv", str(target)]) == 130
+    assert (target / "diagnostic.txt").read_text() == "retained"
+    error = capsys.readouterr().err
+    assert "interrupted while installing hash-locked dependencies" in error
+    assert "new --venv path" in error and "Traceback" not in error
+
+
 def test_offline_success_checks_environment_and_quotes_command(assets: Path, tmp_path: Path, capsys) -> None:
     wheelhouse = tmp_path / "dependency wheels"
     wheelhouse.mkdir()

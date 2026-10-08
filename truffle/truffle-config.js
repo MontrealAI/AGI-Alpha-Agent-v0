@@ -1,26 +1,5 @@
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-require('dotenv').config();
-
-module.exports = {
-  networks: {
-    mainnet: {
-      provider: () =>
-        new HDWalletProvider(
-          process.env.DEPLOYER_KEY,
-          process.env.MAINNET_RPC_URL
-        ),
-      network_id: 1,
-      gasPrice: Number(process.env.GAS_PRICE) || undefined,
-    },
-  },
-  compilers: {
-    solc: {
-      version: '0.8.25',
-      settings: { optimizer: { enabled: true, runs: 200 } },
-    },
-  },
-  plugins: ['truffle-plugin-verify'],
-  api_keys: {
-    etherscan: process.env.ETHERSCAN_API_KEY,
-  },
-};
+// SPDX-License-Identifier: Apache-2.0
+// Compatibility entrypoint only. The historical Deployer artifact is absent.
+// Do not load wallet credentials or construct a provider for an unsupported path.
+// See truffle/README.md and tests/contracts/README.md for the supported workflow.
+module.exports = { networks: {} };

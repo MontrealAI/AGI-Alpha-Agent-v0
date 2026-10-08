@@ -7,7 +7,9 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 import shutil
 import stat
 
-_IGNORE_NAMES = {".git", ".mypy_cache", ".pytest_cache", "__pycache__", "node_modules", ".venv", "venv"}
+# CI stores downloaded browser runtimes and other generated assets in .tmp.
+# Prune that cache before inspecting links, just like installed dependencies.
+_IGNORE_NAMES = {".git", ".mypy_cache", ".pytest_cache", ".tmp", "__pycache__", "node_modules", ".venv", "venv"}
 
 
 class WorkspaceError(ValueError):

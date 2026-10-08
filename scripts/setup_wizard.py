@@ -5,15 +5,22 @@
 
 from __future__ import annotations
 
+import argparse
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-from alpha_factory_v1.utils.disclaimer import print_disclaimer
+REPO_ROOT = Path(__file__).resolve().parents[1]
+# A setup helper must work before the checkout is installed, including direct
+# invocation by absolute path from another directory.
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from alpha_factory_v1.utils.disclaimer import print_disclaimer  # noqa: E402
 
 MIN_PY = (3, 11)
-MAX_PY = (3, 15)
+MAX_PY = (3, 14)
 
 
 def banner(msg: str, color: str = "") -> None:
@@ -63,15 +70,36 @@ def check_node() -> bool:
     return True
 
 
-def run(cmd: list[str]) -> None:
-    subprocess.run(cmd, check=False)
+def run(cmd: list[str]) -> bool:
+    """Run one selected action from the checkout and leave errors visible for recovery."""
+    try:
+        subprocess.run(cmd, cwd=REPO_ROOT, check=True)
+    except subprocess.CalledProcessError as exc:
+        banner(f"Command failed with exit status {exc.returncode}. Review the error above before retrying.", "RED")
+        return False
+    except OSError as exc:
+        banner(f"Could not start the command: {exc}. Check the required tool and try again.", "RED")
+        return False
+    return True
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
+    """Offer explicit source-checkout setup actions without installing on startup."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Requires Python 3.11–3.13. Actions run from this checkout's root. Installation options may download "
+            "dependencies; launch options may start services. Choose an action explicitly, or 5 to exit. "
+            "For the minimal native agent, use the release's install_agent.py instead."
+        ),
+    )
+    parser.parse_args(argv)
     print_disclaimer()
     banner("Alpha-Factory Setup Wizard", "YELLOW")
+    if not check_python():
+        banner("Restart with a supported Python interpreter before installing or launching services.", "RED")
+        return 1
     ok = True
-    ok &= check_python()
     ok &= check_cmd("git")
     ok &= check_cmd("docker")
     ok &= check_node()
@@ -81,7 +109,7 @@ def main() -> None:
     else:
         banner("Environment looks good", "GREEN")
 
-    repo_root = Path(__file__).resolve().parents[1]
+    print(f"Working checkout: {REPO_ROOT}")
     while True:
         print()
         print("Select an option:")
@@ -90,20 +118,27 @@ def main() -> None:
         print("3) Start Insight demo with ./quickstart.sh")
         print("4) Start Insight demo in Docker (docker compose up)")
         print("5) Exit")
-        choice = input("Enter choice: ").strip()
-        if choice == "1":
-            run([sys.executable, str(repo_root / "check_env.py"), "--auto-install"])
-        elif choice == "2":
-            run([str(repo_root / "codex" / "setup.sh")])
-        elif choice == "3":
-            run([str(repo_root / "quickstart.sh")])
-        elif choice == "4":
-            run(["docker", "compose", "up"])
-        elif choice == "5":
-            break
-        else:
-            print("Invalid choice")
+        try:
+            choice = input("Enter choice: ").strip()
+            if choice == "1":
+                run([sys.executable, str(REPO_ROOT / "check_env.py"), "--auto-install"])
+            elif choice == "2":
+                run([str(REPO_ROOT / "codex" / "setup.sh")])
+            elif choice == "3":
+                run([str(REPO_ROOT / "quickstart.sh")])
+            elif choice == "4":
+                run(["docker", "compose", "up"])
+            elif choice == "5":
+                return 0
+            else:
+                print("Invalid choice; enter a number from 1 to 5.")
+        except EOFError:
+            print("\nSetup wizard closed; no further action was started.")
+            return 0
+        except KeyboardInterrupt:
+            print("\nSetup wizard interrupted. Check any running services before retrying.")
+            return 130
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

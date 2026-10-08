@@ -1,11 +1,12 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.24.0 SUCCESSOR Ω candidate
+# Release readiness — 1.24.0 SUCCESSOR Ω
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
-boundaries. This candidate adds the SUCCESSOR mission lifecycle while retaining repository repairs and release-installer preflight.
+boundaries. This version adds the SUCCESSOR mission lifecycle while retaining repository repairs and release-installer preflight.
 The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe the new boundaries.
-A candidate is publishable only after the exact integrated revision passes every existing and added gate.
+A revision is publishable only after the exact integrated commit passes every existing and added gate.
+The published release manifest, rather than this source guide, identifies the accepted commit and recorded results.
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
@@ -36,6 +37,7 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Construct and evaluate a bounded successor | [SUCCESSOR Ω](SUCCESSOR.md) | Browser or signed native lifecycle, matched generation-two trials and empty successor proof/authority until newly earned |
 | Review a governance proposal | [Governance Workbench](../solving_agi_governance/index.html) | Nine conditional gates, reproducible dossier and input-bound verification jobs |
 | Make an operational decision with your records | [Decision Studio](../studio/index.html) | Eleven cases, editable data, constrained plans, proof backlogs and replayable dossiers |
 | Measure whether a learned capability helps new tasks | [Compounding Lab](../compounding/index.html) | Frozen policy, four measured arms, learning/review costs, negative controls and a complete Evidence Docket |
@@ -63,7 +65,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Delivery | Same tested source/site, exact-commit CI, versioned tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; checksums do not establish GitHub-enforced release immutability or make separate API writes atomic |
 | Manuscript fidelity | Original 198-page PDF, canonical Markdown and 31 figures checked against a pinned source commit | A paper is a research specification, not proof that every proposed scientific capability has been established |
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
-| Preservation | 2,125 baseline paths, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
+| Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
 [the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.24.0). The manifest identifies
@@ -80,12 +82,20 @@ audits block publication. Retain the matching checksums with prior release asset
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
 4. Stop the old process before using the restored home. Resume deliberately and test representative missions. For rollback, stop the
-   new process and restore the pre-upgrade backup into another new home with the prior environment.
+   new process. Restore a pre-upgrade backup with the prior environment only if it still satisfies the latest
+   independently retained checkpoint. Later work or revocations must not disappear through rollback; keep the
+   operator stopped until a compatible current recovery path is verified.
 
 There is no journal schema migration in this release. Existing Ed25519 identities, Nova-Seed formats
 and v1 Bloom Chronicle events remain compatible. The transfer protocol uses a separate versioned JSON
 format and does not rewrite native mission history. Do not run two versions on the same home or discard your pre-upgrade backup.
 Exact commands, Windows paths and container operations are in [the operator guide](OPERATIONS.md).
+For SUCCESSOR private recovery, verify the separately retained checkpoint using the
+[installed verification procedure](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys).
+Portable institution transfer is a different workflow: it restores history with active proof and grants empty.
+Native upgrades never deploy or migrate contracts; the
+[contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md)
+describes the separate local rehearsal and external-chain prerequisites.
 
 ## Boundaries that still require separate evidence
 

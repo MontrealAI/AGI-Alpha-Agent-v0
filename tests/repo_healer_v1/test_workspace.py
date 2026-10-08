@@ -58,6 +58,33 @@ def test_engine_retains_source_and_documentation_with_environment_like_names(tmp
     assert (destination / "environment/config.py").read_text() == "source = True\n"
 
 
+@pytest.mark.parametrize("folder", [".tmp/ms-playwright/webkit-2191/lib", "nested/.tmp/assets"])
+def test_generated_caches_with_browser_links_stay_outside_repair_scope(tmp_path: Path, folder: str) -> None:
+    source = tmp_path / "repo"
+    cache = source / folder
+    cache.mkdir(parents=True)
+    (source / "app.py").write_text("value = 1\n")
+    outside = tmp_path / "browser-library.so"
+    outside.write_text("installed browser runtime\n")
+    (cache / "libwebkitgtk.so").symlink_to(outside)
+    (cache / "runtime.json").write_text("{}\n")
+
+    destination = tmp_path / "repair"
+    copy_workspace(source, destination)
+    assert not (destination / folder).exists()
+    assert workspace_files(source) == workspace_files(destination) == {Path("app.py")}
+    assert _diff_between_repos(source, destination) == ""
+    (destination / "app.py").write_text("value = 2\n")
+    patch = _diff_between_repos(source, destination)
+    assert "-value = 1" in patch and "+value = 2" in patch
+    assert ".tmp" not in patch and "libwebkitgtk" not in patch
+    assert is_patch_safe(patch, source)[0]
+    cache_patch = f"--- a/{folder}/runtime.json\n+++ b/{folder}/runtime.json\n@@ -1 +1 @@\n-{{}}\n+changed\n"
+    assert not is_patch_safe(cache_patch, source)[0]
+    assert outside.read_text() == "installed browser runtime\n"
+    assert (cache / "libwebkitgtk.so").is_symlink()
+
+
 @pytest.mark.parametrize("kind", ["file", "directory", "dangling", "hardlink", "fifo"])
 def test_workspace_rejects_links_and_special_files_without_changing_outside_data(tmp_path: Path, kind: str) -> None:
     source = tmp_path / "repo"

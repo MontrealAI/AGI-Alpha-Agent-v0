@@ -6,12 +6,15 @@ from __future__ import annotations
 import hashlib
 import json
 import stat
+import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
 import pytest
 
 from scripts.build_service_worker import gather_assets
+from scripts import release_packs
 from scripts.release_packs import MAX_ASSET_BYTES, classify, pack, require_asset_limits, restore
 
 
@@ -126,6 +129,68 @@ def test_existing_state_is_never_replaced(distribution, tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="already exists"):
         restore(manifest, target)
     assert (target / "keep").read_text() == "operator data"
+
+
+@pytest.mark.parametrize("damage", ["missing", "corrupt", "existing"])
+def test_restore_cli_explains_download_and_destination_errors_without_state_loss(
+    distribution, tmp_path: Path, damage: str
+):
+    _, manifest = distribution
+    destination = tmp_path / "restored site"
+    if damage == "missing":
+        manifest.unlink()
+    elif damage == "corrupt":
+        data = json.loads(manifest.read_bytes())
+        (manifest.parent / data["packs"][0]["name"]).write_bytes(b"corrupt")
+    else:
+        destination.mkdir()
+        (destination / "keep.txt").write_text("operator data")
+    result = subprocess.run(
+        [
+            sys.executable,
+            release_packs.__file__,
+            "restore",
+            "--manifest",
+            str(manifest),
+            "--destination",
+            str(destination),
+        ],
+        text=True,
+        capture_output=True,
+        timeout=20,
+    )
+    assert result.returncode == 1
+    assert "Restore stopped:" in result.stderr and "restore --help" in result.stderr
+    assert "Traceback" not in result.stderr and result.stdout == ""
+    if damage == "existing":
+        assert (destination / "keep.txt").read_text() == "operator data"
+    else:
+        assert not destination.exists()
+
+
+def test_restore_cli_keeps_machine_readable_success_and_exact_contents(distribution, tmp_path: Path) -> None:
+    source, manifest = distribution
+    destination = tmp_path / "restored site"
+    result = subprocess.run(
+        [
+            sys.executable,
+            release_packs.__file__,
+            "restore",
+            "--manifest",
+            str(manifest),
+            "--destination",
+            str(destination),
+            "--groups",
+            "core",
+        ],
+        text=True,
+        capture_output=True,
+        timeout=20,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"commit": "a" * 40, "version": "1.24.0", "groups": ["core"], "files": 1}
+    assert (destination / "index.html").read_bytes() == (source / "index.html").read_bytes()
+    assert not (destination / "models").exists()
 
 
 def test_oversized_final_asset_blocks_publication(tmp_path: Path) -> None:

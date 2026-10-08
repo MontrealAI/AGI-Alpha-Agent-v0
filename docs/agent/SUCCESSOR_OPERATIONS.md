@@ -21,6 +21,10 @@ matching dependency wheelhouse; an installed offline **rehearsal** needs no netw
 Keep `--home` before the subcommand. It selects private persistent identity, journal and local role-key state. Example
 output names below are deliberately new: the CLI refuses existing output files/directories rather than overwriting them.
 
+For command discovery, use `alpha-agent successor-help --language en` (or `fr`), then
+`alpha-agent successor-demo --help`. If the executable is not found, follow the
+[environment activation and troubleshooting instructions](OPERATIONS.md#troubleshooting-a-first-run).
+
 ## One-command native mission
 
 ```sh
@@ -85,6 +89,24 @@ alpha-agent --home ./successor-state resume
 
 The `resume` control above clears the operator pause condition. It is different from `successor-run --resume`, which
 explicitly continues an interrupted request. Neither restores revoked proof, increases a budget or grants authority.
+
+## Troubleshooting and safe repetition
+
+| Situation | Next action |
+|---|---|
+| The output already exists | Keep it as evidence. Use a new output path for a new run; do not delete a partial demo directory before recovering its saved request. |
+| You interrupted a demo | Read `request_id` in its `request.json`, inspect `successor-show`, then use the explicit resume command above with the same home and request. |
+| The saved request was edited | Recover the original exact request for that UUID, or create a new experiment. An edited request cannot reuse the old identity or evidence. |
+| A completed run needs another copy | Use `successor-export REQUEST_UUID` with a new output filename. Export does not generate fresh measurements. |
+| Qualification says `HOLD` or the incumbent wins | Read `REPORT.txt` and the measured comparisons. These are valid outcomes, not instructions to relax proof requirements. |
+| Browser import reports a request mismatch | Restore the original browser `request.json` before importing its corresponding native `result.json`. Do not substitute a later request. |
+| Signature or checkpoint verification fails | Preserve the rejected files and compare against the separately retained key/checkpoint. Do not replace the trusted key with one supplied by the failed import. |
+| Source or environment no longer matches a freeze | Keep the historical evidence and create a new release/request/freeze under the current environment; never patch old source hashes. |
+| A portable restore refuses the destination | Select a new home; restoration never merges state. A private backup instead uses the separate `restore` command. |
+
+For a clean new rehearsal, select new `--home` and `--output` directories. This creates a separate local
+identity; it is not a migration of the previous institution. Preserve old journals, exports and checkpoints.
+There is no destructive reset command needed for the documented workflow.
 
 ## Verify a file return
 
@@ -271,13 +293,16 @@ export a new consistent snapshot instead. A key/checkpoint supplied only inside 
 Restore into a **new** home with the separately retained source key and matching checkpoint:
 
 ```sh
-alpha-agent --home ./restored-state successor-restore ./portable-current.json --source-public-key TRUSTED_SOURCE_KEY_HEX --checkpoint ./retained-checkpoint.json
+alpha-agent --home ./restored-state successor-restore ./portable-current.json --source-public-key TRUSTED_SOURCE_KEY_HEX --checkpoint ./snapshot-checkpoint.json
 ```
 
 The destination must not exist. The command validates version, structure, signature, source identity and the separately
 retained checkpoint before creating the destination. It preserves institutional identity and lineage, but the new home
 starts stopped, with fresh local rehearsal role keys, no active proof, no admission, no grant and no allocated budget.
 It does not import predecessor credentials or automatically trust predecessor verifier keys.
+
+Here `snapshot-checkpoint.json` means the matching copy you retained independently after export, not a
+replacement checkpoint received with an untrusted package. Substitute its actual retained path if stored elsewhere.
 
 An operator may explicitly allocate new local resources with repeated `--budget UNIT=COUNT` arguments, and may explicitly
 provide a separately configured trust file with `--trust trust.json`. Neither resource allocation nor trust configuration
@@ -332,7 +357,7 @@ from pathlib import Path
 from alpha_factory_v1.core.runtime.store import Journal
 from alpha_factory_v1.core.runtime.successor.protocol import safe_json_loads
 from alpha_factory_v1.core.runtime.successor.trust import JournalCheckpoint
-checkpoint = JournalCheckpoint(**safe_json_loads(Path("retained-recovery-checkpoint.json").read_bytes()))
+checkpoint = JournalCheckpoint(**safe_json_loads(Path("recovery-checkpoint.json").read_bytes()))
 checkpoint.verify(Journal(Path("private-restored-state")))
 ```
 
@@ -340,6 +365,9 @@ The checkpoint must have been retained separately from the incoming archive. A s
 satisfy a later checkpoint. Keep the restored operator paused while checking current trust, expiry, dependency rights,
 provider/source changes and uncertain effects. Only then make explicit recovery/resumption decisions. A private backup
 preserves recorded identity and history; it does not turn expired or revoked permissions back into current authority.
+
+Use the actual separately retained `recovery-checkpoint.json` path in the verification example. A newer
+checkpoint must not be replaced by the archive's older checkpoint to make a rollback appear current.
 
 ## Français : exploitation native et vérification
 

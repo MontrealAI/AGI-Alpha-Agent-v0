@@ -10,9 +10,21 @@ work and records an honest decision. A successor inherits permitted knowledge; p
 [Repository guide](REPOSITORY_GUIDE.md) · [Exact Ascension adapter](SUCCESSOR_ASCENSION.md) ·
 [Native operator, developer and verifier handbook](SUCCESSOR_OPERATIONS.md)
 
+## Choose your first run / choisir un premier essai
+
+| Your starting point | Follow this path | What you need |
+|---|---|---|
+| Try the mission now | [Open the browser workspace](../successor/index.html), then follow the first session below | A modern browser; no installation, account or wallet |
+| Keep a signed native journal | [Install the minimal operator](START_HERE.md#1-install-one-release), then run the native quickstart below | Python 3.11–3.13 and four matching release assets; no source checkout |
+| Start without internet access | [Restore the core website pack](SUCCESSOR_PACKAGING.md#first-offline-rehearsal), or prepare the [native wheelhouse](OPERATIONS.md#install-from-a-release) first | Previously downloaded files for the chosen path |
+| Reproduce contract integration | [Ascension adapter evidence](SUCCESSOR_ASCENSION.md#reproduce-the-local-engineering-evidence) and [Hardhat deployment guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Source checkout, Node and Python; disposable local fixtures only |
+
+Le navigateur suffit pour un premier essai. Le journal natif exige l'installation Python indiquée;
+les essais de contrats suivent un parcours séparé. Aucun de ces démarrages n'exige un portefeuille réel.
+
 ## Native one-command quickstart / démarrage natif
 
-With the minimal operator package installed and its environment activated, run:
+With the [minimal operator package installed](START_HERE.md#1-install-one-release) and its environment activated, run:
 
 ```sh
 alpha-agent --home ./successor-state successor-demo --output ./successor-evidence
@@ -31,6 +43,11 @@ credentials and is not an export. Interrupted runs use the saved request and exp
 `successor-export` reproduces a completed result without new measurements. A local performance result leaves independent
 qualification on `HOLD`. Read the [installed-command, recovery and verifier handbook](SUCCESSOR_OPERATIONS.md) before
 resuming, restoring or interpreting signatures. No source checkout is required.
+
+Success means the command exits normally and writes those six files. `HOLD`, a loss to a comparator or
+`RETAIN_INCUMBENT` can be valid measured outcomes; a preferred successor is not guaranteed. Keep both
+directories for later inspection. To repeat the experiment, choose a new evidence directory; to continue
+an interrupted request, use the [resume procedure](SUCCESSOR_OPERATIONS.md#interrupt-inspect-resume-and-export).
 
 Le dossier de preuves contient les mêmes fichiers et un rapport français. Gardez séparément la clé publique et le point
 de contrôle; ne publiez pas le dossier privé. La reprise utilise `successor-run --resume` avec la requête conservée;
