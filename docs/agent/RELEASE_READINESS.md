@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.24.0 SUCCESSOR Ω
+# Release readiness — 1.24.1 SUCCESSOR Ω
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
 boundaries. This version adds the SUCCESSOR mission lifecycle while retaining repository repairs and release-installer preflight.
@@ -10,7 +10,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.24.0.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.24.1.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -68,7 +68,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.24.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.24.1). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -96,7 +96,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.24.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.24.1 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

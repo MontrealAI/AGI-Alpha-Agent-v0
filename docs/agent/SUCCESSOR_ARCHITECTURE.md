@@ -1,14 +1,16 @@
 # SUCCESSOR Ω: architecture decision 001
 
-Status: implementation candidate; no external qualification or production grant.
+Status: implemented in release 1.24.0; no external qualification or production grant.
 
 ## Base and preservation
 
-The inspected main revision is `aab4995ee87f7fb575180931c79b8bf86e26d50d` (1.23.2).
-This additive candidate is stacked on reviewed PR #4758 head
-`d1fb99e629ec1627e7d3876a330797bde79d5ee6`; neither that PR nor this candidate is automatically merged.
-Its repair preservation, release identity and browser corrections remain intact.
-The proposed feature version is 1.24.0. Existing journal bytes, five native mission kinds,
+The preservation baseline is main revision `aab4995ee87f7fb575180931c79b8bf86e26d50d` (1.23.2).
+PR #4759 merged the additive lifecycle together with PR #4758 head
+`d1fb99e629ec1627e7d3876a330797bde79d5ee6`. Follow-ups #4760 and #4761 completed operator
+workflows and release-evidence handoffs. Their repair preservation, release identity and browser
+corrections remain intact.
+The lifecycle was introduced in 1.24.0; the current maintenance release is 1.24.1.
+Existing journal bytes, five native mission kinds,
 research assets, diagrams, contracts and routes retain their meanings and compatibility.
 
 ## Decision and dependency order

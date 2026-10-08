@@ -1,6 +1,6 @@
 # Contract deployment and migration guide
 
-This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.24.0. It deploys the Ascension
+This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.24.1. It deploys the Ascension
 contracts, verifies their bindings and writes inspectable evidence. It needs no wallet, secret, RPC URL
 or real funds. Contract state exists only inside that command's process and disappears when it exits.
 
