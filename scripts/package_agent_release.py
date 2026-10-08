@@ -24,6 +24,7 @@ from scripts.check_factory_readiness import check as verify_factory
 from scripts.check_manuscript import verify as verify_manuscript
 from scripts.check_successor_preservation import check as verify_successor_preservation
 from scripts.release_packs import digest, require_asset_limits, restore
+from scripts.wait_for_release_ci import require_historical_evidence
 
 
 def release_documents(version: str) -> tuple[str, ...]:
@@ -123,12 +124,13 @@ def main() -> None:
     parser.add_argument("--evidence", type=Path, required=True)
     args = parser.parse_args()
     subprocess.run(["git", "diff", "--exit-code", "--quiet", "HEAD"], check=True)
+    sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    historical_ci = require_historical_evidence(args.evidence, sha)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
     if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("release version must be major.minor.patch")
-    sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     manuscript_hashes = verify_manuscript()
     factory_preservation = verify_factory()
@@ -224,6 +226,7 @@ def main() -> None:
         "distributions": distributions,
         "maximum_asset_bytes": 450_000_000,
         "commit": sha,
+        "historical_ci": historical_ci,
         "baseline": "ac9b112a44670f67d53fc3d188ef73fa16e90894",
         "repository": "MontrealAI/AGI-Alpha-Agent-v0",
         "workflow_run": (

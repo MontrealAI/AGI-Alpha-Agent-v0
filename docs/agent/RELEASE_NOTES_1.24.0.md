@@ -2,6 +2,10 @@
 
 # 1.24.0 — SUCCESSOR Ω mission institutions
 
+Release retries bind the historical-CI report to the successful job's unique artifact name and digest.
+Packaging rejects stale or unsuccessful reports, and the wait budget accommodates the historical
+test jobs' full time limit. See [retry recovery](RELEASE_READINESS.md#recover-a-release-workflow-after-a-retry).
+
 **Publication requires the exact-commit acceptance workflow.** The published release manifest records
 the accepted revision, workflow and evidence; this guide describes the version's behavior and requirements.
 This feature extends the maintained runtime with persistent mission institutions, separately versioned

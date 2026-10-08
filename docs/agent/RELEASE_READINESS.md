@@ -73,6 +73,25 @@ the tested commit and workflow. JUnit reports distinguish passing, skipped and e
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
 
+## Recover a release workflow after a retry
+
+1. Open the failed job and identify its actual error. A historical-CI waiting timeout does not mean
+   the test suites failed: inspect the separate CI, PR CI and Smoke runs for the same full commit SHA.
+2. Wait for every required run on that commit to complete successfully. Repair a test failure through
+   a reviewed source change; the new main commit must pass its own checks.
+3. For a timing-only failure, use **Re-run failed jobs** on the original release workflow. Successful
+   test jobs retain their evidence. The historical waiter rechecks all three required workflows.
+4. Confirm packaging, public Pages acceptance and publication all succeed. A successful test run alone
+   does not establish that the public website or release assets have been published.
+
+The historical waiter allows 75 minutes within an 80-minute job, accommodating the historical test
+jobs' 60-minute limit and runner startup. A timeout still fails closed. The successful waiter supplies
+its unique attempt-specific artifact name to packaging, and the download verifies its SHA-256 digest.
+The report must identify the same commit and successful main-push runs of every required workflow.
+Packaging rejects missing, failed or stale reports. Package and public-site evidence downloads also
+use the producing job's unique artifact name. Artifact IDs are opaque identifiers: a larger number
+does not prove a newer attempt. Earlier attempt artifacts remain available as diagnostic history.
+
 ## Upgrade without losing your work
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
@@ -115,8 +134,8 @@ backups maintained; review new advisories and preserve a tested rollback path fo
 
 The September 27, 2026 audit found main branch protection disabled and no repository rulesets. The
 release workflow still gates deployment and publication, but that does not protect direct pushes.
-The connected repository API supports the code/release work and does not expose administration writes;
-the separate browser session requires sign-in. An administrator must enable the repository rule.
+The connected repository API supports the code/release work and does not expose administration writes.
+An administrator with repository settings access must enable the repository rule.
 
 In the repository, open **Settings → Branches → Add classic branch protection rule**. Set the branch
 pattern to `main`, enable **Require status checks to pass before merging** and **Require branches to

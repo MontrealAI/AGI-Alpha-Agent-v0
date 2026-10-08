@@ -69,7 +69,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
@@ -749,7 +749,9 @@ jobs:
 
   historical-ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 80
+    outputs:
+      artifact-name: ${{ steps.evidence-name.outputs.name }}
     permissions:
       contents: read
       actions: read
@@ -764,13 +766,16 @@ jobs:
         run: python -m scripts.wait_for_release_ci
       - name: Record non-publishing candidate scope
         if: github.ref != 'refs/heads/main'
+        run: python -m scripts.wait_for_release_ci --candidate
+      - name: Name this attempt's historical evidence
+        id: evidence-name
+        if: always()
         run: |
-          mkdir -p evidence
-          echo '{"required": false, "reason": "Branch candidate; publication requires the main-commit historical checks."}' > evidence/historical-ci.json
+          echo "name=historical-ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: historical-ci
+          name: ${{ steps.evidence-name.outputs.name }}
           path: evidence/
           if-no-files-found: warn
 
@@ -778,6 +783,8 @@ jobs:
     needs: [runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit]
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      artifact-name: ${{ steps.package-name.outputs.name }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -788,7 +795,16 @@ jobs:
           python-version: '3.12'
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
+          # Ignore failed historical snapshots and outputs from previous attempts.
+          pattern: '!{historical-ci,release-package,public-pages,github-pages}*'
           path: evidence
+          digest-mismatch: error
+      - name: Download the successful historical job's exact evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.historical-ci.outputs.artifact-name }}
+          path: evidence/historical-ci
+          digest-mismatch: error
       - name: Build, verify and package the exact tested commit
         run: |
           python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0
@@ -797,9 +813,12 @@ jobs:
           python scripts/install_agent.py --release-dir release --venv "$RUNNER_TEMP/release-install"
           cd release
           sha256sum -c SHA256SUMS
+      - name: Name this attempt's verified package
+        id: package-name
+        run: echo "name=release-package-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
-          name: release-package
+          name: ${{ steps.package-name.outputs.name }}
           path: release/
           if-no-files-found: error
 
@@ -808,6 +827,8 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      artifact-name: ${{ steps.public-name.outputs.name }}
     permissions:
       contents: read
       pages: write
@@ -846,6 +867,7 @@ jobs:
           enablement: ${{ secrets.ADMIN_GITHUB_TOKEN != '' }}
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: site
       - name: Reject superseded main before deployment
         env:
@@ -854,6 +876,8 @@ jobs:
       - name: Deploy the tested artifact
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verify public commit and user workflows
         run: |
           python -m pip install --require-hashes -r requirements-agent.lock
@@ -876,10 +900,14 @@ jobs:
           python -m scripts.validate_governance --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/governance --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_sovereign --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/sovereign --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_successor --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Name this attempt's public acceptance evidence
+        id: public-name
+        if: always()
+        run: echo "name=public-pages-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: public-pages
+          name: ${{ steps.public-name.outputs.name }}
           path: evidence/
           if-no-files-found: warn
 
@@ -896,12 +924,14 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: release-package
+          name: ${{ needs.package.outputs.artifact-name }}
           path: release
+          digest-mismatch: error
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: public-pages
+          name: ${{ needs.pages.outputs.artifact-name }}
           path: public-evidence
+          digest-mismatch: error
       - name: Include public acceptance in the release evidence and checksums
         run: |
           python -m scripts.finalize_pages_release --evidence public-evidence
