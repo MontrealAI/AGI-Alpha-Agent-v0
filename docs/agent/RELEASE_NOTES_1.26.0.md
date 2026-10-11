@@ -21,6 +21,9 @@ Reviewed compatibility overrides address transitive advisories. A full npm audit
 toolchain now blocks publication on moderate or higher findings. Remaining low-severity legacy elliptic
 findings are documented; no production keys are imported by the toolchain's scripts.
 
+MuZero cancellation now uses session-local stop requests and a single streaming status writer.
+The experiment closes before confirming Stop, and a fresh run is verified after cancellation.
+
 ## Validation and operational scope
 
 The existing exact-commit release gates are retained. The expanded contract suite includes adversarial

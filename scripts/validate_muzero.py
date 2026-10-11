@@ -17,7 +17,7 @@ from urllib.parse import urlsplit
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 
-def validate(output: Path, url: str | None = None) -> None:
+def validate(output: Path, url: str | None = None, executable: str | None = None) -> None:
     """Use an isolated local server, not an SDK stub or prerecorded completion."""
     from playwright.sync_api import expect, sync_playwright
 
@@ -63,7 +63,7 @@ def validate(output: Path, url: str | None = None) -> None:
             else:
                 raise RuntimeError("MuZero health endpoint did not become ready")
             with sync_playwright() as playwright:
-                browser = playwright.chromium.launch()
+                browser = playwright.chromium.launch(executable_path=executable)
                 context = browser.new_context(viewport={"width": 1440, "height": 1000})
                 page = context.new_page()
                 errors = []
@@ -77,7 +77,7 @@ def validate(output: Path, url: str | None = None) -> None:
                         else route.abort()
                     ),
                 )
-                page.goto(url, wait_until="networkidle")
+                page.goto(url, wait_until="domcontentloaded")
                 expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
                 page.get_by_role("button", name="Train & compare", exact=True).click()
                 page.get_by_text("Complete.", exact=False).wait_for(timeout=120000)
@@ -100,6 +100,12 @@ def validate(output: Path, url: str | None = None) -> None:
                 page.get_by_text("Stopped.", exact=False).wait_for(timeout=15000)
                 expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
                 expect(page.get_by_role("button", name="Train & compare", exact=True)).to_be_enabled()
+                # A completed stop must not poison the next run's session state.
+                episodes.press("Home")
+                expect(episodes).to_have_value("0")
+                page.get_by_role("button", name="Train & compare", exact=True).click()
+                page.get_by_text("Complete.", exact=False).wait_for(timeout=120000)
+                expect(page.get_by_role("button", name="Stop", exact=True)).to_be_disabled()
                 assert not errors, errors
                 (output / "browser.json").write_text(
                     json.dumps(
@@ -110,6 +116,7 @@ def validate(output: Path, url: str | None = None) -> None:
                             "real_environment_snapshots": True,
                             "mobile_no_overflow": True,
                             "stop": True,
+                            "restart_after_stop": True,
                             "external_browser_requests_blocked": True,
                             "page_errors": errors,
                         },
@@ -132,8 +139,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("evidence/muzero-browser"))
     parser.add_argument("--url", help="Existing local Docker URL instead of starting a subprocess")
+    parser.add_argument("--browser-executable")
     args = parser.parse_args()
-    validate(args.output, args.url)
+    validate(args.output, args.url, args.browser_executable)
 
 
 if __name__ == "__main__":

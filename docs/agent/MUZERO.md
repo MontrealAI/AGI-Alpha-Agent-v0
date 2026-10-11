@@ -47,3 +47,8 @@ The [complete demo guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/
 contains the preserved flowchart, full research archive, Colab notebook, programmatic checkpoint
 example, algorithm simplifications and troubleshooting. The static gallery chart remains a labeled
 sample replay; Python performs the actual neural learning.
+
+Stop requests are scoped to your browser session. The training loop closes its experiment before
+confirming **Stopped** and enabling a new run; a late cancellation response cannot overwrite that
+confirmation. Work stops at the next bounded training boundary, rather than interrupting a numerical
+operation midway. The next experiment starts with fresh state.
