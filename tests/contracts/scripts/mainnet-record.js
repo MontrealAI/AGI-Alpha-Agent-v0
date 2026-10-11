@@ -7,7 +7,7 @@ const ethers = require("ethers");
 const { readOnlyRpc, ENS, WRAPPER, roots } = require("./mainnet");
 const { writeManifest } = require("./deployment");
 const ROOT = path.resolve(__dirname, "../../../deployments/ethereum-mainnet/2026-10-11");
-const RECORD_SHA256 = "8bddc4e720956db61526ba83b5fdae0c13d9e5049a27ced3a662a3b86e89dc6f";
+const RECORD_SHA256 = "829e61c887ea6127e93570d994a4bf12b88763104b69beed1a7076a634cf6246";
 const NAMES = ["AscensionAccess", "NovaSeed", "AscensionRiskOracle", "AscensionJobMarket", "AscensionMark"];
 const TOKEN = "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA";
 const sha256 = bytes => crypto.createHash("sha256").update(bytes).digest("hex");

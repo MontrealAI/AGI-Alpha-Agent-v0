@@ -22,8 +22,10 @@ Start with the [owner and verification guide](../../../docs/agent/MAINNET_DEPLOY
 
 Use the repository root's `npm run mainnet:record-check --prefix tests/contracts` for archive integrity,
 and the guide's read-only command for finalized mainnet verification. No private credentials are included.
-The recorded Etherscan source-verification result comes from the operator's successful API output;
-recheck the linked explorer pages independently when relying on that result.
+Etherscan source verification is operator-reported. The API response/transcript is not included in this
+archive, so the manifest labels that result `operator-reported-verified` and `transcriptIncluded: false`.
+The read-only verifier checks chain data; it does not verify explorer source-verification status. Recheck
+the linked explorer pages independently when relying on that result.
 
 To reproduce the compiler output, use **solc 0.8.24+commit.e11b9ed9**, pass `compiler-input.json` through
 its standard-JSON interface, and compare the named contract ABI/bytecode/immutable references with
@@ -32,4 +34,5 @@ is needed. Constructor arguments are reconstructed by `tests/contracts/scripts/m
 Current contract compilation uses a newer source/dependency/compiler profile and is a different build.
 
 These non-upgradeable contracts lack the newer payout/burn balance and revoked-rejection-quorum checks.
-Deployment and Ledger ownership are verified; participant commissioning and public funding are not approved.
+Deployment and final ownership are recorded; Ledger custody is operator-reported. Participant
+commissioning and public funding are not approved.

@@ -55,6 +55,8 @@ describe("Recorded Ethereum deployment (offline and read-only)", function () {
         const bundle = loadRecord();
         expect(bundle.record.transactions).to.have.length(11);
         expect(bundle.record.compiler.version).to.equal("0.8.24+commit.e11b9ed9");
+        expect(bundle.record.sourceVerification.status).to.equal("operator-reported-verified");
+        expect(bundle.record.sourceVerification.transcriptIncluded).to.equal(false);
         expect(bundle.record.operationalStatus.newerSettlementHardeningIncluded).to.equal(false);
     });
     it("refuses a modified deployment manifest or compiler input", () => {

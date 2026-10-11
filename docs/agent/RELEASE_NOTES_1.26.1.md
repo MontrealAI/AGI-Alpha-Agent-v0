@@ -5,8 +5,9 @@
 For installation and the first local run, follow the [first-run guide](START_HERE.md).
 
 The October 11 Ascension Ethereum mainnet deployment now has a public, reproducible source record and
-a [plain-language owner guide](MAINNET_DEPLOYMENT.md). Five contracts were deployed and source-verified,
-their bindings checked, and Oracle/JobMarket ownership accepted by the final owner. No further ownership
+a [plain-language owner guide](MAINNET_DEPLOYMENT.md). Five contracts were deployed, their bindings
+checked, and Oracle/JobMarket ownership accepted by the final owner. Etherscan source verification is
+operator-reported; its API response/transcript is not included in the public archive. No further ownership
 acceptance is required. The record includes all eleven transactions, complete runtime hashes, exact compiler
 inputs, constructor arguments, dependency metadata, historical costs and public operator evidence.
 
