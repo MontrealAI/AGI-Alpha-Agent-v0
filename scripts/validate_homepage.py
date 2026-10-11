@@ -13,7 +13,7 @@ import re
 import subprocess
 from threading import Thread
 import tomllib
-from typing import Any
+from typing import Any, cast
 from urllib.parse import parse_qs, urlsplit
 from urllib.request import Request, urlopen
 
@@ -54,7 +54,7 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
     assert controls, "No visible welcome controls"
     small = [control for control in controls if min(control["width"], control["height"]) < 43.5]
     assert not small, f"Welcome controls need at least 44 × 44 CSS pixels: {small}"
-    return controls
+    return cast(list[dict[str, Any]], controls)
 
 
 def audit(page: Page, axe_source: str, *, beginner_only: bool) -> dict[str, Any]:
@@ -62,7 +62,7 @@ def audit(page: Page, axe_source: str, *, beginner_only: bool) -> dict[str, Any]
     inspect(page, axe_source + "; void 0")
     context = "{include:['header','#home'],exclude:['#research']}" if beginner_only else "document"
     tags = "['wcag2a','wcag2aa','wcag21aa','best-practice']" if beginner_only else "['wcag2a','wcag2aa','wcag21aa']"
-    return inspect(page, f"axe.run({context}, {{runOnly:{{type:'tag',values:{tags}}}}})")
+    return cast(dict[str, Any], inspect(page, f"axe.run({context}, {{runOnly:{{type:'tag',values:{tags}}}}})"))
 
 
 def validate(
