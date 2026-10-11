@@ -5,6 +5,7 @@
 **[Make your first plan](../start/index.html)** or explore the
 **[homepage](../index.html)**. No technical experience, account, wallet, payment or installation is
 needed for the first-plan experience. The [simple guide](ONBOARDING.md) is available in English and French.
+For an installed agent, follow the [operator start guide](START_HERE.md).
 
 ## What changes
 
