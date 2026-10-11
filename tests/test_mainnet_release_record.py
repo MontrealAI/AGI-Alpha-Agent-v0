@@ -28,6 +28,7 @@ def test_mainnet_archive_preserves_evidence_and_excludes_unlisted_files(tmp_path
     (output / "MAINNET_DEPLOYMENT.md").write_text("reviewed owner guide")
     target = package_mainnet_record(checkout, output, "1.26.1")
     manifest = json.loads((ROOT / RECORD / "manifest.json").read_text())
+    assert {"licenses/Apache-2.0.txt", "licenses/OpenZeppelin-MIT.txt"}.issubset(manifest["files"])
     with zipfile.ZipFile(target) as archive:
         assert len(archive.namelist()) == len(manifest["files"]) + 3
         assert not any("private-file" in name for name in archive.namelist())

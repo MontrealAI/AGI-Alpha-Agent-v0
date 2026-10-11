@@ -16,6 +16,9 @@ Start with the [owner and verification guide](../../../docs/agent/MAINNET_DEPLOY
   operator package remains in the operator's private deployment backup; this archive contains selected evidence.
 - `evidence/` contains the public preflight, isolated-fork rehearsal and final operator verification.
   The fork used development-chain impersonation, not live mainnet authority.
+- `licenses/` preserves the project's Apache 2.0 license and the MIT notice for the embedded
+  [OpenZeppelin Contracts 5.4.0 sources](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.4.0/LICENSE).
+  Both full license texts are included in the checksum-bound standalone archive.
 
 Use the repository root's `npm run mainnet:record-check --prefix tests/contracts` for archive integrity,
 and the guide's read-only command for finalized mainnet verification. No private credentials are included.
