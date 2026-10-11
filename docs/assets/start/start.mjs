@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { runMission } from "../portal/mission-engine.mjs?v=1.26.1";
+import { runMission } from "../portal/mission-engine.mjs?v=1.26.2";
 
 const $ = (id) => document.getElementById(id);
 const french = {
@@ -174,6 +174,21 @@ const defaults = {
 };
 let language =
     new URLSearchParams(location.search).get("lang") === "fr" ? "fr" : "en";
+const largeText = new URLSearchParams(location.search).get("text") === "large";
+document.documentElement.classList.toggle("large-text", largeText);
+$("text-size").setAttribute("aria-pressed", String(largeText));
+
+// Carry display preferences between the welcome page and this guide without
+// storing task inputs or introducing cookies/local storage.
+function updateHomeLinks() {
+    const query = new URLSearchParams();
+    if (language === "fr") query.set("lang", "fr");
+    if (document.documentElement.classList.contains("large-text"))
+        query.set("text", "large");
+    const suffix = query.size ? `?${query}` : "";
+    for (const link of document.querySelectorAll("a[data-home-link]"))
+        link.setAttribute("href", `../${suffix}`);
+}
 let currentStep = 0,
     accepted = false,
     snapshot = null;
@@ -263,6 +278,7 @@ function renderResult() {
 }
 function translate() {
     document.documentElement.lang = language;
+    updateHomeLinks();
     document.title =
         language === "fr" ? "Commencer · AGI ALPHA" : "Start here · AGI ALPHA";
     const dictionary = language === "fr" ? french : english;
@@ -412,6 +428,7 @@ $("language").addEventListener("click", () => {
 $("text-size").addEventListener("click", () => {
     const large = document.documentElement.classList.toggle("large-text");
     $("text-size").setAttribute("aria-pressed", String(large));
+    updateHomeLinks();
 });
 function readablePlan() {
     if (!snapshot || !accepted || currentStep !== 2) return "";

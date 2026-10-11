@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-51ca903951cc476d";
-const RELEASE = "1.26.1";
+const CACHE = "agialpha-gallery-b7dca0467bbad6c3";
+const RELEASE = "1.26.2";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -251,6 +251,8 @@ const ASSETS = [
   "./assets/portal/portal.css",
   "./assets/portal/portal.mjs",
   "./assets/portal/verify-export.mjs",
+  "./assets/portal/welcome.css",
+  "./assets/portal/welcome.mjs",
   "./assets/pyodide_demo.js",
   "./assets/replay_chart.js",
   "./assets/start/start.css",

@@ -1,3 +1,12 @@
+## 1.26.2 — 2026-10-11
+
+- Give the homepage a welcoming purple-and-cream design, one clear first-plan invitation and a sample result.
+- Explain the three-step journey, cost and privacy in everyday English and French.
+- Keep language and larger-text choices when opening the guided first-plan experience.
+- Add generated-site and public-site homepage acceptance while retaining every existing release gate.
+- Preserve advanced tools, original research, diagrams, media and historical mainnet records.
+- See [release notes](agent/RELEASE_NOTES_1.26.2.md).
+
 ## 1.26.1 — 2026-10-11
 
 - Record the five deployed Ethereum contracts, finalized transaction evidence and completed Ledger ownership.

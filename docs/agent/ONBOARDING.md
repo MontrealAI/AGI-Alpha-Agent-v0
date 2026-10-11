@@ -2,11 +2,24 @@
 
 # Your first useful plan / Votre premier plan utile
 
-**[Start here — open the guided experience](../start/index.html)** ·
-**[Commencer en français](../start/index.html?lang=fr)**
+**[Visit the welcoming homepage](../index.html)** ·
+**[Make your first plan](../start/index.html)** ·
+**[Commencer en français](../index.html?lang=fr)**
 
 No technical experience, account, wallet, payment, installation or AI service key is needed.
 This page runs a small planning calculation on your device. It does not perform the tasks for you.
+
+## Find your way from the homepage
+
+The homepage starts with one clear invitation to make a first plan. An example shows what you will
+receive, three short steps explain the process, and plain-language questions explain cost, privacy
+and what happens next. Choose **Français** or **Larger text** at the top before you begin. The first-plan
+link carries those choices with you; there is no need to select them again.
+
+You can also open the [French experience with larger text](../start/index.html?lang=fr&text=large)
+directly. Preferences are carried in the link for this visit, without an account or saved browser
+settings. The advanced workspaces, research, documentation and original demonstrations remain farther
+down the homepage for people who want to explore them.
 
 ## Three easy steps
 
@@ -27,7 +40,8 @@ own storage and recovery behavior, described in the [browser guide](PAGES_GUIDE.
 
 ## Make yourself comfortable
 
-- Use **Larger text**, browser zoom, or **Français** at the top. These preferences are for this page visit.
+- Use **Larger text**, browser zoom, or **Français** at the top. Homepage language and text-size choices
+  follow the first-plan link; they are for this visit and can be changed at any time.
 - Use Tab and Shift+Tab to move between controls, Enter to activate a button, and Space for a checkbox.
 - There is no countdown or automatic progression. Changing a plan clears the previous review and result.
 - Error messages name the field to fix. Select the linked message to reach that field.
@@ -47,7 +61,11 @@ own storage and recovery behavior, described in the [browser guide](PAGES_GUIDE.
 
 ## Français
 
-**[Ouvrir le parcours en français](../start/index.html?lang=fr).** Aucun compte, portefeuille,
+**[Ouvrir la page d’accueil en français](../index.html?lang=fr)** ou
+**[commencer directement avec un texte plus grand](../start/index.html?lang=fr&text=large)**.
+La page d’accueil présente un exemple de plan, trois étapes et des réponses aux questions courantes.
+Vos choix de langue et de taille du texte vous accompagnent au début du parcours.
+Aucun compte, portefeuille,
 paiement, téléchargement de modèle ni installation n’est nécessaire.
 
 1. **Choisir.** Indiquez le temps disponible et conservez ou modifiez les quatre tâches proposées.

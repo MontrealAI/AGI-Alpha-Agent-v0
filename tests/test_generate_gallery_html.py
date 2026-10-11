@@ -80,9 +80,14 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     entries = [("Fixture demo", "preview.svg", "fixture/", "A retained gallery entry")]
     decision_cards = '<a href="studio/?case=fixture">Fixture decision</a>'
     generated = ggh.build_portal_html(entries, "9.8.7", decision_cards)
-    navigation = re.search(r'<nav aria-label="Main navigation">(.*?)</nav>', generated, re.S)
+    navigation = re.search(r'<nav\b[^>]*aria-label="Main navigation"[^>]*>(.*?)</nav>', generated, re.S)
     assert navigation is not None
-    assert '<a href="successor/">SUCCESSOR Ω</a>' in navigation[1]
+    directory = re.search(r'<nav\b[^>]*class="welcome-directory"[^>]*>(.*?)</nav>', generated, re.S)
+    assert directory is not None
+    # Beginners get a short path; every advanced workspace remains discoverable.
+    assert len(re.findall(r"<a\b", navigation[1])) == 4
+    assert 'href="start/"' in navigation[1] and "Start here" in navigation[1]
+    assert 'href="successor/"' in directory[1] and "SUCCESSOR Ω" in directory[1]
     feature = re.search(
         r'<section\b[^>]*aria-labelledby="successor-feature-title"[^>]*>(.*?)</section>', generated, re.S
     )
@@ -92,7 +97,7 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     assert 'href="agent/SUCCESSOR/"' in feature[1]
     assert re.search(r'href="ascension/"\s*>Launch Ascension', generated)
     for route in ("compounding/", "bloom/", "insight/", "ascension-protocol/", "studio/"):
-        assert f'href="{route}"' in navigation[1]
+        assert f'href="{route}"' in directory[1]
     assert 'href="fixture/"' in generated and "A retained gallery entry" in generated
     assert decision_cards in generated
     assert 'name="application-version" content="9.8.7"' in generated
@@ -102,7 +107,12 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
 
 def test_generated_homepage_features_beginner_onboarding():
     page = ggh.build_portal_html([], "1.25.0", "")
-    assert 'href="start/">Start here</a>' in page
-    assert "Start here — your first plan" in page
+    assert re.search(r'data-home-key="nav-start"\s*>\s*Start here\s*</a\s*>', page)
+    assert "Start here — make a plan" in page
+    assert page.index('id="home"') < page.index('id="research"') < page.index('id="workbench"')
+    assert 'class="legacy-research" lang="en"' in page
+    assert 'id="home-text-size"' in page
+    assert 'id="home-fr"' in page
+    assert page.count("<h1") == 1
     assert "Launch Ascension" in page
     assert "Begin SUCCESSOR Ω" in page
