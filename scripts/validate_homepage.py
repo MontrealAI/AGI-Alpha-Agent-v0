@@ -33,8 +33,29 @@ def assert_handoff(page: Page, language: str, large: bool) -> None:
         target = urlsplit(href)
         assert not target.scheme and not target.netloc and target.path == "start/", href
         query = parse_qs(target.query)
+        assert set(query) <= {"lang", "text"}, href
         assert query.get("lang", ["en"]) == [language], href
         assert query.get("text", ["standard"]) == (["large"] if large else ["standard"]), href
+
+
+def assert_reading_url(
+    page: Page,
+    language: str,
+    large: bool,
+    *,
+    path: str,
+    fragment: str = "",
+    extra_query: dict[str, list[str]] | None = None,
+) -> None:
+    """Require a bookmarkable reading choice without altering the page's other URL state."""
+    target = urlsplit(page.url)
+    assert target.path == path and target.fragment == fragment, page.url
+    expected = dict(extra_query or {})
+    if language == "fr":
+        expected["lang"] = ["fr"]
+    if large:
+        expected["text"] = ["large"]
+    assert parse_qs(target.query, keep_blank_values=True) == expected, page.url
 
 
 def check_layout(page: Page) -> list[dict[str, Any]]:
@@ -158,6 +179,8 @@ def validate(
             expect(page.locator('a[href="#home"]').first).to_be_focused()
             page.keyboard.press("Enter")
             expect(page.locator("#home")).to_be_focused()
+            home_path = urlsplit(origin).path
+            history_length = inspect(page, "history.length")
             page.locator("#home-fr").focus()
             page.keyboard.press("Enter")
             expect(page.locator("html")).to_have_attribute("lang", "fr")
@@ -168,18 +191,85 @@ def validate(
                 expect(legacy).to_have_attribute("lang", "en")
             assert heading.inner_text().strip() != english_heading
             assert_handoff(page, "fr", False)
+            assert_reading_url(page, "fr", False, path=home_path, fragment="home")
             page.locator("#home-text-size").click()
             expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
             assert inspect(page, "parseFloat(getComputedStyle(document.body).fontSize)") > base_size
             assert_handoff(page, "fr", True)
+            assert_reading_url(page, "fr", True, path=home_path, fragment="home")
+            assert inspect(page, "history.length") == history_length, "Reading controls must not add history entries"
+            page.reload(wait_until="networkidle")
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
+            assert_reading_url(page, "fr", True, path=home_path, fragment="home")
+            assert_handoff(page, "fr", True)
+
+            # Native anchor navigation creates entries; Back/Forward restores each entry's choices.
+            page.locator('header a[href="#questions"]').click()
+            expect(page).to_have_url(re.compile(r"#questions$"))
+            question_history_length = inspect(page, "history.length")
+            page.locator("#home-en").click()
+            assert_reading_url(page, "en", True, path=home_path, fragment="questions")
+            assert inspect(page, "history.length") == question_history_length
+            page.go_back()
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
+            assert_reading_url(page, "fr", True, path=home_path, fragment="home")
+            assert_handoff(page, "fr", True)
+            page.go_forward()
+            expect(page.locator("html")).to_have_attribute("lang", "en")
+            assert_reading_url(page, "en", True, path=home_path, fragment="questions")
+            assert_handoff(page, "en", True)
+            page.locator("#home-fr").click()
             page.locator("[data-start-link]").first.click()
             expect(page.locator("html")).to_have_attribute("lang", "fr")
             expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
             expect(page.locator("#planner")).to_be_visible()
-            report["checks"] += ["keyboard-skip", "english-and-french", "larger-text", "guided-plan-preferences"]
+            assert_reading_url(page, "fr", True, path=home_path + "start/")
+
+            # Planner controls update only reading preferences, never task input or storage.
+            page.goto(origin + "start/?lang=fr&text=large&source=bookmark#planner", wait_until="networkidle")
+            expect(page.locator("#planner")).to_be_visible()
+            page.locator("#task-options summary").click()
+            page.locator("#name-0").fill("My private task, kept on this page")
+            planner_history_length = inspect(page, "history.length")
+            page.locator("#language").click()
+            expect(page.locator("html")).to_have_attribute("lang", "en")
+            page.locator("#text-size").click()
+            assert_reading_url(
+                page, "en", False, path=home_path + "start/", fragment="planner", extra_query={"source": ["bookmark"]}
+            )
+            expect(page.locator("#name-0")).to_have_value("My private task, kept on this page")
+            for link in page.locator("a[data-home-link]").all():
+                expect(link).to_have_attribute("href", "../")
+            page.locator("#language").click()
+            page.locator("#text-size").click()
+            assert inspect(page, "history.length") == planner_history_length
+            assert_reading_url(
+                page, "fr", True, path=home_path + "start/", fragment="planner", extra_query={"source": ["bookmark"]}
+            )
+            assert inspect(page, "localStorage.length === 0 && sessionStorage.length === 0")
+            page.reload(wait_until="networkidle")
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
+            expect(page.locator("#name-0")).not_to_have_value("My private task, kept on this page")
+            for link in page.locator("a[data-home-link]").all():
+                expect(link).to_have_attribute("href", "../?lang=fr&text=large")
+            page.locator("a[data-home-link]").first.click()
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
+            assert_reading_url(page, "fr", True, path=home_path)
+            report["checks"] += [
+                "keyboard-skip",
+                "english-and-french",
+                "larger-text",
+                "guided-plan-preferences",
+                "reading-preferences-survive-reload",
+                "reading-preferences-follow-history",
+            ]
 
             # Shared links reproduce preferences without requiring a saved browser setting.
-            page.goto(origin + "?lang=fr&text=large", wait_until="networkidle")
+            page.goto(origin + "?lang=fr&text=large&source=bookmark#home", wait_until="networkidle")
             expect(page.locator("html")).to_have_attribute("lang", "fr")
             expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
             assert_handoff(page, "fr", True)
@@ -188,6 +278,11 @@ def validate(
             assert heading.inner_text().strip() == english_heading
             assert_handoff(page, "en", True)
             page.locator("#home-text-size").click()
+            expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "false")
+            assert_handoff(page, "en", False)
+            assert_reading_url(page, "en", False, path=home_path, fragment="home", extra_query={"source": ["bookmark"]})
+            page.reload(wait_until="networkidle")
+            expect(page.locator("html")).to_have_attribute("lang", "en")
             expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "false")
             assert_handoff(page, "en", False)
             report["checks"].append("shareable-reading-preferences")

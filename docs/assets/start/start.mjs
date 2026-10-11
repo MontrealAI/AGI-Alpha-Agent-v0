@@ -188,6 +188,13 @@ function updateHomeLinks() {
     const suffix = query.size ? `?${query}` : "";
     for (const link of document.querySelectorAll("a[data-home-link]"))
         link.setAttribute("href", `../${suffix}`);
+    // Retain this page's route and unrelated parameters; only display flags are written.
+    const address = new URL(location.href);
+    address.searchParams.delete("lang");
+    address.searchParams.delete("text");
+    for (const [key, value] of query) address.searchParams.set(key, value);
+    if (address.href !== location.href)
+        history.replaceState(history.state, "", address.href);
 }
 let currentStep = 0,
     accepted = false,
@@ -415,20 +422,32 @@ for (const id of ["back", "revise"])
         invalidate();
         showStep(0);
     });
-$("language").addEventListener("click", () => {
+function changeLanguage(nextLanguage) {
     const previous = language;
-    language = language === "en" ? "fr" : "en";
+    language = nextLanguage;
     for (let i = 0; i < 4; i++)
         if ($(`name-${i}`).value === defaults[previous][i]) {
             $(`name-${i}`).value = defaults[language][i];
             if (snapshot) snapshot.labels[`task-${i}`] = defaults[language][i];
         }
     translate();
+}
+$("language").addEventListener("click", () => {
+    changeLanguage(language === "en" ? "fr" : "en");
 });
 $("text-size").addEventListener("click", () => {
     const large = document.documentElement.classList.toggle("large-text");
     $("text-size").setAttribute("aria-pressed", String(large));
     updateHomeLinks();
+});
+window.addEventListener("popstate", () => {
+    const query = new URLSearchParams(location.search);
+    const large = query.get("text") === "large";
+    document.documentElement.classList.toggle("large-text", large);
+    $("text-size").setAttribute("aria-pressed", String(large));
+    const nextLanguage = query.get("lang") === "fr" ? "fr" : "en";
+    if (nextLanguage !== language) changeLanguage(nextLanguage);
+    else updateHomeLinks();
 });
 function readablePlan() {
     if (!snapshot || !accepted || currentStep !== 2) return "";

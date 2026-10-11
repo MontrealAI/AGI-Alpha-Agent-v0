@@ -27,6 +27,8 @@ REQUIRED_CHECKS = {
     "english-and-french",
     "larger-text",
     "guided-plan-preferences",
+    "reading-preferences-survive-reload",
+    "reading-preferences-follow-history",
     "shareable-reading-preferences",
     "mobile-reflow",
     "large-touch-targets",

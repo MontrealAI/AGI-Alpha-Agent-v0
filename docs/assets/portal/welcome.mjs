@@ -119,6 +119,13 @@ function render() {
     if (largeText) query.set("text", "large");
     for (const link of document.querySelectorAll("[data-start-link]"))
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}`);
+    // Keep this entry bookmarkable without adding history or forwarding other parameters.
+    const address = new URL(location.href);
+    address.searchParams.delete("lang");
+    address.searchParams.delete("text");
+    for (const [key, value] of query) address.searchParams.set(key, value);
+    if (address.href !== location.href)
+        history.replaceState(history.state, "", address.href);
 }
 
 for (const lang of ["en", "fr"])
@@ -128,6 +135,12 @@ for (const lang of ["en", "fr"])
     });
 document.getElementById("home-text-size").addEventListener("click", () => {
     largeText = !largeText;
+    render();
+});
+window.addEventListener("popstate", () => {
+    const query = new URLSearchParams(location.search);
+    language = query.get("lang") === "fr" ? "fr" : "en";
+    largeText = query.get("text") === "large";
     render();
 });
 render();

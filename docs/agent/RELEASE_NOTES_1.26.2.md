@@ -16,8 +16,9 @@ questions explain cost, privacy and what the planner does.
 
 English/French and larger-text controls are visible at the top. Their choices follow the first-plan
 link through `?lang=fr&text=large`, so visitors can continue comfortably. The page supports keyboard
-navigation and narrow screens. The advanced workspaces, documentation, research and original
-experiments remain available farther down the homepage.
+navigation and narrow screens. Reading choices stay in the page address, so reloads, bookmarks and
+Back/Forward navigation keep the displayed preferences consistent. The advanced workspaces,
+documentation, research and original experiments remain available farther down the homepage.
 
 The planner still compares all 16 combinations of four independent tasks to fit the available time.
 It calculates a plan; it does not perform tasks or call an AI service. Explicit review is still needed
