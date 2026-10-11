@@ -58,6 +58,10 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
             page.on("pageerror", lambda error: report["browser_errors"].append(str(error)))
             requests: list[str] = []
             page.on("request", lambda request: requests.append(request.url))
+            page.emulate_media(media="print")
+            expect(page.locator("main")).to_be_visible()
+            expect(page.locator("#print-copy")).not_to_be_visible()
+            page.emulate_media(media="screen")
             page.screenshot(path=str(output / "desktop.png"), full_page=True)
             for language in ("en", "fr"):
                 if language == "fr":

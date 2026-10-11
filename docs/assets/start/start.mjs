@@ -446,6 +446,7 @@ function readablePlan() {
     return lines.join("\n") + "\n";
 }
 function updateReadablePlan() {
+    document.body.classList.toggle("has-kept-plan", Boolean(readablePlan()));
     $("readable-plan").textContent = readablePlan();
     $("print-text").textContent = readablePlan();
 }
