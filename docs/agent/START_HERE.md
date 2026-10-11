@@ -2,6 +2,10 @@
 
 # Start here — get a useful, reviewable result
 
+**Prefer to start without installing anything? [Open the guided first experience](../start/index.html).**
+It offers an English/French walkthrough, larger text and a useful planning download.
+The instructions below are for installing and operating your own agent.
+
 Alpha-Factory runs bounded missions against inputs you supply, retains a signed journal, and asks you
 to inspect the result before approval. Start with the allocation example; it needs no wallet, API key,
 Docker or model download. The [factory guide](FACTORY_GUIDE.md) explains all five mission types and the

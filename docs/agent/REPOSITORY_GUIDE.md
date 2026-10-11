@@ -1,6 +1,9 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.24.1
+# Repository guide — 1.25.0
+
+**New to the project? [Start with the guided webpage](../start/index.html)** or read the
+[English/French getting-started guide](ONBOARDING.md).
 
 Choose a working path before installing dependencies. The maintained private operator, browser workspaces,
 native learning labs and historical service stack have different requirements. Their source, research,
@@ -10,6 +13,7 @@ flowcharts, media and prior release notes remain available together in this repo
 
 | Goal | Entry point | First result |
 |---|---|---|
+| Begin without technical experience | [Guided first plan](../start/index.html) | English/French steps, larger text, a reviewed plan and a useful download |
 | Try the project immediately | [Public workspace](../index.html) | Editable scenarios, computed results and downloadable evidence |
 | Run a bounded two-generation mission | [SUCCESSOR Ω first session](SUCCESSOR.md) | Constructed challengers, fresh evaluation, retained knowledge and explicit proof/authority boundaries |
 | Work privately with your own records | [Start here](START_HERE.md) | Install matching release assets, run an allocation, inspect and review it |
@@ -93,7 +97,7 @@ Keep the existing agent and its backup when upgrading.
 | Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
 
 A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
-native journals require no schema migration for 1.24.1; unknown SUCCESSOR protocol versions are rejected
+native journals require no schema migration for 1.25.0; unknown SUCCESSOR protocol versions are rejected
 instead of silently rewriting signed evidence. Keep state and release environments separate so a
 failed installation cannot replace the working operator.
 

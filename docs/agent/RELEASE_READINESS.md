@@ -1,16 +1,18 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.24.1 SUCCESSOR Ω
+# Release readiness — 1.25.0 welcoming onboarding
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
-boundaries. This version adds the SUCCESSOR mission lifecycle while retaining repository repairs and release-installer preflight.
-The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe the new boundaries.
+boundaries. This version adds a guided English/French first-use page with larger text, explicit review
+and useful downloads. [Start here](../start/index.html) or read the [onboarding guide](ONBOARDING.md).
+The existing SUCCESSOR mission lifecycle, repository repairs and release-installer preflight remain.
+The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe that lifecycle's boundaries.
 A revision is publishable only after the exact integrated commit passes every existing and added gate.
 The published release manifest, rather than this source guide, identifies the accepted commit and recorded results.
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.24.1.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.25.0.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -37,6 +39,7 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Make a first plan without technical setup | [Guided first experience](../start/index.html) | English/French Choose → Review → Keep journey, larger text and text/JSON downloads |
 | Construct and evaluate a bounded successor | [SUCCESSOR Ω](SUCCESSOR.md) | Browser or signed native lifecycle, matched generation-two trials and empty successor proof/authority until newly earned |
 | Review a governance proposal | [Governance Workbench](../solving_agi_governance/index.html) | Nine conditional gates, reproducible dossier and input-bound verification jobs |
 | Make an operational decision with your records | [Decision Studio](../studio/index.html) | Eleven cases, editable data, constrained plans, proof backlogs and replayable dossiers |
@@ -48,7 +51,8 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 | Keep a persistent identity, private journal and operator controls | [Install the agent](OPERATIONS.md) from the matching release assets | Five native mission kinds, signed evidence, recovery, optional inference and verified payment receipts |
 | Explore earlier experiments | [Demo catalog](DEMO_VALIDATION.md) | Preserved launch paths with explicit execution modes and optional requirements |
 
-Pages needs no sign-in, wallet or API key for its built-in computation. The lightweight workspace
+Pages needs no sign-in, wallet or API key for its built-in computation. The guided first-use page keeps
+entries only on the current page; download your result before reloading. The lightweight workspace
 works offline after installation; model text generation needs its separate initial download. Export
 work you want to keep. Browser storage is not a substitute for a downloaded recovery capsule and its
 separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.md).
@@ -61,14 +65,14 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Security controls | Authentication/origin checks, measured 512 KiB request limit and 15-second body deadline, private files, signed journal, tamper tests, real Docker isolation | Private single-operator host; not a public multi-tenant service or perfect sandbox |
 | Dependencies | Hash-locked installation, full operator Python advisory audit, existing browser audits | A dated advisory snapshot; historical environments and host OS need separate maintenance |
 | Recovery | Signed backup/restore, pause, corruption detection, persistent container restart | Backups contain secrets; archive limit 256 MiB; independent checkpoints detect rollback |
-| User experience | Real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
+| User experience | English/French first-use completion, larger text, keyboard and download checks, real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
 | Delivery | Same tested source/site, exact-commit CI, versioned tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; checksums do not establish GitHub-enforced release immutability or make separate API writes atomic |
 | Manuscript fidelity | Original 198-page PDF, canonical Markdown and 31 figures checked against a pinned source commit | A paper is a research specification, not proof that every proposed scientific capability has been established |
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.24.1). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.25.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -96,7 +100,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.24.1 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.25.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Release publication must reject incomplete, stale or failed onboarding evidence."""
+import pytest
+from scripts.onboarding_evidence import REQUIRED_CHECKS, verify_report
+
+
+def test_onboarding_evidence_requires_exact_release_and_every_journey():
+    report = {
+        "schema": "agialpha.onboarding.acceptance.v1",
+        "passed": True,
+        "commit": "a" * 40,
+        "version": "1.25.0",
+        "origin": "https://site/",
+        "browser_errors": [],
+        "checks": sorted(REQUIRED_CHECKS),
+    }
+    verify_report(report, "a" * 40, "1.25.0", "https://site/")
+    for field, value in [
+        ("passed", False),
+        ("commit", "b" * 40),
+        ("version", "1.24.1"),
+        ("origin", "local project subpath"),
+        ("browser_errors", ["TypeError"]),
+    ]:
+        with pytest.raises(ValueError):
+            verify_report({**report, field: value}, "a" * 40, "1.25.0", "https://site/")
+    for check in REQUIRED_CHECKS:
+        with pytest.raises(ValueError):
+            verify_report({**report, "checks": sorted(REQUIRED_CHECKS - {check})}, "a" * 40, "1.25.0", "https://site/")

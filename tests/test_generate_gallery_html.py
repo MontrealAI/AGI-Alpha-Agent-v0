@@ -98,3 +98,11 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     assert 'name="application-version" content="9.8.7"' in generated
     assert "{{" not in generated
     assert ggh.build_portal_html(entries, "9.8.7", decision_cards) == generated
+
+
+def test_generated_homepage_features_beginner_onboarding():
+    page = ggh.build_portal_html([], "1.25.0", "")
+    assert 'href="start/">Start here</a>' in page
+    assert "Start here — your first plan" in page
+    assert "Launch Ascension" in page
+    assert "Begin SUCCESSOR Ω" in page

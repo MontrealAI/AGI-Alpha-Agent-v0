@@ -19,6 +19,7 @@ from scripts.mats_evidence import verify_report as verify_mats_report
 from scripts.release_packs import require_asset_limits
 from scripts.sovereign_evidence import verify_report as verify_sovereign_report
 from scripts.successor_evidence import verify_report as verify_successor_report
+from scripts.onboarding_evidence import verify_report as verify_onboarding_report
 
 
 def finalize(folder: Path, evidence: Path) -> None:
@@ -46,6 +47,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     curriculum = None
     sovereign = None
     successor = None
+    onboarding = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -233,6 +235,11 @@ def finalize(folder: Path, evidence: Path) -> None:
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 24, 0):
         successor = json.loads((evidence / "public-pages" / "successor" / "successor.json").read_text(encoding="utf-8"))
         verify_successor_report(successor, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 25, 0):
+        onboarding = json.loads(
+            (evidence / "public-pages" / "onboarding" / "onboarding.json").read_text(encoding="utf-8")
+        )
+        verify_onboarding_report(onboarding, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -249,6 +256,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if onboarding:
+        manifest["public_onboarding"] = onboarding
+        manifest["release_gates"].append("public English/French onboarding, exact downloads, review and accessibility")
     if successor:
         manifest["public_successor"] = successor
         manifest["release_gates"].append(
