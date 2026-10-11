@@ -3,8 +3,10 @@
 # Ethereum mainnet: deployed contracts and owner guide
 
 **Five Ascension contracts were deployed on Ethereum mainnet on October 11, 2026.**
-Their Etherscan source verification completed, their bindings were checked, and the two ownership
-acceptances completed. The operator reports Ledger custody of the final owner address below.
+The operator reports completed Etherscan source verification. The public archive does not include the
+Etherscan API response or transcript; verify that status independently using the explorer links below.
+The recorded on-chain bindings and the two ownership acceptances are checked by the read-only verifier.
+The operator reports Ledger custody of the final owner address below.
 On-chain evidence establishes the address and successful transactions; it cannot identify a hardware device.
 
 **Before admitting participants or funding jobs, review the source difference below.** The deployed
@@ -118,8 +120,10 @@ inputs only; it contains no private key, API key, seed phrase, signed pending tr
 
 ## En français
 
-Les cinq contrats sont déployés sur **Ethereum mainnet**, leurs sources ont été vérifiées sur Etherscan,
-et les transferts de propriété vers l'adresse Ledger sont terminés. Aucune nouvelle acceptation n'est nécessaire.
+Les cinq contrats sont déployés sur **Ethereum mainnet**. La vérification des sources sur Etherscan est
+rapportée par l'opérateur; sa réponse API et sa transcription ne figurent pas dans l'archive publique.
+Vérifiez ce statut au moyen des liens vers l'explorateur. Les transferts de propriété vers l'adresse finale
+sont terminés; sa garde sur Ledger est rapportée par l'opérateur. Aucune nouvelle acceptation n'est nécessaire.
 Les contrats déployés précèdent les dernières corrections de règlement du dépôt et ne sont pas modifiables.
 Avant toute admission ou tout financement, faites examiner cette différence et décidez d'un déploiement
 distinct si les corrections sont requises. `mainnet:record-verify` vérifie les contrats existants en lecture
