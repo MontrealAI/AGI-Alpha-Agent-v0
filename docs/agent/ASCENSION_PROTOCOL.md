@@ -163,3 +163,9 @@ validator. Many campaigns can coexist; no global-scale throughput claim follows 
 
 There is no wallet action in the public desk. Existing native agent provider integrations, proof/reuse
 experiments, original demos and browser simulations remain usable with their documented limits.
+
+## Mainnet commissioning
+
+Release 1.26.0 adds [unsigned deployment preparation and read-only verification](MAINNET_READINESS.md).
+The local lifecycle above remains an isolated rehearsal. Mainnet operation still requires exact-source
+independent review, real-token fork evidence and reviewed multisignature configuration.

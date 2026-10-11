@@ -23,6 +23,9 @@ REQUIRED_CHECKS = {
 
 def verify_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
     """Bind all required onboarding checks to the release source and public origin."""
+    required = set(REQUIRED_CHECKS)
+    if tuple(int(part) for part in version.split(".")) >= (1, 26, 0):
+        required.add("readable-and-printable-plan")
     if (
         report.get("schema") != "agialpha.onboarding.acceptance.v1"
         or report.get("commit") != commit
@@ -30,6 +33,6 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
         or report.get("origin") != origin
         or report.get("passed") is not True
         or report.get("browser_errors") != []
-        or not REQUIRED_CHECKS.issubset(report.get("checks", []))
+        or not required.issubset(report.get("checks", []))
     ):
         raise ValueError("Onboarding must pass every required journey on the exact release and origin")

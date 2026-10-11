@@ -23,7 +23,17 @@ abstract contract AscensionToken {
     function _burn(uint256 amount) internal {
         if (amount == 0) return;
         uint256 before_ = token.totalSupply();
+        uint256 balance = token.balanceOf(address(this));
         IAscensionBurn(address(token)).burn(amount);
         require(token.totalSupply() == before_ - amount, "supply not burned");
+        require(token.balanceOf(address(this)) == balance - amount, "non-exact burn");
+    }
+    function _send(address recipient, uint256 amount) internal {
+        if (amount == 0) return;
+        uint256 balance = token.balanceOf(address(this));
+        uint256 received = token.balanceOf(recipient);
+        token.safeTransfer(recipient, amount);
+        require(token.balanceOf(address(this)) == balance - amount &&
+            token.balanceOf(recipient) == received + amount, "non-exact payout");
     }
 }

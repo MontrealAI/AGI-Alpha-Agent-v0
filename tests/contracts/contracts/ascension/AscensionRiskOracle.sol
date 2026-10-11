@@ -57,7 +57,7 @@ contract AscensionRiskOracle is AscensionToken, Ownable2Step, ReentrancyGuard {
     }
     function withdraw(uint256 amount) external nonReentrant {
         require(block.timestamp > lockedUntil[msg.sender] && amount > 0 && amount <= stake[msg.sender], "locked stake");
-        stake[msg.sender] -= amount; token.safeTransfer(msg.sender, amount);
+        stake[msg.sender] -= amount; _send(msg.sender, amount);
         emit StakeChanged(msg.sender, stake[msg.sender]);
     }
     function isValidator(address account) public view returns (bool) {

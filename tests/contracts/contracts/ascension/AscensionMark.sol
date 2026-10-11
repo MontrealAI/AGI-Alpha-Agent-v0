@@ -83,7 +83,7 @@ contract AscensionMark is AscensionToken, ReentrancyGuard {
         uint256 value = quote(c.supply - count, count, c.base, c.slope);
         require(value >= minReturn, "slippage");
         c.supply -= count; c.reserve -= value; lots[id][msg.sender] -= count;
-        token.safeTransfer(msg.sender, value); emit Traded(id, msg.sender, false, count, value);
+        _send(msg.sender, value); emit Traded(id, msg.sender, false, count, value);
     }
     function transferLots(uint256 id, address to, uint32 count) external {
         Campaign storage c = campaigns[id];
@@ -141,7 +141,7 @@ contract AscensionMark is AscensionToken, ReentrancyGuard {
         require(c.phase == Phase.Closed && count > 0, "no capital claim");
         amount = c.reserve * count / c.supply;
         lots[id][msg.sender] = 0; c.supply -= uint32(count); c.reserve -= amount;
-        if (amount > 0) token.safeTransfer(msg.sender, amount);
+        if (amount > 0) _send(msg.sender, amount);
         emit CapitalReturned(id, msg.sender, amount);
     }
 }

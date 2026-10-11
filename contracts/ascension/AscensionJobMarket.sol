@@ -86,7 +86,7 @@ contract AscensionJobMarket is AscensionToken, Ownable2Step, ReentrancyGuard {
     }
     function withdraw(uint256 amount) external nonReentrant {
         require(amount > 0 && amount <= stake[msg.sender] - locked[msg.sender], "locked stake");
-        stake[msg.sender] -= amount; token.safeTransfer(msg.sender, amount);
+        stake[msg.sender] -= amount; _send(msg.sender, amount);
         emit StakeChanged(msg.sender, stake[msg.sender], locked[msg.sender]);
     }
     function hashSpec(uint32 index, Spec calldata spec) public pure returns (bytes32) {
@@ -192,11 +192,15 @@ contract AscensionJobMarket is AscensionToken, Ownable2Step, ReentrancyGuard {
         if (approved) ++j.yes; else ++j.no;
         emit Validated(id, msg.sender, approved, resultHash, evidence);
         if (j.yes == 2) _pay(id, j);
-        else if (j.no == 2) _fail(id, j, true);
+        else if (j.no == 2) {
+            for (uint256 i; i < 3; ++i) if (votes[id][committees[id][i]] == 2)
+                require(oracle.isValidator(committees[id][i]), "rejection no longer eligible");
+            _fail(id, j, true);
+        }
     }
     function _payout(uint256 id, address recipient, uint256 gross) internal {
         uint256 burned = gross / 100;
-        _burn(burned); token.safeTransfer(recipient, gross - burned);
+        _burn(burned); _send(recipient, gross - burned);
         emit Payout(id, recipient, gross, burned);
     }
     function _releaseCommittee(uint256 id) internal {
@@ -241,7 +245,7 @@ contract AscensionJobMarket is AscensionToken, Ownable2Step, ReentrancyGuard {
         Job storage j = jobs[id];
         require(j.client == msg.sender && terminal(id) && !j.claimed, "refund unavailable");
         j.claimed = true; amount = j.refund;
-        if (amount > 0) token.safeTransfer(msg.sender, amount);
+        if (amount > 0) _send(msg.sender, amount);
         emit RefundClaimed(id, msg.sender, amount);
     }
     function terminal(uint256 id) public view returns (bool) {

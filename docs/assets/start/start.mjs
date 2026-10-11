@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { runMission } from "../portal/mission-engine.mjs?v=1.25.0";
+import { runMission } from "../portal/mission-engine.mjs?v=1.26.0";
 
 const $ = (id) => document.getElementById(id);
 const french = {
@@ -65,6 +65,8 @@ const french = {
         "Enregistrez une copie lisible sur votre appareil. Le fichier de preuve contient aussi les données exactes et le résultat calculé pour permettre une vérification.",
     download: 'Télécharger mon plan (.txt) <span aria-hidden="true">↓</span>',
     evidence: "Garder la preuve (.json)",
+    printPlan: "Imprimer ou enregistrer en PDF",
+    readPlan: "Lire mon plan ici",
     revise: "Revenir à mes choix",
     nextEyebrow: "QUAND VOUS SEREZ PRÊT",
     nextTitle: "Où souhaitez-vous aller ensuite?",
@@ -281,9 +283,11 @@ function translate() {
     $("errors").hidden = true;
     $("download-status").textContent = "";
     renderResult();
+    updateReadablePlan();
 }
 function showStep(step) {
     currentStep = step;
+    updateReadablePlan();
     ["choose", "review", "keep"].forEach((id, index) => {
         $(id).hidden = index !== step;
         const li = document.querySelectorAll(".steps li")[index];
@@ -299,6 +303,7 @@ function invalidate() {
     $("continue").disabled = true;
     $("result").replaceChildren();
     $("download-status").textContent = "";
+    updateReadablePlan();
 }
 $("plan-form").addEventListener("input", (event) => {
     invalidate();
@@ -408,8 +413,8 @@ $("text-size").addEventListener("click", () => {
     const large = document.documentElement.classList.toggle("large-text");
     $("text-size").setAttribute("aria-pressed", String(large));
 });
-function download(evidence) {
-    if (!snapshot || !accepted || currentStep !== 2) return;
+function readablePlan() {
+    if (!snapshot || !accepted || currentStep !== 2) return "";
     const { request, result, labels } = snapshot;
     const lines = [
         words().planTitle,
@@ -438,6 +443,14 @@ function download(evidence) {
         `AGI ALPHA ${snapshot.version}`,
         "https://montrealai.github.io/AGI-Alpha-Agent-v0/start/",
     );
+    return lines.join("\n") + "\n";
+}
+function updateReadablePlan() {
+    $("readable-plan").textContent = readablePlan();
+    $("print-text").textContent = readablePlan();
+}
+function download(evidence) {
+    if (!snapshot || !accepted || currentStep !== 2) return;
     const content = evidence
         ? JSON.stringify(
               {
@@ -452,7 +465,7 @@ function download(evidence) {
               null,
               2,
           ) + "\n"
-        : lines.join("\n") + "\n";
+        : readablePlan();
     const url = URL.createObjectURL(
         new Blob([content], {
             type: evidence
@@ -471,6 +484,9 @@ function download(evidence) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     $("download-status").textContent = words().downloaded;
 }
+$("print-plan").addEventListener("click", () => {
+    if (snapshot && accepted && currentStep === 2) window.print();
+});
 $("download").addEventListener("click", () => download(false));
 $("evidence").addEventListener("click", () => download(true));
 translate();
