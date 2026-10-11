@@ -43,6 +43,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/START_HERE.md",
         "docs/agent/ONBOARDING.md",
         "docs/agent/MAINNET_READINESS.md",
+        "docs/agent/MAINNET_DEPLOYMENT.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
         "docs/agent/DEMOS.md",
@@ -120,6 +121,40 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str) 
         target.write_text("".join(sections), encoding="utf-8")
 
 
+def package_mainnet_record(root: Path, output: Path, version: str) -> Path:
+    """Ship the pinned public deployment record without local operator files."""
+    relative = Path("deployments/ethereum-mainnet/2026-10-11")
+    record = root / relative
+    raw = (record / "manifest.json").read_bytes()
+    manifest = json.loads(raw)
+    verifier = (root / "tests/contracts/scripts/mainnet-record.js").read_text(encoding="utf-8")
+    match = re.search(r'const RECORD_SHA256 = "([0-9a-f]{64})";', verifier)
+    if not match or hashlib.sha256(raw).hexdigest() != match[1]:
+        raise ValueError("Mainnet manifest differs from the pinned verifier identity")
+    destination = output / f"alpha-agent-v{version}-mainnet-record.zip"
+    with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
+        for name, expected in manifest["files"].items():
+            member = Path(name)
+            if member.is_absolute() or ".." in member.parts:
+                raise ValueError("Unsafe mainnet record member")
+            source = record / member
+            if source.is_symlink() or not source.is_file():
+                raise ValueError("Mainnet record requires regular files")
+            data = source.read_bytes()
+            if hashlib.sha256(data).hexdigest() != expected:
+                raise ValueError(f"Mainnet evidence digest differs: {name}")
+            archive.writestr(f"ascension-ethereum-mainnet-2026-10-11/{name}", data)
+        archive.writestr("ascension-ethereum-mainnet-2026-10-11/manifest.json", raw)
+        readme = (
+            (record / "README.md")
+            .read_text(encoding="utf-8")
+            .replace("../../../docs/agent/MAINNET_DEPLOYMENT.md", "../MAINNET_DEPLOYMENT.md")
+        )
+        archive.writestr("ascension-ethereum-mainnet-2026-10-11/README.md", readme)
+        archive.write(output / "MAINNET_DEPLOYMENT.md", "MAINNET_DEPLOYMENT.md")
+    return destination
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -170,6 +205,7 @@ def main() -> None:
         check=True,
     )
     copy_release_documents(Path.cwd(), output, version, sha)
+    package_mainnet_record(Path.cwd(), output, version)
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-operator-guide.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for name in release_documents(version):
             if name.startswith("docs/agent/"):

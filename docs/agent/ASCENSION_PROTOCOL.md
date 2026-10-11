@@ -152,6 +152,13 @@ Constructors and one-time bindings reject cross-wired access, seed, oracle, mark
 No admin key can withdraw a treasury or fabricate validator votes. Governance can still deny new work
 through admission decisions; one-time oracle/market bindings must be checked before operation.
 
+## Recorded Ethereum deployment
+
+The [mainnet owner guide](MAINNET_DEPLOYMENT.md) records the five contracts deployed on October 11, 2026,
+Etherscan source verification and completed Ledger ownership. Their preserved Solidity 0.8.24 source predates
+the current settlement hardening. Use the record verifier for those addresses and review this difference
+before participant admissions or funding. The local receipts above remain an isolated demonstration.
+
 ## Deployment boundary
 
 The repository now contains a coherent, tested reference protocol, **not an independently audited or
