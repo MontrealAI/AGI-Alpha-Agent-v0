@@ -1,4 +1,7 @@
-> **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded. Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the Etherscan API transcript. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md). The deployed contracts predate the current settlement fixes; resolve that difference before admissions or funding.
+> **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded.
+> Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the
+> Etherscan API transcript. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md).
+> The deployed contracts predate the current settlement fixes; resolve that difference before admissions or funding.
 
 > **New here? [Start here — make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).** A welcoming English/French walkthrough, large controls and a useful download. No account, wallet, payment or installation. [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/?lang=fr) · [Simple guide](docs/agent/ONBOARDING.md) · [1.26.1 release notes](docs/agent/RELEASE_NOTES_1.26.1.md).
 
