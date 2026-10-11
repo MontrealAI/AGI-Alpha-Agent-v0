@@ -476,8 +476,6 @@ jobs:
         run: |
           npm ci --prefix tests/browser --ignore-scripts
           node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs tests/browser/successor_engine.test.mjs
-      - name: Require a welcoming accessible homepage on a project subpath
-        run: python -m scripts.validate_homepage --output evidence/homepage
       - name: Require accessible first-use onboarding on a project subpath
         run: python -m scripts.validate_onboarding --output evidence/onboarding
       - name: Require exact Business 3 Python and browser calculations and exports
@@ -494,6 +492,8 @@ jobs:
         run: python -m scripts.validate_governance_core --output evidence/governance-core
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
+      - name: Require a welcoming accessible homepage on the exact rebuilt site
+        run: python -m scripts.validate_homepage --site site --output evidence/homepage
       - name: Verify SUCCESSOR on the exact rebuilt site
         run: python -m scripts.validate_successor --site site --output evidence/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify every rebuilt demo page
