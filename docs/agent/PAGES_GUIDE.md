@@ -2,6 +2,11 @@
 
 # Use the $AGIALPHA browser workspace
 
+**New here? [Make your first plan with the guided experience](../start/index.html).**
+It offers English/French instructions, larger text and a simple Choose → Review → Keep journey.
+Read the [first-use guide](ONBOARDING.md) for help. That planner keeps entries only on the current page;
+download your result before refreshing. The advanced workspace below has separate storage and recovery controls.
+
 Open [the workspace](../index.html). Start with **Allocate resources**, change an input and select
 **Run mission**. No account, wallet, API key or installation is required for the four browser workflows.
 The home page implements a bounded version of the original Identify → Learn → Think → Design →

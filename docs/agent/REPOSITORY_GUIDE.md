@@ -13,6 +13,7 @@ flowcharts, media and prior release notes remain available together in this repo
 
 | Goal | Entry point | First result |
 |---|---|---|
+| Begin without technical experience | [Guided first plan](../start/index.html) | English/French steps, larger text, a reviewed plan and a useful download |
 | Try the project immediately | [Public workspace](../index.html) | Editable scenarios, computed results and downloadable evidence |
 | Run a bounded two-generation mission | [SUCCESSOR Ω first session](SUCCESSOR.md) | Constructed challengers, fresh evaluation, retained knowledge and explicit proof/authority boundaries |
 | Work privately with your own records | [Start here](START_HERE.md) | Install matching release assets, run an allocation, inspect and review it |
