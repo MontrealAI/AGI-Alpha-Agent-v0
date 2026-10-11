@@ -1,3 +1,12 @@
+## 1.26.0 — 2026-10-11
+
+- Add English/French on-page and printable copies of reviewed first plans.
+- Verify exact outgoing settlement and burn balances; reject stale negative-validator quorum before slashing.
+- Add unsigned Ethereum deployment plans, read-only preflight and fresh-deployment verification.
+- Pin the updated contract/compiler toolchain and gate releases on its complete moderate-or-higher advisory audit.
+- Document mainnet commissioning requirements and retain original research and local deployment boundaries.
+- See [release notes](docs/agent/RELEASE_NOTES_1.26.0.md).
+
 ## 1.25.0 — 2026-10-11
 
 - Add a featured English/French first-use webpage with a complete Choose, Review and Keep journey.

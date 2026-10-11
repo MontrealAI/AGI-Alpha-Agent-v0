@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import inspect
+from contextlib import closing
 from typing import Any, Iterator
 
 # Gradio reads this setting during import. The demo never needs analytics.
@@ -40,7 +41,7 @@ async def explain_move(state: str) -> str:
 
 
 def build_dashboard(config: Any = None) -> Any:
-    """Build an accessible interface; generator cancellation stops between episodes."""
+    """Build an accessible interface with acknowledged, session-local cancellation."""
     if gr is None:
         raise RuntimeError("gradio is required; install the demo requirements.txt")
     require_dependencies()
@@ -48,6 +49,7 @@ def build_dashboard(config: Any = None) -> Any:
 
     config = config or Config()
     with gr.Blocks(title="MuZero · Planning Lab", analytics_enabled=False) as demo:
+        control = gr.State(value={"stop": False, "running": False})
         gr.Markdown(
             "# MuZero · Planning Lab\n### Learn a model. Inspect a decision. Measure the difference.\n"
             "Train a small neural model locally, then compare it with random actions and its untrained self. "
@@ -109,7 +111,9 @@ def build_dashboard(config: Any = None) -> Any:
             "alpha_factory_v1/demos/muzero_planning)"
         )
 
-        def run(env_id: str, count: int, budget: int, random_seed: int, limit: int) -> Iterator[tuple[Any, ...]]:
+        def run(
+            env_id: str, count: int, budget: int, random_seed: int, limit: int, signal: dict[str, bool]
+        ) -> Iterator[tuple[Any, ...]]:
             import pandas as pd
 
             try:
@@ -119,71 +123,104 @@ def build_dashboard(config: Any = None) -> Any:
                 cfg = Config(env_id, int(random_seed), int(count), int(budget), int(limit))
             except ValueError as exc:
                 raise gr.Error(str(exc)) from exc
-            yield (
-                "Preparing held-out baselines…",
-                gr.skip(),
-                [],
-                [],
-                [],
-                None,
-                [],
-                gr.Button(interactive=False),
-                gr.Button(interactive=True),
-            )
-            for event in experiment(cfg):
-                history = event["history"]
-                frame = pd.DataFrame(
-                    [{"episode": h["episode"], "reward": h["reward"]} for h in history], columns=["episode", "reward"]
+            signal["stop"] = False
+            signal["running"] = True
+            try:
+                yield (
+                    "Preparing held-out baselines…",
+                    gr.skip(),
+                    [],
+                    [],
+                    [],
+                    None,
+                    [],
+                    gr.Button(interactive=False),
+                    gr.Button(interactive=True),
                 )
-                loss_rows = [
-                    [h["episode"], round(h["loss_reward"], 6), round(h["loss_value"], 6), round(h["loss_policy"], 6)]
-                    for h in history[-10:]
-                ]
-                if event["status"] == "training":
-                    yield (
-                        f"Training episode **{event['completed']} / {event['total']}**",
-                        frame,
-                        loss_rows,
-                        [],
-                        [],
-                        None,
-                        [],
-                        gr.Button(interactive=False),
-                        gr.Button(interactive=True),
-                    )
-                else:
-                    rows = [
-                        [key, round(sum(values) / len(values), 3), str(values)]
-                        for key, values in event["evaluation"].items()
-                    ]
-                    search_rows = [list(row.values()) for row in event["search_after"]]
-                    yield (
-                        "**Complete.** Compare measured returns below; every run starts with fresh weights.",
-                        frame,
-                        loss_rows,
-                        rows,
-                        search_rows,
-                        event,
-                        preview_episode(event),
-                        gr.Button(interactive=True),
-                        gr.Button(interactive=False),
-                    )
+                with closing(experiment(cfg)) as training:
+                    while not signal["stop"]:
+                        event = next(training, None)
+                        if event is None or signal["stop"]:
+                            break
+                        history = event["history"]
+                        frame = pd.DataFrame(
+                            [{"episode": h["episode"], "reward": h["reward"]} for h in history],
+                            columns=["episode", "reward"],
+                        )
+                        loss_rows = [
+                            [
+                                h["episode"],
+                                round(h["loss_reward"], 6),
+                                round(h["loss_value"], 6),
+                                round(h["loss_policy"], 6),
+                            ]
+                            for h in history[-10:]
+                        ]
+                        if event["status"] == "training":
+                            yield (
+                                f"Training episode **{event['completed']} / {event['total']}**",
+                                frame,
+                                loss_rows,
+                                [],
+                                [],
+                                None,
+                                [],
+                                gr.Button(interactive=False),
+                                gr.Button(interactive=True),
+                            )
+                        else:
+                            rows = [
+                                [key, round(sum(values) / len(values), 3), str(values)]
+                                for key, values in event["evaluation"].items()
+                            ]
+                            search_rows = [list(row.values()) for row in event["search_after"]]
+                            snapshots = preview_episode(event)
+                            if signal["stop"]:
+                                break
+                            yield (
+                                "**Complete.** Compare measured returns below; every run starts with fresh weights.",
+                                frame,
+                                loss_rows,
+                                rows,
+                                search_rows,
+                                event,
+                                snapshots,
+                                gr.Button(interactive=True),
+                                gr.Button(interactive=False),
+                            )
 
-        event = start.click(
+                if signal["stop"]:
+                    yield (
+                        "Stopped. Completed measurements remain visible.",
+                        gr.skip(),
+                        gr.skip(),
+                        gr.skip(),
+                        gr.skip(),
+                        gr.skip(),
+                        gr.skip(),
+                        gr.Button(interactive=True),
+                        gr.Button(interactive=False),
+                    )
+            finally:
+                signal["running"] = False
+
+        def request_stop(signal: dict[str, bool]) -> None:
+            # Only the streaming run writes status/buttons. A separate response could
+            # arrive after its terminal update and leave stale controls on screen.
+            if signal["running"]:
+                signal["stop"] = True
+
+        start.click(
             run,
-            [env, episodes, sims, seed, steps],
+            [env, episodes, sims, seed, steps, control],
             [status, curve, losses, comparison, tree, record, frames, start, stop],
             concurrency_limit=1,
             concurrency_id="muzero-training",
         )
         stop.click(
-            fn=lambda: (
-                "Stopped. Completed measurements remain visible.",
-                gr.Button(interactive=True),
-                gr.Button(interactive=False),
-            ),
-            outputs=[status, start, stop],
-            cancels=[event],
+            fn=request_stop,
+            inputs=[control],
+            outputs=[],
             queue=False,
         )
     return demo.queue(max_size=4, default_concurrency_limit=1)

@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.25.0
+## Current runnable path — 1.26.0
 
 **Mode:** Bounded repair. Provides repository-specific triage and isolated repair evaluation.
 

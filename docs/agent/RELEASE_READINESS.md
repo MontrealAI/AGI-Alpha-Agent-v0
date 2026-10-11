@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.25.0 welcoming onboarding
+# Release readiness — 1.26.0 contract hardening and commissioning
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
 boundaries. This version adds a guided English/French first-use page with larger text, explicit review
@@ -12,7 +12,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.25.0.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.26.0.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -26,13 +26,15 @@ Python 3.11–3.13 calculation gates and real browser/notebook acceptance. See
 local scope and the separately unverified legacy/testnet integration.
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
-plus a self-contained public browser workspace. The final 198-page manuscript is the versioned research
+plus a self-contained public browser workspace. Version 1.26.0 adds readable/printable first plans,
+exact settlement checks, a full contract-toolchain advisory gate and unsigned mainnet preparation. The final 198-page manuscript is the versioned research
 specification. Installation, execution, review, evidence export, recovery and publication have explicit
 acceptance gates. The [manuscript map](MANUSCRIPT_ALIGNMENT.md) records implemented behavior and the
 research obligations that still need external evidence.
 
-The additive [Ascension protocol](ASCENSION_PROTOCOL.md) is a local-EVM-verified reference suite;
-it is not part of the commissioned mainnet deployment profile. Its public [Protocol Desk](../ascension-protocol/index.html)
+The additive [Ascension protocol](ASCENSION_PROTOCOL.md) has an expanded local-EVM suite and
+[mainnet preparation/verification tools](MAINNET_READINESS.md). Mainnet commissioning remains pending
+independent review, real-token fork evidence and operator configuration. Its public [Protocol Desk](../ascension-protocol/index.html)
 shows the executable lifecycle and explicit fixture boundaries. Existing agent state requires no migration.
 
 ## Choose a starting point
@@ -72,7 +74,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.25.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -100,7 +102,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.25.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.26.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

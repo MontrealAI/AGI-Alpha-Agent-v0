@@ -4,6 +4,10 @@ This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.25.0. It
 contracts, verifies their bindings and writes inspectable evidence. It needs no wallet, secret, RPC URL
 or real funds. Contract state exists only inside that command's process and disappears when it exits.
 
+For Ethereum deployment preparation, use the separate [mainnet commissioning guide](../../docs/agent/MAINNET_READINESS.md).
+It provides unsigned plans and read-only preflight/post-deployment checks; the local fixture below stays isolated.
+A mainnet-fork rehearsal, independent review and operator configuration are still required before funding.
+
 | Your goal | Command / guide | Result |
 | --- | --- | --- |
 | Review what would be deployed | `npm run deploy:plan` | Read-only JSON plan; no EVM or transactions |
@@ -12,6 +16,10 @@ or real funds. Contract state exists only inside that command's process and disa
 | Execute a funded local mission lifecycle | `npm run ascension:demo` | Mock funding, review, job settlement and evidence |
 | Compile a mission's indexed commitments | `node scripts/plan.js /absolute/path/jobs.json` | FusionPlan, separate from deployment planning |
 | Replace the historical Truffle workflow | [Migration below](#migration-and-rollback) | Fresh local state; no automatic balance or identity import |
+
+| Prepare an unsigned Ethereum deployment | `npm run mainnet:plan -- CONFIG NEW_OUTPUT` | Exact compiled deployment data; requires a clean reviewed checkout |
+| Check reviewed live dependencies | `npm run mainnet:preflight -- CONFIG NEW_OUTPUT` | Read-only, finalized-block configuration evidence |
+| Verify fresh deployed contracts | `npm run mainnet:verify -- PLAN NEW_OUTPUT` | Read-only bytecode, ownership and binding checks |
 
 ## First run
 
@@ -113,6 +121,8 @@ node. If interrupted before a verified receipt, rerun from a fresh process; do n
 The legacy migration path now fails before artifact loading or transaction submission and directs you
 here. Its former `Deployer` artifact was absent; the former environment token override did not change
 Solidity's canonical token. The legacy config exposes no networks and loads no wallet provider.
+
+The separate mainnet tools use `MAINNET_RPC_URL` for read-only HTTPS queries. They never read `DEPLOYER_KEY`.
 
 ## Tests and troubleshooting
 

@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.25.0
+# Repository guide — 1.26.0
 
 **New to the project? [Start with the guided webpage](../start/index.html)** or read the
 [English/French getting-started guide](ONBOARDING.md).
@@ -97,7 +97,7 @@ Keep the existing agent and its backup when upgrading.
 | Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
 
 A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
-native journals require no schema migration for 1.25.0; unknown SUCCESSOR protocol versions are rejected
+native journals require no schema migration for 1.26.0; unknown SUCCESSOR protocol versions are rejected
 instead of silently rewriting signed evidence. Keep state and release environments separate so a
 failed installation cannot replace the working operator.
 
@@ -118,3 +118,8 @@ The supported profile remains bounded demos and a private single-operator deploy
 public multi-tenant operation, universal intelligence, independent economic guarantees and unconfigured
 external services require separate evidence. The [manuscript map](MANUSCRIPT_ALIGNMENT.md) keeps those
 research obligations visible while preserving the full vision.
+
+## Mainnet commissioning
+
+The [mainnet guide](MAINNET_READINESS.md) documents unsigned deployment preparation, read-only preflight,
+independent audit/fork requirements and fresh-deployment verification. It does not authorize funding.

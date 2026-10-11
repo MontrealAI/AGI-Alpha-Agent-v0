@@ -16,7 +16,7 @@ This page runs a small planning calculation on your device. It does not perform 
    The planner compares all 16 combinations and maximizes the importance points within your time.
    Tasks must be independent and fit in full; it does not account for dependencies or interruptions.
    Check your assumptions and tick the review box, or select **Change my choices**.
-3. **Keep.** Select **Continue to save**, then **Download my plan**. The text file is easy to read.
+3. **Keep.** Select **Continue to save**, then **Download my plan**. The text file is easy to read. You can also select **Read my plan here** or **Print or save as PDF**.
    **Save evidence** downloads JSON with the exact inputs, task names and calculated result.
    A checked box records your review; it is not independent verification or permission to act.
 
@@ -56,6 +56,7 @@ paiement, téléchargement de modèle ni installation n’est nécessaire.
    et le temps restant. Le calcul compare les 16 combinaisons; les tâches sont indépendantes et indivisibles.
    Cochez la case de vérification ou choisissez **Modifier mes choix**.
 3. **Garder.** Sélectionnez **Continuer pour enregistrer**, puis **Télécharger mon plan**.
+   Vous pouvez aussi choisir **Lire mon plan ici** ou **Imprimer ou enregistrer en PDF**.
    Le fichier texte est lisible; le fichier JSON contient les données exactes et le résultat.
 
 Les données restent sur la page et ne sont pas enregistrées par ce planificateur. Rechargez la page

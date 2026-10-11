@@ -9,7 +9,7 @@ and compare search with random actions and the network's own policy. Everything 
 No API key, hosted model, Ollama service or public tunnel is required.
 
 <!-- CURRENT-DEMO:START -->
-## Start here — 1.25.0
+## Start here — 1.26.0
 
 **Mode:** Bounded MuZero-style research experiment. Demo revision **2.0.0**.
 
@@ -180,3 +180,8 @@ on the delayed-reward task. The dedicated workflow also exercises the real dashb
 
 DeepMind's MuZero research inspired this educational implementation; Montreal.AI and the open-source
 PyTorch, Gymnasium and Gradio communities make it possible. New code is Apache-2.0 licensed.
+
+Stop requests are scoped to your browser session. The training loop closes its experiment before
+confirming **Stopped** and enabling a new run; a late cancellation response cannot overwrite that
+confirmation. Work stops at the next bounded training boundary, rather than interrupting a numerical
+operation midway. The next experiment starts with fresh state.

@@ -254,3 +254,69 @@ def test_cli_checkpoint_digest_binds_exported_bytes(tmp_path):
     with pytest.raises(SystemExit) as error:
         main(["--headless", "--output", str(report_path)])
     assert error.value.code == 2
+
+
+def test_dashboard_stop_acknowledges_cleanup_without_competing_status_updates(monkeypatch):
+    # Exercise the registered callbacks with a controlled in-flight generator.
+    for key in ("ALL_PROXY", "all_proxy", "HTTP_PROXY", "http_proxy", "HTTPS_PROXY", "https_proxy"):
+        monkeypatch.delenv(key, raising=False)
+    gradio = pytest.importorskip("gradio")
+    from alpha_factory_v1.demos.muzero_planning import training, agent_muzero_entrypoint
+
+    monkeypatch.setattr(agent_muzero_entrypoint, "gr", gradio)
+
+    closed = []
+    progressed = []
+
+    def controlled_experiment(config):
+        try:
+            for episode in range(10):
+                progressed.append(episode)
+                yield {"status": "training", "completed": episode + 1, "total": 10, "history": []}
+        finally:
+            closed.append(True)
+
+    monkeypatch.setattr(training, "experiment", controlled_experiment)
+    dashboard = agent_muzero_entrypoint.build_dashboard(Config(episodes=10, max_steps=8))
+    callbacks = {callback.fn.__name__: callback for callback in dashboard.fns.values() if callback.fn}
+    signal = {"stop": False, "running": False}
+    other_session = {"stop": False, "running": True}
+    run = callbacks["run"].fn("MiniChoice-v0", 10, 8, 7, 8, signal)
+    assert "Preparing" in next(run)[0]
+    assert "Training episode" in next(run)[0]
+    assert callbacks["request_stop"].fn(signal) is None
+    assert not callbacks["request_stop"].outputs
+    assert other_session == {"stop": False, "running": True}
+    terminal = next(run)
+    assert terminal[0].startswith("Stopped.")
+    assert closed == [True]  # Cleanup happened before the acknowledgement.
+    assert progressed == [0]  # No extra episode began after cancellation.
+    with pytest.raises(StopIteration):
+        next(run)
+    assert signal["running"] is False
+    # A late duplicate stop has no UI output that can overwrite a new result.
+    assert callbacks["request_stop"].fn(signal) is None
+
+
+def test_dashboard_stop_before_baselines_does_not_start_an_experiment(monkeypatch):
+    for key in ("ALL_PROXY", "all_proxy", "HTTP_PROXY", "http_proxy", "HTTPS_PROXY", "https_proxy"):
+        monkeypatch.delenv(key, raising=False)
+    gradio = pytest.importorskip("gradio")
+    from alpha_factory_v1.demos.muzero_planning import training, agent_muzero_entrypoint
+
+    monkeypatch.setattr(agent_muzero_entrypoint, "gr", gradio)
+
+    def forbidden(config):
+        pytest.fail("Stopped training must not begin baseline evaluation")
+        yield  # Keep the same lazy-generator contract without running work.
+
+    monkeypatch.setattr(training, "experiment", forbidden)
+    dashboard = agent_muzero_entrypoint.build_dashboard(Config(episodes=10, max_steps=8))
+    callbacks = {callback.fn.__name__: callback for callback in dashboard.fns.values() if callback.fn}
+    signal = {"stop": False, "running": False}
+    run = callbacks["run"].fn("MiniChoice-v0", 10, 8, 7, 8, signal)
+    next(run)
+    callbacks["request_stop"].fn(signal)
+    assert next(run)[0].startswith("Stopped.")
+    run.close()
+    assert signal["running"] is False

@@ -58,6 +58,10 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
             page.on("pageerror", lambda error: report["browser_errors"].append(str(error)))
             requests: list[str] = []
             page.on("request", lambda request: requests.append(request.url))
+            page.emulate_media(media="print")
+            expect(page.locator("main")).to_be_visible()
+            expect(page.locator("#print-copy")).not_to_be_visible()
+            page.emulate_media(media="screen")
             page.screenshot(path=str(output / "desktop.png"), full_page=True)
             for language in ("en", "fr"):
                 if language == "fr":
@@ -80,6 +84,15 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 download.value.save_as(text_path)
                 content = text_path.read_text()
                 assert "60" in content and "12" in content and report["version"] in content
+                page.locator(".readable-copy summary").click()
+                expect(page.locator("#readable-plan")).to_be_visible()
+                assert page.locator("#readable-plan").inner_text() == content
+                page.emulate_media(media="print")
+                expect(page.locator("#print-copy")).to_be_visible()
+                expect(page.locator("main")).not_to_be_visible()
+                assert page.locator("#print-text").inner_text() == content
+                page.emulate_media(media="screen")
+                page.locator(".readable-copy summary").click()
                 with page.expect_download() as download:
                     page.locator("#evidence").click()
                 json_path = output / f"plan-{language}.json"
@@ -101,6 +114,7 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 "review-before-export",
                 "changed-inputs-clear-review",
                 "exact-downloads",
+                "readable-and-printable-plan",
                 "keyboard-focus",
             ]
             page.locator("#task-options summary").click()

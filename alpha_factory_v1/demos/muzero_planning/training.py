@@ -9,7 +9,7 @@ import json
 import math
 from pathlib import Path
 import random
-from typing import Any, Iterator
+from typing import Any, Generator
 
 import gymnasium as gym
 import numpy as np
@@ -256,7 +256,7 @@ def load_checkpoint(agent: MiniMu, path: Path) -> None:
         raise ValueError("Invalid checkpoint") from exc
 
 
-def experiment(config: Config) -> Iterator[dict[str, Any]]:
+def experiment(config: Config) -> Generator[dict[str, Any], None, None]:
     """Yield bounded progress, then measured baselines, training losses and JSON weights."""
     require_dependencies()
     agent = MiniMu(config.env_id, seed=config.seed, simulations=config.simulations, render_mode=None)
