@@ -1,3 +1,11 @@
+## 1.25.0 — 2026-10-11
+
+- Add a featured English/French first-use webpage with a complete Choose, Review and Keep journey.
+- Compute a bounded plan with the existing allocation engine and export readable and replayable results.
+- Add large text, field-specific errors, keyboard focus, responsive layouts and public browser acceptance.
+- Preserve original research, flowcharts, contracts, native state formats and all release gates.
+- See [release notes](docs/agent/RELEASE_NOTES_1.25.0.md).
+
 ## 1.24.1 — 2026-10-08
 
 - Keep SUCCESSOR navigation and its introduction in the generated homepage template.

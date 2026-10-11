@@ -41,6 +41,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/SUCCESSOR_ARCHITECTURE.md",
         "docs/agent/SUCCESSOR_PACKAGING.md",
         "docs/agent/START_HERE.md",
+        "docs/agent/ONBOARDING.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
         "docs/agent/DEMOS.md",

@@ -1,6 +1,9 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.24.1
+# Repository guide — 1.25.0
+
+**New to the project? [Start with the guided webpage](../start/index.html)** or read the
+[English/French getting-started guide](ONBOARDING.md).
 
 Choose a working path before installing dependencies. The maintained private operator, browser workspaces,
 native learning labs and historical service stack have different requirements. Their source, research,
@@ -93,7 +96,7 @@ Keep the existing agent and its backup when upgrading.
 | Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
 
 A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
-native journals require no schema migration for 1.24.1; unknown SUCCESSOR protocol versions are rejected
+native journals require no schema migration for 1.25.0; unknown SUCCESSOR protocol versions are rejected
 instead of silently rewriting signed evidence. Keep state and release environments separate so a
 failed installation cannot replace the working operator.
 

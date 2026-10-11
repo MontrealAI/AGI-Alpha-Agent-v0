@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-0f34dc3eee5690bf";
-const RELEASE = "1.24.1";
+const CACHE = "agialpha-gallery-f2fbb67a72134b47";
+const RELEASE = "1.25.0";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -174,6 +174,7 @@ const ASSETS = [
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/script.js",
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/assets/style.css",
   "../alpha_factory_v1/demos/sovereign_agentic_agialpha_agent_v0/index.html",
+  "../alpha_factory_v1/demos/start/index.html",
   "../alpha_factory_v1/demos/studio/index.html",
   "../alpha_factory_v1/demos/successor/index.html",
   "../alpha_factory_v1/index.html",
@@ -252,6 +253,8 @@ const ASSETS = [
   "../assets/portal/verify-export.mjs",
   "../assets/pyodide_demo.js",
   "../assets/replay_chart.js",
+  "../assets/start/start.css",
+  "../assets/start/start.mjs",
   "../assets/studio/cases.json",
   "../assets/studio/engine-1.9.mjs",
   "../assets/studio/engine.mjs",
@@ -368,6 +371,7 @@ const ASSETS = [
   "../sovereign_agentic_agialpha_agent_v0/assets/script.js",
   "../sovereign_agentic_agialpha_agent_v0/assets/style.css",
   "../sovereign_agentic_agialpha_agent_v0/index.html",
+  "../start/index.html",
   "../studio/index.html",
   "../stylesheets/cards.css",
   "../stylesheets/demo_base.css",

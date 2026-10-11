@@ -397,6 +397,12 @@ def main() -> None:
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
     version_application_assets(REPO_ROOT / "docs", version)
+    start = REPO_ROOT / "docs/start/index.html"
+    start.parent.mkdir(parents=True, exist_ok=True)
+    start.write_text(
+        (REPO_ROOT / "scripts/templates/start.html").read_text(encoding="utf-8").replace("{{VERSION}}", version),
+        encoding="utf-8",
+    )
     protocol_template = REPO_ROOT / "scripts/templates/ascension-protocol.html"
     if protocol_template.is_file():
         (REPO_ROOT / "docs/ascension-protocol/index.html").write_text(
@@ -463,6 +469,7 @@ def main() -> None:
         for p in REPO_ROOT.glob("docs/**/index.html")
         if p not in {INDEX_FILE, GALLERY_FILE, DEMOS_INDEX_FILE, SUBDIR_GALLERY_FILE}
         and "DISCLAIMER_SNIPPET" not in p.parts
+        and "start" not in p.parts
     ]
     insert_back_link(pages)
 

@@ -1,3 +1,5 @@
+> **New here? [Start here — make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).** A welcoming English/French walkthrough, large controls and a useful download. No account, wallet, payment or installation. [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/?lang=fr) · [Simple guide](docs/agent/ONBOARDING.md) · [1.25.0 release notes](docs/agent/RELEASE_NOTES_1.25.0.md).
+
 > **SUCCESSOR Ω — 1.24.1.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md) · [Release notes and acceptance requirements](docs/agent/RELEASE_NOTES_1.24.1.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
 
 **Choose a current launch path:** [browser mission](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/),

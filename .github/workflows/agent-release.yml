@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
+    branches: [main, codex/welcoming-onboarding-1.25.0, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -474,6 +474,8 @@ jobs:
         run: |
           npm ci --prefix tests/browser --ignore-scripts
           node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs tests/browser/successor_engine.test.mjs
+      - name: Require accessible first-use onboarding on a project subpath
+        run: python -m scripts.validate_onboarding --output evidence/onboarding
       - name: Require exact Business 3 Python and browser calculations and exports
         run: python -m scripts.validate_business3_core --output evidence/business3-core
       - name: Verify exact Insight discovery decisions and portable review evidence
@@ -900,6 +902,7 @@ jobs:
           python -m scripts.validate_governance --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/governance --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_sovereign --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/sovereign --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_successor --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_onboarding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/onboarding
       - name: Name this attempt's public acceptance evidence
         id: public-name
         if: always()
