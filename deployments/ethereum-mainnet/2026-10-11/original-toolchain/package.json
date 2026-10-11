@@ -1,0 +1,30 @@
+{
+  "name": "agialpha-ascension-mainnet",
+  "version": "1.0.2",
+  "private": true,
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "node --test test/*.test.js",
+    "mainnet:preflight": "node scripts/operator.js preflight",
+    "mainnet:deploy": "node scripts/operator.js deploy",
+    "mainnet:verify": "node scripts/operator.js verify",
+    "wallet:create": "node scripts/wallet.js",
+    "audit:check": "npm audit --audit-level=high",
+    "mainnet:rehearse": "node scripts/operator.js rehearse",
+    "mainnet:status": "node scripts/operator.js status",
+    "mainnet:verify-source": "node scripts/verify-source.js",
+    "configure": "node scripts/configure.js",
+    "test:fork": "node scripts/qualify-fork.js",
+    "wallet:import": "node scripts/wallet-import.js",
+    "mainnet:check-services": "node scripts/check-services.js"
+  },
+  "devDependencies": {
+    "hardhat": "3.19.0",
+    "ethers": "6.17.0",
+    "@openzeppelin/contracts": "5.4.0"
+  },
+  "type": "module"
+}

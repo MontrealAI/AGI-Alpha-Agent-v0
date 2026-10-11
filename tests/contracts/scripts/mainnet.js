@@ -131,7 +131,7 @@ function checkPlan(plan) {
 function readOnlyRpc(url) {
     const parsed = new URL(url);
     requireValue(parsed.protocol === "https:" && !parsed.username && !parsed.password && !parsed.hash, "Use an HTTPS RPC URL without embedded user credentials");
-    const allowed = new Set(["eth_chainId", "eth_getBlockByNumber", "eth_getCode", "eth_call", "eth_getTransactionCount", "eth_getBalance"]);
+    const allowed = new Set(["eth_chainId", "eth_getBlockByNumber", "eth_getCode", "eth_call", "eth_getTransactionCount", "eth_getBalance", "eth_getTransactionByHash", "eth_getTransactionReceipt"]);
     return async (method, params) => {
         requireValue(allowed.has(method), "Read-only RPC method required");
         let response;

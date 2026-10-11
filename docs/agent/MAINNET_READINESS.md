@@ -1,6 +1,11 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Ethereum mainnet preparation and commissioning — 1.26.0
+# Prepare a new Ethereum mainnet deployment — 1.26.1
+
+For the **already deployed October 11 contracts**, use the [deployed addresses and owner guide](MAINNET_DEPLOYMENT.md).
+Those contracts have completed ownership transfer but predate this guide's current source and compiler profile.
+The commands below prepare a **separate new deployment** with a configured multisignature governor.
+They do not upgrade, replace, or verify the existing Ledger-owned deployment.
 
 **Release status: preparation tooling implemented and locally tested; mainnet commissioning is pending.**
 A passing software release is not an independent contract audit or evidence of a live deployment.
@@ -21,8 +26,9 @@ The [first-use page](../start/index.html) continues to work without a wallet or 
 | Web access and capacity | Guided bilingual, accessible browser journey; static hosting | Measured capacity and service operations for any future public multi-tenant service; no billion-user claim |
 
 The scripts intentionally never emit `readyToBroadcast: true` or authorize public funding. The live-chain
-items above cannot be inferred from mock EVM tests. No production governor, RPC endpoint, fork results
-or independent audit was supplied for this release. Do not invent them or reuse the example placeholders.
+items above cannot be inferred from mock EVM tests. For this current-source candidate, a selected production multisignature and exact-build fork/audit evidence
+remain required. The archived earlier deployment's Ledger address and fork results do not satisfy those
+requirements for different bytecode. Do not reuse the example placeholders as live configuration.
 
 ## 1. Prepare an exact release checkout
 
@@ -30,7 +36,7 @@ Use a clean checkout of the **release tag**, Node.js 22.17.1 and the committed l
 plans and provider credentials outside the repository. A plan or verification from a dirty checkout is refused.
 
 ```sh
-git checkout v1.26.0
+git checkout v1.26.1
 nvm use
 cd tests/contracts
 npm ci

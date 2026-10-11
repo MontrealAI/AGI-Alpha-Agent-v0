@@ -1,0 +1,173 @@
+{
+  "scope": "isolated-mainnet-fork",
+  "mainnetTransactions": false,
+  "passed": true,
+  "blockNumber": 26170536,
+  "blockHash": "0xb068bba3163d7d47b12c1edf9ce8168b1aef707f74341daf725853698262fa29",
+  "gas": [
+    {
+      "label": "Deploy AscensionAccess",
+      "gasUsed": "879344",
+      "gasLimit": "1193147"
+    },
+    {
+      "label": "Deploy NovaSeed",
+      "gasUsed": "1206018",
+      "gasLimit": "1617823"
+    },
+    {
+      "label": "Deploy AscensionRiskOracle",
+      "gasUsed": "1737064",
+      "gasLimit": "2308183"
+    },
+    {
+      "label": "Deploy AscensionJobMarket",
+      "gasUsed": "3599194",
+      "gasLimit": "4728952"
+    },
+    {
+      "label": "Deploy AscensionMark",
+      "gasUsed": "2672404",
+      "gasLimit": "3524125"
+    },
+    {
+      "label": "AscensionRiskOracle.bindMarketplace",
+      "gasUsed": "52060",
+      "gasLimit": "117678"
+    },
+    {
+      "label": "AscensionJobMarket.bindMark",
+      "gasUsed": "52727",
+      "gasLimit": "118545"
+    },
+    {
+      "label": "AscensionRiskOracle.transferOwnership",
+      "gasUsed": "48127",
+      "gasLimit": "112565"
+    },
+    {
+      "label": "AscensionJobMarket.transferOwnership",
+      "gasUsed": "48295",
+      "gasLimit": "112783"
+    }
+  ],
+  "runtime": {
+    "AscensionAccess": {
+      "address": "0x36f8C079fEEBC81c5AF30D71be5017037246a32e",
+      "runtimeCodeHash": "0xc335a914267e140fc05f14da7d3c7914b67f6aea127b13509a84e8fa364e4edb"
+    },
+    "NovaSeed": {
+      "address": "0xFA4737Ba7cF111EBb0840aA300BC61D84d303449",
+      "runtimeCodeHash": "0x264f62a65d3761de5b1a6a09c55e3ce894f41602d5eae8f51ecadc3deeeea85a"
+    },
+    "AscensionRiskOracle": {
+      "address": "0x06cb4D684628846B048d88CCf8C03c4Cfb74f149",
+      "runtimeCodeHash": "0x74a9a6f2ac1989967548a697ec59731faad96c7866e721f3c682b137b3fd5553"
+    },
+    "AscensionJobMarket": {
+      "address": "0x86f84E173A7a1a4588f4e757552F20f7C58e61E8",
+      "runtimeCodeHash": "0xdf6b4bd7486d6ec7cb13d1c4894a2431b75b21a849615d8d8775608a0cbf988b"
+    },
+    "AscensionMark": {
+      "address": "0xa28dA507f7F9AFF8910f1F7cB5d5b8238F5Db625",
+      "runtimeCodeHash": "0xd77ab270ed71977b20cedee431b00487bf339ed3a9ac5f74516ad57ee83dcd70"
+    }
+  },
+  "graph": {
+    "bindingsVerified": true,
+    "governanceComplete": false,
+    "pendingGovernanceActions": [
+      {
+        "contract": "AscensionRiskOracle",
+        "address": "0x06cb4D684628846B048d88CCf8C03c4Cfb74f149",
+        "to": "0x06cb4D684628846B048d88CCf8C03c4Cfb74f149",
+        "from": "0xa9eD0539c2fbc5C6BC15a2E168bd9BCd07c01201",
+        "data": "0x79ba5097",
+        "value": "0"
+      },
+      {
+        "contract": "AscensionJobMarket",
+        "address": "0x86f84E173A7a1a4588f4e757552F20f7C58e61E8",
+        "to": "0x86f84E173A7a1a4588f4e757552F20f7C58e61E8",
+        "from": "0xa9eD0539c2fbc5C6BC15a2E168bd9BCd07c01201",
+        "data": "0x79ba5097",
+        "value": "0"
+      }
+    ]
+  },
+  "tokenOperations": {
+    "transfer": true,
+    "transferFrom": true,
+    "burn": true,
+    "funding": "Local-only impersonation of the existing real token minter; no token mocks or mainnet mint"
+  },
+  "governanceAcceptanceSimulated": 2,
+  "paidJobLifecycle": {
+    "passed": true,
+    "realTokenBytecode": true,
+    "realENSWrapperBytecode": true,
+    "namespaceCreation": "Isolated-fork impersonation of the three existing namespace controllers",
+    "rolesRegistered": 5,
+    "validators": 3,
+    "approvals": 2,
+    "settledJobs": 1,
+    "workerGross": "95000000000000000000",
+    "burned": "1000000000000000000"
+  },
+  "createdAt": "2026-10-11T17:11:23.638Z",
+  "configHash": "5a16750d42f1030deedc8e6183f5c84b457c503292082092ed3e086593cbe225",
+  "identity": "e5288493cc8119e3a293944e9ad9b95dbda11b86ac43229af7cc65e64fc0bffe",
+  "startNonce": 237,
+  "planHash": "0c196644a3d382a3a1e258101af3756e7cc2b0a031eec0cc23e50beb492a2500",
+  "dependencies": {
+    "chainId": 1,
+    "blockNumber": 26170536,
+    "blockHash": "0xb068bba3163d7d47b12c1edf9ce8168b1aef707f74341daf725853698262fa29",
+    "timestamp": 1791737687,
+    "codeHashes": {
+      "token": "0xb2f6d0bbf5e047601a71fc099779bd3932274a484f2175fd1e830e613349c310",
+      "ens": "0xd6bfd5d6f1384a1f6ea57b8a8412de5552f138d42021cf7c4941e33206f529e4",
+      "wrapper": "0xb2d3098f0579718d88a04ee65d3c6827a76823316ceed387945ad993fc6dbb6c",
+      "registrar": "0x15557327bea19f454db3ec207da1a440b6d9318af56e52e2a3eba440d4b62e0a"
+    },
+    "token": {
+      "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+      "symbol": "AGIALPHA",
+      "decimals": 18,
+      "totalSupply": "68362951948693001000000001",
+      "paused": false
+    },
+    "agiExpiry": 1999955864,
+    "roots": [
+      {
+        "name": "alpha.agi.eth",
+        "node": "0xa94157e008cc618e05d6df5c4a67ac9a3d45c16d7379a2e35f081199589ff8f7",
+        "registryOwner": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+        "holder": "0x049fFE5432fa375049C2Ed19fAccD9B31bB4523E",
+        "expiry": 2007731864,
+        "ready": true
+      },
+      {
+        "name": "alpha.agent.agi.eth",
+        "node": "0xc74b6c5e8a0d97ed1fe28755da7d06a84593b4de92f6582327bc40f41d6c2d5e",
+        "registryOwner": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+        "holder": "0x3B7205E05D015D06323B432E9813bCb3fe86adf7",
+        "expiry": 2007731864,
+        "ready": true
+      },
+      {
+        "name": "alpha.club.agi.eth",
+        "node": "0x6487f659ec6f3fbd424b18b685728450d2559e4d68768393f9c689b2b6e5405e",
+        "registryOwner": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+        "holder": "0xc0794B670346025738EE90D470862Bf76727BCf3",
+        "expiry": 2007731864,
+        "ready": true
+      }
+    ],
+    "namespaceReady": true
+  },
+  "budget": {
+    "gas": "13833801",
+    "maximumGasCostETH": "0.0069169005"
+  }
+}

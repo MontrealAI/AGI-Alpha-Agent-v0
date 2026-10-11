@@ -1,4 +1,6 @@
-> **New here? [Start here — make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).** A welcoming English/French walkthrough, large controls and a useful download. No account, wallet, payment or installation. [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/?lang=fr) · [Simple guide](docs/agent/ONBOARDING.md) · [1.26.0 release notes](docs/agent/RELEASE_NOTES_1.26.0.md).
+> **Ethereum mainnet deployment recorded.** Five contracts are source-verified and the Ledger ownership handoff is complete. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md). The deployed contracts predate the current settlement fixes; resolve that difference before admissions or funding.
+
+> **New here? [Start here — make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).** A welcoming English/French walkthrough, large controls and a useful download. No account, wallet, payment or installation. [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/?lang=fr) · [Simple guide](docs/agent/ONBOARDING.md) · [1.26.1 release notes](docs/agent/RELEASE_NOTES_1.26.1.md).
 
 > **SUCCESSOR Ω — 1.24.1.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md) · [Release notes and acceptance requirements](docs/agent/RELEASE_NOTES_1.24.1.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
 
@@ -84,7 +86,8 @@ treasuries and reputation-weighted job auctions with exact $AGIALPHA settlement 
 The native agent runs the delivered mission; local EVM receipts expose the entire sequence and capital recovery.
 [Read the implementation and reproduction guide](docs/agent/ASCENSION_PROTOCOL.md) and
 [release notes](docs/agent/RELEASE_NOTES_1.11.0.md). This additive suite preserves all existing contracts,
-research and demos. Local execution is verified; live deployment and independent commissioning remain outstanding.
+research and demos. Local execution is verified. The [recorded mainnet deployment](docs/agent/MAINNET_DEPLOYMENT.md)
+uses an earlier source profile; participant commissioning and review of the newer fixes remain outstanding.
 
 # $AGIALPHA Agent — release status
 

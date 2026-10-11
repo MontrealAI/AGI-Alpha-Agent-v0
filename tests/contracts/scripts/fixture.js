@@ -24,7 +24,7 @@ async function jump(timestamp) {
     ]);
     await ethers.provider.send("evm_mine");
 }
-async function fixture() {
+async function fixture({ contractArtifacts = null } = {}) {
     await requireDisposableLocalNetwork();
     await ethers.provider.send("hardhat_reset", []);
     const [
@@ -41,9 +41,11 @@ async function fixture() {
     ] = await ethers.getSigners();
     const token = await installToken();
     async function deploy(name, ...args) {
-        const contract = await (
-            await ethers.getContractFactory(name)
-        ).deploy(...args);
+        const archived = contractArtifacts?.[name];
+        const factory = archived
+            ? new ethers.ContractFactory(archived.abi, archived.bytecode, governor)
+            : await ethers.getContractFactory(name);
+        const contract = await factory.deploy(...args);
         await contract.waitForDeployment();
         return contract;
     }

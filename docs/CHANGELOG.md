@@ -1,3 +1,12 @@
+## 1.26.1 — 2026-10-11
+
+- Record the five deployed Ethereum contracts, finalized transaction evidence and completed Ledger ownership.
+- Preserve exact deployed compiler inputs and sources separately from the newer settlement fixes.
+- Add read-only receipt, runtime, ownership and binding verification with explicit commissioning status.
+- Reproduce the historical rejection behavior locally and retain the fixed current-source regression.
+- Add the owner guide and deployment record to release delivery and the public documentation.
+- See [release notes](agent/RELEASE_NOTES_1.26.1.md).
+
 ## 1.26.0 — 2026-10-11
 
 - Add English/French on-page and printable copies of reviewed first plans.

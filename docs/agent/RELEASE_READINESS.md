@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.26.0 contract hardening and commissioning
+# Release readiness — 1.26.1 mainnet records and owner verification
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
 boundaries. This version adds a guided English/French first-use page with larger text, explicit review
@@ -12,7 +12,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.26.0.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.26.1.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -26,15 +26,18 @@ Python 3.11–3.13 calculation gates and real browser/notebook acceptance. See
 local scope and the separately unverified legacy/testnet integration.
 
 The supported deployment profile is a private, single-operator agent with a persistent signed journal,
-plus a self-contained public browser workspace. Version 1.26.0 adds readable/printable first plans,
+plus a self-contained public browser workspace. Version 1.26.1 records the earlier mainnet deployment and
+its completed ownership handoff, with a separate read-only verifier. Version 1.26.0 added readable/printable first plans,
 exact settlement checks, a full contract-toolchain advisory gate and unsigned mainnet preparation. The final 198-page manuscript is the versioned research
 specification. Installation, execution, review, evidence export, recovery and publication have explicit
 acceptance gates. The [manuscript map](MANUSCRIPT_ALIGNMENT.md) records implemented behavior and the
 research obligations that still need external evidence.
 
 The additive [Ascension protocol](ASCENSION_PROTOCOL.md) has an expanded local-EVM suite and
-[mainnet preparation/verification tools](MAINNET_READINESS.md). Mainnet commissioning remains pending
-independent review, real-token fork evidence and operator configuration. Its public [Protocol Desk](../ascension-protocol/index.html)
+[mainnet preparation/verification tools](MAINNET_READINESS.md). The [recorded mainnet deployment](MAINNET_DEPLOYMENT.md)
+has verified ownership and predates the current settlement fixes. Its participant commissioning remains pending;
+current-source deployment needs its own independent review, real-token fork evidence and operator configuration.
+The public [Protocol Desk](../ascension-protocol/index.html)
 shows the executable lifecycle and explicit fixture boundaries. Existing agent state requires no migration.
 
 ## Choose a starting point
@@ -74,7 +77,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.0). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.1). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -102,7 +105,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.26.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.26.1 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
@@ -125,7 +128,8 @@ describes the separate local rehearsal and external-chain prerequisites.
 ## Boundaries that still require separate evidence
 
 The Ascension economics, Council and governance are browser protocol simulations. The runtime verifies
-local-EVM payments; this release has not demonstrated mainnet operation, deployed minting authority,
+local-EVM payments; the recorded mainnet deployment establishes contracts and ownership, not commissioned
+mainnet job operation, deployed minting authority,
 live DEX activity or an independently audited production token economy. Paper-level AGI/ASI, formal
 invariants and physical/economic guarantees remain research claims; the
 [latest manuscript map](MANUSCRIPT_ALIGNMENT.md) records the remaining obligations; the

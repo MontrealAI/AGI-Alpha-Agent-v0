@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.26.0
+# Repository guide — 1.26.1
 
 **New to the project? [Start with the guided webpage](../start/index.html)** or read the
 [English/French getting-started guide](ONBOARDING.md).
@@ -20,6 +20,7 @@ flowcharts, media and prior release notes remain available together in this repo
 | Explore a particular experiment | [Complete demo walkthrough](DEMOS.md) | All 26 catalog entries, prerequisites and launch commands |
 | Train a small planning model | [MuZero guide](MUZERO.md) or [Evidence & Planning Lab](../demos/muzeromctsllmagent_v0.md) | Native training, measured baselines and retained reports |
 | Operate and recover the agent | [Operator guide](OPERATIONS.md) | Private state, authentication, pause, backup, restore and upgrades |
+| Verify the existing mainnet deployment | [Deployed contracts and owner guide](MAINNET_DEPLOYMENT.md) | Finalized receipts, exact archived runtime and completed ownership; separate from current candidate source |
 | Reproduce the contract reference | [Ascension protocol](ASCENSION_PROTOCOL.md) | Local-EVM lifecycle with explicit fixture boundaries |
 | Inspect contract deployment or migration | [Hardhat deployment guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed deployment plan, disposable local receipts and external deployment prerequisites |
 | Contribute to the repository | [Contributor guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/AGENTS.md) | Locked development setup, hooks, types and tests |
@@ -97,7 +98,7 @@ Keep the existing agent and its backup when upgrading.
 | Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
 
 A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
-native journals require no schema migration for 1.26.0; unknown SUCCESSOR protocol versions are rejected
+native journals require no schema migration for 1.26.1; unknown SUCCESSOR protocol versions are rejected
 instead of silently rewriting signed evidence. Keep state and release environments separate so a
 failed installation cannot replace the working operator.
 
