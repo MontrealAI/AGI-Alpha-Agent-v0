@@ -155,9 +155,11 @@ through admission decisions; one-time oracle/market bindings must be checked bef
 ## Recorded Ethereum deployment
 
 The [mainnet owner guide](MAINNET_DEPLOYMENT.md) records the five contracts deployed on October 11, 2026,
-Etherscan source verification and completed Ledger ownership. Their preserved Solidity 0.8.24 source predates
-the current settlement hardening. Use the record verifier for those addresses and review this difference
-before participant admissions or funding. The local receipts above remain an isolated demonstration.
+with completed on-chain ownership transfers. Etherscan source verification and Ledger custody are
+operator-reported; the public archive does not include the Etherscan API response or transcript. Their
+preserved Solidity 0.8.24 source predates the current settlement hardening. Use the record verifier for those
+addresses and review this difference before participant admissions or funding. The local receipts above remain
+an isolated demonstration.
 
 ## Deployment boundary
 
