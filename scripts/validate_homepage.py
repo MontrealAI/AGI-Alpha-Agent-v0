@@ -58,6 +58,37 @@ def assert_reading_url(
     assert parse_qs(target.query, keep_blank_values=True) == expected, page.url
 
 
+def assert_home_handoff(page: Page, language: str, large: bool) -> None:
+    """Require every planner return link to retain preferences and its intended section."""
+    for selector, fragment in (
+        ("header a.brand", ""),
+        ("footer a.brand", ""),
+        ('footer a[data-i18n="all"]', "explore"),
+    ):
+        link = page.locator(selector)
+        expect(link).to_have_count(1)
+        href = link.get_attribute("href")
+        assert href is not None
+        assert urlsplit(href).fragment == fragment, href
+    home_links = 0
+    for link in page.locator("a[href]").all():
+        href = link.get_attribute("href")
+        assert href is not None
+        target = urlsplit(href)
+        if target.path != "../":
+            continue
+        home_links += 1
+        assert not target.scheme and not target.netloc, href
+        query = parse_qs(target.query, keep_blank_values=True)
+        expected: dict[str, list[str]] = {}
+        if language == "fr":
+            expected["lang"] = ["fr"]
+        if large:
+            expected["text"] = ["large"]
+        assert query == expected, href
+    assert home_links >= 3, "Offer the homepage through both brands and All workspaces"
+
+
 def check_layout(page: Page) -> list[dict[str, Any]]:
     """Measure real rendered controls and horizontal reflow, including mobile text."""
     assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1"), "Horizontal page overflow"
@@ -240,8 +271,7 @@ def validate(
                 page, "en", False, path=home_path + "start/", fragment="planner", extra_query={"source": ["bookmark"]}
             )
             expect(page.locator("#name-0")).to_have_value("My private task, kept on this page")
-            for link in page.locator("a[data-home-link]").all():
-                expect(link).to_have_attribute("href", "../")
+            assert_home_handoff(page, "en", False)
             page.locator("#language").click()
             page.locator("#text-size").click()
             assert inspect(page, "history.length") == planner_history_length
@@ -253,12 +283,22 @@ def validate(
             expect(page.locator("html")).to_have_attribute("lang", "fr")
             expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
             expect(page.locator("#name-0")).not_to_have_value("My private task, kept on this page")
-            for link in page.locator("a[data-home-link]").all():
-                expect(link).to_have_attribute("href", "../?lang=fr&text=large")
-            page.locator("a[data-home-link]").first.click()
+            assert_home_handoff(page, "fr", True)
+            page.locator('footer a[data-i18n="all"]').click()
             expect(page.locator("html")).to_have_attribute("lang", "fr")
             expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
-            assert_reading_url(page, "fr", True, path=home_path)
+            assert_reading_url(page, "fr", True, path=home_path, fragment="explore")
+
+            # The historical nested gallery rewrites the return path; retain that destination too.
+            page.goto(origin + "alpha_factory_v1/demos/start/?lang=fr&text=large", wait_until="networkidle")
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
+            mirror_return = page.locator('footer a[data-i18n="all"]')
+            expect(mirror_return).to_have_attribute("href", "../../..?lang=fr&text=large#explore")
+            mirror_return.click()
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#home-text-size")).to_have_attribute("aria-pressed", "true")
+            assert_reading_url(page, "fr", True, path=home_path, fragment="explore")
             report["checks"] += [
                 "keyboard-skip",
                 "english-and-french",
