@@ -17,7 +17,7 @@ admit a production SUCCESSOR Ω.
 Atlas Ω is a synthetic service-metrics analyst. Given event records, calculate the count, total duration,
 maximum duration and error count for every day/service pair. Exact outputs and malformed-input rejection
 are mandatory. The experiment measures four candidate configurations and compares the frozen choice with
-both the existing scan-based implementation and a deterministic map baseline on six further workloads.
+both the existing one-pass Map implementation and a deterministic sort-and-reduce baseline on six further workloads.
 
 These public cases are reproducible teaching cases. They are not protected from the producer. Timing is
 measured on the user's device, is sensitive to ordering/JIT/load, and can favor either baseline. A local

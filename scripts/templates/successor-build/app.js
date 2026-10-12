@@ -84,8 +84,8 @@ function renderPortfolio() {
     details.append(summary);
     for (let i=start;i<end;i++) {
       const article=document.createElement('article'), h=document.createElement('h4'), p=document.createElement('p');
-      article.className='job'; h.textContent=`${i+1}. ${jobsTemplates.JOB_TEMPLATES[i].title}`;
-      p.textContent=model.DELIVERABLES[i]; article.append(h,p);
+      article.className='job'; h.textContent=`${i+1}. ${language==='fr'?model.FRENCH_TITLES[i]:jobsTemplates.JOB_TEMPLATES[i].title}`;
+      p.textContent=(language==='fr'?model.FRENCH_DELIVERABLES:model.DELIVERABLES)[i]; article.append(h,p);
       if(pack){ const info=document.createElement('p'); info.textContent=`DRAFT · ${pack.compilation.graph.nodes[i].digest}`; article.append(info); }
       details.append(article);
     }
@@ -102,7 +102,7 @@ function render() {
     byId('checks').textContent=`${pack.evaluation.cases.filter(c=>c.exact_output).length} / 6`;
     byId('verdict').textContent=pack.evaluation.correctness ? words('Exactness checks passed. Read the comparison before deciding what to keep.','Les tests d’exactitude passent. Examinez la comparaison avant de choisir.') : words('A hard check failed. Keep the baseline and investigate.','Un test obligatoire échoue. Conservez la référence et examinez l’erreur.');
     byId('timings').replaceChildren();
-    for(const [key,en,fr] of [['current','Existing baseline','Référence actuelle'],['beta','Map-based alternative','Autre référence déterministe'],['candidate','Your candidate','Votre candidat']]){
+    for(const [key,en,fr] of [['current','One-pass Map baseline','Référence Map en un passage'],['beta','Sort-and-reduce alternative','Alternative par tri et réduction'],['candidate','Your candidate','Votre candidat']]){
       const tr=document.createElement('tr'), th=document.createElement('th'), td=document.createElement('td');
       th.scope='row';th.textContent=words(en,fr);td.textContent=(pack.evaluation.totals_ns[key]/1e6).toFixed(3);tr.append(th,td);byId('timings').append(tr);
     }

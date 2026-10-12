@@ -7,8 +7,8 @@ import { digestObject } from './vendor/agijobs/integrity.mjs';
 export const TOKEN = '0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA';
 export const DELIVERABLES = [
   'mission.json: count, sum, maximum duration and error count by day and service; zero incorrect totals.',
-  'incumbent.json: exact outputs and observed timings for the existing scan-based implementation.',
-  'alternatives.json: compare the deterministic map baseline; record that a frontier comparison is missing.',
+  'incumbent.json: exact outputs and observed timings for the existing one-pass Map implementation.',
+  'alternatives.json: compare the deterministic sort-and-reduce baseline; record that a frontier comparison is missing.',
   'rights.json: synthetic nonpersonal events only; list code licenses and permitted reuse.',
   'gym.json: version the event generator, malformed-input cases, public partitions and zero-error gate.',
   'teacher.json: disclose that this example uses fixed code and no external model or teaching calls.',
@@ -28,6 +28,38 @@ export const DELIVERABLES = [
   'authority.json: retain HOLD with zero grants until separate, scoped, expiring, revocable admission.',
   'renewal.json: propose the next test and preserve lessons; a successor inherits no proof or authority.',
 ];
+export const FRENCH_TITLES = [
+  'Constitution de mission', 'Référence actuelle', 'Ensemble des alternatives', 'Droits et données',
+  'Environnement d’entraînement et protocole comparatif', 'Étude des oracles et des enseignants',
+  'Classification des échecs', 'Comparaison des architectures', 'Formation des données et de l’expérience',
+  'Formation du modèle spécialisé', 'Outils et recherche documentaire', 'Construction du vérificateur',
+  'Sécurité et confidentialité', 'Économie complète', 'Charge humaine et pouvoir de décision',
+  'Résilience et retour arrière', 'Évaluation protégée sur données nouvelles', 'Validation indépendante',
+  'Acceptation responsable', 'Chronique et admission de l’autorité', 'Capacité financée et requalification',
+];
+export const FRENCH_DELIVERABLES = [
+  'mission.json : compter les événements, les erreurs, la durée totale et maximale par jour et service; aucun total incorrect.',
+  'incumbent.json : conserver les sorties exactes et les durées de la référence Map en un seul passage.',
+  'alternatives.json : comparer la référence déterministe par tri et réduction; signaler l’absence de comparaison avec les meilleures IA.',
+  'rights.json : utiliser uniquement des événements fictifs non personnels; préciser les licences et réutilisations permises.',
+  'gym.json : versionner le générateur, les entrées mal formées, les jeux publics et le seuil de zéro erreur.',
+  'teacher.json : déclarer le code fixe utilisé et l’absence de modèle externe ou d’appel d’enseignement.',
+  'failures.json : tester les données vides, nombres invalides, caractères Unicode mal formés et clés de service inhabituelles.',
+  'candidates.json : conserver les quatre configurations délimitées et les tentatives rejetées.',
+  'experience.json : noter les graines aléatoires, tailles de jeux et version du générateur; aucune preuve protégée.',
+  'candidate.json : figer la grammaire retenue et l’empreinte SHA-256 du moteur avant la comparaison.',
+  'tools.json : autoriser uniquement le moteur fixe; aucun code arbitraire, navigation ou mouvement de fonds.',
+  'verifier.json : reproduire les sorties exactes et rejeter les entrées invalides; signaler l’absence de garde indépendante.',
+  'security.json : vérifier l’absence de requêtes externes, clés, données personnelles et autorisations de portefeuille.',
+  'economics.json : noter les coûts observés; laisser le prix du calcul, la revue humaine et la maintenance non mesurés.',
+  'roles.json : distinguer producteur, vérificateur, responsable de l’acceptation et décideur d’admission; identités non authentifiées.',
+  'rollback.json : garder la référence et démontrer l’abandon du candidat actif sans effet externe.',
+  'evaluation.json : comparer le candidat figé aux deux références sur six nouveaux jeux publics.',
+  'review.json : obtenir une revue attribuable séparément; aucune preuve indépendante n’est créée dans le navigateur.',
+  'acceptance.json : exiger des preuves conformes aux termes figés; toutes les tâches restent des brouillons DRAFT.',
+  'authority.json : maintenir HOLD et zéro autorisation jusqu’à une admission distincte, limitée, temporaire et révocable.',
+  'renewal.json : proposer le prochain test et garder les enseignements; aucun héritage automatique de preuve ou d’autorité.',
+];
 
 export function missionFor({ name = 'Atlas Ω', budget = '2100', now = new Date().toISOString() } = {}) {
   if (typeof name !== 'string' || !name.trim() || name.length > 48) throw Error('Use a name of 1–48 characters.');
@@ -41,8 +73,8 @@ export function missionFor({ name = 'Atlas Ω', budget = '2100', now = new Date(
     institutionId: 'local-successor-workshop', version: '1', title: name.trim().normalize('NFC'),
     principal: 'example-human-principal', beneficiary: 'Owner of this local synthetic mission',
     objective: 'Produce exact daily service metrics, compare bounded implementations, and prepare reviewable work orders.',
-    incumbent: { id: 'alpha-current', version: alpha.VERSION, description: 'Measured scan-based baseline.' },
-    alternatives: [{ id: 'alpha-beta', version: alpha.VERSION, description: 'Measured deterministic map baseline; not a frontier AI comparator.' }],
+    incumbent: { id: 'alpha-current', version: alpha.VERSION, description: 'Measured one-pass Map baseline.' },
+    alternatives: [{ id: 'alpha-beta', version: alpha.VERSION, description: 'Measured deterministic sort-and-reduce baseline; not a frontier AI comparator.' }],
     rights: [{ sourceId: 'synthetic-events', license: 'Apache-2.0 generator; synthetic nonpersonal outputs', dataClass: 'synthetic', permittedUses: ['mission-evaluation', 'fixture-export'], expiresAt }],
     hardGates: [
       { id: 'exact-output', description: 'All grouped counts and durations agree exactly.', maxViolations: 0 },
@@ -97,6 +129,9 @@ export async function buildPack(options = {}, { signal, onProgress = () => {} } 
 }
 
 export function jobBriefs(pack) {
+  if(pack.request.language==='fr')return `# ${pack.title} — Fiches de construction SUCCESSOR Ω\n\nRÉPÉTITION LOCALE. Brouillons DRAFT, empreintes non signées, zéro dépense.\nPreuve indépendante absente. Admission HOLD. Aucune autorité accordée.\n\nJeton commun sur Ethereum mainnet : ${TOKEN} (AGIALPHA, 18 décimales).\nBudget de planification seulement; frais, mises et gaz à estimer séparément.\n\n` +
+    pack.compilation.graph.nodes.map((job,i)=>`## ${i+1}. ${FRENCH_TITLES[i]}\n\n${FRENCH_DELIVERABLES[i]}\n\nTermes canoniques du compilateur (anglais) : ${job.objective}\n\nCritère d’acceptation canonique (anglais) : ${job.acceptance.predicate}\n\nLimite de planification (unités de base AGIALPHA) : ${job.budget.limitBaseUnits}\nExpiration : ${job.expiresAt}\nProducteur : ${job.actor}\nVérificateur : ${job.verifier.identity}\nResponsable de l’acceptation : ${job.acceptance.owner}\nRetour arrière : ${job.rollback.target}\nEmpreinte non signée : ${job.digest}\n`).join('\n') +
+    '\nSuite : organiser une évaluation protégée indépendante, mesurer tous les coûts, mettre en service l’intégration puis demander une décision humaine d’admission distincte. Le jeton commun ne relie pas automatiquement les marchés.\n';
   return `# ${pack.title} — SUCCESSOR Ω build briefs\n\nLOCAL REHEARSAL. DRAFT work, unsigned commitments, zero funds spent.\nIndependent proof absent. Admission HOLD. No authority is granted.\n\nShared Ethereum mainnet token: ${TOKEN} (AGIALPHA, 18 decimals).\nPlanning allowance only; fees, stakes and gas require separate estimates before commissioning.\n\n` +
     pack.compilation.graph.nodes.map((job, i) => `## ${i + 1}. ${JOB_TEMPLATES[i].title}\n\n${job.objective}\n\nAcceptance: ${job.acceptance.predicate}\n\nPlanning limit (AGIALPHA base units): ${job.budget.limitBaseUnits}\nExpiry: ${job.expiresAt}\nProducer: ${job.actor}\nVerifier: ${job.verifier.identity}\nAcceptance owner: ${job.acceptance.owner}\nRollback: ${job.rollback.target}\nUnsigned commitment: ${job.digest}\n`).join('\n') +
     '\nNext: arrange independent protected evaluation, measure full costs, resolve commissioning, then request a separate human admission decision. Sharing the token does not bridge the two markets.\n';

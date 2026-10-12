@@ -54,6 +54,10 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     local.locator("#run").click()
     expect(local.locator("#checks")).to_have_text("6 / 6")
     expect(local.locator("html")).to_have_attribute("lang", "fr")
+    expect(local.locator("#portfolio h4")).to_have_count(21)
+    expect(local.locator("#portfolio h4").first).to_contain_text("Constitution de mission")
+    expect(local.locator("#portfolio h4").last).to_contain_text("Capacité financée et requalification")
+    expect(local.locator("#timings")).to_contain_text("tri et réduction")
     with local.expect_download() as download:
         local.locator("#request").click()
     native_request = output / "builder-request-fr.json"
