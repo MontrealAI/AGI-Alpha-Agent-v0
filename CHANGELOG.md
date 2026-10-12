@@ -1,3 +1,11 @@
+## 1.26.3 — 2026-10-11
+
+- Open task choices directly from make-plan buttons while keeping the introduction behind the general Start here link.
+- Increase essential planner and review text for easier reading.
+- Show reading controls only when ready, with readable guidance for JavaScript and module-load failures.
+- Extend browser acceptance while retaining exact-asset checks, earlier release gates and original research.
+- See [release notes](docs/agent/RELEASE_NOTES_1.26.3.md).
+
 ## 1.26.2 — 2026-10-11
 
 - Give the homepage a welcoming purple-and-cream design, one clear first-plan invitation and a sample result.

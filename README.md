@@ -1,10 +1,10 @@
-> **New here? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).**
+> **New here? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/#journey).**
 > Choose what matters, review a simple plan and keep a readable copy. No technical experience,
 > account, wallet, payment or installation is needed.
 > [Visit the welcoming homepage](https://montrealai.github.io/AGI-Alpha-Agent-v0/) ·
 > [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr) ·
 > [Larger text](https://montrealai.github.io/AGI-Alpha-Agent-v0/?text=large) ·
-> [Simple guide](docs/agent/ONBOARDING.md) · [1.26.2 release notes](docs/agent/RELEASE_NOTES_1.26.2.md).
+> [Simple guide](docs/agent/ONBOARDING.md) · [1.26.3 release notes](docs/agent/RELEASE_NOTES_1.26.3.md).
 
 > **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded.
 > Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the

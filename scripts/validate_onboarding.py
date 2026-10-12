@@ -12,9 +12,33 @@ from threading import Thread
 import tomllib
 from typing import Any
 
-from playwright.sync_api import expect, sync_playwright
+from playwright.sync_api import Page, expect, sync_playwright
 
 from scripts.validate_ascension import Handler, inspect
+
+
+def assert_readable_text(page: Page) -> None:
+    """Keep visible instructions and controls at least one readable root em."""
+    measured = inspect(
+        page,
+        """(() => {
+          const selectors = [
+            'main p:not(.eyebrow):not(.step-caption)', 'button', 'input',
+            'label', 'legend', 'summary', '.sample-task', '.how small',
+            '.steps b', '.result-list span', '.next-card b', '.help a', 'footer nav a'
+          ];
+          const minimum = Math.max(18, parseFloat(getComputedStyle(document.documentElement).fontSize));
+          const elements = [...document.querySelectorAll(selectors.join(','))]
+            .filter(element => element.getClientRects().length > 0);
+          return {
+            count: elements.length,
+            tooSmall: elements.filter(element => parseFloat(getComputedStyle(element).fontSize) < minimum)
+              .map(element => ({text: element.textContent.trim(), fontSize: getComputedStyle(element).fontSize}))
+          };
+        })()""",
+    )
+    assert measured["count"] > 0, "No readable onboarding content was measured"
+    assert not measured["tooSmall"], measured["tooSmall"]
 
 
 def validate(site: Path, output: Path, public_url: str | None, axe_script: Path, executable: str | None) -> None:
@@ -53,8 +77,12 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
             expect(entry).to_have_attribute("href", "start/")
             entry.click()
             expect(page.locator("#planner")).to_be_visible()
+            expect(page.locator("#preferences")).to_be_visible()
+            expect(page.locator("#text-size")).to_be_visible()
+            expect(page.locator("#language")).to_be_visible()
+            expect(page.locator("#loading")).not_to_be_visible()
             expect(page.locator('meta[name="application-version"]')).to_have_attribute("content", report["version"])
-            report["checks"].append("homepage-entry")
+            report["checks"] += ["homepage-entry", "preferences-after-initialization"]
             page.on("pageerror", lambda error: report["browser_errors"].append(str(error)))
             requests: list[str] = []
             page.on("request", lambda request: requests.append(request.url))
@@ -67,6 +95,7 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 if language == "fr":
                     page.locator("#language").click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
+                assert_readable_text(page)
                 page.locator("#minutes").fill("60")
                 page.locator('#plan-form button[type="submit"]').focus()
                 page.keyboard.press("Enter")
@@ -74,10 +103,12 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 expect(page.locator("#continue")).to_be_disabled()
                 expect(page.locator("#result .result-stats strong")).to_have_text(["60", "0", "12"])
                 expect(page.locator("#result .result-list li")).to_have_count(2)
+                assert_readable_text(page)
                 page.locator("#reviewed").focus()
                 page.keyboard.press("Space")
                 page.locator("#continue").click()
                 expect(page.locator("#keep-title")).to_be_focused()
+                assert_readable_text(page)
                 with page.expect_download() as download:
                     page.locator("#download").click()
                 text_path = output / f"plan-{language}.txt"
@@ -142,6 +173,8 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 page.set_viewport_size({"width": width, "height": 1000})
                 if large and page.locator("#text-size").get_attribute("aria-pressed") == "false":
                     page.locator("#text-size").click()
+                expect(page.locator("#text-size")).to_have_attribute("aria-pressed", str(large).lower())
+                assert_readable_text(page)
                 assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1")
                 inspect(page, axe_script.read_text() + "; void 0")
                 audit = inspect(
@@ -150,8 +183,18 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
                 )
                 report["accessibility"].append({"width": width, "large_text": large, "violations": audit["violations"]})
                 assert not audit["violations"], audit["violations"]
+                page.locator('#plan-form button[type="submit"]').click()
+                expect(page.locator("#review-title")).to_be_focused()
+                assert_readable_text(page)
+                assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1")
+                page.locator("#reviewed").check()
+                page.locator("#continue").click()
+                expect(page.locator("#keep-title")).to_be_focused()
+                assert_readable_text(page)
+                assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1")
+                page.locator("#revise").click()
             page.screenshot(path=str(output / "mobile-large-fr.png"), full_page=True)
-            report["checks"] += ["mobile-and-larger-text", "axe-no-violations"]
+            report["checks"] += ["mobile-and-larger-text", "essential-readable-text", "axe-no-violations"]
             assert not requests, requests
             assert inspect(page, "localStorage.length === 0 && sessionStorage.length === 0")
             report["checks"].append("no-task-network-or-storage")
@@ -160,7 +203,24 @@ def validate(site: Path, output: Path, public_url: str | None, axe_script: Path,
             fallback.goto(origin + "start/")
             expect(fallback.locator("noscript")).to_be_visible()
             expect(fallback.locator("noscript a")).to_have_count(2)
+            expect(fallback.locator("#preferences")).not_to_be_visible()
+            expect(fallback.locator("#text-size")).not_to_be_visible()
+            expect(fallback.locator("#language")).not_to_be_visible()
+            expect(fallback.locator("#planner")).not_to_be_visible()
             report["checks"].append("no-javascript-guidance")
+            no_js.close()
+            failed_module = browser.new_context(service_workers="block")
+            failed_module.route("**/assets/portal/mission-engine.mjs*", lambda route: route.abort())
+            failure = failed_module.new_page()
+            failure.goto(origin + "start/", wait_until="networkidle")
+            expect(failure.locator("#loading")).to_be_visible()
+            expect(failure.locator("#preferences")).not_to_be_visible()
+            expect(failure.locator("#text-size")).not_to_be_visible()
+            expect(failure.locator("#language")).not_to_be_visible()
+            expect(failure.locator("#planner")).not_to_be_visible()
+            expect(failure.locator('.help a[href="../agent/ONBOARDING/"]')).to_be_visible()
+            report["checks"].append("module-failure-guidance")
+            failed_module.close()
             assert not report["browser_errors"], report["browser_errors"]
             report["passed"] = True
             browser.close()

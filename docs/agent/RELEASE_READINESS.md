@@ -1,11 +1,12 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.26.2 welcoming homepage
+# Release readiness — 1.26.3 easier first-plan entry
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
-boundaries. This version gives the [homepage](../index.html) a clear first step, an example plan,
-plain-language help, and visible English/French and larger-text controls. Those preferences follow you
-to the existing guided Choose → Review → Keep experience. [Make your first plan](../start/index.html)
+boundaries. This patch makes the [homepage](../index.html) make-plan buttons open task choices directly,
+increases essential planner text and shows reading controls only when they are ready to use.
+The general Start here link keeps its introduction; English/French and text-size preferences still follow
+you into the Choose → Review → Keep experience. [Make your first plan](../start/index.html#journey)
 or read the [onboarding guide](ONBOARDING.md).
 The existing SUCCESSOR mission lifecycle, repository repairs and release-installer preflight remain.
 The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe that lifecycle's boundaries.
@@ -14,7 +15,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.26.2.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.26.3.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -79,7 +80,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.2). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.3). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -91,8 +92,11 @@ experience. The release workflow runs the same acceptance against public Pages b
 Both reports must identify the exact packaged commit and version. The checks cover English/French
 content, larger text, keyboard access, narrow-screen layouts, help, preserved advanced entry points,
 and language/text-size preferences carried to `/start/` through `?lang=fr&text=large`.
-The existing planner acceptance still requires explicit review, accurate downloadable results and
-input-specific error recovery. These gates supplement all earlier release checks.
+The make-plan buttons must open the task-entry section directly; the general Start here link keeps
+its introduction. Planner acceptance checks readable essential text and hides reading controls until
+initialization succeeds, including no-JavaScript and module-load failure cases. Explicit review, accurate
+downloadable results and input-specific error recovery remain required. These gates supplement all
+earlier release checks.
 
 A defined test is a requirement, not a recorded pass. Use the published manifest and matching validation
 archive for actual results. Automated accessibility checks and responsive layouts still need to be
@@ -122,7 +126,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.26.2 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.26.3 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

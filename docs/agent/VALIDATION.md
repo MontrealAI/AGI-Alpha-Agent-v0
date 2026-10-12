@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.26.2 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.26.3 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -279,3 +279,13 @@ to exercise the complete Choose → Review → Keep workflow and its download/re
 The matching release manifest and validation archive record actual outcomes. These browser checks
 are finite evidence; they do not certify every browser or assistive technology, replace usability
 studies with older and nontechnical users, or qualify hosting for billions of concurrent visitors.
+
+## Version 1.26.3 first-plan refinements
+
+Homepage acceptance additionally requires intention-specific make-plan links to open the task-entry
+section directly, while the general Start here link retains the introduction. First-plan acceptance
+checks readable essential task and review text, reading controls hidden until initialization completes,
+and usable guidance when JavaScript is unavailable or a required module fails to load.
+Existing exact-asset, preference, review, export, responsive-layout and public-site gates remain required.
+The published manifest and validation archive record results for the accepted commit; defining these
+requirements is not a claim that an untested revision has passed.

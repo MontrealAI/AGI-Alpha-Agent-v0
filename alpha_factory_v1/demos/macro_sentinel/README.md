@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.26.2
+## Current runnable path — 1.26.3
 
 **Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
 
