@@ -399,6 +399,8 @@ def main() -> None:
         "scripts.generate_successor_pocket" if __package__ else "generate_successor_pocket"
     )
     pocket.build(REPO_ROOT)
+    ecosystem = importlib.import_module("scripts.generate_ecosystem" if __package__ else "generate_ecosystem")
+    ecosystem.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]

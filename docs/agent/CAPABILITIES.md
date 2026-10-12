@@ -5,8 +5,11 @@
 The original README, including every flywheel, retains all text beneath the release-status introduction;
 CI badge selectors and live Health/Smoke/Integration image sources are maintained. See [badge scope](../CI_STATUS.md).
 The preservation release `baseline-2026-09-24` retains the original source and complete Git history.
-This project belongs to **$AGIALPHA**. It is separate from AGI Jobs and does not connect this agent to
-USDC job settlement or a private OpenClaw installation. Historical job-contract experiments remain present.
+This project belongs to **$AGIALPHA**. Alpha Ascension and **AGIJobsv0** have separate recorded Ethereum mainnet
+contract suites that identify the same AGIALPHA token. The [paired-system guide](AGI_JOBS_ECOSYSTEM.md) explains
+their complementary roles, all 29 deployed instances and the configuration needed to connect work across them.
+The native agent does not automatically route jobs into AGIJobsv0. USDC settlement in the separate AGIJobManager
+project and a private OpenClaw installation are different integrations. Historical job-contract experiments remain present.
 
 ## Recovered vision
 
@@ -38,7 +41,7 @@ interfaces, experiments, assets and documentation remain available.
 | Reinvestment | Integer allocation of confirmed receipts to an auditable local earmark | No automatic spending, treasury custody or executed buyback/burn claim |
 | Controls | Persistent pause, bounded evaluations/time/output, local bearer-authenticated console, measured request-size/time bounds, idempotency, compare-and-swap reviews | Single-operator local service; remote exposure requires a separately operated secure access layer |
 | Recovery | Consistent SQLite backup plus config/key/token, checksums, signature verification, restore to a new directory | Backup contains secrets; signatures cannot protect against theft of the signing key or rollback without an external checkpoint |
-| Original contracts | Preserved Solidity components; exact shipped/test-source comparison and original contract suite | Tests are not an independent security audit; no mainnet deployment or migration performed |
+| Original contracts | Preserved Solidity components; exact shipped/test-source comparison and original contract suite | Five Alpha contracts have a dated [mainnet deployment record](MAINNET_DEPLOYMENT.md); the deployed source predates newer settlement safeguards and requires separate commissioning |
 | Original demos | All retained; browser/contract/Python regression checks included | Optional heavy integrations, provider keys, hardware and external services remain conditional |
 
 The latest [manuscript implementation map](MANUSCRIPT_ALIGNMENT.md) links the final paper to native code,

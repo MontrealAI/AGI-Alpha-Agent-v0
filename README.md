@@ -2,7 +2,40 @@
 > Give it a name, run real experiments, then save the whole working lab as one file. Reopen it offline,
 > try new challenges and keep your discoveries. Free, English/French, larger text, no account or installation.
 > [Personal lab guide](docs/agent/SUCCESSOR.md#new-here-take-a-lab-home--emportez-votre-laboratoire) ·
-> [What is new in 1.27.1](docs/agent/RELEASE_NOTES_1.27.1.md).
+> [What is new in 1.27.2](docs/agent/RELEASE_NOTES_1.27.2.md).
+
+## Alpha Agent + AGI Jobs: from a useful idea to accepted work
+
+**Alpha helps produce the work; AGI Jobs supplies rules for commissioning, reviewing and settling it.**
+Together, they offer the building blocks for a traceable work cycle: define a worthwhile task, produce
+a result, check the evidence, settle according to agreed terms, and retain what proved useful.
+Alpha's deployed Ascension suite also provides plan records, campaign funding and spending constrained
+to committed jobs in its own market. A connected AGI Jobs workflow requires explicit configuration and commissioning.
+
+**Shared token · Ethereum mainnet · `$AGIALPHA` · 18 decimals**
+
+[`0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`](https://etherscan.io/address/0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA#code)
+
+**[Explore the visual connection guide and all 29 deployed addresses][ecosystem-page]** ·
+[Français][ecosystem-fr] · [Practical workflow and operating boundaries](docs/agent/AGI_JOBS_ECOSYSTEM.md) ·
+[AGI Jobs companion guide][jobs-ecosystem]
+
+The public records identify **5 Alpha Ascension contracts** deployed on 11 October 2026 and
+**24 AGI Jobs contract instances** inventoried on 12 October 2026, including its coordinator and 10 fixed
+implementation contracts. Both records name the token above; it is a shared dependency, not another suite instance.
+[Alpha deployment evidence][alpha-deployment] · [AGI Jobs deployment evidence][jobs-deployment].
+
+These dated records establish deployment, not a commissioned joint service. The Alpha deployment predates
+newer settlement safeguards; its MARK treasury targets its own fixed market. The Jobs record does not approve
+production or open live intake. Check the [Alpha deployment guide](docs/agent/MAINNET_DEPLOYMENT.md) and
+[current Jobs readiness guide][jobs-readiness] before live use. Exploring the guide and personal lab is free.
+
+[ecosystem-page]: https://montrealai.github.io/AGI-Alpha-Agent-v0/ecosystem/
+[ecosystem-fr]: https://montrealai.github.io/AGI-Alpha-Agent-v0/ecosystem/fr/
+[jobs-ecosystem]: https://montrealai.github.io/AGIJobsv0/ecosystem/
+[alpha-deployment]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/755f678954be8e334e69e4d37f56f3fe10da2d84/deployments/ethereum-mainnet/2026-10-11/manifest.json
+[jobs-deployment]: https://github.com/MontrealAI/AGIJobsv0/blob/a1dea46d2f9dfa5680d11e24529f107d65cd4369/docs/deployments/ethereum-mainnet-2026-10-12.json
+[jobs-readiness]: https://github.com/MontrealAI/AGIJobsv0/blob/main/docs/production/readiness.md
 
 > **Prefer a simple planner? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/#journey).**
 > Choose what matters, review a simple plan and keep a readable copy. No technical experience,

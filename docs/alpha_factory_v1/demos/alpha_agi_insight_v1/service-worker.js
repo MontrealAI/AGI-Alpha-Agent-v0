@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-3ef04d54111d0f1b";
-const RELEASE = "1.27.1";
+const CACHE = "agialpha-gallery-d7ceb10c89fe6411";
+const RELEASE = "1.27.2";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -93,6 +93,8 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/script.js",
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/style.css",
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/index.html",
+  "../../../alpha_factory_v1/demos/ecosystem/fr/index.html",
+  "../../../alpha_factory_v1/demos/ecosystem/index.html",
   "../../../alpha_factory_v1/demos/era_of_experience/assets/lab-preview.svg",
   "../../../alpha_factory_v1/demos/era_of_experience/assets/logs.json",
   "../../../alpha_factory_v1/demos/era_of_experience/assets/preview.svg",
@@ -220,6 +222,9 @@ const ASSETS = [
   "../../../assets/discovery/scenarios.json",
   "../../../assets/discovery/workbench.css",
   "../../../assets/discovery/workbench.mjs",
+  "../../../assets/ecosystem/contracts.json",
+  "../../../assets/ecosystem/guide.css",
+  "../../../assets/ecosystem/guide.mjs",
   "../../../assets/experience/constants.mjs",
   "../../../assets/experience/engine.mjs",
   "../../../assets/experience/lab.css",
@@ -290,6 +295,8 @@ const ASSETS = [
   "../../../cross_industry_alpha_factory/index.html",
   "../../../demos/assets/readme_preview.svg",
   "../../../demos/index.html",
+  "../../../ecosystem/fr/index.html",
+  "../../../ecosystem/index.html",
   "../../../era_of_experience/assets/lab-preview.svg",
   "../../../era_of_experience/assets/logs.json",
   "../../../era_of_experience/assets/preview.svg",
