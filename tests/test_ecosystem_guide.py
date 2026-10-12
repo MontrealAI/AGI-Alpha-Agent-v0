@@ -2,15 +2,54 @@
 """Guard the static public contract directory against omissions and misleading links."""
 from __future__ import annotations
 
+import ast
 from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 
 import pytest
 
 from scripts import generate_ecosystem as guide
+
+
+def test_browser_probe_expressions_have_valid_javascript_syntax() -> None:
+    """Compile the actual browser probes before expensive hosted gallery acceptance."""
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("Node.js is required to check browser probe syntax")
+    module = ast.parse((guide.ROOT / "scripts/validate_ecosystem.py").read_text())
+    expressions = []
+    for call in ast.walk(module):
+        if not (
+            isinstance(call, ast.Call)
+            and isinstance(call.func, ast.Name)
+            and call.func.id == "inspect"
+            and len(call.args) > 1
+        ):
+            continue
+        try:
+            expression = ast.literal_eval(call.args[1])
+        except (ValueError, TypeError):
+            continue
+        if isinstance(expression, str):
+            expressions.append(expression)
+    assert expressions
+    result = subprocess.run(
+        [
+            node,
+            "-e",
+            "const vm = require('node:vm'); const fs = require('node:fs'); "
+            "for (const expression of JSON.parse(fs.readFileSync(0, 'utf8'))) new vm.Script(expression);",
+        ],
+        input=json.dumps(expressions),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 class DirectoryLinks(HTMLParser):
