@@ -66,8 +66,10 @@ def validate(browser: Browser, origin: str, output: Path, axe_source: str) -> di
             assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1"), "Guide overflow"
             controls = inspect(
                 page,
-                """[...document.querySelectorAll('header a, header button, .hero .button, .token-actions a,
-                .token-actions button, summary, .contract-directory td a, .invitation a, footer a')]
+                """[...document.querySelectorAll([
+                  'header a', 'header button', '.hero .button', '.token-actions a',
+                  '.token-actions button', 'summary', '.contract-directory td a', '.invitation a', 'footer a'
+                ].join(','))]
                 .filter(el => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
                 .map(el => { const r = el.getBoundingClientRect(); return {
                   label: (el.innerText || el.id).trim(), width: r.width, height: r.height }; })""",
