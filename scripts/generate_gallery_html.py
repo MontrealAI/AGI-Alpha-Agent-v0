@@ -395,7 +395,9 @@ def main() -> None:
     sovereign = importlib.import_module("scripts.generate_sovereign" if __package__ else "generate_sovereign")
 
     sovereign.build(REPO_ROOT)
-    pocket = importlib.import_module("scripts.generate_successor_pocket" if __package__ else "generate_successor_pocket")
+    pocket = importlib.import_module(
+        "scripts.generate_successor_pocket" if __package__ else "generate_successor_pocket"
+    )
     pocket.build(REPO_ROOT)
     entries = collect_entries()
 
