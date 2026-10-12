@@ -1,3 +1,11 @@
+## 1.27.1 — 2026-10-12
+
+- Refresh the historical web client development lockfile within its existing version ranges.
+- Remove unused dependency subtrees and reduce the recorded development advisory total from 39 to 34.
+- Keep remaining development advisories explicit; production dependencies and application behavior are unchanged.
+- Align current release guides and gallery version metadata while retaining all prior release notes and diagrams.
+- See [release notes](agent/RELEASE_NOTES_1.27.1.md).
+
 ## 1.27.0 — 2026-10-12
 
 - Feature SUCCESSOR Ω on the welcoming homepage while retaining the simple planner.
