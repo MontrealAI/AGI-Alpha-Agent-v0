@@ -32,6 +32,16 @@ const french = {
     "example-total": "Votre laboratoire complet",
     "example-duration": "Un fichier",
     "example-note": "Nommez-le. Explorez-le. Rouvrez-le hors ligne.",
+    "ecosystem-eyebrow": "ALPHA AGENT + AGI JOBS",
+    "ecosystem-title": "D’une idée utile à un travail accepté.",
+    "ecosystem-description":
+        "Alpha aide à planifier et à produire le travail. AGI Jobs fixe les règles de commande, de validation et de règlement. Découvrez comment un parcours bien relié peut réunir ces forces.",
+    "ecosystem-guide": "Voir comment les réunir",
+    "ecosystem-contracts": "Explorer les 29 contrats déployés",
+    "ecosystem-token-label": "UN JETON COMMUN · RÉSEAU PRINCIPAL ETHEREUM",
+    "ecosystem-records": "5 instances Alpha et 24 AGI Jobs dans les archives publiques des 11 et 12 octobre 2026.",
+    "ecosystem-readiness":
+        "Consultez les preuves de déploiement et les conditions d’exploitation. Un jeton commun ne crée pas de passerelle automatique et n’ouvre pas l’accueil de missions réelles.",
     "how-eyebrow": "Simple dès le premier pas",
     "how-title": "À votre rythme. Trois étapes simples.",
     "how-description":
@@ -124,6 +134,10 @@ function render() {
     }
     for (const link of document.querySelectorAll("[data-omega-link]")) {
         link.setAttribute("href", `successor/play/${query.size ? `?${query}` : ""}`);
+    }
+    for (const link of document.querySelectorAll("[data-ecosystem-link]")) {
+        const fragment = new URL(link.href).hash;
+        link.setAttribute("href", `ecosystem/${language === "fr" ? "fr/" : ""}${largeText ? "?text=large" : ""}${fragment}`);
     }
     // Keep this entry bookmarkable without adding history or forwarding other parameters.
     const address = new URL(location.href);

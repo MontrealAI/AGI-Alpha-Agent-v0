@@ -1,3 +1,12 @@
+## 1.27.2 — 2026-10-12
+
+- Feature Alpha + AGI Jobs and their shared Ethereum mainnet $AGIALPHA token on the homepage.
+- Explain complementary project funding, accountable work, review and settlement in a readable ecosystem guide.
+- Link all five Alpha contracts and 24 AGIJobsv0 instances to their addresses and pinned deployment evidence.
+- Keep the recorded deployment, current-source and commissioning boundaries explicit.
+- Preserve all existing onboarding, SUCCESSOR, demonstrations, research and flowcharts.
+- See [release notes](docs/agent/RELEASE_NOTES_1.27.2.md).
+
 ## 1.27.1 — 2026-10-12
 
 - Refresh the historical web client development lockfile within its existing version ranges.

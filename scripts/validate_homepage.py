@@ -21,6 +21,7 @@ from playwright.sync_api import Page, expect, sync_playwright
 
 from scripts.homepage_evidence import ASSETS, asset_hashes
 from scripts.validate_ascension import Handler, inspect
+from scripts.validate_ecosystem import validate as validate_ecosystem
 
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
@@ -34,6 +35,14 @@ def assert_handoff(page: Page, language: str, large: bool) -> None:
         assert set(query) <= {"lang", "text"}
         assert query.get("lang", ["en"]) == [language]
         assert query.get("text", ["standard"]) == (["large"] if large else ["standard"])
+    ecosystem_links = page.locator("[data-ecosystem-link]")
+    assert ecosystem_links.count() >= 3, "Offer the shared guide near the introduction and in the directory"
+    for link in ecosystem_links.all():
+        target = urlsplit(link.get_attribute("href") or "")
+        assert not target.scheme and not target.netloc
+        assert target.path == ("ecosystem/fr/" if language == "fr" else "ecosystem/")
+        assert parse_qs(target.query) == ({"text": ["large"]} if large else {})
+        assert target.fragment == ("contracts" if link.get_attribute("data-home-key") == "ecosystem-contracts" else "")
     links = page.locator("[data-start-link]")
     assert links.count() >= 2, "Offer the guided plan at the top and after the introduction"
     for link in links.all():
@@ -106,7 +115,7 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
     controls = inspect(
         page,
         """(() => [...document.querySelectorAll(
-          'header a, header button, #home a, #home button, #questions summary'
+          'header a, header button, #home a, #home button, #questions summary, .welcome-ecosystem a'
         )].filter(el => !el.closest('#research') && el.getClientRects().length &&
           getComputedStyle(el).visibility !== 'hidden').map(el => {
           const box = el.getBoundingClientRect();
@@ -123,7 +132,7 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
 def audit(page: Page, axe_source: str, *, beginner_only: bool) -> dict[str, Any]:
     """Run axe against the shipped CSP and retain exact failures for review."""
     inspect(page, axe_source + "; void 0")
-    context = "{include:['header','#home'],exclude:['#research']}" if beginner_only else "document"
+    context = "{include:['header','#home','.welcome-ecosystem'],exclude:['#research']}" if beginner_only else "document"
     tags = "['wcag2a','wcag2aa','wcag21aa','best-practice']" if beginner_only else "['wcag2a','wcag2aa','wcag21aa']"
     return cast(dict[str, Any], inspect(page, f"axe.run({context}, {{runOnly:{{type:'tag',values:{tags}}}}})"))
 
@@ -359,6 +368,9 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
+                page.locator(".welcome-ecosystem").screenshot(
+                    path=str(output / f"homepage-ecosystem-{language}-{width}{'-large' if large else ''}.png")
+                )
                 for beginner_only in (True, False):
                     result = audit(page, axe_source, beginner_only=beginner_only)
                     report["accessibility"].append(
@@ -394,6 +406,8 @@ def validate(
             expect(fallback.locator("#journey")).to_be_focused()
             expect(fallback.locator("#journey noscript .notice")).to_be_visible()
             report["checks"].append("no-javascript-content-and-navigation")
+            report["ecosystem"] = validate_ecosystem(browser, origin, output / "ecosystem", axe_source)
+            report["checks"].append("paired-system-guide")
             assert not report["browser_errors"], report["browser_errors"]
             report["passed"] = True
             browser.close()

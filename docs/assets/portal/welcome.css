@@ -17,6 +17,73 @@
     font: 6rem Georgia, serif;
     box-shadow: 0 1rem 3rem #653f9235;
 }
+.welcome-ecosystem {
+    padding-block: 3.5rem;
+    border-block: 1px solid #d9cce3;
+    background: #eee5f4;
+}
+.welcome-ecosystem-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 3rem;
+}
+.welcome-ecosystem h2 {
+    max-width: 23ch;
+    margin: 0.4rem 0 1rem;
+    font-size: clamp(1.75rem, 3.1vw, 2.65rem);
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+}
+.welcome-ecosystem p {
+    color: #4e405d;
+}
+.welcome-ecosystem-token {
+    min-width: 0;
+    padding: 1.75rem;
+    border: 1px solid #cdb8de;
+    border-radius: 1.25rem;
+    background: #fffcff;
+}
+.welcome-ecosystem-token h3 {
+    margin: 0.4rem 0 1rem;
+    color: #4c286f;
+    font-size: 2rem;
+}
+.welcome-ecosystem-token > a {
+    display: block;
+    min-height: 3rem;
+    padding: 0.85rem;
+    border: 1px solid #d8cae2;
+    border-radius: 0.5rem;
+    color: #452260;
+    background: #f3edf7;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+}
+.welcome-ecosystem-token code {
+    color: inherit;
+    background: transparent;
+    font-size: 0.94rem;
+    overflow-wrap: anywhere;
+    user-select: all;
+}
+.welcome-ecosystem-token .welcome-ecosystem-note {
+    margin-bottom: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+@media (max-width: 900px) {
+    .welcome-ecosystem-grid {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+}
+@media (max-width: 400px) {
+    .welcome-ecosystem-token {
+        padding: 1.1rem;
+    }
+}
 :root {
     --welcome-ink: #292038;
     --welcome-muted: #62596c;
