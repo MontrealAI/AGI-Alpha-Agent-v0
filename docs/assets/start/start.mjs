@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { runMission } from "../portal/mission-engine.mjs?v=1.26.3";
+import { runMission } from "../portal/mission-engine.mjs?v=1.27.0";
 
 const $ = (id) => document.getElementById(id);
 const french = {

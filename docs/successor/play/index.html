@@ -1,0 +1,794 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#21113d">
+<meta name="description" content="Make SUCCESSOR Ω yours. Name your personal lab, run a real experiment and keep a complete interactive copy that works offline.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-4U/h1B0bLLJyymcHrprIenfAdyzyQU3LqRRxUiiv0AM='; style-src 'sha256-tyhM5NAUpzbsLXg0pg+kfZjvWAfAS9XDVe12GKP7q9o='; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>My SUCCESSOR Ω · A lab of your own</title><style>
+/* SPDX-License-Identifier: Apache-2.0 */
+:root { color-scheme: light; font: 18px/1.6 "Segoe UI", Arial, sans-serif; color: #30283b; background: #faf8f5; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html.large { font-size: 22px; }
+body { margin: 0; }
+a { color: #56318b; text-underline-offset: .2em; }
+button, input, select { font: inherit; }
+button, a, input, select, summary { touch-action: manipulation; }
+button, input, select { min-height: 52px; border: 1px solid #a798b6; border-radius: 12px; padding: .65rem 1rem; }
+button { cursor: pointer; color: #382048; background: #fff; font-weight: 650; }
+button:hover { background: #eee7f7; }
+button:disabled { cursor: wait; opacity: .65; }
+.primary { background: #65409b; color: #fff; border-color: #65409b; }
+.primary:hover { background: #4b267b; }
+:focus-visible, [tabindex="-1"]:focus { outline: 3px solid #925cc7; outline-offset: 5px; }
+.wrap { width: min(1180px, calc(100% - 3rem)); margin: auto; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.2rem; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: .7rem; min-height: 48px; font-weight: 750; text-decoration: none; letter-spacing: .08em; }
+.brand span { display: grid; place-items: center; width: 46px; height: 46px; color: white; background: #65409b; border-radius: 14px; font: 38px Georgia, serif; }
+.preferences { display: flex; gap: .5rem; flex-wrap: wrap; }
+.intro { display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 2rem; padding: 3rem 0; }
+.eyebrow { color: #6d418c; font-size: .85rem; letter-spacing: .1em; font-weight: 750; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { font-family: Georgia, serif; font-size: clamp(2.4rem, 5vw, 4.4rem); line-height: 1.08; letter-spacing: -.045em; font-weight: 400; margin-bottom: 1.25rem; }
+h2 { font-size: 1.85rem; line-height: 1.2; letter-spacing: -.035em; }
+h3 { font-size: 1.2rem; line-height: 1.4; }
+.lead { font-size: 1.15rem; max-width: 35rem; }
+.reassurance, .hint { color: #62566c; }
+.universe { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(ellipse at 40% 25%, #967bc4, #4d2d7b 40%, #1d1036 70%); position: relative; display: grid; place-items: center; box-shadow: 0 25px 70px #40255330; color: #f6e4ff; overflow: hidden; }
+.universe::before { content: "✧  ·     ✦       ·    ✧"; position: absolute; inset: 16% 12% auto; letter-spacing: .45em; text-align: center; }
+.planet { font: clamp(6rem, 12vw, 10rem)/1 Georgia, serif; text-shadow: 0 0 50px #e1b3ff; }
+.ring { position: absolute; width: 91%; height: 46%; border: 1px solid #c99ae5; border-radius: 50%; transform: rotate(-24deg); }
+.universe > span { position: absolute; bottom: 15%; font-size: .7rem; letter-spacing: .1em; }
+.steps { list-style: none; padding: 1.2rem 0; margin: 0 0 1.5rem; display: flex; gap: 2rem; flex-wrap: wrap; border-top: 1px solid #d9cfdf; border-bottom: 1px solid #d9cfdf; }
+.steps li { display: flex; align-items: center; gap: .7rem; }
+.steps b { background: #e9e0f1; color: #50316d; width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; }
+.lab-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 1.5rem; }
+.lab-grid > *, .keep > * { min-width: 0; }
+.panel { padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid #dbd1e2; border-radius: 24px; background: white; }
+label { display: block; font-weight: 650; margin: 1.2rem 0 .4rem; }
+input, select { display: block; width: 100%; max-width: 100%; background: #fdfcff; color: #30283b; }
+.hint { font-size: 1rem; margin-top: .7rem; }
+#run, #cancel { width: 100%; margin-top: .5rem; }
+.notice { padding: 1rem; background: #f0eaf7; border-radius: 12px; margin-top: 1rem; }
+progress { width: 100%; accent-color: #65409b; }
+.result { background: linear-gradient(150deg, #fff, #f4eff9); }
+.result-header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding-bottom: 1.2rem; border-bottom: 1px solid #ddd2e4; margin-bottom: 1.5rem; }
+#result-title { overflow-wrap: anywhere; margin: 0; }
+.mini-orb { width: 64px; height: 64px; flex: 0 0 64px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(at 30% 20%, #af87d3, #442361 70%); color: white; font: 44px Georgia, serif; }
+#empty { padding: 1.2rem 0; }
+.empty-trail { text-align: center; font: 3rem Georgia, serif; color: #846598; margin: 3rem 0; }
+.badge { font-size: .8rem; font-weight: 750; letter-spacing: .07em; color: #5d4672; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.8rem 0; }
+.stats dt { font-size: 1rem; color: #62566c; }
+.stats dd { margin: 0; font-size: 1.8rem; font-weight: 700; color: #583080; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: .7rem .35rem; border-bottom: 1px solid #ddd2e4; overflow-wrap: anywhere; }
+th:last-child, td:last-child { text-align: right; }
+details { border-top: 1px solid #ded5e5; padding: .45rem 0; margin-top: 1rem; }
+summary { padding: .7rem .15rem; min-height: 48px; cursor: pointer; color: #50316d; font-weight: 650; }
+details p { margin-top: .65rem; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; max-height: 25rem; overflow-y: auto; background: #eee9f3; padding: 1rem; }
+#history { padding-left: 1.5rem; }
+#history li { margin-bottom: .7rem; }
+.keep { display: grid; grid-template-columns: 1.3fr .7fr; gap: 2.5rem; padding: 2.5rem; background: #26133f; border-radius: 24px; margin: 1.8rem 0 3rem; color: #fff4ff; }
+.keep .eyebrow, .keep .hint { color: #d3c0e2; }
+.keep-actions { align-self: center; }
+.keep .primary { width: 100%; background: #e9d8ff; color: #331b4b; border: 0; }
+.keep .primary:hover { background: white; }
+.keep-actions p { margin: .8rem 0 0; }
+.questions { max-width: 850px; margin: 0 auto 3rem; }
+.online-link { display: inline-block; padding-block: .8rem; }
+footer { border-top: 1px solid #ded5e5; padding: 2rem 0; }
+footer > a { display: inline-block; margin-right: 1rem; padding: .6rem 0; overflow-wrap: anywhere; }
+.skip { position: absolute; left: 1rem; top: -100px; padding: 1rem; background: white; z-index: 2; }
+.skip:focus { top: 1rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (max-width: 760px) { .wrap { width: calc(100% - 2rem); } .intro, .lab-grid, .keep { grid-template-columns: 1fr; } .intro { padding-top: 2rem; } .universe { width: min(65%, 260px); justify-self: center; } .steps { gap: .8rem 1.5rem; } .keep { padding: 1.3rem; gap: 1rem; } .stats { grid-template-columns: 1fr; } .stats > div { display: flex; justify-content: space-between; align-items: center; gap: 1rem; } .stats dd { font-size: 1.4rem; } }
+@media print { .top, .intro .universe, .setup, button, .keep-actions, footer { display: none; } .lab-grid, .keep { display: block; } .wrap { width: 100%; } body, .panel, .keep { background: white; color: black; } }
+
+</style>
+</head><body>
+<a class="skip" href="#main" data-word="skip">Skip to your lab</a>
+<header class="wrap top"><a class="brand" href="https://montrealai.github.io/AGI-Alpha-Agent-v0/"><span aria-hidden="true">α</span> AGI ALPHA</a>
+<div class="preferences" aria-label="Reading preferences"><button id="language" type="button" lang="fr">Français</button><button id="large" type="button" aria-pressed="false" data-word="larger">Larger text</button></div></header>
+<main id="main" class="wrap" tabindex="-1">
+<section class="intro" aria-labelledby="title"><div><p class="eyebrow">SUCCESSOR Ω · <span data-word="edition">PERSONAL LAB</span></p>
+<h1 id="title" data-word="title">A little universe.<br>A lab of your own.</h1>
+<p class="lead" data-word="lead">Give it a name. Try an experiment. Keep the whole thing. Your next discovery starts with a little curiosity.</p><p class="reassurance" data-word="free">Free to explore. No account, wallet or installation.</p></div>
+<div class="universe" aria-hidden="true"><div class="ring"></div><div class="planet">Ω</div><span>CREATE · EXPLORE · KEEP</span></div></section>
+<noscript><p class="notice">This lab needs JavaScript to run its experiments. Enable JavaScript in a modern browser, then reopen this file. / Ce laboratoire nécessite JavaScript. Activez-le dans un navigateur récent, puis rouvrez ce fichier.</p></noscript>
+<p id="loading" class="notice" data-word="loading">Opening your lab… If this stays on screen, try a current browser with JavaScript enabled.</p>
+<div id="app" hidden>
+<ol class="steps" aria-label="Three simple steps"><li><b>1</b> <span data-word="step1">Make it yours</span></li><li><b>2</b> <span data-word="step2">See it work</span></li><li><b>3</b> <span data-word="step3">Take it with you</span></li></ol>
+<div class="lab-grid"><section class="panel setup" aria-labelledby="setup-title">
+<p class="eyebrow" data-word="yourspace">YOUR SPACE TO EXPLORE</p><h2 id="setup-title" data-word="setup">Make it yours.</h2>
+<form id="lab-form" novalidate><label for="lab-name" data-word="name">Give your lab a name</label><input id="lab-name" value="My Ω" maxlength="48" autocomplete="off" aria-describedby="name-help"><p id="name-help" class="hint" data-word="namehelp">A nickname is perfect. You can change it anytime.</p>
+<label for="challenge" data-word="challenge">Choose a challenge</label><select id="challenge"><option value="256" data-word="small">A first discovery · 256 sample events</option><option value="1000" data-word="medium">A bigger challenge · 1,000 sample events</option><option value="4000" data-word="big">Explore further · 4,000 sample events</option></select>
+<p class="hint" data-word="challengehelp">An event is one made-up service record. Your lab groups the records and checks that the totals are right.</p>
+<button id="run" class="primary" type="submit" data-word="run">Bring my Ω to life</button><button id="cancel" type="button" hidden data-word="cancel">Stop this experiment</button></form>
+<p id="status" role="status" aria-live="polite" class="notice" tabindex="-1" data-word="ready">Ready when you are. The example is already set up.</p><progress id="progress" value="0" max="3" aria-label="Experiment progress" hidden></progress>
+<details><summary data-word="what">What will my Ω actually do?</summary><p data-word="whattext">It tries four small programs, chooses one, then checks it on six new sets of sample events. You see whether its answers match and how long it took. These are real calculations on your device.</p><p data-word="limit">This is a focused computing experiment, not a general AI assistant. It does not complete jobs, make money, or take actions for you.</p></details></section>
+<section class="panel result" aria-labelledby="result-title"><div class="result-header"><div><p class="eyebrow" data-word="yourlab">YOUR SUCCESSOR Ω</p><h2 id="result-title" tabindex="-1">My Ω</h2></div><span class="mini-orb" aria-hidden="true">Ω</span></div>
+<div id="empty"><h3 data-word="emptytitle">Your first discovery is one click away.</h3><p data-word="emptytext">Watch different approaches solve the same challenge. Change the size, try again, and build a small collection of experiments.</p><p class="empty-trail" aria-hidden="true">○ — ○ — Ω</p></div>
+<div id="outcome" hidden><p class="badge" data-word="local">MEASURED HERE · LOCAL EXPERIMENT</p><h3 id="verdict"></h3><p id="explanation"></p>
+<dl class="stats"><div><dt data-word="checks">Fresh checks matched</dt><dd id="checks">—</dd></div><div><dt data-word="programs">Programs compared</dt><dd id="programs">—</dd></div><div><dt data-word="experiments">Experiments kept</dt><dd id="count">—</dd></div></dl>
+<h3 data-word="timing">Time to complete the six checks</h3><div class="table-wrap"><table><caption class="sr-only" data-word="timing">Time to complete the six checks</caption><thead><tr><th scope="col" data-word="approach">Approach</th><th scope="col" data-word="time">Milliseconds</th></tr></thead><tbody id="timings"></tbody></table></div>
+<p class="hint" data-word="timinghelp">Lower is faster in this run. Timings vary with your device and other open apps. A faster result here is an observation, not independent proof of improvement.</p><button id="again" type="button" data-word="again">Try a new challenge</button>
+<details><summary data-word="history">My experiment collection</summary><p class="hint" data-word="historyhelp">The most recent eight experiments. Saved results are historical notes; run a fresh experiment to check again.</p><ol id="history"></ol></details>
+<details><summary data-word="evidence">Look inside the latest experiment</summary><pre id="evidence"></pre><button id="export-evidence" type="button" data-word="export">Save the experiment data</button></details></div></section></div>
+<section class="keep" aria-labelledby="keep-title"><div><p class="eyebrow" data-word="keepbadge">SOMETHING REAL TO KEEP</p><h2 id="keep-title" data-word="keep">Your Ω. On your device.</h2><p data-word="keeptext">Save one small file with your name, experiments and the working lab inside. Open it in your browser to play again—even without internet.</p><p class="hint" data-word="savehelp">Choose “Save my Ω”, then look in Downloads. Open the HTML file in Chrome, Edge, Firefox or Safari. Save a new copy after your next experiments; an open file cannot update itself.</p></div><div class="keep-actions"><button id="save" class="primary" type="button" data-word="save">Save my Ω</button><p data-word="savebefore">You can save it before or after your first experiment.</p><p id="save-status" role="status" aria-live="polite"></p></div></section>
+<section class="questions" aria-labelledby="questions-title"><h2 id="questions-title" data-word="questions">A few reassuring answers.</h2>
+<details><summary data-word="own">What do I own?</summary><p data-word="owntext">You keep your named lab and your experiment files on your device. The included software is open source under Apache 2.0: you may use, copy and modify it under that license. This is not a token, an NFT, company ownership or exclusive intellectual property.</p></details>
+<details><summary data-word="private">Where does my information go?</summary><p data-word="privatetext">The lab does not send your name or experiments anywhere. It does not use accounts, analytics or automatic browser storage. Save your copy before closing or reloading. Downloaded files are not encrypted; share only what you intend to share.</p></details>
+<details><summary data-word="phone">Can I use my phone or tablet?</summary><p data-word="phonetext">Yes, you can experiment here. Some phones preview downloaded HTML without running it. To use your saved interactive copy, open it in a desktop browser. Keep the original download if your device only shows a preview.</p></details>
+<details><summary data-word="next">What can I explore next?</summary><p data-word="nexttext">The full SUCCESSOR Ω workspace offers step-by-step evidence review, generation-two comparisons and a path to an installed runtime.</p><a class="online-link" href="https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/" data-word="advanced">Explore the full workspace (online)</a></details></section>
+</div></main>
+<footer class="wrap"><p>SUCCESSOR Ω · <span data-word="footer">Curiosity in your hands.</span></p><a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/" data-word="home">Explore AGI ALPHA (online)</a><a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/DISCLAIMER_SNIPPET/">docs/DISCLAIMER_SNIPPET.md</a><details><summary data-word="license">Software license · Apache 2.0</summary><pre>                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre></details></footer>
+<script type="application/json" id="omega-state">{}</script><script>
+(() => {
+'use strict';
+// SPDX-License-Identifier: Apache-2.0
+/** Fixed, bounded aggregation engines. No generated JavaScript is executed. */
+const VERSION = 'successor-browser-v1';
+const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join('|') === [...keys].sort().join('|');
+const integer = (value, low, high) => Number.isSafeInteger(value) && value >= low && value <= high;
+function scalar(value) {
+    if (typeof value !== 'string') return false;
+    for (let i = 0; i < value.length; i++) {
+        const c = value.charCodeAt(i);
+        if (c >= 0xd800 && c <= 0xdbff) {
+            const next = value.charCodeAt(++i);
+            if (!(next >= 0xdc00 && next <= 0xdfff)) return false;
+        } else if (c >= 0xdc00 && c <= 0xdfff) return false;
+    }
+    return true;
+}
+function canonical(value) {
+    let nodes = 0;
+    function encode(item, depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
+        if (item === null || typeof item === 'boolean') return JSON.stringify(item);
+        if (typeof item === 'string' && scalar(item)) return JSON.stringify(item);
+        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return String(item);
+        if (Array.isArray(item)) {
+            for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
+            return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
+        }
+        if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
+            return '{' + Object.keys(item).sort().map(key => {
+                if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
+                return JSON.stringify(key) + ':' + encode(item[key], depth + 1);
+            }).join(',') + '}';
+        }
+        throw Error('Unsupported JSON value; integers and Unicode scalars required');
+    }
+    const result = encode(value);
+    if (new TextEncoder().encode(result).length > 2000000) throw Error('Canonical JSON exceeds 2 MB');
+    return result;
+}
+async function digest(domain, value) {
+    if (!/^[a-z][a-z0-9-]{0,63}$/.test(domain)) throw Error('Invalid digest domain');
+    const bytes = new TextEncoder().encode('successor-omega/v1:' + domain + '\0' + canonical(value));
+    return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), n => n.toString(16).padStart(2, '0')).join('');
+}
+/** Parse untrusted imports before they can allocate large or deeply nested objects. */
+function parseBounded(text) {
+    if (typeof text !== 'string' || new TextEncoder().encode(text).length > 2_000_000) throw Error('Import exceeds 2 MB');
+    let pos = 0, nodes = 0;
+    const ws = () => { while (/[\x20\t\n\r]/.test(text[pos] || '\u0000')) pos++; };
+    const string = () => {
+        const start = pos++;
+        while (pos < text.length) {
+            if (text[pos] === '\\') { pos += 2; continue; }
+            if (text[pos++] === '"') {
+                const value = JSON.parse(text.slice(start, pos));
+                if (!scalar(value)) throw Error('Malformed Unicode');
+                return value;
+            }
+        }
+        throw Error('Unterminated string');
+    };
+    function read(depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('Import complexity exceeds limit');
+        ws();
+        if (text[pos] === '"') return string();
+        if (text[pos] === '[' || text[pos] === '{') {
+            const object = text[pos++] === '{', end = object ? '}' : ']';
+            const value = object ? Object.create(null) : [];
+            ws(); if (text[pos] === end) { pos++; return value; }
+            while (true) {
+                ws();
+                if (object) {
+                    if (text[pos] !== '"') throw Error('Expected object key');
+                    const key = string(); ws();
+                    if (Object.hasOwn(value, key)) throw Error('Duplicate JSON key');
+                    if (text[pos++] !== ':') throw Error('Expected colon');
+                    value[key] = read(depth + 1);
+                } else value.push(read(depth + 1));
+                ws(); const next = text[pos++];
+                if (next === end) break;
+                if (next !== ',') throw Error('Expected comma');
+            }
+            return value;
+        }
+        for (const [token, value] of [['true', true], ['false', false], ['null', null]]) {
+            if (text.startsWith(token, pos)) { pos += token.length; return value; }
+        }
+        const match = /^-?(?:0|[1-9]\d*)(?![\d.eE+-])/.exec(text.slice(pos));
+        if (!match) throw Error('Expected integer JSON value');
+        pos += match[0].length; const value = Number(match[0]);
+        if (!Number.isSafeInteger(value) || Object.is(value, -0)) throw Error('Unsafe integer');
+        return value;
+    }
+    const value = read(); ws();
+    if (pos !== text.length) throw Error('Trailing JSON content');
+    canonical(value);
+    return value;
+}
+function validateRequest(request) {
+    const keys = ['schema_version', 'kind', 'request_id', 'mission', 'seed', 'max_candidates', 'formation_trials', 'max_events', 'language'];
+    if (!request || typeof request !== 'object' || Array.isArray(request) || !Object.hasOwn(request, 'request_id') || Object.keys(request).some(key => !keys.includes(key))) throw Error('Invalid versioned rehearsal request');
+    request = {schema_version: 1, kind: 'successor-rehearsal', mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...request};
+    if (!exact(request, keys) || request.schema_version !== 1 || request.kind !== 'successor-rehearsal' || request.mission !== 'streaming-metrics-v1' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(request.request_id) || !integer(request.seed, 0, 4294967295) || !integer(request.max_candidates, 2, 12) || !integer(request.formation_trials, 1, 6) || !integer(request.max_events, 64, 20000) || !['en', 'fr'].includes(request.language)) throw Error('Invalid versioned rehearsal request');
+    return structuredClone(request);
+}
+function newRequest(options = {}) {
+    return validateRequest({schema_version: 1, kind: 'successor-rehearsal', request_id: crypto.randomUUID(), mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...options});
+}
+function order(a, b) {
+    const aa = Array.from(a, c => c.codePointAt(0)), bb = Array.from(b, c => c.codePointAt(0));
+    for (let i = 0; i < Math.min(aa.length, bb.length); i++) if (aa[i] !== bb[i]) return aa[i] - bb[i];
+    return aa.length - bb.length;
+}
+const rowOrder = (a, b) => order(a.day, b.day) || order(a.service, b.service);
+function validateEvents(events) {
+    if (!Array.isArray(events) || events.length > 20000) throw Error('Event count exceeds mission bound');
+    for (const e of events) {
+        if (!exact(e, ['day', 'service', 'duration_us', 'ok']) || !scalar(e.day) || !scalar(e.service) || !integer(Array.from(e.day).length, 1, 64) || !integer(Array.from(e.service).length, 1, 64) || !integer(e.duration_us, 0, 1000000000) || typeof e.ok !== 'boolean') throw Error('Malformed aggregation event');
+    }
+}
+const makeRow = e => ({day: e.day, service: e.service, count: 0, total_duration_us: 0, max_duration_us: 0, error_count: 0});
+function update(row, e, kind = 'builtin') {
+    row.count++; row.total_duration_us += e.duration_us; row.error_count += Number(!e.ok);
+    if (kind === 'builtin') row.max_duration_us = Math.max(row.max_duration_us, e.duration_us);
+    else if (e.duration_us > row.max_duration_us) row.max_duration_us = e.duration_us;
+}
+function current(events) {
+    validateEvents(events); const groups = new Map();
+    for (const e of events) {
+        const key = JSON.stringify([e.day, e.service]);
+        if (!groups.has(key)) groups.set(key, makeRow(e));
+        update(groups.get(key), e);
+    }
+    return [...groups.values()].sort(rowOrder);
+}
+function beta(events) {
+    validateEvents(events); const sorted = [...events].sort(rowOrder), rows = [];
+    for (const e of sorted) {
+        let row = rows[rows.length - 1];
+        if (!row || row.day !== e.day || row.service !== e.service) { row = makeRow(e); rows.push(row); }
+        row.count += 1; row.total_duration_us += e.duration_us;
+        row.error_count += e.ok ? 0 : 1;
+        row.max_duration_us = row.max_duration_us >= e.duration_us ? row.max_duration_us : e.duration_us;
+    }
+    return rows;
+}
+function validateCandidate(c) {
+    if (!exact(c, ['version', 'layout', 'cache_last', 'update']) || c.version !== 1 || !['nested', 'tuple'].includes(c.layout) || typeof c.cache_last !== 'boolean' || !['branch', 'builtin'].includes(c.update)) throw Error('Candidate is outside the fixed grammar');
+    return c;
+}
+function candidate(events, config) {
+    validateEvents(events); validateCandidate(config);
+    const groups = new Map(), rows = []; let last = null;
+    for (const e of events) {
+        let row;
+        if (config.cache_last && last && e.day === last.day && e.service === last.service) row = last;
+        else if (config.layout === 'nested') {
+            if (!groups.has(e.day)) groups.set(e.day, new Map());
+            const services = groups.get(e.day);
+            row = services.get(e.service);
+            if (!row) { row = makeRow(e); services.set(e.service, row); rows.push(row); }
+        } else {
+            const key = JSON.stringify([e.day, e.service]); row = groups.get(key);
+            if (!row) { row = makeRow(e); groups.set(key, row); rows.push(row); }
+        }
+        update(row, e, config.update); last = row;
+    }
+    return rows.sort(rowOrder);
+}
+function generateCandidates(seed, count) {
+    if (!integer(count, 2, 12)) throw Error('Candidate count outside bound');
+    const out = [];
+    // Eight complete compositions; repeated configuration is never represented as a new challenger.
+    for (let i = 0; i < Math.min(count, 8); i++) {
+        const bits = (i + (seed % 8)) % 8;
+        out.push({version: 1, layout: bits & 1 ? 'nested' : 'tuple', cache_last: Boolean(bits & 2), update: bits & 4 ? 'branch' : 'builtin'});
+    }
+    return out;
+}
+function workload(seed, count, mode = 'mixed') {
+    let state = seed >>> 0;
+    const next = () => (state = (Math.imul(state, 1664525) + 1013904223) >>> 0);
+    const names = ['api', 'résumé', '東京', '🙂', '__proto__', '\ue000', '𝄞'];
+    return Array.from({length: count}, (_, i) => ({day: 'day-' + (next() % (mode === 'high' ? 97 : 3)), service: mode === 'high' ? names[next() % names.length] + i : names[next() % names.length], duration_us: next() % 1000000001, ok: next() % 5 !== 0}));
+}
+const pause = () => new Promise(resolve => setTimeout(resolve, 0));
+function measured(fn, events) {
+    const start = performance.now(); const result = fn(events);
+    return {elapsed_ns: Math.max(1, Math.round((performance.now() - start) * 1000000)), rows: result.length, result};
+}
+function correct(fn) {
+    const valid = [[], [{day: '🙂', service: '__proto__', duration_us: 1000000000, ok: false}], workload(12, 64, 'high'), workload(98, 120)];
+    if (!valid.every(events => canonical(fn(events)) === canonical(beta(events)))) return false;
+    const bad = [[{day: '', service: 'x', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: true, ok: true}], [{day: 'd', service: 'x', duration_us: 1, ok: 'true'}], [{day: 'd', service: '\ud800', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: -1, ok: true}]];
+    return bad.every(events => { try { fn(events); return false; } catch { return true; } });
+}
+function abort(signal) { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); }
+async function discover(request, {signal, onProgress = () => {}, preferred = null} = {}) {
+    request = validateRequest(request); const configurations = generateCandidates(request.seed, request.max_candidates);
+    configurations.sort((a, b) => Number(b.layout === 'nested') - Number(a.layout === 'nested'));
+    if (preferred) { validateCandidate(preferred); configurations.sort((a, b) => Number(canonical(b) === canonical(preferred)) - Number(canonical(a) === canonical(preferred))); }
+    const events = workload(request.seed, request.max_events), attempts = [];
+    const world = {version: 1, prediction: 'nested map reduces tuple-key serialization', uncertainty: 'allocation and sorting may dominate', experiment: 'prioritize nested-map compositions, then test tuple-map alternatives within the same budget', selection_rule: 'minimum measured development elapsed_ns among correct candidates; not final proof'};
+    for (const config of configurations) {
+        abort(signal); await pause(); abort(signal);
+        const fn = values => candidate(values, config), pass = correct(fn), measurement = measured(fn, events);
+        const attempt = {config, construction: {operator: 'bounded-grammar-composition', seed: request.seed, parent: VERSION}, artifact_hash: await digest('candidate', config), correctness: pass, elapsed_ns: measurement.elapsed_ns, rows: measurement.rows};
+        attempts.push(attempt); onProgress(attempts.length, configurations.length);
+    }
+    const nested = attempts.filter(a => a.config.layout === 'nested'), tuples = attempts.filter(a => a.config.layout === 'tuple');
+    world.observation = {nested_mean_ns: Math.round(nested.reduce((sum, a) => sum + a.elapsed_ns, 0) / (nested.length || 1)), tuple_mean_ns: Math.round(tuples.reduce((sum, a) => sum + a.elapsed_ns, 0) / (tuples.length || 1)), interpretation: 'development observation only; confounded by composition and browser timing'};
+    world.falsified_in_this_run = world.observation.nested_mean_ns >= world.observation.tuple_mean_ns;
+    const feasible = attempts.filter(a => a.correctness).sort((a, b) => a.elapsed_ns - b.elapsed_ns);
+    if (!feasible.length) throw Error('No correct candidate; retain Current');
+    return {world, attempts, selected: feasible[0], generation_budget: request.max_candidates, actual_candidates: configurations.length, source: VERSION};
+}
+async function freeze(request, discovery, sourceHash) {
+    if (!/^[0-9a-f]{64}$/.test(sourceHash)) throw Error('Exact engine source digest required');
+    const manifest = {schema_version: 1, request_hash: await digest('request', validateRequest(request)), grammar: discovery.selected.config, candidate_hash: discovery.selected.artifact_hash, engine: VERSION, engine_source_hash: sourceHash, comparators: ['current-one-pass-map-v1', 'beta-sorted-reduction-v1'], protocol: 'browser-local-aggregation-v1', correctness_required: true, minimum_speedup_ppm: 50000, costs: {money: null, review: null, memory: null}, authority: []};
+    return {manifest, release_hash: await digest('release', manifest)};
+}
+async function evaluate(request, frozen, {signal} = {}) {
+    request = validateRequest(request);
+    if (frozen.manifest.request_hash !== await digest('request', request) || frozen.release_hash !== await digest('release', frozen.manifest)) throw Error('Frozen release or request changed');
+    if (frozen.manifest.candidate_hash !== await digest('candidate', frozen.manifest.grammar) || frozen.manifest.protocol !== 'browser-local-aggregation-v1' || frozen.manifest.minimum_speedup_ppm !== 50000 || frozen.manifest.correctness_required !== true || canonical(frozen.manifest.comparators) !== canonical(['current-one-pass-map-v1', 'beta-sorted-reduction-v1'])) throw Error('Candidate or protocol binding mismatch');
+    const config = validateCandidate(frozen.manifest.grammar), fn = e => candidate(e, config), cases = [];
+    const correctness = correct(fn);
+    for (let i = 0; i < 6; i++) {
+        abort(signal); await pause(); abort(signal);
+        const events = workload((request.seed + 100003 + i * 907) >>> 0, i < 2 ? 64 : request.max_events, i % 2 ? 'high' : 'mixed');
+        const samples = [measured(current, events), measured(beta, events), measured(fn, events)];
+        const exact_output = canonical(samples[0].result) === canonical(samples[1].result) && canonical(samples[1].result) === canonical(samples[2].result);
+        cases.push({case_index: i, events: events.length, current_ns: samples[0].elapsed_ns, beta_ns: samples[1].elapsed_ns, candidate_ns: samples[2].elapsed_ns, exact_output});
+    }
+    const totals = {current: 0, beta: 0, candidate: 0};
+    for (const c of cases) { totals.current += c.current_ns; totals.beta += c.beta_ns; totals.candidate += c.candidate_ns; }
+    const best_comparator = totals.current <= totals.beta ? 'current' : 'beta';
+    const hard_gate = correctness && cases.every(c => c.exact_output);
+    return {schema_version: 1, scope: 'browser-rehearsal', release_hash: frozen.release_hash, cases, correctness: hard_gate, totals_ns: totals, best_comparator, local_verdict: !hard_gate ? 'FAIL' : totals.candidate >= totals[best_comparator] ? (best_comparator === 'beta' ? 'RETAIN_ALTERNATIVE' : 'RETAIN_INCUMBENT') : totals.candidate / totals[best_comparator] > 0.95 ? 'INSUFFICIENT_MARGIN' : 'LOCAL_SPEEDUP_OBSERVED', institutional_verdict: 'HOLD', missing: ['independent-verifier', 'frontier-comparator', 'measured-peak-memory', 'accepted-realized-economics', 'principal-issued-authority'], authority: [], timing_limitations: 'Single browser process; timer resolution, order, JIT and device load confound timings. Descriptive measurements only.'};
+}
+async function renew(request, discovery, {signal, onProgress = () => {}, engineSourceHash = null} = {}) {
+    request = validateRequest(request);
+    const trials = [];
+    for (let i = 0; i < request.formation_trials; i++) {
+        abort(signal);
+        const next = {...request, seed: (request.seed + 200003 + i * 997) >>> 0};
+        const control = await discover(next, {signal}), treatment = await discover(next, {signal, preferred: discovery.selected.config});
+        const controlFreeze = await freeze(next, control, engineSourceHash), treatmentFreeze = await freeze(next, treatment, engineSourceHash);
+        const controlEvaluation = await evaluate(next, controlFreeze, {signal}), treatmentEvaluation = await evaluate(next, treatmentFreeze, {signal});
+        trials.push({trial: i, seed: next.seed, control_attempts: control.attempts.length, treatment_attempts: treatment.attempts.length, control, treatment, control_release: controlFreeze, treatment_release: treatmentFreeze, control_evaluation: controlEvaluation, treatment_evaluation: treatmentEvaluation});
+        onProgress(i + 1, request.formation_trials);
+    }
+    return {generation: 2, active_proof: [], authority: [], memory: {permitted: ['configuration-order-hint'], excluded: ['final-cases', 'proof', 'grants']}, primary_metric: 'construction_attempts', interpretation: 'Descriptive matched trials; equal construction counts do not establish compounding.', trials};
+}
+// Canonical encoding and low-order rejection supplement WebCrypto verification.
+// Mathematical torsion encodings: @noble/curves 1.2.0 src/ed25519.ts ED25519_TORSION_SUBGROUP.
+const lowOrderY = new Set([
+    '0000000000000000000000000000000000000000000000000000000000000000',
+    '0100000000000000000000000000000000000000000000000000000000000000',
+    'ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f',
+    '26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05',
+    'c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a',
+]);
+const littleEndian = bytes => BigInt('0x' + [...bytes].reverse().map(v => v.toString(16).padStart(2, '0')).join(''));
+function validatePointEncoding(bytes) {
+    const y = bytes.slice(); y[31] &= 0x7f;
+    const hex = [...y].map(v => v.toString(16).padStart(2, '0')).join('');
+    if (littleEndian(y) >= (1n << 255n) - 19n || lowOrderY.has(hex)) throw Error('Non-canonical or low-order Ed25519 point');
+}
+function validateSignatureEncoding(key, signature) {
+    validatePointEncoding(key); validatePointEncoding(signature.slice(0, 32));
+    if (littleEndian(signature.slice(32)) >= (1n << 252n) + 27742317777372353535851937790883648493n) throw Error('Non-canonical Ed25519 scalar');
+}
+async function verifyNative(request, envelope) {
+    request = validateRequest(request);
+    if (!exact(envelope, ['schema_version', 'kind', 'request_hash', 'evidence', 'evidence_hash', 'scope', 'signature']) || envelope.schema_version !== 1 || envelope.kind !== 'successor-result' || envelope.scope !== 'local-native-rehearsal') throw Error('Unsupported native evidence envelope');
+    if (envelope.request_hash !== await digest('request', request)) throw Error('Native result belongs to a different request');
+    if (!envelope.evidence || envelope.evidence.scope !== envelope.scope || envelope.evidence.request_hash !== envelope.request_hash || !exact(envelope.evidence.request, Object.keys(request)) || canonical(envelope.evidence.request) !== canonical(request)) throw Error('Authenticated evidence request or scope mismatch');
+    if (envelope.evidence_hash !== await digest('evidence', envelope.evidence)) throw Error('Native evidence digest mismatch');
+    if (envelope.signature !== null) {
+        const signature = envelope.signature;
+        if (!exact(signature, ['public_key', 'signature']) || !/^[0-9a-f]{64}$/.test(signature.public_key) || !/^[A-Za-z0-9+/]{86}==$/.test(signature.signature)) throw Error('Malformed native signature');
+        const publicBytes = Uint8Array.from(signature.public_key.match(/../g), x => parseInt(x, 16));
+        const bytes = Uint8Array.from(atob(signature.signature), c => c.charCodeAt(0));
+        validateSignatureEncoding(publicBytes, bytes);
+        const key = await crypto.subtle.importKey('raw', publicBytes, {name: 'Ed25519'}, false, ['verify']);
+        const data = Uint8Array.from(envelope.evidence_hash.match(/../g), x => parseInt(x, 16));
+        if (!await crypto.subtle.verify('Ed25519', key, bytes, data)) throw Error('Invalid native signature');
+    }
+    return {scope: envelope.scope, integrity: 'request-and-evidence-digests-match', authenticity: 'unverified', authority: [], evidence: envelope.evidence};
+}
+
+// SPDX-License-Identifier: Apache-2.0
+// Bundled with the unchanged SUCCESSOR engine by generate_successor_pocket.py.
+const pocketSource = '<!doctype html>\n' + document.documentElement.outerHTML;
+const el = id => document.getElementById(id);
+const en = Object.fromEntries([...document.querySelectorAll('[data-word]')].map(node => [node.dataset.word, node.textContent]));
+en.title = 'A little universe. A lab of your own.';
+const fr = {
+    skip: 'Aller au laboratoire', larger: 'Texte plus grand', edition: 'LABORATOIRE PERSONNEL',
+    title: 'Un petit univers. Votre propre laboratoire.',
+    lead: 'Donnez-lui un nom. Lancez une expérience. Gardez le tout. Votre prochaine découverte commence par un peu de curiosité.',
+    free: 'Gratuit à explorer. Sans compte, portefeuille ni installation.',
+    loading: 'Ouverture du laboratoire… Si ce message reste affiché, essayez un navigateur récent avec JavaScript activé.',
+    step1: 'Personnalisez-le', step2: 'Voyez-le fonctionner', step3: 'Emportez-le',
+    yourspace: 'VOTRE ESPACE DE DÉCOUVERTE', setup: 'À votre image.', name: 'Donnez un nom à votre laboratoire',
+    namehelp: 'Un surnom suffit. Vous pouvez le changer à tout moment.', challenge: 'Choisissez un défi',
+    small: 'Une première découverte · 256 événements', medium: 'Un plus grand défi · 1 000 événements', big: 'Aller plus loin · 4 000 événements',
+    challengehelp: 'Un événement est un enregistrement fictif de service. Votre laboratoire regroupe les données et vérifie les totaux.',
+    run: 'Donner vie à mon Ω', cancel: 'Arrêter cette expérience', ready: 'À votre rythme. L’exemple est déjà prêt.',
+    what: 'Que fait mon Ω exactement?',
+    whattext: 'Il essaie quatre petits programmes, en choisit un, puis le vérifie sur six nouveaux jeux de données. Vous voyez si les réponses correspondent et combien de temps il a fallu. Ce sont de vrais calculs sur votre appareil.',
+    limit: 'C’est une expérience informatique ciblée, pas un assistant IA généraliste. Elle n’effectue pas de missions, ne gagne pas d’argent et n’agit pas à votre place.',
+    yourlab: 'VOTRE SUCCESSOR Ω', emptytitle: 'Votre première découverte est à un clic.',
+    emptytext: 'Voyez différentes approches résoudre le même défi. Changez sa taille, recommencez et créez une petite collection d’expériences.',
+    local: 'MESURÉ ICI · EXPÉRIENCE LOCALE', checks: 'Vérifications concordantes', programs: 'Programmes comparés', experiments: 'Expériences conservées',
+    timing: 'Durée des six vérifications', approach: 'Approche', time: 'Millisecondes',
+    timinghelp: 'Un temps plus court signifie plus rapide dans cet essai. Les temps varient selon votre appareil et les applications ouvertes. Un résultat plus rapide est une observation, pas une preuve indépendante d’amélioration.',
+    again: 'Essayer un nouveau défi', history: 'Ma collection d’expériences',
+    historyhelp: 'Les huit expériences les plus récentes. Les résultats sauvegardés sont des notes historiques; lancez une nouvelle expérience pour vérifier à nouveau.',
+    evidence: 'Examiner la dernière expérience', export: 'Enregistrer les données de l’expérience',
+    keepbadge: 'QUELQUE CHOSE À GARDER', keep: 'Votre Ω. Sur votre appareil.',
+    keeptext: 'Gardez un petit fichier contenant votre nom, vos expériences et le laboratoire fonctionnel. Ouvrez-le dans votre navigateur pour recommencer, même sans internet.',
+    savehelp: 'Choisissez « Enregistrer mon Ω », puis consultez Téléchargements. Ouvrez le fichier HTML dans Chrome, Edge, Firefox ou Safari. Enregistrez une nouvelle copie après vos prochaines expériences; le fichier ouvert ne se met pas à jour tout seul.',
+    save: 'Enregistrer mon Ω', savebefore: 'Vous pouvez l’enregistrer avant ou après votre première expérience.',
+    questions: 'Quelques réponses rassurantes.', own: 'Qu’est-ce qui m’appartient?',
+    owntext: 'Vous gardez votre laboratoire nommé et vos fichiers d’expériences sur votre appareil. Le logiciel inclus est libre sous licence Apache 2.0 : vous pouvez l’utiliser, le copier et le modifier selon cette licence. Ce n’est ni un jeton, ni un NFT, ni une part d’entreprise, ni une propriété intellectuelle exclusive.',
+    private: 'Où vont mes informations?',
+    privatetext: 'Le laboratoire n’envoie votre nom ni vos expériences nulle part. Il n’utilise ni compte, ni suivi analytique, ni stockage automatique du navigateur. Enregistrez votre copie avant de fermer ou de recharger. Les fichiers téléchargés ne sont pas chiffrés; partagez-les à votre discrétion.',
+    phone: 'Puis-je utiliser mon téléphone ou ma tablette?',
+    phonetext: 'Oui, vous pouvez expérimenter ici. Certains téléphones affichent un aperçu des fichiers HTML sans les exécuter. Ouvrez votre copie interactive dans un navigateur sur ordinateur. Gardez le fichier original si votre appareil ne montre qu’un aperçu.',
+    next: 'Que puis-je explorer ensuite?',
+    nexttext: 'L’espace SUCCESSOR Ω complet propose une revue des preuves étape par étape, des comparaisons de deuxième génération et un parcours vers un logiciel installé.',
+    advanced: 'Explorer l’espace complet (en ligne)', footer: 'La curiosité entre vos mains.', home: 'Explorer AGI ALPHA (en ligne)', license: 'Licence du logiciel · Apache 2.0',
+};
+const words = {
+    en: {working:'Trying four approaches…', checking:'Checking six fresh workloads…', done:'Your experiment is ready. Save your Ω to keep it.', stopped:'Stopped. Your earlier experiments are still here.', failed:'The experiment could not finish. Your earlier results are safe. Try again in a current browser.', invalid:'Please give your lab a name of 1–48 characters and choose one of the three challenges.', saved:'Your download is ready. Look for the HTML file in Downloads. Save again after making changes.', savefailed:'The download could not be created. Keep this page open and try again.', restored:'Your saved collection is open. These are historical, unverified notes. Try a new challenge to make fresh measurements.', damaged:'The saved data could not be read. The lab is ready for a fresh experiment; the original file is unchanged.', verified:'The answers matched.', rejected:'An answer did not match.', detail:'Your chosen program passed the exact-output checks. Compare its time below, then try another challenge.', faildetail:'Keep the original approach. Inspect the experiment before relying on this result.', original:'Original approach', alternative:'Sorting approach', yours:'Your chosen program', sample:'sample events', historical:'SAVED NOTES · RERUN TO CHECK', unsupported:'This browser is missing the local cryptography needed by the experiment. Open this page or saved file in a current desktop browser.'},
+    fr: {working:'Essai de quatre approches…', checking:'Vérification de six nouvelles charges…', done:'Votre expérience est prête. Enregistrez votre Ω pour la garder.', stopped:'Arrêté. Vos expériences précédentes sont toujours là.', failed:'L’expérience n’a pas pu se terminer. Vos résultats précédents sont conservés. Réessayez dans un navigateur récent.', invalid:'Donnez un nom de 1 à 48 caractères au laboratoire et choisissez l’un des trois défis.', saved:'Votre téléchargement est prêt. Cherchez le fichier HTML dans Téléchargements. Enregistrez à nouveau après vos modifications.', savefailed:'Le téléchargement n’a pas pu être créé. Gardez cette page ouverte et réessayez.', restored:'Votre collection est ouverte. Ce sont des notes historiques non vérifiées. Essayez un nouveau défi pour effectuer de nouvelles mesures.', damaged:'Les données sauvegardées sont illisibles. Le laboratoire est prêt pour un nouvel essai; le fichier original reste intact.', verified:'Les réponses correspondent.', rejected:'Une réponse ne correspond pas.', detail:'Votre programme a passé les vérifications de résultats exacts. Comparez sa durée ci-dessous, puis essayez un autre défi.', faildetail:'Conservez l’approche d’origine. Examinez l’expérience avant de vous fier au résultat.', original:'Approche d’origine', alternative:'Approche par tri', yours:'Votre programme choisi', sample:'événements fictifs', historical:'NOTES SAUVEGARDÉES · À REVÉRIFIER', unsupported:'Ce navigateur ne propose pas la cryptographie locale nécessaire. Ouvrez cette page ou le fichier enregistré dans un navigateur récent sur ordinateur.'},
+};
+let state = {schema:'successor-pocket-v1', name:'My Ω', language:'en', large:false, events:256, seed:42, history:[], evidence:null};
+let statusKey = 'ready', downloadStatusKey = null, restored = false, controller = null, hasUnsavedChanges = false;
+function validatePocket(value) {
+    if (!exact(value, Object.keys(state)) || value.schema !== state.schema || !scalar(value.name) || !value.name.trim() || value.name.length > 48 || !['en','fr'].includes(value.language) || typeof value.large !== 'boolean' || ![256,1000,4000].includes(value.events) || !integer(value.seed,0,4294967295) || !Array.isArray(value.history) || value.history.length > 8) throw Error('Invalid saved lab');
+    for (const item of value.history) {
+        if (!exact(item,['seed','events','matched','correctness','totals','candidates']) || !integer(item.seed,0,4294967295) || ![256,1000,4000].includes(item.events) || !integer(item.matched,0,6) || typeof item.correctness !== 'boolean' || item.candidates !== 4 || !exact(item.totals,['current','beta','candidate']) || Object.values(item.totals).some(n => !integer(n,1,Number.MAX_SAFE_INTEGER))) throw Error('Invalid experiment note');
+    }
+    // Evidence is an inert historical document. It never supplies executable code or authority.
+    if (value.evidence !== null && (!value.evidence || typeof value.evidence !== 'object' || Array.isArray(value.evidence))) throw Error('Invalid historical evidence');
+    canonical(value);
+    return value;
+}
+try {
+    const saved = parseBounded(el('omega-state').textContent);
+    if (Object.keys(saved).length) { state = validatePocket(saved); restored = state.history.length > 0; statusKey = restored ? 'restored' : 'ready'; }
+} catch { statusKey = 'damaged'; }
+const preferenceQuery = new URLSearchParams(location.search);
+if (preferenceQuery.has('lang')) state.language = preferenceQuery.get('lang') === 'fr' ? 'fr' : 'en';
+if (preferenceQuery.has('text')) state.large = preferenceQuery.get('text') === 'large';
+const w = key => words[state.language][key] || (state.language === 'fr' ? fr : en)[key];
+function say(key) { statusKey = key; el('status').textContent = w(key); }
+function render() {
+    document.documentElement.lang = state.language;
+    document.documentElement.classList.toggle('large', state.large);
+    for (const node of document.querySelectorAll('[data-word]')) node.textContent = (state.language === 'fr' ? fr : en)[node.dataset.word];
+    document.title = state.name + ' · SUCCESSOR Ω';
+    el('language').textContent = state.language === 'en' ? 'Français' : 'English';
+    el('language').lang = state.language === 'en' ? 'fr' : 'en';
+    el('large').setAttribute('aria-pressed', String(state.large));
+    document.querySelector('.preferences').setAttribute('aria-label', state.language === 'fr' ? 'Préférences de lecture' : 'Reading preferences');
+    document.querySelector('.steps').setAttribute('aria-label', state.language === 'fr' ? 'Trois étapes simples' : 'Three simple steps');
+    el('progress').setAttribute('aria-label', state.language === 'fr' ? 'Progression de l’expérience' : 'Experiment progress');
+    el('result-title').textContent = el('lab-name').value.trim() || state.name;
+    if (downloadStatusKey) el('save-status').textContent = w(downloadStatusKey);
+    el('empty').hidden = state.history.length > 0;
+    el('outcome').hidden = !state.history.length;
+    say(statusKey);
+    const latest = state.history.at(-1);
+    if (!latest) return;
+    el('verdict').textContent = w(latest.correctness ? 'verified' : 'rejected');
+    el('explanation').textContent = w(restored ? 'restored' : latest.correctness ? 'detail' : 'faildetail');
+    if (restored) document.querySelector('.badge').textContent = w('historical');
+    el('checks').textContent = latest.matched + ' / 6';
+    el('programs').textContent = latest.candidates;
+    el('count').textContent = state.history.length;
+    el('timings').replaceChildren();
+    for (const [key,label] of [['current','original'],['beta','alternative'],['candidate','yours']]) {
+        const row = document.createElement('tr'), heading = document.createElement('th'), cell = document.createElement('td');
+        heading.scope = 'row'; heading.textContent = w(label);
+        cell.textContent = (latest.totals[key] / 1000000).toLocaleString(state.language, {minimumFractionDigits:3,maximumFractionDigits:3});
+        row.append(heading, cell); el('timings').append(row);
+    }
+    el('history').replaceChildren();
+    for (const record of state.history) {
+        const li = document.createElement('li');
+        li.textContent = `${record.events.toLocaleString(state.language)} ${w('sample')} · ${record.matched}/6 · ${w(record.correctness ? 'verified' : 'rejected')}`;
+        el('history').append(li);
+    }
+    el('evidence').textContent = JSON.stringify(state.evidence, null, 2);
+    el('export-evidence').disabled = state.evidence === null;
+}
+function readInputs() {
+    const name = el('lab-name').value.trim(), events = Number(el('challenge').value);
+    const valid = name.length >= 1 && name.length <= 48 && scalar(name) && [256,1000,4000].includes(events);
+    el('lab-name').setAttribute('aria-invalid', String(!name || name.length > 48 || !scalar(name)));
+    if (!valid) { say('invalid'); el('status').focus(); return false; }
+    state.name = name; state.events = events;
+    return true;
+}
+function busy(value) {
+    for (const id of ['run','again','save','lab-name','challenge']) el(id).disabled = value;
+    el('cancel').hidden = !value; el('progress').hidden = !value;
+    el('lab-form').setAttribute('aria-busy', String(value));
+}
+async function runExperiment() {
+    if (controller || !readInputs()) return;
+    if (!crypto?.subtle || !crypto.randomUUID) { say('unsupported'); return; }
+    controller = new AbortController(); busy(true); el('progress').value = 0; say('working');
+    try {
+        const request = newRequest({seed:state.seed, max_events:state.events, max_candidates:4, formation_trials:1, language:state.language});
+        const discovery = await discover(request, {signal:controller.signal, onProgress:(n,total) => { el('progress').value = n/total; }});
+        const frozen = await freeze(request, discovery, '38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488');
+        el('progress').value = 1; say('checking');
+        const evaluation = await evaluate(request, frozen, {signal:controller.signal});
+        if (controller.signal.aborted) throw new DOMException('Cancelled','AbortError');
+        const note = {seed:request.seed, events:request.max_events, matched:evaluation.cases.filter(c => c.exact_output).length, correctness:evaluation.correctness, totals:evaluation.totals_ns, candidates:discovery.actual_candidates};
+        state.history = [...state.history,note].slice(-8);
+        state.evidence = {scope:'personal-browser-experiment', request, discovery, frozen, evaluation, authority:[]};
+        state.seed = (state.seed + 104729) >>> 0;
+        restored = false; hasUnsavedChanges = true; el('progress').value = 3; say('done'); render(); el('result-title').focus();
+    } catch (error) { say(error.name === 'AbortError' ? 'stopped' : 'failed'); el('status').focus(); }
+    finally { controller = null; busy(false); }
+}
+function download(name, content, type) {
+    const url = URL.createObjectURL(new Blob([content], {type}));
+    const link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+el('lab-name').value = state.name; el('challenge').value = state.events;
+el('lab-form').addEventListener('submit', event => { event.preventDefault(); runExperiment(); });
+el('again').addEventListener('click', runExperiment);
+el('cancel').addEventListener('click', () => controller?.abort());
+el('lab-name').addEventListener('input', () => { hasUnsavedChanges = true; el('result-title').textContent = el('lab-name').value || 'Ω'; });
+el('challenge').addEventListener('change', () => { hasUnsavedChanges = true; });
+el('language').addEventListener('click', () => { state.language = state.language === 'en' ? 'fr' : 'en'; hasUnsavedChanges = true; render(); });
+el('large').addEventListener('click', () => { state.large = !state.large; hasUnsavedChanges = true; render(); });
+el('save').addEventListener('click', () => {
+    if (!readInputs()) return;
+    try {
+        const encoded = canonical(validatePocket(state)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+        const file = pocketSource.replace(/(<script type="application\/json" id="omega-state">)[\s\S]*?(<\/script>)/, (_, start, end) => start + encoded + end);
+        download('My-SUCCESSOR-Omega.html', file, 'text/html;charset=utf-8'); hasUnsavedChanges = false;
+        downloadStatusKey = 'saved'; el('save-status').textContent = w(downloadStatusKey);
+    } catch { downloadStatusKey = 'savefailed'; el('save-status').textContent = w(downloadStatusKey); }
+});
+el('export-evidence').addEventListener('click', () => {
+    if (state.evidence) download('SUCCESSOR-Omega-experiment.json', JSON.stringify(state.evidence,null,2), 'application/json');
+});
+addEventListener('beforeunload', event => { if (hasUnsavedChanges) { event.preventDefault(); event.returnValue = ''; } });
+render(); el('loading').hidden = true; el('app').hidden = false;
+
+})();
+</script>
+</body></html>
