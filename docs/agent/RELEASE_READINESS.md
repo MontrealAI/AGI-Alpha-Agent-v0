@@ -3,11 +3,11 @@
 # Release readiness — 1.27.0 personal SUCCESSOR Ω lab
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
-boundaries. This patch makes the [homepage](../index.html) make-plan buttons open task choices directly,
-increases essential planner text and shows reading controls only when they are ready to use.
-The general Start here link keeps its introduction; English/French and text-size preferences still follow
-you into the Choose → Review → Keep experience. [Make your first plan](../start/index.html#journey)
-or read the [onboarding guide](ONBOARDING.md).
+boundaries. This release features a [personal SUCCESSOR Ω lab](../successor/play/index.html) on the
+[homepage](../index.html): name it, compare real bounded programs, keep its evidence and download a complete
+offline copy. English/French, larger text and the download/reopen/rerun journey have explicit acceptance gates.
+The general Start here link still opens the simple planner; its existing Choose → Review → Keep experience
+and readable exports remain. [Make your first plan](../start/index.html#journey) or read the [onboarding guide](ONBOARDING.md).
 The existing SUCCESSOR mission lifecycle, repository repairs and release-installer preflight remain.
 The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe that lifecycle's boundaries.
 A revision is publishable only after the exact integrated commit passes every existing and added gate.

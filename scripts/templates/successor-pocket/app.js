@@ -3,6 +3,7 @@
 const pocketSource = '<!doctype html>\n' + document.documentElement.outerHTML;
 const el = id => document.getElementById(id);
 const en = Object.fromEntries([...document.querySelectorAll('[data-word]')].map(node => [node.dataset.word, node.textContent]));
+en.title = 'A little universe. A lab of your own.';
 const fr = {
     skip: 'Aller au laboratoire', larger: 'Texte plus grand', edition: 'LABORATOIRE PERSONNEL',
     title: 'Un petit univers. Votre propre laboratoire.',
@@ -45,7 +46,7 @@ const words = {
     fr: {working:'Essai de quatre approches…', checking:'Vérification de six nouvelles charges…', done:'Votre expérience est prête. Enregistrez votre Ω pour la garder.', stopped:'Arrêté. Vos expériences précédentes sont toujours là.', failed:'L’expérience n’a pas pu se terminer. Vos résultats précédents sont conservés. Réessayez dans un navigateur récent.', invalid:'Donnez un nom de 1 à 48 caractères au laboratoire et choisissez l’un des trois défis.', saved:'Votre téléchargement est prêt. Cherchez le fichier HTML dans Téléchargements. Enregistrez à nouveau après vos modifications.', savefailed:'Le téléchargement n’a pas pu être créé. Gardez cette page ouverte et réessayez.', restored:'Votre collection est ouverte. Ce sont des notes historiques non vérifiées. Essayez un nouveau défi pour effectuer de nouvelles mesures.', damaged:'Les données sauvegardées sont illisibles. Le laboratoire est prêt pour un nouvel essai; le fichier original reste intact.', verified:'Les réponses correspondent.', rejected:'Une réponse ne correspond pas.', detail:'Votre programme a passé les vérifications de résultats exacts. Comparez sa durée ci-dessous, puis essayez un autre défi.', faildetail:'Conservez l’approche d’origine. Examinez l’expérience avant de vous fier au résultat.', original:'Approche d’origine', alternative:'Approche par tri', yours:'Votre programme choisi', sample:'événements fictifs', historical:'NOTES SAUVEGARDÉES · À REVÉRIFIER', unsupported:'Ce navigateur ne propose pas la cryptographie locale nécessaire. Ouvrez cette page ou le fichier enregistré dans un navigateur récent sur ordinateur.'},
 };
 let state = {schema:'successor-pocket-v1', name:'My Ω', language:'en', large:false, events:256, seed:42, history:[], evidence:null};
-let statusKey = 'ready', restored = false, controller = null, hasUnsavedChanges = false;
+let statusKey = 'ready', downloadStatusKey = null, restored = false, controller = null, hasUnsavedChanges = false;
 function validatePocket(value) {
     if (!exact(value, Object.keys(state)) || value.schema !== state.schema || !scalar(value.name) || !value.name.trim() || value.name.length > 48 || !['en','fr'].includes(value.language) || typeof value.large !== 'boolean' || ![256,1000,4000].includes(value.events) || !integer(value.seed,0,4294967295) || !Array.isArray(value.history) || value.history.length > 8) throw Error('Invalid saved lab');
     for (const item of value.history) {
@@ -76,7 +77,8 @@ function render() {
     document.querySelector('.preferences').setAttribute('aria-label', state.language === 'fr' ? 'Préférences de lecture' : 'Reading preferences');
     document.querySelector('.steps').setAttribute('aria-label', state.language === 'fr' ? 'Trois étapes simples' : 'Three simple steps');
     el('progress').setAttribute('aria-label', state.language === 'fr' ? 'Progression de l’expérience' : 'Experiment progress');
-    el('result-title').textContent = state.name;
+    el('result-title').textContent = el('lab-name').value.trim() || state.name;
+    if (downloadStatusKey) el('save-status').textContent = w(downloadStatusKey);
     el('empty').hidden = state.history.length > 0;
     el('outcome').hidden = !state.history.length;
     say(statusKey);
@@ -155,8 +157,8 @@ el('save').addEventListener('click', () => {
         const encoded = canonical(validatePocket(state)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
         const file = pocketSource.replace(/(<script type="application\/json" id="omega-state">)[\s\S]*?(<\/script>)/, (_, start, end) => start + encoded + end);
         download('My-SUCCESSOR-Omega.html', file, 'text/html;charset=utf-8'); hasUnsavedChanges = false;
-        el('save-status').textContent = w('saved');
-    } catch { el('save-status').textContent = w('savefailed'); }
+        downloadStatusKey = 'saved'; el('save-status').textContent = w(downloadStatusKey);
+    } catch { downloadStatusKey = 'savefailed'; el('save-status').textContent = w(downloadStatusKey); }
 });
 el('export-evidence').addEventListener('click', () => {
     if (state.evidence) download('SUCCESSOR-Omega-experiment.json', JSON.stringify(state.evidence,null,2), 'application/json');

@@ -5,6 +5,8 @@
 **[Create your personal lab](../successor/play/index.html)**. Name it, choose a challenge, run an
 experiment and save the entire working experience as one HTML file. Reopen that file in a modern
 desktop browser, even offline. The [bilingual guide](SUCCESSOR.md) explains how to keep it.
+For a separately installed agent, follow the [operator start guide](START_HERE.md) and
+[backup, upgrade and recovery instructions](OPERATIONS.md).
 
 ## What changes
 
