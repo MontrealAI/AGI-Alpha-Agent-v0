@@ -33,6 +33,7 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     assert len(pack["compilation"]["graph"]["nodes"]) == 21
     assert pack["admission"] == {"decision": "HOLD", "independentProof": False, "authority": [], "specialistASI": False}
     assert pack["settlement"]["spentBaseUnits"] == "0"
+    page.locator("#larger").click()
     with page.expect_download() as download:
         page.locator("#save").click()
     portable = output.resolve() / "builder-offline.html"
@@ -46,6 +47,8 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     expect(local.locator("#name")).to_have_value(name)
     expect(local.locator("#pack")).to_be_disabled()
     expect(local.locator("#status")).to_contain_text("historical")
+    expect(local.locator("#larger")).to_have_attribute("aria-pressed", "true")
+    expect(local.locator("html")).to_have_class("large")
     local.locator("#name").fill("Mon Atlas Ω")
     local.locator("#language").click()
     local.locator("#run").click()
@@ -56,11 +59,14 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     native_request = output / "builder-request-fr.json"
     download.value.save_as(native_request)
     assert json.loads(native_request.read_text())["language"] == "fr"
+    local.locator("#language").click()
+    expect(local.locator("#request")).to_be_disabled()
+    local.locator("#language").click()
+    local.locator("#run").click()
+    expect(local.locator("#pack")).to_be_enabled()
     audits = []
     for width in (1440, 390, 320):
         local.set_viewport_size({"width": width, "height": 1000})
-        if width == 320:
-            local.locator("#larger").click()
         local.locator("#portfolio details").first.locator("summary").click()
         local.locator("#contracts details").first.locator("summary").click()
         assert inspect(local, "document.documentElement.scrollWidth <= innerWidth + 1")
@@ -78,6 +84,13 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     local.locator("#rollback").click()
     expect(local.locator("#pack")).to_be_disabled()
     expect(local.locator("#evidence")).to_contain_text("BASELINE_RETAINED")
+    unsupported = browser.new_context(offline=True)
+    unsupported.add_init_script("Object.defineProperty(globalThis.crypto,'randomUUID',{value:undefined})")
+    limited = unsupported.new_page()
+    limited.goto(portable.as_uri())
+    expect(limited.locator("#run")).to_be_disabled()
+    expect(limited.locator("#status")).to_contain_text("Web Crypto")
+    unsupported.close()
     assert not errors, errors
     context.close()
     offline.close()

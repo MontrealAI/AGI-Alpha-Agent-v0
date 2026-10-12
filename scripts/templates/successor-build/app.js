@@ -51,9 +51,8 @@ const phases = [
   ['Admit & renew separately', 'Admettre et renouveler séparément', 19, 21],
 ];
 let language = new URLSearchParams(location.search).get('lang') === 'fr' ? 'fr' : 'en';
-const largePreference = new URLSearchParams(location.search).get('text') === 'large';
-document.documentElement.classList.toggle('large',largePreference);
-byId('larger').setAttribute('aria-pressed',String(largePreference));
+let largePreference = new URLSearchParams(location.search).get('text') === 'large';
+const supported = !!globalThis.crypto?.subtle && typeof globalThis.crypto?.randomUUID === 'function';
 let pack = null, notes = null, controller = null, seed = 42;
 let formState = {name:'Atlas Ω',events:1000,budget:'2100'};
 try {
@@ -65,14 +64,18 @@ try {
     if (![256,1000,4000].includes(saved.form.events)) throw Error('Invalid workload.');
     formState = saved.form;
     language = saved.language === 'fr' ? 'fr' : 'en';
+    if(typeof saved.largePreference === 'boolean')largePreference=saved.largePreference;
     notes = saved.notes || null;
   }
 } catch { byId('status').textContent = 'Saved settings could not be restored. Start a new build.'; }
+document.documentElement.classList.toggle('large',largePreference);
+byId('larger').setAttribute('aria-pressed',String(largePreference));
 byId('name').value = formState.name;
 byId('events').value = formState.events;
 byId('budget').value = formState.budget;
 const words = (en, fr) => language === 'fr' ? fr : en;
 function message(en, fr) { byId('status').textContent = words(en, fr); }
+function browserMessage(){message('Required Web Crypto features are unavailable. Open this file in a current desktop browser.','Les fonctions Web Crypto requises sont indisponibles. Ouvrez ce fichier dans un navigateur récent sur ordinateur.');}
 function renderPortfolio() {
   byId('portfolio').replaceChildren();
   for (const [en,fr,start,end] of phases) {
@@ -115,10 +118,10 @@ function download(filename, text, type) {
   byId('save-status').textContent=words('Download prepared. Check your Downloads folder.','Téléchargement préparé. Consultez votre dossier Téléchargements.');
 }
 function settings(){ return {name:byId('name').value.trim(), events:Number(byId('events').value), budget:byId('budget').value}; }
-function invalidate(){ if(pack)notes={status:'HISTORICAL_ONLY',record:pack};pack=null;render();message('Settings changed. Build again to bind fresh results to them.','Paramètres modifiés. Relancez pour obtenir des résultats correspondants.'); }
+function invalidate(){ if(pack)notes={status:'HISTORICAL_ONLY',record:pack};pack=null;render();if(!supported){browserMessage();return;}message('Settings changed. Build again to bind fresh results to them.','Paramètres modifiés. Relancez pour obtenir des résultats correspondants.'); }
 byId('form').addEventListener('input',invalidate);
 byId('form').addEventListener('submit',async event=>{
-  event.preventDefault();if(controller)return;
+  event.preventDefault();if(controller||!supported)return;
   controller=new AbortController();if(pack)notes={status:'HISTORICAL_ONLY',record:pack};pack=null;render();
   for(const id of ['run','name','events','budget','save','language'])byId(id).disabled=true;
   byId('stop').hidden=false;byId('progress').hidden=false;
@@ -133,8 +136,8 @@ byId('form').addEventListener('submit',async event=>{
   finally { controller=null;for(const id of ['run','name','events','budget','save','language'])byId(id).disabled=false;byId('stop').hidden=true;byId('progress').hidden=true; }
 });
 byId('stop').onclick=()=>controller?.abort();
-byId('language').onclick=()=>{language=language==='en'?'fr':'en';render();};
-byId('larger').onclick=()=>{const active=document.documentElement.classList.toggle('large');byId('larger').setAttribute('aria-pressed',String(active));};
+byId('language').onclick=()=>{language=language==='en'?'fr':'en';invalidate();};
+byId('larger').onclick=()=>{largePreference=document.documentElement.classList.toggle('large');byId('larger').setAttribute('aria-pressed',String(largePreference));};
 byId('rollback').onclick=()=>{notes={status:'BASELINE_RETAINED',record:pack};pack=null;render();message('Baseline retained. The candidate is now only a historical note. Build again to propose a successor.','Référence conservée. Le candidat est désormais une note historique. Relancez pour proposer un successeur.');};
 byId('pack').onclick=()=>{if(pack)download('successor-build-pack.json',JSON.stringify(pack,null,2)+'\n','application/json');};
 byId('briefs').onclick=()=>{if(pack)download('successor-job-briefs.md',model.jobBriefs(pack),'text/markdown');};
@@ -142,7 +145,7 @@ byId('request').onclick=()=>{if(pack)download('request.json',JSON.stringify(pack
 byId('save').onclick=()=>{
   try {
     model.missionFor(settings());
-    const saved=JSON.stringify({form:settings(),language,notes:pack?{status:'HISTORICAL_ONLY',record:pack}:notes}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+    const saved=JSON.stringify({form:settings(),language,largePreference,notes:pack?{status:'HISTORICAL_ONLY',record:pack}:notes}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
     const html=originalDocument.replace(/(<script type="application\/json" id="saved-state">)[\s\S]*?(<\/script>)/,(_,a,b)=>a+saved+b);
     download('My-SUCCESSOR-Omega-Builder.html',html,'text/html');
   }catch(error){byId('save-status').textContent=error.message;}
@@ -152,4 +155,4 @@ byId('copy-token').onclick=async()=>{try{await navigator.clipboard.writeText(mod
 render();
 if(notes)message('Your saved settings and historical notes are restored. Build again for current results.','Paramètres et notes historiques restaurés. Relancez pour de nouveaux résultats.');
 byId('app').hidden=false;byId('loading').hidden=true;
-if(!globalThis.crypto?.subtle){byId('run').disabled=true;message('Web Crypto is unavailable. Open this file in a current desktop browser.','Web Crypto est indisponible. Ouvrez ce fichier dans un navigateur récent sur ordinateur.');}
+if(!supported){byId('run').disabled=true;browserMessage();}
