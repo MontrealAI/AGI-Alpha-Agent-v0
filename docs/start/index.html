@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="application-version" content="1.26.1" />
+        <meta name="application-version" content="1.26.2" />
         <meta name="theme-color" content="#21113d" />
         <meta
             name="description"
@@ -25,10 +25,10 @@
             href="../assets/portal/mark.svg"
             type="image/svg+xml"
         />
-        <link rel="stylesheet" href="../assets/start/start.css?v=1.26.1" />
+        <link rel="stylesheet" href="../assets/start/start.css?v=1.26.2" />
         <script
             type="module"
-            src="../assets/start/start.mjs?v=1.26.1"
+            src="../assets/start/start.mjs?v=1.26.2"
         ></script>
     </head>
     <body>
@@ -36,7 +36,11 @@
             >Skip to your first plan</a
         >
         <header class="mast wrap">
-            <a class="brand" href="../" aria-label="AGI ALPHA home"
+            <a
+                class="brand"
+                href="../"
+                data-home-link
+                aria-label="AGI ALPHA home"
                 ><span class="mark" aria-hidden="true">α</span
                 ><span
                     >AGI ALPHA<small data-i18n="brandNote"
@@ -174,7 +178,10 @@
                             <a href="../agent/ONBOARDING/"
                                 >English/French getting-started guide</a
                             >
-                            or <a href="../#explore">browse the workspaces</a>.
+                            or
+                            <a href="../#explore" data-home-link
+                                >browse the workspaces</a
+                            >.
                         </p></noscript
                     >
                     <p id="loading" class="notice" data-i18n="loading">
@@ -367,9 +374,18 @@
                                     Save evidence (.json)
                                 </button>
                             </div>
-                            <button type="button" id="print-plan" class="button secondary" data-i18n="printPlan">Print or save as PDF</button>
+                            <button
+                                type="button"
+                                id="print-plan"
+                                class="button secondary"
+                                data-i18n="printPlan"
+                            >
+                                Print or save as PDF
+                            </button>
                             <details class="readable-copy">
-                                <summary data-i18n="readPlan">Read my plan here</summary>
+                                <summary data-i18n="readPlan">
+                                    Read my plan here
+                                </summary>
                                 <pre id="readable-plan"></pre>
                             </details>
                             <p
@@ -498,12 +514,13 @@
                     </div>
                 </section>
                 <footer class="wrap">
-                    <a class="brand" href="../"
+                    <a class="brand" href="../" data-home-link
                         ><span class="mark" aria-hidden="true">α</span> AGI
                         ALPHA</a
                     >
                     <nav aria-label="More information" data-i18n-label="more">
-                        <a href="../#explore" data-i18n="all">All workspaces</a
+                        <a href="../#explore" data-home-link data-i18n="all"
+                            >All workspaces</a
                         ><a
                             href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0"
                             >GitHub</a
@@ -513,10 +530,12 @@
                             >Project notice</a
                         >
                     </nav>
-                    <small>v1.26.1 · Apache-2.0 · Montréal</small>
+                    <small>v1.26.2 · Apache-2.0 · Montréal</small>
                 </footer>
             </div>
         </main>
-        <section id="print-copy" class="print-copy" aria-hidden="true"><pre id="print-text"></pre></section>
+        <section id="print-copy" class="print-copy" aria-hidden="true">
+            <pre id="print-text"></pre>
+        </section>
     </body>
 </html>

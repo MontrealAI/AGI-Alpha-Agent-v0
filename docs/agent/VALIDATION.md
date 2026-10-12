@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.26.1 separates direct evidence from mocks, simulations and unavailable integrations.
+Version 1.26.2 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser
 screenshots and integration evidence are retained as workflow artifacts and release evidence.
@@ -267,3 +267,15 @@ cancels an active budget, avoiding a race against an already-completed tiny expe
 Current Insight source builds and both generated galleries additionally require non-overlapping panels
 and no horizontal page overflow at desktop, mobile and narrow mobile widths after offline reload.
 The separately preserved documentation snapshot retains its original functional acceptance.
+
+## Version 1.26.2 homepage acceptance
+
+The generated homepage and public Pages deployment must both pass `scripts/validate_homepage.py`.
+It checks clear first-plan entry points, English/French and larger-text controls, preference handoff,
+keyboard access, narrow-screen layouts, help, preserved advanced links and automated accessibility
+checks. Reports bind the tested commit and release version. Existing onboarding acceptance continues
+to exercise the complete Choose → Review → Keep workflow and its download/review boundaries.
+
+The matching release manifest and validation archive record actual outcomes. These browser checks
+are finite evidence; they do not certify every browser or assistive technology, replace usability
+studies with older and nontechnical users, or qualify hosting for billions of concurrent visitors.

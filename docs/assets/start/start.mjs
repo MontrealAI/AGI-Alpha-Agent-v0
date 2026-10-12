@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { runMission } from "../portal/mission-engine.mjs?v=1.26.1";
+import { runMission } from "../portal/mission-engine.mjs?v=1.26.2";
 
 const $ = (id) => document.getElementById(id);
 const french = {
@@ -174,6 +174,31 @@ const defaults = {
 };
 let language =
     new URLSearchParams(location.search).get("lang") === "fr" ? "fr" : "en";
+const largeText = new URLSearchParams(location.search).get("text") === "large";
+document.documentElement.classList.toggle("large-text", largeText);
+$("text-size").setAttribute("aria-pressed", String(largeText));
+
+// Carry display preferences between the welcome page and this guide without
+// storing task inputs or introducing cookies/local storage.
+function updateHomeLinks() {
+    const query = new URLSearchParams();
+    if (language === "fr") query.set("lang", "fr");
+    if (document.documentElement.classList.contains("large-text"))
+        query.set("text", "large");
+    const suffix = query.size ? `?${query}` : "";
+    for (const link of document.querySelectorAll("a[data-home-link]")) {
+        const path = link.getAttribute("href").split(/[?#]/, 1)[0];
+        const fragment = new URL(link.href).hash;
+        link.setAttribute("href", `${path}${suffix}${fragment}`);
+    }
+    // Retain this page's route and unrelated parameters; only display flags are written.
+    const address = new URL(location.href);
+    address.searchParams.delete("lang");
+    address.searchParams.delete("text");
+    for (const [key, value] of query) address.searchParams.set(key, value);
+    if (address.href !== location.href)
+        history.replaceState(history.state, "", address.href);
+}
 let currentStep = 0,
     accepted = false,
     snapshot = null;
@@ -263,6 +288,7 @@ function renderResult() {
 }
 function translate() {
     document.documentElement.lang = language;
+    updateHomeLinks();
     document.title =
         language === "fr" ? "Commencer · AGI ALPHA" : "Start here · AGI ALPHA";
     const dictionary = language === "fr" ? french : english;
@@ -399,19 +425,32 @@ for (const id of ["back", "revise"])
         invalidate();
         showStep(0);
     });
-$("language").addEventListener("click", () => {
+function changeLanguage(nextLanguage) {
     const previous = language;
-    language = language === "en" ? "fr" : "en";
+    language = nextLanguage;
     for (let i = 0; i < 4; i++)
         if ($(`name-${i}`).value === defaults[previous][i]) {
             $(`name-${i}`).value = defaults[language][i];
             if (snapshot) snapshot.labels[`task-${i}`] = defaults[language][i];
         }
     translate();
+}
+$("language").addEventListener("click", () => {
+    changeLanguage(language === "en" ? "fr" : "en");
 });
 $("text-size").addEventListener("click", () => {
     const large = document.documentElement.classList.toggle("large-text");
     $("text-size").setAttribute("aria-pressed", String(large));
+    updateHomeLinks();
+});
+window.addEventListener("popstate", () => {
+    const query = new URLSearchParams(location.search);
+    const large = query.get("text") === "large";
+    document.documentElement.classList.toggle("large-text", large);
+    $("text-size").setAttribute("aria-pressed", String(large));
+    const nextLanguage = query.get("lang") === "fr" ? "fr" : "en";
+    if (nextLanguage !== language) changeLanguage(nextLanguage);
+    else updateHomeLinks();
 });
 function readablePlan() {
     if (!snapshot || !accepted || currentStep !== 2) return "";

@@ -15,6 +15,7 @@ from scripts.curriculum_evidence import verify_report as verify_curriculum_repor
 from scripts.discovery_evidence import verify_report as verify_discovery_report
 from scripts.experience_evidence import verify_report as verify_experience_report
 from scripts.governance_evidence import verify_report as verify_governance_report
+from scripts.homepage_evidence import verify_report as verify_homepage_report
 from scripts.mats_evidence import verify_report as verify_mats_report
 from scripts.release_packs import require_asset_limits
 from scripts.sovereign_evidence import verify_report as verify_sovereign_report
@@ -48,6 +49,7 @@ def finalize(folder: Path, evidence: Path) -> None:
     sovereign = None
     successor = None
     onboarding = None
+    homepage = None
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 5, 0):
         ascension = json.loads((evidence / "public-pages" / "ascension" / "ascension.json").read_text(encoding="utf-8"))
         if ascension.get("passed") is not True or ascension.get("origin") != url:
@@ -240,6 +242,9 @@ def finalize(folder: Path, evidence: Path) -> None:
             (evidence / "public-pages" / "onboarding" / "onboarding.json").read_text(encoding="utf-8")
         )
         verify_onboarding_report(onboarding, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 26, 2):
+        homepage = json.loads((evidence / "public-pages" / "homepage" / "homepage.json").read_text(encoding="utf-8"))
+        verify_homepage_report(homepage, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -256,6 +261,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if homepage:
+        manifest["public_homepage"] = homepage
+        manifest["release_gates"].append(
+            "public welcoming homepage, English/French handoff, larger text, keyboard access and mobile reflow"
+        )
     if onboarding:
         manifest["public_onboarding"] = onboarding
         manifest["release_gates"].append("public English/French onboarding, exact downloads, review and accessibility")
