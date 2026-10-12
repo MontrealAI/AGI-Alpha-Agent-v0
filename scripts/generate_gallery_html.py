@@ -196,7 +196,7 @@ def insert_back_link(pages: Iterable[Path]) -> None:
     for page in pages:
         if not page.is_file():
             continue
-        if page.parts[-3:] == ("successor", "play", "index.html"):
+        if page.parts[-3:] in (("successor", "play", "index.html"), ("successor", "build", "index.html")):
             continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
@@ -401,6 +401,10 @@ def main() -> None:
     pocket.build(REPO_ROOT)
     ecosystem = importlib.import_module("scripts.generate_ecosystem" if __package__ else "generate_ecosystem")
     ecosystem.build(REPO_ROOT)
+    successor_build = importlib.import_module(
+        "scripts.generate_successor_build" if __package__ else "generate_successor_build"
+    )
+    successor_build.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]

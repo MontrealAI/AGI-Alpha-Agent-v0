@@ -1,3 +1,8 @@
+> **[Build your own SUCCESSOR Ω with Alpha Agent + AGI Jobs →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/build/)**
+> Name your mission, run four candidate programs, compile 21 bounded job drafts, and keep the working lab offline.
+> English / Français · Large text · No account, wallet or installation. [Source and reproduction guide](examples/build-successor/README.md) · [Version 1.28.0](docs/agent/RELEASE_NOTES_1.28.0.md).
+> The example runs both projects’ code locally. Independent proof remains absent; admission stays on HOLD.
+
 > **Take home your own SUCCESSOR Ω. [Create your personal lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/play/).**
 > Give it a name, run real experiments, then save the whole working lab as one file. Reopen it offline,
 > try new challenges and keep your discoveries. Free, English/French, larger text, no account or installation.

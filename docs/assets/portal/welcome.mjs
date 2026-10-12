@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "build-successor": "Construire votre Ω avec les deux projets",
     "omega-start": "Créer mon SUCCESSOR Ω",
     skip: "Aller au contenu principal",
     "brand-note": "La curiosité entre vos mains",
@@ -131,6 +132,9 @@ function render() {
     for (const link of document.querySelectorAll("[data-start-link]")) {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
+    }
+    for (const link of document.querySelectorAll("[data-build-link]")) {
+        link.setAttribute("href", `successor/build/${query.size ? `?${query}` : ""}`);
     }
     for (const link of document.querySelectorAll("[data-omega-link]")) {
         link.setAttribute("href", `successor/play/${query.size ? `?${query}` : ""}`);
