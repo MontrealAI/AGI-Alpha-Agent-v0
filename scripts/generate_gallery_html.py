@@ -196,6 +196,8 @@ def insert_back_link(pages: Iterable[Path]) -> None:
     for page in pages:
         if not page.is_file():
             continue
+        if page.parts[-3:] == ("successor", "play", "index.html"):
+            continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
         link = f'<p><a href="{rel}">\u2b05\ufe0f Back to Gallery</a></p>'
@@ -393,6 +395,8 @@ def main() -> None:
     sovereign = importlib.import_module("scripts.generate_sovereign" if __package__ else "generate_sovereign")
 
     sovereign.build(REPO_ROOT)
+    pocket = importlib.import_module("scripts.generate_successor_pocket" if __package__ else "generate_successor_pocket")
+    pocket.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]

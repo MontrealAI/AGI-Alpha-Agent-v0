@@ -1,4 +1,10 @@
-> **New here? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/#journey).**
+> **Take home your own SUCCESSOR Ω. [Create your personal lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/play/).**
+> Give it a name, run real experiments, then save the whole working lab as one file. Reopen it offline,
+> try new challenges and keep your discoveries. Free, English/French, larger text, no account or installation.
+> [Personal lab guide](docs/agent/SUCCESSOR.md#new-here-take-a-lab-home--emportez-votre-laboratoire) ·
+> [What is new in 1.27.0](docs/agent/RELEASE_NOTES_1.27.0.md).
+
+> **Prefer a simple planner? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/#journey).**
 > Choose what matters, review a simple plan and keep a readable copy. No technical experience,
 > account, wallet, payment or installation is needed.
 > [Visit the welcoming homepage](https://montrealai.github.io/AGI-Alpha-Agent-v0/) ·

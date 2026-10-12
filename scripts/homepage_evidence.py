@@ -15,6 +15,7 @@ ASSETS = (
     "start/index.html",
     "assets/start/start.css",
     "assets/start/start.mjs",
+    "successor/play/index.html",
 )
 
 REQUIRED_CHECKS = {

@@ -25,6 +25,15 @@ from scripts.validate_ascension import Handler, inspect
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    pocket_links = page.locator("[data-omega-link]")
+    assert pocket_links.count() >= 2, "Offer the personal lab at both main invitations"
+    for link in pocket_links.all():
+        target = urlsplit(link.get_attribute("href") or "")
+        assert not target.scheme and not target.netloc and target.path == "successor/play/"
+        query = parse_qs(target.query)
+        assert set(query) <= {"lang", "text"}
+        assert query.get("lang", ["en"]) == [language]
+        assert query.get("text", ["standard"]) == (["large"] if large else ["standard"])
     links = page.locator("[data-start-link]")
     assert links.count() >= 2, "Offer the guided plan at the top and after the introduction"
     for link in links.all():

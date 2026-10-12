@@ -1,3 +1,11 @@
+## 1.27.0 — 2026-10-12
+
+- Feature SUCCESSOR Ω on the welcoming homepage while retaining the simple planner.
+- Add a bilingual personal lab with real experiments and a complete, playable offline HTML download.
+- Preserve reading preferences, eight experiment summaries and the latest evidence in each saved copy.
+- Verify the download/reopen/rerun journey, mobile reflow, keyboard access and English/French accessibility.
+- See [release notes](agent/RELEASE_NOTES_1.27.0.md).
+
 ## 1.26.3 — 2026-10-11
 
 - Open task choices directly from make-plan buttons while keeping the introduction behind the general Start here link.

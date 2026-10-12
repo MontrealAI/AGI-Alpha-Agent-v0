@@ -1,78 +1,79 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "omega-start": "Créer mon SUCCESSOR Ω",
     skip: "Aller au contenu principal",
-    "brand-note": "Une prochaine étape plus claire",
+    "brand-note": "La curiosité entre vos mains",
     "nav-start": "Commencer",
     "nav-how": "Comment ça marche",
     "nav-questions": "Questions",
     "nav-explore": "Explorer les outils",
     "larger-text": "Texte plus grand",
-    "hero-eyebrow": "Un bon point de départ",
-    "hero-title-first": "Un peu d’aide.",
-    "hero-title-second": "Un plan plus clair.",
+    "hero-eyebrow": "DÉCOUVREZ VOTRE SUCCESSOR Ω",
+    "hero-title-first": "Un petit univers.",
+    "hero-title-second": "À vous d’explorer.",
     "hero-description":
-        "Choisissez quelques tâches et le temps disponible. Ce guide simple vous aide à voir ce qui convient, puis à conserver un plan utile.",
+        "Créez votre laboratoire SUCCESSOR Ω. Donnez-lui un nom, lancez une vraie expérience et gardez une copie fonctionnelle à rouvrir, même hors ligne.",
     "hero-start": "Commencer — créer un plan",
     "hero-how": "Voir comment ça marche",
     "hero-reassurance":
-        "Prenez votre temps. Essayez l’exemple ou adaptez-le à vos besoins.",
+        "Des exemples prêts. Des étapes claires. Prenez tout le temps nécessaire.",
     "trust-account": "Sans compte",
     "trust-payment": "Sans paiement",
     "trust-install": "Rien à installer",
-    "example-label": "Un exemple de votre plan",
-    "example-title": "Une heure. Deux étapes utiles.",
+    "example-label": "Votre SUCCESSOR Ω personnel",
+    "example-title": "À votre image. En action.",
     "example-description":
-        "Un peu de temps pour vous concentrer sur l’essentiel.",
-    "example-task-one": "Vérifier les sources",
-    "example-time-one": "20 min",
-    "example-task-two": "Améliorer le brouillon",
-    "example-time-two": "40 min",
-    "example-total": "Temps prévu",
-    "example-duration": "60 minutes",
-    "example-note": "Vous choisissez les tâches. Vous vérifiez le plan.",
+        "Un petit laboratoire fonctionnel à garder.",
+    "example-task-one": "Faire des expériences",
+    "example-time-one": "Explorer",
+    "example-task-two": "Garder vos découvertes",
+    "example-time-two": "Garder",
+    "example-total": "Votre laboratoire complet",
+    "example-duration": "Un fichier",
+    "example-note": "Nommez-le. Explorez-le. Rouvrez-le hors ligne.",
     "how-eyebrow": "Simple dès le premier pas",
     "how-title": "À votre rythme. Trois étapes simples.",
     "how-description":
-        "Nous vous guidons à chaque étape. Vous pouvez changer d’avis en cours de route.",
-    "step-one-title": "Choisissez ce qui convient à votre journée",
+        "Commencez par un exemple. Faites une découverte. Emportez votre laboratoire.",
+    "step-one-title": "Personnalisez votre Ω",
     "step-one-description":
-        "Indiquez le temps disponible et quelques tâches. Des exemples vous aident à commencer.",
-    "step-two-title": "Vérifiez votre plan",
+        "Nommez votre laboratoire et choisissez un petit ou un grand défi. L’exemple est déjà prêt.",
+    "step-two-title": "Lancez une vraie expérience",
     "step-two-description":
-        "Voyez quelles tâches conviennent. Vérifiez le résultat, ajustez vos choix et décidez de ce qui vous convient.",
-    "step-three-title": "Gardez-le à portée de main",
+        "Voyez quatre petits programmes se comparer. Le laboratoire vérifie les réponses sur de nouveaux exemples et affiche les résultats.",
+    "step-three-title": "Gardez toute l’expérience",
     "step-three-description":
-        "Enregistrez une copie lisible ou imprimez votre plan. Passez à la prochaine étape quand vous le souhaitez.",
+        "Enregistrez un fichier interactif contenant votre laboratoire et vos expériences. Ouvrez-le dans un navigateur sur ordinateur, même sans internet.",
     "questions-eyebrow": "Quelques réponses pour vous guider",
     "questions-title": "Vous vous posez peut-être ces questions.",
     "questions-description": "Ouvrez une question pour lire la réponse.",
-    "faq-free-question": "L’exemple guidé est-il gratuit?",
+    "faq-free-question": "SUCCESSOR Ω est-il gratuit à essayer?",
     "faq-free-answer":
-        "Oui. Vous pouvez créer et conserver un plan sans compte, paiement ni portefeuille.",
+        "Oui. Créez votre laboratoire, expérimentez et enregistrez-le sans compte, paiement, portefeuille ni abonnement.",
     "faq-install-question": "Faut-il installer quelque chose?",
     "faq-install-answer":
-        "Non. L’exemple guidé s’ouvre dans votre navigateur. Vous n’avez pas besoin de télécharger une application ni de savoir programmer.",
-    "faq-privacy-question": "Que deviennent les tâches que je saisis?",
+        "Rien à installer pour le laboratoire personnel ou le planificateur. Ouvrez-les dans votre navigateur. Le laboratoire enregistré est un fichier HTML; un navigateur sur ordinateur peut l’ouvrir hors ligne.",
+    "faq-privacy-question": "Où vont mon nom et mes expériences?",
     "faq-privacy-answer":
-        "Dans l’exemple guidé, vos tâches restent sur votre appareil. Elles ne sont pas envoyées à un serveur ni enregistrées automatiquement. Enregistrez ou imprimez votre plan avant de quitter ou de recharger la page.",
-    "faq-guidance-question": "L’outil réalise-t-il les tâches à ma place?",
+        "Le laboratoire personnel les garde sur votre appareil. Il ne les envoie pas à un serveur et ne les enregistre pas automatiquement. Téléchargez votre copie avant de fermer ou de recharger, puis enregistrez après vos modifications.",
+    "faq-guidance-question": "Que fait mon Ω exactement?",
     "faq-guidance-answer":
-        "Cet exemple vous aide à choisir un plan adapté au temps disponible. Il ne réalise pas les tâches et ne décide pas à votre place. Vous gardez le contrôle de la suite.",
+        "Il réalise de vrais calculs ciblés sur des enregistrements fictifs. Il compare les approches, vérifie les réponses et vous laisse garder les résultats. Ce laboratoire personnel n’est pas un assistant IA généraliste et n’effectue pas de missions à votre place.",
     "faq-reading-question": "Puis-je faciliter la lecture?",
     "faq-reading-answer":
-        "Oui. Choisissez Texte plus grand en haut de la page ou utilisez le zoom du navigateur. Choisissez English ou Français pour la page d’accueil et l’exemple guidé.",
-    "invitation-eyebrow": "Un petit pas suffit",
-    "invitation-title": "Quand vous le souhaitez.",
+        "Oui. Choisissez Texte plus grand ou utilisez le zoom. Le français et l’anglais sont proposés sur l’accueil, dans votre laboratoire personnel et dans le planificateur simple.",
+    "invitation-eyebrow": "VOTRE PROCHAINE DÉCOUVERTE COMMENCE ICI",
+    "invitation-title": "Emportez quelque chose.",
     "invitation-description":
-        "Commencez par l’exemple. Adaptez-le au fil des étapes.",
+        "Votre nom. Vos expériences. Un laboratoire à retrouver.",
     "invitation-start": "Créer mon premier plan",
     "research-eyebrow": "Pour les curieux",
     "research-title": "Explorez davantage, à votre rythme.",
     "research-description":
         "Vous trouverez aussi des outils de planification, des expériences et les travaux de recherche d’origine.",
     "research-language-note":
-        "Les outils avancés et la recherche ci-dessous sont présentés en anglais. Certains proposent leurs propres options de langue et peuvent demander des connaissances techniques. L’exemple guidé ci-dessus est le point de départ le plus simple.",
+        "Commencez par le laboratoire personnel SUCCESSOR Ω ci-dessus ou essayez le planificateur simple. Les outils avancés et la recherche ci-dessous sont en anglais; certains offrent des options de langue et demandent des connaissances techniques.",
     "brand-label": "Accueil AGIALPHA",
     "preferences-label": "Préférences de lecture",
     "navigation-label": "Navigation principale",
@@ -100,8 +101,8 @@ function render() {
     document.documentElement.classList.toggle("home-large-text", largeText);
     document.title =
         language === "fr"
-            ? "AGIALPHA · Un peu d’aide. Un plan plus clair."
-            : "AGIALPHA · A little help. A clearer plan.";
+            ? "AGIALPHA · Votre SUCCESSOR Ω. À vous d’explorer."
+            : "AGIALPHA · Your SUCCESSOR Ω. Yours to explore.";
     for (const el of textElements) el.textContent = words[el.dataset.homeKey];
     for (const el of labelElements)
         el.setAttribute("aria-label", words[el.dataset.homeLabel]);
@@ -120,6 +121,9 @@ function render() {
     for (const link of document.querySelectorAll("[data-start-link]")) {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
+    }
+    for (const link of document.querySelectorAll("[data-omega-link]")) {
+        link.setAttribute("href", `successor/play/${query.size ? `?${query}` : ""}`);
     }
     // Keep this entry bookmarkable without adding history or forwarding other parameters.
     const address = new URL(location.href);
