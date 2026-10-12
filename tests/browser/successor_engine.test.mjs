@@ -97,3 +97,6 @@ test('Python and JavaScript share checked canonical commitment vectors', async (
         if (vector.domain === 'request') assert.equal(canonical(validateRequest({request_id:vector.value.request_id})), vector.canonical);
     }
 });
+
+// The portable paired-project workshop reuses the engine above and the pinned Jobs compiler.
+import '../../examples/build-successor/test.mjs';

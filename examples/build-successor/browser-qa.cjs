@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: Apache-2.0
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
+(async()=>{
+  const root=path.resolve(__dirname,'../..'), destination=path.resolve(process.argv[2]||path.join(root,'evidence/successor-build'));
+  fs.mkdirSync(destination,{recursive:true});
+  const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE?{executablePath:process.env.CHROMIUM_EXECUTABLE}:{})});
+  const report={passed:false,checks:[],accessibility:[],errors:[],requests:[]};
+  try{
+    const context=await browser.newContext({viewport:{width:1440,height:1000},offline:true});
+    const page=await context.newPage();
+    page.on('pageerror',e=>report.errors.push(e.message));
+    page.on('request',r=>{if(/^https?:/.test(r.url()))report.requests.push(r.url());});
+    await page.goto(pathToFileURL(path.join(root,'docs/successor/build/index.html')).href);
+    await page.locator('#app').waitFor({state:'visible'});
+    const malicious='</script><img src=x onerror=alert(1)>';
+    await page.locator('#name').fill(malicious);await page.locator('#run').focus();await page.keyboard.press('Enter');
+    await page.waitForFunction(()=>!document.getElementById('pack').disabled);
+    assert.equal(await page.locator('#checks').innerText(),'6 / 6');
+    assert.equal(await page.locator('#result-title').innerText(),malicious);
+    assert.equal(await page.locator('#result-title img').count(),0);
+    const pack=JSON.parse(await page.locator('#evidence').textContent());
+    assert.equal(pack.compilation.graph.nodes.length,21);assert.deepEqual(pack.admission.authority,[]);
+    assert.equal(pack.admission.independentProof,false);assert.equal(pack.settlement.spentBaseUnits,'0');
+    report.checks.push('actual-engine-and-compiler','keyboard-run','escaped-input','no-false-authority');
+    const saved=page.waitForEvent('download');await page.locator('#save').click();const portable=path.join(destination,'saved-omega.html');await(await saved).saveAs(portable);
+    assert.ok(fs.statSync(portable).size<500000);
+    const local=await context.newPage();local.on('pageerror',e=>report.errors.push(e.message));
+    await local.goto(pathToFileURL(portable).href);
+    assert.equal(await local.locator('#name').inputValue(),malicious);assert.equal(await local.locator('#pack').isDisabled(),true);
+    assert.match(await local.locator('#status').innerText(),/historical/);
+    await local.locator('#name').fill('Mon Atlas Ω');await local.locator('#language').click();
+    await local.locator('#run').click();await local.waitForFunction(()=>!document.getElementById('pack').disabled);
+    assert.equal(await local.locator('html').getAttribute('lang'),'fr');assert.equal(await local.locator('#checks').innerText(),'6 / 6');
+    report.checks.push('offline-save-and-reopen','restored-notes-not-active-proof','french-new-run');
+    const axe=fs.readFileSync(path.join(root,'tests/browser/node_modules/axe-core/axe.min.js'),'utf8');
+    for(const width of [1440,390,320]){
+      await local.setViewportSize({width,height:1000});
+      if(width===320)await local.locator('#larger').click();
+      await local.locator('#portfolio details').first().locator('summary').click();
+      await local.locator('#contracts details').first().locator('summary').click();
+      assert.ok(await local.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow at '+width);
+      await local.evaluate(axe);
+      const audit=await local.evaluate(()=>axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','best-practice']}}));
+      report.accessibility.push({width,violations:audit.violations});assert.deepEqual(audit.violations,[]);
+      await local.screenshot({path:path.join(destination,`workshop-${width}.png`),fullPage:true});
+    }
+    await local.locator('#events').selectOption('4000');assert.equal(await local.locator('#pack').isDisabled(),true);
+    await local.locator('#run').click();await local.waitForFunction(()=>!document.getElementById('pack').disabled);
+    await local.locator('#rollback').click();assert.equal(await local.locator('#pack').isDisabled(),true);
+    assert.match(await local.locator('#evidence').textContent(),/BASELINE_RETAINED/);
+    report.checks.push('mobile-large-text','axe-zero-violations','edits-invalidate-current-results','baseline-rollback');
+    assert.deepEqual(report.errors,[]);assert.deepEqual(report.requests,[]);
+    report.checks.push('no-browser-errors','no-external-requests');report.passed=true;
+  }finally{await browser.close();fs.writeFileSync(path.join(destination,'report.json'),JSON.stringify(report,null,2)+'\n');}
+  console.log(JSON.stringify(report,null,2));
+})().catch(e=>{console.error(e);process.exit(1)});

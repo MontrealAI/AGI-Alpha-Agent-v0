@@ -1,0 +1,2220 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#211035"><meta name="description" content="Build your own SUCCESSOR Ω with Alpha Agent and AGI Jobs. Run real local code, create 21 bounded work orders, inspect both mainnet suites and keep an offline copy.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-rY98Gvz8ZXZdE8OhxwaojjNpRLzdK9qhszGiRE2GrBg='; style-src 'sha256-+x9CDafX+2l9FwywiXN3V00/lsg67lfJ/+amv5CEgps='; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Build your SUCCESSOR Ω · Alpha Agent + AGI Jobs</title><style>
+/* SPDX-License-Identifier: Apache-2.0 */
+:root{font:18px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;color:#332d3e;background:#faf8f4;color-scheme:light}*{box-sizing:border-box}[hidden]{display:none!important}html.large{font-size:22px}body{margin:0;overflow-wrap:anywhere}a{color:#62348b;text-underline-offset:.22em;overflow-wrap:anywhere}button,input,select{font:inherit;min-height:52px;border:1px solid #9986ae;border-radius:10px;padding:.65rem .95rem;max-width:100%}button{cursor:pointer;background:#fff;color:#42235e;font-weight:650}button:hover{background:#eee4f8}button:disabled{cursor:default;opacity:.55}.primary{background:#683da0;color:white;border-color:#683da0}.primary:hover{background:#503077;color:white}.button{display:inline-flex;align-items:center;min-height:54px;padding:.75rem 1.25rem;border-radius:10px;text-decoration:none;font-weight:700}button,input,select,summary,a{touch-action:manipulation}:focus-visible,[tabindex="-1"]:focus{outline:3px solid #af73e0;outline-offset:4px}.wrap{width:min(1200px,calc(100% - 3rem));margin:auto}.mast{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;gap:1rem;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;font-size:1.1rem;font-weight:750;color:#352044;letter-spacing:.06em}.brand b{font:2.5rem Georgia,serif}.brand small{display:block;font-size:.57rem;letter-spacing:.16em}nav,.links{display:flex;gap:1rem;flex-wrap:wrap}.hero{background:radial-gradient(ellipse at 85% 10%,#563074,transparent 50%),#211035;color:#fff;padding:3.2rem 0 4rem}.hero-grid{display:grid;grid-template-columns:1.35fr .85fr;gap:3rem;align-items:center}.eyebrow{font-size:.73rem;letter-spacing:.14em;font-weight:750;color:#74499a;margin-bottom:.8rem}.hero .eyebrow{color:#dbc18b}h1,h2,h3,p{margin-top:0}h1{font:clamp(2.6rem,5.5vw,4.8rem)/1.05 Georgia,serif;letter-spacing:-.04em;margin-bottom:1.3rem}h2{font-size:1.9rem;letter-spacing:-.035em;line-height:1.25}h3{overflow-wrap:anywhere;font-size:1.15rem;line-height:1.4}p{margin-bottom:1rem}.lead{font-size:1.12rem;max-width:38rem;color:#e8dbf5}.quiet,.hint{color:#685c73;font-size:.87rem}.hero .quiet{color:#dac8e9;margin:1rem 0 0}.hero .primary{background:#e5cc98;border-color:#e5cc98;color:#30203f}.universe{position:relative;text-align:center;border:1px solid #9772b8;border-radius:22px;padding:2rem 1.5rem;background:radial-gradient(circle at 50% 32%,#aa75cb44,transparent 56%),linear-gradient(150deg,#4a2b67aa,#221338);box-shadow:0 25px 80px #0f052b66;overflow:hidden}.universe:before{content:"";position:absolute;inset:10% 12% 28%;border:1px solid #b99acc66;border-radius:50%;transform:rotate(-24deg);pointer-events:none}.universe p{color:#e2d2ef}.universe h2{font:1.65rem Georgia,serif;letter-spacing:-.01em}.orb{font:6rem Georgia,serif;display:block;color:#ecd6a4;text-shadow:0 0 60px #d9b6ff;position:relative;margin-bottom:1rem}.pill{display:inline-block;background:#eee6f7;color:#58317b;border-radius:30px;padding:.35rem .7rem;font-size:.65rem;font-weight:750;letter-spacing:.065em}.token-strip{display:flex;justify-content:space-between;gap:2rem;align-items:center;padding:1.5rem 2rem;background:white;border:1px solid #e6dfea;border-radius:16px;position:relative;margin-top:-1.7rem;box-shadow:0 8px 26px #2819350a}.token-strip h2{font-size:1.3rem;margin-bottom:.45rem}.token-strip small{font: .72rem system-ui,sans-serif;color:#685c73;display:inline-block;margin-left:.4rem}.token-strip code{font-size:.77rem;overflow-wrap:anywhere}.token-strip>div:last-child{display:grid;gap:.6rem;font-size:.8rem}.token-strip p{margin-bottom:0}.section{padding-top:3rem;padding-bottom:1rem}.section-intro{max-width:50rem}.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem}.trio article{padding:1.5rem;background:white;border:1px solid #e5ddeb;border-radius:14px}.trio span{display:block;font-size:.7rem;letter-spacing:.09em;color:#7c539e;margin-bottom:1rem;font-weight:750}.trio p{color:#5e5369;margin-bottom:0;font-size:.93rem}.steps{display:flex;gap:1rem;list-style:none;padding:0;margin:1.4rem 0;color:#67458a;font-weight:650;flex-wrap:wrap}.steps li{background:#eee7f5;border-radius:8px;padding:.5rem .8rem;flex:1;font-size:.8rem;min-width:160px}.work-grid{display:grid;grid-template-columns: .9fr 1.1fr;gap:1.3rem}.panel{padding:1.6rem;border-radius:16px;background:white;border:1px solid #ddd2e6}.panel label{display:block;margin:.9rem 0 .3rem;font-weight:600;font-size:.9rem}.panel input,.panel select{width:100%;background:#fdfbff;color:#332d3e}.hint{margin-top:.5rem}#status{font-size:.88rem;margin:1rem 0 0}progress{width:100%}.output{background:linear-gradient(135deg,#fcfaff,#f2eaf7)}.stats{display:flex;gap:1rem;justify-content:space-between;margin:1.2rem 0}.stats b{display:block;font-size:2rem;line-height:1.2;color:#5c3780}.stats span{font-size:.72rem;display:block;max-width:8rem}.stats div{min-width:0}table{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.87rem}th,td{padding:.6rem;text-align:left;border-bottom:1px solid #ded3e8}caption{text-align:left;font-weight:650;margin-bottom:.5rem}td:last-child,th:last-child{text-align:right}.portfolio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}details{border:1px solid #dfd5e8;border-radius:12px;background:white;padding:1rem 1.2rem;margin-bottom:.85rem}summary{cursor:pointer;font-weight:650;min-height:40px;align-content:center}details p{margin-top:.8rem;font-size:.9rem}summary::marker{color:#8554ac}.job{border-top:1px solid #e7dfee;margin-top:1rem;padding-top:1rem}.job h4{margin:0 0 .3rem;font-size:.88rem}.job p{overflow-wrap:anywhere;font-size:.8rem;margin:.3rem 0}.keep{margin:2.4rem 0 1rem;display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;background:#ede3f5;padding:2rem;border-radius:18px}.downloads{display:grid;gap:.65rem;align-content:center}.downloads button{font-size:.85rem}pre{font:.7rem/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:24rem;overflow:auto;border-radius:8px;background:#f4f0f7;padding:1rem}code{font-family:ui-monospace,monospace}.notice{background:#f0e8f6;border-left:3px solid #9565b3;padding:1rem;border-radius:4px;font-size:.88rem}.contract{padding:.85rem 0;border-top:1px solid #ece4f0}.contract strong{overflow-wrap:anywhere;display:block;font-size:.85rem}.contract code{font-size:.77rem}.contract p{font-size:.8rem;margin:.25rem 0}.records .source{display:block;margin:.7rem 0}.questions{padding-bottom:2.5rem}.questions details p{max-width:58rem}footer{border-top:1px solid #ddd2e6;padding-block:2rem;color:#655273;font-size:.85rem}footer details{margin-top:1.5rem}.skip{clip-path:inset(100%);position:fixed;top:0;left:1rem;padding:1rem;background:white;z-index:10}.skip:focus{clip-path:none;top:1rem}@media(max-width:760px){.hero-grid,.work-grid,.keep{grid-template-columns:minmax(0,1fr)}.hero{padding:2rem 0 3rem}.universe{padding:1rem}.orb{font-size:4rem;margin:0}.universe:before{inset:8% 25% 20%}.trio{grid-template-columns:minmax(0,1fr)}.token-strip{display:block;padding:1.2rem}.token-strip>div:last-child{margin-top:.8rem}.portfolio{grid-template-columns:minmax(0,1fr)}.wrap{width:calc(100% - 2rem)}.section{padding-top:2rem}.panel,.keep{padding:1.2rem}.hero-grid{gap:1.8rem}.stats{gap:.5rem}}@media print{button,nav,.universe,#loading{display:none!important}.hero{background:white;color:#332d3e}.hero .lead,.hero .quiet{color:#332d3e}.wrap{width:100%}.keep,.panel{break-inside:avoid}.hero-grid{display:block}details{break-inside:avoid}pre{max-height:none}.token-strip{margin-top:0}}
+
+.hero-grid>*,.work-grid>*,.keep>*{min-width:0}.button{max-width:100%}@media(max-width:400px){h1{font-size:2rem}}
+
+</style></head><body>
+<a class="skip" href="#workshop" data-word="skip">Skip to the workshop</a>
+<header class="wrap mast"><a class="brand" href="https://montrealai.github.io/AGI-Alpha-Agent-v0/"><b aria-hidden="true">Ω</b><span>SUCCESSOR <small>ALPHA AGENT × AGI JOBS</small></span></a><nav aria-label="Reading preferences"><button id="language" type="button" lang="fr">Français</button><button id="larger" type="button" aria-pressed="false" data-word="larger">Larger text</button></nav></header>
+<main>
+<section class="hero"><div class="wrap hero-grid"><div><p class="eyebrow" data-word="eyebrow">YOUR MISSION. YOUR METHODS. YOUR NEXT CHAPTER.</p><h1 data-word="title">Build the intelligence<br>you can keep.</h1><p class="lead" data-word="intro">Give your SUCCESSOR Ω a mission. Let Alpha build and compare candidates. Let AGI Jobs turn the plan into bounded, reviewable work. Take the whole working example home.</p><a class="button primary" href="#workshop" data-word="begin">Build my first Ω ↓</a><p class="quiet" data-word="free">About 5 minutes · Free · No account, wallet or installation</p></div><aside class="universe" aria-label="Example mission"><span class="orb" aria-hidden="true">Ω</span><p class="eyebrow">ATLAS Ω</p><h2 data-word="mission-card">Your open-data analyst.</h2><p data-word="mission-sub">A small mission. Exact answers. Evidence you can inspect.</p><span class="pill" data-word="candidate">CANDIDATE · LOCAL WORKSHOP</span></aside></div></section>
+<section class="wrap token-strip" aria-labelledby="shared-title"><div><p class="eyebrow" data-word="shared">BOTH DEPLOYED SYSTEMS · ONE SHARED TOKEN</p><h2 id="shared-title">$AGIALPHA <small>Ethereum mainnet · 1</small></h2><a href="https://etherscan.io/address/0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA#code"><code id="token">0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA</code></a></div><div><button id="copy-token" type="button" hidden data-word="copy">Copy token address</button><a href="#contracts" data-word="all-contracts">Explore all 29 deployed contracts ↓</a><p id="copy-status" role="status"></p></div></section>
+<section class="wrap section" aria-labelledby="together-title"><p class="eyebrow" data-word="together">TWO PROJECTS, ONE PRACTICAL EXAMPLE</p><h2 id="together-title" data-word="together-title">From a plan to something you can examine.</h2><div class="trio"><article><span>01 / ALPHA AGENT</span><h3 data-word="alpha-title">Build a candidate</h3><p data-word="alpha-text">Four small programs compete to group synthetic service records and calculate exact totals. Keep the selected program’s configuration, source identity and measured results.</p></article><article><span>02 / AGI JOBS</span><h3 data-word="jobs-title">Make the work checkable</h3><p data-word="jobs-text">The actual AGI Jobs compiler creates 21 work orders with inputs, limits, dependencies, acceptance criteria and unsigned commitments. These are drafts for review.</p></article><article><span>03 / YOUR SUCCESSOR Ω</span><h3 data-word="own-title">Keep the complete package</h3><p data-word="own-text">Save the working lab, mission, job graph, results and renewal notes. Independent proof and a separate admission decision are the next steps toward a qualified successor.</p></article></div></section>
+<section class="wrap section" id="workshop" aria-labelledby="workshop-title"><p class="eyebrow" data-word="workshop">THE HANDS-ON WORKSHOP</p><h2 id="workshop-title" data-word="workshop-title">Make Atlas Ω yours.</h2><p class="section-intro" data-word="scope">The mission: count events, total and maximum duration, and errors for each day and service. All inputs are made-up, nonpersonal records. No external AI is called.</p>
+<noscript><p class="notice">Enable JavaScript to run this local workshop. All contract records below remain readable.</p></noscript><p id="loading" class="notice" data-word="loading">Opening the workshop… JavaScript and Web Crypto are required.</p>
+<div id="app" hidden><ol class="steps"><li data-word="step1">1 · Name & plan</li><li data-word="step2">2 · Build & compare</li><li data-word="step3">3 · Review & keep</li></ol>
+<div class="work-grid"><section class="panel"><h3 data-word="settings">Your starting point</h3><form id="form"><label for="name" data-word="name">Name your Ω</label><input id="name" value="Atlas Ω" maxlength="48" required autocomplete="off"><label for="events" data-word="events">How much sample data?</label><select id="events"><option value="256">256</option><option value="1000" selected>1,000</option><option value="4000">4,000</option></select><label for="budget" data-word="budget">Planning allowance · AGIALPHA tokens</label><input id="budget" type="number" min="1" max="1000000" step="1" value="2100" required aria-describedby="budget-help"><p id="budget-help" class="hint" data-word="budget-help">An editable example, not a price quote or funded balance. Nothing is spent. Gas, stakes, review and operating costs need separate estimates.</p><button class="primary" id="run" type="submit" data-word="run">Build & test my Ω</button><button id="stop" type="button" hidden data-word="stop">Stop</button></form><p id="status" role="status" aria-live="polite" tabindex="-1" data-word="ready">Ready. Your first example is already set up.</p><progress id="progress" max="3" value="0" hidden aria-label="Build progress"></progress><p class="hint" data-word="labels">Producer, verifier and decision-maker names are example roles. They do not establish independent people or signed approval.</p></section>
+<section class="panel output" aria-labelledby="result-title"><span class="eyebrow" data-word="result-label">YOUR BUILD RECEIPT</span><h3 id="result-title" data-word="empty-title">A working first step.</h3><p id="empty" data-word="empty">Build your example to see exactness checks, measured timings and the drafted job portfolio.</p><div id="result" hidden><p class="pill" data-word="local">LOCAL REHEARSAL · ADMISSION ON HOLD</p><div class="stats"><div><b id="checks">—</b><span data-word="checks">matching workloads</span></div><div><b>21</b><span data-word="jobs">drafted work orders</span></div><div><b>0</b><span data-word="spent">tokens spent</span></div></div><p id="verdict"></p><table><caption data-word="timings">Measured here · six comparative workloads</caption><thead><tr><th scope="col" data-word="approach">Approach</th><th scope="col">ms</th></tr></thead><tbody id="timings"></tbody></table><p class="hint" data-word="timing-note">The candidate may lose. Timing varies with your device, run order and browser. This is not independent proof or measured economic advantage.</p><p id="historical" class="notice" hidden data-word="historical">Restored historical notes. Run a fresh build to create current evidence.</p><button id="rollback" type="button" data-word="rollback">Retain the baseline</button></div></section></div>
+<section class="section" aria-labelledby="jobs-heading"><h3 id="jobs-heading" data-word="jobs-heading">A clear work plan, one bounded job at a time.</h3><p data-word="jobs-note">Each phase maps to the real compiler’s work orders. Open a phase after building to inspect its deliverables. All orders remain DRAFT; a hash binds the terms, it does not accept the work.</p><div id="portfolio" class="portfolio"></div></section>
+<section class="keep" aria-labelledby="keep-title"><div><p class="eyebrow" data-word="keep-label">SOMETHING YOU CAN KEEP</p><h2 id="keep-title" data-word="keep-title">Your Ω. Your next experiment.</h2><p data-word="keep-text">Download the complete working lab. Open the HTML file in a desktop browser, even offline. It includes your latest notes; run again for fresh results. Save a new copy after changes.</p><p class="hint" data-word="privacy">Your entries stay in this page. Nothing is uploaded or saved automatically. Downloads are readable files, so use a nickname and save before closing.</p></div><div class="downloads"><button id="save" class="primary" type="button" data-word="save">Save my working Ω</button><button id="pack" type="button" disabled data-word="pack">Download the build package · JSON</button><button id="briefs" type="button" disabled data-word="briefs">Download the 21 job briefs</button><button id="request" type="button" disabled data-word="request">Download Alpha runtime request</button><p id="save-status" role="status"></p></div></section>
+<details class="inspect"><summary data-word="inspect">Inspect the exact package and source identities</summary><pre id="evidence">{}</pre><p data-word="integrity">The digest checks consistency, not authenticity. This package is an example interchange format; it is not a live settlement instruction or a native restore backup.</p><pre>{
+  &quot;alphaEngineSha256&quot;: &quot;38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488&quot;,
+  &quot;agijobs&quot;: {
+    &quot;repository&quot;: &quot;https://github.com/MontrealAI/AGIJobsv0&quot;,
+    &quot;revision&quot;: &quot;ead296b4f515580c108ebae13e993eb4a83d780d&quot;,
+    &quot;license&quot;: &quot;MIT&quot;,
+    &quot;scope&quot;: &quot;Unmodified compiler, templates, schema validation and integrity modules. No network or settlement adapter.&quot;,
+    &quot;files&quot;: [
+      {
+        &quot;path&quot;: &quot;packages/successor-core/src/integrity.mjs&quot;,
+        &quot;sha256&quot;: &quot;164000134cc9c8b54209c420a348e3e5c324ebf7ff8f71fc84dc44812345c428&quot;
+      },
+      {
+        &quot;path&quot;: &quot;packages/successor-core/src/domain.mjs&quot;,
+        &quot;sha256&quot;: &quot;2869bb750a408e12ada19f6d0b216d47c3b9f67fc66039db4372dae8430e47a3&quot;
+      },
+      {
+        &quot;path&quot;: &quot;packages/successor-core/src/templates.mjs&quot;,
+        &quot;sha256&quot;: &quot;bc035b1c38b36d2db24031ac92fb193946df9cf4f180120394506a8802be2b31&quot;
+      },
+      {
+        &quot;path&quot;: &quot;packages/successor-core/src/compiler.mjs&quot;,
+        &quot;sha256&quot;: &quot;5e4fc86d78af7a22e915d8b19803fc219cb68b9b73201f47cf1f643f19380762&quot;
+      }
+    ]
+  }
+}</pre></details></div></section>
+<section class="wrap section" aria-labelledby="next-title"><p class="eyebrow" data-word="next-label">TURN THE EXAMPLE INTO YOUR MISSION</p><h2 id="next-title" data-word="next-title">Build. Prove. Then decide.</h2><div class="trio"><article><h3 data-word="next1">Choose a useful, testable task</h3><p data-word="next1-text">Start with a public-data calculation, an open-source feature or a numerical reproduction. Specify rights, expected outputs, failure limits, reviewer time and a reversible budget.</p></article><article><h3 data-word="next2">Commission bounded work</h3><p data-word="next2-text">Use the exported job briefs to agree on deliverables. An operator must select and commission the market, identities, evidence interface and settlement path. This workshop posts no live jobs.</p></article><article><h3 data-word="next3">Earn the next permission</h3><p data-word="next3-text">Freeze the complete candidate. Have independent reviewers compare it with the incumbent and best credible alternative on protected fresh work, including full costs. Only a separate human decision can grant scoped, expiring, revocable authority.</p></article></div><details><summary data-word="native">Run the same Alpha request in your installed runtime</summary><p data-word="native-text">After a build, download the Alpha runtime request. With alpha-agent installed, run the command below. The result is a separate local rehearsal; use the full Alpha workspace to inspect it.</p><pre>alpha-agent successor-run request.json --output result.json</pre><a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/" data-word="full-lab">Open the full Alpha workspace ↗</a></details></section>
+<section class="wrap section" id="contracts" aria-labelledby="contracts-title"><p class="eyebrow" data-word="contracts-label">RECORDED ETHEREUM MAINNET DEPLOYMENTS</p><h2 id="contracts-title" data-word="contracts-title">Two deployed suites. The same $AGIALPHA.</h2><p data-word="contract-scope">All 29 instances below come from the public 11–12 October 2026 records. The shared token has 18 decimals. These records identify deployments; they are not a live readiness monitor.</p><div class="records"><details><summary>Alpha Ascension · 5 contracts · 2026-10-11</summary><a class="source" href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/755f678954be8e334e69e4d37f56f3fe10da2d84/deployments/ethereum-mainnet/2026-10-11/manifest.json">Dated source record / Dossier source daté ↗</a><div class="contract"><strong>AscensionAccess</strong><p>ENS identity and participant admission / Identité ENS et admission des participants</p><a href="https://etherscan.io/address/0x36f8C079fEEBC81c5AF30D71be5017037246a32e#code"><code>0x36f8C079fEEBC81c5AF30D71be5017037246a32e</code></a></div><div class="contract"><strong>NovaSeed</strong><p>Ownership of a plan record/token and its lineage / Propriété du jeton associé au plan et filiation du dossier</p><a href="https://etherscan.io/address/0xFA4737Ba7cF111EBb0840aA300BC61D84d303449#code"><code>0xFA4737Ba7cF111EBb0840aA300BC61D84d303449</code></a></div><div class="contract"><strong>AscensionRiskOracle</strong><p>Staked risk review and reviewer availability / Évaluation du risque avec garantie et disponibilité des validateurs</p><a href="https://etherscan.io/address/0x06cb4D684628846B048d88CCf8C03c4Cfb74f149#code"><code>0x06cb4D684628846B048d88CCf8C03c4Cfb74f149</code></a></div><div class="contract"><strong>AscensionJobMarket</strong><p>Auctions, work review and settlement / Enchères, validation du travail et règlement</p><a href="https://etherscan.io/address/0x86f84E173A7a1a4588f4e757552F20f7C58e61E8#code"><code>0x86f84E173A7a1a4588f4e757552F20f7C58e61E8</code></a></div><div class="contract"><strong>AscensionMark</strong><p>Funding restricted to the committed work plan / Financement réservé au plan de travail engagé</p><a href="https://etherscan.io/address/0xa28dA507f7F9AFF8910f1F7cB5d5b8238F5Db625#code"><code>0xa28dA507f7F9AFF8910f1F7cB5d5b8238F5Db625</code></a></div></details>
+<details><summary>AGI Jobs · 24 instances · 2026-10-12</summary><a class="source" href="https://github.com/MontrealAI/AGIJobsv0/blob/a1dea46d2f9dfa5680d11e24529f107d65cd4369/docs/deployments/ethereum-mainnet-2026-10-12.json">Dated source record / Dossier source daté ↗</a><div class="contract"><strong>Deployer</strong><p>Deployment coordinator / Coordinateur du déploiement</p><a href="https://etherscan.io/address/0xeF1Be4B8251a9C4a584140C113508B95fd8B2543#code"><code>0xeF1Be4B8251a9C4a584140C113508B95fd8B2543</code></a></div><div class="contract"><strong>StakeManager</strong><p>Stake and escrow accounting / Comptabilité des garanties et fonds réservés</p><a href="https://etherscan.io/address/0xFd970F60363984A6274342776D34423EC37b5432#code"><code>0xFd970F60363984A6274342776D34423EC37b5432</code></a></div><div class="contract"><strong>JobRegistry</strong><p>Job terms and lifecycle / Conditions et cycle de vie des missions</p><a href="https://etherscan.io/address/0x72Ec2CcC9403b643C4d6CA3eF05E06ca8faa3084#code"><code>0x72Ec2CcC9403b643C4d6CA3eF05E06ca8faa3084</code></a></div><div class="contract"><strong>ValidationModule</strong><p>Review coordination / Coordination des validations</p><a href="https://etherscan.io/address/0xCcfC0Adae434446D1809f0551b34990dE5fBe3eA#code"><code>0xCcfC0Adae434446D1809f0551b34990dE5fBe3eA</code></a></div><div class="contract"><strong>ReputationEngine</strong><p>Work reputation records / Historique de réputation</p><a href="https://etherscan.io/address/0x863B985A3a1a5fFf292178aC91Cd75d62F2b7664#code"><code>0x863B985A3a1a5fFf292178aC91Cd75d62F2b7664</code></a></div><div class="contract"><strong>ArbitratorCommittee</strong><p>Dispute review committee / Comité d’arbitrage des litiges</p><a href="https://etherscan.io/address/0xF8eBD86d66CDda12C3F881a38c5e5db4FeCeb2d1#code"><code>0xF8eBD86d66CDda12C3F881a38c5e5db4FeCeb2d1</code></a></div><div class="contract"><strong>DisputeModule</strong><p>Dispute handling / Traitement des litiges</p><a href="https://etherscan.io/address/0x946A84df069764f18eE4A472Cc67890d585AC6Bd#code"><code>0x946A84df069764f18eE4A472Cc67890d585AC6Bd</code></a></div><div class="contract"><strong>CertificateNFT</strong><p>Completion certificate records / Certificats de réalisation</p><a href="https://etherscan.io/address/0xd3851E3525080d8914e282Cc89Ff40cD7D4be77D#code"><code>0xd3851E3525080d8914e282Cc89Ff40cD7D4be77D</code></a></div><div class="contract"><strong>FeePool</strong><p>Protocol fee accounting / Comptabilité des frais du protocole</p><a href="https://etherscan.io/address/0xa6091C773f3e400124744cc2bb47f16D347cA091#code"><code>0xa6091C773f3e400124744cc2bb47f16D347cA091</code></a></div><div class="contract"><strong>IdentityRegistry</strong><p>Participant identity checks / Vérification de l’identité des participants</p><a href="https://etherscan.io/address/0xFfE52FB27d66dcCCDF03376b400d6E399DeC3EEC#code"><code>0xFfE52FB27d66dcCCDF03376b400d6E399DeC3EEC</code></a></div><div class="contract"><strong>PlatformRegistry</strong><p>Platform registration / Registre des plateformes</p><a href="https://etherscan.io/address/0x1cfd99F0a4937BD279aBa93c1184a270FEe6FE21#code"><code>0x1cfd99F0a4937BD279aBa93c1184a270FEe6FE21</code></a></div><div class="contract"><strong>JobRouter</strong><p>Job routing interface / Interface d’acheminement des missions</p><a href="https://etherscan.io/address/0xb471BE24a09345C503eaA55B2A490f4d9488A37E#code"><code>0xb471BE24a09345C503eaA55B2A490f4d9488A37E</code></a></div><div class="contract"><strong>PlatformIncentives</strong><p>Platform incentives / Incitations des plateformes</p><a href="https://etherscan.io/address/0x243c6D5B1104d76c7dfE31418b14Ea1a4DB2a0d0#code"><code>0x243c6D5B1104d76c7dfE31418b14Ea1a4DB2a0d0</code></a></div><div class="contract"><strong>SystemPause</strong><p>Coordinated pause controls / Commandes de pause coordonnées</p><a href="https://etherscan.io/address/0xcAEf0CD10Bf7DfB3894362D2Ddd69D26D771BCd2#code"><code>0xcAEf0CD10Bf7DfB3894362D2Ddd69D26D771BCd2</code></a></div><div class="contract"><strong>JobRegistryConfiguration</strong><p>Fixed implementation used by JobRegistry / Implémentation fixe utilisée par JobRegistry</p><a href="https://etherscan.io/address/0x175B9087a8d088073C9896F0CbF7b072b6ED11Bf#code"><code>0x175B9087a8d088073C9896F0CbF7b072b6ED11Bf</code></a></div><div class="contract"><strong>JobRegistryLifecycle</strong><p>Fixed implementation used by JobRegistry / Implémentation fixe utilisée par JobRegistry</p><a href="https://etherscan.io/address/0x4f40CE804DD40A87667bDD0e03d8D5A2bA402FB6#code"><code>0x4f40CE804DD40A87667bDD0e03d8D5A2bA402FB6</code></a></div><div class="contract"><strong>JobRegistrySettlement</strong><p>Fixed implementation used by JobRegistry / Implémentation fixe utilisée par JobRegistry</p><a href="https://etherscan.io/address/0x70EBFBa633E1519c9b4a5A659A9137Fd31662d0e#code"><code>0x70EBFBa633E1519c9b4a5A659A9137Fd31662d0e</code></a></div><div class="contract"><strong>StakeManagerConfiguration</strong><p>Fixed implementation used by StakeManager / Implémentation fixe utilisée par StakeManager</p><a href="https://etherscan.io/address/0x6D46fF00d11acF432E4E8f882EABB9C974F0d72E#code"><code>0x6D46fF00d11acF432E4E8f882EABB9C974F0d72E</code></a></div><div class="contract"><strong>StakeManagerStaking</strong><p>Fixed implementation used by StakeManager / Implémentation fixe utilisée par StakeManager</p><a href="https://etherscan.io/address/0x44dA2237A94B4b07B9C1e3E44742C9AF4AA77a7A#code"><code>0x44dA2237A94B4b07B9C1e3E44742C9AF4AA77a7A</code></a></div><div class="contract"><strong>StakeManagerEscrow</strong><p>Fixed implementation used by StakeManager / Implémentation fixe utilisée par StakeManager</p><a href="https://etherscan.io/address/0x97A17aAC4F6bD865d9e38d53411526B3291e88ae#code"><code>0x97A17aAC4F6bD865d9e38d53411526B3291e88ae</code></a></div><div class="contract"><strong>StakeManagerSlashing</strong><p>Fixed implementation used by StakeManager / Implémentation fixe utilisée par StakeManager</p><a href="https://etherscan.io/address/0xEbB4c5FB19fe64712Fe8996638bEf092aa8347F5#code"><code>0xEbB4c5FB19fe64712Fe8996638bEf092aa8347F5</code></a></div><div class="contract"><strong>ValidationModuleConfiguration</strong><p>Fixed implementation used by ValidationModule / Implémentation fixe utilisée par ValidationModule</p><a href="https://etherscan.io/address/0x53221f2DF17EbD5F022DBa1eAcc856957074c723#code"><code>0x53221f2DF17EbD5F022DBa1eAcc856957074c723</code></a></div><div class="contract"><strong>ValidationModuleVoting</strong><p>Fixed implementation used by ValidationModule / Implémentation fixe utilisée par ValidationModule</p><a href="https://etherscan.io/address/0x04af6F94C7F74933BEeE4f6D39ceC4B2d9f7A42A#code"><code>0x04af6F94C7F74933BEeE4f6D39ceC4B2d9f7A42A</code></a></div><div class="contract"><strong>ValidationModuleSelection</strong><p>Fixed implementation used by ValidationModule / Implémentation fixe utilisée par ValidationModule</p><a href="https://etherscan.io/address/0x5454686c3F6866fA958A4D6Ea87c596E56BbA625#code"><code>0x5454686c3F6866fA958A4D6Ea87c596E56BbA625</code></a></div></details></div><p class="notice" data-word="routing">The deployed Alpha MARK is fixed to Alpha’s own market. It does not route funds into AGIJobsv0. The Alpha deployment predates later safeguards; Jobs’ dated record does not open live intake. Review current readiness before any live funding.</p><div class="links"><a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/agent/MAINNET_DEPLOYMENT/" data-word="alpha-readiness">Alpha deployment & readiness ↗</a><a href="https://github.com/MontrealAI/AGIJobsv0/blob/main/docs/production/readiness.md" data-word="jobs-readiness">AGI Jobs readiness ↗</a></div></section>
+<section class="wrap section questions"><h2 data-word="questions">A few clear answers.</h2><details><summary data-word="is-asi">Have I created Specialist ASI?</summary><p data-word="is-asi-text">You have built a reproducible candidate example. Specialist ASI is a mission-bounded designation earned through independent comparative proof. SUCCESSOR Ω additionally requires separate accountable admission. This workshop grants neither.</p></details><details><summary data-word="ownership">What do I own?</summary><p data-word="ownership-text">You control your downloaded files, mission notes and results. The included Alpha code is Apache 2.0 and the AGI Jobs compiler is MIT licensed. Third-party rights remain in force. Exclusive IP, legal ownership of commissioned work and provider portability must be established separately.</p></details><details><summary data-word="models">Where are the neural models?</summary><p data-word="models-text">This first example uses deterministic code so you can inspect every result. A neural-symbolic successor may add replaceable models and executable world programs through separately bounded jobs. It still needs the same mission, evidence, costs, rollback and admission checks.</p></details><details><summary data-word="papers">How does this relate to the four SUCCESSOR Ω guides?</summary><p data-word="papers-text">It makes their common cycle tangible: select a reversible mission, constitute bounded jobs, form and freeze a candidate, compare it, preserve useful evidence, and keep admission separate. Public browser cases are a teaching Gym; they cannot substitute for protected independent evaluation.</p></details></section>
+</main><footer class="wrap"><p>SUCCESSOR Ω · Alpha Agent × AGI Jobs</p><div class="links"><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/build-successor" data-word="source">Source & reproduction guide ↗</a><a href="https://montrealai.github.io/AGIJobsv0/" data-word="jobs-home">Explore AGI Jobs ↗</a><a href="https://montrealai.github.io/AGI-Alpha-Agent-v0/DISCLAIMER_SNIPPET/">docs/DISCLAIMER_SNIPPET.md</a></div><details><summary data-word="licenses">Included software licenses</summary><pre>                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+
+AGI Jobs compiler:
+MIT License
+
+Copyright (c) 2025 MONTREAL.AI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre></details></footer>
+<script type="application/json" id="saved-state">{}</script><script>
+(() => {
+'use strict';
+const module_1 = (() => {
+// SPDX-License-Identifier: Apache-2.0
+/** Fixed, bounded aggregation engines. No generated JavaScript is executed. */
+const VERSION = 'successor-browser-v1';
+const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join('|') === [...keys].sort().join('|');
+const integer = (value, low, high) => Number.isSafeInteger(value) && value >= low && value <= high;
+function scalar(value) {
+    if (typeof value !== 'string') return false;
+    for (let i = 0; i < value.length; i++) {
+        const c = value.charCodeAt(i);
+        if (c >= 0xd800 && c <= 0xdbff) {
+            const next = value.charCodeAt(++i);
+            if (!(next >= 0xdc00 && next <= 0xdfff)) return false;
+        } else if (c >= 0xdc00 && c <= 0xdfff) return false;
+    }
+    return true;
+}
+function canonical(value) {
+    let nodes = 0;
+    function encode(item, depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
+        if (item === null || typeof item === 'boolean') return JSON.stringify(item);
+        if (typeof item === 'string' && scalar(item)) return JSON.stringify(item);
+        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return String(item);
+        if (Array.isArray(item)) {
+            for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
+            return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
+        }
+        if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
+            return '{' + Object.keys(item).sort().map(key => {
+                if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
+                return JSON.stringify(key) + ':' + encode(item[key], depth + 1);
+            }).join(',') + '}';
+        }
+        throw Error('Unsupported JSON value; integers and Unicode scalars required');
+    }
+    const result = encode(value);
+    if (new TextEncoder().encode(result).length > 2000000) throw Error('Canonical JSON exceeds 2 MB');
+    return result;
+}
+async function digest(domain, value) {
+    if (!/^[a-z][a-z0-9-]{0,63}$/.test(domain)) throw Error('Invalid digest domain');
+    const bytes = new TextEncoder().encode('successor-omega/v1:' + domain + '\0' + canonical(value));
+    return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), n => n.toString(16).padStart(2, '0')).join('');
+}
+/** Parse untrusted imports before they can allocate large or deeply nested objects. */
+function parseBounded(text) {
+    if (typeof text !== 'string' || new TextEncoder().encode(text).length > 2_000_000) throw Error('Import exceeds 2 MB');
+    let pos = 0, nodes = 0;
+    const ws = () => { while (/[\x20\t\n\r]/.test(text[pos] || '\u0000')) pos++; };
+    const string = () => {
+        const start = pos++;
+        while (pos < text.length) {
+            if (text[pos] === '\\') { pos += 2; continue; }
+            if (text[pos++] === '"') {
+                const value = JSON.parse(text.slice(start, pos));
+                if (!scalar(value)) throw Error('Malformed Unicode');
+                return value;
+            }
+        }
+        throw Error('Unterminated string');
+    };
+    function read(depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('Import complexity exceeds limit');
+        ws();
+        if (text[pos] === '"') return string();
+        if (text[pos] === '[' || text[pos] === '{') {
+            const object = text[pos++] === '{', end = object ? '}' : ']';
+            const value = object ? Object.create(null) : [];
+            ws(); if (text[pos] === end) { pos++; return value; }
+            while (true) {
+                ws();
+                if (object) {
+                    if (text[pos] !== '"') throw Error('Expected object key');
+                    const key = string(); ws();
+                    if (Object.hasOwn(value, key)) throw Error('Duplicate JSON key');
+                    if (text[pos++] !== ':') throw Error('Expected colon');
+                    value[key] = read(depth + 1);
+                } else value.push(read(depth + 1));
+                ws(); const next = text[pos++];
+                if (next === end) break;
+                if (next !== ',') throw Error('Expected comma');
+            }
+            return value;
+        }
+        for (const [token, value] of [['true', true], ['false', false], ['null', null]]) {
+            if (text.startsWith(token, pos)) { pos += token.length; return value; }
+        }
+        const match = /^-?(?:0|[1-9]\d*)(?![\d.eE+-])/.exec(text.slice(pos));
+        if (!match) throw Error('Expected integer JSON value');
+        pos += match[0].length; const value = Number(match[0]);
+        if (!Number.isSafeInteger(value) || Object.is(value, -0)) throw Error('Unsafe integer');
+        return value;
+    }
+    const value = read(); ws();
+    if (pos !== text.length) throw Error('Trailing JSON content');
+    canonical(value);
+    return value;
+}
+function validateRequest(request) {
+    const keys = ['schema_version', 'kind', 'request_id', 'mission', 'seed', 'max_candidates', 'formation_trials', 'max_events', 'language'];
+    if (!request || typeof request !== 'object' || Array.isArray(request) || !Object.hasOwn(request, 'request_id') || Object.keys(request).some(key => !keys.includes(key))) throw Error('Invalid versioned rehearsal request');
+    request = {schema_version: 1, kind: 'successor-rehearsal', mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...request};
+    if (!exact(request, keys) || request.schema_version !== 1 || request.kind !== 'successor-rehearsal' || request.mission !== 'streaming-metrics-v1' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(request.request_id) || !integer(request.seed, 0, 4294967295) || !integer(request.max_candidates, 2, 12) || !integer(request.formation_trials, 1, 6) || !integer(request.max_events, 64, 20000) || !['en', 'fr'].includes(request.language)) throw Error('Invalid versioned rehearsal request');
+    return structuredClone(request);
+}
+function newRequest(options = {}) {
+    return validateRequest({schema_version: 1, kind: 'successor-rehearsal', request_id: crypto.randomUUID(), mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...options});
+}
+function order(a, b) {
+    const aa = Array.from(a, c => c.codePointAt(0)), bb = Array.from(b, c => c.codePointAt(0));
+    for (let i = 0; i < Math.min(aa.length, bb.length); i++) if (aa[i] !== bb[i]) return aa[i] - bb[i];
+    return aa.length - bb.length;
+}
+const rowOrder = (a, b) => order(a.day, b.day) || order(a.service, b.service);
+function validateEvents(events) {
+    if (!Array.isArray(events) || events.length > 20000) throw Error('Event count exceeds mission bound');
+    for (const e of events) {
+        if (!exact(e, ['day', 'service', 'duration_us', 'ok']) || !scalar(e.day) || !scalar(e.service) || !integer(Array.from(e.day).length, 1, 64) || !integer(Array.from(e.service).length, 1, 64) || !integer(e.duration_us, 0, 1000000000) || typeof e.ok !== 'boolean') throw Error('Malformed aggregation event');
+    }
+}
+const makeRow = e => ({day: e.day, service: e.service, count: 0, total_duration_us: 0, max_duration_us: 0, error_count: 0});
+function update(row, e, kind = 'builtin') {
+    row.count++; row.total_duration_us += e.duration_us; row.error_count += Number(!e.ok);
+    if (kind === 'builtin') row.max_duration_us = Math.max(row.max_duration_us, e.duration_us);
+    else if (e.duration_us > row.max_duration_us) row.max_duration_us = e.duration_us;
+}
+function current(events) {
+    validateEvents(events); const groups = new Map();
+    for (const e of events) {
+        const key = JSON.stringify([e.day, e.service]);
+        if (!groups.has(key)) groups.set(key, makeRow(e));
+        update(groups.get(key), e);
+    }
+    return [...groups.values()].sort(rowOrder);
+}
+function beta(events) {
+    validateEvents(events); const sorted = [...events].sort(rowOrder), rows = [];
+    for (const e of sorted) {
+        let row = rows[rows.length - 1];
+        if (!row || row.day !== e.day || row.service !== e.service) { row = makeRow(e); rows.push(row); }
+        row.count += 1; row.total_duration_us += e.duration_us;
+        row.error_count += e.ok ? 0 : 1;
+        row.max_duration_us = row.max_duration_us >= e.duration_us ? row.max_duration_us : e.duration_us;
+    }
+    return rows;
+}
+function validateCandidate(c) {
+    if (!exact(c, ['version', 'layout', 'cache_last', 'update']) || c.version !== 1 || !['nested', 'tuple'].includes(c.layout) || typeof c.cache_last !== 'boolean' || !['branch', 'builtin'].includes(c.update)) throw Error('Candidate is outside the fixed grammar');
+    return c;
+}
+function candidate(events, config) {
+    validateEvents(events); validateCandidate(config);
+    const groups = new Map(), rows = []; let last = null;
+    for (const e of events) {
+        let row;
+        if (config.cache_last && last && e.day === last.day && e.service === last.service) row = last;
+        else if (config.layout === 'nested') {
+            if (!groups.has(e.day)) groups.set(e.day, new Map());
+            const services = groups.get(e.day);
+            row = services.get(e.service);
+            if (!row) { row = makeRow(e); services.set(e.service, row); rows.push(row); }
+        } else {
+            const key = JSON.stringify([e.day, e.service]); row = groups.get(key);
+            if (!row) { row = makeRow(e); groups.set(key, row); rows.push(row); }
+        }
+        update(row, e, config.update); last = row;
+    }
+    return rows.sort(rowOrder);
+}
+function generateCandidates(seed, count) {
+    if (!integer(count, 2, 12)) throw Error('Candidate count outside bound');
+    const out = [];
+    // Eight complete compositions; repeated configuration is never represented as a new challenger.
+    for (let i = 0; i < Math.min(count, 8); i++) {
+        const bits = (i + (seed % 8)) % 8;
+        out.push({version: 1, layout: bits & 1 ? 'nested' : 'tuple', cache_last: Boolean(bits & 2), update: bits & 4 ? 'branch' : 'builtin'});
+    }
+    return out;
+}
+function workload(seed, count, mode = 'mixed') {
+    let state = seed >>> 0;
+    const next = () => (state = (Math.imul(state, 1664525) + 1013904223) >>> 0);
+    const names = ['api', 'résumé', '東京', '🙂', '__proto__', '\ue000', '𝄞'];
+    return Array.from({length: count}, (_, i) => ({day: 'day-' + (next() % (mode === 'high' ? 97 : 3)), service: mode === 'high' ? names[next() % names.length] + i : names[next() % names.length], duration_us: next() % 1000000001, ok: next() % 5 !== 0}));
+}
+const pause = () => new Promise(resolve => setTimeout(resolve, 0));
+function measured(fn, events) {
+    const start = performance.now(); const result = fn(events);
+    return {elapsed_ns: Math.max(1, Math.round((performance.now() - start) * 1000000)), rows: result.length, result};
+}
+function correct(fn) {
+    const valid = [[], [{day: '🙂', service: '__proto__', duration_us: 1000000000, ok: false}], workload(12, 64, 'high'), workload(98, 120)];
+    if (!valid.every(events => canonical(fn(events)) === canonical(beta(events)))) return false;
+    const bad = [[{day: '', service: 'x', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: true, ok: true}], [{day: 'd', service: 'x', duration_us: 1, ok: 'true'}], [{day: 'd', service: '\ud800', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: -1, ok: true}]];
+    return bad.every(events => { try { fn(events); return false; } catch { return true; } });
+}
+function abort(signal) { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); }
+async function discover(request, {signal, onProgress = () => {}, preferred = null} = {}) {
+    request = validateRequest(request); const configurations = generateCandidates(request.seed, request.max_candidates);
+    configurations.sort((a, b) => Number(b.layout === 'nested') - Number(a.layout === 'nested'));
+    if (preferred) { validateCandidate(preferred); configurations.sort((a, b) => Number(canonical(b) === canonical(preferred)) - Number(canonical(a) === canonical(preferred))); }
+    const events = workload(request.seed, request.max_events), attempts = [];
+    const world = {version: 1, prediction: 'nested map reduces tuple-key serialization', uncertainty: 'allocation and sorting may dominate', experiment: 'prioritize nested-map compositions, then test tuple-map alternatives within the same budget', selection_rule: 'minimum measured development elapsed_ns among correct candidates; not final proof'};
+    for (const config of configurations) {
+        abort(signal); await pause(); abort(signal);
+        const fn = values => candidate(values, config), pass = correct(fn), measurement = measured(fn, events);
+        const attempt = {config, construction: {operator: 'bounded-grammar-composition', seed: request.seed, parent: VERSION}, artifact_hash: await digest('candidate', config), correctness: pass, elapsed_ns: measurement.elapsed_ns, rows: measurement.rows};
+        attempts.push(attempt); onProgress(attempts.length, configurations.length);
+    }
+    const nested = attempts.filter(a => a.config.layout === 'nested'), tuples = attempts.filter(a => a.config.layout === 'tuple');
+    world.observation = {nested_mean_ns: Math.round(nested.reduce((sum, a) => sum + a.elapsed_ns, 0) / (nested.length || 1)), tuple_mean_ns: Math.round(tuples.reduce((sum, a) => sum + a.elapsed_ns, 0) / (tuples.length || 1)), interpretation: 'development observation only; confounded by composition and browser timing'};
+    world.falsified_in_this_run = world.observation.nested_mean_ns >= world.observation.tuple_mean_ns;
+    const feasible = attempts.filter(a => a.correctness).sort((a, b) => a.elapsed_ns - b.elapsed_ns);
+    if (!feasible.length) throw Error('No correct candidate; retain Current');
+    return {world, attempts, selected: feasible[0], generation_budget: request.max_candidates, actual_candidates: configurations.length, source: VERSION};
+}
+async function freeze(request, discovery, sourceHash) {
+    if (!/^[0-9a-f]{64}$/.test(sourceHash)) throw Error('Exact engine source digest required');
+    const manifest = {schema_version: 1, request_hash: await digest('request', validateRequest(request)), grammar: discovery.selected.config, candidate_hash: discovery.selected.artifact_hash, engine: VERSION, engine_source_hash: sourceHash, comparators: ['current-one-pass-map-v1', 'beta-sorted-reduction-v1'], protocol: 'browser-local-aggregation-v1', correctness_required: true, minimum_speedup_ppm: 50000, costs: {money: null, review: null, memory: null}, authority: []};
+    return {manifest, release_hash: await digest('release', manifest)};
+}
+async function evaluate(request, frozen, {signal} = {}) {
+    request = validateRequest(request);
+    if (frozen.manifest.request_hash !== await digest('request', request) || frozen.release_hash !== await digest('release', frozen.manifest)) throw Error('Frozen release or request changed');
+    if (frozen.manifest.candidate_hash !== await digest('candidate', frozen.manifest.grammar) || frozen.manifest.protocol !== 'browser-local-aggregation-v1' || frozen.manifest.minimum_speedup_ppm !== 50000 || frozen.manifest.correctness_required !== true || canonical(frozen.manifest.comparators) !== canonical(['current-one-pass-map-v1', 'beta-sorted-reduction-v1'])) throw Error('Candidate or protocol binding mismatch');
+    const config = validateCandidate(frozen.manifest.grammar), fn = e => candidate(e, config), cases = [];
+    const correctness = correct(fn);
+    for (let i = 0; i < 6; i++) {
+        abort(signal); await pause(); abort(signal);
+        const events = workload((request.seed + 100003 + i * 907) >>> 0, i < 2 ? 64 : request.max_events, i % 2 ? 'high' : 'mixed');
+        const samples = [measured(current, events), measured(beta, events), measured(fn, events)];
+        const exact_output = canonical(samples[0].result) === canonical(samples[1].result) && canonical(samples[1].result) === canonical(samples[2].result);
+        cases.push({case_index: i, events: events.length, current_ns: samples[0].elapsed_ns, beta_ns: samples[1].elapsed_ns, candidate_ns: samples[2].elapsed_ns, exact_output});
+    }
+    const totals = {current: 0, beta: 0, candidate: 0};
+    for (const c of cases) { totals.current += c.current_ns; totals.beta += c.beta_ns; totals.candidate += c.candidate_ns; }
+    const best_comparator = totals.current <= totals.beta ? 'current' : 'beta';
+    const hard_gate = correctness && cases.every(c => c.exact_output);
+    return {schema_version: 1, scope: 'browser-rehearsal', release_hash: frozen.release_hash, cases, correctness: hard_gate, totals_ns: totals, best_comparator, local_verdict: !hard_gate ? 'FAIL' : totals.candidate >= totals[best_comparator] ? (best_comparator === 'beta' ? 'RETAIN_ALTERNATIVE' : 'RETAIN_INCUMBENT') : totals.candidate / totals[best_comparator] > 0.95 ? 'INSUFFICIENT_MARGIN' : 'LOCAL_SPEEDUP_OBSERVED', institutional_verdict: 'HOLD', missing: ['independent-verifier', 'frontier-comparator', 'measured-peak-memory', 'accepted-realized-economics', 'principal-issued-authority'], authority: [], timing_limitations: 'Single browser process; timer resolution, order, JIT and device load confound timings. Descriptive measurements only.'};
+}
+async function renew(request, discovery, {signal, onProgress = () => {}, engineSourceHash = null} = {}) {
+    request = validateRequest(request);
+    const trials = [];
+    for (let i = 0; i < request.formation_trials; i++) {
+        abort(signal);
+        const next = {...request, seed: (request.seed + 200003 + i * 997) >>> 0};
+        const control = await discover(next, {signal}), treatment = await discover(next, {signal, preferred: discovery.selected.config});
+        const controlFreeze = await freeze(next, control, engineSourceHash), treatmentFreeze = await freeze(next, treatment, engineSourceHash);
+        const controlEvaluation = await evaluate(next, controlFreeze, {signal}), treatmentEvaluation = await evaluate(next, treatmentFreeze, {signal});
+        trials.push({trial: i, seed: next.seed, control_attempts: control.attempts.length, treatment_attempts: treatment.attempts.length, control, treatment, control_release: controlFreeze, treatment_release: treatmentFreeze, control_evaluation: controlEvaluation, treatment_evaluation: treatmentEvaluation});
+        onProgress(i + 1, request.formation_trials);
+    }
+    return {generation: 2, active_proof: [], authority: [], memory: {permitted: ['configuration-order-hint'], excluded: ['final-cases', 'proof', 'grants']}, primary_metric: 'construction_attempts', interpretation: 'Descriptive matched trials; equal construction counts do not establish compounding.', trials};
+}
+// Canonical encoding and low-order rejection supplement WebCrypto verification.
+// Mathematical torsion encodings: @noble/curves 1.2.0 src/ed25519.ts ED25519_TORSION_SUBGROUP.
+const lowOrderY = new Set([
+    '0000000000000000000000000000000000000000000000000000000000000000',
+    '0100000000000000000000000000000000000000000000000000000000000000',
+    'ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f',
+    '26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05',
+    'c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a',
+]);
+const littleEndian = bytes => BigInt('0x' + [...bytes].reverse().map(v => v.toString(16).padStart(2, '0')).join(''));
+function validatePointEncoding(bytes) {
+    const y = bytes.slice(); y[31] &= 0x7f;
+    const hex = [...y].map(v => v.toString(16).padStart(2, '0')).join('');
+    if (littleEndian(y) >= (1n << 255n) - 19n || lowOrderY.has(hex)) throw Error('Non-canonical or low-order Ed25519 point');
+}
+function validateSignatureEncoding(key, signature) {
+    validatePointEncoding(key); validatePointEncoding(signature.slice(0, 32));
+    if (littleEndian(signature.slice(32)) >= (1n << 252n) + 27742317777372353535851937790883648493n) throw Error('Non-canonical Ed25519 scalar');
+}
+async function verifyNative(request, envelope) {
+    request = validateRequest(request);
+    if (!exact(envelope, ['schema_version', 'kind', 'request_hash', 'evidence', 'evidence_hash', 'scope', 'signature']) || envelope.schema_version !== 1 || envelope.kind !== 'successor-result' || envelope.scope !== 'local-native-rehearsal') throw Error('Unsupported native evidence envelope');
+    if (envelope.request_hash !== await digest('request', request)) throw Error('Native result belongs to a different request');
+    if (!envelope.evidence || envelope.evidence.scope !== envelope.scope || envelope.evidence.request_hash !== envelope.request_hash || !exact(envelope.evidence.request, Object.keys(request)) || canonical(envelope.evidence.request) !== canonical(request)) throw Error('Authenticated evidence request or scope mismatch');
+    if (envelope.evidence_hash !== await digest('evidence', envelope.evidence)) throw Error('Native evidence digest mismatch');
+    if (envelope.signature !== null) {
+        const signature = envelope.signature;
+        if (!exact(signature, ['public_key', 'signature']) || !/^[0-9a-f]{64}$/.test(signature.public_key) || !/^[A-Za-z0-9+/]{86}==$/.test(signature.signature)) throw Error('Malformed native signature');
+        const publicBytes = Uint8Array.from(signature.public_key.match(/../g), x => parseInt(x, 16));
+        const bytes = Uint8Array.from(atob(signature.signature), c => c.charCodeAt(0));
+        validateSignatureEncoding(publicBytes, bytes);
+        const key = await crypto.subtle.importKey('raw', publicBytes, {name: 'Ed25519'}, false, ['verify']);
+        const data = Uint8Array.from(envelope.evidence_hash.match(/../g), x => parseInt(x, 16));
+        if (!await crypto.subtle.verify('Ed25519', key, bytes, data)) throw Error('Invalid native signature');
+    }
+    return {scope: envelope.scope, integrity: 'request-and-evidence-digests-match', authenticity: 'unverified', authority: [], evidence: envelope.evidence};
+}
+
+return {VERSION, canonical, digest, parseBounded, validateRequest, newRequest, validateEvents, current, beta, validateCandidate, candidate, generateCandidates, workload, discover, freeze, evaluate, renew, verifyNative};
+})();
+const module_4 = (() => {
+const FORBIDDEN_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
+
+/** Deterministic JSON encoding. Ambiguous or non-JSON values are refused. */
+function canonicalize(value) {
+  const active = new Set();
+  let count = 0;
+  const encode = (item, depth) => {
+    if (++count > 100000 || depth > 64)
+      throw new TypeError('JSON_LIMIT_EXCEEDED');
+    if (item === null) return 'null';
+    if (typeof item === 'string') {
+      if (
+        item !== item.normalize('NFC') ||
+        /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(
+          item
+        )
+      )
+        throw new TypeError('NON_CANONICAL_UNICODE');
+      return JSON.stringify(item);
+    }
+    if (typeof item === 'boolean') return item ? 'true' : 'false';
+    if (typeof item === 'number') {
+      if (
+        !Number.isFinite(item) ||
+        Object.is(item, -0) ||
+        (Number.isInteger(item) && !Number.isSafeInteger(item))
+      )
+        throw new TypeError('UNSAFE_NUMBER');
+      return JSON.stringify(item);
+    }
+    if (typeof item !== 'object' || active.has(item))
+      throw new TypeError('NON_JSON_VALUE');
+    const proto = Object.getPrototypeOf(item);
+    if (
+      (Array.isArray(item) && proto !== Array.prototype) ||
+      (!Array.isArray(item) && proto !== Object.prototype && proto !== null)
+    )
+      throw new TypeError('NON_JSON_OBJECT');
+    active.add(item);
+    let encoded;
+    if (Object.getOwnPropertySymbols(item).length)
+      throw new TypeError('NON_JSON_SYMBOL');
+    if (Array.isArray(item)) {
+      const names = Object.getOwnPropertyNames(item);
+      if (
+        names.length !== item.length + 1 ||
+        Object.keys(item).length !== item.length
+      )
+        throw new TypeError('SPARSE_OR_EXTENDED_ARRAY');
+      for (let index = 0; index < item.length; index += 1) {
+        const descriptor = Object.getOwnPropertyDescriptor(item, String(index));
+        if (
+          !descriptor ||
+          descriptor.get ||
+          descriptor.set ||
+          !descriptor.enumerable
+        )
+          throw new TypeError('ACCESSOR_OR_SPARSE_ARRAY');
+      }
+      encoded = `[${Array.prototype.map
+        .call(item, (part) => encode(part, depth + 1))
+        .join(',')}]`;
+    } else {
+      const keys = Object.keys(item).sort();
+      for (const key of keys) {
+        if (FORBIDDEN_KEYS.has(key) || key !== key.normalize('NFC'))
+          throw new TypeError('UNSAFE_OBJECT_KEY');
+        if (
+          Object.getOwnPropertyDescriptor(item, key)?.get ||
+          Object.getOwnPropertyDescriptor(item, key)?.set
+        )
+          throw new TypeError('ACCESSOR_NOT_ALLOWED');
+      }
+      encoded = `{${keys
+        .map(
+          (key) => `${encode(key, depth + 1)}:${encode(item[key], depth + 1)}`
+        )
+        .join(',')}}`;
+    }
+    active.delete(item);
+    return encoded;
+  };
+  return encode(value, 0);
+}
+
+async function digestBytes(value) {
+  const bytes =
+    typeof value === 'string' ? new TextEncoder().encode(value) : value;
+  if (!(bytes instanceof Uint8Array)) throw new TypeError('BYTES_REQUIRED');
+  if (!globalThis.crypto?.subtle) throw new Error('WEBCRYPTO_UNAVAILABLE');
+  const digest = new Uint8Array(
+    await globalThis.crypto.subtle.digest('SHA-256', bytes)
+  );
+  return `sha256:${Array.from(digest, (byte) =>
+    byte.toString(16).padStart(2, '0')
+  ).join('')}`;
+}
+
+async function digestObject(domain, object) {
+  if (
+    typeof domain !== 'string' ||
+    !/^[a-zA-Z0-9][a-zA-Z0-9._:/-]{0,127}$/.test(domain)
+  )
+    throw new TypeError('INVALID_HASH_DOMAIN');
+  return digestBytes(
+    canonicalize({ hashFormat: 'successor-canonical-json-v1', domain, object })
+  );
+}
+
+function cloneJson(value) {
+  return JSON.parse(canonicalize(value));
+}
+
+return {canonicalize, digestBytes, digestObject, cloneJson};
+})();
+const module_3 = (() => {
+const { canonicalize, cloneJson } = module_4;
+
+const SCHEMA_VERSION = '1.0.0';
+const JOB_FAMILIES = Object.freeze([
+  'constitution',
+  'evidence',
+  'formation',
+  'challenge',
+  'verification',
+  'admission',
+  'renewal',
+]);
+const EDGE_KINDS = Object.freeze([
+  'evidence',
+  'control',
+  'challenge',
+  'rollback',
+  'invalidation',
+]);
+const JOB_STATES = Object.freeze([
+  'DRAFT',
+  'UNDERWRITTEN',
+  'AUTHORIZED',
+  'EXECUTING',
+  'VERIFIED',
+  'ACCEPTED',
+  'CHRONICLE_ELIGIBLE',
+  'REFUSED',
+  'FAILED',
+  'TIMED_OUT',
+  'REPAIR_REQUIRED',
+  'ROLLED_BACK',
+]);
+class SuccessorError extends Error {
+  constructor(code, message, { details = {}, retryable = false } = {}) {
+    super(message);
+    this.name = 'SuccessorError';
+    this.code = code;
+    this.details = details;
+    this.retryable = retryable;
+  }
+  toJSON() {
+    return {
+      code: this.code,
+      message: this.message,
+      details: this.details,
+      retryable: this.retryable,
+    };
+  }
+}
+function requireCondition(condition, code, message, details = {}) {
+  if (!condition) throw new SuccessorError(code, message, { details });
+}
+const fail = (path, message) => {
+  throw new SuccessorError('SCHEMA_INVALID', `${path}: ${message}`, {
+    details: { path },
+  });
+};
+function object(value, keys, required, path) {
+  if (!value || typeof value !== 'object' || Array.isArray(value))
+    fail(path, 'expected object');
+  for (const key of Object.keys(value))
+    if (!keys.includes(key)) fail(`${path}.${key}`, 'unknown field');
+  for (const key of required)
+    if (!Object.hasOwn(value, key)) fail(`${path}.${key}`, 'required field');
+}
+const text = (value, path) => {
+  if (typeof value !== 'string' || !value.trim() || value.length > 16000)
+    fail(path, 'expected nonempty bounded string');
+};
+const id = (value, path) => {
+  text(value, path);
+  if (!/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}$/.test(value))
+    fail(path, 'invalid identifier');
+};
+const list = (value, path, check = text, minimum = 0, maximum = 256) => {
+  if (!Array.isArray(value) || value.length < minimum || value.length > maximum)
+    fail(path, 'invalid list size');
+  value.forEach((entry, i) => check(entry, `${path}[${i}]`));
+};
+const integer = (value, path, min = 0, max = 1000000000) => {
+  if (!Number.isSafeInteger(value) || value < min || value > max)
+    fail(path, 'expected bounded integer');
+};
+const date = (value, path) => {
+  if (
+    typeof value !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/.test(value) ||
+    !Number.isFinite(Date.parse(value))
+  )
+    fail(path, 'expected UTC ISO timestamp');
+  const normalized = new Date(value).toISOString();
+  if (value !== normalized && value !== normalized.replace('.000Z', 'Z'))
+    fail(path, 'invalid calendar timestamp');
+};
+const choice = (value, values, path) => {
+  if (!values.includes(value))
+    fail(path, `expected one of ${values.join(', ')}`);
+};
+const unique = (values, path) => {
+  if (new Set(values).size !== values.length) fail(path, 'duplicate values');
+};
+const bool = (value, path) => {
+  if (typeof value !== 'boolean') fail(path, 'expected boolean');
+};
+function json(value) {
+  try {
+    canonicalize(value);
+  } catch (error) {
+    throw new SuccessorError('SCHEMA_INVALID', error.message);
+  }
+}
+function validateBudget(value, path = 'budget', mission = false) {
+  const fields = [
+    'unit',
+    'limitBaseUnits',
+    'maxDurationMs',
+    'maxRetries',
+    ...(mission ? ['maxJobs'] : []),
+  ];
+  object(value, fields, fields, path);
+  id(value.unit, `${path}.unit`);
+  if (
+    typeof value.limitBaseUnits !== 'string' ||
+    !/^(0|[1-9][0-9]{0,29})$/.test(value.limitBaseUnits)
+  )
+    fail(
+      `${path}.limitBaseUnits`,
+      'expected canonical unsigned integer string'
+    );
+  integer(value.maxDurationMs, `${path}.maxDurationMs`, 1, 86400000);
+  integer(value.maxRetries, `${path}.maxRetries`, 0, 100);
+  if (mission) integer(value.maxJobs, `${path}.maxJobs`, 1, 256);
+}
+function rollback(value, path) {
+  object(
+    value,
+    ['target', 'available', 'reason'],
+    ['target', 'available', 'reason'],
+    path
+  );
+  id(value.target, `${path}.target`);
+  bool(value.available, `${path}.available`);
+  text(value.reason, `${path}.reason`);
+}
+function reference(value, path) {
+  object(
+    value,
+    ['id', 'version', 'description'],
+    ['id', 'version', 'description'],
+    path
+  );
+  id(value.id, `${path}.id`);
+  id(value.version, `${path}.version`);
+  text(value.description, `${path}.description`);
+}
+function validateMission(input) {
+  json(input);
+  const fields = [
+    'schemaVersion',
+    'kind',
+    'missionId',
+    'institutionId',
+    'version',
+    'title',
+    'principal',
+    'beneficiary',
+    'objective',
+    'incumbent',
+    'alternatives',
+    'rights',
+    'hardGates',
+    'criticalFunctions',
+    'roles',
+    'budget',
+    'expiresAt',
+    'authorityCeiling',
+    'allowedTools',
+    'allowedActions',
+    'rollback',
+    'proofProtocol',
+  ];
+  object(input, fields, fields, 'mission');
+  requireCondition(
+    input.schemaVersion === SCHEMA_VERSION,
+    'SCHEMA_VERSION_UNSUPPORTED',
+    'Unsupported mission schema version'
+  );
+  choice(input.kind, ['MissionConstitution'], 'mission.kind');
+  for (const key of ['missionId', 'institutionId', 'version', 'principal'])
+    id(input[key], `mission.${key}`);
+  for (const key of ['title', 'beneficiary', 'objective'])
+    text(input[key], `mission.${key}`);
+  reference(input.incumbent, 'mission.incumbent');
+  list(input.alternatives, 'mission.alternatives', reference, 1, 32);
+  unique(
+    input.alternatives.map((alternative) => alternative.id),
+    'mission.alternatives'
+  );
+  list(
+    input.rights,
+    'mission.rights',
+    (right, path) => {
+      object(
+        right,
+        ['sourceId', 'license', 'dataClass', 'permittedUses', 'expiresAt'],
+        ['sourceId', 'license', 'dataClass', 'permittedUses', 'expiresAt'],
+        path
+      );
+      id(right.sourceId, `${path}.sourceId`);
+      text(right.license, `${path}.license`);
+      choice(
+        right.dataClass,
+        ['synthetic', 'public-licensed-nonpersonal'],
+        `${path}.dataClass`
+      );
+      list(right.permittedUses, `${path}.permittedUses`, id, 1, 20);
+      date(right.expiresAt, `${path}.expiresAt`);
+    },
+    1,
+    256
+  );
+  unique(
+    input.rights.map((right) => right.sourceId),
+    'mission.rights'
+  );
+  list(
+    input.hardGates,
+    'mission.hardGates',
+    (gate, path) => {
+      object(
+        gate,
+        ['id', 'description', 'maxViolations'],
+        ['id', 'description', 'maxViolations'],
+        path
+      );
+      id(gate.id, `${path}.id`);
+      text(gate.description, `${path}.description`);
+      integer(gate.maxViolations, `${path}.maxViolations`, 0, 100);
+    },
+    1,
+    64
+  );
+  unique(
+    input.hardGates.map((gate) => gate.id),
+    'mission.hardGates'
+  );
+  list(input.criticalFunctions, 'mission.criticalFunctions', id, 1, 64);
+  unique(input.criticalFunctions, 'mission.criticalFunctions');
+  object(
+    input.roles,
+    ['producer', 'verifier', 'acceptor', 'admitter'],
+    ['producer', 'verifier', 'acceptor', 'admitter'],
+    'mission.roles'
+  );
+  for (const [key, value] of Object.entries(input.roles))
+    id(value, `mission.roles.${key}`);
+  validateBudget(input.budget, 'mission.budget', true);
+  date(input.expiresAt, 'mission.expiresAt');
+  object(
+    input.authorityCeiling,
+    ['level', 'permittedActions', 'prohibitedActions', 'externalEffects'],
+    ['level', 'permittedActions', 'prohibitedActions', 'externalEffects'],
+    'mission.authorityCeiling'
+  );
+  choice(
+    input.authorityCeiling.level,
+    ['A0', 'A1', 'A2', 'A3', 'A4'],
+    'mission.authorityCeiling.level'
+  );
+  list(
+    input.authorityCeiling.permittedActions,
+    'mission.authorityCeiling.permittedActions',
+    id,
+    1
+  );
+  list(
+    input.authorityCeiling.prohibitedActions,
+    'mission.authorityCeiling.prohibitedActions',
+    id,
+    1
+  );
+  bool(
+    input.authorityCeiling.externalEffects,
+    'mission.authorityCeiling.externalEffects'
+  );
+  list(input.allowedTools, 'mission.allowedTools', id, 1);
+  list(input.allowedActions, 'mission.allowedActions', id, 1);
+  rollback(input.rollback, 'mission.rollback');
+  object(
+    input.proofProtocol,
+    [
+      'id',
+      'version',
+      'mode',
+      'formationOwner',
+      'custodian',
+      'requiredIndependence',
+      'minimumMargin',
+      'criticalErrorCeiling',
+      'scope',
+    ],
+    [
+      'id',
+      'version',
+      'mode',
+      'formationOwner',
+      'custodian',
+      'requiredIndependence',
+      'minimumMargin',
+      'criticalErrorCeiling',
+      'scope',
+    ],
+    'mission.proofProtocol'
+  );
+  for (const key of ['id', 'version', 'formationOwner', 'custodian'])
+    id(input.proofProtocol[key], `mission.proofProtocol.${key}`);
+  choice(
+    input.proofProtocol.mode,
+    ['SYNTHETIC_REHEARSAL', 'INDEPENDENT_REQUEST'],
+    'mission.proofProtocol.mode'
+  );
+  choice(
+    input.proofProtocol.requiredIndependence,
+    ['I0', 'I1', 'I2', 'I3', 'I4'],
+    'mission.proofProtocol.requiredIndependence'
+  );
+  if (
+    !Number.isFinite(input.proofProtocol.minimumMargin) ||
+    input.proofProtocol.minimumMargin < 0
+  )
+    fail('mission.proofProtocol.minimumMargin', 'expected nonnegative number');
+  integer(
+    input.proofProtocol.criticalErrorCeiling,
+    'mission.proofProtocol.criticalErrorCeiling',
+    0,
+    100
+  );
+  text(input.proofProtocol.scope, 'mission.proofProtocol.scope');
+  return cloneJson(input);
+}
+
+function validateWorkOrder(input) {
+  json(input);
+  const required = [
+    'schemaVersion',
+    'kind',
+    'jobId',
+    'missionId',
+    'version',
+    'family',
+    'objective',
+    'principal',
+    'actor',
+    'authorizedInputs',
+    'evidenceObligation',
+    'permittedTools',
+    'permittedActions',
+    'prohibitedActions',
+    'budget',
+    'expiresAt',
+    'outputSchema',
+    'verifier',
+    'acceptance',
+    'rollback',
+    'chronicle',
+    'covers',
+    'state',
+  ];
+  object(
+    input,
+    [...required, 'digest', 'sealed', 'signatureStatus'],
+    required,
+    'job'
+  );
+  requireCondition(
+    input.schemaVersion === SCHEMA_VERSION,
+    'SCHEMA_VERSION_UNSUPPORTED',
+    'Unsupported work-order schema version'
+  );
+  choice(input.kind, ['SealedWorkOrder'], 'job.kind');
+  for (const key of ['jobId', 'missionId', 'version', 'principal', 'actor'])
+    id(input[key], `job.${key}`);
+  choice(input.family, JOB_FAMILIES, 'job.family');
+  choice(input.state, JOB_STATES, 'job.state');
+  text(input.objective, 'job.objective');
+  for (const key of [
+    'authorizedInputs',
+    'evidenceObligation',
+    'permittedTools',
+    'permittedActions',
+    'prohibitedActions',
+    'covers',
+  ]) {
+    list(input[key], `job.${key}`, id, key === 'covers' ? 0 : 1);
+    unique(input[key], `job.${key}`);
+  }
+  validateBudget(input.budget, 'job.budget');
+  date(input.expiresAt, 'job.expiresAt');
+  object(
+    input.outputSchema,
+    ['type', 'required'],
+    ['type', 'required'],
+    'job.outputSchema'
+  );
+  choice(input.outputSchema.type, ['object'], 'job.outputSchema.type');
+  list(input.outputSchema.required, 'job.outputSchema.required', id, 1);
+  object(
+    input.verifier,
+    ['identity', 'method', 'independence'],
+    ['identity', 'method', 'independence'],
+    'job.verifier'
+  );
+  id(input.verifier.identity, 'job.verifier.identity');
+  text(input.verifier.method, 'job.verifier.method');
+  choice(
+    input.verifier.independence,
+    ['I0', 'I1', 'I2', 'I3', 'I4'],
+    'job.verifier.independence'
+  );
+  object(
+    input.acceptance,
+    ['owner', 'predicate', 'evidenceSources'],
+    ['owner', 'predicate', 'evidenceSources'],
+    'job.acceptance'
+  );
+  id(input.acceptance.owner, 'job.acceptance.owner');
+  text(input.acceptance.predicate, 'job.acceptance.predicate');
+  list(
+    input.acceptance.evidenceSources,
+    'job.acceptance.evidenceSources',
+    id,
+    1
+  );
+  rollback(input.rollback, 'job.rollback');
+  object(
+    input.chronicle,
+    ['eligible', 'rights', 'scope', 'expiresAt'],
+    ['eligible', 'rights', 'scope', 'expiresAt'],
+    'job.chronicle'
+  );
+  bool(input.chronicle.eligible, 'job.chronicle.eligible');
+  text(input.chronicle.rights, 'job.chronicle.rights');
+  text(input.chronicle.scope, 'job.chronicle.scope');
+  date(input.chronicle.expiresAt, 'job.chronicle.expiresAt');
+  if ('sealed' in input) bool(input.sealed, 'job.sealed');
+  if ('digest' in input && !/^sha256:[a-f0-9]{64}$/.test(input.digest))
+    fail('job.digest', 'expected SHA-256 digest');
+  if ('signatureStatus' in input)
+    choice(
+      input.signatureStatus,
+      ['UNSIGNED_COMMITMENT', 'FIXTURE_SIGNED', 'AUTHORIZED_SIGNATURE'],
+      'job.signatureStatus'
+    );
+  return cloneJson(input);
+}
+
+function validateGraph(input) {
+  json(input);
+  object(
+    input,
+    [
+      'schemaVersion',
+      'kind',
+      'graphId',
+      'missionId',
+      'version',
+      'nodes',
+      'edges',
+      'authorityCreated',
+      'digest',
+    ],
+    [
+      'schemaVersion',
+      'kind',
+      'graphId',
+      'missionId',
+      'version',
+      'nodes',
+      'edges',
+      'authorityCreated',
+    ],
+    'graph'
+  );
+  requireCondition(
+    input.schemaVersion === SCHEMA_VERSION,
+    'SCHEMA_VERSION_UNSUPPORTED',
+    'Unsupported graph schema version'
+  );
+  choice(input.kind, ['JobGraph'], 'graph.kind');
+  for (const key of ['graphId', 'missionId', 'version'])
+    id(input[key], `graph.${key}`);
+  list(input.nodes, 'graph.nodes', validateWorkOrder, 1, 256);
+  unique(
+    input.nodes.map((node) => node.jobId),
+    'graph.nodes'
+  );
+  list(
+    input.edges,
+    'graph.edges',
+    (edge, path) => {
+      object(edge, ['from', 'to', 'kind'], ['from', 'to', 'kind'], path);
+      id(edge.from, `${path}.from`);
+      id(edge.to, `${path}.to`);
+      choice(edge.kind, EDGE_KINDS, `${path}.kind`);
+    },
+    0,
+    2048
+  );
+  choice(input.authorityCreated, ['NONE'], 'graph.authorityCreated');
+  return cloneJson(input);
+}
+
+const FORWARD = {
+  DRAFT: 'UNDERWRITTEN',
+  UNDERWRITTEN: 'AUTHORIZED',
+  AUTHORIZED: 'EXECUTING',
+  EXECUTING: 'VERIFIED',
+  VERIFIED: 'ACCEPTED',
+  ACCEPTED: 'CHRONICLE_ELIGIBLE',
+};
+// Pure reducer: context must originate in a trusted runtime, never request JSON.
+function transitionJob(current, event, context = {}) {
+  const job = validateWorkOrder(current);
+  json(event);
+  object(
+    event,
+    [
+      'eventId',
+      'expectedState',
+      'to',
+      'actor',
+      'timestamp',
+      'evidence',
+      'reason',
+    ],
+    [
+      'eventId',
+      'expectedState',
+      'to',
+      'actor',
+      'timestamp',
+      'evidence',
+      'reason',
+    ],
+    'event'
+  );
+  id(event.eventId, 'event.eventId');
+  id(event.actor, 'event.actor');
+  date(event.timestamp, 'event.timestamp');
+  text(event.reason, 'event.reason');
+  list(event.evidence, 'event.evidence', id, 1);
+  requireCondition(
+    event.expectedState === job.state,
+    'STATE_CONFLICT',
+    'The job changed; reload before retrying'
+  );
+  const exceptional = [
+    'REFUSED',
+    'FAILED',
+    'TIMED_OUT',
+    'REPAIR_REQUIRED',
+    'ROLLED_BACK',
+  ];
+  requireCondition(
+    FORWARD[job.state] === event.to ||
+      (exceptional.includes(event.to) &&
+        !['CHRONICLE_ELIGIBLE', ...exceptional].includes(job.state)),
+    'TRANSITION_FORBIDDEN',
+    'This job transition is not permitted'
+  );
+  const owner =
+    event.to === 'VERIFIED'
+      ? job.verifier.identity
+      : ['ACCEPTED', 'CHRONICLE_ELIGIBLE'].includes(event.to)
+      ? job.acceptance.owner
+      : event.to === 'EXECUTING'
+      ? job.actor
+      : job.principal;
+  requireCondition(
+    event.actor === owner,
+    'ROLE_CONFLICT',
+    'The actor cannot authorize this transition'
+  );
+  if (['AUTHORIZED', 'EXECUTING'].includes(event.to)) {
+    requireCondition(
+      job.sealed === true && !!job.digest,
+      'JOB_UNSEALED',
+      'Seal the exact work order before authorization'
+    );
+    requireCondition(
+      context.sealValid === true,
+      'JOB_SEAL_UNVERIFIED',
+      'The runtime must cryptographically verify the immutable work-order seal'
+    );
+    requireCondition(
+      Date.parse(event.timestamp) < Date.parse(job.expiresAt),
+      'JOB_EXPIRED',
+      'The work order has expired'
+    );
+    requireCondition(
+      context.preconditionsValid === true,
+      'PRECONDITION_UNAVAILABLE',
+      'Rights, dependencies and budget must be validated by the runtime'
+    );
+  }
+  if (event.to === 'VERIFIED')
+    requireCondition(
+      context.verifierVerdict === 'PASS' && context.receiptValid === true,
+      'VERIFICATION_REQUIRED',
+      'A valid receipt and passing independent verdict are required'
+    );
+  if (event.to === 'ACCEPTED')
+    requireCondition(
+      context.acceptanceSatisfied === true,
+      'ACCEPTANCE_CRITERIA_UNMET',
+      'The runtime must verify the frozen deliverable acceptance predicate'
+    );
+  if (event.to === 'CHRONICLE_ELIGIBLE')
+    requireCondition(
+      job.chronicle.eligible && context.rightsCurrent === true,
+      'CHRONICLE_INELIGIBLE',
+      'Current reuse rights are required'
+    );
+  return { ...job, state: event.to };
+}
+
+return {SCHEMA_VERSION, JOB_FAMILIES, EDGE_KINDS, JOB_STATES, SuccessorError, requireCondition, validateBudget, validateMission, validateWorkOrder, validateGraph, transitionJob};
+})();
+const module_5 = (() => {
+const { SCHEMA_VERSION, validateMission } = module_3;
+
+const JOB_TEMPLATES = Object.freeze(
+  [
+    [
+      'mission-constitution',
+      'constitution',
+      'Mission Constitution',
+      'Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions.',
+    ],
+    [
+      'incumbent-baseline',
+      'evidence',
+      'Incumbent Baseline',
+      'Measure accepted quality, complete cost, risk, time, human burden and authority.',
+    ],
+    [
+      'alternative-set',
+      'constitution',
+      'Alternative Set',
+      'Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives.',
+    ],
+    [
+      'rights-data',
+      'constitution',
+      'Rights and Data Constitution',
+      'Establish source provenance, licenses, retention, exclusions and permitted reuse.',
+    ],
+    [
+      'mission-gym',
+      'formation',
+      'Mission Gym and Benchmark Constitution',
+      'Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds.',
+    ],
+    [
+      'oracle-teacher',
+      'evidence',
+      'Oracle and Teacher Study',
+      'Declare external teaching signals, hidden-call prohibition and transfer hypothesis.',
+    ],
+    [
+      'failure-taxonomy',
+      'challenge',
+      'Failure Taxonomy',
+      'Classify errors, severity, causes, abstention, adversarial cases and stop conditions.',
+    ],
+    [
+      'architecture-frontier',
+      'formation',
+      'Architecture Frontier',
+      'Form diverse complete candidates and retain non-dominated reserve options.',
+    ],
+    [
+      'experience-formation',
+      'formation',
+      'Data and Experience Formation',
+      'Build rights-cleared examples and simulation experience with explicit quality controls.',
+    ],
+    [
+      'specialist-formation',
+      'formation',
+      'Specialist Model Formation',
+      'Construct or adapt candidate components with exact immutable release identities.',
+    ],
+    [
+      'tools-retrieval',
+      'formation',
+      'Tool and Retrieval Formation',
+      'Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces.',
+    ],
+    [
+      'verifier-formation',
+      'verification',
+      'Verifier Formation',
+      'Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring.',
+    ],
+    [
+      'security-privacy',
+      'verification',
+      'Security and Privacy Proof',
+      'Test credential controls, isolation, threat model, incidents and provider risks.',
+    ],
+    [
+      'complete-economics',
+      'evidence',
+      'Complete Economics',
+      'Count construction, operation, human rescue, maintenance, requalification and unwind.',
+    ],
+    [
+      'human-agency',
+      'constitution',
+      'Human Burden and Agency',
+      'Define reviewer capacity, escalation, contestability and accountable decision rights.',
+    ],
+    [
+      'resilience-rollback',
+      'verification',
+      'Resilience and Rollback',
+      'Prove graceful degradation, kill switch, portability and known-good restoration.',
+    ],
+    [
+      'fresh-evaluation',
+      'verification',
+      'Protected Fresh Evaluation',
+      'Evaluate one frozen challenger on unseen representative work with full intervention costs.',
+    ],
+    [
+      'independent-validation',
+      'verification',
+      'Independent Validation',
+      'Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose.',
+    ],
+    [
+      'accountable-acceptance',
+      'admission',
+      'Accountable Acceptance',
+      'Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission.',
+    ],
+    [
+      'chronicle-authority',
+      'admission',
+      'Chronicle and Authority Admission',
+      'Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation.',
+    ],
+    [
+      'capital-requalification',
+      'renewal',
+      'Capital-to-Capacity and Requalification',
+      'Allocate verified available value and define next-successor and fresh-transfer triggers.',
+    ],
+  ].map(([id, family, title, objective]) =>
+    Object.freeze({ id, family, title, objective, coverageKey: id })
+  )
+);
+
+function createPortfolioJobs(input) {
+  const mission = validateMission(input);
+  return JOB_TEMPLATES.map((template) => ({
+    schemaVersion: SCHEMA_VERSION,
+    kind: 'SealedWorkOrder',
+    jobId: `${mission.missionId}:${template.id}`,
+    missionId: mission.missionId,
+    version: '1',
+    family: template.family,
+    objective: template.objective,
+    principal: mission.principal,
+    actor: mission.roles.producer,
+    authorizedInputs: mission.rights.map((right) => right.sourceId),
+    evidenceObligation: ['source-lineage', 'complete-cost', 'failure-record'],
+    permittedTools: [...mission.allowedTools],
+    permittedActions: [...mission.allowedActions],
+    prohibitedActions: [...mission.authorityCeiling.prohibitedActions],
+    budget: {
+      unit: mission.budget.unit,
+      limitBaseUnits: (BigInt(mission.budget.limitBaseUnits) / 21n).toString(),
+      maxDurationMs: mission.budget.maxDurationMs,
+      maxRetries: mission.budget.maxRetries,
+    },
+    expiresAt: mission.expiresAt,
+    outputSchema: {
+      type: 'object',
+      required: ['evidence', 'findings', 'cost'],
+    },
+    verifier: {
+      identity: mission.roles.verifier,
+      method:
+        'Independent examination against frozen purpose-specific criteria; template is not executed proof.',
+      independence: 'I0',
+    },
+    acceptance: {
+      owner: mission.roles.acceptor,
+      predicate: `All ${template.title} obligations have valid traceable evidence and no failed hard gate.`,
+      evidenceSources: mission.rights.map((right) => right.sourceId),
+    },
+    rollback: { ...mission.rollback },
+    chronicle: {
+      eligible: false,
+      rights: 'Requires a separate rights and admission review.',
+      scope: mission.objective,
+      expiresAt: mission.expiresAt,
+    },
+    covers: mission.criticalFunctions.includes(template.coverageKey)
+      ? [template.coverageKey]
+      : [],
+    state: 'DRAFT',
+  }));
+}
+
+return {JOB_TEMPLATES, createPortfolioJobs};
+})();
+const module_2 = (() => {
+const {
+  SCHEMA_VERSION,
+  SuccessorError,
+  requireCondition,
+  validateMission,
+  validateWorkOrder,
+  validateGraph,
+  transitionJob,
+} = module_3;
+const { cloneJson, digestObject } = module_4;
+const { createPortfolioJobs } = module_5;
+
+const EXECUTION_EDGES = new Set(['evidence', 'control', 'challenge']);
+function workOrderPayload(input) {
+  const job = validateWorkOrder(input);
+  const { digest, sealed, signatureStatus, state, ...immutable } = job;
+  return immutable;
+}
+async function sealWorkOrder(input) {
+  const job = validateWorkOrder(input);
+  requireCondition(
+    job.state === 'DRAFT',
+    'SEAL_STATE_FORBIDDEN',
+    'Only a draft may be sealed; material changes require a new draft version'
+  );
+  return {
+    ...job,
+    sealed: true,
+    signatureStatus: 'UNSIGNED_COMMITMENT',
+    digest: await digestObject(
+      'successor.work-order.v1',
+      workOrderPayload(job)
+    ),
+  };
+}
+async function verifyWorkOrderSeal(input) {
+  const job = validateWorkOrder(input);
+  return (
+    job.sealed === true &&
+    job.digest ===
+      (await digestObject('successor.work-order.v1', workOrderPayload(job)))
+  );
+}
+async function transitionSealedJob(current, event, trustedContext = {}) {
+  requireCondition(
+    await verifyWorkOrderSeal(current),
+    'JOB_SEAL_INVALID',
+    'The immutable work-order seal is invalid'
+  );
+  return transitionJob(current, event, { ...trustedContext, sealValid: true });
+}
+function topologicalOrder(nodes, edges) {
+  const indegree = new Map(nodes.map((node) => [node.jobId, 0]));
+  const outgoing = new Map(nodes.map((node) => [node.jobId, []]));
+  for (const edge of edges.filter((edge) => EXECUTION_EDGES.has(edge.kind))) {
+    outgoing.get(edge.from).push(edge.to);
+    indegree.set(edge.to, indegree.get(edge.to) + 1);
+  }
+  const queue = [...indegree]
+    .filter(([, count]) => count === 0)
+    .map(([key]) => key)
+    .sort();
+  const order = [];
+  const depth = new Map(nodes.map((node) => [node.jobId, 1]));
+  while (queue.length) {
+    const key = queue.shift();
+    order.push(key);
+    for (const target of outgoing.get(key)) {
+      depth.set(target, Math.max(depth.get(target), depth.get(key) + 1));
+      indegree.set(target, indegree.get(target) - 1);
+      if (!indegree.get(target)) {
+        queue.push(target);
+        queue.sort();
+      }
+    }
+  }
+  requireCondition(
+    order.length === nodes.length,
+    'GRAPH_CYCLE',
+    'Execution, acceptance and challenge dependencies must be acyclic; use bounded version-producing discovery loops'
+  );
+  requireCondition(
+    Math.max(...depth.values()) <= 64,
+    'GRAPH_DEPTH_EXCEEDED',
+    'Graph exceeds the supported execution depth'
+  );
+  return order;
+}
+
+async function compileJobs(
+  input,
+  { jobs: proposedJobs, edges = [], now = new Date().toISOString() } = {}
+) {
+  const mission = validateMission(input);
+  const instant = Date.parse(now);
+  requireCondition(
+    Number.isFinite(instant),
+    'CLOCK_INVALID',
+    'A valid compiler clock is required'
+  );
+  requireCondition(
+    instant < Date.parse(mission.expiresAt),
+    'MISSION_EXPIRED',
+    'The mission constitution has expired'
+  );
+  requireCondition(
+    new Set([
+      mission.roles.producer,
+      mission.roles.verifier,
+      mission.roles.admitter,
+    ]).size === 3,
+    'ROLE_CONFLICT',
+    'Producer, verifier and admitter must have distinct identities'
+  );
+  requireCondition(
+    mission.roles.producer !== mission.roles.acceptor,
+    'ROLE_CONFLICT',
+    'A producer cannot accept its own delivered work'
+  );
+  requireCondition(
+    mission.proofProtocol.formationOwner !== mission.proofProtocol.custodian,
+    'PROOF_CUSTODY_CONFLICT',
+    'Formation and protected proof custody must be separately attributed'
+  );
+  requireCondition(
+    mission.rollback.available,
+    'ROLLBACK_UNAVAILABLE',
+    'An available rollback or containment route is required'
+  );
+  if (mission.proofProtocol.mode === 'INDEPENDENT_REQUEST')
+    requireCondition(
+      ['I3', 'I4'].includes(mission.proofProtocol.requiredIndependence),
+      'INDEPENDENCE_INSUFFICIENT',
+      'An independently proven request requires I3 or I4 custody; internal rehearsal remains available'
+    );
+  for (const action of mission.allowedActions)
+    requireCondition(
+      !mission.authorityCeiling.prohibitedActions.includes(action),
+      'ACTION_PROHIBITED',
+      'A permitted formation action conflicts with a prohibition',
+      { action }
+    );
+  requireCondition(
+    proposedJobs === undefined || Array.isArray(proposedJobs),
+    'SCHEMA_INVALID',
+    'Jobs must be a bounded array'
+  );
+  const jobs = (proposedJobs ?? createPortfolioJobs(mission)).map(
+    validateWorkOrder
+  );
+  requireCondition(
+    jobs.length <= mission.budget.maxJobs,
+    'JOB_LIMIT_EXCEEDED',
+    'The graph exceeds its authorized work count'
+  );
+  const graph = validateGraph({
+    schemaVersion: SCHEMA_VERSION,
+    kind: 'JobGraph',
+    graphId: `${mission.missionId}:graph`,
+    missionId: mission.missionId,
+    version: mission.version,
+    nodes: jobs,
+    edges,
+    authorityCreated: 'NONE',
+  });
+  const ids = new Set(jobs.map((job) => job.jobId));
+  const rights = new Map(
+    mission.rights.map((right) => [right.sourceId, right])
+  );
+  const edgeKeys = new Set();
+  for (const edge of graph.edges) {
+    requireCondition(
+      ids.has(edge.from) && ids.has(edge.to),
+      'REFERENCE_UNRESOLVED',
+      'A graph edge references an unknown job',
+      edge
+    );
+    requireCondition(
+      edge.from !== edge.to,
+      'GRAPH_CYCLE',
+      'Self-dependent jobs are not admissible',
+      edge
+    );
+    const key = `${edge.from}|${edge.to}|${edge.kind}`;
+    requireCondition(
+      !edgeKeys.has(key),
+      'EDGE_DUPLICATE',
+      'Duplicate graph edge',
+      edge
+    );
+    edgeKeys.add(key);
+  }
+  const executionOrder = topologicalOrder(jobs, graph.edges);
+  let reservation = 0n;
+  for (const job of jobs) {
+    requireCondition(
+      job.missionId === mission.missionId &&
+        job.principal === mission.principal,
+      'MISSION_BINDING_MISMATCH',
+      'Job mission and accountable principal must match the constitution',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.state === 'DRAFT',
+      'COMPILER_REQUIRES_DRAFT',
+      'Compilation cannot grant or replay an existing job lifecycle state'
+    );
+    requireCondition(
+      job.actor !== job.verifier.identity &&
+        job.actor !== mission.roles.admitter,
+      'ROLE_CONFLICT',
+      'A producer cannot verify its own work or hold admission identity',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.actor !== job.acceptance.owner,
+      'ROLE_CONFLICT',
+      'A producing actor cannot accept its own delivered work',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.verifier.identity === mission.roles.verifier,
+      'VERIFIER_UNAUTHORIZED',
+      'Job verifier must be the constituted verifier identity',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.acceptance.owner === mission.roles.acceptor,
+      'ACCEPTANCE_OWNER_MISMATCH',
+      'Acceptance must belong to the constituted owner',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.rollback.available,
+      'ROLLBACK_UNAVAILABLE',
+      'Job has no available rollback or containment route',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      Date.parse(job.expiresAt) > instant &&
+        Date.parse(job.expiresAt) <= Date.parse(mission.expiresAt),
+      'JOB_EXPIRED',
+      'Job expiry must be current and within the mission expiry',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.budget.unit === mission.budget.unit,
+      'BUDGET_UNIT_MISMATCH',
+      'Job and mission budget units differ',
+      { jobId: job.jobId }
+    );
+    requireCondition(
+      job.budget.maxRetries <= mission.budget.maxRetries &&
+        job.budget.maxDurationMs <= mission.budget.maxDurationMs,
+      'BUDGET_LIMIT_EXCEEDED',
+      'Job resource limits exceed the mission ceiling',
+      { jobId: job.jobId }
+    );
+    reservation += BigInt(job.budget.limitBaseUnits);
+    for (const tool of job.permittedTools)
+      requireCondition(
+        mission.allowedTools.includes(tool),
+        'TOOL_UNSUPPORTED',
+        'The mission has not admitted this tool',
+        { jobId: job.jobId, tool }
+      );
+    for (const action of job.permittedActions)
+      requireCondition(
+        mission.allowedActions.includes(action) &&
+          !job.prohibitedActions.includes(action) &&
+          !mission.authorityCeiling.prohibitedActions.includes(action),
+        'ACTION_PROHIBITED',
+        'Action is not within the mission capability mask',
+        { jobId: job.jobId, action }
+      );
+    for (const prohibited of mission.authorityCeiling.prohibitedActions)
+      requireCondition(
+        job.prohibitedActions.includes(prohibited),
+        'PROHIBITION_WEAKENED',
+        'Job removes a constitutional prohibition',
+        { jobId: job.jobId, prohibited }
+      );
+    for (const source of job.authorizedInputs) {
+      if (rights.has(source)) {
+        const right = rights.get(source);
+        requireCondition(
+          Date.parse(right.expiresAt) > instant &&
+            Date.parse(right.expiresAt) >= Date.parse(job.expiresAt),
+          'RIGHTS_EXPIRED',
+          'Source rights do not cover the job duration',
+          { jobId: job.jobId, source }
+        );
+        requireCondition(
+          right.permittedUses.includes('mission-evaluation'),
+          'RIGHTS_SCOPE_MISMATCH',
+          'Source does not permit mission evaluation',
+          { jobId: job.jobId, source }
+        );
+      } else {
+        requireCondition(
+          ids.has(source) &&
+            graph.edges.some(
+              (edge) =>
+                edge.from === source &&
+                edge.to === job.jobId &&
+                edge.kind === 'evidence'
+            ),
+          'EVIDENCE_PATH_MISSING',
+          'Every derived input requires an upstream evidence edge',
+          { jobId: job.jobId, source }
+        );
+      }
+    }
+    for (const source of job.acceptance.evidenceSources)
+      requireCondition(
+        job.authorizedInputs.includes(source),
+        'ACCEPTANCE_EVIDENCE_UNAVAILABLE',
+        'Acceptance cannot depend on an unauthorized or producer-only source',
+        { jobId: job.jobId, source }
+      );
+  }
+  requireCondition(
+    reservation <= BigInt(mission.budget.limitBaseUnits),
+    'BUDGET_EXCEEDED',
+    'Aggregate cumulative job budgets exceed the mission budget',
+    {
+      reservedBaseUnits: reservation.toString(),
+      limitBaseUnits: mission.budget.limitBaseUnits,
+    }
+  );
+  const coverage = mission.criticalFunctions.map((functionId) => ({
+    functionId,
+    jobIds: jobs
+      .filter((job) => job.covers.includes(functionId))
+      .map((job) => job.jobId),
+    status: 'PLANNED_NOT_ACCEPTED',
+  }));
+  for (const obligation of coverage)
+    requireCondition(
+      obligation.jobIds.length > 0,
+      'CRITICAL_COVERAGE_MISSING',
+      'A non-negotiable mission function has no job path',
+      { functionId: obligation.functionId }
+    );
+  const sealedJobs = await Promise.all(jobs.map(sealWorkOrder));
+  const sealedGraph = { ...graph, nodes: sealedJobs };
+  sealedGraph.digest = await digestObject(
+    'successor.job-graph.v1',
+    sealedGraph
+  );
+  const dependencyMap = Object.fromEntries(
+    jobs.map((job) => [
+      job.jobId,
+      graph.edges
+        .filter(
+          (edge) => edge.to === job.jobId && EXECUTION_EDGES.has(edge.kind)
+        )
+        .map((edge) => ({ jobId: edge.from, kind: edge.kind })),
+    ])
+  );
+  const invalidationMap = Object.fromEntries(
+    [...rights.keys(), ...ids].map((key) => [
+      key,
+      jobs
+        .filter((job) => job.authorizedInputs.includes(key))
+        .map((job) => job.jobId),
+    ])
+  );
+  for (const edge of graph.edges.filter((edge) =>
+    ['evidence', 'invalidation', 'challenge', 'control'].includes(edge.kind)
+  ))
+    if (!invalidationMap[edge.from].includes(edge.to))
+      invalidationMap[edge.from].push(edge.to);
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    status: 'SEALED',
+    mode: mission.proofProtocol.mode,
+    constitution: mission,
+    graph: sealedGraph,
+    executionOrder,
+    coverage,
+    criticalEvidenceCuts: coverage.map(({ functionId, jobIds }) => ({
+      functionId,
+      removeJobIds: jobIds,
+      exhaustive: false,
+    })),
+    budgetReservations: {
+      unit: mission.budget.unit,
+      reservedBaseUnits: reservation.toString(),
+      limitBaseUnits: mission.budget.limitBaseUnits,
+      includesRetries: true,
+    },
+    dependencyMap,
+    invalidationMap,
+    capabilityRequests: jobs.map((job) => ({
+      jobId: job.jobId,
+      actor: job.actor,
+      tools: job.permittedTools,
+      actions: job.permittedActions,
+      status: 'REQUESTED_NOT_GRANTED',
+    })),
+    evaluationPlan: cloneJson(mission.proofProtocol),
+    authorityCreated: 'NONE',
+    signatureStatus: 'UNSIGNED_COMMITMENT',
+    digest: await digestObject('successor.constitution.v1', mission),
+  };
+}
+
+function invalidationClosure(compilation, sourceIds) {
+  const pending = [...sourceIds];
+  const seen = new Set();
+  while (pending.length) {
+    const source = pending.shift();
+    if (seen.has(source)) continue;
+    seen.add(source);
+    pending.push(...(compilation.invalidationMap[source] ?? []));
+  }
+  return [...seen].sort();
+}
+
+async function diagnoseMission(mission, options) {
+  try {
+    return await compileJobs(mission, options);
+  } catch (error) {
+    if (!(error instanceof SuccessorError)) throw error;
+    return {
+      status: 'REJECTED',
+      diagnostics: [error.toJSON()],
+      authorityCreated: 'NONE',
+    };
+  }
+}
+
+return {workOrderPayload, sealWorkOrder, verifyWorkOrderSeal, transitionSealedJob, compileJobs, invalidationClosure, diagnoseMission};
+})();
+const module_0 = (() => {
+// SPDX-License-Identifier: Apache-2.0
+const alpha = module_1;
+const { compileJobs } = module_2;
+const { JOB_TEMPLATES, createPortfolioJobs } = module_5;
+const { digestObject } = module_4;
+
+const TOKEN = '0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA';
+const DELIVERABLES = [
+  'mission.json: count, sum, maximum duration and error count by day and service; zero incorrect totals.',
+  'incumbent.json: exact outputs and observed timings for the existing scan-based implementation.',
+  'alternatives.json: compare the deterministic map baseline; record that a frontier comparison is missing.',
+  'rights.json: synthetic nonpersonal events only; list code licenses and permitted reuse.',
+  'gym.json: version the event generator, malformed-input cases, public partitions and zero-error gate.',
+  'teacher.json: disclose that this example uses fixed code and no external model or teaching calls.',
+  'failures.json: test empty data, invalid numbers, malformed Unicode and unusual service keys.',
+  'candidates.json: preserve all four bounded aggregation configurations and rejected attempts.',
+  'experience.json: record seeds, workload sizes and generator version; no protected claims.',
+  'candidate.json: freeze the selected grammar and engine SHA-256 before comparative evaluation.',
+  'tools.json: allow only the fixed aggregation engine; no arbitrary code, browsing or money movement.',
+  'verifier.json: reproduce exact outputs and reject invalid inputs; identify missing independent custody.',
+  'security.json: confirm no external requests, keys, personal data or wallet approvals are required.',
+  'economics.json: record all observed costs; mark compute price, human review and maintenance unmeasured.',
+  'roles.json: separate producer, verifier, acceptance owner and admitter; labels are unauthenticated.',
+  'rollback.json: retain the baseline and demonstrate clearing the active candidate without external effects.',
+  'evaluation.json: compare the frozen candidate with both baselines on six further public workloads.',
+  'review.json: obtain a separately attributable review; this browser leaves independent proof absent.',
+  'acceptance.json: require evidence against the frozen terms; all work orders remain DRAFT here.',
+  'authority.json: retain HOLD with zero grants until separate, scoped, expiring, revocable admission.',
+  'renewal.json: propose the next test and preserve lessons; a successor inherits no proof or authority.',
+];
+
+function missionFor({ name = 'Atlas Ω', budget = '2100', now = new Date().toISOString() } = {}) {
+  if (typeof name !== 'string' || !name.trim() || name.length > 48) throw Error('Use a name of 1–48 characters.');
+  if (typeof budget !== 'string' || !/^[1-9][0-9]{0,6}$/.test(budget) || BigInt(budget) > 1000000n) {
+    throw Error('Use a whole planning allowance from 1 to 1,000,000 AGIALPHA.');
+  }
+  if (!Number.isFinite(Date.parse(now))) throw Error('A valid clock is required.');
+  const expiresAt = new Date(Date.parse(now) + 7 * 86400000).toISOString();
+  return {
+    schemaVersion: '1.0.0', kind: 'MissionConstitution', missionId: 'streaming-metrics-builder-v1',
+    institutionId: 'local-successor-workshop', version: '1', title: name.trim().normalize('NFC'),
+    principal: 'example-human-principal', beneficiary: 'Owner of this local synthetic mission',
+    objective: 'Produce exact daily service metrics, compare bounded implementations, and prepare reviewable work orders.',
+    incumbent: { id: 'alpha-current', version: alpha.VERSION, description: 'Measured scan-based baseline.' },
+    alternatives: [{ id: 'alpha-beta', version: alpha.VERSION, description: 'Measured deterministic map baseline; not a frontier AI comparator.' }],
+    rights: [{ sourceId: 'synthetic-events', license: 'Apache-2.0 generator; synthetic nonpersonal outputs', dataClass: 'synthetic', permittedUses: ['mission-evaluation', 'fixture-export'], expiresAt }],
+    hardGates: [
+      { id: 'exact-output', description: 'All grouped counts and durations agree exactly.', maxViolations: 0 },
+      { id: 'invalid-input', description: 'Malformed and unsupported records are rejected.', maxViolations: 0 },
+      { id: 'no-external-effect', description: 'No network request, live job, payment or authority grant.', maxViolations: 0 },
+    ],
+    criticalFunctions: JOB_TEMPLATES.map(t => t.coverageKey),
+    roles: { producer: 'example-producer', verifier: 'example-verifier', acceptor: 'example-acceptor', admitter: 'example-admitter' },
+    budget: { unit: 'AGIALPHA', limitBaseUnits: (BigInt(budget) * 10n ** 18n).toString(), maxDurationMs: 60000, maxRetries: 0, maxJobs: 21 },
+    expiresAt,
+    authorityCeiling: { level: 'A0', permittedActions: ['inspect-local'], prohibitedActions: ['send-payment', 'post-live-job', 'access-private-data', 'self-admit'], externalEffects: false },
+    allowedTools: ['fixed-aggregation-engine'], allowedActions: ['inspect-local'],
+    rollback: { target: 'alpha-current', available: true, reason: 'Discard the local candidate and return to the retained fixed baseline.' },
+    proofProtocol: { id: 'public-local-rehearsal', version: '1', mode: 'SYNTHETIC_REHEARSAL', formationOwner: 'example-producer', custodian: 'example-verifier', requiredIndependence: 'I0', minimumMargin: 0.05, criticalErrorCeiling: 0, scope: 'Public synthetic cases in one process; no independent proof, mission alpha or operational admission.' },
+  };
+}
+
+async function compilePlan(options = {}) {
+  const mission = missionFor(options);
+  const jobs = createPortfolioJobs(mission).map((job, i) => ({
+    ...job,
+    objective: `${job.objective} Streaming-metrics deliverable: ${DELIVERABLES[i]}`,
+    acceptance: { ...job.acceptance, predicate: `${DELIVERABLES[i]} Preserve failures and missing evidence. Separate review is required.` },
+  }));
+  const dependencies = [[], [0], [0], [0], [1, 2, 3], [4], [4], [1, 2, 5, 6], [3, 4], [7, 8], [9], [4, 6, 10], [10, 11], [1, 2, 9], [0, 13], [10, 12], [9, 11, 12, 13, 14, 15], [16], [17], [18], [19]];
+  const edges = dependencies.flatMap((parents, i) => parents.map(j => ({ from: jobs[j].jobId, to: jobs[i].jobId, kind: 'evidence' })));
+  for (const edge of edges) jobs.find(job => job.jobId === edge.to).authorizedInputs.push(edge.from);
+  return compileJobs(mission, { jobs, edges, now: options.now });
+}
+
+async function buildPack(options = {}, { signal, onProgress = () => {} } = {}) {
+  const now = options.now || new Date().toISOString();
+  const request = alpha.newRequest({ max_events: options.events ?? 1000, seed: options.seed ?? 42, max_candidates: 4 });
+  if (!/^[0-9a-f]{64}$/.test(options.engineSourceHash || '')) throw Error('Engine source identity is required.');
+  onProgress('compile');
+  const compilation = await compilePlan({ ...options, now });
+  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+  onProgress('discover');
+  const discovery = await alpha.discover(request, { signal });
+  const frozen = await alpha.freeze(request, discovery, options.engineSourceHash);
+  onProgress('evaluate');
+  const evaluation = await alpha.evaluate(request, frozen, { signal });
+  const record = {
+    schema: 'successor-build-example/v1', createdAt: now, title: compilation.constitution.title,
+    scope: 'LOCAL_REHEARSAL', request, compilation, discovery, frozen, evaluation,
+    token: { symbol: 'AGIALPHA', chainId: 1, address: TOKEN, decimals: 18 },
+    settlement: { status: 'NOT_CONNECTED', transactions: [], spentBaseUnits: '0', allowanceIs: 'ILLUSTRATIVE_NOT_FUNDED' },
+    admission: { decision: 'HOLD', independentProof: false, authority: [], specialistASI: false },
+    chronicle: [{ kind: 'local-observation', candidateRelease: frozen.release_hash, reusable: 'Configuration hypothesis only; rerun tests.', inheritedProof: false, inheritedAuthority: false }],
+  };
+  return { ...record, integrityDigest: await digestObject('successor-build-example.v1', record) };
+}
+
+function jobBriefs(pack) {
+  return `# ${pack.title} — SUCCESSOR Ω build briefs\n\nLOCAL REHEARSAL. DRAFT work, unsigned commitments, zero funds spent.\nIndependent proof absent. Admission HOLD. No authority is granted.\n\nShared Ethereum mainnet token: ${TOKEN} (AGIALPHA, 18 decimals).\nPlanning allowance only; fees, stakes and gas require separate estimates before commissioning.\n\n` +
+    pack.compilation.graph.nodes.map((job, i) => `## ${i + 1}. ${JOB_TEMPLATES[i].title}\n\n${job.objective}\n\nAcceptance: ${job.acceptance.predicate}\n\nPlanning limit (AGIALPHA base units): ${job.budget.limitBaseUnits}\nExpiry: ${job.expiresAt}\nProducer: ${job.actor}\nVerifier: ${job.verifier.identity}\nAcceptance owner: ${job.acceptance.owner}\nRollback: ${job.rollback.target}\nUnsigned commitment: ${job.digest}\n`).join('\n') +
+    '\nNext: arrange independent protected evaluation, measure full costs, resolve commissioning, then request a separate human admission decision. Sharing the token does not bridge the two markets.\n';
+}
+
+return {TOKEN, DELIVERABLES, missionFor, compilePlan, buildPack, jobBriefs};
+})();
+const model = module_0, jobsTemplates = module_5;
+const ENGINE_HASH = '38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488';
+// SPDX-License-Identifier: Apache-2.0
+const originalDocument = '<!doctype html>\n' + document.documentElement.outerHTML;
+const byId = id => document.getElementById(id);
+const english = Object.fromEntries([...document.querySelectorAll('[data-word]')].map(el => [el.dataset.word, el.textContent]));
+english.title = 'Build the intelligence you can keep.';
+const french = {
+  skip:'Aller à l’atelier', larger:'Texte plus grand', eyebrow:'VOTRE MISSION. VOS MÉTHODES. VOTRE PROCHAIN CHAPITRE.',
+  title:'Construisez l’intelligence que vous gardez.', intro:'Donnez une mission à votre SUCCESSOR Ω. Alpha construit et compare des candidats. AGI Jobs transforme le plan en tâches délimitées et vérifiables. Emportez l’exemple fonctionnel.',
+  begin:'Construire mon premier Ω ↓', free:'Environ 5 minutes · Gratuit · Sans compte, portefeuille ni installation',
+  'mission-card':'Votre analyste de données ouvertes.', 'mission-sub':'Une petite mission. Des réponses exactes. Des preuves à examiner.', candidate:'CANDIDAT · ATELIER LOCAL',
+  shared:'DEUX SYSTÈMES DÉPLOYÉS · UN MÊME JETON', copy:'Copier l’adresse du jeton', 'all-contracts':'Voir les 29 contrats déployés ↓',
+  together:'DEUX PROJETS, UN EXEMPLE CONCRET', 'together-title':'Du plan à un résultat que vous pouvez examiner.',
+  'alpha-title':'Construire un candidat', 'alpha-text':'Quatre petits programmes rivalisent pour regrouper des données fictives et calculer des totaux exacts. Gardez la configuration choisie, l’identité du code et les mesures.',
+  'jobs-title':'Rendre le travail vérifiable', 'jobs-text':'Le véritable compilateur AGI Jobs produit 21 tâches avec entrées, limites, dépendances, critères et empreintes non signées. Ce sont des brouillons à examiner.',
+  'own-title':'Garder le dossier complet', 'own-text':'Enregistrez le laboratoire, la mission, le graphe de tâches, les résultats et les notes. La preuve indépendante et une décision d’admission distincte restent nécessaires.',
+  workshop:'L’ATELIER PRATIQUE', 'workshop-title':'Faites d’Atlas Ω le vôtre.', scope:'La mission : compter les événements, les erreurs, la durée totale et maximale par jour et service. Les données sont fictives et non personnelles. Aucun modèle externe n’est appelé.',
+  loading:'Ouverture de l’atelier… JavaScript et Web Crypto sont nécessaires.', step1:'1 · Nommer et planifier', step2:'2 · Construire et comparer', step3:'3 · Examiner et garder',
+  settings:'Votre point de départ', name:'Nommez votre Ω', events:'Quelle quantité de données fictives?', budget:'Budget de planification · jetons AGIALPHA',
+  'budget-help':'Exemple modifiable, sans devis ni fonds déposés. Rien n’est dépensé. Gaz, mises, revue et exploitation doivent être estimés séparément.',
+  run:'Construire et tester mon Ω', stop:'Arrêter', ready:'Tout est prêt pour votre premier exemple.', labels:'Les noms du producteur, du vérificateur et du décideur sont des rôles fictifs, sans identité indépendante ni approbation signée.',
+  'result-label':'VOTRE DOSSIER DE CONSTRUCTION', 'empty-title':'Un premier pas concret.', empty:'Construisez l’exemple pour voir les tests d’exactitude, les durées mesurées et le portefeuille de tâches.',
+  local:'RÉPÉTITION LOCALE · ADMISSION SUSPENDUE', checks:'jeux de données concordants', jobs:'brouillons de tâches', spent:'jetons dépensés', timings:'Mesuré ici · six comparaisons', approach:'Approche',
+  'timing-note':'Le candidat peut perdre. Les durées varient avec l’appareil, l’ordre des tests et le navigateur. Il ne s’agit ni de preuve indépendante ni d’avantage économique mesuré.',
+  historical:'Notes historiques restaurées. Relancez la construction pour produire de nouvelles preuves.', rollback:'Conserver la référence',
+  'jobs-heading':'Un plan clair, une tâche délimitée à la fois.', 'jobs-note':'Chaque phase correspond aux tâches du véritable compilateur. Après la construction, ouvrez une phase pour voir ses livrables. Les tâches restent DRAFT; une empreinte lie les termes, elle n’accepte pas le travail. Les détails exportés du compilateur sont en anglais.',
+  'keep-label':'QUELQUE CHOSE À GARDER', 'keep-title':'Votre Ω. Votre prochaine expérience.', 'keep-text':'Téléchargez le laboratoire complet. Ouvrez le fichier HTML dans un navigateur sur ordinateur, même hors ligne. Il conserve vos dernières notes; relancez pour de nouveaux résultats. Enregistrez une nouvelle copie après modification.',
+  privacy:'Vos entrées restent dans cette page. Aucun envoi ni enregistrement automatique. Les fichiers téléchargés sont lisibles : utilisez un surnom et enregistrez avant de fermer.',
+  save:'Enregistrer mon Ω fonctionnel', pack:'Télécharger le dossier · JSON', briefs:'Télécharger les 21 fiches de tâches', request:'Télécharger la requête Alpha', inspect:'Examiner le dossier exact et l’identité du code',
+  integrity:'L’empreinte vérifie la cohérence, pas l’authenticité. Ce format d’exemple n’est ni une instruction de règlement ni une sauvegarde native à restaurer.',
+  'next-label':'ADAPTEZ L’EXEMPLE À VOTRE MISSION', 'next-title':'Construire. Prouver. Puis décider.', next1:'Choisir une tâche utile et testable',
+  'next1-text':'Commencez par un calcul sur données publiques, une fonction libre ou une reproduction numérique. Fixez les droits, résultats, limites d’erreur, temps de revue et budget réversible.',
+  next2:'Commander des tâches délimitées', 'next2-text':'Utilisez les fiches exportées pour convenir des livrables. Un opérateur doit choisir et mettre en service le marché, les identités, les preuves et le règlement. Cet atelier ne publie aucune tâche réelle.',
+  next3:'Mériter la permission suivante', 'next3-text':'Figez le candidat complet. Des vérificateurs indépendants doivent le comparer aux meilleures références sur du travail frais et protégé, coûts complets inclus. Seule une décision humaine distincte peut accorder une autorité limitée, temporaire et révocable.',
+  native:'Exécuter la même requête dans votre environnement Alpha installé', 'native-text':'Après la construction, téléchargez la requête Alpha. Avec alpha-agent installé, exécutez la commande ci-dessous. Le résultat est une répétition locale distincte; examinez-le dans l’espace Alpha complet.', 'full-lab':'Ouvrir l’espace Alpha complet ↗',
+  'contracts-label':'DÉPLOIEMENTS ETHEREUM MAINNET DOCUMENTÉS', 'contracts-title':'Deux suites déployées. Le même $AGIALPHA.',
+  'contract-scope':'Les 29 instances ci-dessous proviennent des dossiers publics des 11–12 octobre 2026. Le jeton partagé a 18 décimales. Ces dossiers identifient les déploiements; ils ne suivent pas leur disponibilité en direct.',
+  routing:'Le MARK déployé d’Alpha est lié à son propre marché. Il ne transfère pas les fonds vers AGIJobsv0. Le déploiement Alpha précède des protections ultérieures; le dossier Jobs n’ouvre pas l’admission publique. Vérifiez l’état de préparation avant tout financement réel.',
+  'alpha-readiness':'Déploiement et préparation Alpha ↗', 'jobs-readiness':'Préparation AGI Jobs ↗', questions:'Quelques réponses claires.',
+  'is-asi':'Ai-je créé une ASI spécialisée?', 'is-asi-text':'Vous avez construit un exemple de candidat reproductible. L’ASI spécialisée est une désignation limitée à une mission, acquise par preuve comparative indépendante. SUCCESSOR Ω exige aussi une admission distincte et responsable. Cet atelier n’accorde ni l’une ni l’autre.',
+  ownership:'Qu’est-ce qui m’appartient?', 'ownership-text':'Vous contrôlez vos fichiers téléchargés, notes et résultats. Le code Alpha est sous Apache 2.0 et le compilateur AGI Jobs sous MIT. Les droits des tiers demeurent. Propriété exclusive, droits sur les travaux commandés et portabilité des fournisseurs doivent être établis séparément.',
+  models:'Où sont les modèles neuronaux?', 'models-text':'Cet exemple utilise du code déterministe pour rendre chaque résultat examinable. Un successeur neuronal-symbolique peut ajouter des modèles remplaçables et des programmes exécutables par tâches délimitées. Les exigences de mission, preuve, coûts, retour arrière et admission restent les mêmes.',
+  papers:'Quel lien avec les quatre guides SUCCESSOR Ω?', 'papers-text':'L’exemple concrétise leur cycle : choisir une mission réversible, constituer les tâches, former et figer un candidat, le comparer, conserver les preuves utiles et séparer l’admission. Les cas publics du navigateur forment un Gym pédagogique, sans remplacer une évaluation indépendante protégée.',
+  source:'Code source et guide de reproduction ↗', 'jobs-home':'Explorer AGI Jobs ↗', licenses:'Licences des logiciels inclus',
+};
+const phases = [
+  ['Constitute the mission', 'Constituer la mission', 0, 4],
+  ['Design the teaching Gym', 'Concevoir le Gym pédagogique', 4, 7],
+  ['Build the candidate', 'Construire le candidat', 7, 11],
+  ['Prepare proof & rollback', 'Préparer la preuve et le retour arrière', 11, 16],
+  ['Evaluate & seek acceptance', 'Évaluer et demander l’acceptation', 16, 19],
+  ['Admit & renew separately', 'Admettre et renouveler séparément', 19, 21],
+];
+let language = new URLSearchParams(location.search).get('lang') === 'fr' ? 'fr' : 'en';
+const largePreference = new URLSearchParams(location.search).get('text') === 'large';
+document.documentElement.classList.toggle('large',largePreference);
+byId('larger').setAttribute('aria-pressed',String(largePreference));
+let pack = null, notes = null, controller = null, seed = 42;
+let formState = {name:'Atlas Ω',events:1000,budget:'2100'};
+try {
+  const raw = byId('saved-state').textContent;
+  if (raw.length > 500000) throw Error('Saved notes exceed the size limit.');
+  const saved = JSON.parse(raw);
+  if (saved.form) {
+    model.missionFor(saved.form);
+    if (![256,1000,4000].includes(saved.form.events)) throw Error('Invalid workload.');
+    formState = saved.form;
+    language = saved.language === 'fr' ? 'fr' : 'en';
+    notes = saved.notes || null;
+  }
+} catch { byId('status').textContent = 'Saved settings could not be restored. Start a new build.'; }
+byId('name').value = formState.name;
+byId('events').value = formState.events;
+byId('budget').value = formState.budget;
+const words = (en, fr) => language === 'fr' ? fr : en;
+function message(en, fr) { byId('status').textContent = words(en, fr); }
+function renderPortfolio() {
+  byId('portfolio').replaceChildren();
+  for (const [en,fr,start,end] of phases) {
+    const details = document.createElement('details'), summary = document.createElement('summary');
+    summary.textContent = `${language === 'fr' ? fr : en} · ${end-start} ${words('jobs','tâches')}`;
+    details.append(summary);
+    for (let i=start;i<end;i++) {
+      const article=document.createElement('article'), h=document.createElement('h4'), p=document.createElement('p');
+      article.className='job'; h.textContent=`${i+1}. ${jobsTemplates.JOB_TEMPLATES[i].title}`;
+      p.textContent=model.DELIVERABLES[i]; article.append(h,p);
+      if(pack){ const info=document.createElement('p'); info.textContent=`DRAFT · ${pack.compilation.graph.nodes[i].digest}`; article.append(info); }
+      details.append(article);
+    }
+    byId('portfolio').append(details);
+  }
+}
+function render() {
+  document.documentElement.lang=language;
+  for(const node of document.querySelectorAll('[data-word]')) node.textContent=(language==='fr'?french:english)[node.dataset.word] || english[node.dataset.word];
+  byId('language').textContent=language==='fr'?'English':'Français';
+  byId('language').lang=language==='fr'?'en':'fr';
+  if(pack){
+    byId('result-title').textContent=pack.title;
+    byId('checks').textContent=`${pack.evaluation.cases.filter(c=>c.exact_output).length} / 6`;
+    byId('verdict').textContent=pack.evaluation.correctness ? words('Exactness checks passed. Read the comparison before deciding what to keep.','Les tests d’exactitude passent. Examinez la comparaison avant de choisir.') : words('A hard check failed. Keep the baseline and investigate.','Un test obligatoire échoue. Conservez la référence et examinez l’erreur.');
+    byId('timings').replaceChildren();
+    for(const [key,en,fr] of [['current','Existing baseline','Référence actuelle'],['beta','Map-based alternative','Autre référence déterministe'],['candidate','Your candidate','Votre candidat']]){
+      const tr=document.createElement('tr'), th=document.createElement('th'), td=document.createElement('td');
+      th.scope='row';th.textContent=words(en,fr);td.textContent=(pack.evaluation.totals_ns[key]/1e6).toFixed(3);tr.append(th,td);byId('timings').append(tr);
+    }
+  }
+  byId('result').hidden=!pack;byId('empty').hidden=!!pack;
+  for(const id of ['pack','briefs','request'])byId(id).disabled=!pack;
+  byId('evidence').textContent=JSON.stringify(pack||notes||{},null,2);
+  renderPortfolio();
+}
+function download(filename, text, type) {
+  const url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  byId('save-status').textContent=words('Download prepared. Check your Downloads folder.','Téléchargement préparé. Consultez votre dossier Téléchargements.');
+}
+function settings(){ return {name:byId('name').value.trim(), events:Number(byId('events').value), budget:byId('budget').value}; }
+function invalidate(){ if(pack)notes={status:'HISTORICAL_ONLY',record:pack};pack=null;render();message('Settings changed. Build again to bind fresh results to them.','Paramètres modifiés. Relancez pour obtenir des résultats correspondants.'); }
+byId('form').addEventListener('input',invalidate);
+byId('form').addEventListener('submit',async event=>{
+  event.preventDefault();if(controller)return;
+  controller=new AbortController();if(pack)notes={status:'HISTORICAL_ONLY',record:pack};pack=null;render();
+  for(const id of ['run','name','events','budget','save','language'])byId(id).disabled=true;
+  byId('stop').hidden=false;byId('progress').hidden=false;
+  try {
+    pack=await model.buildPack({...settings(),seed:seed++,engineSourceHash:ENGINE_HASH},{signal:controller.signal,onProgress:phase=>{
+      byId('progress').value={compile:0,discover:1,evaluate:2}[phase];
+      message({compile:'Compiling 21 bounded work orders…',discover:'Comparing four candidate programs…',evaluate:'Checking the frozen candidate on six further workloads…'}[phase],{compile:'Compilation de 21 tâches délimitées…',discover:'Comparaison de quatre programmes candidats…',evaluate:'Vérification du candidat figé sur six autres jeux de données…'}[phase]);
+    }});
+    byId('progress').value=3;render();message('Build complete. Review your results and save your Ω.','Construction terminée. Examinez les résultats et enregistrez votre Ω.');
+    byId('result-title').tabIndex=-1;byId('result-title').focus();
+  } catch(error){pack=null;render();message(error.name==='AbortError'?'Stopped. No active result; no funds spent.':'Build failed: '+error.message,error.name==='AbortError'?'Arrêté. Aucun résultat actif; aucune dépense.':'Échec : '+error.message);}
+  finally { controller=null;for(const id of ['run','name','events','budget','save','language'])byId(id).disabled=false;byId('stop').hidden=true;byId('progress').hidden=true; }
+});
+byId('stop').onclick=()=>controller?.abort();
+byId('language').onclick=()=>{language=language==='en'?'fr':'en';render();};
+byId('larger').onclick=()=>{const active=document.documentElement.classList.toggle('large');byId('larger').setAttribute('aria-pressed',String(active));};
+byId('rollback').onclick=()=>{notes={status:'BASELINE_RETAINED',record:pack};pack=null;render();message('Baseline retained. The candidate is now only a historical note. Build again to propose a successor.','Référence conservée. Le candidat est désormais une note historique. Relancez pour proposer un successeur.');};
+byId('pack').onclick=()=>{if(pack)download('successor-build-pack.json',JSON.stringify(pack,null,2)+'\n','application/json');};
+byId('briefs').onclick=()=>{if(pack)download('successor-job-briefs.md',model.jobBriefs(pack),'text/markdown');};
+byId('request').onclick=()=>{if(pack)download('request.json',JSON.stringify(pack.request,null,2)+'\n','application/json');};
+byId('save').onclick=()=>{
+  try {
+    model.missionFor(settings());
+    const saved=JSON.stringify({form:settings(),language,notes:pack?{status:'HISTORICAL_ONLY',record:pack}:notes}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+    const html=originalDocument.replace(/(<script type="application\/json" id="saved-state">)[\s\S]*?(<\/script>)/,(_,a,b)=>a+saved+b);
+    download('My-SUCCESSOR-Omega-Builder.html',html,'text/html');
+  }catch(error){byId('save-status').textContent=error.message;}
+};
+byId('copy-token').hidden=false;
+byId('copy-token').onclick=async()=>{try{await navigator.clipboard.writeText(model.TOKEN);byId('copy-status').textContent=words('Address copied.','Adresse copiée.');}catch{byId('copy-status').textContent=words('Select and copy the full address shown here.','Sélectionnez et copiez l’adresse complète affichée.');}};
+render();
+if(notes)message('Your saved settings and historical notes are restored. Build again for current results.','Paramètres et notes historiques restaurés. Relancez pour de nouveaux résultats.');
+byId('app').hidden=false;byId('loading').hidden=true;
+if(!globalThis.crypto?.subtle){byId('run').disabled=true;message('Web Crypto is unavailable. Open this file in a current desktop browser.','Web Crypto est indisponible. Ouvrez ce fichier dans un navigateur récent sur ordinateur.');}
+
+})();
+</script></body></html>

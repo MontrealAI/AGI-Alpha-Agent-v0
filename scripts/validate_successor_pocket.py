@@ -15,6 +15,7 @@ from typing import Any
 from playwright.sync_api import expect, sync_playwright
 
 from scripts.validate_ascension import Handler, inspect
+from scripts.validate_successor_build import validate_workshop
 
 
 def validate(site: Path, output: Path, public_url: str | None = None) -> None:
@@ -136,6 +137,7 @@ def validate(site: Path, output: Path, public_url: str | None = None) -> None:
             expect(fallback.locator("#app")).to_be_hidden()
             report["checks"].append("no-javascript-guidance")
             assert not report["errors"], report["errors"]
+            report["builder"] = validate_workshop(browser, origin, output, axe)
             report["passed"] = True
             browser.close()
     finally:
