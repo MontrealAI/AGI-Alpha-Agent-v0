@@ -75,7 +75,7 @@ export async function compilePlan(options = {}) {
 
 export async function buildPack(options = {}, { signal, onProgress = () => {} } = {}) {
   const now = options.now || new Date().toISOString();
-  const request = alpha.newRequest({ max_events: options.events ?? 1000, seed: options.seed ?? 42, max_candidates: 4 });
+  const request = alpha.newRequest({ max_events: options.events ?? 1000, seed: options.seed ?? 42, max_candidates: 4, language: options.language ?? 'en' });
   if (!/^[0-9a-f]{64}$/.test(options.engineSourceHash || '')) throw Error('Engine source identity is required.');
   onProgress('compile');
   const compilation = await compilePlan({ ...options, now });

@@ -123,7 +123,7 @@ byId('form').addEventListener('submit',async event=>{
   for(const id of ['run','name','events','budget','save','language'])byId(id).disabled=true;
   byId('stop').hidden=false;byId('progress').hidden=false;
   try {
-    pack=await model.buildPack({...settings(),seed:seed++,engineSourceHash:ENGINE_HASH},{signal:controller.signal,onProgress:phase=>{
+    pack=await model.buildPack({...settings(),language,seed:seed++,engineSourceHash:ENGINE_HASH},{signal:controller.signal,onProgress:phase=>{
       byId('progress').value={compile:0,discover:1,evaluate:2}[phase];
       message({compile:'Compiling 21 bounded work orders…',discover:'Comparing four candidate programs…',evaluate:'Checking the frozen candidate on six further workloads…'}[phase],{compile:'Compilation de 21 tâches délimitées…',discover:'Comparaison de quatre programmes candidats…',evaluate:'Vérification du candidat figé sur six autres jeux de données…'}[phase]);
     }});

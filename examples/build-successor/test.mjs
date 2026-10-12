@@ -8,7 +8,8 @@ import { compileJobs, verifyWorkOrderSeal } from './vendor/agijobs/compiler.mjs'
 const engineSourceHash=createHash('sha256').update(fs.readFileSync(new URL('../../docs/assets/successor/engine.mjs',import.meta.url))).digest('hex');
 
 test('paired engine and compiler produce bounded draft work, never proof or authority',async()=>{
-  const pack=await buildPack({engineSourceHash,events:256,budget:'1'});
+  const pack=await buildPack({engineSourceHash,events:256,budget:'1',language:'fr'});
+  assert.equal(pack.request.language,'fr');
   assert.equal(pack.discovery.attempts.length,4);
   assert.equal(pack.evaluation.cases.length,6);
   assert.equal(pack.evaluation.correctness,true);

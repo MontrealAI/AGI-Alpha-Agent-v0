@@ -51,6 +51,11 @@ def validate_workshop(browser: Browser, origin: str, output: Path, axe: str) -> 
     local.locator("#run").click()
     expect(local.locator("#checks")).to_have_text("6 / 6")
     expect(local.locator("html")).to_have_attribute("lang", "fr")
+    with local.expect_download() as download:
+        local.locator("#request").click()
+    native_request = output / "builder-request-fr.json"
+    download.value.save_as(native_request)
+    assert json.loads(native_request.read_text())["language"] == "fr"
     audits = []
     for width in (1440, 390, 320):
         local.set_viewport_size({"width": width, "height": 1000})

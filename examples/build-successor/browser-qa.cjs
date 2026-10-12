@@ -35,6 +35,9 @@ const { pathToFileURL } = require('node:url');
     await local.locator('#name').fill('Mon Atlas Ω');await local.locator('#language').click();
     await local.locator('#run').click();await local.waitForFunction(()=>!document.getElementById('pack').disabled);
     assert.equal(await local.locator('html').getAttribute('lang'),'fr');assert.equal(await local.locator('#checks').innerText(),'6 / 6');
+    const requested=local.waitForEvent('download');await local.locator('#request').click();
+    const nativeRequest=path.join(destination,'request-fr.json');await(await requested).saveAs(nativeRequest);
+    assert.equal(JSON.parse(fs.readFileSync(nativeRequest,'utf8')).language,'fr');
     report.checks.push('offline-save-and-reopen','restored-notes-not-active-proof','french-new-run');
     const axe=fs.readFileSync(path.join(root,'tests/browser/node_modules/axe-core/axe.min.js'),'utf8');
     for(const width of [1440,390,320]){
