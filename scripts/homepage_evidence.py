@@ -46,6 +46,9 @@ def asset_hashes(site: Path = ROOT / "docs") -> dict[str, str]:
 
 def verify_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
     """Require successful exact-origin journeys and every measured accessibility layout."""
+    required_checks = set(REQUIRED_CHECKS)
+    if tuple(int(part) for part in version.split(".")) >= (1, 26, 3):
+        required_checks.add("direct-plan-entry")
     if (
         report.get("schema") != "agialpha.homepage.acceptance.v1"
         or report.get("commit") != commit
@@ -54,7 +57,7 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
         or report.get("passed") is not True
         or report.get("browser_errors") != []
         or not report.get("browser_version")
-        or not REQUIRED_CHECKS.issubset(report.get("checks", []))
+        or not required_checks.issubset(report.get("checks", []))
         or report.get("assets") != asset_hashes()
     ):
         raise ValueError("Homepage must pass every required journey on the exact release and origin")

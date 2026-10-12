@@ -32,6 +32,8 @@ def assert_handoff(page: Page, language: str, large: bool) -> None:
         assert href is not None
         target = urlsplit(href)
         assert not target.scheme and not target.netloc and target.path == "start/", href
+        expected_fragment = "" if link.get_attribute("data-home-key") == "nav-start" else "journey"
+        assert target.fragment == expected_fragment, href
         query = parse_qs(target.query)
         assert set(query) <= {"lang", "text"}, href
         assert query.get("lang", ["en"]) == [language], href
@@ -252,11 +254,17 @@ def validate(
             assert_reading_url(page, "en", True, path=home_path, fragment="questions")
             assert_handoff(page, "en", True)
             page.locator("#home-fr").click()
-            page.locator("[data-start-link]").first.click()
+            page.locator("#home [data-start-link]").focus()
+            page.keyboard.press("Enter")
             expect(page.locator("html")).to_have_attribute("lang", "fr")
             expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
             expect(page.locator("#planner")).to_be_visible()
-            assert_reading_url(page, "fr", True, path=home_path + "start/")
+            expect(page.locator("#journey")).to_be_focused()
+            expect(page.locator("#minutes")).to_be_visible()
+            expect(page.locator("#minutes")).to_have_value("60")
+            page.keyboard.press("Tab")
+            expect(page.locator("#minutes")).to_be_focused()
+            assert_reading_url(page, "fr", True, path=home_path + "start/", fragment="journey")
 
             # Planner controls update only reading preferences, never task input or storage.
             page.goto(origin + "start/?lang=fr&text=large&source=bookmark#planner", wait_until="networkidle")
@@ -304,6 +312,7 @@ def validate(
                 "english-and-french",
                 "larger-text",
                 "guided-plan-preferences",
+                "direct-plan-entry",
                 "reading-preferences-survive-reload",
                 "reading-preferences-follow-history",
             ]
@@ -371,6 +380,10 @@ def validate(
             fallback.locator("#questions summary").first.click()
             expect(fallback.locator("#questions details").first).to_have_attribute("open", "")
             assert_handoff(fallback, "en", False)
+            fallback.locator("#home [data-start-link]").click()
+            expect(fallback).to_have_url(origin + "start/#journey")
+            expect(fallback.locator("#journey")).to_be_focused()
+            expect(fallback.locator("#journey noscript .notice")).to_be_visible()
             report["checks"].append("no-javascript-content-and-navigation")
             assert not report["browser_errors"], report["browser_errors"]
             report["passed"] = True

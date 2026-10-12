@@ -117,8 +117,10 @@ function render() {
     const query = new URLSearchParams();
     if (language === "fr") query.set("lang", "fr");
     if (largeText) query.set("text", "large");
-    for (const link of document.querySelectorAll("[data-start-link]"))
-        link.setAttribute("href", `start/${query.size ? `?${query}` : ""}`);
+    for (const link of document.querySelectorAll("[data-start-link]")) {
+        const fragment = new URL(link.href).hash;
+        link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
+    }
     // Keep this entry bookmarkable without adding history or forwarding other parameters.
     const address = new URL(location.href);
     address.searchParams.delete("lang");

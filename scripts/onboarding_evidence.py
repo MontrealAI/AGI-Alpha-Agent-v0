@@ -26,6 +26,8 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
     required = set(REQUIRED_CHECKS)
     if tuple(int(part) for part in version.split(".")) >= (1, 26, 0):
         required.add("readable-and-printable-plan")
+    if tuple(int(part) for part in version.split(".")) >= (1, 26, 3):
+        required.update({"essential-readable-text", "preferences-after-initialization", "module-failure-guidance"})
     if (
         report.get("schema") != "agialpha.onboarding.acceptance.v1"
         or report.get("commit") != commit

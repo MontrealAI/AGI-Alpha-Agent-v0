@@ -3,7 +3,7 @@
 # Your first useful plan / Votre premier plan utile
 
 **[Visit the welcoming homepage](../index.html)** ·
-**[Make your first plan](../start/index.html)** ·
+**[Make your first plan](../start/index.html#journey)** ·
 **[Commencer en français](../index.html?lang=fr)**
 
 No technical experience, account, wallet, payment, installation or AI service key is needed.
@@ -14,9 +14,10 @@ This page runs a small planning calculation on your device. It does not perform 
 The homepage starts with one clear invitation to make a first plan. An example shows what you will
 receive, three short steps explain the process, and plain-language questions explain cost, privacy
 and what happens next. Choose **Français** or **Larger text** at the top before you begin. The first-plan
-link carries those choices with you; there is no need to select them again.
+link carries those choices with you; there is no need to select them again. The make-plan buttons open
+the task choices directly. The general **Start here** navigation link keeps the short introduction.
 
-You can also open the [French experience with larger text](../start/index.html?lang=fr&text=large)
+You can also open the [French experience with larger text](../start/index.html?lang=fr&text=large#journey)
 directly. Preferences are carried in the link for this visit, without an account or saved browser
 settings. The advanced workspaces, research, documentation and original demonstrations remain farther
 down the homepage for people who want to explore them.
@@ -46,7 +47,9 @@ own storage and recovery behavior, described in the [browser guide](PAGES_GUIDE.
 - There is no countdown or automatic progression. Changing a plan clears the previous review and result.
 - Error messages name the field to fix. Select the linked message to reach that field.
 - If no task fits, increase available time or reconsider the estimates. An empty selection is a valid result.
-- If the planner does not load, reload online in an updated browser. The guide remains readable without JavaScript.
+- Reading controls appear when the planner is ready. If JavaScript is unavailable or a required module
+  cannot load, the page keeps readable guidance instead of showing controls that cannot work.
+- If the planner does not load, follow the on-page guidance or reload online in an updated browser.
 - Downloads go to the browser’s Downloads folder; on a phone, use the browser’s download menu or Files app.
 
 ## Continue when you are ready
@@ -62,9 +65,10 @@ own storage and recovery behavior, described in the [browser guide](PAGES_GUIDE.
 ## Français
 
 **[Ouvrir la page d’accueil en français](../index.html?lang=fr)** ou
-**[commencer directement avec un texte plus grand](../start/index.html?lang=fr&text=large)**.
+**[commencer directement avec un texte plus grand](../start/index.html?lang=fr&text=large#journey)**.
 La page d’accueil présente un exemple de plan, trois étapes et des réponses aux questions courantes.
-Vos choix de langue et de taille du texte vous accompagnent au début du parcours.
+Vos choix de langue et de taille du texte vous accompagnent au début du parcours. Les boutons pour
+créer un plan ouvrent directement le choix des tâches; le lien général **Commencer** garde l’introduction.
 Aucun compte, portefeuille,
 paiement, téléchargement de modèle ni installation n’est nécessaire.
 
@@ -81,6 +85,8 @@ Les données restent sur la page et ne sont pas enregistrées par ce planificate
 pour les effacer; téléchargez votre résultat pour le conserver. Le site reçoit les requêtes ordinaires
 nécessaires pour afficher la page. Aucun achat, publication ni travail externe n’est effectué.
 Le bouton **Texte plus grand**, le zoom et la navigation au clavier sont disponibles, sans minuterie.
+Les réglages de lecture s’affichent quand le planificateur est prêt. Si le chargement échoue ou si
+JavaScript est désactivé, les indications restent lisibles sans afficher de commandes inutilisables.
 Les espaces avancés ont leurs propres règles de stockage et peuvent demander une configuration technique.
 
 ## Maintained scope and scale

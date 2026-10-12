@@ -40,6 +40,15 @@ def test_complete_bound_homepage_evidence_is_accepted(report):
     verify(report)
 
 
+def test_direct_plan_entry_is_required_from_1_26_3(report):
+    verify(report)
+    report["version"] = "1.26.3"
+    with pytest.raises(ValueError):
+        verify_report(report, "a" * 40, "1.26.3", "https://site/")
+    report["checks"].append("direct-plan-entry")
+    verify_report(report, "a" * 40, "1.26.3", "https://site/")
+
+
 @pytest.mark.parametrize(
     ("field", "value"),
     [
