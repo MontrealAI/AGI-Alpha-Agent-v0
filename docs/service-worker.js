@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-51ca903951cc476d";
-const RELEASE = "1.26.1";
+const CACHE = "agialpha-gallery-3ef04d54111d0f1b";
+const RELEASE = "1.27.1";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -177,6 +177,7 @@ const ASSETS = [
   "./alpha_factory_v1/demos/start/index.html",
   "./alpha_factory_v1/demos/studio/index.html",
   "./alpha_factory_v1/demos/successor/index.html",
+  "./alpha_factory_v1/demos/successor/play/index.html",
   "./alpha_factory_v1/index.html",
   "./alpha_super_planner_v1/assets/preview.svg",
   "./ascension-protocol/index.html",
@@ -251,6 +252,8 @@ const ASSETS = [
   "./assets/portal/portal.css",
   "./assets/portal/portal.mjs",
   "./assets/portal/verify-export.mjs",
+  "./assets/portal/welcome.css",
+  "./assets/portal/welcome.mjs",
   "./assets/pyodide_demo.js",
   "./assets/replay_chart.js",
   "./assets/start/start.css",
@@ -376,6 +379,7 @@ const ASSETS = [
   "./stylesheets/cards.css",
   "./stylesheets/demo_base.css",
   "./successor/index.html",
+  "./successor/play/index.html",
   "./utils/assets/logs.json",
   "./utils/assets/preview.svg",
   "./utils/assets/script.js",

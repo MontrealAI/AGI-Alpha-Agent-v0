@@ -1,10 +1,19 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.26.1 mainnet records and owner verification
+# Release readiness — 1.27.1 development-toolchain maintenance
+
+Version 1.27.1 refreshes only the historical web client development dependency graph and current release metadata.
+Its dated full development audit still reports 34 findings (23 high, nine moderate and two low).
+The production dependency audit is separate and remains a release gate. This maintenance release does not
+claim to clear the historical development toolchain; Cypress, Percy and Workbox remediation still needs
+compatibility review. See the [maintenance notes](RELEASE_NOTES_1.27.1.md).
 
 The [repository guide](REPOSITORY_GUIDE.md) maps the maintained launch paths, source areas and validation
-boundaries. This version adds a guided English/French first-use page with larger text, explicit review
-and useful downloads. [Start here](../start/index.html) or read the [onboarding guide](ONBOARDING.md).
+boundaries. This release features a [personal SUCCESSOR Ω lab](../successor/play/index.html) on the
+[homepage](../index.html): name it, compare real bounded programs, keep its evidence and download a complete
+offline copy. English/French, larger text and the download/reopen/rerun journey have explicit acceptance gates.
+The general Start here link still opens the simple planner; its existing Choose → Review → Keep experience
+and readable exports remain. [Make your first plan](../start/index.html#journey) or read the [onboarding guide](ONBOARDING.md).
 The existing SUCCESSOR mission lifecycle, repository repairs and release-installer preflight remain.
 The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe that lifecycle's boundaries.
 A revision is publishable only after the exact integrated commit passes every existing and added gate.
@@ -12,7 +21,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.26.1.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.27.1.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -70,17 +79,35 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Security controls | Authentication/origin checks, measured 512 KiB request limit and 15-second body deadline, private files, signed journal, tamper tests, real Docker isolation | Private single-operator host; not a public multi-tenant service or perfect sandbox |
 | Dependencies | Hash-locked installation, full operator Python advisory audit, existing browser audits | A dated advisory snapshot; historical environments and host OS need separate maintenance |
 | Recovery | Signed backup/restore, pause, corruption detection, persistent container restart | Backups contain secrets; archive limit 256 MiB; independent checkpoints detect rollback |
-| User experience | English/French first-use completion, larger text, keyboard and download checks, real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
+| User experience | Homepage clarity and preference handoff, English/French first-use completion, larger text, keyboard and download checks, real Chromium workflows, mobile 320/390 px, cancellation, offline reload, public HTTPS checks | Browser acceptance covers Chromium; no comprehensive accessibility certification or other-engine certification |
 | Delivery | Same tested source/site, exact-commit CI, versioned tag/assets, upload re-download checksums | Hosting and GitHub remain trusted services; checksums do not establish GitHub-enforced release immutability or make separate API writes atomic |
 | Manuscript fidelity | Original 198-page PDF, canonical Markdown and 31 figures checked against a pinned source commit | A paper is a research specification, not proof that every proposed scientific capability has been established |
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.26.1). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.27.1). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
+
+## Homepage acceptance
+
+`python scripts/validate_homepage.py` checks the generated homepage and the handoff to the first-plan
+experience. The release workflow runs the same acceptance against public Pages before publication.
+Both reports must identify the exact packaged commit and version. The checks cover English/French
+content, larger text, keyboard access, narrow-screen layouts, help, preserved advanced entry points,
+and language/text-size preferences carried to `/start/` through `?lang=fr&text=large`.
+The make-plan buttons must open the task-entry section directly; the general Start here link keeps
+its introduction. Planner acceptance checks readable essential text and hides reading controls until
+initialization succeeds, including no-JavaScript and module-load failure cases. Explicit review, accurate
+downloadable results and input-specific error recovery remain required. These gates supplement all
+earlier release checks.
+
+A defined test is a requirement, not a recorded pass. Use the published manifest and matching validation
+archive for actual results. Automated accessibility checks and responsive layouts still need to be
+complemented by usability studies with older and nontechnical participants, additional browsers and
+assistive technologies.
 
 ## Recover a release workflow after a retry
 
@@ -105,7 +132,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.26.1 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.27.1 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

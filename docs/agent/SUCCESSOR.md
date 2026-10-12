@@ -2,6 +2,32 @@
 
 [Research disclaimer](../DISCLAIMER_SNIPPET.md)
 
+## New here? Take a lab home / Emportez votre laboratoire
+
+[Create your personal SUCCESSOR Ω](../successor/play/index.html). Give it a nickname, choose a challenge,
+and select **Bring my Ω to life**. The existing browser engine compares four bounded programs and checks
+the selected program on six fresh workloads. Read the result, try another challenge, then **Save my Ω**.
+
+The download is one self-contained HTML file with the working engine, your preferences, your last eight
+experiment summaries and the latest complete evidence document. Open it in a modern desktop browser to
+experiment offline. Save a new copy after changes; the open file cannot overwrite itself. There is no
+account, telemetry, network call, automatic browser storage or model download. On mobile, downloaded
+HTML may open as a preview; use a desktop browser for the saved interactive edition.
+
+You retain your personal files and a copy of the software under Apache 2.0, whose full license is included.
+This is not exclusive IP, a token or an ownership interest in a company. Saved measurements are explicitly
+historical and unverified; they grant no authority. New experiments use fresh inputs and compute new results.
+This edition is a focused experiment, not a general AI assistant or a replacement for native commissioning.
+
+[Créer votre SUCCESSOR Ω personnel](../successor/play/index.html?lang=fr). Nommez-le, choisissez un défi,
+puis **Donner vie à mon Ω**. Sélectionnez **Enregistrer mon Ω** pour garder le laboratoire fonctionnel
+et vos expériences dans un seul fichier HTML. Rouvrez-le dans un navigateur récent sur ordinateur,
+même hors ligne. Enregistrez une nouvelle copie après vos modifications. Les résultats sauvegardés restent
+des notes historiques non vérifiées; chaque nouvel essai produit ses propres mesures. Le logiciel est
+fourni sous licence Apache 2.0 et ne représente ni jeton ni part d’entreprise.
+
+The full mission workspace, lifecycle, native tools and original research remain below.
+
 SUCCESSOR Ω extends Ascension into a persistent mission lifecycle. The first mission aggregates public synthetic
 streaming events exactly, constructs bounded competing implementations, freezes one complete challenger, evaluates fresh
 work and records an honest decision. A successor inherits permitted knowledge; proof and authority start empty.

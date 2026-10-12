@@ -1,9 +1,21 @@
+> **Take home your own SUCCESSOR Ω. [Create your personal lab](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/play/).**
+> Give it a name, run real experiments, then save the whole working lab as one file. Reopen it offline,
+> try new challenges and keep your discoveries. Free, English/French, larger text, no account or installation.
+> [Personal lab guide](docs/agent/SUCCESSOR.md#new-here-take-a-lab-home--emportez-votre-laboratoire) ·
+> [What is new in 1.27.1](docs/agent/RELEASE_NOTES_1.27.1.md).
+
+> **Prefer a simple planner? [Make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/#journey).**
+> Choose what matters, review a simple plan and keep a readable copy. No technical experience,
+> account, wallet, payment or installation is needed.
+> [Visit the welcoming homepage](https://montrealai.github.io/AGI-Alpha-Agent-v0/) ·
+> [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr) ·
+> [Larger text](https://montrealai.github.io/AGI-Alpha-Agent-v0/?text=large) ·
+> [Simple guide](docs/agent/ONBOARDING.md) · [1.26.3 release notes](docs/agent/RELEASE_NOTES_1.26.3.md).
+
 > **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded.
 > Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the
 > Etherscan API transcript. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md).
 > The deployed contracts predate the current settlement fixes; resolve that difference before admissions or funding.
-
-> **New here? [Start here — make your first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/).** A welcoming English/French walkthrough, large controls and a useful download. No account, wallet, payment or installation. [Français](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/?lang=fr) · [Simple guide](docs/agent/ONBOARDING.md) · [1.26.1 release notes](docs/agent/RELEASE_NOTES_1.26.1.md).
 
 > **SUCCESSOR Ω — 1.24.1.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md) · [Release notes and acceptance requirements](docs/agent/RELEASE_NOTES_1.24.1.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
 

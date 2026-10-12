@@ -2,15 +2,17 @@
 
 # Alpha-Factory — from first mission to Ascension evidence
 
-**Version 1.26.1.** Start with a useful result, inspect the evidence, and extend the workflow from there.
+**Version 1.27.1.** Start with a useful result, inspect the evidence, and extend the workflow from there.
 The `alpha_factory_v1` package retains the original domain agents, demos, blueprints and flowcharts.
 Its maintained runtime provides five bounded mission types, a signed persistent journal, explicit review,
-recovery and an authenticated local console. Ascension adds a tested, undeployed enterprise protocol.
+recovery and an authenticated local console. Ascension adds a locally tested protocol; the separately
+[recorded historical mainnet deployment](MAINNET_DEPLOYMENT.md) predates the current settlement fixes.
 
 ## Choose your starting point
 
 | Goal | Path | Requirements |
 |---|---|---|
+| Make a first plan without technical setup | [Welcoming homepage](../index.html) and [guided first plan](../start/index.html) | Browser; English/French and larger text; no account or wallet |
 | Try editable decision cases | [Decision Studio](../studio/index.html) | Browser; built-in cases need no key or wallet |
 | Work with your own supplied records | Native operator below | Python 3.11–3.13; private state directory |
 | Explore all original experiments | [Demo walkthrough](DEMOS.md); `alpha-factory demos list`, `show NAME` and `check NAME` | Installed wheel or source checkout; optional dependencies listed per entry |
@@ -173,7 +175,7 @@ the much larger historical SDK/training environment.
 
 Before upgrade, pause, verify and back up the journal. Keep its identity, head and checksum separately.
 Restore into a **new** home, verify it, then resume deliberately. Never run two processes against the
-same home or manually edit signed records. No journal migration is needed for 1.26.1.
+same home or manually edit signed records. No journal migration is needed for 1.27.1.
 [Recovery commands and troubleshooting](OPERATIONS.md) cover Windows, containers and rollback.
 
 ## Verification and preservation

@@ -1,3 +1,36 @@
+## 1.27.1 — 2026-10-12
+
+- Refresh the historical web client development lockfile within its existing version ranges.
+- Remove unused dependency subtrees and reduce the recorded development advisory total from 39 to 34.
+- Keep remaining development advisories explicit; production dependencies and application behavior are unchanged.
+- Align current release guides and gallery version metadata while retaining all prior release notes and diagrams.
+- See [release notes](docs/agent/RELEASE_NOTES_1.27.1.md).
+
+## 1.27.0 — 2026-10-12
+
+- Feature SUCCESSOR Ω on the welcoming homepage while retaining the simple planner.
+- Add a bilingual personal lab with real experiments and a complete, playable offline HTML download.
+- Preserve reading preferences, eight experiment summaries and the latest evidence in each saved copy.
+- Verify the download/reopen/rerun journey, mobile reflow, keyboard access and English/French accessibility.
+- See [release notes](docs/agent/RELEASE_NOTES_1.27.0.md).
+
+## 1.26.3 — 2026-10-11
+
+- Open task choices directly from make-plan buttons while keeping the introduction behind the general Start here link.
+- Increase essential planner and review text for easier reading.
+- Show reading controls only when ready, with readable guidance for JavaScript and module-load failures.
+- Extend browser acceptance while retaining exact-asset checks, earlier release gates and original research.
+- See [release notes](docs/agent/RELEASE_NOTES_1.26.3.md).
+
+## 1.26.2 — 2026-10-11
+
+- Give the homepage a welcoming purple-and-cream design, one clear first-plan invitation and a sample result.
+- Explain the three-step journey, cost and privacy in everyday English and French.
+- Keep language and larger-text choices when opening the guided first-plan experience.
+- Add generated-site and public-site homepage acceptance while retaining every existing release gate.
+- Preserve advanced tools, original research, diagrams, media and historical mainnet records.
+- See [release notes](docs/agent/RELEASE_NOTES_1.26.2.md).
+
 ## 1.26.0 — 2026-10-11
 
 - Add English/French on-page and printable copies of reviewed first plans.
