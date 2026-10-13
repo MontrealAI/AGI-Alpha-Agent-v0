@@ -1,8 +1,16 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.28.1 contract qualification
+# Release readiness — 1.29.0 SUCCESSOR workbench
 
-Version 1.28.1 strengthens contract compilation and exact-build verification. The
+Version 1.29.0 adds five bounded local work adapters, a portable English/French workbench and optional
+isolated browser Computer Use. Start with [Create my Ω](../successor/work/index.html), retain its actual
+artifacts, or use the [native work interface](SUCCESSOR_WORK.md). The [Computer Use guide](SUCCESSOR_COMPUTER_USE.md)
+explains the explicit provider/image permission and its separate commissioning requirements. The
+[release notes](RELEASE_NOTES_1.29.0.md) describe the addition and the stopped-run recovery correction.
+Publication requires the exact integrated source, actual container execution, installed distribution,
+five-family public browser acceptance and all preserved release gates. The manifest records their results.
+
+Version 1.28.1 strengthened contract compilation and exact-build verification. The
 [warning and verification guide](MAINNET_DEPLOYMENT.md#understand-a-contract-warning) separates current-source
 checks from the archived October 11 deployment. Publishing this release changes no deployed bytecode
 and does not authorize a migration or public funding. See the [release notes](RELEASE_NOTES_1.28.1.md).
@@ -30,7 +38,7 @@ The published release manifest, rather than this source guide, identifies the ac
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the
-[release notes](RELEASE_NOTES_1.28.1.md), [walkthrough](DEMOS.md) and
+[release notes](RELEASE_NOTES_1.29.0.md), [walkthrough](DEMOS.md) and
 [dated audit](DEMO_AUDIT_2026-10-01.md). Original research and diagrams remain preserved.
 
 Sovereign adds a private portfolio → schedule → evidence workflow, explicit result-bound reviews,
@@ -62,6 +70,8 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Run and keep a useful local Ω | [Five-family workbench](../successor/work/index.html) | Bounded repairs, benchmarks, checked examples, public-data reports or numerical calculations with offline artifacts |
+| Configure screenshot and keyboard/mouse work | [Computer Use](SUCCESSOR_COMPUTER_USE.md) | Explicitly permitted disposable browser sessions, observations and stop/reconciliation controls |
 | Make a first plan without technical setup | [Guided first experience](../start/index.html) | English/French Choose → Review → Keep journey, larger text and text/JSON downloads |
 | Construct and evaluate a bounded successor | [SUCCESSOR Ω](SUCCESSOR.md) | Browser or signed native lifecycle, matched generation-two trials and empty successor proof/authority until newly earned |
 | Review a governance proposal | [Governance Workbench](../solving_agi_governance/index.html) | Nine conditional gates, reproducible dossier and input-bound verification jobs |
@@ -95,7 +105,7 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
 Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.28.1). The manifest identifies
+[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.29.0). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -141,7 +151,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.28.1 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching 1.29.0 assets and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.

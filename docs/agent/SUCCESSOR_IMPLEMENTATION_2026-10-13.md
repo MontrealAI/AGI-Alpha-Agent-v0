@@ -119,3 +119,20 @@ A future 1.29.0 publication now requires the deployed workbench to match the che
 domain-source hashes, execute all five families, reopen saved artifacts offline and pass EN/FR,
 keyboard and accessibility checks. Release finalization rejects stale, incomplete or local-only reports.
 This adds a publication requirement; no release or site has been published here.
+
+## Pre-merge lifecycle review
+
+On 13 October the owner explicitly requested merging PR #4777 and publishing the next release.
+Review of head `96f9254ea5a135c166226629c1c50df6eebaa866` checked the execution, import/export,
+Computer Use and publication boundaries and identified a stopped-run recovery defect: the `control`
+command could change a stopped run back to paused, allowing an explicit resume. The correction refuses
+that transition, preserves the original stopped record and still permits retirement. The regression is
+`test_stopped_work_cannot_resume_through_pause` in `tests/runtime/test_successor_workbench.py`.
+
+This is an internal source review, not an independent mission proof or a GitHub approval from another
+maintainer. The observed `main` branch remains unprotected, repository rulesets are empty, and the
+integration cannot read the administrative branch-protection endpoint (HTTP 403). No rule is changed
+or bypassed. The owner's merge instruction permits the normal PR merge after final-head checks;
+the existing main-branch workflow must qualify the integrated source before Pages/release publication.
+Final run links, merge SHA and publication evidence belong in the PR and generated release manifest,
+so these historical candidate observations must not be interpreted as final publication results.

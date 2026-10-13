@@ -365,6 +365,8 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
     if command == "control":
         if record["state"] == "retired":
             raise Conflict("Retired work is terminal")
+        if record["state"] == "stopped" and args.state == "paused":
+            raise Conflict("Stopped work cannot be paused or resumed; create a new run")
         return _change(journal, key, record["revision"], state=args.state)
     if command == "review":
         if record["state"] != "review" or record["result_digest"] != args.result_digest:

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import uuid
@@ -123,3 +124,29 @@ def test_worker_source_is_reproducible() -> None:
     manifest = json.loads(workbench.WORKER.with_name("workbench_sources.json").read_text())
     assert manifest["sourceHash"] == source_hash
     assert manifest["sources"] == json.loads(sources)
+
+
+def test_stopped_work_cannot_resume_through_pause(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    home, run_id = tmp_path / "home", str(uuid.uuid4())
+    spec = workbench.invoke({"operation": "example", "family": "numerical"})
+    original = workbench.invoke
+
+    def interrupt(request: dict[str, Any], *args: Any) -> dict[str, Any]:
+        if request["operation"] == "run":
+            raise KeyboardInterrupt()
+        return original(request, *args)
+
+    monkeypatch.setattr(workbench, "invoke", interrupt)
+    with pytest.raises(KeyboardInterrupt):
+        workbench.execute(home, spec, run_id)
+    command = argparse.Namespace(home=home, run_id=run_id, work_command="control", state="stopped")
+    stopped = workbench.handle(command)
+    command.state = "paused"
+    with pytest.raises(Conflict, match="Stopped work"):
+        workbench.handle(command)
+    assert Journal(home).latest("@successor-work:" + run_id)["digest"] == stopped["digest"]
+    monkeypatch.setattr(workbench, "invoke", original)
+    with pytest.raises(Conflict, match="Stopped or retired"):
+        workbench.execute(home, spec, run_id, resume=True)
+    command.state = "retired"
+    assert workbench.handle(command)["state"] == "retired"
