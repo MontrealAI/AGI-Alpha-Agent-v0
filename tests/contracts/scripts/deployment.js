@@ -5,6 +5,7 @@ const path = require("path");
 const crypto = require("crypto");
 const { execFileSync } = require("child_process");
 const { AGIALPHA_ADDRESS, AGIALPHA_DECIMALS } = require("../../../token.config");
+const { assertNoCompilerWarnings } = require("./compiler-policy");
 
 const root = path.resolve(__dirname, "../../..");
 const names = ["AscensionAccess", "NovaSeed", "AscensionRiskOracle", "AscensionJobMarket", "AscensionMark"];
@@ -73,6 +74,7 @@ async function compiledEvidence() {
         if (artifact.bytecode !== `0x${output.evm.bytecode.object}`)
             throw Error(`Deployment bytecode differs from compiler output: ${name}. Run npm run compile.`);
         if (!builds[build.id]) {
+            assertNoCompilerWarnings(build.output);
             const sourceHashes = verifyBuildSources(build, source => fs.readFileSync(path.join(root, "tests/contracts",
                 source.startsWith("@") ? "node_modules" : "", source), "utf8"));
             builds[build.id] = { solcVersion: build.solcVersion, solcLongVersion: build.solcLongVersion,

@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Prepare a new Ethereum mainnet deployment — 1.26.1
+# Prepare a new Ethereum mainnet deployment — 1.28.1
 
 For the **already deployed October 11 contracts**, use the [deployed addresses and owner guide](MAINNET_DEPLOYMENT.md).
 Those contracts have completed ownership transfer but predate this guide's current source and compiler profile.
@@ -36,14 +36,19 @@ Use a clean checkout of the **release tag**, Node.js 22.17.1 and the committed l
 plans and provider credentials outside the repository. A plan or verification from a dirty checkout is refused.
 
 ```sh
-git checkout v1.26.1
+git checkout v1.28.1
 nvm use
 cd tests/contracts
 npm ci
 npm run audit
-npm run compile
+npm run compile:strict
 npm test
 ```
+
+`compile:strict` forces a complete build with the exact npm-locked Solidity compiler. The compiler gate
+rejects every Solidity warning; it does not hide or downgrade diagnostics. This release review found no
+Solidity warnings in the baseline compilation: the new gate prevents later regressions. A normal cached
+build is insufficient evidence for that check.
 
 The contract dependency audit includes development dependencies: this is the compilation toolchain.
 Publication fails on moderate, high or critical advisories. Hardhat 2 retains the low-severity elliptic
@@ -137,11 +142,26 @@ quorum, risk threshold, role roots and fresh seed/job counters must match. Retai
 runtime-code hashes. This is a **fresh-deployment commissioning check**, not an ongoing health check
 for an already active protocol.
 
-Publish verified sources for all five contracts using the plan's compiler standard JSON input,
-contract source/name, exact compiler version and constructor arguments. Do not flatten or change
-optimizer/EVM settings. Check the explorer's runtime comparison and publish address/chain/block,
-plan digest, audit/fork reports and multisignature receipts together. Have governance approve the
-admission policy, monitoring, support, incident response and initial exposure limits before first funding.
+Export the matching explorer package from the same reviewed checkout:
+
+```sh
+npm run mainnet:verification-package -- plan /operator/new-plan.json /operator/new-verification-package
+```
+
+The exporter rebuilds and compares the plan against the current compiled sources. It refuses a different
+plan/build or an existing output directory. Each contract folder contains `standard-input.json`,
+`constructor-arguments.txt` (ABI hex without `0x`) and `etherscan-request.json` for the Etherscan V2 API.
+`manifest.json` lists addresses, exact compiler/settings and file digests. `README.txt` gives the submission steps.
+The command only writes local files; it sends no explorer request and needs no API key or signing key.
+Planned addresses remain predictions until deployment is independently verified.
+
+Publish each contract's exact Standard JSON using its compiler version, fully qualified source/name and
+constructor arguments. Preserve imports and metadata; do not flatten or change optimizer/EVM settings.
+If submitting through the API, supply the API key separately and retain the final verification status:
+a submission GUID only means pending. Check the explorer's final address/source/runtime comparison and
+publish address/chain/block, plan digest, audit/fork reports and multisignature receipts together.
+Have governance approve the admission policy, monitoring, support, incident response and initial exposure
+limits before first funding.
 
 ## Recovery and limits
 
@@ -161,7 +181,7 @@ monitoring for exposure, deadlines, dependency upgrades, name expiry and governa
 
 Cette version prépare des transactions **non signées** et vérifie la configuration et les contrats en
 lecture seule. Elle ne déploie rien sur le réseau principal et n'autorise aucun financement public.
-Commencez par le tag de version, `npm ci`, `npm run audit`, `npm run compile` et `npm test`.
+Commencez par le tag de version, `npm ci`, `npm run audit`, `npm run compile:strict` et `npm test`.
 Faites vérifier les adresses, les paramètres, les propriétaires ENS et le multisig par une personne
 indépendante. Un audit des sources exactes et un essai complet sur un fork mainnet avec le vrai jeton
 restent nécessaires. Signez ensuite dans votre système habituel, puis exécutez `mainnet:verify` avant

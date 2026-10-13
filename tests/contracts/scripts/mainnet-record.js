@@ -168,7 +168,7 @@ async function main() {
     console.log(JSON.stringify({ output: path.resolve(output), governanceComplete: true,
         finalizedBlock: report.block.number, externalTransactions: false, readyForPublicFunding: false }));
 }
-module.exports = { ROOT, RECORD_SHA256, NAMES, loadRecord, verifyRecord, expectedBindings, expectedTransactions };
+module.exports = { ROOT, RECORD_SHA256, NAMES, loadRecord, verifyRecord, expectedBindings, expectedTransactions, constructorArguments };
 if (require.main === module) main().catch(error => {
     console.error(error.publicMessage ? error.message : "Read-only verification failed. Check the HTTPS RPC, registered evidence and new output path. Provider details are hidden.");
     process.exitCode = 1;

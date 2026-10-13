@@ -1,3 +1,11 @@
+## 1.28.1 — 2026-10-13
+
+- Strengthen contract qualification and distinguish current-source builds from the immutable October 11 deployment.
+- Correct legacy v2 deadline/reward admission, client event attribution, fee limits and certificate sale/payout bounds.
+- Explain compiler warnings, explorer verification and exact historical compiler settings in the owner guide.
+- Retain deployed addresses, ownership, commissioning boundaries, research and flowcharts.
+- See [release notes](docs/agent/RELEASE_NOTES_1.28.1.md).
+
 ## 1.28.0 — 2026-10-12
 
 - Add a bilingual, accessible workshop combining the real Alpha candidate engine and pinned AGI Jobs compiler.

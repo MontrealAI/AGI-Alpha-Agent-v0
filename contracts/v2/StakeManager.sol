@@ -127,6 +127,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @notice Sets protocol fee percentage in basis points
     function setFeePct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
+        require(pct + burnPct <= 10_000, "total deductions too high");
         feePct = pct;
         emit FeePctUpdated(pct);
     }
@@ -134,6 +135,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @notice Sets burn percentage in basis points
     function setBurnPct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
+        require(feePct + pct <= 10_000, "total deductions too high");
         burnPct = pct;
         emit BurnPctUpdated(pct);
     }
@@ -157,8 +159,10 @@ contract StakeManager is Ownable, ReentrancyGuard {
         emit SlashPctsUpdated(employerPct, treasuryPct);
     }
 
-    /// @notice Adds an AGI type NFT and its payout percentage
+    /// @notice Adds an AGI type NFT and its payout percentage in basis points.
+    /// @dev Payouts cannot exceed funded escrow or consume another user's collateral.
     function addAGIType(address nft, uint256 payoutPct) external onlyOwner {
+        require(payoutPct <= 10_000, "payout exceeds escrow");
         agiTypePayoutPct[nft] = payoutPct;
         agiTypes.push(nft);
         emit AGITypeAdded(nft, payoutPct);
