@@ -8,6 +8,7 @@ import json
 import platform
 import shutil
 import subprocess
+import tempfile
 import time
 import uuid
 from pathlib import Path
@@ -110,43 +111,52 @@ def invoke(request: dict[str, Any], checkpoint: Callable[[], None] = lambda: Non
     node = shutil.which("node")
     if node is None:
         raise ValueError("Node.js 22 or later is required for the optional workbench; legacy commands are unchanged")
-    version = subprocess.run([node, "--version"], capture_output=True, text=True, timeout=5, check=True).stdout
-    if int(version.lstrip("v").split(".")[0]) < 22:
-        raise ValueError("Node.js 22 or later is required")
-    # NODE_OPTIONS, inherited preload paths and credentials cannot alter the fixed worker.
+    # Scrub the version probe as well as the worker: no inherited preload or credential paths.
     import os
 
     environment = {key: value for key, value in os.environ.items() if key in {"PATH", "SYSTEMROOT", "WINDIR", "TMPDIR"}}
-    process = subprocess.Popen(
-        [node, str(WORKER)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=environment
-    )
-    started = time.monotonic()
-    payload: bytes | None = canonical(request)
-    try:
-        while True:
+    version = subprocess.run(
+        [node, "--version"], capture_output=True, text=True, timeout=5, check=True, env=environment
+    ).stdout
+    if int(version.lstrip("v").split(".")[0]) < 22:
+        raise ValueError("Node.js 22 or later is required")
+    payload = canonical(request)
+    if len(payload) > 2_000_000:
+        raise ValueError("Work adapter input exceeds its limit")
+    # A private, seekable stdin avoids partially-written pipes when communicate times out.
+    # Polling still drains stdout/stderr and checks cancellation without replaying any input.
+    with tempfile.TemporaryFile() as input_file:
+        input_file.write(payload)
+        input_file.seek(0)
+        process = subprocess.Popen(
+            [node, str(WORKER)], stdin=input_file, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=environment
+        )
+        started = time.monotonic()
+        try:
+            while True:
+                checkpoint()
+                if time.monotonic() - started > 65:
+                    raise TimeoutError("Work adapter exceeded its wall-clock limit")
+                try:
+                    output, errors = process.communicate(timeout=0.1)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+            if process.returncode:
+                # Worker traces may contain input bytes. Expose only a bounded first error classification.
+                message = next((line for line in errors.decode(errors="replace").splitlines() if "Error:" in line), "")
+                raise ValueError("Work adapter rejected the request: " + message[:200])
+            if len(output) > 2_000_000:
+                raise ValueError("Work adapter output exceeds its limit")
+            result = safe_json_loads(output)
+            if not isinstance(result, dict):
+                raise ValueError("Work adapter returned an invalid document")
             checkpoint()
-            if time.monotonic() - started > 65:
-                raise TimeoutError("Work adapter exceeded its wall-clock limit")
-            try:
-                output, errors = process.communicate(payload, timeout=0.1)
-                break
-            except subprocess.TimeoutExpired:
-                payload = None
-        if process.returncode:
-            # Worker traces may contain input bytes. Expose only a bounded first error classification.
-            message = next((line for line in errors.decode(errors="replace").splitlines() if "Error:" in line), "")
-            raise ValueError("Work adapter rejected the request: " + message[:200])
-        if len(output) > 2_000_000:
-            raise ValueError("Work adapter output exceeds its limit")
-        result = safe_json_loads(output)
-        if not isinstance(result, dict):
-            raise ValueError("Work adapter returned an invalid document")
-        checkpoint()
-        return result
-    finally:
-        if process.poll() is None:
-            process.kill()
-        process.communicate()
+            return result
+        finally:
+            if process.poll() is None:
+                process.kill()
+            process.communicate()
 
 
 def _key(run_id: str) -> str:

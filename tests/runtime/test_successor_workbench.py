@@ -17,6 +17,23 @@ from alpha_factory_v1.core.runtime.successor import workbench
 FAMILIES = ["reliability", "performance", "documentation", "public-data", "numerical"]
 
 
+def test_large_input_reaches_a_slow_reader_while_checkpoints_continue(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Real delayed stdin consumption must not strand a partially sent evidence package."""
+    worker = tmp_path / "delayed-reader.mjs"
+    worker.write_text(
+        "await new Promise(resolve=>setTimeout(resolve,350));\n"
+        "process.stdin.setEncoding('utf8');let input='';\n"
+        "for await(const chunk of process.stdin)input+=chunk;\n"
+        "process.stdout.write(JSON.stringify({length:JSON.parse(input).data.length}));\n"
+    )
+    monkeypatch.setattr(workbench, "WORKER", worker)
+    checks: list[bool] = []
+    assert workbench.invoke({"data": "x" * 200_000}, lambda: checks.append(True)) == {"length": 200_000}
+    assert len(checks) >= 2
+
+
 @pytest.mark.parametrize("family", FAMILIES)
 def test_real_domain_artifacts_and_seven_job_binding(family: str, tmp_path: Path) -> None:
     spec = workbench.invoke({"operation": "example", "family": family})
