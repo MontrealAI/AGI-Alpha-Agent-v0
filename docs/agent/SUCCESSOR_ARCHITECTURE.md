@@ -9,7 +9,9 @@ PR #4759 merged the additive lifecycle together with PR #4758 head
 `d1fb99e629ec1627e7d3876a330797bde79d5ee6`. Follow-ups #4760 and #4761 completed operator
 workflows and release-evidence handoffs. Their repair preservation, release identity and browser
 corrections remain intact.
-The lifecycle was introduced in 1.24.0; the current maintenance release is 1.28.1.
+The lifecycle was introduced in 1.24.0. Release 1.29.0 adds the
+[five-family workbench](SUCCESSOR_WORK.md) and [bounded Computer Use](SUCCESSOR_COMPUTER_USE.md)
+through this existing runtime; the earlier 1.28.1 contract qualification remains preserved.
 Existing journal bytes, five native mission kinds,
 research assets, diagrams, contracts and routes retain their meanings and compatibility.
 

@@ -196,7 +196,11 @@ def insert_back_link(pages: Iterable[Path]) -> None:
     for page in pages:
         if not page.is_file():
             continue
-        if page.parts[-3:] in (("successor", "play", "index.html"), ("successor", "build", "index.html")):
+        if page.parts[-3:] in (
+            ("successor", "play", "index.html"),
+            ("successor", "build", "index.html"),
+            ("successor", "work", "index.html"),
+        ):
             continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
@@ -405,6 +409,11 @@ def main() -> None:
         "scripts.generate_successor_build" if __package__ else "generate_successor_build"
     )
     successor_build.build(REPO_ROOT)
+    if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():
+        workbench = importlib.import_module(
+            "scripts.generate_successor_workbench" if __package__ else "generate_successor_workbench"
+        )
+        workbench.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]

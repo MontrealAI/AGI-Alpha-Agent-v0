@@ -8,6 +8,7 @@ import hashlib
 import json
 import zipfile
 from pathlib import Path
+from typing import Any
 
 from scripts.ascension_protocol_evidence import verify_report as verify_protocol_report
 from scripts.business3_evidence import verify_report as verify_business3_report
@@ -23,6 +24,29 @@ from scripts.successor_evidence import verify_report as verify_successor_report
 from scripts.onboarding_evidence import verify_report as verify_onboarding_report
 
 
+def verify_workbench_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
+    """Require exact deployed workbench bytes and completed browser journeys."""
+    root = Path(__file__).resolve().parents[1]
+    sources = json.loads((root / "alpha_factory_v1/core/runtime/successor/workbench_sources.json").read_text())
+    expected = {
+        "schema": "agialpha.successor-workbench.acceptance.v1",
+        "commit": commit,
+        "version": version,
+        "origin": origin + "successor/work/",
+        "sourceHash": sources["sourceHash"],
+        "page_sha256": hashlib.sha256((root / "docs/successor/work/index.html").read_bytes()).hexdigest(),
+        "families": ["reliability", "performance", "documentation", "public-data", "numerical"],
+        "offline_save_reopen": "PASS",
+        "keyboard": "PASS",
+        "languages": ["en", "fr"],
+        "viewports": [1440, 390, 320],
+        "axe": "PASS",
+        "errors": [],
+    }
+    if report.get("passed") is not True or any(report.get(key) != value for key, value in expected.items()):
+        raise ValueError("Workbench must pass every journey against the exact public release and source bytes")
+
+
 def finalize(folder: Path, evidence: Path) -> None:
     """Bind public evidence to the packaged commit and refresh package checksums."""
     manifest_path = folder / "release-manifest.json"
@@ -34,6 +58,7 @@ def finalize(folder: Path, evidence: Path) -> None:
         raise ValueError("Public Pages evidence differs from the packaged source")
     if workspace["origin"] != url or not workspace["model_required"] or public["url"] != url:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
+    workbench = None
     ascension = None
     insight = None
     bloom = None
@@ -245,6 +270,11 @@ def finalize(folder: Path, evidence: Path) -> None:
     if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 26, 2):
         homepage = json.loads((evidence / "public-pages" / "homepage" / "homepage.json").read_text(encoding="utf-8"))
         verify_homepage_report(homepage, manifest["commit"], manifest["version"], url)
+    if tuple(int(part) for part in manifest["version"].split(".")) >= (1, 29, 0):
+        workbench = json.loads(
+            (evidence / "public-pages" / "successor-workbench" / "browser-report.json").read_text(encoding="utf-8")
+        )
+        verify_workbench_report(workbench, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name
@@ -261,6 +291,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if workbench:
+        manifest["public_successor_workbench"] = workbench
+        manifest["release_gates"].append(
+            "public five-family workbench, exact source bytes, EN/FR accessibility and saved offline artifacts"
+        )
     if homepage:
         manifest["public_homepage"] = homepage
         manifest["release_gates"].append(

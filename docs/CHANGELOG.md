@@ -1,3 +1,10 @@
+## 1.29.0 candidate — 2026-10-13
+
+- Add five distinct local SUCCESSOR work adapters, a bilingual offline workbench and a documented extension SDK.
+- Add signed native work/recovery commands and optional bounded screenshot/action Computer Use.
+- Preserve existing commands, routes, journals, diagrams, economic rules and deployed contract records.
+- Qualification and publication gates remain explicit; see [candidate release notes](agent/RELEASE_NOTES_1.29.0.md).
+
 ## 1.28.1 — 2026-10-13
 
 - Strengthen contract qualification and distinguish current-source builds from the immutable October 11 deployment.
