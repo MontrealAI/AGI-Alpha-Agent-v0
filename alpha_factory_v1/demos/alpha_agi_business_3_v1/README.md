@@ -3,7 +3,7 @@
 # 🏛️ Large-Scale α-AGI Business 3 👁️✨ — Ω-Lattice Enterprise Studio
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.28.1
+## Current runnable path — 1.29.0
 
 **Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
 and export reviewable Ascension jobs.

@@ -109,10 +109,10 @@ def validate_action(value: dict[str, Any]) -> dict[str, Any]:
             coordinate(point)
     if kind == "type" and (not isinstance(value["text"], str) or len(value["text"]) > 4000):
         raise ValueError("typed text exceeds its bound")
-    if kind == "scroll" and any(
-        type(value[k]) is not int or abs(value[k]) > 2000 for k in ("scroll_x", "scroll_y")
-    ):  # noqa: E721
-        raise ValueError("scroll exceeds its bound")
+    if kind == "scroll":
+        for key in ("scroll_x", "scroll_y"):
+            if type(value[key]) is not int or abs(value[key]) > 2000:  # noqa: E721
+                raise ValueError("scroll exceeds its bound")
     if kind == "keypress":
         allowed = {"ENTER", "TAB", "ESC", "BACKSPACE", "DELETE", "SPACE", "UP", "DOWN", "LEFT", "RIGHT", "HOME", "END"}
         keys = value["keys"]

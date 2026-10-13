@@ -21,3 +21,5 @@ independent evidence and live market commissioning are separate claims.
 Publication remains subject to exact-head CI, independent review, the normal merge process and deployed
 artifact verification. This note does not claim those gates have passed. Actual outcomes and blockers are
 tracked in [the acceptance record](SUCCESSOR_IMPLEMENTATION_2026-10-13.md).
+
+Begin with [START_HERE.md](START_HERE.md) for installation and the preserved operator workflows.

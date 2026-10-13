@@ -827,7 +827,8 @@ jobs:
           docker pull mcr.microsoft.com/playwright/python:v1.63.0-noble
           base_image=$(docker image inspect mcr.microsoft.com/playwright/python:v1.63.0-noble --format '{{index .RepoDigests 0}}')
           docker build --build-arg "BASE_IMAGE=$base_image" -f examples/successor-workbench/computer/Dockerfile -t successor-computer .
-          export SUCCESSOR_COMPUTER_IMAGE=$(docker image inspect successor-computer --format '{{.Id}}')
+          SUCCESSOR_COMPUTER_IMAGE=$(docker image inspect successor-computer --format '{{.Id}}')
+          export SUCCESSOR_COMPUTER_IMAGE
           python -m pytest tests/runtime/test_successor_workbench.py tests/runtime/test_successor_computer.py --confcutdir=tests/runtime -q --junitxml=evidence/workbench-native.xml
           docker image inspect "$SUCCESSOR_COMPUTER_IMAGE" > evidence/computer-image.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

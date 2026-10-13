@@ -196,7 +196,11 @@ def insert_back_link(pages: Iterable[Path]) -> None:
     for page in pages:
         if not page.is_file():
             continue
-        if page.parts[-3:] in (("successor", "play", "index.html"), ("successor", "build", "index.html")):
+        if page.parts[-3:] in (
+            ("successor", "play", "index.html"),
+            ("successor", "build", "index.html"),
+            ("successor", "work", "index.html"),
+        ):
             continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
