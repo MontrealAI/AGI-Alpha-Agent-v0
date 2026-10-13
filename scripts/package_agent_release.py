@@ -315,6 +315,7 @@ def main() -> None:
             "source preservation",
             "SUCCESSOR complete offline lifecycle, strict protocol, authority, succession and settlement adapters",
             "SUCCESSOR installed-wheel and bilingual browser request/evidence round trip",
+            "SUCCESSOR five real work families, extension SDK, offline artifacts and isolated Computer Use actuator",
             "complete baseline preservation inventory and bounded verified distribution packs",
         ],
         "limits": [

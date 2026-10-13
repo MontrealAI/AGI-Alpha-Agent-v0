@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
+import subprocess
+import tomllib
 from typing import Any
 
 from playwright.sync_api import expect, sync_playwright
@@ -17,13 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 def validate(output: Path, url: str | None = None, axe: Path | None = None) -> dict[str, Any]:
     """Run all five families, input invalidation, keyboard, EN/FR, responsive and offline journeys."""
     output.mkdir(parents=True, exist_ok=True)
+    source_manifest = json.loads((ROOT / "alpha_factory_v1/core/runtime/successor/workbench_sources.json").read_text())
+    page_hash = hashlib.sha256((ROOT / "docs/successor/work/index.html").read_bytes()).hexdigest()
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, accept_downloads=True)
         page = context.new_page()
         errors: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(url or (ROOT / "docs/successor/work/index.html").as_uri())
+        response = page.goto(url or (ROOT / "docs/successor/work/index.html").as_uri())
+        assert response is not None and response.ok
+        assert hashlib.sha256(response.body()).hexdigest() == page_hash, "Served workbench differs from this source"
         expect(page.locator("#families button")).to_have_count(5)
         families = ["reliability", "performance", "documentation", "public-data", "numerical"]
         for index, family in enumerate(families):
@@ -38,6 +45,7 @@ def validate(output: Path, url: str | None = None, axe: Path | None = None) -> d
             download.value.save_as(evidence)
             pack = json.loads(evidence.read_text())
             assert pack["spec"]["family"] == family
+            assert pack["frozen"]["sourceHash"] == source_manifest["sourceHash"]
             assert pack["result"]["artifacts"] and pack["evaluation"]["authority"] == []
             assert len(pack["compilation"]["graph"]["nodes"]) == 7
         page.locator("#language").click()
@@ -88,6 +96,13 @@ def validate(output: Path, url: str | None = None, axe: Path | None = None) -> d
         assert not errors, errors
         browser.close()
     report = {
+        "schema": "agialpha.successor-workbench.acceptance.v1",
+        "passed": True,
+        "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "version": tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"],
+        "origin": url or "local file",
+        "sourceHash": source_manifest["sourceHash"],
+        "page_sha256": page_hash,
         "families": families,
         "offline_save_reopen": "PASS",
         "keyboard": "PASS",

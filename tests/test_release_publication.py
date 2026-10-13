@@ -22,6 +22,37 @@ from scripts import discovery_evidence
 from scripts import experience_evidence, mats_evidence, curriculum_evidence
 
 
+@pytest.mark.parametrize("damage", [None, "origin", "commit", "sourceHash", "page_sha256", "families", "axe", "passed"])
+def test_workbench_publication_refuses_stale_or_incomplete_journeys(damage: str | None) -> None:
+    """Controlled reports cannot substitute stale content or skipped accessibility for public acceptance."""
+    root = Path(__file__).resolve().parents[1]
+    origin = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+    report = {
+        "schema": "agialpha.successor-workbench.acceptance.v1",
+        "passed": True,
+        "commit": "a" * 40,
+        "version": "1.29.0",
+        "origin": origin + "successor/work/",
+        "sourceHash": json.loads((root / "alpha_factory_v1/core/runtime/successor/workbench_sources.json").read_text())[
+            "sourceHash"
+        ],
+        "page_sha256": hashlib.sha256((root / "docs/successor/work/index.html").read_bytes()).hexdigest(),
+        "families": ["reliability", "performance", "documentation", "public-data", "numerical"],
+        "offline_save_reopen": "PASS",
+        "keyboard": "PASS",
+        "languages": ["en", "fr"],
+        "viewports": [1440, 390, 320],
+        "axe": "PASS",
+        "errors": [],
+    }
+    if damage:
+        report[damage] = 1 if damage == "passed" else "stale-or-not-run"
+        with pytest.raises(ValueError, match="exact public release"):
+            finalize_pages_release.verify_workbench_report(report, "a" * 40, "1.29.0", origin)
+    else:
+        finalize_pages_release.verify_workbench_report(report, "a" * 40, "1.29.0", origin)
+
+
 def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
     import importlib.metadata
     import runpy

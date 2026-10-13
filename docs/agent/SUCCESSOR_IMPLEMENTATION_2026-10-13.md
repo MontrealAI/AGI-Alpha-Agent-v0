@@ -55,8 +55,8 @@ The optional container declares its own locked Playwright 1.63.0 environment; th
 | Ω07 | PASS in initial candidate CI | The `browser-contracts` job in run `38416321126` exercised the real local EVM; the final head must pass again |
 | Ω08 | PASS for local protocol | Existing forgery/replay/signature suite plus hostile artifact and supplier-substitution checks |
 | Ω09 | PASS for bounded local protocol | Existing atomic ledger tests, work revision/lease bounds, computer task reservation and replay guard |
-| Ω10 | PASS for controlled faults | Native pause/recovery and uncertain computer-effect receipts; real container qualification remains separate |
-| Ω11 | PASS for controlled faults | Failed cleanup quarantines; missing Docker has no host fallback; real container cleanup still requires CI |
+| Ω10 | PASS for controlled faults | Native pause/recovery and uncertain computer-effect receipts; normal real-container typing and screenshots also passed CI |
+| Ω11 | PASS for controlled faults | Failed cleanup quarantines; missing Docker has no host fallback; normal real-container cleanup passed CI |
 | Ω12 | PASS for existing bounded lifecycle | Existing specialist/delegation suite preserved; extension SDK adds installed adapters, not arbitrary self-provisioning |
 | Ω13 | PASS for local export/rebuild | Offline reopen, native reinstall, signed attribution, inert restore with empty authority |
 | Ω14 | PASS for substitution binding | Provider identity changes require a different permission commitment; no live supplier equivalence claim |
@@ -105,3 +105,17 @@ release notes, original diagrams, contract interfaces and economic rules are ret
   unpause, ownership change or mainnet deployment. Existing 29-address historical records are preserved.
 
 This is a software candidate awaiting those gates, not a claim of complete production commissioning.
+
+## Container and final-distribution follow-up
+
+At candidate `8465b57338b2fe8119be4b0e94f5fe69e25b7dd7`, CI run `38418835189` passed the new
+workbench job: **26 native tests with no skip**, including actual disposable Docker/Chromium typing,
+screenshots and verified cleanup. The scripted advisor in that test is explicitly not a live model.
+The complete local native suite passed **501 tests with one local Docker skip**. The same candidate
+wheel ran all five families outside the checkout and verified their signed receipts. Final-head CI
+remains required after changes, including this post-publication workbench gate.
+
+A future 1.29.0 publication now requires the deployed workbench to match the checked-out HTML and
+domain-source hashes, execute all five families, reopen saved artifacts offline and pass EN/FR,
+keyboard and accessibility checks. Release finalization rejects stale, incomplete or local-only reports.
+This adds a publication requirement; no release or site has been published here.

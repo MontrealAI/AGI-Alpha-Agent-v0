@@ -1,7 +1,7 @@
 # SUCCESSOR Ω: useful local work
 
 This additive workbench preserves the existing personal lab, aggregation workshop, lifecycle,
-native commands, journals and deployed contracts. Open [the workbench](../../successor/work/index.html),
+native commands, journals and deployed contracts. Open [the workbench](../successor/work/index.html),
 choose a mission, run the example, inspect its files, and save your working HTML copy.
 No account, provider key, wallet or token is required for these five adapters.
 

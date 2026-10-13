@@ -960,6 +960,7 @@ jobs:
           python -m scripts.validate_sovereign --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/sovereign --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_successor --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/successor --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_successor_pocket --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/successor-pocket
+          python -m scripts.validate_successor_workbench --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/ --output evidence/public-pages/successor-workbench --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_onboarding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/onboarding
           python -m scripts.validate_homepage --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/homepage
       - name: Name this attempt's public acceptance evidence
