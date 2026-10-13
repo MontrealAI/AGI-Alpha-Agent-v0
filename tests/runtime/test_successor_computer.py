@@ -1,0 +1,282 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Adversarial control tests use labeled supplier/actuator doubles, never claim live qualification."""
+
+from __future__ import annotations
+
+import base64
+import argparse
+import json
+import os
+from pathlib import Path
+from typing import Any
+
+import httpx
+import pytest
+
+from alpha_factory_v1.core.runtime.store import Journal
+from alpha_factory_v1.core.runtime.successor.computer import (
+    ComputerTask,
+    DockerComputer,
+    HTTPAdvisor,
+    ReadBroker,
+    commitment,
+    run_session,
+    handle,
+    validate_action,
+)
+
+
+def task() -> ComputerTask:
+    return ComputerTask(
+        goal="Type useful work into the box",
+        html='<input aria-label="Result" id="result">',
+        input_rights="synthetic",
+        license="Apache-2.0",
+        max_turns=3,
+    )
+
+
+class ScriptedAdvisor:
+    identity = {"mode": "CONTROLLED_TEST_DOUBLE", "model": "fixed-script", "endpoint": "none"}
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def next(self, task: ComputerTask, observation: dict[str, Any]) -> dict[str, Any]:
+        self.calls += 1
+        return (
+            {
+                "actions": [
+                    {"type": "click", "button": "left", "x": 80, "y": 16},
+                    {"type": "type", "text": "useful work"},
+                ],
+                "done": False,
+                "summary": "",
+            }
+            if self.calls == 1
+            else {"actions": [], "done": True, "summary": "Unverified scripted completion"}
+        )
+
+
+class TestComputer:
+    __test__ = False
+
+    def __init__(self, *args: Any) -> None:
+        self.closed = False
+
+    def observe(self) -> dict[str, Any]:
+        return {
+            "type": "observation",
+            "png": base64.b64encode(b"\x89PNG\r\n\x1a\nTEST_DOUBLE").decode(),
+            "text": "test-double observation",
+            "url": "about:blank",
+        }
+
+    def act(self, action: dict[str, Any]) -> dict[str, Any]:
+        return self.observe()
+
+    def close(self) -> None:
+        self.closed = True
+
+
+@pytest.mark.parametrize(
+    "action",
+    [
+        {"type": "shell", "command": "id"},
+        {"type": "type", "text": "x", "authority": True},
+        {"type": "click", "x": True, "y": 1, "button": "left"},
+        {"type": "click", "x": 1024, "y": 1, "button": "left"},
+        {"type": "keypress", "keys": ["CTRL", "L"]},
+        {"type": "keypress", "keys": ["META", "R"]},
+        {"type": "drag", "path": []},
+        {"type": "scroll", "x": 1, "y": 1, "scroll_x": 0, "scroll_y": 10_000},
+    ],
+)
+def test_hostile_or_unbounded_advice_is_not_executable(action: dict[str, Any]) -> None:
+    with pytest.raises(ValueError):
+        validate_action(action)
+
+
+def test_provider_substitution_invalidates_permission(tmp_path: Path) -> None:
+    advisor = ScriptedAdvisor()
+    image = "sha256:" + "a" * 64
+    permit = commitment(task(), advisor, image)
+    advisor.identity = {**advisor.identity, "model": "other"}
+    with pytest.raises(ValueError, match="permit"):
+        run_session(
+            Journal.initialize(tmp_path / "home"),
+            task(),
+            advisor,
+            image,
+            tmp_path / "out",
+            permit,
+            factory=TestComputer,
+        )
+    assert not (tmp_path / "out").exists()
+
+
+def test_reservations_and_untrusted_completion_retained(tmp_path: Path) -> None:
+    journal, advisor = Journal.initialize(tmp_path / "home"), ScriptedAdvisor()
+    image = "sha256:" + "a" * 64
+    result = run_session(
+        journal, task(), advisor, image, tmp_path / "out", commitment(task(), advisor, image), factory=TestComputer
+    )
+    receipt = json.loads((tmp_path / "out/receipt.json").read_text())
+    assert result["state"] == "review" and result["verified"] is False
+    assert receipt["turns_reserved"] == 2 and receipt["actions_reserved"] == 2
+    assert len(receipt["screenshots"]) == 3
+    assert receipt["authority"] == [] and receipt["billing"] == "UNKNOWN"
+    journal.verify()
+
+
+def test_failure_preserves_uncertain_effect_and_cleanup(tmp_path: Path) -> None:
+    class BrokenComputer(TestComputer):
+        def act(self, action: dict[str, Any]) -> dict[str, Any]:
+            raise OSError("connection lost after an uncertain effect")
+
+    journal, advisor = Journal.initialize(tmp_path / "home"), ScriptedAdvisor()
+    image = "sha256:" + "a" * 64
+    with pytest.raises(OSError):
+        run_session(
+            journal,
+            task(),
+            advisor,
+            image,
+            tmp_path / "out",
+            commitment(task(), advisor, image),
+            factory=BrokenComputer,
+        )
+    receipt = json.loads((tmp_path / "out/receipt.json").read_text())
+    assert receipt["state"] == "interrupted"
+    assert receipt["actions_reserved"] == 1 and receipt["pending"] == "action"
+    assert receipt["events"][-1]["status"] == "reserved"
+    with pytest.raises(ValueError, match="reconcile"):
+        run_session(
+            journal,
+            task(),
+            ScriptedAdvisor(),
+            image,
+            tmp_path / "retry",
+            commitment(task(), ScriptedAdvisor(), image),
+            factory=TestComputer,
+        )
+
+
+def test_egress_blocks_private_dns_and_unapproved_queries(monkeypatch: pytest.MonkeyPatch) -> None:
+    broker = ReadBroker(["https://example.org/public"])
+    with pytest.raises(ValueError):
+        broker.fetch("https://example.org/public?stolen=secret", "GET")
+    with pytest.raises(ValueError):
+        broker.fetch("https://example.org/public", "POST")
+    monkeypatch.setattr("socket.getaddrinfo", lambda *a, **kw: [(2, 1, 6, "", ("127.0.0.1", 443))])
+    with pytest.raises(ValueError, match="nonpublic"):
+        broker.fetch("https://example.org/public", "GET")
+
+
+def test_reconciliation_binds_exact_inactive_record(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    journal, advisor = Journal.initialize(home), ScriptedAdvisor()
+    image = "sha256:" + "a" * 64
+    result = run_session(
+        journal, task(), advisor, image, tmp_path / "out", commitment(task(), advisor, image), factory=TestComputer
+    )
+    record = journal.latest("@successor-computer:" + result["run_id"])
+    args = argparse.Namespace(
+        home=home,
+        computer_command="reconcile",
+        run_id=result["run_id"],
+        record_digest="0" * 64,
+        note="Observed local draft; no external writes occurred",
+    )
+    with pytest.raises(ValueError):
+        handle(args)
+    args.record_digest = record["digest"]
+    assert handle(args)["state"] == "reconciled"
+    advisor = ScriptedAdvisor()
+    assert (
+        run_session(
+            journal,
+            task(),
+            advisor,
+            image,
+            tmp_path / "second",
+            commitment(task(), advisor, image),
+            factory=TestComputer,
+        )["state"]
+        == "review"
+    )
+
+
+def test_failed_cleanup_quarantines_completed_claim(tmp_path: Path) -> None:
+    class LeakedComputer(TestComputer):
+        def close(self) -> None:
+            raise ValueError("controlled cleanup failure")
+
+    journal, advisor = Journal.initialize(tmp_path / "home"), ScriptedAdvisor()
+    image = "sha256:" + "a" * 64
+    with pytest.raises(ValueError, match="cleanup"):
+        run_session(
+            journal,
+            task(),
+            advisor,
+            image,
+            tmp_path / "out",
+            commitment(task(), advisor, image),
+            factory=LeakedComputer,
+        )
+    receipt = json.loads((tmp_path / "out/receipt.json").read_text())
+    assert receipt["state"] == "quarantined" and receipt["cleanup"] == "FAILED"
+
+
+def test_current_responses_wire_format_and_safety_refusal(monkeypatch: pytest.MonkeyPatch) -> None:
+    original = httpx.Client
+    requests: list[dict[str, Any]] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        requests.append(body)
+        return httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "output": [
+                    {
+                        "type": "computer_call",
+                        "call_id": "one",
+                        "actions": [{"type": "screenshot"}],
+                        "pending_safety_checks": [] if len(requests) == 1 else ["review"],
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=httpx.MockTransport(respond), **kwargs))
+    advisor = HTTPAdvisor("responses", "operator-selected-model", "https://api.openai.com/v1", "TEST_ONLY")
+    observation = TestComputer().observe()
+    assert advisor.next(task(), observation)["actions"] == [{"type": "screenshot"}]
+    with pytest.raises(ValueError, match="safety review"):
+        advisor.next(task(), observation)
+    assert requests[0]["tools"] == [{"type": "computer"}]
+    assert requests[0]["store"] is False
+    assert requests[1]["input"][-1]["output"]["type"] == "computer_screenshot"
+    assert requests[1]["input"][-1]["call_id"] == "one"
+
+
+@pytest.mark.skipif(
+    not os.environ.get("SUCCESSOR_COMPUTER_IMAGE"), reason="real Docker image must be explicitly provided"
+)
+def test_real_container_keyboard_screenshot_and_cleanup(tmp_path: Path) -> None:
+    journal, advisor, mission = Journal.initialize(tmp_path / "home"), ScriptedAdvisor(), task()
+    mission = mission.model_copy(
+        update={
+            "html": '<input id="result" oninput="document.querySelector(\'output\').textContent=this.value">'
+            "<output></output>"
+        }
+    )
+    image = os.environ["SUCCESSOR_COMPUTER_IMAGE"]
+    result = run_session(
+        journal, mission, advisor, image, tmp_path / "out", commitment(mission, advisor, image), factory=DockerComputer
+    )
+    assert result["state"] == "review"
+    assert "useful work" in (tmp_path / "out/visible-text.txt").read_text()
+    assert (tmp_path / "out/screen-002.png").stat().st_size > 100

@@ -1,3 +1,7 @@
+> **[Create a useful SUCCESSOR Ω →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/)**
+> Five bounded work families · English / Français · Real artifacts you can retain · Optional native Computer Use.
+> [Scope, setup and reproduction](docs/agent/SUCCESSOR_WORK.md).
+
 > **[Build your own SUCCESSOR Ω with Alpha Agent + AGI Jobs →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/build/)**
 > Name your mission, run four candidate programs, compile 21 bounded job drafts, and keep the working lab offline.
 > English / Français · Large text · No account, wallet or installation. [Source and reproduction guide](examples/build-successor/README.md) · [Version 1.28.0](docs/agent/RELEASE_NOTES_1.28.0.md).

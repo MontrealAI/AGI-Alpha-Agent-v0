@@ -24,6 +24,11 @@ from .trust import (
 
 def add_commands(commands: Any) -> None:
     """Add compatible commands without changing legacy mission arguments."""
+    from .workbench import add_commands as add_work_commands
+    from .computer import add_commands as add_computer_commands
+
+    add_work_commands(commands)
+    add_computer_commands(commands)
     demo = commands.add_parser("successor-demo", help="Run a complete offline two-generation SUCCESSOR rehearsal")
     demo.add_argument(
         "--output", type=Path, required=True, help="New evidence directory; existing work is never overwritten"
@@ -225,6 +230,14 @@ def _restore(args: argparse.Namespace) -> dict[str, Any]:
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
     """Validate external inputs before creating any mission state."""
+    if args.command == "successor-computer":
+        from .computer import handle as handle_computer
+
+        return handle_computer(args)
+    if args.command == "successor-work":
+        from .workbench import handle as handle_work
+
+        return handle_work(args)
     from .orchestration import rehearse, retained_result, show_run, write_demo
 
     if args.command == "successor-restore":

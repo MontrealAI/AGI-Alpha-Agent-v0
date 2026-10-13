@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "successor-work": "Créer du travail utile · cinq familles de missions",
     "build-successor": "Construire votre Ω avec les deux projets",
     "omega-start": "Créer mon SUCCESSOR Ω",
     skip: "Aller au contenu principal",

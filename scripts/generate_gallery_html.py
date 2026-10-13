@@ -405,6 +405,11 @@ def main() -> None:
         "scripts.generate_successor_build" if __package__ else "generate_successor_build"
     )
     successor_build.build(REPO_ROOT)
+    if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():
+        workbench = importlib.import_module(
+            "scripts.generate_successor_workbench" if __package__ else "generate_successor_workbench"
+        )
+        workbench.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
