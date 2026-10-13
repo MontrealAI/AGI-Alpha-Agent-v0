@@ -211,8 +211,9 @@ contract JobRegistry is Ownable {
     function createJob(uint96 reward, uint40 deadline) external returns (uint256 jobId) {
         require(!reputationEngine.isBlacklisted(msg.sender), "blacklisted");
         require(taxPolicy.isAcknowledged(msg.sender), "tax");
+        require(reward > 0, "reward 0");
         require(reward <= maxJobReward, "reward too high");
-        require(deadline != 0 && deadline <= block.timestamp + maxJobDuration, "invalid deadline");
+        require(deadline > block.timestamp && deadline <= block.timestamp + maxJobDuration, "invalid deadline");
         jobId = ++nextJobId;
         stakeManager.lock(jobId, msg.sender, reward);
         jobs[jobId] = Job({
@@ -244,6 +245,7 @@ contract JobRegistry is Ownable {
         );
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
+        require(block.timestamp < job.deadline, "deadline passed");
         uint256 agentStake = stakeManager.agentStakes(msg.sender);
         uint256 minStake = stakeManager.minStakeAgent();
         require(agentStake >= minStake, "stake too low");
@@ -260,9 +262,10 @@ contract JobRegistry is Ownable {
         Job storage job = jobs[jobId];
         require(job.client == msg.sender, "not client");
         require(job.status == Status.Created, "invalid status");
-        stakeManager.release(jobId, job.client, new address[](0), 0);
+        address client = job.client;
+        stakeManager.release(jobId, client, new address[](0), 0);
         delete jobs[jobId];
-        emit JobCancelled(jobId, job.client);
+        emit JobCancelled(jobId, client);
     }
 
     /// @notice Delists a job by the contract owner
@@ -270,9 +273,10 @@ contract JobRegistry is Ownable {
     function delistJob(uint256 jobId) external onlyOwner {
         Job storage job = jobs[jobId];
         require(job.status == Status.Created, "invalid status");
-        stakeManager.release(jobId, job.client, new address[](0), 0);
+        address client = job.client;
+        stakeManager.release(jobId, client, new address[](0), 0);
         delete jobs[jobId];
-        emit JobDelisted(jobId, job.client);
+        emit JobDelisted(jobId, client);
     }
 
     /// @notice Submits work for a job, validated by validation module

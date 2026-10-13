@@ -57,6 +57,61 @@ deployment to update an existing address. If the newer source is chosen, use a s
 deployment and an explicit transition plan. No proxy upgrade, automatic migration, global pause, or
 arbitrary treasury rescue exists. Keep this deployment's receipts, source identity and user obligations.
 
+## Understand a contract warning
+
+First identify where the warning appears and copy its exact text. A successful build, a green explorer
+source badge and a complete operational review answer different questions. The warning text from an
+explorer is needed to determine its specific cause; this release does not assert that every recorded
+address has the same warning.
+
+| What you see | What it means | Next step |
+| --- | --- | --- |
+| Solidity warning during a fresh build | A diagnostic for the source and compiler being run | Use the locked current-source qualification commands in the [new-deployment guide](MAINNET_READINESS.md); resolve every compiler warning before release |
+| Explorer compiler-version or known-bug notice | A notice about the compiler embedded in that deployment's verified metadata | Compare the exact compiler/settings with the [Solidity known-bug list](https://docs.soliditylang.org/en/latest/bugs.html); review each bug's conditions against the archived source |
+| Explorer source or constructor mismatch | The submitted input does not reproduce the deployed build | Use that deployment's exact standard JSON, source paths, libraries and encoded constructor arguments; do not flatten or rebuild with the newer compiler |
+| Hardhat stack-trace support notice | A limitation of Hardhat's debugging support for that compiler | Retain the notice and test receipt/state assertions; do not downgrade Solidity or suppress diagnostics to obtain a quieter terminal |
+| Dependency audit finding | An advisory for a toolchain package | Run the full locked-toolchain audit; compiler checks and dependency audits are separate gates |
+
+The October 11 archive must remain **Solidity 0.8.24, via IR, optimizer 200, Paris, OpenZeppelin 5.4.0**.
+Current-source preparation uses **Solidity 0.8.37, via IR, optimizer 200, Cancun, OpenZeppelin 5.6.1**.
+Changing a repository file, compiler setting or explorer submission cannot replace an already deployed
+contract's runtime. A compiler notice can remain on an immutable historical deployment after a clean
+current-source build. A notice alone also does not prove a particular bug affects that contract.
+
+For the five existing addresses, start with `mainnet:record-check`, then use the read-only check below.
+For a new deployment, start with the [current-source preparation guide](MAINNET_READINESS.md).
+Keep both build profiles and their evidence separate. The canonical $AGIALPHA token is an external
+dependency; this maintenance release does not recompile or replace it.
+
+**En français.** Relevez le texte exact de l'avertissement. Les contrats du 11 octobre restent liés à
+Solidity 0.8.24 et à leurs sources archivées. La version actuelle utilise Solidity 0.8.37 pour une nouvelle
+préparation. Une publication GitHub ne modifie aucun contrat déployé. Utilisez les fichiers de vérification
+correspondant exactement à l'adresse, au compilateur et aux paramètres de cette adresse.
+
+## Prepare exact explorer verification files
+
+If an explorer needs verification or a submission must be reproduced, export the historical profile
+from the repository root after the locked `npm ci --prefix tests/contracts` installation:
+
+```sh
+npm run mainnet:record-check --prefix tests/contracts
+npm run mainnet:verification-package --prefix tests/contracts -- record /operator/new-record-verification
+```
+
+Use a new directory outside the repository; PowerShell accepts an equivalent absolute Windows path.
+The export includes all five addresses. Each named contract folder has its archived `standard-input.json`,
+encoded `constructor-arguments.txt` without `0x`, and `etherscan-request.json` with the exact V2 parameters.
+The root `manifest.json` records compiler/settings, address bindings and file digests; `README.txt` walks
+through the submission. The original archive is unchanged. No wallet, API key or explorer request is used.
+
+Select **Solidity (Standard-Json-Input)** on Etherscan, select the exact compiler in the manifest, then
+upload the file for that address and preserve its fully qualified contract name and constructor arguments.
+For an API submission, supply your API key separately, retain the returned GUID and check the final status;
+a GUID is a pending submission, not successful verification. Retain the final response and independently
+check the explorer's address/source/runtime match. Exporting files does not establish explorer acceptance.
+Use `plan` mode only for a separately reviewed new deployment, as explained in the
+[new-deployment guide](MAINNET_READINESS.md#5-verify-the-deployed-result-before-use).
+
 ## Check the existing deployment safely
 
 These commands run from a clean checkout of the matching release. They require Node.js **22.17.1**.

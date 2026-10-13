@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Constants.sol";
 
 interface IERC20Burnable {
@@ -44,6 +43,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     uint256 public employerSlashPct; // percentage (0-100)
     uint256 public treasurySlashPct; // percentage (0-100)
 
+    // Retained for legacy ABI/storage compatibility; new NFT bonus registration is disabled.
     mapping(address => uint256) public agiTypePayoutPct;
     address[] public agiTypes;
     mapping(uint256 => uint256) public jobEscrows;
@@ -127,6 +127,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @notice Sets protocol fee percentage in basis points
     function setFeePct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
+        require(pct + burnPct <= 10_000, "total deductions too high");
         feePct = pct;
         emit FeePctUpdated(pct);
     }
@@ -134,6 +135,7 @@ contract StakeManager is Ownable, ReentrancyGuard {
     /// @notice Sets burn percentage in basis points
     function setBurnPct(uint256 pct) external onlyOwner {
         require(pct <= 10_000, "pct too high");
+        require(feePct + pct <= 10_000, "total deductions too high");
         burnPct = pct;
         emit BurnPctUpdated(pct);
     }
@@ -157,11 +159,10 @@ contract StakeManager is Ownable, ReentrancyGuard {
         emit SlashPctsUpdated(employerPct, treasuryPct);
     }
 
-    /// @notice Adds an AGI type NFT and its payout percentage
-    function addAGIType(address nft, uint256 payoutPct) external onlyOwner {
-        agiTypePayoutPct[nft] = payoutPct;
-        agiTypes.push(nft);
-        emit AGITypeAdded(nft, payoutPct);
+    /// @notice NFT bonus registration is disabled pending a separately funded design.
+    /// @dev Retains the legacy selector. Escrow and other users' stakes cannot fund NFT bonuses.
+    function addAGIType(address, uint256) external view onlyOwner {
+        revert("NFT bonuses disabled");
     }
 
     /// @notice Removes an AGI type NFT
@@ -251,15 +252,6 @@ contract StakeManager is Ownable, ReentrancyGuard {
         uint256 validatorReward = (net * validatorPct) / 100;
         uint256 perValidator = validators.length > 0 ? validatorReward / validators.length : 0;
         uint256 payout = net - (perValidator * validators.length);
-
-        uint256 pct = 10_000;
-        for (uint256 i = 0; i < agiTypes.length; i++) {
-            address nft = agiTypes[i];
-            if (agiTypePayoutPct[nft] > pct && IERC721(nft).balanceOf(recipient) > 0) {
-                pct = agiTypePayoutPct[nft];
-            }
-        }
-        payout = (payout * pct) / 10_000;
 
         if (fee > 0) agiToken.safeTransfer(treasury, fee);
         if (burn > 0) IERC20Burnable(address(agiToken)).burn(burn);

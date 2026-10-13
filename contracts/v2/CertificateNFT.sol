@@ -54,6 +54,16 @@ contract CertificateNFT is ERC721, Ownable, ReentrancyGuard {
         return baseTokenURI;
     }
 
+    /// @dev A transfer ends the seller's offer, even if the token later returns to that seller.
+    function _update(address to, uint256 tokenId, address auth) internal override returns (address) {
+        address previousOwner = super._update(to, tokenId, auth);
+        if (listings[tokenId].seller != address(0)) {
+            delete listings[tokenId];
+            emit NFTDelisted(tokenId);
+        }
+        return previousOwner;
+    }
+
     /// @notice Mints a certificate NFT for a completed job
     function mint(address to, uint256 jobId) external {
         require(msg.sender == jobRegistry, "not registry");

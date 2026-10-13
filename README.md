@@ -50,6 +50,10 @@ production or open live intake. Check the [Alpha deployment guide](docs/agent/MA
 > [Larger text](https://montrealai.github.io/AGI-Alpha-Agent-v0/?text=large) ·
 > [Simple guide](docs/agent/ONBOARDING.md) · [1.26.3 release notes](docs/agent/RELEASE_NOTES_1.26.3.md).
 
+> **Contract maintenance · [Version 1.28.1](docs/agent/RELEASE_NOTES_1.28.1.md).**
+> Follow the [warning and verification guide](docs/agent/MAINNET_DEPLOYMENT.md#understand-a-contract-warning)
+> to distinguish source compilation, explorer verification and the immutable October 11 deployment.
+
 > **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded.
 > Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the
 > Etherscan API transcript. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md).

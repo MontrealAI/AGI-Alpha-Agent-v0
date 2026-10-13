@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const { execFileSync } = require("child_process");
 const ethers = require("ethers");
 const { verifyBuildSources, writeManifest } = require("./deployment");
+const { SOLC_VERSION, assertNoCompilerWarnings } = require("./compiler-policy");
 const { AGIALPHA_ADDRESS } = require("../../../token.config");
 const root = path.resolve(__dirname, "../../..");
 const names = ["AscensionAccess", "NovaSeed", "AscensionRiskOracle", "AscensionJobMarket", "AscensionMark"];
@@ -81,11 +82,12 @@ function compiledContracts() {
         const debug = JSON.parse(fs.readFileSync(`${file}.dbg.json`));
         const build = JSON.parse(fs.readFileSync(path.resolve(path.dirname(file), debug.buildInfo)));
         const output = build.output.contracts[artifact.sourceName][name];
-        requireValue(build.solcVersion === "0.8.37" && build.input.settings.optimizer.enabled &&
+        requireValue(build.solcVersion === SOLC_VERSION && build.input.settings.optimizer.enabled &&
             build.input.settings.optimizer.runs === 200 && build.input.settings.viaIR === true && build.input.settings.evmVersion === "cancun", "Unexpected compiler settings");
         requireValue(artifact.bytecode === `0x${output.evm.bytecode.object}` && artifact.deployedBytecode === `0x${output.evm.deployedBytecode.object}`, "Artifact/compiler bytecode mismatch");
         requireValue(Object.keys(artifact.linkReferences).length === 0, "Unlinked deployment bytecode");
         if (!builds[build.id]) {
+            assertNoCompilerWarnings(build.output);
             const sourceHashes = verifyBuildSources(build, source => fs.readFileSync(path.join(root, "tests/contracts", source.startsWith("@") ? "node_modules" : "", source), "utf8"));
             builds[build.id] = { compiler: build.solcLongVersion, input: build.input, inputSha256: digest(canonical(build.input)), sourceHashes };
         }
@@ -126,6 +128,13 @@ function checkPlan(plan) {
     const { payloadSha256, ...payload } = plan;
     requireValue(plan.schema === "agialpha.mainnet.unsigned-plan.v1" && digest(canonical(payload)) === payloadSha256, "Plan checksum mismatch");
     validateConfig(plan.config);
+}
+function reviewedRevision(directory = root) {
+    const git = args => execFileSync("git", args, { cwd: directory, encoding: "utf8" }).trim();
+    requireValue(!git(["status", "--porcelain", "--untracked-files=normal"]),
+        "Mainnet plan requires a clean reviewed checkout; put operator files outside the repository");
+    return { commit: git(["rev-parse", "HEAD"]), tree: git(["rev-parse", "HEAD^{tree}"]),
+        lockSha256: digest(fs.readFileSync(path.join(directory, "tests/contracts/package-lock.json"))) };
 }
 // The transport has an explicit allowlist: no signing, sending, impersonation, reset or state override.
 function readOnlyRpc(url) {
@@ -252,10 +261,7 @@ async function main() {
     let result;
     let revision;
     if (mode === "plan" || mode === "verify") {
-        const git = args => execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
-        requireValue(!git(["status", "--porcelain", "--untracked-files=normal"]), "Mainnet plan requires a clean reviewed checkout; put operator files outside the repository");
-        revision = { commit: git(["rev-parse", "HEAD"]), tree: git(["rev-parse", "HEAD^{tree}"]),
-            lockSha256: digest(fs.readFileSync(path.join(root, "tests/contracts/package-lock.json"))) };
+        revision = reviewedRevision();
     }
     if (mode === "plan") {
         result = await makePlan(config, compiledContracts(), revision);
@@ -272,7 +278,7 @@ async function main() {
     writeManifest(result, output);
     process.stdout.write(JSON.stringify({ output: path.resolve(output), schema: result.schema, readyToBroadcast: false }) + "\n");
 }
-module.exports = { validateConfig, compiledContracts, makePlan, checkPlan, inspectChain, verifyLive, readOnlyRpc, canonical, ENS, WRAPPER, roots };
+module.exports = { validateConfig, compiledContracts, makePlan, checkPlan, reviewedRevision, inspectChain, verifyLive, readOnlyRpc, canonical, ENS, WRAPPER, roots };
 if (require.main === module) main().catch(error => {
     // Never echo arbitrary operator input, JSON fragments or RPC URLs/secrets.
     if (error.publicMessage) console.error(error.message);

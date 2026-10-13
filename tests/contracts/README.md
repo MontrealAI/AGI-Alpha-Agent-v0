@@ -1,6 +1,6 @@
 # Contract deployment and migration guide
 
-This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.25.0. It deploys the Ascension
+This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.28.1. It deploys the Ascension
 contracts, verifies their bindings and writes inspectable evidence. It needs no wallet, secret, RPC URL
 or real funds. Contract state exists only inside that command's process and disappears when it exits.
 
@@ -17,15 +17,18 @@ A mainnet-fork rehearsal, independent review and operator configuration are stil
 | Review what would be deployed | `npm run deploy:plan` | Read-only JSON plan; no EVM or transactions |
 | Deploy and verify a fresh local protocol | `npm run deploy:local` | Local transactions, verified graph, JSON manifest |
 | Test contracts and failure paths | `npm test` | Existing v2/Ascension/SUCCESSOR tests plus deployment checks |
+| Enforce clean Solidity diagnostics | `npm run compile:strict` | Compile every production source, then force all Hardhat fixtures; any Solidity warning or error fails |
+| Inspect production source coverage and sizes | `npm run compile:production` | Full production compilation report, source hashes and creation/runtime byte sizes |
 | Execute a funded local mission lifecycle | `npm run ascension:demo` | Mock funding, review, job settlement and evidence |
 | Compile a mission's indexed commitments | `node scripts/plan.js /absolute/path/jobs.json` | FusionPlan, separate from deployment planning |
 | Replace the historical Truffle workflow | [Migration below](#migration-and-rollback) | Fresh local state; no automatic balance or identity import |
-
 | Prepare an unsigned Ethereum deployment | `npm run mainnet:plan -- CONFIG NEW_OUTPUT` | Exact compiled deployment data; requires a clean reviewed checkout |
 | Check reviewed live dependencies | `npm run mainnet:preflight -- CONFIG NEW_OUTPUT` | Read-only, finalized-block configuration evidence |
 | Check recorded mainnet evidence | `npm run mainnet:record-check` | Offline file, source, transaction and cost integrity |
 | Verify existing October 11 contracts | `npm run mainnet:record-verify -- NEW_OUTPUT` | Read-only finalized receipts, full runtime, ownership and bindings; no signer |
 | Verify fresh deployed contracts | `npm run mainnet:verify -- PLAN NEW_OUTPUT` | Read-only bytecode, ownership and binding checks |
+| Export explorer inputs for existing addresses | `npm run mainnet:verification-package -- record NEW_DIRECTORY` | Exact archived Standard JSON, compiler and ABI constructor arguments |
+| Export explorer inputs for a new deployment plan | `npm run mainnet:verification-package -- plan PLAN NEW_DIRECTORY` | Current build inputs; rejects a plan that differs from compiled sources |
 
 ## First run
 
@@ -37,14 +40,71 @@ nvm use
 cd tests/contracts
 npm ci
 npm run deploy:plan
-npm run compile
+npm run compile:strict
 npm run deploy:local
 ```
 
 On Windows, install/select the version in `.nvmrc` with your Node version manager, then run the same
-`cd`, `npm ci` and `npm run` commands in PowerShell. The initial `npm ci` and compiler download require
-network access; execution uses an in-process EVM. Offline execution requires the previously installed
-locked dependencies and Solidity compiler cache.
+`cd`, `npm ci` and `npm run` commands in PowerShell. The initial `npm ci` requires network access;
+the exact Solidity compiler is included in the locked npm dependencies. Compilation needs no separate
+compiler download. Offline execution requires those installed dependencies and uses an in-process EVM.
+
+The source profile is Solidity **0.8.37**, optimizer **200**, **via IR**, **Cancun** and OpenZeppelin
+**5.6.1**. `npm run compile:strict` first discovers and compiles every `contracts/**/*.sol` production
+source, then forces the Hardhat fixture build. It fails on every Solidity warning, including dependency
+warnings. The production gate covers all 15 shipped source files and their 30 OpenZeppelin dependencies,
+including `DisputeModule`, `ReputationEngine` and `TokenUtils`, which have no Hardhat fixture copies.
+It embeds the complete dependency closure under normalized source names and checks all 12 existing
+production/fixture mirrors. Its JSON report records source hashes and creation/runtime byte sizes.
+Ordinary incremental fixture compilation enforces the same diagnostic policy. Deployment tools also
+reject previously cached build outputs containing warnings. Compilation coverage does not establish
+legacy v2 integration compatibility or commissioning.
+
+Hardhat 2.29.1 separately reports that its Solidity 0.8.37 stack-trace support is incomplete. This is a
+debugger compatibility notice, not a Solidity compiler diagnostic. The retained Hardhat dependency
+tree also reports upstream npm deprecations for `lodash.isequal` and `glob`; `npm run audit` separately
+checks security advisories. These notices are not hidden or counted as compiler errors. Do not change
+the reviewed compiler or dependency versions merely to silence an unrelated notice.
+
+## Explorer verification without guesswork
+
+For the five October 11 addresses, run:
+
+```sh
+npm run mainnet:record-check
+npm run mainnet:verification-package -- record /absolute/path/new-verification-package
+```
+
+This works offline after `npm ci`. Each contract folder contains `standard-input.json`,
+`constructor-arguments.txt` (ABI-encoded hex without `0x`) and `etherscan-request.json`. The top-level
+`manifest.json` identifies Ethereum mainnet, each exact address, the fully qualified source name,
+compiler release, all compiler settings, constructor values and file hashes. `README.txt` explains the
+manual Standard JSON and API V2 workflows. Existing output directories are refused.
+
+The existing addresses require their original **0.8.24 / Paris / OpenZeppelin 5.4.0** archive, including
+its `project/` and `npm/` source names and remappings. The exporter copies that compiler input byte for
+byte and checks every constructor against the recorded creation transaction. Do not flatten it or use
+current sources to verify those addresses. Their code is immutable; a source release does not patch it.
+
+For a reviewed new deployment plan, use
+`npm run mainnet:verification-package -- plan /absolute/path/plan.json /absolute/path/new-package`.
+The exporter reconstructs the plan from current compiled sources and rejects changed addresses,
+constructors, chain or compiler data. Planned addresses remain predictions until deployment and
+`mainnet:verify` succeed. Keep operator files outside the repository so the plan checkout stays clean.
+
+Exporting makes **no network request**, submits no explorer verification and needs no API key. When
+submitting through Etherscan, add the API key separately, retain the final `checkverifystatus` response,
+and check the published address and source match. An accepted submission GUID is only a pending
+request. Compiler-version advisories on an immutable address cannot be removed by uploading changed
+source. Follow the [mainnet guide](../../docs/agent/MAINNET_DEPLOYMENT.md) for deployment limits.
+
+The `contracts/v2` fixtures are legacy component tests. Interface gaps between their registry and
+validation modules remain outside the commissioned Ascension graph; passing component tests does not
+establish an end-to-end v2 deployment. The five recorded Ethereum addresses are Ascension contracts.
+The legacy NFT completion-bonus path is explicitly disabled: `addAGIType` rejects every registration,
+including a zero percentage,
+until a separately reviewed funding mechanism exists. This avoids promising bonus payouts from the
+same escrow that must already fund the job reward, fee and burn.
 
 Success prints a JSON manifest with `verified: true`, `scope: "disposable-local-fixture"`, chain ID
 `"31337"`, eight contract/fixture addresses and their runtime-code hashes. This command does not mint
