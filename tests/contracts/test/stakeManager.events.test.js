@@ -84,14 +84,16 @@ describe("StakeManager setters emit events", function () {
       .withArgs(45, 55);
   });
 
-  it("emits AGITypeAdded", async function () {
+  it("explicitly rejects disabled AGI type registration", async function () {
     await expect(stake.addAGIType(addr2.address, 500))
-      .to.emit(stake, "AGITypeAdded")
-      .withArgs(addr2.address, 500);
+      .to.be.revertedWith("NFT bonuses disabled");
+    await expect(stake.connect(addr1).addAGIType(addr2.address, 500))
+      .to.be.revertedWithCustomError(stake, "OwnableUnauthorizedAccount")
+      .withArgs(addr1.address);
+    expect(await stake.agiTypePayoutPct(addr2.address)).to.equal(0);
   });
 
-  it("emits AGITypeRemoved", async function () {
-    await stake.addAGIType(addr2.address, 500);
+  it("preserves AGITypeRemoved for legacy cleanup", async function () {
     await expect(stake.removeAGIType(addr2.address))
       .to.emit(stake, "AGITypeRemoved")
       .withArgs(addr2.address);

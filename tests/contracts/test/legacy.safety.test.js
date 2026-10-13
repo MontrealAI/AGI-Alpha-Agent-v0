@@ -82,18 +82,22 @@ describe("Legacy v2 escrow and certificate safety", function () {
     expect(await token.balanceOf(stake.target)).to.equal(0);
   });
 
-  it("rejects an NFT payout above escrow and preserves unrelated staker collateral", async function () {
+  it("disables every NFT bonus configuration and preserves escrow and unrelated staker collateral", async function () {
     const cert = await (await ethers.getContractFactory("CertificateNFT")).deploy();
     await cert.setJobRegistry(owner.address);
     await cert.mint(agent.address, 1);
-    await expect(stake.addAGIType(cert.target, 20000)).to.be.revertedWith("payout exceeds escrow");
-    await stake.addAGIType(cert.target, 10000);
+    for (const payoutPct of [0, 500, 9999, 10000, 10001, 20000, ethers.MaxUint256]) {
+      await expect(stake.addAGIType(cert.target, payoutPct)).to.be.revertedWith("NFT bonuses disabled");
+    }
+    expect(await stake.agiTypePayoutPct(cert.target)).to.equal(0);
+    await expect(stake.agiTypes(0)).to.be.reverted;
     await token.mint(buyer.address, reward);
     await token.connect(buyer).approve(stake.target, reward);
     await stake.connect(buyer).depositStake(0, reward);
     await stake.setJobRegistry(owner.address);
     await stake.lock(1, employer.address, reward);
     await stake.release(1, agent.address, [], 0);
+    expect(await stake.jobEscrows(1)).to.equal(0);
     expect(await token.balanceOf(agent.address)).to.equal(reward);
     expect(await token.balanceOf(stake.target)).to.equal(reward);
     expect(await stake.agentStakes(buyer.address)).to.equal(reward);

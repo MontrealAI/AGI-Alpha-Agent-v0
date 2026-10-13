@@ -12,15 +12,17 @@ For the installed agent, use the [operator start guide](START_HERE.md).
 - Keep the current Solidity 0.8.37/Cancun build separate from the immutable October 11
   Solidity 0.8.24/Paris deployment archive. Both use via IR and optimizer 200; their dependency versions
   also differ. Verification must use the exact sources, settings and constructor arguments of its address.
-- Add `npm run compile:strict`: force a fresh build with the npm-locked Solidity compiler and reject every
-  Solidity warning. The baseline compilation already emitted no Solidity warnings; this prevents regressions.
+- Add `npm run compile:strict`: compile every shipped production source and its dependencies, check fixture
+  copies for drift, then force a fresh fixture build with the npm-locked Solidity compiler and reject every
+  Solidity warning. The baseline fixture compilation already emitted no Solidity warnings; this prevents regressions.
   Hardhat debugging notices, dependency advisories and explorer verification status remain distinct checks.
 - Add `mainnet:verification-package` for either the recorded deployment or an exact reviewed new plan.
   Export all five Standard JSON inputs, ABI-encoded constructor arguments, Etherscan V2 request parameters
   and file digests without credentials, explorer submissions or transactions.
 - Correct legacy v2 job admission for zero rewards and expired deadlines/applications; retain the actual
-  client in cancellation/delist events; bound combined fees/burn and certificate payout percentages;
-  clear certificate sale listings when ownership changes.
+  client in cancellation/delist events; bound combined fees/burn; clear certificate sale listings when
+  ownership changes. Disable unsupported legacy NFT bonus registration until a separately funded design
+  exists; retain the historical ABI selectors/getters with an explicit rejection of registration.
 - Add targeted legacy regressions and preserve the existing Ascension settlement, historical deployment,
   read-only verification, source-preservation and release-publication gates.
 - Synchronize active release/version guides and browser caches while retaining the SUCCESSOR Ω workshop,
@@ -42,6 +44,13 @@ The `contracts/v2` suite is retained legacy material, separate from those five A
 Its bounded fixes do not establish a commissioned end-to-end v2 system: the legacy registry/validation
 integration has additional interface gaps. Do not treat that suite as deployment-ready.
 
+Legacy `StakeManager.addAGIType` rejects every bonus registration with `NFT bonuses disabled`.
+The former bonus model
+could pay more than a job's escrow by consuming other users' collateral. Settlement uses the funded
+escrow reward, and the unsupported bonus multiplier has been removed. Historical ABI selectors/getters
+remain for compatibility; an independently reviewed, separately funded bonus design is required before
+that feature can be enabled.
+
 ## Evidence, upgrade and remaining qualification
 
 A build without Solidity warnings establishes the diagnostics of the exact tested compilation, not a
@@ -60,4 +69,5 @@ The [1.28.0 workshop release](RELEASE_NOTES_1.28.0.md) and earlier deployment ar
 **En français.** Cette version améliore les contrôles de compilation et la reproduction des fichiers
 à vérifier, et corrige des défauts circonscrits de l'ancien module v2. Elle ne modifie aucun contrat sur
 Ethereum. Les cinq adresses existantes conservent leur code du 11 octobre et leurs paramètres historiques.
-La validation indépendante et la mise en service restent à effectuer séparément.
+Les bonus NFT de l’ancien module v2 sont explicitement désactivés tant qu’un financement séparé n’est
+pas conçu et vérifié. La validation indépendante et la mise en service restent à effectuer séparément.

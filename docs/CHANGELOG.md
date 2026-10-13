@@ -1,7 +1,8 @@
 ## 1.28.1 — 2026-10-13
 
 - Strengthen contract qualification and distinguish current-source builds from the immutable October 11 deployment.
-- Correct legacy v2 deadline/reward admission, client event attribution, fee limits and certificate sale/payout bounds.
+- Correct legacy v2 deadline/reward admission, client event attribution, fee limits and certificate sale listings.
+- Explicitly disable unsupported legacy NFT bonuses pending a separately funded design; retain historical ABI access.
 - Explain compiler warnings, explorer verification and exact historical compiler settings in the owner guide.
 - Retain deployed addresses, ownership, commissioning boundaries, research and flowcharts.
 - See [release notes](agent/RELEASE_NOTES_1.28.1.md).

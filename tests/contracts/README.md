@@ -17,11 +17,11 @@ A mainnet-fork rehearsal, independent review and operator configuration are stil
 | Review what would be deployed | `npm run deploy:plan` | Read-only JSON plan; no EVM or transactions |
 | Deploy and verify a fresh local protocol | `npm run deploy:local` | Local transactions, verified graph, JSON manifest |
 | Test contracts and failure paths | `npm test` | Existing v2/Ascension/SUCCESSOR tests plus deployment checks |
-| Enforce clean Solidity diagnostics | `npm run compile:strict` | Force a complete build; any Solidity warning or error fails |
+| Enforce clean Solidity diagnostics | `npm run compile:strict` | Compile every production source, then force all Hardhat fixtures; any Solidity warning or error fails |
+| Inspect production source coverage and sizes | `npm run compile:production` | Full production compilation report, source hashes and creation/runtime byte sizes |
 | Execute a funded local mission lifecycle | `npm run ascension:demo` | Mock funding, review, job settlement and evidence |
 | Compile a mission's indexed commitments | `node scripts/plan.js /absolute/path/jobs.json` | FusionPlan, separate from deployment planning |
 | Replace the historical Truffle workflow | [Migration below](#migration-and-rollback) | Fresh local state; no automatic balance or identity import |
-
 | Prepare an unsigned Ethereum deployment | `npm run mainnet:plan -- CONFIG NEW_OUTPUT` | Exact compiled deployment data; requires a clean reviewed checkout |
 | Check reviewed live dependencies | `npm run mainnet:preflight -- CONFIG NEW_OUTPUT` | Read-only, finalized-block configuration evidence |
 | Check recorded mainnet evidence | `npm run mainnet:record-check` | Offline file, source, transaction and cost integrity |
@@ -50,9 +50,15 @@ the exact Solidity compiler is included in the locked npm dependencies. Compilat
 compiler download. Offline execution requires those installed dependencies and uses an in-process EVM.
 
 The source profile is Solidity **0.8.37**, optimizer **200**, **via IR**, **Cancun** and OpenZeppelin
-**5.6.1**. `npm run compile:strict` forces every file to compile and fails on every Solidity warning,
-including dependency warnings; ordinary incremental compilation enforces the same diagnostic policy.
-Deployment tools also reject previously cached build outputs containing warnings.
+**5.6.1**. `npm run compile:strict` first discovers and compiles every `contracts/**/*.sol` production
+source, then forces the Hardhat fixture build. It fails on every Solidity warning, including dependency
+warnings. The production gate covers all 15 shipped source files and their 30 OpenZeppelin dependencies,
+including `DisputeModule`, `ReputationEngine` and `TokenUtils`, which have no Hardhat fixture copies.
+It embeds the complete dependency closure under normalized source names and checks all 12 existing
+production/fixture mirrors. Its JSON report records source hashes and creation/runtime byte sizes.
+Ordinary incremental fixture compilation enforces the same diagnostic policy. Deployment tools also
+reject previously cached build outputs containing warnings. Compilation coverage does not establish
+legacy v2 integration compatibility or commissioning.
 
 Hardhat 2.29.1 separately reports that its Solidity 0.8.37 stack-trace support is incomplete. This is a
 debugger compatibility notice, not a Solidity compiler diagnostic. The retained Hardhat dependency
@@ -95,6 +101,10 @@ source. Follow the [mainnet guide](../../docs/agent/MAINNET_DEPLOYMENT.md) for d
 The `contracts/v2` fixtures are legacy component tests. Interface gaps between their registry and
 validation modules remain outside the commissioned Ascension graph; passing component tests does not
 establish an end-to-end v2 deployment. The five recorded Ethereum addresses are Ascension contracts.
+The legacy NFT completion-bonus path is explicitly disabled: `addAGIType` rejects every registration,
+including a zero percentage,
+until a separately reviewed funding mechanism exists. This avoids promising bonus payouts from the
+same escrow that must already fund the job reward, fee and burn.
 
 Success prints a JSON manifest with `verified: true`, `scope: "disposable-local-fixture"`, chain ID
 `"31337"`, eight contract/fixture addresses and their runtime-code hashes. This command does not mint
