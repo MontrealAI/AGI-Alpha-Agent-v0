@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.31.2
+# Repository guide — 1.31.3
 
 **New to the project? [Start with the guided webpage](../start/index.html)** or read the
 [English/French getting-started guide](ONBOARDING.md).

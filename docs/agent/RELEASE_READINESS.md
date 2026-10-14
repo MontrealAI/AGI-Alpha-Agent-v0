@@ -1,6 +1,13 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.31.2 publication
+# Release readiness — 1.31.3 publication
+
+Version **1.31.3** brings Nova-Seed Studio into the public homepage, preserves French/larger-text
+reading choices and offers explicit local start, recovery and execution handoffs. All eleven Studio steps
+have a 132-layout language, viewport and text-size acceptance matrix. The same source, private operator,
+contract, complete-cycle, public HTTPS and uploaded-byte release gates remain required. See the
+[Studio usability notes](RELEASE_NOTES_1.31.3.md). The archived Mainnet deployment remains restricted;
+this release introduces no qualified replacement deployment or live-provider commissioning.
 
 Version **1.31.2** validates and bounds Mainnet RPC responses in the Hardhat preparation and verification
 scripts. See the [maintenance notes](RELEASE_NOTES_1.31.2.md) and [operator guide](MAINNET_READINESS.md).

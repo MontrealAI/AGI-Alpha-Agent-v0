@@ -5,6 +5,14 @@
 - Update the active Hardhat/mainnet guides and current version/cache labels; retain prior research and notes.
 - See [release notes](agent/RELEASE_NOTES_1.31.2.md).
 
+## 1.31.3 — Nova-Seed Studio public usability
+
+- Feature Studio on the bilingual homepage with direct creation and recovery entry points.
+- Retain reading preferences, explain available actions and provide local/native handoffs.
+- Require encrypted recovery, exact assets and accessibility/reflow across all eleven Studio steps.
+- Preserve contracts, economic rules, recovery formats, research and flowcharts; Mainnet restrictions remain.
+
+
 ## 1.31.1 — Computer-use study publication
 
 - Add the English/French study reader, larger text, print styling and exact Markdown/JSON downloads.

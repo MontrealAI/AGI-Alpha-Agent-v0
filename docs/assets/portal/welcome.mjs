@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "nova-eyebrow": "STUDIO NOVA-SEED",
+    "nova-title": "Donnez un avenir à votre prochaine idée.",
+    "nova-description": "Définissez un projet, vérifiez son plan exact et protégez-le par une sauvegarde chiffrée. Gardez le même historique en reliant l’exécution, les résultats et le prochain cycle.",
+    "nova-start": "Ouvrir le Studio Nova-Seed",
+    "nova-recover": "Récupérer mon projet",
+    "nova-guide": "Lire le guide du Studio",
+    "nova-readiness": "La préparation locale ne demande ni portefeuille ni paiement. Le déploiement Mainnet archivé bloque les nouvelles créations, les nouveaux financements et engagements. L’exécution externe, la revue et le règlement ont leurs propres prérequis.",
+    "nova-path-label": "UN PROJET À CONSERVER",
+    "nova-plan": "Planifier des travaux précis et vérifiables",
+    "nova-protect": "Chiffrer, télécharger et récupérer",
+    "nova-continue": "Examiner les preuves et poursuivre délibérément",
+    "nova-backup": "Téléchargez la sauvegarde avant de quitter le Studio. Gardez la phrase secrète séparément; n’utilisez jamais celle de votre portefeuille.",
     "successor-work": "Créer du travail utile · cinq familles de missions",
     "build-successor": "Construire votre Ω avec les deux projets",
     "omega-start": "Créer mon SUCCESSOR Ω",
@@ -133,6 +145,10 @@ function render() {
     for (const link of document.querySelectorAll("[data-start-link]")) {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
+    }
+    for (const link of document.querySelectorAll("[data-nova-link]")) {
+        const fragment = new URL(link.href).hash;
+        link.setAttribute("href", `ascension/mainnet/${query.size ? `?${query}` : ""}${fragment}`);
     }
     for (const link of document.querySelectorAll("[data-build-link]")) {
         link.setAttribute("href", `successor/build/${query.size ? `?${query}` : ""}`);
