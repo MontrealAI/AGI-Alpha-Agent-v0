@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, feat/nova-seed-mainnet-studio-20261014, feat/mark-mainnet-wallet-20261013, codex/successor-workbench-20261013, codex/contract-verification-1.28.1, codex/successor-personal-lab-20261012, codex/onboarding-refinement-1.26.3, codex/homepage-welcome-1.26.2, codex/mainnet-deployment-record-1.26.1, codex/mainnet-readiness-1.26.0, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
+    branches: [main, fix/nova-studio-integration-hardening-20261014, feat/nova-seed-mainnet-studio-20261014, feat/mark-mainnet-wallet-20261013, codex/successor-workbench-20261013, codex/contract-verification-1.28.1, codex/successor-personal-lab-20261012, codex/onboarding-refinement-1.26.3, codex/homepage-welcome-1.26.2, codex/mainnet-deployment-record-1.26.1, codex/mainnet-readiness-1.26.0, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -525,6 +525,8 @@ jobs:
         run: python -m scripts.validate_insight_atlas --site site --output evidence/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify generated MARK wallet route
         run: python -m scripts.validate_mark_wallet --site site --output evidence/mark-wallet-site
+      - name: Verify generated Nova-Seed Studio recovery and accessibility
+        run: python -m scripts.validate_nova_studio --site site --output evidence/nova-studio-site
       - name: Verify five Proof Bloom experiences, signed returns and capability recovery
         run: python -m scripts.validate_proof_bloom --site site --output evidence/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js
       - name: Verify manuscript transfer, complete dossiers and independent native replay
@@ -952,6 +954,7 @@ jobs:
           python -m scripts.validate_ascension --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension
           npm ci --prefix tests/browser --ignore-scripts
           python -m scripts.validate_mark_wallet --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/mark-wallet
+          python -m scripts.validate_nova_studio --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/nova-studio
           python -m scripts.validate_ascension_protocol --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/ascension-protocol
           python -m scripts.validate_insight_atlas --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/insight-atlas --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_proof_bloom --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/proof-bloom --axe-script tests/browser/node_modules/axe-core/axe.min.js

@@ -24,7 +24,7 @@
         return HASH;
       }
       if(method==='eth_getTransactionReceipt') return this.noReceipt?null:{transactionHash:params[0],status:this.reverted?'0x0':'0x1',blockHash:BLOCK,blockNumber:'0x100'};
-      if(method==='eth_getTransactionByHash') return {hash:params[0],from:this.last.from,to:this.cancelled?A:this.last.to,input:this.cancelled?'0x':this.last.data,nonce:this.last.nonce,chainId:'0x1',value:'0x0',blockHash:BLOCK,blockNumber:'0x100'};
+      if(method==='eth_getTransactionByHash') return {type:'0x2',hash:params[0],from:this.last.from,to:this.cancelled?A:this.last.to,input:this.cancelled?'0x':this.last.data,nonce:this.last.nonce,chainId:'0x1',value:'0x0',blockHash:BLOCK,blockNumber:'0x100'};
       if(method==='wallet_switchEthereumChain') {this.chain='0x1';this.emit('chainChanged');return null;}
       const {CONTRACTS,METHODS,SELECTORS,tuple}=await module();
       if(method==='eth_call') {

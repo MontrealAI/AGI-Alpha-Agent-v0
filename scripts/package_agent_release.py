@@ -175,6 +175,11 @@ def main() -> None:
 
         report = json.loads((args.evidence / "mark-wallet-browser" / "report.json").read_text())
         verify_wallet(report, sha, version)
+        from scripts.nova_studio_evidence import verify_browser, verify_lifecycle
+
+        verify_lifecycle(args.evidence / "nova-studio-acceptance", sha)
+        studio = json.loads((args.evidence / "nova-studio-browser" / "report.json").read_text())
+        verify_browser(studio, sha, version)
     manuscript_hashes = verify_manuscript()
     factory_preservation = verify_factory()
     subprocess.run(
