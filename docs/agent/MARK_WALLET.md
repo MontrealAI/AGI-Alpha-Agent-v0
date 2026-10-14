@@ -4,6 +4,8 @@
 
 The Protocol Desk now has an additive **Ethereum Mainnet wallet workspace**, separate from its unchanged local-EVM demonstration. It reads the five recorded October 11, 2026 contracts and can request real transactions through an injected EIP-1193 wallet. The wallet keeps custody and signing. No key, seed phrase, transaction broadcast or account permission request occurs merely by opening the page.
 
+The additive [Nova-Seed Studio](NOVA_SEED_STUDIO.md) now provides a guided project-to-campaign journey using this same client, profile policy, journal and lock. The advanced workspace remains available.
+
 ## What this version permits
 
 The interface implements inputs and ABI encoding for MARK's `open`, `buy`, `sell`, `transferLots`, `bloom`, `route`, `collect`, `close` and `reclaim`; bounded token approval; existing ENS-role registration; seed sealing; risk review; staking; reviewer availability; job bidding, award, delivery, validation, timeout and refunds.

@@ -50,6 +50,9 @@ class CacheBoundary(unittest.TestCase):
                 "assets/ascension-wallet/app.mjs",
                 "ascension-protocol/mainnet/index.html",
                 "alpha_factory_v1/demos/ascension-protocol/mainnet/index.html",
+                "assets/nova-studio/app.mjs",
+                "ascension/mainnet/index.html",
+                "alpha_factory_v1/demos/ascension/mainnet/index.html",
             ]:
                 path = docs / name
                 path.parent.mkdir(parents=True, exist_ok=True)

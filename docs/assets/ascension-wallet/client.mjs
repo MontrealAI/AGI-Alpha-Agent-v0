@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import {CHAIN, CONTRACTS, METHODS, ACTIONS, callData, decode, address, bytes32, parseFields, isRecovery} from './protocol.mjs';
-const READ_METHODS = new Set(['eth_chainId','eth_accounts','eth_getBlockByNumber','eth_getCode','eth_call','eth_estimateGas','eth_getBalance','eth_getTransactionCount','eth_getTransactionReceipt','eth_getTransactionByHash']);
+import {CONTRACTS, METHODS, ACTIONS, callData, decode, address, bytes32, parseFields, isRecovery} from './protocol.mjs';
+import {QUALIFIED_PROFILES} from './qualified-profiles.mjs';
+import {canonicalJSON} from '../ascension/crypto.mjs';
+const READ_METHODS = new Set(['eth_chainId','eth_accounts','eth_getBlockByNumber','eth_getCode','eth_call','eth_estimateGas','eth_getBalance','eth_getTransactionCount','eth_getTransactionReceipt','eth_getTransactionByHash','eth_getLogs','eth_getStorageAt']);
 const TERMINAL = ['not-submitted','rejected-by-wallet','finalized','reverted','cancelled','replaced'];
 export const unresolved = record => !!record && !TERMINAL.includes(record.status);
 const quantity = value => { if (typeof value !== 'string' || !/^0x(0|[1-9a-f][0-9a-f]*)$/i.test(value)) throw Error('Malformed RPC quantity.'); return BigInt(value); };
+function frozen(value) { if (value && typeof value==='object') { for (const part of Object.values(value)) frozen(part); Object.freeze(value); } return value; }
 export const json = value => JSON.stringify(value, (_, v) => typeof v === 'bigint' ? v.toString() : v, 2);
 export async function sha256Hex(hex) {
   if (typeof hex !== 'string' || !/^0x([0-9a-fA-F]{2})+$/.test(hex) || hex.length > 200002) throw Error('Missing or malformed contract bytecode.');
@@ -11,6 +14,20 @@ export async function sha256Hex(hex) {
   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), b => b.toString(16).padStart(2, '0')).join('');
 }
 export function validateProfile(p) {
+  const registered = QUALIFIED_PROFILES.find(x => x.profile === p?.profile);
+  if (registered) {
+    if (canonicalJSON(p) !== canonicalJSON(registered) || p.schema !== 'agialpha.qualified-wallet-profile.v1' ||
+        !Number.isSafeInteger(p.chainId) || p.chainId < 1 || !['canary','public'].includes(p.stage) ||
+        p.newExposureEnabled !== true || !p.evidence || !Array.isArray(p.dependencies) || !p.dependencies.length ||
+        !Array.isArray(p.authorities) || !p.authorities.length || !Array.isArray(p.actions) ||
+        (p.stage === 'canary' && (!p.scope?.actors?.length || !p.scope?.actions)))
+      throw Error('Profile differs from the reviewed, build-time qualification registry.');
+    for (const key of ['Access','Seed','Oracle','Jobs','Mark','Token']) {
+      address(p.contracts?.[key]?.address);
+      if (!/^[0-9a-f]{64}$/.test(p.contracts[key].sha256)) throw Error('Missing exact runtime identity.');
+    }
+    return JSON.parse(JSON.stringify(registered));
+  }
   if (!p || p.schema !== 'agialpha.mark-wallet-profile.v1' || p.chainId !== 1 || p.profile !== 'ascension-2026-10-11-solc-0.8.24' || p.newExposureEnabled !== false)
     throw Error('Unsupported or unreviewed deployment profile. This build supports the recorded suite with new funding disabled.');
   for (const key of ['Access','Seed','Oracle','Jobs','Mark']) {
@@ -21,23 +38,26 @@ export function validateProfile(p) {
 }
 export class MarkClient {
   constructor(profile, notify = () => {}, persist = () => {}) {
-    this.profile = validateProfile(profile); this.notify = notify;
+    Object.defineProperty(this,'profile',{value:frozen(JSON.parse(JSON.stringify(validateProfile(profile)))),writable:false}); this.notify = notify;
+    this.chainId = '0x' + this.profile.chainId.toString(16);
+    this.contracts = Object.freeze({...CONTRACTS, ...Object.fromEntries(Object.entries(this.profile.contracts).map(([k,v]) => [k,v.address]))});
     this.provider = null; this.account = null; this.epoch = 0;
     this.prepared = null; this.pending = null; this.history = []; this.report = null;
     this.listeners = []; this.previewRevision = 0;
     this.persist = persist;
   }
   emit() { this.notify(this); }
-  journal() { return {schema:'agialpha.mark-wallet-journal.v2',chainId:1,transactions:this.history}; }
+  journal() { return {schema:'agialpha.mark-wallet-journal.v2',chainId:this.profile.chainId,profile:this.profile.profile,transactions:this.history}; }
   checkpoint() { this.persist(this.journal()); this.emit(); }
   restore(value) {
-    if (json(value).length > 1000000 || value?.schema !== 'agialpha.mark-wallet-journal.v2' || value.chainId !== 1 ||
+    if (json(value).length > 1000000 || value?.schema !== 'agialpha.mark-wallet-journal.v2' || value.chainId !== this.profile.chainId || (value.profile && value.profile !== this.profile.profile) ||
+        (this.profile.newExposureEnabled && value.profile !== this.profile.profile) ||
         !Array.isArray(value.transactions) || value.transactions.length > 100) throw Error('Invalid or oversized recovery journal.');
     const records = value.transactions.map(r => {
       const action = ACTIONS[r.action], tx = r.transaction;
       if (!Object.hasOwn(ACTIONS,r.action) || !action || !tx || !Array.isArray(r.args) ||
-          r.schema !== 'agialpha.mark-wallet-transaction.v2' || r.chainId !== 1 || tx.chainId !== CHAIN ||
-          address(tx.to) !== address(CONTRACTS[action.contract]) || tx.data !== callData(action.method,r.args) ||
+          r.schema !== 'agialpha.mark-wallet-transaction.v2' || r.chainId !== this.profile.chainId || tx.chainId !== this.chainId ||
+          address(tx.to) !== address(this.contracts[action.contract]) || tx.data !== callData(action.method,r.args) ||
           tx.value !== '0x0' || !Number.isFinite(Date.parse(r.createdAt)) ||
           ![...TERMINAL,'awaiting-wallet','submission-unknown','submitted','reorged','mined-not-finalized'].includes(r.status))
         throw Error('Journal transaction does not match an allowed action.');
@@ -78,7 +98,7 @@ export class MarkClient {
     } finally { clearTimeout(timer); }
   }
   async chain(epoch = this.epoch) {
-    if (await this.read('eth_chainId', [], epoch) !== CHAIN) throw Error('Wrong network. Select Ethereum Mainnet explicitly in your wallet.');
+    if (await this.read('eth_chainId', [], epoch) !== this.chainId) throw Error('Wrong network. Select the deployment network explicitly in your wallet.');
   }
   async identity(epoch = this.epoch) {
     await this.chain(epoch);
@@ -100,12 +120,12 @@ export class MarkClient {
   async switchMainnet() {
     if (!this.provider || this.pending?.status === 'awaiting-wallet') throw Error('Choose a wallet and finish any pending request.');
     this.prepared = null;
-    await this.provider.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN}]});
+    await this.provider.request({method:'wallet_switchEthereumChain',params:[{chainId:this.chainId}]});
     this.invalidate();
   }
   async call(contract, method, args = [], block = 'latest', epoch = this.epoch, from = null) {
-    if (!Object.hasOwn(CONTRACTS, contract)) throw Error('Unknown contract.');
-    const tx = {to: CONTRACTS[contract], data: callData(method, args)};
+    if (!Object.hasOwn(this.contracts, contract)) throw Error('Unknown contract.');
+    const tx = {to: this.contracts[contract], data: callData(method, args)};
     if (from) tx.from = address(from);
     return decode(METHODS[method].outputs, await this.read('eth_call', [tx, block], epoch));
   }
@@ -114,28 +134,40 @@ export class MarkClient {
     const block = await this.read('eth_getBlockByNumber', ['latest',false], epoch);
     if (!block || !/^0x[0-9a-f]+$/i.test(block.number) || !/^0x[0-9a-f]+$/i.test(block.timestamp)) throw Error('Missing observed block.');
     bytes32(block.hash);
-    for (const key of ['Access','Seed','Oracle','Jobs','Mark']) {
-      const code = await this.read('eth_getCode', [CONTRACTS[key], block.number], epoch);
-      if (await sha256Hex(code) !== this.profile.contracts[key].sha256) throw Error(`${key}: bytecode does not match the archived deployment. All wallet writes are blocked.`);
+    for (const key of Object.keys(this.profile.contracts)) {
+      const code = await this.read('eth_getCode', [this.contracts[key], block.number], epoch);
+      if (await sha256Hex(code) !== this.profile.contracts[key].sha256) throw Error(`${key}: bytecode does not match the selected deployment. All wallet writes are blocked.`);
       this.guard(epoch);
+    }
+    for (const dependency of this.profile.dependencies || []) {
+      if (await sha256Hex(await this.read('eth_getCode',[address(dependency.address),block.number],epoch)) !== dependency.sha256)
+        throw Error('External dependency code changed.');
+      for (const slot of dependency.slots || []) {
+        if ((await this.read('eth_getStorageAt',[address(dependency.address),slot.key,block.number],epoch)).toLowerCase() !== slot.value.toLowerCase())
+          throw Error('External proxy implementation or authority changed.');
+      }
+    }
+    for (const authority of this.profile.authorities || []) {
+      if ((await this.call(authority.contract,'owner',[],block.number,epoch))[0] !== address(authority.owner))
+        throw Error('Deployment governance changed; qualification must be reviewed.');
     }
     const bindings = [['Seed','access','Access'],['Oracle','access','Access'],['Oracle','seed','Seed'],['Oracle','marketplace','Jobs'],['Jobs','access','Access'],['Jobs','oracle','Oracle'],['Jobs','mark','Mark'],['Mark','seed','Seed'],['Mark','access','Access'],['Mark','oracle','Oracle'],['Mark','jobsBinding','Jobs'],['Mark','token','Token'],['Jobs','token','Token'],['Oracle','token','Token']];
     for (const [contract, getter, expected] of bindings) {
       const [actual] = await this.call(contract, getter, [], block.number, epoch);
-      if (actual !== address(CONTRACTS[expected])) throw Error(`${contract}.${getter}: wrong protocol binding.`);
+      if (actual !== address(this.contracts[expected])) throw Error(`${contract}.${getter}: wrong protocol binding.`);
     }
     if ((await this.call('Token','decimals',[],block.number,epoch))[0] !== 18n) throw Error('Token decimals mismatch.');
     const canonical = await this.read('eth_getBlockByNumber',[block.number,false],epoch);
     if (canonical?.hash !== block.hash) throw Error('Observed block reorganized. Refresh before continuing.');
     await this.chain(epoch);
-    this.report = {schema:'agialpha.mark-wallet-observation.v1', chainId:1, blockNumber:block.number, blockHash:block.hash, blockTime:block.timestamp,
+    this.report = {schema:'agialpha.mark-wallet-observation.v1', chainId:this.profile.chainId, blockNumber:block.number, blockHash:block.hash, blockTime:block.timestamp,
       observedAt:new Date().toISOString(), suiteBytecodeMatches:true, bindingsMatch:true, externalDependenciesIndependentlyReviewed:false,
-      newExposureEnabled:false, finality:'observed-not-finalized', profile:this.profile.profile};
+      newExposureEnabled:this.profile.newExposureEnabled, finality:'observed-not-finalized', profile:this.profile.profile};
     this.emit(); return this.report;
   }
   async inspect(seedId = null, jobId = null) {
     const epoch = this.epoch, report = await this.verify(epoch), block = report.blockNumber;
-    const result = {verification:report, contracts:CONTRACTS, nextSeedId:(await this.call('Seed','nextId',[],block,epoch))[0]};
+    const result = {verification:report, contracts:this.contracts, nextSeedId:(await this.call('Seed','nextId',[],block,epoch))[0]};
     // Wallet permissions are never requested by inspection.
     const accounts = await this.read('eth_accounts',[],epoch);
     const who = Array.isArray(accounts) && accounts.length ? address(accounts[0]) : null;
@@ -143,7 +175,7 @@ export class MarkClient {
       result.wallet = {account:who, balance:(await this.call('Token','balanceOf',[who],block,epoch))[0],
         admitted:(await this.call('Access','admitted',[who],block,epoch))[0], roles:[], allowances:{}, stake:{}};
       for (const role of ['0','1','2']) result.wallet.roles.push((await this.call('Access','eligible',[who,role],block,epoch))[0]);
-      for (const key of ['Mark','Oracle','Jobs']) result.wallet.allowances[key] = (await this.call('Token','allowance',[who,CONTRACTS[key]],block,epoch))[0];
+      for (const key of ['Mark','Oracle','Jobs']) result.wallet.allowances[key] = (await this.call('Token','allowance',[who,this.contracts[key]],block,epoch))[0];
       for (const key of ['Oracle','Jobs']) result.wallet.stake[key] = (await this.call(key,'stake',[who],block,epoch))[0];
       result.wallet.stake.agentLocked = (await this.call('Jobs','locked',[who],block,epoch))[0];
       result.wallet.stake.validatorLockedUntil = (await this.call('Oracle','lockedUntil',[who],block,epoch))[0];
@@ -169,20 +201,41 @@ export class MarkClient {
   allowed(actionId, args) {
     const action = ACTIONS[actionId];
     if (!action || !Object.hasOwn(ACTIONS,actionId)) throw Error('Action is not allowlisted.');
+    if (this.profile.newExposureEnabled) {
+      if (!this.profile.actions.includes(actionId)) throw Error('Action is outside this profile commissioning scope.');
+      const scope = this.profile.scope;
+      if (this.profile.stage === 'canary') {
+        const rule = scope.actions[actionId];
+        if (!rule) throw Error('Action is outside the authorized canary.');
+        for (const [index, maximum] of Object.entries(rule.maxArgs || {}))
+          if (BigInt(args[Number(index)]) > BigInt(maximum)) throw Error('Action exceeds the authorized canary amount.');
+        if (rule.seedIds && !rule.seedIds.includes(String(args[0]))) throw Error('Seed is outside the authorized canary.');
+      }
+      return;
+    }
     if (action.risk === 'new' && !isRecovery(actionId,args))
       throw Error('New exposure is not commissioned for this archived deployment. This is not bypassed by wallet connection or an acknowledgement. Recovery and existing obligations remain available.');
     // Revoking existing future availability is a recovery action; new approvals never get a blanket bypass.
   }
+  checkScopeTime(actionId,args) {
+    if (this.profile.stage==='canary' && this.profile.scope.until && ACTIONS[actionId].risk==='new' && !isRecovery(actionId,args) &&
+        BigInt(this.report.blockTime)>=BigInt(this.profile.scope.until)) throw Error('Canary authorization expired. Existing recovery actions remain available.');
+  }
+  checkActor(from) {
+    if (this.profile.stage === 'canary' && !this.profile.scope.actors.map(address).includes(address(from)))
+      throw Error('Wallet is outside the authorized canary participants.');
+  }
   async prepare(actionId, rawValues) {
     if (unresolved(this.pending)) throw Error('Reconcile the outstanding transaction before starting another.');
     this.prepared = null; const revision = ++this.previewRevision;
-    const epoch = this.epoch, args = parseFields(actionId, rawValues), action = ACTIONS[actionId];
+    const epoch = this.epoch, args = parseFields(actionId, rawValues, this.contracts), action = ACTIONS[actionId];
     // Encoding validates widths, arrays and text even for policy-blocked actions.
     const data = callData(action.method,args);
     this.allowed(actionId,args);
     const from = await this.identity(epoch), report = await this.verify(epoch);
+    this.checkActor(from); this.checkScopeTime(actionId,args);
     const nonce = await this.read('eth_getTransactionCount',[from,'pending'],epoch); quantity(nonce);
-    const tx = {from, to:CONTRACTS[action.contract], data, value:'0x0', chainId:CHAIN, nonce};
+    const tx = {from, to:this.contracts[action.contract], data, value:'0x0', chainId:this.chainId, nonce};
     const result = await this.read('eth_call',[tx,'latest'],epoch);
     decode(METHODS[action.method].outputs,result);
     if (actionId === 'approve' && decode(['bool'],result)[0] !== true) throw Error('Token approval simulation returned false.');
@@ -204,9 +257,9 @@ export class MarkClient {
     if (unresolved(this.pending)) throw Error('An outstanding transaction already exists.');
     this.prepared = null; this.guard(p.epoch);
     if (Date.now() - p.preparedAt > 60000) throw Error('Preview expired. Prepare again.');
-    this.allowed(p.actionId,p.args);
+    this.allowed(p.actionId,p.args); this.checkActor(p.transaction.from);
     if (await this.identity(p.epoch) !== p.transaction.from) throw Error('Account changed.');
-    await this.verify(p.epoch);
+    await this.verify(p.epoch); this.checkScopeTime(p.actionId,p.args);
     if (await this.read('eth_call',[p.transaction,'latest'],p.epoch) !== p.simulatedResult) throw Error('Simulation result changed. Prepare a new preview.');
     const gas = BigInt(await this.read('eth_estimateGas',[p.transaction],p.epoch));
     if (gas <= 0n || gas > BigInt(p.transaction.gas)) throw Error('Gas estimate changed materially. Prepare again.');
@@ -216,7 +269,7 @@ export class MarkClient {
     this.guard(p.epoch);
     if (Date.now() - p.preparedAt > 60000) throw Error('Preview expired during final checks. Prepare again.');
     const provider = this.provider;
-    this.pending = {schema:'agialpha.mark-wallet-transaction.v2', action:p.actionId, args:p.args, chainId:1, transaction:p.transaction,
+    this.pending = {schema:'agialpha.mark-wallet-transaction.v2', action:p.actionId, args:p.args, chainId:this.profile.chainId, transaction:p.transaction,
       createdAt:new Date().toISOString(), status:'awaiting-wallet', hash:null};
     this.history.push(this.pending); this.history = this.history.slice(-100);
     // Persist the exact intent BEFORE the wallet is opened. Storage failure sends nothing.
@@ -239,7 +292,7 @@ export class MarkClient {
     if (!['0x0','0x1'].includes(receipt.status) || receipt.transactionHash?.toLowerCase() !== hash.toLowerCase()) throw Error('Malformed transaction receipt.');
     const tx = await this.read('eth_getTransactionByHash',[hash],epoch);
     if (!tx || tx.hash?.toLowerCase() !== hash.toLowerCase() || address(tx.from) !== address(record.transaction.from) ||
-        quantity(tx.nonce) !== quantity(record.transaction.nonce) || quantity(tx.chainId) !== 1n ||
+        quantity(tx.nonce) !== quantity(record.transaction.nonce) || quantity(tx.chainId) !== BigInt(this.profile.chainId) ||
         tx.blockHash !== receipt.blockHash || tx.blockNumber !== receipt.blockNumber)
       throw Error('Receipt transaction does not match the recorded sender, nonce, chain and block.');
     const matches = tx.to && address(tx.to) === address(record.transaction.to) &&

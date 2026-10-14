@@ -211,3 +211,13 @@ try {
   catch(error) { storageError=`Recovery unavailable: ${error.message}`; }
   refresh(); discover(); if(storageError) status(storageError);
 } catch(error) { status(error.message); }
+
+// Public identifiers only; links never connect a wallet or prepare an action.
+const studioContext=new URLSearchParams(location.search);
+if(client && studioContext.get('profile')===client.profile.profile) {
+  for(const [parameter,input] of [['seed','seed-id'],['job','job-id']]) {
+    const value=studioContext.get(parameter);
+    if(value && /^[1-9][0-9]{0,77}$/.test(value)) try {$(input).value=uint(value).toString();} catch { /* invalid context */ }
+  }
+  actionFields();
+}

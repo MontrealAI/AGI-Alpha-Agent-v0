@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'docs/assets/ascension-wallet/**'
+      - 'docs/assets/nova-studio/**'
+      - 'docs/ascension/mainnet/**'
+      - 'tests/nova-studio/**'
+      - 'tests/contracts/scripts/nova-studio.js'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -14,9 +18,13 @@ on:
       - 'deployments/ethereum-mainnet/2026-10-11/**'
       - '.github/workflows/mark-wallet.yml'
   push:
-    branches: [main, feat/mark-mainnet-wallet-20261013]
+    branches: [main, feat/mark-mainnet-wallet-20261013, feat/nova-seed-mainnet-studio-20261014]
     paths:
       - 'docs/assets/ascension-wallet/**'
+      - 'docs/assets/nova-studio/**'
+      - 'docs/ascension/mainnet/**'
+      - 'tests/nova-studio/**'
+      - 'tests/contracts/scripts/nova-studio.js'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -66,6 +74,19 @@ jobs:
           npm ci --prefix tests/browser --ignore-scripts
       - name: Exercise real browser with synthetic injected wallet
         run: python -m scripts.validate_mark_wallet --output evidence/mark-wallet
+      - name: Nova-Seed cross-language compiler, encryption and artifact checks
+        run: node --test tests/nova-studio/core.test.mjs
+      - name: Nova-Seed exact-source lifecycle and browser recovery
+        working-directory: tests/contracts
+        env:
+          NOVA_BROWSER: '1'
+        run: npx --no-install hardhat run scripts/nova-studio.js
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: nova-studio-acceptance
+          path: evidence/nova-studio/
+          if-no-files-found: error
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
