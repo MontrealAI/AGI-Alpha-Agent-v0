@@ -1,0 +1,108 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Work evidence kit
+on:
+  pull_request:
+    branches: [main]
+    paths: ['studies/computer-use/2026-10-14/**', '.github/workflows/work-evidence-kit.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: work-evidence-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - name: Install version-pinned, study-only browser tools
+        run: |
+          python -m pip install playwright==1.57.0 ruff==0.12.9
+          python -m playwright install --with-deps chromium
+          python -c "from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print('BROWSER_EXECUTABLE='+p.chromium.executable_path); p.stop()" >> "$GITHUB_ENV"
+      - name: Build exact source, reject local extras and verify repeatable packaging
+        run: |
+          KIT=studies/computer-use/2026-10-14
+          python -m ruff check "$KIT"/*.py
+          mkdir -p "$RUNNER_TEMP/study-dist"
+          python "$KIT/build_kit.py" --output "$RUNNER_TEMP/study-dist/work-evidence-kit.zip"
+          mkdir -p "$KIT/.ruff_cache"
+          printf 'changing cache' > "$KIT/.ruff_cache/publication-probe"
+          printf 'unrelated local file' > "$KIT/publication-extra.tmp"
+          python "$KIT/build_kit.py" --output "$RUNNER_TEMP/rebuilt-kit.zip"
+          cmp "$RUNNER_TEMP/study-dist/work-evidence-kit.zip" "$RUNNER_TEMP/rebuilt-kit.zip"
+          rm "$KIT/.ruff_cache/publication-probe" "$KIT/publication-extra.tmp"
+          git diff --exit-code -- "$KIT"
+      - name: Replay and check real HTTP and local-file behavior
+        run: |
+          KIT=studies/computer-use/2026-10-14
+          python "$KIT/verify_and_replay.py" --output "$RUNNER_TEMP/fresh-study"
+          python "$KIT/validate_publication.py" --output "$RUNNER_TEMP/publication-checks"
+          python "$KIT/check_negative_controls.py" --replay "$RUNNER_TEMP/fresh-study"
+          git rev-parse HEAD > "$RUNNER_TEMP/publication-checks/SOURCE_COMMIT.txt"
+          python - <<'PY'
+          import hashlib,json,os,platform,shutil,sys,zipfile
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']); dist=root/'study-dist'
+          source=(root/'publication-checks'/'SOURCE_COMMIT.txt').read_text().strip()
+          (root/'publication-checks'/'ENVIRONMENT.json').write_text(json.dumps({'python':sys.version,'platform':platform.platform(),'testedCommit':source,'workflowContextSha':os.environ.get('GITHUB_SHA'),'runId':os.environ.get('GITHUB_RUN_ID'),'humanParticipants':0},indent=2)+'\n')
+          with zipfile.ZipFile(dist/'fresh-evidence.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for folder,prefix in [(root/'fresh-study'/'03_Evidence','replay'),(root/'publication-checks','publication')]:
+                  for p in sorted(folder.rglob('*')):
+                      if p.is_file():z.write(p,prefix+'/'+p.relative_to(folder).as_posix())
+              z.write(root/'fresh-study'/'FRESH_RESULTS.json','FRESH_RESULTS.json')
+          for name in ['REPORT.pdf','PILOT_PROTOCOL.pdf']:
+              shutil.copy2(root/'publication-checks'/name,dist/name)
+          combined={}
+          for filename,prefix in [('work-evidence-kit.zip',''),('fresh-evidence.zip','FRESH_EVIDENCE/')]:
+              with zipfile.ZipFile(dist/filename) as z:
+                  if z.testzip() is not None:raise ValueError('Archive integrity failed')
+                  for info in z.infolist():
+                      if info.is_dir():continue
+                      name=prefix+info.filename
+                      if name.startswith('/') or '..' in Path(name).parts or name in combined:raise ValueError('Unsafe or duplicate archive path')
+                      combined[name]=z.read(info)
+          for name in ['REPORT.pdf','PILOT_PROTOCOL.pdf']:combined[name]=(dist/name).read_bytes()
+          combined['READ_FIRST.txt']=b'Open START_HERE.html for the working examples and recovery guide. REPORT.pdf and PILOT_PROTOCOL.pdf are printable. FRESH_EVIDENCE contains this publication run. Original source hashes remain in SHA256SUMS; the complete convenience package has PUBLICATION_SHA256SUMS. This is a new source/evidence kit, not the original 98-file archive. Human pilot: NOT STARTED, zero observed participants.\n'
+          combined['PUBLICATION_SHA256SUMS']=''.join(hashlib.sha256(data).hexdigest()+'  '+name+'\n' for name,data in sorted(combined.items())).encode()
+          with zipfile.ZipFile(dist/'complete-study-kit.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for name,data in sorted(combined.items()):z.writestr(name,data)
+          (dist/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(dist.iterdir()) if p.is_file() and p.name!='SHA256SUMS'))
+          PY
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: work-evidence-kit-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/study-dist/
+          if-no-files-found: error
+  publish-preview:
+    needs: validate
+    if: always() && !cancelled() && needs.validate.result == 'success' && github.event_name == 'pull_request' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.repo.full_name == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.ref == 'docs/try-work-evidence-pilot-20261014'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: work-evidence-kit-${{ github.event.pull_request.head.sha }}
+          path: study-dist
+      - name: Require exact-head standard checks and verify draft assets before visibility
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STUDY_HEAD: ${{ github.event.pull_request.head.sha }}
+          STUDY_PR: ${{ github.event.pull_request.number }}
+          STUDY_DIST: study-dist
+        run: python studies/computer-use/2026-10-14/publish_preview.py
