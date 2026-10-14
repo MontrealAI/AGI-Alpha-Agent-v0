@@ -55,8 +55,8 @@ jobs:
           assert hashlib.sha256(raw).hexdigest() == '1fac23885f69c56363c2da5ce6373d83a65f4330df2524aa07b03d93d851a906'
           patch = folder / 'integration.patch'
           patch.write_bytes(raw)
-          subprocess.run(['git', 'apply', '--check', str(patch)], check=True)
-          subprocess.run(['git', 'apply', str(patch)], check=True)
+          subprocess.run(['git', 'apply', '-p0', '--check', str(patch)], check=True)
+          subprocess.run(['git', 'apply', '-p0', str(patch)], check=True)
           version_only = ['alpha_factory_v1/__init__.py', 'alpha_factory_v1/demos/catalog.json', 'docs/agent/DEMO_VALIDATION.md', 'docs/agent/FACTORY_GUIDE.md', 'docs/agent/OPERATIONS.md', 'docs/alpha_factory_v1/demos/successor/index.html', 'docs/successor/index.html', 'pyproject.toml']
           for name in version_only:
               path = pathlib.Path(name)
