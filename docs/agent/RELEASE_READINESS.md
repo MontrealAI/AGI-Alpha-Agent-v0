@@ -1,6 +1,10 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.31.1 publication
+# Release readiness — 1.31.2 publication
+
+Version **1.31.2** validates and bounds Mainnet RPC responses in the Hardhat preparation and verification
+scripts. See the [maintenance notes](RELEASE_NOTES_1.31.2.md) and [operator guide](MAINNET_READINESS.md).
+The exact-commit release, public website and uploaded-asset gates remain required.
 
 Version **1.31.1** adds the [English/French computer-use study](../reports/computer-use-study/index.html)
 and its compact offline pack while preserving the 1.31.0 product scope. Read the

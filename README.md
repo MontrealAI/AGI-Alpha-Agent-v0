@@ -1,3 +1,8 @@
+> **Current maintenance scope · 1.31.2.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.31.2.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> Mainnet preparation now rejects malformed or oversized RPC responses. Use matching published assets
+> from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
+
 > **[Create a useful SUCCESSOR Ω →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/)**
 > Five bounded work families · English / Français · Real artifacts you can retain · Optional native Computer Use.
 > [Scope, setup and reproduction](docs/agent/SUCCESSOR_WORK.md).

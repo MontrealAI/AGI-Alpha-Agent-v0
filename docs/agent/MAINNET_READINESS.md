@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Prepare a new Ethereum mainnet deployment — 1.28.1
+# Prepare a new Ethereum mainnet deployment — 1.31.2
 
 For the **already deployed October 11 contracts**, use the [deployed addresses and owner guide](MAINNET_DEPLOYMENT.md).
 Those contracts have completed ownership transfer but predate this guide's current source and compiler profile.
@@ -36,7 +36,7 @@ Use a clean checkout of the **release tag**, Node.js 22.17.1 and the committed l
 plans and provider credentials outside the repository. A plan or verification from a dirty checkout is refused.
 
 ```sh
-git checkout v1.28.1
+git checkout v1.31.2
 nvm use
 cd tests/contracts
 npm ci
@@ -95,6 +95,9 @@ PowerShell uses the same npm commands with Windows paths; configure `MAINNET_RPC
 secret manager or `$env:MAINNET_RPC_URL`. Never paste credentials into an issue or commit them.
 The RPC adapter allows only chain/block/code/call/nonce/balance reads, rejects redirects and redacts
 provider errors. It has no transaction, wallet, impersonation, fixture-reset or state-override method.
+Only a matching successful JSON-RPC 2.0 envelope is accepted. Responses are limited to 2 MiB,
+including streamed responses without a size header; oversized streams are cancelled. Malformed
+provider content is never printed. Check your provider if a read fails, then rerun with a new output path.
 Each output is written exclusively; use a new filename for each attempt. Failed checks exit nonzero.
 
 The plan contains the exact source revision/tree and lock digest, compiler standard JSON inputs,
