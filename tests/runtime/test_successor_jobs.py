@@ -24,7 +24,9 @@ def graph(release_digest):
         worker = (
             "local-verifier"
             if family in {"challenge", "verification"}
-            else "local-controller" if family == "admission" else "local-producer"
+            else "local-controller"
+            if family == "admission"
+            else "local-producer"
         )
         owner = "local-verifier" if worker == "local-controller" else "local-controller"
         jobs.append(
