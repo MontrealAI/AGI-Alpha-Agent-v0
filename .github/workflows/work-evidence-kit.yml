@@ -68,7 +68,7 @@ jobs:
           python "$KIT/check_negative_controls.py" --replay "$RUNNER_TEMP/fresh-study"
           git rev-parse HEAD > "$RUNNER_TEMP/publication-checks/SOURCE_COMMIT.txt"
           python - <<'PY'
-          import hashlib,os,zipfile
+          import hashlib,os,shutil,zipfile
           from pathlib import Path
           root=Path(os.environ['RUNNER_TEMP']); dist=root/'study-dist'
           with zipfile.ZipFile(dist/'fresh-evidence.zip','w',zipfile.ZIP_DEFLATED) as z:
@@ -76,7 +76,9 @@ jobs:
                   for p in sorted(folder.rglob('*')):
                       if p.is_file():z.write(p,prefix+'/'+p.relative_to(folder).as_posix())
               z.write(root/'fresh-study'/'FRESH_RESULTS.json','FRESH_RESULTS.json')
-          (dist/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(dist.iterdir()) if p.is_file()))
+          for name in ['REPORT.pdf','PILOT_PROTOCOL.pdf']:
+              shutil.copy2(root/'publication-checks'/name,dist/name)
+          (dist/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(dist.iterdir()) if p.is_file() and p.name!='SHA256SUMS'))
           PY
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
@@ -85,7 +87,9 @@ jobs:
           if-no-files-found: error
   publish-preview:
     needs: validate
-    if: github.event_name == 'pull_request' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.repo.full_name == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.ref == 'docs/try-work-evidence-pilot-20261014'
+    # Preparation is intentionally skipped on PRs. Do not inherit that skip,
+    # but still require successful validation and reject cancelled runs.
+    if: always() && !cancelled() && needs.validate.result == 'success' && github.event_name == 'pull_request' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.repo.full_name == 'MontrealAI/AGI-Alpha-Agent-v0' && github.event.pull_request.head.ref == 'docs/try-work-evidence-pilot-20261014'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     permissions:
