@@ -48,7 +48,8 @@
 .welcome-ecosystem-token h3 {
     margin: 0.4rem 0 1rem;
     color: #4c286f;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    overflow-wrap: anywhere;
 }
 .welcome-ecosystem-token > a {
     display: block;
@@ -628,6 +629,46 @@ html.home-large-text {
 }
 .welcome-page .legacy-research .demo-card {
     overflow-wrap: anywhere;
+}
+.welcome-page .legacy-research .flagship-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2.5rem;
+}
+.welcome-page .legacy-research .flagship-heading h2 {
+    overflow-wrap: anywhere;
+}
+.welcome-page .legacy-research #successor {
+    margin-block: 3rem;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    border: 1px solid var(--welcome-line);
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #f0e7f7, #fffdfb);
+}
+.welcome-page .legacy-research #successor .flagship-heading {
+    margin-bottom: 0;
+    align-items: center;
+}
+.welcome-page .legacy-research #successor h2 {
+    font-size: clamp(2rem, 3.8vw, 3.6rem);
+    color: var(--welcome-deep);
+}
+.welcome-page .legacy-research #successor .eyebrow {
+    color: var(--welcome-purple);
+}
+.welcome-page .legacy-research #successor .actions {
+    margin-top: 1.5rem;
+}
+@media (max-width: 1000px) {
+    .welcome-page .legacy-research .flagship-heading {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+    }
+}
+@media (max-width: 360px) {
+    .welcome-page .legacy-research #successor h2 {
+        font-size: clamp(1.5rem, 8vw, 2rem);
+    }
 }
 .welcome-page .legacy-research .demo-card h3 {
     font-size: 1.125rem;
