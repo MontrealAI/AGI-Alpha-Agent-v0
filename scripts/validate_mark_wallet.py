@@ -107,6 +107,9 @@ def validate(site: Path, output: Path, url: str | None = None) -> dict:
             page.locator("#reconcile-hash").fill("0x" + "cd" * 32)
             page.locator("#reconcile").click()
             expect(page.locator("#status")).to_contain_text("cancelled")
+            expect(page.locator("#transaction-link a")).to_have_attribute(
+                "href", "https://etherscan.io/tx/0x" + "cd" * 32
+            )
             page.locator("#import-journal").set_input_files(backup)
             expect(page.locator("#status")).to_contain_text("Journal imported")
             page.locator("#reconcile").click()

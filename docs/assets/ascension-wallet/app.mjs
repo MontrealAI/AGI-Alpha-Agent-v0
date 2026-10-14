@@ -50,9 +50,10 @@ function refresh() {
   $('import-journal').disabled = busy || unresolved(client?.pending);
   $('journal').textContent = client?.history.length ? json(client.history) : '—';
   $('transaction-link').replaceChildren();
-  if (client?.pending?.hash) {
-    const a = document.createElement('a'); a.href=`https://etherscan.io/tx/${client.pending.hash}`;
-    a.textContent=`${client.pending.status} · ${client.pending.hash}`; a.rel='noopener noreferrer'; a.target='_blank';
+  const receiptHash=client?.pending?.candidateHash||client?.pending?.hash;
+  if (receiptHash) {
+    const a = document.createElement('a'); a.href=`https://etherscan.io/tx/${receiptHash}`;
+    a.textContent=`${client.pending.status} · ${receiptHash}`; a.rel='noopener noreferrer'; a.target='_blank';
     $('transaction-link').append(a);
   }
 }
