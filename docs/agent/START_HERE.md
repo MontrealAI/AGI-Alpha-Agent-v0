@@ -2,6 +2,10 @@
 
 # Start here — get a useful, reviewable result
 
+<!-- computer-use-study-publication -->
+**See what was actually demonstrated:** [Read the computer-use study](../reports/computer-use-study/REPORT.md) or open its [English/French visual reader](../reports/computer-use-study/index.html). Two repaired websites, tested recovery and fewer scripted setup controls; simulated owner, not a production benchmark.
+<!-- /computer-use-study-publication -->
+
 **Prefer to start without installing anything? [Open the guided first experience](../start/index.html).**
 It offers an English/French walkthrough, larger text and a useful planning download.
 The instructions below are for installing and operating your own agent.

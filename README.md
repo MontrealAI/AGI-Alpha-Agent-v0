@@ -2,6 +2,13 @@
 > Five bounded work families · English / Français · Real artifacts you can retain · Optional native Computer Use.
 > [Scope, setup and reproduction](docs/agent/SUCCESSOR_WORK.md).
 
+<!-- computer-use-study-publication -->
+> **Useful work. Recovered. Reused. — [Read the computer-use study](docs/reports/computer-use-study/REPORT.md).**
+> Two repaired websites, 19/19 recovery checks and 21.4% fewer scripted setup controls.
+> Simulated owner; real software checks. Not a production benchmark or measured human time saving.
+> [English / Français visual reader](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/computer-use-study/) · [Public report pack](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/computer-use-study/report-pack.zip) · [Recorded results](docs/reports/computer-use-study/results.json).
+<!-- /computer-use-study-publication -->
+
 > **[Build your own SUCCESSOR Ω with Alpha Agent + AGI Jobs →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/build/)**
 > Name your mission, run four candidate programs, compile 21 bounded job drafts, and keep the working lab offline.
 > English / Français · Large text · No account, wallet or installation. [Source and reproduction guide](examples/build-successor/README.md) · [Version 1.28.0](docs/agent/RELEASE_NOTES_1.28.0.md).
