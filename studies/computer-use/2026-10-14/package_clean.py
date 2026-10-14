@@ -27,6 +27,8 @@ def package(output: Path) -> None:
     output.parent.mkdir(parents=True,exist_ok=True)
     with zipfile.ZipFile(output,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
         for name,data in sorted(files.items()):
-            info=zipfile.ZipInfo(name,(2026,10,14,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+            info = zipfile.ZipInfo(name, (2026, 10, 14, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o100644 << 16
             archive.writestr(info,data,compresslevel=9)
     print(json.dumps({'path':str(output),'files':len(files),'sha256':hashlib.sha256(output.read_bytes()).hexdigest(),'bytes':output.stat().st_size,'unlistedLocalFilesIncluded':False}))
