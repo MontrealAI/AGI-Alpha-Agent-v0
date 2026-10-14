@@ -9,17 +9,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 
-def package(output: Path) -> None:
-    provenance = json.loads((ROOT / 'SOURCE_PROVENANCE.json').read_text(encoding='utf-8'))
+def publication_names(root: Path = ROOT) -> set[str]:
+    provenance = json.loads((root / 'SOURCE_PROVENANCE.json').read_text(encoding='utf-8'))
     names = set(provenance['originalSourceFiles'])
     names.update(['build_kit.py','_kit_builder.py','package_clean.py','verify_and_replay.py','check_negative_controls.py','publish_preview.py','validate_publication.py','ruff.toml','README.md','PILOT_PROTOCOL.md','PILOT_PROTOCOL.html','START_HERE.html','SOURCE_PROVENANCE.json','LICENSE','original-template.txt','pilot/status.json','pilot/session-template.csv'])
     names.update('01_Report/' + name for name in ['report.html','REPORT.md','study.css','study.js','index.html','results.json','PUBLICATION.md'])
     names.update(['02_Work_Products/Task_A/after/index.html','02_Work_Products/Task_B/after/index.html','02_Work_Products/Task_B/without-portability-fix/index.html'])
+    return names
+
+
+def package(output: Path) -> None:
+    if output.resolve().is_relative_to(ROOT.resolve()):
+        raise ValueError("Write the archive outside its source kit")
+    names = publication_names()
+    from verify_and_replay import safe_file, verify_original_sources
+    verify_original_sources(ROOT)
     files = {}
     for name in sorted(names):
-        path = ROOT / name
-        if path.is_symlink() or not path.resolve().is_relative_to(ROOT) or not path.is_file():
-            raise ValueError('Missing or unsafe publication input: ' + name)
+        path = safe_file(ROOT, name)
         files[name] = path.read_bytes()
     sums = ''.join(hashlib.sha256(data).hexdigest() + '  ' + name + '\n' for name,data in sorted(files.items()))
     (ROOT / 'SHA256SUMS').write_text(sums,encoding='utf-8')

@@ -25,11 +25,14 @@ class Navigation(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.targets: list[str] = []
+        self.ids: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         for key, value in attrs:
             if key in {"href", "src"} and value:
                 self.targets.append(value)
+            if key == "id" and value:
+                self.ids.append(value)
 
 
 def check_navigation() -> None:
@@ -37,9 +40,15 @@ def check_navigation() -> None:
         page = ROOT / name
         links = Navigation()
         links.feed(page.read_text(encoding="utf-8"))
+        if len(links.ids) != len(set(links.ids)):
+            raise ValueError("Duplicate reader anchor: " + name)
         for target in links.targets:
             url = urlsplit(target)
-            if url.scheme or url.netloc or not url.path:
+            if url.scheme or url.netloc:
+                continue
+            if not url.path:
+                if url.fragment and unquote(url.fragment) not in links.ids:
+                    raise ValueError(f"Broken reader anchor in {name}: {target}")
                 continue
             path = (page.parent / unquote(url.path)).resolve()
             if not path.is_relative_to(ROOT.resolve()) or not path.is_file():
@@ -67,11 +76,13 @@ def main() -> None:
     (ROOT / "PILOT_PROTOCOL.html").write_bytes(builder.page('<main><p><a href="START_HERE.html">← Back to the kit</a></p>' + "".join(blocks) + '</main>', "Real-user pilot | Not started"))
     report_home = '<main><section class="hero"><p class="eyebrow">PUBLIC REPORT EDITION</p><h1>Useful work.<br>Recovered. Reused.</h1><p class="lead">Read the full report and inspect the recorded study results. Simulated owner; executed software checks. Human benefits remain unmeasured.</p><div class="actions"><a class="button primary" href="report.html">Read the report</a><a class="button" href="../START_HERE.html">Back to the working examples</a></div><p><a href="REPORT.md">Markdown report</a> · <a href="results.json">Recorded results</a> · <a href="PUBLICATION.md">Historical editorial notes</a></p></section></main>'
     (ROOT / "01_Report/index.html").write_bytes(builder.page(report_home, "Study report | AGI Alpha"))
+    check_navigation()
     # The bundle manifest is generated even for a source-checkout build.
     with tempfile.TemporaryDirectory(prefix="study-kit-build-") as temp:
         package(args.output or Path(temp) / "kit.zip")
-    check_navigation()
-    print("Four reader entry points have valid local file links; original source hashes remain unchanged.")
+    from verify_and_replay import verify_sources
+    verify_sources(ROOT)
+    print("Reader links, complete manifest and original source hashes verified.")
 
 
 if __name__ == "__main__":

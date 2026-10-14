@@ -61,6 +61,11 @@ def main() -> None:
                         dimensions = page.evaluate("({w:document.documentElement.scrollWidth,v:innerWidth})")
                         assert dimensions["w"] <= dimensions["v"] + 1, dimensions
                         assert not errors, errors
+                        assert page.locator("#language").get_attribute("lang") == ("en" if french else "fr")
+                        assert page.locator("#size").get_attribute("aria-pressed") == str(large).lower()
+                        for control in ["#language", "#size"]:
+                            box = page.locator(control).bounding_box()
+                            assert box and box["height"] >= 44, control
                         assert page.locator("#people").inner_text().find("0 OBSERVED PARTICIPANTS") >= 0
                         for anchor in page.locator('a[href^="#"]').all():
                             assert page.locator(anchor.get_attribute("href")).count() == 1
@@ -83,6 +88,18 @@ def main() -> None:
                 ]:
                     response = page.request.get(origin + "/" + relative)
                     assert response.ok and response.body() == (ROOT / relative).read_bytes(), relative
+                page.goto(origin + "/START_HERE.html?lang=fr&text=large")
+                assert page.locator("html").get_attribute("lang") == "fr"
+                assert page.locator("#size").get_attribute("aria-pressed") == "true"
+                page.locator("#language").focus()
+                page.keyboard.press("Enter")
+                assert page.locator("html").get_attribute("lang") == "en"
+                page.locator("#size").focus()
+                page.keyboard.press("Space")
+                assert page.locator("#size").get_attribute("aria-pressed") == "false"
+                page.reload()
+                assert page.locator("html").get_attribute("lang") == "en"
+                assert page.locator("#size").get_attribute("aria-pressed") == "false"
                 page.goto(origin + "/02_Work_Products/Task_A/after/index.html")
                 page.locator("#service").select_option("foundations")
                 page.locator("#seats").fill("10")
@@ -142,6 +159,7 @@ def main() -> None:
                 "httpDownloadsAndRecovery": not args.memory_preview,
                 "localFileOpening": not args.memory_preview,
                 "productionIsolationQualified": False,
+                "keyboardAndReadingPreferences": not args.memory_preview,
             }
             (args.output / "PUBLICATION_CHECKS.json").write_text(json.dumps(report, indent=2) + "\n")
             browser.close()
