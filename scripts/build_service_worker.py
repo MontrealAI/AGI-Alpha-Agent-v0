@@ -57,6 +57,11 @@ def gather_assets(docs_dir: Path) -> list[str]:
         if not item.is_file():
             continue
         relative = item.relative_to(docs_dir)
+        # Wallet code and its generated profile require network freshness, not the demo cache.
+        if "ascension-wallet" in relative.parts or (
+            "ascension-protocol" in relative.parts and "mainnet" in relative.parts
+        ):
+            continue
         if "pyodide" in relative.parts:
             continue
         if "alpha_agi_insight_v1" in relative.parts:

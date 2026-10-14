@@ -44,6 +44,7 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/ONBOARDING.md",
         "docs/agent/MAINNET_READINESS.md",
         "docs/agent/MAINNET_DEPLOYMENT.md",
+        "docs/agent/MARK_WALLET.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
         "docs/agent/DEMOS.md",
@@ -169,6 +170,11 @@ def main() -> None:
     if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("release version must be major.minor.patch")
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
+    if tuple(map(int, version.split("."))) >= (1, 30, 0):
+        from scripts.mark_wallet_evidence import verify_report as verify_wallet
+
+        report = json.loads((args.evidence / "mark-wallet-browser" / "report.json").read_text())
+        verify_wallet(report, sha, version)
     manuscript_hashes = verify_manuscript()
     factory_preservation = verify_factory()
     subprocess.run(

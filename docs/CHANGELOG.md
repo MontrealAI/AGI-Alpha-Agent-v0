@@ -1,3 +1,11 @@
+## 1.30.0 — MARK Mainnet wallet and recoverable transaction journal
+
+- Add the guarded Mainnet wallet workspace while preserving the original Protocol Desk.
+- Bind previews to exact nonce, calldata and bounded gas; persist intent before wallet handoff.
+- Restore journals and reconcile original/replacement hashes; require canonical finalized receipts.
+- Coordinate same-browser tabs and gate publication on exact-source rendered wallet acceptance.
+- Preserve archived contracts and block new funding. See [release notes](agent/RELEASE_NOTES_1.30.0.md).
+
 ## 1.29.0 candidate — 2026-10-13
 
 - Add five distinct local SUCCESSOR work adapters, a bilingual offline workbench and a documented extension SDK.
