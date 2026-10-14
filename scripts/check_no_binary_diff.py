@@ -246,19 +246,24 @@ def _matches_binary_extension(path: str) -> bool:
     return suffix in BINARY_EXTENSIONS
 
 
+REPORT_PACK_SHA256 = "d29e9951bd2d04c05a4520d885e5ca8f716e280b715445dea6f6a193b537f27b"
+AUTHORIZED_REPORT_PACK = {"docs/reports/computer-use-study/report-pack.zip": REPORT_PACK_SHA256}
+
+
 def main() -> int:
     _git_root()
     base_ref = _base_ref()
     changed_paths = _iter_changed_paths(base_ref)
     binary_paths = [path for path in changed_paths if _matches_binary_extension(path)]
     binary_paths.extend(_has_binary_diff(base_ref))
+    authorized = AUTHORIZED_MANUSCRIPT | AUTHORIZED_REPORT_PACK
     binary_paths = sorted(
         {
             path
             for path in binary_paths
-            if path not in AUTHORIZED_MANUSCRIPT
+            if path not in authorized
             or not Path(path).is_file()
-            or hashlib.sha256(Path(path).read_bytes()).hexdigest() != AUTHORIZED_MANUSCRIPT[path]
+            or hashlib.sha256(Path(path).read_bytes()).hexdigest() != authorized[path]
         }
     )
     if binary_paths:

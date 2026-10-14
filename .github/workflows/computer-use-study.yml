@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Computer-use study publication
+on:
+  push:
+    branches: [docs/computer-use-study-publication-20261014]
+    paths:
+      - docs/reports/computer-use-study/**
+      - scripts/publish_computer_use_study.py
+      - scripts/mkdocs_computer_use_study.py
+      - scripts/validate_computer_use_study_browser.py
+      - .github/workflows/computer-use-study.yml
+  pull_request:
+    paths:
+      - docs/reports/computer-use-study/**
+      - scripts/publish_computer_use_study.py
+      - scripts/mkdocs_computer_use_study.py
+      - scripts/validate_computer_use_study_browser.py
+      - .github/workflows/computer-use-study.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: github.event_name == 'push' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.ref == 'refs/heads/docs/computer-use-study-publication-20261014'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.ref }}
+      - name: Build deterministic public pack and additive entry links
+        run: |
+          python3 scripts/publish_computer_use_study.py --build --link-entrypoints
+          python3 scripts/publish_computer_use_study.py --check
+      - name: Commit only generated publication files and entry links
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/reports/computer-use-study/report.html docs/reports/computer-use-study/report-pack.zip docs/reports/computer-use-study/SHA256SUMS README.md docs/agent/START_HERE.md mkdocs.yml
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs: package the public computer-use report and add discovery links'
+            git push origin HEAD:docs/computer-use-study-publication-20261014
+          fi
+  validate:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Verify report values, scopes, anchors, archive and generated files
+        run: python3 scripts/publish_computer_use_study.py --check
+      - name: Install existing hash-locked browser-only tools
+        run: |
+          python3 -m venv /tmp/study-reader-env
+          /tmp/study-reader-env/bin/python -m pip install --require-hashes -r examples/successor-workbench/computer/requirements.lock
+          /tmp/study-reader-env/bin/python -m playwright install --with-deps chromium
+      - name: Check real HTTP downloads, CSP-loaded controls and offline file reopening
+        run: /tmp/study-reader-env/bin/python scripts/validate_computer_use_study_browser.py

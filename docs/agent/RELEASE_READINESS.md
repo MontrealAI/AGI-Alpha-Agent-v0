@@ -1,6 +1,11 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.31.0 integration
+# Release readiness — 1.31.1 publication
+
+Version **1.31.1** adds the [English/French computer-use study](../reports/computer-use-study/index.html)
+and its compact offline pack while preserving the 1.31.0 product scope. Read the
+[maintenance release notes](RELEASE_NOTES_1.31.1.md) for the publication checks and evidence boundaries.
+The manifest and matching validation archive identify the delivered commit and actual acceptance.
 
 Version **1.31.0** combines Nova-Seed Studio, authorized native work, recovery hardening and inspectable
 successor cycles. Start with the [English/French first-use guide](ASCENSION_STACK_RELEASE.md), then use
@@ -70,6 +75,12 @@ The existing SUCCESSOR mission lifecycle, repository repairs and release-install
 The [SUCCESSOR guide](SUCCESSOR.md), [architecture](SUCCESSOR_ARCHITECTURE.md) and [pack restoration](SUCCESSOR_PACKAGING.md) describe that lifecycle's boundaries.
 A revision is publishable only after the exact integrated commit passes every existing and added gate.
 The published release manifest, rather than this source guide, identifies the accepted commit and recorded results.
+
+The [computer-use study reader](../reports/computer-use-study/index.html) is an editorial addition.
+Both rebuilt galleries and public Pages must pass its exact-asset, English/French, large-text, print,
+download and offline-reopening checks. The release includes `computer-use-study-report-pack.zip` and
+retains the reader's acceptance report in its validation archive. These checks qualify publication of
+the report; they neither rerun its original experiment nor establish measured human time savings.
 
 The complete catalog lists all 26 entries and their prerequisites. Seventeen finite demos have
 installed-wheel acceptance, including separate repeat runs that retain earlier evidence. See the

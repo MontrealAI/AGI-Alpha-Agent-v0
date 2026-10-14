@@ -1,0 +1,375 @@
+{
+  "schema": "agi-alpha-public-study/v1",
+  "studyDate": "2026-10-14",
+  "edition": "Reviewed public report; curated records, not the complete original archive",
+  "sourceArchive": {
+    "name": "AGI_Alpha_Advanced_Computer_Use_Study_2026-10-14.zip",
+    "bytes": 3632846,
+    "sha256": "0e9d8a7f3d163f2461af99261d11f464ead71411ae9803074171ac934a123035",
+    "manifestListedFilesVerified": 97
+  },
+  "sourceReportSha256": "4abf31e92d89aea25d3ec1e6cbc834817a5f80a34236177e21aacb58a2f6a82b",
+  "protocol": {
+    "schema": "computer-use-study/v2",
+    "createdAt": "2026-10-14T14:03:51.283204+00:00",
+    "dateContext": "2026-10-14",
+    "purpose": "Execute AI-assisted software delivery and recovery; simulate only owner behavior.",
+    "execution": "This conversation assistant authors code, operates Chromium via Playwright and inspects screenshots. No separately metered model API is called.",
+    "humanParticipants": 0,
+    "actualCustomers": 0,
+    "repositoryExecuted": false,
+    "repositoryModified": false,
+    "repositoryBaseline": {
+      "main": "8c027575c850bf5a872e6b11f81933b5e77b6be2",
+      "latestReleaseObserved": "v1.29.0"
+    },
+    "design": "Constructed before/after site fixtures plus familiar/no-memory versus retained-profile owner workflow on identical Task B. Same assistant creates fixtures and repairs; not blinded, not a frontier-model benchmark.",
+    "primaryOutcomes": [
+      "All declared functional acceptance checks",
+      "Byte-exact artifact recovery with independent retained checkpoint",
+      "Count of recorded simulated-owner interface operations on identical Task B; time estimates separate"
+    ],
+    "qualityComparison": "Compare each repaired deliverable with its own defective supplied fixture. Reuse must not reduce final acceptance quality. Do not fabricate a quality advantage over a correctly repaired no-memory comparator.",
+    "reuse": "Explicit task-independent implementation and preference profile. No weights trained; no hidden memory-independent comparator claimed.",
+    "nonGoals": [
+      "Mainnet settlement",
+      "Live publication",
+      "Personal data handling",
+      "Real transactions",
+      "Multimodel ranking",
+      "General autonomy guarantee"
+    ],
+    "spend": {
+      "separatelyBilledProviderCalls": 0,
+      "providerApiCost": 0,
+      "chatSubscriptionAllocation": null,
+      "hostComputeCost": null,
+      "humanLaborCost": null
+    },
+    "environment": {
+      "python": "3.13.5",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "playwright": "1.57.0",
+      "browser": "Chromium 144.0.7559.96",
+      "isolation": "container, fresh browser contexts, all HTTP/HTTPS requests blocked during fixture tests; --no-sandbox required in host container, not a production security profile"
+    }
+  },
+  "acceptance": {
+    "A_before": {
+      "passed": 8,
+      "total": 31,
+      "sourceSha256": "7c3c2a05ac59c64c95562f084bf838186ffd5015d16c70993b1703d2cb61d61b"
+    },
+    "A_after": {
+      "passed": 31,
+      "total": 31,
+      "sourceSha256": "fde4d2f873c89356444c01ce3eb01fbc87dd2391d968abcc1fb6d47203a1baab"
+    },
+    "B_before": {
+      "passed": 9,
+      "total": 35,
+      "sourceSha256": "c83c13e4cef4e82cfeac111f515869ea788c226994033f9a411102b79f016274"
+    },
+    "B_after": {
+      "passed": 35,
+      "total": 35,
+      "sourceSha256": "5d59f7eda0a3e9b217417ce7e95d1212e6e2ef7ad3af6bb8936f1b5d75a95dbf"
+    },
+    "B_without-portability-fix": {
+      "passed": 29,
+      "total": 35,
+      "sourceSha256": "5097ce8b3d6cb2f95fbc5a31c12f52a16dbc53393390e7d55b049c45381cf599"
+    }
+  },
+  "recovery": {
+    "tests": [
+      {
+        "test": "Actual worker termination after durable checkpoint",
+        "passed": true,
+        "detail": {
+          "marker": "CHECKPOINT_DURABLE",
+          "returncode": -15
+        }
+      },
+      {
+        "test": "Fresh-process artifact restore 1",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-process artifact restore 2",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-process artifact restore 3",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-process artifact restore 4",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-process artifact restore 5",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Tampered checkpoint refused",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Older valid snapshot rejected against newer retained head",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Wrong task refused",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Unknown-effect checkpoint stops; no replay attempted",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Parent-directory path rejected even with valid hash",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Existing recovered work never overwritten",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "No approval or authority inherited",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Unsaved work absence is a failure, not invented recovery",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-browser offline recovery 1: exact quote bytes and new review",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-browser offline recovery 2: exact quote bytes and new review",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-browser offline recovery 3: exact quote bytes and new review",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-browser offline recovery 4: exact quote bytes and new review",
+        "passed": true,
+        "detail": true
+      },
+      {
+        "test": "Fresh-browser offline recovery 5: exact quote bytes and new review",
+        "passed": true,
+        "detail": true
+      }
+    ],
+    "passed": 19,
+    "total": 19,
+    "scope": "Controlled local artifacts and browser drafts; no live external transaction or power-loss experiment",
+    "independentHeadWarning": "Example head is supplied beside the example for reproducibility. Real freshness requires retaining the latest head outside the recovery package."
+  },
+  "ownerEffort": {
+    "runs": [
+      {
+        "mode": "familiar-no-profile",
+        "replicate": 1,
+        "actions": 14,
+        "preferenceEdits": 4,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 444,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "retained-profile",
+        "replicate": 1,
+        "actions": 11,
+        "preferenceEdits": 0,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 436,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "retained-profile",
+        "replicate": 2,
+        "actions": 11,
+        "preferenceEdits": 0,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 394,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "familiar-no-profile",
+        "replicate": 2,
+        "actions": 14,
+        "preferenceEdits": 4,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 392,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "familiar-no-profile",
+        "replicate": 3,
+        "actions": 14,
+        "preferenceEdits": 4,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 364,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "retained-profile",
+        "replicate": 3,
+        "actions": 11,
+        "preferenceEdits": 0,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 355,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "retained-profile",
+        "replicate": 4,
+        "actions": 11,
+        "preferenceEdits": 0,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 353,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "familiar-no-profile",
+        "replicate": 4,
+        "actions": 14,
+        "preferenceEdits": 4,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 369,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "familiar-no-profile",
+        "replicate": 5,
+        "actions": 14,
+        "preferenceEdits": 4,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 384,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      },
+      {
+        "mode": "retained-profile",
+        "replicate": 5,
+        "actions": 11,
+        "preferenceEdits": 0,
+        "freshScopeApprovals": 1,
+        "reviewChecks": 3,
+        "typedBriefCharacters": 180,
+        "mechanicalElapsedMs": 381,
+        "qualitySource": "03_Evidence/acceptance/B_after.json",
+        "qualityPassed": 35,
+        "qualityTotal": 35
+      }
+    ],
+    "baselineActions": 14,
+    "reuseActions": 11,
+    "reductionFraction": 0.2142857142857143,
+    "participants": 0,
+    "interpretation": "Measured scripted interface operations in this replay only. Both modes have identical Task B quality and fresh permission/review. Fewer clicks do not measure attention, skill or human time.",
+    "baselineLimitation": "This UI has four separate preference controls. A well-designed batched preference entry or a different interface could reduce/eliminate the action-count advantage.",
+    "timeModel": {
+      "commonBriefAndScopeSeconds": 120,
+      "commonArtifactReviewSeconds": 180,
+      "commonSaveSeconds": 30,
+      "noProfileFourPreferencesSeconds": 100,
+      "profileConfirmationSeconds": 35,
+      "firstTimePreferenceSetupIncludedInTaskA": true,
+      "humanTimeObserved": false
+    }
+  },
+  "observedIssues": [
+    {
+      "id": "ENV-01",
+      "finding": "file:// navigation refused by browser administrative policy",
+      "outcome": "No bypass attempted. Tests use supplied HTML via page.set_content, with all HTTP/HTTPS requests blocked. First-open filesystem navigation not qualified."
+    },
+    {
+      "id": "CU-01",
+      "finding": "First screenshot-selected mouse coordinate (252,36) missed the language button; subsequent French locator waited until process timeout.",
+      "outcome": "Inspect screenshot; corrected coordinate (324,36) changed language. Retain this as an actual computer-use mistake, not a success."
+    },
+    {
+      "id": "APP-01",
+      "finding": "Task A first candidate used crypto.subtle in an opaque memory page, unavailable in this environment. Saving failed with Cannot read properties of undefined.",
+      "outcome": "Add SHA-256 fallback and verify against Python hashlib. The original candidate is retained."
+    }
+  ],
+  "sha256TestVectorsMatched": 105,
+  "sourceFiles": [
+    {
+      "path": "03_Evidence/PROTOCOL.json",
+      "sha256": "0ff61f9d08bed023a44e41f07c8e5fb4c52658863da086dc659edba357ec9eb3"
+    },
+    {
+      "path": "03_Evidence/OWNER_EFFORT.json",
+      "sha256": "72656deb2f91327359cd3babb25ba1a807e13404474827e54626d7f4a5ef1aac"
+    },
+    {
+      "path": "03_Evidence/recovery/RESULTS.json",
+      "sha256": "ffa40d48df68ea1406f0ebdc854952af6373236d33fb949eb1158f8b592f9306"
+    },
+    {
+      "path": "03_Evidence/SUMMARY.json",
+      "sha256": "f8275bb3df9352443fe4b231689431cf8ef8044b6dbadd05a20cfc2d13531e01"
+    }
+  ]
+}
