@@ -1,3 +1,10 @@
+## 1.31.1 — Computer-use study publication
+
+- Add the English/French study reader, larger text, print styling and exact Markdown/JSON downloads.
+- Ship the compact offline report pack and retain precise simulated-owner evidence boundaries.
+- Gate publication on rebuilt-site and public HTTPS reader/download checks; preserve existing workflows.
+- See [release notes](agent/RELEASE_NOTES_1.31.1.md).
+
 ## 1.31.0 — Nova-Seed projects and inspectable Ascension cycles
 
 - Integrate recoverable Nova-Seed projects, authorized native execution and recovery/delivery hardening.

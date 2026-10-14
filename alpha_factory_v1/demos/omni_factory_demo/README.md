@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.31.0
+## Current runnable path — 1.31.1
 
 **Mode:** Offline simulation. Runs bounded smart-city episodes with local accounting.
 

@@ -502,6 +502,10 @@ jobs:
         run: python -m scripts.validate_governance_core --output evidence/governance-core
       - name: Rebuild the complete gallery with the legacy documentation tools
         run: bash scripts/build_gallery_site.sh
+      - name: Verify the study reader and exact downloads on the rebuilt site
+        run: |
+          python scripts/publish_computer_use_study.py --check
+          python -m scripts.validate_computer_use_study_browser --site site --output evidence/computer-use-study.json
       - name: Require a welcoming accessible homepage on the exact rebuilt site
         run: python -m scripts.validate_homepage --site site --output evidence/homepage
       - name: Verify the personal SUCCESSOR download and offline experience
@@ -972,6 +976,7 @@ jobs:
           python -m scripts.validate_successor_workbench --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/ --output evidence/public-pages/successor-workbench --axe-script tests/browser/node_modules/axe-core/axe.min.js
           python -m scripts.validate_onboarding --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/onboarding
           python -m scripts.validate_homepage --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/homepage
+          python -m scripts.validate_computer_use_study_browser --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/computer-use-study.json
       - name: Name this attempt's public acceptance evidence
         id: public-name
         if: always()

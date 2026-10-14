@@ -114,6 +114,15 @@ def test_gallery_cache_version_changes_with_contents(tmp_path: Path) -> None:
     assert all("alpha_agi_insight_v1" not in path for path in build_service_worker.gather_assets(tmp_path))
 
 
+def test_report_reader_does_not_enter_an_incomplete_gallery_cache(tmp_path: Path) -> None:
+    study = tmp_path / "reports/computer-use-study"
+    study.mkdir(parents=True)
+    for name in ("index.html", "report.html", "study.js", "study.css", "report-pack.zip"):
+        (study / name).write_text("report edition")
+    (tmp_path / "index.html").write_text("gallery")
+    assert build_service_worker.gather_assets(tmp_path) == ["index.html"]
+
+
 def test_muzero_nonrendering_run_is_bounded_and_closes() -> None:
     from alpha_factory_v1.demos.muzero_planning.minimuzero import play_episode
 

@@ -57,6 +57,9 @@ def gather_assets(docs_dir: Path) -> list[str]:
         if not item.is_file():
             continue
         relative = item.relative_to(docs_dir)
+        # The study has its own complete offline ZIP; do not cache only its overview.
+        if relative.parts[:2] == ("reports", "computer-use-study"):
+            continue
         # Wallet code and profiles need network freshness, including nested gallery copies.
         if {"ascension-wallet", "nova-studio"}.intersection(relative.parts) or (
             "mainnet" in relative.parts and {"ascension-protocol", "ascension"}.intersection(relative.parts)

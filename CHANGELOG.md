@@ -1,3 +1,10 @@
+## 1.31.1 — 2026-10-14
+
+- Publish the English/French computer-use study reader, curated results and compact offline report pack.
+- Verify exact assets, responsive reading controls, print contrast, downloads and offline reopening.
+- Include the report ZIP in release checksums; preserve the complete 1.31.0 product and evidence scope.
+- See [release notes](docs/agent/RELEASE_NOTES_1.31.1.md).
+
 ## 1.31.0 — 2026-10-14
 
 - Integrate Nova-Seed Studio, the bounded native executor and recoverable project cycles from PRs #4779–#4782.

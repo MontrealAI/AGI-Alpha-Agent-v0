@@ -222,6 +222,8 @@ def main() -> None:
         check=True,
     )
     copy_release_documents(Path.cwd(), output, version, sha)
+    subprocess.run([sys.executable, "scripts/publish_computer_use_study.py", "--check"], check=True)
+    shutil.copy2("docs/reports/computer-use-study/report-pack.zip", output / "computer-use-study-report-pack.zip")
     package_mainnet_record(Path.cwd(), output, version)
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-operator-guide.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for name in release_documents(version):

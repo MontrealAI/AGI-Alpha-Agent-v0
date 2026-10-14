@@ -28,11 +28,13 @@ def inline(value: str) -> str:
     value = html.escape(value)
     value = re.sub(r"`([^`]+)`", r"<code>\1</code>", value)
     value = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", value)
+
     def link(match: re.Match[str]) -> str:
         label, target = match.groups()
         if ":" in target and not target.startswith("https://"):
             raise ValueError("Unsupported report link")
         return f'<a href="{target}">{label}</a>'
+
     return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, value)
 
 
@@ -74,18 +76,23 @@ def render_report() -> bytes:
             blocks.append(f"<p>{inline(' '.join(paragraph))}</p>")
         index += 1
     body = "\n".join(blocks)
-    page = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<meta name="description" content="The complete public report edition of the AGI Alpha computer-use study.">'
-            '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'self\'; '
-            'script-src \'self\'; connect-src \'none\'; base-uri \'none\'; object-src \'none\'">'
-            '<title>Full report | AGI Alpha computer-use study</title>'
-            '<link rel="stylesheet" href="study.css"><script src="study.js" defer></script></head><body>'
-            '<a class="skip" href="#main">Skip to the report</a><header class="shell topbar">'
-            '<a class="brand" href="index.html">AGI ALPHA <small>STUDY REPORT</small></a>'
-            '<nav aria-label="Report controls"><a class="button" href="index.html">Overview</a>'
-            '<button type="button" data-print>Print / Save PDF</button></nav></header>'
-            f'<main id="main" class="shell reader">{body}</main></body></html>')
+    page = (
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<meta name="description" '
+        'content="The complete public report edition of the AGI Alpha computer-use study.">'
+        "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'self'; "
+        "script-src 'self'; connect-src 'none'; base-uri 'none'; object-src 'none'\">"
+        "<title>Full report | AGI Alpha computer-use study</title>"
+        '<link rel="stylesheet" href="study.css"><script src="study.js" defer></script></head><body>'
+        '<a class="skip" href="#main">Skip to the report</a><header class="shell topbar">'
+        '<a class="brand" href="index.html">AGI ALPHA <small>STUDY REPORT</small></a>'
+        '<nav aria-label="Report controls"><a class="button" href="index.html">Overview</a>'
+        '<button type="button" data-print>Print / Save PDF</button></nav></header>'
+        f'<main id="main" class="shell reader">{body}</main>'
+        '<footer class="shell"><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/'
+        'blob/main/docs/DISCLAIMER_SNIPPET.md">Project notice</a></footer></body></html>'
+    )
     return page.encode("utf-8")
 
 
@@ -97,7 +104,8 @@ def bundle_files(report: bytes) -> dict[str, bytes]:
         "AGI Alpha — public report edition\n\n"
         "Open START_HERE.html in a modern desktop browser. Read report.html for the complete English web report.\n"
         "Use Print / Save PDF for a printable copy. The report itself does not run an AI agent.\n"
-        "This compact edition includes curated records, not the original 98-file archive or its full executable study.\n"
+        "This compact edition includes curated records, "
+        "not the original 98-file archive or its full executable study.\n"
         "No account, wallet or API key is required. External project/download links require a network connection.\n"
         "Verify files with: sha256sum -c SHA256SUMS (or shasum -a 256 -c SHA256SUMS on macOS).\n"
         "Checksums establish byte consistency, not independent authenticity or production readiness.\n"
@@ -141,8 +149,13 @@ def validate_sources() -> None:
         if not (STUDY / name).is_file():
             raise ValueError(f"Missing public source: {name}")
     data = json.loads((STUDY / "results.json").read_text(encoding="utf-8"))
-    expected = {"A_before": (8, 31), "A_after": (31, 31), "B_before": (9, 35),
-                "B_after": (35, 35), "B_without-portability-fix": (29, 35)}
+    expected = {
+        "A_before": (8, 31),
+        "A_after": (31, 31),
+        "B_before": (9, 35),
+        "B_after": (35, 35),
+        "B_without-portability-fix": (29, 35),
+    }
     for key, counts in expected.items():
         row = data["acceptance"][key]
         if (row["passed"], row["total"]) != counts:
@@ -159,8 +172,11 @@ def validate_sources() -> None:
         runs = [item for item in effort["runs"] if item["mode"] == mode]
         if len(runs) != 5 or any(item["actions"] != actions for item in runs):
             raise ValueError("Owner action totals differ")
-        if any((item["reviewChecks"], item["freshScopeApprovals"], item["qualityPassed"], item["qualityTotal"])
-               != (3, 1, 35, 35) for item in runs):
+        if any(
+            (item["reviewChecks"], item["freshScopeApprovals"], item["qualityPassed"], item["qualityTotal"])
+            != (3, 1, 35, 35)
+            for item in runs
+        ):
             raise ValueError("Quality or review obligations differ")
     if abs(effort["reductionFraction"] - 3 / 14) > 1e-12:
         raise ValueError("Incorrect reduction")
@@ -198,7 +214,8 @@ def link_entrypoints() -> None:
     marker = "<!-- computer-use-study-publication -->"
     callout = (
         f"{marker}\n"
-        "> **Useful work. Recovered. Reused. — [Read the computer-use study](docs/reports/computer-use-study/REPORT.md).**\n"
+        "> **Useful work. Recovered. Reused. — "
+        "[Read the computer-use study](docs/reports/computer-use-study/REPORT.md).**\n"
         "> Two repaired websites, 19/19 recovery checks and 21.4% fewer scripted setup controls.\n"
         "> Simulated owner; real software checks. Not a production benchmark or measured human time saving.\n"
         f"> [English / Français visual reader]({URL}) · [Public report pack]({URL}report-pack.zip) · "
@@ -209,7 +226,8 @@ def link_entrypoints() -> None:
         split = old.find("\n\n")
         if split < 0:
             raise ValueError("README opening boundary is missing")
-        new = old[:split + 2] + callout + old[split + 2:]
+        boundary = split + 2
+        new = old[:boundary] + callout + old[boundary:]
         if new.replace(callout, "", 1) != old:
             raise ValueError("README preservation failed")
         readme_path.write_text(new, encoding="utf-8")
@@ -218,7 +236,8 @@ def link_entrypoints() -> None:
     if marker not in old:
         callout = (
             f"\n{marker}\n"
-            "**See what was actually demonstrated:** [Read the computer-use study](../reports/computer-use-study/REPORT.md) "
+            "**See what was actually demonstrated:** "
+            "[Read the computer-use study](../reports/computer-use-study/REPORT.md) "
             "or open its [English/French visual reader](../reports/computer-use-study/index.html). "
             "Two repaired websites, tested recovery and fewer scripted setup controls; simulated owner, "
             "not a production benchmark.\n<!-- /computer-use-study-publication -->\n"
@@ -226,7 +245,8 @@ def link_entrypoints() -> None:
         heading = re.search(r"(?m)^# .+\n", old)
         if not heading:
             raise ValueError("Start-guide heading is missing")
-        new = old[:heading.end()] + callout + old[heading.end():]
+        boundary = heading.end()
+        new = old[:boundary] + callout + old[boundary:]
         if new.replace(callout, "", 1) != old:
             raise ValueError("Guide preservation failed")
         guide.write_text(new, encoding="utf-8")
@@ -272,7 +292,9 @@ def main() -> None:
     outputs = {"report.html": report, "report-pack.zip": archive}
     web_files = {name: (STUDY / name).read_bytes() for name in SOURCES}
     web_files.update(outputs)
-    outputs["SHA256SUMS"] = "".join(f"{sha(value)}  {name}\n" for name, value in sorted(web_files.items())).encode("ascii")
+    outputs["SHA256SUMS"] = "".join(f"{sha(value)}  {name}\n" for name, value in sorted(web_files.items())).encode(
+        "ascii"
+    )
     for name, content in outputs.items():
         target = STUDY / name
         if args.build:
@@ -284,9 +306,19 @@ def main() -> None:
             raise ValueError("Public pack integrity failed")
     if args.link_entrypoints:
         link_entrypoints()
-    print(json.dumps({"publication": "checked", "originalStudyRerun": False,
-                      "publicPackFiles": len(bundle_files(report)), "publicPackBytes": len(archive),
-                      "publicPackSha256": sha(archive), "sourceScope": "curated public report edition"}, indent=2))
+    print(
+        json.dumps(
+            {
+                "publication": "checked",
+                "originalStudyRerun": False,
+                "publicPackFiles": len(bundle_files(report)),
+                "publicPackBytes": len(archive),
+                "publicPackSha256": sha(archive),
+                "sourceScope": "curated public report edition",
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

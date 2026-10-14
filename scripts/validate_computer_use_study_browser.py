@@ -2,8 +2,11 @@
 """Check the report reader, not the original computer-use experiment."""
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import subprocess
+import tomllib
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -18,16 +21,39 @@ STUDY = ROOT / "docs/reports/computer-use-study"
 def main() -> None:
     from playwright.sync_api import sync_playwright
 
-    server = ThreadingHTTPServer(
-        ("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=str(STUDY))
-    )
-    Thread(target=server.serve_forever, daemon=True).start()
-    origin = f"http://127.0.0.1:{server.server_port}"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--site", type=Path, help="Built site root to serve instead of report sources")
+    parser.add_argument("--url", help="Public site root to check instead of a local server")
+    parser.add_argument("--output", type=Path, help="Retain the exact-source acceptance report")
+    args = parser.parse_args()
+    server = None
+    if args.url:
+        origin = args.url.rstrip("/") + "/reports/computer-use-study"
+    else:
+        directory = args.site / "reports/computer-use-study" if args.site else STUDY
+        server = ThreadingHTTPServer(("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=str(directory)))
+        Thread(target=server.serve_forever, daemon=True).start()
+        origin = f"http://127.0.0.1:{server.server_port}"
     records: list[dict[str, object]] = []
     try:
         with TemporaryDirectory() as temporary, sync_playwright() as driver:
             output = Path(temporary)
             browser = driver.chromium.launch()
+            request = driver.request.new_context()
+            for name in (
+                "index.html",
+                "study.css",
+                "study.js",
+                "REPORT.md",
+                "PUBLICATION.md",
+                "results.json",
+                "report.html",
+                "report-pack.zip",
+                "SHA256SUMS",
+            ):
+                response = request.get(origin + "/" + name)
+                assert response.ok and response.body() == (STUDY / name).read_bytes(), name
+            request.dispose()
             for width in (320, 390, 900, 1440):
                 for french in (False, True):
                     for large in (False, True):
@@ -60,14 +86,24 @@ def main() -> None:
             assert page.locator("html").evaluate("e => getComputedStyle(e).backgroundColor") == "rgb(255, 255, 255)"
             score = page.locator("table").nth(1).locator("tbody tr").nth(1).locator("td").nth(1)
             assert score.inner_text() == "35/35"
-            line_tops = score.evaluate("""element => {
+            line_tops = score.evaluate(
+                """element => {
                 const range = document.createRange(); range.selectNodeContents(element);
                 return [...new Set([...range.getClientRects()].map(rect => Math.round(rect.top)))];
-            }""")
+            }"""
+            )
             assert len(line_tops) == 1, "Printed comparison score wrapped across lines"
             assert page.locator("thead th").first.evaluate("e => getComputedStyle(e).color") == "rgb(17, 17, 17)"
             page.pdf(path=str(output / "report.pdf"), prefer_css_page_size=True)
-            records.append({"markdownDownloadExact": True, "localPackBytesExact": True, "printContrast": True, "whitePrintMargins": True, "printScoresSingleLine": True})
+            records.append(
+                {
+                    "markdownDownloadExact": True,
+                    "localPackBytesExact": True,
+                    "printContrast": True,
+                    "whitePrintMargins": True,
+                    "printScoresSingleLine": True,
+                }
+            )
             page.close()
             extracted = output / "offline"
             extracted.mkdir()
@@ -95,11 +131,26 @@ def main() -> None:
             assert "Zero human participants" in page.locator("main").inner_text()
             records.append({"noJavaScriptReader": True})
             plain.close()
-            print(json.dumps({"scope": "Public report only; local HTTP and offline file paths, not live Pages or the original study", "browser": browser.version, "checks": records}, indent=2))
+            result = {
+                "scope": "Public report publication only; does not rerun the original study",
+                "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                "version": tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"],
+                "target": args.url or (str(args.site) if args.site else "report sources"),
+                "servedAssetsExact": True,
+                "publicPackSha256": hashlib.sha256((STUDY / "report-pack.zip").read_bytes()).hexdigest(),
+                "browser": browser.version,
+                "passed": True,
+                "checks": records,
+            }
+            if args.output:
+                args.output.parent.mkdir(parents=True, exist_ok=True)
+                args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+            print(json.dumps(result, indent=2))
             browser.close()
     finally:
-        server.shutdown()
-        server.server_close()
+        if server:
+            server.shutdown()
+            server.server_close()
 
 
 if __name__ == "__main__":
