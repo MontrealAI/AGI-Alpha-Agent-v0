@@ -1,0 +1,155 @@
+
+
+  AGIALPHA integrations
+    ✔ StakeManager deploy fails if decimals != 18 (46ms)
+    ✔ CertificateNFT deploy fails if decimals != 18
+    ✔ staking and locking succeed with 1e18 and fail with mismatched token (46ms)
+    ✔ certificate purchasing succeeds with AGI and fails with mismatched token (41ms)
+    ✔ release burns the configured percentage
+    ✔ prevents reentrancy attacks
+    ✔ prevents reentrancy attacks in certificate purchase
+    ✔ exposes configured address and decimals
+
+  Ascension: Nova-Seed → MARK → Sovereign → jobs
+    ✔ rejects cross-wired protocol modules before they can accept capital (57ms)
+    ✔ executes the complete immutable plan, burns every payout and refunds unused capital exactly (56ms)
+    ✔ verifies nontrivial Merkle proofs and rejects altered goals, metrics, budgets and replay (131ms)
+    ✔ rejects an unbudgeted plan without moving tokens
+    ✔ requires an evidence-bound successor and preserves its parent and independent review gate
+    ✔ allows only the bound MARK to post on behalf of a business
+    ✔ closes an abandoned enterprise after its horizon and returns every unspent unit
+    ✔ suspends new treasury spending when the NFT is transferred after bloom
+
+  Ascension identity and risk oracle
+    ✔ uses exactly the three requested ENS namespaces (185ms)
+    ✔ rejects wrong roots, resolver-only assertions and noncanonical or compound labels
+    ✔ rechecks live ownership and wrapped-name expiry
+    ✔ fails closed on absent, expired and revoked admission; only governance can attest admission
+    ✔ requires two staked validators, rejects duplicate votes and locks risk stake until expiry
+    ✔ rejects high risk or denied-policy quorum, empty evidence, and seed-owner self-review
+    ✔ revokes green status when any approving validator loses admission or the NFT changes owners
+
+  Ascension auctions, delivery and failure recovery
+    ✔ reserves opted-in reviewer capacity and releases it at terminal state
+    ✔ selects the minimum published price/time/reputation score, independent of bid order
+    ✔ rejects duplicate bids, empty or impossible missions, unbonded workers and conflicting committees (46ms)
+    ✔ skips expired ENS bidders and releases their collateral
+    ✔ returns unawarded escrow without slashing when no bidder fits the remaining horizon
+    ✔ binds reviews to the exact artifact and selected committee; a single vote cannot release payment
+    ✔ rechecks earlier approvals before payout when a validator is revoked
+    ✔ slashes failed work once, burns 1% of compensation, and returns escrow plus net collateral
+    ✔ slashes missed delivery but never slashes submitted work merely because reviewers disappear
+    ✔ uses integer base units and floors 1% separately for every actual payout
+
+  MARK curve, admission and capital recovery
+    ✔ quotes exact independent per-lot sums and reverses each batch (57ms)
+    ✔ enforces slippage, trading admission and funding target without partial mutation
+    ✔ keeps exits available after policy revocation while blocking new exposure
+    ✔ transfers funding lots only between admitted accounts and conserves all closed reserve including dust
+    ✔ stops redemption at bloom and prevents a transferred NFT from taking committed capital
+
+  Ascension: installed native evidence matches Solidity
+    ✔ matches Python, JavaScript and Solidity commitments including odd/max trees and uint96 (2169ms)
+    ✔ settles the exact signed and reviewed native delivery bytes with the required burn (1160ms)
+
+  Ascension settlement conservation
+    ✔ requires the recipient and sender balances to change by the exact payment
+    ✔ requires burns to destroy the paying contract's own balance and total supply
+    ✔ never slashes on a rejection whose earlier validator has lost eligibility (204ms)
+
+  SUCCESSOR: exact Ascension adapter and honest local settlement
+    ✔ refuses fixture/reset authority for URL-backed or forked providers regardless of chain ID
+    ✔ accepts and pays a correct FAIL report at nonzero plan index without admitting the candidate (2576ms)
+    ✔ returns bounty and unlocks a delivered report when review quorum is missing (1595ms)
+
+  Local deployment operator workflow
+    ✔ plans without provider writes and rejects token override drift
+    ✔ deploys, binds and verifies actual bytecode, ownership and empty state (649ms)
+    ✔ rejects URL-backed and forked networks before any deployment transaction (106ms)
+    ✔ writes exclusive public evidence files without replacing earlier runs
+    ✔ refuses stale compiler inputs instead of attributing old bytecode to changed source
+    ✔ blocks the legacy route and catches attempts to re-enable its networks or deployment
+
+  Shipped identity verification (no permissive test stub)
+    ✔ accepts the actual Merkle member and rejects a different claimant or name
+    ✔ rejects an unconfigured root
+
+  JobRegistry setters emit events
+    ✔ emits ValidatorRewardPctUpdated
+    ✔ emits MaxJobRewardUpdated
+    ✔ emits MaxJobDurationUpdated
+
+  JobRegistry agent staking requirements
+    ✔ rejects agents without the minimum stake
+    ✔ allows agents meeting the minimum stake to apply
+
+  JobRegistry timeout claims
+    ✔ allows employers to reclaim escrow after timeouts
+    ✔ rejects timeout claims before the deadline
+    ✔ rejects timeout claims outside the Applied status
+    ✔ prevents unauthorized callers from claiming timeouts
+    ✔ allows the contract owner to claim timeouts
+
+  Legacy v2 escrow and certificate safety
+    ✔ rejects a deadline that has already elapsed before taking escrow
+    ✔ rejects empty rewards before opening an unrefundable zero escrow
+    ✔ does not assign a worker to an expired open job
+    ✔ preserves the client in JobCancelled after clearing the job
+    ✔ preserves the client in JobDelisted after clearing the job
+    ✔ rejects fee and burn settings that together exceed the escrow
+    ✔ disables every NFT bonus configuration and preserves escrow and unrelated staker collateral
+    ✔ invalidates a certificate listing on transfer, including a round trip to the seller
+
+  Recorded Ethereum deployment (offline and read-only)
+    ✔ binds the eleven recorded transactions to exact archived bytecode, sources and gas accounting
+    ✔ refuses a modified deployment manifest or compiler input
+    ✔ verifies complete finalized receipts and owners without claiming participant commissioning (58ms)
+    ✔ rejects wrong chain, non-finality, changed bytecode/ownership and missing or altered receipts
+    ✔ blocks wallet, send and development mutation methods before transport
+    ✔ documents the deployed snapshot's revoked-rejection behavior on an isolated EVM (154ms)
+
+  Mainnet preparation (unsigned and read-only)
+    ✔ rejects wrong chain, placeholder hashes, noncanonical token and unsafe governance
+    ✔ checks pinned dependencies, governance, roots and nonce without mutation methods
+    ✔ refuses signing methods before transport and redacts RPC errors
+    ✔ executes the exact prepared constructor data and governance bindings on an isolated EVM (413ms)
+
+  Complete production-source compilation gate
+    ✔ includes the production modules absent from Hardhat fixtures and matches its compiler profile
+    ✔ rejects actual Solidity warnings and errors instead of excluding their source (50ms)
+    ✔ rejects source/fixture drift and symbolic-link exclusions
+    ✔ embeds only normalized imports from the locked OpenZeppelin package
+
+  StakeManager setters emit events
+    ✔ emits TreasuryUpdated
+    ✔ emits JobRegistryUpdated
+    ✔ emits SlasherUpdated
+    ✔ emits MinStakeAgentUpdated
+    ✔ emits MinStakeEmployerUpdated
+    ✔ emits MinStakeValidatorUpdated
+    ✔ emits FeePctUpdated
+    ✔ emits BurnPctUpdated
+    ✔ emits SlashPctsUpdated when setting employer pct
+    ✔ emits SlashPctsUpdated when setting treasury pct
+    ✔ explicitly rejects disabled AGI type registration
+    ✔ preserves AGITypeRemoved for legacy cleanup
+
+  StakeManager slash distribution
+    ✔ routes the full slash to the treasury by default
+    ✔ respects the configured employer slash pct
+    ✔ sends the entire amount to the treasury when no beneficiary
+
+  ValidationModule access control
+    ✔ only allows the JobRegistry to start validation rounds
+
+  Strict compilation and exact explorer verification packages
+    ✔ uses the lockfile compiler and rejects every Solidity warning in the real compilation task
+    ✔ exports the original input byte for byte and constructors matching all five recorded creation transactions (138ms)
+    ✔ never overwrites an existing export directory (66ms)
+    ✔ exports a reviewed new plan and rejects wrong-chain, changed-address, constructor or compiler profiles (504ms)
+    ✔ requires a clean checkout and binds its exact commit, tree and lockfile (94ms)
+    ✔ requires exact released compiler identities rather than guessing a compiler commit
+
+
+  108 passing (18s)
+

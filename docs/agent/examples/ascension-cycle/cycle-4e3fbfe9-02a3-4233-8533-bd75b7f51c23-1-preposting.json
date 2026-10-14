@@ -1,0 +1,284 @@
+{
+  "request": {
+    "schema": "agialpha.ascension.studio-work.v1",
+    "project_id": "8e6b632e-6d89-4581-aebb-992a46494b78",
+    "cycle_id": "4e3fbfe9-02a3-4233-8533-bd75b7f51c23",
+    "plan": {
+      "schema": "agialpha.ascension.fusion-plan.v1",
+      "token": "AGIALPHA",
+      "decimals": 18,
+      "planRoot": "0x34ab2f81fb93bee4ec53c9746943f3d1d23cef2a56ad329f0c9542332c274fd2",
+      "totalBounty": "200000000000000000000",
+      "jobs": [
+        {
+          "index": 0,
+          "spec": {
+            "goal": "Produce a reproducible exact-rational polynomial integration report for supplied synthetic inputs.",
+            "successMetric": "Return the exact integral, both numerical estimates, residuals and tolerance decisions. Accurate negative reports qualify.",
+            "bounty": "100000000000000000000",
+            "duration": 86400,
+            "priceWeight": 6000
+          },
+          "leaf": "0x5ff6cc7a2c4cc425148befefaa8910af15803f43e744644c87146880ee34b669",
+          "proof": [
+            "0xe7dee370d71d48469abe3f8c55a913ac3f85669f9e83af39ed5fba86dd6b55f7"
+          ]
+        },
+        {
+          "index": 1,
+          "spec": {
+            "goal": "Produce a reproducible exact-rational polynomial integration report for supplied synthetic inputs.",
+            "successMetric": "Return the exact integral, both numerical estimates, residuals and tolerance decisions. Accurate negative reports qualify.",
+            "bounty": "100000000000000000000",
+            "duration": 86400,
+            "priceWeight": 6000
+          },
+          "leaf": "0xe7dee370d71d48469abe3f8c55a913ac3f85669f9e83af39ed5fba86dd6b55f7",
+          "proof": [
+            "0x5ff6cc7a2c4cc425148befefaa8910af15803f43e744644c87146880ee34b669"
+          ]
+        }
+      ]
+    },
+    "plan_index": 1,
+    "work_spec": {
+      "family": "numerical",
+      "inputs": {
+        "coefficients": [
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "lower": 0,
+        "upper": 3,
+        "steps": 2,
+        "tolerancePpm": 10
+      },
+      "language": "en",
+      "name": "Polynomial accuracy report",
+      "owner": "local-owner",
+      "reviewMinutes": 10,
+      "rights": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Included public example"
+      },
+      "schema": "successor-workbench/v1"
+    }
+  },
+  "seal": {
+    "domain": "ascension-terms",
+    "body": {
+      "schema_version": 1,
+      "job_contract": {
+        "schema_version": 1,
+        "job_id": "studio-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+        "family": "verification",
+        "worker": null,
+        "acceptance_owner": "local-controller",
+        "release_digest": "a46370f3fd11c05b61ddcef6610d473e93cdfe0ff4c884b5ca76bdd4f05009e3",
+        "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+        "inputs": {},
+        "outputs": {
+          "report": "agialpha.ascension.work-artifact.v1"
+        },
+        "critical_functions": [],
+        "resources": {
+          "calls": 1
+        },
+        "valid_until": "2099-01-01T00:00:00Z",
+        "max_attempts": 1,
+        "effects": [],
+        "institution_id": "cycle-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+        "mission_id": "mission-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+        "goal": "Produce a reproducible exact-rational polynomial integration report for supplied synthetic inputs.",
+        "verifier": null,
+        "input_evidence": [],
+        "allowed_tools": [
+          "fixed-workbench"
+        ],
+        "prohibited_effects": [
+          "network",
+          "host-code",
+          "wallet-signing",
+          "automatic-admission"
+        ],
+        "rollback_target": null,
+        "acceptance_conditions": [
+          "Review exact fixed-adapter inputs, output artifacts, limitations and retained failures.",
+          "An accurate negative evaluation is eligible work; candidate adoption requires a separate decision."
+        ],
+        "evidence_assumptions": [
+          "studio-request-sha256:047d625d8d7363a1bb7b2c83523395e304aff8d5d62bbea8fccdc827b8a38e97"
+        ],
+        "repair_routes": [],
+        "lifecycle_obligations": []
+      },
+      "job_terms_digest": "3a1417b5eecfccb98b3a782deda7a4fc002d721dbdc9819471c10e72629921c3",
+      "legacy_spec": {
+        "goal": "Produce a reproducible exact-rational polynomial integration report for supplied synthetic inputs.",
+        "successMetric": "Return the exact integral, both numerical estimates, residuals and tolerance decisions. Accurate negative reports qualify.",
+        "bounty": "100000000000000000000",
+        "duration": 86400,
+        "priceWeight": 6000
+      },
+      "market_context": {
+        "schema_version": 1,
+        "chain_id": "31337",
+        "market": "0x0165878a594ca255338adfa4d48449f69242eb8f",
+        "market_code_hash": "0x1850f7d098db57f114a2341972adfd757ebd7e853f55544c5878bedf2421bc17",
+        "token_code_hash": "0x0dfa3c2054d792e75cb7690bd00a1aea75feaa2fc87254262ea8ca985871ab6c",
+        "protocol": "agialpha.ascension.v1",
+        "scope": "disposable-local-fixture",
+        "confirmations": 1,
+        "mark": "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853",
+        "mark_code_hash": "0x070e0d85e1e6c6e985f8d8a2b71226a25e72382539641e923fc0351a33ed7049",
+        "seed": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+        "seed_code_hash": "0xdc5ee0b4c00ce1dfeca96a26454bcf14420b92382838bc27a7c125d9991d1670",
+        "seed_id": "1"
+      },
+      "market_spec_hash": "0x5ff6cc7a2c4cc425148befefaa8910af15803f43e744644c87146880ee34b669",
+      "plan_binding": {
+        "kind": "mark-seed",
+        "plan_root": "0x34ab2f81fb93bee4ec53c9746943f3d1d23cef2a56ad329f0c9542332c274fd2",
+        "plan_index": 1,
+        "indexed_leaf": "0xe7dee370d71d48469abe3f8c55a913ac3f85669f9e83af39ed5fba86dd6b55f7"
+      },
+      "preposting_checkpoint": {
+        "number": 78,
+        "hash": "0xa495a30a98359510a8230cc678b2cbc8a3a3d52f511694aaf9233492b2c4ae31",
+        "timestamp": 1791953190
+      },
+      "prior_market_next_id": "0",
+      "market_job_id": null,
+      "assigned_worker": null
+    },
+    "digest": "e7b5d6908a5c170d64bedc850d75a7ddc60360044d1d82c2de7e842c28bb5114",
+    "public_key": "3613e7e7edc287089a6d6d2a38021a5fdbcbe70858251a03fcb65b559e02d320",
+    "signature": "jCredGmOd9tmiWkBlfv5IySfN3ve0oTNC4qAPvaEOAXTBAYMUPBbiBjnNZebXBrJTuQBXyDSD07IqTNqweQEAw=="
+  },
+  "prepared": {
+    "request_digest": "047d625d8d7363a1bb7b2c83523395e304aff8d5d62bbea8fccdc827b8a38e97",
+    "job_contract": {
+      "schema_version": 1,
+      "job_id": "studio-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "family": "verification",
+      "worker": null,
+      "acceptance_owner": "local-controller",
+      "release_digest": "a46370f3fd11c05b61ddcef6610d473e93cdfe0ff4c884b5ca76bdd4f05009e3",
+      "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+      "inputs": {},
+      "outputs": {
+        "report": "agialpha.ascension.work-artifact.v1"
+      },
+      "critical_functions": [],
+      "resources": {
+        "calls": 1
+      },
+      "valid_until": "2099-01-01T00:00:00Z",
+      "max_attempts": 1,
+      "effects": [],
+      "institution_id": "cycle-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "mission_id": "mission-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "goal": "Produce a reproducible exact-rational polynomial integration report for supplied synthetic inputs.",
+      "verifier": null,
+      "input_evidence": [],
+      "allowed_tools": [
+        "fixed-workbench"
+      ],
+      "prohibited_effects": [
+        "network",
+        "host-code",
+        "wallet-signing",
+        "automatic-admission"
+      ],
+      "rollback_target": null,
+      "acceptance_conditions": [
+        "Review exact fixed-adapter inputs, output artifacts, limitations and retained failures.",
+        "An accurate negative evaluation is eligible work; candidate adoption requires a separate decision."
+      ],
+      "evidence_assumptions": [
+        "studio-request-sha256:047d625d8d7363a1bb7b2c83523395e304aff8d5d62bbea8fccdc827b8a38e97"
+      ],
+      "repair_routes": [],
+      "lifecycle_obligations": []
+    },
+    "release": {
+      "schema_version": 1,
+      "release_id": "studio-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "institution_id": "cycle-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "mission_id": "mission-4e3fbfe9-02a3-4233-8533-bd75b7f51c23-1",
+      "producer": "local-producer",
+      "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+      "artifacts": [
+        {
+          "schema_version": 1,
+          "name": "studio-request",
+          "role": "other",
+          "digest": "047d625d8d7363a1bb7b2c83523395e304aff8d5d62bbea8fccdc827b8a38e97",
+          "location": null
+        },
+        {
+          "schema_version": 1,
+          "name": "installed-worker",
+          "role": "source",
+          "digest": "ee450fb1c868f7c0584dda776d717672f798eac23491baeed3dbab55b1f4407b",
+          "location": null
+        },
+        {
+          "schema_version": 1,
+          "name": "installed-bridge",
+          "role": "source",
+          "digest": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+          "location": null
+        }
+      ],
+      "providers": [],
+      "world_digest": null,
+      "policy_digest": null,
+      "memory_digests": [],
+      "budget": {
+        "schema_version": 1,
+        "limits": {
+          "calls": 1
+        },
+        "units": {
+          "calls": "one bounded fixed-adapter execution; maximum 65 seconds"
+        },
+        "enforceable": [
+          "calls"
+        ],
+        "unknown_costs": [
+          "compute",
+          "human-review"
+        ],
+        "stop_loss": {}
+      },
+      "development_evaluator_digest": null,
+      "final_proof_interface_digest": null,
+      "parent_release_digest": null,
+      "configuration": {
+        "family": "numerical",
+        "network": false,
+        "arbitrary_code": false
+      },
+      "mutable_state_classes": [],
+      "immutable_trial": true
+    },
+    "environment": {
+      "schema": "agialpha.ascension.fixed-environment.v1",
+      "node": "v22.17.1",
+      "system": "Linux",
+      "architecture": "x86_64",
+      "python": "3.12.14",
+      "worker_sha256": "ee450fb1c868f7c0584dda776d717672f798eac23491baeed3dbab55b1f4407b",
+      "bridge_sha256": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+      "runtime_sha256": "65391c4fc956007769e7e122b2170010a6a3948a4259fa28652d736e9036a782",
+      "network": false,
+      "arbitrary_code": false
+    },
+    "active_authority": []
+  }
+}

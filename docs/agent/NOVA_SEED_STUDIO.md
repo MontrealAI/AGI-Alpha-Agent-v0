@@ -2,7 +2,7 @@
 
 # Nova-Seed Mainnet Studio
 
-[Open Studio](../ascension/mainnet/index.html) · [MARK wallet](MARK_WALLET.md) · [Engineering and acceptance](NOVA_SEED_STUDIO_ENGINEERING.md)
+[Open Studio](../ascension/mainnet/index.html) · [MARK wallet](MARK_WALLET.md) · [Engineering and acceptance](NOVA_SEED_STUDIO_ENGINEERING.md) · [Complete-cycle guide](ASCENSION_CYCLE.md)
 
 Studio adds a guided browser journey to the existing Ascension Lab. It compiles the exact executable plan,
 encrypts it, proves local recovery, publishes artifacts, prepares minting and carries the same seed into review,

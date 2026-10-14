@@ -1,0 +1,384 @@
+{
+  "profile": "declared CI regression dependencies, credential-cleared offline runner",
+  "cwd": "/workspace/scratch/12b422fcd367/AGI-Alpha-Agent-v0",
+  "baseline": "89b6f78b83a6643416649173d7d16b6d1c7a65c1",
+  "python": "/workspace/scratch/12b422fcd367/fullsuite-venv/bin/python",
+  "node_bin": "/workspace/scratch/12b422fcd367/node-runtime/node_modules/node/bin",
+  "dependency_setup": [
+    "Python 3.12 venv",
+    "pip<26",
+    "pip install --require-hashes -r requirements.lock -r requirements-dev.lock",
+    "pip install eth-account==0.13.7",
+    "python scripts/check_python_deps.py",
+    "python check_env.py --auto-install",
+    "python -m pip check"
+  ],
+  "environment": "env -i; PATH includes fullsuite-venv and Node22.17.1; HOME and NO_DISCLAIMER=1 retained; scripts.run_local_tests clears provider credentials and enables loopback-only network guard",
+  "command": "env -i PATH=\"/workspace/scratch/12b422fcd367/fullsuite-venv/bin:/workspace/scratch/12b422fcd367/node-runtime/node_modules/node/bin:$PATH\" HOME=\"$HOME\" NO_DISCLAIMER=1 /workspace/scratch/12b422fcd367/fullsuite-venv/bin/python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:/workspace/scratch/12b422fcd367/ascension-fullsuite-coverage.xml --junitxml=/workspace/scratch/12b422fcd367/ascension-fullsuite-regression.xml",
+  "exit_code": 1,
+  "duration_seconds": 1755.68,
+  "passed": 2191,
+  "failed": 38,
+  "errors": 122,
+  "skipped": 94,
+  "xfailed": 4,
+  "warnings": 38,
+  "coverage_percent": 80.57,
+  "coverage_threshold_percent": 80,
+  "coverage_threshold_reached": true,
+  "gate_status": "not_passing_environment_contaminated",
+  "environment_incidents": [
+    "Overlay disk reached 100% with no available space during two test intervals.",
+    "Parent removed obsolete original .venv after capturing its freeze; active fullsuite and qualification environments were unchanged.",
+    "Existing MuZero tests copy the whole alpha_factory_v1 tree, including generated Insight assets; two completed temp copies occupied about3.2GB and were removed after those tests had finished.",
+    "No source changes or live provider calls were made to bypass failures."
+  ],
+  "initial_failure_classification": {
+    "disk_related_failure": 29,
+    "disk_related_error": 122,
+    "unattributed_failure": 9
+  },
+  "classification_limit": "Disk-related includes explicit ENOSPC/full database or pytest temp-directory creation errors. It does not prove other failures are code defects. Targeted reruns and baseline comparison are separate evidence.",
+  "unattributed_failures_pending_targeted_rerun": [
+    {
+      "classname": "tests.test_edge_runner_cli.TestEdgeRunnerCLI",
+      "name": "test_edge_runner_help",
+      "message": "AssertionError: 1 != 0"
+    },
+    {
+      "classname": "tests.test_edge_runner_parse.TestParseArgs",
+      "name": "test_version_flag",
+      "message": "AssertionError: 1 != 0"
+    },
+    {
+      "classname": "tests.test_evolution_worker",
+      "name": "test_mutate_returns_child",
+      "message": "assert 500 == 200\n +  where 500 = <Response [500 Internal Server Error]>.status_code"
+    },
+    {
+      "classname": "tests.test_evolution_worker",
+      "name": "test_mutate_cleanup_nested",
+      "message": "assert 500 == 200\n +  where 500 = <Response [500 Internal Server Error]>.status_code"
+    },
+    {
+      "classname": "tests.test_evolution_worker",
+      "name": "test_mutate_rejects_traversal",
+      "message": "assert 500 == 400\n +  where 500 = <Response [500 Internal Server Error]>.status_code"
+    },
+    {
+      "classname": "tests.test_evolution_worker_safe_extract",
+      "name": "test_mutate_rejects_traversal",
+      "message": "assert 500 == 400\n +  where 500 = <Response [500 Internal Server Error]>.status_code"
+    },
+    {
+      "classname": "tests.test_notebooks",
+      "name": "test_macro_sentinel_notebook",
+      "message": "RuntimeError: Kernel died before replying to kernel_info"
+    },
+    {
+      "classname": "tests.test_selfheal_entrypoint",
+      "name": "test_selfheal_live_endpoint",
+      "message": "AssertionError: server did not start"
+    },
+    {
+      "classname": "tests.test_world_model_notebook_exec",
+      "name": "test_notebook_runs",
+      "message": "RuntimeError: Kernel died before replying to kernel_info"
+    }
+  ],
+  "artifacts": {
+    "ascension-fullsuite-pytest.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-pytest.log",
+      "sha256": "cf75afa922b90235c9a69ba38bb9cc69dfed60372bcd67f422f58dd7e90fa35d"
+    },
+    "ascension-fullsuite-regression.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-regression.xml",
+      "sha256": "e244cf6cbfcea0f9ce24cbde58806144290acbaf8e55178ab2f6d9a376d77aa5"
+    },
+    "ascension-fullsuite-coverage.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-coverage.xml",
+      "sha256": "48af474c24a3418d35e8ce01a6484e586448376edd6684bbb4a911e5aef6bbb6"
+    },
+    "ascension-fullsuite-pip-freeze.txt": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-pip-freeze.txt",
+      "sha256": "0e3562521aeb991f32e03164ba07e02d5721e4c73271762a317c9ecf62aa4ef8"
+    },
+    "ascension-fullsuite-targeted-pytest.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-targeted-pytest.log",
+      "sha256": "c7cd9c2f31026432336c18c6220591ffbeb2047869073b09ade65a93a2516174"
+    },
+    "ascension-fullsuite-targeted-regression.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-targeted-regression.xml",
+      "sha256": "51d4356adc4b9a06ca180057680e55d7320b1fde64fcb24903e60e4913b9ea75"
+    },
+    "ascension-baseline-targeted-pytest.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-baseline-targeted-pytest.log",
+      "sha256": "27646dd8bd797fa2850dbab20f152e492ea6dfa87bf0dbb586f7d06e933f9804"
+    },
+    "ascension-baseline-targeted-regression.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-baseline-targeted-regression.xml",
+      "sha256": "dfe2d87dcfbb75e22e6171e802a6dd9e522ac119b8a5d2de794a8418ab058492"
+    },
+    "ascension-disk-rerun-cases.json": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-cases.json",
+      "sha256": "a263cecbc08a12038c982ff67e00ab3f4cd05652e112d4107a91e1a9c70fda5d"
+    },
+    "ascension-disk-rerun-batches.json": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-batches.json",
+      "sha256": "b793e098cb4b53dec087e324c62ae2ed3a6059a450356478f1ee7d22dfb3c10d"
+    },
+    "ascension-disk-rerun-runner.py": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-runner.py",
+      "sha256": "e8ff6e07912ce3a2016fa837ec9baed25e997f236ed8937b3a642efd9bc950b0"
+    },
+    "ascension-disk-rerun-runner.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-runner.log",
+      "sha256": "67ad35d652ac9d287cd539012f9e168fc4c2cf5ae2e75d065c9b0de52ce82da6"
+    },
+    "ascension-fullsuite-pip-freeze-after-reruns.txt": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-fullsuite-pip-freeze-after-reruns.txt",
+      "sha256": "0e3562521aeb991f32e03164ba07e02d5721e4c73271762a317c9ecf62aa4ef8"
+    },
+    "ascension-disk-rerun-cleanup.json": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-cleanup.json",
+      "sha256": "2a6efde13d227b42fa42ef9cd77ea2ae027d528f4dbd8a8df3f3e62cf63ced45"
+    },
+    "ascension-disk-rerun-selector-ablation.csv": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-selector-ablation.csv",
+      "sha256": "42470ab2ce99d1b93c53427d5f9ec128a9318c008ef65157a5808c440fcd81f5"
+    },
+    "ascension-disk-rerun-distribution.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-distribution.log",
+      "sha256": "94f7dc8b55c396107468c9d3f1ca5d6b07c5296127d64942531ee9af242e0105"
+    },
+    "ascension-disk-rerun-distribution.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-distribution.xml",
+      "sha256": "7d8499284a3a0da525a6ee483d06c523c571b7dfc216c3445bddb8abc774ba3b"
+    },
+    "ascension-disk-rerun-distribution-setup-error.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-distribution-setup-error.log",
+      "sha256": "e33590c3f7b32b97d39a8bee038ddfac233bc35ab68b44fe155b5d8c48887c92"
+    },
+    "ascension-disk-rerun-distribution-setup-error.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-distribution-setup-error.xml",
+      "sha256": "b7d3aa933bda3c95d1d185a2e593b0242e313f25d65e1f85f03e322d3640dd1d"
+    },
+    "ascension-disk-rerun-muzero.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-muzero.log",
+      "sha256": "85d5639a236cb0c363fa04b5daa55623136fb31c8dd9260385b79c20a7d391af"
+    },
+    "ascension-disk-rerun-muzero.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-muzero.xml",
+      "sha256": "77fafa4ba2d5b83cefdfc50fa33c14a7b9acf95b3c23a5e816fbaaa12f22dfd8"
+    },
+    "ascension-disk-rerun-benchmark.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-benchmark.log",
+      "sha256": "900f24cd1435a3fcc9b1de09896bc1a7896e4ddf1e44b73d809ce2e333ee3120"
+    },
+    "ascension-disk-rerun-benchmark.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-benchmark.xml",
+      "sha256": "db7dc25fa5332bfe726755545f1ea2b0c9fd7832e09a0ce269ce9a8b20d98d07"
+    },
+    "ascension-disk-rerun-ordinary-1.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-1.log",
+      "sha256": "6540dff41e255aa37dd43083a815a7e63968abb7a7dd8d957acb491ab9e7e22a"
+    },
+    "ascension-disk-rerun-ordinary-1.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-1.xml",
+      "sha256": "954c93d75873a40b26ccf65bc844d0914dcdc7b7b6a3c1e0430f6ea6b5e82913"
+    },
+    "ascension-disk-rerun-ordinary-2.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-2.log",
+      "sha256": "78d690d794958487fc102d3f5ed75a623be2d34f0260f7503e42a53cf69884da"
+    },
+    "ascension-disk-rerun-ordinary-2.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-2.xml",
+      "sha256": "f03883f3ad9a8c8b3ed1cacff0763ac8553f58a9dbc1820d30759a044c5ab541"
+    },
+    "ascension-disk-rerun-ordinary-3.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-3.log",
+      "sha256": "38310adc3576414f5ad80453dbfa8f16c400d1c05e65ed6a61ca66bfbce87433"
+    },
+    "ascension-disk-rerun-ordinary-3.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-3.xml",
+      "sha256": "370cbb86d7df608faaaabd34d892cc44ef8526121475f37b39b71d855659470c"
+    },
+    "ascension-disk-rerun-ordinary-4.log": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-4.log",
+      "sha256": "1e16fcb6fa5e50f924bc12c37a8dbf0d2bb08c7dd42fb84e3d871b782b250876"
+    },
+    "ascension-disk-rerun-ordinary-4.xml": {
+      "path": "/workspace/scratch/12b422fcd367/ascension-disk-rerun-ordinary-4.xml",
+      "sha256": "f70744a7cd99c32e15069f1935a71a3f144b612423d13c0a45b430e5693bed11"
+    }
+  },
+  "successor_scoped_counts": {
+    "tests.runtime.test_successor_adversarial": {
+      "passed": 11
+    },
+    "tests.runtime.test_successor_ascension": {
+      "passed": 28
+    },
+    "tests.runtime.test_successor_backup": {
+      "passed": 17
+    },
+    "tests.runtime.test_successor_computer": {
+      "passed": 15,
+      "skipped": 1
+    },
+    "tests.runtime.test_successor_jobs": {
+      "passed": 8
+    },
+    "tests.runtime.test_successor_lifecycle": {
+      "passed": 3
+    },
+    "tests.runtime.test_successor_mission": {
+      "passed": 44
+    },
+    "tests.runtime.test_successor_protocol": {
+      "passed": 37
+    },
+    "tests.runtime.test_successor_recovery": {
+      "passed": 4
+    },
+    "tests.runtime.test_successor_restore_cli": {
+      "passed": 3
+    },
+    "tests.runtime.test_successor_signatures": {
+      "passed": 26
+    },
+    "tests.runtime.test_successor_state": {
+      "passed": 23
+    },
+    "tests.runtime.test_successor_studio": {
+      "passed": 11
+    },
+    "tests.runtime.test_successor_studio_operator": {
+      "passed": 13
+    },
+    "tests.runtime.test_successor_studio_operator_browser": {
+      "passed": 1
+    },
+    "tests.runtime.test_successor_transport": {
+      "passed": 9
+    },
+    "tests.runtime.test_successor_workbench": {
+      "passed": 12
+    },
+    "tests.test_successor_preservation": {
+      "passed": 5
+    }
+  },
+  "targeted_followup": {
+    "candidate": {
+      "exit_code": 1,
+      "passed": 7,
+      "failed": 2,
+      "duration_seconds": 6.9,
+      "scope": "Nine broad-run failures without explicit disk-related strings, same credential-cleared offline CI environment."
+    },
+    "baseline": {
+      "commit": "89b6f78b83a6643416649173d7d16b6d1c7a65c1",
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 2,
+      "duration_seconds": 2.98,
+      "scope": "The two persistent notebook startup failures, same environment and offline runner."
+    },
+    "persistent_cases": [
+      "tests/test_notebooks.py::test_macro_sentinel_notebook",
+      "tests/test_world_model_notebook_exec.py::test_notebook_runs"
+    ],
+    "persistent_evidence": "Candidate and unchanged baseline both log Operation not permitted (src/ip_resolver.cpp:542) before notebook kernel_info and then Kernel died before replying to kernel_info.",
+    "assessment": "Both persistent notebook startup failures reproduce on unchanged baseline under the same sandbox. The other seven initially unclassified failures pass once disk space is available. All151 explicit disk-related outcomes subsequently pass in isolated or bounded batches. This follow-up does not convert the original failed integrated full-suite run into a passing run."
+  },
+  "disk_recovery_followup": {
+    "scope": "Every one of the151 distinct original outcomes classified as disk-related; exact case set checked against retained selection.",
+    "passed": 151,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "original_full_run_status_unchanged": "failed_environment_contaminated",
+    "environment_freeze_unchanged": true,
+    "environment_freeze_sha256": "0e3562521aeb991f32e03164ba07e02d5721e4c73271762a317c9ecf62aa4ef8",
+    "runner": "Same credential-cleared scripts.run_local_tests and existing fullsuite-venv; no source, dependency, validation-threshold, or network-guard changes.",
+    "batching": "Distribution, MuZero, and seeded benchmark isolated; remaining cases in file-preserving batches of40,38,40,30. Completed owned temporary trees removed after each batch.",
+    "minimum_observed_available_disk_bytes": 1782312960,
+    "all_owned_batch_temp_trees_removed": true,
+    "distribution_asset_preparation": "Two existing built Pyodide files verified against checked manifest SHA384, temporarily restored for the distribution build, then original tracked bytes restored exactly.",
+    "generated_tracked_asset_original_hashes": {
+      "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm/pyodide.asm.wasm": "ae8fcaaf6401ff816b8ae010677509e75f373d59ad445716097d3bc80b24fd9a",
+      "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm/pyodide.js": "5563d92f7c67a1a4bc0b18e3c013580aeedaaa20d01724a59f1a4edc1716a973"
+    },
+    "setup_note": "An initial distribution retry failed before executing the test because the runner-owned temp parent was missing. The directory was created and the unchanged test passed. The setup-error log/XML is retained separately.",
+    "batches": [
+      {
+        "label": "distribution",
+        "passed": 1,
+        "exit_code": 0,
+        "pytest_duration_seconds": 8.07
+      },
+      {
+        "label": "muzero",
+        "exit_code": 0,
+        "duration_seconds": 6.0,
+        "minimum_available_disk_bytes": 1782312960,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "label": "benchmark",
+        "exit_code": 0,
+        "duration_seconds": 54.01,
+        "minimum_available_disk_bytes": 2145435648,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "label": "ordinary-1",
+        "exit_code": 0,
+        "duration_seconds": 14.0,
+        "minimum_available_disk_bytes": 2734944256,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 40
+        }
+      },
+      {
+        "label": "ordinary-2",
+        "exit_code": 0,
+        "duration_seconds": 38.01,
+        "minimum_available_disk_bytes": 2737819648,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 38
+        }
+      },
+      {
+        "label": "ordinary-3",
+        "exit_code": 0,
+        "duration_seconds": 24.0,
+        "minimum_available_disk_bytes": 2736095232,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 40
+        }
+      },
+      {
+        "label": "ordinary-4",
+        "exit_code": 0,
+        "duration_seconds": 16.0,
+        "minimum_available_disk_bytes": 2735149056,
+        "aborted_for_disk_space": false,
+        "counts": {
+          "passed": 30
+        }
+      }
+    ],
+    "remaining_persistent_failures": "Only the two baseline-reproduced notebook kernel startup failures remain among the original non-passing cases. A fresh integrated whole-suite passing run is still unproven."
+  }
+}
