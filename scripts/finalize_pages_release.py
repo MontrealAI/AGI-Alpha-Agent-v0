@@ -275,6 +275,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             (evidence / "public-pages" / "successor-workbench" / "browser-report.json").read_text(encoding="utf-8")
         )
         verify_workbench_report(workbench, manifest["commit"], manifest["version"], url)
+    if tuple(map(int, manifest["version"].split("."))) >= (1, 30, 0):
+        from scripts.mark_wallet_evidence import verify_report as verify_wallet
+
+        wallet = json.loads((evidence / "public-pages" / "mark-wallet" / "report.json").read_text())
+        verify_wallet(wallet, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name

@@ -17,7 +17,8 @@ async function fixture() {
       if(method==='eth_chainId') return this.chain;
       if(method==='eth_accounts'||method==='eth_requestAccounts') { if(method==='eth_requestAccounts'&&this.announce) this.emit('accountsChanged'); return [this.account]; }
       if(method==='eth_getCode') return this.code;
-      if(method==='eth_getBlockByNumber') return {number:'0x100',hash:BLOCK,timestamp:'0x6ace0000'};
+      if(method==='eth_getBlockByNumber') return {number:params[0]==='finalized'&&this.unfinalized?'0xff':'0x100',hash:this.reorg?'0x'+'99'.repeat(32):BLOCK,timestamp:'0x6ace0000'};
+      if(method==='eth_getTransactionCount') return this.nonce||'0x0';
       if(method==='eth_getBalance') return '0xde0b6b3a7640000';
       if(method==='eth_estimateGas') { if(this.delay) await this.delay; return '0xc350'; }
       if(method==='eth_call') {
@@ -38,8 +39,8 @@ async function fixture() {
         return '0x';
       }
       if(method==='eth_sendTransaction') { this.sends++; this.last=params[0]; if(this.sendError) throw this.sendError; return HASH; }
-      if(method==='eth_getTransactionReceipt') return this.noReceipt?null:{transactionHash:HASH,status:this.reverted?'0x0':'0x1',blockHash:BLOCK,blockNumber:'0x100'};
-      if(method==='eth_getTransactionByHash') return {from:this.last.from,to:this.wrongTo?ACCOUNT:this.last.to,input:this.last.data,value:'0x0'};
+      if(method==='eth_getTransactionReceipt') return this.noReceipt?null:{transactionHash:params[0],status:this.reverted?'0x0':'0x1',blockHash:BLOCK,blockNumber:'0x100'};
+      if(method==='eth_getTransactionByHash') return {hash:params[0],nonce:this.wrongNonce?'0x99':this.last.nonce,chainId:'0x1',blockHash:BLOCK,blockNumber:'0x100',from:this.last.from,to:this.wrongTo||this.cancelled?ACCOUNT:this.last.to,input:this.cancelled?'0x':this.last.data,value:'0x0'};
       if(method==='wallet_switchEthereumChain') {this.chain='0x1';this.emit('chainChanged');return null;}
       throw Error(`Unexpected RPC ${method}`);
     }};
@@ -152,10 +153,10 @@ test('wallet rejection is explicit and not automatically retried',async()=>{
   const {client,provider}=await fixture();provider.sendError={code:4001};await client.prepare('reclaim',['1']);
   await assert.rejects(client.confirm(true),/rejected/);assert.equal(provider.sends,1);assert.equal(client.pending.status,'rejected-by-wallet');
 });
-test('unknown signing outcome blocks retries and provider changes',async()=>{
+test('unknown signing outcome blocks retries but permits provider reconciliation',async()=>{
   const {client,provider}=await fixture();provider.sendError=Error('disconnected');await client.prepare('reclaim',['1']);
   await assert.rejects(client.confirm(true),/unknown/);assert.equal(client.pending.status,'submission-unknown');
-  await assert.rejects(client.prepare('reclaim',['1']),/outstanding/);assert.throws(()=>client.select(provider),/Resolve/);
+  await assert.rejects(client.prepare('reclaim',['1']),/outstanding/);client.select(provider);assert.equal((await client.receipt(HASH,true)).status,'finalized');
 });
 test('real receipts distinguish pending, reverted and finalized; calldata must match',async()=>{
   const {client,provider}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
@@ -163,4 +164,52 @@ test('real receipts distinguish pending, reverted and finalized; calldata must m
   provider.wrongTo=true;await assert.rejects(client.receipt(HASH),/does not match/);provider.wrongTo=false;
   provider.reverted=true;assert.equal((await client.receipt(HASH)).status,'reverted');provider.reverted=false;
   assert.equal((await client.receipt(HASH)).status,'finalized');
+});
+test('intent is persisted before opening the wallet and survives a reload with no hash',async()=>{
+  const {client,provider,p}=await fixture();let saved;
+  client.persist=value=>{saved=JSON.parse(JSON.stringify(value));};
+  provider.sendError=Error('transport lost');await client.prepare('reclaim',['1']);
+  await assert.rejects(client.confirm(true),/unknown/);
+  assert.equal(saved.transactions[0].transaction.nonce,'0x0');
+  const restored=new MarkClient(p);restored.restore(saved);restored.select(provider);
+  await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
+  assert.equal((await restored.receipt(HASH,true)).status,'finalized');assert.equal(provider.sends,1);
+});
+test('storage failure before wallet handoff cannot broadcast',async()=>{
+  const {client,provider}=await fixture();client.persist=()=>{throw Error('Storage full');};
+  await client.prepare('reclaim',['1']);await assert.rejects(client.confirm(true),/Storage full/);assert.equal(provider.sends,0);
+});
+test('nonce drift invalidates an exact preview',async()=>{
+  const {client,provider}=await fixture();await client.prepare('reclaim',['1']);provider.nonce='0x1';
+  await assert.rejects(client.confirm(true),/nonce changed/);assert.equal(provider.sends,0);
+});
+test('mined success and revert both stay blocked until finalized',async()=>{
+  const {client,provider}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);provider.unfinalized=true;
+  for(const reverted of [false,true]){provider.reverted=reverted;assert.equal((await client.receipt(HASH)).status,'mined-not-finalized');await assert.rejects(client.prepare('reclaim',['1']),/outstanding/);}
+  provider.unfinalized=false;assert.equal((await client.receipt(HASH)).status,'reverted');
+});
+test('a disappearing or reorganized receipt restores the pending barrier',async()=>{
+  const {client,provider}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+  provider.reorg=true;await assert.rejects(client.receipt(HASH),/canonical/);await assert.rejects(client.prepare('reclaim',['1']),/outstanding/);
+  provider.reorg=false;await client.receipt(HASH);provider.noReceipt=true;await client.receipt(HASH);
+  await assert.rejects(client.prepare('reclaim',['1']),/outstanding/);
+});
+test('same-nonce finalized cancellation and different replacement never report original success',async()=>{
+  for(const cancelled of [true,false]){
+    const {client,provider}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+    provider.cancelled=cancelled;provider.wrongTo=true;
+    const result=await client.receipt('0x'+'cd'.repeat(32),true);
+    assert.equal(result.status,cancelled?'cancelled':'replaced');assert.equal(provider.sends,1);
+  }
+});
+test('unrelated nonce cannot reconcile an uncertain submission',async()=>{
+  const {client,provider}=await fixture();provider.sendError=Error('lost');await client.prepare('reclaim',['1']);await assert.rejects(client.confirm(true));
+  provider.wrongNonce=true;await assert.rejects(client.receipt(HASH,true),/nonce/);assert.equal(client.pending.status,'submission-unknown');
+});
+test('restoration rejects changed destinations, calldata, funding and malformed state atomically',async()=>{
+  const {client,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+  for(const mutate of [r=>r.transaction.to=ACCOUNT,r=>r.transaction.data='0x',r=>r.transaction.nonce='0x00',r=>r.action='buy',r=>r.status='trust-me']){
+    const value=JSON.parse(JSON.stringify(client.journal()));mutate(value.transactions[0]);const other=new MarkClient(p);
+    assert.throws(()=>other.restore(value));assert.equal(other.history.length,0);
+  }
 });

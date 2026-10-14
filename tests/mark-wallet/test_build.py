@@ -16,7 +16,14 @@ class ProfileBuild(unittest.TestCase):
     def fixture(self, root):
         folder = root / "deployments/ethereum-mainnet/2026-10-11"
         folder.mkdir(parents=True)
-        manifest = {"chainId": 1, "profile": "ascension-2026-10-11-solc-0.8.24", "contracts": {name: {"address": module.ADDRESSES[alias], "runtimeCodeHash": "0x" + "a" * 64} for alias, name in module.NAMES.items()}}
+        manifest = {
+            "chainId": 1,
+            "profile": "ascension-2026-10-11-solc-0.8.24",
+            "contracts": {
+                name: {"address": module.ADDRESSES[alias], "runtimeCodeHash": "0x" + "a" * 64}
+                for alias, name in module.NAMES.items()
+            },
+        }
         (folder / "manifest.json").write_text(json.dumps(manifest))
         (folder / "runtime-code.json").write_text(json.dumps({name: "0x6000" for name in module.NAMES.values()}))
         return folder

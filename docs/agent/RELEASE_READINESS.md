@@ -1,6 +1,12 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.29.0 SUCCESSOR workbench
+# Release readiness — 1.30.0 MARK wallet
+
+Version 1.30.0 adds the [MARK wallet](MARK_WALLET.md) with a durable public transaction journal,
+explicit nonce-bound previews and finalized original/replacement reconciliation. Targeted codec/provider tests,
+rendered injected-provider acceptance, generated-site acceptance and public HTTPS acceptance are additional gates;
+all previous integrated release requirements remain. Browser fixtures do not establish a physical-wallet trial,
+independent contract audit, live settlement or permission for new funding. See [release notes](RELEASE_NOTES_1.30.0.md).
 
 Version 1.29.0 adds five bounded local work adapters, a portable English/French workbench and optional
 isolated browser Computer Use. Start with [Create my Ω](../successor/work/index.html), retain its actual

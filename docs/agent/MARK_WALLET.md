@@ -19,7 +19,7 @@ This is **not a read-only mock**: recovery actions and actions needed to complet
 3. Enter an existing Nova-Seed ID and/or job ID, then inspect. No counter is assumed to be zero. Contract bytecode and immutable/one-time bindings are checked at a named block; failed RPC reads remain failures, not empty campaigns.
 4. Select an action. Human token fields accept exact decimal $AGIALPHA amounts. Durations and Unix timestamps are seconds. The advanced route form takes the exact five-field FusionPlan specification, a JSON Merkle-proof array and three reviewer addresses; its bounty is in 18-decimal integer base units. Use the existing FusionPlan compiler rather than hand-authoring a root or proof.
 5. Choose **Prepare and simulate**, inspect sender, destination, calldata, arguments and consequences, then acknowledge **this exact action**. Choose **Confirm in my wallet**, and review the wallet's own final transaction/fee display. The page rechecks account, chain, bytecode, bindings, simulation and gas before requesting a signature. A preview expires after 60 seconds.
-6. Refresh the receipt. Submitted, mined, reverted and finalized are distinct states. A returned hash is not successful payment. Export the observation and transaction journal before leaving. Journals contain public transaction data and are kept in memory, not silently persisted or uploaded.
+6. Refresh the receipt. Submitted, mined, reverted and finalized are distinct states. A returned hash is not successful payment. Export the observation and transaction journal before leaving. Journals contain public transaction data and are saved locally before the wallet opens; the page discloses this storage. They are never uploaded. Export a separate backup before clearing site data. The storage key and Web Lock coordinate tabs of this origin and browser profile, not other devices or wallet applications.
 
 The ENS namespaces remain distinct: businesses use `*.alpha.agi.eth`, agents use `*.alpha.agent.agi.eth`, and validators use `*.alpha.club.agi.eth`. Registering an existing label neither creates a name nor grants admission. Funding-only participation requires admission but does not acquire an unnecessary role-name requirement. This wallet does not impersonate an owner, set admission policy or fabricate independent review.
 
@@ -39,7 +39,9 @@ RPC requests are restricted to documented reads plus a separately requested wall
 
 The interface exposes advanced fields rather than claiming to be a complete nontechnical campaign-creation service. It does not generate a Nova-Seed capsule, recruit reviewers, run an AI agent, host deliverables, provision ENS names, or settle a separate marketplace. Existing tools perform those jobs and remain available.
 
-If a signing request's outcome is unknown, check the wallet and explorer before doing anything else. The app never retries automatically and blocks additional actions in that session. A replacement or cancellation must be reconciled outside this first-version journal; it is not falsely reported as a successful original transaction. Export evidence before closing the page. No background keeper or automatic deadline processing is provided.
+If a signing request's outcome is unknown, the persisted intent blocks another send, including after reload. Choose a provider, paste the transaction hash from your wallet or explorer and select **Reconcile original or replacement**. The read-only check binds the sender, explicitly prepared nonce, chain, transaction hash and canonical receipt block. It checks finality before allowing another action. Exact replacement calldata may establish execution; a same-nonce cancellation or different replacement is labelled separately and never reports success for the original action. A missing receipt, reorg, mismatched nonce or unavailable finality remains unresolved. Changing providers for reconciliation does not clear the journal.
+
+**Restore an exported journal** accepts bounded v2 JSON, validates action/calldata/destination, and requires rechecking the latest outcome. Imports cannot create a transaction preview or request a signature. Browser storage and imported files are editable local recovery aids, not authenticated on-chain evidence. Do not import someone else's journal to establish your own pending state. If no transaction hash exists, keep the state blocked while investigating in the wallet; there is no blind retry or reset button. A browser without working storage or Web Locks can inspect but cannot sign. No background keeper or automatic deadline processing is provided.
 
 ## Build and test
 
@@ -47,7 +49,7 @@ From a checkout of this change:
 
 ```sh
 python -m scripts.build_mark_wallet
-node --test tests/mark-wallet/core.test.mjs
+node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs
 npm ci --prefix tests/contracts
 node --test tests/mark-wallet/abi.test.mjs
 python -m unittest discover -s tests/mark-wallet -p test_build.py -v

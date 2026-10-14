@@ -1,8 +1,23 @@
 // SPDX-License-Identifier: Apache-2.0
 import {ACTIONS, CONTRACTS, uint, tokens, curve, parseFields, isRecovery} from './protocol.mjs';
-import {MarkClient, json} from './client.mjs';
+import {MarkClient, json, unresolved} from './client.mjs';
+import {RecoveryStore, JOURNAL_KEY} from './recovery.mjs';
 const $ = id => document.getElementById(id);
 let language = 'en', client = null, busy = false, snapshot = null, observedEpoch = -1;
+let recovery = null, storedJournal = null, storageError = null;
+function syncJournal() {
+  if(storageError) throw Error(storageError);
+  const saved=recovery.read(), raw=JSON.stringify(saved);
+  if(raw!==storedJournal) {
+    if(saved) client.restore(saved);
+    else if(unresolved(client.pending)) throw Error('The outstanding journal was removed. Export it and reconcile before continuing.');
+    storedJournal=raw; client.cancelPreview();
+  }
+}
+async function journalAction(fn) {
+  if(!recovery) throw Error('Recovery storage is unavailable; signing is disabled.');
+  return recovery.exclusive(async()=>{syncJournal(); return fn();});
+}
 const providers = [];
 const text = (en, fr) => language === 'fr' ? fr : en;
 function status(message) { $('status').textContent = String(message).slice(0,1800); }
@@ -24,12 +39,15 @@ function refresh() {
   $('account').textContent = client?.account ? `Ethereum Mainnet · ${client.account}` : text('No connected account. Select Mainnet in the wallet.','Aucun compte connecté. Sélectionnez Mainnet dans le portefeuille.');
   $('preview-panel').hidden = !client?.prepared;
   $('confirm').disabled = busy || !client?.prepared || !$('ack').checked;
+  if(storageError) $('confirm').disabled=true;
   $('cancel').disabled = busy;
   $('export-state').disabled = !snapshot;
   $('quote-buy').disabled = busy || !snapshot?.campaign || !ready;
   $('quote-sell').disabled = busy || !snapshot?.campaign || !ready;
-  $('receipt').disabled = busy || !client?.pending?.hash || !ready;
+  $('receipt').disabled = busy || !(client?.pending?.hash||client?.pending?.candidateHash) || !ready;
   $('export-journal').disabled = !client?.history.length;
+  $('reconcile').disabled = busy || !ready || !client?.pending || client.pending.status==='awaiting-wallet';
+  $('import-journal').disabled = busy || unresolved(client?.pending);
   $('journal').textContent = client?.history.length ? json(client.history) : '—';
   $('transaction-link').replaceChildren();
   if (client?.pending?.hash) {
@@ -136,13 +154,37 @@ $('prepare').addEventListener('click',()=>run(async()=>{
 $('ack').addEventListener('change',refresh);
 $('confirm').addEventListener('click',()=>run(async()=>{
   status(text('Rechecking state before opening your wallet. Do not retry while a signature is pending.','Nouvelle vérification avant signature. Ne réessayez pas pendant une demande en attente.'));
-  const hash=await client.confirm($('ack').checked); $('ack').checked=false;
+  const hash=await journalAction(()=>client.confirm($('ack').checked)); $('ack').checked=false;
   status(`${text('Submitted, not yet confirmed','Envoyée, pas encore confirmée')}: ${hash}`);
 }));
 $('cancel').addEventListener('click',()=>{changed(); status(text('Preview cancelled. Nothing was sent.','Devis annulé. Aucun envoi.'));});
-$('receipt').addEventListener('click',()=>run(async()=>{ const result=await client.receipt(client.pending.hash); status(`${result.status} · ${result.hash}`); }));
+$('receipt').addEventListener('click',()=>run(async()=>{ const result=await journalAction(()=>client.receipt(client.pending.candidateHash||client.pending.hash,!!client.pending.candidateHash)); status(`${result.status} · ${result.candidateHash||result.hash}`); }));
+$('reconcile').addEventListener('click',()=>run(async()=>{
+  const result=await journalAction(()=>client.receipt($('reconcile-hash').value.trim(),true));
+  status(`${result.status} · ${result.candidateHash||result.hash||''}`);
+}));
+$('import-journal').addEventListener('change',()=>run(async()=>{
+  const file=$('import-journal').files[0]; if(!file) return;
+  if(file.size>1000000) throw Error('Journal exceeds 1 MB.');
+  const value=JSON.parse(await file.text());
+  await journalAction(async()=>{
+    if(unresolved(client.pending)) throw Error('Reconcile the existing journal before importing another.');
+    const checked=new MarkClient(client.profile); checked.restore(value);
+    // Imported statuses are not evidence. Recheck the latest on-chain outcome.
+    if(checked.pending) checked.pending.status='submission-unknown';
+    recovery.write(checked.journal()); client.restore(checked.journal()); storedJournal=JSON.stringify(checked.journal());
+    changed(); status(text('Journal imported. Reconcile a transaction hash before signing again.','Journal importé. Réconciliez une empreinte avant toute nouvelle signature.'));
+  });
+  $('import-journal').value='';
+}));
 $('export-state').addEventListener('click',()=>save('mark-mainnet-observation.json',snapshot));
-$('export-journal').addEventListener('click',()=>save('mark-mainnet-transaction-journal.json',{schema:'agialpha.mark-wallet-journal.v1',chainId:1,transactions:client.history}));
+$('export-journal').addEventListener('click',()=>save('mark-mainnet-transaction-journal.json',client.journal()));
+window.addEventListener('storage',event=>{
+  if(event.key===JOURNAL_KEY || event.key===null) {
+    client?.cancelPreview();
+    if(!busy) try {syncJournal();refresh();} catch(error) {storageError=error.message;status(storageError);refresh();}
+  }
+});
 $('language').addEventListener('click',()=>{
   language=language==='en'?'fr':'en'; document.documentElement.lang=language;
   for(const el of document.querySelectorAll('[data-en]')) el.textContent=el.dataset[language];
@@ -160,5 +202,11 @@ window.addEventListener('beforeunload',event=>{if(client?.history.length){event.
 try {
   const response=await fetch(new URL('./profile.json',import.meta.url),{cache:'no-store',redirect:'error'});
   if(!response.ok) throw Error('The deployment profile is missing. Build the wallet assets before serving; wallet actions remain disabled.');
-  client=new MarkClient(await response.json(),refresh); refresh(); discover();
+  client=new MarkClient(await response.json(),refresh,journal=>{
+    if(!recovery||storageError) throw Error(storageError||'Recovery storage is unavailable.');
+    recovery.write(journal); storedJournal=JSON.stringify(journal);
+  });
+  try { recovery=new RecoveryStore(window.localStorage,navigator.locks); syncJournal(); }
+  catch(error) { storageError=`Recovery unavailable: ${error.message}`; }
+  refresh(); discover(); if(storageError) status(storageError);
 } catch(error) { status(error.message); }

@@ -6,8 +6,20 @@ import hashlib
 import json
 from pathlib import Path
 
-NAMES = {"Access": "AscensionAccess", "Seed": "NovaSeed", "Oracle": "AscensionRiskOracle", "Jobs": "AscensionJobMarket", "Mark": "AscensionMark"}
-ADDRESSES = {"Access": "0x36f8C079fEEBC81c5AF30D71be5017037246a32e", "Seed": "0xFA4737Ba7cF111EBb0840aA300BC61D84d303449", "Oracle": "0x06cb4D684628846B048d88CCf8C03c4Cfb74f149", "Jobs": "0x86f84E173A7a1a4588f4e757552F20f7C58e61E8", "Mark": "0xa28dA507f7F9AFF8910f1F7cB5d5b8238F5Db625"}
+NAMES = {
+    "Access": "AscensionAccess",
+    "Seed": "NovaSeed",
+    "Oracle": "AscensionRiskOracle",
+    "Jobs": "AscensionJobMarket",
+    "Mark": "AscensionMark",
+}
+ADDRESSES = {
+    "Access": "0x36f8C079fEEBC81c5AF30D71be5017037246a32e",
+    "Seed": "0xFA4737Ba7cF111EBb0840aA300BC61D84d303449",
+    "Oracle": "0x06cb4D684628846B048d88CCf8C03c4Cfb74f149",
+    "Jobs": "0x86f84E173A7a1a4588f4e757552F20f7C58e61E8",
+    "Mark": "0xa28dA507f7F9AFF8910f1F7cB5d5b8238F5Db625",
+}
 
 
 def build(root: Path, docs: Path | None = None) -> Path:
@@ -28,11 +40,23 @@ def build(root: Path, docs: Path | None = None) -> Path:
         runtime = bytes.fromhex(encoded[2:])
         if not runtime or len(runtime) > 100000:
             raise ValueError(f"{name}: empty or oversized runtime")
-        contracts[alias] = {"address": record["address"], "sha256": hashlib.sha256(runtime).hexdigest(), "archivedKeccak256": record["runtimeCodeHash"]}
-    output = {"schema": "agialpha.mark-wallet-profile.v1", "chainId": 1, "profile": manifest["profile"],
-              "sourceManifestSHA256": hashlib.sha256(manifest_bytes).hexdigest(), "contracts": contracts,
-              "newExposureEnabled": False,
-              "reason": "Archived deployment predates newer settlement safeguards; funding commissioning remains unresolved. No runtime override is accepted."}
+        contracts[alias] = {
+            "address": record["address"],
+            "sha256": hashlib.sha256(runtime).hexdigest(),
+            "archivedKeccak256": record["runtimeCodeHash"],
+        }
+    output = {
+        "schema": "agialpha.mark-wallet-profile.v1",
+        "chainId": 1,
+        "profile": manifest["profile"],
+        "sourceManifestSHA256": hashlib.sha256(manifest_bytes).hexdigest(),
+        "contracts": contracts,
+        "newExposureEnabled": False,
+        "reason": (
+            "Archived deployment predates newer settlement safeguards; funding commissioning remains unresolved. "
+            "No runtime override is accepted."
+        ),
+    }
     destination = (docs or root / "docs") / "assets/ascension-wallet/profile.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")

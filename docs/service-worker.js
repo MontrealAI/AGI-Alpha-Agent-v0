@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-1445227f40f92a55";
-const RELEASE = "1.29.0";
+const CACHE = "agialpha-gallery-4e49c3209b77432d";
+const RELEASE = "1.30.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -85,6 +85,7 @@ const ASSETS = [
   "./alpha_factory_v1/demos/alpha_asi_world_model/assets/style.css",
   "./alpha_factory_v1/demos/alpha_asi_world_model/index.html",
   "./alpha_factory_v1/demos/ascension-protocol/index.html",
+  "./alpha_factory_v1/demos/ascension-protocol/mainnet/index.html",
   "./alpha_factory_v1/demos/ascension/index.html",
   "./alpha_factory_v1/demos/bloom/index.html",
   "./alpha_factory_v1/demos/compounding/index.html",
@@ -185,10 +186,17 @@ const ASSETS = [
   "./alpha_factory_v1/index.html",
   "./alpha_super_planner_v1/assets/preview.svg",
   "./ascension-protocol/index.html",
+  "./ascension-protocol/mainnet/index.html",
   "./ascension/index.html",
   "./assets/ascension-protocol/desk.css",
   "./assets/ascension-protocol/desk.mjs",
   "./assets/ascension-protocol/receipt.json",
+  "./assets/ascension-wallet/app.mjs",
+  "./assets/ascension-wallet/client.mjs",
+  "./assets/ascension-wallet/profile.json",
+  "./assets/ascension-wallet/protocol.mjs",
+  "./assets/ascension-wallet/recovery.mjs",
+  "./assets/ascension-wallet/wallet.css",
   "./assets/ascension/crypto.mjs",
   "./assets/ascension/engine.mjs",
   "./assets/ascension/home.css",
