@@ -7,6 +7,7 @@ on:
       - 'docs/assets/nova-studio/**'
       - 'docs/ascension/mainnet/**'
       - 'tests/nova-studio/**'
+      - 'scripts/*nova_studio*'
       - 'tests/contracts/scripts/nova-studio.js'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
@@ -24,6 +25,7 @@ on:
       - 'docs/assets/nova-studio/**'
       - 'docs/ascension/mainnet/**'
       - 'tests/nova-studio/**'
+      - 'scripts/*nova_studio*'
       - 'tests/contracts/scripts/nova-studio.js'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
@@ -54,7 +56,7 @@ jobs:
           python-version: '3.12'
       - name: Check dependency-free wallet and profile tests
         run: |
-          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs
+          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs tests/mark-wallet/qualification.test.mjs
           python -m unittest discover -s tests/mark-wallet -p "test_*.py" -v
       - name: Install existing locked contract reference tools
         run: npm ci --prefix tests/contracts
@@ -75,7 +77,11 @@ jobs:
       - name: Exercise real browser with synthetic injected wallet
         run: python -m scripts.validate_mark_wallet --output evidence/mark-wallet
       - name: Nova-Seed cross-language compiler, encryption and artifact checks
-        run: node --test tests/nova-studio/core.test.mjs
+        run: |
+          node --test tests/nova-studio/*.test.mjs
+          python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
+      - name: Nova-Seed shipped browser preparation and portable recovery
+        run: python -m scripts.validate_nova_studio --output evidence/nova-studio-browser
       - name: Nova-Seed exact-source lifecycle and browser recovery
         working-directory: tests/contracts
         env:
@@ -86,6 +92,12 @@ jobs:
         with:
           name: nova-studio-acceptance
           path: evidence/nova-studio/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: nova-studio-browser
+          path: evidence/nova-studio-browser/
           if-no-files-found: error
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()

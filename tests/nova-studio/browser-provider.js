@@ -1,13 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Test-only provider: actual transactions target the disposable local EVM.
 const originalFetch=window.fetch.bind(window);
-window.fetch=(url,options)=>{
-  const target=String(url);
-  if(target==='https://uploads.pinata.cloud/v3/files')return originalFetch('/upload',options);
-  if(target.startsWith('https://gateway.pinata.cloud/ipfs/')||target.startsWith('https://ipfs.io/ipfs/'))
-    return originalFetch('/ipfs/'+target.split('/').at(-1),options);
-  return originalFetch(url,options);
-};
+// Leave window.fetch untouched. Playwright intercepts storage network requests
+// outside the page so this test exercises the browser's real native receiver.
 window.__nova={actor:0,calls:[],sends:0,lastHash:null,loseNext:false,listeners:{}};
 window.ethereum={
   on:(event,fn)=>(window.__nova.listeners[event]??=new Set()).add(fn),

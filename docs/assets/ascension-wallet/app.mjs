@@ -1,22 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
-import {ACTIONS, CONTRACTS, uint, tokens, curve, parseFields, isRecovery} from './protocol.mjs';
-import {MarkClient, json, unresolved} from './client.mjs';
-import {RecoveryStore, JOURNAL_KEY} from './recovery.mjs';
+import {ACTIONS, uint, tokens, curve, parseFields, isRecovery} from './protocol.mjs';
+import {json, unresolved, availableProfiles, selectBuildProfile, canonicalProfile} from './client.mjs';
+import {JOURNAL_KEY} from './recovery.mjs';
+import {WalletSession, profileForJournal} from './session.mjs';
 const $ = id => document.getElementById(id);
 let language = 'en', client = null, busy = false, snapshot = null, observedEpoch = -1;
-let recovery = null, storedJournal = null, storageError = null;
+let session = null, storageError = null, defaultProfile = null, profiles = [];
 function syncJournal() {
   if(storageError) throw Error(storageError);
-  const saved=recovery.read(), raw=JSON.stringify(saved);
-  if(raw!==storedJournal) {
-    if(saved) client.restore(saved);
-    else if(unresolved(client.pending)) throw Error('The outstanding journal was removed. Export it and reconcile before continuing.');
-    storedJournal=raw; client.cancelPreview();
-  }
+  session?.sync();
 }
 async function journalAction(fn) {
-  if(!recovery) throw Error('Recovery storage is unavailable; signing is disabled.');
-  return recovery.exclusive(async()=>{syncJournal(); return fn();});
+  if(!session||storageError) throw Error(storageError||'Recovery storage is unavailable; signing is disabled.');
+  return session.exclusive(fn);
 }
 const providers = [];
 const text = (en, fr) => language === 'fr' ? fr : en;
@@ -36,7 +32,9 @@ function refresh() {
   for (const id of ['connect','switch','disconnect','inspect','prepare']) $(id).disabled = busy || !ready;
   for (const id of ['wallet-choice','action','discover']) $(id).disabled = busy;
   for (const el of $('action-fields').querySelectorAll('input,select,textarea')) el.disabled = busy;
-  $('account').textContent = client?.account ? `Ethereum Mainnet · ${client.account}` : text('No connected account. Select Mainnet in the wallet.','Aucun compte connecté. Sélectionnez Mainnet dans le portefeuille.');
+  $('account').textContent = client?.account ? `Chain ${client.profile.chainId} · ${client.account}` : text('No connected account. Select the chosen deployment’s network in your wallet.','Aucun compte connecté. Sélectionnez le réseau du déploiement choisi dans votre portefeuille.');
+  $('deployment-choice').disabled=busy||!client;
+  if(client){$('deployment-choice').value=client.profileIdentity;profileView();}
   $('preview-panel').hidden = !client?.prepared;
   $('confirm').disabled = busy || !client?.prepared || !$('ack').checked;
   if(storageError) $('confirm').disabled=true;
@@ -52,9 +50,9 @@ function refresh() {
   $('transaction-link').replaceChildren();
   const receiptHash=client?.pending?.candidateHash||client?.pending?.hash;
   if (receiptHash) {
-    const a = document.createElement('a'); a.href=`https://etherscan.io/tx/${receiptHash}`;
-    a.textContent=`${client.pending.status} · ${receiptHash}`; a.rel='noopener noreferrer'; a.target='_blank';
-    $('transaction-link').append(a);
+    const el=document.createElement(client.profile.chainId===1?'a':'span');
+    if(client.profile.chainId===1){el.href=`https://etherscan.io/tx/${receiptHash}`;el.rel='noopener noreferrer';el.target='_blank';}
+    el.textContent=`${client.pending.status} · ${receiptHash}`;$('transaction-link').append(el);
   }
 }
 async function run(fn) {
@@ -66,13 +64,34 @@ async function run(fn) {
 function changed() {
   client?.cancelPreview(); $('ack').checked=false; refresh();
 }
+function profileView() {
+  const archive=client.stage==='archive',local=client.stage==='local';
+  $('deployment-heading').textContent=`α-AGI MARK · ${client.stage.toUpperCase()} · chain ${client.profile.chainId}`;
+  $('boundary-title').textContent=archive?text('Deployed does not mean commissioned','Déployé ne signifie pas mis en service'):local?text('Local rehearsal · test assets only','Répétition locale · actifs de test'):text('Build-qualified deployment · explicit authorization','Déploiement qualifié · autorisation explicite');
+  $('boundary-copy').textContent=archive
+    ?text('The October 11, 2026 contracts are immutable and predate newer settlement safeguards. This build blocks new funding, stake deposits, seed/campaign creation and new work commitments. Eligible recovery and completion of existing obligations use real wallet transactions. No checkbox bypasses commissioning.','Les contrats immuables du 11 octobre 2026 précèdent de nouvelles protections de règlement. Cette version bloque les nouveaux financements, dépôts, créations et engagements. Les récupérations admissibles et obligations existantes utilisent de vraies transactions. Aucune case ne remplace la mise en service.')
+    :local?text('This separately built profile uses disposable local contracts and test assets. It is not a Mainnet qualification. Every send still requires an explicit transaction preview and wallet confirmation.','Ce profil distinct utilise des contrats locaux jetables et des actifs de test. Il ne qualifie pas Mainnet. Chaque envoi exige un devis explicite et une confirmation du portefeuille.')
+    :text('This profile is pinned in this release with exact source, code and authorization evidence. Each action rechecks its permitted scope and current deployment state. A canary authorizes only its bounded rehearsal; it is not public activation.','Ce profil est inscrit dans cette version avec ses sources, son code et ses preuves d’autorisation exacts. Chaque action revérifie son périmètre et l’état actuel. Un essai limité n’autorise pas l’activation publique.');
+  $('switch').textContent=client.profile.chainId===1?text('Switch to Mainnet','Passer à Mainnet'):text('Switch to selected network','Passer au réseau choisi');
+  for(const option of $('action').options){const a=ACTIONS[option.value];const restricted=a.risk==='new'&&(!client.profile.newExposureEnabled||(client.profile.actions&&!client.profile.actions.includes(option.value)));option.textContent=`${restricted?text('[Restricted] ','[Restreint] '):''}${a.label}`;}
+  const action=ACTIONS[$('action').value];
+  $('action-policy').textContent=action?.risk==='new'&&!client.profile.newExposureEnabled
+    ?text('New exposure is blocked by the selected profile. Zero allowance or future-availability revocation remains available where applicable.','Les nouveaux engagements sont bloqués par le profil choisi. La révocation à zéro d’une autorisation ou disponibilité reste possible.')
+    :text('A real wallet action must satisfy this profile’s current scope and contract conditions. Review token consequences and separate network fees.','Une action réelle doit respecter le périmètre du profil et les conditions des contrats. Examinez ses conséquences et les frais réseau distincts.');
+  $('studio-link').href=`../../ascension/mainnet/?profile=${encodeURIComponent(client.profileIdentity)}&chain=${client.profile.chainId}${$('seed-id').value?`&seed=${encodeURIComponent($('seed-id').value)}`:''}${$('job-id').value?`&job=${encodeURIComponent($('job-id').value)}`:''}`;
+}
+function addressesView() {
+  $('addresses').replaceChildren();
+  for(const [name,value] of Object.entries(client.contracts)){
+    const p=document.createElement('p'),el=document.createElement(client.profile.chainId===1?'a':'span');
+    if(client.profile.chainId===1){el.href=`https://etherscan.io/address/${value}#code`;el.target='_blank';el.rel='noopener noreferrer';}
+    el.textContent=`${name}: ${value}`;p.append(el);$('addresses').append(p);
+  }
+}
 function actionFields() {
   changed();
   const action = ACTIONS[$('action').value];
   $('action-note').textContent = action.note;
-  $('action-policy').textContent = action.risk === 'new'
-    ? text('New exposure is blocked for this archived profile. Zero allowance or future-availability revocation is available where applicable.','Les nouveaux engagements sont bloqués. La révocation à zéro d’une autorisation ou disponibilité reste possible.')
-    : text('Real wallet action, subject to current contract conditions. It may spend ETH and can change or settle existing obligations.','Action réelle soumise aux règles actuelles du contrat. Elle consomme des frais ETH et peut modifier ou régler une obligation.');
   $('action-fields').replaceChildren();
   for (const f of action.fields) {
     const label=document.createElement('label'); label.textContent=f.label;
@@ -111,6 +130,14 @@ window.addEventListener('eip6963:announceProvider', event => {
   try { addProvider(event.detail?.provider,event.detail?.info?.name); } catch { /* Untrusted extension metadata is ignored. */ }
 });
 $('discover').addEventListener('click',discover);
+$('deployment-choice').addEventListener('change',()=>{const selectedId=$('deployment-choice').value;return run(async()=>{
+  if(selectedId===client.profileIdentity)return;
+  client=await session.selectProfile(selectBuildProfile(selectedId,defaultProfile));observedEpoch=-1;snapshot=null;
+  client.disconnect();$('wallet-choice').value='';$('seed-id').value='';$('job-id').value='';
+  addressesView();actionFields();
+  status(text('Registered deployment selected. Choose and reconnect your wallet; no account or signature request was sent.','Déploiement inscrit choisi. Choisissez et reconnectez votre portefeuille; aucune demande de compte ou signature envoyée.'));
+});});
+for(const id of ['seed-id','job-id'])$(id).addEventListener('input',changed);
 $('wallet-choice').addEventListener('change',()=>run(async()=>{
   const item=providers[Number($('wallet-choice').value)];
   if ($('wallet-choice').value===''||!item) { client?.disconnect(); return; }
@@ -118,7 +145,7 @@ $('wallet-choice').addEventListener('change',()=>run(async()=>{
   status(text('Wallet selected. Inspection requests no account permissions; Connect requests the selected account.','Portefeuille sélectionné. La consultation ne demande aucune permission de compte.'));
 }));
 $('connect').addEventListener('click',()=>run(async()=>{ await client.connect(); status(text('Account connected. No transaction was signed.','Compte connecté. Aucune transaction signée.')); }));
-$('switch').addEventListener('click',()=>run(async()=>{ await client.switchMainnet(); status(text('Reconnect after selecting Ethereum Mainnet.','Reconnectez-vous après la sélection de Mainnet.')); }));
+$('switch').addEventListener('click',()=>run(async()=>{ await client.switchMainnet(); status(text('Reconnect after selecting this deployment’s network.','Reconnectez-vous après la sélection du réseau de ce déploiement.')); }));
 $('disconnect').addEventListener('click',()=>run(async()=>{ client.disconnect(); $('wallet-choice').value=''; snapshot=null; status(text('This page is disconnected. Wallet permissions can be revoked in the wallet.','Page déconnectée. Révoquez les permissions dans le portefeuille.')); }));
 $('inspect').addEventListener('click',()=>run(async()=>{
   changed(); snapshot=null; $('snapshot').textContent='—'; $('quote-output').textContent='—'; $('snapshot-summary').textContent=text('No fresh observation yet.','Aucune observation actualisée.'); status(text('Verifying the pinned bytecode and bindings…','Vérification du bytecode et des liaisons…'));
@@ -126,7 +153,7 @@ $('inspect').addEventListener('click',()=>run(async()=>{
   const job=$('job-id').value ? uint($('job-id').value).toString() : null;
   const observation=await client.inspect(seed,job); snapshot={...observation,selectedSeed:seed}; $('snapshot').textContent=json(snapshot);
   const phase=snapshot.campaign ? ['None / Aucune','Funding / Financement','Bloomed / Engagée','Closed / Fermée'][Number(snapshot.campaign.phase)] : null;
-  $('snapshot-summary').textContent=`${text('Observed block','Bloc observé')} ${BigInt(snapshot.verification.blockNumber)} · ${text('Nova-Seeds created','Nova-Seeds créés')}: ${snapshot.nextSeedId}${phase?` · ${phase} · ${tokens(snapshot.campaign.reserve)} $AGIALPHA`:''} · ${text('New funding not commissioned','Nouveau financement non autorisé')}`;
+  $('snapshot-summary').textContent=`${text('Observed block','Bloc observé')} ${BigInt(snapshot.verification.blockNumber)} · ${text('Nova-Seeds created','Nova-Seeds créés')}: ${snapshot.nextSeedId}${phase?` · ${phase} · ${tokens(snapshot.campaign.reserve)} $AGIALPHA`:''} · ${snapshot.verification.newExposureEnabled?text('Subject to the selected profile’s explicit scope','Soumis au périmètre explicite du profil choisi'):text('New funding not commissioned','Nouveau financement non autorisé')}`;
   status(text('Observation complete. Bytecode matching is not an independent audit or approval for public funding.','Observation terminée. La concordance du bytecode n’est ni un audit indépendant ni une autorisation de financement.'));
 }));
 for (const side of ['buy','sell']) $(`quote-${side}`).addEventListener('click',()=>run(async()=>{
@@ -168,14 +195,8 @@ $('import-journal').addEventListener('change',()=>run(async()=>{
   const file=$('import-journal').files[0]; if(!file) return;
   if(file.size>1000000) throw Error('Journal exceeds 1 MB.');
   const value=JSON.parse(await file.text());
-  await journalAction(async()=>{
-    if(unresolved(client.pending)) throw Error('Reconcile the existing journal before importing another.');
-    const checked=new MarkClient(client.profile); checked.restore(value);
-    // Imported statuses are not evidence. Recheck the latest on-chain outcome.
-    if(checked.pending) checked.pending.status='submission-unknown';
-    recovery.write(checked.journal()); client.restore(checked.journal()); storedJournal=JSON.stringify(checked.journal());
-    changed(); status(text('Journal imported. Reconcile a transaction hash before signing again.','Journal importé. Réconciliez une empreinte avant toute nouvelle signature.'));
-  });
+  await session.restore(value);
+  changed();status(text('Journal imported. Reconcile every recorded broadcast before signing again.','Journal importé. Réconciliez chaque envoi enregistré avant toute nouvelle signature.'));
   $('import-journal').value='';
 }));
 $('export-state').addEventListener('click',()=>save('mark-mainnet-observation.json',snapshot));
@@ -195,29 +216,26 @@ for(const [id,a] of Object.entries(ACTIONS)) {
   const option=document.createElement('option'); option.value=id; option.textContent=`${a.risk==='new'?'[Commissioning pending] ':''}${a.label}`; $('action').append(option);
 }
 $('action').value='sell'; actionFields();
-for(const [name,value] of Object.entries(CONTRACTS)) {
-  const p=document.createElement('p'), a=document.createElement('a');
-  a.href=`https://etherscan.io/address/${value}#code`; a.textContent=`${name}: ${value}`; a.target='_blank'; a.rel='noopener noreferrer'; p.append(a); $('addresses').append(p);
-}
 window.addEventListener('beforeunload',event=>{if(client?.history.length){event.preventDefault();event.returnValue='';}});
 try {
   const response=await fetch(new URL('./profile.json',import.meta.url),{cache:'no-store',redirect:'error'});
   if(!response.ok) throw Error('The deployment profile is missing. Build the wallet assets before serving; wallet actions remain disabled.');
-  client=new MarkClient(await response.json(),refresh,journal=>{
-    if(!recovery||storageError) throw Error(storageError||'Recovery storage is unavailable.');
-    recovery.write(journal); storedJournal=JSON.stringify(journal);
-  });
-  try { recovery=new RecoveryStore(window.localStorage,navigator.locks); syncJournal(); }
-  catch(error) { storageError=`Recovery unavailable: ${error.message}`; }
-  refresh(); discover(); if(storageError) status(storageError);
-} catch(error) { status(error.message); }
-
-// Public identifiers only; links never connect a wallet or prepare an action.
-const studioContext=new URLSearchParams(location.search);
-if(client && studioContext.get('profile')===client.profile.profile) {
-  for(const [parameter,input] of [['seed','seed-id'],['job','job-id']]) {
-    const value=studioContext.get(parameter);
-    if(value && /^[1-9][0-9]{0,77}$/.test(value)) try {$(input).value=uint(value).toString();} catch { /* invalid context */ }
+  defaultProfile=await response.json();profiles=availableProfiles(defaultProfile);
+  $('deployment-choice').replaceChildren();for(const choice of profiles){const option=document.createElement('option');option.value=choice.id;option.textContent=`${choice.stage.toUpperCase()} · ${choice.label} · chain ${choice.profile.chainId}`;$('deployment-choice').append(option);}
+  const storage={getItem:key=>{try{return window.localStorage.getItem(key);}catch{storageError='Browser storage unavailable; signing disabled.';return null;}},
+    setItem:(key,value)=>{if(storageError)throw Error(storageError);window.localStorage.setItem(key,value);}};
+  const context=new URLSearchParams(location.search),requested=context.get('profile');
+  const requestedChoices=requested?profiles.filter(choice=>choice.id===requested||choice.profile.profile===requested):[];
+  const requestedChoice=requestedChoices.length===1?requestedChoices[0]:null;
+  const journalProfile=profileForJournal(defaultProfile,storage);
+  const savedChoice=storage.getItem(JOURNAL_KEY)?profiles.find(choice=>canonicalProfile(choice.profile)===canonicalProfile(journalProfile)):null;
+  const selected=savedChoice||requestedChoice||profiles[0];
+  session=new WalletSession(selected.profile,storage,navigator.locks,refresh);client=session.client;
+  const contextMatches=requestedChoice?.id===client.profileIdentity&&(!context.has('chain')||context.get('chain')===String(client.profile.chainId));
+  if(contextMatches)for(const [parameter,input] of [['seed','seed-id'],['job','job-id']]){
+    const value=context.get(parameter);if(value&&/^[1-9][0-9]{0,77}$/.test(value))try{$(input).value=uint(value).toString();}catch{/* Invalid context remains empty. */}
   }
-  actionFields();
-}
+  addressesView();actionFields();refresh();discover();
+  if(requested&&!contextMatches)status(text('Link context was not applied. Select its exact registered deployment; the saved journal keeps its original profile.','Le contexte du lien n’a pas été appliqué. Choisissez son déploiement inscrit exact; le journal garde son profil original.'));
+  if(storageError)status(storageError);
+} catch(error) { status(error.message); }

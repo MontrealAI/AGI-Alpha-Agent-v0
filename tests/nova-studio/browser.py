@@ -6,12 +6,15 @@ import json
 from pathlib import Path
 import sys
 
-from playwright.sync_api import expect, sync_playwright
+from playwright.sync_api import Route, expect, sync_playwright
+
+from native_fixture import native_delivery
 
 
 def main() -> None:
     config = json.loads(Path(sys.argv[1]).read_text())
     output = Path(config["output"])
+    origin = config["url"].split("/ascension/")[0]
     fixture = "window.__novaActors=" + json.dumps(config["actors"]) + ";\n"
     fixture += Path(__file__).with_name("browser-provider.js").read_text()
     errors: list[str] = []
@@ -20,10 +23,34 @@ def main() -> None:
         browser = p.chromium.launch()
         context = browser.new_context(viewport={"width": 1440, "height": 1080}, accept_downloads=True)
         context.add_init_script(script=fixture)
+
+        def artifact_request(route: Route) -> None:
+            # Intercept the network, never window.fetch: genuine browser fetch
+            # catches an unbound native receiver in the production adapter.
+            request = route.request
+            cors = {
+                "access-control-allow-origin": origin,
+                "access-control-allow-methods": "GET, POST, OPTIONS",
+                "access-control-allow-headers": "authorization, content-type",
+            }
+            if request.method == "OPTIONS":
+                route.fulfill(status=204, headers=cors)
+                return
+            target = origin + ("/upload" if request.method == "POST" else "/ipfs/" + request.url.split("/")[-1])
+            response = route.fetch(url=target)
+            route.fulfill(response=response, headers={**response.headers, **cors})
+
+        context.route("https://uploads.pinata.cloud/v3/files", artifact_request)
+        context.route("https://gateway.pinata.cloud/ipfs/*", artifact_request)
+        context.route("https://ipfs.io/ipfs/*", artifact_request)
         page = context.new_page()
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(config["url"])
         expect(page.locator("#status")).to_contain_text("Start locally")
+        assert page.evaluate("Function.prototype.toString.call(window.fetch).includes('[native code]')")
+        if page.locator("#deployment-choice").count():
+            page.locator("#deployment-choice").locator("xpath=ancestor::details").evaluate("el=>el.open=true")
+            page.locator("#deployment-choice").select_option(config["profile"])
         assert page.evaluate("window.__nova.calls.length") == 0
         page.locator("#example").click()
         page.locator("#compile").click()
@@ -53,7 +80,10 @@ def main() -> None:
             page.locator("#export-kit").click()
         kit_path = output / "browser-published-kit.json"
         download.value.save_as(kit_path)
-        checks.append("Production multipart storage adapter over real local HTTP with exact retrieved bytes")
+        assert page.evaluate("Function.prototype.toString.call(window.fetch).includes('[native code]')")
+        checks.append(
+            "Unwrapped native browser fetch, production multipart adapter and exact local HTTP artifact readback"
+        )
 
         def connect(actor: int) -> None:
             page.locator('[data-step="mint"]').click()
@@ -89,6 +119,9 @@ def main() -> None:
         assert page.evaluate("window.__nova.sends") == 1
         page.reload()
         expect(page.locator("#status")).to_contain_text("Start locally")
+        if page.locator("#deployment-choice").count():
+            page.locator("#deployment-choice").locator("xpath=ancestor::details").evaluate("el=>el.open=true")
+            page.locator("#deployment-choice").select_option(config["profile"])
         assert page.evaluate("window.__nova.sends") == 0
         page.locator('[data-step="resume"]').click()
         page.locator("#kit-file").set_input_files(kit_path)
@@ -145,14 +178,15 @@ def main() -> None:
         assert "No runtime connected" in page.locator("#runtime-state").inner_text()
         with page.expect_download() as download:
             page.locator("#work-package").click()
-        download.value.save_as(output / "browser-work-package.json")
+        work_path = output / "browser-work-package.json"
+        download.value.save_as(work_path)
+        work = json.loads(work_path.read_text())
         checks.append("Actual browser mint, separate fixture review, funding, activation, route and work handoff")
         connect(2)
         page.locator('[data-step="launch"]').click()
         page.locator("#bid").locator("xpath=ancestor::details").evaluate("el=>el.open=true")
         page.locator("#bid").click()
         finish()
-        origin = config["url"].split("/ascension/")[0]
         assert context.request.post(origin + "/advance-auction").ok
         page.locator('[data-step="launch"]').click()
         page.locator("#award").click()
@@ -160,19 +194,24 @@ def main() -> None:
         page.locator('[data-step="launch"]').click()
         page.locator("#inspect-job").click()
         expect(page.locator("#status")).to_contain_text("Worker awarded")
-        result_bytes = b'{"result":"synthetic local UI acceptance result"}\n'
-        result_path = output / "browser-result.json"
+        result_bytes, native = native_delivery(work["plan"], work["job"]["index"])
+        native["artifact"] = "browser-native-delivery.json"
+        result_path = output / native["artifact"]
         result_path.write_bytes(result_bytes)
         uploaded = context.request.post(
             origin + "/upload",
             multipart={
                 "network": "public",
-                "file": {"name": "result.json", "mimeType": "application/json", "buffer": result_bytes},
+                "file": {"name": result_path.name, "mimeType": "application/json", "buffer": result_bytes},
             },
         ).json()
         page.locator('[data-step="launch"]').click()
+        page.locator("#result-format").select_option("native-signed")
         page.locator("#result-file").set_input_files(result_path)
-        expect(page.locator("#result-hash")).to_contain_text("0x")
+        page.locator("#native-signer").fill(native["signer"])
+        page.locator("#verify-native-result").click()
+        expect(page.locator("#result-digest")).to_have_value(native["resultHash"], timeout=30000)
+        assert "No runtime connected" in page.locator("#runtime-state").inner_text()
         page.locator("#result-uri").fill("ipfs://" + uploaded["data"]["cid"])
         page.locator("#submit-result").click()
         finish()
@@ -201,6 +240,10 @@ def main() -> None:
         page.locator("#reclaim").click()
         finish()
         checks.append("Browser bid, award, result delivery, distinct votes, payment, collection, closure and reclaim")
+        checks.append(
+            "Native Engine execution, explicit local review, independent replay "
+            "and exact signed-byte Keccak through browser submission"
+        )
         axe = (Path(__file__).parents[1] / "browser/node_modules/axe-core/axe.min.js").read_text()
         audits = []
         for width in [1440, 390, 320]:
@@ -228,12 +271,16 @@ def main() -> None:
         (output / "browser-report.json").write_text(
             json.dumps(
                 {
+                    "passed": True,
                     "classification": (
                         "Chromium, synthetic wallet, actual disposable contracts; no physical wallet trial"
                     ),
                     "checks": checks,
                     "audits": audits,
                     "pageErrors": errors,
+                    "nativeDeliveryVerified": True,
+                    "nativeDelivery": native,
+                    "unwrappedNativeFetch": True,
                     "mainnetTransactions": 0,
                 },
                 indent=2,

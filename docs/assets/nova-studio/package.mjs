@@ -2,6 +2,7 @@
 import { canonicalJSON, hashObject, sealSeed, openSeed } from '../ascension/crypto.mjs';
 import { compilePlan, verifyPlan } from './plan.mjs';
 import { uint, TOKEN } from '../ascension-wallet/protocol.mjs';
+import { deploymentDescriptor } from '../ascension-wallet/client.mjs';
 const encoder = new TextEncoder();
 export const PACKAGE_SCHEMA = 'agialpha.nova-studio.package.v1';
 export const KIT_SCHEMA = 'agialpha.nova-studio.recovery.v1';
@@ -47,8 +48,16 @@ export function strictJSON(text, maxBytes = 2000000) {
   return JSON.parse(text);
 }
 export function profileIdentity(profile) {
+  return deploymentDescriptor(profile);
+}
+function legacyProfileIdentity(profile) {
   return { chainId:profile.chainId, profile:profile.profile,
     contracts:{Token:TOKEN.toLowerCase(),...Object.fromEntries(Object.entries(profile.contracts).map(([k,v]) => [k,v.address.toLowerCase()]))} };
+}
+export function deploymentIdentityStatus(pkg, profile) {
+  if (canonicalJSON(pkg?.deployment) === canonicalJSON(profileIdentity(profile))) return 'exact-source';
+  if (canonicalJSON(pkg?.deployment) === canonicalJSON(legacyProfileIdentity(profile))) return 'legacy-addresses';
+  throw Error('Package belongs to another deployment or source identity.');
 }
 export async function createPackage({ title, description, jobs, evidence, parent = '0', legacyGenome = null }, passphrase, profile) {
   if (typeof title !== 'string' || !title.trim() || encoder.encode(title).length > 160 ||
@@ -77,7 +86,9 @@ export async function verifyPackage(pkg, profile = null) {
   if (pkg?.schema !== PACKAGE_SCHEMA || !pkg.deployment || !Number.isSafeInteger(pkg.deployment.chainId)) throw Error('Unsupported project package.');
   const keys=['schema','deployment','capsule','plan','evidence','capsuleHash','capsuleByteHash','evidenceHash','parent'];
   if (Object.keys(pkg).sort().join()!==keys.sort().join()) throw Error('Unexpected package fields. Import only the supported public/encrypted schema.');
-  if (profile && canonicalJSON(pkg.deployment) !== canonicalJSON(profileIdentity(profile))) throw Error('Package belongs to another deployment.');
+  // Address-only v1 kits remain readable without rewriting their encrypted or public commitments.
+  // A workflow must require exact-source identity before authorizing a new mint.
+  if (profile) deploymentIdentityStatus(pkg,profile);
   verifyPlan(pkg.plan); uint(pkg.parent);
   if (pkg.capsule?.schema !== 'agialpha.novaseed.sealed.v1' ||
       await objectHash(pkg.capsule) !== pkg.capsuleHash || await hashBytes(fileBytes(pkg.capsule)) !== pkg.capsuleByteHash ||
