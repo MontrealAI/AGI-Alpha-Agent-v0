@@ -26,6 +26,14 @@ from scripts.validate_ecosystem import validate as validate_ecosystem
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    nova_links = page.locator("[data-nova-link]")
+    assert nova_links.count() >= 4, "Offer Studio in the hero, project section and directory"
+    for link in nova_links.all():
+        target = urlsplit(link.get_attribute("href") or "")
+        assert not target.scheme and not target.netloc and target.path == "ascension/mainnet/"
+        assert target.fragment in ("", "resume")
+        query = parse_qs(target.query)
+        assert query == ({"lang": ["fr"]} if language == "fr" else {}) | ({"text": ["large"]} if large else {})
     pocket_links = page.locator("[data-omega-link]")
     assert pocket_links.count() >= 2, "Offer the personal lab at both main invitations"
     for link in pocket_links.all():
@@ -392,8 +400,12 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
-                page.locator(".welcome-ecosystem").screenshot(
+                page.locator(".welcome-ecosystem:not(.welcome-nova)").screenshot(
                     path=str(output / f"homepage-ecosystem-{language}-{width}{'-large' if large else ''}.png")
+                )
+                page.locator("#nova-title").click()
+                page.locator("#nova-seed").screenshot(
+                    path=str(output / f"homepage-nova-{language}-{width}{'-large' if large else ''}.png")
                 )
                 for beginner_only in (True, False):
                     result = audit(page, axe_source, beginner_only=beginner_only)

@@ -1,5 +1,5 @@
-> **Current maintenance scope · 1.31.2.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.31.2.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> **Current maintenance scope · 1.31.3.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.31.3.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
 > Mainnet preparation now rejects malformed or oversized RPC responses. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 

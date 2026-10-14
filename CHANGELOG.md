@@ -5,6 +5,14 @@
 - Refresh current contract/operator guidance and release/cache labels; preserve deployed contracts and research.
 - See [release notes](docs/agent/RELEASE_NOTES_1.31.2.md).
 
+## 1.31.3 — Nova-Seed Studio public usability
+
+- Feature Studio on the bilingual homepage with direct creation and recovery entry points.
+- Retain reading preferences, explain available actions and provide local/native handoffs.
+- Require encrypted recovery, exact assets and accessibility/reflow across all eleven Studio steps.
+- Preserve contracts, economic rules, recovery formats, research and flowcharts; Mainnet restrictions remain.
+
+
 ## 1.31.1 — 2026-10-14
 
 - Publish the English/French computer-use study reader, curated results and compact offline report pack.

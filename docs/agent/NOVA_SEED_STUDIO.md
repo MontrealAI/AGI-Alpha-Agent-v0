@@ -15,6 +15,18 @@ is exercised on a disposable exact-source local deployment with mock ENS/token d
 participants. This implementation does not upgrade the immutable contracts or authorize public funding.
 See the [deployment record](MAINNET_DEPLOYMENT.md) and [qualification checklist](MAINNET_READINESS.md).
 
+## Start from the public website
+
+The homepage features **Open Nova-Seed Studio** near the first invitation and in a dedicated project
+section. **Recover my project** opens the recovery step directly. French and larger-text choices travel
+into Studio and back to the homepage; the URL retains them for bookmarking without storing a preference.
+Studio also has its own language and text-size controls. These links never connect a wallet or execute work.
+
+Use **Begin locally**, **Recover a project** or **Connect execution** to reach the relevant controls.
+The first two steps compile and encrypt on this device. Download recovery before leaving: the private
+project is not automatically saved. The native execution step provides the installed-runtime handoff;
+posting a job is not an automatic executor. Read the availability notice before any external action.
+
 ## Create and recover
 
 1. Describe your project privately. Add 1–128 jobs with a precise goal, objective acceptance criteria, maximum

@@ -16,7 +16,7 @@ from typing import Any
 from playwright.sync_api import expect, sync_playwright
 
 from scripts.mark_wallet_evidence import ROOT, hashes
-from scripts.nova_studio_evidence import BROWSER_CHECKS, verify_browser
+from scripts.nova_studio_evidence import BROWSER_CHECKS, STEPS, verify_browser
 from scripts.validate_ascension import Handler, inspect
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
@@ -60,6 +60,20 @@ def validate(site: Path, output: Path, url: str | None = None) -> dict[str, Any]
                 identity = context.request.get(origin + "release.json?nova=" + commit).json()
                 assert identity["commit"] == commit and identity["version"] == version
             target = origin + "ascension/mainnet/"
+            page.goto(origin + "?lang=fr&text=large")
+            entry = page.locator('#nova-seed [data-nova-link][href*="#resume"]')
+            expect(entry).to_have_count(1)
+            expect(entry).to_have_attribute("href", "ascension/mainnet/?lang=fr&text=large#resume")
+            entry.click()
+            expect(page.locator("#status")).to_contain_text("Commencez localement")
+            expect(page.locator("html")).to_have_attribute("lang", "fr")
+            expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
+            expect(page.locator("#step-resume")).to_be_visible()
+            page.reload()
+            expect(page.locator("#step-resume")).to_be_visible()
+            expect(page.locator("#text-size")).to_have_attribute("aria-pressed", "true")
+            assert inspect(page, "window.__novaReadinessRequests") == []
+            assert "lang=fr&text=large" in (page.locator("#studio-home").get_attribute("href") or "")
             page.goto(target)
             expect(page.locator("#status")).to_contain_text("Start locally")
             page.locator("#example").click()
@@ -121,25 +135,48 @@ def validate(site: Path, output: Path, url: str | None = None) -> dict[str, Any]
                 if language == "fr":
                     page.locator("#language").click()
                 expect(page.locator("html")).to_have_attribute("lang", language)
-                for width in (1440, 390, 320):
-                    page.set_viewport_size({"width": width, "height": 1080})
-                    for step in ("project", "protect", "publish", "mint", "review", "fund", "launch", "resume"):
-                        page.locator(f'[data-step="{step}"]').click()
-                        assert inspect(page, "document.documentElement.scrollWidth <= innerWidth+1"), (
-                            language,
-                            width,
-                            step,
-                        )
-                        inspect(page, axe + ";void 0")
-                        audit = inspect(
-                            page,
-                            "axe.run(document,{runOnly:{type:'tag',"
-                            "values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})",
-                        )
-                        assert audit["violations"] == [], audit["violations"]
-                        audits.append({"language": language, "width": width, "step": step, "violations": []})
-                    if width == 390:
-                        page.screenshot(path=str(output / f"studio-recovered-{language}.png"), full_page=True)
+                for large in (False, True):
+                    if large:
+                        page.locator("#text-size").click()
+                    expect(page.locator("#text-size")).to_have_attribute("aria-pressed", str(large).lower())
+                    for width in (1440, 390, 320):
+                        page.set_viewport_size({"width": width, "height": 1080})
+                        font_size = inspect(page, "parseFloat(getComputedStyle(document.documentElement).fontSize)")
+                        assert font_size >= 20 if large else font_size <= 17
+                        for step in STEPS:
+                            page.locator(f'[data-step="{step}"]').click()
+                            assert inspect(page, "document.documentElement.scrollWidth <= innerWidth+1"), (
+                                language,
+                                width,
+                                step,
+                                large,
+                            )
+                            inspect(page, axe + ";void 0")
+                            audit = inspect(
+                                page,
+                                "axe.run(document,{runOnly:{type:'tag',"
+                                "values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})",
+                            )
+                            assert audit["violations"] == [], audit["violations"]
+                            audits.append(
+                                {
+                                    "language": language,
+                                    "width": width,
+                                    "step": step,
+                                    "largeText": large,
+                                    "violations": [],
+                                }
+                            )
+                        if width == 390:
+                            page.locator('[data-step="project"]').click()
+                            page.screenshot(
+                                path=str(
+                                    output / f"studio-recovered-{language}-{'large' if large else 'standard'}.png"
+                                ),
+                                full_page=True,
+                            )
+                    if large:
+                        page.locator("#text-size").click()
             page.locator('[data-step="project"]').focus()
             page.keyboard.press("Enter")
             expect(page.locator("#step-project")).to_be_visible()

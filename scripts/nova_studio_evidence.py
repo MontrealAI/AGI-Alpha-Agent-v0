@@ -19,6 +19,9 @@ BROWSER_CHECKS = [
     "no-secret-persistence",
     "keyboard",
     "en-fr",
+    "reading-handoff",
+    "larger-text",
+    "direct-recovery",
     "mobile",
     "axe",
 ]
@@ -43,14 +46,30 @@ REQUIRED_ACTIONS = {
 }
 HEX32 = re.compile(r"0x[0-9a-fA-F]{64}\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
-STEPS = ("project", "protect", "publish", "mint", "review", "fund", "launch", "resume")
+STEPS = (
+    "project",
+    "protect",
+    "publish",
+    "mint",
+    "review",
+    "fund",
+    "launch",
+    "resume",
+    "runtime",
+    "reservoir",
+    "continue",
+)
 
 
 def verify_browser(report: dict[str, Any], commit: str, version: str, origin: str | None = None) -> None:
     """Reject stale assets, missing UI checks and claims beyond the actual trial."""
     audits = report.get("audits", [])
     expected_audits = {
-        (language, width, step) for language in ("en", "fr") for width in (1440, 390, 320) for step in STEPS
+        (language, width, step, large)
+        for language in ("en", "fr")
+        for width in (1440, 390, 320)
+        for step in STEPS
+        for large in (False, True)
     }
     if (
         report.get("schema") != "agialpha.nova-studio.browser.v1"
@@ -64,7 +83,8 @@ def verify_browser(report: dict[str, Any], commit: str, version: str, origin: st
         or report.get("mainnetTransactions") != 0
         or report.get("physicalWalletValidated") is not False
         or len(audits) != len(expected_audits)
-        or {(audit.get("language"), audit.get("width"), audit.get("step")) for audit in audits} != expected_audits
+        or {(audit.get("language"), audit.get("width"), audit.get("step"), audit.get("largeText")) for audit in audits}
+        != expected_audits
         or any(audit.get("violations") != [] for audit in audits)
         or (origin is not None and report.get("origin") != origin.rstrip("/") + "/")
     ):

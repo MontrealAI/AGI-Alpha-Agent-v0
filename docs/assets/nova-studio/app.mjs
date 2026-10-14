@@ -11,7 +11,9 @@ import { NovaWorkflow } from './workflow.mjs';
 import { installCycleUI, renderCycleUI } from './cycle-ui.mjs';
 import { resultCommitments } from './runtime.mjs';
 const $ = id => document.getElementById(id);
-let language='en', busy=false, session=null, flow=null, compiled=null, legacyGenome=null, identity=null, resultHash=null;
+const reading=new URLSearchParams(location.search);
+let language=reading.get('lang')==='fr'?'fr':'en', largeText=reading.get('text')==='large';
+let busy=false, session=null, flow=null, compiled=null, legacyGenome=null, identity=null, resultHash=null;
 let epoch=-1, storageFault=null, stopDiscovery=null, nativeResult=null, cycleResult=null, resultScope=null;
 let defaultProfile=null, profiles=[];
 const wallets=[];
@@ -30,7 +32,19 @@ function go(step) {
 }
 function translate() {
   for(const el of document.querySelectorAll('[data-fr]')) {el.dataset.en??=el.textContent;el.textContent=el.dataset[language];}
-  document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';render();
+  document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';
+  document.title=text('Nova-Seed Studio · AGIALPHA','Studio Nova-Seed · AGIALPHA');
+  document.documentElement.classList.toggle('studio-large-text',largeText);
+  $('text-size').setAttribute('aria-pressed',String(largeText));
+  const address=new URL(location.href);
+  address.searchParams.delete('lang');address.searchParams.delete('text');
+  if(language==='fr')address.searchParams.set('lang','fr');
+  if(largeText)address.searchParams.set('text','large');
+  if(address.href!==location.href)history.replaceState(history.state,'',address.href);
+  const query=new URLSearchParams();
+  if(language==='fr')query.set('lang','fr');if(largeText)query.set('text','large');
+  $('studio-home').href=`../../${query.size?`?${query}`:''}`;
+  render();
 }
 function field(label,key,value,kind='input') {
   const el=document.createElement('label');el.textContent=label;
@@ -145,6 +159,9 @@ function packageView() {
 for(const el of document.querySelectorAll('[data-step]'))el.addEventListener('click',()=>go(el.dataset.step));
 for(const el of document.querySelectorAll('[data-next]'))el.addEventListener('click',()=>go(el.dataset.next));
 $('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';translate();});
+$('text-size').addEventListener('click',()=>{largeText=!largeText;translate();});
+for(const el of document.querySelectorAll('[data-open-step]'))el.addEventListener('click',()=>go(el.dataset.openStep));
+window.addEventListener('popstate',()=>{const query=new URLSearchParams(location.search);language=query.get('lang')==='fr'?'fr':'en';largeText=query.get('text')==='large';translate();});
 $('deployment-choice').addEventListener('change',()=>{const selectedId=$('deployment-choice').value;return run(async()=>{
   const profile=selectBuildProfile(selectedId,defaultProfile);
   if(selectedId===flow.client.profileIdentity)return;
@@ -314,6 +331,7 @@ document.addEventListener('input',event=>{if(!['transaction-ack','journal-consen
 window.addEventListener('storage',event=>{if(event.key===JOURNAL_KEY||event.key===null){flow?.clearPreview();if(!busy)try{session?.sync();render();}catch(error){storageFault=error.message;status(storageFault,true);}}});
 window.addEventListener('beforeunload',event=>{if(flow?.package||flow?.client.history.some(unresolved)){event.preventDefault();event.returnValue='';}});
 addJob();
+translate();
 const cycleMode=document.createElement('option');cycleMode.value='cycle-artifact';cycleMode.textContent='Verified cycle artifact · Keccak-256';cycleMode.dataset.fr='Artefact du cycle vérifié · Keccak-256';$('result-format').append(cycleMode);
 try {
   const response=await fetch(new URL('../ascension-wallet/profile.json',import.meta.url),{cache:'no-store',redirect:'error'});
@@ -354,4 +372,5 @@ $('result-algorithm').addEventListener('change',()=>run(async()=>{
   if($('result-format').value!=='generic-sha256'){$('result-algorithm').value='keccak256';return;}
   if($('result-file').files[0])await readResult();else{clearResult();status('Select the exact file again / Choisir le fichier exact.');}
 }));
+if(['project','protect','publish','mint','review','fund','launch','resume','runtime','reservoir','continue'].includes(location.hash.slice(1)))go(location.hash.slice(1));
 render();

@@ -30,10 +30,11 @@ class StudioEvidenceTests(unittest.TestCase):
             "mainnetTransactions": 0,
             "physicalWalletValidated": False,
             "audits": [
-                {"language": lang, "width": width, "step": step, "violations": []}
+                {"language": lang, "width": width, "step": step, "largeText": large, "violations": []}
                 for lang in ("en", "fr")
                 for width in (1440, 390, 320)
                 for step in STEPS
+                for large in (False, True)
             ],
         }
         with patch("scripts.nova_studio_evidence.hashes", return_value=assets):
@@ -152,15 +153,19 @@ class StudioEvidenceTests(unittest.TestCase):
                 }
                 (folder / "evidence-index.json").write_text(json.dumps(manifest))
 
-            with patch("scripts.nova_studio_evidence.ROOT", root), patch(
-                "scripts.nova_studio_evidence.hashes", return_value={"ascension/mainnet/index.html": digest}
+            with (
+                patch("scripts.nova_studio_evidence.ROOT", root),
+                patch("scripts.nova_studio_evidence.hashes", return_value={"ascension/mainnet/index.html": digest}),
             ):
                 save_index()
                 verify_lifecycle(folder, "a" * 40)
-                with patch(
-                    "scripts.nova_studio_evidence.hashes",
-                    return_value={"ascension/mainnet/index.html": digest, "assets/successor/engine.mjs": "f" * 64},
-                ), self.assertRaises(ValueError):
+                with (
+                    patch(
+                        "scripts.nova_studio_evidence.hashes",
+                        return_value={"ascension/mainnet/index.html": digest, "assets/successor/engine.mjs": "f" * 64},
+                    ),
+                    self.assertRaises(ValueError),
+                ):
                     verify_lifecycle(folder, "a" * 40)
                 with self.assertRaises(ValueError):
                     verify_lifecycle(folder, "b" * 40)
