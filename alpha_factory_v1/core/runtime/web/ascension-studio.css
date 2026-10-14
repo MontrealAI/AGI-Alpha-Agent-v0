@@ -1,0 +1,16 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+:root{--bg:#100d20;--surface:#1a1530;--line:#493862;--accent:#d7b1ff;--muted:#c1b2d2;--text:#f4eefb}
+.skip{position:absolute;left:16px;top:-100px;padding:14px;background:var(--accent);color:#160d25;z-index:2}.skip:focus{top:10px}
+header{flex-wrap:wrap}nav{flex-wrap:wrap}.language{margin:0;font-size:11px}.language select{margin-top:6px;padding:8px;min-height:44px}
+button,input,select{min-height:44px}button{color:#21102e;white-space:normal}.secondary,.quiet{color:var(--text)}
+input,textarea,select{background:#130e22}button:disabled{cursor:not-allowed}.intro h1{color:var(--text)}
+dl{display:grid;grid-template-columns:minmax(100px,.25fr) minmax(0,1fr);gap:8px 16px;font-size:13px;line-height:1.7}
+dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:440px;overflow:auto;background:#100b1d;padding:18px;font:12px/1.65 ui-monospace,monospace}
+.phase-list{display:flex;list-style:none;flex-wrap:wrap;padding:0;gap:10px}.phase-list li{padding:8px 12px;border:1px solid var(--line);border-radius:24px;font-size:12px}.phase-list li[aria-current=step]{border-color:var(--accent);background:#342347}
+.callout{border-left:3px solid var(--accent);padding:12px 18px;background:#251b38}.phase-panel{border-top:1px solid var(--line);margin-top:25px;padding-top:12px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.6;margin:20px 0}.check input{width:22px;min-height:22px;flex:none;margin:1px 0;accent-color:var(--accent)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.wrap{flex-wrap:wrap}.mission-row{text-align:left;gap:12px}.mission-row small{color:var(--muted)}
+details{margin:20px 0}summary{min-height:44px;cursor:pointer;line-height:1.5;padding:12px 0}summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+[hidden]{display:none!important}#message{min-height:26px}.error{color:#ffb7ac}footer{align-items:flex-start}footer p{margin:0}body.busy{cursor:progress}
+@media(max-width:900px){header,footer{padding:24px}.columns,.form-grid{grid-template-columns:1fr}main{padding:28px 18px}.panel{padding:22px}.section-title{flex-wrap:wrap}.inline{flex-wrap:wrap}.inline input{flex-basis:100%}nav{margin-left:0}dl{grid-template-columns:1fr}dd{margin-bottom:12px}.brand{font-size:40px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}

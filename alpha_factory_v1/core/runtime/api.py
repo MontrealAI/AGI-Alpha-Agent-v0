@@ -12,6 +12,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import Field
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.concurrency import run_in_threadpool
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from .engine import Engine
@@ -159,6 +160,72 @@ def create_app(journal: Journal) -> FastAPI:
     @app.get("/style.css")
     def stylesheet() -> FileResponse:
         return FileResponse(static / "style.css", media_type="text/css")
+
+    @app.get("/ascension-studio")
+    def ascension_studio() -> FileResponse:
+        return FileResponse(static / "ascension-studio.html")
+
+    @app.get("/ascension-studio.js")
+    def ascension_studio_javascript() -> FileResponse:
+        return FileResponse(static / "ascension-studio.js", media_type="application/javascript")
+
+    @app.get("/ascension-studio.css")
+    def ascension_studio_stylesheet() -> FileResponse:
+        return FileResponse(static / "ascension-studio.css", media_type="text/css")
+
+    @app.get("/ascension-studio-setup")
+    def ascension_studio_setup() -> FileResponse:
+        return FileResponse(static / "ascension-studio-setup.html")
+
+    @app.get("/api/ascension-studio/status", dependencies=[Depends(authorize)])
+    def ascension_studio_status() -> dict[str, Any]:
+        from .successor.studio_operator import status
+
+        return status(journal)
+
+    @app.get("/api/ascension-studio/work", dependencies=[Depends(authorize)])
+    def ascension_studio_records() -> list[dict[str, Any]]:
+        from .successor.studio_operator import records
+
+        return records(journal)
+
+    @app.get("/api/ascension-studio/work/{request_digest}/export", dependencies=[Depends(authorize)])
+    def ascension_studio_export(request_digest: str) -> dict[str, Any]:
+        from .successor.studio_operator import export
+
+        return export(journal, request_digest)
+
+    @app.get("/api/ascension-studio/work/{request_digest}/settlement", dependencies=[Depends(authorize)])
+    def ascension_studio_export_settlement(request_digest: str) -> dict[str, Any]:
+        from .successor.studio_operator import export_settlement
+
+        return export_settlement(journal, request_digest)
+
+    @app.get("/api/ascension-studio/work/{request_digest}", dependencies=[Depends(authorize)])
+    def ascension_studio_show(request_digest: str) -> dict[str, Any]:
+        from .successor.studio_operator import show
+
+        return show(journal, request_digest)
+
+    @app.post("/api/ascension-studio/{action}", dependencies=[Depends(authorize)])
+    async def ascension_studio_operate(action: str, request: Request) -> dict[str, Any]:
+        from .successor.protocol import safe_json_loads
+        from .successor.studio_operator import operate
+
+        document = safe_json_loads(await request.body(), max_bytes=MAX_REQUEST_BYTES)
+        if not isinstance(document, dict):
+            raise ValueError("Studio operation must be an object")
+        try:
+            result: dict[str, Any] = await run_in_threadpool(operate, journal, action, document)
+            return result
+        except (Conflict, KeyError):
+            raise
+        except ValueError as exc:
+            from .store import public_error
+
+            raise HTTPException(422, public_error(exc)) from exc
+        except Exception as exc:
+            raise HTTPException(502, "Studio operation failed; refresh retained history before retrying") from exc
 
     @app.get("/healthz")
     def health() -> dict[str, str]:
