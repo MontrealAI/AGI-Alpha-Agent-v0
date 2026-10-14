@@ -20,7 +20,7 @@ async function main(){
   await requireDisposableLocalNetwork();
   const f=await fixture(),temp=fs.mkdtempSync(path.join(os.tmpdir(),'nova-studio-'));
   fs.mkdirSync(out,{recursive:true});
-  for(const folder of ['ascension','ascension-wallet','nova-studio'])fs.cpSync(path.join(root,'docs/assets',folder),path.join(temp,'assets',folder),{recursive:true});
+  for(const folder of ['ascension','ascension-wallet','nova-studio','successor'])fs.cpSync(path.join(root,'docs/assets',folder),path.join(temp,'assets',folder),{recursive:true});
   fs.cpSync(path.join(root,'docs/ascension/mainnet'),path.join(temp,'ascension/mainnet'),{recursive:true});
   const {ACTIONS,CONTRACTS}=await import(path.join(root,'docs/assets/ascension-wallet/protocol.mjs'));
   const contracts={};

@@ -8,12 +8,12 @@ export const KIT_SCHEMA = 'agialpha.nova-studio.recovery.v1';
 export const hashBytes = async bytes => '0x' + Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), b => b.toString(16).padStart(2,'0')).join('');
 export const fileBytes = object => encoder.encode(canonicalJSON(object) + '\n');
 export const objectHash = async object => '0x' + await hashObject(object);
-export function strictJSON(text, maxBytes = 2000000) {
+export function strictJSON(text, maxBytes = 2000000, { historicalTimestamp = false } = {}) {
   if (typeof text !== 'string' || encoder.encode(text).length > maxBytes) throw Error('Import exceeds its size limit.');
   // Tokenize objects before JSON.parse so duplicate decoded keys cannot disappear.
   const tokens = text.match(/"(?:[^"\\]|\\.)*"|[{}\[\]:,]|[^\s{}\[\]:,]+/g) || [];
   let pos = 0;
-  function visit(depth = 0) {
+  function visit(depth = 0, path = []) {
     if (depth > 24) throw Error('Import exceeds 24 nesting levels.');
     const token = tokens[pos++];
     if (token === '{') {
@@ -24,27 +24,33 @@ export function strictJSON(text, maxBytes = 2000000) {
           throw Error('Duplicate or unsafe JSON key.');
         seen.add(key);
         if (tokens[pos++] !== ':') throw Error('Malformed JSON object.');
-        visit(depth + 1);
+        visit(depth + 1, [...path,key]);
         if (tokens[pos] !== ',') break;
         pos++;
       } while (true);
       if (tokens[pos++] !== '}') throw Error('Malformed JSON object.');
     } else if (token === '[') {
       if (tokens[pos] !== ']') do {
-        visit(depth + 1);
+        visit(depth + 1, [...path,'[]']);
         if (tokens[pos] !== ',') break;
         pos++;
       } while (true);
       if (tokens[pos++] !== ']') throw Error('Malformed JSON array.');
     } else {
       const value = JSON.parse(token);
-      if (typeof value === 'number' && (!Number.isSafeInteger(value) || !Number.isFinite(value)))
+      // A signed legacy journal stores nanoseconds as a uint64 JSON number.
+      // Preserve that one metadata lexeme as an exact string in the parsed copy;
+      // authenticate the original bytes separately, never a rounded reserialization.
+      if (historicalTimestamp && path.length===1 && path[0]==='time_ns') {
+        if (!/^[1-9][0-9]*$/.test(token) || BigInt(token)>=(1n<<64n)) throw Error('Invalid exact historical timestamp.');
+        tokens[pos-1]=JSON.stringify(token);
+      } else if (typeof value === 'number' && !Number.isSafeInteger(value))
         throw Error('Use exact integer strings for large values.');
     }
   }
   visit();
   if (pos !== tokens.length) throw Error('Unexpected trailing JSON.');
-  return JSON.parse(text);
+  return JSON.parse(historicalTimestamp?tokens.join(''):text);
 }
 export function profileIdentity(profile) {
   return { chainId:profile.chainId, profile:profile.profile,

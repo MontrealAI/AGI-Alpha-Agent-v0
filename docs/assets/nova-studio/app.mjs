@@ -5,9 +5,11 @@ import { ACTIONS, tokens, curve, uint } from '../ascension-wallet/protocol.mjs';
 import { json, unresolved } from '../ascension-wallet/client.mjs';
 import { canonicalJSON, openSeed } from '../ascension/crypto.mjs';
 import { compilePlan, jobFromEditor } from './plan.mjs';
-import { fileBytes, hashBytes, objectHash, strictJSON, profileIdentity } from './package.mjs';
+import { fileBytes, objectHash, strictJSON, profileIdentity } from './package.mjs';
 import { PinataStorage, metadataFor, verifyPublication } from './storage.mjs';
 import { NovaWorkflow } from './workflow.mjs';
+import { installCycleUI, renderCycleUI } from './cycle-ui.mjs';
+import { resultCommitments } from './runtime.mjs';
 const $ = id => document.getElementById(id);
 let language='en', busy=false, session=null, flow=null, compiled=null, legacyGenome=null, identity=null, resultHash=null;
 let epoch=-1, storageFault=null, stopDiscovery=null;
@@ -79,6 +81,7 @@ function render() {
     $('nft-card').append(h,p,code,note);
   } else { $('nft-card').replaceChildren();$('review-status').textContent=text('Refresh chain state to check current review.','Actualisez la chaîne pour vérifier la revue.');$('funding-status').textContent=''; }
   $('mark-link').href=`../../ascension-protocol/mainnet/?profile=${encodeURIComponent(c.profile.profile)}${flow.seedId?`&seed=${flow.seedId}`:''}${$('onchain-job').value?`&job=${encodeURIComponent($('onchain-job').value)}`:''}`;
+  renderCycleUI(flow);
 }
 async function run(fn) {
   if(busy)return;busy=true;render();
@@ -111,6 +114,17 @@ $('example').addEventListener('click',()=>{
   $('title').value='EXAMPLE · Public performance improvement';$('description').value='Illustrative project. Replace these assumptions with your own.';
   $('evidence').value='Use a public repository and reproducible benchmark. Compare the same workload and document hardware, baseline and results.';
   $('jobs').replaceChildren();addJob({goal:'Improve the throughput of a public open-source parser.',successMetric:'All upstream tests pass; a reproducible benchmark improves median throughput by at least 15% without higher error rates.',bounty:'100000000000000000000',duration:86400,priceWeight:6000});edited();
+});
+$('cycle-example').addEventListener('click',()=>{
+  if(flow?.package)return status('The exact package is already frozen. Export it before preparing a different project.',true);
+  $('title').value='EXAMPLE · Inspectable numerical cycle';
+  $('description').value='Synthetic polynomial calculations with a retained baseline, a fresh comparison and a separately authorized successor.';
+  $('evidence').value='Return exact analytic reference, trapezoid and Simpson estimates, absolute errors and tolerance decisions. A truthful negative finding satisfies the report job. Freeze fresh common inputs and a fixed comparison before the second execution. Costs remain unmeasured.';
+  $('jobs').replaceChildren();
+  for(const goal of ['Produce the original exact-rational numerical report, retaining negative results.','Compare the two predeclared fixed numerical methods on fresh common inputs before considering a successor.'])addJob({goal,successMetric:'Exact reproducible inputs, both numerical outputs, analytic reference, absolute errors and tolerance decisions; accurately reported failure is acceptable.',bounty:'100000000000000000000',duration:86400,priceWeight:6000});
+  $('runtime-family').value='numerical';$('runtime-data-fields').hidden=true;$('runtime-numerical-fields').hidden=false;
+  $('numerical-coefficients').value='0,0,0,0,1';$('numerical-lower').value='0';$('numerical-upper').value='5';$('numerical-steps').value='2';$('numerical-tolerance').value='1';
+  edited();status('Two-job synthetic example loaded. Review commitments and inputs; separate actors must approve every required action.');
 });
 $('compile').addEventListener('click',()=>run(async()=>{compiled=compilePlan(jobs());$('plan-details').textContent=json(compiled);$('compile-summary').textContent=`${compiled.jobs.length} jobs · ${tokens(compiled.totalBounty)} $AGIALPHA · ${text('Exact plan compiled locally. Reviewers receive the contract-defined allocation from the gross price; gas is separate.','Plan exact compilé localement. La part des validateurs est prélevée sur le prix brut; les frais réseau sont distincts.')}`;status('Plan compiled. No wallet or network access.');}));
 $('seal-package').addEventListener('click',()=>run(async()=>{
@@ -146,15 +160,9 @@ $('admission-request').addEventListener('click',()=>run(async()=>{identity=await
 action('register','register',()=>({label:$('ens-label').value}));action('mint','seal');action('open-review','openReview');
 action('transfer-seed','transferSeed',()=>({to:$('seed-recipient').value,acknowledged:$('transfer-ack').checked}));
 $('successor-seed').addEventListener('click',()=>run(async()=>{
-  const state=await flow.inspect();
   if(!flow.package)throw Error('Recover the parent’s exact package before deriving a successor.');
-  if(flow.client.account?.toLowerCase()!==state.seedOwner.toLowerCase())throw Error('Connect the current owner to create a successor.');
-  const parent=state.seedId, inherited=flow.package.plan.jobs.map(j=>j.spec);
-  download(`Nova-Seed-${parent}-Recovery-Kit.json`,await flow.kit());
-  flow=new NovaWorkflow(session,new PinataStorage());compiled=null;legacyGenome=null;
-  $('title').value=`Successor to Nova-Seed #${parent}`;$('description').value='';$('parent').value=parent;
-  $('jobs').replaceChildren();for(const spec of inherited)addJob(spec);
-  go('project');status('Parent exported unchanged. Edit and encrypt a new version; review and campaign authority are not inherited.');
+  await flow.syncProject();go('continue');
+  status('Prepare a distinct linked cycle here. The parent and its history stay intact; authority is not inherited.');
 }));
 $('refresh-review').addEventListener('click',()=>run(()=>flow.inspect()));
 $('review-reference').addEventListener('click',()=>run(async()=>{await flow.inspect();download('nova-review-reference.json',{schema:'agialpha.nova-studio.review-reference.v1',deployment:profileIdentity(session.client.profile),seedId:flow.seedId,metadataURI:flow.observation.metadataURI,genome:flow.observation.genome,round:flow.observation.review,guide:'Obtain authorized capsule access separately. Connect your own validator wallet and refresh current state. This reference is not an approval.'});}));
@@ -177,8 +185,9 @@ action('bid','bid',()=>({jobId:$('onchain-job').value,price:$('bid-price').value
 action('approve-worker','approveStake',()=>({spender:'Jobs',amount:$('worker-stake').value}));
 action('deposit-worker','agentDeposit',()=>({amount:$('worker-stake').value}));
 action('withdraw-worker','agentWithdraw',()=>({amount:$('worker-stake').value}));
-$('result-file').addEventListener('change',()=>run(async()=>{resultHash=null;const f=$('result-file').files[0];if(!f||f.size>2000000)throw Error('Use an exact result file no larger than 2 MB.');resultHash=await hashBytes(await f.arrayBuffer());$('result-hash').textContent=resultHash;flow.clearPreview();}));
-action('submit-result','submit',()=>({jobId:$('onchain-job').value,result:resultHash,uri:$('result-uri').value}));
+async function selectedResult(){resultHash=null;const f=$('result-file').files[0];if(!f||f.size>2000000)throw Error('Use an exact result file no larger than 2 MB.');const hashes=await resultCommitments(await f.arrayBuffer());resultHash=hashes[$('result-algorithm')?.value||'sha256'];$('result-hash').textContent=resultHash;flow.clearPreview();}
+$('result-file').addEventListener('change',()=>run(selectedResult));
+action('submit-result','submit',()=>({jobId:$('onchain-job').value,result:resultHash,uri:$('result-uri').value,hashAlgorithm:$('result-algorithm').value}));
 action('validate-result','validate',()=>({jobId:$('onchain-job').value,result:resultHash,approved:$('result-decision').value,findings:$('result-findings').value,reviewed:$('result-review-ack').checked}));
 action('timeout-job','timeout',()=>({jobId:$('onchain-job').value}));
 $('restore-kit').addEventListener('click',()=>run(async()=>{
@@ -198,7 +207,7 @@ action('transfer-lots','transferLots',()=>({to:$('lot-recipient').value,count:$(
 $('confirm').addEventListener('click',()=>run(async()=>{if(!$('journal-consent').checked)throw Error('Consent to the public recovery journal is required.');const hash=await flow.confirm($('transaction-ack').checked);$('transaction-ack').checked=false;$('reconcile-hash').value=hash;go('resume');status(`Submitted, not confirmed: ${hash}. Reconcile before another action.`);}));
 $('cancel-preview').addEventListener('click',()=>{flow.clearPreview();render();});
 $('transaction-ack').addEventListener('change',render);$('journal-consent').addEventListener('change',render);
-$('clear-project').addEventListener('click',()=>run(async()=>{if(unresolved(flow.client.pending))throw Error('Resolve the outstanding transaction before clearing this project.');flow=new NovaWorkflow(session,new PinataStorage());compiled=null;legacyGenome=null;resultHash=null;for(const id of ['title','description','evidence','passphrase','passphrase-again','restore-passphrase','storage-token'])$(id).value='';$('jobs').replaceChildren();addJob();$('plan-details').textContent='—';$('commitments').textContent='—';$('public-fields').textContent='—';$('job-choice').replaceChildren();go('project');status('Project cleared from this page. Best-effort UI clearing is not guaranteed memory erasure.');}));
+$('clear-project').addEventListener('click',()=>run(async()=>{if(unresolved(flow.client.pending))throw Error('Resolve the outstanding transaction before clearing this project.');flow=new NovaWorkflow(session,new PinataStorage());await flow.ensureProject();compiled=null;legacyGenome=null;resultHash=null;for(const id of ['title','description','evidence','passphrase','passphrase-again','restore-passphrase','storage-token'])$(id).value='';$('jobs').replaceChildren();addJob();$('plan-details').textContent='—';$('commitments').textContent='—';$('public-fields').textContent='—';$('job-choice').replaceChildren();go('project');status('Project cleared from this page. Best-effort UI clearing is not guaranteed memory erasure.');}));
 document.addEventListener('input',event=>{if(!['transaction-ack','journal-consent','reconcile-hash'].includes(event.target.id)&&flow?.client.prepared){flow.clearPreview();$('transaction-ack').checked=false;render();}});
 window.addEventListener('storage',event=>{if(event.key===JOURNAL_KEY||event.key===null){flow?.clearPreview();if(!busy)try{session?.sync();render();}catch(error){storageFault=error.message;status(storageFault,true);}}});
 window.addEventListener('beforeunload',event=>{if(flow?.package||unresolved(flow?.client.pending)){event.preventDefault();event.returnValue='';}});
@@ -209,9 +218,14 @@ try {
   const storage={getItem:key=>{try{return window.localStorage.getItem(key);}catch{storageFault='Browser storage unavailable; signing disabled.';return null;}},
     setItem:(key,value)=>{if(storageFault||!$('journal-consent').checked)throw Error(storageFault||'Public journal consent is required.');window.localStorage.setItem(key,value);}};
   session=new WalletSession(await response.json(),storage,navigator.locks,render);flow=new NovaWorkflow(session,new PinataStorage());
+  await flow.ensureProject();
   epoch=flow.client.epoch;render();
   status(text('Start locally, without connecting a wallet. Existing project? Open Resume & recover.','Commencez localement, sans portefeuille. Projet existant ? Ouvrez Reprendre et récupérer.'));
   if(storageFault)status(storageFault,true);
 }catch(error){status(error.message,true);}
 
 $('export-result-review').addEventListener('click',()=>run(async()=>{if(!flow.resultReviewEvidence)throw Error('Prepare your result review first.');download('nova-result-review.json',flow.resultReviewEvidence);}));
+installCycleUI({getFlow:()=>flow,run,download,status,go,packageView,getLanguage:()=>language,
+  setNativeResult:(hash,algorithm)=>{resultHash=hash;$('result-algorithm').value=algorithm;$('result-hash').textContent=`${algorithm}: ${hash}`;flow.clearPreview();}});
+$('result-algorithm').addEventListener('change',()=>run(async()=>{if($('result-file').files[0])await selectedResult();else{resultHash=null;$('result-hash').textContent='Select the exact file again / Choisir le fichier exact.';}}));
+render();

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Bind MARK browser acceptance to exact shipped source and release identity."""
+
 from __future__ import annotations
 import hashlib
 from pathlib import Path
@@ -21,7 +22,7 @@ ASSETS = (
             "profile.json",
         )
     )
-    + ("assets/ascension/crypto.mjs",)
+    + ("assets/ascension/crypto.mjs", "assets/successor/engine.mjs")
     + ("ascension/mainnet/index.html",)
     + tuple(
         "assets/nova-studio/" + name
@@ -33,6 +34,11 @@ ASSETS = (
             "storage.mjs",
             "studio.css",
             "workflow.mjs",
+            "cycle.mjs",
+            "cycle-ui.mjs",
+            "runtime.mjs",
+            "reuse.mjs",
+            "ledger.mjs",
             "vendor/ethers-6.17.0.mjs",
         )
     )
