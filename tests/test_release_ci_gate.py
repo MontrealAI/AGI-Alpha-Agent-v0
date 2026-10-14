@@ -166,15 +166,16 @@ def test_candidate_cli_writes_bound_scope_without_querying_github(tmp_path: Path
         wait_for_release_ci.main()
 
 
-def test_waiter_allows_historical_tests_to_finish_after_the_old_fifty_minute_deadline(
-    tmp_path: Path, monkeypatch
+@pytest.mark.parametrize("elapsed", [3001, 4801])
+def test_waiter_allows_historical_tests_to_finish_after_previous_deadlines(
+    tmp_path: Path, monkeypatch, elapsed: int
 ) -> None:
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("GITHUB_SHA", SHA)
     monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     monkeypatch.setattr(sys, "argv", ["wait_for_release_ci"])
-    clock = iter([0, 3001])
+    clock = iter([0, elapsed])
     monkeypatch.setattr(wait_for_release_ci.time, "monotonic", lambda: next(clock))
     rounds = []
     monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: rounds.append(seconds))
@@ -191,6 +192,15 @@ def test_waiter_allows_historical_tests_to_finish_after_the_old_fifty_minute_dea
     assert rounds == [30]
     evidence = json.loads(Path("evidence/historical-ci.json").read_text())
     validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
+
+
+def test_historical_job_leaves_time_to_record_waiter_evidence() -> None:
+    import yaml
+
+    workflow = yaml.safe_load((Path(__file__).resolve().parents[1] / ".github/workflows/agent-release.yml").read_text())
+    timeout = workflow["jobs"]["historical-ci"]["timeout-minutes"]
+    assert timeout * 60 >= wait_for_release_ci.WAIT_SECONDS + 5 * 60
+    assert wait_for_release_ci.WAIT_SECONDS <= 120 * 60
 
 
 def test_packaging_rejects_stale_historical_evidence_before_creating_assets(tmp_path: Path, monkeypatch) -> None:

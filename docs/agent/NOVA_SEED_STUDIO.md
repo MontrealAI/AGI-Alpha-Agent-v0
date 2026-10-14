@@ -45,6 +45,10 @@ posting a job is not an automatic executor. Read the availability notice before 
    Restore checks the checksum, commitments and encrypted plan. Imported transaction outcomes remain
    untrusted until reconciled against the chain. Nothing signs or uploads automatically.
 
+Full-project recovery also preserves historical runtime records for inspection. Unrecognized or incomplete records
+remain in the recovered project but are excluded from the selectable delivery/settlement view, so they cannot prevent
+the rest of the project from opening. A recognized record still requires current verification before use.
+
 Existing compatible encrypted capsules remain readable. Conversion of an old unminted capsule produces a
 new package while preserving the original. A capsule without a committed on-chain plan cannot be relabelled
 as ready to mint or attached to an already-minted NFT.

@@ -149,8 +149,14 @@ export class NovaWorkflow {
     if (payouts.length!==settlement.payouts.length || payouts.some((event,i)=>event.recipient.toLowerCase()!==settlement.payouts[i].recipient.toLowerCase() || event.gross!==BigInt(settlement.payouts[i].gross) || event.burned!==BigInt(settlement.payouts[i].burned))) throw Error('Settlement payouts and burn differ from the signed accounting.');
     if ((await this.client.read('eth_getBlockByNumber',[receipt.blockNumber,false]))?.hash!==receipt.blockHash) throw Error('Settlement block reorganized. Refresh before continuing.');
     for (const cycle of this.project.cycles) for (const item of cycle.signedRecords.filter(r=>r.kind==='settlement')) {
-      const old=strictJSON(item.originalText).settlement;
-      if (old && canonical(old.chain)===canonical(settlement.chain) && (cycle.cycleId!==this.cycleId || canonical(old)!==canonical(settlement))) throw Error('This payment is already attributed to another cycle or result.');
+      const old=strictJSON(item.originalText)?.settlement, previous=old?.chain;
+      // Opaque recovery records remain intact, but only a recognizable chain
+      // attribution can participate in duplicate-payment checks.
+      if (!previous || typeof previous!=='object' || Array.isArray(previous) ||
+          Object.keys(previous).sort().join()!=='chain,job,market' ||
+          !['chain','job'].every(key=>typeof previous[key]==='string' && /^[1-9][0-9]*$/.test(previous[key])) ||
+          typeof previous.market!=='string' || !/^0x[0-9a-fA-F]{40}$/.test(previous.market)) continue;
+      if (canonical(previous)===canonical(settlement.chain) && (cycle.cycleId!==this.cycleId || canonical(old)!==canonical(settlement))) throw Error('This payment is already attributed to another cycle or result.');
     }
     this.client.guard(epoch);
     let project=await preserveSignedRecord(this.project,{kind:'settlement',originalText:text});
@@ -162,8 +168,10 @@ export class NovaWorkflow {
   retainedResult(artifactHash) {
     for (const cycle of this.project.cycles) for (const record of cycle.signedRecords.filter(item=>item.kind==='runtime-run')) {
       const result=strictJSON(record.originalText);
-      if (result.artifact_keccak256!==artifactHash) continue;
-      const request=cycle.missions.find(item=>item.request.plan_index===result.execution_binding.body.plan_binding.plan_index)?.request;
+      if (result?.schema!=='agialpha.ascension.studio-result.v1' || result.artifact_keccak256!==artifactHash) continue;
+      const index=result.execution_binding?.body?.plan_binding?.plan_index;
+      if (!Number.isSafeInteger(index) || index<0) continue;
+      const request=cycle.missions.find(item=>item.request.plan_index===index)?.request;
       if (request) return {request,result,cycle,originalText:record.originalText};
     }
     throw Error('Retain the exact original runtime result and request before evaluating it.');
@@ -182,7 +190,7 @@ export class NovaWorkflow {
     let request;
     for (const item of this.currentCycle.missions) if (await digest('ascension-studio-request',item.request)===body.request_digest) request=item.request;
     if (!request || canonical(request.work_spec.inputs)!==canonical(body.fresh_common_inputs)) throw Error('Prepare the exact fresh comparison request before importing its freeze.');
-    if (this.currentCycle.signedRecords.some(item=>item.kind==='runtime-run'&&strictJSON(item.originalText).request_digest===body.request_digest)) throw Error('Import the frozen protocol before the fresh execution result. Preserve late records as history only.');
+    if (this.currentCycle.signedRecords.some(item=>item.kind==='runtime-run'&&strictJSON(item.originalText)?.request_digest===body.request_digest)) throw Error('Import the frozen protocol before the fresh execution result. Preserve late records as history only.');
     const protocol=await this.evaluationProtocol(freeze,baseline);
     let project=await preserveSignedRecord(this.project,{kind:'evaluation',originalText:text});
     const known=this.currentCycle.evaluations.find(item=>item.protocol.procedureDigest==='0x'+freeze.digest);
@@ -227,7 +235,7 @@ export class NovaWorkflow {
     const retained=this.retainedResult(source.artifactHash||this.runtimeResult?.artifact_keccak256);
     const {result,request,cycle}=retained, sourceCycleId=cycle.cycleId;
     const observerKey=source.observerKey||this.runtimeTrust?.observerKey;
-    const record=cycle.signedRecords.find(item=>item.kind==='settlement'&&strictJSON(item.originalText).settlement?.delivery_digest===result.delivery.digest);
+    const record=cycle.signedRecords.find(item=>item.kind==='settlement'&&strictJSON(item.originalText)?.settlement?.delivery_digest===result.delivery.digest);
     if (!record || !observerKey) throw Error('Retain the exact finalized settlement and pin the source runtime observer first.');
     const authorized=await authorizeArtifactReuse(this.project,sourceCycleId,{artifactName:'calculation-input.json',review,verifyCurrent:async()=>{
       const verifier=new NovaWorkflow(this.session,this.storage);

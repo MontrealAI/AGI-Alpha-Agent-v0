@@ -20,6 +20,18 @@ function line(label,value) {
   const p=document.createElement('p'), strong=document.createElement('strong');
   strong.textContent=label+': ';p.append(strong,document.createTextNode(String(value)));return p;
 }
+function historicalResult(record,project,cycle) {
+  // Recovery preserves opaque signed bytes, including records from other runtime
+  // versions. A readable local checksum is not current signature verification.
+  const result=strictJSON(record.originalText);
+  const matches=(value,pattern)=>typeof value==='string'&&pattern.test(value);
+  if(result?.schema!=='agialpha.ascension.studio-result.v1' || result.project_id!==project.projectId ||
+      result.cycle_id!==cycle.cycleId || !matches(result.artifact_keccak256,/^0x[0-9a-f]{64}$/) ||
+      !matches(result.artifact_sha256,/^0x[0-9a-f]{64}$/) || !matches(result.delivery?.digest,/^[0-9a-f]{64}$/) ||
+      !matches(result.execution_binding?.body?.market_job_id,/^[1-9][0-9]{0,77}$/) ||
+      !['PASS','FAIL','RETAIN_INCUMBENT','INSUFFICIENT_EVIDENCE','NOT_APPLICABLE'].includes(result.candidate_verdict))return null;
+  return result;
+}
 function workSpec(flow,language) {
   const family=$('runtime-family').value;
   const number=id=>{const raw=$(id).value;if(!/^-?(0|[1-9]\d*)$/.test(raw))throw Error('Use exact whole numbers / Utilisez des entiers exacts.');const value=Number(raw);if(!Number.isSafeInteger(value))throw Error('Integer exceeds supported range.');return value;};
@@ -197,8 +209,8 @@ export function renderCycleUI(flow) {
   $('reuse-source').replaceChildren();
   const empty=document.createElement('option');empty.value='';empty.textContent='Choose a retained result / Choisir un résultat';$('reuse-source').append(empty);
   for(const item of project.cycles)for(const record of item.signedRecords.filter(r=>r.kind==='runtime-run')){
-    const result=strictJSON(record.originalText);
-    if(!item.signedRecords.some(r=>r.kind==='settlement'&&strictJSON(r.originalText).settlement?.delivery_digest===result.delivery.digest))continue;
+    const result=historicalResult(record,project,item);
+    if(!result || !item.signedRecords.some(r=>r.kind==='settlement'&&strictJSON(r.originalText)?.settlement?.delivery_digest===result.delivery.digest))continue;
     const option=document.createElement('option');option.value=result.artifact_keccak256;
     option.textContent=`Cycle ${item.ordinal} · job ${result.execution_binding.body.market_job_id} · ${result.artifact_sha256.slice(0,18)}…`;
     $('reuse-source').append(option);
@@ -206,7 +218,12 @@ export function renderCycleUI(flow) {
   $('reuse-source').value=selectedSource||flow.runtimeResult?.artifact_keccak256||'';
   if(!$('reuse-valid-until').value)$('reuse-valid-until').value=new Date(Date.now()+3600000).toISOString().slice(0,16);
   const results=cycle.signedRecords.filter(r=>r.kind==='runtime-run');
-  for(const record of results){const result=strictJSON(record.originalText);$('candidate-summary').append(line('Retained candidate verdict / Verdict conservé',result.candidate_verdict),line('Adoption / Adoption','Not granted by payment or recovery / Non accordée par paiement ou récupération'));}
+  for(const record of results){
+    const result=historicalResult(record,project,cycle);
+    $('candidate-summary').append(line('Historical report · unverified / Rapport historique · non vérifié',
+      result?result.candidate_verdict:'Unrecognized historical record retained / Document historique non reconnu conservé'),
+      line('Adoption / Adoption','Not granted by payment or recovery / Non accordée par paiement ou récupération'));
+  }
   if(!results.length)$('candidate-summary').append(line('Evaluation / Évaluation','No execution report retained / Aucun rapport conservé'));
   for(const evaluation of cycle.evaluations)$('candidate-summary').append(line('Frozen comparison / Comparaison figée',`${evaluation.evidence?.effectiveVerdict||'Awaiting evidence'} · ${evaluation.decision?.decision||'Decision pending'} · costs unqualified / coûts non qualifiés`));
   $('cycle-graph').replaceChildren();

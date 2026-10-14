@@ -284,6 +284,23 @@ test('native signed paid settlement rejects failed or refunded current state bef
     await rejectsSettlementWithoutMutation(settlementWorkflow(project,example.baseline,record,state),record,example.key);
 });
 
+test('opaque historical settlement shapes cannot block a valid native import or erase duplicate attribution',async()=>{
+  let {project}=await retainedFailProject();
+  const example=native[1],record=example.settlement;
+  const originals=['{"settlement":{}}','{"settlement":{"chain":null}}','{"settlement":{"chain":[]}}',
+    JSON.stringify({settlement:{chain:{...record.settlement.chain,job:{toString:null}}}})];
+  for(const originalText of originals)project=await preserveSignedRecord(project,{kind:'settlement',originalText});
+  const paid=settlementWorkflow(project,example.baseline,record);
+  await paid.importRuntimeSettlement(JSON.stringify(record),example.key);
+  assert.equal(paid.runtimeSettlement.settlement.settlement_status,'paid');
+  for(const originalText of originals)assert.ok(paid.currentCycle.signedRecords.some(item=>item.originalText===originalText));
+  const conflicting=await preserveSignedRecord(project,{kind:'settlement',originalText:JSON.stringify({
+    settlement:{...record.settlement,delivery_digest:'f'.repeat(64)}})});
+  const blocked=settlementWorkflow(conflicting,example.baseline,record),before=copy(blocked.project);
+  await assert.rejects(blocked.importRuntimeSettlement(JSON.stringify(record),example.key),/already attributed/);
+  assert.deepEqual(blocked.project,before);assert.equal(blocked.runtimeSettlement,null);
+});
+
 test('even authenticated settlement asset, acceptance and authority claims must match fixed chain semantics',async()=>{
   const {project}=await retainedFailProject(), example=native[1], result=await resignResult(example.baseline);
   const body=strictJSON(example.settlement.canonical_body,2000000,{historicalTimestamp:true});

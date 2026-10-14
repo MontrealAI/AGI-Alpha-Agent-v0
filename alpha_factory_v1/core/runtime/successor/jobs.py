@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import sqlite3
 from collections.abc import Callable
+from copy import deepcopy
 from typing import Any
 
 from pydantic import ConfigDict, Field
 
 from ..store import Conflict, Journal
-from .protocol import ExecutionAuthorization, JobContract, JobGraph, StrictModel, digest
+from .protocol import ExecutionAuthorization, JobContract, JobGraph, StrictModel, canonical, digest
 from .state import SuccessorState, SuccessorStore, checked_resources, current, utc_now
 from .trust import SignedEnvelope
 
@@ -44,6 +45,7 @@ class ToolInvocation(StrictModel):
     actor: str
     state: str = "executing"
     result_digest: str | None = None
+    result_json: str | None = None
 
 
 class JobRun(StrictModel):
@@ -163,7 +165,7 @@ class JobDispatcher:
             try:
                 old = self.journal.latest(self.key, cx)
             except KeyError:
-                return self.journal.append(cx, self.key, state.model_dump(mode="json"))
+                return self.journal.append(cx, self.key, self._document(state))
             if old["graph_digest"] != state.graph_digest:
                 raise Conflict("sealed job terms cannot be changed; use a new institution or graph version")
             return old
@@ -174,6 +176,22 @@ class JobDispatcher:
             if terms.job_id == job_id:
                 return terms
         raise ValueError("job does not exist")
+
+    @staticmethod
+    def _document(state: GraphState) -> dict[str, Any]:
+        """Validate a snapshot while reserving the space needed to recover every running job."""
+        document = state.model_dump(mode="json")
+        GraphState.model_validate(document)
+        recovered = deepcopy(document)
+        for runs in recovered["runs"].values():
+            for run in runs:
+                if run["state"] == "running":
+                    run["state"] = "uncertain"
+                    for invocation in run["tools"].values():
+                        if invocation["state"] == "executing":
+                            invocation["state"] = "uncertain"
+        canonical(recovered)
+        return document
 
     def _dependencies(self, state: GraphState, job_id: str, now: str) -> None:
         if job_id in state.revoked_jobs:
@@ -293,7 +311,7 @@ class JobDispatcher:
                 JobRun(authorization=authorization, authorization_envelope=envelope, attempt=len(runs) + 1)
             )
             self.journal.append(cx, self.store._key(self.institution_id), institution.model_dump(mode="json"))
-            return self.journal.append(cx, self.key, state.model_dump(mode="json"))
+            return self.journal.append(cx, self.key, self._document(state))
 
     def _check_action(self, cx: sqlite3.Connection, job_id: str, tool: str, actor: str) -> tuple[GraphState, JobRun]:
         state = GraphState.model_validate(Journal.document(self.journal.latest(self.key, cx)))
@@ -343,6 +361,7 @@ class JobDispatcher:
         actor: str,
         invocation_id: str,
         handler: Callable[[], Any],
+        retain_result: bool = False,
     ) -> Any:
         """Execute an installed bounded development tool with durable at-most-once claims.
 
@@ -351,6 +370,8 @@ class JobDispatcher:
         responsive. Revalidation suppresses results invalidated during computation.
         Consequential actions require ActionGateway; arbitrary code requires the
         existing explicitly opted-in isolated runner, never this callable boundary.
+        Opted-in canonical results are committed atomically with completion so an
+        interrupted caller can finish its handoff without repeating measured work.
         """
         if not invocation_id or len(invocation_id) > 128:
             raise ValueError("tool invocation requires a bounded unique identity")
@@ -359,19 +380,24 @@ class JobDispatcher:
                 state, run = self._check_action(cx, job_id, tool, actor)
                 if invocation_id in run.tools:
                     raise Conflict("tool invocation already started; recover rather than replay")
+                authorization_id = run.authorization.authorization_id
                 run.tools[invocation_id] = ToolInvocation(tool=tool, actor=actor)
-                self.journal.append(cx, self.key, state.model_dump(mode="json"))
+                self.journal.append(cx, self.key, self._document(state))
             failure: Exception | None = None
             result = None
             result_digest = None
+            result_json = None
             with self.journal.transaction() as cx:
                 _, checked_run = self._check_action(cx, job_id, tool, actor)
+                if checked_run.authorization.authorization_id != authorization_id:
+                    raise Conflict("job attempt changed before bounded work; do not execute")
                 if checked_run.tools[invocation_id].state != "executing":
                     raise Conflict("tool invocation is no longer executable")
-                authorization_id = checked_run.authorization.authorization_id
             try:
                 result = handler()
                 result_digest = digest("job-tool-output", result)
+                if retain_result:
+                    result_json = canonical(result).decode("utf-8")
             except Exception as exc:  # noqa: BLE001 - persist boundary failures before re-raising
                 failure = exc
             with self.journal.transaction() as cx:
@@ -390,9 +416,18 @@ class JobDispatcher:
                     update={
                         "state": "failed" if failure else "completed",
                         "result_digest": None if failure else result_digest,
+                        "result_json": None if failure else result_json,
                     }
                 )
-                self.journal.append(cx, self.key, state.model_dump(mode="json"))
+                try:
+                    document = self._document(state)
+                except ValueError as exc:
+                    failure = exc
+                    run.tools[invocation_id] = invocation.model_copy(
+                        update={"state": "failed", "result_digest": None, "result_json": None}
+                    )
+                    document = self._document(state)
+                self.journal.append(cx, self.key, document)
             if failure is not None:
                 raise ValueError("bounded job tool failed; failure retained") from failure
             return result
@@ -441,13 +476,17 @@ class JobDispatcher:
                 institution.resources.unknown.append(result.job_id)
             runs[-1] = run.model_copy(update={"state": "completed", "result": result, "acceptance": envelope})
             self.journal.append(cx, self.store._key(self.institution_id), institution.model_dump(mode="json"))
-            return self.journal.append(cx, self.key, state.model_dump(mode="json"))
+            return self.journal.append(cx, self.key, self._document(state))
 
     def recover_job(self, envelope: SignedEnvelope) -> dict[str, Any]:
         """Conservatively close an interrupted bounded attempt under a new owner decision."""
         payload = self.store.trust.verify(envelope, "job-recovery", "controller")
-        if set(payload) != {"job_id", "reason"} or not all(isinstance(value, str) for value in payload.values()):
-            raise ValueError("job recovery requires job_id and reason strings")
+        if set(payload) != {"institution_id", "job_id", "authorization_id", "reason"} or not all(
+            isinstance(value, str) and value for value in payload.values()
+        ):
+            raise ValueError("job recovery requires institution_id, job_id, authorization_id and reason strings")
+        if payload["institution_id"] != self.institution_id:
+            raise ValueError("job recovery belongs to another institution")
         with self.journal.transaction() as cx:
             old = self.journal.latest(self.key, cx)
             state = GraphState.model_validate(Journal.document(old))
@@ -458,7 +497,9 @@ class JobDispatcher:
                 raise ValueError("job recovery requires the institution controller")
             terms = self._terms(state, payload["job_id"])
             runs = state.runs.get(terms.job_id, [])
-            if not runs or runs[-1].state != "running":
+            if not runs or runs[-1].authorization.authorization_id != payload["authorization_id"]:
+                raise Conflict("job recovery belongs to a different execution attempt")
+            if runs[-1].state != "running":
                 return old
             run = runs[-1]
             for unit, amount in terms.resources.items():
@@ -470,7 +511,7 @@ class JobDispatcher:
                     run.tools[ident] = invocation.model_copy(update={"state": "uncertain"})
             runs[-1] = run.model_copy(update={"state": "uncertain"})
             self.journal.append(cx, self.store._key(self.institution_id), institution.model_dump(mode="json"))
-            return self.journal.append(cx, self.key, state.model_dump(mode="json"))
+            return self.journal.append(cx, self.key, self._document(state))
 
     def revoke_dependency(self, envelope: SignedEnvelope) -> dict[str, Any]:
         """Revoke influence transitively without deleting accepted work history."""
@@ -492,4 +533,4 @@ class JobDispatcher:
                     continue
                 state.revoked_jobs.append(job_id)
                 pending.extend(edge.target for edge in state.graph.edges if edge.source == job_id)
-            return self.journal.append(cx, self.key, state.model_dump(mode="json"))
+            return self.journal.append(cx, self.key, self._document(state))
