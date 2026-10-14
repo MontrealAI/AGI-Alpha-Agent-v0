@@ -1,0 +1,69 @@
+{
+  "schema": "agialpha.ascension-cycle.model-unit-evidence.v1",
+  "scope": "Production project model unit suite; synthetic chain adapter; no live chain or audit claim.",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/nova-studio/cycle.test.mjs"
+  ],
+  "runtime": {
+    "version": "v22.17.1",
+    "platform": "linux",
+    "architecture": "x64",
+    "versions": {
+      "node": "22.17.1",
+      "acorn": "8.14.1",
+      "ada": "2.9.2",
+      "amaro": "0.4.1",
+      "ares": "1.34.5",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "47.0",
+      "icu": "77.1",
+      "llhttp": "9.3.0",
+      "modules": "127",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.3",
+      "simdutf": "6.4.2",
+      "sqlite": "3.50.0",
+      "tz": "2025b",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.4.254.21-node.27",
+      "zlib": "1.3.0.1-motley-780819f",
+      "zstd": "1.5.7"
+    }
+  },
+  "started_at": "2026-10-14T04:44:59.003175+00:00",
+  "finished_at": "2026-10-14T04:45:06.386251+00:00",
+  "exit_code": 0,
+  "tests": 14,
+  "passed": 14,
+  "failed": 0,
+  "source_stable_during_tests": true,
+  "source_sha256": {
+    "docs/assets/ascension-wallet/client.mjs": "98906ce7a5e9fd05270fc350903f52bae5a775ae7395b891f1cf4646be9b78c8",
+    "docs/assets/ascension-wallet/protocol.mjs": "b8a4c43dfa8d18613384fa7919e311be2690970bdedafcad6402ce74b1c021d7",
+    "docs/assets/ascension-wallet/qualified-profiles.mjs": "90f28d8ecef0d5116c70e73bc52775dda9f0fc2dd03cecef91ee59dc37edb39a",
+    "docs/assets/ascension/crypto.mjs": "a5360e2db2c4ef04b408c0fa81f5ced0bb16c79e6073a8274e0a542d261883b5",
+    "docs/assets/nova-studio/cycle.mjs": "2781560e71cd6e0b28a2e233ec200d870221c6f56e5d167bfb6eabf33ce7d0cd",
+    "docs/assets/nova-studio/package.mjs": "95ea3fcb61c02ff37d034088e7e00745d781ac5668fc0daf3bd8033213786b7d",
+    "docs/assets/nova-studio/plan.mjs": "8fa9f86fff7ee7fe19a13df52720d6b7f92157df5ea8559548e6b2d270a60efd",
+    "docs/assets/nova-studio/vendor/ethers-6.17.0.mjs": "b016b0c3898c78fd8156466eb1ff1f42c9df951c2f0d64c9bdf799fe745b0a6c",
+    "tests/nova-studio/cycle.test.mjs": "f67a01340372c390c1399779d45aec7b548ca61a0d0f934963915a0792fb4a8f"
+  },
+  "stdout": "TAP version 13\n# Subtest: project and cycle identities exist before package or NFT and preserve original commitments\nok 1 - project and cycle identities exist before package or NFT and preserve original commitments\n  ---\n  duration_ms: 262.615762\n  type: 'test'\n  ...\n# Subtest: compatible large packages above legacy canonical object limit still enter private project recovery\nok 2 - compatible large packages above legacy canonical object limit still enter private project recovery\n  ---\n  duration_ms: 876.951682\n  type: 'test'\n  ...\n# Subtest: full private recovery encrypts plan, terms and original signed strings without changing v1 semantics\nok 3 - full private recovery encrypts plan, terms and original signed strings without changing v1 semantics\n  ---\n  duration_ms: 898.521251\n  type: 'test'\n  ...\n# Subtest: historical records remain exact, deduplicated and unable to import credentials or active grants\nok 4 - historical records remain exact, deduplicated and unable to import credentials or active grants\n  ---\n  duration_ms: 11.373996\n  type: 'test'\n  ...\n# Subtest: private recovery and runtime requests honor their own larger bounds without changing capsule hash domains\nok 5 - private recovery and runtime requests honor their own larger bounds without changing capsule hash domains\n  ---\n  duration_ms: 1925.576653\n  type: 'test'\n  ...\n# Subtest: fresh projections refuse imported flags, account changes, reorg hashes and old observations\nok 6 - fresh projections refuse imported flags, account changes, reorg hashes and old observations\n  ---\n  duration_ms: 8.984528\n  type: 'test'\n  ...\n# Subtest: wallet balance, backing reserve, stakes and rightful claim stay separate in native units\nok 7 - wallet balance, backing reserve, stakes and rightful claim stay separate in native units\n  ---\n  duration_ms: 6.898878\n  type: 'test'\n  ...\n# Subtest: flow arithmetic deduplicates receipts, separates burns/returned principal and never assigns another actor payout\nok 8 - flow arithmetic deduplicates receipts, separates burns/returned principal and never assigns another actor payout\n  ---\n  duration_ms: 0.540577\n  type: 'test'\n  ...\n# Subtest: successor preserves identities, rejects replayed package and distinguishes cross-profile provenance\nok 9 - successor preserves identities, rejects replayed package and distinguishes cross-profile provenance\n  ---\n  duration_ms: 894.667951\n  type: 'test'\n  ...\n# Subtest: imported possession, NFT identity and accepted flags cannot authorize artifact reuse\nok 10 - imported possession, NFT identity and accepted flags cannot authorize artifact reuse\n  ---\n  duration_ms: 281.22258\n  type: 'test'\n  ...\n# Subtest: evaluation freezes criteria, retains negative findings and detects leakage, omitted runs and regressions\nok 11 - evaluation freezes criteria, retains negative findings and detects leakage, omitted runs and regressions\n  ---\n  duration_ms: 98.356753\n  type: 'test'\n  ...\n# Subtest: adoption needs fresh verification of exact native report; recovery cannot recreate this authority\nok 12 - adoption needs fresh verification of exact native report; recovery cannot recreate this authority\n  ---\n  duration_ms: 533.376209\n  type: 'test'\n  ...\n# Subtest: recovered evaluation IDs cannot be cloned or reused for a different comparison in another cycle\nok 13 - recovered evaluation IDs cannot be cloned or reused for a different comparison in another cycle\n  ---\n  duration_ms: 582.98469\n  type: 'test'\n  ...\n# Subtest: multiple unexecuted missions work; completed missions cannot replay input, run, result or settlement\nok 14 - multiple unexecuted missions work; completed missions cannot replay input, run, result or settlement\n  ---\n  duration_ms: 573.343028\n  type: 'test'\n  ...\n1..14\n# tests 14\n# suites 0\n# pass 14\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 7350.842606\n",
+  "stderr": "",
+  "limitations": [
+    "No independent-human review or legal license audit was performed.",
+    "Actual native-executor and disposable-EVM two-cycle qualification are separate evidence.",
+    "Financial proposals and reused artifact declarations are not execution grants or global planning locks."
+  ]
+}

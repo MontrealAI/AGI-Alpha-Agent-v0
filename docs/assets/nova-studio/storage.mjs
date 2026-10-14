@@ -31,9 +31,14 @@ export class PinataStorage {
     this.fetcher = fetcher.bind(globalThis);
   }
   async publish(object, name, credential) {
+    return this.publishBytes(fileBytes(object),name,credential);
+  }
+  async publishBytes(bytes, name, credential) {
+    if (!(bytes instanceof Uint8Array) || !bytes.length || bytes.length>2000000) throw Error('Publish exact bytes between 1 byte and 2 MB.');
+    if (typeof name!=='string' || !/^[A-Za-z0-9._-]{1,100}$/.test(name)) throw Error('Use a simple public artifact filename.');
     if (typeof credential !== 'string' || credential.length < 16 || credential.length > 8000 || /\s/.test(credential))
       throw Error('Enter a session-only Pinata upload token. It is sent only to Pinata.');
-    const bytes = fileBytes(object), form = new FormData();
+    const form = new FormData();
     form.append('network','public');
     form.append('file',new Blob([bytes],{type:'application/json'}),name);
     let value;

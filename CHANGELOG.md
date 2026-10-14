@@ -1,3 +1,12 @@
+## 1.31.0 — 2026-10-14
+
+- Integrate Nova-Seed Studio, the bounded native executor and recoverable project cycles from PRs #4779–#4782.
+- Preserve exact signed deliveries, independent review, immutable commitments and separate wallet approvals.
+- Retain shared transaction recovery barriers across project changes and verify current deployment identity.
+- Add English/French first-use guidance and package the Studio and cycle guides with the release.
+- Distinguish source qualification from the remaining live commissioning and broader acceptance work.
+- See [release notes](docs/agent/RELEASE_NOTES_1.31.0.md).
+
 ## 1.28.1 — 2026-10-13
 
 - Strengthen contract qualification and distinguish current-source builds from the immutable October 11 deployment.

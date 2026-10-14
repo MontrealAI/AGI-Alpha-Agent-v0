@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import sys
 
@@ -51,6 +52,12 @@ def main() -> None:
         if page.locator("#deployment-choice").count():
             page.locator("#deployment-choice").locator("xpath=ancestor::details").evaluate("el=>el.open=true")
             page.locator("#deployment-choice").select_option(config["profile"])
+        assert page.evaluate("window.__nova.calls.length") == 0
+        original_project = page.locator("#project-context").inner_text()
+        page.locator('[data-step="resume"]').click()
+        page.locator("#clear-project").click()
+        expect(page.locator("#status")).to_contain_text("Project cleared")
+        assert page.locator("#project-context").inner_text() != original_project
         assert page.evaluate("window.__nova.calls.length") == 0
         page.locator("#example").click()
         page.locator("#compile").click()
@@ -206,7 +213,17 @@ def main() -> None:
             },
         ).json()
         page.locator('[data-step="launch"]').click()
+        page.locator("#result-format").select_option("generic-sha256")
+        expect(page.locator("#result-file")).to_be_enabled()
+        page.locator("#result-file").set_input_files(result_path)
+        expect(page.locator("#result-digest")).to_have_value("0x" + hashlib.sha256(result_bytes).hexdigest())
+        page.locator("#result-algorithm").select_option("keccak256")
+        expect(page.locator("#result-digest")).to_have_value(native["resultHash"])
         page.locator("#result-format").select_option("native-signed")
+        expect(page.locator("#result-digest")).to_have_value("")
+        expect(page.locator("#result-algorithm")).to_have_value("keccak256")
+        expect(page.locator("#result-algorithm")).to_be_disabled()
+        expect(page.locator("#result-file")).to_be_enabled()
         page.locator("#result-file").set_input_files(result_path)
         page.locator("#native-signer").fill(native["signer"])
         page.locator("#verify-native-result").click()

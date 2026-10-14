@@ -7,6 +7,9 @@ import {StudioChain,INTERFACES} from '../../docs/assets/nova-studio/chain.mjs';
 import {createPackage,exportKit,hashBytes,objectHash,profileIdentity} from '../../docs/assets/nova-studio/package.mjs';
 import {leaf} from '../../docs/assets/nova-studio/plan.mjs';
 import {unresolved} from '../../docs/assets/ascension-wallet/client.mjs';
+import {WalletSession} from '../../docs/assets/ascension-wallet/session.mjs';
+import {JOURNAL_KEY} from '../../docs/assets/ascension-wallet/recovery.mjs';
+import {createProject,updateCycle,exportProjectKit} from '../../docs/assets/nova-studio/cycle.mjs';
 import {TOKEN} from '../../docs/assets/ascension-wallet/protocol.mjs';
 import {keccak256} from '../../docs/assets/nova-studio/vendor/ethers-6.17.0.mjs';
 
@@ -29,6 +32,25 @@ function harness() {
   const session={client,exclusive:async fn=>{assert.equal(locked,false);locked=true;try{return await fn();}finally{locked=false;}},
     restore:async()=>{throw Error('Existing journal must remain untouched.');}};
   return {flow:new NovaWorkflow(session,{}),client,session,isLocked:()=>locked};
+}
+function localSession({journal=null,beforeLock=()=>{}}={}) {
+  const values=new Map(journal?[[JOURNAL_KEY,JSON.stringify(journal)]]:[]);
+  const storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+  let locked=false;
+  const locks={request:async(_name,_options,fn)=>{
+    assert.equal(locked,false,'Workflow operations must not nest the shared Web Lock.');
+    locked=true;
+    try {beforeLock(storage);return await fn({});} finally {locked=false;}
+  }};
+  const session=new WalletSession(profile,storage,locks);
+  return {session,storage,flow:new NovaWorkflow(session,{})};
+}
+function pendingJournal(client,pkg) {
+  const record={...mintRecord(pkg),schema:'agialpha.mark-wallet-transaction.v2',chainId:profile.chainId,
+    createdAt:'2026-10-14T00:00:00.000Z',status:'submission-unknown'};
+  record.args[2]=String(record.args[2]);
+  record.transaction={...record.transaction,chainId:client.chainId,nonce:'0x1',gas:'0x100000',value:'0x0'};
+  return {...client.journal(),transactions:[record]};
 }
 function log(contract,event,args,overrides={}) {
   return {address:contracts[contract],...INTERFACES[contract].encodeEventLog(event,args),transactionHash:HASH,
@@ -64,6 +86,58 @@ function bindSeedReads(flow,livePackage,values=jobValues()) {
     throw Error(`Unexpected read ${contract}.${method}`);
   };
 }
+
+test('local package creation needs no wallet and refuses an asynchronous client context change',async()=>{
+  const {flow,session,storage}=localSession();
+  assert.equal(session.client.provider,null);
+  const pkg=await flow.create(draft,passphrase);
+  assert.equal(flow.package,pkg);assert.equal(flow.currentCycle.package.capsuleHash,pkg.capsuleHash);
+  assert.equal(session.client.provider,null);assert.equal(storage.getItem(JOURNAL_KEY),null);
+  const second=localSession(),preparing=second.flow.create(draft,passphrase);
+  second.session.client.invalidate();
+  await assert.rejects(preparing,/context|changed/i);
+  assert.equal(second.flow.package,null);assert.equal(second.flow.project,null);
+});
+
+test('create and next cycle refresh the shared journal before replacing local context',async()=>{
+  const pkg=await packagePromise;
+  for(const method of ['create','nextCycle']) {
+    let journal;
+    const {flow,session}=localSession({beforeLock:storage=>storage.setItem(JOURNAL_KEY,JSON.stringify(journal))});
+    journal=pendingJournal(session.client,pkg);
+    if(method==='nextCycle') {
+      flow.package=pkg;flow.project=await createProject(pkg);flow.seedId='7';
+    }
+    const selected={package:flow.package,project:flow.project,seedId:flow.seedId};
+    await assert.rejects(flow[method](draft,passphrase),/outstanding/);
+    assert.equal(flow.package,selected.package);assert.equal(flow.project,selected.project);
+    assert.equal(flow.seedId,selected.seedId);assert.equal(session.client.history.length,1);
+    assert.equal(unresolved(session.client.pending),true);
+  }
+});
+
+test('full project recovery attaches matching uncertainty without importing runtime authority or replacing the journal',async()=>{
+  const pkg=await packagePromise,initial=localSession();
+  const journal=pendingJournal(initial.session.client,pkg),{flow,session,storage}=localSession({journal});
+  let project=await createProject(pkg);
+  project=await updateCycle(project,project.activeCycleId,{seedId:'7',publication,journal});
+  const kit=await exportProjectKit(project,passphrase),pending=session.client.pending,raw=storage.getItem(JOURNAL_KEY);
+  for(const key of ['runtimeResult','runtimeTrust','runtimeSettlement','runtimeEvaluation','runtimeReuse','nativeDelivery'])
+    flow[key]={stale:true};
+  flow.runtimeTerms.set(0,{stale:true});flow.verifiedRoutes.set('9',{stale:true});
+  await flow.restoreProject(JSON.stringify(kit),passphrase);
+  assert.equal(flow.package.capsuleHash,pkg.capsuleHash);assert.equal(flow.project.projectId,project.projectId);
+  assert.equal(session.client.pending,pending);assert.equal(storage.getItem(JOURNAL_KEY),raw);
+  assert.equal(unresolved(pending),true);assert.equal(session.client.provider,null);
+  for(const key of ['runtimeResult','runtimeTrust','runtimeSettlement','runtimeEvaluation','runtimeReuse','nativeDelivery'])
+    assert.equal(flow[key],null,key);
+  assert.equal(flow.runtimeTerms.size,0);assert.equal(flow.verifiedRoutes.size,0);
+  await assert.rejects(flow.nextCycle(draft,passphrase),/outstanding/);
+  const selected=flow.project,other=await createProject(await createPackage({...draft,title:'Unrelated recovery'},passphrase,profile));
+  const otherKit=await exportProjectKit(other,passphrase);
+  await assert.rejects(flow.restoreProject(JSON.stringify(otherKit),passphrase),/exact package/);
+  assert.equal(flow.project,selected);assert.equal(session.client.pending,pending);assert.equal(storage.getItem(JOURNAL_KEY),raw);
+});
 
 test('selected event must belong to the receipt transaction and canonical block',()=>{
   const chain=new StudioChain({contracts});

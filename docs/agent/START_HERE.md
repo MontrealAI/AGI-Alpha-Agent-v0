@@ -6,6 +6,14 @@
 It offers an English/French walkthrough, larger text and a useful planning download.
 The instructions below are for installing and operating your own agent.
 
+**Starting a Nova-Seed project?** Follow the [English first-use guide](ASCENSION_STACK_RELEASE.md#first-use-english)
+to prepare, encrypt and keep a small project before choosing any wallet or paid service. The guide also
+explains the installed executor and the separate execution, review and payment decisions.
+
+**Vous préférez le français?** Le [guide de première utilisation](ASCENSION_STACK_RELEASE.md#premiere-utilisation-francais)
+explique comment préparer et sauvegarder un projet, puis utiliser la console locale. La préparation ne
+demande ni portefeuille ni service payant; chaque autorisation reste une décision distincte.
+
 Alpha-Factory runs bounded missions against inputs you supply, retains a signed journal, and asks you
 to inspect the result before approval. Start with the allocation example; it needs no wallet, API key,
 Docker or model download. The [factory guide](FACTORY_GUIDE.md) explains all five mission types and the

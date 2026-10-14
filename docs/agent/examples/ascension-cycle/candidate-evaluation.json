@@ -1,0 +1,93 @@
+{
+  "freeze": {
+    "domain": "ascension-evaluation-freeze",
+    "body": {
+      "schema_version": 1,
+      "evaluation_id": "6858dbc1-0865-4f35-8423-fe01f1650d03",
+      "project_id": "8e6b632e-6d89-4581-aebb-992a46494b78",
+      "cycle_id": "4e3fbfe9-02a3-4233-8533-bd75b7f51c23",
+      "baseline_request_digest": "047d625d8d7363a1bb7b2c83523395e304aff8d5d62bbea8fccdc827b8a38e97",
+      "baseline_artifact_keccak256": "0x8504960f78ab24bf80db74a362c0592c387d12744a2fd5078f721f025b1dd444",
+      "request_digest": "77dd8463f1f1b6adf146584373aca93333ac4620a6e48bb42d9e13a158e54a75",
+      "methods": {
+        "baseline": "trapezoid",
+        "candidate": "simpson"
+      },
+      "fresh_common_inputs": {
+        "coefficients": [
+          1,
+          0,
+          1
+        ],
+        "lower": 0,
+        "steps": 12,
+        "tolerancePpm": 10,
+        "upper": 5
+      },
+      "budget": {
+        "calls": 1,
+        "max_milliseconds": 65000,
+        "steps_per_method": 12
+      },
+      "criterion": "candidate meets frozen absolute tolerance and has smaller exact error than baseline",
+      "input_policy": "fresh operator-visible common inputs; no independently protected holdout",
+      "selection_policy": "one predeclared fixed comparison; retain all outcomes and unknown costs",
+      "source_environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+      "authority_status": "not_granted"
+    },
+    "digest": "27ea0b008475828b699fff06f680207e67bee220df69f41e322b65c67131f54c",
+    "public_key": "3613e7e7edc287089a6d6d2a38021a5fdbcbe70858251a03fcb65b559e02d320",
+    "signature": "hocG4ea0GL9RDs4C0YfmJyKvZpZsLrgxbCjoEh3N0DMISe1Zo8X40ggE+c1NuXQwDYvIW8fzXLJewruOC2dMCg=="
+  },
+  "report": {
+    "domain": "ascension-evaluation-report",
+    "body": {
+      "schema_version": 1,
+      "evaluation_id": "6858dbc1-0865-4f35-8423-fe01f1650d03",
+      "project_id": "8e6b632e-6d89-4581-aebb-992a46494b78",
+      "cycle_id": "4e3fbfe9-02a3-4233-8533-bd75b7f51c23",
+      "freeze_digest": "27ea0b008475828b699fff06f680207e67bee220df69f41e322b65c67131f54c",
+      "baseline_artifact_keccak256": "0x8504960f78ab24bf80db74a362c0592c387d12744a2fd5078f721f025b1dd444",
+      "evaluated_artifact_keccak256": "0x3050bf51eb9c77f4b03563403221f11329e3e526eb72d635bb790f192e372b80",
+      "request_digest": "77dd8463f1f1b6adf146584373aca93333ac4620a6e48bb42d9e13a158e54a75",
+      "methods": {
+        "baseline": "trapezoid",
+        "candidate": "simpson"
+      },
+      "common_inputs": {
+        "coefficients": [
+          1,
+          0,
+          1
+        ],
+        "lower": 0,
+        "steps": 12,
+        "tolerancePpm": 10,
+        "upper": 5
+      },
+      "exact_absolute_errors": {
+        "simpson": "0/1",
+        "trapezoid": "125/864"
+      },
+      "absolute_tolerance": "1/100000",
+      "outcome": "PASS",
+      "measured_elapsed_milliseconds": 19,
+      "budget": {
+        "calls": 1,
+        "max_milliseconds": 65000,
+        "steps_per_method": 12
+      },
+      "compute_cost": null,
+      "human_cost": null,
+      "provider_execution": false,
+      "independent_proof": false,
+      "scope": "exact numerical error on one fresh common polynomial; no general or economic superiority",
+      "tradeoff": "Both methods share the same node evaluations; general accuracy, memory and costs remain unqualified.",
+      "admission": "HOLD",
+      "authority_status": "not_granted"
+    },
+    "digest": "affc00ad0755a9b2345cc4b3d4e9eaa6477ca852b0e19729c939684a4eec53a6",
+    "public_key": "3613e7e7edc287089a6d6d2a38021a5fdbcbe70858251a03fcb65b559e02d320",
+    "signature": "SqQNUfcu74vFP0yJt69Vdpj2V/6egvSwCzqYkH3Ho6i/xbbo5nS31DZfkBIZBJHAOPJvEI9sGL5NDRT7LRiUCg=="
+  }
+}

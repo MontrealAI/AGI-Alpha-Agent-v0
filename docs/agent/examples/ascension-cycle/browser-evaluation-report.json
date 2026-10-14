@@ -1,0 +1,51 @@
+{
+  "domain": "ascension-evaluation-report",
+  "body": {
+    "schema_version": 1,
+    "evaluation_id": "d6a0732f-2fcc-4fa9-a504-5ce9acf2db27",
+    "project_id": "1d868d97-39a5-4a1d-8fa1-cb01774a1c3d",
+    "cycle_id": "be21765a-b595-4532-91fe-cf1d689a26be",
+    "freeze_digest": "9b5d90b3abde3f62a9b9b24e1565d1c0c5d515df4fa2aa3a7ebc5a72ffcf28e0",
+    "baseline_artifact_keccak256": "0x648c7e447172c1efc6378e1321e36d95feefd3ce08035750bfd93a4e96276a2a",
+    "evaluated_artifact_keccak256": "0x42c8bb209a674d2b08c482a3ff2f47863ef35912458020e5dca30942fbb9b49b",
+    "request_digest": "81c4cf412050388b76e6510ebcb321f7c2b5d48fa30a4a29cf23a6fea2234cf2",
+    "methods": {
+      "baseline": "trapezoid",
+      "candidate": "simpson"
+    },
+    "common_inputs": {
+      "coefficients": [
+        1,
+        0,
+        1
+      ],
+      "lower": 0,
+      "steps": 12,
+      "tolerancePpm": 10,
+      "upper": 5
+    },
+    "exact_absolute_errors": {
+      "simpson": "0/1",
+      "trapezoid": "125/864"
+    },
+    "absolute_tolerance": "1/100000",
+    "outcome": "PASS",
+    "measured_elapsed_milliseconds": 22,
+    "budget": {
+      "calls": 1,
+      "max_milliseconds": 65000,
+      "steps_per_method": 12
+    },
+    "compute_cost": null,
+    "human_cost": null,
+    "provider_execution": false,
+    "independent_proof": false,
+    "scope": "exact numerical error on one fresh common polynomial; no general or economic superiority",
+    "tradeoff": "Both methods share the same node evaluations; general accuracy, memory and costs remain unqualified.",
+    "admission": "HOLD",
+    "authority_status": "not_granted"
+  },
+  "digest": "2ed9655be74d627ac809aacf86dce39354da0edc9dcea58486fb4c38b0701122",
+  "public_key": "cc9a861fe29fc109c7f433e301171f0a236a0024f84e53b67e40e407e4b212fe",
+  "signature": "y4YEPhg0p29Z+qESd7i2dGDEJ/LnVDUoYxfWLhKqYRCNH+mgI+r2+6FELeKmX4BZcLcq7kcYuZKkCJXh6i39Dg=="
+}

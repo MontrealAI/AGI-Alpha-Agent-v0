@@ -1,0 +1,266 @@
+{
+  "request": {
+    "schema": "agialpha.ascension.studio-work.v1",
+    "project_id": "8e6b632e-6d89-4581-aebb-992a46494b78",
+    "cycle_id": "a7330813-2bf5-491c-9bd4-d29b045c4123",
+    "plan": {
+      "schema": "agialpha.ascension.fusion-plan.v1",
+      "token": "AGIALPHA",
+      "decimals": 18,
+      "planRoot": "0xd5fb4b592bdaf1fea170fbdb730aca33374561d189a73f1865851e76dcb9b19a",
+      "totalBounty": "100000000000000000000",
+      "jobs": [
+        {
+          "index": 0,
+          "spec": {
+            "goal": "Reproduce a new exact-rational polynomial calculation using fresh coefficients and the retained reviewed calculation procedure.",
+            "successMetric": "Return the exact integral, both numerical estimates, residuals and tolerance decisions. Accurate negative reports qualify.",
+            "bounty": "100000000000000000000",
+            "duration": 86400,
+            "priceWeight": 6000
+          },
+          "leaf": "0xd5fb4b592bdaf1fea170fbdb730aca33374561d189a73f1865851e76dcb9b19a",
+          "proof": []
+        }
+      ]
+    },
+    "plan_index": 0,
+    "work_spec": {
+      "family": "numerical",
+      "inputs": {
+        "coefficients": [
+          2,
+          -1,
+          1
+        ],
+        "lower": 0,
+        "steps": 12,
+        "tolerancePpm": 10,
+        "upper": 5
+      },
+      "language": "en",
+      "name": "Fresh polynomial validation",
+      "owner": "local-owner",
+      "reviewMinutes": 10,
+      "rights": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Included public example; reused calculation-input.json SHA-256 0x9996cd916d8f40c2d18332b588c9fb3f660b650df00285a56d2565bac9ffd564"
+      },
+      "schema": "successor-workbench/v1"
+    }
+  },
+  "seal": {
+    "domain": "ascension-terms",
+    "body": {
+      "schema_version": 1,
+      "job_contract": {
+        "schema_version": 1,
+        "job_id": "studio-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+        "family": "verification",
+        "worker": null,
+        "acceptance_owner": "local-controller",
+        "release_digest": "227601710a6f70e18ae5eab266b05a65fae27d7757762f013503ce935a0d612c",
+        "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+        "inputs": {},
+        "outputs": {
+          "report": "agialpha.ascension.work-artifact.v1"
+        },
+        "critical_functions": [],
+        "resources": {
+          "calls": 1
+        },
+        "valid_until": "2099-01-01T00:00:00Z",
+        "max_attempts": 1,
+        "effects": [],
+        "institution_id": "cycle-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+        "mission_id": "mission-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+        "goal": "Reproduce a new exact-rational polynomial calculation using fresh coefficients and the retained reviewed calculation procedure.",
+        "verifier": null,
+        "input_evidence": [],
+        "allowed_tools": [
+          "fixed-workbench"
+        ],
+        "prohibited_effects": [
+          "network",
+          "host-code",
+          "wallet-signing",
+          "automatic-admission"
+        ],
+        "rollback_target": null,
+        "acceptance_conditions": [
+          "Review exact fixed-adapter inputs, output artifacts, limitations and retained failures.",
+          "An accurate negative evaluation is eligible work; candidate adoption requires a separate decision."
+        ],
+        "evidence_assumptions": [
+          "studio-request-sha256:858fd5b90771e306af7cbd7b4147d233f2235e29a66eec4fc22e36e964a1aba7"
+        ],
+        "repair_routes": [],
+        "lifecycle_obligations": []
+      },
+      "job_terms_digest": "1d08b0591048021db39d264b10c4fab4234dcfb29a25bebb48972b53c863e942",
+      "legacy_spec": {
+        "goal": "Reproduce a new exact-rational polynomial calculation using fresh coefficients and the retained reviewed calculation procedure.",
+        "successMetric": "Return the exact integral, both numerical estimates, residuals and tolerance decisions. Accurate negative reports qualify.",
+        "bounty": "100000000000000000000",
+        "duration": 86400,
+        "priceWeight": 6000
+      },
+      "market_context": {
+        "schema_version": 1,
+        "chain_id": "31337",
+        "market": "0x0165878a594ca255338adfa4d48449f69242eb8f",
+        "market_code_hash": "0x1850f7d098db57f114a2341972adfd757ebd7e853f55544c5878bedf2421bc17",
+        "token_code_hash": "0x0dfa3c2054d792e75cb7690bd00a1aea75feaa2fc87254262ea8ca985871ab6c",
+        "protocol": "agialpha.ascension.v1",
+        "scope": "disposable-local-fixture",
+        "confirmations": 1,
+        "mark": "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853",
+        "mark_code_hash": "0x070e0d85e1e6c6e985f8d8a2b71226a25e72382539641e923fc0351a33ed7049",
+        "seed": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+        "seed_code_hash": "0xdc5ee0b4c00ce1dfeca96a26454bcf14420b92382838bc27a7c125d9991d1670",
+        "seed_id": "2"
+      },
+      "market_spec_hash": "0xd5fb4b592bdaf1fea170fbdb730aca33374561d189a73f1865851e76dcb9b19a",
+      "plan_binding": {
+        "kind": "mark-seed",
+        "plan_root": "0xd5fb4b592bdaf1fea170fbdb730aca33374561d189a73f1865851e76dcb9b19a",
+        "plan_index": 0,
+        "indexed_leaf": "0xd5fb4b592bdaf1fea170fbdb730aca33374561d189a73f1865851e76dcb9b19a"
+      },
+      "preposting_checkpoint": {
+        "number": 104,
+        "hash": "0xb03bd40584364d19c37dff1a443652e2ce6e0ce6a1ca7b24859e9ba5a30dc427",
+        "timestamp": 1791953341
+      },
+      "prior_market_next_id": "2",
+      "market_job_id": null,
+      "assigned_worker": null
+    },
+    "digest": "02e50eeb033b99fc6c4c1fe1ac6334384414a8135d500f35481f72a2802968e3",
+    "public_key": "3613e7e7edc287089a6d6d2a38021a5fdbcbe70858251a03fcb65b559e02d320",
+    "signature": "Q1p9YRxgeHk1QqINpApgsDiI1sSDyFoU4egiMxHqzMOhlnHg4+jK337fAFy/gy/tep+LMzDTVTDsHEEPHGNcDQ=="
+  },
+  "prepared": {
+    "request_digest": "858fd5b90771e306af7cbd7b4147d233f2235e29a66eec4fc22e36e964a1aba7",
+    "job_contract": {
+      "schema_version": 1,
+      "job_id": "studio-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "family": "verification",
+      "worker": null,
+      "acceptance_owner": "local-controller",
+      "release_digest": "227601710a6f70e18ae5eab266b05a65fae27d7757762f013503ce935a0d612c",
+      "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+      "inputs": {},
+      "outputs": {
+        "report": "agialpha.ascension.work-artifact.v1"
+      },
+      "critical_functions": [],
+      "resources": {
+        "calls": 1
+      },
+      "valid_until": "2099-01-01T00:00:00Z",
+      "max_attempts": 1,
+      "effects": [],
+      "institution_id": "cycle-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "mission_id": "mission-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "goal": "Reproduce a new exact-rational polynomial calculation using fresh coefficients and the retained reviewed calculation procedure.",
+      "verifier": null,
+      "input_evidence": [],
+      "allowed_tools": [
+        "fixed-workbench"
+      ],
+      "prohibited_effects": [
+        "network",
+        "host-code",
+        "wallet-signing",
+        "automatic-admission"
+      ],
+      "rollback_target": null,
+      "acceptance_conditions": [
+        "Review exact fixed-adapter inputs, output artifacts, limitations and retained failures.",
+        "An accurate negative evaluation is eligible work; candidate adoption requires a separate decision."
+      ],
+      "evidence_assumptions": [
+        "studio-request-sha256:858fd5b90771e306af7cbd7b4147d233f2235e29a66eec4fc22e36e964a1aba7"
+      ],
+      "repair_routes": [],
+      "lifecycle_obligations": []
+    },
+    "release": {
+      "schema_version": 1,
+      "release_id": "studio-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "institution_id": "cycle-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "mission_id": "mission-a7330813-2bf5-491c-9bd4-d29b045c4123-0",
+      "producer": "local-producer",
+      "environment_digest": "1e33dcacad01580e9013c12402f8e92abfb1ea854228b7b69ab23fb80e2d91ca",
+      "artifacts": [
+        {
+          "schema_version": 1,
+          "name": "studio-request",
+          "role": "other",
+          "digest": "858fd5b90771e306af7cbd7b4147d233f2235e29a66eec4fc22e36e964a1aba7",
+          "location": null
+        },
+        {
+          "schema_version": 1,
+          "name": "installed-worker",
+          "role": "source",
+          "digest": "ee450fb1c868f7c0584dda776d717672f798eac23491baeed3dbab55b1f4407b",
+          "location": null
+        },
+        {
+          "schema_version": 1,
+          "name": "installed-bridge",
+          "role": "source",
+          "digest": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+          "location": null
+        }
+      ],
+      "providers": [],
+      "world_digest": null,
+      "policy_digest": null,
+      "memory_digests": [],
+      "budget": {
+        "schema_version": 1,
+        "limits": {
+          "calls": 1
+        },
+        "units": {
+          "calls": "one bounded fixed-adapter execution; maximum 65 seconds"
+        },
+        "enforceable": [
+          "calls"
+        ],
+        "unknown_costs": [
+          "compute",
+          "human-review"
+        ],
+        "stop_loss": {}
+      },
+      "development_evaluator_digest": null,
+      "final_proof_interface_digest": null,
+      "parent_release_digest": null,
+      "configuration": {
+        "family": "numerical",
+        "network": false,
+        "arbitrary_code": false
+      },
+      "mutable_state_classes": [],
+      "immutable_trial": true
+    },
+    "environment": {
+      "schema": "agialpha.ascension.fixed-environment.v1",
+      "node": "v22.17.1",
+      "system": "Linux",
+      "architecture": "x86_64",
+      "python": "3.12.14",
+      "worker_sha256": "ee450fb1c868f7c0584dda776d717672f798eac23491baeed3dbab55b1f4407b",
+      "bridge_sha256": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+      "runtime_sha256": "65391c4fc956007769e7e122b2170010a6a3948a4259fa28652d736e9036a782",
+      "network": false,
+      "arbitrary_code": false
+    },
+    "active_authority": []
+  }
+}

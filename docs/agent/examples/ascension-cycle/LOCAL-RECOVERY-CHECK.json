@@ -1,0 +1,43 @@
+{
+  "schema": "agialpha.ascension.public-example-recovery-check.v1",
+  "checked_utc": "2026-10-14T04:51:05.823428+00:00",
+  "node": "v22.17.1",
+  "method": "Production importProjectKit followed by recoverPackage for every retained cycle, using the public fixture passphrases in README.md.",
+  "result": "passed",
+  "files": [
+    {
+      "path": "browser-two-cycle-private-recovery.json",
+      "projectId": "1d868d97-39a5-4a1d-8fa1-cb01774a1c3d",
+      "cycles": 2,
+      "missions": [
+        2,
+        1
+      ],
+      "signedRecords": [
+        8,
+        3
+      ]
+    },
+    {
+      "path": "two-cycle-project-recovery.json",
+      "projectId": "8e6b632e-6d89-4581-aebb-992a46494b78",
+      "cycles": 2,
+      "missions": [
+        2,
+        1
+      ],
+      "signedRecords": [
+        8,
+        3
+      ]
+    }
+  ],
+  "wallet_calls": 0,
+  "runtime_calls": 0,
+  "credential_field_scan": "No private-key/API-token/role-token/password/mnemonic field in whitelisted JSON; production encrypted-project validation also rejects active authority and credential fields.",
+  "screenshots": "Both original PNGs visually inspected; public synthetic fixture fields only, no credential values.",
+  "limitations": [
+    "Local decryption/integrity validation does not authenticate a new chain observation or establish current observer trust.",
+    "No transaction, runtime execution or independent rights review is repeated by this check."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "agialpha.ascension.operator-validation.v1",
+  "environment": {
+    "python": "3.12.14",
+    "python_executable": "/workspace/scratch/12b422fcd367/AGI-Alpha-Agent-v0/../qualification-venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "node": "v22.17.1",
+    "node_executable": "/workspace/scratch/12b422fcd367/node-runtime/node_modules/node/bin/node",
+    "chromium": "Chromium 139.0.7258.5",
+    "playwright": "1.54.0",
+    "pytest": "8.4.1",
+    "uvicorn": "0.53.0",
+    "fastapi": "0.141.1",
+    "pydantic": "2.13.5",
+    "cryptography": "50.0.1",
+    "mypy": "1.17.1",
+    "pip_freeze_sha256": "6505efb7cb88370f16aca5521a502140bb4bec84a50dad057d62c3d7ef8b319c",
+    "requirements_agent_lock_sha256": "807e9de36cff92e1cecd7a6f1d651760f66ea4f8346dd799a139269f48c75790",
+    "chromium_executable": "/root/.cache/ms-playwright/chromium-1181/chrome-linux/chrome"
+  },
+  "sha256": {
+    "alpha_factory_v1/core/runtime/api.py": "b67556779f4218fc34e5f53c7c9b81cdb4a2244551d40bb47c3a65c55a14f3dd",
+    "alpha_factory_v1/core/runtime/successor/studio.py": "7bf1a8db0707b9540488aa91a3bfbc8752fdb3f226dbc69bebb8435073bf7369",
+    "alpha_factory_v1/core/runtime/successor/studio_operator.py": "1ed2f4b35f18642628385952ce0d5c3862b3b06b33f1d3d5cebe734510cfb78b",
+    "alpha_factory_v1/core/runtime/web/index.html": "a7babff62b9f54999b72bfeb8e477c333a961d73a0fdee4c2f155df7b117a777",
+    "alpha_factory_v1/core/runtime/web/ascension-studio.html": "e9d24de9b820bc95dfaf1217d2a8fed7c70c07fc342845b8faed084c143ce802",
+    "alpha_factory_v1/core/runtime/web/ascension-studio.js": "20b1afab496d4b792b78358ae5e51267fbb2fdbd2aaa18c6f276ed82d7376fac",
+    "alpha_factory_v1/core/runtime/web/ascension-studio.css": "ade9225dd4dfa973e5ec18f7fee35508a4be5f3ed73e3dd28eb5399e142748df",
+    "alpha_factory_v1/core/runtime/web/ascension-studio-setup.html": "01e32ac20afb547205696e411276defd028ee41b640d54d4326162214dc0dabb",
+    "tests/runtime/test_successor_studio_operator.py": "335faf9c34b759056d4ef682cac733ae21e47818dae85597f7c95c8d286e1ff7",
+    "tests/runtime/test_successor_studio_operator_browser.py": "adc65e2a9e6d69279428db3e18860ef87b0e6be9b485ddf10eea88c356a17538",
+    "tests/runtime/test_api_boundary.py": "afa41ae0e428e9be048544e03daaf7a4e2c3e45a0b83d889d6883e8121fdcd45"
+  },
+  "verified_at_utc": "2026-10-14T04:50:29.879276+00:00",
+  "command": "/workspace/scratch/12b422fcd367/AGI-Alpha-Agent-v0/../qualification-venv/bin/python -m pytest -q tests/runtime/test_successor_studio_operator.py tests/runtime/test_api_boundary.py tests/runtime/test_successor_studio_operator_browser.py --confcutdir=tests/runtime --disable-warnings --maxfail=1 --color=no --junitxml=/tmp/ascension-operator-validation.xml",
+  "result": "28 passed, 1 warning in 14.29s",
+  "source_unchanged_after_run": true,
+  "browser": {
+    "surface": "actual installed FastAPI operator app served by uvicorn on loopback",
+    "engine": "real Playwright Chromium",
+    "coverage": [
+      "first install with preinstalled trust and separate role credentials",
+      "typed per-work template and seed pairing",
+      "preposting seal download",
+      "posting and assignment receipt verification",
+      "separate controller sign and execute clicks",
+      "actual fixed numerical native worker report",
+      "separate acceptance-owner review",
+      "settlement history export",
+      "distinct plan_index zero request and signed freeze download before execution",
+      "French UI and 390px viewport without horizontal overflow",
+      "no page errors and explicit credential clear on disconnect",
+      "valid 280000-byte Unicode documentation request prepares through actual UI/API",
+      "exact 524288-byte serialized UTF-8 POST accepted",
+      "524289-byte serialized UTF-8 POST blocked client-side before network although raw file and JS string are below limit",
+      "raw file larger than 524288 bytes rejected without a POST"
+    ],
+    "visual_review": [
+      "desktop",
+      "390px mobile"
+    ],
+    "screenshots": "temporary pytest test output",
+    "limitations": [
+      "RPC receipts are synthetic test fixtures; this suite does not prove a live external chain or actual payment",
+      "Trust, private role keys, and dedicated approval-token slots are independently provisioned before UI setup",
+      "This fixture does not run a real model"
+    ]
+  },
+  "exit_code": 0,
+  "operator_typecheck": {
+    "command": "/workspace/scratch/12b422fcd367/AGI-Alpha-Agent-v0/../qualification-venv/bin/python -m mypy --config-file mypy.ini --follow-imports=silent alpha_factory_v1/core/runtime/successor/studio_operator.py",
+    "exit_code": 0,
+    "output": "Success: no issues found in 1 source file"
+  },
+  "api_typecheck_note": "Checking the API with follow-imports=silent leaves only the existing alpha_factory_v1.__version__ attr-defined error; new API boundary and operator code have no reported errors."
+}

@@ -1,6 +1,35 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.30.0 MARK wallet
+# Release readiness — 1.31.0 integration
+
+Version **1.31.0** combines Nova-Seed Studio, authorized native work, recovery hardening and inspectable
+successor cycles. Start with the [English/French first-use guide](ASCENSION_STACK_RELEASE.md), then use
+the [release notes](RELEASE_NOTES_1.31.0.md) for scope and upgrade instructions. Local preparation does
+not require a wallet or paid provider. Publishing, funding and execution have their own prerequisites.
+
+This is the release scope and verification record, not proof of publication. At the start of this integration,
+PRs #4780 and #4781 had merged into the Nova-Seed feature branch, while #4779 still targeted `main`
+and #4782 required reconciliation with that branch. The resulting combined source needs its own
+verification. The release manifest, exact-commit workflow results, tag and public-site acceptance
+identify what was actually delivered; a source version or a successful feature-branch run cannot do so.
+
+| Evidence | How to read it |
+|---|---|
+| [Historical 80-case record](ascension-cycle-acceptance.json) | Original requirement texts and snapshot decisions: 10 passed, 65 partial, 5 blocked; retained without changing their source identity |
+| [Historical cycle handoff](ASCENSION_CYCLE_HANDOFF.md) | Real bounded three-job/two-cycle evidence, focused passes and recorded broad-suite/type-check failures at the named earlier sources |
+| New integrated verification | Results must name the combined commit and actual environment; prior results qualify only their original source and scope |
+| Release and public website | Require matching tag, manifest, checksums, release assets and served-site acceptance; preparing these files is not publication |
+
+During the October 14 integration, local checks reported 148 passing MARK Node tests, 26 passing native
+MARK selections and successful configured type-check scopes covering 31 and 32 files. These are local
+integration observations, not final-source CI or a full-repository type-check pass. The inspectable-cycle
+branch is included in the full **Agent release acceptance** candidate path; its actual run and the
+integrated `main` results must be checked at the delivered commit.
+
+The complete 80-case product scope and operational Mainnet commissioning remain separate from a software
+release. No new production profile, physical-wallet trial, live provider execution or external storage
+qualification is established by the historical fixtures. Per-edge observed actions, shared allocations
+and complete principal-return/cost accounting retain their documented limits.
 
 Version 1.30.0 adds the [MARK wallet](MARK_WALLET.md) with a durable public transaction journal,
 explicit nonce-bound previews and finalized original/replacement reconciliation. Targeted codec/provider tests,
@@ -76,6 +105,7 @@ shows the executable lifecycle and explicit fixture boundaries. Existing agent s
 
 | Your goal | Start here | What you receive |
 |---|---|---|
+| Create and recover an Ascension project | [English/French first use](ASCENSION_STACK_RELEASE.md), then [complete-cycle guide](ASCENSION_CYCLE.md) | Exact project plans, private recovery and explicit native execution, review and continuation controls |
 | Run and keep a useful local Ω | [Five-family workbench](../successor/work/index.html) | Bounded repairs, benchmarks, checked examples, public-data reports or numerical calculations with offline artifacts |
 | Configure screenshot and keyboard/mouse work | [Computer Use](SUCCESSOR_COMPUTER_USE.md) | Explicitly permitted disposable browser sessions, observations and stop/reconciliation controls |
 | Make a first plan without technical setup | [Guided first experience](../start/index.html) | English/French Choose → Review → Keep journey, larger text and text/JSON downloads |
@@ -110,8 +140,8 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
-Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from
-[the release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.29.0). The manifest identifies
+Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from the
+[published release you select](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped
 audits block publication. Retain the matching checksums with prior release assets as recovery checkpoints.
@@ -157,7 +187,7 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
 
 1. Pause the old agent. Verify its journal, make a private backup, and retain its checksum and journal
    head separately. Keep its existing environment and state directory.
-2. Download matching 1.29.0 assets and use `install_agent.py` to create a new environment. It checks
+2. Download matching assets from one published release and use `install_agent.py` to create a new environment. It checks
    wheel/lock checksums, installs hashed dependencies and runs `pip check`.
 3. Restore the backup into a **new** private home. Verify identity and journal head, inspect your
    configuration and confirm the agent remains paused.
@@ -166,9 +196,12 @@ does not prove a newer attempt. Earlier attempt artifacts remain available as di
    independently retained checkpoint. Later work or revocations must not disappear through rollback; keep the
    operator stopped until a compatible current recovery path is verified.
 
-There is no journal schema migration in this release. Existing Ed25519 identities, Nova-Seed formats
-and v1 Bloom Chronicle events remain compatible. The transfer protocol uses a separate versioned JSON
-format and does not rewrite native mission history. Do not run two versions on the same home or discard your pre-upgrade backup.
+Existing Ed25519 identities, native journal records, Nova-Seed capsule/readable-kit formats and v1 Bloom
+Chronicle events keep their original meaning. The private full-project recovery format is a separate
+versioned envelope; it does not rewrite native mission history or reactivate imported authority. Retain
+or separately reprovision the local operator configuration, trusted identities, private signer files and
+role-approval tokens. A public project export does not back up those secrets. Do not run two versions on
+the same home or discard your pre-upgrade backup.
 Exact commands, Windows paths and container operations are in [the operator guide](OPERATIONS.md).
 For SUCCESSOR private recovery, verify the separately retained checkpoint using the
 [installed verification procedure](SUCCESSOR_OPERATIONS.md#private-disaster-recovery-same-identity-and-keys).
