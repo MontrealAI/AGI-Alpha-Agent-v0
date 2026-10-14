@@ -1,6 +1,12 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.30.0 MARK wallet
+# Release readiness — 1.31.0 Nova-Seed Studio candidate
+
+Version 1.31.0 adds the [Nova-Seed Studio](NOVA_SEED_STUDIO.md) on the shared MARK wallet foundation.
+Publication additionally requires browser preparation/recovery acceptance and the actual browser journey
+against a disposable current-source EVM. The [acceptance matrix](NOVA_SEED_STUDIO_ACCEPTANCE.md) distinguishes
+this software evidence from external wallet trials, real-dependency fork qualification and authorized mainnet commissioning.
+The archived deployment remains closed to new exposure. See [release notes](RELEASE_NOTES_1.31.0.md).
 
 Version 1.30.0 adds the [MARK wallet](MARK_WALLET.md) with a durable public transaction journal,
 explicit nonce-bound previews and finalized original/replacement reconciliation. Targeted codec/provider tests,

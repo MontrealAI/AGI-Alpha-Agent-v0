@@ -8,7 +8,16 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ("ascension-protocol/mainnet/index.html",) + tuple(
     "assets/ascension-wallet/" + name
-    for name in ("app.mjs", "client.mjs", "protocol.mjs", "recovery.mjs", "wallet.css", "profile.json")
+    for name in (
+        "app.mjs",
+        "client.mjs",
+        "protocol.mjs",
+        "recovery.mjs",
+        "build-profile.mjs",
+        "qualification.mjs",
+        "wallet.css",
+        "profile.json",
+    )
 )
 CHECKS = [
     "exact-assets",

@@ -70,15 +70,32 @@ function encodeValue(type, value) {
   throw Error('Unsupported ABI type.');
 }
 export function decode(types, data) {
-  if (typeof data !== 'string' || !/^0x[0-9a-fA-F]*$/.test(data) || data.length !== 2 + 64 * types.length)
+  if (typeof data !== 'string' || !/^0x([0-9a-fA-F]{64})*$/.test(data) || data.length > 200002)
     throw Error('Malformed contract response.');
-  return types.map((type, i) => {
-    const hex = data.slice(2 + i * 64, 66 + i * 64), n = BigInt(`0x${hex}`);
+  const body = data.slice(2);
+  const readWord = offset => {
+    if (!Number.isSafeInteger(offset) || offset < 0 || offset % 32 || offset * 2 + 64 > body.length)
+      throw Error('Malformed ABI offset or length.');
+    return body.slice(offset * 2, offset * 2 + 64);
+  };
+  const values = types.map((type, i) => {
+    const hex = readWord(i * 32), n = BigInt(`0x${hex}`);
+    if (type === 'string') {
+      if (n > BigInt(body.length / 2)) throw Error('Malformed ABI string offset.');
+      const offset = Number(n), length = BigInt(`0x${readWord(offset)}`);
+      if (length > 512n || offset + 32 + Number(length) > body.length / 2) throw Error('Malformed or oversized ABI string.');
+      const bytes = Uint8Array.from(body.slice((offset + 32) * 2, (offset + 32 + Number(length)) * 2).match(/../g) || [], h => parseInt(h, 16));
+      return new TextDecoder('utf-8', {fatal:true}).decode(bytes);
+    }
     if (type === 'address') { if (n >= 1n << 160n) throw Error('Malformed address.'); return address(`0x${hex.slice(24)}`); }
     if (type === 'bytes32') return `0x${hex.toLowerCase()}`;
     if (type === 'bool') { if (n > 1n) throw Error('Malformed boolean.'); return n === 1n; }
+    if (!/^uint(8|16|32|64|96|256)$/.test(type)) throw Error('Unsupported ABI response type.');
     return uint(String(n), Number(type.slice(4)));
   });
+  // Reject noncanonical offsets, overlapping tails, padding and trailing bytes.
+  if (tuple(types, values) !== body.toLowerCase()) throw Error('Noncanonical contract response.');
+  return values;
 }
 function canonical(t) { return Array.isArray(t) ? `(${t.map(canonical).join(',')})` : t; }
 const method = (name, inputs, outputs = []) => ({name, inputs, outputs, signature: `${name}(${inputs.map(canonical).join(',')})`});
@@ -88,6 +105,20 @@ export const METHODS = {
   jobsBinding: method('jobs', [], ['address']), mark: method('mark', [], ['address']), marketplace: method('marketplace', [], ['address']),
   token: method('token', [], ['address']), decimals: method('decimals', [], ['uint8']),
   nextId: method('nextId', [], ['uint256']), ownerOf: method('ownerOf', ['uint256'], ['address']),
+  creatorOf: method('creatorOf', ['uint256'], ['address']), tokenURI: method('tokenURI', ['uint256'], ['string']),
+  genomes: method('genomes', ['uint256'], ['bytes32','bytes32','bytes32','uint256','uint32','address']),
+  rounds: method('rounds', ['uint256'], ['uint64','uint64','uint16','uint16','address']),
+  quorum: method('quorum', [], ['uint16']), maximumRiskBps: method('maximumRiskBps', [], ['uint16']),
+  voted: method('voted', ['uint256','uint64','address'], ['bool']),
+  admission: method('admission', ['address'], ['bytes32','uint64']), roots: method('roots', ['uint8'], ['bytes32']),
+  child: method('child', ['bytes32','string'], ['bytes32']), ens: method('ens', [], ['address']), wrapper: method('wrapper', [], ['address']),
+  ensOwner: method('owner', ['bytes32'], ['address']), wrapperData: method('getData', ['uint256'], ['address','uint32','uint64']),
+  reviewWindow: method('REVIEW_WINDOW', [], ['uint32']), validatorBps: method('VALIDATOR_BPS', [], ['uint16']),
+  posted: method('posted', ['uint256','uint32'], ['bool']), jobSeed: method('jobSeed', ['uint256'], ['uint256']),
+  collected: method('collected', ['uint256'], ['bool']), committees: method('committees', ['uint256','uint256'], ['address']),
+  votes: method('votes', ['uint256','address'], ['uint8']), terminal: method('terminal', ['uint256'], ['bool']),
+  hashSpec: method('hashSpec', ['uint32',SPEC], ['bytes32']),
+  safeTransferFrom: method('safeTransferFrom', ['address','address','uint256']),
   green: method('green', ['uint256'], ['bool']), admitted: method('admitted', ['address'], ['bool']),
   eligible: method('eligible', ['address', 'uint8'], ['bool']), names: method('names', ['address', 'uint8'], ['bytes32']),
   owns: method('owns', ['address', 'bytes32'], ['bool']), plan: method('plan', ['uint256'], ['bytes32', 'uint32']),
@@ -128,6 +159,30 @@ export const SELECTORS = {
   "decimals": "0x313ce567",
   "nextId": "0x61b8ce8c",
   "ownerOf": "0x6352211e",
+  "creatorOf": "0x589a1743",
+  "tokenURI": "0xc87b56dd",
+  "genomes": "0xc7bebdfd",
+  "rounds": "0x8c65c81f",
+  "quorum": "0x1703a018",
+  "maximumRiskBps": "0xcf2dcc65",
+  "voted": "0x1b06d507",
+  "admission": "0x51e719cf",
+  "roots": "0x17baa7e9",
+  "child": "0x6dfc1431",
+  "ens": "0x3f15457f",
+  "wrapper": "0xac210cc7",
+  "ensOwner": "0x02571be3",
+  "wrapperData": "0x0178fe3f",
+  "reviewWindow": "0x4584712b",
+  "validatorBps": "0x49da1a63",
+  "posted": "0x52f26410",
+  "jobSeed": "0x78efae42",
+  "collected": "0x77e840ed",
+  "committees": "0x5d7ecce9",
+  "votes": "0xd23254b4",
+  "terminal": "0x1be1894c",
+  "hashSpec": "0x05d0f719",
+  "safeTransferFrom": "0x42842e0e",
   "green": "0xb0fa32bf",
   "admitted": "0x0020d939",
   "eligible": "0xe1227718",
@@ -196,6 +251,7 @@ export const ACTIONS = {
   approve: action('Token','approve','Set bounded allowance / Autoriser un montant limité','new',[field('spender','Protocol spender / Contrat autorisé','spender'),amount], 'Approval is a separate transaction, not a purchase. Zero revokes the remaining allowance and is allowed during recovery. Never transfer tokens directly to MARK.'),
   register: action('Access','register','Register existing ENS role / Enregistrer un rôle ENS','new',[field('role','Role: 0 business, 1 agent, 2 validator','role'),field('label','Owned subname label only / Libellé du sous-nom','label')], 'Does not create an ENS name or grant admission. Business: *.alpha.agi.eth; agent: *.alpha.agent.agi.eth; validator: *.alpha.club.agi.eth.'),
   seal: action('Seed','seal','Seal Nova-Seed / Sceller un Nova-Seed','new',[field('capsule','Encrypted capsule hash / Empreinte capsule','hash'),field('root','FusionPlan root / Racine FusionPlan','hash'),field('jobs','Committed job count / Nombre de travaux'),field('uri','Metadata URI / URI des métadonnées','uri'),field('parent','Parent seed ID (0 for none) / Parent (0 : aucun)'),proof], 'Keep the encrypted capsule and decryption key separately. The NFT binds hashes; it does not store the work, confer approval or create an autonomous business.'),
+  transferSeed: action('Seed','safeTransferFrom','Transfer this seed / Transférer ce seed','new',[field('from','Current owner / Propriétaire actuel','address'),field('to','Recipient / Destinataire','address'),id], 'NFT ownership changes; the capsule passphrase and existing campaign authority do not transfer. Existing approval may become unusable. Contract recipients must support ERC-721.'),
   openReview: action('Oracle','openReview','Open seed review / Ouvrir une revue','new',[id], 'Requires the eligible seed owner; approval is time-limited and does not transfer automatically to a new owner.'),
   attest: action('Oracle','attest','Attest seed risk / Attester le risque','new',[id,field('risk','Risk: basis points / Risque : points de base'),field('approved','Policy approved / Politique approuvée','boolean'),proof], 'Only an eligible staked validator distinct from owner and creator may attest. A hash is not a substitute for actual review.'),
   validatorDeposit: action('Oracle','deposit','Deposit validator stake / Déposer la mise validateur','new',[amount], 'Requires admission and an owned registered validator ENS identity; inspect locking obligations before depositing.'),
@@ -210,14 +266,14 @@ export const ACTIONS = {
   timeout: action('Jobs','timeout','Process expired job / Traiter un travail expiré','obligation',[job], 'Late undelivered work can slash the worker. Missing review quorum refunds escrow without slashing. This is not a generic cancel button.'),
   jobRefund: action('Jobs','claimRefund','Claim direct-job refund / Réclamer un remboursement direct','recovery',[job], 'Only the recorded client can claim. For a MARK-originated job, use Collect: MARK is the client.'),
 };
-export function parseFields(actionId, values) {
+export function parseFields(actionId, values, contracts = CONTRACTS) {
   const a = ACTIONS[actionId];
   if (!Object.hasOwn(ACTIONS, actionId) || !a || values.length !== a.fields.length) throw Error('Unknown action or missing fields.');
   return a.fields.map((f, i) => {
     const v = values[i];
     if (f.kind === 'tokens') return units(v).toString();
     if (f.kind === 'address') return address(v);
-    if (f.kind === 'spender') { if (!['Mark','Jobs','Oracle'].includes(v)) throw Error('Choose a protocol spender.'); return CONTRACTS[v]; }
+    if (f.kind === 'spender') { if (!['Mark','Jobs','Oracle'].includes(v)) throw Error('Choose a protocol spender.'); return address(contracts[v]); }
     if (f.kind === 'hash') { bytes32(v); return v; }
     if (f.kind === 'boolean') { if (!['true','false'].includes(v)) throw Error('Choose true or false.'); return v === 'true'; }
     if (f.kind === 'role') { if (!['0','1','2'].includes(v)) throw Error('Invalid role.'); return v; }
@@ -243,4 +299,393 @@ export function curve(supply, count, base, slope) {
   const s = uint(String(supply),32), n = uint(String(count),32), b = uint(String(base),96), m = uint(String(slope),96);
   if (s + n > 1000000n) throw Error('Lot bound exceeded.');
   return n * b + m * n * (2n * s + n - (n ? 1n : 0n)) / 2n;
+}
+
+// Exact selected event surface; topics and payloads are independently checked against ethers.
+export const EVENTS = {
+  "SeedSealed": {
+    "contract": "Seed",
+    "name": "SeedSealed",
+    "signature": "SeedSealed(uint256,address,bytes32,bytes32,uint256,bytes32)",
+    "topic": "0x071fec114521189fc6ed4a104a32aaeb5ac8c837285831cb0f71415975d4d90f",
+    "fields": [
+      {
+        "name": "seedId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "creator",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "capsuleHash",
+        "type": "bytes32",
+        "indexed": false
+      },
+      {
+        "name": "planRoot",
+        "type": "bytes32",
+        "indexed": false
+      },
+      {
+        "name": "parent",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "evidenceHash",
+        "type": "bytes32",
+        "indexed": false
+      }
+    ]
+  },
+  "Transfer": {
+    "contract": "Seed",
+    "name": "Transfer",
+    "signature": "Transfer(address,address,uint256)",
+    "topic": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+    "fields": [
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "indexed": true
+      }
+    ]
+  },
+  "ReviewOpened": {
+    "contract": "Oracle",
+    "name": "ReviewOpened",
+    "signature": "ReviewOpened(uint256,uint64,address,uint64)",
+    "topic": "0xdf614c0fae0e5382079ec4c814070feb57041a5e53d8a2d30a2e927bc6031e84",
+    "fields": [
+      {
+        "name": "seedId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "round",
+        "type": "uint64",
+        "indexed": false
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "until",
+        "type": "uint64",
+        "indexed": false
+      }
+    ]
+  },
+  "RiskAttested": {
+    "contract": "Oracle",
+    "name": "RiskAttested",
+    "signature": "RiskAttested(uint256,uint64,address,uint16,bool,bytes32)",
+    "topic": "0xb54b5abd90ba8c75c41495b17d61963cc1eeef0db27a187bfe27bed5f4f1ad76",
+    "fields": [
+      {
+        "name": "seedId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "round",
+        "type": "uint64",
+        "indexed": false
+      },
+      {
+        "name": "validator",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "riskBps",
+        "type": "uint16",
+        "indexed": false
+      },
+      {
+        "name": "admitted",
+        "type": "bool",
+        "indexed": false
+      },
+      {
+        "name": "evidenceHash",
+        "type": "bytes32",
+        "indexed": false
+      }
+    ]
+  },
+  "MarketOpened": {
+    "contract": "Mark",
+    "name": "MarketOpened",
+    "signature": "MarketOpened(uint256,address,uint96,uint96,uint96)",
+    "topic": "0x0e69fafda6176c23380e5d3126c562149df5ca350d819bc64b13860da9fc36b8",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "business",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "base",
+        "type": "uint96",
+        "indexed": false
+      },
+      {
+        "name": "slope",
+        "type": "uint96",
+        "indexed": false
+      },
+      {
+        "name": "target",
+        "type": "uint96",
+        "indexed": false
+      }
+    ]
+  },
+  "Traded": {
+    "contract": "Mark",
+    "name": "Traded",
+    "signature": "Traded(uint256,address,bool,uint32,uint256)",
+    "topic": "0xf352b585d935f764073aa89aee75c3c6e8742cc87a0b63b105a6cc120273caf0",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "account",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "buy",
+        "type": "bool",
+        "indexed": false
+      },
+      {
+        "name": "lots",
+        "type": "uint32",
+        "indexed": false
+      },
+      {
+        "name": "value",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  },
+  "Bloomed": {
+    "contract": "Mark",
+    "name": "Bloomed",
+    "signature": "Bloomed(uint256,bytes32,bytes32,uint256)",
+    "topic": "0x4f66438a275796623905f12091b6564b1706cb4710a379c14d081fd401609edf",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "businessNode",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "planRoot",
+        "type": "bytes32",
+        "indexed": false
+      },
+      {
+        "name": "funding",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  },
+  "MissionRouted": {
+    "contract": "Mark",
+    "name": "MissionRouted",
+    "signature": "MissionRouted(uint256,uint32,uint256,bytes32)",
+    "topic": "0x2c7f1949748bd4f5f3ef4e3eb5150a738e3e49391d7984246412f989c804a43b",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "index",
+        "type": "uint32",
+        "indexed": true
+      },
+      {
+        "name": "jobId",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "leaf",
+        "type": "bytes32",
+        "indexed": false
+      }
+    ]
+  },
+  "JobPosted": {
+    "contract": "Jobs",
+    "name": "JobPosted",
+    "signature": "JobPosted(uint256,address,bytes32,string,string,uint96,uint64,uint64)",
+    "topic": "0x809a57fb2526885051a1a2beafa83e72f73a021bd64a355f0613a5e51abbac3b",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "business",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "specHash",
+        "type": "bytes32",
+        "indexed": false
+      },
+      {
+        "name": "goal",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "successMetric",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "bounty",
+        "type": "uint96",
+        "indexed": false
+      },
+      {
+        "name": "auctionEnd",
+        "type": "uint64",
+        "indexed": false
+      },
+      {
+        "name": "reviewEnd",
+        "type": "uint64",
+        "indexed": false
+      }
+    ]
+  },
+  "Delivered": {
+    "contract": "Jobs",
+    "name": "Delivered",
+    "signature": "Delivered(uint256,bytes32,string)",
+    "topic": "0xeae8f9d8b5ed021b3e2e94968390d0146082831b6c475bb8519732612e012c6c",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "resultHash",
+        "type": "bytes32",
+        "indexed": false
+      },
+      {
+        "name": "resultURI",
+        "type": "string",
+        "indexed": false
+      }
+    ]
+  },
+  "Closed": {
+    "contract": "Jobs",
+    "name": "Closed",
+    "signature": "Closed(uint256,uint8,uint256)",
+    "topic": "0x73a30a0c2202c1545037d5087e8f1a1fbe626dae2f48564f290f55ceba7ffcce",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "state",
+        "type": "uint8",
+        "indexed": false
+      },
+      {
+        "name": "refundable",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  },
+  "Payout": {
+    "contract": "Jobs",
+    "name": "Payout",
+    "signature": "Payout(uint256,address,uint256,uint256)",
+    "topic": "0xa5df5a195b51346b41c715be6896ddef8de524059309701b83d22c7e4ec1aa4c",
+    "fields": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "gross",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "burned",
+        "type": "uint256",
+        "indexed": false
+      }
+    ]
+  }
+};
+export function decodeEvent(key, log, expectedAddress) {
+  const event = EVENTS[key];
+  if (!Object.hasOwn(EVENTS,key) || !event || !log || log.removed || address(log.address) !== address(expectedAddress))
+    throw Error('Event is missing or emitted by the wrong contract.');
+  const indexed = event.fields.filter(f => f.indexed), plain = event.fields.filter(f => !f.indexed);
+  if (!Array.isArray(log.topics) || log.topics.length !== indexed.length + 1 || log.topics[0]?.toLowerCase() !== event.topic)
+    throw Error('Event signature or indexed fields do not match.');
+  const values = new Map(plain.map((field,i) => [field.name,decode(plain.map(f => f.type),log.data)[i]]));
+  indexed.forEach((field,i) => values.set(field.name,decode([field.type],log.topics[i+1])[0]));
+  return Object.fromEntries(event.fields.map(field => [field.name,values.get(field.name)]));
+}
+export function protocolIdentity() {
+  return JSON.stringify({methods:METHODS,selectors:SELECTORS,events:EVENTS,actions:ACTIONS});
 }

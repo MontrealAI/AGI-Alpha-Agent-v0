@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {METHODS, SELECTORS, ACTIONS, callData, decode} from '../../docs/assets/ascension-wallet/protocol.mjs';
+import {METHODS, SELECTORS, ACTIONS, EVENTS, callData, decode, decodeEvent} from '../../docs/assets/ascension-wallet/protocol.mjs';
 const require=createRequire(new URL('../contracts/package.json',import.meta.url));
 const {Interface, id, keccak256}=require('ethers');
 const archive=new URL('../../deployments/ethereum-mainnet/2026-10-11/',import.meta.url);
@@ -44,12 +44,34 @@ for(const [key,a] of Object.entries(ACTIONS)) test(`action uses exact archived A
   assert.deepEqual(fragment.outputs.map(v=>v.type),m.outputs);
 });
 test('every read signature exists in an archived ABI or the canonical ERC20 surface',()=>{
-  const external=new Set(['balanceOf','allowance','approve','decimals']);
+  const external=new Set(['balanceOf','allowance','approve','decimals','ensOwner','wrapperData']);
   for(const [key,m] of Object.entries(METHODS)) {
     if(external.has(key)) continue;
     const found=Object.values(interfaces).map(i=>i.getFunction(m.signature)).find(Boolean);
     assert.ok(found,`Missing ${m.signature}`);assert.deepEqual(found.outputs.map(o=>o.type),m.outputs);
   }
+});
+for(const [key,event] of Object.entries(EVENTS)) test(`event differential and exact archived ABI: ${key}`,()=>{
+  const iface=interfaces[event.contract], fragment=iface.getEvent(event.signature);
+  assert.ok(fragment); assert.equal(fragment.topicHash,event.topic);
+  assert.deepEqual(fragment.inputs.map(i=>({name:i.name,type:i.type,indexed:i.indexed})),event.fields);
+  for(let n=0;n<12;n++) {
+    const expected=event.fields.map(f=>example(f.type,n)), encoded=iface.encodeEventLog(fragment,expected);
+    const actual=decodeEvent(key,{...encoded,address:manifest.contracts[names[event.contract]].address},manifest.contracts[names[event.contract]].address);
+    const independent=iface.decodeEventLog(fragment,encoded.data,encoded.topics);
+    for(let i=0;i<expected.length;i++) assert.equal(actual[event.fields[i].name],typeof independent[i]==='string'&&independent[i].startsWith('0x')?independent[i].toLowerCase():independent[i]);
+    assert.throws(()=>decodeEvent(key,{...encoded,address:'0x'+'ff'.repeat(20)},manifest.contracts[names[event.contract]].address));
+    assert.throws(()=>decodeEvent(key,{...encoded,address:manifest.contracts[names[event.contract]].address,removed:true},manifest.contracts[names[event.contract]].address));
+    assert.throws(()=>decodeEvent(key,{...encoded,address:manifest.contracts[names[event.contract]].address,topics:encoded.topics.slice(1)},manifest.contracts[names[event.contract]].address));
+  }
+});
+test('dynamic response decoder rejects overlapping offsets, trailing bytes, invalid UTF-8 and nonzero padding',()=>{
+  const iface=new Interface(['function tokenURI(uint256) view returns (string)']);
+  const encoded=iface.encodeFunctionResult('tokenURI',['é']);
+  assert.throws(()=>decode(['string'],'0x'+'0'.repeat(64)+encoded.slice(66)));
+  assert.throws(()=>decode(['string'],encoded+'0'.repeat(64)));
+  assert.throws(()=>decode(['string'],encoded.slice(0,130)+'fffe'+encoded.slice(134)));
+  assert.throws(()=>decode(['string'],encoded.slice(0,-1)+'1'));
 });
 test('generated profile matches archived exact-byte SHA256 and Ethereum Keccak hashes',()=>{
   const p=JSON.parse(readFileSync(new URL('../../docs/assets/ascension-wallet/profile.json',import.meta.url),'utf8'));

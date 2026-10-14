@@ -280,6 +280,11 @@ def finalize(folder: Path, evidence: Path) -> None:
 
         wallet = json.loads((evidence / "public-pages" / "mark-wallet" / "report.json").read_text())
         verify_wallet(wallet, manifest["commit"], manifest["version"], url)
+    if tuple(map(int, manifest["version"].split("."))) >= (1, 31, 0):
+        from scripts.nova_studio_evidence import verify_report as verify_nova
+
+        nova = json.loads((evidence / "public-pages" / "nova-studio" / "report.json").read_text())
+        verify_nova(nova, manifest["commit"], manifest["version"], url)
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
         path = folder / name

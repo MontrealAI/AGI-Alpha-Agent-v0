@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {ACTIONS, CONTRACTS, uint, tokens, curve, parseFields, isRecovery} from './protocol.mjs';
-import {MarkClient, json, unresolved} from './client.mjs';
+import {MarkClient, json, unresolved, availableProfiles, selectBuildProfile} from './client.mjs';
 import {RecoveryStore, JOURNAL_KEY} from './recovery.mjs';
 const $ = id => document.getElementById(id);
 let language = 'en', client = null, busy = false, snapshot = null, observedEpoch = -1;
@@ -35,8 +35,9 @@ function refresh() {
   const ready = !!client?.provider;
   for (const id of ['connect','switch','disconnect','inspect','prepare']) $(id).disabled = busy || !ready;
   for (const id of ['wallet-choice','action','discover']) $(id).disabled = busy;
+  $('deployment-choice').disabled=busy || unresolved(client?.pending);
   for (const el of $('action-fields').querySelectorAll('input,select,textarea')) el.disabled = busy;
-  $('account').textContent = client?.account ? `Ethereum Mainnet · ${client.account}` : text('No connected account. Select Mainnet in the wallet.','Aucun compte connecté. Sélectionnez Mainnet dans le portefeuille.');
+  $('account').textContent = client?.account ? `Chain ${client.chainId} · ${client.account}` : text('No connected account. Select the deployment network in your wallet.','Aucun compte connecté. Sélectionnez le réseau du déploiement dans votre portefeuille.');
   $('preview-panel').hidden = !client?.prepared;
   $('confirm').disabled = busy || !client?.prepared || !$('ack').checked;
   if(storageError) $('confirm').disabled=true;
@@ -52,6 +53,7 @@ function refresh() {
   $('transaction-link').replaceChildren();
   const receiptHash=client?.pending?.candidateHash||client?.pending?.hash;
   if (receiptHash) {
+    if(client.chainId!==1) { $('transaction-link').textContent=`${client.pending.status} · chain ${client.chainId} · ${receiptHash}`; return; }
     const a = document.createElement('a'); a.href=`https://etherscan.io/tx/${receiptHash}`;
     a.textContent=`${client.pending.status} · ${receiptHash}`; a.rel='noopener noreferrer'; a.target='_blank';
     $('transaction-link').append(a);
@@ -70,7 +72,7 @@ function actionFields() {
   changed();
   const action = ACTIONS[$('action').value];
   $('action-note').textContent = action.note;
-  $('action-policy').textContent = action.risk === 'new'
+  $('action-policy').textContent = action.risk === 'new' && (!client || client.stage==='archive')
     ? text('New exposure is blocked for this archived profile. Zero allowance or future-availability revocation is available where applicable.','Les nouveaux engagements sont bloqués. La révocation à zéro d’une autorisation ou disponibilité reste possible.')
     : text('Real wallet action, subject to current contract conditions. It may spend ETH and can change or settle existing obligations.','Action réelle soumise aux règles actuelles du contrat. Elle consomme des frais ETH et peut modifier ou régler une obligation.');
   $('action-fields').replaceChildren();
@@ -118,7 +120,7 @@ $('wallet-choice').addEventListener('change',()=>run(async()=>{
   status(text('Wallet selected. Inspection requests no account permissions; Connect requests the selected account.','Portefeuille sélectionné. La consultation ne demande aucune permission de compte.'));
 }));
 $('connect').addEventListener('click',()=>run(async()=>{ await client.connect(); status(text('Account connected. No transaction was signed.','Compte connecté. Aucune transaction signée.')); }));
-$('switch').addEventListener('click',()=>run(async()=>{ await client.switchMainnet(); status(text('Reconnect after selecting Ethereum Mainnet.','Reconnectez-vous après la sélection de Mainnet.')); }));
+$('switch').addEventListener('click',()=>run(async()=>{ await client.switchMainnet(); status(text('Reconnect after selecting the deployment network.','Reconnectez-vous après la sélection du réseau du déploiement.')); }));
 $('disconnect').addEventListener('click',()=>run(async()=>{ client.disconnect(); $('wallet-choice').value=''; snapshot=null; status(text('This page is disconnected. Wallet permissions can be revoked in the wallet.','Page déconnectée. Révoquez les permissions dans le portefeuille.')); }));
 $('inspect').addEventListener('click',()=>run(async()=>{
   changed(); snapshot=null; $('snapshot').textContent='—'; $('quote-output').textContent='—'; $('snapshot-summary').textContent=text('No fresh observation yet.','Aucune observation actualisée.'); status(text('Verifying the pinned bytecode and bindings…','Vérification du bytecode et des liaisons…'));
@@ -126,7 +128,7 @@ $('inspect').addEventListener('click',()=>run(async()=>{
   const job=$('job-id').value ? uint($('job-id').value).toString() : null;
   const observation=await client.inspect(seed,job); snapshot={...observation,selectedSeed:seed}; $('snapshot').textContent=json(snapshot);
   const phase=snapshot.campaign ? ['None / Aucune','Funding / Financement','Bloomed / Engagée','Closed / Fermée'][Number(snapshot.campaign.phase)] : null;
-  $('snapshot-summary').textContent=`${text('Observed block','Bloc observé')} ${BigInt(snapshot.verification.blockNumber)} · ${text('Nova-Seeds created','Nova-Seeds créés')}: ${snapshot.nextSeedId}${phase?` · ${phase} · ${tokens(snapshot.campaign.reserve)} $AGIALPHA`:''} · ${text('New funding not commissioned','Nouveau financement non autorisé')}`;
+  $('snapshot-summary').textContent=`${text('Observed block','Bloc observé')} ${BigInt(snapshot.verification.blockNumber)} · ${text('Nova-Seeds created','Nova-Seeds créés')}: ${snapshot.nextSeedId}${phase?` · ${phase} · ${tokens(snapshot.campaign.reserve)} $AGIALPHA`:''} · ${client.stage==='archive'?text('New funding not commissioned','Nouveau financement non autorisé'):client.stage}`;
   status(text('Observation complete. Bytecode matching is not an independent audit or approval for public funding.','Observation terminée. La concordance du bytecode n’est ni un audit indépendant ni une autorisation de financement.'));
 }));
 for (const side of ['buy','sell']) $(`quote-${side}`).addEventListener('click',()=>run(async()=>{
@@ -147,7 +149,7 @@ $('prepare').addEventListener('click',()=>run(async()=>{
   $('ack').checked=false;
   const id=$('action').value, values=ACTIONS[id].fields.map(f=>$(`field-${f.key}`).value);
   // Surface the policy result before making any account or transaction request.
-  const args=parseFields(id,values); const preview=await client.prepare(id,values);
+  const args=parseFields(id,values,client.contracts); const preview=await client.prepare(id,values);
   $('preview').textContent=json({...preview,method:ACTIONS[id].method,arguments:args,recovery:isRecovery(id,args)});
   status(text('Preview prepared. Read it, then explicitly confirm in your wallet.','Devis préparé. Examinez-le, puis confirmez dans votre portefeuille.'));
   $('preview-title').scrollIntoView({block:'start',behavior:'instant'});
@@ -172,7 +174,11 @@ $('import-journal').addEventListener('change',()=>run(async()=>{
     if(unresolved(client.pending)) throw Error('Reconcile the existing journal before importing another.');
     const checked=new MarkClient(client.profile); checked.restore(value);
     // Imported statuses are not evidence. Recheck the latest on-chain outcome.
-    if(checked.pending) checked.pending.status='submission-unknown';
+    if(checked.pending) {
+      checked.pending.status='submission-unknown';
+      checked.pending.effectVerified=false;
+      delete checked.pending.effectBlockHash;
+    }
     recovery.write(checked.journal()); client.restore(checked.journal()); storedJournal=JSON.stringify(checked.journal());
     changed(); status(text('Journal imported. Reconcile a transaction hash before signing again.','Journal importé. Réconciliez une empreinte avant toute nouvelle signature.'));
   });
@@ -189,24 +195,58 @@ window.addEventListener('storage',event=>{
 $('language').addEventListener('click',()=>{
   language=language==='en'?'fr':'en'; document.documentElement.lang=language;
   for(const el of document.querySelectorAll('[data-en]')) el.textContent=el.dataset[language];
-  $('language').textContent=language==='en'?'Français':'English'; refresh();
+  $('language').textContent=language==='en'?'Français':'English'; deploymentLabel(); refresh();
 });
+function deploymentLabel() {
+  if(!client) return;
+  $('deployment-status').textContent=`${client.profile.profile} · chain ${client.chainId} · ${client.stage}`;
+  $('deployment-heading').textContent=`α-AGI MARK · ${client.chainId===1?'Ethereum Mainnet':text('Local test network','Réseau local de test')} · chain ${client.chainId}`;
+  $('archive-boundary').hidden=client.stage!=='archive';
+  $('selected-boundary').hidden=client.stage==='archive';
+  $('selected-boundary').textContent=client.stage==='local'
+    ? text('Disposable local deployment. These transactions and accounts are test evidence, not Mainnet activity.','Déploiement local jetable. Ces transactions et comptes sont des preuves de test, pas une activité Mainnet.')
+    : text('Source-reviewed deployment selection. Each action still requires current on-chain eligibility, qualification and explicit wallet confirmation. Canary actions are limited to the registered exact intents.','Déploiement sélectionné dans les sources vérifiées. Chaque action exige toujours admissibilité, qualification et confirmation explicite. Le canari est limité aux intentions exactes enregistrées.');
+  for(const option of $('action').options) option.textContent=`${client.stage==='archive' && ACTIONS[option.value].risk==='new'?'[Commissioning pending] ':''}${ACTIONS[option.value].label}`;
+}
+$('deployment-choice').addEventListener('change',()=>run(async()=>{
+  if(unresolved(client?.pending)) throw Error('Reconcile the outstanding transaction before changing deployment.');
+  const target=new URL(window.location.href); target.search=''; target.searchParams.set('profile',$('deployment-choice').value);
+  client?.disconnect(); window.location.assign(target.href);
+}));
 for(const [id,a] of Object.entries(ACTIONS)) {
   const option=document.createElement('option'); option.value=id; option.textContent=`${a.risk==='new'?'[Commissioning pending] ':''}${a.label}`; $('action').append(option);
 }
 $('action').value='sell'; actionFields();
-for(const [name,value] of Object.entries(CONTRACTS)) {
-  const p=document.createElement('p'), a=document.createElement('a');
-  a.href=`https://etherscan.io/address/${value}#code`; a.textContent=`${name}: ${value}`; a.target='_blank'; a.rel='noopener noreferrer'; p.append(a); $('addresses').append(p);
-}
 window.addEventListener('beforeunload',event=>{if(client?.history.length){event.preventDefault();event.returnValue='';}});
 try {
   const response=await fetch(new URL('./profile.json',import.meta.url),{cache:'no-store',redirect:'error'});
   if(!response.ok) throw Error('The deployment profile is missing. Build the wallet assets before serving; wallet actions remain disabled.');
-  client=new MarkClient(await response.json(),refresh,journal=>{
+  const defaultProfile=await response.json(), context=new URLSearchParams(window.location.search);
+  const choices=availableProfiles(defaultProfile);
+  for(const choice of choices) {const option=document.createElement('option');option.value=choice.id;option.textContent=`${choice.label} · ${choice.stage}`;$('deployment-choice').append(option);}
+  const selected=context.get('profile') || choices[0].id;
+  client=new MarkClient(selectBuildProfile(selected,defaultProfile),refresh,journal=>{
     if(!recovery||storageError) throw Error(storageError||'Recovery storage is unavailable.');
     recovery.write(journal); storedJournal=JSON.stringify(journal);
   });
+  $('deployment-choice').value=selected; deploymentLabel();
+  for(const [name,value] of Object.entries(client.contracts)) {
+    const p=document.createElement('p'); p.textContent=`${name}: ${value}`;
+    if(client.chainId===1) {const a=document.createElement('a');a.href=`https://etherscan.io/address/${value}#code`;a.textContent=p.textContent;a.target='_blank';a.rel='noopener noreferrer';p.replaceChildren(a);}
+    $('addresses').append(p);
+  }
+  if (context.has('seed') || context.has('job')) {
+    if (context.get('profile') !== client.profileIdentity || context.get('chain') !== String(client.chainId))
+      throw Error('The linked project belongs to a different deployment. Return to Nova Studio and select the matching profile. No wallet request was made.');
+    for (const [key,id] of [['seed','seed-id'],['job','job-id']]) {
+      if (!context.has(key)) continue;
+      const value=uint(context.get(key));
+      if (!value) throw Error('A linked seed or job identifier must be positive.');
+      $(id).value=value.toString();
+    }
+    actionFields();
+    status(text('Project identifiers loaded. Select a wallet and inspect to verify current state; the link grants no signing authority.','Identifiants chargés. Sélectionnez un portefeuille et consultez l’état actuel; le lien ne donne aucune autorisation de signature.'));
+  }
   try { recovery=new RecoveryStore(window.localStorage,navigator.locks); syncJournal(); }
   catch(error) { storageError=`Recovery unavailable: ${error.message}`; }
   refresh(); discover(); if(storageError) status(storageError);

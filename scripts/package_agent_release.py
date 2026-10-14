@@ -45,6 +45,10 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/MAINNET_READINESS.md",
         "docs/agent/MAINNET_DEPLOYMENT.md",
         "docs/agent/MARK_WALLET.md",
+        "docs/agent/NOVA_SEED_STUDIO.md",
+        "docs/agent/NOVA_SEED_STUDIO_TECHNICAL.md",
+        "docs/agent/NOVA_SEED_STUDIO_COMMISSIONING.md",
+        "docs/agent/NOVA_SEED_STUDIO_ACCEPTANCE.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
         "docs/agent/DEMOS.md",
@@ -175,6 +179,11 @@ def main() -> None:
 
         report = json.loads((args.evidence / "mark-wallet-browser" / "report.json").read_text())
         verify_wallet(report, sha, version)
+    if tuple(map(int, version.split("."))) >= (1, 31, 0):
+        from scripts.nova_studio_evidence import verify_evm_report, verify_report as verify_nova
+
+        verify_nova(json.loads((args.evidence / "nova-studio-browser" / "report.json").read_text()), sha, version)
+        verify_evm_report(json.loads((args.evidence / "nova-studio-evm" / "report.json").read_text()), sha, version)
     manuscript_hashes = verify_manuscript()
     factory_preservation = verify_factory()
     subprocess.run(
@@ -314,6 +323,8 @@ def main() -> None:
             "contract toolchain full dependency audit: no moderate/high/critical advisories",
             "unsigned mainnet plan execution and read-only verification rejection tests",
             "real local EVM payments",
+            "Nova Studio exact-source browser mint, review, funding, activation, delivery and settlement",
+            "Nova Studio compiler parity, portable recovery, EN/FR accessibility and archived-profile isolation",
             "native Ascension commitments, signed reviewed deliveries and strict evidence types",
             "Ascension protocol exact assets, canonical and mirrored routes, keyboard access and offline recovery",
             "clean wheel installation",

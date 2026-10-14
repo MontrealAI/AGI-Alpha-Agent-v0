@@ -46,7 +46,7 @@ jobs:
           python-version: '3.12'
       - name: Check dependency-free wallet and profile tests
         run: |
-          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs
+          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs tests/mark-wallet/qualification.test.mjs
           python -m unittest discover -s tests/mark-wallet -p "test_*.py" -v
       - name: Install existing locked contract reference tools
         run: npm ci --prefix tests/contracts

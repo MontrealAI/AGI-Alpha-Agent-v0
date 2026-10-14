@@ -40,7 +40,7 @@ async function fixture() {
       }
       if(method==='eth_sendTransaction') { this.sends++; this.last=params[0]; if(this.sendError) throw this.sendError; return HASH; }
       if(method==='eth_getTransactionReceipt') return this.noReceipt?null:{transactionHash:params[0],status:this.reverted?'0x0':'0x1',blockHash:BLOCK,blockNumber:'0x100'};
-      if(method==='eth_getTransactionByHash') return {hash:params[0],nonce:this.wrongNonce?'0x99':this.last.nonce,chainId:'0x1',blockHash:BLOCK,blockNumber:'0x100',from:this.last.from,to:this.wrongTo||this.cancelled?ACCOUNT:this.last.to,input:this.cancelled?'0x':this.last.data,value:'0x0'};
+      if(method==='eth_getTransactionByHash') return {type:this.omitType?undefined:this.txType??'0x2',authorizationList:this.authorizations,hash:params[0],nonce:this.wrongNonce?'0x99':this.last.nonce,chainId:'0x1',blockHash:BLOCK,blockNumber:'0x100',from:this.last.from,to:this.wrongTo||this.cancelled?ACCOUNT:this.last.to,input:this.cancelled?'0x':this.last.data,value:'0x0'};
       if(method==='wallet_switchEthereumChain') {this.chain='0x1';this.emit('chainChanged');return null;}
       throw Error(`Unexpected RPC ${method}`);
     }};
@@ -211,5 +211,44 @@ test('restoration rejects changed destinations, calldata, funding and malformed 
   for(const mutate of [r=>r.transaction.to=ACCOUNT,r=>r.transaction.data='0x',r=>r.transaction.nonce='0x00',r=>r.action='buy',r=>r.status='trust-me']){
     const value=JSON.parse(JSON.stringify(client.journal()));mutate(value.transactions[0]);const other=new MarkClient(p);
     assert.throws(()=>other.restore(value));assert.equal(other.history.length,0);
+  }
+});
+test('semantic readback remains unresolved across reload and shared receipt checks until verified',async()=>{
+  const {client,provider,p}=await fixture();client.requireEffectVerification=true;
+  await client.prepare('reclaim',['1']);await client.confirm(true);
+  assert.equal((await client.receipt(HASH)).status,'effect-unverified');
+  const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));restored.select(provider);
+  await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
+  const checked=await restored.receipt(HASH);assert.equal(checked.status,'effect-unverified');
+  restored.completeEffects(checked);assert.equal(checked.status,'finalized');
+  assert.equal((await restored.receipt(HASH)).status,'finalized');
+  provider.noReceipt=true;await restored.receipt(HASH);provider.noReceipt=false;
+  assert.equal((await restored.receipt(HASH)).status,'effect-unverified');
+});
+test('journal profile identity cannot be changed or mistaken for another deployment',async()=>{
+  const {client,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+  const value=JSON.parse(JSON.stringify(client.journal()));value.profile='another-deployment';
+  assert.throws(()=>new MarkClient(p).restore(value),/journal/);
+  value.profile=client.profileIdentity;value.transactions[0].profile='another-deployment';
+  assert.throws(()=>new MarkClient(p).restore(value),/allowed action/);
+});
+test('an older receipt becoming uncertain also blocks new signing',async()=>{
+  const {client,provider,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);await client.receipt(HASH);
+  const latest={...client.pending,hash:'0x'+'fa'.repeat(32),status:'finalized'};client.history.push(latest);client.pending=latest;
+  provider.reorg=true;await assert.rejects(client.receipt(HASH),/canonical/);
+  await assert.rejects(client.prepare('reclaim',['2']),/outstanding/);
+  const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));restored.select(provider);
+  assert.equal(restored.pending.status,'reorged');provider.reorg=false;
+  assert.equal((await restored.receipt(HASH,true)).status,'finalized');
+  await restored.prepare('reclaim',['2']);
+});
+test('unsupported transaction types and added wallet authorization lists remain durably unresolved',async()=>{
+  for(const envelope of ['0x4','0x3','0x02','authorization','missing']) {
+    const {client,provider,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+    if(envelope==='authorization')provider.authorizations=[{address:ACCOUNT}];else if(envelope==='missing')provider.omitType=true;else provider.txType=envelope;
+    await assert.rejects(client.receipt(HASH),/Unsupported transaction envelope/);
+    assert.equal(client.pending.status,'unsupported-envelope');
+    const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));
+    await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
   }
 });

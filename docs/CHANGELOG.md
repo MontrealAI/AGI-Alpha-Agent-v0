@@ -1,3 +1,11 @@
+## 1.31.0 candidate — Nova-Seed Mainnet Studio
+
+- Add the bilingual guided Nova Studio, exact browser FusionPlans, encrypted executable packages and portable recovery.
+- Share MARK wallet policy, transaction preparation, uncertainty recovery and deployment identity.
+- Integrate artifact publication, seed receipt verification, review, funding, activation and committed job routing.
+- Add independent compiler parity, current-source EVM and browser acceptance gates; retain archived restrictions.
+- See [release notes](agent/RELEASE_NOTES_1.31.0.md) for implementation and operational boundaries.
+
 ## 1.30.0 — MARK Mainnet wallet and recoverable transaction journal
 
 - Add the guarded Mainnet wallet workspace while preserving the original Protocol Desk.
