@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Ascension integration preview
+on:
+  push:
+    branches:
+      - chore/ascension-integration-preview-20261014
+permissions:
+  contents: read
+concurrency:
+  group: ascension-integration-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: eee6add6b89962a293afb67170d14154691d9776
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Capture both exact sources and a read-only merge preview
+        shell: bash
+        env:
+          CYCLE_SHA: eee6add6b89962a293afb67170d14154691d9776
+          INTEGRATION_SHA: 541f33a4c380e7ffe9f433baab14aca24be1777d
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$CYCLE_SHA"
+          git cat-file -e "$INTEGRATION_SHA^{commit}"
+          git config user.name 'Integration preview only'
+          git config user.email 'preview@example.invalid'
+          mkdir -p "$RUNNER_TEMP/ascension-preview"
+          export PREVIEW="$RUNNER_TEMP/ascension-preview"
+          set +e
+          git -c merge.conflictStyle=diff3 merge --no-commit --no-ff "$INTEGRATION_SHA" > "$PREVIEW/merge.txt" 2>&1
+          result=$?
+          set -e
+          if [ "$result" -gt 1 ]; then cat "$PREVIEW/merge.txt"; exit "$result"; fi
+          export MERGE_RESULT="$result"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          out = pathlib.Path(os.environ['PREVIEW'])
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          conflicts = sorted(set(git('diff', '--name-only', '--diff-filter=U', '-z').decode().strip('\0').split('\0')) - {''})
+          skipped, copied = [], {}
+          paths = sorted(set(git('ls-files', '-z').decode().strip('\0').split('\0')) - {''})
+          for name in paths:
+              src = pathlib.Path(name)
+              if src.is_symlink() or not src.is_file() or src.stat().st_size > 2_000_000:
+                  skipped.append(name)
+                  continue
+              raw = src.read_bytes()
+              try:
+                  raw.decode('utf-8')
+              except UnicodeDecodeError:
+                  skipped.append(name)
+                  continue
+              dst = out / 'source' / name
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              dst.write_bytes(raw)
+              copied[name] = hashlib.sha256(raw).hexdigest()
+          for name in conflicts:
+              for stage in (1, 2, 3):
+                  item = subprocess.run(['git', 'show', f':{stage}:{name}'], capture_output=True)
+                  if item.returncode == 0:
+                      dst = out / f'stage-{stage}' / name
+                      dst.parent.mkdir(parents=True, exist_ok=True)
+                      dst.write_bytes(item.stdout)
+          for label, ref in [('cycle', os.environ['CYCLE_SHA']), ('integration', os.environ['INTEGRATION_SHA'])]:
+              (out / (label + '-tree.txt')).write_bytes(git('ls-tree', '-r', ref))
+          (out / 'index.txt').write_bytes(git('ls-files', '--stage'))
+          (out / 'merge-diff.patch').write_bytes(git('diff', '--cc'))
+          (out / 'manifest.json').write_text(json.dumps({
+              'schema': 'agialpha.read-only-integration-preview.v1',
+              'cycle': os.environ['CYCLE_SHA'], 'integration': os.environ['INTEGRATION_SHA'],
+              'merge_exit': int(os.environ['MERGE_RESULT']), 'conflicts': conflicts,
+              'copied_sha256': copied, 'omitted_binary_large_or_linked': skipped,
+              'qualification': 'Diagnostic source subset only; not a release or a passing test gate. No remote refs, contracts or authorizations changed.'
+          }, indent=2) + '\n')
+          print(json.dumps({'conflicts': conflicts, 'copied_files': len(copied), 'omitted_files': len(skipped)}, indent=2))
+          PY
+          cat "$PREVIEW/merge.txt"
+          tar -czf "$RUNNER_TEMP/ascension-integration-preview.tar.gz" -C "$PREVIEW" .
+          sha256sum "$RUNNER_TEMP/ascension-integration-preview.tar.gz"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ascension-integration-preview
+          path: ${{ runner.temp }}/ascension-integration-preview.tar.gz
+          if-no-files-found: error
+          retention-days: 14
