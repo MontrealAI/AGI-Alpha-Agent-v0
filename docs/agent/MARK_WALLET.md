@@ -56,7 +56,7 @@ python -m unittest discover -s tests/mark-wallet -p test_build.py -v
 python -m http.server 8000 --directory docs
 ```
 
-The new page is at `/ascension-protocol/mainnet/` on the local server. Normal MkDocs builds generate the profile through the existing `scripts/mkdocs_assets.py` hook. Building never changes the deployment archive, current Solidity, compiler settings, existing local-EVM receipt or wallet state. Serve the generated files; opening the HTML directly with `file://` is not supported. Without a valid profile the page fails closed.
+The new page is at `/ascension-protocol/mainnet/` on the local server. Normal MkDocs builds generate the profile through the existing `scripts/mkdocs_assets.py` hook. Building never changes the deployment archive, current Solidity, compiler settings, existing local-EVM receipt or wallet state. Serve the generated files; opening the HTML directly with `file://` is not supported. Without a valid profile the page fails closed. The wallet route and assets are excluded from the shared offline demo cache; they require network loading and cannot prevent existing offline demos from installing.
 
 Automated codec/provider tests are not a real hardware-wallet trial, independent audit, observed mainnet settlement, or approval to open public funding. The targeted workflow retains test reports; existing release acceptance remains in force. A code review/merge and the normal Pages deployment are still necessary before the new route exists on the public website.
 

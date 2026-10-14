@@ -13,6 +13,8 @@ wallet only after explicit confirmation, and verifies the resulting transaction 
 - Unknown submissions survive reload. Export/import and hash reconciliation recover original or replacement
   transactions. Unfinalized and reorganized receipts keep the barrier active. Cancellation or a different
   replacement never appears as successful execution of the original action.
+- The wallet loads from the network and is excluded from the shared offline cache, preserving cold-checkout
+  installation and offline SUCCESSOR workflows.
 - The generated Protocol Desk retains the wallet link. Existing contracts, recorded deployment artifacts,
   economic rules, flowcharts and local-EVM evidence remain unchanged.
 - Targeted wallet tests and rendered browser journeys now gate the integrated release. Packaged and public

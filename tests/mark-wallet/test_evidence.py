@@ -33,3 +33,27 @@ class EvidenceGate(unittest.TestCase):
                 bad[field] = value
                 with self.assertRaises(ValueError):
                     verify_report(bad, "a" * 40, "1.30.0", "https://example.test/")
+
+
+class CacheBoundary(unittest.TestCase):
+    def test_generated_wallet_profile_never_enters_the_offline_demo_cache(self):
+        import tempfile
+        from pathlib import Path
+        from scripts.build_service_worker import build, gather_assets
+
+        with tempfile.TemporaryDirectory() as temporary:
+            docs = Path(temporary)
+            (docs / "index.html").write_text("demo")
+            original = build(docs)
+            for name in [
+                "assets/ascension-wallet/profile.json",
+                "assets/ascension-wallet/app.mjs",
+                "ascension-protocol/mainnet/index.html",
+                "alpha_factory_v1/demos/ascension-protocol/mainnet/index.html",
+            ]:
+                path = docs / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("network-only")
+            self.assertEqual(gather_assets(docs), ["index.html"])
+            self.assertEqual(build(docs), original)
+            self.assertNotIn("ascension-wallet", (docs / "service-worker.js").read_text())
