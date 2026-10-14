@@ -242,3 +242,11 @@ def test_stateless_fleet_work_is_bounded_and_never_approves() -> None:
     spec["mission"]["work"] = {"kind": "code", "candidate": "print('no')"}
     with pytest.raises(ValueError):
         execute(json.dumps(spec).encode())
+
+
+def test_four_kind_wire_vectors_reproduce_exact_normalized_bytes() -> None:
+    from scripts.build_fleet_work_vectors import vectors
+
+    retained = json.loads((ROOT / "examples/ecosystem/fleet-work-vectors.json").read_text())
+    assert vectors() == retained
+    assert {item["kind"] for item in retained["vectors"]} == {"research", "allocation", "schedule", "forecast"}

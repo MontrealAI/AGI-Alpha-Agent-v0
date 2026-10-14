@@ -40,3 +40,34 @@ def read_spec(raw: bytes) -> tuple[WorkSpec, str]:
 
     value = json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)
     return WorkSpec.model_validate(value), "0x" + hashlib.sha256(raw).hexdigest()
+
+
+def validation(raw: bytes) -> dict[str, Any]:
+    """Expose exact normalized canonical bytes without cross-language number rewriting."""
+    spec, spec_hash = read_spec(raw)
+    mission = json.dumps(
+        spec.mission.model_dump(), ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
+    )
+    return {
+        "schema": "agialpha.work-spec-validation.v1",
+        "spec_hash": spec_hash,
+        "executor": spec.executor,
+        "market": spec.market,
+        "canonical_mission": mission,
+        "mission_hash": hashlib.sha256(mission.encode()).hexdigest(),
+    }
+
+
+def main() -> None:
+    """Validate bounded stdin only; never execute the described mission."""
+    import sys
+
+    raw = sys.stdin.buffer.read(MAX_BYTES + 1)
+    result = validation(raw)
+    sys.stdout.write(
+        json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n"
+    )
+
+
+if __name__ == "__main__":
+    main()

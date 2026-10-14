@@ -7,6 +7,7 @@ and cannot approve work or authorize marketplace settlement.
 """
 from __future__ import annotations
 
+import base64
 import sys
 import time
 from typing import Any
@@ -45,6 +46,9 @@ def execute(raw: bytes) -> dict[str, Any]:
         "schema": "agialpha.fleet-work-result.v1",
         "spec_hash": spec_hash,
         "mission_hash": digest(mission.model_dump()),
+        "canonical_mission": canonical(mission.model_dump()).decode(),
+        "canonical_result": canonical(result).decode(),
+        "spec_base64": base64.b64encode(raw).decode(),
         "result": result,
         "result_hash": digest(result),
         "verification": verification,
