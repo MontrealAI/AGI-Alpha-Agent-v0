@@ -14,8 +14,9 @@ import pytest
 from test_successor_ascension import AWARD_TX, CLOSE_TX, POST_TX, WORKER
 from test_successor_studio_operator import install_template, installed
 
-from alpha_factory_v1.core.runtime.api import create_app
+from alpha_factory_v1.core.runtime.api import MAX_REQUEST_BYTES, create_app
 from alpha_factory_v1.core.runtime.successor import studio_operator as operator
+from alpha_factory_v1.core.runtime.successor import workbench
 
 playwright = pytest.importorskip("playwright.sync_api")
 uvicorn = pytest.importorskip("uvicorn")
@@ -167,6 +168,98 @@ def test_actual_local_ui_setup_pair_seal_separate_roles_run_review_and_export(
             page.locator("#workspace").wait_for(state="hidden")
             assert not page.locator("#result-preview").inner_text()
             assert not errors
+            browser.close()
+    finally:
+        server.should_exit = True
+        thread.join(timeout=5)
+        listener.close()
+
+
+def test_actual_local_ui_bounds_utf8_request_body_before_post(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    incoming, journal, _, _, _ = installed(tmp_path, monkeypatch)
+    incoming["work_spec"] = workbench.invoke({"operation": "example", "family": "documentation"})
+
+    def encode(value: object) -> str:
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+
+    def body(raw: str) -> str:
+        return encode({"request_json": raw})
+
+    # A valid bounded documentation input tests bytes, not ASCII padding alone.
+    source = incoming["work_spec"]["inputs"]["markdown"]
+    characters = (280_000 - len(encode(incoming).encode())) // 3
+    incoming["work_spec"]["inputs"]["markdown"] = "界" * characters + source
+    raw = encode(incoming)
+    raw += " " * (280_000 - len(raw.encode()))
+    assert len(raw.encode()) == 280_000
+    remaining = MAX_REQUEST_BYTES - len(body(raw).encode())
+    exact = raw + "\n" * (remaining // 2) + " " * (remaining % 2)
+    assert len(body(exact).encode()) == MAX_REQUEST_BYTES
+    oversized = exact + " "
+    assert len(oversized.encode()) <= MAX_REQUEST_BYTES
+    assert len(body(oversized)) < MAX_REQUEST_BYTES < len(body(oversized).encode())
+
+    listener = socket.socket()
+    listener.bind(("127.0.0.1", 0))
+    port = listener.getsockname()[1]
+    server = uvicorn.Server(uvicorn.Config(create_app(journal), log_level="error", lifespan="off"))
+    thread = threading.Thread(target=lambda: server.run(sockets=[listener]), daemon=True)
+    thread.start()
+    deadline = time.monotonic() + 5
+    while not server.started and time.monotonic() < deadline:
+        time.sleep(0.02)
+    try:
+        with playwright.sync_playwright() as driver:
+            if not Path(driver.chromium.executable_path).exists():
+                pytest.skip("Chromium is not installed")
+            browser = driver.chromium.launch(headless=True, args=["--no-sandbox"])
+            page = browser.new_page()
+            posts = []
+            page.on("request", lambda request: posts.append(request) if request.method == "POST" else None)
+            page.goto(f"http://127.0.0.1:{port}/ascension-studio")
+            page.fill("#token", (journal.root / "api.token").read_text())
+            page.click("#login-form button")
+            page.locator("#workspace").wait_for(state="visible")
+
+            def select_work(text: str) -> None:
+                playwright.expect(page.locator("#request-file")).to_be_enabled()
+                page.set_input_files(
+                    "#request-file",
+                    {"name": "bounded-work.json", "mimeType": "application/json", "buffer": text.encode()},
+                )
+                playwright.expect(page.locator("#file-summary")).to_contain_text("Selected request")
+                playwright.expect(page.locator("#workspace")).to_have_attribute("aria-busy", "false")
+
+            for accepted in (raw, exact):
+                select_work(accepted)
+                with page.expect_response(
+                    lambda response: response.request.method == "POST"
+                    and response.url.endswith("/api/ascension-studio/import")
+                ) as submitted:
+                    page.click("#prepare")
+                assert submitted.value.status == 200
+                playwright.expect(page.locator("#workspace")).to_have_attribute("aria-busy", "false")
+                assert len(posts[-1].post_data_buffer) == len(body(accepted).encode())
+            assert len(posts) == 2
+            assert len(operator.records(journal)) == 1
+
+            select_work(oversized)
+            page.click("#prepare")
+            playwright.expect(page.locator("#message")).to_contain_text("encoded request exceeds the 512 KiB API limit")
+            playwright.expect(page.locator("#workspace")).to_have_attribute("aria-busy", "false")
+            assert len(posts) == 2
+
+            page.set_input_files(
+                "#request-file",
+                {"name": "too-large.json", "mimeType": "application/json", "buffer": b" " * (MAX_REQUEST_BYTES + 1)},
+            )
+            playwright.expect(page.locator("#message")).to_contain_text("file exceeds 512 KiB")
+            playwright.expect(page.locator("#workspace")).to_have_attribute("aria-busy", "false")
+            assert not page.locator("#file-summary").inner_text()
+            assert len(posts) == 2
             browser.close()
     finally:
         server.should_exit = True

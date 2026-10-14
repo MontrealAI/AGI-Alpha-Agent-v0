@@ -2,6 +2,7 @@
 'use strict';
 
 const $ = id => document.getElementById(id);
+const MAX_REQUEST_BYTES = 512 * 1024;
 let accessToken = '', selected = null, installation = null, fileText = '', busy = false, epoch = 0, allRecords = [];
 const english = Object.fromEntries([...document.querySelectorAll('[data-i18n]')].map(node => [node.dataset.i18n, node.textContent]));
 const french = {
@@ -40,7 +41,7 @@ const messages = {
     setupNeeded: 'Setup is incomplete. An operator must install the project profile, trusted public identities and existing institution before preparation. Work files cannot supply that authority. Read the setup guide.',
     name: 'Journal identity', key: 'Public key to retain independently', control: 'Agent control', pause: 'Pause agent', resume: 'Resume agent',
     empty: 'No retained Studio work yet.', disconnected: 'Disconnected. Private page contents and token cleared.', connected: 'Connected. Select a work file or reopen a retained project.',
-    invalidFile: 'Select a Studio work request JSON file.', tooLarge: 'The file exceeds 256 KiB. Reduce its bounded inputs before importing.', signedTooLarge: 'The signed envelope exceeds 128 KiB.',
+    invalidFile: 'Select a Studio work request JSON file.', tooLarge: 'The file exceeds 512 KiB. Reduce its bounded inputs before importing.', requestTooLarge: 'The encoded request exceeds the 512 KiB API limit, including JSON escaping and handoff fields. Reduce its inputs or formatting before importing.', signedTooLarge: 'The signed envelope exceeds 128 KiB.',
     changedSession: 'Connection changed. Reconnect and inspect retained history.', failed: 'Operation failed. Refresh the retained record and inspect its state before retrying.',
     waiting: 'Working. Keep this page open; if the response is lost, reconnect and open the retained record.',
     prepared: 'Prepared — no grant', sealed: 'Sealed — awaiting assignment', bound: 'Assignment verified — awaiting grant', running: 'Execution may be active', interrupted: 'Interrupted — recovery required', delivered: 'Delivered — review and settlement separate', settled: 'Settlement observed',
@@ -61,7 +62,7 @@ const messages = {
     setupNeeded: 'Configuration incomplète. Un opérateur doit installer le profil du projet, les identités publiques de confiance et une institution existante. Les fichiers de travail ne peuvent fournir cette autorité. Consultez le guide.',
     name: 'Identité du journal', key: 'Clé publique à conserver séparément', control: 'État de l’agent', pause: 'Mettre l’agent en pause', resume: 'Reprendre l’agent',
     empty: 'Aucun travail Studio conservé.', disconnected: 'Déconnecté. Le contenu privé et le jeton ont été effacés de la page.', connected: 'Connecté. Sélectionnez un fichier ou rouvrez un projet conservé.',
-    invalidFile: 'Sélectionnez un fichier JSON de demande Studio.', tooLarge: 'Le fichier dépasse 256 Kio. Réduisez ses entrées avant l’importation.', signedTooLarge: 'L’enveloppe signée dépasse 128 Kio.',
+    invalidFile: 'Sélectionnez un fichier JSON de demande Studio.', tooLarge: 'Le fichier dépasse 512 Kio. Réduisez ses entrées avant l’importation.', requestTooLarge: 'La demande encodée dépasse la limite de 512 Kio de l’API, avec les échappements JSON et les champs de transmission. Réduisez ses entrées ou sa mise en forme avant l’importation.', signedTooLarge: 'L’enveloppe signée dépasse 128 Kio.',
     changedSession: 'La connexion a changé. Reconnectez-vous et consultez l’historique.', failed: 'Échec de l’opération. Actualisez le dossier conservé et examinez son état avant de réessayer.',
     waiting: 'Opération en cours. Gardez cette page ouverte; si la réponse est perdue, reconnectez-vous et ouvrez le dossier conservé.',
     prepared: 'Préparé — sans autorisation', sealed: 'Scellé — attribution attendue', bound: 'Attribution vérifiée — autorisation attendue', running: 'Exécution peut-être active', interrupted: 'Interrompu — récupération requise', delivered: 'Livré — révision et règlement distincts', settled: 'Règlement observé',
@@ -129,6 +130,9 @@ function entries(node, values) {
   }));
 }
 async function api(path, options = {}) {
+  if (typeof options.body === 'string' && new TextEncoder().encode(options.body).byteLength > MAX_REQUEST_BYTES) {
+    throw new Error(t('requestTooLarge'));
+  }
   const started = epoch;
   const response = await fetch('/api' + path, {...options, headers: {
     Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json', ...(options.headers || {}),
@@ -285,7 +289,7 @@ $('refresh').addEventListener('click', () => guarded(refresh));
 $('request-file').addEventListener('change', () => guarded(async () => {
   fileText = ''; $('input-preview').textContent = ''; $('file-summary').textContent = '';
   const file = $('request-file').files[0]; if (!file) return;
-  if (file.size > 256 * 1024) throw new Error(t('tooLarge'));
+  if (file.size > MAX_REQUEST_BYTES) throw new Error(t('tooLarge'));
   const raw = await file.text(), value = JSON.parse(raw);
   if (value.schema !== 'agialpha.ascension.studio-work.v1') throw new Error(t('invalidFile'));
   fileText = raw; $('input-preview').textContent = pretty(value); $('file-summary').textContent = t('selected') + value.project_id + ' · ' + value.cycle_id;
