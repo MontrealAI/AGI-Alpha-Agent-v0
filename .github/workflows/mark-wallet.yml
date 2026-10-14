@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: Apache-2.0
+name: MARK wallet acceptance
+on:
+  pull_request:
+    paths:
+      - 'docs/assets/ascension-wallet/**'
+      - 'docs/ascension-protocol/**'
+      - 'scripts/build_mark_wallet.py'
+      - 'scripts/mkdocs_assets.py'
+      - 'tests/mark-wallet/**'
+      - 'deployments/ethereum-mainnet/2026-10-11/**'
+      - '.github/workflows/mark-wallet.yml'
+  push:
+    branches: [main, feat/mark-mainnet-wallet-20261013]
+    paths:
+      - 'docs/assets/ascension-wallet/**'
+      - 'docs/ascension-protocol/**'
+      - 'scripts/build_mark_wallet.py'
+      - 'scripts/mkdocs_assets.py'
+      - 'tests/mark-wallet/**'
+      - 'deployments/ethereum-mainnet/2026-10-11/**'
+      - '.github/workflows/mark-wallet.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  wallet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Check dependency-free wallet and profile tests
+        run: |
+          node --test tests/mark-wallet/core.test.mjs
+          python -m unittest discover -s tests/mark-wallet -p test_build.py -v
+      - name: Install existing locked contract reference tools
+        run: npm ci --prefix tests/contracts
+      - name: Validate the unchanged archived deployment record
+        run: npm run mainnet:record-check --prefix tests/contracts
+      - name: Build exact archived wallet profile
+        run: python -m scripts.build_mark_wallet
+      - name: Differential ABI and archive conformance
+        run: node --test tests/mark-wallet/abi.test.mjs
+      - name: Ensure historical source, archive and local evidence were not rewritten
+        run: git diff --exit-code -- contracts tests/contracts/contracts deployments docs/assets/ascension-protocol/receipt.json

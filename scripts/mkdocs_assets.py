@@ -13,3 +13,9 @@ def on_pre_build(config: MkDocsConfig) -> None:
     destination = Path(config.docs_dir) / "assets" / source.name
     destination.parent.mkdir(parents=True, exist_ok=True)
     copyfile(source, destination)
+
+    # Add the exact archived wallet profile; the paper and local demo are unchanged.
+    from runpy import run_path
+
+    build = run_path(str(Path(__file__).with_name("build_mark_wallet.py")))["build"]
+    build(Path(__file__).resolve().parents[1], Path(config.docs_dir))
