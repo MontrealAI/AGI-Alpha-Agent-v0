@@ -1,0 +1,158 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Prepare reviewed Ascension integration
+on:
+  push:
+    branches: [chore/ascension-integration-preview-20261014]
+    paths: ['.github/ascension-integration/**', '.github/workflows/ascension-reviewed-integration.yml']
+permissions:
+  contents: read
+concurrency:
+  group: ascension-reviewed-integration
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Creates only unreferenced Git objects after checks. Never moves any ref.
+    permissions:
+      contents: write
+    env:
+      NO_DISCLAIMER: '1'
+      OPENAI_AGENTS_DISABLE_TRACING: 'true'
+      CI: 'true'
+      CYCLE: eee6add6b89962a293afb67170d14154691d9776
+      INTEGRATION: 541f33a4c380e7ffe9f433baab14aca24be1777d
+      EXPECTED_TREE: bca68115fc5f8651a4c838dd7a0fe4db33acaa57
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Apply the reviewed resolution to both complete original trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -r .github/ascension-integration "$RUNNER_TEMP/reviewed-plan"
+          git checkout --detach "$CYCLE"
+          git config user.name 'MONTREAL.AI integration preparation'
+          git config user.email 'info@montreal.ai'
+          set +e
+          git -c merge.conflictStyle=diff3 merge --no-commit --no-ff "$INTEGRATION"
+          code=$?
+          set -e
+          test "$code" = 1
+          python - <<'PY'
+          import gzip, hashlib, os, pathlib, re, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          conflicts = set(git('diff', '--name-only', '--diff-filter=U', '-z').decode().strip('\0').split('\0'))
+          assert conflicts == {'.github/workflows/mark-wallet.yml', 'docs/assets/nova-studio/app.mjs', 'docs/assets/nova-studio/studio.css', 'docs/assets/nova-studio/workflow.mjs'}, conflicts
+          folder = pathlib.Path(os.environ['RUNNER_TEMP']) / 'reviewed-plan'
+          compressed = b''.join((folder / f'patch.gz.part{i}').read_bytes() for i in range(7))
+          assert len(compressed) < 30_000
+          raw = gzip.decompress(compressed)
+          assert len(raw) == 88114
+          assert hashlib.sha256(raw).hexdigest() == '1fac23885f69c56363c2da5ce6373d83a65f4330df2524aa07b03d93d851a906'
+          patch = folder / 'integration.patch'
+          patch.write_bytes(raw)
+          subprocess.run(['git', 'apply', '--check', str(patch)], check=True)
+          subprocess.run(['git', 'apply', str(patch)], check=True)
+          version_only = ['alpha_factory_v1/__init__.py', 'alpha_factory_v1/demos/catalog.json', 'docs/agent/DEMO_VALIDATION.md', 'docs/agent/FACTORY_GUIDE.md', 'docs/agent/OPERATIONS.md', 'docs/alpha_factory_v1/demos/successor/index.html', 'docs/successor/index.html', 'pyproject.toml']
+          for name in version_only:
+              path = pathlib.Path(name)
+              before = path.read_bytes()
+              after = before.replace(b'1.30.0', b'1.31.0')
+              assert after != before, name
+              path.write_bytes(after)
+          pattern = re.compile(r'''(<meta\b[^>]*name=["']application-version["'][^>]*content=["'])1\.30\.0(["'])''')
+          for name in git('ls-files', '-z', '*.html').decode().strip('\0').split('\0'):
+              path = pathlib.Path(name)
+              if not path.is_file() or path.is_symlink():
+                  continue
+              before = path.read_text(encoding='utf-8')
+              after = pattern.sub(r'\g<1>1.31.0\2', before)
+              if after != before:
+                  path.write_text(after, encoding='utf-8')
+          subprocess.run(['git', 'add', '-u'], check=True)
+          subprocess.run(['git', 'add', 'docs/agent/RELEASE_NOTES_1.31.0.md', 'tests/nova-studio/stack-integration.test.mjs'], check=True)
+          actual = git('write-tree').decode().strip()
+          assert actual == os.environ['EXPECTED_TREE'], actual
+          assert not git('ls-files', '--unmerged')
+          print('Complete source tree matched:', actual)
+          PY
+          git commit -m 'Integrate reviewed Nova hardening and inspectable cycles for 1.31.0 qualification'
+          git diff --exit-code
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Qualify the combined Studio source before creating candidate objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install 'eth-hash[pycryptodome]==0.8.0' eth-abi==6.0.0 pytest==8.4.1
+          python -m pip check
+          python -m scripts.build_mark_wallet
+          node --test tests/nova-studio/*.test.mjs
+          python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
+          git diff --exit-code
+          test "$(git rev-parse 'HEAD^{tree}')" = "$EXPECTED_TREE"
+      - name: Store the reviewed candidate without moving branches or publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64, json, os, pathlib, subprocess, urllib.request
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          def api(path, body):
+              assert path in {'git/blobs', 'git/trees', 'git/commits'}
+              request = urllib.request.Request('https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/' + path, data=json.dumps(body).encode(), headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json'}, method='POST')
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+          def entries(ref):
+              result = {}
+              for line in git('ls-tree', '-rz', ref).split(b'\0'):
+                  if not line:
+                      continue
+                  metadata, name = line.split(b'\t', 1)
+                  mode, kind, sha = metadata.decode().split()
+                  result[name.decode()] = {'path': name.decode(), 'mode': mode, 'type': kind, 'sha': sha}
+              return result
+          expected = os.environ['EXPECTED_TREE']
+          assert git('rev-parse', 'HEAD^{tree}').decode().strip() == expected
+          cycle, integration = os.environ['CYCLE'], os.environ['INTEGRATION']
+          base, other, final = entries(cycle), entries(integration), entries('HEAD')
+          existing = {item['sha'] for item in [*base.values(), *other.values()]}
+          updates = []
+          assert set(base) <= set(final), 'Unexpected file deletion'
+          for name, item in final.items():
+              if base.get(name) == item:
+                  continue
+              if item['sha'] not in existing:
+                  assert item['type'] == 'blob'
+                  raw = git('cat-file', 'blob', item['sha'])
+                  response = api('git/blobs', {'encoding': 'base64', 'content': base64.b64encode(raw).decode()})
+                  assert response['sha'] == item['sha'], name
+                  existing.add(item['sha'])
+              updates.append(item)
+          tree = api('git/trees', {'base_tree': git('rev-parse', cycle + '^{tree}').decode().strip(), 'tree': updates})
+          assert tree['sha'] == expected, tree['sha']
+          commit = api('git/commits', {'tree': expected, 'parents': [cycle, integration], 'message': 'Integrate Nova recovery hardening and inspectable cycles; prepare 1.31.0\n\nOwner-requested four-PR reconciliation. Preserve both original parents, canonical receipts, pending-transaction barriers, immutable deployment records and all existing workflows. Add eight integration regressions and current operator/release guidance. This candidate still requires exact-head repository acceptance; no live-operation qualification or authorization is conferred.'})
+          result = {'candidate': commit['sha'], 'tree': expected, 'parents': [cycle, integration], 'run_id': os.environ['GITHUB_RUN_ID'], 'scope': 'Unreferenced candidate only; no remote ref, tag, release, deployment or authority changed. Exact-head release gates still required.'}
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ascension-candidate.json'
+          output.write_text(json.dumps(result, indent=2) + '\n')
+          print(json.dumps(result, indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
+              stream.write('```json\n' + json.dumps(result, indent=2) + '\n```\n')
+          PY
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: reviewed-ascension-candidate
+          path: ${{ runner.temp }}/ascension-candidate.json
+          if-no-files-found: error
+          retention-days: 14
