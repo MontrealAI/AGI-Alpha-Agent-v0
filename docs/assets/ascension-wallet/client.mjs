@@ -18,7 +18,7 @@ export function validateProfile(p) {
   if (registered) {
     if (canonicalJSON(p) !== canonicalJSON(registered) || p.schema !== 'agialpha.qualified-wallet-profile.v1' ||
         !Number.isSafeInteger(p.chainId) || p.chainId < 1 || !['canary','public'].includes(p.stage) ||
-        p.newExposureEnabled !== true || !p.evidence || !Array.isArray(p.dependencies) || !p.dependencies.length ||
+        typeof p.newExposureEnabled !== 'boolean' || !p.evidence || !Array.isArray(p.dependencies) || !p.dependencies.length ||
         !Array.isArray(p.authorities) || !p.authorities.length || !Array.isArray(p.actions) ||
         (p.stage === 'canary' && (!p.scope?.actors?.length || !p.scope?.actions)))
       throw Error('Profile differs from the reviewed, build-time qualification registry.');
@@ -51,7 +51,7 @@ export class MarkClient {
   checkpoint() { this.persist(this.journal()); this.emit(); }
   restore(value) {
     if (json(value).length > 1000000 || value?.schema !== 'agialpha.mark-wallet-journal.v2' || value.chainId !== this.profile.chainId || (value.profile && value.profile !== this.profile.profile) ||
-        (this.profile.newExposureEnabled && value.profile !== this.profile.profile) ||
+        (this.profile.schema==='agialpha.qualified-wallet-profile.v1' && value.profile !== this.profile.profile) ||
         !Array.isArray(value.transactions) || value.transactions.length > 100) throw Error('Invalid or oversized recovery journal.');
     const records = value.transactions.map(r => {
       const action = ACTIONS[r.action], tx = r.transaction;
@@ -61,7 +61,9 @@ export class MarkClient {
           tx.value !== '0x0' || !Number.isFinite(Date.parse(r.createdAt)) ||
           ![...TERMINAL,'awaiting-wallet','submission-unknown','submitted','reorged','mined-not-finalized'].includes(r.status))
         throw Error('Journal transaction does not match an allowed action.');
-      this.allowed(r.action,r.args); address(tx.from); quantity(tx.nonce); quantity(tx.gas);
+      // Historical intent stays readable after an exposure policy is suspended.
+      // Import grants no signing authority; prepare/confirm enforce current policy.
+      address(tx.from); quantity(tx.nonce); quantity(tx.gas);
       if (r.hash !== null) bytes32(r.hash);
       if (r.candidateHash) bytes32(r.candidateHash);
       return {...r, transaction:{...tx}, status:r.status === 'awaiting-wallet' ? 'submission-unknown' : r.status};
@@ -201,7 +203,9 @@ export class MarkClient {
   allowed(actionId, args) {
     const action = ACTIONS[actionId];
     if (!action || !Object.hasOwn(ACTIONS,actionId)) throw Error('Action is not allowlisted.');
-    if (this.profile.newExposureEnabled) {
+    if (this.profile.schema==='agialpha.qualified-wallet-profile.v1') {
+      if (!this.profile.newExposureEnabled && action.risk==='new' && !isRecovery(actionId,args))
+        throw Error('New exposure is suspended for this qualified deployment. Permitted recovery remains available.');
       if (!this.profile.actions.includes(actionId)) throw Error('Action is outside this profile commissioning scope.');
       const scope = this.profile.scope;
       if (this.profile.stage === 'canary') {

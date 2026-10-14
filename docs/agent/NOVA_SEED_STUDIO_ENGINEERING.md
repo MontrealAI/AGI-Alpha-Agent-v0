@@ -58,6 +58,9 @@ digests, external dependency/proxy-slot identities, authority observations, perm
 commissioning evidence. Canary entries additionally restrict actors/actions/amounts and may expire. Expiry
 blocks new exposure while preserving explicitly permitted recovery. Runtime toggles, imported approvals,
 JSON and wallet signatures cannot register a profile. The production registry is empty.
+An existing qualified entry can be suspended through a reviewed build setting `newExposureEnabled: false`.
+The same deployment identity and historical intent remain readable; new exposure is rejected while allowed
+recovery transactions remain available. The local acceptance suite explicitly tests this policy transition.
 
 The test harness copies production modules to a temporary directory, builds a registry there for the
 newly created unforked Hardhat chain 31337, and leaves production registry/assets unchanged. Fixture mutation

@@ -52,12 +52,12 @@ function edited() {
 }
 function render() {
   if(!flow) return;
-  const c=flow.client, pkg=flow.package;
+  const c=flow.client, pkg=flow.package, archived=c.profile.schema==='agialpha.mark-wallet-profile.v1';
   if(epoch!==c.epoch){epoch=c.epoch;flow.preview=null;flow.observation=null;identity=null;$('transaction-ack').checked=false;$('identity-summary').textContent='';}
   $('mode').textContent=c.profile.chainId!==1?text('LOCAL REHEARSAL · test assets only','RÉPÉTITION LOCALE · actifs de test'):
-    c.profile.newExposureEnabled?`${c.profile.stage.toUpperCase()} · Ethereum Mainnet`:text('Local preparation · Mainnet archive: new exposure restricted','Préparation locale · Archive Mainnet : nouveaux engagements bloqués');
+    c.profile.newExposureEnabled?`${c.profile.stage.toUpperCase()} · Ethereum Mainnet`:!archived?text('Qualified deployment · new exposure suspended','Déploiement qualifié · nouveaux engagements suspendus'):text('Local preparation · Mainnet archive: new exposure restricted','Préparation locale · Archive Mainnet : nouveaux engagements bloqués');
   $('deployment-policy').textContent=c.profile.newExposureEnabled?text('This build binds the selected qualified deployment. Review every wallet action.','Cette version lie le déploiement qualifié sélectionné. Examinez chaque action.'):
-    text('The October 11 contracts are immutable and predate settlement fixes. New minting, approvals and funding remain blocked. The complete workflow is exercised against a separately built local profile. Public activation requires an independently qualified deployment.','Les contrats immuables du 11 octobre précèdent les correctifs de règlement. La création, les autorisations et le financement restent bloqués. Le parcours complet est testé avec un profil local distinct. L’activation publique exige un déploiement qualifié indépendamment.');
+    !archived?text('New exposure is suspended by the current reviewed build. Permitted recovery remains available.','Les nouveaux engagements sont suspendus par la version examinée. Les récupérations permises restent accessibles.'):text('The October 11 contracts are immutable and predate settlement fixes. New minting, approvals and funding remain blocked. The complete workflow is exercised against a separately built local profile. Public activation requires an independently qualified deployment.','Les contrats immuables du 11 octobre précèdent les correctifs de règlement. La création, les autorisations et le financement restent bloqués. Le parcours complet est testé avec un profil local distinct. L’activation publique exige un déploiement qualifié indépendamment.');
   $('package-state').textContent=pkg?text('Encrypted · recovery tested','Chiffré · récupération vérifiée'):text('No package yet','Aucun paquet');
   $('job-count').textContent=String((pkg?.plan||compiled)?.jobs.length||0);
   $('budget').textContent=`${tokens((pkg?.plan||compiled)?.totalBounty||'0')} $AGIALPHA`;

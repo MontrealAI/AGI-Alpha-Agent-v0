@@ -111,6 +111,18 @@ async function main(){
   const restored=new NovaWorkflow(new WalletSession(profile,freshStore(),locks),storage);
   await restored.restore(serialize(kit),'local test capsule passphrase');assert.equal(restored.seedId,'1');assert.equal(restored.client.pending.status,'submission-unknown');
   const bad=structuredClone(profile);bad.contracts.Mark.address=CONTRACTS.Mark;assert.throws(()=>new WalletSession(bad,store,locks),/differs/);
+  // A reviewed build may suspend exposure without stranding previously signed
+  // journals. This alternative policy exists only in another disposable copy.
+  const restricted=path.join(temp,'restricted');fs.cpSync(path.join(temp,'assets'),path.join(restricted,'assets'),{recursive:true});
+  const suspended={...profile,newExposureEnabled:false};
+  fs.writeFileSync(path.join(restricted,'assets/ascension-wallet/qualified-profiles.mjs'),`export const QUALIFIED_PROFILES=Object.freeze(${JSON.stringify([suspended])});\n`);
+  const {WalletSession:RestrictedSession}=await import(path.join(restricted,'assets/ascension-wallet/session.mjs'));
+  const recoveryOnly=new RestrictedSession(suspended,freshStore(),locks);
+  recoveryOnly.client.restore(session.client.journal());assert.equal(recoveryOnly.client.history.length,events.length);
+  recoveryOnly.client.select({request:({method,params=[]})=>method==='eth_accounts'||method==='eth_requestAccounts'?Promise.resolve([f.funder.address]):network.provider.request({method,params})});
+  await assert.rejects(recoveryOnly.prepare('buy',['1','1','1']),/suspended/);
+  assert.equal((await recoveryOnly.prepare('approve',['Mark','0'])).args[1],'0');
+  await recoveryOnly.reconcile(recoveryOnly.client.pending.hash);
   // Test that a stale initial kit can still recover a mint through the shared journal.
   const mintJournal={...session.client.journal(),transactions:[mint]};
   const recovered=new NovaWorkflow(new WalletSession(profile,freshStore(),locks),storage);
