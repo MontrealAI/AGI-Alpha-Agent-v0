@@ -29,6 +29,7 @@ function cid(bytes) {
 async function main(){
   await requireDisposableLocalNetwork();
   const sourceFiles=['docs/ascension/mainnet/index.html','docs/ascension-protocol/mainnet/index.html',
+    'docs/assets/successor/engine.mjs',
     'tests/contracts/scripts/nova-studio.js','tests/nova-studio/browser.py','tests/nova-studio/browser-provider.js',
     'tests/nova-studio/native_fixture.py','tests/contracts/contracts/ascension/NovaPlanProofHarness.sol'];
   for(const folder of ['docs/assets/nova-studio','docs/assets/ascension-wallet','docs/assets/ascension','contracts/ascension'])
@@ -326,6 +327,9 @@ async function main(){
       const bytes=fs.readFileSync(path.join(out,name));return [name,{sha256:sha(bytes),bytes:bytes.length}];
     })),notPerformed:['live storage account','physical wallets','human screen reader','real validators','mainnet canary','independent security review']};
   fs.writeFileSync(path.join(out,'evidence-index.json'),serialize(manifest));
+  if(process.env.NOVA_BROWSER==='1')execFileSync(process.env.ALPHA_PYTHON||'python3',[
+    '-c','import sys; from pathlib import Path; from scripts.nova_studio_evidence import verify_lifecycle; verify_lifecycle(Path(sys.argv[1]), sys.argv[2])',
+    out,manifest.commit],{cwd:root,env:{...process.env,PYTHONPATH:root,NO_DISCLAIMER:'1'},stdio:'inherit'});
   fs.rmSync(temp,{recursive:true,force:true});console.log(`Nova-Seed exact-source acceptance passed: ${events.length} local wallet actions. Evidence: ${out}`);
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

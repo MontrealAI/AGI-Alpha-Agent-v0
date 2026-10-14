@@ -157,6 +157,11 @@ class StudioEvidenceTests(unittest.TestCase):
             ):
                 save_index()
                 verify_lifecycle(folder, "a" * 40)
+                with patch(
+                    "scripts.nova_studio_evidence.hashes",
+                    return_value={"ascension/mainnet/index.html": digest, "assets/successor/engine.mjs": "f" * 64},
+                ), self.assertRaises(ValueError):
+                    verify_lifecycle(folder, "a" * 40)
                 with self.assertRaises(ValueError):
                     verify_lifecycle(folder, "b" * 40)
                 page.write_text("different source")
