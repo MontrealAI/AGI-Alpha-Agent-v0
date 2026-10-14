@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Ascension offline reference tools
+on:
+  push:
+    branches:
+      - chore/ascension-integration-preview-20261014
+    paths:
+      - '.github/workflows/ascension-offline-tools.yml'
+permissions:
+  contents: read
+jobs:
+  tools:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: eee6add6b89962a293afb67170d14154691d9776
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Retain exact locked tools without changing repository refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/reference-tools/wheels"
+          python -m pip download --require-hashes -r requirements-agent.lock --dest "$RUNNER_TEMP/reference-tools/wheels"
+          python -m pip download 'eth-hash[pycryptodome]==0.8.0' eth-abi==6.0.0 pytest==8.4.1 --dest "$RUNNER_TEMP/reference-tools/wheels"
+          npm ci --prefix tests/contracts
+          cp tests/contracts/package-lock.json "$RUNNER_TEMP/reference-tools/package-lock.json"
+          cp requirements-agent.lock "$RUNNER_TEMP/reference-tools/requirements-agent.lock"
+          mv tests/contracts/node_modules "$RUNNER_TEMP/reference-tools/node_modules"
+          git rev-parse HEAD > "$RUNNER_TEMP/reference-tools/source.txt"
+          git diff --exit-code
+          tar -czf "$RUNNER_TEMP/ascension-reference-tools.tar.gz" -C "$RUNNER_TEMP/reference-tools" .
+          sha256sum "$RUNNER_TEMP/ascension-reference-tools.tar.gz"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ascension-offline-reference-tools
+          path: ${{ runner.temp }}/ascension-reference-tools.tar.gz
+          if-no-files-found: error
+          retention-days: 14
