@@ -55,9 +55,11 @@ def main() -> None:
             page.goto(origin + "/report.html")
             assert page.locator("h1").count() == 1
             page.emulate_media(media="print")
+            assert page.locator("html").evaluate("e => getComputedStyle(e).colorScheme") == "light"
+            assert page.locator("html").evaluate("e => getComputedStyle(e).backgroundColor") == "rgb(255, 255, 255)"
             assert page.locator("thead th").first.evaluate("e => getComputedStyle(e).color") == "rgb(17, 17, 17)"
             page.pdf(path=str(output / "report.pdf"), prefer_css_page_size=True)
-            records.append({"markdownDownloadExact": True, "localPackBytesExact": True, "printContrast": True})
+            records.append({"markdownDownloadExact": True, "localPackBytesExact": True, "printContrast": True, "whitePrintMargins": True})
             page.close()
             extracted = output / "offline"
             extracted.mkdir()
