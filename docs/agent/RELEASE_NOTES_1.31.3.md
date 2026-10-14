@@ -19,6 +19,12 @@ No account, wallet, payment or API key is required for local preparation.
   accessibility audits and exact-source asset checks. Both rebuilt galleries and public Pages must pass.
 - Preserve prior research, all flowcharts, deployed contract records, economic rules, recovery formats,
   shared wallet protections and the complete native/local-EVM cycle acceptance gates.
+- Keep recovered opaque historical runtime records inspectable without crashing Studio or treating their verdicts
+  as currently verified. Recognized results still need the existing verification and settlement checks.
+- Bind native recovery decisions to their institution and exact execution authorization. Completed bounded phase
+  outputs survive interruption before acceptance or caching, without repeated measurements or duplicate charges.
+- Allow up to two hours for exact-main historical CI, with five additional minutes for evidence recording. Failed,
+  missing or unrelated checks still block publication; the previous 75-minute wait expired before a successful run.
 
 ## Availability and verification
 
@@ -38,6 +44,9 @@ Use matching assets from one release. Keep private recovery kits, capsule passph
 unresolved wallet intents and an independently retained native journal checkpoint. Follow
 [installation and recovery](OPERATIONS.md) and the [Studio guide](NOVA_SEED_STUDIO.md). No journal or
 contract migration is introduced. Imported project history never reactivates grants or permissions.
+Integrators must replace legacy job-only recovery signatures with explicitly attempt-bound decisions as described
+in the [SUCCESSOR operator guide](SUCCESSOR_OPERATIONS.md). An older completed invocation whose output was never
+retained stops for inspection instead of silently repeating the work.
 
 **Français.** Le Studio Nova-Seed est maintenant accessible dès l’accueil, avec un parcours clair pour
 créer, récupérer et relier l’exécution. Les choix de langue et de taille du texte suivent votre navigation.

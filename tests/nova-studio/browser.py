@@ -1,15 +1,48 @@
 # SPDX-License-Identifier: Apache-2.0
 """Actual Chromium UI against the disposable exact-source EVM and local artifact HTTP service."""
+
 from __future__ import annotations
 
-import json
 import hashlib
-from pathlib import Path
+import json
 import sys
-
-from playwright.sync_api import Route, expect, sync_playwright
+from pathlib import Path
 
 from native_fixture import native_delivery
+from playwright.sync_api import Page, Route, expect, sync_playwright
+
+
+def check_historical_recovery(page: Page, checks: list[str]) -> None:
+    """Recover opaque historical bytes through the real file-import controls."""
+    phrase = "browser historical project recovery phrase"
+    kit = page.evaluate(
+        """async phrase => {
+          const cycle = await import(new URL('../../assets/nova-studio/cycle.mjs', location.href));
+          let project = await cycle.createProject(null, {title: 'Historical recovery regression'});
+          for (const originalText of ['null', '[]', '{"candidate_verdict":"PASS"}'])
+            project = await cycle.preserveSignedRecord(project, {kind: 'runtime-run', originalText});
+          project = await cycle.preserveSignedRecord(project, {kind: 'settlement', originalText: 'null\\n'});
+          return JSON.stringify(await cycle.exportProjectKit(project, phrase));
+        }""",
+        phrase,
+    )
+    page.locator('[data-step="continue"]').click()
+    page.locator("#project-file").set_input_files(
+        {"name": "historical-project.encrypted.json", "mimeType": "application/json", "buffer": kit.encode()}
+    )
+    page.locator("#project-restore-passphrase").fill(phrase)
+    page.locator("#restore-project").click()
+    expect(page.locator("#status")).to_contain_text("Linked project restored")
+    expect(page.locator("#project-restore-passphrase")).to_have_value("")
+    expect(page.locator("#candidate-summary")).to_contain_text("Unrecognized historical record retained")
+    expect(page.locator("#reuse-source option")).to_have_count(1)
+    expect(page.locator("#cycle-history")).to_contain_text("4 retained records")
+    expect(page.locator("#cycle-graph li")).to_have_count(18)
+    # A subsequent click must still run; render errors must not strand busy state.
+    page.locator("#language").click()
+    expect(page.locator("html")).to_have_attribute("lang", "fr")
+    page.locator("#language").click()
+    checks.append("Encrypted opaque historical recovery remains inspectable, untrusted and interactive")
 
 
 def main() -> None:
@@ -52,6 +85,8 @@ def main() -> None:
         if page.locator("#deployment-choice").count():
             page.locator("#deployment-choice").locator("xpath=ancestor::details").evaluate("el=>el.open=true")
             page.locator("#deployment-choice").select_option(config["profile"])
+        assert page.evaluate("window.__nova.calls.length") == 0
+        check_historical_recovery(page, checks)
         assert page.evaluate("window.__nova.calls.length") == 0
         original_project = page.locator("#project-context").inner_text()
         page.locator('[data-step="resume"]').click()

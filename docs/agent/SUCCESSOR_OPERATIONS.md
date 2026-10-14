@@ -76,6 +76,11 @@ of the same frozen request after inspection. Completed phases are retained rathe
 changed request under the same UUID is rejected. Changed release bytes, expired prerequisites, revoked evidence or
 uncertain effectful actions require their own recovery decision; `--resume` does not override them.
 
+New bounded lifecycle invocations retain their exact canonical output atomically with tool completion. If the process
+stops before job acceptance or phase caching, resumption finishes that handoff using the recorded output rather than
+repeating measurements. An older completed invocation without retained output stops for inspection; its missing result
+is never reconstructed by silently rerunning the work.
+
 `successor-export` reproduces the completed retained return and does not remeasure performance. A resumed `successor-run`
 writes its signed result file; it does not recreate all six files of a `successor-demo` directory. Do not rerun
 `successor-demo` over an existing output folder. Use new request/output identities for a genuinely new experiment.
@@ -226,6 +231,10 @@ challenge and rollback obligations. `JobDispatcher.execute_tool` revalidates a p
 its installed handler. A crash leaving an uncertain effect is not automatically replayed; the accountable controller
 must inspect and recover it. Work acceptance, negative candidate verdict, settlement, memory admission and production
 admission remain distinct. Do not translate an accepted negative evaluation into a passing candidate.
+
+Signed `job-recovery` decisions must name the exact `institution_id`, `job_id`, `authorization_id` and a nonempty
+`reason`. Inspect the latest attempt before signing: a decision for an earlier authorization cannot close or charge a
+later attempt. Legacy decisions containing only a job ID and reason must be replaced with an explicitly scoped decision.
 
 The maintained OpenAI-compatible supplier is an explicit Python adapter using the existing bounded provider transport.
 There is no implicit live provider or `successor-run --provider` option. An integrator deliberately supplies a

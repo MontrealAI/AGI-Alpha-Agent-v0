@@ -290,34 +290,62 @@ class _Lifecycle:
         terms = next(job for job in self.graph.jobs if job.job_id == family)
         graph_state = self.journal.latest(self.dispatcher.key)
         attempts = graph_state["runs"].get(family, [])
-        if attempts and attempts[-1]["state"] == "running":
-            self.dispatcher.recover_job(
-                self.signed(
-                    "job-recovery",
-                    {"job_id": family, "reason": "explicitly resumed interrupted bounded attempt; no effect replay"},
+        previous = attempts[-1] if attempts else None
+        invocation = previous["tools"].get(f"{family}-{previous['attempt']}") if previous else None
+        if invocation and invocation["state"] == "completed":
+            # Completion and its exact output share a commit. Acceptance and the
+            # phase cache can safely be finished after either intervening crash.
+            retained = invocation.get("result_json")
+            if not isinstance(retained, str):
+                raise Conflict("completed phase has no retained output; cannot safely repeat its measurements")
+            payload = safe_json_loads(retained)
+            if (
+                not isinstance(payload, dict)
+                or digest("job-tool-output", payload) != invocation["result_digest"]
+                or invocation["tool"] != "bounded-" + family
+                or invocation["actor"] != terms.worker
+                or previous is None
+                or previous["state"] not in {"running", "completed"}
+            ):
+                raise Conflict("retained phase output does not bind its completed tool invocation")
+            authorization = ExecutionAuthorization.model_validate(previous["authorization"])
+        else:
+            if previous and previous["state"] == "completed":
+                raise Conflict("completed phase has no retained output; cannot safely repeat its measurements")
+            if previous and previous["state"] == "running":
+                self.dispatcher.recover_job(
+                    self.signed(
+                        "job-recovery",
+                        {
+                            "institution_id": self.institution_id,
+                            "job_id": family,
+                            "authorization_id": previous["authorization"]["authorization_id"],
+                            "reason": "explicitly resumed interrupted bounded attempt; no effect replay",
+                        },
+                    )
                 )
+            attempt = len(attempts) + 1
+            authorization = ExecutionAuthorization(
+                authorization_id=f"{family}-{attempt}",
+                acting_identity=str(terms.worker),
+                job_terms_digest=digest("job-terms", terms),
+                release_digest=terms.release_digest,
+                environment_digest=terms.environment_digest,
+                capabilities=terms.allowed_tools,
+                reservation_id=f"reserve-{family}-{attempt}",
+                expires_at=self.until,
             )
-        attempt = len(attempts) + 1
-        authorization = ExecutionAuthorization(
-            authorization_id=f"{family}-{attempt}",
-            acting_identity=str(terms.worker),
-            job_terms_digest=digest("job-terms", terms),
-            release_digest=terms.release_digest,
-            environment_digest=terms.environment_digest,
-            capabilities=terms.allowed_tools,
-            reservation_id=f"reserve-{family}-{attempt}",
-            expires_at=self.until,
-        )
-        self.dispatcher.dispatch(family, self.signed("execution", authorization))
-        _save(self.journal, self.key, current_phase=family)
-        self.checkpoint()
-        payload = self.dispatcher.execute_tool(
-            family,
-            tool="bounded-" + family,
-            actor=str(terms.worker),
-            invocation_id=f"{family}-{attempt}",
-            handler=operation,
-        )
+            self.dispatcher.dispatch(family, self.signed("execution", authorization))
+            _save(self.journal, self.key, current_phase=family)
+            self.checkpoint()
+            payload = self.dispatcher.execute_tool(
+                family,
+                tool="bounded-" + family,
+                actor=str(terms.worker),
+                invocation_id=f"{family}-{attempt}",
+                handler=operation,
+                retain_result=True,
+            )
         result = JobResult(
             job_id=family,
             authorization_id=authorization.authorization_id,

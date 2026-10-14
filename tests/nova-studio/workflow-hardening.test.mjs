@@ -9,7 +9,7 @@ import {leaf} from '../../docs/assets/nova-studio/plan.mjs';
 import {unresolved} from '../../docs/assets/ascension-wallet/client.mjs';
 import {WalletSession} from '../../docs/assets/ascension-wallet/session.mjs';
 import {JOURNAL_KEY} from '../../docs/assets/ascension-wallet/recovery.mjs';
-import {createProject,updateCycle,exportProjectKit} from '../../docs/assets/nova-studio/cycle.mjs';
+import {createProject,updateCycle,exportProjectKit,preserveSignedRecord} from '../../docs/assets/nova-studio/cycle.mjs';
 import {TOKEN} from '../../docs/assets/ascension-wallet/protocol.mjs';
 import {keccak256} from '../../docs/assets/nova-studio/vendor/ethers-6.17.0.mjs';
 
@@ -137,6 +137,23 @@ test('full project recovery attaches matching uncertainty without importing runt
   const otherKit=await exportProjectKit(other,passphrase);
   await assert.rejects(flow.restoreProject(JSON.stringify(otherKit),passphrase),/exact package/);
   assert.equal(flow.project,selected);assert.equal(session.client.pending,pending);assert.equal(storage.getItem(JOURNAL_KEY),raw);
+});
+
+test('opaque historical records cannot hide a retained runtime request or crash reuse selection',async()=>{
+  const {flow}=localSession();flow.package=await packagePromise;
+  const request=await flow.runtimeRequest(0,{schema:'successor-workbench/v1',family:'numerical',
+    inputs:{coefficients:[1],lower:0,upper:1,steps:2,tolerancePpm:1}});
+  for(const originalText of ['null','[]','{"artifact_keccak256":null}'])
+    flow.project=await preserveSignedRecord(flow.project,{kind:'runtime-run',originalText});
+  assert.throws(()=>flow.retainedResult(HASH),/Retain the exact original runtime result/);
+  const result={schema:'agialpha.ascension.studio-result.v1',artifact_keccak256:HASH,
+    execution_binding:{body:{plan_binding:{plan_index:0}}},delivery:{digest:'d'.repeat(64)}};
+  flow.project=await preserveSignedRecord(flow.project,{kind:'runtime-run',originalText:JSON.stringify(result)});
+  flow.project=await preserveSignedRecord(flow.project,{kind:'settlement',originalText:'null\n'});
+  assert.deepEqual(flow.retainedResult(HASH).request,request);
+  assert.deepEqual(flow.retainedResult(HASH).result,result);
+  await assert.rejects(flow.authorizeArtifactReuse({}, {artifactHash:HASH}),/pin the source runtime observer/);
+  assert.equal(flow.runtimeReuse,null);
 });
 
 test('selected event must belong to the receipt transaction and canonical block',()=>{

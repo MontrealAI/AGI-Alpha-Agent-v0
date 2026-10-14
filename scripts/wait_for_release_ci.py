@@ -17,7 +17,10 @@ from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 WORKFLOWS = ("ci.yml", "pr-ci.yml", "smoke.yml")
 REPOSITORY = "MontrealAI/AGI-Alpha-Agent-v0"
-WAIT_SECONDS = 75 * 60
+# The integrated workflow has sequential dependency/build/test jobs. A successful
+# main run on 2026-10-14 finished after the previous 75-minute polling deadline.
+# Keep a finite wait without treating a slow successful run as failed evidence.
+WAIT_SECONDS = 120 * 60
 MAX_SNAPSHOT_BYTES = 8 * 1024 * 1024
 
 

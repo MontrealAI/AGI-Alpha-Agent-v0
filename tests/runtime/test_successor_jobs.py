@@ -24,9 +24,7 @@ def graph(release_digest):
         worker = (
             "local-verifier"
             if family in {"challenge", "verification"}
-            else "local-controller"
-            if family == "admission"
-            else "local-producer"
+            else "local-controller" if family == "admission" else "local-producer"
         )
         owner = "local-verifier" if worker == "local-controller" else "local-controller"
         jobs.append(
@@ -239,7 +237,12 @@ def test_interrupted_job_recovery_consumes_bound_once_and_allows_new_attempt(tmp
         keys["local-controller"],
         "local-controller",
         "job-recovery",
-        {"job_id": first.job_id, "reason": "explicit operator resume"},
+        {
+            "institution_id": "institution",
+            "job_id": first.job_id,
+            "authorization_id": one.authorization_id,
+            "reason": "explicit operator resume",
+        },
     )
     recovered = dispatcher.recover_job(recovery)
     assert dispatcher.recover_job(recovery)["revision"] == recovered["revision"]
@@ -275,6 +278,7 @@ def test_pause_commits_during_pure_work_and_suppresses_invalidated_result(tmp_pa
             actor=first.worker,
             invocation_id="pausable",
             handler=bounded,
+            retain_result=True,
         )
         assert started.wait(timeout=5)
         store.journal.control(True)
@@ -284,3 +288,295 @@ def test_pause_commits_during_pure_work_and_suppresses_invalidated_result(tmp_pa
     graph_state = store.journal.latest(dispatcher.key)
     invocation = graph_state["runs"][first.job_id][-1]["tools"]["pausable"]
     assert invocation["state"] == "failed" and invocation["result_digest"] is None
+    assert invocation["result_json"] is None
+
+
+def test_recovery_decision_cannot_close_a_newer_attempt(tmp_path):
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    one, two = authorization(first), authorization(first, 2)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", one))
+    recovery = sign_record(
+        keys["local-controller"],
+        "local-controller",
+        "job-recovery",
+        {
+            "institution_id": "institution",
+            "job_id": first.job_id,
+            "authorization_id": one.authorization_id,
+            "reason": "recover only the interrupted first attempt",
+        },
+    )
+    dispatcher.recover_job(recovery)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", two))
+    before = store.journal.verify()
+    with pytest.raises(Conflict, match="different execution attempt"):
+        dispatcher.recover_job(recovery)
+    assert store.journal.verify() == before
+    assert store.journal.latest(dispatcher.key)["runs"][first.job_id][-1]["state"] == "running"
+    resources = store.read("institution")["resources"]
+    assert resources["spent"] == {"calls": 1}
+    assert resources["reserved"] == {"calls": 1}
+    assert resources["unknown"] == [one.authorization_id]
+
+
+@pytest.mark.parametrize("binding", ["missing", "other-institution", "other-authorization"])
+def test_job_recovery_requires_exact_institution_and_attempt(tmp_path, binding):
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    auth = authorization(first)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", auth))
+    payload = {
+        "institution_id": "institution",
+        "job_id": first.job_id,
+        "authorization_id": auth.authorization_id,
+        "reason": "operator recovery",
+    }
+    if binding == "missing":
+        del payload["authorization_id"]
+    elif binding == "other-institution":
+        payload["institution_id"] = "different-institution"
+    else:
+        payload["authorization_id"] = "different-authorization"
+    before = store.journal.verify()
+    with pytest.raises((ValueError, Conflict)):
+        dispatcher.recover_job(sign_record(keys["local-controller"], "local-controller", "job-recovery", payload))
+    assert store.journal.verify() == before
+    assert store.read("institution")["resources"]["reserved"] == {"calls": 1}
+
+
+@pytest.mark.parametrize("retain_result", [False, True])
+def test_tool_output_retention_is_explicit_and_bound_to_completion(tmp_path, retain_result):
+    from alpha_factory_v1.core.runtime.successor.protocol import safe_json_loads
+
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    dispatcher.dispatch(
+        first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", authorization(first))
+    )
+    expected = {"measurement": [1, 2, 3], "accepted": False}
+    assert (
+        dispatcher.execute_tool(
+            first.job_id,
+            tool="fixed",
+            actor=first.worker,
+            invocation_id="retained",
+            handler=lambda: expected,
+            retain_result=retain_result,
+        )
+        == expected
+    )
+    invocation = store.journal.latest(dispatcher.key)["runs"][first.job_id][-1]["tools"]["retained"]
+    assert invocation["state"] == "completed"
+    assert invocation["result_digest"] == digest("job-tool-output", expected)
+    if retain_result:
+        assert safe_json_loads(invocation["result_json"]) == expected
+    else:
+        assert invocation["result_json"] is None
+
+
+def test_recovered_attempt_cannot_borrow_a_newer_tool_claim(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    from contextlib import contextmanager
+    from threading import Event
+
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    one, two = authorization(first), authorization(first, 2)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", one))
+    original_transaction = store.journal.transaction
+    recovered = False
+    started, release = Event(), Event()
+    old_calls = []
+    new_calls = []
+    newer = []
+
+    def new_handler():
+        new_calls.append(True)
+        started.set()
+        assert release.wait(timeout=5)
+        return {"attempt": 2}
+
+    with ThreadPoolExecutor(max_workers=1) as pool:
+
+        @contextmanager
+        def recover_after_claim():
+            nonlocal recovered
+            with original_transaction() as cx:
+                yield cx
+            if not recovered:
+                recovered = True
+                dispatcher.recover_job(
+                    sign_record(
+                        keys["local-controller"],
+                        "local-controller",
+                        "job-recovery",
+                        {
+                            "institution_id": "institution",
+                            "job_id": first.job_id,
+                            "authorization_id": one.authorization_id,
+                            "reason": "interrupt before the handler starts",
+                        },
+                    )
+                )
+                dispatcher.dispatch(
+                    first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", two)
+                )
+                newer.append(
+                    pool.submit(
+                        dispatcher.execute_tool,
+                        first.job_id,
+                        tool="fixed",
+                        actor=first.worker,
+                        invocation_id="same-name",
+                        handler=new_handler,
+                    )
+                )
+                assert started.wait(timeout=5)
+
+        monkeypatch.setattr(store.journal, "transaction", recover_after_claim)
+        try:
+            with pytest.raises(Conflict, match="attempt changed before"):
+                dispatcher.execute_tool(
+                    first.job_id,
+                    tool="fixed",
+                    actor=first.worker,
+                    invocation_id="same-name",
+                    handler=lambda: old_calls.append(True) or {"attempt": 1},
+                )
+        finally:
+            release.set()
+        assert newer[0].result(timeout=5) == {"attempt": 2}
+    assert old_calls == [] and new_calls == [True]
+    runs = store.journal.latest(dispatcher.key)["runs"][first.job_id]
+    assert runs[0]["tools"]["same-name"]["state"] == "uncertain"
+    assert runs[1]["tools"]["same-name"]["state"] == "completed"
+
+
+@pytest.mark.parametrize("prior_output", [False, True])
+def test_oversized_retained_graph_fails_without_stranding_reservation(tmp_path, prior_output):
+    from alpha_factory_v1.core.runtime.store import Journal
+    from alpha_factory_v1.core.runtime.successor.jobs import GraphState
+    from alpha_factory_v1.core.runtime.successor.protocol import canonical
+
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    one, two = authorization(first), authorization(first, 2)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", one))
+    output = {"text": '"' * (250_000 if prior_output else 500_000)}
+    assert len(canonical(output)) < 2_000_000
+    if prior_output:
+        dispatcher.execute_tool(
+            first.job_id,
+            tool="fixed",
+            actor=first.worker,
+            invocation_id="earlier-output",
+            handler=lambda: output,
+            retain_result=True,
+        )
+    with pytest.raises(ValueError, match="bounded job tool failed") as rejected:
+        dispatcher.execute_tool(
+            first.job_id,
+            tool="fixed",
+            actor=first.worker,
+            invocation_id="oversized-output",
+            handler=lambda: output,
+            retain_result=True,
+        )
+    assert "byte limit" in str(rejected.value.__cause__)
+    graph_state = GraphState.model_validate(Journal.document(store.journal.latest(dispatcher.key)))
+    invocation = graph_state.runs[first.job_id][-1].tools["oversized-output"]
+    assert invocation.state == "failed"
+    assert invocation.result_json is invocation.result_digest is None
+    assert store.read("institution")["resources"]["reserved"] == {"calls": 1}
+    dispatcher.recover_job(
+        sign_record(
+            keys["local-controller"],
+            "local-controller",
+            "job-recovery",
+            {
+                "institution_id": "institution",
+                "job_id": first.job_id,
+                "authorization_id": one.authorization_id,
+                "reason": "close oversized output failure",
+            },
+        )
+    )
+    assert store.read("institution")["resources"]["reserved"] == {"calls": 0}
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", two))
+    dispatcher.complete(accept(keys, first, two))
+    assert store.read("institution")["resources"]["spent"] == {"calls": 2}
+    assert store.journal.verify()["valid"]
+
+
+@pytest.mark.parametrize("spare_bytes", [0, 2])
+def test_exact_graph_boundary_preserves_and_consumes_recovery_headroom(tmp_path, spare_bytes):
+    from alpha_factory_v1.core.runtime.store import Journal
+    from alpha_factory_v1.core.runtime.successor.jobs import GraphState, ToolInvocation
+    from alpha_factory_v1.core.runtime.successor.protocol import MAX_JSON_BYTES, canonical
+
+    store, keys, dispatcher, frozen = setup(tmp_path)
+    first = frozen.jobs[0]
+    auth = authorization(first)
+    dispatcher.dispatch(first.job_id, sign_record(keys["local-controller"], "local-controller", "execution", auth))
+    proposed = Journal.document(store.journal.latest(dispatcher.key))
+    invocation = ToolInvocation(
+        tool="fixed",
+        actor=first.worker,
+        state="completed",
+        result_digest="0" * 64,
+        result_json=canonical({"text": ""}).decode("utf-8"),
+    ).model_dump(mode="json")
+    proposed["runs"][first.job_id][-1]["tools"]["boundary"] = invocation
+    output = {"text": "x" * (MAX_JSON_BYTES - len(canonical(proposed)) - spare_bytes)}
+    invocation["result_json"] = canonical(output).decode("utf-8")
+    invocation["result_digest"] = digest("job-tool-output", output)
+    assert len(canonical(proposed)) == MAX_JSON_BYTES - spare_bytes
+    GraphState.model_validate(proposed)
+
+    def execute():
+        return dispatcher.execute_tool(
+            first.job_id,
+            tool="fixed",
+            actor=first.worker,
+            invocation_id="boundary",
+            handler=lambda: output,
+            retain_result=True,
+        )
+
+    if spare_bytes == 0:
+        with pytest.raises(ValueError, match="bounded job tool failed"):
+            execute()
+    else:
+        assert execute() == output
+        before = store.journal.verify()
+        with pytest.raises(ValueError, match="byte limit"):
+            dispatcher.complete(accept(keys, first, auth))
+        with pytest.raises(ValueError, match="byte limit"):
+            dispatcher.revoke_dependency(
+                sign_record(
+                    keys["local-controller"],
+                    "local-controller",
+                    "job-revocation",
+                    {"job_id": first.job_id, "reason": "must preserve recovery space"},
+                )
+            )
+        assert store.journal.verify() == before
+    recovered = dispatcher.recover_job(
+        sign_record(
+            keys["local-controller"],
+            "local-controller",
+            "job-recovery",
+            {
+                "institution_id": "institution",
+                "job_id": first.job_id,
+                "authorization_id": auth.authorization_id,
+                "reason": "consume the reserved recovery headroom",
+            },
+        )
+    )
+    GraphState.model_validate(Journal.document(recovered))
+    assert recovered["runs"][first.job_id][-1]["state"] == "uncertain"
+    assert store.read("institution")["resources"]["reserved"] == {"calls": 0}
+    if spare_bytes == 2:
+        assert len(canonical(Journal.document(recovered))) == MAX_JSON_BYTES
