@@ -112,6 +112,25 @@ def assert_home_handoff(page: Page, language: str, large: bool) -> None:
 def check_layout(page: Page) -> list[dict[str, Any]]:
     """Measure real rendered controls and horizontal reflow, including mobile text."""
     assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1"), "Horizontal page overflow"
+    overflowing_headings = inspect(
+        page,
+        """(() => [...document.querySelectorAll('h1,h2,h3')].filter(el =>
+          el.getClientRects().length && el.clientWidth && el.scrollWidth > el.clientWidth + 2
+        ).map(el => ({text: el.innerText, width: el.clientWidth, scroll: el.scrollWidth})))()""",
+    )
+    assert not overflowing_headings, f"Heading text overflows its column: {overflowing_headings}"
+    overlapping_columns = inspect(
+        page,
+        """(() => [...document.querySelectorAll('.flagship-heading')].filter(el => {
+          const children = [...el.children].filter(child => child.getClientRects().length);
+          return children.some((child, i) => children.slice(i + 1).some(other => {
+            const a = child.getBoundingClientRect(), b = other.getBoundingClientRect();
+            return Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
+              Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1;
+          }));
+        }).map(el => el.innerText))()""",
+    )
+    assert not overlapping_columns, f"Feature heading and description overlap: {overlapping_columns}"
     controls = inspect(
         page,
         """(() => [...document.querySelectorAll(
@@ -356,6 +375,11 @@ def validate(
 
             for language, width, large in (
                 ("en", 1440, False),
+                ("en", 2048, False),
+                ("en", 1024, False),
+                ("en", 900, False),
+                ("en", 720, False),
+                ("fr", 1024, True),
                 ("en", 390, False),
                 ("fr", 320, False),
                 ("fr", 320, True),
