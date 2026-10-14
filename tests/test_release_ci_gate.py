@@ -209,3 +209,28 @@ def test_packaging_rejects_stale_historical_evidence_before_creating_assets(tmp_
     with pytest.raises(ValueError, match="completed successful main push"):
         package_agent_release.main()
     assert not Path("release").exists()
+
+
+def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_SHA", SHA)
+    monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setattr(sys, "argv", ["wait_for_release_ci"])
+    clock = iter([0, wait_for_release_ci.WAIT_SECONDS])
+    monkeypatch.setattr(wait_for_release_ci.time, "monotonic", lambda: next(clock))
+    monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: pytest.fail("Expired wait must stop"))
+
+    def response(command: list[str], **kwargs) -> str:
+        workflow = command[-1].split("/workflows/")[1].split("/")[0]
+        record = snapshot()["workflows"][workflow][0]
+        if workflow == "ci.yml":
+            record.update(status="in_progress", conclusion=None)
+        return json.dumps({"workflow_runs": [record]})
+
+    monkeypatch.setattr(subprocess, "check_output", response)
+    with pytest.raises(TimeoutError, match="release deadline"):
+        wait_for_release_ci.main()
+    evidence = json.loads(Path("evidence/historical-ci.json").read_text())
+    with pytest.raises(ValueError, match="completed successful main push"):
+        validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
