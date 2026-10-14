@@ -102,3 +102,24 @@ reviewed production lifecycle, human benefit, real storage publication, browser
 wallet combinations and live deployments remain separate gates. Candidate source
 changes require fresh integrated qualification; retained fixture records do not
 silently upgrade a later source revision or an external service.
+
+## Native workspace and explicit compatibility choices
+
+The installed agent serves `/ecosystem-studio`, an EN/FR workspace using its existing
+bearer token only in page memory. It shows the installed market profile, exact work
+file digest, assignment references and retained history before admission. Each
+execution and local review requires a separate explicit action. Exports are checked
+against their exact SHA-256 before download. Refresh and reconnect read retained
+state without replaying execution; an uncertain response calls for inspection first.
+Changing installations disconnects the page. The public Studio's goal/market/executor
+chooser is navigation only: it cannot install profiles, connect to native services,
+change MARK's market, convert tokens or enable an unqualified Fleet adapter.
+
+Native work specifications are limited to 512,000 bytes (the browser uses a
+350,000-byte ceiling to leave room for base64 within its HTTP request bound).
+Reviewed delivery artifacts have one shared 8 MiB exact-byte limit on both export
+and verification; the limit excludes the outer base64 transport representation.
+Exports exceeding that limit fail closed. Native Coding remains subject to the
+existing host execution policy; Fleet supports only research, allocation, schedule
+and forecast. Neither a local review nor a signed artifact establishes marketplace
+acceptance or independent human validation.

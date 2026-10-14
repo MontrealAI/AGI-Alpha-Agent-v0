@@ -9,12 +9,28 @@
   <title>Nova-Seed Mainnet Studio · AGIALPHA</title>
   <link rel="stylesheet" href="../../assets/nova-studio/studio.css">
   <script type="module" src="../../assets/nova-studio/app.mjs"></script>
+  <script type="module" src="../../assets/nova-studio/ecosystem-choice.mjs"></script>
 </head>
 <body>
 <a class="skip" href="#workspace">Skip to workspace / Aller à l’espace de travail</a>
 <header class="topbar"><a id="studio-home" href="../../" class="brand">α <span>AGIALPHA</span></a><nav aria-label="Related workspaces"><a href="../index.html">Ascension Lab</a><a id="mark-link" href="../../ascension-protocol/mainnet/">MARK</a><button id="language" type="button">Français</button><button id="text-size" type="button" aria-pressed="false" data-fr="Texte plus grand">Larger text</button></nav></header>
 <main>
   <section class="hero"><div class="eyebrow">ASCENSION / NOVA-SEED</div><h1 data-fr="Une idée. Un plan. Un Nova-Seed.">An idea. A plan. A Nova-Seed.</h1><p class="lede" data-fr="Créez un projet vérifiable. Protégez-le. Préparez son financement et son premier travail, une décision à la fois.">Create a verifiable project. Protect it. Prepare its funding and first job, one decision at a time.</p><div class="mode" id="mode">Local preparation · Ethereum Mainnet archive restricted</div><p class="boundary" data-fr="Un fichier chiffré n’est pas un NFT. Un NFT n’est pas une campagne financée. Une campagne activée n’est pas un résultat accepté.">An encrypted file is not an NFT. An NFT is not a funded campaign. An activated campaign is not accepted work.</p></section>
+  <section id="ecosystem-choice" class="studio-start" aria-labelledby="ecosystem-title">
+    <h2 id="ecosystem-title" data-fr="Choisissez un parcours compatible.">Choose a compatible path.</h2>
+    <p data-fr="Commencez par l’objectif, puis vérifiez le marché, le jeton et l’exécuteur. Un choix de navigation n’accorde aucun droit.">Start with the goal, then check market, token and executor. A navigation choice grants no authority.</p>
+    <div class="studio-start-grid">
+      <label><span data-fr="Mon objectif">My goal</span><select id="ecosystem-goal"><option value="prepare" data-fr="Préparer un travail vérifiable">Prepare inspectable work</option><option value="execute" data-fr="Exécuter un travail attribué">Execute assigned work</option></select></label>
+      <label><span data-fr="Marché">Market</span><select id="ecosystem-market"><option value="ascension">Alpha Ascension · AGIALPHA</option><option value="jobs-v0">AGI Jobs v0 · AGIALPHA</option><option value="manager">AGIJobManager · USDC</option></select></label>
+      <label><span data-fr="Exécuteur">Executor</span><select id="ecosystem-executor"><option value="native" data-fr="Agent Alpha natif">Native Alpha agent</option><option value="fleet">AGI Fleet Linux</option></select></label>
+    </div>
+    <p><strong data-fr="Unité de règlement : ">Settlement unit: </strong><span id="ecosystem-token">AGIALPHA</span></p>
+    <p id="ecosystem-explanation" role="status"></p>
+    <button id="ecosystem-continue" data-fr="Continuer ce parcours">Continue this path</button>
+    <a id="ecosystem-native" href="http://127.0.0.1:8765/ecosystem-studio" target="_blank" rel="noopener noreferrer" hidden data-fr="Ouvrir l’espace Jobs de mon agent installé">Open my installed agent’s Jobs workspace</a>
+    <p class="small" data-fr="Le lien natif utilise le port local par défaut 8765. Si votre opérateur l’a changé, utilisez l’adresse de votre agent. Aucun jeton, fichier, paiement ou ordre n’est transmis par ce lien.">The native link uses default local port 8765. If your operator changed it, use your agent’s address. This link sends no token, file, payment or command.</p>
+    <a href="../../agent/ECOSYSTEM_ADAPTERS/" data-fr="Compatibilité, prérequis et preuves">Compatibility, prerequisites and evidence</a>
+  </section>
   <section class="studio-start" aria-labelledby="studio-start-title">
     <h2 id="studio-start-title" data-fr="Votre projet. Un parcours clair.">Your project. A clear path.</h2>
     <p data-fr="Commencez sans compte, portefeuille ni paiement. Compilez votre plan, chiffrez-le et téléchargez la sauvegarde avant de quitter cette page.">Begin without an account, wallet or payment. Compile your plan, encrypt it and download recovery before leaving this page.</p>

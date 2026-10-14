@@ -250,3 +250,70 @@ def test_four_kind_wire_vectors_reproduce_exact_normalized_bytes() -> None:
     retained = json.loads((ROOT / "examples/ecosystem/fleet-work-vectors.json").read_text())
     assert vectors() == retained
     assert {item["kind"] for item in retained["vectors"]} == {"research", "allocation", "schedule", "forecast"}
+
+
+def test_large_accepted_spec_exports_a_verifiable_bounded_delivery(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    spec = json.loads(SPEC)
+    spec["mission"]["work"] = {
+        "kind": "research",
+        "sources": [{"id": f"s{i}", "title": "Bounded escaped test input", "text": "\x01" * 10000} for i in range(8)],
+    }
+    raw_spec = json.dumps(spec).encode()
+    assert 480000 < len(raw_spec) < eco.MAX_BYTES
+    journal = Journal.initialize(tmp_path / "agent")
+    profile, state = fixture()
+    state["calls"]["jobs(uint256)"][1][7] = bytes.fromhex(eco.read_spec(raw_spec)[1][2:])
+    (journal.root / "jobs-v0-profile.json").write_text(profile.model_dump_json())
+    monkeypatch.setattr(eco, "ReadOnlyRPC", lambda _url: reader(state))
+    admitted = eco.admit(journal, raw_spec, "1", WORKER, TX)
+    binding = admitted["binding"]["id"]
+    result = eco.execute(journal, binding)
+    assert result["state"] == "review"
+    Engine(journal).review(result["id"], result["revision"], digest(result["result"]), True, "Bounded fixture review")
+    packet = eco.delivery(journal, binding)
+    raw = base64.b64decode(packet["artifact_base64"])
+    assert 2_000_000 < len(raw) <= eco.MAX_DELIVERY_BYTES
+    assert eco.verify_delivery(raw, journal.public, admitted["binding"]["observation"])["valid"]
+    with pytest.raises(ValueError):
+        eco.verify_delivery(b" " * (eco.MAX_DELIVERY_BYTES + 1), journal.public, {})
+    monkeypatch.setattr(eco, "MAX_DELIVERY_BYTES", len(raw) - 1)
+    with pytest.raises(ValueError, match="bounded wire size"):
+        eco.delivery(journal, binding)
+
+
+def test_wire_integer_negative_zero_and_float_negative_zero_are_distinct() -> None:
+    from alpha_factory_v1.core.runtime.work_spec import validation
+    from scripts.build_fleet_work_vectors import vectors
+
+    vector = next(item for item in vectors()["vectors"] if item["kind"] == "forecast")
+    raw = base64.b64decode(vector["spec_base64"])
+    assert b"-0.0" in raw
+    integer = validation(raw.replace(b"-0.0", b"-0", 1))
+    floating = validation(raw)
+    assert integer["mission_hash"] != floating["mission_hash"]
+    assert "0.0,0.0" in integer["canonical_mission"]
+    assert "0.0,-0.0" in floating["canonical_mission"]
+
+
+def test_native_api_requires_token_exact_journal_and_explicit_confirmation(tmp_path: Path) -> None:
+    from fastapi.testclient import TestClient
+    from alpha_factory_v1.core.runtime.api import create_app
+
+    journal = Journal.initialize(tmp_path / "agent")
+    client = TestClient(create_app(journal))
+    token = (journal.root / "api.token").read_text().strip()
+    auth = {"Authorization": "Bearer " + token}
+    assert client.get("/api/ecosystem/status").status_code == 401
+    assert client.get("/api/ecosystem/status", headers=auth).status_code == 200
+    payload = {"binding": "@ecosystem:" + "a" * 64, "confirm": True}
+    before = journal.verify()
+    assert client.post("/api/ecosystem/execute", headers=auth, json=payload).status_code == 409
+    headers = {**auth, "X-AGIALPHA-Journal": journal.identity}
+    assert client.post("/api/ecosystem/execute", headers=headers, json={**payload, "confirm": False}).status_code == 422
+    assert (
+        client.post("/api/ecosystem/execute", headers=headers, json={**payload, "extra": "authority"}).status_code
+        == 422
+    )
+    assert journal.verify() == before

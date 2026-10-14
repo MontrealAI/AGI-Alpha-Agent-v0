@@ -20,6 +20,7 @@ from .successor.studio_operator import ReadOnlyRPC
 
 from .work_spec import MAX_BYTES, WorkSpec, read_spec
 
+MAX_DELIVERY_BYTES = 8 * 1024 * 1024
 DELIVERY_SCHEMA = "agialpha.ecosystem-reviewed-delivery.v1"
 BACKEND = "agijobsv0-jobregistry-v2"
 
@@ -352,6 +353,8 @@ def delivery(journal: Journal, binding_id: str) -> dict[str, Any]:
         "signature": base64.b64encode(journal.key.sign(bytes.fromhex(hashed))).decode(),
     }
     raw = canonical(result)
+    if len(raw) > MAX_DELIVERY_BYTES:
+        raise ValueError("Reviewed delivery exceeds its bounded wire size")
     result_hash = "0x" + hashlib.sha256(raw).hexdigest()
     if current["state"] != 2 and current["result_hash"] != result_hash:
         raise Conflict("Submitted market result differs from the retained native artifact")
@@ -367,7 +370,7 @@ def verify_delivery(raw: bytes, trusted_key: str, expected_binding: dict[str, An
     """Verify externally pinned signer, exact binding, work and native approval."""
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
-    value = parse(raw, 2_000_000)
+    value = parse(raw, MAX_DELIVERY_BYTES)
     if set(value) != {"body", "public_key", "sha256", "signature"} or value["public_key"] != trusted_key:
         raise ValueError("Delivery identity or shape differs")
     body = value["body"]

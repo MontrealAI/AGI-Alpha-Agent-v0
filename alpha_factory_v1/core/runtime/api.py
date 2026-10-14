@@ -227,6 +227,34 @@ def create_app(journal: Journal) -> FastAPI:
         except Exception as exc:
             raise HTTPException(502, "Studio operation failed; refresh retained history before retrying") from exc
 
+    @app.get("/ecosystem-studio")
+    def ecosystem_studio() -> FileResponse:
+        return FileResponse(static / "ecosystem-studio.html")
+
+    @app.get("/ecosystem-studio.js")
+    def ecosystem_studio_javascript() -> FileResponse:
+        return FileResponse(static / "ecosystem-studio.js", media_type="application/javascript")
+
+    @app.get("/api/ecosystem/status", dependencies=[Depends(authorize)])
+    def ecosystem_status() -> dict[str, Any]:
+        from .ecosystem_operator import status
+
+        return status(journal)
+
+    @app.post("/api/ecosystem/{action}", dependencies=[Depends(authorize)])
+    async def ecosystem_operate(
+        action: str, request: Request, x_agialpha_journal: str = Header(default="")
+    ) -> dict[str, Any]:
+        from .successor.protocol import safe_json_loads
+        from .ecosystem_operator import operate
+
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact connected journal identity required")
+        document = safe_json_loads(await request.body(), max_bytes=MAX_REQUEST_BYTES)
+        if not isinstance(document, dict):
+            raise ValueError("Operation must be an object")
+        return await run_in_threadpool(operate, journal, action, document)
+
     @app.get("/healthz")
     def health() -> dict[str, str]:
         return {"status": "ok"}
