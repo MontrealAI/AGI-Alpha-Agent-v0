@@ -191,7 +191,8 @@ jobs:
 
   regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Allow the complete locked suite plus cold strict-type checks to finish.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -775,7 +776,8 @@ jobs:
 
   historical-ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    # Includes runner queues and the historical jobs' 60-minute execution limit.
+    timeout-minutes: 125
     outputs:
       artifact-name: ${{ steps.evidence-name.outputs.name }}
     permissions:
