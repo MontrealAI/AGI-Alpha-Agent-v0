@@ -198,9 +198,10 @@ assistive technologies.
    does not establish that the public website or release assets have been published.
 
 The regression job allows 60 minutes for the complete locked test suite, cold strict-type checks and
-repository validation. The historical waiter allows 120 minutes within a 125-minute job, accommodating
-runner queues before the historical test jobs' 60-minute execution limit. These bounded deadlines still
-fail closed; no successful test result can replace an incomplete job. The successful waiter supplies
+repository validation. The historical waiter reserves five additional minutes in its enclosing job
+for evidence upload and cleanup; its bounded wait accommodates runner queues and the historical test
+jobs' 60-minute execution limit. Deadlines still fail closed: successful tests cannot replace an
+incomplete job. The successful waiter supplies
 its unique attempt-specific artifact name to packaging, and the download verifies its SHA-256 digest.
 The report must identify the same commit and successful main-push runs of every required workflow.
 Packaging rejects missing, failed or stale reports. Package and public-site evidence downloads also

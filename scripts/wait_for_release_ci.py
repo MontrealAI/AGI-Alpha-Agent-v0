@@ -17,8 +17,7 @@ from alpha_factory_v1.utils.disclaimer import DISCLAIMER  # noqa: F401
 
 WORKFLOWS = ("ci.yml", "pr-ci.yml", "smoke.yml")
 REPOSITORY = "MontrealAI/AGI-Alpha-Agent-v0"
-# Include runner queue time before the historical jobs' 60-minute execution limit.
-WAIT_SECONDS = 120 * 60
+WAIT_SECONDS = 75 * 60
 MAX_SNAPSHOT_BYTES = 8 * 1024 * 1024
 
 

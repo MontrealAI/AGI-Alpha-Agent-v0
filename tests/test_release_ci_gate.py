@@ -166,7 +166,7 @@ def test_candidate_cli_writes_bound_scope_without_querying_github(tmp_path: Path
         wait_for_release_ci.main()
 
 
-def test_waiter_allows_queued_historical_tests_to_finish_after_seventy_five_minutes(
+def test_waiter_allows_historical_tests_to_finish_after_the_old_fifty_minute_deadline(
     tmp_path: Path, monkeypatch
 ) -> None:
     monkeypatch.chdir(tmp_path)
@@ -174,7 +174,7 @@ def test_waiter_allows_queued_historical_tests_to_finish_after_seventy_five_minu
     monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     monkeypatch.setattr(sys, "argv", ["wait_for_release_ci"])
-    clock = iter([0, 4501])
+    clock = iter([0, 3001])
     monkeypatch.setattr(wait_for_release_ci.time, "monotonic", lambda: next(clock))
     rounds = []
     monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: rounds.append(seconds))
@@ -199,7 +199,7 @@ def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, 
     monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     monkeypatch.setattr(sys, "argv", ["wait_for_release_ci"])
-    clock = iter([0, 7200])
+    clock = iter([0, wait_for_release_ci.WAIT_SECONDS])
     monkeypatch.setattr(wait_for_release_ci.time, "monotonic", lambda: next(clock))
     monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: pytest.fail("Expired wait must stop"))
 

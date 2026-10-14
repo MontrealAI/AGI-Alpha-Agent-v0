@@ -776,8 +776,7 @@ jobs:
 
   historical-ci:
     runs-on: ubuntu-latest
-    # Includes runner queues and the historical jobs' 60-minute execution limit.
-    timeout-minutes: 125
+    timeout-minutes: 80
     outputs:
       artifact-name: ${{ steps.evidence-name.outputs.name }}
     permissions:
