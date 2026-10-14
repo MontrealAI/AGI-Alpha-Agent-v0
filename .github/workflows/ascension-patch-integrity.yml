@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Inspect Ascension patch transport
+on:
+  push:
+    branches: [chore/ascension-integration-preview-20261014]
+    paths: ['.github/workflows/ascension-patch-integrity.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Inspect exact uploaded bytes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import gzip, hashlib, os
+          parts=Path('.github/ascension-integration')
+          compressed=b''.join((parts/f'patch.gz.part{i}').read_bytes() for i in range(7))
+          raw=gzip.decompress(compressed)
+          print('Compressed length:',len(compressed),'SHA256:',hashlib.sha256(compressed).hexdigest())
+          print('Raw length:',len(raw),'SHA256:',hashlib.sha256(raw).hexdigest())
+          output=Path(os.environ['RUNNER_TEMP'])/'transported-integration.patch'
+          output.write_bytes(raw)
+          PY
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: ascension-transported-patch
+          path: ${{ runner.temp }}/transported-integration.patch
+          if-no-files-found: error
+          retention-days: 7
