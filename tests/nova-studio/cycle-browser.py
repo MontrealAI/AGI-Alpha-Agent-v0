@@ -528,13 +528,11 @@ def main() -> None:
         for transaction in recovered_receipts:
             page.locator("#reconcile-hash").fill(transaction)
             page.locator("#reconcile").click()
-            page.wait_for_function(
-                "hash=>JSON.parse(document.querySelector('#journal').textContent).transactions"
-                ".find(row=>row.hash===hash)?.status==='finalized'",
-                arg=transaction,
-            )
             expect(page.locator("#deployment-choice")).to_be_enabled()
             expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+            journal = json.loads(page.locator("#journal").inner_text())
+            receipt_record = next(row for row in journal["transactions"] if row.get("hash") == transaction)
+            assert receipt_record["status"] == "finalized"
         page.locator("#reconcile-hash").fill("")
         assert page.evaluate("window.__nova.sends") == 0
         checks.append("Every recovered receipt is independently reconciled before any new cycle authorization")
