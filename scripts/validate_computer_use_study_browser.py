@@ -54,12 +54,20 @@ def main() -> None:
             assert response.ok and response.body() == (STUDY / "report-pack.zip").read_bytes()
             page.goto(origin + "/report.html")
             assert page.locator("h1").count() == 1
+            page.set_viewport_size({"width": 794, "height": 1123})
             page.emulate_media(media="print")
             assert page.locator("html").evaluate("e => getComputedStyle(e).colorScheme") == "light"
             assert page.locator("html").evaluate("e => getComputedStyle(e).backgroundColor") == "rgb(255, 255, 255)"
+            score = page.locator("table").nth(1).locator("tbody tr").nth(1).locator("td").nth(1)
+            assert score.inner_text() == "35/35"
+            line_tops = score.evaluate("""element => {
+                const range = document.createRange(); range.selectNodeContents(element);
+                return [...new Set([...range.getClientRects()].map(rect => Math.round(rect.top)))];
+            }""")
+            assert len(line_tops) == 1, "Printed comparison score wrapped across lines"
             assert page.locator("thead th").first.evaluate("e => getComputedStyle(e).color") == "rgb(17, 17, 17)"
             page.pdf(path=str(output / "report.pdf"), prefer_css_page_size=True)
-            records.append({"markdownDownloadExact": True, "localPackBytesExact": True, "printContrast": True, "whitePrintMargins": True})
+            records.append({"markdownDownloadExact": True, "localPackBytesExact": True, "printContrast": True, "whitePrintMargins": True, "printScoresSingleLine": True})
             page.close()
             extracted = output / "offline"
             extracted.mkdir()
