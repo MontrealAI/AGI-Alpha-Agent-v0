@@ -29,6 +29,29 @@ def add_commands(commands: Any) -> None:
 
     add_work_commands(commands)
     add_computer_commands(commands)
+    cycle = commands.add_parser("successor-cycle", help="Exchange exact Studio work with an installed local operator")
+    phases = cycle.add_subparsers(dest="cycle_action", required=True)
+    phases.add_parser("status", help="Inspect configured trust and cycle prerequisites without contacting a node")
+    for name in ("prepare", "seal", "bind", "run", "accept", "settle", "freeze-evaluation", "evaluate"):
+        phase = phases.add_parser(name, help="Apply one explicit configured Studio phase from a bounded JSON file")
+        phase.add_argument("file", type=Path)
+        phase.add_argument("--output", type=Path, required=True)
+    for name in ("show", "export"):
+        phase = phases.add_parser(name, help="Read retained history without replaying authority or execution")
+        phase.add_argument("request_digest")
+        phase.add_argument("--output", type=Path, required=True)
+    cycle_verify = phases.add_parser(
+        "verify", help="Authenticate exact native result with independently retained trust"
+    )
+    cycle_verify.add_argument("file", type=Path)
+    cycle_verify.add_argument("--request", type=Path, required=True)
+    cycle_verify.add_argument("--public-key", required=True)
+    cycle_recover = phases.add_parser(
+        "recover-result", help="Recover completed output without replaying an expired grant"
+    )
+    cycle_recover.add_argument("--request", type=Path, required=True)
+    cycle_recover.add_argument("--binding-digest", required=True)
+    cycle_recover.add_argument("--output", type=Path, required=True)
     demo = commands.add_parser("successor-demo", help="Run a complete offline two-generation SUCCESSOR rehearsal")
     demo.add_argument(
         "--output", type=Path, required=True, help="New evidence directory; existing work is never overwritten"
@@ -230,6 +253,8 @@ def _restore(args: argparse.Namespace) -> dict[str, Any]:
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
     """Validate external inputs before creating any mission state."""
+    if args.command == "successor-cycle":
+        return _cycle(args)
     if args.command == "successor-computer":
         from .computer import handle as handle_computer
 
@@ -301,3 +326,28 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
     result = retained_result(journal, args.request_id)
     private_write(args.output, canonical(result))
     return {"output": str(args.output.resolve()), "remeasured": False, "scope": result["scope"]}
+
+
+def _cycle(args: argparse.Namespace) -> dict[str, Any]:
+    from . import studio, studio_operator
+
+    if args.cycle_action == "verify":
+        return studio.verify_work_result(
+            read_document(args.request), read_document(args.file), public_key=args.public_key
+        )
+    journal = Journal(args.home)
+    journal.verify()
+    if args.cycle_action == "status":
+        return studio_operator.status(journal)
+    if args.output.exists() or args.output.is_symlink():
+        raise FileExistsError("Studio output already exists; choose a new file")
+    if args.cycle_action == "recover-result":
+        result = studio.retained_work(journal, read_document(args.request), args.binding_digest)
+    elif args.cycle_action == "show":
+        result = studio_operator.show(journal, args.request_digest)
+    elif args.cycle_action == "export":
+        result = studio_operator.export(journal, args.request_digest)
+    else:
+        result = studio_operator.operate(journal, args.cycle_action, read_document(args.file))
+    private_write(args.output, canonical(result))
+    return {"output": str(args.output.resolve()), "phase": args.cycle_action, "authority_status": "not_granted"}
