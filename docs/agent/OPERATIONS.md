@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.31.1**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a
+Current release: **1.31.2**. See [release readiness and deployment scope](RELEASE_READINESS.md) before choosing a
 launch path; use one published release's matching assets and manifest for its actual delivery identity.
 
 For Nova-Seed projects and the installed Studio desk, begin with the
@@ -322,8 +322,8 @@ It installs the historical core lock; heavyweight domain integrations remain opt
 Build from the repository root and bind the published port to host loopback:
 
 ```sh
-docker build --target agent-runtime -t agialpha-agent:1.31.1 -f alpha_factory_v1/Dockerfile .
-docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.31.1
+docker build --target agent-runtime -t agialpha-agent:1.31.2 -f alpha_factory_v1/Dockerfile .
+docker run --name agialpha-agent -d -p 127.0.0.1:8000:8000 -v agialpha-data:/data agialpha-agent:1.31.2
 docker exec agialpha-agent cat /data/agent/api.token
 ```
 

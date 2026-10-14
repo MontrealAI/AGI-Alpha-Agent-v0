@@ -148,8 +148,30 @@ function readOnlyRpc(url) {
             response = await fetch(url, { method: "POST", redirect: "error", signal: AbortSignal.timeout(20000),
                 headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }) });
             requireValue(response.ok, "RPC unavailable");
-            const body = await response.json();
-            requireValue(!body.error && body.result !== undefined, "RPC request rejected");
+            const reader = response.body?.getReader();
+            requireValue(reader, "RPC response body required");
+            const limit = 2 * 1024 * 1024;
+            const chunks = [];
+            let size = 0;
+            try {
+                const length = response.headers.get("content-length");
+                requireValue(length === null || (/^[0-9]+$/.test(length) && Number(length) <= limit),
+                    "RPC response exceeds 2 MiB");
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    size += value.byteLength;
+                    requireValue(size <= limit, "RPC response exceeds 2 MiB");
+                    chunks.push(value);
+                }
+            } finally {
+                await reader.cancel().catch(() => {});
+                reader.releaseLock();
+            }
+            const body = JSON.parse(Buffer.concat(chunks, size).toString("utf8"));
+            requireValue(body && typeof body === "object" && !Array.isArray(body) &&
+                body.jsonrpc === "2.0" && body.id === 1 && !Object.hasOwn(body, "error") &&
+                Object.hasOwn(body, "result"), "Invalid RPC response");
             return body.result;
         } catch { throw Error(`Read-only RPC failed for ${method}; check provider availability (URL and provider errors are redacted)`); }
     };

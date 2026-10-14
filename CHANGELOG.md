@@ -1,3 +1,10 @@
+## 1.31.2 — 2026-10-14
+
+- Reject malformed Mainnet RPC envelopes and responses larger than 2 MiB, including streamed bodies.
+- Cancel oversized streams, preserve redacted failures and add exact-boundary/adversarial response tests.
+- Refresh current contract/operator guidance and release/cache labels; preserve deployed contracts and research.
+- See [release notes](docs/agent/RELEASE_NOTES_1.31.2.md).
+
 ## 1.31.1 — 2026-10-14
 
 - Publish the English/French computer-use study reader, curated results and compact offline report pack.

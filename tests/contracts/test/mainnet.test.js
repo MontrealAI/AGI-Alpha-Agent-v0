@@ -81,6 +81,50 @@ describe("Mainnet preparation (unsigned and read-only)", function () {
             await rejects(() => rpc("eth_chainId", []), "URL and provider errors are redacted");
         } finally { global.fetch = previous; }
     });
+    it("accepts only matching successful JSON-RPC envelopes, including a null read result", async () => {
+        const previous = global.fetch, rpc = readOnlyRpc("https://rpc.example/private-secret");
+        try {
+            for (const result of ["0x1", null]) {
+                global.fetch = async () => new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }));
+                expect(await rpc("eth_chainId", [])).to.equal(result);
+            }
+            for (const body of [null, [], { jsonrpc: "1.0", id: 1, result: "0x1" },
+                { jsonrpc: "2.0", id: 999, result: "0x1" }, { jsonrpc: "2.0", id: "1", result: "0x1" },
+                { jsonrpc: "2.0", id: 1 }, { jsonrpc: "2.0", id: 1, error: null, result: "0x1" }]) {
+                global.fetch = async () => new Response(JSON.stringify(body));
+                await rejects(() => rpc("eth_chainId", []), "URL and provider errors are redacted");
+            }
+        } finally { global.fetch = previous; }
+    });
+    it("bounds streamed RPC bytes, stops oversized responses and redacts provider content", async () => {
+        const previous = global.fetch, rpc = readOnlyRpc("https://rpc.example/private-secret");
+        try {
+            for (const headers of [{ "content-length": String(2 * 1024 * 1024 + 1) }, {}]) {
+                let cancelled = false;
+                const stream = new ReadableStream({
+                    start(controller) {
+                        controller.enqueue(new Uint8Array(1024 * 1024));
+                        controller.enqueue(new Uint8Array(1024 * 1024 + 1));
+                    },
+                    cancel() { cancelled = true; }
+                });
+                global.fetch = async () => new Response(stream, { headers });
+                await rejects(() => rpc("eth_chainId", []), "URL and provider errors are redacted");
+                expect(cancelled).to.equal(true);
+            }
+            const prefix = '{"jsonrpc":"2.0","id":1,"result":"', suffix = '"}';
+            const exact = prefix + "a".repeat(2 * 1024 * 1024 - prefix.length - suffix.length) + suffix;
+            global.fetch = async () => new Response(exact);
+            expect((await rpc("eth_getCode", [])).length).to.equal(exact.length - prefix.length - suffix.length);
+            for (const body of ["private-secret malformed JSON", "", "x".repeat(2 * 1024 * 1024 + 1)]) {
+                global.fetch = async () => new Response(body);
+                let error;
+                try { await rpc("eth_chainId", []); } catch (caught) { error = caught; }
+                expect(error).to.be.instanceOf(Error);
+                expect(error.message).not.to.include("private-secret");
+            }
+        } finally { global.fetch = previous; }
+    });
     it("executes the exact prepared constructor data and governance bindings on an isolated EVM", async () => {
         await ethers.provider.send("hardhat_reset", []);
         const [deployer, governor] = await ethers.getSigners();

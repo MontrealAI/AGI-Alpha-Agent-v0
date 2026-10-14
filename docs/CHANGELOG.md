@@ -1,3 +1,10 @@
+## 1.31.2 — Mainnet read verification hardening
+
+- Require matching successful JSON-RPC 2.0 envelopes and cap streamed provider responses at 2 MiB.
+- Cancel oversized streams and retain redacted error reporting; no signer or broadcast is added.
+- Update the active Hardhat/mainnet guides and current version/cache labels; retain prior research and notes.
+- See [release notes](agent/RELEASE_NOTES_1.31.2.md).
+
 ## 1.31.1 — Computer-use study publication
 
 - Add the English/French study reader, larger text, print styling and exact Markdown/JSON downloads.

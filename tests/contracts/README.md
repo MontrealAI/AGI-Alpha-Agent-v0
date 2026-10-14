@@ -1,6 +1,6 @@
 # Contract deployment and migration guide
 
-This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.28.1. It deploys the Ascension
+This is the supported **local Hardhat rehearsal** for $AGIALPHA Agent 1.31.2. It deploys the Ascension
 contracts, verifies their bindings and writes inspectable evidence. It needs no wallet, secret, RPC URL
 or real funds. Contract state exists only inside that command's process and disappears when it exits.
 
@@ -189,6 +189,9 @@ here. Its former `Deployer` artifact was absent; the former environment token ov
 Solidity's canonical token. The legacy config exposes no networks and loads no wallet provider.
 
 The separate mainnet tools use `MAINNET_RPC_URL` for read-only HTTPS queries. They never read `DEPLOYER_KEY`.
+RPC responses must use JSON-RPC 2.0, match the request ID, contain a result and omit an error field.
+Each body is limited to 2 MiB even without a Content-Length header; an oversized stream is cancelled.
+Provider URLs and response details are redacted from failures. An invalid response produces no verified output.
 
 ## Tests and troubleshooting
 
