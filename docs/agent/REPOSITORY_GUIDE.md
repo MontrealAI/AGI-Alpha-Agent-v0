@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Repository guide — 1.28.1
+# Repository guide — 1.31.0
 
 **New to the project? [Start with the guided webpage](../start/index.html)** or read the
 [English/French getting-started guide](ONBOARDING.md).
@@ -13,6 +13,7 @@ flowcharts, media and prior release notes remain available together in this repo
 
 | Goal | Entry point | First result |
 |---|---|---|
+| Prepare and recover a Nova-Seed project | [English/French first use](ASCENSION_STACK_RELEASE.md) | Exact local plan and encrypted recovery, then explicit native work, review and continuation |
 | Begin without technical experience | [Guided first plan](../start/index.html) | English/French steps, larger text, a reviewed plan and a useful download |
 | Try the project immediately | [Public workspace](../index.html) | Editable scenarios, computed results and downloadable evidence |
 | Run a bounded two-generation mission | [SUCCESSOR Ω first session](SUCCESSOR.md) | Constructed challengers, fresh evaluation, retained knowledge and explicit proof/authority boundaries |
@@ -98,9 +99,11 @@ Keep the existing agent and its backup when upgrading.
 | Contracts or external chain | Start with the [contract deployment/migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md) | Reviewed addresses, chain ID, bytecode identities, governance and current on-chain obligations |
 
 A native package upgrade does not deploy contracts, migrate tokens or send transactions. Existing
-native journals require no schema migration for 1.28.1; unknown SUCCESSOR protocol versions are rejected
-instead of silently rewriting signed evidence. Keep state and release environments separate so a
-failed installation cannot replace the working operator.
+native journal formats retain their original meaning; unknown SUCCESSOR protocol versions are rejected
+instead of silently rewriting signed evidence. Private project recovery is a separate envelope, and
+imports do not restore active grants. Keep private role credentials and current operator configuration
+with your private recovery procedure. Keep state and release environments separate so a failed
+installation cannot replace the working operator.
 
 ## What the release establishes
 

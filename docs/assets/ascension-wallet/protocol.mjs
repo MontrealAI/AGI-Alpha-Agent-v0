@@ -107,6 +107,7 @@ export const METHODS = {
   collect: method('collect', ['uint256']), close: method('close', ['uint256']), reclaim: method('reclaim', ['uint256'], ['uint256']),
   approve: method('approve', ['address','uint256'], ['bool']), register: method('register', ['uint8','string']),
   seal: method('seal', ['bytes32','bytes32','uint32','string','uint256','bytes32'], ['uint256']),
+  transferSeed: method('safeTransferFrom', ['address','address','uint256']),
   openReview: method('openReview', ['uint256']), attest: method('attest', ['uint256','uint16','bool','bytes32']),
   deposit: method('deposit', ['uint256']), withdraw: method('withdraw', ['uint256']),
   setJobAvailability: method('setJobAvailability', ['address','uint64','uint32']),
@@ -160,6 +161,7 @@ export const SELECTORS = {
   "approve": "0x095ea7b3",
   "register": "0xd3eb9541",
   "seal": "0x91abd3d5",
+  "transferSeed": "0x42842e0e",
   "openReview": "0x92f25df8",
   "attest": "0x34caf5e3",
   "deposit": "0xb6b55f25",
@@ -184,6 +186,7 @@ const amount = field('amount', '$AGIALPHA amount / Montant', 'tokens');
 const proof = field('evidence', 'Evidence hash / Empreinte des preuves', 'hash');
 const action = (contract, methodName, label, risk, fields, note) => ({contract, method: methodName, label, risk, fields, note});
 export const ACTIONS = {
+  transferSeed: action('Seed','transferSeed','Transfer Nova-Seed / Transférer le Nova-Seed','new',[field('from','Current owner / Propriétaire','address'),field('to','Recipient / Destinataire','address'),id], 'Transfers the NFT only. It does not transfer capsule access, legal rights, current review or a campaign’s recorded business authority. It can interrupt activation and routing.'),
   buy: action('Mark','buy','Buy funding lots / Acheter des lots','new',[id,field('count','Lots'),field('maxCost','Maximum $AGIALPHA cost / Coût maximal','tokens')], 'Approve only the bounded spend separately. Bloom can end redemption as soon as the target is reached.'),
   sell: action('Mark','sell','Redeem funding lots / Racheter des lots','recovery',[id,field('count','Lots'),field('minReturn','Minimum $AGIALPHA return / Retour minimal','tokens')], 'Funding phase only; admission or risk expiry does not by itself prevent redemption. The curve price may differ from your purchase price. A competing bloom or close can make this revert.'),
   reclaim: action('Mark','reclaim','Claim remaining capital / Réclamer le solde','recovery',[id], 'Closed campaign only. Returns your proportion of the remaining reserve, not spent funding or a guaranteed original deposit.'),
@@ -210,14 +213,14 @@ export const ACTIONS = {
   timeout: action('Jobs','timeout','Process expired job / Traiter un travail expiré','obligation',[job], 'Late undelivered work can slash the worker. Missing review quorum refunds escrow without slashing. This is not a generic cancel button.'),
   jobRefund: action('Jobs','claimRefund','Claim direct-job refund / Réclamer un remboursement direct','recovery',[job], 'Only the recorded client can claim. For a MARK-originated job, use Collect: MARK is the client.'),
 };
-export function parseFields(actionId, values) {
+export function parseFields(actionId, values, contracts = CONTRACTS) {
   const a = ACTIONS[actionId];
   if (!Object.hasOwn(ACTIONS, actionId) || !a || values.length !== a.fields.length) throw Error('Unknown action or missing fields.');
   return a.fields.map((f, i) => {
     const v = values[i];
     if (f.kind === 'tokens') return units(v).toString();
     if (f.kind === 'address') return address(v);
-    if (f.kind === 'spender') { if (!['Mark','Jobs','Oracle'].includes(v)) throw Error('Choose a protocol spender.'); return CONTRACTS[v]; }
+    if (f.kind === 'spender') { if (!['Mark','Jobs','Oracle'].includes(v)) throw Error('Choose a protocol spender.'); return contracts[v]; }
     if (f.kind === 'hash') { bytes32(v); return v; }
     if (f.kind === 'boolean') { if (!['true','false'].includes(v)) throw Error('Choose true or false.'); return v === 'true'; }
     if (f.kind === 'role') { if (!['0','1','2'].includes(v)) throw Error('Invalid role.'); return v; }

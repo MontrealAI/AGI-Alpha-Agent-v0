@@ -6,6 +6,7 @@ import {createRequire} from 'node:module';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {METHODS, SELECTORS, ACTIONS, callData, decode} from '../../docs/assets/ascension-wallet/protocol.mjs';
+import {QUALIFICATION_METHODS} from '../../docs/assets/ascension-wallet/qualification.mjs';
 const require=createRequire(new URL('../contracts/package.json',import.meta.url));
 const {Interface, id, keccak256}=require('ethers');
 const archive=new URL('../../deployments/ethereum-mainnet/2026-10-11/',import.meta.url);
@@ -59,4 +60,10 @@ test('generated profile matches archived exact-byte SHA256 and Ethereum Keccak h
     assert.equal(createHash('sha256').update(Buffer.from(runtimes[name].slice(2),'hex')).digest('hex'),p.contracts[alias].sha256);
     assert.equal(p.contracts[alias].address,manifest.contracts[name].address);
   }
+});
+
+for(const [key,m] of Object.entries(QUALIFICATION_METHODS)) test(`qualification ABI/selector differential: ${m.signature}`,()=>{
+  assert.equal(m.selector,id(m.signature).slice(0,10));
+  const found=Object.values(interfaces).map(i=>i.getFunction(m.signature)).find(Boolean);
+  assert.ok(found,`Missing ${key} in exact archived ABI`);assert.deepEqual(found.outputs.map(o=>o.type),m.outputs);
 });

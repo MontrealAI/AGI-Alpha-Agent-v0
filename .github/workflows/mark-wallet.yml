@@ -4,6 +4,16 @@ on:
   pull_request:
     paths:
       - 'docs/assets/ascension-wallet/**'
+      - 'docs/assets/nova-studio/**'
+      - 'docs/ascension/mainnet/**'
+      - 'tests/nova-studio/**'
+      - 'scripts/*nova_studio*'
+      - 'tests/contracts/scripts/nova-studio.js'
+      - 'tests/contracts/scripts/ascension-cycle.js'
+      - 'alpha_factory_v1/core/runtime/successor/**'
+      - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
+      - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -14,9 +24,19 @@ on:
       - 'deployments/ethereum-mainnet/2026-10-11/**'
       - '.github/workflows/mark-wallet.yml'
   push:
-    branches: [main, feat/mark-mainnet-wallet-20261013]
+    branches: [main, feat/mark-mainnet-wallet-20261013, feat/nova-seed-mainnet-studio-20261014]
     paths:
       - 'docs/assets/ascension-wallet/**'
+      - 'docs/assets/nova-studio/**'
+      - 'docs/ascension/mainnet/**'
+      - 'tests/nova-studio/**'
+      - 'scripts/*nova_studio*'
+      - 'tests/contracts/scripts/nova-studio.js'
+      - 'tests/contracts/scripts/ascension-cycle.js'
+      - 'alpha_factory_v1/core/runtime/successor/**'
+      - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
+      - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -46,7 +66,7 @@ jobs:
           python-version: '3.12'
       - name: Check dependency-free wallet and profile tests
         run: |
-          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs
+          node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs tests/mark-wallet/qualification.test.mjs
           python -m unittest discover -s tests/mark-wallet -p "test_*.py" -v
       - name: Install existing locked contract reference tools
         run: npm ci --prefix tests/contracts
@@ -61,11 +81,55 @@ jobs:
       - name: Install rendered wallet acceptance tools
         run: |
           python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install 'eth-hash[pycryptodome]==0.8.0' eth-abi==6.0.0 pytest==8.4.1
           python -m pip install playwright==1.54.0
           python -m playwright install --with-deps chromium
           npm ci --prefix tests/browser --ignore-scripts
       - name: Exercise real browser with synthetic injected wallet
         run: python -m scripts.validate_mark_wallet --output evidence/mark-wallet
+      - name: Nova-Seed compiler, encryption, cycle trust and rights checks
+        run: |
+          node --test tests/nova-studio/*.test.mjs
+          python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
+      - name: Nova-Seed shipped browser preparation and portable recovery
+        run: python -m scripts.validate_nova_studio --output evidence/nova-studio-browser
+      - name: Bounded native bridge, authority and operator checks
+        env:
+          PYTHONPATH: '.'
+          NO_DISCLAIMER: '1'
+        run: >-
+          python -m pytest --confcutdir=tests/runtime
+          tests/runtime/test_successor_studio.py tests/runtime/test_successor_studio_operator.py
+          tests/runtime/test_successor_studio_operator_browser.py -q
+      - name: Nova-Seed exact-source lifecycle and browser recovery
+        working-directory: tests/contracts
+        env:
+          NOVA_BROWSER: '1'
+        run: npx --no-install hardhat run scripts/nova-studio.js
+      - name: Complete two-cycle browser workflow and genuine bounded execution
+        working-directory: tests/contracts
+        env:
+          ASCENSION_CYCLE_BROWSER: '1'
+          ALPHA_PYTHON: python
+        run: npx --no-install hardhat run scripts/ascension-cycle.js
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: ascension-complete-cycle-acceptance
+          path: evidence/ascension-cycle/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: nova-studio-acceptance
+          path: evidence/nova-studio/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: nova-studio-browser
+          path: evidence/nova-studio-browser/
+          if-no-files-found: error
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

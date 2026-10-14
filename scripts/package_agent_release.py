@@ -45,6 +45,12 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/MAINNET_READINESS.md",
         "docs/agent/MAINNET_DEPLOYMENT.md",
         "docs/agent/MARK_WALLET.md",
+        "docs/agent/NOVA_SEED_STUDIO.md",
+        "docs/agent/NOVA_SEED_STUDIO_ENGINEERING.md",
+        "docs/agent/ASCENSION_STACK_RELEASE.md",
+        "docs/agent/ASCENSION_CYCLE.md",
+        "docs/agent/ASCENSION_CYCLE_HANDOFF.md",
+        "docs/agent/ASCENSION_CYCLE_ENGINEERING.md",
         "docs/agent/REPOSITORY_GUIDE.md",
         "docs/agent/FACTORY_GUIDE.md",
         "docs/agent/DEMOS.md",
@@ -175,6 +181,11 @@ def main() -> None:
 
         report = json.loads((args.evidence / "mark-wallet-browser" / "report.json").read_text())
         verify_wallet(report, sha, version)
+        from scripts.nova_studio_evidence import verify_browser, verify_lifecycle
+
+        verify_lifecycle(args.evidence / "nova-studio-acceptance", sha)
+        studio = json.loads((args.evidence / "nova-studio-browser" / "report.json").read_text())
+        verify_browser(studio, sha, version)
     manuscript_hashes = verify_manuscript()
     factory_preservation = verify_factory()
     subprocess.run(

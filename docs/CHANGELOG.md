@@ -1,3 +1,12 @@
+## 1.31.0 — Nova-Seed projects and inspectable Ascension cycles
+
+- Integrate recoverable Nova-Seed projects, authorized native execution and recovery/delivery hardening.
+- Retain original signed evidence through reviewed work, settlement, frozen comparison and a distinct successor mission.
+- Add English/French first-use instructions, private project recovery and owner-specific financial observations.
+- Keep existing shared-wallet confirmations, archived deployment restrictions and original research/diagrams.
+- Require fresh combined-source verification and matching publication evidence; historical fixtures do not qualify live services.
+- See [release notes and limits](agent/RELEASE_NOTES_1.31.0.md) and [release readiness](agent/RELEASE_READINESS.md).
+
 ## 1.30.0 — MARK Mainnet wallet and recoverable transaction journal
 
 - Add the guarded Mainnet wallet workspace while preserving the original Protocol Desk.

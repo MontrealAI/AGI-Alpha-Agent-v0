@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ascension Studio · Operator setup</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/ascension-studio.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to setup</a>
+  <header><a class="brand" href="/ascension-studio">α<span>ASCENSION<br><small>OPERATOR SETUP</small></span></a>
+    <nav><a href="#fr" lang="fr">Français</a><a href="/ascension-studio">Return to Studio</a></nav></header>
+  <main id="main">
+    <section class="intro"><p class="eyebrow">ONE-TIME INSTALLATION · EXPLICIT ROLES</p>
+      <h1>Prepare your agent<br>for authorized work.</h1>
+      <p>The host operator installs trusted identities and a bounded deployment policy. The controller authorizes the exact run. The acceptance owner reviews its result. Studio keeps those decisions separate and retains their evidence.</p>
+    </section>
+    <section class="panel"><h2>Before the first project</h2>
+      <p>An installation administrator must first provision this agent’s private home and independently verified public trust. Optional local signing also needs the appropriate role keys and separate approval tokens already installed privately. A work file, successful import or connected wallet cannot provide those permissions.</p>
+      <ol>
+        <li>Use the existing native installation and private-home workflow. The fixed executor requires Node.js 22 or later. Initialize a new home only once; keep an existing home and its history.</li>
+        <li>Install the independently checked <code>successor-trust.json</code>. It identifies the actual controller, producer, acceptance owner and permitted worker principals with their roles. The on-chain worker address is a lowercase principal identifier. Local test keys remain local test actors.</li>
+        <li>For optional signing in this console, install each role’s existing private key in its approved private slot and a dedicated approval token. The key must match that role’s independently trusted public identity. Do not paste or upload private keys through a browser.</li>
+        <li>Start the local console, open <a href="/ascension-studio">Ascension Studio</a>, and connect with this home’s private <code>api.token</code>. The API token stays in page memory. Do not enter it in a hosted website.</li>
+      </ol>
+      <pre>alpha-agent --home /absolute/private/agent init
+alpha-agent --home /absolute/private/agent serve --port 8765</pre>
+      <p>Run <code>init</code> only for a new home. The local address is <code>http://127.0.0.1:8765/ascension-studio</code>. The server uses its existing loopback Host checks, same-origin request controls, bearer authentication and body limits. The hosted Studio exchanges files with this console; it does not connect directly to the local server.</p>
+      <h3>Complete the first-install form</h3>
+      <p>Open <strong>First installation using existing trusted identities</strong>. Choose the installed actors, set the finite call allowance and expiry, and enter independently verified chain, contract/code and read-only RPC settings. Review the exact deployment and scope before confirming. The form creates a pairing policy in <code>studio-operator.json</code> once; it never overwrites an existing configuration or commissions a Mainnet deployment.</p>
+      <p>Local signer slots are optional. Their dedicated approval-token path is displayed read-only in the form: <code>studio-approval/&lt;sha256(principal UTF8)&gt;.token</code>, inside the private home. An administrator must already have provisioned a cryptographically random token of the supported <code>token_urlsafe(32)</code> form there. It must differ from the API token and every other configured role token. The form checks the existing private slot; it does not generate, reveal or import its secret.</p>
+      <p>If trust, a key or a role token is missing, the responsible administrator must supply it through the existing private installation process. The first-install form cannot grant a role or treat an imported public key as trusted. If settings are already installed, the page displays them for use; changes follow the operator’s separate configuration and review process.</p>
+    </section>
+    <section class="panel"><h2>Operate each work item through the browser</h2>
+      <ol>
+        <li><strong>Import and pair.</strong> Download the exact executor work request from Nova-Seed Studio, select it here and inspect its scope. For a new work context, choose <strong>Pair a new work item</strong>, the installed deployment/role policy and the actual seed number. Confirm the exact work and bounded allowance.</li>
+        <li><strong>Review the proposed context.</strong> Pairing records the exact project, cycle and plan index, with a new bounded institution and its companion-job proposals. Constitution, evidence, formation, challenge, admission and renewal obligations remain pending. Pairing grants no execution permission or admission and marks no work complete.</li>
+        <li><strong>Seal before posting.</strong> Review the exact inputs, prepared terms and graph, then explicitly seal. Download that signed preposting seal and return it to hosted Studio before routing the job. Sealing does not post a transaction or start a run.</li>
+        <li><strong>Bind the actual assignment.</strong> Complete posting and award through the wallet workflow. Supply the actual job number, selected worker, posting/assignment receipts and bounded expiry in the local form. The configured reader verifies them and prepares the exact unsigned execution scope.</li>
+        <li><strong>Get controller approval.</strong> If the named controller has an installed local signer, that controller reviews the scope, enters their separate approval token and confirms <strong>Sign this exact execution grant</strong>. Signing does not execute. Otherwise use the retained external signed-envelope handoff below.</li>
+        <li><strong>Run explicitly.</strong> Review the retained signed grant and separately confirm one bounded execution. No network, arbitrary shell, personal browser or wallet access is granted by the fixed executor. Inspect the actual run and output, then download the signed result for the project.</li>
+        <li><strong>Record local acceptance.</strong> The configured acceptance owner inspects the exact artifact and chooses accept or reject. Their separate role approval token can sign and record that decision; an external signed acceptance envelope also works. This reconciles the runtime resource reservation. On-chain committee review and payment remain separate.</li>
+        <li><strong>Verify chain settlement.</strong> After the worker’s actual delivery, committee review and closure, submit the observed closure transaction for a read-only check. Export the signed settlement history and return it with the result to hosted Studio using the separately retained observer identity.</li>
+      </ol>
+      <p>The ordinary API access token does not authorize controller or acceptance signing. Never include approval tokens in a work request, recovery export, message or hosted Studio. A correct report that a candidate failed can be accepted and paid; that result does not adopt the failed candidate.</p>
+    </section>
+    <section class="panel"><h2>Evaluate and authorize the next mission</h2>
+      <p>The built-in comparison uses the installed numerical adapter. Select a retained baseline and <strong>Freeze comparison before this work runs</strong> for fresh work on a different polynomial or domain. The comparison freezes common inputs, step/resource limits and the exact accuracy criterion. Run that work under its own assignment and controller grant, then select <strong>Evaluate the frozen comparison</strong> and download the signed report.</p>
+      <p>The inputs are visible to the operator; this is not an independently protected holdout. PASS, FAIL, TIE or insufficient evidence remain scoped to the recorded comparison. Unknown money costs stay unknown, and no general or economic superiority is established. Candidate adoption and new spending require separate decisions in the project.</p>
+      <p>For a distinct next mission, return to Studio, choose the authorized artifact/version and prepare new exact work. Pair its new request through the installed policy here. The immutable graph receives a separately confirmed new institution/context; you do not need to hand-edit another per-cycle JSON file. Every new job still requires its own actual assignment, controller grant, result, review and settlement. Old grants and receipts are not inherited.</p>
+    </section>
+    <section class="panel"><h2>Recover without repeating effects</h2>
+      <p>Open retained history after a refresh. If execution finished but the browser lost its response, retrieve the exact completed result from the native journal without running it again, including when the old authorization has expired or been removed. If a run is interrupted or its effect is uncertain, preserve the reservation and use the existing controller recovery process. A refresh cannot authorize replay.</p>
+      <p>Changes to configured trust or work policy stop new actions at the next runtime checkpoint; the existing global pause remains available. Neither control reverses a confirmed chain transaction. Keep the private agent backup and an independently retained journal checkpoint for host recovery. Keep the observer public key independently from the evidence file it authenticates.</p>
+      <p>The existing backup is not claimed to contain every newly configurable operator key/token file. The administrator must separately retain or deliberately reprovision <code>studio-operator.json</code>, current trust and the approved private signer/approval-token slots. Never include those secrets in public project exports. Reconstructing historical evidence does not reactivate an old grant.</p>
+    </section>
+    <section class="panel"><details><summary>Advanced: explicit profiles and external signed envelopes</summary>
+      <p>Existing operator-installed exact profiles remain supported. Their identity includes <code>project_id</code>, <code>cycle_id</code> and <code>plan_index</code>, with a retained institution/mission, explicit roles/expiry, pinned <code>MarketContext</code>, read-only RPC, six companion-job families and dependency edges. An imported work file cannot alter these settings. Use this path when the administrator deliberately manages exact profiles instead of the normal pairing form.</p>
+      <p>The downloaded controller or acceptance request is an unsigned proposal. The separately held role signer reviews its exact <code>domain</code>, <code>principal</code> and <code>payload</code>, then returns the existing <code>SignedEnvelope</code> with those fields and its <code>signature</code>. Import the envelope in the appropriate form and explicitly confirm the resulting action. No message is sent automatically, and no key or new trust registry belongs in that file.</p>
+      <p>Schema and operator details are available in <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/core/runtime/successor/studio_operator.py" rel="noopener">studio_operator.py</a>, the <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/ASCENSION_CYCLE.md" rel="noopener">cycle operator guide</a>, and the preserved <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/agent/SUCCESSOR_ASCENSION.md" rel="noopener">SUCCESSOR Ascension guide</a>.</p>
+    </details></section>
+    <section class="panel" id="fr" lang="fr"><h2>Configuration et parcours en français</h2>
+      <h3>Installation initiale par l’administrateur</h3>
+      <p>L’administrateur installe d’abord l’agent, son répertoire privé et les identités publiques vérifiées séparément dans <code>successor-trust.json</code>. La signature locale facultative exige les clés de rôle et des jetons d’approbation déjà installés dans des emplacements privés. Aucun fichier de travail ni formulaire ne crée ces identités, ne génère ces secrets ou ne leur accorde un rôle.</p>
+      <p>Ouvrez <a href="/ascension-studio">le Studio local</a>, choisissez Français et connectez-vous avec le jeton privé <code>api.token</code>. Dans le formulaire de première installation, sélectionnez les acteurs existants, les limites et le déploiement vérifié. Confirmez uniquement après examen. Le formulaire enregistre une politique de jumelage une seule fois; il ne remplace jamais une configuration existante.</p>
+      <p>Le chemin du jeton de chaque rôle apparaît en lecture seule: <code>studio-approval/&lt;sha256(principal UTF8)&gt;.token</code>, dans le répertoire privé. L’administrateur doit déjà y avoir placé un jeton aléatoire du format pris en charge, différent du jeton API et de ceux des autres rôles. La clé privée existante doit correspondre à l’identité publique vérifiée. Ne collez et n’importez jamais de clé privée dans le navigateur.</p>
+      <h3>Un travail, une autorisation précise</h3>
+      <ol>
+        <li>Importez la demande exacte de Nova-Seed Studio. Pour un nouveau contexte, choisissez la politique installée, le numéro réel du seed et confirmez le jumelage. Les obligations associées restent en attente; aucune permission d’exécution, admission ou réalisation n’est créée.</li>
+        <li>Examinez les données, conditions et obligations du graphe. Scellez avant publication du travail et renvoyez le sceau signé au Studio hébergé avant son routage.</li>
+        <li>Après la publication et l’attribution par le portefeuille, fournissez les transactions, le travailleur retenu et l’échéance. Le lecteur configuré vérifie l’attribution réelle et prépare la portée à autoriser.</li>
+        <li>Le contrôleur nommé examine cette portée et utilise son jeton d’approbation distinct pour signer, ou transmet une enveloppe signée séparément. La signature ne lance pas le travail. Confirmez ensuite une exécution bornée distincte.</li>
+        <li>Inspectez et téléchargez le résultat signé. Le responsable d’acceptation choisit accepter ou refuser avec son propre jeton de rôle ou une enveloppe externe. Cette décision clôture la réservation locale; elle ne remplace ni les validateurs ni le paiement sur la chaîne.</li>
+        <li>Vérifiez la transaction de clôture réelle puis exportez l’historique de règlement signé. Conservez l’identité publique de l’observateur indépendamment du fichier de preuve.</li>
+      </ol>
+      <p>Le jeton API ordinaire n’autorise pas la signature du contrôleur ou du responsable d’acceptation. Ne placez aucun de ces jetons dans un projet, une sauvegarde exportée ou le Studio hébergé. Les fichiers assurent le passage entre le site hébergé et le serveur local; aucune connexion distante automatique n’est ouverte.</p>
+      <h3>Évaluation, prochaine mission et récupération</h3>
+      <p>Pour l’évaluation numérique, choisissez une référence conservée et figez les critères avant d’exécuter le nouveau travail autorisé sur un polynôme ou domaine différent. Évaluez ensuite la comparaison et exportez le rapport signé. Les entrées restent visibles à l’opérateur: ce n’est pas un essai indépendant protégé. Un échec exact peut être accepté et payé sans adopter le candidat. Aucun gain économique général n’est déduit de cet essai.</p>
+      <p>Une mission suivante reçoit une demande nouvelle, un jumelage explicitement confirmé, une attribution et une autorisation propres. Le formulaire propose son nouveau contexte sans édition manuelle d’un fichier JSON pour chaque cycle. Aucune permission ni aucun règlement précédent n’est réutilisé automatiquement.</p>
+      <p>Après une interruption, rouvrez l’historique. La récupération ne fait que restituer un résultat déjà terminé; elle ne relance pas le travail. Le contrôleur doit résoudre les effets incertains et leurs réservations par le processus établi. Conservez la sauvegarde privée et un point de contrôle du journal séparément. Les rôles locaux, les résultats d’essai et les formulaires ne constituent ni une preuve d’indépendance des acteurs ni une qualification Mainnet.</p>
+      <p>La sauvegarde existante n’est pas réputée contenir tous les nouveaux chemins configurables de clés et de jetons. L’administrateur doit conserver séparément, ou réinstaller par les canaux de confiance actuels, la configuration opérateur, le registre de confiance et les emplacements privés autorisés. Ces secrets ne font jamais partie d’un export public de projet. Restaurer des preuves historiques ne réactive pas une ancienne permission.</p>
+    </section>
+  </main>
+  <footer><a href="/ascension-studio">Open local Studio · Ouvrir le Studio local</a></footer>
+</body>
+</html>

@@ -1,14 +1,49 @@
 # SPDX-License-Identifier: Apache-2.0
 """Bind MARK browser acceptance to exact shipped source and release identity."""
+
 from __future__ import annotations
 import hashlib
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ("ascension-protocol/mainnet/index.html",) + tuple(
-    "assets/ascension-wallet/" + name
-    for name in ("app.mjs", "client.mjs", "protocol.mjs", "recovery.mjs", "wallet.css", "profile.json")
+ASSETS = (
+    ("ascension-protocol/mainnet/index.html",)
+    + tuple(
+        "assets/ascension-wallet/" + name
+        for name in (
+            "app.mjs",
+            "client.mjs",
+            "protocol.mjs",
+            "recovery.mjs",
+            "qualified-profiles.mjs",
+            "qualification.mjs",
+            "session.mjs",
+            "wallet.css",
+            "profile.json",
+        )
+    )
+    + ("assets/ascension/crypto.mjs", "assets/successor/engine.mjs")
+    + ("ascension/mainnet/index.html",)
+    + tuple(
+        "assets/nova-studio/" + name
+        for name in (
+            "app.mjs",
+            "chain.mjs",
+            "native-delivery.mjs",
+            "package.mjs",
+            "plan.mjs",
+            "storage.mjs",
+            "studio.css",
+            "workflow.mjs",
+            "cycle.mjs",
+            "cycle-ui.mjs",
+            "runtime.mjs",
+            "reuse.mjs",
+            "ledger.mjs",
+            "vendor/ethers-6.17.0.mjs",
+        )
+    )
 )
 CHECKS = [
     "exact-assets",
