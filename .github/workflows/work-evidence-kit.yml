@@ -51,7 +51,8 @@ jobs:
           import hashlib,json,os,platform,shutil,sys,zipfile
           from pathlib import Path
           root=Path(os.environ['RUNNER_TEMP']); dist=root/'study-dist'
-          (root/'publication-checks'/'ENVIRONMENT.json').write_text(json.dumps({'python':sys.version,'platform':platform.platform(),'commit':os.environ.get('GITHUB_SHA'),'runId':os.environ.get('GITHUB_RUN_ID'),'humanParticipants':0},indent=2)+'\n')
+          source=(root/'publication-checks'/'SOURCE_COMMIT.txt').read_text().strip()
+          (root/'publication-checks'/'ENVIRONMENT.json').write_text(json.dumps({'python':sys.version,'platform':platform.platform(),'testedCommit':source,'workflowContextSha':os.environ.get('GITHUB_SHA'),'runId':os.environ.get('GITHUB_RUN_ID'),'humanParticipants':0},indent=2)+'\n')
           with zipfile.ZipFile(dist/'fresh-evidence.zip','w',zipfile.ZIP_DEFLATED) as z:
               for folder,prefix in [(root/'fresh-study'/'03_Evidence','replay'),(root/'publication-checks','publication')]:
                   for p in sorted(folder.rglob('*')):
@@ -88,6 +89,7 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
