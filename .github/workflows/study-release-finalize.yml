@@ -1,0 +1,172 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Finalize verified study release
+on:
+  push:
+    branches: [ops/study-release-tag-20261014]
+    paths: [.github/workflows/study-release-finalize.yml]
+permissions:
+  contents: read
+concurrency:
+  group: finalize-study-release-20261014-r1
+  cancel-in-progress: false
+jobs:
+  finalize:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.ref == 'refs/heads/ops/study-release-tag-20261014'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: 655bb41feb85c2b1147459d48583b1d1bba17812
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          repository: MontrealAI/AGI-Alpha-Agent-v0
+          run-id: 38635103029
+          name: work-evidence-kit-655bb41feb85c2b1147459d48583b1d1bba17812
+          path: study-dist
+      - name: Publish only the verified existing draft and preserve the latest agent release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess, sys, tempfile, urllib.parse, urllib.request
+          from pathlib import Path
+          REPO = 'MontrealAI/AGI-Alpha-Agent-v0'
+          HEAD = '655bb41feb85c2b1147459d48583b1d1bba17812'
+          TAG = 'study-computer-use-2026-10-14-r1'
+          RELEASE_ID = 413188629
+          PR = 4788
+          DIST = Path('study-dist')
+          def gh(*args):
+              return subprocess.check_output(['gh', *args], text=True, timeout=90)
+          def api(path):
+              return json.loads(gh('api', f'repos/{REPO}/{path}'))
+          def sha(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+          def gate():
+              pr = api(f'pulls/{PR}')
+              if (pr['head']['sha'] != HEAD or pr['head']['repo']['full_name'] != REPO or
+                      pr['head']['ref'] != 'docs/try-work-evidence-pilot-20261014' or pr['draft']):
+                  raise RuntimeError('Reviewed study source or origin changed')
+              obj = api(f'git/ref/tags/{TAG}')['object']
+              if obj['type'] == 'tag':
+                  obj = api(f"git/tags/{obj['sha']}")['object']
+              if obj['type'] != 'commit' or obj['sha'] != HEAD:
+                  raise RuntimeError('Frozen tag does not match the reviewed source')
+              required = {'pr-ci.yml', 'smoke.yml'}
+              latest = {}
+              runs = api(f'actions/runs?head_sha={HEAD}&event=pull_request&per_page=100')['workflow_runs']
+              for item in sorted(runs, key=lambda x: (x['created_at'], x.get('run_attempt', 1), x['id'])):
+                  name = item['path'].split('/')[-1]
+                  if name in required and item['head_sha'] == HEAD:
+                      latest[name] = item
+              if set(latest) != required or any(x['status'] != 'completed' or x['conclusion'] != 'success' for x in latest.values()):
+                  raise RuntimeError('Exact-head PR CI or Smoke checks are not successful')
+              run = api('actions/runs/38635103029')
+              jobs = api('actions/runs/38635103029/jobs?per_page=100')['jobs']
+              if run['head_sha'] != HEAD or not any(j['name'] == 'validate' and j['conclusion'] == 'success' for j in jobs):
+                  raise RuntimeError('Exact-source kit validation is not successful')
+              release = api(f'releases/{RELEASE_ID}')
+              if release['tag_name'] != TAG or release['target_commitish'] != HEAD or not release['prerelease']:
+                  raise RuntimeError('The existing release identity or study-preview scope changed')
+              return release
+          if os.environ.get('GITHUB_REPOSITORY') != REPO or os.environ.get('GITHUB_EVENT_NAME') != 'push':
+              raise RuntimeError('Unexpected publication context')
+          if subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() != HEAD:
+              raise RuntimeError('Unexpected source checkout')
+          sys.path.insert(0, str(Path('studies/computer-use/2026-10-14').resolve()))
+          from publish_preview import ASSETS, validate_distribution
+          validate_distribution(DIST, HEAD)
+          release = gate()
+          existing = {a['name']: a for a in release['assets']}
+          if len(existing) != len(release['assets']) or not set(existing).issubset(ASSETS):
+              raise RuntimeError('The draft contains duplicate or unrelated assets')
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  raise RuntimeError('Unexpected upload redirect refused')
+          opener = urllib.request.build_opener(NoRedirect())
+          expected_upload = f'https://uploads.github.com/repos/{REPO}/releases/{RELEASE_ID}/assets'
+          if release['upload_url'].split('{', 1)[0] != expected_upload:
+              raise RuntimeError('Unexpected GitHub upload endpoint')
+          if release['draft']:
+              for name in sorted(ASSETS):
+                  path = DIST / name
+                  if name in existing:
+                      item = existing[name]
+                      if item['size'] != path.stat().st_size or item.get('digest') not in {None, 'sha256:' + sha(path)}:
+                          raise RuntimeError('Existing draft asset differs; it was not overwritten: ' + name)
+                      continue
+                  mime = 'application/zip' if name.endswith('.zip') else ('application/pdf' if name.endswith('.pdf') else 'text/plain')
+                  request = urllib.request.Request(expected_upload + '?' + urllib.parse.urlencode({'name': name}), data=path.read_bytes(), method='POST', headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'Content-Type': mime, 'User-Agent': 'agi-alpha-study-publisher'})
+                  with opener.open(request, timeout=90) as response:
+                      item = json.load(response)
+                  if item['name'] != name or item['size'] != path.stat().st_size:
+                      raise RuntimeError('Upload response differs from local asset')
+          remote = api(f'releases/{RELEASE_ID}')
+          if len(remote['assets']) != len(ASSETS) or {a['name'] for a in remote['assets']} != ASSETS:
+              raise RuntimeError('Release asset membership differs')
+          with tempfile.TemporaryDirectory(prefix='study-remote-verification-') as temp:
+              downloaded = Path(temp)
+              for item in remote['assets']:
+                  target = downloaded / item['name']
+                  with target.open('wb') as stream:
+                      subprocess.run(['gh', 'api', '-H', 'Accept: application/octet-stream', f"repos/{REPO}/releases/assets/{item['id']}"], stdout=stream, check=True, timeout=90)
+                  if sha(target) != sha(DIST / item['name']):
+                      raise RuntimeError('Re-downloaded asset bytes differ: ' + item['name'])
+              validate_distribution(downloaded, HEAD)
+          release = gate()
+          base = f'https://github.com/{REPO}/releases/download/{TAG}'
+          notes = f'''# Try the Work — Evidence & Recovery Kit
+
+          **Start with the all-in-one download:** [complete-study-kit.zip]({base}/complete-study-kit.zip).
+          Extract it, then open **START_HERE.html**. No account, wallet or model key is needed to try the two synthetic workshop examples.
+
+          ## Choose your download
+          | Download | Use it for |
+          |---|---|
+          | [Complete study kit]({base}/complete-study-kit.zip) | Working examples, source, fresh evidence, report and pilot protocol in one ZIP. |
+          | [Report PDF]({base}/REPORT.pdf) | Read, print or share the detailed findings. |
+          | [Pilot protocol PDF]({base}/PILOT_PROTOCOL.pdf) | Prepare genuine user observations; not completed human results. |
+          | [Source kit]({base}/work-evidence-kit.zip) | Inspect and mechanically reproduce the study. |
+          | [Fresh evidence]({base}/fresh-evidence.zip) | Inspect individual checks, screenshots and this validation run. |
+          | [SHA-256 checksums]({base}/SHA256SUMS) | Verify the exact release downloads. |
+
+          ## What you can do
+          Try both repaired websites, inspect their briefs and source, save and restore drafts with fresh review, and reproduce the declared checks. The English/French start page includes larger-text and keyboard controls. Historical results, fresh mechanical evidence and prospective human-study materials remain distinct.
+
+          ## Verified for this source
+          The dedicated kit validation reproduced A 31/31 and B 35/35 final checks, 19/19 recovery/refusal checks, 105 hash vectors, and 14 versus 11 scripted owner controls. The one-fix-removal comparison remains 29/35; six failed checks share one cause. All 24 damaged/missing-evidence cases were refused. Browser acceptance covered 16 viewport/language/text-size combinations, real HTTP downloads, local-file opening and fresh review after recovery. Canonical PR CI and the nine-platform/Python Smoke matrix passed.
+
+          All six uploaded assets were re-downloaded and checked against the validated distribution before visibility. The complete ZIP contains 97 files; it is a new publication kit, not the historical 98-file Office archive.
+
+          ## Scope
+          This is **study release r1 (preview)**, not a new AGI Alpha runtime release or a GitHub Pages deployment. The existing latest agent release is not replaced. Zero human participants were observed. The 21.4% reduction concerns scripted interface operations, not measured human time, customer acceptance or production autonomy. Replaying the kit is not fresh model generation.
+
+          Exact study source: `{HEAD}`.
+          [Source and review](https://github.com/{REPO}/pull/4788) · [Kit validation](https://github.com/{REPO}/actions/runs/38635103029) · [PR CI](https://github.com/{REPO}/actions/runs/38635103151) · [Smoke matrix](https://github.com/{REPO}/actions/runs/38635103026) · [Real-user readiness](https://github.com/{REPO}/issues/4787).
+
+          Draft lookup was completed by release ID after the original publisher stopped on its draft-by-tag lookup. The tested study source and asset bytes were not changed.
+          '''
+          notes = '\n'.join(line[10:] if line.startswith('          ') else line for line in notes.splitlines()) + '\n'
+          if release['draft']:
+              payload = Path(os.environ['RUNNER_TEMP']) / 'study-release-publication.json'
+              payload.write_text(json.dumps({'name': 'Try the Work — Evidence & Recovery Kit · r1 (study preview)', 'body': notes, 'draft': False, 'prerelease': True, 'make_latest': 'false'}), encoding='utf-8')
+              gh('api', '--method', 'PATCH', f'repos/{REPO}/releases/{RELEASE_ID}', '--input', str(payload))
+          public = api(f'releases/tags/{TAG}')
+          if public['id'] != RELEASE_ID or public['draft'] or not public['prerelease'] or {a['name'] for a in public['assets']} != ASSETS:
+              raise RuntimeError('Public release readback differs')
+          gate()
+          record = {'release': public['html_url'], 'sourceCommit': HEAD, 'publishedAt': public['published_at'], 'assets': [{'name': p.name, 'sha256': sha(p), 'bytes': p.stat().st_size} for p in sorted(DIST.iterdir())], 'humanParticipants': 0, 'reDownloadedAndVerified': True, 'agentReleaseReplaced': False}
+          print(json.dumps(record, indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Study release published and read back\n\n' + public['html_url'] + '\n\n```json\n' + json.dumps(record, indent=2) + '\n```\n')
+          PY
