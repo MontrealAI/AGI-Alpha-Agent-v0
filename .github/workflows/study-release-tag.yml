@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Prepare verified study release tag
+on:
+  push:
+    branches: [ops/study-release-tag-20261014]
+    paths: [.github/workflows/study-release-tag.yml]
+permissions:
+  contents: read
+concurrency:
+  group: prepare-study-release-tag-20261014-r1
+  cancel-in-progress: false
+jobs:
+  prepare-tag:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.ref == 'refs/heads/ops/study-release-tag-20261014'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: 655bb41feb85c2b1147459d48583b1d1bba17812
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          repository: MontrealAI/AGI-Alpha-Agent-v0
+          run-id: 38635103029
+          name: work-evidence-kit-655bb41feb85c2b1147459d48583b1d1bba17812
+          path: study-dist
+      - name: Verify exact source, complete distribution and all required checks before tag creation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess, sys, time
+          from pathlib import Path
+          REPO = 'MontrealAI/AGI-Alpha-Agent-v0'
+          HEAD = '655bb41feb85c2b1147459d48583b1d1bba17812'
+          TAG = 'study-computer-use-2026-10-14-r1'
+          PR = 4788
+          def gh(*args):
+              return subprocess.check_output(['gh', *args], text=True, timeout=60)
+          def api(path):
+              return json.loads(gh('api', f'repos/{REPO}/{path}'))
+          def same_head():
+              pr = api(f'pulls/{PR}')
+              if (pr['head']['sha'] != HEAD or pr['head']['repo']['full_name'] != REPO or
+                      pr['head']['ref'] != 'docs/try-work-evidence-pilot-20261014' or
+                      pr['base']['repo']['full_name'] != REPO or pr['base']['ref'] != 'main' or pr['draft']):
+                  raise RuntimeError('The reviewed PR identity or source changed; no tag mutation allowed')
+          if os.environ.get('GITHUB_REPOSITORY') != REPO:
+              raise RuntimeError('Wrong repository')
+          if subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() != HEAD:
+              raise RuntimeError('Checkout is not the tested study source')
+          same_head()
+          run = api('actions/runs/38635103029')
+          if run['head_sha'] != HEAD or run['event'] != 'pull_request':
+              raise RuntimeError('Artifact run does not bind to the reviewed PR source')
+          jobs = api('actions/runs/38635103029/jobs?per_page=100')['jobs']
+          if not any(j['name'] == 'validate' and j['conclusion'] == 'success' for j in jobs):
+              raise RuntimeError('The dedicated validation job has not passed')
+          sys.path.insert(0, str(Path('studies/computer-use/2026-10-14').resolve()))
+          from publish_preview import validate_distribution
+          validate_distribution(Path('study-dist'), HEAD)
+          required = {'pr-ci.yml', 'smoke.yml'}
+          for attempt in range(40):
+              same_head()
+              runs = api(f'actions/runs?head_sha={HEAD}&event=pull_request&per_page=100')['workflow_runs']
+              latest = {}
+              for item in sorted(runs, key=lambda x: (x['created_at'], x.get('run_attempt', 1), x['id'])):
+                  name = item['path'].split('/')[-1]
+                  if name in required and item['head_sha'] == HEAD:
+                      latest[name] = item
+              if set(latest) == required and all(x['status'] == 'completed' and x['conclusion'] == 'success' for x in latest.values()):
+                  break
+              if any(x['status'] == 'completed' and x['conclusion'] not in {'success', 'cancelled'} for x in latest.values()):
+                  raise RuntimeError('A required exact-source check failed; no tag created')
+              if attempt == 39:
+                  raise RuntimeError('Required checks remain incomplete; no tag created')
+              time.sleep(30)
+          same_head()
+          response = subprocess.run(['gh', 'api', '--include', f'repos/{REPO}/git/ref/tags/{TAG}'], text=True, capture_output=True, timeout=60)
+          if response.returncode:
+              if not re.search(r'^HTTP/\S+ 404\b', response.stdout, re.MULTILINE):
+                  raise RuntimeError('Tag lookup failed for a reason other than absence')
+              gh('api', '--method', 'POST', f'repos/{REPO}/git/refs', '-f', f'ref=refs/tags/{TAG}', '-f', f'sha={HEAD}')
+          obj = api(f'git/ref/tags/{TAG}')['object']
+          if obj['type'] == 'tag':
+              obj = api(f"git/tags/{obj['sha']}")['object']
+          if obj['type'] != 'commit' or obj['sha'] != HEAD:
+              raise RuntimeError('Existing tag points elsewhere; it has not been changed')
+          same_head()
+          print(json.dumps({'tag': TAG, 'commit': HEAD, 'distributionVerified': True, 'requiredRuns': {k: v['id'] for k,v in latest.items()}, 'releasePublishedByThisJob': False}, indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write(f'## Exact-source study tag verified\n\n`{TAG}` → `{HEAD}`.\n\nThe six distribution assets and all required PR checks passed. No source, frozen tag, release asset, or latest-agent-release setting was changed. The study publisher must still verify its draft uploads before publication.\n')
+          PY
