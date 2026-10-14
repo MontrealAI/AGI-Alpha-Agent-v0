@@ -4,19 +4,27 @@ import assert from 'node:assert/strict';
 import {generateKeyPairSync,sign} from 'node:crypto';
 import {canonical,digest} from '../../docs/assets/successor/engine.mjs';
 import {CONTRACTS} from '../../docs/assets/ascension-wallet/protocol.mjs';
-import {createPackage,hashBytes} from '../../docs/assets/nova-studio/package.mjs';
+import {createPackage,hashBytes,objectHash,fileBytes,recoverPackage} from '../../docs/assets/nova-studio/package.mjs';
+import {sealSeed} from '../../docs/assets/ascension/crypto.mjs';
 import {createProject,updateCycle,addCycle,preserveSignedRecord} from '../../docs/assets/nova-studio/cycle.mjs';
 import {StudioChain,INTERFACES} from '../../docs/assets/nova-studio/chain.mjs';
 import {readProjectLedger,createReinvestmentProposal} from '../../docs/assets/nova-studio/ledger.mjs';
 
-const profile = {chainId:1,profile:'archived-read-only-ledger-fixture',
-  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key]) => key !== 'Token').map(([key,value]) => [key,{address:value}]))};
+const profile = {chainId:1,profile:'archived-read-only-ledger-fixture',sourceSHA256:'a'.repeat(64),abiSHA256:'b'.repeat(64),
+  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key]) => key !== 'Token').map(([key,value]) => [key,{address:value,sha256:'c'.repeat(64)}]))};
 const who = '0x1111111111111111111111111111111111111111', reviewer = '0x2222222222222222222222222222222222222222';
 const other = '0x3333333333333333333333333333333333333333', h = digit => '0x'+digit.repeat(64);
 const key = generateKeyPairSync('ed25519'), observerKey = key.publicKey.export({format:'der',type:'spki'}).subarray(-32).toString('hex');
 const encoder = new TextEncoder(), passphrase = 'a separate ledger fixture passphrase';
 const pkg = await createPackage({title:'Ledger fixture',description:'Synthetic read-only RPC observations',evidence:'Local tests only.',
   jobs:[{goal:'Report exact computation',successMetric:'Truthful positive or negative result',bounty:'10000',duration:86400,priceWeight:6000}]},passphrase,profile);
+async function historicalPackage() {
+  const deployment = {chainId:profile.chainId,profile:profile.profile,
+    contracts:Object.fromEntries(Object.entries(CONTRACTS).map(([name,value])=>[name,value.toLowerCase()]))};
+  const evidence = {...pkg.evidence,deployment}, evidenceHash = await objectHash(evidence);
+  const capsule = await sealSeed({...await recoverPackage(pkg,passphrase),deployment,evidenceHash},passphrase);
+  return {...pkg,deployment,evidence,evidenceHash,capsule,capsuleHash:await objectHash(capsule),capsuleByteHash:await hashBytes(fileBytes(capsule))};
+}
 async function journal(settlement) {
   const body = {schema:1,sequence:1,previous:'0'.repeat(64),identity:'urn:agialpha:ed25519:'+observerKey,
     mission:'@successor:ascension:settlement:'+await digest('settlement-job',settlement.chain),time_ns:'1700000000000000000',
@@ -28,10 +36,11 @@ async function journal(settlement) {
 }
 function event(name,values,index) {
   const data = INTERFACES.Jobs.encodeEventLog(INTERFACES.Jobs.getEvent(name),values);
-  return {address:CONTRACTS.Jobs,...data,logIndex:'0x'+index.toString(16),removed:false};
+  return {address:CONTRACTS.Jobs,...data,logIndex:'0x'+index.toString(16),removed:false,
+    transactionHash:h('c'),blockHash:h('a'),blockNumber:'0x10'};
 }
-async function fixture({state = 4,collected = false,fullyReclaimed = false} = {}) {
-  let project = await createProject(pkg);
+async function fixture({state = 4,collected = false,fullyReclaimed = false,sourcePackage = pkg} = {}) {
+  let project = await createProject(sourcePackage);
   project = await updateCycle(project,project.activeCycleId,{seedId:'7',jobIds:['12']});
   const payouts = state === 4 ? [{recipient:who,gross:'6800',burned:'68'},{recipient:reviewer,gross:'600',burned:'6'},
     {recipient:other,gross:'600',burned:'6'}] : state === 5 ? [{recipient:CONTRACTS.Mark,gross:'1000',burned:'10'}] : [];
@@ -67,7 +76,7 @@ async function fixture({state = 4,collected = false,fullyReclaimed = false} = {}
     }};
   const chain = new StudioChain(client);
   chain.call = async (contract,method) => {
-    if (contract === 'Seed' && method === 'genomes') return [pkg.capsuleHash,pkg.plan.planRoot,pkg.evidenceHash,0n,1n,who];
+    if (contract === 'Seed' && method === 'genomes') return [sourcePackage.capsuleHash,sourcePackage.plan.planRoot,sourcePackage.evidenceHash,0n,1n,who];
     if (contract === 'Mark' && method === 'jobSeed') return [7n];
     throw Error('Unexpected Studio read '+contract+'.'+method);
   };
@@ -110,14 +119,36 @@ test('failed slash event accrues into refundable campaign custody and no-quorum 
   }
 });
 
+test('legacy ledger history remains labeled and immutable while current descriptors reject same-address source changes',async()=>{
+  for (const [original,status] of [[pkg,'exact-source'],[await historicalPackage(),'legacy-addresses']]) {
+    const before = JSON.stringify(original), f = await fixture({sourcePackage:original});
+    const ledger = await readProjectLedger(f.project,f.chain,{observerKey});
+    assert.equal(ledger.settlements[0].deploymentIdentity,status);assert.equal(ledger.ownerTotals.netPayout,'6732');
+    assert.equal(ledger.refunds[0].currentCustodian,CONTRACTS.Jobs.toLowerCase());
+    assert.equal(JSON.stringify(f.project.cycles[0].package),before);assert.equal(JSON.stringify(original),before);
+    f.campaign[12] = 1n;
+    const proposal = await createReinvestmentProposal(f.project,f.project.activeCycleId,f.chain,{amount:'100',lotCount:'1',
+      destination:{deployment:pkg.deployment,seedId:'8'},rationale:'A separately reviewed task',risk:'Possible principal loss.'});
+    assert.equal(proposal.observation.deploymentIdentity,status);assert.equal(proposal.quote.baseUnits,'100');
+  }
+  const f = await fixture();f.client.profile={...profile,sourceSHA256:'f'.repeat(64)};
+  const skipped = await readProjectLedger(f.project,f.chain,{observerKey});
+  assert.equal(skipped.settlements.length,0);assert.equal(skipped.skippedProfiles.length,1);
+  await assert.rejects(createReinvestmentProposal(f.project,f.project.activeCycleId,f.chain,{amount:'100',
+    destination:{deployment:pkg.deployment,seedId:'8'}}),/exact currently verified destination/);
+});
+
 test('imports, wrong observer, changed receipts, unsafe finality, reorg and cross-cycle duplicate attribution fail closed',async()=>{
   const f = await fixture();
   await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey:'0'.repeat(64)}));
   f.receipt.status = '0x0';await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/receipt/);f.receipt.status = '0x1';
   const logs = f.receipt.logs;f.receipt.logs = logs.slice(1);
   await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/payouts/);f.receipt.logs = logs;
-  f.receipt.logs[0].removed = true;await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/Removed/);
+  f.receipt.logs[0].removed = true;await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/canonical receipt/);
   f.receipt.logs[0].removed = false;
+  f.receipt.logs[0].blockHash = h('f');
+  await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/canonical receipt/);
+  f.receipt.logs[0].blockHash = h('a');
   const read = f.client.read;f.client.read = async (method,args) => method === 'eth_getBlockByNumber' && args[0] === 'finalized' ?
     {number:'0xf',hash:h('d')} : read.call(f.client,method,args);
   await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}),/finalized/);f.client.read = read;

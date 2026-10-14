@@ -2,6 +2,13 @@
 
 # Ascension complete cycle: implementation and evidence
 
+This engineering map retains the **October 14, 2026 implementation snapshot** and its original evidence.
+References below to the final source, current checkout or passing checks describe that recorded snapshot.
+Later hardening, merge resolutions and release assets need verification against their own exact source;
+see [release readiness](RELEASE_READINESS.md) and the [1.31.0 notes](RELEASE_NOTES_1.31.0.md).
+The original requirement index and signed examples remain unchanged. Historical failures are not erased
+or converted into a successful integrated release by later selected retries.
+
 ## Inspected source and initial gap matrix
 
 Integration owner: the implementation coordinator. Source inspected: PR #4779 at

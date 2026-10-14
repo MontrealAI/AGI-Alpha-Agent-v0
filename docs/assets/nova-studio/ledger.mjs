@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // Read-only, receipt-reverified history. This is neither a custody account nor a reservation service.
 import {address,uint} from '../ascension-wallet/protocol.mjs';
-import {profileIdentity,strictJSON} from './package.mjs';
+import {profileIdentity,strictJSON,deploymentIdentityStatus} from './package.mjs';
 import {verifySettlementRecord} from './runtime.mjs';
-import {validateProject,observeCycle,projectReservoir,proposeReinvestment} from './cycle.mjs';
+import {validateProject,observeCycle,projectReservoir,proposeReinvestment,deploymentAddress} from './cycle.mjs';
 
 const stable = value => JSON.stringify(value,(_key,item) => item && typeof item === 'object' && !Array.isArray(item) ?
   Object.fromEntries(Object.keys(item).sort().map(key => [key,item[key]])) : item);
@@ -25,6 +25,7 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
     throw Error('Provide the independently pinned observer public key; embedded recovery keys are not trusted.');
   const verifiedProject = await validateProject(project), client = chain.client, epoch = client.epoch;
   const deployment = profileIdentity(client.profile), owner = account ? address(account) : null;
+  const contracts = Object.fromEntries(['Token','Jobs','Mark'].map(name => [name,deploymentAddress(deployment,name)]));
   const observation = await client.verify(), finalized = await client.read('eth_getBlockByNumber',['finalized',false]);
   if (!finalized?.number || !finalized.hash) throw Error('A finalized chain checkpoint is required for historical accounting.');
   const block = observation.blockNumber, seen = new Map(), recipients = new Map(), campaigns = new Map(), checkedSeeds = new Set();
@@ -41,12 +42,13 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
         continue;
       }
       seen.set(attribution,{cycleId:cycle.cycleId,settlement});
-      if (!cycle.package || !same(cycle.package.deployment,deployment)) {
+      let deploymentIdentity;
+      try { deploymentIdentity = deploymentIdentityStatus(cycle.package,client.profile); } catch {
         skippedProfiles.push({cycleId:cycle.cycleId,attribution,status:'requires-original-deployment'}); continue;
       }
       if (!cycle.seedId || settlement.chain.chain !== String(deployment.chainId) ||
-          address(settlement.chain.market) !== address(deployment.contracts.Jobs) ||
-          address(settlement.token) !== address(deployment.contracts.Token) || settlement.decimals !== 18)
+          address(settlement.chain.market) !== contracts.Jobs ||
+          address(settlement.token) !== contracts.Token || settlement.decimals !== 18)
         throw Error('Settlement does not identify this exact cycle, native token and deployment.');
       if (!checkedSeeds.has(cycle.cycleId)) {
         const genome = await chain.call('Seed','genomes',[cycle.seedId],block), pkg = cycle.package;
@@ -65,10 +67,10 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
         throw Error('Settlement is not finalized at the observed checkpoint.');
       const [job,seed,collected] = await Promise.all([
         client.call('Jobs','job',[jobId],block),chain.call('Mark','jobSeed',[jobId],block),
-        chain.external(deployment.contracts.Mark,'function collected(uint256) view returns(bool)',[jobId],block)
+        chain.external(contracts.Mark,'function collected(uint256) view returns(bool)',[jobId],block)
       ]);
       const state = Number(job[14]), refund = uint(settlement.refund_base_units);
-      if (String(seed[0]) !== cycle.seedId || address(job[0]) !== address(deployment.contracts.Mark) ||
+      if (String(seed[0]) !== cycle.seedId || address(job[0]) !== contracts.Mark ||
           ![4,5,6].includes(state) || uint(String(job[17])) !== refund || typeof job[18] !== 'boolean' ||
           typeof collected[0] !== 'boolean' || job[18] !== collected[0])
         throw Error('Current terminal job, originating campaign or refund custody does not reconcile.');
@@ -95,7 +97,7 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
       });
       const grossTotal = paid.reduce((total,row) => total+BigInt(row.gross),0n);
       if ((state === 4 && (paid.length !== 3 || grossTotal !== uint(String(job[4])) || refund !== uint(String(job[3]))-grossTotal)) ||
-          (state === 5 && (paid.length !== 1 || paid[0].recipient !== address(deployment.contracts.Mark) ||
+          (state === 5 && (paid.length !== 1 || paid[0].recipient !== contracts.Mark ||
             grossTotal !== uint(String(job[5])) || refund !== uint(String(job[3]))+grossTotal-grossTotal/100n)) ||
           (state === 6 && (paid.length || refund !== uint(String(job[3])))))
         throw Error('Terminal payout, slashing and refund arithmetic differs from the deployed contract.');
@@ -107,7 +109,7 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
       const campaign = campaigns.get(cycle.seedId);
       refunds.push({cycleId:cycle.cycleId,seedId:cycle.seedId,jobId,amount:String(refund),
         status:collected[0] ? 'collected-into-campaign' : 'collectible-by-mark',
-        currentCustodian:collected[0] ? (campaign.phase === 3 && campaign.supply === '0' ? null : deployment.contracts.Mark) : deployment.contracts.Jobs,
+        currentCustodian:collected[0] ? (campaign.phase === 3 && campaign.supply === '0' ? null : contracts.Mark) : contracts.Jobs,
         campaignFullyReclaimed:campaign.phase === 3 && campaign.supply === '0',
         currentReserve:campaign.reserve,withdrawnToAccount:null,spendable:false,
         note:collected[0] ? 'Historical campaign inflow; current reserve is shared backing, not this refund plus reserve.' :
@@ -120,7 +122,7 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
       }
       if ((await client.read('eth_getBlockByNumber',[receipt.blockNumber,false]))?.hash?.toLowerCase() !== hash(receipt.blockHash))
         throw Error('Settlement block reorganized; refresh history.');
-      settlements.push({cycleId:cycle.cycleId,seedId:cycle.seedId,jobId,attribution,transactionHash,
+      settlements.push({cycleId:cycle.cycleId,seedId:cycle.seedId,jobId,attribution,transactionHash,deploymentIdentity,
         blockNumber:receipt.blockNumber,blockHash:receipt.blockHash,state,jobAcceptance:expected[0],settlementStatus:expected[1],
         candidateVerdict:settlement.candidate_verdict,payouts:paid,refund:String(refund),closureGas:gas,
         trust:'pinned-observer-and-finalized-canonical-receipt',authority:'none'});

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPackage,hashBytes,strictJSON} from '../../docs/assets/nova-studio/package.mjs';
+import {createPackage,hashBytes,strictJSON,objectHash,fileBytes,recoverPackage} from '../../docs/assets/nova-studio/package.mjs';
+import {sealSeed} from '../../docs/assets/ascension/crypto.mjs';
 import {CONTRACTS} from '../../docs/assets/ascension-wallet/protocol.mjs';
 import {createProject,updateCycle,registerMission,prepareSuccessor} from '../../docs/assets/nova-studio/cycle.mjs';
 import {authorizeArtifactReuse,assertNumericalReuse} from '../../docs/assets/nova-studio/reuse.mjs';
@@ -11,12 +12,19 @@ import {canonical,digest} from '../../docs/assets/successor/engine.mjs';
 import {example,run} from '../../examples/successor-workbench/engine.mjs';
 
 const encoder = new TextEncoder(), now = Date.now(), passphrase = 'separate local fixture passphrase';
-const profile = {chainId:1,profile:'archived-read-only-unit-fixture',
-  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key])=>key!=='Token').map(([key,value])=>[key,{address:value}]))};
+const profile = {chainId:1,profile:'archived-read-only-unit-fixture',sourceSHA256:'a'.repeat(64),abiSHA256:'b'.repeat(64),
+  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key])=>key!=='Token').map(([key,value])=>[key,{address:value,sha256:'c'.repeat(64)}]))};
 const job = {goal:'Compute a synthetic polynomial and report both correct and negative findings.',
   successMetric:'Supply exact source inputs, rational results and a truthful tolerance verdict.',
   bounty:'100000000000000000000',duration:86400,priceWeight:6000};
 const pkg = await createPackage({title:'Reuse fixture',description:'No live authority',jobs:[job],evidence:'Synthetic local reference.'},passphrase,profile);
+async function historicalPackage() {
+  const deployment = {chainId:profile.chainId,profile:profile.profile,
+    contracts:Object.fromEntries(Object.entries(CONTRACTS).map(([name,value])=>[name,value.toLowerCase()]))};
+  const evidence = {...pkg.evidence,deployment}, evidenceHash = await objectHash(evidence);
+  const capsule = await sealSeed({...await recoverPackage(pkg,passphrase),deployment,evidenceHash},passphrase);
+  return {...pkg,deployment,evidence,evidenceHash,capsule,capsuleHash:await objectHash(capsule),capsuleByteHash:await hashBytes(fileBytes(capsule))};
+}
 const keys = await crypto.subtle.generateKey({name:'Ed25519'},true,['sign','verify']);
 const observerKey = Buffer.from(await crypto.subtle.exportKey('raw',keys.publicKey)).toString('hex');
 async function signature(domain,body) {
@@ -24,12 +32,12 @@ async function signature(domain,body) {
   return {public_key:observerKey,digest:commitment,signature:Buffer.from(signed).toString('base64')};
 }
 async function envelope(domain,body) { return {domain,body,...await signature(domain,body)}; }
-async function fixture(mutateReport = null) {
-  let project = await createProject(pkg);
+async function fixture(mutateReport = null,sourcePackage = pkg) {
+  let project = await createProject(sourcePackage);
   project = await updateCycle(project,project.activeCycleId,{seedId:'7'});
   const workSpec = {...example('numerical'),owner:project.projectId,
     inputs:{coefficients:[0,0,0,0,1],lower:0,upper:3,steps:2,tolerancePpm:10}};
-  const request = await makeRuntimeRequest(pkg,0,project.projectId,project.activeCycleId,workSpec);
+  const request = await makeRuntimeRequest(sourcePackage,0,project.projectId,project.activeCycleId,workSpec);
   project = await registerMission(project,project.activeCycleId,{request});
   const report = await run(workSpec,{sourceHash:'a'.repeat(64)});
   if (mutateReport) {
@@ -41,7 +49,7 @@ async function fixture(mutateReport = null) {
     release_digest:'c'.repeat(64),environment_digest:'d'.repeat(64),evidence_assumptions:['studio-request-sha256:'+requestDigest]};
   const terms = {schema_version:1,job_contract:jobContract,job_terms_digest:await digest('job-terms',jobContract),
     legacy_spec:job,market_spec_hash:leaf(0,job),market_job_id:null,assigned_worker:null,
-    plan_binding:{kind:'mark-seed',plan_root:pkg.plan.planRoot,plan_index:0,indexed_leaf:leaf(0,job)},market_context:{
+    plan_binding:{kind:'mark-seed',plan_root:sourcePackage.plan.planRoot,plan_index:0,indexed_leaf:leaf(0,job)},market_context:{
       chain_id:'1',market:CONTRACTS.Jobs,seed:CONTRACTS.Seed,seed_id:'7'}};
   const seal = await envelope('ascension-terms',terms);
   const binding = await envelope('ascension-execution-binding',{schema_version:1,terms_seal_digest:seal.digest,
@@ -65,7 +73,7 @@ async function fixture(mutateReport = null) {
   const result = {...body,signature:await signature('ascension-studio-result',body)};
   const settlement = {chain:{chain:'1',market:CONTRACTS.Jobs,job:'12'},job_acceptance:'accepted',settlement_status:'paid',
     execution_binding_digest:binding.digest,delivery_digest:delivery.digest,candidate_verdict:'FAIL',authority_status:'not_granted'};
-  const current = {request,result,settlement,observerKey};
+  const current = {request,result,settlement,observerKey,profile};
   const review = {reviewer:'Local fixture operator',rationale:'I reviewed the synthetic source, declared Apache license and exact recipe bytes.',
     license:workSpec.rights.license,validUntil:new Date(now+86400000).toISOString()};
   return {project,current,workSpec,review};
@@ -85,6 +93,24 @@ test('select actual accepted artifact bytes, retain a paid negative finding and 
     parent:'7',evidence:'Distinct synthetic source and fresh authorization required.'},passphrase,profile);
   assert.equal((await prepareSuccessor(reuse.project,project.activeCycleId,successorPkg,
     {assetIds:[reuse.asset.assetId],verifiedAssets:[reuse.token],now})).cycles.length,2);
+});
+
+test('reuse preserves both identity formats and refuses an unverifiable or changed exact source profile',async()=>{
+  for (const [original,status] of [[pkg,'exact-source'],[await historicalPackage(),'legacy-addresses']]) {
+    const before = JSON.stringify(original), {project,current,review} = await fixture(null,original);
+    const reuse = await authorizeArtifactReuse(project,project.activeCycleId,{review,verifyCurrent:async()=>current,now});
+    assert.equal(reuse.deploymentIdentity,status);assert.equal(reuse.selection.deploymentIdentity,status);
+    assert.equal(JSON.stringify(reuse.project.cycles[0].package),before);assert.equal(JSON.stringify(original),before);
+  }
+  const {project,current,review} = await fixture();
+  for (const changed of [{...profile,sourceSHA256:'d'.repeat(64)},
+    {...profile,contracts:{...profile.contracts,Jobs:{...profile.contracts.Jobs,sha256:'e'.repeat(64)}}}]) {
+    await assert.rejects(authorizeArtifactReuse(project,project.activeCycleId,{review,now,
+      verifyCurrent:async()=>({...current,profile:changed})}),/source identity/);
+  }
+  await assert.rejects(authorizeArtifactReuse(project,project.activeCycleId,{review,now,
+    verifyCurrent:async()=>({...current,profile:undefined})}),/deployment profile/);
+  assert.equal(project.cycles[0].assets.length,0);
 });
 
 test('new execution consumes selected exact steps, tolerance and bounds while using different coefficients',async()=>{

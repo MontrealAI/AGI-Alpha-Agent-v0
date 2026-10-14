@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import {canonical,digest} from '../successor/engine.mjs?nova-cycle=38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488';
 import {address} from '../ascension-wallet/protocol.mjs';
-import {hashBytes,strictJSON} from './package.mjs';
-import {validateProject,registerAsset,verifyReuseRights} from './cycle.mjs';
+import {hashBytes,strictJSON,deploymentIdentityStatus} from './package.mjs';
+import {validateProject,registerAsset,verifyReuseRights,deploymentAddress} from './cycle.mjs';
 import {verifyRuntimeResult} from './runtime.mjs';
 
 const encoder = new TextEncoder(), selections = new WeakMap();
@@ -43,21 +43,22 @@ async function checkedSource(project,cycleId,artifactName,verifyCurrent) {
   // This callback belongs to the existing workflow: recheck the pinned signer,
   // assignment, canonical/finalized receipt, accepted state and exact payouts.
   const current = await verifyCurrent();
-  if (!current?.request || !current.result || !current.settlement || !current.observerKey)
-    throw Error('The current verification did not return its exact request, result, settlement and pinned source.');
+  if (!current?.request || !current.result || !current.settlement || !current.observerKey || !current.profile)
+    throw Error('The current verification did not return its exact request, result, settlement, deployment profile and pinned source.');
+  const deploymentIdentity = deploymentIdentityStatus(cycle.package,current.profile);
   const {request,result,settlement,observerKey} = current;
   if (request.project_id !== project.projectId || request.cycle_id !== cycleId ||
       !same(request.plan,cycle.package.plan) ||
       !cycle.missions.some(mission => same(mission.request,request))) throw Error('Reuse source is not the original registered mission.');
   const checked = await verifyRuntimeResult(request,result,observerKey), binding = checked.binding;
   const deployment = cycle.package.deployment, context = binding.market_context;
-  if (String(context.chain_id) !== String(deployment.chainId) || address(context.market) !== address(deployment.contracts.Jobs) ||
-      address(context.seed) !== address(deployment.contracts.Seed) || String(context.seed_id) !== cycle.seedId ||
+  if (String(context.chain_id) !== String(deployment.chainId) || address(context.market) !== deploymentAddress(deployment,'Jobs') ||
+      address(context.seed) !== deploymentAddress(deployment,'Seed') || String(context.seed_id) !== cycle.seedId ||
       settlement.job_acceptance !== 'accepted' || settlement.settlement_status !== 'paid' ||
       settlement.execution_binding_digest !== result.execution_binding.digest || settlement.delivery_digest !== result.delivery.digest ||
       settlement.candidate_verdict !== result.candidate_verdict || settlement.authority_status !== 'not_granted' ||
       String(settlement.chain?.chain) !== String(deployment.chainId) ||
-      address(settlement.chain?.market) !== address(deployment.contracts.Jobs) ||
+      address(settlement.chain?.market) !== deploymentAddress(deployment,'Jobs') ||
       String(settlement.chain?.job) !== String(binding.market_job_id))
     throw Error('Reuse requires this exact execution’s accepted finalized settlement and source deployment.');
   const report = checked.artifact.report;
@@ -77,7 +78,7 @@ async function checkedSource(project,cycleId,artifactName,verifyCurrent) {
   const sourceBytes = encoder.encode(artifact.content), inputs = numericalInput(strictJSON(artifact.content,200000));
   if (!same(inputs,report.spec.inputs) || report.result.evidence?.absoluteTolerance !== absoluteTolerance(inputs.tolerancePpm))
     throw Error('Selected recipe differs from the executed inputs or exact absolute tolerance.');
-  return {request,result,settlement,observerKey,report,artifact,sourceBytes,inputs,sha256:await hashBytes(sourceBytes)};
+  return {request,result,settlement,observerKey,deploymentIdentity,report,artifact,sourceBytes,inputs,sha256:await hashBytes(sourceBytes)};
 }
 
 /** Explicit local rights review; payment and candidate verdict confer no reuse or execution authority. */
@@ -107,13 +108,14 @@ export async function authorizeArtifactReuse(project,cycleId,{artifactName = 'ca
   const token = await verifyReuseRights(next,cycleId,asset.assetId,async()=>({valid:true,digest:asset.digest,rightsEvidence,
     licenseCompatible:true,source:'Fresh workflow result/settlement verification and explicit local operator rights declaration.'}),{now});
   const selection = Object.freeze({assetId:asset.assetId,sourceProjectId:project.projectId,sourceCycleId:cycleId,
+    deploymentIdentity:source.deploymentIdentity,
     artifactName,artifactSha256:source.sha256,sourceResultSha256:source.result.artifact_sha256,license:review.license,
     inherited:Object.freeze({steps:source.inputs.steps,absoluteTolerance:absoluteTolerance(source.inputs.tolerancePpm),
       tolerancePpm:source.inputs.tolerancePpm,lower:source.inputs.lower,upper:source.inputs.upper}),
     scope:'fixed-numerical-recipe; no candidate adoption',validUntil:review.validUntil});
   selections.set(selection,{projectId:project.projectId,cycleId,inputs:copy(source.inputs),assetId:asset.assetId,
     license:asset.license,reviewUntil:Date.parse(review.validUntil),verifiedAt:now});
-  return {project:next,asset,token,sourceBytes:source.sourceBytes.slice(),selection};
+  return {project:next,asset,token,sourceBytes:source.sourceBytes.slice(),selection,deploymentIdentity:source.deploymentIdentity};
 }
 
 /** Return the exact new work spec with inherited inputs reconstructed from the reviewed source bytes. */

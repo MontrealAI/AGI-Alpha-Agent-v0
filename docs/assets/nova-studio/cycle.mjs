@@ -1,10 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
-import { verifyPackage, objectHash, hashBytes, strictJSON, profileIdentity } from './package.mjs';
-import { uint, address, curve } from '../ascension-wallet/protocol.mjs';
+import { verifyPackage, objectHash, hashBytes, strictJSON, deploymentIdentityStatus } from './package.mjs';
+import { uint, address, curve, TOKEN } from '../ascension-wallet/protocol.mjs';
 import { unresolved } from '../ascension-wallet/client.mjs';
 
 export const PROJECT_SCHEMA = 'agialpha.nova-studio.project.v1';
 export const PRIVATE_KIT_SCHEMA = 'agialpha.nova-studio.private-recovery.v1';
+// Resolve a call/asset address only; never use this projection to compare deployment identities.
+export function deploymentAddress(deployment,name) {
+  if (!deployment?.contracts || typeof deployment.contracts !== 'object' || Array.isArray(deployment.contracts))
+    throw Error('Missing deployment contracts.');
+  if (name === 'Token' && !Object.hasOwn(deployment.contracts,name)) return address(TOKEN);
+  const record = deployment.contracts[name];
+  return address(typeof record === 'string' ? record : record?.address);
+}
 export const PROJECT_RECOVERY_GUIDE = 'This encrypted file preserves private project history, not current authority. Keep its passphrase separately; never use a wallet recovery phrase. Reopen the exact original packages, reconnect your wallet explicitly, refresh chain state, and obtain fresh runtime authorization. Signed historical bytes retain their original trust scope; an embedded key or successful decryption grants no authority. Never repeat an uncertain transaction, auto-run a recovered request, or adopt a recovered candidate without current verification.';
 const encoder = new TextEncoder(), MAX_PROJECT_BYTES = 8000000, MAX_RECORD_BYTES = 1500000;
 const ITERATIONS = 600000, observations = new WeakMap(), verifiedEvaluations = new WeakMap(), reservoirs = new WeakMap();
@@ -228,10 +236,10 @@ export async function preserveSignedRecord(project,{cycleId = project.activeCycl
 export async function observeCycle(project,cycleId,chain,{now} = {}) {
   const cycle = cycleFor(await validateProject(project),cycleId);
   if (!cycle.package || !cycle.seedId) throw Error('A package and observed seed identity are needed for current chain inspection.');
-  if (!same(profileIdentity(chain.client.profile),cycle.package.deployment)) throw Error('Select the cycle’s exact deployment.');
+  const deploymentIdentity = deploymentIdentityStatus(cycle.package,chain.client.profile);
   const epoch = chain.client.epoch, state = await chain.seed(cycle.seedId,cycle.package);
   chain.client.guard(epoch);
-  const observation = Object.freeze({projectId:project.projectId,cycleId,observedAt:timestamp(now),
+  const observation = Object.freeze({projectId:project.projectId,cycleId,deploymentIdentity,observedAt:timestamp(now),
     blockNumber:state.verification.blockNumber,blockHash:state.verification.blockHash});
   observations.set(observation,{projectId:project.projectId,cycleId,packageHash:cycle.commitments.packageHash,
     seedId:cycle.seedId,state,epoch,client:chain.client,observedAt:Date.parse(observation.observedAt)});
@@ -542,7 +550,8 @@ export async function prepareSuccessor(project,cycleId,pkg,{assetIds = [],verifi
 
 export function projectReservoir(project,cycleId = project.activeCycleId,observation,{reservations = [],...context} = {}) {
   const cycle = cycleFor(project,cycleId), state = currentObservation(project,cycle,observation,context);
-  const empty = {projectId:project.projectId,cycleId,fresh:false,account:null,asset:cycle.package?.deployment.contracts.Token ?? null,
+  const asset = cycle.package ? deploymentAddress(cycle.package.deployment,'Token') : null;
+  const empty = {projectId:project.projectId,cycleId,fresh:false,account:null,asset,
     chainId:cycle.package?.deployment.chainId ?? null,walletBalance:null,reserved:null,availableForProposal:'0',
     stake:[],campaign:null,claim:null,ownership:'unknown',costs:{ethGas:null,providerCharges:null,storageCharges:null},
     profit:null,restrictions:['Refresh the exact deployment and wallet. Imported claims are not spendable balances.']};
@@ -565,7 +574,7 @@ export function projectReservoir(project,cycleId = project.activeCycleId,observa
       continue;
     }
     ids.set(key,reservation);
-    if (reservation.chainId === cycle.package.deployment.chainId && address(reservation.asset) === address(cycle.package.deployment.contracts.Token) &&
+    if (reservation.chainId === cycle.package.deployment.chainId && address(reservation.asset) === asset &&
         address(reservation.owner) === who) reserved += amount;
   }
   const restrictions = ['Wallet balance is shared across projects; this view does not allocate it to this project.',
@@ -579,16 +588,17 @@ export function projectReservoir(project,cycleId = project.activeCycleId,observa
     const amount = phase === 3 && supply > 0n ? reserve*lots/supply :
       phase === 1 ? curve(supply-lots,lots,uint(String(campaign.base)),uint(String(campaign.slope))) : null;
     claim = {claimant:who,amount:amount === null ? null : String(amount),lots:String(lots),backing:'campaign-reserve',
-      asset:cycle.package.deployment.contracts.Token,spendable:false,kind:phase === 3 ? 'proportional-reclaim' :
+      asset,spendable:false,kind:phase === 3 ? 'proportional-reclaim' :
         phase === 1 ? 'funding-phase-redemption' : 'contingent-capital-claim',
       nextAction:phase === 3 ? 'reclaim' : phase === 1 ? 'sell' : 'collect-eligible-refunds-and-close-when-permitted'};
   }
-  const stake = [{contract:cycle.package.deployment.contracts.Jobs,owner:who,amount:String(state.wallet.stake.Jobs),
+  const stake = [{contract:deploymentAddress(cycle.package.deployment,'Jobs'),owner:who,amount:String(state.wallet.stake.Jobs),
     locked:String(state.wallet.stake.agentLocked),kind:'worker-stake',spendable:false},
-  {contract:cycle.package.deployment.contracts.Oracle,owner:who,amount:String(state.wallet.stake.Oracle),
+  {contract:deploymentAddress(cycle.package.deployment,'Oracle'),owner:who,amount:String(state.wallet.stake.Oracle),
     lockedUntil:String(state.wallet.stake.validatorLockedUntil),kind:'reviewer-stake',spendable:false}];
   const result = {...empty,fresh:true,account:who,walletBalance:String(balance),reserved:String(reserved),
-    availableForProposal:String(available),stake,campaign:{seedId:cycle.seedId,controller:cycle.package.deployment.contracts.Mark,
+    availableForProposal:String(available),deploymentIdentity:observation.deploymentIdentity,
+    stake,campaign:{seedId:cycle.seedId,controller:deploymentAddress(cycle.package.deployment,'Mark'),
       business:address(campaign.business),reserve:String(reserve),phase,supply:String(supply),spendableByBusiness:false,
       use:'Only original committed jobs while active; entitled lot holders use supported exit/claim rules.'},claim,
     ownership:'wallet-owner-only',restrictions,blockNumber:state.verification.blockNumber,blockHash:state.verification.blockHash,
@@ -604,7 +614,7 @@ export function proposeReinvestment(projection,{sourceOwner,amount,destination,a
       !uint(amount) || uint(amount) > uint(current.availableForProposal)) throw Error('Proposal exceeds currently observed unencumbered funds owned by its approving actor.');
   exact(destination,['deployment','seedId'],'proposal destination');
   if (!destination.deployment || destination.deployment.chainId !== current.chainId ||
-      address(destination.deployment.contracts?.Token) !== address(current.asset) || !uint(destination.seedId))
+      deploymentAddress(destination.deployment,'Token') !== address(current.asset) || !uint(destination.seedId))
     throw Error('Select an exact destination campaign for the same native asset and chain. Cross-chain movement is a separate action.');
   text(rationale,'reinvestment rationale'); text(risk,'reinvestment risk');
   return {schema:'agialpha.nova-studio.reinvestment-proposal.v1',projectId:current.projectId,cycleId:current.cycleId,

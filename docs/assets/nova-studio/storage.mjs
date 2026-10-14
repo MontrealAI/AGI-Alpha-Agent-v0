@@ -25,7 +25,11 @@ async function boundedResponse(response, maximum) {
   return bytes;
 }
 export class PinataStorage {
-  constructor(fetcher = globalThis.fetch) { this.fetcher = fetcher; }
+  constructor(fetcher = globalThis.fetch) {
+    if (typeof fetcher !== 'function') throw Error('A supported storage transport is required.');
+    // Native browser fetch requires its Window receiver. Test arrow wrappers must not mask this boundary.
+    this.fetcher = fetcher.bind(globalThis);
+  }
   async publish(object, name, credential) {
     return this.publishBytes(fileBytes(object),name,credential);
   }
@@ -37,20 +41,36 @@ export class PinataStorage {
     const form = new FormData();
     form.append('network','public');
     form.append('file',new Blob([bytes],{type:'application/json'}),name);
-    const response = await this.fetcher('https://uploads.pinata.cloud/v3/files', {
-      method:'POST', headers:{Authorization:`Bearer ${credential}`}, body:form,
-      redirect:'error', credentials:'omit', referrerPolicy:'no-referrer', signal:AbortSignal.timeout(60000)
-    });
-    const value = strictJSON(new TextDecoder('utf-8',{fatal:true}).decode(await boundedResponse(response,32000)),32000);
+    let value;
+    try {
+      const endpoint = 'https://uploads.pinata.cloud/v3/files';
+      const response = await this.fetcher(endpoint, {
+        method:'POST', headers:{Authorization:`Bearer ${credential}`}, body:form,
+        redirect:'error', credentials:'omit', referrerPolicy:'no-referrer', signal:AbortSignal.timeout(60000)
+      });
+      if (response.url && response.url !== endpoint) throw Error('Unexpected upload destination.');
+      value = strictJSON(new TextDecoder('utf-8',{fatal:true}).decode(await boundedResponse(response,32000)),32000);
+    } catch {
+      // Transport and parser errors can echo authorization data. Never propagate provider text.
+      throw Error('Storage upload failed. Check the credential, provider availability, CORS and artifact size.');
+    }
     return { uri:artifactURI(`ipfs://${value?.data?.cid}`), byteHash:await hashBytes(bytes), size:bytes.length };
   }
   async retrieveBytes(uri, gateway = GATEWAYS[0], maximum = 250001) {
     artifactURI(uri);
     if (!GATEWAYS.includes(gateway)) throw Error('Unreviewed storage gateway.');
-    const response = await this.fetcher(gateway + uri.slice(7), {
-      cache:'no-store',redirect:'error',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(30000)
-    });
-    const bytes = await boundedResponse(response,maximum);
+    if (!Number.isSafeInteger(maximum) || maximum < 1 || maximum > 2000000) throw Error('Invalid artifact size limit.');
+    let bytes;
+    try {
+      const endpoint = gateway + uri.slice(7);
+      const response = await this.fetcher(endpoint, {
+        cache:'no-store',redirect:'error',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(30000)
+      });
+      if (response.url && response.url !== endpoint) throw Error('Unexpected retrieval destination.');
+      bytes = await boundedResponse(response,maximum);
+    } catch {
+      throw Error('Storage retrieval failed. Check provider availability, CORS and artifact size.');
+    }
     return { bytes, byteHash:await hashBytes(bytes) };
   }
   async retrieve(uri, gateway = GATEWAYS[0]) {

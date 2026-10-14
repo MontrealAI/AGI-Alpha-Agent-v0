@@ -10,7 +10,7 @@ import sys
 from typing import Any, cast
 from uuid import uuid4
 
-from playwright.sync_api import expect, sync_playwright
+from playwright.sync_api import Route, expect, sync_playwright
 
 
 def main() -> None:
@@ -19,6 +19,7 @@ def main() -> None:
     origin = config["url"].split("/ascension/")[0]
     errors: list[str] = []
     checks: list[str] = []
+    transaction_history: list[str] = []
     financial_evidence: dict[str, Any] = {}
     expected_nodes = [
         "Insight",
@@ -62,10 +63,31 @@ def main() -> None:
         browser = playwright.chromium.launch()
         context = browser.new_context(viewport={"width": 1440, "height": 1080}, accept_downloads=True)
         context.add_init_script(script=fixture)
+
+        def artifact_request(route: Route) -> None:
+            # Keep the browser's native fetch receiver intact while every
+            # synthetic artifact request stays on the disposable local server.
+            request = route.request
+            cors = {
+                "access-control-allow-origin": origin,
+                "access-control-allow-methods": "GET, POST, OPTIONS",
+                "access-control-allow-headers": "authorization, content-type",
+            }
+            if request.method == "OPTIONS":
+                route.fulfill(status=204, headers=cors)
+                return
+            target = origin + ("/upload" if request.method == "POST" else "/ipfs/" + request.url.split("/")[-1])
+            response = route.fetch(url=target)
+            route.fulfill(response=response, headers={**response.headers, **cors})
+
+        context.route("https://uploads.pinata.cloud/v3/files", artifact_request)
+        context.route("https://gateway.pinata.cloud/ipfs/*", artifact_request)
+        context.route("https://ipfs.io/ipfs/*", artifact_request)
         page = context.new_page()
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(config["url"])
         expect(page.locator("#status")).to_contain_text("Start locally")
+        assert page.evaluate("Function.prototype.toString.call(window.fetch).includes('[native code]')")
 
         def show(control: str) -> None:
             step = page.locator("#" + control).evaluate("el=>el.closest('.step')?.id.slice(5)")
@@ -119,6 +141,7 @@ def main() -> None:
             page.locator("#reconcile").click()
             expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
             page.locator("#reconcile-hash").fill("")
+            transaction_history.append(transaction)
             return transaction
 
         def action(control: str) -> str:
@@ -298,6 +321,16 @@ def main() -> None:
             result = operator(
                 {"operation": "execute", "seed_id": seed_id, "request": request, "seal": sealed["seal"], **bound}
             )
+            if ordinal == 1:
+                show("result-format")
+                page.locator("#result-format").select_option("native-signed")
+                expect(page.locator("#result-algorithm")).to_have_value("keccak256")
+                expect(page.locator("#result-algorithm")).to_be_disabled()
+                page.locator("#result-file").set_input_files(
+                    retain(f"browser-cycle-{ordinal}-runtime-result.json", result)
+                )
+                page.locator("#native-signer").fill(sealed["source_public_key"])
+                assert page.locator("#result-file").evaluate("el=>el.files.length") == 1
             show("runtime-observer-key")
             page.locator("#runtime-observer-key").fill(sealed["source_public_key"])
             import_record(
@@ -307,6 +340,13 @@ def main() -> None:
                 result,
                 "verified",
             )
+            expect(page.locator("#result-format")).to_have_value("cycle-artifact")
+            expect(page.locator("#result-algorithm")).to_have_value("keccak256")
+            expect(page.locator("#result-algorithm")).to_be_disabled()
+            expect(page.locator("#result-file")).to_be_disabled()
+            expect(page.locator("#native-signer")).to_have_value("")
+            assert page.locator("#result-file").evaluate("el=>el.files.length") == 0
+            expect(page.locator("#result-digest")).to_have_value(result["artifact_keccak256"])
             expect(page.locator("#result-hash")).to_contain_text(result["artifact_keccak256"])
             artifact_file = download("export-native-artifact", f"browser-cycle-{ordinal}-exact-artifact.json")
             assert artifact_file.read_bytes() == result["artifact_utf8"].encode()
@@ -452,7 +492,7 @@ def main() -> None:
         action("collect")
         action("close-campaign")
         connect(1)
-        recovered_exit_tx = action("reclaim")
+        action("reclaim")
         first_exit_ledger = ledger("first-cycle-after-reclaim", 2)
         assert first_exit_ledger["ownerTotals"]["netPayout"] == "0"
         assert all(row["status"] == "collected-into-campaign" for row in first_exit_ledger["refunds"])
@@ -464,6 +504,7 @@ def main() -> None:
         show("project-passphrase")
         page.locator("#project-passphrase").fill(project_passphrase)
         recovery = download("export-project", "browser-first-cycle-private-recovery.json")
+        recovered_receipts = transaction_history.copy()
         before_reload_sends = page.evaluate("window.__nova.sends")
         assert before_reload_sends > 0
         page.reload()
@@ -484,11 +525,19 @@ def main() -> None:
         checks.append("Fresh page restores encrypted runtime/settlement history without wallet traffic or execution")
         connect(0)
         show("reconcile-hash")
-        page.locator("#reconcile-hash").fill(recovered_exit_tx)
-        page.locator("#reconcile").click()
-        expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+        for transaction in recovered_receipts:
+            page.locator("#reconcile-hash").fill(transaction)
+            page.locator("#reconcile").click()
+            page.wait_for_function(
+                "hash=>JSON.parse(document.querySelector('#journal').textContent).transactions"
+                ".find(row=>row.hash===hash)?.status==='finalized'",
+                arg=transaction,
+            )
+            expect(page.locator("#deployment-choice")).to_be_enabled()
+            expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
         page.locator("#reconcile-hash").fill("")
         assert page.evaluate("window.__nova.sends") == 0
+        checks.append("Every recovered receipt is independently reconciled before any new cycle authorization")
         show("runtime-observer-key")
         page.locator("#runtime-observer-key").fill(evaluated["source_key"])
         import_record(
@@ -600,6 +649,7 @@ def main() -> None:
                 "environment": config["environment"],
                 "browserVersion": browser.version,
                 "checks": checks,
+                "reconciledRecoveredTransactions": recovered_receipts,
                 "audits": audits,
                 "pageErrors": errors,
                 "cycles": [first, second],

@@ -1,18 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
-import { WalletSession, discoverWallets } from '../ascension-wallet/session.mjs';
+import { WalletSession, discoverWallets, profileForJournal } from '../ascension-wallet/session.mjs';
 import { JOURNAL_KEY } from '../ascension-wallet/recovery.mjs';
 import { ACTIONS, tokens, curve, uint } from '../ascension-wallet/protocol.mjs';
-import { json, unresolved } from '../ascension-wallet/client.mjs';
+import { json, unresolved, availableProfiles, selectBuildProfile } from '../ascension-wallet/client.mjs';
 import { canonicalJSON, openSeed } from '../ascension/crypto.mjs';
 import { compilePlan, jobFromEditor } from './plan.mjs';
-import { fileBytes, objectHash, strictJSON, profileIdentity } from './package.mjs';
+import { fileBytes, objectHash, strictJSON, profileIdentity, deploymentIdentityStatus } from './package.mjs';
 import { PinataStorage, metadataFor, verifyPublication } from './storage.mjs';
 import { NovaWorkflow } from './workflow.mjs';
 import { installCycleUI, renderCycleUI } from './cycle-ui.mjs';
 import { resultCommitments } from './runtime.mjs';
 const $ = id => document.getElementById(id);
 let language='en', busy=false, session=null, flow=null, compiled=null, legacyGenome=null, identity=null, resultHash=null;
-let epoch=-1, storageFault=null, stopDiscovery=null;
+let epoch=-1, storageFault=null, stopDiscovery=null, nativeResult=null, cycleResult=null, resultScope=null;
+let defaultProfile=null, profiles=[];
 const wallets=[];
 const text=(en,fr)=>language==='fr'?fr:en;
 function status(message,error=false) { $('status').textContent=String(message).slice(0,1600); $('status').classList.toggle('error',error); }
@@ -52,15 +53,48 @@ function edited() {
   compiled=null;flow?.clearPreview();$('compile-summary').textContent=text('Edits apply to a new package. A previously sealed package stays frozen.','Les modifications créent un nouveau paquet. Le paquet déjà chiffré reste inchangé.');
   $('transaction-ack').checked=false;render();
 }
+function clearResult() {
+  resultHash=null;nativeResult=null;cycleResult=null;resultScope=null;
+  $('result-digest').value='';$('result-hash').textContent='';
+  if(flow)flow.nativeDelivery=null;
+  flow?.clearPreview();
+}
+function resultAlgorithm() {return $('result-format').value==='generic-sha256'?$('result-algorithm')?.value||'sha256':'keccak256';}
+function rememberResult() {resultScope={flow,seedId:flow.seedId,jobId:$('onchain-job').value,cycleId:flow.cycleId,planRoot:flow.package?.plan.planRoot};}
+function resultView() {
+  const native=$('result-format').value==='native-signed', cycle=$('result-format').value==='cycle-artifact';
+  const algorithm=resultAlgorithm(), label=algorithm==='keccak256'?'Keccak-256':'SHA-256';
+  for(const id of ['result-file','result-format','native-signer','onchain-job'])$(id).disabled=busy;
+  $('result-file').disabled=busy||cycle;
+  if($('result-algorithm')){$('result-algorithm').disabled=busy||native||cycle;if(native||cycle)$('result-algorithm').value='keccak256';}
+  $('result-format').querySelector('[value="generic-sha256"]').textContent=text('Exact file · selected hash','Fichier exact · empreinte choisie');
+  const cycleMode=$('result-format').querySelector('[value="cycle-artifact"]');
+  if(cycleMode)cycleMode.textContent=text('Verified cycle artifact · Keccak-256','Artefact du cycle vérifié · Keccak-256');
+  $('native-delivery-controls').hidden=!native;
+  $('verify-native-result').disabled=busy||!$('result-file').files.length;
+  $('result-format-note').textContent=native
+    ?text('The native path verifies the independently trusted signer and exact plan/job binding, then commits the original file bytes with Keccak-256. It never substitutes SHA-256.','Le format natif vérifie le signataire fiable et le lien exact au plan/travail, puis engage les octets originaux avec Keccak-256. SHA-256 ne s’y substitue jamais.')
+    :cycle?text('The cycle path commits exact artifact bytes with Keccak-256, verified against the separately signed observer report. Import that report in the execution step first.','Le cycle engage les octets exacts de l’artefact avec Keccak-256, vérifiés selon le rapport signé distinct de l’observateur. Importez ce rapport à l’étape d’exécution.')
+    :text(`The exact file uses ${label}. This path does not verify a native signature; select its matching commitment explicitly.`,`Le fichier exact utilise ${label}. Ce chemin ne vérifie aucune signature native; choisissez explicitement son empreinte.`);
+  $('result-digest').value=resultHash||'';
+  const source=native?(nativeResult?text('native signature and job verified','signature native et travail vérifiés'):text('reverify native delivery before submission','revérifiez la livraison native avant soumission')):cycle?text('verified cycle artifact','artefact du cycle vérifié'):text('exact file','fichier exact');
+  $('result-hash').textContent=resultHash?`${label} · ${source} · ${resultHash}`:'';
+  $('runtime-state').textContent=nativeResult
+    ?text('No runtime connected. Signed delivery evidence was verified for the actual job. Signature verification does not replay the work or replace independent on-chain review.','Aucun environnement d’exécution connecté. La livraison signée a été vérifiée pour le travail réel. La signature ne rejoue pas le travail et ne remplace pas la revue indépendante sur la chaîne.')
+    :cycleResult?text('No runtime connected. The exact cycle artifact was verified from the operator’s signed report. Execution authority and on-chain review remain separate.','Aucun environnement d’exécution connecté. L’artefact exact du cycle a été vérifié selon le rapport signé de l’opérateur. L’autorisation d’exécution et la revue sur la chaîne restent distinctes.')
+    :text('No runtime connected. Export the work package and follow the native or SUCCESSOR Ω guide. Posting a job does not automatically start an agent.','Aucun environnement d’exécution connecté. Exportez le paquet et suivez le guide natif ou SUCCESSOR Ω. Publier un travail ne lance pas automatiquement un agent.');
+}
 function render() {
   if(!flow) return;
   const c=flow.client, pkg=flow.package, archived=c.profile.schema==='agialpha.mark-wallet-profile.v1';
-  if(epoch!==c.epoch){epoch=c.epoch;flow.preview=null;flow.observation=null;identity=null;$('transaction-ack').checked=false;$('identity-summary').textContent='';}
+  $('deployment-choice').disabled=busy;$('deployment-choice').value=c.profileIdentity;
+  if(epoch!==c.epoch){epoch=c.epoch;flow.preview=null;flow.observation=null;flow.nativeDelivery=null;nativeResult=null;identity=null;$('transaction-ack').checked=false;$('identity-summary').textContent='';}
   $('mode').textContent=c.profile.chainId!==1?text('LOCAL REHEARSAL · test assets only','RÉPÉTITION LOCALE · actifs de test'):
     c.profile.newExposureEnabled?`${c.profile.stage.toUpperCase()} · Ethereum Mainnet`:!archived?text('Qualified deployment · new exposure suspended','Déploiement qualifié · nouveaux engagements suspendus'):text('Local preparation · Mainnet archive: new exposure restricted','Préparation locale · Archive Mainnet : nouveaux engagements bloqués');
   $('deployment-policy').textContent=c.profile.newExposureEnabled?text('This build binds the selected qualified deployment. Review every wallet action.','Cette version lie le déploiement qualifié sélectionné. Examinez chaque action.'):
     !archived?text('New exposure is suspended by the current reviewed build. Permitted recovery remains available.','Les nouveaux engagements sont suspendus par la version examinée. Les récupérations permises restent accessibles.'):text('The October 11 contracts are immutable and predate settlement fixes. New minting, approvals and funding remain blocked. The complete workflow is exercised against a separately built local profile. Public activation requires an independently qualified deployment.','Les contrats immuables du 11 octobre précèdent les correctifs de règlement. La création, les autorisations et le financement restent bloqués. Le parcours complet est testé avec un profil local distinct. L’activation publique exige un déploiement qualifié indépendamment.');
-  $('package-state').textContent=pkg?text('Encrypted · recovery tested','Chiffré · récupération vérifiée'):text('No package yet','Aucun paquet');
+  const legacyIdentity=pkg&&deploymentIdentityStatus(pkg,c.profile)==='legacy-addresses';
+  $('package-state').textContent=pkg?(legacyIdentity?text('Recovered legacy package · new mint blocked','Ancien paquet récupéré · nouvelle création bloquée'):text('Encrypted · recovery tested','Chiffré · récupération vérifiée')):text('No package yet','Aucun paquet');
   $('job-count').textContent=String((pkg?.plan||compiled)?.jobs.length||0);
   $('budget').textContent=`${tokens((pkg?.plan||compiled)?.totalBounty||'0')} $AGIALPHA`;
   $('seed-summary').textContent=flow.seedId||'—';$('account').textContent=c.account||text('No connected account.','Aucun compte connecté.');
@@ -69,6 +103,10 @@ function render() {
   $('confirm').disabled=busy||!preview||!$('transaction-ack').checked||!$('journal-consent').checked||!!storageFault;
   for(const id of ['seal-package','compile','publish-artifacts','restore-kit','route','mint','bloom']) $(id).disabled=busy;
   for(const id of ['export-kit','export-kit-again','export-capsule','export-plan']) $(id).disabled=!pkg||busy;
+  if(resultScope&&(resultScope.flow!==flow||resultScope.seedId!==flow.seedId||resultScope.jobId!==$('onchain-job').value||resultScope.cycleId!==flow.cycleId||resultScope.planRoot!==pkg?.plan.planRoot))clearResult();
+  if(cycleResult&&cycleResult!==flow.runtimeResult)clearResult();
+  if(nativeResult&&!flow.nativeDelivery)nativeResult=null;
+  resultView();
   $('journal').textContent=c.history.length?json(c.journal()):'—';
   const state=flow.observation;
   if(state){
@@ -80,7 +118,7 @@ function render() {
     const note=document.createElement('p');note.textContent=text('Commitments read back. Ownership does not transfer the capsule passphrase or an existing campaign’s business authority.','Empreintes vérifiées sur la chaîne. La propriété ne transmet ni la phrase secrète ni l’autorité d’une campagne existante.');
     $('nft-card').append(h,p,code,note);
   } else { $('nft-card').replaceChildren();$('review-status').textContent=text('Refresh chain state to check current review.','Actualisez la chaîne pour vérifier la revue.');$('funding-status').textContent=''; }
-  $('mark-link').href=`../../ascension-protocol/mainnet/?profile=${encodeURIComponent(c.profile.profile)}${flow.seedId?`&seed=${flow.seedId}`:''}${$('onchain-job').value?`&job=${encodeURIComponent($('onchain-job').value)}`:''}`;
+  $('mark-link').href=`../../ascension-protocol/mainnet/?profile=${encodeURIComponent(c.profileIdentity)}&chain=${c.profile.chainId}${flow.seedId?`&seed=${flow.seedId}`:''}${$('onchain-job').value?`&job=${encodeURIComponent($('onchain-job').value)}`:''}`;
   renderCycleUI(flow);
 }
 async function run(fn) {
@@ -107,6 +145,14 @@ function packageView() {
 for(const el of document.querySelectorAll('[data-step]'))el.addEventListener('click',()=>go(el.dataset.step));
 for(const el of document.querySelectorAll('[data-next]'))el.addEventListener('click',()=>go(el.dataset.next));
 $('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';translate();});
+$('deployment-choice').addEventListener('change',()=>{const selectedId=$('deployment-choice').value;return run(async()=>{
+  const profile=selectBuildProfile(selectedId,defaultProfile);
+  if(selectedId===flow.client.profileIdentity)return;
+  if(flow.package)throw Error(text('Export the current recovery kit and clear this project before selecting another deployment. Its encrypted commitments cannot be relabeled.','Exportez le kit actuel et effacez ce projet avant de choisir un autre déploiement. Ses engagements chiffrés ne peuvent pas être réétiquetés.'));
+  await session.selectProfile(profile);session.client.disconnect();flow=new NovaWorkflow(session,new PinataStorage());await flow.ensureProject();epoch=-1;
+  $('wallet-choice').value='';$('existing-seed').value='';$('onchain-job').value='';$('parent').value='0';clearResult();
+  status(text('Registered deployment selected. Select and connect your wallet again; no wallet request was sent.','Déploiement inscrit sélectionné. Choisissez et reconnectez votre portefeuille; aucune requête envoyée.'));
+});});
 $('add-job').addEventListener('click',()=>run(async()=>{addJob();edited();}));
 $('step-project').addEventListener('input',edited);
 $('example').addEventListener('click',()=>{
@@ -179,21 +225,64 @@ const buyInputs=()=>({count:$('lot-count').value,limit:$('max-cost').value});act
 $('quote').addEventListener('click',()=>run(async()=>{const s=await flow.inspect(),c=s.campaign,count=uint($('lot-count').value,32);if(c.phase!==1n||count===0n||c.supply+count>c.maxLots)throw Error('Inspect a funding campaign and valid lot count.');const q=curve(c.supply,count,c.base,c.slope);if((await flow.client.call('Mark','quote',[String(c.supply),String(count),String(c.base),String(c.slope)]))[0]!==q)throw Error('Quote mismatch.');$('quote-output').textContent=`${tokens(q)} $AGIALPHA · ${count} lots. Set your own maximum; approval and purchase remain separate.`;}));
 action('bloom','bloom',()=>({irreversible:$('bloom-ack').checked}));
 action('route','route',()=>({index:$('job-choice').value,auction:$('auction').value,reviewers:[1,2,3].map(i=>$(`reviewer-${i}`).value)}));
-$('inspect-job').addEventListener('click',()=>run(async()=>{const s=await flow.client.inspect(flow.seedId,$('onchain-job').value);$('job-state').textContent=json(s.job);const label=['Unknown','Job posted; auction open','Worker awarded','Result delivered; review pending','Settlement paid','Failed / rejected or delivery timeout','Refunded'][Number(s.job.state)];status(label+'. Runtime connection is not established by this state.');}));
+$('inspect-job').addEventListener('click',()=>run(async()=>{
+  const s=await flow.chain.inspectJob(flow.seedId,$('onchain-job').value,flow.package);$('job-state').textContent=json(s.job);
+  const state=Number(s.job.state),confirmed=s.job.settlementConfirmed===true;
+  const labels=[text('Unknown','Inconnu'),text('Job posted; auction open','Travail publié; enchère ouverte'),text('Worker awarded','Exécutant sélectionné'),text('Result delivered; review pending','Résultat livré; revue en attente')];
+  let label=labels[state];
+  if(state>=4){
+    const outcome=state===4?text('Settlement paid','Règlement payé'):state===5?text('Failure or slashing','Échec ou pénalité'):text('Refund','Remboursement');
+    label=confirmed?`${outcome} · ${text('canonical finalized state verified','état canonique finalisé vérifié')}`
+      :text('Terminal job state observed; settlement is pending canonical finality.','État terminal observé; le règlement attend la finalité canonique.');
+  }
+  status(`${label||text('Unknown','Inconnu')}. ${text('Runtime connection is not established by this state.','Cet état n’établit aucune connexion à un environnement d’exécution.')}`);
+}));
 $('work-package').addEventListener('click',()=>run(async()=>download('nova-runtime-work.json',await flow.workPackage($('onchain-job').value))));
 action('bid','bid',()=>({jobId:$('onchain-job').value,price:$('bid-price').value,duration:$('bid-duration').value}));action('award','award',()=>({jobId:$('onchain-job').value}));
 action('approve-worker','approveStake',()=>({spender:'Jobs',amount:$('worker-stake').value}));
 action('deposit-worker','agentDeposit',()=>({amount:$('worker-stake').value}));
 action('withdraw-worker','agentWithdraw',()=>({amount:$('worker-stake').value}));
-async function selectedResult(){resultHash=null;const f=$('result-file').files[0];if(!f||f.size>2000000)throw Error('Use an exact result file no larger than 2 MB.');const hashes=await resultCommitments(await f.arrayBuffer());resultHash=hashes[$('result-algorithm')?.value||'sha256'];$('result-hash').textContent=resultHash;flow.clearPreview();}
-$('result-file').addEventListener('change',()=>run(selectedResult));
-action('submit-result','submit',()=>({jobId:$('onchain-job').value,result:resultHash,uri:$('result-uri').value,hashAlgorithm:$('result-algorithm').value}));
+async function readResult() {
+  clearResult();
+  if($('result-format').value==='cycle-artifact')throw Error('Import and verify the signed cycle result in the execution step first.');
+  const f=$('result-file').files[0];if(!f||f.size>2000000)throw Error('Use an exact result file no larger than 2 MB.');
+  if($('result-format').value==='native-signed')status(text('Native file selected. Enter an independently trusted signer key and verify this delivery before submission.','Fichier natif choisi. Indiquez une clé de signataire fiable et vérifiez la livraison avant soumission.'));
+  else {resultHash=(await resultCommitments(await f.arrayBuffer()))[resultAlgorithm()];rememberResult();}
+  resultView();
+}
+$('result-file').addEventListener('change',()=>run(readResult));
+$('result-format').addEventListener('change',()=>run(async()=>{
+  clearResult();
+  if($('result-format').value==='cycle-artifact'){$('result-file').value='';status(text('Import and verify the signed cycle result in the execution step first.','Importez et vérifiez le résultat signé du cycle à l’étape d’exécution.'));}
+  else if($('result-file').files.length)await readResult();
+  resultView();
+}));
+$('native-signer').addEventListener('input',()=>{clearResult();resultView();});
+$('onchain-job').addEventListener('input',()=>{clearResult();resultView();});
+$('verify-native-result').addEventListener('click',()=>run(async()=>{
+  clearResult();
+  if($('result-format').value!=='native-signed')throw Error('Select the signed native delivery path explicitly.');
+  const f=$('result-file').files[0];if(!f||f.size>2000000)throw Error('Use an exact native delivery file no larger than 2 MB.');
+  const source=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await f.arrayBuffer());
+  nativeResult=await flow.importNativeDelivery(source,{trustedPublicKey:$('native-signer').value,jobId:$('onchain-job').value});
+  resultHash=nativeResult.resultHash;rememberResult();resultView();
+  status(text('Native delivery verified. Exact Keccak-256 hash filled automatically; no runtime connection is claimed.','Livraison native vérifiée. Empreinte Keccak-256 exacte remplie automatiquement; aucune connexion d’exécution n’est revendiquée.'));
+}));
+action('submit-result','submit',()=>{
+  const native=$('result-format').value==='native-signed';
+  if(native&&(!nativeResult||nativeResult.resultHash!==resultHash||nativeResult.jobId!==$('onchain-job').value||nativeResult.seedId!==flow.seedId))throw Error('Verify the signed native delivery for this exact job before submission.');
+  if($('result-format').value==='cycle-artifact'&&(!cycleResult||cycleResult!==flow.runtimeResult||cycleResult.artifact_keccak256!==resultHash||String(cycleResult.execution_binding.body.market_job_id)!==$('onchain-job').value))throw Error('Import and verify the signed cycle result for this exact job before submission.');
+  return {jobId:$('onchain-job').value,result:resultHash,uri:$('result-uri').value,native,hashAlgorithm:resultAlgorithm()};
+});
 action('validate-result','validate',()=>({jobId:$('onchain-job').value,result:resultHash,approved:$('result-decision').value,findings:$('result-findings').value,reviewed:$('result-review-ack').checked}));
 action('timeout-job','timeout',()=>({jobId:$('onchain-job').value}));
 $('restore-kit').addEventListener('click',()=>run(async()=>{
   const f=$('kit-file').files[0];if(!f||f.size>2000000)throw Error('Choose a recovery kit up to 2 MB.');
   try{await flow.restore(await f.text(),$('restore-passphrase').value);}finally{$('restore-passphrase').value='';}
-  packageView();$('existing-seed').value=flow.seedId||'';status('Package recovered locally. Imported transaction outcomes must be reconciled; nothing was signed.');
+  packageView();$('existing-seed').value=flow.seedId||'';
+  status(deploymentIdentityStatus(flow.package,flow.client.profile)==='legacy-addresses'
+    ?text('Legacy package recovered unchanged. Its address-only deployment identity cannot authorize a new mint. Original recovery and read-only inspection remain available; reconcile imported transaction outcomes.','Ancien paquet récupéré sans modification. Son identité limitée aux adresses ne permet pas une nouvelle création. La récupération et la consultation restent accessibles; réconciliez les transactions importées.')
+    :text('Package recovered locally. Imported transaction outcomes must be reconciled; nothing was signed.','Paquet récupéré localement. Réconciliez les transactions importées; aucune signature effectuée.'));
 }));
 $('convert-legacy').addEventListener('click',()=>run(async()=>{const f=$('legacy-file').files[0];if(!f||f.size>350000)throw Error('Choose an original sealed capsule up to 350 KB.');if(flow.package)throw Error('Export and clear the current package first.');try{legacyGenome=await openSeed(strictJSON(await f.text(),350000),$('restore-passphrase').value);}finally{$('restore-passphrase').value='';}if(legacyGenome.onchain_plan){$('jobs').replaceChildren();for(const j of legacyGenome.onchain_plan.jobs)addJob(j.spec);}go('project');status('Original capsule remains unchanged. Complete the project editor to seal a new executable version.');}));
 $('open-seed').addEventListener('click',()=>run(async()=>{await flow.inspect($('existing-seed').value);go('mint');status('Existing seed inspected. Import matching artifacts to route its committed plan.');}));
@@ -207,25 +296,62 @@ action('transfer-lots','transferLots',()=>({to:$('lot-recipient').value,count:$(
 $('confirm').addEventListener('click',()=>run(async()=>{if(!$('journal-consent').checked)throw Error('Consent to the public recovery journal is required.');const hash=await flow.confirm($('transaction-ack').checked);$('transaction-ack').checked=false;$('reconcile-hash').value=hash;go('resume');status(`Submitted, not confirmed: ${hash}. Reconcile before another action.`);}));
 $('cancel-preview').addEventListener('click',()=>{flow.clearPreview();render();});
 $('transaction-ack').addEventListener('change',render);$('journal-consent').addEventListener('change',render);
-$('clear-project').addEventListener('click',()=>run(async()=>{if(unresolved(flow.client.pending))throw Error('Resolve the outstanding transaction before clearing this project.');flow=new NovaWorkflow(session,new PinataStorage());await flow.ensureProject();compiled=null;legacyGenome=null;resultHash=null;for(const id of ['title','description','evidence','passphrase','passphrase-again','restore-passphrase','storage-token'])$(id).value='';$('jobs').replaceChildren();addJob();$('plan-details').textContent='—';$('commitments').textContent='—';$('public-fields').textContent='—';$('job-choice').replaceChildren();go('project');status('Project cleared from this page. Best-effort UI clearing is not guaranteed memory erasure.');}));
+$('clear-project').addEventListener('click',()=>run(async()=>{
+  const previous=flow,owner=session,client=flow.client;
+  await owner.exclusive(async()=>{
+    if(flow!==previous||session!==owner||owner.client!==client)throw Error('Project or deployment changed. Review the current context before clearing it.');
+    if(client.history.some(unresolved))throw Error('Resolve every outstanding transaction before clearing this project.');
+    const currentEpoch=client.epoch,next=new NovaWorkflow(owner,new PinataStorage());
+    await next.ensureProject();previous.guardContext(currentEpoch);
+    if(flow!==previous||session!==owner||owner.client!==client)throw Error('Project or deployment changed. Review the current context before clearing it.');
+    flow=next;compiled=null;legacyGenome=null;clearResult();
+    for(const id of ['title','description','evidence','passphrase','passphrase-again','restore-passphrase','storage-token','result-file','native-signer','result-uri','onchain-job'])$(id).value='';
+    $('jobs').replaceChildren();addJob();$('plan-details').textContent='—';$('commitments').textContent='—';$('public-fields').textContent='—';$('job-choice').replaceChildren();go('project');
+    status('Project cleared from this page. Best-effort UI clearing is not guaranteed memory erasure.');
+  });
+}));
 document.addEventListener('input',event=>{if(!['transaction-ack','journal-consent','reconcile-hash'].includes(event.target.id)&&flow?.client.prepared){flow.clearPreview();$('transaction-ack').checked=false;render();}});
 window.addEventListener('storage',event=>{if(event.key===JOURNAL_KEY||event.key===null){flow?.clearPreview();if(!busy)try{session?.sync();render();}catch(error){storageFault=error.message;status(storageFault,true);}}});
-window.addEventListener('beforeunload',event=>{if(flow?.package||unresolved(flow?.client.pending)){event.preventDefault();event.returnValue='';}});
+window.addEventListener('beforeunload',event=>{if(flow?.package||flow?.client.history.some(unresolved)){event.preventDefault();event.returnValue='';}});
 addJob();
+const cycleMode=document.createElement('option');cycleMode.value='cycle-artifact';cycleMode.textContent='Verified cycle artifact · Keccak-256';cycleMode.dataset.fr='Artefact du cycle vérifié · Keccak-256';$('result-format').append(cycleMode);
 try {
   const response=await fetch(new URL('../ascension-wallet/profile.json',import.meta.url),{cache:'no-store',redirect:'error'});
   if(!response.ok)throw Error('Missing deployment profile. Build the site before opening Studio.');
   const storage={getItem:key=>{try{return window.localStorage.getItem(key);}catch{storageFault='Browser storage unavailable; signing disabled.';return null;}},
     setItem:(key,value)=>{if(storageFault||!$('journal-consent').checked)throw Error(storageFault||'Public journal consent is required.');window.localStorage.setItem(key,value);}};
-  session=new WalletSession(await response.json(),storage,navigator.locks,render);flow=new NovaWorkflow(session,new PinataStorage());
+  defaultProfile=await response.json();profiles=availableProfiles(defaultProfile);
+  $('deployment-choice').replaceChildren();for(const item of profiles){const option=document.createElement('option');option.value=item.id;option.textContent=`${item.stage.toUpperCase()} · ${item.label} · chain ${item.profile.chainId}`;$('deployment-choice').append(option);}
+  const context=new URLSearchParams(location.search),requested=context.get('profile');
+  const matches=id=>profiles.filter(item=>item.id===id||item.profile.profile===id);
+  const journalProfile=profileForJournal(defaultProfile,storage);
+  const savedChoice=storage.getItem(JOURNAL_KEY)?profiles.find(item=>canonicalJSON(item.profile)===canonicalJSON(journalProfile)):null;
+  const requestedChoices=requested?matches(requested):[];
+  const requestedChoice=requestedChoices.length===1?requestedChoices[0]:null;
+  const selected=savedChoice||requestedChoice||profiles[0];
+  session=new WalletSession(selected.profile,storage,navigator.locks,render);flow=new NovaWorkflow(session,new PinataStorage());
   await flow.ensureProject();
   epoch=flow.client.epoch;render();
   status(text('Start locally, without connecting a wallet. Existing project? Open Resume & recover.','Commencez localement, sans portefeuille. Projet existant ? Ouvrez Reprendre et récupérer.'));
+  if(requested){
+    if(!requestedChoice||requestedChoice.id!==selected.id||(context.has('chain')&&context.get('chain')!==String(selected.profile.chainId)))
+      status(text('Link context was not applied. Select its exact registered deployment; the saved journal keeps its original profile.','Le contexte du lien n’a pas été appliqué. Choisissez son déploiement inscrit exact; le journal garde son profil original.'),true);
+    else for(const [parameter,input] of [['seed','existing-seed'],['job','onchain-job']]){const value=context.get(parameter);if(value&&/^[1-9][0-9]{0,77}$/.test(value))$(input).value=uint(value).toString();}
+  }
   if(storageFault)status(storageFault,true);
 }catch(error){status(error.message,true);}
 
 $('export-result-review').addEventListener('click',()=>run(async()=>{if(!flow.resultReviewEvidence)throw Error('Prepare your result review first.');download('nova-result-review.json',flow.resultReviewEvidence);}));
 installCycleUI({getFlow:()=>flow,run,download,status,go,packageView,getLanguage:()=>language,
-  setNativeResult:(hash,algorithm)=>{resultHash=hash;$('result-algorithm').value=algorithm;$('result-hash').textContent=`${algorithm}: ${hash}`;flow.clearPreview();}});
-$('result-algorithm').addEventListener('change',()=>run(async()=>{if($('result-file').files[0])await selectedResult();else{resultHash=null;$('result-hash').textContent='Select the exact file again / Choisir le fichier exact.';}}));
+  setNativeResult:(hash,algorithm)=>{
+    const result=flow.runtimeResult;
+    if(!result||algorithm!=='keccak256'||result.artifact_keccak256!==hash)throw Error('Verify the exact signed cycle result before selecting its artifact.');
+    clearResult();cycleResult=result;resultHash=hash;$('result-format').value='cycle-artifact';$('result-algorithm').value='keccak256';
+    $('result-file').value='';$('native-signer').value='';$('onchain-job').value=String(result.execution_binding.body.market_job_id);
+    rememberResult();resultView();
+  }});
+$('result-algorithm').addEventListener('change',()=>run(async()=>{
+  if($('result-format').value!=='generic-sha256'){$('result-algorithm').value='keccak256';return;}
+  if($('result-file').files[0])await readResult();else{clearResult();status('Select the exact file again / Choisir le fichier exact.');}
+}));
 render();

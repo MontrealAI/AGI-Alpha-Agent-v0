@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The only qualified profile below lives in a temporary copy. Fixture mutations
 // remain restricted to the newly created unforked, in-process Hardhat provider.
-const { ethers, network } = require('hardhat');
+const { ethers, network, artifacts } = require('hardhat');
 const { fixture, jump } = require('./fixture');
 const { requireDisposableLocalNetwork } = require('./disposable');
 const assert = require('node:assert/strict');
@@ -75,29 +75,48 @@ async function setup() {
     fs.cpSync(path.join(root, 'docs/assets', folder), path.join(temp, 'assets', folder), { recursive: true });
   fs.cpSync(path.join(root, 'docs/ascension/mainnet'), path.join(temp, 'ascension/mainnet'), { recursive: true });
   const { ACTIONS } = await import(path.join(root, 'docs/assets/ascension-wallet/protocol.mjs'));
-  const contracts = {}, sourceHashes = {};
+  const { canonicalProfile } = await import(path.join(root, 'docs/assets/ascension-wallet/client.mjs'));
+  const { qualificationIdentity } = await import(path.join(root, 'docs/assets/ascension-wallet/qualification.mjs'));
+  const contracts = {}, sourceHashes = {}, compilerBuilds = {};
   for (const [key, contract] of Object.entries({ Access: f.access, Seed: f.seed, Oracle: f.oracle, Jobs: f.jobs, Mark: f.mark, Token: f.token }))
     contracts[key] = { address: contract.target, sha256: sha(Buffer.from((await ethers.provider.getCode(contract.target)).slice(2), 'hex')) };
-  for (const name of ['AscensionAccess', 'NovaSeed', 'AscensionRiskOracle', 'AscensionJobMarket', 'AscensionMark', 'AscensionToken'])
-    sourceHashes[name] = sha(fs.readFileSync(path.join(root, `contracts/ascension/${name}.sol`)));
+  for (const name of ['AscensionAccess', 'NovaSeed', 'AscensionRiskOracle', 'AscensionJobMarket', 'AscensionMark', 'AscensionToken']) {
+    const artifact = await artifacts.readArtifact(name), build = await artifacts.getBuildInfo(`${artifact.sourceName}:${name}`);
+    assert.ok(build, `Missing exact compiler input for ${name}`);
+    assert.equal(build.solcVersion, require('./compiler-policy').SOLC_VERSION);
+    assert.deepEqual(build.input.settings.optimizer, { enabled: true, runs: 200 });
+    assert.equal(build.input.settings.viaIR, true); assert.equal(build.input.settings.evmVersion, 'cancun');
+    for (const [file, input] of Object.entries(build.input.sources)) {
+      if (!file.startsWith('contracts/ascension/') || !fs.existsSync(path.join(root, file))) continue;
+      assert.equal(input.content, fs.readFileSync(path.join(root, file), 'utf8'), `Stale compiled source: ${file}`);
+      assert.equal(input.content, fs.readFileSync(path.join(root, 'tests/contracts', file), 'utf8'), `Divergent fixture: ${file}`);
+      sourceHashes[file] = sha(Buffer.from(input.content));
+    }
+    compilerBuilds[name] = { source: artifact.sourceName, solcVersion: build.solcVersion,
+      inputSHA256: sha(JSON.stringify(build.input)), settings: build.input.settings };
+  }
+  const sourceSHA256 = sha(canonicalProfile({ sources: sourceHashes, compilerBuilds }));
   const copiedSources = {};
   for (const relative of fs.readdirSync(temp, { recursive: true })) {
     const file = path.join(temp, relative);
     if (fs.statSync(file).isFile()) copiedSources['docs/' + relative] = sha(fs.readFileSync(file));
   }
   const actors = [f.business, f.funder, f.agent, ...f.validators].map(signer => signer.address.toLowerCase());
+  const genesis = await network.provider.request({ method: 'eth_getBlockByNumber', params: ['0x0', false] });
+  const deployment = await network.provider.request({ method: 'eth_getBlockByNumber', params: ['latest', false] });
   const profile = {
-    schema: 'agialpha.qualified-wallet-profile.v1', chainId: 31337, profile: 'disposable-exact-source-ascension-cycle',
-    stage: 'canary', newExposureEnabled: true, contracts, actions: Object.keys(ACTIONS),
-    scope: { actors, actions: Object.fromEntries(Object.keys(ACTIONS).map(action => [action, { maxArgs:
-      action === 'approve' ? { '1': ethers.parseEther('1000').toString() } : action === 'buy' ? { '2': ethers.parseEther('500').toString() } : {} }])) },
+    schema: 'agialpha.nova-local-profile.v1', chainId: 31337, profile: 'disposable-exact-source-ascension-cycle',
+    environment: 'local-exact-source', mainnetQualification: false, newExposureEnabled: true,
+    contracts, actions: Object.keys(ACTIONS), sourceSHA256, abiSHA256: sha(qualificationIdentity()),
+    genesisHash: genesis.hash, deploymentBlock: deployment.number, deploymentBlockHash: deployment.hash,
     dependencies: [], authorities: ['Access', 'Oracle', 'Jobs'].map(contract => ({ contract, owner: f.governor.address })),
     evidence: { classification: 'exact-source-local-with-mock-external-dependencies', sourceHashes, notMainnet: true },
   };
   for (const contract of [f.ens, f.wrapper]) profile.dependencies.push({
     address: contract.target, sha256: sha(Buffer.from((await ethers.provider.getCode(contract.target)).slice(2), 'hex')), slots: [],
   });
-  fs.writeFileSync(path.join(temp, 'assets/ascension-wallet/qualified-profiles.mjs'), `export const QUALIFIED_PROFILES=Object.freeze(${JSON.stringify([profile])});\n`);
+  const registryEntry = { canonicalJSON: canonicalProfile(profile), sha256: sha(canonicalProfile(profile)), stage: 'local' };
+  fs.writeFileSync(path.join(temp, 'assets/ascension-wallet/qualified-profiles.mjs'), `export const QUALIFIED_PROFILES=Object.freeze(${JSON.stringify([registryEntry])});\n`);
   fs.writeFileSync(path.join(temp, 'assets/ascension-wallet/profile.json'), serialize(profile));
   const fixtureModifications = ['assets/ascension-wallet/qualified-profiles.mjs', 'assets/ascension-wallet/profile.json'].map(relative => ({
     path:'docs/'+relative, originalSourceSha256:copiedSources['docs/'+relative],
@@ -128,7 +147,7 @@ async function setup() {
     const hash = await flow.confirm(true), record = await flow.reconcile(hash); assert.equal(record.status, 'finalized');
     events.push({ action: name, hash, seedId: flow.seedId, status: record.status }); return record;
   }
-  return { f, temp, profile, copiedSources, fixtureModifications, actors, files, publish, storage, locks, session, flow, choose, action, events, walletTraffic, financialEvidence, WalletSession, NovaWorkflow };
+  return { f, temp, profile, compilerBuilds, copiedSources, fixtureModifications, actors, files, publish, storage, locks, session, flow, choose, action, events, walletTraffic, financialEvidence, WalletSession, NovaWorkflow };
 }
 
 async function captureLedger(state,observerKey,label,count) {
@@ -280,7 +299,7 @@ async function qualify(state) {
     classification: 'production workflow plus genuine bounded local executor and disposable exact-source EVM',
     commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     worktreeDirty: Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim()),
-    sourceHashes, environment, fixtureModifications:state.fixtureModifications, profile, projectId,
+    sourceHashes, environment, fixtureModifications:state.fixtureModifications, profile, compilerBuilds:state.compilerBuilds, projectId,
     cycles: [first, second], evaluatedJob: evaluated, evaluationFreeze, comparison,
     reuse:{asset:reuse.asset,selection:reuse.selection,sourceBytesUtf8:new TextDecoder().decode(reuse.sourceBytes)},
     reclaimedBaseUnits: String(reclaimed), actions: events,

@@ -37,10 +37,7 @@ def test_candidate_checkout_is_exact_and_read_only():
     assert checkout["ref"] == expected
     assert checkout["persist-credentials"] == "false"
     assert checkout["fetch-depth"] == "0"
-    assert (
-        'test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"'
-        in job["steps"][1]["run"]
-    )
+    assert 'test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"' in job["steps"][1]["run"]
     assert "HEAD^{tree}" in job["steps"][1]["run"]
     assert "secrets." not in WORKFLOW.read_text(encoding="utf-8")
 
@@ -53,9 +50,10 @@ def test_full_regression_retains_coverage_and_offline_runner():
     assert "--cov-fail-under=80" in regression
     assert "--cov-config=pyproject.toml" in regression
     assert "--junitxml=evidence/regression.xml" in regression
-    assert "--require-hashes -r requirements.lock -r requirements-dev.lock" in commands[
-        "Original locked development environment"
-    ]
+    assert (
+        "--require-hashes -r requirements.lock -r requirements-dev.lock"
+        in commands["Original locked development environment"]
+    )
     assert "--deselect" not in regression
     assert " -m " not in regression.split("scripts.run_local_tests", 1)[1]
     assert " -k " not in regression
@@ -66,11 +64,7 @@ def test_full_regression_retains_coverage_and_offline_runner():
 
 def test_strict_types_and_preservation_remain_required():
     steps = _workflow()["jobs"]["regression"]["steps"]
-    command = next(
-        step["run"]
-        for step in steps
-        if step.get("name") == "Strict types and repository checks"
-    )
+    command = next(step["run"] for step in steps if step.get("name") == "Strict types and repository checks")
     for config in (
         "runtime",
         "business3",

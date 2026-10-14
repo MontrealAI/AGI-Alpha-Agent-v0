@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { tokens, units, uint, address, curve } from '../ascension-wallet/protocol.mjs';
-import { StudioChain } from './chain.mjs';
+import { ACTIONS, tokens, units, uint, address, curve } from '../ascension-wallet/protocol.mjs';
+import { canonicalProfile, unresolved } from '../ascension-wallet/client.mjs';
+import { verifyNativeDelivery } from './native-delivery.mjs';
+import { keccak256 } from './vendor/ethers-6.17.0.mjs';
+import { INTERFACES, StudioChain } from './chain.mjs';
 import { verifyPlan } from './plan.mjs';
-import { createPackage, recoverPackage, exportKit, importKit, objectHash, hashBytes, profileIdentity, verifyPackage, strictJSON } from './package.mjs';
+import { createPackage, recoverPackage, exportKit, importKit, objectHash, hashBytes, profileIdentity, verifyPackage, strictJSON, deploymentIdentityStatus } from './package.mjs';
 import { publishPackage, verifyPublication, metadataFor } from './storage.mjs';
 import { createProject, updateCycle, addCycle, preserveSignedRecord, exportProjectKit, importProjectKit, registerMission, completeMission, observeCycle, projectReservoir, freezeEvaluation, recordEvaluation, verifyEvaluation, decideEvaluation, prepareSuccessor } from './cycle.mjs';
 import { makeRuntimeRequest, verifyTerms, verifyRuntimeResult, verifySettlementRecord, resultCommitments, verifyEnvelope } from './runtime.mjs';
@@ -14,9 +17,11 @@ export class NovaWorkflow {
     this.session=session; this.client=session.client; this.chain=new StudioChain(this.client); this.storage=storage;
     this.package=null; this.publication=null; this.seedId=null; this.jobIds=[]; this.recovered=false; this.exported=false;
     this.observation=null; this.preview=null;
+    this.client.requireEffectVerification=true; this.nativeDelivery=null; this.verifiedRoutes=new Map();
     this.project=null; this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms=new Map();
     this.runtimeSettlement=null; this.runtimeEvaluation=null; this.runtimeReuse=null;
   }
+  get deploymentIdentity() { return this.package ? deploymentIdentityStatus(this.package,this.client.profile) : null; }
   get cycleId() { return this.project?.activeCycleId || null; }
   get currentCycle() { return this.project?.cycles.find(cycle=>cycle.cycleId===this.cycleId) || null; }
   async ensureProject(options={}) {
@@ -36,14 +41,13 @@ export class NovaWorkflow {
   async restoreProject(text,passphrase,capsulePassphrase=passphrase) {
     const project=await importProjectKit(text,passphrase), cycle=project.cycles.find(item=>item.cycleId===project.activeCycleId);
     const genome=cycle.package?await recoverPackage(cycle.package,capsulePassphrase,this.client.profile):null;
-    if (cycle.journal?.transactions?.length) await this.session.restore(cycle.journal);
-    this.clearPreview(); this.project=project; this.package=cycle.package; this.publication=cycle.publication;
-    this.seedId=cycle.seedId; this.jobIds=[...cycle.jobIds]; this.recovered=true; this.exported=false;
-    this.observation=null; this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
-    this.runtimeSettlement=null; this.runtimeEvaluation=null; this.runtimeReuse=null;
-    return genome;
+    return this.attachRecovery({package:cycle.package,publication:cycle.publication,seedId:cycle.seedId,
+      jobIds:[...cycle.jobIds],journal:cycle.journal},genome,project);
   }
   async nextCycle(draft,passphrase,options={}) {
+    return this.session.exclusive(async()=>{
+    if (this.client.history.some(unresolved)) throw Error('Reconcile the outstanding transaction before replacing its cycle.');
+    const epoch=this.client.epoch;
     if (!this.package) throw Error('Create and preserve the first exact package first.');
     await this.syncProject();
     let parent='0';
@@ -60,10 +64,11 @@ export class NovaWorkflow {
     if (this.currentCycle.missions.length && !reuse) throw Error('Select and freshly review an actual accepted first-cycle artifact for reuse before continuing.');
     const adopted=evaluation && this.currentCycle.evaluations.find(item=>item.evaluationId===evaluation.modelId)?.decision?.decision==='adopt';
     const project=reuse?await prepareSuccessor(this.project,this.cycleId,pkg,{...options,assetIds:[reuse.asset.assetId],verifiedAssets:[reuse.token],evaluationId:adopted?evaluation.modelId:null,verified:evaluation?.token}):await addCycle(this.project,pkg,{parentCycleId:this.cycleId,...options});
-    this.clearPreview(); this.project=project; this.package=pkg; this.publication=null; this.seedId=null; this.jobIds=[];
+    this.guardContext(epoch); this.stale(); this.project=project; this.package=pkg; this.publication=null; this.seedId=null; this.jobIds=[];
     this.observation=null; this.recovered=true; this.exported=false; this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
     this.runtimeSettlement=null; this.runtimeEvaluation=null;
     return pkg;
+    });
   }
   async runtimeRequest(index,workSpec) {
     await this.syncProject();
@@ -230,7 +235,7 @@ export class NovaWorkflow {
       verifier.seedId=cycle.seedId;
       await verifier.importRuntimeResult(retained.originalText,observerKey);
       const settlement=await verifier.importRuntimeSettlement(record.originalText,observerKey);
-      return {request,result,settlement,observerKey};
+      return {request,result,settlement,observerKey,profile:verifier.client.profile};
     }});
     this.project=authorized.project; this.runtimeReuse={...authorized,sourceCycleId,review,observerKey,artifactHash:result.artifact_keccak256};
     return authorized;
@@ -255,28 +260,76 @@ export class NovaWorkflow {
     const {createReinvestmentProposal}=await import('./ledger.mjs');
     return createReinvestmentProposal(this.project,this.cycleId,this.chain,{...input,destination:{deployment:profileIdentity(this.client.profile),seedId:this.seedId},approvalActor:this.client.account});
   }
-  clearPreview() { this.preview=null; this.client.cancelPreview(); }
-  async create(draft, passphrase) {
-    if (this.package) throw Error('Preserve this package and deliberately prepare a new cycle.');
-    const pkg=await createPackage(draft,passphrase,this.client.profile);
-    const project=this.project?await updateCycle(this.project,this.cycleId,{package:pkg}):await createProject(pkg,{title:draft.title});
-    this.clearPreview(); this.package=pkg; this.publication=null; this.seedId=null; this.jobIds=[];
-    this.project={...project,title:draft.title}; this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
+  stale() { this.observation=null; this.nativeDelivery=null; this.verifiedRoutes.clear(); this.clearPreview(); }
+  clearRuntime() {
+    this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
     this.runtimeSettlement=null; this.runtimeEvaluation=null; this.runtimeReuse=null;
-    this.recovered=true; this.exported=false; this.observation=null; return pkg;
+  }
+  clearPreview() { this.preview=null; this.client.cancelPreview(); }
+  guardContext(epoch) {
+    // Local encrypted preparation does not require a connected wallet.
+    if (this.session.client!==this.client || this.client.epoch!==epoch)
+      throw Error('Wallet or deployment changed during local preparation. Start again.');
+  }
+  async create(draft, passphrase) {
+    return this.session.exclusive(async()=>{
+      if (this.client.history.some(unresolved)) throw Error('Reconcile the outstanding transaction before replacing its project.');
+      if (this.package) throw Error('Preserve this package and deliberately prepare a new cycle.');
+      const epoch=this.client.epoch, pkg=await createPackage(draft,passphrase,this.client.profile);
+      const project=this.project?await updateCycle(this.project,this.cycleId,{package:pkg}):await createProject(pkg,{title:draft.title});
+      this.guardContext(epoch);
+      this.package=pkg; this.publication=null; this.seedId=null; this.jobIds=[];
+      this.project={...project,title:draft.title}; this.clearRuntime();
+      this.recovered=true; this.exported=false; this.stale(); return pkg;
+    });
   }
   async restore(text,passphrase) {
     const body=await importKit(text,this.client.profile);
     const genome=await recoverPackage(body.package,passphrase,this.client.profile);
     let project=await createProject(body.package,{title:genome.project?.title||'Recovered Nova-Seed project'});
     project=await updateCycle(project,project.activeCycleId,{publication:body.publication,seedId:body.seedId,jobIds:body.jobIds,journal:body.journal});
-    // Import journal first; refusal must not replace the current project.
-    if (body.journal?.transactions?.length) await this.session.restore(body.journal);
-    this.clearPreview(); this.package=body.package; this.publication=body.publication; this.seedId=body.seedId;
-    this.jobIds=body.jobIds; this.recovered=true; this.exported=false; this.observation=null;
-    this.project=project; this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
-    this.runtimeSettlement=null; this.runtimeEvaluation=null; this.runtimeReuse=null;
-    return genome;
+    return this.attachRecovery(body,genome,project);
+  }
+  async attachRecovery(body,genome,project) {
+    if (!this.client.history.some(unresolved) && body.journal?.transactions?.length)
+      await this.session.restore(body.journal);
+    return this.session.exclusive(async()=>{
+      // Attaching recovery material never replaces the live journal. A fresh tab
+      // may recover the exact pending route/funding intent without submitting it.
+      const p=body.package;
+      const outstanding=this.client.history.filter(unresolved);
+      let associated=outstanding.length===0;
+      for (const pending of outstanding) {
+        const imported=body.journal?.transactions?.find(record=>record.action===pending.action &&
+          canonicalProfile(record.transaction)===canonicalProfile(pending.transaction) &&
+          canonicalProfile(record.args)===canonicalProfile(pending.args));
+        if (pending.action==='seal') {
+          if (p && pending.args[0]===p.capsuleHash && pending.args[1]===p.plan.planRoot &&
+              String(pending.args[2])===String(p.plan.jobs.length) && String(pending.args[4])===p.parent &&
+              pending.args[5]===p.evidenceHash && (!body.publication || pending.args[3]===body.publication.metadataURI))
+            associated=true;
+        } else {
+          if (!imported) continue;
+          const fields=ACTIONS[pending.action]?.fields || [];
+          if (fields.some((field,index)=>field.key==='id' && String(pending.args[index])!==body.seedId ||
+              field.key==='job' && !body.jobIds.includes(String(pending.args[index])))) continue;
+          if (pending.action==='route') {
+            if (!p) continue;
+            const index=Number(pending.args[1]), job=p.plan.jobs[index];
+            if (!job || INTERFACES.Mark.encodeFunctionData('route',[body.seedId,index,job.spec,job.proof,
+                pending.args[4],pending.args[5]]).toLowerCase()!==pending.transaction.data.toLowerCase()) continue;
+          }
+          associated=true;
+        }
+      }
+      // The shared journal can contain several projects. Attach one matching
+      // project at a time; all other uncertain records continue blocking writes.
+      if (!associated) throw Error('Restore the exact package and recovery seed associated with an unresolved transaction.');
+      this.package=p; this.publication=body.publication; this.seedId=body.seedId;
+      this.jobIds=body.jobIds; this.recovered=true; this.exported=false; this.stale();
+      this.project=project; this.clearRuntime();
+      return genome;
+    });
   }
   async kit() {
     const kit=await exportKit(this.package,{publication:this.publication,seedId:this.seedId,jobIds:this.jobIds,journal:this.client.journal()});
@@ -289,7 +342,7 @@ export class NovaWorkflow {
     return this.publication;
   }
   async inspect(seedId=this.seedId) {
-    this.clearPreview();
+    this.clearPreview(); this.observation=null;
     const state=await this.chain.seed(seedId,this.package);
     this.seedId=seedId; this.observation=state; return state;
   }
@@ -298,6 +351,8 @@ export class NovaWorkflow {
     if (action==='seal') {
       if (!this.package || !this.recovered || !this.exported || this.seedId) throw Error('Recover and export this unminted package first.');
       await verifyPackage(this.package,c.profile);
+      if (this.deploymentIdentity!=='exact-source')
+        throw Error('This legacy package records addresses only. Preserve it for recovery; create a new package with exact source identity before minting.');
       this.publication=await verifyPublication(this.package,this.publication,this.storage);
       if (!(await chain.identity(who)).eligible) throw Error('The minting wallet needs an owned registered business name and current admission.');
       if (this.package.parent!=='0' && !eq((await c.call('Seed','ownerOf',[this.package.parent]))[0],who)) throw Error('This wallet does not own the parent seed.');
@@ -404,11 +459,23 @@ export class NovaWorkflow {
       if (action==='award' && (job.state!==1n || observed<job.auctionEnd)) throw Error('An open auction can be processed only after its end.');
       if (action==='submit') {
         if (job.state!==2n || !eq(who,job.worker) || observed>job.due) throw Error('Delivery requires the awarded worker, an assigned job and an unexpired delivery deadline. Refresh the job state.');
-        const published=await this.storage.retrieveBytes(input.uri,undefined,2000000);
-        const deliveredHash=input.hashAlgorithm==='keccak256'?(await resultCommitments(published.bytes)).keccak256:published.byteHash;
-        if (input.hashAlgorithm && !['sha256','keccak256'].includes(input.hashAlgorithm)) throw Error('Unsupported result commitment domain.');
-        if (deliveredHash!==input.result)
-          throw Error('Published result bytes do not match the selected result file.');
+        const retrieved=await this.storage.retrieveBytes(input.uri,undefined,2000000);
+        if (input.native===true) {
+          const native=this.nativeDelivery;
+          if (!native || native.epoch!==c.epoch || native.seedId!==this.seedId || native.jobId!==jobId ||
+              native.resultHash!==input.result || native.planRoot!==this.package.plan.planRoot)
+            throw Error('Import and verify this native delivery for the connected worker and exact selected job first.');
+          const work=await this.workPackage(jobId);
+          const checked=await verifyNativeDelivery(native.source,{trustedPublicKey:native.signer,
+            plan:this.package.plan,index:work.job.index});
+          if (checked.resultHash!==input.result || keccak256(retrieved.bytes)!==input.result)
+            throw Error('Published native delivery bytes differ from the verified signed artifact.');
+        } else {
+          if (input.hashAlgorithm && !['sha256','keccak256'].includes(input.hashAlgorithm)) throw Error('Unsupported result commitment domain.');
+          const deliveredHash=input.hashAlgorithm==='keccak256'?(await resultCommitments(retrieved.bytes)).keccak256:retrieved.byteHash;
+          if (deliveredHash!==input.result) throw Error('Published result bytes do not match the selected generic SHA-256 or Keccak-256 result file.');
+        }
+
         return ['submit',[jobId,input.result,input.uri]];
       }
       if (action==='validate') {
@@ -426,11 +493,16 @@ export class NovaWorkflow {
   }
   async prepare(action,input={}) {
     this.clearPreview();
-    const epoch=this.client.epoch, [method,values]=await this.preflight(action,input);
-    this.client.guard(epoch);
-    const preview=await this.session.prepare(method,values);
-    this.preview={action,input:JSON.parse(JSON.stringify(input)),method,values,prepared:preview};
-    return preview;
+    return this.session.exclusive(async()=>{
+      // Sync the shared journal and stop before live observations can be reused
+      // while an earlier transaction still has an uncertain effect.
+      if (this.client.history.some(unresolved)) throw Error('Reconcile the outstanding transaction before starting another.');
+      const epoch=this.client.epoch, [method,values]=await this.preflight(action,input);
+      this.client.guard(epoch);
+      const preview=await this.client.prepare(method,values);
+      this.preview={action,input:JSON.parse(JSON.stringify(input)),method,values,prepared:preview};
+      return preview;
+    });
   }
   async confirm(acknowledged) {
     const intent=this.preview;
@@ -445,27 +517,44 @@ export class NovaWorkflow {
     });
   }
   async reconcile(hash) {
-    const record=await this.session.reconcile(hash); this.preview=null;
-    if (record.status!=='finalized') return record;
-    if (record.action==='seal' && this.package && !this.publication) {
-      const metadataURI=record.args[3], {object:metadata}=await this.storage.retrieve(metadataURI);
-      const expected=metadataFor(this.package,metadata.capsule?.uri,metadata.evidence?.uri);
-      this.publication=await verifyPublication(this.package,{schema:'agialpha.nova-studio.publication.v1',metadataURI,
-        capsuleURI:metadata.capsule.uri,evidenceURI:metadata.evidence.uri,metadataHash:await objectHash(expected)},this.storage);
-    }
-    if (record.action==='seal' && this.package && this.publication) {
-      this.observation=await this.chain.verifyMint(record,this.package,this.publication); this.seedId=this.observation.seedId;
-    } else if (record.action==='route' && this.package && this.seedId) {
-      const jobId=await this.chain.verifyRoute(record,this.package,this.seedId);
-      if (!this.jobIds.includes(jobId)) this.jobIds.push(jobId);
-      this.observation=await this.chain.seed(this.seedId,this.package);
-    } else if (this.seedId) this.observation=await this.chain.seed(this.seedId,this.package);
-    return record;
+    this.clearPreview();
+    return this.session.exclusive(async()=>{
+      try {
+        const record=await this.client.receipt(hash,true);
+        if (!['finalized','effect-unverified'].includes(record.status) || record.receipt?.status!=='0x1') {
+          this.stale(); return record;
+        }
+        const selectedMint=record.action==='seal' && this.package && record.args[0]===this.package.capsuleHash &&
+          record.args[1]===this.package.plan.planRoot && record.args[5]===this.package.evidenceHash;
+        if (selectedMint && !this.publication) {
+          const metadataURI=record.args[3], {object:metadata}=await this.storage.retrieve(metadataURI);
+          const expected=metadataFor(this.package,metadata.capsule?.uri,metadata.evidence?.uri);
+          this.publication=await verifyPublication(this.package,{schema:'agialpha.nova-studio.publication.v1',metadataURI,
+            capsuleURI:metadata.capsule.uri,evidenceURI:metadata.evidence.uri,metadataHash:await objectHash(expected)},this.storage);
+        }
+        if (record.action==='seal') {
+          if (selectedMint) {
+            this.observation=await this.chain.verifyMint(record,this.package,this.publication); this.seedId=this.observation.seedId;
+          } else await this.chain.openMintReceipt(hash);
+        } else if (record.action==='route') {
+          const seedId=String(record.args[0]);
+          const selected=!!this.package && this.seedId===seedId;
+          const jobId=await this.chain.verifyRoute(record,selected?this.package:null,seedId);
+          if (selected) {
+            this.verifiedRoutes.set(jobId,{hash,index:Number(record.args[1])});
+            if (!this.jobIds.includes(jobId)) this.jobIds.push(jobId);
+            this.observation=await this.chain.seed(seedId,this.package);
+          }
+        } else if (this.seedId) this.observation=await this.chain.seed(this.seedId,this.package);
+        else await this.client.inspect();
+        if (record.status==='effect-unverified') this.client.completeEffects(record);
+        return record;
+      } catch (error) { this.stale(); throw error; }
+    });
   }
   async workPackage(jobId) {
     await verifyPackage(this.package,this.client.profile);
-    const state=await this.client.inspect(this.seedId,jobId), job=state.job;
-    if (String((await this.chain.call('Mark','jobSeed',[jobId]))[0])!==this.seedId) throw Error('Job is not bound to this seed.');
+    const state=await this.chain.inspectJob(this.seedId,jobId,this.package), job=state.job;
     // JobMarket hashes index zero, while MARK commits the actual plan index.
     const {leaf}=await import('./plan.mjs');
     let matching=this.package.plan.jobs.filter(x=>leaf(0,x.spec)===job.specHash);
@@ -473,12 +562,11 @@ export class NovaWorkflow {
       // Identical specifications are legal at different committed indices. Resolve
       // the actual index from a canonical transaction, never from imported status.
       const routes=this.client.history.filter(r=>r.action==='route' && String(r.args[0])===this.seedId);
+      if (this.verifiedRoutes.has(jobId)) routes.push({hash:this.verifiedRoutes.get(jobId).hash});
       const verified=[];
-      for (const route of routes) {
-        if (!route.hash) continue;
-        const receipt=await this.session.exclusive(()=>this.client.receipt(route.hash));
-        if (await this.chain.verifyRoute(receipt,this.package,this.seedId)===jobId)
-          verified.push(this.package.plan.jobs[Number(route.args[1])]);
+      for (const hash of new Set(routes.map(route=>route.hash).filter(Boolean))) {
+        const route=await this.chain.openRouteReceipt(hash,this.package,this.seedId);
+        if (route.jobId===jobId) verified.push(this.package.plan.jobs[route.index]);
       }
       matching=verified;
     }
@@ -487,8 +575,28 @@ export class NovaWorkflow {
       job:matching[0],plan:this.package.plan,artifacts:this.publication,
       allowedInputs:'Public, licensed or explicitly authorized synthetic inputs only.',
       acceptance:matching[0].spec.successMetric,delivery:{due:String(job.due),reviewEnd:String(job.reviewEnd),
-        required:'Exact result-file SHA-256, immutable result URI and independent review evidence'},
+        required:'Generic files: exact SHA-256. Native signed Ascension delivery: Keccak-256 of the original complete signed envelope. Use the matching import mode, immutable URI and independent review evidence.'},
       native:{verifyPlan:'alpha-agent ascension-check plan.json',delivery:'alpha-agent ascension-deliver',
-        guide:'agent/ASCENSION_PROTOCOL.md'},runtime:{status:'not-connected',authority:'No execution, spending or wallet permission granted.'}};
+        guide:'https://montrealai.github.io/AGI-Alpha-Agent-v0/agent/ASCENSION_PROTOCOL/'},
+      runtime:{status:'not-connected',authority:'No execution, spending or wallet permission granted.'}};
+  }
+  async importNativeDelivery(source,{trustedPublicKey,jobId}) {
+    this.nativeDelivery=null; this.clearPreview();
+    const epoch=this.client.epoch, work=await this.workPackage(jobId);
+    const checked=await verifyNativeDelivery(source,{trustedPublicKey,plan:this.package.plan,index:work.job.index});
+    this.client.guard(epoch);
+    const state=await this.chain.inspectJob(this.seedId,jobId,this.package);
+    if (BigInt(state.job.resultHash)!==0n && state.job.resultHash!==checked.resultHash)
+      throw Error('This signed artifact differs from the result already delivered on chain.');
+    this.nativeDelivery=Object.freeze({...checked,source,epoch,seedId:this.seedId,jobId,status:'evidence-imported'});
+    const {source:privateSource,epoch:walletEpoch,...report}=this.nativeDelivery;
+    return report;
+  }
+  async openRouteReceipt(hash) {
+    if (!this.package || !this.seedId) throw Error('Open the seed and restore its exact package first.');
+    const route=await this.chain.openRouteReceipt(hash,this.package,this.seedId);
+    this.verifiedRoutes.set(route.jobId,{hash,index:route.index});
+    if (!this.jobIds.includes(route.jobId)) this.jobIds.push(route.jobId);
+    return route;
   }
 }

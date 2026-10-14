@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPackage,exportKit,importKit,hashBytes,objectHash} from '../../docs/assets/nova-studio/package.mjs';
+import {createPackage,exportKit,importKit,hashBytes,objectHash,fileBytes,recoverPackage} from '../../docs/assets/nova-studio/package.mjs';
+import {sealSeed} from '../../docs/assets/ascension/crypto.mjs';
 import {CONTRACTS} from '../../docs/assets/ascension-wallet/protocol.mjs';
 import {createProject,validateProject,updateCycle,addCycle,preserveSignedRecord,exportProjectKit,importProjectKit,
   observeCycle,projectCycleState,projectReservoir,proposeReinvestment,reconcileCapital,registerAsset,requireReuseRights,
   verifyReuseRights,freezeEvaluation,recordEvaluation,verifyEvaluation,decideEvaluation,prepareSuccessor,
-  registerMission,completeMission,projectObjectHash} from '../../docs/assets/nova-studio/cycle.mjs';
+  registerMission,completeMission,projectObjectHash,deploymentAddress} from '../../docs/assets/nova-studio/cycle.mjs';
 
-const profile = {chainId:1,profile:'archived-read-only-unit-fixture',
-  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key])=>key!=='Token').map(([key,value])=>[key,{address:value}]))};
+const profile = {chainId:1,profile:'archived-read-only-unit-fixture',sourceSHA256:'a'.repeat(64),abiSHA256:'b'.repeat(64),
+  contracts:Object.fromEntries(Object.entries(CONTRACTS).filter(([key])=>key!=='Token').map(([key,value])=>[key,{address:value,sha256:'c'.repeat(64)}]))};
 const passphrase = 'a separate private recovery passphrase', now = Date.now();
 const who = '0x1111111111111111111111111111111111111111', other = '0x2222222222222222222222222222222222222222';
 const h = digit => '0x'+digit.repeat(64), enc = new TextEncoder();
@@ -17,6 +18,13 @@ const spec = {goal:'Integrate public x^4 on [0,3]',successMetric:'Report exact e
   bounty:'100000000000000000000',duration:86400,priceWeight:6000};
 const draft = {title:'Private opportunity',description:'Unreleased private terms',jobs:[spec],evidence:'Synthetic reproducible reference.'};
 const pkg = await createPackage(draft,passphrase,profile);
+async function historicalPackage() {
+  const deployment = {chainId:profile.chainId,profile:profile.profile,
+    contracts:Object.fromEntries(Object.entries(CONTRACTS).map(([name,value])=>[name,value.toLowerCase()]))};
+  const evidence = {...pkg.evidence,deployment}, evidenceHash = await objectHash(evidence);
+  const capsule = await sealSeed({...await recoverPackage(pkg,passphrase),deployment,evidenceHash},passphrase);
+  return {...pkg,deployment,evidence,evidenceHash,capsule,capsuleHash:await objectHash(capsule),capsuleByteHash:await hashBytes(fileBytes(capsule))};
+}
 const parent = async () => {
   const project = await createProject(pkg,{title:draft.title,opportunity:{baseline:'private baseline'}});
   return updateCycle(project,project.activeCycleId,{seedId:'7'});
@@ -108,9 +116,40 @@ test('fresh projections refuse imported flags, account changes, reorg hashes and
   assert.equal(projectCycleState(project,project.activeCycleId,{observation,now}).fresh,false);
 });
 
+test('current descriptors and historical identities retain exact bytes and separate address extraction from source verification',async()=>{
+  const legacy = await historicalPackage();
+  for (const [original,status] of [[pkg,'exact-source'],[legacy,'legacy-addresses']]) {
+    const before = JSON.stringify(original);
+    let project = await createProject(original);
+    project = await updateCycle(project,project.activeCycleId,{seedId:'7'});
+    const chain = currentChain(project), observation = await observeCycle(project,project.activeCycleId,chain);
+    assert.equal(observation.deploymentIdentity,status);
+    const reservoir = projectReservoir(project,project.activeCycleId,observation);
+    assert.equal(reservoir.deploymentIdentity,status);assert.equal(reservoir.asset,CONTRACTS.Token.toLowerCase());
+    assert.equal(reservoir.campaign.controller,CONTRACTS.Mark.toLowerCase());
+    assert.equal(reservoir.stake[0].contract,CONTRACTS.Jobs.toLowerCase());
+    assert.equal(proposeReinvestment(reservoir,{sourceOwner:who,approvalActor:who,amount:'1',
+      destination:{deployment:pkg.deployment,seedId:'9'},rationale:'Review a fresh task',risk:'Principal may be spent.'}).status,'proposal-only');
+    const restored = await importProjectKit(JSON.stringify(await exportProjectKit(project,passphrase)),passphrase);
+    assert.deepEqual(restored.cycles[0].package,original);assert.equal(JSON.stringify(original),before);
+  }
+  assert.equal(deploymentAddress(pkg.deployment,'Jobs'),CONTRACTS.Jobs.toLowerCase());
+  assert.equal(deploymentAddress(pkg.deployment,'Token'),CONTRACTS.Token.toLowerCase());
+  assert.equal(deploymentAddress({...pkg.deployment,contracts:{...pkg.deployment.contracts,Token:{address:other}}},'Token'),other);
+  assert.throws(()=>deploymentAddress({...pkg.deployment,contracts:{...pkg.deployment.contracts,Token:null}},'Token'),/full 0x/);
+  const project = await parent();
+  for (const changed of [{...profile,sourceSHA256:'d'.repeat(64)},
+    {...profile,contracts:{...profile.contracts,Jobs:{...profile.contracts.Jobs,sha256:'e'.repeat(64)}}}]) {
+    const chain = currentChain(project);chain.client.profile=changed;
+    await assert.rejects(observeCycle(project,project.activeCycleId,chain),/source identity/);
+  }
+  const sameAddressesNewSource = {...profile,sourceSHA256:'f'.repeat(64)};
+  await assert.rejects(addCycle(project,await nextPackage('7',sameAddressesNewSource)),/off-chain/);
+});
+
 test('wallet balance, backing reserve, stakes and rightful claim stay separate in native units',async()=>{
   const project = await parent(), chain = currentChain(project), observation = await observeCycle(project,project.activeCycleId,chain,{now});
-  const foreignProject = crypto.randomUUID(), reservation = {reservationId:'shared-plan',chainId:1,asset:pkg.deployment.contracts.Token,
+  const foreignProject = crypto.randomUUID(), reservation = {reservationId:'shared-plan',chainId:1,asset:CONTRACTS.Token,
     owner:who,amount:'300',projectId:foreignProject,status:'planned'};
   const projection = projectReservoir(project,project.activeCycleId,observation,{now,reservations:[reservation,reservation]});
   assert.equal(projection.walletBalance,'1000');assert.equal(projection.availableForProposal,'700');
@@ -131,8 +170,8 @@ test('wallet balance, backing reserve, stakes and rightful claim stay separate i
 });
 
 test('flow arithmetic deduplicates receipts, separates burns/returned principal and never assigns another actor payout',()=>{
-  const flow = {chainId:1,market:pkg.deployment.contracts.Jobs,jobId:'12',transactionHash:h('c'),logIndex:1,
-    asset:pkg.deployment.contracts.Token,kind:'payout',recipient:who,gross:'100',burned:'5'};
+  const flow = {chainId:1,market:CONTRACTS.Jobs,jobId:'12',transactionHash:h('c'),logIndex:1,
+    asset:CONTRACTS.Token,kind:'payout',recipient:who,gross:'100',burned:'5'};
   const result = reconcileCapital([flow,flow,{...flow,logIndex:2,kind:'principal-return',gross:'200',burned:'0'},
     {...flow,logIndex:3,recipient:other}],{owner:who});
   assert.equal(result.uniqueObservations,3);assert.equal(result.assets[0].netPayout,'95');

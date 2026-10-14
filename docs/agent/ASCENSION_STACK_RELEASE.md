@@ -1,34 +1,82 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Nova-Seed and Ascension stack: start here for integration and release
+# Nova-Seed and Ascension: first use and release integration
 
 [First-use and full-cycle guide](ASCENSION_CYCLE.md) ·
 [Nova-Seed recovery guide](NOVA_SEED_STUDIO.md) ·
 [Native executor guide](SUCCESSOR_ASCENSION.md) ·
 [Acceptance and remaining work](ASCENSION_CYCLE_HANDOFF.md)
 
-## What a user should open
+## First use: English { #first-use-english }
 
-For the complete project journey, start with the **first-use and full-cycle guide** above.
-It explains project creation, encrypted recovery, exact work, separately authorized execution,
-review, settlement, evaluation and the deliberate next mission. Use the Nova-Seed guide for
-wallet and recovery details, and the native executor guide for the local machine.
+Start with one small project whose inputs and success criteria you can explain. You can prepare and
+recover it locally before choosing a wallet or paid service.
 
-The hosted Studio and local operator console are different surfaces. The hosted Studio's
-`/ascension/mainnet/` path does not certify production readiness. After installing the native
-runtime, `alpha-agent --home ./agent-state serve` serves the private operator console at
-`http://127.0.0.1:8765/ascension-studio`. Keep its API and role-approval tokens on that machine;
-do not enter them into the hosted Studio or put them in recovery exports.
+1. **Open [Studio](../ascension/mainnet/index.html).** Describe the work and review the committed jobs,
+   amounts and deadlines. Preparing a project does not mint an NFT or send a transaction.
+2. **Save before continuing.** Encrypt the exact package, check that it reopens and download recovery.
+   Keep the capsule passphrase separately. The readable kit exposes its plan; use the private project
+   export when you need an encrypted copy of the extended history.
+3. **Choose your next step.** You can keep the local project now. Publishing artifacts needs your own
+   supported storage access. A funded cycle also needs a qualified deployment and the actual role
+   holders; archived Mainnet restrictions remain enforced.
+4. **Use the local executor when ready.** Follow [installation](START_HERE.md), then open the installed
+   console using `alpha-agent --home ./agent-state serve`. Its Studio desk is
+   `http://127.0.0.1:8765/ascension-studio`. The administrator first provisions trusted identities and
+   role credentials. Use its setup, pairing, controller approval and execution forms.
+5. **Inspect the result and decisions.** Return the exact signed files to the project. Execution,
+   acceptance, payment and adoption are separate statuses. Keep failed findings and uncertain outcomes.
+6. **Continue deliberately.** Review the source artifact's reuse rights, freeze the comparison and make
+   a distinct next mission with fresh inputs and permissions. Save updated recovery after each milestone.
 
-Local preparation needs no wallet or paid provider. New exposure on the October 11 archived
-Mainnet deployment remains blocked, and the production replacement-profile registry is empty.
-A pending or uncertain transaction must be reconciled, not blindly resubmitted. Restoring a
-project does not grant fresh execution, review, adoption or spending authority.
+Keep API and role-approval tokens on the local machine; never enter them into the hosted Studio or
+include them in project exports. Never use a wallet recovery phrase as a capsule passphrase. If a
+transaction is uncertain, reconcile its original intent before another attempt. Recovery preserves
+history and does not grant new execution, review, adoption or spending authority.
 
-## The four changes are a stack, not four independent releases
+For the detailed workflow, use the [complete-cycle guide](ASCENSION_CYCLE.md). Use the
+[Nova-Seed guide](NOVA_SEED_STUDIO.md) for wallet/publication recovery and the
+[native adapter guide](SUCCESSOR_ASCENSION.md) for the operator's exact handoff.
 
-The following is the inspected implementation snapshot from **October 14, 2026**. The commit
-IDs identify the submitted implementations; subsequent integration fixes need fresh evidence.
+## Première utilisation : français { #premiere-utilisation-francais }
+
+Choisissez d'abord un petit projet dont vous comprenez les données et les critères de réussite.
+La préparation et la récupération locales ne demandent ni portefeuille ni service payant.
+
+1. **Ouvrez le [Studio](../ascension/mainnet/index.html).** Décrivez le travail, puis vérifiez les tâches,
+   les montants et les échéances. Cette préparation ne crée pas de NFT et n'envoie pas de transaction.
+2. **Sauvegardez le projet.** Chiffrez le paquet exact, vérifiez sa réouverture et téléchargez la
+   sauvegarde. Gardez le mot de passe séparément. Le kit lisible contient le plan en clair; l'export
+   privé chiffre l'historique étendu.
+3. **Choisissez la suite.** Vous pouvez conserver le projet local. La publication nécessite votre
+   propre accès au stockage. Un cycle financé nécessite aussi un déploiement qualifié et les véritables
+   responsables de chaque rôle. Les restrictions du déploiement Mainnet archivé restent appliquées.
+4. **Préparez l'exécution locale.** Suivez le [guide d'installation](START_HERE.md), puis les formulaires
+   de la console locale. L'administrateur prépare d'abord les identités et les autorisations. La
+   signature du contrôleur et le démarrage du travail sont deux confirmations distinctes.
+5. **Examinez les preuves.** Importez les fichiers signés d'origine et distinguez l'exécution, la revue,
+   le règlement et le choix d'une meilleure méthode. Conservez aussi les résultats négatifs.
+6. **Commencez une nouvelle mission explicitement.** Vérifiez les droits de réutilisation, fixez les
+   critères de comparaison et utilisez de nouvelles données et autorisations. Mettez la sauvegarde à jour.
+
+Gardez les jetons de la console et des rôles sur la machine locale. Ne les saisissez pas dans le Studio
+hébergé et n'utilisez jamais la phrase de récupération de votre portefeuille. Une restauration ne
+réactive pas les autorisations. Une transaction incertaine doit être vérifiée avant une nouvelle tentative.
+
+## Release scope and verification
+
+Version **1.31.0** integrates the four-PR stack. [Release notes](RELEASE_NOTES_1.31.0.md) describe its scope and the
+[readiness record](RELEASE_READINESS.md) separates integration checks from actual publication.
+At the start of this integration, #4780 and #4781 had been merged into the Nova-Seed feature branch;
+that was not yet a merge of #4779 into `main`. #4782 then needed reconciliation with that updated branch.
+Final combined-source checks, main merge, release/tag identity and public-site acceptance must use the
+actual resulting commit. Historical workflow successes remain evidence for their recorded snapshots.
+
+## Historical stack and integration requirements
+
+The following records the earlier inspected implementation snapshot from **October 14, 2026**. These
+are historical submitted source identities, not the new integrated release identity. Subsequent fixes
+and merge resolutions need fresh evidence.
 
 | PR | Purpose | Submitted source | Base branch at inspection |
 | --- | --- | --- | --- |
@@ -42,7 +90,7 @@ hardening and cycle branches both edit Nova browser, recovery, evidence and test
 Do not select an entire side of a merge merely to remove conflicts. Reconcile the behavior
 and retain both sets of assertions. A feature-branch merge is not a merge into `main`.
 
-## Close the missing regression coverage before final integration
+## Preserve the full regression and publication gates
 
 At the inspected cycle head, the passing workflow was **MARK wallet acceptance**. The
 `agent-release.yml` push allowlist did not include the native-cycle or inspectable-cycle
@@ -52,6 +100,11 @@ The additive **Ascension stack regression** workflow covers pushes to those two 
 branches when the workflow is present on the source revision. It also supports explicit
 manual runs. It does not run a second copy on every pull-request event. The existing Nova
 release workflow and all normal main-branch acceptance and publication gates remain in place.
+
+The 1.31.0 integration also adds the inspectable-cycle branch to **Agent release acceptance** itself,
+so that branch can run the full candidate acceptance path before merging. This configuration change is
+not a recorded CI result. Publication still requires the resulting integrated `main` commit and its
+matching package and public-site evidence.
 
 The added check uses the same locked development setup, full offline regression, unchanged
 80% coverage floor, strict type scopes and preservation commands as the existing release
@@ -88,20 +141,9 @@ real actors, live paid providers and a separately authorized Mainnet canary are 
 by this CI correction. New funding or other public exposure remains subject to its existing
 qualification and explicit authorization requirements.
 
-## Français : par où commencer ?
+## Français : limites de la publication
 
-Commencez par le **guide de première utilisation et du cycle complet** en haut de cette page.
-Il relie le projet, la sauvegarde chiffrée, le travail autorisé, les résultats, la revue, le
-règlement et le choix explicite de la mission suivante. Le guide Nova-Seed explique les
-opérations du portefeuille; le guide de l'exécuteur décrit la machine locale.
-
-Le Studio hébergé n'est pas la console privée de l'opérateur. Gardez les jetons d'accès et
-d'approbation sur la machine locale. N'entrez jamais la phrase de récupération de votre
-portefeuille dans le Studio. Une restauration ne réactive pas les anciennes autorisations.
-Lorsqu'une transaction reste incertaine, vérifiez son résultat avant toute nouvelle tentative.
-
-Les quatre PR forment un ensemble à intégrer et à tester. Le nouveau contrôle de régression
-est en lecture seule : il n'effectue ni fusion, ni publication, ni transaction Mainnet.
-Un résultat CI positif ne remplace pas une revue indépendante ni la qualification
-opérationnelle. Les restrictions du déploiement archivé et les contrôles de récupération
-restent inchangés.
+Les quatre PR forment un ensemble à intégrer et à vérifier. Les contrôles de régression ne fusionnent
+pas le code et n'autorisent aucune transaction. Le manifeste, les sommes de contrôle et les résultats
+liés au commit publié identifient la livraison réelle. Une publication logicielle ne remplace ni la
+revue indépendante, ni les essais de portefeuilles physiques, ni la qualification opérationnelle Mainnet.

@@ -17,6 +17,7 @@ ASSETS = (
             "protocol.mjs",
             "recovery.mjs",
             "qualified-profiles.mjs",
+            "qualification.mjs",
             "session.mjs",
             "wallet.css",
             "profile.json",
@@ -29,6 +30,7 @@ ASSETS = (
         for name in (
             "app.mjs",
             "chain.mjs",
+            "native-delivery.mjs",
             "package.mjs",
             "plan.mjs",
             "storage.mjs",

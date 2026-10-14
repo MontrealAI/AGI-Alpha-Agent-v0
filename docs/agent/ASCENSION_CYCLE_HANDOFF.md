@@ -1,15 +1,18 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Ascension cycle implementation handoff
+# Ascension cycle implementation handoff — historical snapshot
 
-This is an unpublished implementation candidate. The complete-cycle demonstration and focused component
-results are separate from the 80 requirement decisions, broad repository gates and operational Mainnet
-commissioning. A passing test fixture does not authorize a production deployment or establish realized
-commercial value.
+This records the **October 14, 2026 implementation handoff**, when the candidate was unpublished.
+Its source identities, results and remaining requirements are retained as historical evidence. For the
+subsequent combined release, use [release readiness](RELEASE_READINESS.md) and the
+[1.31.0 release notes](RELEASE_NOTES_1.31.0.md); do not treat the draft states below as a live PR status.
+The complete-cycle demonstration and focused component results are separate from the 80 requirement
+decisions, broad repository gates and operational Mainnet commissioning. A passing fixture does not
+authorize a production deployment or establish realized commercial value.
 
-## Source and publication identity
+## Source and publication identity at capture
 
-| Item | Actual identity / state |
+| Item | Recorded identity / state |
 |---|---|
 | Inspected Nova-Seed source | `89b6f78b83a6643416649173d7d16b6d1c7a65c1`, existing PR #4779 |
 | Merged MARK base | `c38f430d5a07064ad7c19ae761e91eaad3e48efe`, PR #4778 |
@@ -23,8 +26,8 @@ commercial value.
 
 The reports retain exact executable-source hashes, fixture-only profile changes, commands and dependency
 versions. The coordinator independently matched all 34 changed production/test files to these commits.
-Both PRs are unmerged drafts. A source change invalidates current-candidate applicability until the
-affected check is rerun.
+At this capture, both PRs were unmerged drafts. A later source change invalidates applicability to that
+changed candidate until the affected check is rerun.
 Imported artifacts and a matching chain ID do not establish an exact deployment or current authority.
 
 ## What changed and why
@@ -46,10 +49,11 @@ identities and optional private signer/role-token slots before first use.
 The original BACKGROUND graph is byte-identical to the inspected source, with twelve nodes and eighteen
 directed edges. Its SHA-256 is `5185e8312dbfa915915c9270dc806e7f47068f581adbb93344699672eff91331`.
 The engineering guide maps each direction to schemas/APIs, actor permission, preconditions, evidence,
-recovery and acceptance IDs. The coordinator reported an empty protected diff for original Solidity,
+recovery and acceptance IDs. At this capture, the coordinator reported an empty protected diff for original Solidity,
 deployments, BACKGROUND, wallet client/session, service worker and dependency locks. Final diff review
-must continue to exclude unintended generated model, worker, WASM and binary outputs. These checks do
-not replace full preservation or broad repository regression results.
+of a later integration must separately account for intended shared-wallet hardening and exclude unintended
+generated model, worker, WASM and binary outputs. This historical empty diff is not the later release's
+change inventory. These checks do not replace full preservation or broad repository regression results.
 
 ## Evidence and requirement decisions
 
@@ -58,7 +62,7 @@ their exact requirement texts. The index records **10 passed, 65 partial and 5 b
 These are requirement decisions, not unit-test counts. Software completion and operational Mainnet
 completion remain blocked.
 
-| Check | Recorded scope / current result |
+| Check | Recorded scope / result at capture |
 |---|---|
 | Project model | Final source-stable report: 14/14 passed, Node 22.17.1; encrypted recovery and global evaluation-ID uniqueness included |
 | Accepted artifact reuse | Final source-stable report: 4/4 passed, Node 22.17.1; real numerical workbench with a synthetic chain verifier |
@@ -152,6 +156,8 @@ external security audit.
 | Independent real actors / Mainnet canary | Deployment governance and consenting role holders | Exact qualified deployment, independent control evidence, bounded authorized lifecycle and distinct live continuation, reconciled receipts/obligations |
 | Publication | Release maintainer | Reviewed final source, immutable release identity and independently verified served routes/assets; public activation remains a separate decision |
 
-Until the applicable items are cleared, the release must remain accurately described as an unpublished
-implementation candidate with scoped evidence. The complete operational guide is [ASCENSION_CYCLE.md](ASCENSION_CYCLE.md)
-and the graph/schema/authority contract is [ASCENSION_CYCLE_ENGINEERING.md](ASCENSION_CYCLE_ENGINEERING.md).
+This capture did not establish a publishable integrated release. Later release decisions must identify
+the actual combined source and new evidence, retain the limits above, and distinguish software publication
+from external-service or Mainnet commissioning. The complete operational guide is
+[ASCENSION_CYCLE.md](ASCENSION_CYCLE.md) and the graph/schema/authority contract is
+[ASCENSION_CYCLE_ENGINEERING.md](ASCENSION_CYCLE_ENGINEERING.md).

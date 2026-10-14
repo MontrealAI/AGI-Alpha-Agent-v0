@@ -63,6 +63,8 @@ This is a remaining operational acceptance item, not a claim that a local fixtur
 ## Wallet, identity and mint
 
 Choose an injected wallet explicitly, then connect the account. Network switching is a separate action.
+The deployment selector lists only the archived recovery profile and entries reviewed into this build.
+Changing a selection never authorizes new funding or imports a deployment policy from a file.
 Studio and MARK use the same wallet client, policy, recovery journal and Web Lock. Account, network or provider
 changes cancel previews. No WalletConnect QR pairing, native USB/Bluetooth driver, smart-account batch or
 account-abstraction receipt support is claimed.
@@ -121,10 +123,15 @@ Before delivery, Studio retrieves the immutable result URI and compares its actu
 selected locally. Reviewers select that exact delivered file, record their findings and explicitly confirm
 their independent review. Studio computes a deployment/seed/job/result-bound evidence hash and exports the
 findings; reviewers do not need to calculate or paste a hash.
-Keep the result bytes and evidence and publish them through the supported runtime/artifact process. A native
-signed delivery still requires the existing `ascension-verify-delivery`/SUCCESSOR verification process; a browser file
-hash alone does not verify its native signature or replay its acceptance tests. Match the observed job and
-result hash before voting. The exact deployed contract decides payout, burn, slashing or refund outcomes.
+Keep the result bytes and evidence and publish them through the supported runtime/artifact process. Choose
+**Native signed delivery** for an `ascension-deliver` envelope and supply its independently trusted Ed25519
+public key. Studio verifies the signature over the original bytes, the plan root and committed job index,
+then fills the native protocol's Keccak result hash. Its signature check does not replay the work or connect
+a runtime; use `ascension-verify-delivery` for independent replay. Ordinary result files use the separately
+labelled SHA-256 mode. Do not convert or reserialize signed native files before publication.
+Match the observed job and result hash before voting. A terminal state observed in the latest block remains
+unconfirmed until Studio verifies the same settlement at a canonical finalized block. The exact deployed
+contract decides payout, burn, slashing or refund outcomes.
 
 After a job terminates, collect its refund into MARK. Close the campaign only when allowed and reclaim unused
 capital proportionally. Spent funding is not refundable principal. Funding-phase redemption remains possible
@@ -146,6 +153,9 @@ If the request loses its response, reloads or backgrounds, the action remains un
 or replacement hash from the wallet and reconcile. Studio checks sender, nonce, chain, exact input/value,
 canonical receipt and finality. Cancellation and different replacement never count as execution of the
 original intent. Missing or reorganized receipts remain unresolved. There is no blind retry/reset button.
+Mint and route receipts also remain unresolved until their exact events and resulting records are verified.
+An unsupported transaction envelope remains unresolved for investigation. An older transaction becoming
+uncertain blocks further signing even if a newer transaction was previously confirmed.
 After each confirmed transition, export an updated kit. Its checksum detects accidental alteration; it is
 neither a signature nor independent evidence.
 

@@ -2,7 +2,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CONTRACTS,METHODS,SELECTORS,callData,tuple,decode,units,tokens,uint,curve,parseFields} from '../../docs/assets/ascension-wallet/protocol.mjs';
-import {MarkClient,sha256Hex,validateProfile} from '../../docs/assets/ascension-wallet/client.mjs';
+import {MarkClient,sha256Hex,validateProfile,deploymentDescriptor} from '../../docs/assets/ascension-wallet/client.mjs';
+import {WalletSession,profileForJournal} from '../../docs/assets/ascension-wallet/session.mjs';
+import {JOURNAL_KEY} from '../../docs/assets/ascension-wallet/recovery.mjs';
 const ACCOUNT='0x1111111111111111111111111111111111111111', HASH='0x'+'ab'.repeat(32), BLOCK='0x'+'12'.repeat(32);
 const ADDRESS_TO_KEY=Object.fromEntries(Object.entries(CONTRACTS).map(([k,v])=>[v.toLowerCase(),k]));
 const profile=()=>({schema:'agialpha.mark-wallet-profile.v1',chainId:1,profile:'ascension-2026-10-11-solc-0.8.24',newExposureEnabled:false,
@@ -40,7 +42,7 @@ async function fixture() {
       }
       if(method==='eth_sendTransaction') { this.sends++; this.last=params[0]; if(this.sendError) throw this.sendError; return HASH; }
       if(method==='eth_getTransactionReceipt') return this.noReceipt?null:{transactionHash:params[0],status:this.reverted?'0x0':'0x1',blockHash:BLOCK,blockNumber:'0x100'};
-      if(method==='eth_getTransactionByHash') return {hash:params[0],nonce:this.wrongNonce?'0x99':this.last.nonce,chainId:'0x1',blockHash:BLOCK,blockNumber:'0x100',from:this.last.from,to:this.wrongTo||this.cancelled?ACCOUNT:this.last.to,input:this.cancelled?'0x':this.last.data,value:'0x0'};
+      if(method==='eth_getTransactionByHash') return {...(this.omitType?{}:{type:this.txType||'0x2'}),authorizationList:this.authorizations,hash:params[0],nonce:this.wrongNonce?'0x99':this.last.nonce,chainId:'0x1',blockHash:BLOCK,blockNumber:'0x100',from:this.last.from,to:this.wrongTo||this.cancelled?ACCOUNT:this.last.to,input:this.cancelled?'0x':this.last.data,value:'0x0'};
       if(method==='wallet_switchEthereumChain') {this.chain='0x1';this.emit('chainChanged');return null;}
       throw Error(`Unexpected RPC ${method}`);
     }};
@@ -212,4 +214,106 @@ test('restoration rejects changed destinations, calldata, funding and malformed 
     const value=JSON.parse(JSON.stringify(client.journal()));mutate(value.transactions[0]);const other=new MarkClient(p);
     assert.throws(()=>other.restore(value));assert.equal(other.history.length,0);
   }
+});
+
+test('semantic readback remains unresolved across reload and shared receipt checks until verified',async()=>{
+  const {client,provider,p}=await fixture();client.requireEffectVerification=true;
+  await client.prepare('reclaim',['1']);await client.confirm(true);
+  assert.equal((await client.receipt(HASH)).status,'effect-unverified');
+  const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));restored.select(provider);
+  await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
+  const checked=await restored.receipt(HASH);assert.equal(checked.status,'effect-unverified');
+  restored.completeEffects(checked);assert.equal(checked.status,'finalized');
+  assert.equal((await restored.receipt(HASH)).status,'finalized');
+  provider.noReceipt=true;await restored.receipt(HASH);provider.noReceipt=false;
+  assert.equal((await restored.receipt(HASH)).status,'effect-unverified');
+});
+test('an older receipt becoming uncertain also blocks new signing',async()=>{
+  const {client,provider,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);await client.receipt(HASH);
+  const latest={...client.pending,hash:'0x'+'fa'.repeat(32),status:'finalized'};client.history.push(latest);client.pending=latest;
+  provider.reorg=true;await assert.rejects(client.receipt(HASH),/canonical/);
+  await assert.rejects(client.prepare('reclaim',['2']),/outstanding/);
+  const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));restored.select(provider);
+  assert.equal(restored.pending.status,'reorged');provider.reorg=false;
+  assert.equal((await restored.receipt(HASH,true)).status,'finalized');
+  await restored.prepare('reclaim',['2']);
+});
+test('unsupported transaction types and added wallet authorization lists remain durably unresolved',async()=>{
+  for(const envelope of ['0x4','0x3','0x02','authorization','missing']) {
+    const {client,provider,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+    if(envelope==='authorization')provider.authorizations=[{address:ACCOUNT}];else if(envelope==='missing')provider.omitType=true;else provider.txType=envelope;
+    await assert.rejects(client.receipt(HASH),/Unsupported transaction envelope/);
+    assert.equal(client.pending.status,'unsupported-envelope');
+    const restored=new MarkClient(p);restored.restore(JSON.parse(JSON.stringify(client.journal())));
+    await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
+  }
+});
+
+test('journal immutable deployment binding rejects changed source and contract identity',async()=>{
+  const {client,p}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);
+  const value=JSON.parse(JSON.stringify(client.journal()));value.profile='another-deployment';
+  assert.throws(()=>new MarkClient(p).restore(value),/journal/);
+  value.profile=p.profile;value.deployment.contracts.Seed.sha256='00'.repeat(32);
+  assert.throws(()=>new MarkClient(p).restore(value),/journal/);
+});
+function sharedStore() {
+  const values=new Map(); return {getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};
+}
+function sharedLocks() {
+  let held=false;
+  return {request:async(key,options,callback)=>{
+    if (held) return callback(null);
+    held=true; try { return await callback({name:key}); } finally { held=false; }
+  }};
+}
+test('semantic receipt verification holds the same cross-tab lock and persists failures',async()=>{
+  const {p,provider}=await fixture(),storage=sharedStore(),locks=sharedLocks();
+  const first=new WalletSession(p,storage,locks),second=new WalletSession(p,storage,locks);
+  first.client.select(provider);await first.client.connect();first.client.requireEffectVerification=true;
+  await first.prepare('reclaim',['1']);const hash=await first.confirm(true);
+  let resume,entered;const started=new Promise(resolve=>entered=resolve),pause=new Promise(resolve=>resume=resolve);
+  const reconciling=first.reconcile(hash,async record=>{assert.equal(record.status,'effect-unverified');entered();await pause;throw Error('Missing matching event');});
+  await started;await assert.rejects(second.prepare('reclaim',['1']),/Another MARK tab/);resume();
+  await assert.rejects(reconciling,/matching event/);
+  const restored=new WalletSession(p,storage,locks);assert.equal(restored.client.pending.status,'effect-unverified');
+  await assert.rejects(restored.prepare('reclaim',['1']),/outstanding/);
+  assert.equal((await first.reconcile(hash,async()=>{})).status,'finalized');
+});
+test('imported terminal records and effect flags remain untrusted until every receipt is reconciled',async()=>{
+  const {p,client,provider}=await fixture();await client.prepare('reclaim',['1']);await client.confirm(true);await client.receipt(HASH);
+  const history=JSON.parse(JSON.stringify(client.journal()));history.transactions[0].effectVerified=true;
+  history.transactions.push({...history.transactions[0],hash:'0x'+'ef'.repeat(32)});
+  const session=new WalletSession(p,sharedStore(),sharedLocks());await session.restore(history);
+  assert.equal(session.client.history.length,2);
+  assert.ok(session.client.history.every(r=>r.status==='submission-unknown'&&r.effectVerified===false));
+  await assert.rejects(session.prepare('reclaim',['2']),/outstanding/);
+  session.client.select(provider);await session.reconcile(HASH);assert.equal(session.client.pending.hash,'0x'+'ef'.repeat(32));
+});
+test('legacy archive startup can select its profile and empty profile selection requires no storage consent',async()=>{
+  const {p}=await fixture(),storage=sharedStore(),locks=sharedLocks();
+  storage.setItem(JOURNAL_KEY,JSON.stringify({schema:'agialpha.mark-wallet-journal.v2',chainId:1,transactions:[]}));
+  assert.equal(profileForJournal(p,storage).profile,p.profile);
+  const denied={getItem:()=>null,setItem:()=>{throw Error('No storage consent');}};
+  const session=new WalletSession(p,denied,locks);await session.selectProfile(p);
+  assert.equal(session.client.profile.profile,p.profile);
+});
+
+test('an imported latest rejected label cannot release an unverified no-response intent',async()=>{
+  const {p,client,provider}=await fixture();provider.sendError={code:4001};
+  await client.prepare('reclaim',['1']);await assert.rejects(client.confirm(true));
+  const session=new WalletSession(p,sharedStore(),sharedLocks());await session.restore(JSON.parse(JSON.stringify(client.journal())));
+  assert.equal(session.client.pending.status,'submission-unknown');
+  await assert.rejects(session.prepare('reclaim',['1']),/outstanding/);
+});
+
+test('Nova rechecking an already verified receipt persists an unresolved effect barrier before readbacks',async()=>{
+  const {client,provider,p}=await fixture();client.requireEffectVerification=true;
+  await client.prepare('reclaim',['1']);await client.confirm(true);
+  client.completeEffects(await client.receipt(HASH));assert.equal(client.pending.status,'finalized');
+  let persisted;client.persist=journal=>{persisted=JSON.parse(JSON.stringify(journal));};
+  const record=await client.receipt(HASH);assert.equal(record.status,'effect-unverified');
+  assert.equal(persisted.transactions.at(-1).status,'effect-unverified');
+  const restored=new MarkClient(p);restored.restore(persisted);restored.select(provider);
+  await assert.rejects(restored.prepare('reclaim',['2']),/outstanding/);
+  client.completeEffects(record);assert.equal(record.status,'finalized');
 });

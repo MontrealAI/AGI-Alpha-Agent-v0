@@ -12,8 +12,9 @@ A new mission does not erase the previous work or inherit its authority.
 **Deployment availability:** the recorded October 11 Mainnet contracts permit inspection and eligible
 recovery. New exposure remains blocked, and this build has no qualified production replacement profile.
 Local qualification uses explicitly identified test assets and actors. Consult the
-[80-case evidence index](ascension-cycle-acceptance.json) for the actual integration status; the existence
-of these controls is not a claim that a complete Mainnet lifecycle has been commissioned.
+[80-case evidence index](ascension-cycle-acceptance.json) for the historical requirement decisions and
+[release readiness](RELEASE_READINESS.md) for how to verify the combined release. The existence of
+these controls is not a claim that a complete Mainnet lifecycle has been commissioned.
 The [disposable worked example](examples/ascension-cycle/README.md) retains the tested two-cycle journey,
 exact signed records and locally decryptable synthetic recovery files.
 

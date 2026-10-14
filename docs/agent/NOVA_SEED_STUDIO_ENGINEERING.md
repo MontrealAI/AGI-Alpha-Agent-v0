@@ -55,12 +55,22 @@ contains readable job specifications and public associations; disclose this befo
 key and atomic Web Lock. Existing MARK journals remain readable. New qualified profiles require an exact
 match to the source-controlled `qualified-profiles.mjs` registry, a different schema and identity, runtime
 digests, external dependency/proxy-slot identities, authority observations, permitted operations and
-commissioning evidence. Canary entries additionally restrict actors/actions/amounts and may expire. Expiry
-blocks new exposure while preserving explicitly permitted recovery. Runtime toggles, imported approvals,
+commissioning evidence. Qualification requires source/ABI identities, genesis and deployment block anchors,
+Token/ENS/Wrapper dependencies, proxy implementation code, live authorities and economic parameters.
+The archived suite cannot be relabelled as a qualified replacement. Canary authorization is a separate
+source-pinned record of exact sender, nonce, destination, calldata, value and gas limits with mandatory expiry.
+Separating it from the immutable deployment identity avoids a circular dependency on encrypted metadata.
+Expiry blocks new exposure while preserving explicitly permitted recovery and existing obligations.
+Runtime toggles, imported approvals,
 JSON and wallet signatures cannot register a profile. The production registry is empty.
 An existing qualified entry can be suspended through a reviewed build setting `newExposureEnabled: false`.
 The same deployment identity and historical intent remain readable; new exposure is rejected while allowed
 recovery transactions remain available. The local acceptance suite explicitly tests this policy transition.
+New packages bind the immutable code/source/deployment descriptor, rather than the changing authorization
+record. Earlier address-only packages remain recoverable with their identity limitation; importing them
+does not upgrade their encrypted commitments or grant qualified minting authority. Both workspaces select
+only build-registered profiles, preserve per-deployment journals, and refuse a deployment change while an
+unresolved action belongs to the current one.
 
 The test harness copies production modules to a temporary directory, builds a registry there for the
 newly created unforked Hardhat chain 31337, and leaves production registry/assets unchanged. Fixture mutation
@@ -73,6 +83,17 @@ simulation, bounded gas and expiring preview. Studio refreshes artifact/actor/ph
 before `MarkClient.confirm`. The receipt engine verifies submitted intent and canonical finality. Studio then
 checks matching mint/route events and on-chain records. Smart-account envelopes are unsupported rather than
 treated as direct calls. A same-nonce cancellation or replacement is distinct from original success.
+Only direct transaction types 0, 1 and 2 without additional account authorization are supported. Unsupported
+envelopes retain an unresolved journal state. The shared journal scans every historical record for unresolved
+actions. Canonical success first becomes `effect-unverified` for minting and routing; effect verification and
+the transition to `finalized` remain inside the same Web Lock. Logs must match their receipt's transaction,
+block hash and block number. Failed or reorganized observations cannot retain a readiness badge.
+
+Native delivery import verifies the existing Ed25519 signature over untouched Python-generated body bytes.
+Large integer timestamps are preserved only in this bounded native parser; general package JSON continues
+to reject unsafe numbers. The result commitment is Keccak of the complete original signed file. Generic
+result files retain SHA-256. Import verifies the trusted signer, full plan and actual routed index, grants no
+runtime authority, and does not itself replay execution. Work exports recheck every immutable seed commitment.
 
 | Deployment | Inspect | Existing recovery/obligations | New mint/funding/route |
 |---|---|---|---|
@@ -97,11 +118,13 @@ python -m scripts.build_mark_wallet
 npm ci --prefix tests/contracts
 npm ci --prefix tests/browser --ignore-scripts
 python -m pip install --require-hashes -r requirements-agent.lock
-node --test tests/mark-wallet/core.test.mjs tests/mark-wallet/recovery.test.mjs tests/mark-wallet/abi.test.mjs
-node --test tests/nova-studio/core.test.mjs
+node --test tests/mark-wallet/*.test.mjs
+node --test tests/nova-studio/*.test.mjs
 python -m unittest discover -s tests/mark-wallet -p 'test_*.py' -v
+python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
 npm test --prefix tests/contracts
 python -m scripts.validate_mark_wallet --output evidence/mark-wallet
+python -m scripts.validate_nova_studio --output evidence/nova-studio-browser
 cd tests/contracts
 NOVA_BROWSER=1 npx --no-install hardhat run scripts/nova-studio.js
 ```
@@ -115,6 +138,13 @@ reproduction command and trials not performed. Existing generated/public MARK ac
 hashes the Studio route and every executable asset, binding publication to these exact tested bytes.
 `studio-desktop.png` and `studio-mobile-fr.png` are captured from the real page, not design illustrations.
 The commit/run identity comes from the Actions run; local reports alone do not prove a merged or published site.
+Release packaging additionally calls `scripts.nova_studio_evidence`: the local lifecycle must match the exact
+commit and source inventory, retain every indexed artifact, include successful distinct receipts, native
+verification/replay and reconciled settlement balances. Missing or changed evidence fails packaging.
+`scripts.validate_nova_studio` exercises preparation and recovery in a fresh Chromium context on source,
+generated and public Pages routes. It checks served byte identities, wrong passphrases, tampered kits, zero
+wallet requests, EN/FR, keyboard and all eight panels at 1440/390/320 pixels. Public finalization requires its
+report for the published release identity. These automated checks do not establish human or hardware trials.
 
 ## Handoff acceptance matrix
 
@@ -137,11 +167,11 @@ labelled test infrastructure above. It does not mean a mainnet fork, real valida
 | 17–18 Funding | Exact curve quotes, separate approval/purchase, insufficient allowance and preserved interrupted-transaction tests |
 | 19 Bloom | Explicit irreversible acknowledgement, real local phase transition and updated state |
 | 20–21 Routing | Actual indexed proof/escrow/committee reads; duplicate index and duplicate reviewers rejected; current-source contract boundary suite |
-| 22 Runtime truth | Versioned bound work package, no runtime-connected claim; actual native execution remains separately authorized |
+| 22 Runtime truth | Bound work package and native signature import; local acceptance executes and independently replays native work without claiming a connected runtime |
 | 23–24 Settlement/exits | Real local paid result, review, collection, closure, reclaim and approval revocation; existing contract rejection/timeout/accounting tests |
 | 25–27 Uncertainty/concurrency/finality | Real local mint broadcast with deliberately lost response, reload and no resend; preserved MARK lock/replacement/reorg suite |
 | 28 Ownership/successor | Current-owner reader, bounded Transfer discovery, explicit transfer and new-parent draft; larger-history/provider-limit field trials pending |
-| 29 Recovery portability | Fresh-session import, frozen export snapshots, revalidation of latest transaction, initial pre-publication kit receipt recovery |
+| 29 Recovery portability | Fresh-session import, frozen snapshots, imported-broadcast revalidation, multi-project journal and initial pre-publication kit recovery |
 | 30 Hostile inputs | Duplicate/prototype/depth/size checks, unsafe storage refs, byte mismatch, malicious wallet metadata; no untrusted HTML |
 | 31 Browsers/accessibility | Chromium EN/FR, keyboard, 1440/390/320 px and axe WCAG A/AA on all steps; human screen-reader and other browser trials **not performed** |
 | 32 Physical wallets | Real injected-wallet extension, mobile wallet app and hardware-wallet trials **not performed** |
