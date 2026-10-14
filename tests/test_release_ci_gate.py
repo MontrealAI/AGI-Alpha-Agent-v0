@@ -193,6 +193,24 @@ def test_waiter_allows_historical_tests_to_finish_after_the_old_fifty_minute_dea
     validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
 
 
+def test_packaging_rejects_stale_historical_evidence_before_creating_assets(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["package", "--output", "release", "--evidence", "evidence"])
+    monkeypatch.setenv("GITHUB_SHA", SHA)
+    monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: None)
+    monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: SHA)
+    path = tmp_path / "evidence" / "historical-ci" / "historical-ci.json"
+    path.parent.mkdir(parents=True)
+    stale = snapshot()
+    stale["workflows"]["ci.yml"][0].update(status="in_progress", conclusion=None)
+    path.write_text(json.dumps(stale))
+    with pytest.raises(ValueError, match="completed successful main push"):
+        package_agent_release.main()
+    assert not Path("release").exists()
+
+
 def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("GITHUB_SHA", SHA)
@@ -216,21 +234,3 @@ def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, 
     evidence = json.loads(Path("evidence/historical-ci.json").read_text())
     with pytest.raises(ValueError, match="completed successful main push"):
         validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
-
-
-def test_packaging_rejects_stale_historical_evidence_before_creating_assets(tmp_path: Path, monkeypatch) -> None:
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setattr(sys, "argv", ["package", "--output", "release", "--evidence", "evidence"])
-    monkeypatch.setenv("GITHUB_SHA", SHA)
-    monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
-    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
-    monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: None)
-    monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: SHA)
-    path = tmp_path / "evidence" / "historical-ci" / "historical-ci.json"
-    path.parent.mkdir(parents=True)
-    stale = snapshot()
-    stale["workflows"]["ci.yml"][0].update(status="in_progress", conclusion=None)
-    path.write_text(json.dumps(stale))
-    with pytest.raises(ValueError, match="completed successful main push"):
-        package_agent_release.main()
-    assert not Path("release").exists()
