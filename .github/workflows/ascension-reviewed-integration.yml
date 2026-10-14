@@ -52,7 +52,7 @@ jobs:
           assert len(compressed) < 30_000
           raw = gzip.decompress(compressed)
           assert len(raw) == 88114
-          assert hashlib.sha256(raw).hexdigest() == '1fac23885f69c563c2da5ce6373d83a65f4330df2524aa07b03d93d851a906'
+          assert hashlib.sha256(raw).hexdigest() == ('1fac23885f69c56363c2da5ce6373d83' 'a65f4330df2524aa07b03d93d851a906')
           patch = folder / 'integration.patch'
           patch.write_bytes(raw)
           subprocess.run(['patch', '--dry-run', '--batch', '--fuzz=0', '-p1', '-i', str(patch)], check=True)
