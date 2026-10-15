@@ -6,6 +6,7 @@ on:
       - 'alpha_factory_v1/demos/aiga_meta_evolution/**'
       - 'tests/fixtures/aiga_reproducibility_probe.py'
       - 'tests/test_aiga_reproducibility.py'
+      - 'tests/test_aiga_cpu_workflow_isolation.py'
       - 'tests/test_aiga_training.py'
       - 'tests/test_evo_net_activation.py'
       - 'alpha_factory_v1/tests/test_aiga_meta_evolution.py'
@@ -42,11 +43,15 @@ jobs:
           python -m pip install --require-hashes -r requirements-demo-verified.lock
           python -m pip install pytest==8.4.1
           python -m pip check
+      - name: Verify minimal-environment test isolation
+        run: |
+          PYTHONPATH="$PWD" PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:tests.conftest -p no:cacheprovider tests/test_aiga_cpu_workflow_isolation.py
       - name: Require real seeded evaluation and selection without skips
         run: |
           python -c "import torch; assert torch.__version__ == '2.6.0+cpu', torch.__version__"
           mkdir -p evidence
-          PYTHONPATH="$PWD" PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:cacheprovider tests/test_aiga_reproducibility.py tests/test_aiga_training.py tests/test_evo_net_activation.py alpha_factory_v1/tests/test_aiga_meta_evolution.py --junitxml=evidence/aiga-cpu-evolution.xml
+          # The legacy test package explicitly loads tests.conftest despite --noconftest.
+          PYTHONPATH="$PWD" PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:tests.conftest -p no:cacheprovider tests/test_aiga_reproducibility.py tests/test_aiga_training.py tests/test_evo_net_activation.py alpha_factory_v1/tests/test_aiga_meta_evolution.py --junitxml=evidence/aiga-cpu-evolution.xml
           python - <<'PYXML'
           import xml.etree.ElementTree as ET
           cases = list(ET.parse('evidence/aiga-cpu-evolution.xml').getroot().iter('testcase'))
