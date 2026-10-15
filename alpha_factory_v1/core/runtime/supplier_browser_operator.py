@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 """Authenticated, explicit operator actions for the separate supplier laboratory."""
+
 from __future__ import annotations
 
 import base64
 from typing import Any, Literal
 from pydantic import Field, field_validator
 
+from . import ecosystem
 from . import supplier_browser as adapter
 from .models import StrictModel
 from .store import Journal
@@ -54,8 +56,8 @@ class Review(Reconcile):
 
 def status(journal: Journal) -> dict[str, Any]:
     journal.verify()
-    profiles = {}
-    for name, loader in (("market", adapter.ecosystem.installed_profile), ("executor", adapter.installed_executor)):
+    profiles: dict[str, dict[str, Any] | None] = {}
+    for name, loader in (("market", ecosystem.installed_profile), ("executor", adapter.installed_executor)):
         try:
             profiles[name] = loader(journal).model_dump(by_alias=True)
         except (ValueError, OSError):
@@ -94,22 +96,32 @@ def status(journal: Journal) -> dict[str, Any]:
 
 def operate(journal: Journal, action: str, document: dict[str, Any]) -> dict[str, Any]:
     if action == "admit":
-        value = Admission.model_validate(document)
+        admission = Admission.model_validate(document)
         return adapter.admit(
-            journal, base64.b64decode(value.spec_base64, validate=True), value.job_id, value.worker, value.assignment_tx
+            journal,
+            base64.b64decode(admission.spec_base64, validate=True),
+            admission.job_id,
+            admission.worker,
+            admission.assignment_tx,
         )
     if action == "execute":
-        value = Execute.model_validate(document)
-        return adapter.execute(journal, value.binding, value.permit)
+        execution = Execute.model_validate(document)
+        return adapter.execute(journal, execution.binding, execution.permit)
     if action == "review":
-        value = Review.model_validate(document)
-        return adapter.review(journal, value.binding, value.revision, value.result_hash, value.approve, value.note)
+        review = Review.model_validate(document)
+        return adapter.review(journal, review.binding, review.revision, review.result_hash, review.approve, review.note)
     if action == "reconcile":
-        value = Reconcile.model_validate(document)
-        return adapter.reconcile(journal, value.binding, value.revision, value.confirm, value.note)
+        reconciliation = Reconcile.model_validate(document)
+        return adapter.reconcile(
+            journal,
+            reconciliation.binding,
+            reconciliation.revision,
+            reconciliation.confirm,
+            reconciliation.note,
+        )
     if action == "stop":
-        value = Confirmed.model_validate(document)
-        return adapter.stop(journal, value.binding)
+        confirmation = Confirmed.model_validate(document)
+        return adapter.stop(journal, confirmation.binding)
     value = Binding.model_validate(document)
     if action == "show":
         journal.verify()
