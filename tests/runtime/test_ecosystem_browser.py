@@ -310,3 +310,105 @@ def test_native_login_without_javascript_explains_unavailable_controls(tmp_path,
         expect(page.locator("noscript p")).to_contain_text("JavaScript is required")
         expect(page.locator("noscript p")).to_contain_text("JavaScript est requis")
         browser.close()
+
+
+def test_unsigned_editor_exports_all_kinds_and_reimports_exact_bytes(tmp_path, monkeypatch):
+    import hashlib
+    from alpha_factory_v1.core.runtime.work_spec import read_spec
+
+    with native(tmp_path, monkeypatch) as (journal, origin, token), sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(accept_downloads=True)
+        connect(page, origin, token)
+        for kind in ["research", "allocation", "schedule", "forecast"]:
+            page.locator("#draft-kind").select_option(kind)
+            page.locator("#draft-example").click()
+            expect(page.locator("#draft-hash")).to_contain_text("specHash: 0x")
+            page.locator("#draft-confirm").check()
+            with page.expect_download() as received:
+                page.locator("#draft-download").click()
+            raw = Path(received.value.path()).read_bytes()
+            specification, digest = read_spec(raw)
+            assert specification.mission.work.kind == kind
+            assert digest == "0x" + hashlib.sha256(raw).hexdigest()
+            page.locator("#spec-file").set_input_files(
+                {"name": "work.json", "mimeType": "application/json", "buffer": raw}
+            )
+            expect(page.locator("#spec-digest")).to_have_text("specHash: " + digest)
+            assert journal.missions() == []
+        page.locator("#language").select_option("fr")
+        expect(page.locator("#draft-editor h2")).to_contain_text("non signé")
+        page.locator("#draft-work").fill('{"kind":"research","kind":"allocation"}')
+        expect(page.locator("#draft-download")).to_be_disabled()
+        expect(page.locator("#draft-hash")).to_be_empty()
+        expect(page.locator("#draft-status")).to_contain_text("invalide")
+        browser.close()
+
+
+def test_unsigned_editor_discards_late_validation_after_edit_and_disconnect(tmp_path, monkeypatch):
+    with native(tmp_path, monkeypatch) as (journal, origin, token), sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page()
+        held = []
+
+        def hold_first(route):
+            if not held:
+                held.append((route, route.fetch()))
+            else:
+                route.continue_()
+
+        page.route("**/api/ecosystem/draft", hold_first)
+        connect(page, origin, token)
+        deadline = time.monotonic() + 5
+        while not held and time.monotonic() < deadline:
+            page.wait_for_timeout(10)
+        assert held
+        page.locator("#draft-goal").fill("A newer supplied-input goal")
+        expect(page.locator("#draft-preview")).to_contain_text("A newer supplied-input goal")
+        newer = page.locator("#draft-hash").inner_text()
+        held[0][0].fulfill(response=held[0][1])
+        page.wait_for_timeout(100)
+        assert page.locator("#draft-hash").inner_text() == newer
+        page.unroute("**/api/ecosystem/draft", hold_first)
+        pending = []
+        page.route("**/api/ecosystem/draft", lambda route: pending.append((route, route.fetch())))
+        page.locator("#draft-goal").fill("Never restore this private draft after disconnect")
+        deadline = time.monotonic() + 5
+        while not pending and time.monotonic() < deadline:
+            page.wait_for_timeout(10)
+        assert pending
+        page.locator("#disconnect").click()
+        pending[0][0].fulfill(response=pending[0][1])
+        page.wait_for_timeout(100)
+        expect(page.locator("#draft-preview")).to_be_empty()
+        expect(page.locator("#draft-goal")).to_have_value("")
+        expect(page.locator("#draft-work")).to_have_value("")
+        expect(page.locator("#draft-download")).to_be_disabled()
+        assert journal.missions() == []
+        browser.close()
+
+
+def test_unsigned_editor_escaped_input_stays_within_transport_limit(tmp_path, monkeypatch):
+    import json
+    from alpha_factory_v1.core.runtime.work_spec import read_spec
+    from test_work_spec_draft import escaped_work
+
+    work = escaped_work()
+    with native(tmp_path, monkeypatch) as (journal, origin, token), sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(accept_downloads=True)
+        connect(page, origin, token)
+        expect(page.locator("#draft-hash")).to_contain_text("specHash: 0x")
+        with page.expect_request("**/api/ecosystem/draft") as request:
+            page.locator("#draft-work").fill(json.dumps(work))
+        body = request.value.post_data
+        assert len(body.encode()) < 512 * 1024 and "mission_base64" in json.loads(body)
+        expect(page.locator("#draft-hash")).to_contain_text("specHash: 0x")
+        page.locator("#draft-confirm").check()
+        with page.expect_download() as received:
+            page.locator("#draft-download").click()
+        raw = Path(received.value.path()).read_bytes()
+        specification, _ = read_spec(raw)
+        assert specification.mission.work.sources[0].text == work["sources"][0]["text"]
+        assert journal.missions() == []
+        browser.close()

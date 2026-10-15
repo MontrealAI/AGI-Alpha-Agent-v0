@@ -9,7 +9,49 @@ from pydantic import Field
 from . import ecosystem
 from .engine import Engine
 from .models import StrictModel
-from .store import Journal, digest
+from .store import Journal, digest, canonical
+from .work_spec import WorkSpec, read_spec
+from .successor.protocol import safe_json_loads
+
+
+DRAFT_MAX_BYTES = 350_000
+
+
+class Draft(StrictModel):
+    """Unsigned precommission inputs, excluding any imported authority."""
+
+    market: Literal["agijobsv0-jobregistry-v2"]
+    executor: Literal["alpha-native-v1"]
+    mission_base64: str = Field(min_length=1, max_length=4 * ((DRAFT_MAX_BYTES + 2) // 3))
+
+
+def draft(document: dict[str, Any]) -> dict[str, Any]:
+    """Validate and serialize a bounded draft without reading or mutating a journal."""
+    value = Draft.model_validate(document)
+    raw_mission = base64.b64decode(value.mission_base64, validate=True)
+    mission = safe_json_loads(raw_mission, max_bytes=DRAFT_MAX_BYTES)
+    specification = WorkSpec.model_validate(
+        {
+            "schema": "agialpha.bounded-work-spec.v1",
+            "market": value.market,
+            "executor": value.executor,
+            "mission": mission,
+        }
+    )
+    if specification.mission.work.kind not in {"research", "allocation", "schedule", "forecast"}:
+        raise ValueError("This draft editor supports the four bounded supplied-input work kinds")
+    raw = canonical(specification.model_dump(by_alias=True)) + b"\n"
+    if len(raw) > DRAFT_MAX_BYTES:
+        raise ValueError("Draft exceeds the browser import bound")
+    _, spec_hash = read_spec(raw)
+    return {
+        "schema": "agialpha.unsigned-work-draft.v1",
+        "spec_base64": base64.b64encode(raw).decode(),
+        "spec_hash": spec_hash,
+        "bytes": len(raw),
+        "unsigned": True,
+        "authority": [],
+    }
 
 
 class Admission(StrictModel):
@@ -83,6 +125,8 @@ def status(journal: Journal) -> dict[str, Any]:
 
 def operate(journal: Journal, action: str, document: dict[str, Any]) -> dict[str, Any]:
     """No work file can install a profile or mint new native/market authority."""
+    if action == "draft":
+        return draft(document)
     if action == "admit":
         value = Admission.model_validate(document)
         raw = base64.b64decode(value.spec_base64, validate=True)

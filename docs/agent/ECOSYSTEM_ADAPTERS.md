@@ -123,3 +123,31 @@ Exports exceeding that limit fail closed. Native Coding remains subject to the
 existing host execution policy; Fleet supports only research, allocation, schedule
 and forecast. Neither a local review nor a signed artifact establishes marketplace
 acceptance or independent human validation.
+
+### Author an unsigned native Jobs work file
+
+The authenticated local `/ecosystem-studio` workspace includes a precommission
+editor for research, allocation, scheduling and forecasting over supplied inputs.
+Choose a labeled sample, replace its goal/data, inspect the validated exact UTF-8
+bytes and `specHash`, confirm the inputs, then download the unsigned JSON file.
+Every input edit clears the old preview/hash and triggers bounded local validation;
+late responses after another edit or disconnect cannot restore an older draft.
+Disconnect clears the private draft from page memory. Drafts are not persisted.
+
+The stateless `draft` operator action requires the existing bearer token and exact
+connected journal identity. It accepts only the installed native adapter pair
+`agijobsv0-jobregistry-v2` / `alpha-native-v1`; Fleet remains a separately qualified
+executor rather than an automatically enabled choice. Drafting does not require
+or install a market deployment profile. Actual assignment admission still requires
+its separately installed profile and fresh chain observations.
+
+Both mission input and exported bytes are bounded to 350,000 UTF-8 bytes, including
+normalized defaults and the final newline. The request carries mission UTF-8 bytes
+as strict base64, keeping quote/backslash-heavy inputs within the existing 512 KiB
+API envelope without increasing its bound. Duplicate JSON keys, nonfinite values,
+unknown fields, unsupported work/executor combinations and oversized output are
+refused. The browser independently hashes the returned bytes before enabling export.
+Reimport the downloaded file unchanged in the assignment step: its byte digest must
+match the market's independently created `specHash`. Editing or reserializing it
+changes that commitment. Validation/export does not queue a mission, reserve funds,
+sign, submit a wallet transaction, execute work or approve settlement.
