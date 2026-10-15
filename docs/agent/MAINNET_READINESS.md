@@ -2,6 +2,12 @@
 
 # Prepare a new Ethereum mainnet deployment — 1.32.0
 
+For the owner-selected October 16 campaign, see [second-deployment decisions and
+accepted omissions](SECOND_MAINNET_DEPLOYMENT.md). That campaign explicitly selects
+the historical Ledger EOA via the opt-in schema and records no external audit or
+Sepolia run; these are omissions, not passed checks. The multisig profile below
+remains the default alternative. Neither profile authorizes broadcasting.
+
 For the **already deployed October 11 contracts**, use the [deployed addresses and owner guide](MAINNET_DEPLOYMENT.md).
 Those contracts have completed ownership transfer but predate this guide's current source and compiler profile.
 The commands below prepare a **separate new deployment** with a configured multisignature governor.
