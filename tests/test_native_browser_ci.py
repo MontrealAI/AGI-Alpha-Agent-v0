@@ -170,3 +170,42 @@ def test_complete_regression_installs_the_pinned_accessibility_auditor():
     assert "npm ci --prefix tests/browser --ignore-scripts" in install["run"].splitlines()
     assert steps.index(install) < steps.index(acceptance)
     assert "if" not in install and "continue-on-error" not in install
+
+
+def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
+    workflow = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
+    assert workflow["on"]["pull_request"] is None
+    job = workflow["jobs"]["mission"]
+    assert "if" not in job and "continue-on-error" not in job
+    steps = job["steps"]
+    actions = [step for step in steps if "uses" in step]
+    assert [step["uses"] for step in actions] == [
+        "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+        "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
+        "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+    ]
+    assert actions[0]["with"]["persist-credentials"] is False
+    selected = {step["name"]: step for step in steps if "name" in step}
+    install = selected["Install pinned browser tools"]
+    assertions = selected["Strict records and existing workbench"]
+    browser = selected["Atomic storage and full browser recovery"]
+    for step in [*actions, *selected.values()]:
+        assert "if" not in step and "continue-on-error" not in step
+    assert steps.index(install) < steps.index(assertions) < steps.index(browser)
+    assert install["run"].splitlines() == [
+        "python -m pip install playwright==1.54.0 PyYAML==6.0.2 pytest==8.4.1",
+        "python -m playwright install --with-deps chromium",
+        "npm ci --prefix tests/browser --ignore-scripts",
+    ]
+    assert assertions["run"].splitlines() == [
+        "node --test examples/successor-workbench/mission-record.test.mjs "
+        "examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs",
+        "node examples/successor-workbench/test.mjs",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null "
+        "-p no:cacheprovider tests/test_native_browser_ci.py -q",
+    ]
+    assert browser["run"].splitlines() == [
+        "python tests/browser/test_successor_mission_store.py",
+        "python tests/browser/test_successor_mission_browser.py",
+    ]
+    assert browser["env"]["AXE_SCRIPT"] == "${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js"
