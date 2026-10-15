@@ -40,7 +40,7 @@ export const messages = {
         raw: "Inspect complete report JSON",
         method: "Reproduce and recover your work",
         privacy:
-            "Everything stays in this tab. Export to retain your work. Reopening a report uses only its input and recomputes every result and digest. Hashes show consistency, not authentic evidence or observed outcomes.",
+            "Everything stays in this tab. Export to retain your work. Reopening a report uses only its input and recomputes every result and digest. Hashes show consistency, not authentic evidence or observed outcomes. Notebook evidence is supported within the 1 MiB browser limit; reopen business2-input.json for larger notebook envelopes.",
         guide: "Original runtime, schema and local launch guide",
         legacy: "Preserved historical chart replay",
         footer: "AGIALPHA · Bounded evidence review · Human judgment required",
@@ -102,7 +102,7 @@ export const messages = {
         raw: "Examiner le rapport JSON complet",
         method: "Reproduire et récupérer votre travail",
         privacy:
-            "Tout reste dans cet onglet. Exportez pour conserver votre travail. Rouvrir un rapport utilise seulement ses entrées et recalcule chaque résultat et empreinte. Les empreintes indiquent la cohérence, pas l’authenticité des observations.",
+            "Tout reste dans cet onglet. Exportez pour conserver votre travail. Rouvrir un rapport utilise seulement ses entrées et recalcule chaque résultat et empreinte. Les empreintes indiquent la cohérence, pas l’authenticité des observations. Les preuves du notebook sont acceptées jusqu’à 1 Mio; rouvrez business2-input.json pour les enveloppes plus grandes.",
         guide: "Code original, schéma et guide local",
         legacy: "Relecture du graphique historique conservé",
         footer: "AGIALPHA · Examen borné des observations · Jugement humain requis",

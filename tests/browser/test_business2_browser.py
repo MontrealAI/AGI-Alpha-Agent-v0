@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 """Exercise the original business evidence portfolio and strict evidence recovery."""
 import hashlib
+import contextlib
+import io
+import tempfile
+import sys
 import json
 import os
 import threading
@@ -11,6 +15,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
 
 def main():
@@ -122,6 +127,34 @@ def main():
                     }
                 ).encode()
             )
+            assert json.loads(page.locator("#raw").text_content()) == first
+            notebook_path = (
+                ROOT / "alpha_factory_v1/demos/alpha_agi_business_2_v1/colab_alpha_agi_business_2_demo.ipynb"
+            )
+            cells = json.loads(notebook_path.read_text())["cells"]
+            previous = Path.cwd()
+            with tempfile.TemporaryDirectory() as temporary:
+                try:
+                    os.chdir(temporary)
+                    namespace = {}
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        for cell in cells:
+                            if cell["cell_type"] == "code":
+                                exec(compile("".join(cell["source"]), str(notebook_path), "exec"), namespace)
+                    notebook_bytes = Path("business2-evidence.json").read_bytes()
+                    notebook_input_bytes = Path("business2-input.json").read_bytes()
+                finally:
+                    os.chdir(previous)
+            import_data(notebook_input_bytes)
+            assert page.locator("#result").is_visible()
+            assert json.loads(page.locator("#raw").text_content()) == first
+            import_data(notebook_bytes)
+            assert page.locator("#result").is_visible()
+            assert not page.locator("#error").is_visible()
+            assert json.loads(page.locator("#raw").text_content()) == first
+            notebook_evidence = json.loads(notebook_bytes)
+            notebook_evidence["report"] = {"forged": True}
+            import_data(json.dumps(notebook_evidence).encode())
             assert json.loads(page.locator("#raw").text_content()) == first
             import_data(data.replace(b"Synthetic", b"\xffynthetic"))
             assert page.locator("#error").is_visible()

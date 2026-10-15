@@ -310,7 +310,13 @@ $("import").onchange = async () => {
             1048576
         );
         let input = parsed;
-        if (parsed && parsed.schema === "agialpha.business2.evidence.v1") {
+        if (
+            parsed &&
+            [
+                "agialpha.business2.evidence.v1",
+                "agialpha.business2.notebook-evidence.v1",
+            ].includes(parsed.schema)
+        ) {
             if (Object.keys(parsed).sort().join("|") !== "input|report|schema")
                 throw Error("Unknown evidence fields");
             input = parsed.input;

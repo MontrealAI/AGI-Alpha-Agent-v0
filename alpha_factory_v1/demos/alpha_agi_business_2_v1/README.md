@@ -30,6 +30,23 @@ python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --example
 python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --input scenario.json > report.json
 ```
 
+The shell launcher now runs the same finite planner and requires explicit input:
+
+```bash
+bash alpha_factory_v1/demos/alpha_agi_business_2_v1/run_business_2_demo.sh --example
+bash alpha_factory_v1/demos/alpha_agi_business_2_v1/run_business_2_demo.sh --input scenario.json
+```
+
+It preserves the caller's relative input path and does not build Docker images, install
+packages, start a server or configure credentials. `PYTHON` may select an already installed
+Python executable. Use the separately documented service command below for legacy topics.
+
+The original [notebook](colab_alpha_agi_business_2_demo.ipynb) imports the installed planner,
+loads explicit example or supplied input, computes, exports an unsigned evidence file without
+overwriting, and recomputes recovered input. Its Python cells are tested offline with network
+connections blocked. Actual Colab deployment is unqualified; no automatic clone/install,
+provider setup or indefinite service wait remains in the executable walkthrough.
+
 Copy [example.json](example.json) to start your own scenario. Change provenance.kind to
 `supplied` and describe your sources in provenance.note. The bundled example is synthetic.
 The command requires exactly one input option, prints JSON once and exits. Invalid input
