@@ -28,6 +28,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                 [
                     sys.executable,
                     STUB,
+                    "--sample",
                     "-n",
                     "2",
                     "--seed",
@@ -55,6 +56,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                     [
                         sys.executable,
                         STUB,
+                        "--sample",
                         "-n",
                         "1",
                         "--seed",
@@ -85,6 +87,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                     [
                         sys.executable,
                         STUB,
+                        "--sample",
                         "-n",
                         "1",
                         "--seed",
@@ -113,6 +116,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                 [
                     sys.executable,
                     STUB,
+                    "--sample",
                     "-n",
                     "1",
                     "--seed",
@@ -137,6 +141,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                 [
                     sys.executable,
                     STUB,
+                    "--sample",
                     "-n",
                     "1",
                     "--seed",
@@ -158,12 +163,20 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
             cross_alpha_discovery_stub as stub,
         )
 
-        resp = types.SimpleNamespace(choices=[types.SimpleNamespace(message=types.SimpleNamespace(content="[]"))])
+        resp = types.SimpleNamespace(
+            choices=[
+                types.SimpleNamespace(
+                    message=types.SimpleNamespace(
+                        content='[{"sector":"Test","opportunity":"Unverified provider idea"}]'
+                    )
+                )
+            ]
+        )
         openai_mock = types.SimpleNamespace(ChatCompletion=types.SimpleNamespace(create=Mock(return_value=resp)))
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": "x"}):
             with patch.object(stub, "openai", openai_mock):
-                stub.discover_alpha(num=1, ledger=None, model="gpt-4o-mini")
+                stub.discover_alpha(num=1, ledger=None, model="gpt-4o-mini", generate=True)
 
         openai_mock.ChatCompletion.create.assert_called_once()
         kwargs = openai_mock.ChatCompletion.create.call_args.kwargs
@@ -175,14 +188,22 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
             cross_alpha_discovery_stub as stub,
         )
 
-        resp = types.SimpleNamespace(choices=[types.SimpleNamespace(message=types.SimpleNamespace(content="[]"))])
+        resp = types.SimpleNamespace(
+            choices=[
+                types.SimpleNamespace(
+                    message=types.SimpleNamespace(
+                        content='[{"sector":"Test","opportunity":"Unverified provider idea"}]'
+                    )
+                )
+            ]
+        )
         openai_mock = types.SimpleNamespace(
             chat=types.SimpleNamespace(completions=types.SimpleNamespace(create=Mock(return_value=resp)))
         )
 
         with patch.dict(os.environ, {"OPENAI_API_KEY": "x"}):
             with patch.object(stub, "openai", openai_mock):
-                stub.discover_alpha(num=1, ledger=None, model="gpt-4o-mini")
+                stub.discover_alpha(num=1, ledger=None, model="gpt-4o-mini", generate=True)
 
         openai_mock.chat.completions.create.assert_called_once()
         kwargs = openai_mock.chat.completions.create.call_args.kwargs
@@ -198,7 +219,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
             ledger = Path(tmp) / "thread_log.json"
 
             def worker(seed: int) -> None:
-                stub.discover_alpha(num=1, seed=seed, ledger=ledger, model="gpt-4o-mini")
+                stub.discover_alpha(num=1, seed=seed, ledger=ledger, model="gpt-4o-mini", sample=True)
 
             threads = [threading.Thread(target=worker, args=(i,)) for i in range(5)]
             for t in threads:
@@ -223,7 +244,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
             ledger = Path(tmp) / "thread_lock_log.json"
 
             def worker(seed: int) -> None:
-                stub.discover_alpha(num=1, seed=seed, ledger=ledger, model="gpt-4o-mini")
+                stub.discover_alpha(num=1, seed=seed, ledger=ledger, model="gpt-4o-mini", sample=True)
 
             threads = [threading.Thread(target=worker, args=(i,)) for i in range(5)]
             with patch.object(stub, "FileLock", filelock.FileLock):

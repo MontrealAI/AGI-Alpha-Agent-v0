@@ -90,7 +90,7 @@ you want a demo's normal persistent state, such as appended SQLite lineage, to c
 | [Marketplace](alpha_agi_marketplace_v1/README.md) | Local API client | Validates a bundled job and can submit it to a configured legacy orchestrator. | Required |
 | [ASI world model](alpha_asi_world_model/README.md) | Research training | Explores generated grid worlds using a small learner and local API. | Separate acceptance / prerequisites |
 | [Super Planner](alpha_super_planner_v1/README.md) | Interface illustration | Shows the stages and progress display of a planning interface. | Required |
-| [Cross-industry discovery](cross_industry_alpha_factory/README.md) | Offline sample | Selects reproducible examples from the bundled opportunity catalog. | Required |
+| [Cross-industry discovery](cross_industry_alpha_factory/README.md) | Supplied-input comparison | Ranks supplied cross-industry assessments with explicit weights, review thresholds, evidence and Pareto trade-offs. | Required |
 | [Era of Experience · Learning Lab](era_of_experience/README.md) | Offline learning lab | Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence. | Required |
 | [Finance Alpha Research Terminal](finance_alpha/README.md) | Reproducible paper research | Inspect next-open fills, cash, costs and risk decisions; compare strategies and replay every reported result. | Required |
 | [GPT-2 CLI](gpt2_small_cli/README.md) | Local model | Generates text with the actual GPT-2 124M model. | Separate acceptance / prerequisites |

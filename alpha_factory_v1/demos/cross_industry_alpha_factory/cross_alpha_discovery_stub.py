@@ -1,19 +1,11 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # [See docs/DISCLAIMER_SNIPPET.md](../../../DISCLAIMER_SNIPPET.md)
-"""Cross‑Industry alpha discovery helper.
+"""Legacy illustrative idea helper; use opportunity_comparison for supplied evidence.
 
-This script is part of a research prototype and does not implement real AGI.
-
-This minimal command‑line tool surfaces potential "alpha" opportunities
-across industries. It works **fully offline** using a small sample set but
-will query OpenAI when an ``OPENAI_API_KEY`` is configured for live ideas.
-Discovered items are logged to ``cross_alpha_log.json`` by default.  The
-queried model defaults to ``gpt-4o-mini`` but can be overridden with
-``--model`` or ``CROSS_ALPHA_MODEL``.
-
-The suggestions returned by this stub are purely illustrative examples and
-should **not** be considered financial advice.
+Samples require --sample; external generation requires --generate explicitly.
+Provider failure never silently substitutes canned findings.
+Neither mode verifies opportunities or constitutes financial advice.
 """
 from __future__ import annotations
 
@@ -78,6 +70,8 @@ def discover_alpha(
     seed: int | None = None,
     ledger: Path | None = None,
     model: str = "gpt-4o-mini",
+    sample: bool = False,
+    generate: bool = False,
 ) -> List[Dict[str, str]]:
     """Generate cross-industry opportunities and log them.
 
@@ -85,7 +79,9 @@ def discover_alpha(
         num: Number of opportunities to return.
         seed: Optional RNG seed for reproducible output.
         ledger: Ledger file to write to. When ``None`` no file is written.
-        model: OpenAI model to query when available. ``main`` reads the default
+        sample: Explicitly select illustrative bundled examples.
+        generate: Explicitly request unverified provider ideas (no fallback).
+        model: OpenAI model used only with generate=True. ``main`` reads the default
             from ``CROSS_ALPHA_MODEL``.
 
     Environment variables:
@@ -96,12 +92,16 @@ def discover_alpha(
     Returns:
         A list of dictionaries with ``sector`` and ``opportunity`` keys.
     """
+    if sample == generate:
+        raise ValueError("choose explicit sample=True or generate=True; use opportunity_comparison for supplied inputs")
+    if generate and ("openai" not in globals() or not os.getenv("OPENAI_API_KEY")):
+        raise ValueError("explicit generation requires the OpenAI package and OPENAI_API_KEY")
     if num < 1:
         raise ValueError("num must be >= 1")
 
     rng = random.Random(seed)
     picks: List[Dict[str, str]] = []
-    if "openai" in globals() and os.getenv("OPENAI_API_KEY"):
+    if generate:
         prompt = f"List {num} short cross-industry investment opportunities as JSON"
         try:
             if hasattr(openai, "chat") and hasattr(openai.chat, "completions"):
@@ -120,8 +120,18 @@ def discover_alpha(
                 picks = [picks]
         except Exception as exc:
             logger.warning("OpenAI request failed: %s", exc)
-            picks = []
-    if not picks:
+            raise ValueError("provider generation failed; no sample fallback") from exc
+        if (
+            not isinstance(picks, list)
+            or not picks
+            or any(
+                not isinstance(item, dict)
+                or not all(isinstance(item.get(k), str) and item[k].strip() for k in ("sector", "opportunity"))
+                for item in picks
+            )
+        ):
+            raise ValueError("provider returned invalid ideas; no sample fallback")
+    if sample:
         if seed is not None and num == 1:
             picks = [SAMPLE_ALPHA[seed % len(SAMPLE_ALPHA)]]
         else:
@@ -165,6 +175,11 @@ def main(argv: List[str] | None = None) -> None:  # pragma: no cover - CLI wrapp
         ``None``
     """
     p = argparse.ArgumentParser(description=__doc__)
+    modes = p.add_mutually_exclusive_group()
+    modes.add_argument("--sample", action="store_true", help="explicit illustrative catalog sampling")
+    modes.add_argument(
+        "--generate", action="store_true", help="explicit external provider generation; unverified ideas"
+    )
     p.add_argument("-n", "--num", type=int, default=1, help="number of opportunities to sample")
     p.add_argument("--list", action="store_true", help="list all sample opportunities and exit")
     p.add_argument("--seed", type=int, help="seed RNG for reproducible output")
@@ -181,12 +196,15 @@ def main(argv: List[str] | None = None) -> None:  # pragma: no cover - CLI wrapp
         print(json.dumps(SAMPLE_ALPHA, indent=2))
         return
 
+    if not args.sample and not args.generate:
+        p.error("choose --sample or --generate; for supplied evidence use opportunity_comparison --input FILE")
     ledger = None if args.no_log else _ledger_path(args.ledger)
     try:
-        picks = discover_alpha(args.num, seed=args.seed, ledger=ledger, model=args.model)
+        picks = discover_alpha(
+            args.num, seed=args.seed, ledger=ledger, model=args.model, sample=args.sample, generate=args.generate
+        )
     except ValueError as exc:
-        print(f"Error: {exc}")
-        return
+        p.error(str(exc))
 
     print(json.dumps(picks[0] if args.num == 1 else picks, indent=2))
     if ledger is not None:

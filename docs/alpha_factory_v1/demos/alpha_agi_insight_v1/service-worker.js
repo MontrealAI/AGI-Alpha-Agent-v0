@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-5f37159b241cbaad";
+const CACHE = "agialpha-gallery-189aea03165f7c25";
 const RELEASE = "1.31.3";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
@@ -88,6 +88,12 @@ const ASSETS = [
   "../../../alpha_factory_v1/demos/ascension/index.html",
   "../../../alpha_factory_v1/demos/bloom/index.html",
   "../../../alpha_factory_v1/demos/compounding/index.html",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/app.mjs",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/comparison.css",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/engine.mjs",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/example.json",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/i18n.mjs",
+  "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/json.mjs",
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/logs.json",
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/preview.svg",
   "../../../alpha_factory_v1/demos/cross_industry_alpha_factory/assets/script.js",
@@ -290,6 +296,12 @@ const ASSETS = [
   "../../../assets/successor/successor.css",
   "../../../bloom/index.html",
   "../../../compounding/index.html",
+  "../../../cross_industry_alpha_factory/assets/app.mjs",
+  "../../../cross_industry_alpha_factory/assets/comparison.css",
+  "../../../cross_industry_alpha_factory/assets/engine.mjs",
+  "../../../cross_industry_alpha_factory/assets/example.json",
+  "../../../cross_industry_alpha_factory/assets/i18n.mjs",
+  "../../../cross_industry_alpha_factory/assets/json.mjs",
   "../../../cross_industry_alpha_factory/assets/logs.json",
   "../../../cross_industry_alpha_factory/assets/preview.svg",
   "../../../cross_industry_alpha_factory/assets/script.js",

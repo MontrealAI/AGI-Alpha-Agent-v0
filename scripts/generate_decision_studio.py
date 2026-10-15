@@ -149,6 +149,9 @@ def build(root: Path = ROOT) -> None:
     studio.parent.mkdir(parents=True, exist_ok=True)
     studio.write_text((root / "scripts/templates/studio.html").read_text().replace("{{VERSION}}", version))
     for legacy, case in lookup(root).items():
+        if legacy == "cross_industry_alpha_factory":
+            # The original supplied-input comparator owns this route.
+            continue
         page = root / "docs" / legacy / "index.html"
         if legacy in {"muzero_planning", "muzeromctsllmagent_v0"} and (page.parent / "research.html").is_file():
             # Keep the historical decision bridge with the preserved presentation.
