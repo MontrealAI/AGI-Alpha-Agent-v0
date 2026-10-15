@@ -292,7 +292,60 @@ Supply `OPENAI_API_KEY` in the Colab session to access OpenAI models. When it is
 | `OPENAI_API_KEY` **set** | Tools routed through **OpenAI Agents SDK** |
 | **unset / empty** | Drops to **Mixtral‑8x7B‑Instruct** via local Ollama side‑car – *zero network egress* |
 
-LLMs supply *commentary & analysis* only – **core evolution is deterministic**.
+LLMs supply *commentary & analysis* only. The current CPU evolution path has explicit
+seed ownership; reproducibility has the limits described below.
+
+### Seeded CPU evaluation and selection
+
+`MetaEvolver(..., seed=17, device="cpu", parallel=False)` owns its mutation and
+tournament RNG. Each generation/population slot gets a stable evaluation seed,
+passed to seed-capable environment constructors and resets. Every `EvoNet` owns a
+CPU Torch generator, including its initialization, without drawing from the
+process-global Python, NumPy or Torch RNG. The supplied `CurriculumEnv` supports
+this path. A no-argument environment factory is also supported if its `reset`
+accepts `seed`; environments with neither interface log a warning and have no
+reproducibility guarantee. Custom environments must actually honor their seed
+and avoid unowned randomness; signature detection cannot establish that.
+
+```bash
+python -m alpha_factory_v1.demos.aiga_meta_evolution.meta_evolver --gens 3 --seed 17 --device cpu
+```
+
+The current implementation initializes a fresh network and environment for each
+individual evaluation, runs one greedy-action episode, and selects/mutates
+architecture genomes. A Hebbian genome changes its hidden-layer weights during
+that episode. It does not run SGD, persist learned weights across generations,
+or demonstrate persistent environment/curriculum co-evolution. The historical
+research narrative and diagrams describe the broader intended experiment.
+
+Repeatability requires the same seed, ordered population, environment factory and
+configuration, Python/NumPy/Gymnasium/Torch versions, device, CPU architecture and
+thread configuration. GPU kernels, different hardware/software builds, custom
+stochastic modules and Ray execution are not qualified by the CPU gate. The
+existing automatic device choice may select CUDA; use `device="cpu"` or
+`--device cpu` for CPU qualification. Thread and process dispatch receive the same
+work-item seeds; exact cross-device or cross-version results are not promised.
+Wall-clock timestamps and checkpoint output paths are intentionally excluded from
+repeatability comparisons.
+
+Version 2 JSON checkpoints retain the complete evolution RNG state, novelty
+archive, scores, population and selection state. Calling `save()` does not advance
+evolution. Resume requires the same external environment configuration and device.
+Historical checkpoints did not retain recoverable RNG state and are rejected with
+an explicit legacy-checkpoint error; there is no claimed exact migration. No
+pickle or downloaded model loading is introduced. `reset()` rewinds in-memory
+state to the initial seed; it leaves checkpoint files in place. Use a fresh
+checkpoint directory for a new experiment: otherwise bare `load()` can select a
+higher-generation checkpoint from before the reset.
+
+The separate `AIGA seeded CPU evolution acceptance` PR workflow installs
+`requirements-demo-verified.lock` (Torch `2.6.0+cpu`) and requires all 36 selected
+tests to execute without skips. It covers real neural initialization, finite
+Hebbian weight updates, environment replay, elite selection, thread/process
+agreement, fresh-process repeatability and checkpoint continuation. Synthetic RNG
+fixtures alone, the CLI's explicit no-training stub, and skipped Torch tests do
+not qualify real CPU evolution. This gate is separate from release acceptance;
+its addition is not evidence that it has already passed.
 
 ## 🔍 Alpha discovery stub
 

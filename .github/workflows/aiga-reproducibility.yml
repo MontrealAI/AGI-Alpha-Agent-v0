@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: Apache-2.0
+name: AIGA seeded CPU evolution acceptance
+on:
+  pull_request:
+    paths:
+      - 'alpha_factory_v1/demos/aiga_meta_evolution/**'
+      - 'tests/fixtures/aiga_reproducibility_probe.py'
+      - 'tests/test_aiga_reproducibility.py'
+      - 'tests/test_aiga_training.py'
+      - 'tests/test_evo_net_activation.py'
+      - 'alpha_factory_v1/tests/test_aiga_meta_evolution.py'
+      - 'requirements-demo-verified.in'
+      - 'requirements-demo-verified.lock'
+      - '.github/workflows/aiga-reproducibility.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aiga-cpu-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  seeded-cpu-evolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NO_LLM: '1'
+      AIGA_REQUIRE_CPU_TRAINING: '1'
+      CUDA_VISIBLE_DEVICES: ''
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-demo-verified.lock
+      - name: Install hash-locked CPU dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements-demo-verified.lock
+          python -m pip install pytest==8.4.1
+          python -m pip check
+      - name: Require real seeded evaluation and selection without skips
+        run: |
+          python -c "import torch; assert torch.__version__ == '2.6.0+cpu', torch.__version__"
+          mkdir -p evidence
+          PYTHONPATH="$PWD" PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:cacheprovider tests/test_aiga_reproducibility.py tests/test_aiga_training.py tests/test_evo_net_activation.py alpha_factory_v1/tests/test_aiga_meta_evolution.py --junitxml=evidence/aiga-cpu-evolution.xml
+          python - <<'PYXML'
+          import xml.etree.ElementTree as ET
+          cases = list(ET.parse('evidence/aiga-cpu-evolution.xml').getroot().iter('testcase'))
+          assert len(cases) == 36, f'Expected 36 objective tests, got {len(cases)}'
+          assert all(not any(case.find(tag) is not None for tag in ('skipped', 'failure', 'error')) for case in cases)
+          PYXML
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: aiga-seeded-cpu-evolution
+          path: evidence/aiga-cpu-evolution.xml
+          if-no-files-found: error
