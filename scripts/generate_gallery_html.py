@@ -152,6 +152,7 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
         for case in json.loads(studio_path.read_text()):
             if md_file.stem in case["legacy"] and md_file.stem not in {
                 "alpha_agi_business_3_v1",
+                "alpha_super_planner_v1",
                 "alpha_agi_insight_v0",
                 "era_of_experience",
                 "meta_agentic_tree_search_v0",

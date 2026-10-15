@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Bounded planner acceptance
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'alpha_factory_v1/demos/alpha_super_planner_v1/**'
+      - 'docs/alpha_super_planner_v1/**'
+      - 'docs/alpha_factory_v1/demos/alpha_super_planner_v1/**'
+      - 'tests/browser/test_planner*'
+      - 'tests/test_bounded_planner.py'
+      - 'scripts/generate_gallery_html.py'
+      - 'scripts/generate_decision_studio.py'
+      - '.github/workflows/bounded-planner.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'alpha_factory_v1/demos/alpha_super_planner_v1/**'
+      - 'docs/alpha_super_planner_v1/**'
+      - 'docs/alpha_factory_v1/demos/alpha_super_planner_v1/**'
+      - 'tests/browser/test_planner*'
+      - 'tests/test_bounded_planner.py'
+      - 'scripts/generate_gallery_html.py'
+      - 'scripts/generate_decision_studio.py'
+      - '.github/workflows/bounded-planner.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: bounded-planner-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  planner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install pinned browser and accessibility auditor
+        run: |
+          python -m pip install playwright==1.54.0 pytest==8.4.1
+          python -m playwright install --with-deps chromium
+          npm ci --prefix tests/browser --ignore-scripts
+      - name: Check strict solver and independent Python parity
+        run: |
+          python -m pytest tests/test_bounded_planner.py --noconftest -o addopts= -q
+          node --test tests/browser/test_planner_engine.mjs
+          python tests/browser/test_planner_parity.py
+      - name: Exercise bilingual planner and evidence lifecycle
+        env:
+          AXE_SCRIPT: tests/browser/node_modules/axe-core/axe.min.js
+        run: |
+          python tests/browser/test_planner_browser.py
+          PLANNER_ROUTE=alpha_factory_v1/demos/alpha_super_planner_v1/ python tests/browser/test_planner_browser.py
+      - name: Retain browser screenshots
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: bounded-planner-browser
+          path: evidence/planner-browser/
+          if-no-files-found: error

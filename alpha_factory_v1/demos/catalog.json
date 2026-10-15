@@ -229,22 +229,22 @@
     {
       "id": "alpha_super_planner_v1",
       "title": "Super Planner",
-      "mode": "Interface illustration",
-      "summary": "Shows the stages and progress display of a planning interface.",
+      "mode": "Bounded local optimization",
+      "summary": "Computes an exact dependency-aware plan from supplied assumptions.",
       "command": [
         "python",
         "-m",
         "alpha_factory_v1.demos.alpha_super_planner_v1"
       ],
-      "expected": "Five progress stages and Plan Complete.",
-      "prerequisites": "Python and rich.",
-      "limitations": "The displayed stages are scripted; this demo does not compute a plan.",
+      "expected": "JSON selecting collect, compare and review: cost 7, effort 7, assumed value 15.",
+      "prerequisites": "Python standard library.",
+      "limitations": "Optimizes at most 16 supplied tasks; does not execute tasks or establish real savings.",
       "smoke": true,
       "environment": {},
-      "required_modules": [
-        "rich"
+      "required_modules": [],
+      "assets": [
+        "alpha_super_planner_v1/fixtures/supplier-plan.json"
       ],
-      "assets": [],
       "offline": true
     },
     {

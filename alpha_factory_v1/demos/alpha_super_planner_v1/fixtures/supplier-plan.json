@@ -1,0 +1,49 @@
+{
+  "schema": "agialpha.bounded-plan.v1",
+  "goal": "Prepare a reviewed supplier comparison",
+  "budget": 8,
+  "effort_capacity": 8,
+  "max_risk": 30,
+  "tasks": [
+    {
+      "id": "collect",
+      "label": "Collect supplied quotes",
+      "cost": 2,
+      "effort": 2,
+      "value": 2,
+      "risk": 10,
+      "requires": []
+    },
+    {
+      "id": "compare",
+      "label": "Compare total delivered costs",
+      "cost": 3,
+      "effort": 3,
+      "value": 8,
+      "risk": 20,
+      "requires": [
+        "collect"
+      ]
+    },
+    {
+      "id": "review",
+      "label": "Review evidence",
+      "cost": 2,
+      "effort": 2,
+      "value": 5,
+      "risk": 10,
+      "requires": [
+        "compare"
+      ]
+    },
+    {
+      "id": "advertise",
+      "label": "Advertise unverified savings",
+      "cost": 1,
+      "effort": 1,
+      "value": 99,
+      "risk": 90,
+      "requires": []
+    }
+  ]
+}
