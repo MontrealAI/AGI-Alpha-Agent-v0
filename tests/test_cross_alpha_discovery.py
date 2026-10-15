@@ -459,8 +459,10 @@ with stub._ledger_lock(Path(sys.argv[1])):
                         sys.executable,
                         "-c",
                         "from pathlib import Path; "
-                        "from alpha_factory_v1.demos.cross_industry_alpha_factory import cross_alpha_discovery_stub as s; "
-                        "import sys; s.FileLock = None; s.discover_alpha(sample=True, seed=1, ledger=Path(sys.argv[1]))",
+                        "from alpha_factory_v1.demos.cross_industry_alpha_factory "
+                        "import cross_alpha_discovery_stub as s; "
+                        "import sys; s.FileLock = None; "
+                        "s.discover_alpha(sample=True, seed=1, ledger=Path(sys.argv[1]))",
                         str(ledger),
                     ],
                     capture_output=True,

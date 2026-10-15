@@ -243,10 +243,10 @@ class HTTPAdvisor:
             if self.identity["mode"] == "responses"
             else ("prompt_tokens", "completion_tokens", "total_tokens")
         )
-        if isinstance(usage, dict) and all(
-            type(usage.get(field)) is int and 0 <= usage[field] <= 10**12 for field in fields  # noqa: E721
-        ):
-            event.update(status="PROVIDER_REPORTED", tokens={field: usage[field] for field in fields})
+        if isinstance(usage, dict):
+            valid = all(type(usage.get(k)) is int and 0 <= usage[k] <= 10**12 for k in fields)  # noqa: E721
+            if valid:
+                event.update(status="PROVIDER_REPORTED", tokens={field: usage[field] for field in fields})
         # Provider-reported token counts are observations, never an invoice or dollar limit.
         if self.identity["mode"] == "vision-json":
             advice = safe_json_loads(result["choices"][0]["message"]["content"])

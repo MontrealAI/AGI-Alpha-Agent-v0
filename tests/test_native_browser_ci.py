@@ -64,7 +64,8 @@ def test_workflows_have_no_duplicate_mapping_keys() -> None:
     "source",
     [
         "on: push\non: pull_request\n",
-        "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n        env:\n          PYTHONPATH: '.'\n",
+        "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n"
+        "        env:\n          PYTHONPATH: '.'\n",
         "jobs: {wallet: {env: {A: one, A: two}}}",
     ],
 )
