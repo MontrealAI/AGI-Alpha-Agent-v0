@@ -138,7 +138,8 @@ def test_actual_forms_exact_units_keyboard_localization_and_accessibility(
         mutations: list[dict[str, Any]] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.add_init_script(
-            "window.__walletCalls=[];window.ethereum={request:p=>{window.__walletCalls.push(p);throw Error('Forbidden');}}"
+            "window.__walletCalls=[];window.ethereum={request:p=>{window.__walletCalls.push(p);"
+            "throw Error('Forbidden');}}"
         )
 
         def remember_request(request: Request) -> None:
@@ -192,7 +193,8 @@ def test_actual_forms_exact_units_keyboard_localization_and_accessibility(
             for width in [1440, 390, 320]:
                 page.set_viewport_size({"width": width, "height": 1080})
                 audit = page.evaluate(
-                    "async()=>await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})"
+                    "async()=>await axe.run(document,{runOnly:{type:'tag',"
+                    "values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})"
                 )
                 assert not audit["violations"], audit["violations"]
                 assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1")

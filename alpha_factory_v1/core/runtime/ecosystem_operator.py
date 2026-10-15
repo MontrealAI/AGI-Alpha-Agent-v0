@@ -54,7 +54,8 @@ def status(journal: Journal) -> dict[str, Any]:
         ids = [
             row[0]
             for row in cx.execute(
-                "SELECT mission,MAX(seq) FROM events WHERE mission LIKE '@ecosystem:%' GROUP BY mission ORDER BY MAX(seq) DESC LIMIT 100"
+                "SELECT mission,MAX(seq) FROM events WHERE mission LIKE '@ecosystem:%' "
+                "GROUP BY mission ORDER BY MAX(seq) DESC LIMIT 100"
             )
         ]
         records = []

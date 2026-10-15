@@ -329,7 +329,8 @@ def main() -> None:
             if point and point not in injected:
                 response = page.evaluate(
                     """async payload=>{
-                    try {const response=await fetch('/operator',{method:'POST',headers:{'Content-Type':'application/json'},
+                    try {const response=await fetch('/operator',{method:'POST',
+                    headers:{'Content-Type':'application/json'},
                     body:JSON.stringify(payload)});return {value:await response.json()};}
                     catch(error){return {lost:String(error)};}
                 }""",
@@ -923,7 +924,10 @@ def main() -> None:
             {
                 "schema": "agialpha.ascension.interruptions.browser.v1",
                 "passed": True,
-                "classification": "Actual Chromium fresh contexts, disposable-EVM transactions and genuine native work; synthetic actors/storage.",
+                "classification": (
+                    "Actual Chromium fresh contexts, disposable-EVM transactions and genuine native work; "
+                    "synthetic actors/storage."
+                ),
                 "sourceHashes": config["sourceHashes"],
                 "environment": config["environment"],
                 "browserVersion": browser.version,
@@ -939,7 +943,8 @@ def main() -> None:
                     "Actual service-account unknown upload response reconciliation",
                     "Physical mobile/background and hardware wallet behavior",
                     "Reorg, changed quote and timed review-quorum variants beyond the retained lost-response path",
-                    "Native host hard-kill during active effectful provider work; fixed-work unit interrupts are separate",
+                    "Native host hard-kill during active effectful provider work; "
+                    "fixed-work unit interrupts are separate",
                 ],
             },
         )

@@ -97,10 +97,15 @@ def source_identity(root: Path) -> dict[str, Any]:
         "commit": git(root, "rev-parse", "HEAD"),
         "source_sha256": sha256(canonical(inventory)),
         "files": inventory,
-        "scope": "Tracked files and unignored files outside runtime evidence/site outputs, plus generated archive profile; audit outputs excluded.",
+        "scope": (
+            "Tracked files and unignored files outside runtime evidence/site outputs, "
+            "plus generated archive profile; audit outputs excluded."
+        ),
         "excluded_audit_outputs": list(EXCLUDED),
         "excluded_untracked_runtime_outputs": ["evidence/", "site/"],
-        "dependency_limit": "Lockfiles and runtime versions are bound; installed package bytes are not independently attested.",
+        "dependency_limit": (
+            "Lockfiles and runtime versions are bound; " "installed package bytes are not independently attested."
+        ),
     }
 
 
@@ -310,8 +315,13 @@ def build_audit(root: Path = ROOT) -> dict[str, Any]:
         "source_identity": {key: value for key, value in identity.items() if key != "commit"},
         "semantics": {
             "automated_scope_status": "Only the explicitly mapped commands; never the entire original requirement.",
-            "requirement_status": "No whole-case pass is inferred. Remaining acceptance needs specific review and evidence.",
-            "integrity": "Content hashes and logs bind local evidence; they do not prove independent review or actor authorization.",
+            "requirement_status": (
+                "No whole-case pass is inferred. " "Remaining acceptance needs specific review and evidence."
+            ),
+            "integrity": (
+                "Content hashes and logs bind local evidence; "
+                "they do not prove independent review or actor authorization."
+            ),
             "stale": "Prior source inventories are retained and listed but contribute no current passing outcome.",
         },
         "graph": {
@@ -397,7 +407,8 @@ def execute_suite(root: Path, suite_id: str, *, python: str, node: str, timeout:
                     [
                         python,
                         "-c",
-                        "import importlib.metadata as m,json; print(json.dumps({d.metadata['Name']:d.version for d in m.distributions()}))",
+                        "import importlib.metadata as m,json; "
+                        "print(json.dumps({d.metadata['Name']:d.version for d in m.distributions()}))",
                     ],
                     text=True,
                 )

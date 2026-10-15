@@ -416,7 +416,8 @@ def main() -> None:
     args = parser.parse_args()
     report = validate(args.output)
     print(
-        f"Cycle-edge Chromium acceptance passed: {len(report['controls'])} keyboard inspections, {len(report['audits'])} layouts"
+        f"Cycle-edge Chromium acceptance passed: {len(report['controls'])} keyboard inspections, "
+        f"{len(report['audits'])} layouts"
     )
 
 
