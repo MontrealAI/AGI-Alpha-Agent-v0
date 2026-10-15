@@ -42,7 +42,9 @@ class ProjectDelivery(unittest.TestCase):
     def test_native_validator_pins_are_unchanged(self):
         pins = {
             "examples/alpha-discovery/engine.mjs": "452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850",
-            "examples/successor-workbench/mission-record.mjs": "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f",
+            "examples/successor-workbench/mission-record.mjs": (
+                "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f"
+            ),
         }
         for path, expected in pins.items():
             self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), expected)

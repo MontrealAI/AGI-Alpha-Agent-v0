@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
+import subprocess
 import zipfile
 
 import pytest
@@ -50,3 +52,39 @@ def test_mainnet_archive_rejects_modified_compiler_evidence(tmp_path: Path) -> N
     output.mkdir()
     with pytest.raises(ValueError, match="digest differs"):
         package_mainnet_record(tmp_path, output, "1.26.1")
+
+
+INVENTORY = ROOT / "docs/agent/CONTRACT_INVENTORY.md"
+
+
+def _assert_inventory_complete(document: str, tracked_paths: list[str]) -> None:
+    expected = {path for path in tracked_paths if path.endswith(".sol") and "node_modules" not in Path(path).parts}
+    listed = re.findall(r"^\| `([^`]+\.sol)` \|", document, re.MULTILINE)
+    assert len(listed) == len(set(listed)), "Duplicate Solidity inventory rows"
+    actual = set(listed)
+    assert actual == expected, (
+        f"Missing Solidity inventory rows: {sorted(expected - actual)}; "
+        f"Stale Solidity inventory rows: {sorted(actual - expected)}"
+    )
+
+
+def test_contract_inventory_covers_all_tracked_solidity_sources() -> None:
+    tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode().split("\0")
+    _assert_inventory_complete(INVENTORY.read_text(), tracked)
+
+
+@pytest.mark.parametrize(
+    ("document", "tracked", "message"),
+    [
+        ("| `contracts/A.sol` | A | Legacy |", ["contracts/A.sol", "contracts/New.sol"], "Missing"),
+        ("| `contracts/Removed.sol` | A | Legacy |", [], "Stale"),
+        ("| `contracts/A.sol` | A | Legacy |\n| `contracts/A.sol` | A | Legacy |", ["contracts/A.sol"], "Duplicate"),
+    ],
+)
+def test_contract_inventory_rejects_incomplete_or_stale_rows(document: str, tracked: list[str], message: str) -> None:
+    with pytest.raises(AssertionError, match=message):
+        _assert_inventory_complete(document, tracked)
+
+
+def test_contract_inventory_excludes_dependency_sources() -> None:
+    _assert_inventory_complete("| `contracts/A.sol` | A | Legacy |", ["contracts/A.sol", "node_modules/vendor/B.sol"])
