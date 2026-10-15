@@ -89,7 +89,7 @@ you want a demo's normal persistent state, such as appended SQLite lineage, to c
 | [Insight v1](alpha_agi_insight_v1/README.md) | Browser + simulation | Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion. | Required |
 | [Marketplace](alpha_agi_marketplace_v1/README.md) | Local API client | Validates a bundled job and can submit it to a configured legacy orchestrator. | Required |
 | [ASI world model](alpha_asi_world_model/README.md) | Research training | Explores generated grid worlds using a small learner and local API. | Separate acceptance / prerequisites |
-| [Super Planner](alpha_super_planner_v1/README.md) | Interface illustration | Shows the stages and progress display of a planning interface. | Required |
+| [Super Planner](alpha_super_planner_v1/README.md) | Bounded local optimization | Computes an exact dependency-aware plan from supplied assumptions. | Required |
 | [Cross-industry discovery](cross_industry_alpha_factory/README.md) | Offline sample | Selects reproducible examples from the bundled opportunity catalog. | Required |
 | [Era of Experience · Learning Lab](era_of_experience/README.md) | Offline learning lab | Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence. | Required |
 | [Finance Alpha Research Terminal](finance_alpha/README.md) | Reproducible paper research | Inspect next-open fills, cash, costs and risk decisions; compare strategies and replay every reported result. | Required |
