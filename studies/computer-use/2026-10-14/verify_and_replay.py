@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Fail-closed verification around the preserved historical mechanical harness."""
 
+# Exact JSON type checks deliberately exclude bool from integer evidence counts.
+# ruff: noqa: E721
+
 from __future__ import annotations
 import argparse
 import hashlib
@@ -39,8 +42,31 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-RECOVERY_NAMES = ['Actual worker termination after durable checkpoint', 'Fresh-process artifact restore 1', 'Fresh-process artifact restore 2', 'Fresh-process artifact restore 3', 'Fresh-process artifact restore 4', 'Fresh-process artifact restore 5', 'Tampered checkpoint refused', 'Older valid snapshot rejected against newer retained head', 'Wrong task refused', 'Unknown-effect checkpoint stops; no replay attempted', 'Parent-directory path rejected even with valid hash', 'Existing recovered work never overwritten', 'No approval or authority inherited', 'Unsaved work absence is a failure, not invented recovery', 'Fresh-browser offline recovery 1: exact quote bytes and new review', 'Fresh-browser offline recovery 2: exact quote bytes and new review', 'Fresh-browser offline recovery 3: exact quote bytes and new review', 'Fresh-browser offline recovery 4: exact quote bytes and new review', 'Fresh-browser offline recovery 5: exact quote bytes and new review']
-OWNER_TRACE_SIGNATURES = {'familiar-no-profile': 'bfbcd797de9c68659643d478d3526a4ea620cb7ff0fd1a4048d4ba98f80d30f9', 'retained-profile': 'af028f1371864578052b28d779bb162808b34bd099ac2720606a5da15e08c650'}
+RECOVERY_NAMES = [
+    "Actual worker termination after durable checkpoint",
+    "Fresh-process artifact restore 1",
+    "Fresh-process artifact restore 2",
+    "Fresh-process artifact restore 3",
+    "Fresh-process artifact restore 4",
+    "Fresh-process artifact restore 5",
+    "Tampered checkpoint refused",
+    "Older valid snapshot rejected against newer retained head",
+    "Wrong task refused",
+    "Unknown-effect checkpoint stops; no replay attempted",
+    "Parent-directory path rejected even with valid hash",
+    "Existing recovered work never overwritten",
+    "No approval or authority inherited",
+    "Unsaved work absence is a failure, not invented recovery",
+    "Fresh-browser offline recovery 1: exact quote bytes and new review",
+    "Fresh-browser offline recovery 2: exact quote bytes and new review",
+    "Fresh-browser offline recovery 3: exact quote bytes and new review",
+    "Fresh-browser offline recovery 4: exact quote bytes and new review",
+    "Fresh-browser offline recovery 5: exact quote bytes and new review",
+]
+OWNER_TRACE_SIGNATURES = {
+    "familiar-no-profile": "bfbcd797de9c68659643d478d3526a4ea620cb7ff0fd1a4048d4ba98f80d30f9",
+    "retained-profile": "af028f1371864578052b28d779bb162808b34bd099ac2720606a5da15e08c650",
+}
 
 PROVENANCE_SHA256 = "4056fed3c8a113256e8c576f956f59245883f671c32a3b767a91d04d9a2f227c"
 
@@ -72,10 +98,14 @@ def load_json(path: Path) -> dict:
                 raise ValueError("Duplicate JSON field: " + key)
             result[key] = value
         return result
+
     if path.stat().st_size > 5_000_000:
         raise ValueError("Oversized evidence JSON")
-    value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique,
-                       parse_constant=lambda x: (_ for _ in ()).throw(ValueError("Non-finite JSON")))
+    value = json.loads(
+        path.read_text(encoding="utf-8"),
+        object_pairs_hook=unique,
+        parse_constant=lambda x: (_ for _ in ()).throw(ValueError("Non-finite JSON")),
+    )
     if not isinstance(value, dict):
         raise ValueError("Evidence must be a JSON object")
     return value
@@ -94,6 +124,7 @@ def manifest_files(root: Path) -> dict[str, str]:
             raise ValueError("Publication checksum mismatch: " + name)
         rows[name] = expected
     from package_clean import publication_names
+
     if set(rows) != publication_names(root):
         raise ValueError("Publication manifest membership differs")
     return rows
@@ -112,7 +143,11 @@ def verify_original_sources(root: Path) -> dict:
         if digest(safe_file(root, f"02_Work_Products/Task_{task}/{variant}/index.html")) != expected:
             raise ValueError("Generated application mismatch: " + case)
     status = load_json(safe_file(root, "pilot/status.json"))
-    if type(status["participantsObserved"]) is not int or status["participantsObserved"] != 0 or status["results"] is not None:
+    if (
+        type(status["participantsObserved"]) is not int
+        or status["participantsObserved"] != 0
+        or status["results"] is not None
+    ):
         raise ValueError("This publication has no observed human results")
     return provenance
 
@@ -124,7 +159,9 @@ def verify_sources(root: Path) -> dict:
 
 
 def outcome_signature(rows: list) -> str:
-    return hashlib.sha256(json.dumps(rows, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(rows, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()
+    ).hexdigest()
 
 
 def verify_results(root: Path) -> dict:
@@ -159,7 +196,11 @@ def verify_results(root: Path) -> dict:
     if (recovery["passed"], recovery["total"]) != (19, 19):
         raise ValueError("Recovery summary differs")
     interrupted = checks[0]["detail"]
-    if interrupted.get("marker") != "CHECKPOINT_DURABLE" or not isinstance(interrupted.get("returncode"), int) or interrupted["returncode"] >= 0:
+    if (
+        interrupted.get("marker") != "CHECKPOINT_DURABLE"
+        or not isinstance(interrupted.get("returncode"), int)
+        or interrupted["returncode"] >= 0
+    ):
         raise ValueError("Process interruption evidence differs")
     if any(x["detail"] is not True for x in checks[1:]):
         raise ValueError("Recovery detail differs from the claimed outcome")
@@ -168,37 +209,70 @@ def verify_results(root: Path) -> dict:
         if safe_file(root, f"03_Evidence/recovery/B-recovered-quote-{i}.json").read_bytes() != quote:
             raise ValueError("Recovered quote bytes differ")
     effort = load_json(safe_file(root, "03_Evidence/OWNER_EFFORT.json"))
-    if type(effort["participants"]) is not int or effort["participants"] != 0 or effort["timeModel"]["humanTimeObserved"] is not False:
+    if (
+        type(effort["participants"]) is not int
+        or effort["participants"] != 0
+        or effort["timeModel"]["humanTimeObserved"] is not False
+    ):
         raise ValueError("Scripted replay cannot assert observed human outcomes")
     runs = effort["runs"]
-    expected_order = [(mode, i) for i in range(1, 6) for mode in
-                      (["familiar-no-profile", "retained-profile"] if i % 2 else ["retained-profile", "familiar-no-profile"])]
+    expected_order = [
+        (mode, i)
+        for i in range(1, 6)
+        for mode in (
+            ["familiar-no-profile", "retained-profile"] if i % 2 else ["retained-profile", "familiar-no-profile"]
+        )
+    ]
     if [(x["mode"], x["replicate"]) for x in runs] != expected_order:
         raise ValueError("Owner replicate identities/order missing or duplicated")
     for run in runs:
         mode, replicate = run["mode"], run["replicate"]
         count, edits = (14, 4) if mode == "familiar-no-profile" else (11, 0)
-        if (run["actions"], run["preferenceEdits"], run["freshScopeApprovals"], run["reviewChecks"],
-            run["qualityPassed"], run["qualityTotal"], run["typedBriefCharacters"]) != (count, edits, 1, 3, 35, 35, 180):
+        if (
+            run["actions"],
+            run["preferenceEdits"],
+            run["freshScopeApprovals"],
+            run["reviewChecks"],
+            run["qualityPassed"],
+            run["qualityTotal"],
+            run["typedBriefCharacters"],
+        ) != (count, edits, 1, 3, 35, 35, 180):
             raise ValueError("Owner controls, quality or authorization changed")
         if run["qualitySource"] != "03_Evidence/acceptance/B_after.json":
             raise ValueError("Owner quality source differs")
         trace = load_json(safe_file(root, f"03_Evidence/owner_{mode}_{replicate}.json"))
-        if trace["schema"] != "owner-replay/v1" or type(trace["humanParticipants"]) is not int or trace["humanParticipants"] != 0:
+        if (
+            trace["schema"] != "owner-replay/v1"
+            or type(trace["humanParticipants"]) is not int
+            or trace["humanParticipants"] != 0
+        ):
             raise ValueError("Owner trace scope differs")
         events = trace["events"]
         rows = [[e[k] for k in ["sequence", "element", "type", "value", "actor", "context"]] for e in events]
         if len(events) != count or outcome_signature(rows) != OWNER_TRACE_SIGNATURES[mode]:
             raise ValueError("Owner event trace differs from the declared actions")
         times = [e["elapsedMs"] for e in events]
-        if any(type(t) not in (int, float) or t < 0 for t in times) or times != sorted(times) or run["mechanicalElapsedMs"] != times[-1]:
+        if (
+            any(type(t) not in (int, float) or t < 0 for t in times)
+            or times != sorted(times)
+            or run["mechanicalElapsedMs"] != times[-1]
+        ):
             raise ValueError("Owner mechanical timings are inconsistent")
-    if (effort["baselineActions"], effort["reuseActions"]) != (14, 11) or abs(effort["reductionFraction"] - 3 / 14) > 1e-12:
+    if (effort["baselineActions"], effort["reuseActions"]) != (14, 11) or abs(
+        effort["reductionFraction"] - 3 / 14
+    ) > 1e-12:
         raise ValueError("Owner headline differs from individual traces")
     vectors = load_json(safe_file(root, "03_Evidence/acceptance/sha256_vectors.json"))
     texts = ["", "abc", "école", 'Ω\n"', "a" * 1000] + ["sample-" + str(i) + "é" * i for i in range(100)]
-    expected_vectors = [{"inputSha256": hashlib.sha256(t.encode()).hexdigest(), "passed": True, "length": len(t.encode())} for t in texts]
-    if vectors["tests"] != expected_vectors or not all(x["passed"] is True for x in vectors["tests"]) or (vectors["count"], vectors["passed"]) != (105, 105):
+    expected_vectors = [
+        {"inputSha256": hashlib.sha256(t.encode()).hexdigest(), "passed": True, "length": len(t.encode())}
+        for t in texts
+    ]
+    if (
+        vectors["tests"] != expected_vectors
+        or not all(x["passed"] is True for x in vectors["tests"])
+        or (vectors["count"], vectors["passed"]) != (105, 105)
+    ):
         raise ValueError("Hash vector identities, outcomes or summary differ")
     return {
         "sha256Vectors": 105,
@@ -209,7 +283,10 @@ def verify_results(root: Path) -> dict:
         "humanParticipants": 0,
         "repositoryRuntimeExecuted": False,
         "modelApiCalls": 0,
-        "interpretation": "Fresh mechanical replay, not fresh model generation, independent replication, or human productivity evidence.",
+        "interpretation": (
+            "Fresh mechanical replay, not fresh model generation, "
+            "independent replication, or human productivity evidence."
+        ),
     }
 
 
@@ -220,7 +297,10 @@ def main() -> None:
     args = parser.parse_args()
     verify_sources(ROOT)
     if args.verify_only:
-        print("Complete publication manifest, original source and generated applications verified; real-user results remain empty.")
+        print(
+            "Complete publication manifest, original source and generated "
+            "applications verified; real-user results remain empty."
+        )
         return
     if not args.output:
         parser.error("--output must name a NEW directory outside this kit")
