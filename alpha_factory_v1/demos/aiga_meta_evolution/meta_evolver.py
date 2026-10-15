@@ -21,6 +21,7 @@ from __future__ import annotations
 import copy
 import dataclasses as dc
 import hashlib
+import inspect
 import json
 import logging
 import math
@@ -145,6 +146,9 @@ CHKPT_DIR = pathlib.Path(os.getenv("CHECKPOINT_DIR", "./checkpoints"))
 CHKPT_DIR.mkdir(parents=True, exist_ok=True)
 
 
+DEFAULT_SEED = int.from_bytes(b"A1GA", "big")
+
+
 # ────────────────────────────── Genome ────────────────────────────────────
 @dc.dataclass(slots=True)
 class Genome:
@@ -154,23 +158,25 @@ class Genome:
     novelty_weight: float = 0.0  # 0–1
 
     # evo‑ops -------------------------------------------------------------
-    def mutate(self) -> "Genome":
+    def mutate(self, rng: random.Random | None = None) -> "Genome":
+        """Mutate using the supplied stream without consuming the global RNG."""
+        rng = rng if rng is not None else random.Random()
         g = copy.deepcopy(self)
-        if random.random() < 0.4:
-            idx = random.randrange(len(g.layers))
-            delta = random.randint(-8, 8)
+        if rng.random() < 0.4:
+            idx = rng.randrange(len(g.layers))
+            delta = rng.randint(-8, 8)
             new_size = max(4, min(128, g.layers[idx] + delta))
             layers = list(g.layers)
             layers[idx] = new_size
-            if random.random() < 0.2 and len(layers) < 4:
-                layers.insert(idx, random.choice([16, 32, 64]))
+            if rng.random() < 0.2 and len(layers) < 4:
+                layers.insert(idx, rng.choice([16, 32, 64]))
             g.layers = tuple(layers)
-        if random.random() < 0.2:
-            g.activation = random.choice(list(_ACT))
-        if random.random() < 0.1:
+        if rng.random() < 0.2:
+            g.activation = rng.choice(list(_ACT))
+        if rng.random() < 0.1:
             g.hebbian = not g.hebbian
-        if random.random() < 0.15:
-            g.novelty_weight = round(min(1.0, max(0.0, g.novelty_weight + random.uniform(-0.15, 0.15))), 2)
+        if rng.random() < 0.15:
+            g.novelty_weight = round(min(1.0, max(0.0, g.novelty_weight + rng.uniform(-0.15, 0.15))), 2)
         return g
 
     # serialisation -------------------------------------------------------
@@ -179,7 +185,10 @@ class Genome:
 
     @staticmethod
     def from_json(js: str | dict) -> "Genome":
-        return Genome(**(json.loads(js) if isinstance(js, str) else js))
+        data = json.loads(js) if isinstance(js, str) else dict(js)
+        if "layers" in data:
+            data["layers"] = tuple(data["layers"])
+        return Genome(**data)
 
     @property
     def sha(self) -> str:
@@ -187,14 +196,31 @@ class Genome:
 
 
 # ───────────────────────── network wrapper ────────────────────────────────
+if _TORCH:
+
+    class _EvoLinear(nn.Linear):
+        def reset_parameters(self) -> None:
+            # EvoNet initializes every parameter with its own CPU generator.
+            # Skipping Linear's default initializer avoids global RNG draws,
+            # including races with unrelated Torch users in other threads.
+            pass
+
+
 class EvoNet(nn.Module):
-    def __init__(self, obs_dim: int, act_dim: int, g: Genome):
+    def __init__(self, obs_dim: int, act_dim: int, g: Genome, *, seed: int | None = None):
         super().__init__()
+        if not _TORCH:
+            raise RuntimeError("EvoNet requires real PyTorch")
+        self._rng = torch.Generator(device="cpu")
+        if seed is None:
+            self._rng.seed()
+        else:
+            self._rng.manual_seed(seed)
         last, modules = obs_dim, []
         for h in g.layers:
-            modules.append(nn.Linear(last, h))
+            modules.append(_EvoLinear(last, h, device="cpu"))
             last = h
-        modules.append(nn.Linear(last, act_dim))
+        modules.append(_EvoLinear(last, act_dim, device="cpu"))
         self.model = nn.ModuleList(modules)
         self.genome = g
         if g.hebbian:
@@ -205,7 +231,7 @@ class EvoNet(nn.Module):
     def _init(self):
         for m in self.model:
             if isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
+                nn.init.xavier_uniform_(m.weight, generator=self._rng)
                 nn.init.zeros_(m.bias)
 
     def forward(self, x: torch.Tensor):
@@ -237,6 +263,8 @@ class MetaEvolver:
         llm: Callable[[str], str] | None = None,
         *,
         start_socket: bool = False,
+        seed: int = DEFAULT_SEED,
+        device: str | None = None,
     ) -> None:
         """Create a meta-evolution engine.
 
@@ -248,15 +276,20 @@ class MetaEvolver:
             checkpoint_dir: Directory for checkpoints.
             llm: Optional LLM callback for commentary.
             start_socket: Start the optional A2A socket.
+            seed: Owned evolution and evaluation seed; checkpointed for resume.
+            device: Torch device override. CPU is the reproducibility qualification target.
         """
+        if type(seed) is not int:
+            raise ValueError("seed must be an integer")
+        if type(pop_size) is not int or type(elitism) is not int or pop_size < 1 or not 0 <= elitism <= pop_size:
+            raise ValueError("pop_size must be positive and elitism must be within the population")
         self.env_cls, self.pop_size, self.elitism = env_cls, pop_size, elitism
+        self.device = device if device is not None else Device
         self.parallel = parallel
         self.ckpt_dir = pathlib.Path(checkpoint_dir)
         self.ckpt_dir.mkdir(parents=True, exist_ok=True)
         self.llm = llm
-        # Use a deterministic seed derived from ASCII bytes so the
-        # meta-evolution runs reproducibly regardless of Python version.
-        seed = int.from_bytes(b"A1GA", "big")
+        self.seed = seed
         self.rng = random.Random(seed)
         self.gen = 0
         self.history: List[Tuple[int, float]] = []
@@ -269,12 +302,12 @@ class MetaEvolver:
             ray.init(ignore_reinit_error=True, _temp_dir=str(self.ckpt_dir / "ray"))
         if start_socket:
             self.start_socket()
-        LOG.info("Evolver ready ▶ pop=%d device=%s", self.pop_size, Device)
+        LOG.info("Evolver ready ▶ pop=%d device=%s", self.pop_size, self.device)
 
     # population -----------------------------------------------------------
     def _init_population(self):
         seed = Genome()
-        self.population = [seed.mutate() for _ in range(self.pop_size)]
+        self.population = [seed.mutate(self.rng) for _ in range(self.pop_size)]
         self.best_genome = self.population[0]
 
     # A2A -----------------------------------------------------------------
@@ -288,47 +321,65 @@ class MetaEvolver:
                 LOG.warning("Failed to start A2A socket", exc_info=True)
 
     # evaluation util ------------------------------------------------------
-    def _simulate(self, g: Genome) -> Tuple[float, np.ndarray]:
-        env = self.env_cls()
-        obs_dim, act_dim = env.observation_space.shape[0], env.action_space.n
-        net = EvoNet(obs_dim, act_dim, g).to(Device)
-        obs, _ = env.reset()
-        total, bc = 0.0, []
-        for _ in range(env.genome.max_steps):
-            with torch.no_grad():
-                a = net(torch.tensor(obs, dtype=torch.float32, device=Device)).argmax().item()
-            obs, rew, done, truncated, _ = env.step(a)
-            total += rew
-            bc.append(obs)
-            if done or truncated:
-                break
-        bc_vec = np.mean(bc, axis=0)
-        if g.novelty_weight and self._archive:
-            novelty = float(np.mean([np.linalg.norm(bc_vec - a) for a in self._archive]))
-            total += g.novelty_weight * novelty
-        return total, bc_vec
+    def _evaluation_seed(self, g: Genome, index: int = 0) -> int:
+        """Derive work-item seeds before dispatch, independent of scheduling."""
+        payload = f"{self.seed}:{self.gen}:{index}:{g.sha}".encode("ascii")
+        return int.from_bytes(hashlib.sha256(payload).digest()[:8], "big") % (2**63)
+
+    def _evaluation_seeds(self) -> List[int]:
+        return [self._evaluation_seed(g, i) for i, g in enumerate(self.population)]
+
+    def _simulate(self, g: Genome, seed: int | None = None) -> Tuple[float, np.ndarray]:
+        seed = self._evaluation_seed(g) if seed is None else seed
+        return self._simulate_worker(self.env_cls, self._archive, g.to_json(), seed, self.device)
 
     @staticmethod
-    def _simulate_worker(env_cls, archive, js: str):
+    def _accepts_seed(fn: Callable) -> bool:
+        try:
+            parameters = inspect.signature(fn).parameters.values()
+        except (TypeError, ValueError):
+            return False
+        return any(
+            p.kind == inspect.Parameter.VAR_KEYWORD
+            or (p.name == "seed" and p.kind != inspect.Parameter.POSITIONAL_ONLY)
+            for p in parameters
+        )
+
+    @staticmethod
+    def _simulate_worker(env_cls, archive, js: str, seed: int = DEFAULT_SEED, device=None):
+        if not _TORCH or np is None:
+            raise RuntimeError("Evolution requires real NumPy and PyTorch; no training was performed")
         g = Genome.from_json(js)
-        env = env_cls()
-        obs_dim, act_dim = env.observation_space.shape[0], env.action_space.n
-        net = EvoNet(obs_dim, act_dim, g).to(Device)
-        obs, _ = env.reset()
-        total, bc = 0.0, []
-        for _ in range(env.genome.max_steps):
-            with torch.no_grad():
-                a = net(torch.tensor(obs, dtype=torch.float32, device=Device)).argmax().item()
-            obs, rew, done, truncated, _ = env.step(a)
-            total += rew
-            bc.append(obs)
-            if done or truncated:
-                break
-        bc_vec = np.mean(bc, axis=0)
-        if g.novelty_weight and archive:
-            novelty = float(np.mean([np.linalg.norm(bc_vec - a) for a in archive]))
-            total += g.novelty_weight * novelty
-        return total, bc_vec
+        constructor_seeded = MetaEvolver._accepts_seed(env_cls)
+        env = env_cls(seed=seed) if constructor_seeded else env_cls()
+        try:
+            obs_dim, act_dim = env.observation_space.shape[0], env.action_space.n
+            device = Device if device is None else device
+            net = EvoNet(obs_dim, act_dim, g, seed=seed).to(device)
+            if MetaEvolver._accepts_seed(env.reset):
+                obs, _ = env.reset(seed=seed)
+            else:
+                if not constructor_seeded:
+                    LOG.warning("Environment has no seed interface; reproducibility is not guaranteed")
+                obs, _ = env.reset()
+            total, bc = 0.0, []
+            for _ in range(env.genome.max_steps):
+                with torch.no_grad():
+                    a = net(torch.tensor(obs, dtype=torch.float32, device=device)).argmax().item()
+                obs, rew, done, truncated, _ = env.step(a)
+                total += rew
+                bc.append(obs)
+                if done or truncated:
+                    break
+            bc_vec = np.mean(bc, axis=0)
+            if g.novelty_weight and archive:
+                novelty = float(np.mean([np.linalg.norm(bc_vec - a) for a in archive]))
+                total += g.novelty_weight * novelty
+            return total, bc_vec
+        finally:
+            close = getattr(env, "close", None)
+            if close is not None:
+                close()
 
     # -------- parallel dispatch ------------------------------------------
     def _evaluate_population(self) -> List[float]:
@@ -339,23 +390,24 @@ class MetaEvolver:
     def _ray_eval(self):
         env_cls = self.env_cls
         archive = self._archive.copy()
+        device = self.device
 
         @ray.remote
-        def _worker(js: str):
-            return MetaEvolver._simulate_worker(env_cls, archive, js)
+        def _worker(js: str, seed: int):
+            return MetaEvolver._simulate_worker(env_cls, archive, js, seed, device)
 
-        futures = [_worker.remote(g.to_json()) for g in self.population]
+        futures = [_worker.remote(g.to_json(), seed) for g, seed in zip(self.population, self._evaluation_seeds())]
         results = ray.get(futures)
         return self._post_eval(results)
 
     def _mp_eval(self):
-        with ProcessPoolExecutor() as pool:
-            results = list(pool.map(self._simulate, self.population))
+        with ProcessPoolExecutor(max_workers=min(self.pop_size, os.cpu_count() or 1)) as pool:
+            results = list(pool.map(self._simulate, self.population, self._evaluation_seeds()))
         return self._post_eval(results)
 
     def _thread_eval(self):
-        with ThreadPoolExecutor() as pool:
-            results = list(pool.map(self._simulate, self.population))
+        with ThreadPoolExecutor(max_workers=min(self.pop_size, os.cpu_count() or 1)) as pool:
+            results = list(pool.map(self._simulate, self.population, self._evaluation_seeds()))
         return self._post_eval(results)
 
     def _post_eval(self, results):
@@ -365,7 +417,7 @@ class MetaEvolver:
 
     # tournament -----------------------------------------------------------
     def _select(self, scores, k=3):
-        idx = max(random.sample(range(self.pop_size), k), key=lambda i: scores[i])
+        idx = max(self.rng.sample(range(self.pop_size), min(k, self.pop_size)), key=lambda i: scores[i])
         return self.population[idx]
 
     # evolutionary loop ----------------------------------------------------
@@ -388,7 +440,7 @@ class MetaEvolver:
             elite_idx = sorted(range(self.pop_size), key=lambda i: scores[i], reverse=True)[: self.elitism]
             new_pop = [self.population[i] for i in elite_idx]
             while len(new_pop) < self.pop_size:
-                new_pop.append(self._select(scores).mutate())
+                new_pop.append(self._select(scores).mutate(self.rng))
             self.population = new_pop
             self.gen += 1
             self._save()
@@ -396,12 +448,16 @@ class MetaEvolver:
     # checkpoint -----------------------------------------------------------
     def _save(self):
         data = {
+            "format_version": 2,
             "gen": self.gen,
+            "elitism": self.elitism,
             "pop": [g.to_json() for g in self.population],
             "hist": self.history,
-            "arc": [a.tolist() for a in self._archive[-256:]],
-            "seed": self.rng.random(),
+            "arc": [{"dtype": a.dtype.str, "values": a.tolist()} for a in self._archive],
+            "seed": self.seed,
+            "rng_state": self.rng.getstate(),
             "sha": self.population_sha(),
+            "last_scores": self._last_scores,
             "best_fitness": self._best_fitness,
             "best_genome": self.best_genome.to_json() if self.best_genome else None,
             "ts": datetime.now(timezone.utc).isoformat(),
@@ -415,8 +471,8 @@ class MetaEvolver:
         self._save()
 
     def reset(self) -> None:
-        """Return to generation zero with a fresh population and clear checkpoints."""
-        # Clear in-memory state
+        """Rewind in-memory evolution to its initial seed; keep checkpoint files."""
+        self.rng.seed(self.seed)
         self._init_population()
         self.gen = 0
         self.history.clear()
@@ -433,14 +489,64 @@ class MetaEvolver:
                 raise FileNotFoundError("no checkpoint found")
             path = latest
         js = json.loads(path.read_text())
-        self.gen = js["gen"]
-        self.population = [Genome.from_json(j) for j in js["pop"]]
-        self.history = js.get("hist", [])
-        self._archive = [np.array(a) for a in js.get("arc", [])]
-        self.rng.seed(js.get("seed", 0))
-        self._best_fitness = js.get("best_fitness", -math.inf)
-        bg = js.get("best_genome")
-        self.best_genome = Genome.from_json(bg) if bg else self.population[0]
+        if js.get("format_version") != 2 or "rng_state" not in js:
+            raise ValueError("Legacy checkpoint lacks RNG state; exact resume requires a version 2 checkpoint")
+        required = {
+            "gen",
+            "elitism",
+            "pop",
+            "hist",
+            "arc",
+            "seed",
+            "rng_state",
+            "last_scores",
+            "best_fitness",
+            "best_genome",
+            "sha",
+        }
+        missing = required.difference(js)
+        if missing:
+            raise ValueError(f"Incomplete version 2 checkpoint: missing {', '.join(sorted(missing))}")
+        # Validate into local objects so an invalid checkpoint never half-loads.
+        try:
+            version, internal, gaussian = js["rng_state"]
+            rng = random.Random()
+            rng.setstate((version, tuple(internal), gaussian))
+            population = [Genome.from_json(j) for j in js["pop"]]
+            history = [tuple(row) for row in js["hist"]]
+            archive = []
+            for entry in js["arc"]:
+                dtype = np.dtype(entry["dtype"])
+                if dtype.kind != "f" or dtype.itemsize not in (2, 4, 8):
+                    raise ValueError("Unsupported archive dtype")
+                archive.append(np.array(entry["values"], dtype=dtype))
+            best_genome = Genome.from_json(js["best_genome"]) if js["best_genome"] else None
+            valid = (
+                type(js["seed"]) is int
+                and type(js["gen"]) is int
+                and js["gen"] >= 0
+                and type(js["elitism"]) is int
+                and 0 <= js["elitism"] <= len(population)
+                and bool(population)
+                and len(history) == js["gen"]
+                and all(len(row) == 2 and row[0] == i and math.isfinite(row[1]) for i, row in enumerate(history))
+                and all(a.ndim == 1 and a.size > 0 and np.isfinite(a).all() for a in archive)
+                and (not archive or all(a.shape == archive[0].shape for a in archive))
+                and len(js["last_scores"]) in (0, len(population))
+                and all(math.isfinite(score) for score in js["last_scores"])
+                and (math.isfinite(js["best_fitness"]) or (js["gen"] == 0 and js["best_fitness"] == -math.inf))
+            )
+            concat = "".join(sorted(g.sha for g in population))
+            valid = valid and hashlib.sha256(concat.encode()).hexdigest()[:16] == js["sha"]
+        except (KeyError, TypeError, ValueError, OverflowError) as exc:
+            raise ValueError("Invalid version 2 checkpoint state") from exc
+        if not valid:
+            raise ValueError("Invalid version 2 checkpoint state")
+        self.seed, self.rng, self.gen = js["seed"], rng, js["gen"]
+        self.population, self.pop_size, self.elitism = population, len(population), js["elitism"]
+        self.history, self._archive = history, archive
+        self._last_scores = list(js["last_scores"])
+        self._best_fitness, self.best_genome = js["best_fitness"], best_genome
         if _fitness_gauge:
             _fitness_gauge.set(self._best_fitness)
         LOG.info("Loaded checkpoint gen=%d sha=%s", self.gen, js.get("sha", "?"))
@@ -482,6 +588,8 @@ def cli() -> None:
 
     parser = argparse.ArgumentParser(description="AI-GA Meta-Evolver demo")
     parser.add_argument("--gens", type=int, default=5, help="Generations to run")
+    parser.add_argument("--seed", type=int, default=DEFAULT_SEED, help="Evolution and evaluation seed")
+    parser.add_argument("--device", choices=("cpu", "cuda"), default=None, help="Torch device override")
     args = parser.parse_args()
 
     if np is None or not _TORCH:
@@ -491,7 +599,9 @@ def cli() -> None:
     from .curriculum_env import CurriculumEnv
 
     try:
-        evolver = MetaEvolver(env_cls=CurriculumEnv, start_socket=False, parallel=False)
+        evolver = MetaEvolver(
+            env_cls=CurriculumEnv, start_socket=False, parallel=False, seed=args.seed, device=args.device
+        )
         evolver.run_generations(args.gens)
         print(evolver.latest_log())
 

@@ -149,12 +149,14 @@ class CurriculumEnv(gym.Env):
     # --------------------------- gym API ----------------------------------
     def reset(self, *, seed: int | None = None, options: Dict[str, Any] | None = None):
         """Reset the environment and return the initial observation."""
+        super().reset(seed=seed)
         if seed is not None:
             self._rng = np.random.default_rng(seed)
+            self.action_space.seed(seed)
         self._steps = 0
         self.energy = 1.0
         self._valid_layout()
-        return self._obs(), {}
+        return self._obs(), {"difficulty": self._difficulty_score(), "genome_id": self.genome.id}
 
     def reset_batch(self, batch_size: int):
         """Return stacked observations from consecutive ``reset`` calls.
