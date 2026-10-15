@@ -28,7 +28,7 @@ export const fr = {
     methodText:
         "La démo Python originale réutilise le moteur Pareto du dépôt. Ce navigateur applique une arithmétique entière testée en parité et la même empreinte canonique. Les deux préservent les preuves fournies sans appel externe.",
     privacy:
-        "Les fichiers restent dans cet onglet. Exportez pour conserver votre travail. Rouvrir un rapport ignore son résultat enregistré et recalcule les données.",
+        "Les fichiers restent dans cet onglet. Exportez pour conserver votre travail. Rouvrir un rapport ignore son résultat enregistré et recalcule les données. Les preuves du notebook sont acceptées dans la limite de 1 Mio. Pour une enveloppe plus grande, rouvrez le fichier exporté cross-industry-input.json.",
     source: "Environnement original, schéma et guide",
     legacy: "Rejeu graphique historique conservé",
     footer: "AGIALPHA · Comparaison de données fournies · Revue humaine requise",

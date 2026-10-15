@@ -29,29 +29,31 @@ def test_all_notebook_cells_execute_without_network_and_export_recover(tmp_path,
     assert namespace["report"]["mode"] == "synthetic-example"
     assert namespace["recomputed"]["input_sha256"] == namespace["report"]["input_sha256"]
     assert namespace["recomputed"]["ranking"] == namespace["report"]["ranking"]
+    raw = json.loads(namespace["raw_input_path"].read_bytes())
+    assert namespace["compare_opportunities"](raw)["input_sha256"] == namespace["report"]["input_sha256"]
     path = namespace["evidence_path"]
     original = path.read_bytes()
     old_weight = namespace["assessment"]["weights"]["benefit"]
     namespace["assessment"]["weights"]["benefit"] = old_weight + 1
     with pytest.raises(ValueError, match="rerun"):
-        exec(compile(cells()[-2], "export-cell", "exec"), namespace)
+        exec(compile(cells()[3], "export-cell", "exec"), namespace)
     namespace["assessment"]["weights"]["benefit"] = old_weight
     assert path.read_bytes() == original
     with pytest.raises(FileExistsError):
-        exec(compile(cells()[-2], "export-cell", "exec"), namespace)
+        exec(compile(cells()[3], "export-cell", "exec"), namespace)
     assert path.read_bytes() == original
     forged = json.loads(original)
     forged["report"] = {"selected_id": "invented", "productionApproved": True}
     path.write_text(json.dumps(forged))
-    exec(compile(cells()[-1], "recovery-cell", "exec"), namespace)
+    exec(compile(cells()[4], "recovery-cell", "exec"), namespace)
     assert namespace["recomputed"]["selected_id"] != "invented"
     assert "productionApproved" not in namespace["recomputed"]
     path.write_bytes(b'{"schema":"x","schema":"y"}')
     with pytest.raises(ValueError, match="Duplicate"):
-        exec(compile(cells()[-1], "recovery-cell", "exec"), namespace)
+        exec(compile(cells()[4], "recovery-cell", "exec"), namespace)
     path.write_bytes(b'{"input":"\xff"}')
     with pytest.raises(UnicodeDecodeError):
-        exec(compile(cells()[-1], "recovery-cell", "exec"), namespace)
+        exec(compile(cells()[4], "recovery-cell", "exec"), namespace)
 
 
 def test_notebook_has_no_shell_cells_or_retained_outputs():

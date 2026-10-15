@@ -288,7 +288,9 @@ $("import").onchange = async () => {
         let input = parseJSON(
             new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(
                 await file.arrayBuffer()
-            )
+            ),
+            true,
+            ["report"]
         );
         if (ticket !== revision) return;
         if (input?.schema_version === "cross-industry-browser-evidence-v1") {
@@ -305,6 +307,11 @@ $("import").onchange = async () => {
                     .join("|")
             )
                 throw Error("Unknown evidence fields");
+            input = input.input;
+        }
+        if (input?.schema === "cross-industry-notebook-evidence-v1") {
+            if (Object.keys(input).sort().join("|") !== "input|report|schema")
+                throw Error("Unknown notebook evidence fields");
             input = input.input;
         }
         validate(input);

@@ -1,4 +1,4 @@
-export function parseJSON(text, integerOnly = true) {
+export function parseJSON(text, integerOnly = true, relaxedRootKeys = []) {
     if (new TextEncoder().encode(text).length > 1048576)
         throw new Error("Fixture exceeds 1 MiB");
     let at = 0;
@@ -19,7 +19,7 @@ export function parseJSON(text, integerOnly = true) {
         }
         fail();
     }
-    function value(depth = 0) {
+    function value(depth = 0, strict = integerOnly) {
         if (depth > 32) throw new Error("Input nesting is too deep");
         ws();
         const c = text[at];
@@ -41,7 +41,12 @@ export function parseJSON(text, integerOnly = true) {
                 seen.add(key);
                 ws();
                 if (text[at++] !== ":") fail();
-                obj[key] = value(depth + 1);
+                obj[key] = value(
+                    depth + 1,
+                    depth === 0 && relaxedRootKeys.includes(key)
+                        ? false
+                        : strict
+                );
                 ws();
                 const sep = text[at++];
                 if (sep === "}") return obj;
@@ -57,7 +62,7 @@ export function parseJSON(text, integerOnly = true) {
                 return arr;
             }
             while (true) {
-                arr.push(value(depth + 1));
+                arr.push(value(depth + 1, strict));
                 ws();
                 const sep = text[at++];
                 if (sep === "]") return arr;
@@ -76,7 +81,7 @@ export function parseJSON(text, integerOnly = true) {
         const token = text
             .slice(at)
             .match(
-                integerOnly
+                strict
                     ? /^-?(?:0|[1-9][0-9]*)/
                     : /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/
             );

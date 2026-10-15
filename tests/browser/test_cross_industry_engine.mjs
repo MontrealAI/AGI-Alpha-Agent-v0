@@ -93,3 +93,18 @@ test("150 full reports and canonical hashes match original Python including Unic
         JSON.parse(run.stdout)
     );
 });
+
+test("ignored report floats do not relax input integer tokens", () => {
+    assert.equal(
+        parseJSON('{"input":{"rating":1},"report":{"score":74.5}}', true, [
+            "report",
+        ]).report.score,
+        74.5
+    );
+    for (const raw of [
+        '{"input":{"rating":1.0},"report":{"score":74.5}}',
+        '{"input":{"rating":1e0},"report":{}}',
+        '{"report":{"score":NaN}}',
+    ])
+        assert.throws(() => parseJSON(raw, true, ["report"]));
+});
