@@ -47,6 +47,9 @@ def build(root: Path = ROOT) -> None:
         ("records", "examples/successor-workbench/mission-record.mjs"),
         ("storage", "examples/successor-workbench/mission-store.mjs"),
         ("transport", "docs/assets/successor/engine.mjs"),
+        ("projects", "examples/successor-project/engine.mjs"),
+        ("projectStorage", "examples/successor-project/store.mjs"),
+        ("discovery", "examples/alpha-discovery/engine.mjs"),
     ):
         modules[name] = visit(root / path)
     vendor = root / "examples/build-successor/vendor/agijobs"
@@ -62,7 +65,33 @@ def build(root: Path = ROOT) -> None:
     code = "\n".join(chunks)
     code += "\n" + "\n".join(f"const {name}={module};" for name, module in modules.items())
     code += f"\nconst SOURCE_HASH='{source_hash}';\n"
-    script = "\n(()=>{\n'use strict';\n" + code + (templates / "app.js").read_text() + "\n})();\n"
+    # Verified against GitHub exact commit/path bytes; drift requires a new provenance review.
+    native_pins = {
+        "examples/alpha-discovery/engine.mjs": "452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850",
+        "examples/successor-workbench/mission-record.mjs": "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f",
+    }
+    if any(sources[path] != expected for path, expected in native_pins.items()):
+        raise ValueError("Native source drift: review commit/path/hash together")
+    project_sources = {
+        role: {
+            "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+            "commit": "021b3337de07e9a0cdd105fac967a0dc650de122",
+            "path": path,
+            "sha256": sources[path],
+        }
+        for role, path in (
+            ("discovery", "examples/alpha-discovery/engine.mjs"),
+            ("mission", "examples/successor-workbench/mission-record.mjs"),
+        )
+    }
+    code += "\nconst PROJECT_SOURCES=" + json.dumps(project_sources, sort_keys=True) + ";\n"
+    script = (
+        "\n(()=>{\n'use strict';\n"
+        + code
+        + (templates / "app.js").read_text()
+        + (templates / "project.js").read_text()
+        + "\n})();\n"
+    )
     if "</script" in script.lower():
         raise ValueError("Closing script tag in source")
     style = "\n" + (templates / "style.css").read_text() + "\n"

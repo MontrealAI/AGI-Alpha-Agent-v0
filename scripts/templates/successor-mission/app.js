@@ -28,6 +28,7 @@ const say=(en,fr)=>language==='fr'?fr:en;
 function status(en,fr=en){$('status').textContent=say(en,fr);}
 function clearError(){$('error').hidden=true;$('error').textContent='';}
 function error(e){$('error').hidden=false;$('error').textContent=String(e?.code||e?.message||e);}
+function failureReason(value){let text='';for(const char of new TextDecoder().decode(new TextEncoder().encode(String(value)))){if(new TextEncoder().encode(text+char).length>512)break;text+=char;}return text;}
 function id(){return crypto.randomUUID();}
 function view(name){document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==name);document.querySelectorAll('[data-view]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.view===name)));}
 function controls(){
@@ -45,6 +46,7 @@ function controls(){
   $('import').disabled=!ready||busy||pendingRun||stopping||!!active;
   $('language').disabled=!ready;
   document.querySelectorAll('[data-view]').forEach(el=>el.disabled=!ready);
+  projectControls();
 }
 function fill(){if(!current)return;const s=current.spec;for(const [key,value]of Object.entries({name:s.name,csv:s.inputs.csv,unit:s.inputs.unit,rights:s.rights.dataClass,source:s.rights.source,license:s.rights.license,minutes:String(s.reviewMinutes)}))$(key).value=value;$('note').value='';dirty=false;}
 function spec(){
@@ -81,6 +83,7 @@ function loseStorage(e,confirmed=false){
     confirmed?'La modification a été enregistrée, mais l’index est illisible. Exportez ce dossier ; l’exécution est désactivée.':'Le stockage local est indisponible ou corrompu. Vous pouvez inspecter un fichier ; l’exécution est désactivée.');
 }
 async function persist(next,expected){
+  if(dossier)return persistProject(next);
   await records.validateRecord(next);
   try{await db.save(next,expected);}catch(e){
     current=next;unpersisted=true;
@@ -91,8 +94,8 @@ async function persist(next,expected){
   current=next;unpersisted=false;dirty=false;try{await refreshList();}catch(e){loseStorage(e,true);}render();
 }
 async function operation(action){if(busy||active||pendingRun||stopping)return;++epoch;busy=true;clearError();controls();try{await action();}catch(e){error(e);}finally{busy=false;render();}}
-async function openSaved(){const token=++epoch;const item=await db.get($('saved').value);if(!item)throw Error('LOCAL_MISSION_MISSING');const checked=await records.validateRecord(item);if(token!==epoch)return;current=checked;unpersisted=false;historicalBytes=null;readOnly=current.sourceHash!==SOURCE_HASH;mode=readOnly?'historical':'current';fill();render();status(readOnly?'Source changed. This record is historical and read-only. Export and import to create a new draft.':'Saved mission opened. No execution has restarted.',readOnly?'Le code a changé. Ce dossier est historique et en lecture seule. Exportez et importez pour créer un brouillon.':'Mission enregistrée ouverte. Aucune exécution n’a redémarré.');}
-async function newMission(){++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:workbench.example('public-data')});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
+async function openSaved(){dossier=null;projectHistorical=false;const token=++epoch;const item=await db.get($('saved').value);if(!item)throw Error('LOCAL_MISSION_MISSING');const checked=await records.validateRecord(item);if(token!==epoch)return;current=checked;unpersisted=false;historicalBytes=null;readOnly=current.sourceHash!==SOURCE_HASH;mode=readOnly?'historical':'current';fill();render();status(readOnly?'Source changed. This record is historical and read-only. Export and import to create a new draft.':'Saved mission opened. No execution has restarted.',readOnly?'Le code a changé. Ce dossier est historique et en lecture seule. Exportez et importez pour créer un brouillon.':'Mission enregistrée ouverte. Aucune exécution n’a redémarré.');}
+async function newMission(){dossier=null;projectHistorical=false;++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:workbench.example('public-data')});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
 async function run(){
   if(busy||active||pendingRun||stopping||dirty||readOnly||!current)return;
   pendingRun=true;
@@ -111,21 +114,20 @@ async function run(){
     if(active!==attempt||epoch!==attempt.epoch||attempt.controller.signal.aborted)return;
     await persist(finished,next.revision);active=null;view('result');
     if(!readOnly)status('Result saved. Inspect its files and checks, then record your review.','Résultat enregistré. Inspectez les fichiers et vérifications, puis consignez votre avis.');
-  }catch(e){if(active!==attempt)return;error(e);active=null;attempt?.controller.abort();if(attempt&&!readOnly){++epoch;try{const stopped=await records.interruptRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:String(e.message).slice(0,200)});await persist(stopped,attempt.record.revision);}catch(failure){error(failure);}}}
+  }catch(e){if(active!==attempt)return;error(e);active=null;attempt?.controller.abort();if(attempt&&!readOnly){++epoch;try{const stopped=await records.interruptRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:failureReason(e.message)});await persist(stopped,attempt.record.revision);}catch(failure){error(failure);}}}
   finally{pendingRun=false;busy=false;render();}
 }
 async function stop(){const attempt=active;if(!attempt||stopping)return;stopping=true;active=null;++epoch;attempt.controller.abort();busy=true;controls();try{const stopped=await records.stopRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:'User requested STOP.'});await persist(stopped,attempt.record.revision);if(!readOnly)status('Stopped. No result was promoted.','Arrêté. Aucun résultat n’a été promu.');}catch(e){error(e);}finally{stopping=false;busy=false;render();}}
 $('editor').addEventListener('submit',event=>{event.preventDefault();operation(async()=>{const prior=current;const next=await records.editRecord(prior,spec(),{expectedRevision:prior.revision});await persist(next,prior.revision);fill();if(!readOnly)status('Input saved. Prior results are historical.','Données enregistrées. Les résultats précédents sont historiques.');});});
-for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).addEventListener('input',()=>{dirty=true;++epoch;render();});
+for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).addEventListener('input',()=>{dirty=true;++epoch;if(dossier)$('project-choice').checked=false;render();});
 $('new').addEventListener('click',()=>operation(newMission));$('open').addEventListener('click',()=>operation(openSaved));$('run').addEventListener('click',run);$('stop').addEventListener('click',stop);
 $('interrupt').addEventListener('click',()=>operation(async()=>{const prior=current;await persist(await records.interruptRun(prior,{expectedRevision:prior.revision,runId:prior.run.runId,reason:'Explicit recovery after interrupted browser session.'}),prior.revision);if(!readOnly)status('Interrupted run closed. A new run requires your action.','Exécution interrompue fermée. Une nouvelle exécution nécessite votre action.');}));
 for(const [button,decision]of [['accept','accepted'],['reject','rejected']])$(button).addEventListener('click',()=>operation(async()=>{const prior=current;await persist(await records.reviewRecord(prior,{expectedRevision:prior.revision,decision,note:$('note').value}),prior.revision);if(!readOnly)status('Your local review is saved. No external authority was granted.','Votre avis local est enregistré. Aucune autorité externe n’a été accordée.');}));
 $('export').addEventListener('click',()=>operation(async()=>{download(await records.serializeRecord(current),`successor-${unpersisted?'unpersisted-':''}${current.missionId}.json`);}));
 $('import').addEventListener('change',async()=>{
   const file=$('import').files[0];if(!file||active||pendingRun||stopping)return;const token=++epoch;busy=true;clearError();controls();
-  try{if(file.size>records.RECORD_LIMITS.bytes)throw Error('RECORD_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const restored=await records.restoreRecord(bytes,{sourceHash:SOURCE_HASH});if(token!==epoch||$('import').files[0]!==file)return;current=restored.record;unpersisted=true;historicalBytes=bytes;readOnly=true;mode='historical';fill();render();status('Imported file inspected as historical evidence. Use its input in a new mission to run and review locally.','Fichier importé inspecté comme preuve historique. Utilisez ses données dans une nouvelle mission pour exécuter et examiner localement.');}catch(e){if(token===epoch)error(e);}finally{if($('import').files[0]===file)$('import').value='';if(token===epoch){busy=false;render();}}
+  try{if(file.size>records.RECORD_LIMITS.bytes)throw Error('RECORD_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const restored=await records.restoreRecord(bytes,{sourceHash:SOURCE_HASH});if(token!==epoch||$('import').files[0]!==file)return;dossier=null;projectHistorical=false;current=restored.record;unpersisted=true;historicalBytes=bytes;readOnly=true;mode='historical';fill();render();status('Imported file inspected as historical evidence. Use its input in a new mission to run and review locally.','Fichier importé inspecté comme preuve historique. Utilisez ses données dans une nouvelle mission pour exécuter et examiner localement.');}catch(e){if(token===epoch)error(e);}finally{if($('import').files[0]===file)$('import').value='';if(token===epoch){busy=false;render();}}
 });
 $('fork').addEventListener('click',()=>operation(async()=>{const record=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('New draft saved. Imported results and reviews remain historical.','Nouveau brouillon enregistré. Les résultats et avis importés restent historiques.');}));
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>view(button.dataset.view)));
 $('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=(language==='fr'?french:english)[el.dataset.i18n]||english[el.dataset.i18n];render();});
-(async()=>{try{db=await storage.openMissionStore();await refreshList();status('Choose a saved mission or create a new example.','Choisissez une mission enregistrée ou créez un nouvel exemple.');}catch(e){loseStorage(e);}finally{ready=true;render();}})();

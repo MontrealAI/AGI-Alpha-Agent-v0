@@ -1,7 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#160c2f"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QYqZ2mnerY4aBsaDV+va+RRlXWuOSSpSsJ8wZjx/wAk='; style-src 'sha256-qMc5U+s8vpz4OpdScmC5tKz55M9vssPkFZXCRNGVGJk='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>SUCCESSOR Ω · Your mission</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#160c2f"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-pj8PGyhHYk0onf7Sf2MnM/Oc/v0E6dKzPqMULXdC3Ik='; style-src 'sha256-Jn8JoV3XiZKSton5YW2QoH5s8U5G8e0DQCYx8tRm2EU='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>SUCCESSOR Ω · Your mission</title><style>
 :root{color-scheme:dark;font:17px/1.6 system-ui,sans-serif;background:#100b20;color:#f4efff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% 5%,#43246588,transparent 45%),radial-gradient(ellipse at 10% 35%,#213b6644,transparent 40%)}header,main{max-width:1050px;margin:auto;padding:1.2rem}header{display:flex;justify-content:space-between;align-items:center;gap:1rem}.brand{font-weight:800;letter-spacing:.12em;text-decoration:none}.hero{padding:3rem 0 2rem;max-width:800px}h1{font-size:clamp(2.5rem,8vw,4.5rem);line-height:1.1;margin:.5rem 0 1.2rem}h2{margin-top:0}.eyebrow{font-size:.8rem;letter-spacing:.15em;color:#d9c3ff}.pill{display:inline-block;border:1px solid #8f75b2;border-radius:2rem;padding:.3rem .8rem}.panel,.toolbar{border:1px solid #59446e;border-radius:1rem;padding:1.3rem;background:#1b142be8;margin:1rem 0}.toolbar{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}.toolbar select{max-width:20rem}button,input,textarea,select{font:inherit;border:1px solid #9a83b6;border-radius:.45rem;padding:.6rem;color:inherit;background:#171123;max-width:100%}button{cursor:pointer;padding:.6rem 1rem}button:hover:enabled{background:#422c61}button:disabled,input:disabled,textarea:disabled,select:disabled{opacity:.55;cursor:not-allowed}.primary{background:#d7bdff;color:#20112f;font-weight:750}.primary:hover:enabled{background:#ebdcff}a{color:#d9c3ff}label{display:block;margin-top:1rem;font-weight:650}input:not([type=file]),textarea,select{width:100%}textarea{resize:vertical}input[type=file]{width:16rem}.views{display:flex;flex-wrap:wrap;gap:.5rem}.views button[aria-pressed=true]{background:#dac3ff;color:#211130}.actions{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0}pre,code{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.85rem}pre{background:#100b1a;padding:1rem;border-radius:.5rem}#error{padding:1rem;background:#4b1828;color:#ffe8ee;border:1px solid #ec93af}#status{padding:1rem;border-left:3px solid #c2a2f5;background:#211631}.file{margin:0}footer{padding:2rem 0;color:#d3c7df}.skip{position:absolute;left:-9999px}.skip:focus{left:1rem;top:1rem;background:#241539;padding:1rem;z-index:10}:focus-visible{outline:3px solid #f0cb77;outline-offset:3px}[hidden]{display:none!important}#files{display:flex;flex-wrap:wrap;gap:.5rem}@media(max-width:480px){header,main{padding:.8rem}.panel,.toolbar{padding:.9rem}.toolbar>*{width:100%}.hero{padding:2rem 0}.views button{flex:1 1 40%}}
 header{flex-wrap:wrap}body{overflow-wrap:anywhere}main,section,form,nav,header>*{min-width:0}button{white-space:normal}.brand{font-size:1rem}input,select{min-width:0}
+
+input[type=checkbox]{width:auto;min-width:1.2rem;min-height:1.2rem;margin-right:.5rem}
 
 </style></head><body>
 <a class="skip" href="#workspace">Skip to mission / Aller à la mission</a><header><a href="../work/" class="brand">SUCCESSOR Ω</a><button id="language" disabled>Français</button></header>
@@ -9,13 +11,21 @@ header{flex-wrap:wrap}body{overflow-wrap:anywhere}main,section,form,nav,header>*
 <noscript><p class="notice">JavaScript is required for local computation. No mission has run. / JavaScript est nécessaire au calcul local. Aucune mission n’a été exécutée.</p></noscript>
 <p id="status" role="status" aria-live="polite">Loading local storage… / Chargement du stockage local…</p><p id="error" role="alert" hidden></p>
 <section class="toolbar" aria-label="Saved missions"><label for="saved" data-i18n="saved">Saved missions</label><select id="saved" disabled><option value="">—</option></select><button id="open" disabled data-i18n="open">Open</button><button id="new" disabled data-i18n="new">New example</button><label class="file" for="import" data-i18n="import">Inspect saved file</label><input id="import" type="file" accept="application/json,.json" disabled><button id="fork" disabled data-i18n="fork">Use input in a new mission</button></section>
+<section class="panel" aria-label="Continuing project / Projet continu"><h2>One continuing project · Un projet continu</h2>
+<p>Illustrative reporting opportunity → explicit CSV task → actual result → incomplete evaluation. No battery experiment, independent proof or external execution. / Possibilité illustrative → tâche CSV choisie → résultat réel → évaluation incomplète.</p>
+<label for="discovery-import">Discovery brief for a NEW project · Dossier Alpha pour un NOUVEAU projet</label><input id="discovery-import" type="file" accept="application/json,.json" disabled><button id="discovery-clear" disabled>Use labelled illustration · Utiliser l’illustration</button><p id="discovery-selected">Illustrative public-data opportunity / Possibilité illustrative de données publiques</p><p>A discovery goal is never converted into a CSV task. Choose the actual supported CSV separately. / Un objectif n’est jamais converti en tâche CSV : choisissez les données séparément.</p><p id="project-summary"></p><label><input id="project-choice" type="checkbox"> I explicitly choose the displayed saved CSV, unchanged integer units and permitted nonpersonal rights. All rows are summed, including duplicates. / Je choisis explicitement le CSV enregistré, les unités entières inchangées et les droits autorisés. Toutes les lignes sont additionnées, doublons compris.</label>
+<div class="actions"><button id="project-start" disabled>Start project from this input · Créer le projet</button><button id="project-resume" disabled>Start fresh cycle · Nouveau cycle</button><button id="project-export" disabled>Export whole project · Exporter le projet</button></div>
+<label for="project-saved">Saved projects · Projets enregistrés</label><select id="project-saved" disabled></select><button id="project-open" disabled>Open project as history · Ouvrir l’historique</button>
+<label for="project-import">Inspect project file · Inspecter un projet</label><input id="project-import" type="file" accept="application/json,.json" disabled>
+<p id="project-next" role="status"></p><details><summary>Project links, mapping and unresolved evaluation · Liens, adaptation et évaluation incomplète</summary><pre id="project-history"></pre></details>
+<p>Hashes establish integrity, not authenticity. Manager/USDC and JobRegistry/AGIALPHA remain separate unfunded proposals; no Fleet grant exists. / Les empreintes établissent l’intégrité, pas l’authenticité. Aucun financement ni permission externe.</p></section>
 <nav class="views" aria-label="Mission views"><button data-view="mission" aria-pressed="true" data-i18n="mission" disabled>Mission</button><button data-view="result" aria-pressed="false" data-i18n="result" disabled>Result</button><button data-view="checks" aria-pressed="false" data-i18n="checks" disabled>Checks</button><button data-view="permissions" aria-pressed="false" data-i18n="permissions" disabled>Permissions</button><button data-view="history" aria-pressed="false" data-i18n="history" disabled>History</button></nav>
 <section id="mission" class="panel view"><h2 data-i18n="mission">Mission</h2><form id="editor"><label for="name" data-i18n="name">Mission name</label><input id="name" maxlength="64" disabled><label for="csv" data-i18n="csv">Data: group,amount CSV, with integer amounts</label><textarea id="csv" rows="10" spellcheck="false" disabled></textarea><label for="unit" data-i18n="unit">Unit</label><input id="unit" maxlength="80" disabled><label for="rights" data-i18n="rights">Input rights</label><select id="rights" disabled><option value="synthetic">Synthetic / Synthétique</option><option value="public">Public</option><option value="licensed-nonpersonal">Licensed, nonpersonal / Autorisé, non personnel</option></select><label for="source" data-i18n="source">Data source</label><input id="source" maxlength="1000" disabled><label for="license" data-i18n="license">License or permission</label><input id="license" maxlength="1000" disabled><label for="minutes" data-i18n="minutes">Review capacity in minutes (1–120)</label><input id="minutes" inputmode="numeric" disabled><div class="actions"><button id="save" type="submit" disabled data-i18n="save">Save input</button><button id="run" type="button" class="primary" disabled data-i18n="run">Run this mission</button><button id="stop" type="button" disabled data-i18n="stop">Stop</button><button id="interrupt" type="button" disabled data-i18n="interrupt">Mark interrupted run stopped</button></div></form><p data-i18n="editHint">Editing clears the current result and review after saving. Earlier observations remain in History.</p></section>
 <section id="result" class="panel view" hidden><h2 data-i18n="result">Result</h2><p id="result-summary"></p><div id="files"></div><pre id="result-data"></pre><button id="export" disabled data-i18n="export">Save mission record</button><p data-i18n="exportHint">Keep a file backup. Browser storage can be cleared or unavailable. Imported reviews remain historical.</p></section>
 <section id="checks" class="panel view" hidden><h2 data-i18n="checks">Checks</h2><p id="check-summary"></p><pre id="check-data"></pre><label for="note" data-i18n="note">Your review note</label><textarea id="note" rows="4" maxlength="2048" disabled></textarea><div class="actions"><button id="accept" disabled data-i18n="accept">Accept this result locally</button><button id="reject" disabled data-i18n="reject">Reject this result</button></div><p data-i18n="reviewHint">Your review is self-reported. It does not authorize payment, marketplace admission or external execution.</p></section>
 <section id="permissions" class="panel view" hidden><h2 data-i18n="permissions">Permissions</h2><p data-i18n="permissionText">This task uses only the supplied data. No provider, wallet or external executor is connected. No transaction or permission is restored from a file.</p><ul><li data-i18n="cost">Provider and settlement spend: zero. Device compute cost and human time: unknown.</li><li data-i18n="fleet">Fleet: this report task has no commissioned executor handoff here.</li><li data-i18n="markets">AGI Jobs uses a separate $AGIALPHA admission flow; AGIJobManager uses a separate USDC flow.</li></ul><p><a href="https://montrealai.github.io/AGIJobsv0/">AGI Jobs</a> · <a href="https://montrealai.github.io/AGIJobManager/">AGIJobManager</a> · <a href="https://montrealai.github.io/AGI-Fleet-Linux/">AGI Fleet Linux</a></p></section>
 <section id="history" class="panel view" hidden><h2 data-i18n="history">History</h2><p id="identity"></p><pre id="history-data"></pre><p data-i18n="historyHint">At most 16 earlier observations are kept. Hashes check consistency, not identity or independent certification.</p></section>
-<footer><p data-i18n="sourceHint">Exact bundled source identity</p><code id="source-hash">7d5ffa18e124dffa66b28710466bca195c3b46a61f44114935ab0e0dc91a3e0f</code><p><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice / Avis du projet</a></p></footer></main><script>
+<footer><p data-i18n="sourceHint">Exact bundled source identity</p><code id="source-hash">2052b3fa57693fd2076cd32f452a2422c445cce537fbeb8588923f099bb860b9</code><p><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice / Avis du projet</a></p></footer></main><script>
 (()=>{
 'use strict';
 const module_1=(()=>{
@@ -2620,11 +2630,260 @@ async function openMissionStore({ indexedDB = globalThis.indexedDB,
 
 return {MAX_RECORD_BYTES,MAX_MISSIONS,MissionStorageError,openMissionStore};
 })();
+const module_10=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const { canonical, digest, parseBounded } = module_1;
+
+const SCHEMA = 'alpha-discovery/v1';
+const CATEGORIES = ['benefit', 'cost', 'proof', 'risk', 'human'];
+const ROLES = ['baseline', 'alternative', 'candidate'];
+function keys(value, expected) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join('|') !== [...expected].sort().join('|')) throw Error('DISCOVERY_SCHEMA');
+}
+function text(value, limit = 2000) {
+  if (typeof value !== 'string' || !value.trim() || value.length > limit) throw Error('DISCOVERY_TEXT');
+}
+function validate(input) {
+  keys(input, ['schema','mission','baseline','alternative','candidate','changed','rights','evidence','constraints','metrics']);
+  if (input.schema !== SCHEMA) throw Error('DISCOVERY_VERSION');
+  for (const key of ['mission','baseline','alternative','candidate','changed','rights']) text(input[key]);
+  if (!Array.isArray(input.evidence) || input.evidence.length > 24) throw Error('DISCOVERY_EVIDENCE');
+  input.evidence.forEach(row => {
+    keys(row, ['kind','claim','reference','basis','supports']);
+    if (!['research','expertise','experiment','lesson','change'].includes(row.kind) || !['illustrative','supplied-report'].includes(row.basis)) throw Error('DISCOVERY_EVIDENCE_BASIS');
+    text(row.claim); text(row.reference);
+    if (!Array.isArray(row.supports) || !row.supports.length || row.supports.length > 4 || row.supports.some(role => ![...ROLES,'change'].includes(role))) throw Error('DISCOVERY_EVIDENCE_LINK');
+  });
+  if (!Array.isArray(input.constraints) || !input.constraints.length || input.constraints.length > 12) throw Error('DISCOVERY_CONSTRAINTS');
+  input.constraints.forEach(row => {
+    keys(row, ['name','status','reference']); text(row.name); text(row.reference);
+    if (!['unknown','reported-pass','reported-fail'].includes(row.status)) throw Error('DISCOVERY_CONSTRAINT_STATUS');
+  });
+  if (!Array.isArray(input.metrics) || input.metrics.length < 5 || input.metrics.length > 12 || CATEGORIES.some(category => !input.metrics.some(row => row.category === category))) throw Error('DISCOVERY_METRIC_CATEGORIES');
+  input.metrics.forEach(row => {
+    keys(row, ['name','unit','category','direction','minimumGain','baseline','alternative','candidate']);
+    text(row.name, 160); text(row.unit, 80);
+    if (!CATEGORIES.includes(row.category) || !['higher','lower'].includes(row.direction) || typeof row.minimumGain !== 'number' || !Number.isSafeInteger(row.minimumGain) || row.minimumGain < 0 || row.minimumGain > 1e12) throw Error('DISCOVERY_METRIC');
+    ROLES.forEach(role => {
+      const observation = row[role]; keys(observation, ['value','basis','reference']);
+      if (observation.value !== null && (typeof observation.value !== 'number' || !Number.isSafeInteger(observation.value) || Math.abs(observation.value) > 1e12)) throw Error('DISCOVERY_VALUE');
+      if (!['unknown','illustrative','supplied-report'].includes(observation.basis)) throw Error('DISCOVERY_BASIS');
+      text(observation.reference);
+      if (observation.basis === 'unknown' && observation.value !== null) throw Error('DISCOVERY_UNKNOWN_VALUE');
+    });
+  });
+  return parseBounded(canonical(input));
+}
+function example() {
+  const observation = value => ({value,basis:value === null ? 'unknown' : 'illustrative',reference:'Illustrative planning input; no research or test result supplied.'});
+  return {schema:SCHEMA,mission:'A longer-lasting, affordable battery with demanding safety requirements',baseline:'Keep the current qualified battery',alternative:'An existing qualified supplier option',candidate:'Investigate a revised cell/system design',changed:'A new design approach may be feasible; supporting evidence is missing.',rights:'Synthetic example only. Use public or authorized nonpersonal inputs.',
+    evidence:[{kind:'change',claim:'A design possibility to investigate, not a demonstrated breakthrough.',reference:'Illustrative scenario, not a published finding.',basis:'illustrative',supports:['candidate','change']}],
+    constraints:[{name:'Safety qualified for the intended application by a competent independent facility',status:'unknown',reference:'No physical safety tests supplied.'}],
+    metrics:[['Service life','cycles','benefit','higher',100,600,700,900],['Lifecycle cost','same currency per service unit','cost','lower',0,100,95,90],['Qualification effort','person-hours','proof','lower',0,10,12,null],['Residual failure risk','same defined risk measure','risk','lower',0,null,null,null],['Operator burden','hours per service unit','human','lower',0,2,2,null]].map(([name,unit,category,direction,minimumGain,b,a,c]) => ({name,unit,category,direction,minimumGain,baseline:observation(b),alternative:observation(a),candidate:observation(c)}))};
+}
+function analyze(raw) {
+  const input = validate(raw), gaps = [], assumptions = [];
+  input.constraints.forEach((row,index) => {
+    if (row.status !== 'reported-pass') gaps.push({kind:'constraint',index,reason:row.status === 'reported-fail' ? 'reported-failure' : 'unknown',subject:row.name});
+  });
+  const comparisons = input.metrics.map((row,index) => {
+    const missing = ROLES.filter(role => row[role].value === null || row[role].basis !== 'supplied-report');
+    if (missing.length) gaps.push({kind:'measurement',index,reason:'missing-or-illustrative',subject:row.name,roles:missing});
+    const computable = ROLES.every(role => row[role].value !== null);
+    const sign = row.direction === 'higher' ? 1 : -1;
+    const gainOverBaseline = computable ? (sign * (row.candidate.value - row.baseline.value) || 0) : null;
+    const gainOverAlternative = computable ? (sign * (row.candidate.value - row.alternative.value) || 0) : null;
+    const clearsComparison = computable && gainOverBaseline >= row.minimumGain && gainOverAlternative >= row.minimumGain;
+    return {index,category:row.category,name:row.name,unit:row.unit,gainOverBaseline,gainOverAlternative,minimumGain:row.minimumGain,
+      status:missing.length ? 'unestablished' : clearsComparison ? 'reported-threshold-met' : 'reported-threshold-missed',illustrative:missing.length > 0};
+  });
+  if (!input.evidence.some(row => row.supports.includes('change') && row.basis === 'supplied-report')) gaps.push({kind:'change',reason:'unsupported',subject:input.changed});
+  ROLES.forEach(role => { if (!input.evidence.some(row => row.supports.includes(role) && row.basis === 'supplied-report')) gaps.push({kind:'evidence',reason:'unsupported',subject:input[role],role}); });
+  const hypotheses = ROLES.map(role => ({role,option:input[role],whyNow:input.changed,evidence:input.evidence.map((row,index) => ({...row,index})).filter(row => row.supports.includes(role)),status:'hypothesis-not-discovery',question:role === 'candidate' ? 'Does the proposed change improve the mission over both credible comparators after all burdens?' : 'Could keeping or adopting this option meet the mission with less proof effort and risk?'}));
+  input.evidence.forEach(row => assumptions.push({claim:row.claim,basis:row.basis,reference:row.reference}));
+  const failure = input.constraints.some(row => row.status === 'reported-fail');
+  const misses = comparisons.filter(row => row.status === 'reported-threshold-missed');
+  // No automatic exchange rate between safety, money, proof effort and human burden.
+  const positiveAdvantage = ['gainOverBaseline','gainOverAlternative'].every(key => comparisons.some(row => row.status === 'reported-threshold-met' && row[key] > 0));
+  const decision = failure || misses.length || (!gaps.length && !positiveAdvantage) ? 'retain-incumbent' : gaps.length ? 'evidence-needed' : 'candidate-for-independent-review';
+  const decisive = gaps[0] || (misses.length ? {kind:'comparison',index:misses[0].index,subject:misses[0].name} : {kind:'independent-review',subject:input.mission});
+  const metric = Number.isInteger(decisive.index) && decisive.kind !== 'constraint' ? input.metrics[decisive.index] : null;
+  const experiment = {status:'proposal-not-executed',target:decisive,
+    hypothesis:metric ? `${input.candidate}: ${metric.direction} ${metric.name} than both comparators by at least ${metric.minimumGain} ${metric.unit}.` : decisive.subject,
+    comparators:[input.baseline,input.alternative],
+    measure:metric ? {name:metric.name,unit:metric.unit,direction:metric.direction,minimumGain:metric.minimumGain} : null,
+    method:decisive.kind === 'constraint' ? 'Have a qualified reviewer define the smallest safe evidence review or accredited test. No physical test instructions are generated.' : 'Pre-register a like-for-like comparison with a qualified reviewer, exact inputs, measurement method, uncertainty and a held-out check before collecting new evidence.',
+    stopConditions:input.constraints.map(row => row.name),budget:'Unspecified; agree a limit before commissioning.',acceptance:'Reviewer must verify provenance, comparability, uncertainty, all constraints and net burden. A local calculation is not independent proof.'};
+  return {schema:'alpha-opportunity-analysis/v1',decision,hypotheses,comparisons,gaps,assumptions,experiment,
+    retainedOption:input.baseline,authority:'none',independentProof:false,limitations:['Supplied reports are not verified here.','No literature search, provider call or physical experiment ran.','No safety, profitability, institutional admission or production fitness is established.']};
+}
+async function createBrief(raw, sourceHash) {
+  if (!/^[a-f0-9]{64}$/.test(sourceHash)) throw Error('DISCOVERY_SOURCE');
+  const input = validate(raw), analysis = analyze(input);
+  const content = {schema:'alpha-opportunity-brief/v1',sourceHash,input,inputDigest:await digest('alpha-discovery-input',input),analysis,
+    handoff:{schema:'successor-unfunded-proposal/v1',purpose:input.mission,inputs:'Only the attached supplied discovery inputs; rights require recipient review.',
+      gym:{stage:'formation-proposal',purpose:'Develop capability before real-world trust. The Gym trains; it does not certify.',simulationLimits:'No simulation has run. Any future simulation guides experiments and is not physical validation.',experimentalHistory:input.evidence.filter(row => ['experiment','lesson'].includes(row.kind)),preserveFailures:true,observations:input.metrics.map(row => ({name:row.name,unit:row.unit})),actions:['review-evidence','propose-bounded-test'],constraints:input.constraints,termination:analysis.experiment.stopConditions,reward:'Vector comparisons only; no scalar utility inferred.'},
+      job:{status:'unfunded-draft',output:'Evidence ledger, comparison and experiment report',verifier:'Unassigned independent qualified reviewer',budget:null,expiry:null,permissions:[],prohibitions:['No spending','No provider calls','No private upload','No physical operation','No production activation'],rollback:'Retain incumbent; reject unsupported candidate.'},
+      compatibility:[{repository:'AGI-Alpha-Agent-v0',capability:'Human-readable proposal; existing local workbench requires a separately selected supported task.'},{repository:'AGIJobsv0',capability:'Planning only; not JobRegistry v2 WorkSpec, assignment or AGIALPHA authorization.'},{repository:'AGIJobManager',capability:'Planning only; not Manager WorkSpec, USDC funding or authorization.'},{repository:'AGI-Fleet-Linux',capability:'Planning only; no qualified executor adapter or grant.'}],authority:'none'}};
+  return {...content,briefDigest:await digest('alpha-discovery-brief',content)};
+}
+function restoreInput(bytes) {
+  const parsed = parseBounded(bytes);
+  // Imported analysis and permission claims are discarded, never restored as authority.
+  return validate(parsed.input || parsed);
+}
+
+return {SCHEMA,CATEGORIES,validate,example,analyze,createBrief,restoreInput};
+})();
+const module_9=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Inert continuity, never a common authority envelope. Native bytes stay unchanged. */
+const {canonical, digest, parseBounded} = module_1;
+const discoveryNative = module_10;
+const {JOB_TEMPLATES} = module_6;
+const {validateRecord, interruptRun} = module_7;
+
+const SCHEMA = 'successor-project/v1';
+const LIMIT = 2_000_000;
+const GATES = Object.freeze(['candidate-manifest','incumbent-manifest','alternative-manifest',
+  'protected-task-set-and-custodian','formation-set','protocol-and-resource-policy',
+  'seven-metric-methods-and-uncertainty','constraint-requirements','reviewer-organization-and-custody','expiry']);
+const HASH=/^[a-f0-9]{64}$/, ID=/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$/;
+function fail(ok, code){if(!ok)throw Error(`PROJECT_${code}`);}
+function keys(v,k){fail(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===[...k].sort().join('|'),'SCHEMA');}
+function id(v){fail(typeof v==='string'&&ID.test(v),'ID');}
+function hash(v){fail(typeof v==='string'&&HASH.test(v),'HASH');}
+function clone(v){return parseBounded(canonical(v));}
+function bounded(v){fail(typeof v==='string'&&new TextEncoder().encode(v).length<=LIMIT,'BYTES');return parseBounded(v);}
+async function exactDigest(bytes){fail(typeof bytes==='string','BYTES');return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(bytes))),n=>n.toString(16).padStart(2,'0')).join('');}
+async function seal(v){return {...v,projectDigest:await digest('successor-project',v)};}
+async function cycleDigest(v){return digest('successor-project-cycle',v);}
+function source(v){keys(v,['repository','commit','path','sha256']);fail(v.repository==='MontrealAI/AGI-Alpha-Agent-v0'&&/^[a-f0-9]{40}$/.test(v.commit),'SOURCE');fail(['examples/alpha-discovery/engine.mjs','examples/successor-workbench/mission-record.mjs'].includes(v.path),'SOURCE_PATH');hash(v.sha256);}
+async function link(role,bytes,sourceIdentity,identity){const native=bounded(bytes);return {role,identity,nativeSchema:native.schema,source:clone(sourceIdentity),algorithm:'sha256-utf8',artifactDigest:await exactDigest(bytes),bytes};}
+async function checkLink(a,role){
+  keys(a,['role','identity','nativeSchema','source','algorithm','artifactDigest','bytes']);
+  fail(a.role===role&&a.algorithm==='sha256-utf8','LINK');id(a.identity);source(a.source);hash(a.artifactDigest);
+  fail(await exactDigest(a.bytes)===a.artifactDigest,'ARTIFACT_BYTES');const v=bounded(a.bytes);
+  fail(v.schema===a.nativeSchema,'NATIVE_SCHEMA');
+  if(role==='discovery'){
+    fail(a.source.path==='examples/alpha-discovery/engine.mjs','SOURCE_PATH');
+    const rebuilt=await discoveryNative.createBrief(v.input,v.sourceHash);
+    fail(canonical(rebuilt)===canonical(v),'DISCOVERY_BINDING');
+  }else{
+    fail(a.source.path==='examples/successor-workbench/mission-record.mjs','SOURCE_PATH');
+    await validateRecord(v);fail(v.missionId===a.identity,'NATIVE_IDENTITY');
+  }
+  return v;
+}
+function choices(v){keys(v,['family','selection','duplicatePolicy','unitPolicy','dataRights']);fail(v.family==='public-data'&&v.selection==='explicit-user-selection'&&v.duplicatePolicy==='sum-all-rows-no-deduplication'&&v.unitPolicy==='unchanged-integer-units'&&['public','synthetic','licensed-nonpersonal'].includes(v.dataRights),'UNSUPPORTED_MAPPING');}
+async function mapping(discovery,record,selected,sourceHash){choices(selected);return {schema:'successor-project-mapping/v1',adapter:'alpha-public-data-explicit/v1',sourceHash,discoveryDigest:discovery.artifactDigest,specDigest:record.specDigest,inputDigest:await exactDigest(record.spec.inputs.csv),choices:clone(selected),unresolved:['No discovery claim or metric is established by CSV totals.','No Manager decimal/identity adapter.','No Fleet execution envelope.'],authority:'none'};}
+function stageWork(cycle){return JOB_TEMPLATES.map(t=>({templateId:t.id,title:t.title,status:'unfunded-proposal',dependencyDigests:[cycle.discovery.artifactDigest,cycle.records.at(-1).artifactDigest],principal:null,reviewer:null,budget:null,expiry:null,protocol:null,authority:'none'}));}
+function evaluation(cycle){return {schema:'successor-project-evaluation-draft/v1',status:'incomplete-uncommissioned',basis:cycle.records.at(-1).artifactDigest,proposalDigest:cycle.discovery.artifactDigest,unresolved:[...GATES],commitments:null,metricsMapping:'unresolved-no-automatic-five-to-seven-dimension-mapping',authority:'none'};}
+function publicDataOpportunity(){const v=discoveryNative.example();v.mission='Reconcile permitted public or synthetic integer CSV totals into an inspectable report';v.baseline='Retain manual checking of the same rows';v.alternative='Use an existing spreadsheet with separately checked formulas';v.candidate='Try the existing bounded Alpha public-data aggregator';v.changed='An inspectable local report may reduce repetitive reconciliation; no comparative measurements supplied.';v.constraints=[{name:'Use only permitted nonpersonal CSV with unchanged integer units',status:'unknown',reference:'Operator must explicitly select the input and confirm its rights.'}];v.evidence=[{kind:'change',claim:'Illustrative public-data reporting opportunity; no measured advantage.',reference:'Local planning example only.',basis:'illustrative',supports:['candidate','change']}];v.metrics=v.metrics.map((m,i)=>({...m,name:['Reconciliation quality','Cost','Proof effort','Data handling risk','Human review burden'][i],unit:['correct outputs','same currency','person-hours','defined risk measure','person-hours'][i],minimumGain:0,baseline:{value:null,basis:'unknown',reference:'Not measured.'},alternative:{value:null,basis:'unknown',reference:'Not measured.'},candidate:{value:null,basis:'unknown',reference:'Not measured.'}}));return v;}
+async function validateProject(raw){
+  const p=typeof raw==='string'?bounded(raw):bounded(canonical(raw));
+  keys(p,['schema','projectId','revision','sourceHash','cycles','history','authority','projectDigest']);
+  fail(p.schema===SCHEMA&&p.authority==='none','VERSION_AUTHORITY');id(p.projectId);hash(p.sourceHash);
+  fail(Number.isSafeInteger(p.revision)&&p.revision>=0,'REVISION');
+  fail(Array.isArray(p.cycles)&&p.cycles.length>0&&p.cycles.length<=8,'CYCLES');
+  fail(Array.isArray(p.history)&&p.history.length>0&&p.history.length<=64,'HISTORY');
+  fail(new Set(p.cycles.map(c=>c.cycleId)).size===p.cycles.length,'DUPLICATE_CYCLE');
+  const seenRecords=new Set(),missionIds=new Set();
+  for(let i=0;i<p.cycles.length;i++){
+    const c=p.cycles[i];keys(c,['cycleId','projectId','parentCycleDigest','discovery','mapping','records','evaluationDraft','stageWork']);id(c.cycleId);fail(c.projectId===p.projectId,'CROSS_PROJECT');
+    fail(c.parentCycleDigest===(i===0?null:await cycleDigest(p.cycles[i-1])),'CYCLE_LINEAGE');
+    await checkLink(c.discovery,'discovery');
+    fail(Array.isArray(c.records)&&c.records.length>0&&c.records.length<=24,'RECORDS');
+    let prior=null;
+    for(const a of c.records){const r=await checkLink(a,'mission');fail(!seenRecords.has(a.artifactDigest),'REUSED_ARTIFACT');seenRecords.add(a.artifactDigest);if(prior)fail(r.missionId===prior.missionId&&r.revision===prior.revision+1&&r.specDigest===prior.specDigest&&r.sourceHash===prior.sourceHash,'RECORD_LINEAGE');prior=r;}
+    const first=bounded(c.records[0].bytes);fail(first.state==='draft'&&first.revision===0&&first.review===null&&first.result===null,'CYCLE_DRAFT');fail(!missionIds.has(first.missionId),'REUSED_MISSION');missionIds.add(first.missionId);
+    fail(c.mapping.choices.dataRights===first.spec.rights.dataClass,'RIGHTS');
+    fail(canonical(c.mapping)===canonical(await mapping(c.discovery,first,c.mapping.choices,c.mapping.sourceHash)),'MAPPING_BINDING');hash(c.mapping.sourceHash);fail(first.sourceHash===c.mapping.sourceHash,'NATIVE_SOURCE_BINDING');if(i===p.cycles.length-1)fail(c.mapping.sourceHash===p.sourceHash,'PROJECT_SOURCE_BINDING');
+    fail(canonical(c.stageWork)===canonical(stageWork(c)),'STAGE_WORK');
+    if(c.evaluationDraft!==null){fail(prior.result!==null,'EVALUATION_BASIS');fail(canonical(c.evaluationDraft)===canonical(evaluation(c)),'EVALUATION_DRAFT');}
+  }
+  p.history.forEach((h,i)=>{keys(h,['revision','cycleId','action','artifactDigest']);fail(h.revision===i,'HISTORY_REVISION');fail(p.cycles.some(c=>c.cycleId===h.cycleId),'HISTORY_CYCLE');fail(['created','native-transition','new-cycle','recovered-cycle'].includes(h.action),'HISTORY_ACTION');hash(h.artifactDigest);fail(p.cycles.some(c=>c.cycleId===h.cycleId&&c.records.some(a=>a.artifactDigest===h.artifactDigest)),'HISTORY_LINK');});
+  fail(p.history.length===p.revision+1,'HISTORY_LENGTH');
+  const {projectDigest,...body}=p;fail(projectDigest===await digest('successor-project',body),'INTEGRITY');return p;
+}
+async function inspectDiscovery(bytes){
+  const native=bounded(bytes);const rebuilt=await discoveryNative.createBrief(native.input,native.sourceHash);fail(canonical(native)===canonical(rebuilt),'DISCOVERY_BINDING');return native;
+}
+async function createProject({projectId,cycleId,sourceHash,discoveryBytes,record,choices:selected,sources}){
+  id(projectId);id(cycleId);hash(sourceHash);await validateRecord(record);
+  const discovery=await link('discovery',discoveryBytes,sources.discovery,'discovery');
+  const mission=await link('mission',canonical(record),sources.mission,record.missionId);
+  const cycle={cycleId,projectId,parentCycleDigest:null,discovery,mapping:await mapping(discovery,record,selected,sourceHash),records:[mission],evaluationDraft:null,stageWork:[]};cycle.stageWork=stageWork(cycle);
+  return validateProject(await seal({schema:SCHEMA,projectId,revision:0,sourceHash,cycles:[cycle],history:[{revision:0,cycleId,action:'created',artifactDigest:mission.artifactDigest}],authority:'none'}));
+}
+async function appendRecord(raw,record,{expectedRevision,sourceHash,sources}){
+  const p=await validateProject(raw);fail(p.revision===expectedRevision,'REVISION_CONFLICT');fail(p.sourceHash===sourceHash,'SOURCE_DRIFT');
+  const c=p.cycles.at(-1);fail(canonical(c.records.at(-1).source)===canonical(sources.mission),'SOURCE_DRIFT');
+  const a=await link('mission',canonical(await validateRecord(record)),sources.mission,record.missionId);c.records.push(a);c.stageWork=stageWork(c);
+  c.evaluationDraft=record.result?evaluation(c):null;p.revision++;p.history.push({revision:p.revision,cycleId:c.cycleId,action:'native-transition',artifactDigest:a.artifactDigest});delete p.projectDigest;const checked=await validateProject(await seal(p));
+  if(record.state==='running'){
+    // Reserve an exact worst-reason interruption snapshot before committing a start.
+    // A too-large result may fail, but its stopped history can still be persisted.
+    const stopped=await interruptRun(record,{expectedRevision:record.revision,runId:record.run.runId,reason:'\u0000'.repeat(512)});
+    await appendRecord(checked,stopped,{expectedRevision:checked.revision,sourceHash,sources});
+  }
+  return checked;
+}
+async function nextCycle(raw,{cycleId,record,choices:selected,sourceHash,sources,recovered=false,expectedRevision}){
+  const p=await validateProject(raw);fail(p.revision===expectedRevision,'REVISION_CONFLICT');id(cycleId);hash(sourceHash);
+  const prior=p.cycles.at(-1);await validateRecord(record);fail(record.missionId!==bounded(prior.records.at(-1).bytes).missionId,'NEW_MISSION_ID_REQUIRED');
+  const a=await link('mission',canonical(record),sources.mission,record.missionId);
+  const renewedDiscovery=await link('discovery',canonical(await discoveryNative.createBrief(bounded(prior.discovery.bytes).input,sourceHash)),sources.discovery,'discovery');
+  const c={cycleId,projectId:p.projectId,parentCycleDigest:await cycleDigest(prior),discovery:renewedDiscovery,mapping:await mapping(renewedDiscovery,record,selected,sourceHash),records:[a],evaluationDraft:null,stageWork:[]};c.stageWork=stageWork(c);
+  p.sourceHash=sourceHash;p.cycles.push(c);p.revision++;p.history.push({revision:p.revision,cycleId,action:recovered?'recovered-cycle':'new-cycle',artifactDigest:a.artifactDigest});delete p.projectDigest;return validateProject(await seal(p));
+}
+async function projectView(raw,{sourceHash,sources,restored=false}){
+  const p=await validateProject(raw),c=p.cycles.at(-1),record=bounded(c.records.at(-1).bytes);
+  const sourceCurrent=p.sourceHash===sourceHash&&record.sourceHash===sourceHash&&c.mapping.sourceHash===sourceHash&&canonical(c.records.at(-1).source)===canonical(sources.mission)&&canonical(c.discovery.source)===canonical(sources.discovery);
+  return {projectId:p.projectId,cycleId:c.cycleId,revision:p.revision,authority:'none',restored,sourceCurrent,
+    sourceAuthenticity:'not-established',currentReview:restored||!sourceCurrent?null:record.review,
+    evaluation:p.cycles.map((item,index)=>({cycleId:item.cycleId,status:index<p.cycles.length-1?'stale-dependent-evaluation':restored?'historical-incomplete':item.evaluationDraft?.status||'not-prepared',draft:item.evaluationDraft})),
+    nextAction:restored||!sourceCurrent?'Start a fresh cycle with explicit input selection.':record.result?'Inspect the actual result; evaluation commitments remain unresolved.':'Explicitly run the permitted local CSV task.',
+    protocols:{ManagerUSDC:'unavailable-no-native-adapter',JobRegistryAGIALPHA:'unfunded-no-assignment',Fleet:'unavailable-no-accepted-envelope'},record};
+}
+
+return {SCHEMA,LIMIT,GATES,exactDigest,publicDataOpportunity,validateProject,inspectDiscovery,createProject,appendRecord,nextCycle,projectView};
+})();
+const module_11=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const {canonical} = module_1;
+const {validateProject} = module_9;
+async function openProjectStore({indexedDB=globalThis.indexedDB,name='agialpha.successor-project.v1'}={}){
+  if(!indexedDB)throw Error('PROJECT_STORAGE_UNAVAILABLE');
+  const db=await new Promise((resolve,reject)=>{let settled=false;const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('projects',{keyPath:'projectId'});r.onerror=r.onblocked=()=>{settled=true;reject(Error('PROJECT_STORAGE_UNAVAILABLE'));};r.onsuccess=()=>{if(settled)r.result.close();else resolve(r.result);};});
+  db.onversionchange=()=>db.close();
+  function transaction(mode,fn){return new Promise((resolve,reject)=>{let tx;try{tx=db.transaction('projects',mode);}catch{reject(Error('PROJECT_STORAGE_CLOSED'));return;}let value,reason;tx.oncomplete=()=>resolve(value);tx.onabort=()=>reject(reason||Error('PROJECT_STORAGE_FAILED'));tx.onerror=()=>{};const abort=code=>{reason=Error(code);tx.abort();};try{fn(tx.objectStore('projects'),v=>{value=v;},abort);}catch(e){reason=e;tx.abort();}});}
+  async function get(id){const raw=await transaction('readonly',(s,done)=>{const r=s.get(id);r.onsuccess=()=>done(r.result??null);});return raw===null?null:validateProject(raw);}
+  return {get,
+    async list(){const rows=await transaction('readonly',(s,done,fail)=>{const r=s.getAll(undefined,13);r.onsuccess=()=>r.result.length>12?fail('PROJECT_STORAGE_LIMIT'):done(r.result);});return Promise.all(rows.map(validateProject));},
+    async save(raw,expected=null){
+      const next=await validateProject(raw);const prior=await get(next.projectId);
+      if(expected!==null&&(!prior||prior.revision!==expected.revision||prior.projectDigest!==expected.digest||next.revision!==expected.revision+1))throw Error('PROJECT_REVISION_CONFLICT');
+      if(expected===null&&prior!==null)throw Error('PROJECT_IMPORT_CONFLICT');
+      return transaction('readwrite',(s,done,fail)=>{const r=s.get(next.projectId);r.onsuccess=()=>{try{
+        if(canonical(r.result??null)!==canonical(prior)){fail('PROJECT_REVISION_CONFLICT');return;}
+        const write=()=>{try{s.put(next);done(next);}catch{fail('PROJECT_STORAGE_FAILED');}};if(prior===null){const count=s.count();count.onsuccess=()=>count.result>=12?fail('PROJECT_STORAGE_LIMIT'):write();}else write();
+      }catch{fail('PROJECT_STORAGE_FAILED');}};});
+    },close(){db.close();}};
+}
+
+return {openProjectStore};
+})();
 const workbench=module_0;
 const records=module_7;
 const storage=module_8;
 const transport=module_1;
-const SOURCE_HASH='7d5ffa18e124dffa66b28710466bca195c3b46a61f44114935ab0e0dc91a3e0f';
+const projects=module_9;
+const projectStorage=module_11;
+const discovery=module_10;
+const SOURCE_HASH='2052b3fa57693fd2076cd32f452a2422c445cce537fbeb8588923f099bb860b9';
+
+const PROJECT_SOURCES={"discovery": {"commit": "021b3337de07e9a0cdd105fac967a0dc650de122", "path": "examples/alpha-discovery/engine.mjs", "repository": "MontrealAI/AGI-Alpha-Agent-v0", "sha256": "452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850"}, "mission": {"commit": "021b3337de07e9a0cdd105fac967a0dc650de122", "path": "examples/successor-workbench/mission-record.mjs", "repository": "MontrealAI/AGI-Alpha-Agent-v0", "sha256": "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f"}};
 const $ = id => document.getElementById(id);
 const english = Object.fromEntries([...document.querySelectorAll('[data-i18n]')].map(el => [el.dataset.i18n, el.textContent]));
 const french = {
@@ -2655,6 +2914,7 @@ const say=(en,fr)=>language==='fr'?fr:en;
 function status(en,fr=en){$('status').textContent=say(en,fr);}
 function clearError(){$('error').hidden=true;$('error').textContent='';}
 function error(e){$('error').hidden=false;$('error').textContent=String(e?.code||e?.message||e);}
+function failureReason(value){let text='';for(const char of new TextDecoder().decode(new TextEncoder().encode(String(value)))){if(new TextEncoder().encode(text+char).length>512)break;text+=char;}return text;}
 function id(){return crypto.randomUUID();}
 function view(name){document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==name);document.querySelectorAll('[data-view]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.view===name)));}
 function controls(){
@@ -2672,6 +2932,7 @@ function controls(){
   $('import').disabled=!ready||busy||pendingRun||stopping||!!active;
   $('language').disabled=!ready;
   document.querySelectorAll('[data-view]').forEach(el=>el.disabled=!ready);
+  projectControls();
 }
 function fill(){if(!current)return;const s=current.spec;for(const [key,value]of Object.entries({name:s.name,csv:s.inputs.csv,unit:s.inputs.unit,rights:s.rights.dataClass,source:s.rights.source,license:s.rights.license,minutes:String(s.reviewMinutes)}))$(key).value=value;$('note').value='';dirty=false;}
 function spec(){
@@ -2708,6 +2969,7 @@ function loseStorage(e,confirmed=false){
     confirmed?'La modification a été enregistrée, mais l’index est illisible. Exportez ce dossier ; l’exécution est désactivée.':'Le stockage local est indisponible ou corrompu. Vous pouvez inspecter un fichier ; l’exécution est désactivée.');
 }
 async function persist(next,expected){
+  if(dossier)return persistProject(next);
   await records.validateRecord(next);
   try{await db.save(next,expected);}catch(e){
     current=next;unpersisted=true;
@@ -2718,8 +2980,8 @@ async function persist(next,expected){
   current=next;unpersisted=false;dirty=false;try{await refreshList();}catch(e){loseStorage(e,true);}render();
 }
 async function operation(action){if(busy||active||pendingRun||stopping)return;++epoch;busy=true;clearError();controls();try{await action();}catch(e){error(e);}finally{busy=false;render();}}
-async function openSaved(){const token=++epoch;const item=await db.get($('saved').value);if(!item)throw Error('LOCAL_MISSION_MISSING');const checked=await records.validateRecord(item);if(token!==epoch)return;current=checked;unpersisted=false;historicalBytes=null;readOnly=current.sourceHash!==SOURCE_HASH;mode=readOnly?'historical':'current';fill();render();status(readOnly?'Source changed. This record is historical and read-only. Export and import to create a new draft.':'Saved mission opened. No execution has restarted.',readOnly?'Le code a changé. Ce dossier est historique et en lecture seule. Exportez et importez pour créer un brouillon.':'Mission enregistrée ouverte. Aucune exécution n’a redémarré.');}
-async function newMission(){++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:workbench.example('public-data')});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
+async function openSaved(){dossier=null;projectHistorical=false;const token=++epoch;const item=await db.get($('saved').value);if(!item)throw Error('LOCAL_MISSION_MISSING');const checked=await records.validateRecord(item);if(token!==epoch)return;current=checked;unpersisted=false;historicalBytes=null;readOnly=current.sourceHash!==SOURCE_HASH;mode=readOnly?'historical':'current';fill();render();status(readOnly?'Source changed. This record is historical and read-only. Export and import to create a new draft.':'Saved mission opened. No execution has restarted.',readOnly?'Le code a changé. Ce dossier est historique et en lecture seule. Exportez et importez pour créer un brouillon.':'Mission enregistrée ouverte. Aucune exécution n’a redémarré.');}
+async function newMission(){dossier=null;projectHistorical=false;++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:workbench.example('public-data')});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
 async function run(){
   if(busy||active||pendingRun||stopping||dirty||readOnly||!current)return;
   pendingRun=true;
@@ -2738,24 +3000,91 @@ async function run(){
     if(active!==attempt||epoch!==attempt.epoch||attempt.controller.signal.aborted)return;
     await persist(finished,next.revision);active=null;view('result');
     if(!readOnly)status('Result saved. Inspect its files and checks, then record your review.','Résultat enregistré. Inspectez les fichiers et vérifications, puis consignez votre avis.');
-  }catch(e){if(active!==attempt)return;error(e);active=null;attempt?.controller.abort();if(attempt&&!readOnly){++epoch;try{const stopped=await records.interruptRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:String(e.message).slice(0,200)});await persist(stopped,attempt.record.revision);}catch(failure){error(failure);}}}
+  }catch(e){if(active!==attempt)return;error(e);active=null;attempt?.controller.abort();if(attempt&&!readOnly){++epoch;try{const stopped=await records.interruptRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:failureReason(e.message)});await persist(stopped,attempt.record.revision);}catch(failure){error(failure);}}}
   finally{pendingRun=false;busy=false;render();}
 }
 async function stop(){const attempt=active;if(!attempt||stopping)return;stopping=true;active=null;++epoch;attempt.controller.abort();busy=true;controls();try{const stopped=await records.stopRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:'User requested STOP.'});await persist(stopped,attempt.record.revision);if(!readOnly)status('Stopped. No result was promoted.','Arrêté. Aucun résultat n’a été promu.');}catch(e){error(e);}finally{stopping=false;busy=false;render();}}
 $('editor').addEventListener('submit',event=>{event.preventDefault();operation(async()=>{const prior=current;const next=await records.editRecord(prior,spec(),{expectedRevision:prior.revision});await persist(next,prior.revision);fill();if(!readOnly)status('Input saved. Prior results are historical.','Données enregistrées. Les résultats précédents sont historiques.');});});
-for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).addEventListener('input',()=>{dirty=true;++epoch;render();});
+for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).addEventListener('input',()=>{dirty=true;++epoch;if(dossier)$('project-choice').checked=false;render();});
 $('new').addEventListener('click',()=>operation(newMission));$('open').addEventListener('click',()=>operation(openSaved));$('run').addEventListener('click',run);$('stop').addEventListener('click',stop);
 $('interrupt').addEventListener('click',()=>operation(async()=>{const prior=current;await persist(await records.interruptRun(prior,{expectedRevision:prior.revision,runId:prior.run.runId,reason:'Explicit recovery after interrupted browser session.'}),prior.revision);if(!readOnly)status('Interrupted run closed. A new run requires your action.','Exécution interrompue fermée. Une nouvelle exécution nécessite votre action.');}));
 for(const [button,decision]of [['accept','accepted'],['reject','rejected']])$(button).addEventListener('click',()=>operation(async()=>{const prior=current;await persist(await records.reviewRecord(prior,{expectedRevision:prior.revision,decision,note:$('note').value}),prior.revision);if(!readOnly)status('Your local review is saved. No external authority was granted.','Votre avis local est enregistré. Aucune autorité externe n’a été accordée.');}));
 $('export').addEventListener('click',()=>operation(async()=>{download(await records.serializeRecord(current),`successor-${unpersisted?'unpersisted-':''}${current.missionId}.json`);}));
 $('import').addEventListener('change',async()=>{
   const file=$('import').files[0];if(!file||active||pendingRun||stopping)return;const token=++epoch;busy=true;clearError();controls();
-  try{if(file.size>records.RECORD_LIMITS.bytes)throw Error('RECORD_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const restored=await records.restoreRecord(bytes,{sourceHash:SOURCE_HASH});if(token!==epoch||$('import').files[0]!==file)return;current=restored.record;unpersisted=true;historicalBytes=bytes;readOnly=true;mode='historical';fill();render();status('Imported file inspected as historical evidence. Use its input in a new mission to run and review locally.','Fichier importé inspecté comme preuve historique. Utilisez ses données dans une nouvelle mission pour exécuter et examiner localement.');}catch(e){if(token===epoch)error(e);}finally{if($('import').files[0]===file)$('import').value='';if(token===epoch){busy=false;render();}}
+  try{if(file.size>records.RECORD_LIMITS.bytes)throw Error('RECORD_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const restored=await records.restoreRecord(bytes,{sourceHash:SOURCE_HASH});if(token!==epoch||$('import').files[0]!==file)return;dossier=null;projectHistorical=false;current=restored.record;unpersisted=true;historicalBytes=bytes;readOnly=true;mode='historical';fill();render();status('Imported file inspected as historical evidence. Use its input in a new mission to run and review locally.','Fichier importé inspecté comme preuve historique. Utilisez ses données dans une nouvelle mission pour exécuter et examiner localement.');}catch(e){if(token===epoch)error(e);}finally{if($('import').files[0]===file)$('import').value='';if(token===epoch){busy=false;render();}}
 });
 $('fork').addEventListener('click',()=>operation(async()=>{const record=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('New draft saved. Imported results and reviews remain historical.','Nouveau brouillon enregistré. Les résultats et avis importés restent historiques.');}));
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>view(button.dataset.view)));
 $('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=(language==='fr'?french:english)[el.dataset.i18n]||english[el.dataset.i18n];render();});
-(async()=>{try{db=await storage.openMissionStore();await refreshList();status('Choose a saved mission or create a new example.','Choisissez une mission enregistrée ou créez un nouvel exemple.');}catch(e){loseStorage(e);}finally{ready=true;render();}})();
+// One additive project layer in the existing mission workspace. No external execution.
+let projectDB=null,dossier=null,projectHistorical=false,projectUnpersisted=false,projectState=null,selectedDiscoveryBytes=null;
+const mappingChoices=()=>({family:'public-data',selection:'explicit-user-selection',duplicatePolicy:'sum-all-rows-no-deduplication',unitPolicy:'unchanged-integer-units',dataRights:current.spec.rights.dataClass});
+function projectControls(){
+  const idle=ready&&!busy&&!active&&!pendingRun&&!stopping;
+  $('project-start').disabled=!idle||!projectDB||!current||dirty||!$('project-choice').checked;
+  $('project-export').disabled=!dossier||busy;
+  $('project-import').disabled=!idle;
+  $('project-open').disabled=!idle||!projectDB;
+  $('project-saved').disabled=!idle||!projectDB;
+  $('project-resume').disabled=!idle||!dossier||!projectHistorical||!projectDB||!$('project-choice').checked;
+  $('project-choice').disabled=!idle;
+  $('discovery-import').disabled=!idle;
+  $('discovery-clear').disabled=!idle||!selectedDiscoveryBytes;
+  if(dossier&&dirty&&!$('project-choice').checked)$('save').disabled=true;
+  $('project-summary').textContent=dossier?`${dossier.projectId} · cycle ${dossier.cycles.at(-1).cycleId} · revision ${dossier.revision} · ${projectHistorical?'historical / historique':projectUnpersisted?'not saved / non enregistré':'local'} · authority: none / aucune`:say('Choose and save the permitted CSV below, then explicitly link it to an illustrative reporting opportunity.','Choisissez et enregistrez le CSV autorisé ci-dessous, puis reliez-le explicitement à une possibilité illustrative de rapport.');
+  $('project-history').textContent=dossier?JSON.stringify({sourceAuthenticity:'not-established',sourceCurrent:projectState?.sourceCurrent??false,currentReview:projectHistorical||readOnly||dirty?null:projectState?.currentReview,cycles:dossier.cycles.map((c,i)=>({cycleId:c.cycleId,parentCycleDigest:c.parentCycleDigest,discovery:JSON.parse(c.discovery.bytes).input,mapping:c.mapping,unfundedStageWork:c.stageWork,recordDigests:c.records.map(a=>a.artifactDigest),evaluationStatus:i<dossier.cycles.length-1?'stale-dependent-evaluation':projectHistorical?'historical-incomplete':c.evaluationDraft?.status||'not-prepared',evaluationDraft:c.evaluationDraft})),decisions:dossier.history},null,2):'';
+  $('project-next').textContent=dossier?(projectHistorical?say('Next: explicitly start a fresh cycle. Imported results and reviews stay historical.','Suite : démarrez explicitement un nouveau cycle. Les résultats et avis importés restent historiques.'):current?.result?say('Next: inspect the actual result. Candidate identities, protected evaluation, metric methods and reviewer custody are still missing.','Suite : inspectez le résultat réel. Les identités, l’évaluation protégée, les méthodes et la garde des preuves restent à définir.'):say('Next: explicitly run this local CSV task.','Suite : exécutez explicitement cette tâche CSV locale.')):'';
+}
+async function projectList(){if(!projectDB)return;const rows=await projectDB.list();$('project-saved').replaceChildren();for(const p of rows){const option=document.createElement('option');option.value=p.projectId;option.textContent=`${p.projectId} · r${p.revision}`;$('project-saved').append(option);}if(dossier)$('project-saved').value=dossier.projectId;}
+async function saveProject(next,expected){
+  try{await projectDB.save(next,expected);}catch(e){dossier=next;projectUnpersisted=true;projectHistorical=true;readOnly=true;mode='project-conflict-or-storage-loss';current=JSON.parse(next.cycles.at(-1).records.at(-1).bytes);status('Project save failed. This copy is read-only; export it, then reopen the saved project.','Échec de l’enregistrement. Cette copie est en lecture seule ; exportez-la, puis rouvrez le projet enregistré.');throw e;}
+  projectState=await projects.projectView(next,{sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,restored:false});
+  if(!projectState.sourceCurrent){readOnly=true;projectHistorical=true;}
+  dossier=next;projectUnpersisted=false;current=JSON.parse(next.cycles.at(-1).records.at(-1).bytes);dirty=false;unpersisted=false;
+  try{await projectList();}catch(e){readOnly=true;projectHistorical=true;error(e);status('Project committed, but its index could not be read. Export before reopening.','Projet enregistré, mais index illisible. Exportez-le avant de rouvrir.');}
+}
+async function persistProject(next){
+  const prior=dossier,old=JSON.parse(prior.cycles.at(-1).records.at(-1).bytes);let updated;
+  if(next.specDigest!==old.specDigest){
+    if(!$('project-choice').checked)throw Error('PROJECT_EXPLICIT_INPUT_SELECTION_REQUIRED');
+    const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:next.spec});
+    const selected={...mappingChoices(),dataRights:fresh.spec.rights.dataClass};
+    updated=await projects.nextCycle(prior,{cycleId:id(),record:fresh,choices:selected,sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,expectedRevision:prior.revision});
+  }else updated=await projects.appendRecord(prior,next,{expectedRevision:prior.revision,sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES});
+  await saveProject(updated,{revision:prior.revision,digest:prior.projectDigest});render();
+}
+$('discovery-import').addEventListener('change',async()=>{
+  const file=$('discovery-import').files[0];if(!file||busy||active||pendingRun||stopping)return;const token=++epoch;busy=true;controls();clearError();
+  try{if(file.size>projects.LIMIT)throw Error('PROJECT_BYTES');const text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(new Uint8Array(await file.arrayBuffer()));const brief=await projects.inspectDiscovery(text);if(token!==epoch||$('discovery-import').files[0]!==file)return;selectedDiscoveryBytes=text;$('project-choice').checked=false;$('discovery-selected').textContent='For a NEW project / Pour un NOUVEAU projet : '+brief.input.mission+' · Imported claims, unverified source/authorship. Exact bytes retained; integrity only. / Déclarations importées, source et auteur non vérifiés.';}catch(e){if(token===epoch)error(e);}finally{if(token===epoch){busy=false;render();}if($('discovery-import').files[0]===file)$('discovery-import').value='';}
+});
+$('discovery-clear').addEventListener('click',()=>{selectedDiscoveryBytes=null;$('project-choice').checked=false;$('discovery-selected').textContent='Illustrative public-data opportunity / Possibilité illustrative de données publiques';controls();});
+$('project-choice').addEventListener('change',controls);
+$('project-start').addEventListener('click',()=>operation(async()=>{
+  if(!$('project-choice').checked||dirty||!current)throw Error('PROJECT_EXPLICIT_INPUT_SELECTION_REQUIRED');
+  const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:current.spec});
+  const discoveryBytes=selectedDiscoveryBytes??transport.canonical(await discovery.createBrief(projects.publicDataOpportunity(),SOURCE_HASH));
+  const next=await projects.createProject({projectId:id(),cycleId:id(),sourceHash:SOURCE_HASH,discoveryBytes,record:fresh,choices:mappingChoices(),sources:PROJECT_SOURCES});
+  projectHistorical=false;readOnly=false;await saveProject(next,null);mode=readOnly?'project-storage-loss':'project';fill();status(selectedDiscoveryBytes?'Project saved with the exact imported discovery bytes. Claims remain unverified; the selected CSV is a separate bounded task.':'Project saved with the labelled illustrative opportunity. Run the explicitly selected CSV task.','Projet enregistré. Les déclarations restent non vérifiées ; la tâche CSV est choisie séparément.');
+}));
+$('project-export').addEventListener('click',()=>operation(async()=>{await projects.validateProject(dossier);download(transport.canonical(dossier),`successor-project-${projectUnpersisted?'unpersisted-':''}${dossier.projectId}.json`);}));
+async function inspectProject(raw){selectedDiscoveryBytes=null;$('discovery-selected').textContent='New project: illustrative opportunity. Current project discovery is shown below. / Nouveau projet : illustration. Le dossier actuel figure ci-dessous.';const checked=await projects.validateProject(raw);const inspected=await projects.projectView(checked,{sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,restored:true});projectState=inspected;dossier=checked;current=inspected.record;projectHistorical=true;readOnly=true;mode='project-historical';historicalBytes=null;fill();$('project-choice').checked=false;status('Project restored as history. No review or permission became current. Select the input and start a fresh cycle.','Projet restauré comme historique. Aucun avis ni permission n’est devenu courant. Choisissez les données et démarrez un nouveau cycle.');}
+$('project-open').addEventListener('click',()=>operation(async()=>{const p=await projectDB.get($('project-saved').value);if(!p)throw Error('PROJECT_NOT_FOUND');await inspectProject(p);projectUnpersisted=false;}));
+$('project-import').addEventListener('change',async()=>{
+  const file=$('project-import').files[0];if(!file||busy||active||pendingRun||stopping)return;const token=++epoch;busy=true;controls();clearError();
+  try{if(file.size>projects.LIMIT)throw Error('PROJECT_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);const p=await projects.validateProject(text);if(token!==epoch||$('project-import').files[0]!==file)return;await inspectProject(p);projectUnpersisted=true;}catch(e){if(token===epoch)error(e);}finally{if(token===epoch){busy=false;render();}if($('project-import').files[0]===file)$('project-import').value='';}
+});
+$('project-resume').addEventListener('click',()=>operation(async()=>{
+  if(!$('project-choice').checked||!projectHistorical)throw Error('PROJECT_EXPLICIT_INPUT_SELECTION_REQUIRED');
+  const prior=dossier;const stored=await projectDB.get(prior.projectId);
+  if(stored&&stored.projectDigest!==prior.projectDigest)throw Error('PROJECT_IMPORT_CONFLICT_OPEN_LATEST');
+  const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:current.spec});
+  const next=await projects.nextCycle(prior,{cycleId:id(),record:fresh,choices:mappingChoices(),sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,recovered:true,expectedRevision:prior.revision});
+  projectHistorical=false;readOnly=false;await saveProject(next,stored?{revision:stored.revision,digest:stored.projectDigest}:null);
+  mode=readOnly?'project-storage-loss':'project';fill();view('mission');status('Fresh cycle saved in the same project. Running and reviewing require new explicit actions.','Nouveau cycle enregistré dans le même projet. Exécuter et réviser nécessitent de nouvelles actions explicites.');
+}));
+
+(async()=>{try{db=await storage.openMissionStore();await refreshList();try{projectDB=await projectStorage.openProjectStore();await projectList();}catch(e){error(e);}status('Choose a saved mission or create a new example.','Choisissez une mission enregistrée ou créez un nouvel exemple.');}catch(e){loseStorage(e);}finally{ready=true;render();}})();
 
 })();
 </script></body></html>
