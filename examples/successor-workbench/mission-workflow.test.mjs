@@ -17,13 +17,16 @@ test('mission PR gate retains pinned dependencies and all substantive suites',()
     'node --test examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs',
     'node examples/successor-workbench/test.mjs',
     'node --test examples/alpha-discovery/engine.test.mjs',
+    'node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs',
     'python scripts/generate_alpha_discovery.py',
+    'python scripts/generate_specialist_evaluation.py',
     'python scripts/generate_successor_mission.py',
     'python scripts/generate_successor_workbench.py',
     'python scripts/build_service_worker.py',
     'python tests/browser/test_successor_mission_store.py',
     'python tests/browser/test_successor_mission_browser.py',
     'python tests/browser/test_alpha_discovery_browser.py',
+    'python tests/browser/test_specialist_evaluation_browser.py',
   ])assert.ok(workflow.includes(command),command);
   assert.match(workflow,/AXE_SCRIPT:.*tests\/browser\/node_modules\/axe-core\/axe\.min\.js/);
   const artifactMarker='      - name: Retain discovery browser screenshots\n';
