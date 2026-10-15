@@ -81,6 +81,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py -q --junitxml=evidence/smoke.xml
+          python -m pytest --noconftest -o addopts= tests/test_macro_simulation_boundaries.py -q --junitxml=evidence/macro-boundaries.xml
       - name: Exercise the installed operator lifecycle
         run: |
           python -m pip install --no-deps .
