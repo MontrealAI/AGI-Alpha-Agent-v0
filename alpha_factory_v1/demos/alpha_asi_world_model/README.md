@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.31.3
+## Current runnable path — 1.32.0
 
 **Mode:** Research training. Explores generated grid worlds using a small learner and local API.
 
@@ -22,6 +22,46 @@ The [catalog](../README.md) explains installation, stopping, backups and recover
 Browser charts for legacy demos are labeled sample replays. Original research
 narratives and advanced scripts below are preserved; they do not expand the tested
 scope stated here.
+### What is actually trained
+
+Each learner belongs to one fixed deterministic MiniWorld maze. Training uses an
+explicit shortest-path oracle for that maze, not MuZero self-play: value targets
+are discounted optimal returns (step reward -0.01, goal reward +1, terminal value
+zero); policy targets split probability equally between optimal actions. Unreachable
+states receive the discounted infinite step-penalty return. Observations contain
+agent position only, so learners are not transferred across layouts.
+
+Replay records observation, action, reward, next observation and termination, plus
+current/next value and policy targets. The equal-weight objective sums initial
+value MSE, initial policy cross-entropy, recurrent reward MSE, recurrent value MSE,
+recurrent policy cross-entropy, and latent next-state consistency MSE against a
+detached encoding. Terminal next-policy targets are masked. Batch-size-one shapes
+are preserved. Non-finite loss/gradients abort training. A zero loss while the
+buffer is warming up is not evidence of learning; `step_count` and `last_losses`
+identify actual updates.
+
+The legacy `mcts_policy` entry point now performs bounded one-step PUCT-style
+search with discounted reward-plus-value scoring. It is not full multi-depth
+MuZero MCTS. Training, curriculum generation and the optional helper agents remain
+research demonstrations, not evidence of ASI, general intelligence or real-world
+performance. Missing PyTorch raises an explicit prerequisite error.
+
+Finite CPU qualification (no provider keys or network required):
+
+```bash
+NO_LLM=1 ALPHA_ASI_DISABLE_AGENT_THREADS=1 ALPHA_ASI_DEVICE=cpu \
+  python -m pytest tests/test_world_model_training.py tests/test_world_model_demo.py -q
+```
+
+The target-oracle tests run without Torch; CPU gradient/head-update, finite-fit and
+learned-search tests explicitly skip if Torch is absent. The training file contains 14 cases;
+the combined command above also includes legacy demo tests. Pull-request and release CI require all 14
+training cases to pass with zero skips on the pinned CPU Torch environment. The reward
+head uses nonlinear joint state/action features so goal-entry interactions are representable.
+Tests also check policy KL, latent consistency, gradient clipping and non-finite rejection. A skipped test is not
+training qualification. The fit test uses only 400 updates on 12 synthetic 2×2
+transitions, with one CPU thread; it does not measure generalization.
+
 <!-- CURRENT-DEMO:END -->
 
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.

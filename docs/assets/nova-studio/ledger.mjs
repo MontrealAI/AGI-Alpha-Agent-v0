@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Read-only, receipt-reverified history. This is neither a custody account nor a reservation service.
+import {INTERFACES} from './chain.mjs';
 import {address,uint} from '../ascension-wallet/protocol.mjs';
 import {profileIdentity,strictJSON,deploymentIdentityStatus} from './package.mjs';
 import {verifySettlementRecord} from './runtime.mjs';
@@ -19,8 +20,73 @@ function quantity(value) {
 const amounts = row => Object.fromEntries(Object.entries(row).map(([key,value]) =>
   [key,typeof value === 'bigint' ? String(value) : value]));
 
+/** Journal entries are receipt lookup hints only; imported statuses never establish a return. */
+async function principalReturns(project,chain,deployment,observation,finalized,explicit,skippedProfiles) {
+  if (!Array.isArray(explicit) || explicit.length>256) throw Error('Use at most 256 explicit principal receipt references.');
+  const client=chain.client, mark=deploymentAddress(deployment,'Mark'), returned=[], seen=new Map();
+  const references=[];
+  for (const cycle of project.cycles) {
+    const transactions=cycle.journal?.transactions;
+    if (transactions!==undefined && (!Array.isArray(transactions) || transactions.length>100))
+      throw Error('Invalid bounded wallet journal for principal receipt lookup.');
+    for (const record of transactions||[]) {
+      if (record?.action==='reclaim' && record.args?.[0]===cycle.seedId && record.receipt?.status==='0x1' &&
+          !['cancelled','replaced'].includes(record.status))
+        references.push({cycleId:cycle.cycleId,transactionHash:record.candidateHash||record.receipt.transactionHash||record.hash,automatic:true});
+    }
+  }
+  for(const reference of explicit) {
+    if(!reference || Object.keys(reference).sort().join()!=='cycleId,transactionHash')throw Error('Invalid principal receipt reference.');
+    references.push({...reference,automatic:false});
+  }
+  if(references.length>3456)throw Error('Too many principal receipt references.');
+  const checked=new Map();
+  for(const reference of references) {
+    const cycle=project.cycles.find(item=>item.cycleId===reference.cycleId), transactionHash=hash(reference.transactionHash);
+    if(!cycle?.seedId || !cycle.package)throw Error('Restore the exact original cycle before attributing principal.');
+    let identity;
+    try { identity=deploymentIdentityStatus(cycle.package,client.profile); } catch(error) {
+      if(!reference.automatic)throw error;
+      skippedProfiles.push({cycleId:cycle.cycleId,transactionHash,kind:'principal-return',status:'requires-original-deployment'});
+      continue;
+    }
+    const prior=checked.get(transactionHash);
+    if(prior){if(prior!==cycle.cycleId)throw Error('Principal receipt cannot be attributed to different cycles.');continue;}
+    checked.set(transactionHash,cycle.cycleId);
+    const genome=await chain.call('Seed','genomes',[cycle.seedId],observation.blockNumber), pkg=cycle.package;
+    if(genome[0]!==pkg.capsuleHash || genome[1]!==pkg.plan.planRoot || genome[2]!==pkg.evidenceHash ||
+        String(genome[3])!==pkg.parent || Number(genome[4])!==pkg.plan.jobs.length)
+      throw Error('Principal return seed differs from the original cycle commitments.');
+    const receipt=await client.read('eth_getTransactionReceipt',[transactionHash]);
+    if(!receipt || receipt.status!=='0x1' || hash(receipt.transactionHash)!==transactionHash ||
+        address(receipt.to)!==mark || quantity(receipt.blockNumber)>quantity(finalized.number) ||
+        quantity(receipt.blockNumber)>quantity(observation.blockNumber))
+      throw Error('Principal return requires a successful finalized receipt from the exact MARK deployment.');
+    const events=chain.events(receipt,'Mark','CapitalReturned');
+    if(events.length!==1 || String(events[0].id)!==cycle.seedId || address(events[0].account)!==address(receipt.from))
+      throw Error('Principal return must identify this seed and direct reclaim recipient.');
+    const topic=INTERFACES.Mark.getEvent('CapitalReturned').topicHash;
+    const logs=receipt.logs.filter(log=>address(log.address)===mark && log.topics?.[0]===topic);
+    const logIndex=quantity(logs[0].logIndex), recipient=address(events[0].account), amount=String(uint(String(events[0].amount)));
+    if(logIndex>BigInt(Number.MAX_SAFE_INTEGER))throw Error('Principal receipt log index exceeds supported bounds.');
+    const attribution=`${deployment.chainId}:${mark}:${transactionHash}:${logIndex}`;
+    if(seen.has(attribution))throw Error('Duplicate principal event attribution.');
+    seen.set(attribution,cycle.cycleId);
+    if((await client.read('eth_getBlockByNumber',[receipt.blockNumber,false]))?.hash?.toLowerCase()!==hash(receipt.blockHash))
+      throw Error('Principal return block reorganized; refresh history.');
+    let gas=null;
+    if(receipt.gasUsed!=null && receipt.effectiveGasPrice!=null)
+      gas={payer:address(receipt.from),wei:String(quantity(receipt.gasUsed)*quantity(receipt.effectiveGasPrice)),transactionHash};
+    returned.push({cycleId:cycle.cycleId,seedId:cycle.seedId,chainId:deployment.chainId,market:mark,
+      token:deploymentAddress(deployment,'Token'),decimals:18,recipient,amount,transactionHash,logIndex:Number(logIndex),
+      blockNumber:receipt.blockNumber,blockHash:receipt.blockHash,attribution,deploymentIdentity:identity,gas,
+      kind:'returned-principal',trust:'finalized-canonical-receipt',income:false,authority:'none'});
+  }
+  return returned;
+}
+
 /** Reverify saved settlement bytes against a caller-pinned observer and the selected exact deployment. */
-export async function readProjectLedger(project,chain,{observerKey,account = chain.client.account} = {}) {
+export async function readProjectLedger(project,chain,{observerKey,account = chain.client.account,principalTransactions = []} = {}) {
   if (typeof observerKey !== 'string' || !/^[0-9a-f]{64}$/.test(observerKey))
     throw Error('Provide the independently pinned observer public key; embedded recovery keys are not trusted.');
   const verifiedProject = await validateProject(project), client = chain.client, epoch = client.epoch;
@@ -128,6 +194,7 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
         trust:'pinned-observer-and-finalized-canonical-receipt',authority:'none'});
     }
   }
+  const returns=await principalReturns(verifiedProject,chain,deployment,observation,finalized,principalTransactions,skippedProfiles);
   await chain.canonical(observation);
   if ((await client.read('eth_getBlockByNumber',[finalized.number,false]))?.hash?.toLowerCase() !== hash(finalized.hash))
     throw Error('Finalized checkpoint changed; refresh history.');
@@ -137,13 +204,15 @@ export async function readProjectLedger(project,chain,{observerKey,account = cha
   return {schema:'agialpha.nova-studio.receipt-ledger.v1',projectId:project.projectId,deployment,observation,
     settlements,recipients:[...recipients.values()].map(amounts),ownerTotals:{owner,...amounts(owned),
       observedClosureGasWei:owner ? String([...closureGas.values()].filter(row => row.payer === owner).reduce((total,row) => total+BigInt(row.wei),0n)) : null,
-      returnedPrincipal:null},refunds,campaigns:[...campaigns.values()],closureGas:[...closureGas.values()],skippedProfiles,
+      returnedPrincipal:owner && returns.some(row=>row.recipient===owner) ? String(returns.filter(row=>row.recipient===owner).reduce((sum,row)=>sum+BigInt(row.amount),0n)) : null},
+    principalReturns:returns,principalCoverage:{knownReceipts:returns.length,completeHistory:false,
+      scope:'Saved successful direct-reclaim receipt hints and explicit references only; absence is unknown, not zero.'},refunds,campaigns:[...campaigns.values()],closureGas:[...closureGas.values()],skippedProfiles,
     closureGasCoverage:{knownTransactions:closureGas.size,unknownTransactions:new Set(settlements.filter(row => !row.closureGas).map(row => row.transactionHash)).size},
     costs:{ethGas:null,providerCharges:null,storageCharges:null},spendableIncrease:null,profit:null,
     scope:'Saved signed settlements reverified on this deployment; not a complete account transaction history.',
     notes:['Payout history is recipient-specific and never added to current wallet balances.',
       'Collected refunds and campaign reserves overlap. Zero remaining supply establishes that lots have exited, not who received prior returns.',
-      'Returned principal recipients and amounts require their own CapitalReturned receipts; they are not inferred as revenue.',
+      'Returned principal is attributed only from canonical finalized CapitalReturned receipts and is never revenue or an additional wallet balance.',
       'Closure transaction gas is partial ETH cost only; all-cycle gas, provider charges, storage charges and profit remain unknown.',
       'This read-only view grants no rights and creates no cross-project or cross-device fund reservation.']};
 }

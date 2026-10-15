@@ -4,9 +4,9 @@
 # This demo is a conceptual research prototype. References to "AGI" and
 # "superintelligence" describe aspirational goals and do not indicate the
 # presence of a real general intelligence. Use at your own risk.
-# Production‑grade α‑ASI world‑model demo.
-# POET‑style curriculum with MuZero learner (light MCTS), orchestrated by
-# ≥5 Alpha‑Factory agents. Local‑first design with optional cloud helpers.
+# Synthetic MiniWorld world-model teaching demo.
+# POET-style curriculum with an oracle-distilled latent learner and one-step search;
+# optional Alpha-Factory helper agents. Local-first design with optional cloud helpers.
 # Python 3.11+, PyTorch ≥2.2. Runs on CPU or GPU.
 #
 # Quick start .................  python -m alpha_asi_world_model_demo --demo
@@ -15,15 +15,16 @@
 # Notebook ...................  python -m alpha_asi_world_model_demo --emit-notebook
 # UI ..........................  http://localhost:7860
 # =============================================================================
-"""Open‑ended world‑model curriculum with strict defaults and enterprise
-readiness. Configurable via `config.yaml` or environment variables;
+"""Synthetic world-model curriculum with oracle-supervised training.
+
+Configurable via `config.yaml` or environment variables;
 integrates structured logging, safety guards and minimal ops helpers.
 
 Key features
 ------------
 * Config.yaml loader with automatic envvar override
 * Structured logging (optional JSON mode)
-* Lightweight MCTS for MuZeroTiny
+* Bounded one-step search for MuZeroTiny
 * Multi‑environment batches (`Config.env_batch`)
 * Testable hooks and graceful shutdown
 * External LLM calls sandboxed with explicit timeouts
@@ -107,6 +108,7 @@ class Config:
     ui_tick: int = 100
     max_steps: int = 200_000
     mcts_simulations: int = 16
+    discount: float = 0.99
     device: str = "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
     log_json: bool = False
     host: str = "127.0.0.1"
@@ -330,7 +332,7 @@ while len(AGENTS) < 5:
 
 
 # =============================================================================
-# 4.  MuZeroTiny with lightweight MCTS
+# 4.  MuZeroTiny with bounded one-step search
 # =============================================================================
 if torch is not None:
 
@@ -345,7 +347,8 @@ if torch is not None:
     class Dyn(nn.Module):
         def __init__(self, hidden: int, act_dim: int):
             super().__init__()
-            self.r = nn.Linear(hidden + act_dim, 1)
+            # Joint nonlinear state/action features are required for goal-entry rewards.
+            self.r = nn.Sequential(nn.Linear(hidden + act_dim, hidden), nn.Tanh(), nn.Linear(hidden, 1))
             self.h = nn.Linear(hidden + act_dim, hidden)
 
         def forward(self, h, a):
@@ -380,22 +383,29 @@ if torch is not None:
 
     # -------------------------------- MCTS -----------------------------------
     def mcts_policy(net: MuZeroTiny, obs: np.ndarray, simulations: int = 16) -> int:
-        """Very small UCB‑based MCTS on top of MuZeroTiny."""
+        """Bounded one-step PUCT-style search, not full multi-depth MuZero MCTS."""
+        if simulations < 1:
+            raise ValueError("simulations must be positive")
         act_dim = 4
         with torch.no_grad():
-            h, v0, p0 = net.initial(torch.tensor(obs, device=CFG.device, dtype=torch.float32))
-        N = np.zeros(act_dim)
-        W = np.zeros(act_dim)
-        P = p0.exp().cpu().numpy()
-        for _ in range(simulations):
-            a = np.argmax(P * (np.sqrt(N.sum() + 1e-8) / (1 + N)))
-            a_one = F.one_hot(torch.tensor(a), num_classes=act_dim).float().to(CFG.device)
-            h2, r, v, p = net.recurrent(h, a_one)
-            q = (r + v).item()
-            N[a] += 1
-            W[a] += q
-        best = int(np.argmax(W / (N + 1e-8)))
-        return best
+            h, _, p0 = net.initial(torch.tensor(obs, device=CFG.device, dtype=torch.float32))
+            visits = np.zeros(act_dim)
+            values = np.zeros(act_dim)
+            priors = p0.exp().cpu().numpy()
+            for _ in range(simulations):
+                # Evaluate each action before relying on the learned prior.
+                unvisited = np.flatnonzero(visits == 0)
+                action = (
+                    int(unvisited[0])
+                    if len(unvisited)
+                    else int(np.argmax(values + priors * np.sqrt(visits.sum()) / (1 + visits)))
+                )
+                onehot = F.one_hot(torch.tensor(action), num_classes=act_dim).float().to(CFG.device)
+                _, reward, value, _ = net.recurrent(h, onehot)
+                values[action] = (reward + CFG.discount * value).item()
+                visits[action] += 1
+            # Unvisited actions must not beat negative evaluated returns with a fake zero.
+            return int(np.argmax(np.where(visits > 0, values, -np.inf)))
 
 else:
 
@@ -484,40 +494,77 @@ class POETGenerator:
 # 6.  Learner wrapper
 # =============================================================================
 class Learner:
-    """MuZero learner that optimizes a policy for a single environment."""
+    """Distill exact MiniWorld targets into initial and one-step recurrent heads.
+
+    Each learner owns a fixed maze. This deliberately uses an environment oracle,
+    not self-play targets, and establishes no generalization or real-world ability.
+    """
 
     def __init__(self, env: MiniWorld):
-        """Initialize the learner for ``env``."""
         if torch is None or optim is None or F is None:
             raise RuntimeError("PyTorch is required for Learner. Install torch to run the world model training loop.")
+        if __package__:
+            from .training import MiniWorldTargets
+        else:  # preserve the documented standalone module invocation
+            from training import MiniWorldTargets
+
+        if CFG.train_batch < 1 or CFG.buffer_limit < CFG.train_batch:
+            raise ValueError("train_batch must be positive and buffer_limit must hold a complete batch")
+        self.targets = MiniWorldTargets(env.size, env.obstacles, env.goal, CFG.discount)
         self.net = MuZeroTiny(env.size**2, 4).to(CFG.device)
         self.opt = optim.Adam(self.net.parameters(), CFG.lr)
-        self.buffer: List[Tuple[np.ndarray, float]] = []
+        self.buffer = []
         self.step_count = 0
+        self.last_losses: Dict[str, float] = {}
 
     def act(self, obs):
-        # epsilon‑greedy w/ MCTS fallback
         if random.random() < 0.1:
             return random.randint(0, 3)
         return mcts_policy(self.net, obs, CFG.mcts_simulations)
 
-    def remember(self, obs, reward):
-        self.buffer.append((obs, reward))
+    def remember(self, obs, action, reward, next_obs, done):
+        self.buffer.append(self.targets.transition(obs, action, reward, next_obs, done))
         if len(self.buffer) > CFG.buffer_limit:
             self.buffer.pop(0)
 
     def train_once(self) -> float:
         if len(self.buffer) < CFG.train_batch:
+            self.last_losses = {}  # zero means replay warm-up, not a fitted model
             return 0.0
-        obs, rew = zip(*random.sample(self.buffer, CFG.train_batch))
-        obs_t = torch.tensor(obs, device=CFG.device, dtype=torch.float32)
-        rew_t = torch.tensor(rew, device=CFG.device)
-        _, v, _ = self.net.initial(obs_t)
-        loss = F.mse_loss(v.squeeze(), rew_t)
+        batch = random.sample(self.buffer, CFG.train_batch)
+
+        def tensor(field):
+            return torch.tensor(
+                np.stack([getattr(row, field) for row in batch]), device=CFG.device, dtype=torch.float32
+            )
+
+        obs, next_obs = tensor("obs"), tensor("next_obs")
+        actions = torch.tensor([row.action for row in batch], device=CFG.device)
+        onehot = F.one_hot(actions, num_classes=4).float()
+        hidden, value, policy = self.net.initial(obs)
+        next_hidden, reward, next_value, next_policy = self.net.recurrent(hidden, onehot)
+        with torch.no_grad():
+            encoded_next = self.net.repr(next_obs)
+        # squeeze(-1) preserves batch dimension for batch size one.
+        losses = {
+            "value": F.mse_loss(value.squeeze(-1), tensor("value")),
+            "policy": -(tensor("policy") * policy).sum(-1).mean(),
+            "reward": F.mse_loss(reward.squeeze(-1), tensor("reward")),
+            "next_value": F.mse_loss(next_value.squeeze(-1), tensor("next_value")),
+            # All-zero terminal target masks the nonexistent terminal action.
+            "next_policy": -(tensor("next_policy") * next_policy).sum(-1).mean(),
+            "consistency": F.mse_loss(next_hidden, encoded_next),
+        }
+        loss = sum(losses.values())
+        if not torch.isfinite(loss):
+            raise FloatingPointError("Non-finite world-model training loss")
         self.opt.zero_grad()
         loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.net.parameters(), 10.0, error_if_nonfinite=True)
         self.opt.step()
-        return float(loss.item())
+        self.step_count += 1
+        self.last_losses = {name: float(component.detach().item()) for name, component in losses.items()}
+        return float(loss.detach().item())
 
 
 # =============================================================================
@@ -555,7 +602,7 @@ class Orchestrator:
             for i, (env, learner) in enumerate(zip(self.envs, self.learners)):
                 a = learner.act(obs[i])
                 nxt, r, done, _ = env.step(a)
-                learner.remember(obs[i], r)
+                learner.remember(obs[i], a, r, nxt, done)
                 loss = learner.train_once()
                 obs[i] = env.reset() if done else nxt
                 total_r += r

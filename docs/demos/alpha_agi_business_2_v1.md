@@ -7,27 +7,24 @@
 [Launch Demo](../alpha_agi_business_2_v1/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.26.3
+## Current runnable path — 1.32.0
 
-**Mode:** Local service. Runs planning, research and optional commentary agents in the legacy orchestrator.
+**Mode:** Supplied-input planning. Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work.
 
-**Prerequisites:** Repository dependencies and legacy orchestrator configuration; see the local README.
-
-After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+**Prerequisites:** Python 3.11–3.13; finite computation uses the standard library.
 
 ```bash
 python -m alpha_factory_v1.demos check alpha_agi_business_2_v1
 python -m alpha_factory_v1.demos run alpha_agi_business_2_v1
+python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --input scenario.json
 ```
 
-**Expected result:** Long-running orchestrator; stop with Ctrl+C. Configure its API_TOKEN and NEO4J_PASSWORD first.
+**Expected result:** Finite JSON evidence review and portfolio; bundled inputs are explicitly synthetic. Use planning --input FILE for supplied data.
 
-**Scope:** Planning/research messages are fixtures. The compatibility SDK is not a live market-data integration.
+**Scope:** Value points and source labels are supplied assumptions, not verified research, revenues or model output. Legacy service and explicit optional commentary require separate setup.
 
-The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+Original research narratives and flowcharts below are preserved as conceptual background.
+They do not expand the tested scope stated here.
 <!-- CURRENT-DEMO:END -->
 
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.

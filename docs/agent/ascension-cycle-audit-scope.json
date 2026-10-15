@@ -1,0 +1,1735 @@
+{
+  "schema": "agialpha.ascension.current-audit-scope.v1",
+  "suites": {
+    "nova_core": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/nova-studio/core.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Capsule/compiler/hash-domain unit checks with deterministic local inputs; no external storage service.",
+      "environment": {}
+    },
+    "wallet_core": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/mark-wallet/core.test.mjs",
+        "tests/mark-wallet/recovery.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Wallet/session arithmetic, pending journal, recovery, provider refusal and finality unit checks with RPC doubles.",
+      "environment": {}
+    },
+    "wallet_abi": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/mark-wallet/abi.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Exact ABI selector and encoding parity checks against pinned protocol definitions.",
+      "environment": {}
+    },
+    "project_core": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/cycle.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Project identity, encrypted history, scoped accounting/evaluation/reuse and recovery unit checks; synthetic observations.",
+      "environment": {}
+    },
+    "native_cycle": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_studio.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Genuine bounded native computation and signed records using synthetic read-only chain observations.",
+      "environment": {}
+    },
+    "native_operator": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_studio_operator.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Local operator authentication, pairing and authorization boundaries; synthetic actors and RPC.",
+      "environment": {}
+    },
+    "native_ascension": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_ascension.py",
+        "tests/runtime/test_ascension_handoff.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Native plan, market binding and handoff checks with synthetic observations.",
+      "environment": {}
+    },
+    "native_state": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_state.py",
+        "tests/runtime/test_successor_jobs.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Local runtime/job state and authority/budget boundaries with test principals.",
+      "environment": {}
+    },
+    "native_recovery": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_recovery.py",
+        "tests/runtime/test_successor_restore_cli.py",
+        "tests/runtime/test_successor_adversarial.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Deterministic native interruption/recovery and adversarial trust checks; no live effectful service.",
+      "environment": {}
+    },
+    "native_workbench": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_workbench.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Installed deterministic workbench outputs and validity checks; no human benefit or live provider.",
+      "environment": {}
+    },
+    "native_computer": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_computer.py",
+        "--confcutdir=tests/runtime",
+        "-q"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Computer Use recovery and actuator doubles; any real-container skip remains unperformed.",
+      "environment": {}
+    },
+    "preservation": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/test_successor_preservation.py",
+        "-q",
+        "--noconftest",
+        "-o",
+        "addopts="
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Declared native workflow and source-preservation assertions, not all repository behavior.",
+      "environment": {}
+    },
+    "wallet_build": {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/mark-wallet",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "kind": "command",
+      "scope": "Generated-wallet profile and evidence validators; no hosted release validation.",
+      "environment": {}
+    },
+    "ascension_contracts": {
+      "argv": [
+        "{node}",
+        "node_modules/hardhat/internal/cli/cli.js",
+        "test",
+        "test/ascension/lifecycle.test.js",
+        "test/ascension/marketplace.test.js",
+        "test/ascension/settlement.test.js",
+        "test/ascension/successor-adapter.test.js"
+      ],
+      "cwd": "tests/contracts",
+      "kind": "command",
+      "scope": "Declared exact-source disposable-EVM lifecycle/market/settlement/adapter tests with synthetic participants.",
+      "environment": {}
+    },
+    "nova_evm_browser": {
+      "argv": [
+        "{node}",
+        "node_modules/hardhat/internal/cli/cli.js",
+        "run",
+        "scripts/nova-studio.js"
+      ],
+      "cwd": "tests/contracts",
+      "kind": "command",
+      "scope": "Production Studio first-cycle browser and disposable-EVM harness; synthetic wallets/storage/actors.",
+      "environment": {
+        "NOVA_BROWSER": "1",
+        "NOVA_EVIDENCE": "{evidence}"
+      }
+    },
+    "two_cycle": {
+      "argv": [
+        "{node}",
+        "node_modules/hardhat/internal/cli/cli.js",
+        "run",
+        "scripts/ascension-cycle.js"
+      ],
+      "cwd": "tests/contracts",
+      "kind": "command",
+      "scope": "Genuine bounded native work and disposable-EVM two-cycle harness; no browser unless separate browser suite runs.",
+      "environment": {
+        "ASCENSION_CYCLE_EVIDENCE": "{evidence}"
+      }
+    },
+    "two_cycle_browser": {
+      "argv": [
+        "{node}",
+        "node_modules/hardhat/internal/cli/cli.js",
+        "run",
+        "scripts/ascension-cycle.js"
+      ],
+      "cwd": "tests/contracts",
+      "kind": "command",
+      "scope": "Production generated Studio browser, genuine fixed executor and disposable-EVM two-cycle harness; synthetic actors/storage.",
+      "environment": {
+        "ASCENSION_CYCLE_EVIDENCE": "{evidence}",
+        "ASCENSION_CYCLE_BROWSER": "1"
+      }
+    },
+    "reuse_core": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/reuse.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Exact accepted-artifact selection and consumption unit checks; synthetic signatures and chain callbacks.",
+      "environment": {}
+    },
+    "native_operator_browser": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/runtime/test_successor_studio_operator.py",
+        "tests/runtime/test_api_boundary.py",
+        "tests/runtime/test_successor_studio_operator_browser.py",
+        "--confcutdir=tests/runtime",
+        "--disable-warnings",
+        "--maxfail=1",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Actual local operator HTTP/browser path plus authority boundary tests; synthetic RPC and no human participants.",
+      "environment": {}
+    },
+    "runtime_bridge": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/nova-studio/runtime.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Portable native-record/request verification against pinned keys and synthetic runtime fixtures.",
+      "environment": {}
+    },
+    "cache_isolation": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/nova-studio/cache.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Static publication/cache isolation checks against shipped source assets.",
+      "environment": {}
+    },
+    "receipt_ledger": {
+      "argv": [
+        "{node}",
+        "--test",
+        "tests/nova-studio/ledger.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Retained signed-settlement and owner-specific receipt ledger checks with synthetic RPC.",
+      "environment": {}
+    },
+    "interruption": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/interruption.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Eleven synthetic persisted checkpoints restored in fresh Node processes plus interrupted-upload resume; not physical-device or complete EVM crash testing.",
+      "environment": {}
+    },
+    "workflow_hardening": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/workflow-hardening.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Production Studio workflow regressions using deterministic local storage and RPC doubles.",
+      "environment": {}
+    },
+    "storage_hardening": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/storage-hardening.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Storage transport destination, credential-redaction and byte-boundary regressions using synthetic responses.",
+      "environment": {}
+    },
+    "cycle_ui": {
+      "argv": [
+        "{node}",
+        "--test",
+        "--test-reporter=tap",
+        "tests/nova-studio/cycle-ui.test.mjs"
+      ],
+      "cwd": ".",
+      "kind": "node",
+      "scope": "Cycle/history UI rendering regressions with a minimal deterministic DOM double; not a real browser or accessibility trial.",
+      "environment": {}
+    },
+    "audit_validation": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/nova-studio/test_current_audit.py",
+        "--confcutdir=tests/nova-studio",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Audit generator/validator adversarial tests for preserved IDs, stale source and evidence tampering.",
+      "environment": {}
+    },
+    "native_interruptions": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_successor_studio_interruptions.py",
+        "--confcutdir=tests/runtime",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Actual fixed-work interruption before/after computation, fresh-process retained reads, and committed acceptance/settlement lost-response idempotency with synthetic RPC/test principals.",
+      "environment": {}
+    },
+    "native_budget": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "--confcutdir=tests/runtime",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Authenticated atomic native reservation coordinator exact arithmetic/concurrency/process-death/lost-response API checks; integrated browser scope is separate.",
+      "environment": {}
+    },
+    "two_cycle_interruption_browser": {
+      "argv": [
+        "{node}",
+        "node_modules/hardhat/internal/cli/cli.js",
+        "run",
+        "scripts/ascension-cycle.js"
+      ],
+      "cwd": "tests/contracts",
+      "kind": "command",
+      "scope": "Eleven actual browser/EVM/native lost-response checkpoints with fresh-browser portable recovery, unchanged send counters and a completed second cycle; synthetic actors and recovered transaction hashes, not physical power loss or unknown-hash discovery.",
+      "environment": {
+        "ASCENSION_CYCLE_EVIDENCE": "{evidence}",
+        "ASCENSION_CYCLE_BROWSER": "1",
+        "ASCENSION_CYCLE_INTERRUPTION_BROWSER": "1"
+      }
+    },
+    "native_budget_browser": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "tests/runtime/test_budget_browser.py",
+        "--confcutdir=tests/runtime",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Actual authenticated native reservation browser journeys, response loss, authority changes and EN/FR desktop/mobile accessibility with synthetic declared capacity.",
+      "environment": {}
+    },
+    "native_ecosystem": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "tests/runtime/test_ecosystem_jobs.py",
+        "--confcutdir=tests/runtime",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Exact Jobs v0 ABI/profile/assignment and signed-artifact regressions with synthetic read-only RPC, plus bounded Fleet wire vectors; not live commissioning.",
+      "environment": {}
+    },
+    "ecosystem_browser": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "tests/runtime/test_ecosystem_browser.py",
+        "--confcutdir=tests/runtime",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Actual EN/FR native Jobs and public compatibility browser controls, lost responses, installation changes and accessibility using synthetic chain observations.",
+      "environment": {}
+    }
+  },
+  "cases": {
+    "01": {
+      "requirement": "Preservation: existing routes, demos, flowcharts, readers, native workflows, source archive, and representative behavior remain intact; necessary edits are explained.",
+      "suite_ids": [
+        "preservation",
+        "wallet_build",
+        "nova_evm_browser",
+        "cache_isolation",
+        "audit_validation"
+      ],
+      "remaining_acceptance": "Retain current generated-route and native preservation results, then required whole-repository regression and release review.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "02": {
+      "requirement": "Shared foundation: Studio and MARK use the same client/session, policy, original journal, and atomic lock; pending work is not bypassed.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Qualify shared pending barriers in the built Studio/MARK browsers as well as deterministic session tests.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "03": {
+      "requirement": "No-wallet start: create, compile, seal, export, and reopen without account permission, wallet traffic, or paid services.",
+      "suite_ids": [
+        "nova_core",
+        "nova_evm_browser",
+        "workflow_hardening"
+      ],
+      "remaining_acceptance": "Retain current generated-route no-wallet journey; unit package creation alone does not cover actual browser traffic.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "04": {
+      "requirement": "Wallet context: selection, denial, disconnect, account/network/provider changes, and stale previews invalidate writes safely.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Retain browser context-change/denial/reload evidence; physical wallet combinations remain a separate trial.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "05": {
+      "requirement": "Profile policy: archived new exposure, unknown/imported/mixed identities, modified code/ABI/bindings, and invalid qualification cannot enable writes.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_core",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Qualify exact current generated assets and registry refusal in the production browser; no production profile is enabled by this audit.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "06": {
+      "requirement": "Identity: correct/incorrect roles, owned/expired wrapped names, missing/revoked admission, and funding-only admission follow actual rules.",
+      "suite_ids": [
+        "ascension_contracts",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Run current exact-contract identity branches and browser handoffs; real namespace/admission authority is external.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "07": {
+      "requirement": "External actors: namespace/admission/reviewer decisions remain attributable, authorized, and resumable; no fabricated operator success.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Obtain attributable independent actor decisions and resumable handoff evidence; synthetic addresses cannot establish independence.",
+      "external_prerequisites": [
+        "real_actor_independence"
+      ],
+      "product_decisions": []
+    },
+    "08": {
+      "requirement": "Compiler parity: browser/native/JS/Solidity agree at 1,2,3,7,127,128 jobs; 0/129 reject; odd-node handling is identical.",
+      "suite_ids": [
+        "nova_core",
+        "nova_evm_browser",
+        "native_ascension",
+        "ascension_contracts"
+      ],
+      "remaining_acceptance": "Run all mapped parity suites and real-EVM browser path at the required sizes and rejection bounds.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "09": {
+      "requirement": "Bounds: large base-unit values, uint limits, UTF-8 lengths, weights, durations, and malformed input cannot round or change commitments.",
+      "suite_ids": [
+        "nova_core",
+        "wallet_core"
+      ],
+      "remaining_acceptance": "Verify all listed integer/UTF-8/weight/duration boundaries in current-source outputs, not merely successful normal inputs.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "10": {
+      "requirement": "Encryption: old capsules reopen; executable capsules contain the exact plan; wrong passphrase, altered bytes, and oversize input fail usefully.",
+      "suite_ids": [
+        "nova_core"
+      ],
+      "remaining_acceptance": "Retain current capsule compatibility, tamper, wrong-passphrase and size-boundary results.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "11": {
+      "requirement": "Hash domains: inner commitment, whole-capsule canonical hash, byte hash, evidence digest, plan root, and CID are non-interchangeable.",
+      "suite_ids": [
+        "nova_core",
+        "native_ascension",
+        "reuse_core",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain exact hash-domain, native-output and artifact-reuse negative checks across the current mapped suites.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "12": {
+      "requirement": "Publication: real supported upload/retrieval path is exercised; placeholders, missing/changed bytes, hostile content, and credential leakage are detected.",
+      "suite_ids": [
+        "nova_core",
+        "nova_evm_browser",
+        "storage_hardening"
+      ],
+      "remaining_acceptance": "Complete authorized real service upload and independently retrieved byte checks; local transport doubles cover only rejection behavior.",
+      "external_prerequisites": [
+        "storage"
+      ],
+      "product_decisions": []
+    },
+    "13": {
+      "requirement": "Mint intent: correct eligible caller and exact zero-value seal; no invented fee, token purchase, or ERC-20 mint approval.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Run the actual current browser seal path and inspect zero-value/no-token-approval assertions.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "14": {
+      "requirement": "Mint evidence: concurrent mints and unrelated logs cannot misidentify the token; verified event/readbacks match the saved package.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Retain current unrelated/concurrent mint and canonical receipt/readback regressions in the production path.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "15": {
+      "requirement": "Existing seed: ID/receipt/kit resumes the right project; mismatched plan/profile cannot overwrite it.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "project_core"
+      ],
+      "remaining_acceptance": "Retain package/profile mismatch, exact original journal and current seed readback results after fresh import.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "16": {
+      "requirement": "Seed review: actual separate actors, stake, evidence, quorum, exclusions, rejection, expiry, transfer, and revocation are handled.",
+      "suite_ids": [
+        "ascension_contracts",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Complete both current contract review-boundary checks and separately authorized real independent reviewer trials.",
+      "external_prerequisites": [
+        "real_actor_independence"
+      ],
+      "product_decisions": []
+    },
+    "17": {
+      "requirement": "Funding arithmetic: exact quotes, curve, reachable target, bounded approvals, slippage, units, and partial-plan funding are correct.",
+      "suite_ids": [
+        "wallet_core",
+        "ascension_contracts",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Retain current contract/browser funding arithmetic and slippage results, including partial-plan cases.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "18": {
+      "requirement": "Approval interruption: approved allowance followed by declined/failed purchase neither double-spends nor claims funding.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_evm_browser",
+        "interruption"
+      ],
+      "remaining_acceptance": "Retain actual approval/purchase refusal path; synthetic portable checkpoints do not demonstrate a real wallet interruption.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "19": {
+      "requirement": "Bloom: valid authority/phase/review/funding only; immediate end of curve redemption is explained and receipt/state verified.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "ascension_contracts"
+      ],
+      "remaining_acceptance": "Retain browser and exact-contract activation authority/phase/review boundaries and irreversible-redemption disclosure.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "20": {
+      "requirement": "Route: exact proof/index, reserve, horizon, three eligible opted-in reviewers, capacity, escrow, and event/readback agree.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "ascension_contracts"
+      ],
+      "remaining_acceptance": "Retain current actual route proof/reserve/reviewer/escrow receipt and readback evidence.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "21": {
+      "requirement": "Route rejection: changed spec, reused index, stale capacity, wrong ownership/name, insufficient reserve, or expired review fail without false progress.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "ascension_contracts"
+      ],
+      "remaining_acceptance": "Retain current route refusal branches and verify that changed context cannot progress the UI or journal.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "22": {
+      "requirement": "Runtime truth: posted, awarded, connected, authorized, running, delivered, reviewed, and settled remain different statuses.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "two_cycle",
+        "two_cycle_browser"
+      ],
+      "remaining_acceptance": "Retain distinct browser and native phase observations through actual bounded execution and settlement.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "23": {
+      "requirement": "Settlement: accepted work, rejected work/slash, delivery timeout, missing review, and unawarded recovery reconcile with exact code.",
+      "suite_ids": [
+        "ascension_contracts",
+        "native_ascension",
+        "nova_evm_browser",
+        "two_cycle",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Run current contract/native settlement branches and owner-specific ledger; normal paid work alone is insufficient.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "24": {
+      "requirement": "Exits: permitted sell after eligibility/review expiry, concurrent phase changes, MARK collection, closure, reclaim, stake exit, and allowance revocation work.",
+      "suite_ids": [
+        "wallet_core",
+        "ascension_contracts",
+        "nova_evm_browser",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain each legitimate exit branch and canonical receipt under current code, including expired eligibility and concurrent phase changes.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "25": {
+      "requirement": "Unknown send: lost hash, request timeout, reload, and mobile backgrounding preserve pending intent without automatic resubmission.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_evm_browser",
+        "interruption"
+      ],
+      "remaining_acceptance": "Complete real browser crash/background and lost-response drills beyond synthetic serialized pending checkpoints.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "26": {
+      "requirement": "Concurrency: repeated clicks and simultaneous Studio/MARK tabs cannot bypass pending state; stale locks recover conservatively.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Retain simultaneous actual Studio/MARK browser-tab lock races; this is origin-local coordination, not cross-device locking.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "27": {
+      "requirement": "Finality: revert, cancellation, replacement, reorg, missing receipt, and unavailable finality never become original-intent success.",
+      "suite_ids": [
+        "wallet_core",
+        "project_core"
+      ],
+      "remaining_acceptance": "Retain replacement/cancellation/reorg/unavailable-finality negative checks and fresh current projections.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "28": {
+      "requirement": "Ownership/lineage: incoming/outgoing transfers and parent ownership are refreshed; passphrase, campaign control, and approval do not transfer implicitly.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "project_core"
+      ],
+      "remaining_acceptance": "Retain actual transfer ownership/lineage refresh and refusal to inherit prior authority or private disclosure.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "29": {
+      "requirement": "Portable recovery: a fresh session restores valid evidence and current chain state without secrets or automatic signing.",
+      "suite_ids": [
+        "nova_core",
+        "nova_evm_browser",
+        "project_core",
+        "two_cycle_browser",
+        "native_operator_browser",
+        "interruption",
+        "native_interruptions"
+      ],
+      "remaining_acceptance": "Retain built-browser fresh-session recovery and separately trusted native history; fresh Node-process tests are bounded component evidence.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs",
+        "tests/runtime/test_successor_studio_interruptions.py"
+      ]
+    },
+    "30": {
+      "requirement": "Hostile imports: malformed JSON/capsules, duplicate/prototype keys, malicious HTML/icons, unsafe references, stale caches, and mixed artifacts cannot execute or authorize writes.",
+      "suite_ids": [
+        "nova_core",
+        "wallet_core",
+        "project_core",
+        "native_operator_browser",
+        "runtime_bridge",
+        "cache_isolation",
+        "workflow_hardening",
+        "storage_hardening",
+        "cycle_ui"
+      ],
+      "remaining_acceptance": "Retain current hostile import, publication/cache and authenticated operator-boundary suites across the declared supported transport.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "31": {
+      "requirement": "Browser usability: actual generated routes, EN/FR, keyboard, screen-reader/larger-text trials, mobile layout, and correct error repair are evidence-qualified.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "two_cycle_browser",
+        "native_operator_browser"
+      ],
+      "remaining_acceptance": "Complete human screen-reader, larger-text and error-repair/comprehension trials on generated routes; automated axe is insufficient.",
+      "external_prerequisites": [
+        "human_accessibility"
+      ],
+      "product_decisions": []
+    },
+    "32": {
+      "requirement": "Wallet trials: declared extension/mobile/hardware combinations are actually exercised; unsupported or untested combinations stay disclosed.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Run and document the declared real extension/mobile/hardware matrix with exact versions and failures.",
+      "external_prerequisites": [
+        "wallet_devices"
+      ],
+      "product_decisions": []
+    },
+    "33": {
+      "requirement": "First-cycle vertical slice: the real browser reaches verified seed, review, funding, activation, routed work, delivery, review, and settlement on the selected exact-source test environment.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Retain current production-browser/disposable-EVM first-cycle vertical slice with actual reviewed delivery and settlement.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "34": {
+      "requirement": "Mainnet canary: only under separate authorization, consenting actors complete a bounded lifecycle with verified receipts and balances.",
+      "suite_ids": [
+        "nova_evm_browser"
+      ],
+      "remaining_acceptance": "Requires separate bounded Mainnet authorization and actual consenting actors; no local test can clear this gate.",
+      "external_prerequisites": [
+        "mainnet_canary"
+      ],
+      "product_decisions": [
+        "launch_scope"
+      ]
+    },
+    "35": {
+      "requirement": "Launch/rollback: evidence-bound enablement and suspension preserve archived restrictions, history, obligations, and exits; UI changes do not claim chain rollback.",
+      "suite_ids": [
+        "nova_core",
+        "nova_evm_browser",
+        "wallet_build"
+      ],
+      "remaining_acceptance": "Retain source-matched publication/policy refusal and recovery behavior; public enablement needs a separate reviewed decision.",
+      "external_prerequisites": [],
+      "product_decisions": [
+        "launch_scope"
+      ]
+    },
+    "36": {
+      "requirement": "Graph fidelity: all original 12 nodes and 18 directions remain; implementation/evidence/recovery matrix covers each.",
+      "suite_ids": [
+        "project_core",
+        "preservation",
+        "two_cycle_browser",
+        "cycle_ui"
+      ],
+      "remaining_acceptance": "Verify preserved BACKGROUND bytes plus the 12-node/18-edge matrix and current generated graph tests.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "37": {
+      "requirement": "Continuous context: opportunity, capsule, seed, campaign, job, runtime, outcome, and successor retain identities across views/imports.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "two_cycle",
+        "two_cycle_browser",
+        "reuse_core",
+        "receipt_ledger",
+        "interruption"
+      ],
+      "remaining_acceptance": "Retain exact project/cycle/request/output/settlement identities across every mapped production-path suite.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "38": {
+      "requirement": "Genuine execution: the assigned exact work reaches an actual supported executor and produces bound run/artifact evidence without signer authority.",
+      "suite_ids": [
+        "native_cycle",
+        "native_workbench",
+        "two_cycle",
+        "two_cycle_browser",
+        "native_operator_browser",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain actual assigned bounded executor output and production-browser handoff; no provider/model capability is inferred.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "39": {
+      "requirement": "Failed/disconnected execution: absent host, stale heartbeat, failed task, cancellation, and unknown effect are distinct and never create accepted work or profit.",
+      "suite_ids": [
+        "native_cycle",
+        "native_operator",
+        "native_state",
+        "project_core",
+        "native_operator_browser",
+        "native_interruptions"
+      ],
+      "remaining_acceptance": "Retain disconnected, revoked, cancelled, failed and unknown-effect behavior, including interruption before completed output.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/runtime/test_successor_studio_interruptions.py"
+      ]
+    },
+    "40": {
+      "requirement": "Role separation: business, funder, host, worker, reviewer, controller, and governance cannot inherit or impersonate one another's permissions.",
+      "suite_ids": [
+        "native_state",
+        "native_ascension",
+        "native_cycle",
+        "native_operator",
+        "project_core",
+        "native_operator_browser"
+      ],
+      "remaining_acceptance": "Retain current permission-negative tests across wallet, operator, runtime and native binding; independent actor control remains external.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "41": {
+      "requirement": "Evidence versus money: artifacts, modeled benefits, price estimates, balances, and unknown observations remain separate; only owned available capital supports allocation.",
+      "suite_ids": [
+        "project_core",
+        "native_ascension",
+        "reuse_core",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain fresh owner-specific custody and claims evidence; no artifact/forecast/candidate score may be treated as money.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "42": {
+      "requirement": "Accounting: payouts, burns, reserve, escrow, stake, principal refunds, and claims reconcile in native units with no double counting.",
+      "suite_ids": [
+        "project_core",
+        "native_ascension",
+        "ascension_contracts",
+        "two_cycle",
+        "receipt_ledger",
+        "workflow_hardening"
+      ],
+      "remaining_acceptance": "Retain receipt-bound CapitalReturned attribution and all supported payout/burn/refund branches; partial gas/cost history cannot prove total profit.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "43": {
+      "requirement": "Shared assets: shared wallets/backing custody and other actors' claims cannot be allocated repeatedly or appropriated by the business.",
+      "suite_ids": [
+        "project_core",
+        "ascension_contracts",
+        "receipt_ledger",
+        "native_budget",
+        "native_budget_browser"
+      ],
+      "remaining_acceptance": "Qualify the selected atomic native reservation coordinator across authenticated clients, simultaneous projects, process death/lost response, exact native-unit amounts and receipt reconciliation. Existing proposal or settlement tests alone do not establish that broader guarantee.",
+      "external_prerequisites": [],
+      "product_decisions": [
+        "shared_allocation"
+      ],
+      "additional_refs": [
+        "alpha_factory_v1/core/runtime/budget.py",
+        "tests/runtime/test_budget_reservations.py",
+        "docs/agent/NATIVE_BUDGET_RESERVATIONS.md"
+      ]
+    },
+    "44": {
+      "requirement": "Valuation: missing/stale prices, incomplete costs, or uncertain revenue attribution cannot fabricate dollars, profit, or spendable funds.",
+      "suite_ids": [
+        "project_core",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain stale/unavailable price, incomplete cost and attribution refusal checks; economic benefit needs separate measured evidence.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "45": {
+      "requirement": "Continue original plan: valid remaining committed work uses actual reserve/refunds; inserted or edited jobs reject.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "ascension_contracts",
+        "two_cycle",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain actual remaining original-plan route using reserve/refund evidence and reject edited or inserted jobs.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "46": {
+      "requirement": "Entitled reinvestment: the actual claimant uses supported exit/reclaim and separately authorizes the next campaign; no arbitrary reserve sweep.",
+      "suite_ids": [
+        "project_core",
+        "nova_evm_browser",
+        "two_cycle",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain rightful claimant exit and separately confirmed next funding in current production-browser/EVM evidence.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "47": {
+      "requirement": "Interrupted reinvestment: partial approval, purchase rejection, changed quote, expiry, uncertain receipt, and reorg remain recoverable without duplicate funding.",
+      "suite_ids": [
+        "project_core",
+        "wallet_core",
+        "nova_evm_browser",
+        "receipt_ledger",
+        "interruption"
+      ],
+      "remaining_acceptance": "Retain actual reinvestment quote/rejection/reorg interruption breadth; synthetic pending checkpoints only prove portable restore barriers.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "48": {
+      "requirement": "Candidate evaluation: frozen baseline and declared tests/budgets produce retained inputs, outputs, measurements, and tradeoffs.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "native_workbench",
+        "two_cycle",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain frozen inputs/procedure/budget and complete native comparison outputs; declared fixture trials do not validate a human outcome.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "49": {
+      "requirement": "Negative/inconclusive result: candidate is not promoted; baseline and truthful findings remain usable.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "ascension_contracts",
+        "two_cycle",
+        "native_operator_browser",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain FAIL/inconclusive and anti-adoption negatives; historical decisions never restore authority.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "50": {
+      "requirement": "Distinct second mission: authorized reuse of a first-mission artifact produces fresh checked work; renaming/cached output/receipt replay fails acceptance.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "two_cycle",
+        "two_cycle_browser",
+        "reuse_core"
+      ],
+      "remaining_acceptance": "Retain current two-cycle browser/executor evidence with actual recipe consumption, distinct inputs/run/result/settlement and explicit reuse.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "51": {
+      "requirement": "Successor lineage: new plan/evidence and valid parent preserve old commitments; authority and review are fresh and deployment identity exact.",
+      "suite_ids": [
+        "project_core",
+        "nova_evm_browser",
+        "two_cycle",
+        "reuse_core",
+        "interruption"
+      ],
+      "remaining_acceptance": "Retain current lineage and fresh next-cycle authority checks; a restored successor package alone proves only history preservation.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "52": {
+      "requirement": "Full-cycle recovery: fresh-device restore spans runtime, reservoir, evaluated versions, claims, and next-cycle state without granting stale authority.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "native_recovery",
+        "two_cycle_browser",
+        "receipt_ledger",
+        "interruption",
+        "native_interruptions"
+      ],
+      "remaining_acceptance": "Complete fresh-device/browser recovery through claims and next cycle with native trust independently restored; Node process tests cover a narrower scope.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs",
+        "tests/runtime/test_successor_studio_interruptions.py"
+      ]
+    },
+    "53": {
+      "requirement": "Honest graph: data/control/fund edges display observed state; unavailable or unperformed actions never animate as success.",
+      "suite_ids": [
+        "project_core",
+        "two_cycle_browser",
+        "cycle_ui"
+      ],
+      "remaining_acceptance": "Run per-edge observed-state/action tests and actual browser coverage for all 18 directions; topology alone cannot satisfy this requirement.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "54": {
+      "requirement": "Complete two-cycle qualification: production browser plus genuine executor completes first cycle, reconciled capital, explicit next-cycle authorization, and a distinct successor mission/result/settlement in the declared exact-source test environment.",
+      "suite_ids": [
+        "two_cycle",
+        "two_cycle_browser",
+        "native_operator_browser",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain final integrated production-browser/native/disposable-EVM two-cycle output after all code changes; unit checks cannot replace it.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "55": {
+      "requirement": "Live continuation: separately authorized canary evidence covers live continued work where approved; local execution, model use, settlement, and profit remain separately labeled.",
+      "suite_ids": [
+        "two_cycle"
+      ],
+      "remaining_acceptance": "Requires separately authorized live continuation and independently attributable live execution/review/settlement.",
+      "external_prerequisites": [
+        "live_continuation"
+      ],
+      "product_decisions": [
+        "launch_scope"
+      ]
+    },
+    "56": {
+      "requirement": "Existing-PR integration: current #4778/#4779 code and corrections are reviewed/reused; no parallel Studio, journal, wallet engine, or unnecessary route is created.",
+      "suite_ids": [
+        "wallet_core",
+        "nova_core",
+        "nova_evm_browser",
+        "preservation"
+      ],
+      "remaining_acceptance": "Review current integration against original PR boundaries and retain shared-engine preservation checks; no parallel journal is introduced.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "57": {
+      "requirement": "Preposting richer terms: immutable richer work terms/checkpoint precede posting; future winner/job ID stay unresolved; late backfilling into completed work is refused.",
+      "suite_ids": [
+        "native_cycle",
+        "native_ascension",
+        "ascension_contracts",
+        "two_cycle",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain immutable preposting-term/checkpoint timing and late-backfill refusals with actual route evidence.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "58": {
+      "requirement": "Indexed versus stored hash: identical specs at different plan indices bind the correct routed leaf and stored index-zero market hash without falsely covering richer terms.",
+      "suite_ids": [
+        "native_ascension",
+        "ascension_contracts",
+        "native_cycle",
+        "two_cycle"
+      ],
+      "remaining_acceptance": "Retain index-sensitive native/Solidity/browser parity and both indexed versus stored hash commitments.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "59": {
+      "requirement": "Assignment/controller binding: actual winner, job, release/environment, observer trust, controller grant, expiry, and market-binding digest are verified before dispatch.",
+      "suite_ids": [
+        "native_cycle",
+        "native_ascension",
+        "native_state",
+        "two_cycle",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain current winner/assignment/runtime/environment/controller/budget binding negatives and actual supported execution.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "60": {
+      "requirement": "Paid negative evaluation: an accurate FAIL report can be accepted/paid while candidate adoption, memory admission, and new authority remain denied.",
+      "suite_ids": [
+        "native_cycle",
+        "native_ascension",
+        "ascension_contracts",
+        "two_cycle",
+        "native_operator_browser",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain accepted paid negative evaluation separately from denied adoption, memory admission and authority.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "61": {
+      "requirement": "Attribution idempotency: duplicate settlement imports return the same record; conflicting project/institution/artifact attribution is rejected.",
+      "suite_ids": [
+        "native_ascension",
+        "ascension_contracts",
+        "native_cycle",
+        "two_cycle",
+        "runtime_bridge",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain exact duplicate-idempotency and conflicting attribution refusal in native and receipt-ledger paths.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "62": {
+      "requirement": "Restore trust: embedded keys, editable journals, or a checksum cannot establish current trust, replay grants, promote a version, or trigger actions.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "native_state",
+        "native_recovery",
+        "reuse_core",
+        "native_operator_browser",
+        "runtime_bridge",
+        "interruption",
+        "native_interruptions"
+      ],
+      "remaining_acceptance": "Retain independent-trust/import negatives, no-grant/no-adoption/no-replay barriers and fresh-process recovery.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs",
+        "tests/runtime/test_successor_studio_interruptions.py"
+      ]
+    },
+    "63": {
+      "requirement": "Private recovery: old readable-kit semantics stay disclosed; new encrypted-private export preserves sensitive plan/terms/provenance without breaking old readers.",
+      "suite_ids": [
+        "project_core",
+        "nova_core",
+        "native_operator_browser",
+        "interruption"
+      ],
+      "remaining_acceptance": "Retain old readable-kit disclosure and new authenticated private-kit compatibility/tamper/bounds tests.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs"
+      ]
+    },
+    "64": {
+      "requirement": "Bridge security: malicious origins, replayed pairing, altered host/runtime, expired credentials, DNS/network boundary abuse, and forbidden operations fail; supported browser behavior is exercised.",
+      "suite_ids": [
+        "native_operator",
+        "native_cycle",
+        "two_cycle_browser",
+        "native_operator_browser"
+      ],
+      "remaining_acceptance": "Qualify the advertised portable-file/local-authenticated-UI transport boundaries; no untested hosted cross-origin bridge or DNS/proxy combination is claimed.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "65": {
+      "requirement": "Action-time runtime authority: revocation, expiry, changed release/environment/inputs, insufficient budget, and replay prevent new effects without erasing prior evidence.",
+      "suite_ids": [
+        "native_cycle",
+        "native_state",
+        "native_recovery",
+        "native_operator_browser",
+        "runtime_bridge",
+        "native_interruptions"
+      ],
+      "remaining_acceptance": "Retain action-time revoked/expired/changed input/runtime/budget/replay refusal while preserving prior output.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/runtime/test_successor_studio_interruptions.py"
+      ]
+    },
+    "66": {
+      "requirement": "Effectful Computer Use recovery: lost response, unknown charge/action, stop race, replay attempt, and failed cleanup retain reservations and require reconciliation/quarantine.",
+      "suite_ids": [
+        "native_computer",
+        "native_state"
+      ],
+      "remaining_acceptance": "Run effectful recovery doubles and separately qualify any real container/provider claim; skipped real-container tests remain open.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "67": {
+      "requirement": "Live model evidence: actual provider/model execution is distinguished from actuator doubles; missing authorization or provider access is not reported as a passed model trial.",
+      "suite_ids": [
+        "native_computer"
+      ],
+      "remaining_acceptance": "Requires authorized actual provider/model usage evidence; actuator doubles and fixed numerical work do not count.",
+      "external_prerequisites": [
+        "live_provider"
+      ],
+      "product_decisions": []
+    },
+    "68": {
+      "requirement": "Provenance/rights: unauthorized or license-incompatible reuse cannot become an approved successor input; encrypted possession or NFT ownership alone grants no extra rights.",
+      "suite_ids": [
+        "project_core",
+        "native_workbench",
+        "native_cycle",
+        "two_cycle",
+        "reuse_core"
+      ],
+      "remaining_acceptance": "Retain exact-source artifact rights and use-boundary negatives; operator declarations are not an independent license audit.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "69": {
+      "requirement": "Evaluation integrity: held-out leakage, changed evaluation criteria, incomparable budgets, cherry-picked runs, missing costs, and poorer quality are surfaced rather than labeled improvement.",
+      "suite_ids": [
+        "project_core",
+        "native_recovery",
+        "native_cycle",
+        "runtime_bridge"
+      ],
+      "remaining_acceptance": "Retain leakage/incomparable budgets/omitted run/missing cost/quality-regression checks under frozen protocol.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "70": {
+      "requirement": "Cross-deployment derivation: off-chain provenance uses full identities; an unrelated same-number token cannot become an on-chain parent.",
+      "suite_ids": [
+        "project_core"
+      ],
+      "remaining_acceptance": "Retain full-identity cross-deployment provenance and reject same-number unrelated on-chain parent substitution.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "71": {
+      "requirement": "Multiple cycles/claims: parallel projects, cycles, partial claims, and cross-device activity cannot double-allocate assets or duplicate accepted settlements.",
+      "suite_ids": [
+        "project_core",
+        "native_ascension",
+        "native_state",
+        "receipt_ledger",
+        "native_budget",
+        "native_budget_browser"
+      ],
+      "remaining_acceptance": "Qualify the selected atomic native reservation coordinator across authenticated clients, simultaneous projects, process death/lost response, exact native-unit amounts and receipt reconciliation. Existing proposal or settlement tests alone do not establish that broader guarantee.",
+      "external_prerequisites": [],
+      "product_decisions": [
+        "shared_allocation"
+      ],
+      "additional_refs": [
+        "alpha_factory_v1/core/runtime/budget.py",
+        "tests/runtime/test_budget_reservations.py",
+        "docs/agent/NATIVE_BUDGET_RESERVATIONS.md"
+      ]
+    },
+    "72": {
+      "requirement": "External changes/reorg projection: another actor's valid action and invalidated chain observations update the project without deleting history or retaining phantom liquidity.",
+      "suite_ids": [
+        "project_core",
+        "wallet_core",
+        "receipt_ledger"
+      ],
+      "remaining_acceptance": "Retain external-actor/reorg/stale-observation invalidation without deleting history or inventing liquidity.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "73": {
+      "requirement": "Publication isolation: clean build preserves old offline installation; stale profile/ABI/app mixtures and modified generated assets cannot authorize writes.",
+      "suite_ids": [
+        "wallet_build",
+        "nova_core",
+        "wallet_core",
+        "cache_isolation"
+      ],
+      "remaining_acceptance": "Retain clean generated assets/cache-isolation checks and actual published-route/version identity at release.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "74": {
+      "requirement": "Real storage qualification: bounded authorized service-account upload and independently retrieved public content have retained sanitized evidence; local HTTP fixtures alone do not qualify the service.",
+      "suite_ids": [
+        "nova_core",
+        "storage_hardening"
+      ],
+      "remaining_acceptance": "Requires authorized real service-account publication and independent retrieval with sanitized records.",
+      "external_prerequisites": [
+        "storage"
+      ],
+      "product_decisions": []
+    },
+    "75": {
+      "requirement": "Closed-browser obligations: documented operator/monitoring path handles deadlines and claims; no imaginary background keeper or instant contract pause.",
+      "suite_ids": [
+        "project_core",
+        "two_cycle_browser"
+      ],
+      "remaining_acceptance": "Exercise timed obligations and accountable handoff/next-check evidence with browser closed; a manual runbook is not a background keeper.",
+      "external_prerequisites": [],
+      "product_decisions": [
+        "closed_browser_obligations"
+      ]
+    },
+    "76": {
+      "requirement": "Recovery drills: interrupt at upload, mint, approval, purchase, route, runtime start, delivery, review, settlement import, claim, and successor stages; restore safely at each.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "wallet_core",
+        "nova_core",
+        "two_cycle",
+        "two_cycle_browser",
+        "interruption",
+        "native_interruptions",
+        "two_cycle_interruption_browser"
+      ],
+      "remaining_acceptance": "The integrated eleven-stage recovery harness requires saved encrypted project state and separately recovered exact transaction hashes. Physical power loss before any export, unknown-hash discovery and independent real-device trials remain unqualified.",
+      "external_prerequisites": [],
+      "product_decisions": [],
+      "additional_refs": [
+        "tests/nova-studio/interruption.test.mjs",
+        "tests/nova-studio/helpers/fresh-session-recovery.mjs",
+        "tests/runtime/test_successor_studio_interruptions.py",
+        "tests/nova-studio/cycle-interruptions-browser.py",
+        "tests/nova-studio/cycle-interruptions-native.py",
+        "docs/agent/ASCENSION_INTERRUPTION_QUALIFICATION.md"
+      ]
+    },
+    "77": {
+      "requirement": "Source-matched release: required CI, preservation, generated assets, evidence hashes, release tag, and published routes refer to the actual reviewed commit.",
+      "suite_ids": [
+        "wallet_build",
+        "preservation",
+        "two_cycle",
+        "two_cycle_browser"
+      ],
+      "remaining_acceptance": "Require exact reviewed release commit, required CI, clean generated assets, immutable tag and independently checked published routes.",
+      "external_prerequisites": [
+        "publication_release"
+      ],
+      "product_decisions": [
+        "launch_scope"
+      ]
+    },
+    "78": {
+      "requirement": "Honest unsupported paths: unsupported wallets, stale/unavailable RPC, missing runtime/provider/storage, and absent independent review yield specific next steps, not success or data loss.",
+      "suite_ids": [
+        "nova_evm_browser",
+        "wallet_core",
+        "native_operator",
+        "two_cycle_browser",
+        "native_operator_browser"
+      ],
+      "remaining_acceptance": "Retain current unsupported-context refusal and concrete repair guidance in generated browser/operator routes.",
+      "external_prerequisites": [],
+      "product_decisions": []
+    },
+    "79": {
+      "requirement": "Limits and accessibility: bounds, polling/log pagination, cancellation, low-resource/mobile behavior, translations, larger text, and financial confirmation remain usable under tested conditions.",
+      "suite_ids": [
+        "nova_core",
+        "project_core",
+        "nova_evm_browser",
+        "two_cycle_browser",
+        "native_operator_browser"
+      ],
+      "remaining_acceptance": "Complete supported low-resource/cancellation/pagination breadth and real human accessibility/device trials.",
+      "external_prerequisites": [
+        "human_accessibility"
+      ],
+      "product_decisions": []
+    },
+    "80": {
+      "requirement": "Final product audit: every required node/edge, user journey, role boundary, acceptance ID, software capability, and advertised live capability has a matching implementation and appropriately scoped evidence or an explicit release blocker.",
+      "suite_ids": [
+        "project_core",
+        "native_cycle",
+        "two_cycle",
+        "two_cycle_browser",
+        "preservation",
+        "audit_validation",
+        "native_budget",
+        "native_budget_browser"
+      ],
+      "remaining_acceptance": "Review every row and all graph/role/journey mappings against final integrated evidence; unresolved software, product-policy and external gates prevent product completion.",
+      "external_prerequisites": [],
+      "product_decisions": [
+        "launch_scope"
+      ],
+      "additional_refs": [
+        "scripts/ascension_current_audit.py",
+        "docs/agent/ascension-cycle-audit-scope.json",
+        "tests/nova-studio/test_current_audit.py",
+        "alpha_factory_v1/core/runtime/budget.py",
+        "tests/runtime/test_budget_reservations.py",
+        "docs/agent/NATIVE_BUDGET_RESERVATIONS.md"
+      ]
+    }
+  },
+  "pilot": {
+    "reference": "Issue #4787",
+    "observed_participants": 0,
+    "benefit_validated": false,
+    "status": "Protocol preparation only; no completed participant trial or measured human benefit."
+  },
+  "external_prerequisites": {
+    "storage": {
+      "owner": "Authorized storage-account operator",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Bounded real supported service upload and independently retrieved matching bytes; retain sanitized receipts, exact hashes and retention/cost scope."
+    },
+    "human_accessibility": {
+      "owner": "Human accessibility testers",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Actual generated routes, keyboard, screen reader, larger text, error repair and comprehension trials; record browser/assistive-tool versions and results."
+    },
+    "wallet_devices": {
+      "owner": "Wallet compatibility testers",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Actual declared extension/mobile/hardware combinations, consent/rejection/network/account changes and device signing; retain exact versions."
+    },
+    "mainnet_canary": {
+      "owner": "Deployment governance and separately authorized canary participants",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Qualified exact deployment, named actors/actions/amounts/time, authorized real lifecycle and reconciled receipts/obligations; public launch remains a separate decision."
+    },
+    "live_continuation": {
+      "owner": "Separately authorized live continuation participants",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Distinct authorized live next mission with genuine execution, review and settlement; provider use and profit remain separately evidenced."
+    },
+    "live_provider": {
+      "owner": "Provider-account/runtime operator",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Authorized actual provider/model trial with exact model/version, usage/request identity, screenshot/action evidence, observed costs and reviewed output."
+    },
+    "real_actor_independence": {
+      "owner": "Actual namespace/admission authorities and reviewers",
+      "status": "not_performed_in_this_audit",
+      "clearance": "Attributable authorized decisions and evidence of actual control independence; local fixture addresses do not establish it."
+    },
+    "publication_release": {
+      "owner": "Repository/release maintainer",
+      "status": "not_performed_in_this_audit",
+      "clearance": "All required exact-head checks and review, immutable release tag, generated asset hashes and independently verified published route/version."
+    }
+  },
+  "product_decisions": {
+    "shared_allocation": {
+      "owner": "Product and accounting owner",
+      "status": "chosen_implementation_and_qualification_pending",
+      "cases": [
+        "43",
+        "71"
+      ],
+      "decision": "The user selected an atomic native reservation coordinator. Retain final integrated API/browser/concurrency/receipt qualification before claiming cross-project/device double-allocation prevention; partial-claim breadth remains separately scoped."
+    },
+    "closed_browser_obligations": {
+      "owner": "Operations and product owner",
+      "status": "decision_and_drill_required",
+      "cases": [
+        "75"
+      ],
+      "decision": "Choose accountable manual handoff or an explicitly implemented monitoring service and exercise timed obligations. A static browser cannot imply a background keeper."
+    },
+    "launch_scope": {
+      "owner": "Release/deployment authority",
+      "status": "separate_decision_required",
+      "cases": [
+        "34",
+        "35",
+        "55",
+        "77",
+        "80"
+      ],
+      "decision": "Review qualified deployment and external trial evidence before any live activation. This audit enables no profile or funds."
+    }
+  },
+  "interruption_matrix": [
+    {
+      "point": "upload",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: upload",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "mint",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: mint",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "approval",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: approval",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "purchase",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: purchase",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "route",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: route",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "runtime-start",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: runtime-start",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence.",
+      "additional_suite_ids": [
+        "native_interruptions"
+      ],
+      "additional_scope": "Actual fixed-work interrupted start/completion and acceptance/settlement committed-response loss, with fresh-process retained journal reads. Synthetic chain observations remain explicit."
+    },
+    {
+      "point": "delivery",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: delivery",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence.",
+      "additional_suite_ids": [
+        "native_interruptions"
+      ],
+      "additional_scope": "Actual fixed-work interrupted start/completion and acceptance/settlement committed-response loss, with fresh-process retained journal reads. Synthetic chain observations remain explicit."
+    },
+    {
+      "point": "review",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: review",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence.",
+      "additional_suite_ids": [
+        "native_interruptions"
+      ],
+      "additional_scope": "Actual fixed-work interrupted start/completion and acceptance/settlement committed-response loss, with fresh-process retained journal reads. Synthetic chain observations remain explicit."
+    },
+    {
+      "point": "settlement-import",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: settlement-import",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence.",
+      "additional_suite_ids": [
+        "native_interruptions"
+      ],
+      "additional_scope": "Actual fixed-work interrupted start/completion and acceptance/settlement committed-response loss, with fresh-process retained journal reads. Synthetic chain observations remain explicit."
+    },
+    {
+      "point": "claim",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: claim",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    },
+    {
+      "point": "successor",
+      "suite_id": "interruption",
+      "test": "fresh-session interruption checkpoint: successor",
+      "scope": "Synthetic saved checkpoint restored through production WalletSession/NovaWorkflow in a fresh Node process; no replay, live observation or authority restoration.",
+      "remaining": "Actual production-browser/EVM/native interruption and fresh-device recovery at this point, with exact receipts or independently trusted runtime evidence."
+    }
+  ],
+  "release_gates": [
+    "Final-source mapped automated suites, including production-browser/genuine-executor/disposable-EVM two-cycle qualification.",
+    "Complete remaining software acceptance and review; a suite pass is narrower than an original requirement.",
+    "Resolve explicit product-policy decisions without changing or waiving the original requirements.",
+    "Required exact-head repository CI/typecheck/release review and immutable published-asset identity.",
+    "Separately authorized real storage, wallet/device, accessibility, independent-actor, provider and live canary/continuation trials as advertised.",
+    "Zero-participant pilot cannot establish usability or human benefit."
+  ],
+  "additional_integration_matrix": {
+    "ascension_mark_route": {
+      "status": "existing_supported_surface_separate_qualification",
+      "currency": "$AGIALPHA",
+      "protocol": "AscensionJobMarket",
+      "boundary": "The deployed MARK contract has an immutable fixed AscensionJobMarket route; no AGIJobsv0 or AGIJobManager substitution is inferred.",
+      "required_evidence": "Current exact-source MARK/market/browser lifecycle and immutable contract binding."
+    },
+    "agi_jobs_v0": {
+      "status": "implemented_local_fixture_proven_production_qualification_open",
+      "currency": "$AGIALPHA",
+      "protocol": "AGIJobsv0",
+      "boundary": "Separate installed JobRegistry v2 adapter; real disposable local lifecycle including a2078954-byte signed Alpha artifact was executed with mock token/identity/validation. Current source-bound unit/browser evidence is reported separately.",
+      "required_evidence": "Exact deployment full-runtime pins and independent live commissioning remain required; shared token and historical template hashes do not grant readiness."
+    },
+    "fleet_execution": {
+      "status": "wire_contract_implemented_pinned_ipc_qualification_open",
+      "currency": "not_inferred",
+      "protocol": "Fleet executor",
+      "boundary": "Exact canonical-byte stateless supplied-input interface implemented; actual Fleet grant/host/process/source-closure qualification remains separate and unprovisioned.",
+      "required_evidence": "Versioned Fleet interface, exact assignment/output identity, fresh bounded execution authority, cancellation/lost-response/idempotency and genuine execution evidence."
+    },
+    "agi_job_manager": {
+      "status": "separate_protocol_not_substituted",
+      "currency": "USDC",
+      "protocol": "AGIJobManager",
+      "boundary": "Distinct Manager/USDC protocol; do not relabel its accounting or routes as AGIJobsv0/$AGIALPHA.",
+      "required_evidence": "Any future Manager work needs its own explicit scope, exact protocol evidence and authorization."
+    }
+  }
+}

@@ -98,41 +98,56 @@ class TestBusinessAgentIntegration(unittest.TestCase):
         self.assertEqual(result, "alpha_discovery queued")
 
     def test_submit_job(self):
-        job = {"agent": "alpha_discovery", "foo": 1}
+        from alpha_factory_v1.demos.alpha_agi_business_v1.evaluation import evaluate_submission
+
+        state = {
+            "budget": 100,
+            "max_loss": 20,
+            "opportunities": [{"id": "a", "cost": 60, "benefit": 90, "worst_loss": 15}],
+        }
+        expected = evaluate_submission(json.dumps(state).encode())
+        job = {"agent": "alpha_execution", "state": state}
         with patch.object(bridge, "AsyncClient") as client_cls:
             client = AsyncMock()
             client.__aenter__.return_value = client
-            client.post.return_value = DummyResponse()
+            client.post.return_value = DummyResponse(expected)
             client_cls.return_value = client
             result = asyncio.run(bridge.submit_job(job))
         client.post.assert_awaited_once_with(
-            f"{bridge.HOST}/agent/alpha_discovery/trigger",
-            json=job,
+            f"{bridge.HOST}/agent/alpha_execution/evaluate",
+            json=state,
             headers=bridge.HEADERS,
             timeout=5,
         )
-        self.assertEqual(result, "job for alpha_discovery queued")
+        self.assertEqual(json.loads(result), expected)
 
-    def test_trigger_best_alpha(self):
-        """trigger_best_alpha should POST the highest scoring entry."""
-        data = [
-            {"alpha": "x", "score": 1},
-            {"alpha": "y", "score": 5},
-        ]
-        with patch.object(bridge.Path, "read_text", return_value=json.dumps(data)):
+    def test_submit_job_rejects_unsupported_input(self):
+        with patch.object(bridge, "AsyncClient") as client_cls:
+            with self.assertRaises(ValueError):
+                asyncio.run(bridge.submit_job({"agent": "alpha_discovery", "foo": 1}))
+            client_cls.assert_not_called()
+
+    def test_submit_job_does_not_accept_queue_acknowledgement(self):
+        state = {
+            "budget": 100,
+            "max_loss": 20,
+            "opportunities": [{"id": "a", "cost": 60, "benefit": 90, "worst_loss": 15}],
+        }
+        for payload in [{"queued": True}, {"status": "evaluated_supplied_assumptions", "input_id": "stale"}]:
             with patch.object(bridge, "AsyncClient") as client_cls:
                 client = AsyncMock()
                 client.__aenter__.return_value = client
-                client.post.return_value = DummyResponse()
+                client.post.return_value = DummyResponse(payload)
                 client_cls.return_value = client
-                result = asyncio.run(bridge.trigger_best_alpha())
-        client.post.assert_awaited_once_with(
-            f"{bridge.HOST}/agent/alpha_execution/trigger",
-            json={"alpha": "y", "score": 5},
-            headers=bridge.HEADERS,
-            timeout=5,
-        )
-        self.assertEqual(result, "best alpha queued")
+                with self.assertRaises(RuntimeError):
+                    asyncio.run(bridge.submit_job({"agent": "alpha_execution", "state": state}))
+
+    def test_trigger_best_alpha(self):
+        """A score-only bundled opportunity is not a complete evaluation input."""
+        with patch.object(bridge, "AsyncClient") as client_cls:
+            with self.assertRaisesRegex(ValueError, "Nothing was queued or executed"):
+                asyncio.run(bridge.trigger_best_alpha())
+            client_cls.assert_not_called()
 
     def test_check_health(self):
         with patch.object(bridge, "AsyncClient") as client_cls:

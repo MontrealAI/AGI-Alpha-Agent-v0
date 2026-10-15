@@ -9,8 +9,8 @@ import {
     REPORT_SCHEMA,
     SCHEMA,
     uct,
-} from "./engine.mjs?v=1.31.3";
-import { zipFiles } from "../compounding/engine.mjs?v=1.31.3";
+} from "./engine.mjs?v=1.32.0";
+import { zipFiles } from "../compounding/engine.mjs?v=1.32.0";
 const $ = (id) => document.getElementById(id),
     storageKey = "agialpha.mats.settings.v1";
 const fields = [

@@ -19,7 +19,7 @@ class _FallbackAgent:  # pragma: no cover - used in tests and offline paths
         pass
 
     async def __call__(self, text: str) -> str:
-        return "ok"
+        raise RuntimeError("No compatible inference adapter is available; use the supplied-input local workflow")
 
 
 def _resolve_openai_agent() -> type:

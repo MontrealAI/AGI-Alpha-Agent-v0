@@ -1,6 +1,16 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.31.3 publication
+# Release readiness — 1.32.0 candidate publication
+
+Version **1.32.0** is the integrated additive candidate described in the
+[release notes](RELEASE_NOTES_1.32.0.md). Exact combined-source tests, all required CI,
+current-main packaging, public HTTPS verification and uploaded-byte checks remain mandatory.
+Historical passing feature branches do not qualify a later merge. The local supplier/Registry
+proof used actual Chromium with scripted provider responses and test-token settlement;
+Docker/live-provider commissioning and real financial transactions remain unqualified.
+The pinned CPU world-model gate must execute every objective test without skips.
+
+The sections below preserve earlier source-specific records and are not new release evidence.
 
 Version **1.31.3** brings Nova-Seed Studio into the public homepage, preserves French/larger-text
 reading choices and offers explicit local start, recovery and execution handoffs. All eleven Studio steps

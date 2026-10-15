@@ -149,6 +149,9 @@ def build(root: Path = ROOT) -> None:
     studio.parent.mkdir(parents=True, exist_ok=True)
     studio.write_text((root / "scripts/templates/studio.html").read_text().replace("{{VERSION}}", version))
     for legacy, case in lookup(root).items():
+        if legacy in {"cross_industry_alpha_factory", "alpha_agi_business_2_v1"}:
+            # These original demos own their supplied-input workspaces.
+            continue
         page = root / "docs" / legacy / "index.html"
         if legacy in {"muzero_planning", "muzeromctsllmagent_v0"} and (page.parent / "research.html").is_file():
             # Keep the historical decision bridge with the preserved presentation.

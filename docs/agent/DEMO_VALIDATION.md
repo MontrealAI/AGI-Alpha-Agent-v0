@@ -45,12 +45,12 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 ## Inventory
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.31.3: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.32.0: 26 entries; 18 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|
 | [AI-GA meta-evolution](../demos/aiga_meta_evolution.md) | Research training | Evolves small networks in a curriculum environment. | Separate acceptance / prerequisites |
-| [Business v2](../demos/alpha_agi_business_2_v1.md) | Local service | Runs planning, research and optional commentary agents in the legacy orchestrator. | Separate acceptance / prerequisites |
+| [Business v2](../demos/alpha_agi_business_2_v1.md) | Supplied-input planning | Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work. | Required |
 | [Business 3 Enterprise Studio](../demos/alpha_agi_business_3_v1.md) | Reproducible planning | Select a constrained enterprise portfolio, stress the downside and export reviewable Ascension jobs. | Required |
 | [Business v1](../demos/alpha_agi_business_v1.md) | Offline sample | Ranks bundled business opportunities; service agents publish illustrative business events. | Required |
 | [Insight Discovery Workbench](../demos/alpha_agi_insight_v0.md) | Local evidence review | Screen cross-sector hypotheses, allocate review time and export input-bound verification jobs and plaintext Nova-Seed drafts. | Required |
@@ -58,7 +58,7 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 | [Marketplace](../demos/alpha_agi_marketplace_v1.md) | Local API client | Validates a bundled job and can submit it to a configured legacy orchestrator. | Required |
 | [ASI world model](../demos/alpha_asi_world_model.md) | Research training | Explores generated grid worlds using a small learner and local API. | Separate acceptance / prerequisites |
 | [Super Planner](../demos/alpha_super_planner_v1.md) | Interface illustration | Shows the stages and progress display of a planning interface. | Required |
-| [Cross-industry discovery](../demos/cross_industry_alpha_factory.md) | Offline sample | Selects reproducible examples from the bundled opportunity catalog. | Required |
+| [Cross-industry discovery](../demos/cross_industry_alpha_factory.md) | Supplied-input comparison | Ranks supplied cross-industry assessments with explicit weights, review thresholds, evidence and Pareto trade-offs. | Required |
 | [Era of Experience · Learning Lab](../demos/era_of_experience.md) | Offline learning lab | Learns a bounded policy from synthetic outcomes, tests it against a frozen baseline, and exports reviewable evidence. | Required |
 | [Finance Alpha Research Terminal](../demos/finance_alpha.md) | Reproducible paper research | Inspect next-open fills, cash, costs and risk decisions; compare strategies and replay every reported result. | Required |
 | [GPT-2 CLI](../demos/gpt2_small_cli.md) | Local model | Generates text with the actual GPT-2 124M model. | Separate acceptance / prerequisites |

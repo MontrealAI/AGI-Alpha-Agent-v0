@@ -8,10 +8,9 @@ indicate the presence of real general intelligence. Use at your own risk.
 Alpha conversion stub.
 
 Given a text description of an opportunity, output a short JSON plan
-for how one might capitalise on it. Works fully offline via a canned
-response but will query OpenAI when ``OPENAI_API_KEY`` is set and the
-``openai`` package is available. Compatible with either the
-``openai_agents`` package or the ``agents`` backport.
+for how one might evaluate it. The offline path uses explicit keyword rules,
+not AI inference. Provider calls require ALPHA_CONVERSION_ALLOW_PROVIDER=1
+and an installed SDK and key; credentials alone never enable calls.
 """
 from __future__ import annotations
 
@@ -19,6 +18,8 @@ import argparse
 import json
 import os
 import contextlib
+import hashlib
+import re
 from pathlib import Path
 from typing import Any, Dict
 import logging
@@ -30,24 +31,6 @@ with contextlib.suppress(ModuleNotFoundError):
     import openai  # type: ignore
 
 OPENAI_TIMEOUT_SEC = int(os.getenv("OPENAI_TIMEOUT_SEC", "30"))
-
-try:
-    from openai_agents import OpenAIAgent  # noqa: F401
-except ImportError:
-    try:  # pragma: no cover - fallback for legacy package
-        from agents import OpenAIAgent  # noqa: F401
-    except Exception as exc:  # pragma: no cover - optional dependency
-        raise SystemExit(
-            "openai-agents or agents package is required. Install with `pip install openai-agents`"
-        ) from exc
-
-SAMPLE_PLAN: Dict[str, Any] = {
-    "steps": [
-        "Validate market potential and regulatory constraints",
-        "Prototype a minimal solution to capture early demand",
-        "Deploy iteratively while measuring ROI",
-    ]
-}
 
 DEFAULT_LEDGER = Path.home() / ".aiga" / "alpha_conversion_log.json"
 
@@ -76,26 +59,81 @@ def convert_alpha(alpha: str, *, ledger: Path | None = None, model: str = "gpt-4
     Returns:
         Dictionary representation of the plan steps.
     """
-    plan: Dict[str, Any] = SAMPLE_PLAN.copy()
-    if openai is not None and os.getenv("OPENAI_API_KEY"):
-        prompt = (
-            f"Given the opportunity: {alpha}\n" "Provide a short JSON plan with three concise steps to realise value."
+    if not isinstance(alpha, str) or not alpha.strip() or len(alpha) > 10000:
+        raise ValueError("alpha must be a nonempty description of at most 10000 characters")
+    alpha = " ".join(alpha.split())
+    # A deterministic, inspectable rule-based planner, not model inference.
+    words = set(re.findall(r"[a-z]+", alpha.lower()))
+    rules = [
+        (
+            {"inventory", "supply", "warehouse", "stock"},
+            "inventory",
+            "Measure stockouts, excess units and lead times from supplied inventory records",
+            "Compare reorder points against demand and carrying-cost assumptions",
+        ),
+        (
+            {"energy", "solar", "electricity", "power"},
+            "energy",
+            "Collect interval demand, tariffs and generation assumptions",
+            "Calculate avoided energy cost against installation and maintenance cost",
+        ),
+        (
+            {"trade", "trading", "market", "finance", "arbitrage"},
+            "finance",
+            "Collect timestamped prices, fees and liquidity assumptions",
+            "Backtest a paper-only strategy including fees, slippage and downside limits",
+        ),
+        (
+            {"software", "automation", "support", "workflow"},
+            "automation",
+            "Measure task volume, handling time and error rates in the supplied workflow",
+            "Compare a bounded prototype with the current workflow on held-out tasks",
+        ),
+    ]
+    matched = [
+        (len(words & keys), category, evidence, experiment)
+        for keys, category, evidence, experiment in rules
+        if words & keys
+    ]
+    if matched:
+        _, category, evidence, experiment = max(matched, key=lambda item: item[0])
+    else:
+        category = "general"
+        evidence = "Collect customer demand, unit cost and capacity evidence for the stated opportunity"
+        experiment = "Compare a small reversible prototype against the current baseline"
+    plan: Dict[str, Any] = {
+        "mode": "local_rule_based_plan",
+        "status": "proposal_only",
+        "input_id": hashlib.sha256(alpha.encode()).hexdigest(),
+        "opportunity": alpha,
+        "category": category,
+        "steps": [
+            evidence,
+            experiment,
+            "Obtain independent review and explicit authorization before any external action",
+        ],
+        "required_evidence": ["baseline measurements", "cost assumptions", "measured trial outcomes"],
+        "external_actions_performed": False,
+    }
+    if os.getenv("ALPHA_CONVERSION_ALLOW_PROVIDER") == "1":
+        if openai is None or not os.getenv("OPENAI_API_KEY"):
+            raise RuntimeError("Provider explicitly requested but OpenAI SDK or credentials are unavailable")
+        client = openai.OpenAI(timeout=OPENAI_TIMEOUT_SEC)
+        resp = client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Draft a proposal for {alpha}. Return JSON with three nonempty string steps. Do not claim actions occurred.",
+                }
+            ],
         )
-        try:
-            resp = openai.ChatCompletion.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                timeout=OPENAI_TIMEOUT_SEC,
-            )
-            plan = json.loads(resp.choices[0].message.content)
-            if not isinstance(plan, dict):
-                plan = SAMPLE_PLAN
-        except openai.OpenAIError as e:
-            logging.error(f"OpenAI API call failed: {e}. Falling back to SAMPLE_PLAN.")
-            plan = SAMPLE_PLAN
-        except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse JSON response: {e}. Falling back to SAMPLE_PLAN.")
-            plan = SAMPLE_PLAN
+        proposed = json.loads(resp.choices[0].message.content)
+        steps = proposed.get("steps") if isinstance(proposed, dict) else None
+        if not isinstance(steps, list) or len(steps) != 3 or not all(isinstance(x, str) and x.strip() for x in steps):
+            raise ValueError("Provider returned an invalid proposal schema")
+        plan["steps"] = steps
+        plan["mode"] = "provider_generated_proposal"
     if ledger is not None:
         _ledger_path(ledger).write_text(json.dumps(plan, indent=2))
     return plan

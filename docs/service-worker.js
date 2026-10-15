@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-5f37159b241cbaad";
-const RELEASE = "1.31.3";
+const CACHE = "agialpha-gallery-e1bcc06c2e3cc307";
+const RELEASE = "1.32.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
   "./aiga_meta_evolution/assets/bridge_overview.svg",
@@ -10,6 +10,12 @@ const ASSETS = [
   "./aiga_meta_evolution/assets/script.js",
   "./aiga_meta_evolution/assets/style.css",
   "./aiga_meta_evolution/index.html",
+  "./alpha_agi_business_2_v1/assets/app.mjs",
+  "./alpha_agi_business_2_v1/assets/comparison.css",
+  "./alpha_agi_business_2_v1/assets/engine.mjs",
+  "./alpha_agi_business_2_v1/assets/example.json",
+  "./alpha_agi_business_2_v1/assets/i18n.mjs",
+  "./alpha_agi_business_2_v1/assets/json.mjs",
   "./alpha_agi_business_2_v1/assets/logs.json",
   "./alpha_agi_business_2_v1/assets/preview.svg",
   "./alpha_agi_business_2_v1/assets/script.js",
@@ -46,6 +52,12 @@ const ASSETS = [
   "./alpha_factory_v1/demos/aiga_meta_evolution/assets/script.js",
   "./alpha_factory_v1/demos/aiga_meta_evolution/assets/style.css",
   "./alpha_factory_v1/demos/aiga_meta_evolution/index.html",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/app.mjs",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/comparison.css",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/engine.mjs",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/example.json",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/i18n.mjs",
+  "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/json.mjs",
   "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/logs.json",
   "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/preview.svg",
   "./alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/script.js",
@@ -88,6 +100,12 @@ const ASSETS = [
   "./alpha_factory_v1/demos/ascension/index.html",
   "./alpha_factory_v1/demos/bloom/index.html",
   "./alpha_factory_v1/demos/compounding/index.html",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/app.mjs",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/comparison.css",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/engine.mjs",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/example.json",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/i18n.mjs",
+  "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/json.mjs",
   "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/logs.json",
   "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/preview.svg",
   "./alpha_factory_v1/demos/cross_industry_alpha_factory/assets/script.js",
@@ -290,6 +308,12 @@ const ASSETS = [
   "./assets/successor/successor.css",
   "./bloom/index.html",
   "./compounding/index.html",
+  "./cross_industry_alpha_factory/assets/app.mjs",
+  "./cross_industry_alpha_factory/assets/comparison.css",
+  "./cross_industry_alpha_factory/assets/engine.mjs",
+  "./cross_industry_alpha_factory/assets/example.json",
+  "./cross_industry_alpha_factory/assets/i18n.mjs",
+  "./cross_industry_alpha_factory/assets/json.mjs",
   "./cross_industry_alpha_factory/assets/logs.json",
   "./cross_industry_alpha_factory/assets/preview.svg",
   "./cross_industry_alpha_factory/assets/script.js",

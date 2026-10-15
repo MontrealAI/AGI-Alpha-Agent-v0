@@ -12,6 +12,21 @@ on:
       - 'tests/contracts/scripts/ascension-cycle.js'
       - 'alpha_factory_v1/core/runtime/successor/**'
       - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/budget.py'
+      - 'tests/runtime/test_budget_reservations.py'
+      - 'tests/runtime/test_budget_browser.py'
+      - 'alpha_factory_v1/core/runtime/web/budget-studio*'
+      - 'scripts/ascension_current_audit.py'
+      - 'docs/agent/ascension-cycle-audit-scope.json'
+
+      - 'alpha_factory_v1/core/runtime/ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/work_spec.py'
+      - 'alpha_factory_v1/core/runtime/fleet_work.py'
+      - 'alpha_factory_v1/core/runtime/web/ecosystem-studio*'
+      - 'tests/runtime/test_ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/supplier_browser*.py'
+      - 'alpha_factory_v1/core/runtime/web/supplier-*'
+      - 'tests/runtime/test_supplier_browser*.py'
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
@@ -35,6 +50,21 @@ on:
       - 'tests/contracts/scripts/ascension-cycle.js'
       - 'alpha_factory_v1/core/runtime/successor/**'
       - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/budget.py'
+      - 'tests/runtime/test_budget_reservations.py'
+      - 'tests/runtime/test_budget_browser.py'
+      - 'alpha_factory_v1/core/runtime/web/budget-studio*'
+      - 'scripts/ascension_current_audit.py'
+      - 'docs/agent/ascension-cycle-audit-scope.json'
+
+      - 'alpha_factory_v1/core/runtime/ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/work_spec.py'
+      - 'alpha_factory_v1/core/runtime/fleet_work.py'
+      - 'alpha_factory_v1/core/runtime/web/ecosystem-studio*'
+      - 'tests/runtime/test_ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/supplier_browser*.py'
+      - 'alpha_factory_v1/core/runtime/web/supplier-*'
+      - 'tests/runtime/test_supplier_browser*.py'
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
@@ -53,7 +83,7 @@ permissions:
 jobs:
   wallet:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -91,16 +121,23 @@ jobs:
         run: |
           node --test tests/nova-studio/*.test.mjs
           python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
+          python -m pytest tests/nova-studio/test_current_audit.py --confcutdir=tests/nova-studio -q
+          python -m pytest tests/test_native_browser_ci.py --noconftest -o addopts= -q
       - name: Nova-Seed shipped browser preparation and portable recovery
         run: python -m scripts.validate_nova_studio --output evidence/nova-studio-browser
       - name: Bounded native bridge, authority and operator checks
         env:
+          AXE_SCRIPT: tests/browser/node_modules/axe-core/axe.min.js
           PYTHONPATH: '.'
           NO_DISCLAIMER: '1'
         run: >-
           python -m pytest --confcutdir=tests/runtime
           tests/runtime/test_successor_studio.py tests/runtime/test_successor_studio_operator.py
-          tests/runtime/test_successor_studio_operator_browser.py -q
+          tests/runtime/test_successor_studio_operator_browser.py
+          tests/runtime/test_successor_studio_interruptions.py tests/runtime/test_budget_reservations.py tests/runtime/test_budget_browser.py
+          tests/runtime/test_ecosystem_jobs.py tests/runtime/test_ecosystem_browser.py
+          tests/runtime/test_supplier_browser_jobs.py tests/runtime/test_supplier_browser_spec.py
+          tests/runtime/test_supplier_browser_operator.py tests/runtime/test_supplier_browser_browser.py -q
       - name: Nova-Seed exact-source lifecycle and browser recovery
         working-directory: tests/contracts
         env:
@@ -112,6 +149,20 @@ jobs:
           ASCENSION_CYCLE_BROWSER: '1'
           ALPHA_PYTHON: python
         run: npx --no-install hardhat run scripts/ascension-cycle.js
+      - name: Record additive current-source recovery and audit evidence
+        run: |
+          python -m scripts.ascension_current_audit run --node "$(command -v node)" \
+            --suite audit_validation --suite interruption --suite native_interruptions --suite native_budget --suite native_budget_browser \
+            --suite two_cycle_interruption_browser --suite native_ecosystem --suite ecosystem_browser
+          python -m scripts.ascension_current_audit validate
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: ascension-current-audit
+          path: |
+            docs/agent/ascension-cycle-current-audit.json
+            docs/agent/release-evidence/current-acceptance/
+          if-no-files-found: error
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:

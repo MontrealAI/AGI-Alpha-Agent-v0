@@ -108,10 +108,10 @@ commands. A READY result checks file/module presence; it does not certify a work
 
 <!-- CATALOG-COUNTS:START -->
 The catalog contains **26 entries: 23 launch commands and 3 guide-only entries**.
-The 17 finite catalog examples use explicit offline defaults. Their child processes disable configured
+The 18 finite catalog examples use explicit offline defaults. Their child processes disable configured
 OpenAI/Anthropic keys, remote Neo4j/PostgreSQL storage and tracing; tree search uses its bundled
 synthetic workflow model and reproducible private random stream.
-Your shell credentials are unchanged. The release tests run all 17 from the wheel with Python network
+Your shell credentials are unchanged. The release tests run all 18 from the wheel with Python network
 calls blocked, including Python 3.11/3.12 environments with the full backend dependencies and inherited
 database settings. This verifies those launch contracts; the launcher is not a network or code sandbox.
 Advanced standalone commands and optional services retain their separately documented behavior.

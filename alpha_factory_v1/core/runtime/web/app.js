@@ -70,3 +70,7 @@ $('reject').addEventListener('click', () => guarded(() => review(false)));
 $('download').addEventListener('click', () => guarded(async () => {const data = await api('/missions/' + selected.id + '/export'); const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'})); const link = document.createElement('a'); link.href = url; link.download = 'agialpha-' + selected.id + '.json'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);}));
 $('recover').addEventListener('click', () => guarded(async () => {if (selected.state !== 'queued') await api('/missions/' + selected.id + '/recover', {method: 'POST', body: '{}'}); render(await api('/missions/' + selected.id + '/execute', {method: 'POST', body: '{}'})); await refresh();}));
 loadExample();
+// Enable credentials only after every handler has been installed successfully.
+$('token').disabled = false;
+$('connect').disabled = false;
+$('initializing').hidden = true;

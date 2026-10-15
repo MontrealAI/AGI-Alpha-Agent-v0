@@ -58,7 +58,7 @@ except Exception as exc:  # pragma: no cover - optional dependency
 
     _ = exc
 from .data_feeds import stream_macro_events
-from .simulation_core import MonteCarloSimulator
+from .simulation_core import MonteCarloSimulator, draft_order
 
 
 def _check_ollama(url: str) -> None:
@@ -118,7 +118,8 @@ async def mc_risk(event: dict[str, Any], portfolio: float = PORTFOLIO_USD) -> di
     """
     factors = simulator.simulate(event)
     hedge = simulator.hedge(factors, portfolio)
-    scen = simulator.scenario_table(factors).to_dict(orient="records")
+    table = simulator.scenario_table(factors)
+    scen = table.to_dict(orient="records") if hasattr(table, "to_dict") else table
     return {"hedge": hedge, "scenarios": scen}
 
 
@@ -132,10 +133,7 @@ async def order_stub(hedge: dict[str, Any]) -> dict[str, Any]:
     Returns:
         Order parameters for a market trade in Micro‑ES.
     """
-    notional = hedge["es_notional"]
-    side = "SELL" if notional > 0 else "BUY"
-    qty = max(int(abs(notional) // 50_000), 1)  # 50 k USD ≈ 1 MES
-    return {"symbol": "MES", "qty": qty, "side": side, "type": "MKT"}
+    return draft_order(hedge)
 
 
 @Tool("explain", "Narrate risk & hedge for a PM.")  # type: ignore[misc]

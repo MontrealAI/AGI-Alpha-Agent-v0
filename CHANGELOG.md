@@ -1,3 +1,10 @@
+## 1.32.0 — Inspectable work and supplied-input journeys
+
+- Integrate explicit Jobs adapters, native supplier-browser controls, atomic budget reservations and unsigned WorkSpec authoring.
+- Add original supplied-input comparison/planning workspaces and bounded Macro/world-model correctness repairs.
+- Preserve research diagrams, existing routes and explicit laboratory/live qualification boundaries.
+- Breaking behavior changes and upgrade requirements are recorded in the [release notes](docs/agent/RELEASE_NOTES_1.32.0.md).
+
 ## 1.31.2 — 2026-10-14
 
 - Reject malformed Mainnet RPC envelopes and responses larger than 2 MiB, including streamed bodies.

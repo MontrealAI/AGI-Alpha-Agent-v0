@@ -166,6 +166,15 @@ After all lots are reclaimed, an old refund does not become a new asset. This vi
 complete account history, identify principal-return beneficiaries without their own receipts, or calculate
 profit. A missing receipt or changed canonical block makes reconciliation unavailable.
 
+Known successful direct-reclaim receipts saved in the wallet journal are also rechecked against the original
+cycle, selected deployment and finalized `CapitalReturned` event. The separate principal-return list names the
+actual recipient, exact token amount, transaction and log index; it never adds these historical amounts to
+current wallet balances or payout income. A zero-value observed return is zero; no known receipt remains unknown.
+The journal is bounded and is only a lookup hint, so this does not establish complete account history.
+Integrators may supply up to 256 explicit `{cycleId, transactionHash}` references through
+`readProjectLedger(..., {observerKey, principalTransactions})`; those undergo the same live checks.
+All-cycle gas, provider/storage charges, original cost basis, profit and shared fund reservations remain separate.
+
 **Continue the original plan** only with its original unposted jobs, exact proofs, actual reserve and
 remaining time/reviewer capacity. Eligible job refunds return to that original campaign.
 

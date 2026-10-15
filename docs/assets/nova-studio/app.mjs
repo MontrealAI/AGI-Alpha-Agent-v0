@@ -8,6 +8,7 @@ import { compilePlan, jobFromEditor } from './plan.mjs';
 import { fileBytes, objectHash, strictJSON, profileIdentity, deploymentIdentityStatus } from './package.mjs';
 import { PinataStorage, metadataFor, verifyPublication } from './storage.mjs';
 import { NovaWorkflow } from './workflow.mjs';
+import { readEdgeEvidence } from './cycle-edges.mjs';
 import { installCycleUI, renderCycleUI } from './cycle-ui.mjs';
 import { resultCommitments } from './runtime.mjs';
 const $ = id => document.getElementById(id);
@@ -218,8 +219,8 @@ $('wallet-choice').addEventListener('change',()=>run(async()=>{const w=wallets[N
 $('connect').addEventListener('click',()=>run(async()=>{await session.client.connect();status('Wallet connected. No signature requested.');}));
 $('switch-network').addEventListener('click',()=>run(()=>session.client.switchMainnet()));
 $('disconnect').addEventListener('click',()=>run(async()=>{session.client.disconnect();$('wallet-choice').value='';}));
-$('check-identity').addEventListener('click',()=>run(async()=>{identity=await flow.chain.identity();$('identity-details').textContent=json(identity);$('identity-summary').textContent=identity.eligible?'Eligible business / Entreprise admissible':`Waiting for owned registered ENS name and/or admission. Current admission operator: ${identity.governor}`;status('Identity read from the current deployment.');}));
-$('admission-request').addEventListener('click',()=>run(async()=>{identity=await flow.chain.identity();download('nova-operator-request.json',{schema:'agialpha.nova-studio.operator-request.v1',deployment:profileIdentity(session.client.profile),requester:identity.who,operator:identity.governor,role:0,namespace:'alpha.agi.eth',observation:identity,request:'Provision an owned business subname through the genuine namespace process, then separately evaluate time-limited admission. This file grants neither.'});}));
+$('check-identity').addEventListener('click',()=>run(async()=>{identity=await readEdgeEvidence(flow,'identity',()=>flow.chain.identity());$('identity-details').textContent=json(identity);$('identity-summary').textContent=identity.eligible?'Eligible business / Entreprise admissible':`Waiting for owned registered ENS name and/or admission. Current admission operator: ${identity.governor}`;status('Identity read from the current deployment.');}));
+$('admission-request').addEventListener('click',()=>run(async()=>{identity=await readEdgeEvidence(flow,'identity',()=>flow.chain.identity());download('nova-operator-request.json',{schema:'agialpha.nova-studio.operator-request.v1',deployment:profileIdentity(session.client.profile),requester:identity.who,operator:identity.governor,role:0,namespace:'alpha.agi.eth',observation:identity,request:'Provision an owned business subname through the genuine namespace process, then separately evaluate time-limited admission. This file grants neither.'});}));
 action('register','register',()=>({label:$('ens-label').value}));action('mint','seal');action('open-review','openReview');
 action('transfer-seed','transferSeed',()=>({to:$('seed-recipient').value,acknowledged:$('transfer-ack').checked}));
 $('successor-seed').addEventListener('click',()=>run(async()=>{
@@ -243,8 +244,9 @@ $('quote').addEventListener('click',()=>run(async()=>{const s=await flow.inspect
 action('bloom','bloom',()=>({irreversible:$('bloom-ack').checked}));
 action('route','route',()=>({index:$('job-choice').value,auction:$('auction').value,reviewers:[1,2,3].map(i=>$(`reviewer-${i}`).value)}));
 $('inspect-job').addEventListener('click',()=>run(async()=>{
-  const s=await flow.chain.inspectJob(flow.seedId,$('onchain-job').value,flow.package);$('job-state').textContent=json(s.job);
-  const state=Number(s.job.state),confirmed=s.job.settlementConfirmed===true;
+  const s=await readEdgeEvidence(flow,'job',async()=>({jobId:$('onchain-job').value,
+    state:await flow.chain.inspectJob(flow.seedId,$('onchain-job').value,flow.package)}));const job=s.state.job;$('job-state').textContent=json(job);
+  const state=Number(job.state),confirmed=job.settlementConfirmed===true;
   const labels=[text('Unknown','Inconnu'),text('Job posted; auction open','Travail publié; enchère ouverte'),text('Worker awarded','Exécutant sélectionné'),text('Result delivered; review pending','Résultat livré; revue en attente')];
   let label=labels[state];
   if(state>=4){

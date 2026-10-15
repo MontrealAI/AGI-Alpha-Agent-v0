@@ -1,28 +1,120 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.31.3
+## Current runnable path — 1.32.0
 
-**Mode:** Local service. Runs planning, research and optional commentary agents in the legacy orchestrator.
+**Mode:** Supplied-input planning. Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work.
 
-**Prerequisites:** Repository dependencies and legacy orchestrator configuration; see the local README.
-
-After [installation](../README.md#start-locally):
+**Prerequisites:** Python 3.11–3.13; finite computation uses the standard library.
 
 ```bash
 python -m alpha_factory_v1.demos check alpha_agi_business_2_v1
 python -m alpha_factory_v1.demos run alpha_agi_business_2_v1
+python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --input scenario.json
 ```
 
-**Expected result:** Long-running orchestrator; stop with Ctrl+C. Configure its API_TOKEN and NEO4J_PASSWORD first.
+**Expected result:** Finite JSON evidence review and portfolio; bundled inputs are explicitly synthetic. Use planning --input FILE for supplied data.
 
-**Scope:** Planning/research messages are fixtures. The compatibility SDK is not a live market-data integration.
+**Scope:** Value points and source labels are supplied assumptions, not verified research, revenues or model output. Legacy service and explicit optional commentary require separate setup.
 
-The [catalog](../README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+Original research narratives and flowcharts below are preserved as conceptual background.
+They do not expand the tested scope stated here.
 <!-- CURRENT-DEMO:END -->
+
+## Supplied-input evidence planning
+
+Run one bounded, offline computation without starting the legacy service:
+
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --example
+python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --input scenario.json > report.json
+```
+
+The shell launcher now runs the same finite planner and requires explicit input:
+
+```bash
+bash alpha_factory_v1/demos/alpha_agi_business_2_v1/run_business_2_demo.sh --example
+bash alpha_factory_v1/demos/alpha_agi_business_2_v1/run_business_2_demo.sh --input scenario.json
+```
+
+It preserves the caller's relative input path and does not build Docker images, install
+packages, start a server or configure credentials. `PYTHON` may select an already installed
+Python executable. Use the separately documented service command below for legacy topics.
+
+The original [notebook](colab_alpha_agi_business_2_demo.ipynb) imports the installed planner,
+loads explicit example or supplied input, computes, exports an unsigned evidence file without
+overwriting, and recomputes recovered input. Its Python cells are tested offline with network
+connections blocked. Actual Colab deployment is unqualified; no automatic clone/install,
+provider setup or indefinite service wait remains in the executable walkthrough.
+
+Copy [example.json](example.json) to start your own scenario. Change provenance.kind to
+`supplied` and describe your sources in provenance.note. The bundled example is synthetic.
+The command requires exactly one input option, prints JSON once and exits. Invalid input
+exits nonzero without a success report. The catalog runs the synthetic example offline.
+
+### Input contract
+
+Schema: `agialpha.business2.input.v1`. Unknown fields, duplicate JSON keys, non-finite numbers,
+booleans in numeric fields, and files above 128,000 bytes are rejected. Numbers must be JSON
+integers, not decimals. IDs use 1–40 lowercase letters/digits/hyphens and start with a letter.
+All text rejects control characters and invalid Unicode. Source/metric/unit/title text is
+nonempty and at most 200 characters; provenance.note is at most 500 characters.
+
+- Root: schema, id, provenance, policy, observations, opportunities (all required)
+- provenance: kind (`constructed` or `supplied`), note
+- policy: effortHours (0–100,000), maxProjects (0–16), minSupportingSources (1–64)
+- observations: 1–64 entries with unique id, source, metric, unit, baseline, current, direction
+  (`increase` or `decrease`). Baseline/current are nonnegative integers up to 1,000,000,000
+  in the same declared unit. Fractional measurements must be converted to a named integer unit.
+- opportunities: 1–16 entries with unique id, title, effortHours (1–100,000), valuePoints
+  (0–1,000,000), evidenceIds (1–64 distinct, existing observation IDs)
+
+Research computes current minus baseline. Only a strictly positive change in the requested
+direction supports an opportunity; neutral/opposite changes remain visible in the report.
+Support counts distinct stripped source labels, so multiple rows from the same label do not
+multiply corroboration. Labels are case-sensitive and unverified; two labels can still refer
+to the same underlying source. Conflicting observations remain visible rather than being
+silently removed. This simple support threshold is a screening rule, not a reliability score.
+
+Planning enumerates at most 65,536 subsets of eligible opportunities. It maximizes supplied
+valuePoints under the effort and project-count limits, then minimizes effort, then uses
+lexicographically sorted IDs to break ties. Zero-value projects may be omitted. An empty
+portfolio is a valid outcome, including when budget or evidence is insufficient. Opportunities
+are independent; no hidden dependency, monetary value, causation or revenue model is inferred.
+
+The report includes all observation deltas, source support, selection/exclusion reasons,
+remaining hours, subset count, provenance and SHA-256 input/report commitments. Commitments
+use sorted-key compact UTF-8 JSON; they bind supplied data, not its truth. Original array order
+is retained in the input commitment, while report rows are sorted by ID.
+
+### Legacy service and optional commentary
+
+The original service keeps `alpha.plan`, `alpha.research`, and `alpha.insight` topics and the
+`plan`, `summary`, and `insight` envelope keys. Plan and summary now contain structured computed
+results. Set BUSINESS2_INPUT to a scenario path before starting the service; missing or invalid
+input fails rather than substituting fixtures. Each cycle rereads the file and includes its
+inputDigest, so consumers can correlate results when the file changes. Use atomic replacement
+when updating input. Existing API_TOKEN/NEO4J_PASSWORD and service prerequisites still apply.
+
+```bash
+BUSINESS2_INPUT=/absolute/path/scenario.json \
+  python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.alpha_agi_business_2_v1
+```
+
+Commentary is disabled unless BUSINESS2_COMMENTARY=1. The existing optional OpenAIAgent path
+is preserved (configured cloud key, otherwise its local Ollama endpoint), but the repository's
+compatibility stub is explicitly rejected. A separately installed genuine compatible SDK and
+provider are required. Failures propagate to the service's error handling; no fallback insight
+is published. Supplied input is sent to that provider only in this explicit mode. Commentary
+is labeled provider_commentary and is not independently verified or used in allocation.
+No live provider call is part of offline acceptance.
+
+### Historical concept narrative
+
+The preserved narrative and flowchart below describe research ambitions. Claims about live
+alpha, automatic model upgrades, autonomous execution and monetary outcomes are not features
+of the tested supplied-input workflow above.
+
 
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
 Each demo package exposes its own `__version__` constant. The value marks the revision of that demo only and does not reflect the overall Alpha‑Factory release version.

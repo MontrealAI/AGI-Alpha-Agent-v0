@@ -1,31 +1,30 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# scripts/post_alpha_job.sh - queue a demo job via the orchestrator REST API
-# Usage: ./scripts/post_alpha_job.sh examples/job_copper_spread.json
-# Requirements: curl, jq
-
+# Evaluate supplied business assumptions, without queuing or external execution.
+# Usage: API_TOKEN=<configured token> ./scripts/post_alpha_job.sh examples/job_evaluate_business.json
 set -euo pipefail
 
-JOB_FILE="${1:-examples/job_copper_spread.json}"
+JOB_FILE="${1:-examples/job_evaluate_business.json}"
 HOST="${HOST:-localhost}"
 PORT="${PORT:-8000}"
+: "${API_TOKEN:?Set API_TOKEN to the configured orchestrator authentication token}"
 
 for cmd in curl jq; do
-  command -v "$cmd" >/dev/null || { echo "❌  $cmd not found"; exit 1; }
+  command -v "$cmd" >/dev/null || { echo "$cmd not found" >&2; exit 1; }
 done
 
-JOB_JSON=$(cat "$JOB_FILE")
-AGENT=$(jq -r '.agent' "$JOB_FILE")
-
-if [[ -z "$AGENT" || "$AGENT" == "null" ]]; then
-  echo "❌  'agent' field missing in $JOB_FILE"; exit 1
+if ! jq -e 'keys == ["agent", "state"] and .agent == "alpha_execution" and (.state | type == "object")' "$JOB_FILE" >/dev/null; then
+  echo "Unsupported job: provide agent=alpha_execution and a complete state. Nothing was submitted." >&2
+  exit 1
 fi
 
-echo "🚀  Posting alpha job '$JOB_FILE' ..."
-curl -fsS -X POST \
+RESULT=$(jq -c '.state' "$JOB_FILE" | curl -fsS -X POST \
+  -H "Authorization: Bearer ${API_TOKEN}" \
   -H 'Content-Type: application/json' \
-  -d "$JOB_JSON" \
-  "http://${HOST}:${PORT}/agent/${AGENT}/trigger"
-echo
-
-echo "✔  Done."
+  --data-binary @- \
+  "http://${HOST}:${PORT}/agent/alpha_execution/evaluate")
+if ! printf '%s' "$RESULT" | jq -e '.status == "evaluated_supplied_assumptions" and .external_actions_performed == false and (.evaluation | type == "object")' >/dev/null; then
+  echo "Server did not return a supplied-input evaluation." >&2
+  exit 1
+fi
+printf '%s\n' "$RESULT"
