@@ -241,3 +241,16 @@ def test_release_requires_full_successor_journey_before_packaging():
         assert "continue-on-error" not in target
         assert not re.search(r"\b(?:always|failure|cancelled)\s*\(", target.get("if", ""))
     test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites()
+
+
+def test_discovery_journey_polling_does_not_require_csp_unsafe_eval():
+    # Playwright 1.54 evaluates even arrow-function strings through globalThis.eval
+    # on each wait_for_function poll. Use locator assertions under the real CSP.
+    path = ROOT / "tests/browser/test_alpha_discovery_browser.py"
+    tree = ast.parse(path.read_text())
+    forbidden = [
+        node.lineno for node in ast.walk(tree) if isinstance(node, ast.Attribute) and node.attr == "wait_for_function"
+    ]
+    assert not forbidden, f"Discovery polling must be CSP-safe; wait_for_function at {forbidden}"
+    bypass = [node.lineno for node in ast.walk(tree) if isinstance(node, ast.keyword) and node.arg == "bypass_csp"]
+    assert not bypass, f"Discovery must exercise production CSP; bypass_csp at {bypass}"

@@ -5,8 +5,10 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import faulthandler
 import json
 from pathlib import Path
+import sys
 import threading
 import time
 from typing import Any
@@ -27,46 +29,76 @@ from alpha_factory_v1.core.runtime.store import Conflict, Journal
 def test_expired_worker_cannot_fail_its_replacement(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, old_worker_fails: bool
 ) -> None:
+    started = time.monotonic()
+    phases: list[tuple[str, float]] = []
+
+    def phase(name: str) -> None:
+        phases.append((name, round(time.monotonic() - started, 6)))
+
     journal = Journal.initialize(tmp_path / "agent")
     mission = Mission(
         goal="Extract the supplied fact",
         work={"kind": "research", "sources": [{"id": "S", "title": "Fact", "text": "The capacity is 40 units."}]},
     )
     queued = journal.submit(mission)
+    phase("submitted")
     old_started, new_started, release_old, release_new = (threading.Event() for _ in range(4))
     research = runtime.work.research
 
     def suspended_work(request: Mission) -> dict[str, Any]:
         if not old_started.is_set():
+            phase("old_work_started")
             old_started.set()
             assert release_old.wait(10)
+            phase("old_work_released")
             if old_worker_fails:
                 raise RuntimeError("retired provider failed")
         else:
+            phase("replacement_work_started")
             new_started.set()
             assert release_new.wait(10)
-        return research(request)
+            phase("replacement_work_released")
+        result = research(request)
+        phase("research_returned")
+        return result
 
     monkeypatch.setattr(runtime.work, "research", suspended_work)
     with ThreadPoolExecutor(max_workers=2) as pool:
         old = pool.submit(runtime.Engine(journal).execute, queued["id"])
         try:
             assert old_started.wait(10)
+            phase("old_start_observed")
             lease = journal.latest(queued["id"])["lease_expires_ns"]
             replacement = runtime.Engine(Journal(journal.root))
             with monkeypatch.context() as clock:
                 clock.setattr(runtime.time, "time_ns", lambda: lease + 1)
                 replacement.recover(queued["id"])
+            phase("expired_lease_recovered")
             new = pool.submit(replacement.execute, queued["id"])
             assert new_started.wait(10)
+            phase("replacement_start_observed")
             before = journal.latest(queued["id"])
             release_old.set()
             with pytest.raises((Conflict, RuntimeError)):
                 old.result(timeout=10)
+            phase("old_result_rejected")
             assert journal.latest(queued["id"]) == before
+            phase("replacement_ownership_preserved")
+            phase("releasing_replacement")
             release_new.set()
             assert new.result(timeout=10)["state"] == "review"
+            phase("replacement_review_observed")
             assert journal.verify()["valid"]
+        except TimeoutError:
+            # Failure-only evidence: phase names/times and stack locations, never
+            # mission contents, provider responses, credentials or frame locals.
+            try:
+                phase("future_timeout")
+                print(f"expired-worker phases (old_worker_fails={old_worker_fails}): {phases}", file=sys.stderr)
+                faulthandler.dump_traceback(file=sys.stderr, all_threads=True)
+            except (OSError, RuntimeError, ValueError):
+                pass  # Diagnostics must not replace the original timeout.
+            raise
         finally:
             release_old.set()
             release_new.set()

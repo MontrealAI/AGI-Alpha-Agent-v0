@@ -5,11 +5,15 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json
 import os
+import re
 import threading
 
-from playwright.sync_api import Browser, Page, sync_playwright
+from playwright.sync_api import Browser, Page, expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# Match the browser's existing 30-second wait budget without page-side eval polling.
+expect.set_options(timeout=30_000)
 
 
 def watch_page(page: Page, origin: str, errors: list[str], external: list[str]) -> None:
@@ -199,7 +203,7 @@ def exercise_beginner_journey(
         watch_page(phone, origin, errors, external)
         phone.goto(page.url)
         restore_file(phone, raw_start)
-        phone.wait_for_function("value => document.querySelector('#mission').value === value", arg=mission)
+        expect(phone.locator("#mission")).to_have_value(mission)
         assert phone.locator("html").get_attribute("lang") == language
         assert_step(phone, 0)
         assert form_snapshot(phone) == starting_values
@@ -207,7 +211,7 @@ def exercise_beginner_journey(
         assert phone.locator("#export").is_disabled()
         record_state(phone, screenshots, f"beginner-mobile-{language}-restored-step-1")
         restore_file(phone, raw, "unfinished-metric.json")
-        phone.wait_for_function("document.querySelector('#m-0-candidate-value').value === '1.5'")
+        expect(phone.locator("#m-0-candidate-value")).to_have_value("1.5")
         assert_step(phone, 2)
         assert form_snapshot(phone) == unfinished_values
         assert phone.locator("html").get_attribute("lang") == language
@@ -243,7 +247,7 @@ def exercise_beginner_journey(
             phone.locator("#changed").fill(name)  # Clear the earlier validation error before the import.
             preserved = form_snapshot(phone)
             restore_file(phone, invalid, name)
-            phone.wait_for_function("!document.querySelector('#error').hidden")
+            expect(phone.locator("#error")).to_be_visible()
             assert form_snapshot(phone) == preserved
             assert phone.locator("html").get_attribute("lang") == language
             assert_step(phone, 0)
@@ -254,16 +258,17 @@ def exercise_beginner_journey(
               File.prototype.arrayBuffer = function() { const file = this;
                 return new Promise(resolve => {
                   window.pendingImports.push(async () => resolve(await original.call(file)));
+                  document.documentElement.dataset.testPendingImports = String(window.pendingImports.length);
                 });
               };
             }"""
         )
         restore_file(phone, raw, "interrupted-draft.json")
-        phone.wait_for_function("window.pendingImports.length === 1")
+        expect(phone.locator("html")).to_have_attribute("data-test-pending-imports", "1")
         phone.locator("#changed").fill("Newer partial edit must survive / Modification plus récente")
         preserved = form_snapshot(phone)
         phone.evaluate("window.pendingImports[0]()")
-        phone.wait_for_function("!document.querySelector('#error').hidden")
+        expect(phone.locator("#error")).to_be_visible()
         assert form_snapshot(phone) == preserved
         assert phone.locator("html").get_attribute("lang") == language
         assert_step(phone, 0)
@@ -271,23 +276,23 @@ def exercise_beginner_journey(
         # Language-only and navigation-only changes are also newer user intent, even without a field edit.
         phone.locator("#changed").fill("Language switch must survive / Le choix de langue doit rester")
         restore_file(phone, raw, "language-interrupted-draft.json")
-        phone.wait_for_function("window.pendingImports.length === 2")
+        expect(phone.locator("html")).to_have_attribute("data-test-pending-imports", "2")
         phone.locator("#language").click()
         switched_language = "fr" if language == "en" else "en"
         preserved = form_snapshot(phone)
         phone.evaluate("window.pendingImports[1]()")
-        phone.wait_for_function("!document.querySelector('#error').hidden")
+        expect(phone.locator("#error")).to_be_visible()
         assert phone.locator("html").get_attribute("lang") == switched_language
         assert form_snapshot(phone) == preserved
         assert_step(phone, 0)
         phone.locator("#language").click()
         phone.locator("#changed").fill("Newer navigation must survive / La navigation récente doit rester")
         restore_file(phone, raw, "navigation-interrupted-draft.json")
-        phone.wait_for_function("window.pendingImports.length === 3")
+        expect(phone.locator("html")).to_have_attribute("data-test-pending-imports", "3")
         phone.locator("#journey-next").click()
         preserved = form_snapshot(phone)
         phone.evaluate("window.pendingImports[2]()")
-        phone.wait_for_function("!document.querySelector('#error').hidden")
+        expect(phone.locator("#error")).to_be_visible()
         assert_step(phone, 1)
         assert phone.locator("html").get_attribute("lang") == language
         assert form_snapshot(phone) == preserved
@@ -298,13 +303,11 @@ def exercise_beginner_journey(
         newer["language"] = "fr" if language == "en" else "en"
         newer["step"] = 1
         restore_file(phone, raw, "older-draft.json")
-        phone.wait_for_function("window.pendingImports.length === 4")
+        expect(phone.locator("html")).to_have_attribute("data-test-pending-imports", "4")
         restore_file(phone, json.dumps(newer).encode(), "newer-draft.json")
-        phone.wait_for_function("window.pendingImports.length === 5")
+        expect(phone.locator("html")).to_have_attribute("data-test-pending-imports", "5")
         phone.evaluate("window.pendingImports[4]()")
-        phone.wait_for_function(
-            "value => document.querySelector('#mission').value === value", arg=newer["input"]["mission"]
-        )
+        expect(phone.locator("#mission")).to_have_value(newer["input"]["mission"])
         imported_values = form_snapshot(phone)
         assert_step(phone, 1)
         assert phone.locator("html").get_attribute("lang") == newer["language"]
@@ -453,7 +456,7 @@ def main():
             phone.locator("#restore").set_input_files(
                 {"name": "brief.json", "mimeType": "application/json", "buffer": json.dumps(brief).encode()}
             )
-            phone.wait_for_function("document.querySelector('#mission').value.includes('battery')")
+            expect(phone.locator("#mission")).to_have_value(re.compile("battery"))
             assert phone.locator("#show-all").get_attribute("aria-pressed") == "true"
             assert phone.locator("#result").is_hidden()
             phone.locator("#analyze").click()
@@ -478,7 +481,7 @@ def main():
             phone.locator("#restore").set_input_files(
                 {"name": "malformed.json", "mimeType": "application/json", "buffer": malformed}
             )
-            phone.wait_for_function("!document.querySelector('#error').hidden")
+            expect(phone.locator("#error")).to_be_visible()
             assert phone.locator("#mission").input_value() == preserved
             # Interrupted file reading cannot overwrite newer user input.
             phone.evaluate(
@@ -486,16 +489,17 @@ def main():
               File.prototype.arrayBuffer = function() { const file = this;
                 return new Promise(resolve => {
                   window.finishImport = async () => resolve(await original.call(file));
+                  document.documentElement.dataset.testImportReady = "true";
                 }); };
             }"""
             )
             phone.locator("#restore").set_input_files(
                 {"name": "slow.json", "mimeType": "application/json", "buffer": original}
             )
-            phone.wait_for_function("typeof window.finishImport === 'function'")
+            expect(phone.locator("html")).to_have_attribute("data-test-import-ready", "true")
             phone.locator("#changed").fill("Newer edit must survive")
             phone.evaluate("window.finishImport()")
-            phone.wait_for_function("!document.querySelector('#error').hidden")
+            expect(phone.locator("#error")).to_be_visible()
             assert phone.locator("#changed").input_value() == "Newer edit must survive"
             assert phone.locator("#result").is_hidden()
             phone.locator("#example").click()
