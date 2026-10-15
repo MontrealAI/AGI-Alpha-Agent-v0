@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.31.3
+## Current runnable path — 1.32.0
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 
@@ -456,3 +456,26 @@ Huge thanks to:
 * OSS maintainers – you make this possible ♥
 
 > **Alpha‑Factory** — forging intelligence that *invents* intelligence.
+
+## Local conversion workflow
+
+Run a bounded supplied-input workflow without an SDK, model download or server:
+
+```bash
+python -m alpha_factory_v1.demos.aiga_meta_evolution.workflow_demo --alpha "solar energy generation"
+```
+
+Conversion validates the description, classifies supported keyword families
+(inventory, energy, finance, automation, or general), and produces corresponding
+evidence and experiment steps. Output includes the normalized input hash,
+`local_rule_based_plan` provenance and `proposal_only` status. This is a deterministic
+rule-based planner, not AI inference, execution, or a feasibility guarantee.
+
+`convert_alpha` retains its dictionary/steps interface and optional ledger argument.
+OpenAI conversion requires `ALPHA_CONVERSION_ALLOW_PROVIDER=1`, a key and the modern
+`OpenAI().chat.completions.create` SDK contract. Provider errors or invalid schemas
+fail explicitly; no canned success is substituted. No provider was qualified here.
+The optional historical SDK service is explicitly launched with `--serve`; its
+module imports are package-relative. Discovery additionally requires
+`AIGA_ALLOW_DISCOVERY_PROVIDER=1`, and missing inference adapters raise an error.
+These changes do not qualify evolutionary training or claim seeded training reproducibility.

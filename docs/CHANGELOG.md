@@ -1,3 +1,10 @@
+## 1.32.0 — Inspectable work and supplied-input journeys
+
+- Integrate explicit Jobs adapters, native supplier-browser controls, atomic budget reservations and unsigned WorkSpec authoring.
+- Add original supplied-input comparison/planning workspaces and bounded Macro/world-model correctness repairs.
+- Preserve research diagrams, existing routes and explicit laboratory/live qualification boundaries.
+- Breaking behavior changes and upgrade requirements are recorded in the [release notes](agent/RELEASE_NOTES_1.32.0.md).
+
 ## 1.31.2 — Mainnet read verification hardening
 
 - Require matching successful JSON-RPC 2.0 envelopes and cap streamed provider responses at 2 MiB.

@@ -1,39 +1,139 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
 <!DOCTYPE html>
-<html lang='en'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – “Infinite Bloom 3.0”</title>
-<link rel='stylesheet' href='../stylesheets/cards.css'>
-<link rel='stylesheet' href='../stylesheets/demo_base.css'>
-</head>
-<body>
-<!-- decision-studio-bridge:start -->
-<section class="decision-bridge" aria-label="Practical decision workspace" style="max-width:1100px;margin:20px auto;padding:24px;background:#0a3029;color:#f5f5e7;border-radius:8px;font-family:Arial,sans-serif;box-sizing:border-box"><p style="font-size:11px;letter-spacing:2px;color:#d9ed9c">PUT THIS IDEA TO WORK</p><h2 style="font-family:Georgia,serif;font-weight:400">Invention to operating value</h2><p>Which inventions justify the cost of developing and operating them?</p><p style="font-size:12px">Development portfolio · prerequisite map · verification jobs</p><a href="../studio/?case=invention" style="display:inline-block;padding:12px 18px;background:#d9ed9c;color:#173b2d;border-radius:4px;font-weight:bold">Open editable workspace ↗</a><p style="font-size:11px">The original research presentation is preserved below.</p></section>
-<!-- decision-studio-bridge:end -->
-<h1>Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – **“Infinite Bloom 3.0”**</h1>
-<img class='preview' src='assets/preview.svg' alt='Large‑Scale α‑AGI Business 👁️✨ ($AGIALPHA) Demo – “Infinite Bloom 3.0”'>
-
-<p><a href='../demos/alpha_agi_business_2_v1/'>Detailed instructions</a></p>
-<p class='snippet'><a href='../DISCLAIMER_SNIPPET/'>See docs/DISCLAIMER_SNIPPET.md</a> This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.</p>
-<div id="mode-control">
-  <button id="offline-mode" aria-label="Run demo offline">Offline</button>
-  <button id="online-mode" aria-label="Use OpenAI API">OpenAI API</button>
-</div>
-<canvas id="chart"></canvas>
-<pre id="logs-panel"></pre>
-<script src="../assets/chart.min.js"></script>
-<script type="module" src="../assets/pyodide_demo.js"></script>
-<script type="module" src="assets/script.js"></script>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'none';script-src 'self';style-src 'self';connect-src 'self';base-uri 'none';form-action 'none'"
+        />
+        <title>Business 2 · Evidence and portfolio desk</title>
+        <link rel="stylesheet" href="assets/comparison.css" />
+    </head>
+    <body>
+        <a class="skip" href="#main" data-t="skip">Skip to workspace</a>
+        <nav aria-label="Primary">
+            <a href="../index.html">AGIALPHA</a>
+            <div>
+                <a href="../demos/" data-t="directory">Demo directory</a
+                ><button id="language" aria-label="Passer en français">
+                    FR
+                </button>
+            </div>
+        </nav>
+        <header>
+            <p class="eyebrow">BUSINESS 2 / EVIDENCE + EXACT PORTFOLIO</p>
+            <h1 data-t="heading">Evidence first. A plan you can inspect.</h1>
+            <p class="lead" data-t="lead">
+                Review supplied measurements, count independent source labels,
+                and choose an exact portfolio within your effort budget.
+            </p>
+            <p class="notice" data-t="notice">
+                Synthetic example. Source labels are unverified. Value points
+                are assumptions, not revenue forecasts. Positive change is not
+                causation. No execution, payment, provider or live research.
+            </p>
+        </header>
+        <main id="main">
+            <noscript
+                >JavaScript required / requis.
+                <a
+                    href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_business_2_v1"
+                    >Local guide / Guide local</a
+                ></noscript
+            >
+            <section class="panel">
+                <h2 data-t="inputs">1. Supply observations and priorities</h2>
+                <button id="reset" type="button" data-t="reset">
+                    Restore synthetic example</button
+                ><label for="import" data-t="import"
+                    >Reopen input or report · UTF-8 JSON, 128,000 bytes
+                    maximum</label
+                ><input
+                    id="import"
+                    type="file"
+                    accept=".json,application/json"
+                />
+                <form id="workspace">
+                    <div id="metadata" class="pair"></div>
+                    <div id="policy" class="pair"></div>
+                    <h3 data-t="observations">Observations · up to 64</h3>
+                    <div id="observations"></div>
+                    <button
+                        id="addObservation"
+                        type="button"
+                        data-t="addObservation"
+                    >
+                        Add observation
+                    </button>
+                    <h3 data-t="opportunities">Opportunities · up to 16</h3>
+                    <div id="opportunities"></div>
+                    <button
+                        id="addOpportunity"
+                        type="button"
+                        data-t="addOpportunity"
+                    >
+                        Add opportunity
+                    </button>
+                    <p class="notice" data-t="bounds">
+                        Only a strictly favorable change supports a project.
+                        Repeated source labels count once after trimming
+                        surrounding whitespace. The exact search maximizes
+                        supplied points, then minimizes effort, then uses
+                        identifier order.
+                    </p>
+                    <button type="submit" class="primary" data-t="run">
+                        Review evidence and compute plan
+                    </button>
+                </form>
+                <p id="error" role="alert" hidden></p>
+                <p id="status" role="status"></p>
+            </section>
+            <section id="result" class="panel" hidden>
+                <h2 data-t="results">2. Inspect the chosen portfolio</h2>
+                <p id="summary"></p>
+                <div id="review"></div>
+                <div id="portfolio"></div>
+                <div class="actions">
+                    <button id="download" data-t="download">
+                        Download input</button
+                    ><button id="evidence" data-t="evidence">
+                        Download recomputed report
+                    </button>
+                </div>
+                <p id="digest" class="hint"></p>
+                <details>
+                    <summary data-t="raw">Inspect complete report JSON</summary>
+                    <pre id="raw"></pre>
+                </details>
+            </section>
+            <section class="panel">
+                <h2 data-t="method">Reproduce and recover your work</h2>
+                <p data-t="privacy">
+                    Everything stays in this tab. Export to retain your work.
+                    Reopening a report uses only its input and recomputes every
+                    result and digest. Hashes show consistency, not authentic
+                    evidence or observed outcomes.
+                </p>
+                <pre>
+python -m alpha_factory_v1.demos.alpha_agi_business_2_v1.planning --input observations.json</pre
+                >
+                <p>
+                    <a
+                        href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/alpha_factory_v1/demos/alpha_agi_business_2_v1"
+                        data-t="guide"
+                        >Original runtime, schema and local launch guide</a
+                    >
+                </p>
+                <a href="legacy.html" data-t="legacy"
+                    >Preserved historical chart replay</a
+                >
+            </section>
+        </main>
+        <footer data-t="footer">
+            AGIALPHA · Bounded evidence review · Human judgment required
+        </footer>
+        <script type="module" src="assets/app.mjs"></script>
 <p><a href="../index.html">⬅️ Back to Gallery</a></p>
-<link rel="stylesheet" href="assets/style.css">
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("../service-worker.js").catch(() => {
-      console.warn("Service worker registration failed");
-    });
-  }
-</script>
-</body>
+    </body>
 </html>

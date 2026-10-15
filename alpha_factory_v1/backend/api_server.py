@@ -78,11 +78,40 @@ def build_rest(
         return list(runners)
 
     @app.post("/agent/{name}/trigger")
-    async def _trigger(name: str) -> Dict[str, bool]:  # noqa: D401
+    async def _trigger(request: Request, name: str) -> Dict[str, bool]:  # noqa: D401
         if name not in runners:
             raise HTTPException(404, "Agent not found")
+        # Trigger is a scheduling operation, not a payload submission API.
+        # Reject even empty JSON objects rather than silently discarding input.
+        async for chunk in request.stream():
+            if chunk:
+                raise HTTPException(
+                    422, "Trigger accepts no body; use /agent/{name}/evaluate for supported supplied-input evaluation"
+                )
         runners[name].next_ts = 0
         return {"queued": True}
+
+    @app.post("/agent/{name}/evaluate")
+    async def _evaluate(request: Request, name: str) -> Any:
+        if name not in runners:
+            raise HTTPException(404, "Agent not found")
+        evaluate_submission = getattr(runners[name].inst, "evaluate_submission", None)
+        if not callable(evaluate_submission):
+            raise HTTPException(501, "Agent does not support supplied-input evaluation")
+        if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
+            raise HTTPException(415, "Supplied-input evaluation requires application/json")
+        # Enforce the bound while streaming, even without Content-Length.
+        payload = bytearray()
+        async for chunk in request.stream():
+            if len(payload) + len(chunk) > 256_000:
+                raise HTTPException(413, "Evaluation input exceeds 256000 bytes")
+            payload.extend(chunk)
+        try:
+            # This capability is stateless: no rescheduling, file writes or reuse
+            # of a previous request's state is permitted by its agent contract.
+            return await evaluate_submission(bytes(payload))
+        except (ValueError, TypeError, OverflowError) as exc:
+            raise HTTPException(422, str(exc)) from exc
 
     upload_param = File(...) if "FastAPI" in globals() else None  # type: ignore
 

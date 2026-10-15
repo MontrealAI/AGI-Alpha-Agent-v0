@@ -16,6 +16,7 @@ from starlette.concurrency import run_in_threadpool
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from .engine import Engine
+from .budget import BudgetCommand, BudgetScope, inspect as inspect_budget, operate as operate_budget
 from .models import Mission, StrictModel
 from .store import Conflict, Journal
 
@@ -226,6 +227,90 @@ def create_app(journal: Journal) -> FastAPI:
             raise HTTPException(422, public_error(exc)) from exc
         except Exception as exc:
             raise HTTPException(502, "Studio operation failed; refresh retained history before retrying") from exc
+
+    def budget_identity(x_agialpha_journal: str = Header(default="")) -> None:
+        if x_agialpha_journal and x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Journal identity changed; reconnect and review retained state")
+
+    @app.post("/api/budget/inspect", dependencies=[Depends(authorize), Depends(budget_identity)])
+    def budget_inspect(scope: BudgetScope) -> dict[str, Any]:
+        return inspect_budget(journal, scope)
+
+    def budget_mutation_identity(x_agialpha_journal: str = Header(default="")) -> None:
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact journal identity is required; reconnect before changing reservations")
+
+    @app.post("/api/budget/operate", dependencies=[Depends(authorize), Depends(budget_mutation_identity)])
+    def budget_operate(command: BudgetCommand) -> dict[str, Any]:
+        return operate_budget(journal, command)
+
+    @app.get("/budget-studio")
+    def budget_studio() -> FileResponse:
+        return FileResponse(static / "budget-studio.html")
+
+    @app.get("/budget-studio.js")
+    def budget_studio_javascript() -> FileResponse:
+        return FileResponse(static / "budget-studio.js", media_type="application/javascript")
+
+    @app.get("/ecosystem-studio")
+    def ecosystem_studio() -> FileResponse:
+        return FileResponse(static / "ecosystem-studio.html")
+
+    @app.get("/ecosystem-studio.js")
+    def ecosystem_studio_javascript() -> FileResponse:
+        return FileResponse(static / "ecosystem-studio.js", media_type="application/javascript")
+
+    @app.get("/api/ecosystem/status", dependencies=[Depends(authorize)])
+    def ecosystem_status() -> dict[str, Any]:
+        from .ecosystem_operator import status
+
+        return status(journal)
+
+    @app.post("/api/ecosystem/{action}", dependencies=[Depends(authorize)])
+    async def ecosystem_operate(
+        action: str, request: Request, x_agialpha_journal: str = Header(default="")
+    ) -> dict[str, Any]:
+        from .successor.protocol import safe_json_loads
+        from .ecosystem_operator import operate
+
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact connected journal identity required")
+        document = safe_json_loads(await request.body(), max_bytes=MAX_REQUEST_BYTES)
+        if not isinstance(document, dict):
+            raise ValueError("Operation must be an object")
+        return await run_in_threadpool(operate, journal, action, document)
+
+    @app.get("/supplier-studio")
+    def supplier_studio() -> FileResponse:
+        return FileResponse(static / "supplier-studio.html")
+
+    @app.get("/supplier-studio.css")
+    def supplier_studio_stylesheet() -> FileResponse:
+        return FileResponse(static / "supplier-studio.css", media_type="text/css")
+
+    @app.get("/supplier-studio.js")
+    def supplier_studio_javascript() -> FileResponse:
+        return FileResponse(static / "supplier-studio.js", media_type="application/javascript")
+
+    @app.get("/api/supplier-browser/status", dependencies=[Depends(authorize)])
+    def supplier_status() -> dict[str, Any]:
+        from .supplier_browser_operator import status
+
+        return status(journal)
+
+    @app.post("/api/supplier-browser/{action}", dependencies=[Depends(authorize)])
+    async def supplier_operate(
+        action: str, request: Request, x_agialpha_journal: str = Header(default="")
+    ) -> dict[str, Any]:
+        from .successor.protocol import safe_json_loads
+        from .supplier_browser_operator import operate
+
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact connected journal identity required")
+        document = safe_json_loads(await request.body(), max_bytes=MAX_REQUEST_BYTES)
+        if not isinstance(document, dict):
+            raise ValueError("Operation must be an object")
+        return await run_in_threadpool(operate, journal, action, document)
 
     @app.get("/healthz")
     def health() -> dict[str, str]:

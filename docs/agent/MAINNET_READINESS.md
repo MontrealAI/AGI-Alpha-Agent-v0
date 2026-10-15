@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Prepare a new Ethereum mainnet deployment — 1.31.3
+# Prepare a new Ethereum mainnet deployment — 1.32.0
 
 For the **already deployed October 11 contracts**, use the [deployed addresses and owner guide](MAINNET_DEPLOYMENT.md).
 Those contracts have completed ownership transfer but predate this guide's current source and compiler profile.
@@ -36,7 +36,7 @@ Use a clean checkout of the **release tag**, Node.js 22.17.1 and the committed l
 plans and provider credentials outside the repository. A plan or verification from a dirty checkout is refused.
 
 ```sh
-git checkout v1.31.3
+git checkout v1.32.0
 nvm use
 cd tests/contracts
 npm ci

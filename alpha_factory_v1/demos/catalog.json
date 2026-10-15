@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.31.3",
+  "release": "1.32.0",
   "entries": [
     {
       "id": "aiga_meta_evolution",
@@ -31,25 +31,24 @@
     {
       "id": "alpha_agi_business_2_v1",
       "title": "Business v2",
-      "mode": "Local service",
-      "summary": "Runs planning, research and optional commentary agents in the legacy orchestrator.",
+      "mode": "Supplied-input planning",
+      "summary": "Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.alpha_agi_business_2_v1.alpha_agi_business_2_v1"
+        "alpha_factory_v1.demos.alpha_agi_business_2_v1.planning",
+        "--example"
       ],
-      "expected": "Long-running orchestrator; stop with Ctrl+C. Configure its API_TOKEN and NEO4J_PASSWORD first.",
-      "prerequisites": "Repository dependencies and legacy orchestrator configuration; see the local README.",
-      "limitations": "Planning/research messages are fixtures. The compatibility SDK is not a live market-data integration.",
-      "smoke": false,
+      "expected": "Finite JSON evidence review and portfolio; bundled inputs are explicitly synthetic. Use planning --input FILE for supplied data.",
+      "prerequisites": "Python 3.11–3.13; finite computation uses the standard library.",
+      "limitations": "Value points and source labels are supplied assumptions, not verified research, revenues or model output. Legacy service and explicit optional commentary require separate setup.",
+      "smoke": true,
       "environment": {},
-      "required_modules": [
-        "fastapi",
-        "pydantic",
-        "yaml"
+      "required_modules": [],
+      "assets": [
+        "alpha_agi_business_2_v1/example.json"
       ],
-      "assets": [],
-      "offline": false
+      "offline": true
     },
     {
       "id": "alpha_agi_business_3_v1",
@@ -250,26 +249,26 @@
     {
       "id": "cross_industry_alpha_factory",
       "title": "Cross-industry discovery",
-      "mode": "Offline sample",
-      "summary": "Selects reproducible examples from the bundled opportunity catalog.",
+      "mode": "Supplied-input comparison",
+      "summary": "Ranks supplied cross-industry assessments with explicit weights, review thresholds, evidence and Pareto trade-offs.",
       "command": [
         "python",
         "-m",
-        "alpha_factory_v1.demos.cross_industry_alpha_factory.cross_alpha_discovery_stub",
-        "--num",
-        "2",
-        "--seed",
-        "42",
-        "--no-log"
+        "alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison",
+        "--example"
       ],
-      "expected": "Two JSON sample opportunities; no ledger written.",
+      "expected": "Deterministic JSON ranking, contribution breakdown, input digest and excluded candidates; bundled fixture explicitly labeled synthetic-example.",
       "prerequisites": "Python 3.11–3.13; installed project dependencies.",
-      "limitations": "Examples are canned; optional external generation is separate from verified discovery.",
+      "limitations": "User-rated priorities, not verified opportunities or financial forecasts. No provider calls; supplied evidence is preserved, not fetched.",
       "smoke": true,
       "environment": {
         "OPENAI_API_KEY": ""
       },
-      "required_modules": [],
+      "required_modules": [
+        "numpy",
+        "cryptography",
+        "pydantic"
+      ],
       "assets": [],
       "offline": true
     },

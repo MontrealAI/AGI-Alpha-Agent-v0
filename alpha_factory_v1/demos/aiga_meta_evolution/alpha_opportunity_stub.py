@@ -35,6 +35,8 @@ LLM = build_llm()
 @Tool(name="identify_alpha", description="Suggest current inefficiencies in a domain")
 async def identify_alpha(domain: str = "finance") -> str:
     """List promising opportunities in ``domain``."""
+    if os.getenv("AIGA_ALLOW_DISCOVERY_PROVIDER") != "1":
+        raise RuntimeError("Discovery inference requires explicit AIGA_ALLOW_DISCOVERY_PROVIDER=1 opt-in")
     prompt = (
         f"List three emerging opportunities or inefficiencies in the {domain} domain "
         "that a small team could exploit for outsized value."

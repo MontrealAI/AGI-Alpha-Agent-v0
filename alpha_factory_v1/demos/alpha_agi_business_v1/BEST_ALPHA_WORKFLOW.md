@@ -28,42 +28,38 @@ python start_alpha_business.py
 Open the REST docs at `http://localhost:8000/docs` to verify the service is running. The core agents (discovery,
   opportunity, execution, risk, compliance, portfolio) start automatically.
 
-## 3. Submit the Opportunity
+## 3. Evaluate supplied assumptions
 
-Send a job definition to the orchestrator so the agents can evaluate and act on it. Replace `<PORT>` if you changed the
-  default 8000:
-
-```bash
-curl -X POST http://localhost:<PORT>/agent/alpha_execution/trigger \
-     -H 'Content-Type: application/json' \
-     -d '{"alpha": "gene therapy patent undervalued by market", "score": 88}'
-```
-
-Or trigger it via the OpenAI Agents bridge using the ``trigger_best_alpha``
-helper:
+The score-only ranking above is a historical example, not a cost/benefit or
+risk assessment. It cannot be submitted for execution. Supply a complete
+business state instead; all amounts must use the same caller-selected currency.
+The example below is deliberately illustrative and unverified.
 
 ```bash
-curl -X POST http://localhost:5001/v1/agents/business_helper/invoke \
-     -H 'Content-Type: application/json' \
-     -d '{"action": "best_alpha"}'
+# API_TOKEN must match the configured orchestrator token.
+./scripts/post_alpha_job.sh examples/job_evaluate_business.json
 ```
 
-The execution agent will process the input and propagate tasks to downstream agents such as risk and compliance.
+The helper sends only the `state` object to the authenticated
+`POST /agent/alpha_execution/evaluate` endpoint. It requires budget, max_loss
+and opportunities containing id, cost, benefit and worst_loss. The immediate
+response reports ranked proposals, supplied-loss checks, unverified position
+arithmetic and pending legal/compliance review, with an input hash. It never
+places orders, forms a company or certifies compliance.
 
-## 4. Monitor Progress
+The bridge `submit_job` tool accepts the same outer `{agent, state}` object.
+Its old `trigger_best_alpha` helper now rejects score-only submissions with a
+clear missing-input error. It never reports them queued.
 
-Use the built‑in dashboard or the OpenAI Agents bridge to query recent alpha items and check agent status:
+## 4. Interpret the result
 
-```bash
-python openai_agents_bridge.py --host http://localhost:<PORT> --open-ui
-```
+Inspect the immediate `evaluation` response. No periodic state is changed or
+reused, and no event is written to the dashboard/memory by this endpoint.
+Malformed, incomplete or unauthenticated requests fail without returning an old
+result. To schedule the separate file-driven periodic evaluation, call
+`POST /agent/alpha_execution/trigger` without a body and with authentication.
+That response only acknowledges rescheduling; it is not proof of evaluation.
+Request bodies on a trigger are explicitly rejected.
 
-Replace `<PORT>` with the OpenAI Agents bridge port (default is 5001). Once the bridge is running, open
-  `http://localhost:5001/v1/agents` to interact via the OpenAI Agents SDK. The `recent_alpha` and `fetch_logs` tools
-  provide a quick view of system activity.
-
----
-
-This workflow demonstrates how to take a discovered alpha signal and run it through the demo's multi‑agent pipeline. The
-  components are intentionally lightweight so you can extend them with domain‑specific logic or connect them to external
-  data sources.
+The original research architecture and diagrams remain context for future
+integrations; this supported path is bounded supplied-assumption evaluation.

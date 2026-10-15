@@ -1,0 +1,73 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Planning reservations · Local operator</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/ascension-studio.css">
+  <script src="/budget-studio.js" defer></script>
+</head>
+<body class="budget-studio">
+  <a class="skip" href="#main" data-i18n="skip">Skip to workspace</a>
+  <header><a class="brand" href="/ascension-studio">α<span>ASCENSION<br><small data-i18n="local">LOCAL OPERATOR</small></span></a>
+    <nav><a href="/ascension-studio" data-i18n="studio">Ascension Studio</a><a href="/" data-i18n="agent">Agent workspace</a></nav>
+    <label class="language" for="language"><span data-i18n="language">Language</span><select id="language"><option value="en">English</option><option value="fr">Français</option></select></label>
+  </header>
+  <main id="main">
+    <section class="intro"><p class="eyebrow" data-i18n="eyebrow">ONE JOURNAL · EXACT UNITS · EXPLICIT RECONCILIATION</p>
+      <h1 data-i18n="title">Coordinate a planning budget.</h1>
+      <p data-i18n="intro">Sessions using this same native journal share a declared owner, chain and token budget. Reserve planning capacity for a project, then explicitly reconcile it.</p>
+      <p class="callout" data-i18n="boundary">This does not lock wallet funds, verify ownership or balance, prevent external transfers, or authorize payment or execution. Independent agent homes and copied journals do not coordinate. Use one authoritative journal.</p>
+    </section>
+    <section id="login" class="panel"><h2 data-i18n="connectTitle">Connect to this installed agent</h2>
+      <p class="help" data-i18n="tokenHelp">Use its existing access token. The token stays only in page memory, never in recovery storage, a URL or a download. Reload or disconnect clears it.</p>
+      <p id="initializing" role="status">Loading secure controls… / Chargement des contrôles sécurisés…</p>
+      <noscript>JavaScript is required to connect. / JavaScript est requis pour se connecter.</noscript>
+      <form id="login-form"><label for="token" data-i18n="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required disabled><button id="connect" data-i18n="connect" disabled>Connect</button></div></form>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <div id="workspace" hidden>
+      <section class="panel"><div class="section-title"><h2 data-i18n="authority">Connected journal</h2><button id="disconnect" class="secondary" data-i18n="disconnect">Disconnect</button></div>
+        <p id="journal-identity" class="mono"></p><p class="help" data-i18n="sessionHelp">A changed connection or scope invalidates the preview. Every new request uses the revision you inspected. A lost response retains its exact request for explicit retry.</p>
+        <form id="scope-form"><h3 data-i18n="scope">Exact planning scope</h3><div class="form-grid">
+          <div><label for="owner" data-i18n="owner">Declared owner address</label><input id="owner" spellcheck="false" autocomplete="off" pattern="0x[0-9a-fA-F]{40}" required></div>
+          <div><label for="chain-id" data-i18n="chain">Chain ID</label><input id="chain-id" inputmode="numeric" autocomplete="off" pattern="[1-9][0-9]*" required></div>
+          <div><label for="asset-token" data-i18n="asset">Token address</label><input id="asset-token" spellcheck="false" autocomplete="off" pattern="0x[0-9a-fA-F]{40}" required></div>
+        </div><button id="inspect" data-i18n="inspect">Inspect retained planning state</button></form>
+      </section>
+      <section id="snapshot-panel" class="panel" hidden><h2 data-i18n="snapshot">Last inspected state</h2>
+        <p id="snapshot-state" class="callout"></p><dl id="totals"></dl>
+        <p class="help" data-i18n="units">All amounts are exact token base units. The cumulative ceiling is an operator assumption, not a wallet balance or income. Active reservations never expire automatically. Committed amounts remain consumed capacity.</p>
+        <div id="reservations" class="archive"></div>
+        <details><summary data-i18n="rawState">Retained journal record</summary><pre id="record" tabindex="0"></pre></details>
+      </section>
+      <section class="panel"><h2 data-i18n="operation">Prepare an explicit planning request</h2>
+        <form id="operation-form"><label for="action" data-i18n="action">Operation</label><select id="action">
+          <option value="set_limit" data-i18n="set_limit">Set cumulative planning ceiling</option>
+          <option value="reserve" data-i18n="reserve">Reserve project planning capacity</option>
+          <option value="release" data-i18n="release">Release a reconciled active reservation</option>
+          <option value="commit" data-i18n="commit">Record consumed planning capacity</option>
+        </select><label for="reservation-id" data-i18n="reservation">Stable reservation ID</label><input id="reservation-id" autocomplete="off" maxlength="64" pattern="[a-zA-Z0-9_-]{1,64}">
+          <label for="amount" data-i18n="amount">Exact amount in base units</label><input id="amount" inputmode="numeric" autocomplete="off" pattern="0|[1-9][0-9]{0,77}" required>
+          <p id="operation-help" class="help"></p>
+          <label for="purpose" data-i18n="purpose">Project/cycle purpose or reconciliation reason</label><textarea id="purpose" rows="3" maxlength="1000" required></textarea>
+          <button id="prepare" data-i18n="prepare" disabled>Review exact request</button>
+        </form>
+      </section>
+      <section id="preview-panel" class="panel" hidden><h2 id="preview-title" tabindex="-1" data-i18n="preview">Review before recording</h2><pre id="preview-record" tabindex="0"></pre>
+        <p class="help" data-i18n="storageDisclosure">Before sending, this tab stores the exact request, declared owner, amounts, purpose and journal identity in session storage for recovery after reload. It stores no token. The copy stays until a verified response or explicit reconciliation; it is not spending permission.</p>
+        <label class="check"><input id="confirm-ack" type="checkbox"><span data-i18n="confirmAck">I reviewed this exact planning request and its inspected revision. I authorize recording it and keeping this tab's disclosed recovery copy. Release or commit reflects my separate reconciliation; it is not proof of a wallet payment.</span></label>
+        <div class="inline wrap"><button id="confirm" data-i18n="confirm" disabled>Record reviewed planning request</button><button id="cancel-preview" class="secondary" data-i18n="cancel">Cancel preview</button></div>
+      </section>
+      <section id="pending-panel" class="panel" hidden><h2 data-i18n="pending">Retained request needs attention</h2><p id="pending-state" class="callout"></p><pre id="pending-record" tabindex="0"></pre>
+        <p class="help" data-i18n="pendingHelp">Reconnect to the same journal and inspect this exact scope before retrying. A retry sends only the unchanged native planning request and ID. It never retries a wallet transaction or releases a reservation. An unavailable response is not proof of failure.</p>
+        <label class="check"><input id="retry-ack" type="checkbox"><span data-i18n="retryAck">I reviewed the original exact request and authorize only its idempotent native planning retry.</span></label>
+        <div class="inline wrap"><button id="retry" data-i18n="retry" disabled>Retry exact planning request</button><button id="export-pending" class="secondary" data-i18n="export">Download request recovery copy</button></div>
+        <div id="rejected-controls" hidden><label class="check"><input id="dismiss-ack" type="checkbox"><span data-i18n="dismissAck">I inspected the current state and the explicit rejection. Clear only this rejected request copy so I can prepare new reviewed terms. Do not change any reservation.</span></label><button id="dismiss" class="secondary" data-i18n="dismiss" disabled>Clear reconciled rejected request</button></div>
+      </section>
+      <section id="invalid-panel" class="panel" hidden><h2 data-i18n="invalidTitle">Recovery copy is unavailable</h2><p data-i18n="invalidHelp">This tab's recovery data is malformed, too large or unavailable. New mutations are blocked. Preserve and reconcile any uncertain request through the original journal before clearing the local copy.</p><label class="check"><input id="invalid-ack" type="checkbox"><span data-i18n="invalidAck">I preserved and reconciled any uncertain planning request. Clear this unusable tab copy without changing the journal.</span></label><button id="clear-invalid" class="secondary" data-i18n="clearInvalid" disabled>Clear unusable local copy</button></section>
+    </div>
+  </main>
+  <footer><p data-i18n="footer">Planning coordination only. Wallet custody, market escrow, execution grants and review decisions remain separate.</p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/DISCLAIMER_SNIPPET.md" data-i18n="notice">Project notice</a></footer>
+</body>
+</html>

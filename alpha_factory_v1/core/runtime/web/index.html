@@ -17,7 +17,7 @@
       <p>Research your sources, allocate resources, improve a schedule, test a forecast, or verify a Python function. Every mission keeps its inputs, decisions, checks and results together.</p></section>
     <section id="login" class="panel"><h2>Connect to your agent</h2>
       <p>Paste the access token from the private <code>api.token</code> file created during initialization. It stays in this page’s memory.</p>
-      <form id="login-form"><label for="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required><button>Connect</button></div></form>
+      <form id="login-form"><label for="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required disabled><button id="connect" disabled>Connect</button></div></form><p id="initializing" role="status">Loading secure controls… / Chargement des contrôles sécurisés…</p><noscript><p>JavaScript is required to connect. / JavaScript est requis pour se connecter.</p></noscript>
     </section>
     <p id="message" role="status" aria-live="polite"></p>
     <div id="workspace" hidden>

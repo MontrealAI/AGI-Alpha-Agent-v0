@@ -3,7 +3,7 @@
 """
 OMNI‑Factory • Smart‑City Resilience Demo (α‑Factory v1 add‑on)
 ═══════════════════════════════════════════════════════════════
-A self‑contained, production‑grade open‑ended learning loop that plugs
+A bounded smart-city research simulation that plugs
 straight into the **Alpha‑Factory v1** backbone and demonstrates:
 
 • **Automatic scenario generation**   (OMNI‑EPIC style)
@@ -12,11 +12,11 @@ straight into the **Alpha‑Factory v1** backbone and demonstrates:
 • **Token‑economy accounting**        ($AGIALPHA ledger, hard‑capped)
 • **Observability & safety**          (Prometheus, graceful exits, plugin sandbox)
 
-The script is **offline‑first** – it runs fully locally with zero external
-requirements. If environment variables such as `OPENAI_API_KEY` or
-`GOOGLE_ADK_KEY` are detected, it will *transparently* enable cloud
-extras (LLM scenario generation, OpenAI‑Agents SDK planners, Google ADK
-skills, A2A protocol messaging, …) without breaking determinism.
+The default planner uses validated local plugin heuristics or enumerates the
+actual analytical city transition equations. It is not learned inference.
+Optional provider calls require OMNI_ALLOW_PROVIDER=1 as well as a configured
+SDK and credentials. Google ADK import alone supplies no inference adapter.
+External provider output is not guaranteed deterministic.
 
 Run
 ───
@@ -45,6 +45,7 @@ import functools
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import random
 import signal
@@ -95,27 +96,9 @@ if "spaces" not in globals():  # pragma: no cover
         pass
 
 
-if "oas" not in globals():
-
-    class oas:  # type: ignore
-        class Agent:
-            def __init__(self, *_, **__):
-                pass
-
-            def act(self, prompt: str) -> str:  # noqa: D401
-                return "{" "action" ": {" "id" ": 0}}"
-
-
-if "gadk" not in globals():
-
-    class gadk:  # type: ignore
-        class Skill:
-            def __init__(self, *_, **__):
-                pass
-
-        class Toolkit:
-            def __init__(self, *_, **__):
-                pass
+# Availability is capability-based; missing packages are never represented by fake SDKs.
+OAS_AVAILABLE = "oas" in globals() and not getattr(oas, "__alpha_factory_stub__", False)
+ADK_AVAILABLE = "gadk" in globals() and not getattr(gadk, "__alpha_factory_stub__", False)
 
 
 ###############################################################################
@@ -210,7 +193,7 @@ _FALLBACK_SCENARIOS: tuple[str, ...] = (
 
 def _llm_one_liner(prompt: str) -> str:
     """LLM helper with deterministic fallback."""
-    if "openai" not in globals() or not os.getenv("OPENAI_API_KEY"):
+    if os.getenv("OMNI_ALLOW_PROVIDER") != "1" or "openai" not in globals() or not os.getenv("OPENAI_API_KEY"):
         idx = (int(hashlib.sha256(prompt.encode()).hexdigest()[:16], 16) + CFG.seed) % len(_FALLBACK_SCENARIOS)
         return _FALLBACK_SCENARIOS[idx]
     try:
@@ -356,7 +339,7 @@ class SuccessEvaluator:
     def check(self, env: SmartCityEnv) -> bool:
         numeric = env.solved()
         qualitative = True
-        if "openai" in globals() and os.getenv("OPENAI_API_KEY"):
+        if os.getenv("OMNI_ALLOW_PROVIDER") == "1" and "openai" in globals() and os.getenv("OPENAI_API_KEY"):
             prompt = (
                 f"Scenario: {env.scenario}. Final KPIs power_ok={env.state.power_ok:.2f}, "
                 f"traffic_ok={env.state.traffic_ok:.2f}.\n"
@@ -373,42 +356,76 @@ class SuccessEvaluator:
 ###############################################################################
 
 
-def _plan(obs: List[float], scenario: str) -> Dict[str, Any]:
-    """Hierarchical planner: SDK agent → Google ADK → WM fallback."""
-    # 1) OpenAI Agents SDK ---------------------------------------------------
-    if "oas" in globals():
-        try:
-            agent = _plan._cached_agent  # type: ignore[attr-defined]
-        except AttributeError:
-            agent = oas.Agent(name="OMNI‑Planner", model=CFG.llm_model)  # type: ignore[arg-type]
-            _plan._cached_agent = agent  # type: ignore[attr-defined]
-        reply = agent.act(json.dumps({"obs": obs, "scenario": scenario}))  # type: ignore[attr-defined]
-        with contextlib.suppress(Exception):
-            return json.loads(reply)
-    # 2) Google ADK skill‑set -----------------------------------------------
-    if "gadk" in globals():
-        skillkit = getattr(_plan, "_skillkit", None)
-        if skillkit is None:
-            skillkit = gadk.Toolkit()  # type: ignore[call-arg]
-            _plan._skillkit = skillkit
-        # Dummy skill inference (placeholder)
-        action_id = int(sum(obs) * 10) % 5
-        return {"action": {"id": action_id}}
-    # 3) Alpha‑Factory world‑model planner ----------------------------------
-    from alpha_factory_v1.backend.world_model import wm
+def _valid_plan(value: Any, source: str) -> Dict[str, Any] | None:
+    """Only the five documented discrete action IDs are executable in this simulation."""
+    if not isinstance(value, dict) or not isinstance(value.get("action"), dict):
+        return None
+    action_id = value["action"].get("id")
+    if type(action_id) is not int or not 0 <= action_id <= 4:  # noqa: E721 - reject bool and int subclasses
+        return None
+    return {"action": {"id": action_id}, "planner": source, "mode": "city_simulation"}
 
-    plan = wm.plan("smart_city", {"obs": obs, "scenario": scenario})
-    if plan:
-        return plan
-    # 4) Plugin heuristics --------------------------------------------------
+
+def _city_model_plan(obs: List[float]) -> Dict[str, Any]:
+    """Enumerate actions using this demo's actual one-step transition equations.
+
+    The shared grid-world singleton has a different state/action schema and may
+    initialize providers. It is deliberately not mislabeled a smart-city model.
+    This is an analytical simulator, not a learned world model or AI inference.
+    """
+    scores = []
+    for action_id in range(5):
+        repair, traffic = _action_controls(action_id)
+        reward = (min(1.0, obs[0] + 0.65 * repair) + min(1.0, obs[1] + 0.55 * traffic)) / 2
+        scores.append(reward)
+    best = max(range(5), key=lambda action_id: scores[action_id])
+    return {
+        "action": {"id": best},
+        "planner": "local_analytical_city_model",
+        "mode": "city_simulation",
+        "predicted_rewards": scores,
+    }
+
+
+def _action_controls(action_id: int) -> Tuple[float, float]:
+    return (0.8 if action_id % 3 == 0 else 0.2, 0.8 if action_id % 3 == 1 else 0.2)
+
+
+def _plan(obs: List[float], scenario: str) -> Dict[str, Any]:
+    """Opt-in SDK adapter, validated plugins, then bounded local city planning."""
+    if (
+        not isinstance(obs, (list, tuple))
+        or len(obs) != 3
+        or any(
+            isinstance(x, bool) or not isinstance(x, (int, float)) or not 0 <= x <= 1 or not math.isfinite(x)
+            for x in obs
+        )
+    ):
+        raise ValueError("obs must contain three finite normalized city measurements")
+    if OAS_AVAILABLE and os.getenv("OMNI_ALLOW_PROVIDER") == "1":
+        try:
+            agent = getattr(_plan, "_cached_agent", None)
+            if agent is None:
+                agent = oas.Agent(name="OMNI-Planner", model=CFG.llm_model)
+                _plan._cached_agent = agent
+            reply = agent.act(json.dumps({"obs": obs, "scenario": scenario}))
+            candidate = _valid_plan(json.loads(reply), "opt_in_sdk_proposal")
+            if candidate is not None:
+                return candidate
+        except Exception:
+            pass  # Unsupported SDK contracts and failures select an implemented fallback.
+    # No Google ADK inference adapter is implemented. Merely importing a Toolkit
+    # must never count as successful inference or bypass the local fallback.
     for plug in PLUGINS:
         heur = getattr(plug, "heuristic_policy", None)
-        if heur:
+        if callable(heur):
             try:
-                return heur(obs)
+                candidate = _valid_plan(heur(obs), "local_plugin_heuristic")
+                if candidate is not None:
+                    return candidate
             except Exception:
                 pass
-    return {"action": {"id": 0}}
+    return _city_model_plan(obs)
 
 
 ###############################################################################
@@ -459,8 +476,7 @@ async def _episode(
     for minute in range(CFG.max_minutes):
         plan = _plan(obs, scenario)
         act_id = plan.get("action", {}).get("id", 0)
-        repair = 0.8 if act_id % 3 == 0 else 0.2
-        traffic = 0.8 if act_id % 3 == 1 else 0.2
+        repair, traffic = _action_controls(act_id)
         obs, rew, done, _, _ = env.step((repair, traffic))
         cumulative += rew
         if done:

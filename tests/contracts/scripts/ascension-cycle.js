@@ -9,6 +9,9 @@ const fs = require('node:fs'), os = require('node:os'), path = require('node:pat
 const http = require('node:http'), readline = require('node:readline');
 const { createHash } = require('node:crypto'), { spawn, execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '../../..');
+const interruptionBrowser = process.env.ASCENSION_CYCLE_INTERRUPTION_BROWSER === '1';
+const nativeRunner = interruptionBrowser ? 'cycle-interruptions-native.py' : 'cycle-native.py';
+const browserRunner = interruptionBrowser ? 'cycle-interruptions-browser.py' : 'cycle-browser.py';
 const out = path.resolve(process.env.ASCENSION_CYCLE_EVIDENCE || path.join(root, 'evidence/ascension-cycle'));
 const serialize = value => JSON.stringify(value, (_, item) => typeof item === 'bigint' ? String(item) : item, 2) + '\n';
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -19,7 +22,7 @@ function freshStore() {
 }
 function native(input) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.env.ALPHA_PYTHON || 'python3', [path.join(root, 'tests/nova-studio/cycle-native.py')], {
+    const child = spawn(process.env.ALPHA_PYTHON || 'python3', [path.join(root, 'tests/nova-studio', nativeRunner)], {
       cwd: root, env: { ...process.env, PYTHONPATH: root, NO_DISCLAIMER: '1' }, stdio: ['pipe', 'pipe', 'pipe'],
     });
     let result, failure, stderr = '';
@@ -232,6 +235,10 @@ async function qualify(state) {
   assert.equal((await f.mark.campaigns(first.seedId)).reserve, 0n);
   const firstExitLedger=await captureLedger(state,evaluated.sourceKey,'first-cycle-after-reclaim',2);
   assert.equal(firstExitLedger.ownerTotals.netPayout,'0');
+  assert.equal(firstExitLedger.principalReturns.length,1);
+  assert.equal(BigInt(firstExitLedger.ownerTotals.returnedPrincipal),reclaimed);
+  assert.equal(firstExitLedger.principalReturns[0].recipient,f.funder.address.toLowerCase());
+  assert.equal(firstExitLedger.principalReturns[0].income,false);
   assert(firstExitLedger.refunds.every(row=>row.status==='collected-into-campaign'));
   assert(firstExitLedger.campaigns.every(row=>row.reserve==='0'));
   const recovery = await flow.projectKit('encrypted full project passphrase');
@@ -272,9 +279,15 @@ async function qualify(state) {
   assert.notEqual(JSON.stringify(second.settlement.chain), JSON.stringify(first.settlement.chain));
   assert.equal((await f.seed.genomes(second.seedId)).parent.toString(), first.seedId);
   await choose(f.business); await action('collect', { jobId: second.jobId }); await action('close');
-  await choose(f.funder); await action('reclaim');
+  await choose(f.funder);
+  const secondBeforeReclaim=await f.token.balanceOf(f.funder.address), secondReclaimed=(await f.mark.campaigns(second.seedId)).reserve;
+  await action('reclaim');
+  assert.equal(await f.token.balanceOf(f.funder.address)-secondBeforeReclaim,secondReclaimed);
   const secondLedger=await captureLedger(state,second.sourceKey,'second-cycle-after-reclaim',3);
   assert.equal(secondLedger.ownerTotals.netPayout,'0');
+  assert.equal(secondLedger.principalReturns.length,2);
+  assert.equal(BigInt(secondLedger.ownerTotals.returnedPrincipal),reclaimed+secondReclaimed);
+  assert.equal(secondLedger.principalCoverage.completeHistory,false);
   assert(secondLedger.refunds.every(row=>row.status==='collected-into-campaign'));
   assert(secondLedger.campaigns.every(row=>row.reserve==='0'));
   const finalKit = await flow.projectKit('encrypted full project passphrase');
@@ -286,8 +299,9 @@ async function qualify(state) {
   const sourceHashes = { ...profile.evidence.sourceHashes, ...state.copiedSources };
   for (const relative of ['alpha_factory_v1/core/runtime/successor/studio.py', 'alpha_factory_v1/core/runtime/successor/workbench.py',
     'tests/contracts/scripts/ascension-cycle.js', 'tests/contracts/scripts/disposable.js',
-    'tests/nova-studio/cycle-native.py', 'tests/nova-studio/cycle-browser.py',
-    'tests/nova-studio/browser-provider.js']) sourceHashes[relative] = sha(fs.readFileSync(path.join(root, relative)));
+    'tests/nova-studio/cycle-native.py', 'tests/nova-studio/cycle-browser.py', 'tests/nova-studio/edge_browser.py',
+    'tests/nova-studio/browser-provider.js',
+    ...(interruptionBrowser ? ['tests/nova-studio/cycle-interruptions-browser.py', 'tests/nova-studio/cycle-interruptions-native.py'] : [])]) sourceHashes[relative] = sha(fs.readFileSync(path.join(root, relative)));
   const environment = {
     node:process.version,hardhat:require('hardhat/package.json').version,ethers:ethers.version,
     python:JSON.parse(execFileSync(process.env.ALPHA_PYTHON||'python3',['-c',
@@ -411,6 +425,7 @@ async function runJob(state, work, planIndex) {
 
 async function browserAcceptance(state) {
   const { f, temp, actors, files, publish } = state;
+  const observations = { rpcSends: [], nativeOperations: [], uploads: [] };
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, 'http://localhost');
@@ -422,10 +437,16 @@ async function browserAcceptance(state) {
         raw = Buffer.concat(parts); return raw;
       }
       function json(value) { res.setHeader('Content-Type', 'application/json'); res.end(serialize(value)); }
+      if (interruptionBrowser && url.pathname === '/interruption-observations' && req.method === 'GET') {
+        json(observations); return;
+      }
       if (url.pathname === '/operator' && req.method === 'POST') {
         await requireDisposableLocalNetwork();
         const source = JSON.parse((await body()).toString());
-        if (!['example', 'seal', 'bind', 'execute', 'settle', 'freeze-evaluation', 'evaluate-comparison', 'accept'].includes(source.operation)) throw Error('Unsupported test operator operation');
+        if (!['example', 'seal', 'bind', 'execute', 'settle', 'freeze-evaluation', 'evaluate-comparison', 'accept',
+          ...(interruptionBrowser ? ['recover-output', 'recover-settlement'] : [])].includes(source.operation)) throw Error('Unsupported test operator operation');
+        if (interruptionBrowser) observations.nativeOperations.push({ operation:source.operation,
+          projectId:source.request?.project_id, cycleId:source.request?.cycle_id, planIndex:source.request?.plan_index });
         json(await native({ ...source, home: path.join(temp, 'browser-native-state'), worker: f.agent.address.toLowerCase(),
           ...(source.seed_id ? { context: await marketContext(f, source.seed_id) } : {}) })); return;
       }
@@ -443,12 +464,17 @@ async function browserAcceptance(state) {
           'eth_getTransactionCount', 'eth_getTransactionReceipt', 'eth_getTransactionByHash', 'eth_getLogs',
           'eth_getStorageAt', 'eth_sendTransaction'].includes(method)) throw Error('RPC forbidden by disposable test transport');
         if (method === 'eth_sendTransaction' && !actors.includes(params[0]?.from?.toLowerCase())) throw Error('Unknown fixture signer');
-        json({ result: await network.provider.request({ method, params }) }); return;
+        const result = await network.provider.request({ method, params });
+        if (interruptionBrowser && method === 'eth_sendTransaction') observations.rpcSends.push({ hash:result, from:params[0].from });
+        json({ result }); return;
       }
       if (url.pathname === '/upload' && req.method === 'POST') {
         const form = await new Request('http://localhost/upload', { method: 'POST',
           headers: { 'Content-Type': req.headers['content-type'] }, body: await body() }).formData();
-        assert.equal(form.get('network'), 'public'); json({ data: { cid: publish(await form.get('file').arrayBuffer()) } }); return;
+        assert.equal(form.get('network'), 'public');
+        const file=form.get('file'), bytes=await file.arrayBuffer(), published=publish(bytes);
+        if (interruptionBrowser) observations.uploads.push({ filename:file.name, sha256:sha(Buffer.from(bytes)), cid:published });
+        json({ data: { cid:published } }); return;
       }
       if (url.pathname.startsWith('/ipfs/')) {
         const bytes = files.get(url.pathname.slice(6)); res.statusCode = bytes ? 200 : 404;
@@ -473,10 +499,13 @@ async function browserAcceptance(state) {
   fs.writeFileSync(path.join(out, 'cycle-browser-config.json'), serialize(config));
   try {
     await new Promise((resolve, reject) => {
-      const child = spawn(process.env.ALPHA_PYTHON || 'python3', [path.join(root, 'tests/nova-studio/cycle-browser.py'),
+      const child = spawn(process.env.ALPHA_PYTHON || 'python3', [path.join(root, 'tests/nova-studio', browserRunner),
         path.join(out, 'cycle-browser-config.json')], { cwd: root, stdio: 'inherit' });
       child.on('error', reject); child.on('exit', code => code === 0 ? resolve() : reject(Error(`Browser cycle acceptance exit ${code}`)));
     });
-  } finally { await new Promise(resolve => server.close(resolve)); }
+  } finally {
+    if (interruptionBrowser) fs.writeFileSync(path.join(out,'cycle-interruptions-transport.json'),serialize(observations));
+    await new Promise(resolve => server.close(resolve));
+  }
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

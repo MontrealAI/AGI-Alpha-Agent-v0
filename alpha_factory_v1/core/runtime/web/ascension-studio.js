@@ -6,6 +6,9 @@ const MAX_REQUEST_BYTES = 512 * 1024;
 let accessToken = '', selected = null, installation = null, fileText = '', busy = false, epoch = 0, allRecords = [];
 const english = Object.fromEntries([...document.querySelectorAll('[data-i18n]')].map(node => [node.dataset.i18n, node.textContent]));
 const french = {
+  budget: 'Budget de planification',
+
+  ecosystem: 'Marchés et exécuteurs',
   freezeDownload: 'Télécharger le gel signé de l’évaluation pour Studio',
   firstInstall: 'Première installation avec les identités déjà vérifiées', firstInstallHelp: 'L’opérateur du poste effectue cette étape une fois. Choisissez les acteurs déjà installés et le déploiement vérifié. Les clés locales facultatives doivent déjà exister en privé avec leurs jetons d’approbation distincts. Ce formulaire ne crée aucune clé et ne remplace aucune configuration.', setupConfirm: 'Comme opérateur du poste, j’ai vérifié ces acteurs, clés privées et paramètres de lecture de la chaîne, et j’autorise cette première installation.', install: 'Installer les paramètres examinés',
   pairTitle: 'Apparier un nouveau travail', pairHelp: 'Choisissez un déploiement installé et le numéro réel de la graine. L’appariement prépare une institution bornée et les obligations exactes du cycle de vie. Toutes les obligations associées restent en attente; aucune autorisation d’exécution ni admission n’est créée.', pairTemplate: 'Déploiement et politique de rôles installés', pairSeed: 'Numéro réel de la graine', pairConfirm: 'Préparer ce travail exact avec la politique installée et l’allocation bornée sélectionnées.', pair: 'Apparier et préparer le travail exact',
@@ -373,3 +376,7 @@ $('setup-form').addEventListener('submit', event => {event.preventDefault(); gua
   installation = await api('/ascension-studio/install', {method:'POST',body:JSON.stringify({template,signers,confirm:true})});
   await refresh(); message(t('complete'));
 });});
+// Enable credentials only after every handler has been installed successfully.
+$('token').disabled = false;
+$('connect').disabled = false;
+$('initializing').hidden = true;

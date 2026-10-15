@@ -105,7 +105,7 @@ def test_wheel_retains_sample_bytes_and_runs_every_offline_demo(tmp_path: Path) 
     assert not (tmp_path / "demo-runs").exists()
     assert not attempted.exists(), attempted.read_text()
     finite = [entry for entry in entries if entry["smoke"]]
-    assert len(entries) == 26 and len(finite) == 17
+    assert len(entries) == 26 and len(finite) == 18
     for entry in finite:
         result = subprocess.run(
             [

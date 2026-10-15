@@ -15,11 +15,12 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import List, Dict
+from typing import Any, List, Dict
 
 import os
 
-from .cross_alpha_discovery_stub import SAMPLE_ALPHA, discover_alpha, _ledger_path
+from .cross_alpha_discovery_stub import SAMPLE_ALPHA, _ledger_path
+from .opportunity_comparison import compare_opportunities
 
 logger = logging.getLogger(__name__)
 
@@ -76,9 +77,9 @@ async def list_samples() -> List[Dict[str, str]]:
     return SAMPLE_ALPHA
 
 
-@Tool(name="discover_alpha", description="Generate new opportunities")
-async def discover(num: int = 1) -> List[Dict[str, str]]:
-    return discover_alpha(num=num)
+@Tool(name="discover_alpha", description="Compare supplied opportunity assessments; no provider calls")
+async def discover(supplied: dict[str, Any] | None = None) -> dict[str, Any]:
+    return compare_opportunities(supplied)
 
 
 @Tool(name="recent_log", description="Return recently logged opportunities")
@@ -96,7 +97,7 @@ class CrossIndustryAgent(Agent):
         if isinstance(obs, dict):
             action = obs.get("action")
             if action == "discover":
-                return await discover(obs.get("num", 1))
+                return await discover(obs.get("supplied"))
             if action == "recent":
                 return await recent_log(obs.get("limit", 5))
         return await list_samples()

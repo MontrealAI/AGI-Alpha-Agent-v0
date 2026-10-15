@@ -10,6 +10,8 @@ _loader = importlib.machinery.SourceFileLoader(__name__, __file__)
 __spec__ = importlib.machinery.ModuleSpec(__name__, _loader, origin=__file__)
 
 __version__ = "0.0.17"
+# Machine-readable guard: callers must not label this shim as real inference.
+__alpha_factory_stub__ = True
 
 
 class AgentRuntime:

@@ -226,6 +226,7 @@ def test_failed_cleanup_quarantines_completed_claim(tmp_path: Path) -> None:
         )
     receipt = json.loads((tmp_path / "out/receipt.json").read_text())
     assert receipt["state"] == "quarantined" and receipt["cleanup"] == "FAILED"
+    assert receipt["elapsed_milliseconds"] >= 0
 
 
 def test_current_responses_wire_format_and_safety_refusal(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -280,3 +281,102 @@ def test_real_container_keyboard_screenshot_and_cleanup(tmp_path: Path) -> None:
     assert result["state"] == "review"
     assert "useful work" in (tmp_path / "out/visible-text.txt").read_text()
     assert (tmp_path / "out/screen-002.png").stat().st_size > 100
+
+
+@pytest.mark.parametrize(
+    "usage,expected",
+    [
+        ({"input_tokens": 17, "output_tokens": 3, "total_tokens": 20}, "PROVIDER_REPORTED"),
+        ({"input_tokens": True, "output_tokens": 3, "total_tokens": 4}, "UNKNOWN"),
+        ({"input_tokens": -1, "output_tokens": 3, "total_tokens": 2}, "UNKNOWN"),
+        (None, "UNKNOWN"),
+    ],
+)
+def test_provider_usage_is_observed_not_invoiced(monkeypatch, tmp_path, usage, expected):
+    original = httpx.Client
+
+    def respond(request):
+        return httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "usage": usage,
+                "output": [{"type": "message", "content": [{"type": "output_text", "text": "Unverified completion"}]}],
+            },
+        )
+
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=httpx.MockTransport(respond), **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    journal = Journal.initialize(tmp_path / "home")
+    mission = task()
+    image = "sha256:" + "a" * 64
+    result = run_session(
+        journal, mission, advisor, image, tmp_path / "out", commitment(mission, advisor, image), factory=TestComputer
+    )
+    receipt = json.loads((tmp_path / "out/receipt.json").read_text())
+    assert receipt["provider_usage"][0]["status"] == expected
+    assert receipt["provider_usage"][0]["cost"] is None
+    assert result["billing"] == "UNKNOWN"
+    assert type(receipt["elapsed_milliseconds"]) is int  # noqa: E721
+    assert receipt["elapsed_milliseconds"] >= 0
+
+
+def test_failed_provider_attempt_retains_unknown_cost(monkeypatch, tmp_path):
+    original = httpx.Client
+
+    def fail(request):
+        raise httpx.ReadTimeout("uncertain provider response")
+
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=httpx.MockTransport(fail), **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    journal = Journal.initialize(tmp_path / "home")
+    mission = task()
+    image = "sha256:" + "a" * 64
+    with pytest.raises(httpx.ReadTimeout):
+        run_session(
+            journal,
+            mission,
+            advisor,
+            image,
+            tmp_path / "out",
+            commitment(mission, advisor, image),
+            factory=TestComputer,
+        )
+    receipt = json.loads((tmp_path / "out/receipt.json").read_text())
+    assert receipt["provider_usage"] == [{"attempt": 1, "status": "UNKNOWN", "cost": None}]
+    assert receipt["state"] == "interrupted"
+    assert receipt["cleanup"] == "VERIFIED"
+    assert receipt["turns_reserved"] == 1
+
+
+def test_stop_during_provider_response_retains_usage_and_never_completes(monkeypatch, tmp_path):
+    from alpha_factory_v1.core.runtime.store import Conflict
+    from alpha_factory_v1.core.runtime.successor.computer import _change
+
+    original = httpx.Client
+    journal = Journal.initialize(tmp_path / "home")
+    output = tmp_path / "out"
+
+    def respond(request):
+        run_id = json.loads((output / "run.json").read_text())["run_id"]
+        key = "@successor-computer:" + run_id
+        latest = journal.latest(key)
+        _change(journal, key, latest["revision"], state="stopped")
+        return httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "usage": {"input_tokens": 17, "output_tokens": 3, "total_tokens": 20},
+                "output": [{"type": "message", "content": [{"type": "output_text", "text": "untrusted done"}]}],
+            },
+        )
+
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=httpx.MockTransport(respond), **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    image = "sha256:" + "a" * 64
+    with pytest.raises(Conflict):
+        run_session(journal, task(), advisor, image, output, commitment(task(), advisor, image), factory=TestComputer)
+    receipt = json.loads((output / "receipt.json").read_text())
+    assert receipt["state"] == "stopped" and receipt["actions_reserved"] == 0
+    assert receipt["provider_usage"][0]["status"] == "PROVIDER_REPORTED"
+    assert receipt["billing"] == "UNKNOWN" and receipt["cleanup"] == "VERIFIED"

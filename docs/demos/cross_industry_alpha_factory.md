@@ -1,35 +1,100 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# 👁️ Alpha-Factory v1 — Cross-Industry **AGENTIC α-AGI** Demo
+# Cross Industry Alpha Factory
 
 ![preview](../cross_industry_alpha_factory/assets/preview.svg){.demo-preview}
 
 [Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.26.3
+## Current runnable path — 1.32.0
 
-**Mode:** Offline sample. Selects reproducible examples from the bundled opportunity catalog.
+**Mode:** Supplied-input comparison. Compare your own cross-industry assessments
+using explicit priorities, review thresholds and evidence notes. This is a
+bounded decision-support calculation, not discovery of verified market opportunities.
 
-**Prerequisites:** Python 3.11–3.13; installed project dependencies.
+**Prerequisites:** Python 3.11–3.13 and installed project dependencies.
 
-After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally):
+After [installation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md#start-locally), run the explicitly synthetic
+example, then replace its assessments with your own:
 
 ```bash
 python -m alpha_factory_v1.demos check cross_industry_alpha_factory
 python -m alpha_factory_v1.demos run cross_industry_alpha_factory
+python -m alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison --example
+python -m alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison --input my-opportunities.json > comparison.json
 ```
 
-The catalog command uses bundled inputs and explicit offline defaults.
+The module requires either `--input` or `--example`; it never manufactures
+findings when no input is supplied. The catalog uses `--example` and labels the
+report `synthetic-example`. Supplied files produce `supplied-input` reports.
+No network, credentials, provider, persistent ledger or financial transaction is used.
 
-**Expected result:** Two JSON sample opportunities; no ledger written.
+### Input contract
 
-**Scope:** Examples are canned; optional external generation is separate from verified discovery.
+Copy [opportunities.example.json](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/cross_industry_alpha_factory/opportunities.example.json). The JSON must have
+exactly these fields (unknown and duplicate keys are rejected):
 
-The [catalog](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/README.md) explains installation, stopping, backups and recovery.
-Browser charts for legacy demos are labeled sample replays. Original research
-narratives and advanced scripts below are preserved; they do not expand the tested
-scope stated here.
+- `schema_version`: `cross-industry-input-v1`
+- `weights`: `benefit`, `confidence`, `effort`, `risk`, each an integer 0–100;
+  at least one weight must be positive
+- `constraints`: integer `max_risk` and `min_confidence`, each 0–100
+- `opportunities`: 1–100 candidates, each with `id`, `sector`, `opportunity`,
+  `benefit`, `confidence`, `effort`, `risk`, and `evidence`
+
+Candidate ratings are integer assessment points 0–100. Larger benefit and
+confidence are preferred; smaller effort and risk are preferred. These are
+your judgments, not calibrated probabilities or money. Use consistent criteria
+across sectors. IDs are unique, 1–64 ASCII letters/digits/underscores/hyphens,
+starting with a letter or digit. Sector text is limited to 120 Unicode codepoints,
+opportunity text to 500, and evidence to 1–10 references/notes of at most 500
+codepoints each. All text must be nonempty and trimmed; control characters and
+unpaired surrogates are rejected. Evidence URLs are retained as text, never fetched.
+The CLI accepts strict UTF-8 JSON up to 1 MiB; invalid inputs exit 2 with no report.
+
+### Calculation and evidence
+
+Score = (benefit weight × benefit + confidence weight × confidence +
+effort weight × (100 − effort) + risk weight × (100 − risk)) / sum of weights.
+
+The report preserves all supplied candidates and evidence. It includes each
+weighted contribution, normalized weights, constraints, exclusion reasons,
+rank and Pareto status. Scores/contributions round exact nonnegative rational
+values half-up to six decimal places; rounded contributions may not sum exactly
+to the rounded score. Risk above the maximum or confidence below the minimum
+excludes a candidate. Eligible candidates sort by rounded score descending,
+then ASCII ID; excluded candidates follow in ID order with null ranks.
+`selected_id` is the first eligible ID, or null when all are excluded.
+A high score is only a review priority, not authorization to act.
+
+The existing system `core.simulation.mats.pareto_front` computes non-dominated
+eligible candidates over (−benefit, −confidence, effort, risk). Equal vectors
+are both non-dominated; weights do not alter Pareto membership.
+`core.runtime.store.digest` binds the complete input using SHA-256 over sorted,
+compact, non-ASCII-escaped UTF-8 JSON. This identifies the assessed input, not
+proof of truth. Same input gives the same report, with no timestamps/randomness.
+The example ranks routing (74.5), maintenance (73.5), then excluded storage (52.5).
+Changing weights or thresholds changes the actual result.
+
+### Compatibility and review boundary
+
+The historical helper retains `--list` and explicit `--sample --seed 42 --no-log`.
+Legacy external generation requires explicit `--generate` plus configuration;
+it never falls back to canned samples on provider failure. Those unverified
+ideas are separate from the offline comparator.
+The optional Agents bridge accepts the full input under `supplied`.
+The marketplace helper accepts `--input FILE --dry-run` and only queues eligible
+ranked candidates when invoked without `--dry-run`; actual queueing is a separate
+external action requiring operator approval. Explicit `--sample` is retained.
+
+Original research narratives, assets, flowcharts and deployment scripts below
+are preserved as historical/advanced material. They do not expand this tested scope.
+Nothing here verifies market data, promises revenue or implements superintelligence.
+The linked notebook now runs only the supplied-input comparison and recoverable
+unsigned evidence export. Its Python cells are tested locally with network access
+blocked; actual hosted Colab deployment remains unqualified. The retained deployment
+shell script is historical advanced material, not a recommended quick-start.
+
 <!-- CURRENT-DEMO:END -->
 
 This repository is a conceptual research prototype. References to "AGI" and "superintelligence" describe aspirational goals and do not indicate the presence of a real general intelligence. Use at your own risk. Nothing herein constitutes financial advice. MontrealAI and the maintainers accept no liability for losses incurred from using this software.
@@ -141,16 +206,17 @@ Generate offline sample opportunities with:
 ```bash
 python cross_alpha_discovery_stub.py --list
 ```
-Use `-n 3 --seed 42` to log three deterministic picks to
-`cross_alpha_log.json`. If `OPENAI_API_KEY` is set, the tool queries an LLM for fresh ideas. The model may be overridden with `--model` (default `gpt-4o-mini`).
+Use `--sample -n 3 --seed 42` to log three illustrative picks to
+`~/.alpha_factory/cross_alpha_log.json`. External ideas require explicit `--generate`
+and configured credentials; provider failure is an error. Use the comparator above for supplied evidence.
 
 
 ### Environment variables
 | Variable | Default | Purpose |
 |---------|---------|---------|
 | `CROSS_ALPHA_LEDGER` | `cross_alpha_log.json` | Output ledger for `cross_alpha_discovery_stub`. |
-| `CROSS_ALPHA_MODEL` | `gpt-4o-mini` | Remote model used when `OPENAI_API_KEY` is set. |
-| `OPENAI_API_KEY` | _(empty)_ | Enables live suggestions. Offline samples are used when empty. |
+| `CROSS_ALPHA_MODEL` | `gpt-4o-mini` | Remote model used only with explicit `--generate`. |
+| `OPENAI_API_KEY` | _(empty)_ | Credentials for explicit `--generate` only; never used by the comparator. |
 | `OPENAI_API_BASE` | `https://api.openai.com/v1` | API endpoint. Auto-set to `http://local-llm:11434/v1` when no API key. |
 | `OPENAI_TIMEOUT_SEC` | `30` | Request timeout for the OpenAI client. |
 | `AGENTS_ENABLED` | `"finance_agent biotech_agent climate_agent manufacturing_agent policy_agent"` | Agents launched by the deploy script. |
@@ -183,7 +249,7 @@ or install the packages individually.
 Run the cross-industry discovery test to ensure the stub works:
 
 ```bash
-pytest tests/test_cross_alpha_discovery.py
+pytest tests/test_cross_alpha_discovery.py tests/test_cross_industry_comparison.py
 ```
 
 See [tests/README.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/README.md) for environment setup guidance.
@@ -191,7 +257,7 @@ See [tests/README.md](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main
 ### 🤖 OpenAI Agents bridge
 Expose the discovery helper via the OpenAI Agents SDK:
 ```bash
-python openai_agents_bridge.py
+python -m alpha_factory_v1.demos.cross_industry_alpha_factory.openai_agents_bridge
 ```
 The agent registers the tools `list_samples`, `discover_alpha` and `recent_log`.
 When Google ADK is installed the bridge auto-registers with the ADK gateway as well.

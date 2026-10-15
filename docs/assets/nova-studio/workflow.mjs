@@ -7,8 +7,9 @@ import { INTERFACES, StudioChain } from './chain.mjs';
 import { verifyPlan } from './plan.mjs';
 import { createPackage, recoverPackage, exportKit, importKit, objectHash, hashBytes, profileIdentity, verifyPackage, strictJSON, deploymentIdentityStatus } from './package.mjs';
 import { publishPackage, verifyPublication, metadataFor } from './storage.mjs';
-import { createProject, updateCycle, addCycle, preserveSignedRecord, exportProjectKit, importProjectKit, registerMission, completeMission, observeCycle, projectReservoir, freezeEvaluation, recordEvaluation, verifyEvaluation, decideEvaluation, prepareSuccessor } from './cycle.mjs';
+import { validateProject, createProject, updateCycle, addCycle, preserveSignedRecord, exportProjectKit, importProjectKit, registerMission, completeMission, observeCycle, projectReservoir, freezeEvaluation, recordEvaluation, verifyEvaluation, decideEvaluation, prepareSuccessor } from './cycle.mjs';
 import { makeRuntimeRequest, verifyTerms, verifyRuntimeResult, verifySettlementRecord, resultCommitments, verifyEnvelope } from './runtime.mjs';
+import { rememberEdgeEvidence, invalidateEdgeEvidence, readEdgeEvidence } from './cycle-edges.mjs';
 import * as runtimeEvidence from './runtime.mjs';
 import { canonical, digest } from '../successor/engine.mjs?nova-cycle=38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488';
 const eq = (a,b) => address(a) === address(b);
@@ -105,6 +106,7 @@ export class NovaWorkflow {
     return verifyTerms(request,seal,this.client.profile,this.seedId,observerKey,codeHashes);
   }
   async importTerms(index,text,observerKey) {
+    invalidateEdgeEvidence(this,'terms');
     const request=this.requestFor(index), seal=strictJSON(text), epoch=this.client.epoch;
     const body=await this.verifyNativeTerms(request,seal,observerKey);
     const checkpoint=body.preposting_checkpoint;
@@ -114,9 +116,11 @@ export class NovaWorkflow {
     this.client.guard(epoch);
     const project=await preserveSignedRecord(this.project,{kind:'preposting',originalText:text});
     this.project=project; this.runtimeTerms.set(Number(index),{seal,observerKey,epoch});
+    rememberEdgeEvidence(this,'terms',{index,seal},{epoch});
     return body;
   }
   async importRuntimeResult(text,observerKey) {
+    invalidateEdgeEvidence(this,'runtime');
     const result=strictJSON(text), index=result.execution_binding?.body?.plan_binding?.plan_index;
     const request=this.requestFor(index), checked=await verifyRuntimeResult(request,result,observerKey);
     await this.verifyNativeTerms(request,result.terms_seal,observerKey);
@@ -128,9 +132,14 @@ export class NovaWorkflow {
     this.client.guard(epoch);
     const project=await preserveSignedRecord(this.project,{kind:'runtime-run',originalText:text});
     this.project=project; this.runtimeResult=result; this.runtimeTrust={observerKey,epoch};
+    rememberEdgeEvidence(this,'runtime',{projectId:result.project_id,cycleId:result.cycle_id,
+      jobId:String(checked.binding.market_job_id),hashes:checked.hashes,candidateVerdict:result.candidate_verdict,
+      deliveryState:checked.deliveryState,authority:'not_granted'},{epoch});
+    rememberEdgeEvidence(this,'job',{jobId:String(checked.binding.market_job_id),state},{epoch});
     return checked;
   }
   async importRuntimeSettlement(text,observerKey) {
+    invalidateEdgeEvidence(this,'settlement');
     if (!this.runtimeResult) throw Error('Verify the exact native result with your pinned observer key first.');
     const record=strictJSON(text), settlement=await verifySettlementRecord(record,observerKey);
     const result=this.runtimeResult, binding=result.execution_binding.body, epoch=this.client.epoch;
@@ -163,6 +172,7 @@ export class NovaWorkflow {
     const mission=this.currentCycle.missions.find(item=>item.request.plan_index===binding.plan_binding.plan_index);
     project=await completeMission(project,this.cycleId,mission.missionId,{runId:binding.execution_authorization.authorization_id,resultDigest:result.artifact_sha256,settlementId:`${settlement.chain.chain}:${settlement.chain.market.toLowerCase()}:${settlement.chain.job}`});
     this.project=project; this.runtimeSettlement={text,settlement,observerKey};
+    rememberEdgeEvidence(this,'settlement',settlement,{epoch});
     return settlement;
   }
   retainedResult(artifactHash) {
@@ -181,6 +191,7 @@ export class NovaWorkflow {
     return {baselineDigest:await objectHash({method:body.methods.baseline,environment:body.source_environment_digest}),candidateDigest:await objectHash({method:body.methods.candidate,environment:body.source_environment_digest}),taskDigest:'0x'+body.request_digest,procedureDigest:'0x'+freeze.digest,resourceBudget:body.budget,acceptance:{criterion:body.criterion,scope:'Exact numerical quality only; costs and independent holdout remain unqualified.'},heldOut:{method:body.input_policy,evidenceDigest:await objectHash(body.fresh_common_inputs),tuningExposure:false},expectedRunIds:[body.request_digest],rollbackDigest:baseline.result.artifact_sha256};
   }
   async importEvaluationFreeze(text,observerKey) {
+    invalidateEdgeEvidence(this,'evaluation');
     const freeze=strictJSON(text), body=await verifyEnvelope(freeze,'ascension-evaluation-freeze',observerKey);
     if (body.project_id!==this.project.projectId || body.cycle_id!==this.cycleId || body.authority_status!=='not_granted') throw Error('Evaluation freeze belongs to another project or cycle.');
     const baseline=this.retainedResult(body.baseline_artifact_keccak256);
@@ -201,6 +212,7 @@ export class NovaWorkflow {
     return freeze;
   }
   async importEvaluation(freezeText,reportText,observerKey) {
+    invalidateEdgeEvidence(this,'evaluation'); const edgeEpoch=this.client.epoch;
     const freeze=strictJSON(freezeText), report=strictJSON(reportText), body=freeze.body;
     if (body.project_id!==this.project.projectId || body.cycle_id!==this.cycleId || body.authority_status!=='not_granted') throw Error('Evaluation freeze belongs to another project or cycle.');
     const evaluation=this.currentCycle.evaluations.find(item=>item.protocol.procedureDigest==='0x'+freeze.digest);
@@ -222,15 +234,19 @@ export class NovaWorkflow {
     const current=project.cycles.find(item=>item.cycleId===this.cycleId).evaluations.find(item=>item.evaluationId===evaluation.evaluationId);
     const token=await verifyEvaluation(project,evaluation.evaluationId,async()=>({valid:true,protocolHash:await objectHash(await this.evaluationProtocol(freeze,baseline)),reportHash:await hashBytes(new TextEncoder().encode(reportText)),verdict,source:`Separately pinned native observer ${observerKey}; fixed numerical scope, not independent review.`}));
     this.project=project; this.runtimeEvaluation={modelId:evaluation.evaluationId,freeze,freezeText,report,reportText,observerKey,token};
+    rememberEdgeEvidence(this,'evaluation',{freeze,report,outcome:checked.outcome,evaluation:current},{epoch:edgeEpoch});
     return {...checked,evaluation:current};
   }
   async decideImprovement(decision,reviewer,rationale) {
-    const evidence=this.runtimeEvaluation;
+    const evidence=this.runtimeEvaluation,edgeEpoch=this.client.epoch;
     if (!evidence?.report) throw Error('Verify a frozen comparison and its original report first.');
     this.project=await decideEvaluation(this.project,evidence.modelId,{decision,reviewer,rationale,verified:evidence.token});
-    return this.currentCycle.evaluations.find(item=>item.evaluationId===evidence.modelId);
+    const recorded=this.currentCycle.evaluations.find(item=>item.evaluationId===evidence.modelId);
+    rememberEdgeEvidence(this,'evaluation',{freeze:evidence.freeze,report:evidence.report,decision:recorded},{epoch:edgeEpoch});
+    return recorded;
   }
   async authorizeArtifactReuse(review,source={}) {
+    invalidateEdgeEvidence(this,'reuse'); const edgeEpoch=this.client.epoch;
     const {authorizeArtifactReuse}=await import('./reuse.mjs');
     const retained=this.retainedResult(source.artifactHash||this.runtimeResult?.artifact_keccak256);
     const {result,request,cycle}=retained, sourceCycleId=cycle.cycleId;
@@ -246,6 +262,7 @@ export class NovaWorkflow {
       return {request,result,settlement,observerKey,profile:verifier.client.profile};
     }});
     this.project=authorized.project; this.runtimeReuse={...authorized,sourceCycleId,review,observerKey,artifactHash:result.artifact_keccak256};
+    rememberEdgeEvidence(this,'reuse',{sourceCycleId,asset:authorized.asset,selection:authorized.selection},{epoch:edgeEpoch});
     return authorized;
   }
   async refreshArtifactReuse() {
@@ -255,20 +272,22 @@ export class NovaWorkflow {
   }
   async reservoir() {
     await this.syncProject();
-    const observation=await observeCycle(this.project,this.cycleId,this.chain);
-    return projectReservoir(this.project,this.cycleId,observation);
+    return readEdgeEvidence(this,'reservoir',async()=>{
+      const observation=await observeCycle(this.project,this.cycleId,this.chain);
+      return projectReservoir(this.project,this.cycleId,observation);
+    });
   }
   async ledger(observerKey) {
     await this.syncProject();
     const {readProjectLedger}=await import('./ledger.mjs');
-    return readProjectLedger(this.project,this.chain,{observerKey,account:this.client.account});
+    return readEdgeEvidence(this,'ledger',()=>readProjectLedger(this.project,this.chain,{observerKey,account:this.client.account}));
   }
   async reinvestmentProposal(input) {
     await this.syncProject();
     const {createReinvestmentProposal}=await import('./ledger.mjs');
     return createReinvestmentProposal(this.project,this.cycleId,this.chain,{...input,destination:{deployment:profileIdentity(this.client.profile),seedId:this.seedId},approvalActor:this.client.account});
   }
-  stale() { this.observation=null; this.nativeDelivery=null; this.verifiedRoutes.clear(); this.clearPreview(); }
+  stale() { invalidateEdgeEvidence(this); this.observation=null; this.nativeDelivery=null; this.verifiedRoutes.clear(); this.clearPreview(); }
   clearRuntime() {
     this.runtimeResult=null; this.runtimeTrust=null; this.runtimeTerms.clear();
     this.runtimeSettlement=null; this.runtimeEvaluation=null; this.runtimeReuse=null;
@@ -299,6 +318,7 @@ export class NovaWorkflow {
     return this.attachRecovery(body,genome,project);
   }
   async attachRecovery(body,genome,project) {
+    project=await validateProject(project);
     if (!this.client.history.some(unresolved) && body.journal?.transactions?.length)
       await this.session.restore(body.journal);
     return this.session.exclusive(async()=>{
@@ -308,28 +328,35 @@ export class NovaWorkflow {
       const outstanding=this.client.history.filter(unresolved);
       let associated=outstanding.length===0;
       for (const pending of outstanding) {
-        const imported=body.journal?.transactions?.find(record=>record.action===pending.action &&
+        // A new unminted successor can retain a shared journal from an exact
+        // earlier cycle. Matching that history permits viewing, never sending.
+        for (const context of [body,...project.cycles]) {
+          const p=context.package;
+          if (!p) continue;
+          try { deploymentIdentityStatus(p,this.client.profile); } catch { continue; }
+        const imported=context.journal?.transactions?.find(record=>record.action===pending.action &&
           canonicalProfile(record.transaction)===canonicalProfile(pending.transaction) &&
           canonicalProfile(record.args)===canonicalProfile(pending.args));
         if (pending.action==='seal') {
           if (p && pending.args[0]===p.capsuleHash && pending.args[1]===p.plan.planRoot &&
               String(pending.args[2])===String(p.plan.jobs.length) && String(pending.args[4])===p.parent &&
-              pending.args[5]===p.evidenceHash && (!body.publication || pending.args[3]===body.publication.metadataURI))
+              pending.args[5]===p.evidenceHash && (!context.publication || pending.args[3]===context.publication.metadataURI))
             associated=true;
         } else {
           if (!imported) continue;
           const fields=ACTIONS[pending.action]?.fields || [];
-          if (fields.some((field,index)=>field.key==='id' && String(pending.args[index])!==body.seedId ||
-              field.key==='job' && !body.jobIds.includes(String(pending.args[index])))) continue;
+          if (fields.some((field,index)=>field.key==='id' && String(pending.args[index])!==context.seedId ||
+              field.key==='job' && !context.jobIds.includes(String(pending.args[index])))) continue;
           if (pending.action==='route') {
             if (!p) continue;
             const index=Number(pending.args[1]), job=p.plan.jobs[index];
-            if (!job || INTERFACES.Mark.encodeFunctionData('route',[body.seedId,index,job.spec,job.proof,
+            if (!job || INTERFACES.Mark.encodeFunctionData('route',[context.seedId,index,job.spec,job.proof,
                 pending.args[4],pending.args[5]]).toLowerCase()!==pending.transaction.data.toLowerCase()) continue;
           }
           associated=true;
         }
       }
+        }
       // The shared journal can contain several projects. Attach one matching
       // project at a time; all other uncertain records continue blocking writes.
       if (!associated) throw Error('Restore the exact package and recovery seed associated with an unresolved transaction.');
@@ -350,9 +377,10 @@ export class NovaWorkflow {
     return this.publication;
   }
   async inspect(seedId=this.seedId) {
-    this.clearPreview(); this.observation=null;
-    const state=await this.chain.seed(seedId,this.package);
-    this.seedId=seedId; this.observation=state; return state;
+    this.clearPreview(); this.observation=null; invalidateEdgeEvidence(this,'chain');
+    const epoch=this.client.epoch,state=await this.chain.seed(seedId,this.package);
+    this.seedId=seedId; this.observation=state;
+    rememberEdgeEvidence(this,'chain',state,{epoch}); return state;
   }
   async preflight(action,input={}) {
     const c=this.client, chain=this.chain, who=await c.identity();
@@ -525,10 +553,12 @@ export class NovaWorkflow {
     });
   }
   async reconcile(hash) {
-    this.clearPreview();
+    this.clearPreview(); invalidateEdgeEvidence(this);
+    const epoch=this.client.epoch;
     return this.session.exclusive(async()=>{
       try {
         const record=await this.client.receipt(hash,true);
+        let observedSelected=false;
         if (!['finalized','effect-unverified'].includes(record.status) || record.receipt?.status!=='0x1') {
           this.stale(); return record;
         }
@@ -543,6 +573,7 @@ export class NovaWorkflow {
         if (record.action==='seal') {
           if (selectedMint) {
             this.observation=await this.chain.verifyMint(record,this.package,this.publication); this.seedId=this.observation.seedId;
+            observedSelected=true;
           } else await this.chain.openMintReceipt(hash);
         } else if (record.action==='route') {
           const seedId=String(record.args[0]);
@@ -550,12 +581,14 @@ export class NovaWorkflow {
           const jobId=await this.chain.verifyRoute(record,selected?this.package:null,seedId);
           if (selected) {
             this.verifiedRoutes.set(jobId,{hash,index:Number(record.args[1])});
+            rememberEdgeEvidence(this,'route',{jobId,index:Number(record.args[1]),receipt:record.receipt},{epoch});
             if (!this.jobIds.includes(jobId)) this.jobIds.push(jobId);
-            this.observation=await this.chain.seed(seedId,this.package);
+            this.observation=await this.chain.seed(seedId,this.package); observedSelected=true;
           }
-        } else if (this.seedId) this.observation=await this.chain.seed(this.seedId,this.package);
+        } else if (this.seedId) { this.observation=await this.chain.seed(this.seedId,this.package); observedSelected=true; }
         else await this.client.inspect();
         if (record.status==='effect-unverified') this.client.completeEffects(record);
+        if(observedSelected)rememberEdgeEvidence(this,'chain',this.observation,{epoch});
         return record;
       } catch (error) { this.stale(); throw error; }
     });
@@ -601,9 +634,11 @@ export class NovaWorkflow {
     return report;
   }
   async openRouteReceipt(hash) {
+    invalidateEdgeEvidence(this,'route'); const epoch=this.client.epoch;
     if (!this.package || !this.seedId) throw Error('Open the seed and restore its exact package first.');
     const route=await this.chain.openRouteReceipt(hash,this.package,this.seedId);
     this.verifiedRoutes.set(route.jobId,{hash,index:route.index});
+    rememberEdgeEvidence(this,'route',route,{epoch});
     if (!this.jobIds.includes(route.jobId)) this.jobIds.push(route.jobId);
     return route;
   }

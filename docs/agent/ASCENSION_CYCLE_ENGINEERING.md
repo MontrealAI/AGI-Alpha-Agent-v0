@@ -196,6 +196,36 @@ The current implementation preserves and tests the exact topology, but individua
 their own observed state and permitted-action presentation. Case 53 remains an explicit software blocker;
 the matrix above defines the required contract and does not claim that presentation is complete.
 
+### Additive case 53 inspector
+
+The paragraph above preserves the original snapshot's presentation gap. The additive
+`cycle-edges.mjs` / `cycle-ui.mjs` implementation gives every original E01–E18 direction a native
+keyboard button, a current-record panel, its specific evidence scope and responsible actor, and a
+navigation-only next step. The original twelve components, eighteen directions and diagrams are unchanged.
+
+The panel separates local commitments, exact retained historical bytes and in-process observed snapshots.
+Snapshots are bound to the selected project, cycle, package commitments, seed, deployment, wallet account
+and provider epoch. They expire after two minutes, including while the panel is idle. A failed refresh,
+reorganization error, changed context or explicit invalidation keeps the earlier record visible as stale.
+Serialized imports, embedded keys, model outcomes, retained job IDs and opaque future record schemas do
+not restore an observed state. Missing source observations remain listed explicitly. The shared wallet
+journal is filtered by the selected package, seed or known job; unresolved wallet effects take priority
+and direct the user to original-intent reconciliation.
+
+Inspector actions only reveal the relevant existing form, open its disclosure and move keyboard focus.
+They do not click that form's control, prepare a transaction, submit data, publish an artifact, grant
+execution, spend, approve reuse or adopt a candidate. The actual controls retain all existing validation,
+qualification, public-disclosure, wallet and runtime consent gates. The target is resolved again against
+the live flow when activated, so a changed context cannot reuse an old suggested action. Enter/Space,
+Escape/return-to-connection, EN/FR and narrow/large-text layouts have executable coverage.
+
+Regression entry points are `tests/nova-studio/cycle-edges.test.mjs`, `cycle-ui.test.mjs` and
+`edge_browser.py`. The standalone Chromium report separates real shipped UI and encrypted recovery from
+explicitly synthetic stale-state fixtures; it establishes no chain observation or runtime execution.
+The production native/disposable-EVM `cycle-browser.py` also inspects every edge after real workflow
+steps and retains the inspected records. Run-specific source hashes and outcomes are required before
+claiming qualification; these additions do not rewrite any historical report or waive other acceptance cases.
+
 ## Exact artifact and hash conventions
 
 The existing [Studio format contract](NOVA_SEED_STUDIO_ENGINEERING.md#hash-and-schema-contracts) and
@@ -336,6 +366,14 @@ tests** for original signed settlements, canonical event attribution, refund cus
 proposals. These three reports use the repository-pinned Node 22.17.1, retain complete runtime versions
 and verify that their declared source hashes stayed unchanged during execution. Principal-return receipts,
 all-cycle costs and shared project/device allocations are outside the current ledger's implemented scope.
+
+The historical report above retains its original scope. The subsequent receipt-accounting implementation adds
+direct `CapitalReturned` attribution from saved wallet-journal hints or explicit bounded receipt references.
+It requires matching cycle commitments, the selected verified MARK deployment, finalized canonical receipt/log,
+the exact seed and direct claimant, and unique transaction/log attribution. It retains observed zero returns,
+keeps missing coverage unknown and separates returned principal from payout income and wallet balances.
+`tests/nova-studio/ledger.test.mjs` and the two-cycle native/browser harness exercise this addition; their final
+source-bound execution results must accompany qualification. All-cycle costs and shared allocations remain open.
 
 The [native component report](release-evidence/ascension-cycle-native.json), with its retained
 [pytest output](release-evidence/ascension-cycle-native.txt) and

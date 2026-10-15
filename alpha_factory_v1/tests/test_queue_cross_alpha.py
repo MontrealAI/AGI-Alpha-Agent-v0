@@ -37,7 +37,7 @@ class QueueCrossAlphaTest(unittest.TestCase):
     def test_queue_opportunities(self) -> None:
         self.server, self.thread = _start_server()
         host, port = self.server.server_address
-        jobs = queue_cross_alpha.queue_opportunities(1, host=str(host), port=port, dry_run=False)
+        jobs = queue_cross_alpha.queue_opportunities(1, host=str(host), port=port, dry_run=False, sample=True)
         self.assertEqual(len(jobs), 1)
         self.assertEqual(_Handler.received_path, "/agent/finance/trigger")
         assert _Handler.received_body is not None

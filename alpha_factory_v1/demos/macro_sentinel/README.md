@@ -1,7 +1,25 @@
+## Supplied-input simulation boundaries
+
+Both numerical backends react to supplied yield slope and stable-flow observations. The
+standard-library fallback and NumPy backend use the same illustrative marginal log-return
+model with a regime selected once per path; their random streams differ. Coefficients are
+demonstration assumptions, not verified empirical calibration or investment guidance.
+
+At most 100,000 paths, 365 steps per path and 2,000,000 total path-steps are accepted.
+Nonfinite observations and unsupported drift magnitudes fail before scenario allocation.
+Quantile interpolation, tail means and constant-sample skew have the same definitions in
+both backends. Metric inputs require 1–100,000 finite factors in (0, 1e100];
+empty, nonpositive, nonfinite or oversized scenario inputs are rejected.
+
+The order tool produces an illustrative draft only and marks executionAuthorized=false.
+It assumes a fixed USD 50,000 per whole contract for demonstration, not a current MES
+price. Zero or sub-contract notionals produce quantity zero and side NONE; no minimum
+trade is invented. No broker or transaction is called by these tools.
+
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.31.3
+## Current runnable path — 1.32.0
 
 **Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
 

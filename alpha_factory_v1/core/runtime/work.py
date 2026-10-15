@@ -207,7 +207,7 @@ def _predict(history: list[float], policy: str, season: int, horizon: int = 1) -
     if policy == "last":
         return [history[-1]] * horizon
     if policy == "mean":
-        return [sum(history) / len(history)] * horizon
+        return [math.fsum(history) / len(history)] * horizon
     if policy == "drift":
         slope = (history[-1] - history[0]) / max(1, len(history) - 1)
         return [history[-1] + slope * step for step in range(1, horizon + 1)]
@@ -231,7 +231,7 @@ def forecast(mission: Mission) -> dict[str, Any]:
         validation_start = len(train) - 1
 
     def mae(expected: list[float], predicted: list[float]) -> float:
-        return sum(abs(a - b) for a, b in zip(expected, predicted)) / len(expected)
+        return math.fsum(abs(a - b) for a, b in zip(expected, predicted)) / len(expected)
 
     scores = {
         policy: mae(train[validation_start:], _walk_forward(train, validation_start, policy, work.season))

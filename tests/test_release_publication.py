@@ -859,3 +859,13 @@ def test_release_packaging_refuses_dirty_source_before_creating_assets(
     with pytest.raises(subprocess.CalledProcessError):
         package_agent_release.main()
     assert not (tmp_path / "release").exists()
+
+
+def test_integrated_operator_guide_contains_adapter_and_reservation_instructions() -> None:
+    documents = set(package_agent_release.release_documents("1.32.0"))
+    assert {
+        "docs/agent/ECOSYSTEM_ADAPTERS.md",
+        "docs/agent/SUPPLIER_BROWSER_ADAPTER.md",
+        "docs/agent/SUCCESSOR_COMPUTER_USE.md",
+        "docs/agent/NATIVE_BUDGET_RESERVATIONS.md",
+    } <= documents

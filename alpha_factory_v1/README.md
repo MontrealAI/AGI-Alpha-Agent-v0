@@ -306,7 +306,7 @@ sequenceDiagram
 |4|`alpha_agi_business_3_v1`|📊|Runs a bounded business-cycle simulation with local fallback results.|Optimises capital stack for ROI alpha.|`alpha-factory demos show alpha_agi_business_3_v1`|
 |5|`alpha_agi_marketplace_v1`|🛒|Peer‑to‑peer agent marketplace simulating price discovery.|Validates micro‑alpha extraction via agent barter.|`alpha-factory demos show alpha_agi_marketplace_v1`|
 |6|`alpha_asi_world_model`|🌌|Scales MuZero‑style world‑model to an open‑ended grid‑world.|Stress‑tests anticipatory planning for ASI scenarios.|`alpha-factory demos show alpha_asi_world_model`|
-|7|`cross_industry_alpha_factory`|🌐|Full pipeline: ingest → plan → act across 4 verticals.|Proof that one orchestrator handles multi‑domain alpha.|`alpha-factory demos show cross_industry_alpha_factory`|
+|7|`cross_industry_alpha_factory`|🌐|Supplied assessments → compare → inspect trade-offs.|Bounded priorities and evidence; no execution or returns claim.|`alpha-factory demos show cross_industry_alpha_factory`|
 |8|`era_of_experience`|🏛|Lifelong RL stack blending real & synthetic experience streams.|Showcases sensor-motor tools, grounded rewards & non-human reasoning.|`alpha-factory demos show era_of_experience`|
 |9|`finance_alpha`|💹|Paper-market and legacy broker integration example.|Illustrates risk controls; realized P&L is not established by release evidence.|`alpha-factory demos show finance_alpha`|
 |10|`macro_sentinel`|🌐|Monte Carlo risk simulation over bundled macro inputs.|Quantifies modeled tail risk under supplied assumptions.|`alpha-factory demos show macro_sentinel`|

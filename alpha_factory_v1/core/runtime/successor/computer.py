@@ -157,6 +157,7 @@ class HTTPAdvisor:
         self.api_key = api_key
         self.history: list[dict[str, Any]] = []
         self.pending: str | None = None
+        self.usage_events: list[dict[str, Any]] = []
 
     def next(self, task: ComputerTask, observation: dict[str, Any]) -> dict[str, Any]:
         """Never retry a billed request automatically, follow redirects or acknowledge safety checks."""
@@ -218,6 +219,9 @@ class HTTPAdvisor:
                 ],
             }
             suffix = "/chat/completions"
+        # Reserve an attempt before network I/O; a timeout never establishes zero cost.
+        event: dict[str, Any] = {"attempt": len(self.usage_events) + 1, "status": "UNKNOWN", "cost": None}
+        self.usage_events.append(event)
         with httpx.Client(timeout=30, trust_env=False, follow_redirects=False) as client:
             with client.stream(
                 "POST",
@@ -233,6 +237,17 @@ class HTTPAdvisor:
                     if len(chunks) > 128_000:
                         raise ValueError("provider response exceeds bound")
         result = json.loads(chunks)
+        usage = result.get("usage")
+        fields = (
+            ("input_tokens", "output_tokens", "total_tokens")
+            if self.identity["mode"] == "responses"
+            else ("prompt_tokens", "completion_tokens", "total_tokens")
+        )
+        if isinstance(usage, dict) and all(
+            type(usage.get(field)) is int and 0 <= usage[field] <= 10**12 for field in fields  # noqa: E721
+        ):
+            event.update(status="PROVIDER_REPORTED", tokens={field: usage[field] for field in fields})
+        # Provider-reported token counts are observations, never an invoice or dollar limit.
         if self.identity["mode"] == "vision-json":
             advice = safe_json_loads(result["choices"][0]["message"]["content"])
             if not isinstance(advice, dict):
@@ -435,17 +450,19 @@ class DockerComputer:
             raise ValueError("isolated browser cleanup could not be verified")
 
 
-def commitment(task: ComputerTask, advisor: Advisor, image: str) -> str:
-    """Bind provider substitution, worker bytes, image, input rights and all limits before permission."""
-    return digest(
-        "computer-task",
-        {
-            "task": task.model_dump(mode="json"),
-            "provider": advisor.identity,
-            "image": image,
-            "worker_sha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
-        },
-    )
+def commitment(task: ComputerTask, advisor: Advisor, image: str, execution_context: str | None = None) -> str:
+    """Bind exact work, provider, worker/image and optional immutable assignment context."""
+    document = {
+        "task": task.model_dump(mode="json"),
+        "provider": advisor.identity,
+        "image": image,
+        "worker_sha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+    }
+    if execution_context is not None:
+        if not isinstance(execution_context, str) or re.fullmatch(r"[0-9a-f]{64}", execution_context) is None:
+            raise ValueError("Execution context must be an exact SHA256 commitment")
+        document["execution_context"] = execution_context
+    return digest("computer-task", document)
 
 
 def run_session(
@@ -457,10 +474,11 @@ def run_session(
     permit: str,
     *,
     factory: Any = DockerComputer,
+    execution_context: str | None = None,
 ) -> dict[str, Any]:
     """Retain every pre-effect reservation; interrupted sessions cannot resume or silently replay."""
     journal.verify()
-    expected = commitment(task, advisor, image)
+    expected = commitment(task, advisor, image, execution_context)
     if permit != expected:
         raise ValueError("operator permit must match the displayed task/provider/image commitment")
     if output.exists() or output.is_symlink():
@@ -486,6 +504,7 @@ def run_session(
                 "run_id": run_id,
                 "state": "running",
                 "commitment": expected,
+                "execution_context": execution_context,
                 "provider": advisor.identity,
                 "turns_reserved": 0,
                 "actions_reserved": 0,
@@ -526,7 +545,15 @@ def run_session(
         for turn in range(task.max_turns):
             checkpoint()
             record = _change(journal, key, record["revision"], turns_reserved=turn + 1, pending="provider")
-            advice = advisor.next(task, observation)
+            try:
+                advice = advisor.next(task, observation)
+            finally:
+                if isinstance(advisor, HTTPAdvisor):
+                    latest = journal.latest(key)
+                    changed_during_provider = latest["revision"] != record["revision"]
+                    record = _change(journal, key, latest["revision"], provider_usage=advisor.usage_events)
+                    if changed_during_provider:
+                        raise Conflict("operator revoked or changed execution during provider response")
             checkpoint()
             if (
                 set(advice) != {"actions", "done", "summary"}
@@ -543,7 +570,8 @@ def run_session(
             if record["actions_reserved"] + len(actions) > task.max_actions:
                 raise ValueError("session action budget exhausted")
             if advice["done"]:
-                private_write(output / "visible-text.txt", observation["text"].encode())
+                visible_bytes = observation["text"].encode("utf-8")
+                private_write(output / "visible-text.txt", visible_bytes)
                 record = _change(
                     journal,
                     key,
@@ -551,6 +579,8 @@ def run_session(
                     state="closing",
                     pending=None,
                     completion_claim=advice["summary"],
+                    observed_text_sha256=hashlib.sha256(visible_bytes).hexdigest(),
+                    observed_text_bytes=len(visible_bytes),
                     verified=False,
                 )
                 break
@@ -601,6 +631,10 @@ def run_session(
             raise
         finally:
             latest = journal.latest(key)
+            record = _change(
+                journal, key, latest["revision"], elapsed_milliseconds=int((time.monotonic() - started) * 1000)
+            )
+            latest = record
             private_write(output / "receipt.json", canonical(latest))
             write_receipt(journal, latest, output, "computer-receipt")
     return {

@@ -8,7 +8,7 @@ import json
 
 from alpha_factory_v1.utils.disclaimer import print_disclaimer
 from .data_feeds import stream_macro_events
-from .simulation_core import MonteCarloSimulator
+from .simulation_core import MAX_PATH_STEPS, MonteCarloSimulator
 
 
 def main() -> None:
@@ -20,6 +20,8 @@ def main() -> None:
     args = parser.parse_args()
     if not 1 <= args.paths <= 100000 or not 1 <= args.horizon <= 365:
         parser.error("paths must be 1–100000 and horizon 1–365")
+    if args.paths * args.horizon > MAX_PATH_STEPS:
+        parser.error("paths times horizon must not exceed 2000000")
     print_disclaimer()
 
     async def sample() -> dict:

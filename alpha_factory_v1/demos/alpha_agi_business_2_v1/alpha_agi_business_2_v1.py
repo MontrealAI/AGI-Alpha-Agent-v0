@@ -1,40 +1,55 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # NOTE: This demo is a research prototype. References to "AGI" or "superintelligence" describe aspirational goals and do not indicate the presence of real general intelligence. Use at your own risk. Nothing herein constitutes financial advice.
-"""Alpha‑AGI Business v2 demo.
+"""Legacy service adapter for the finite supplied-input Business 2 planner.
 
-Boots the Alpha‑Factory orchestrator with two minimal agents. The demo
-operates fully offline but automatically upgrades to cloud LLM providers
-when ``OPENAI_API_KEY`` is detected.
+Use ``planning --input`` for offline execution; this module preserves service topics.
+Commentary requires explicit opt-in and a real compatible provider SDK.
 """
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
+from pathlib import Path
+from typing import Any
 
 from alpha_factory_v1.backend import orchestrator
 from alpha_factory_v1.backend.agents import (
-    AgentBase,
     AgentMetadata,
     register_agent,
 )
 
+from alpha_factory_v1.backend.agents.base import AgentBase
+from .planning import load_report
+
+
+def _report() -> dict[str, Any]:
+    path = os.getenv("BUSINESS2_INPUT")
+    if not path:
+        raise ValueError("Set BUSINESS2_INPUT to a validated scenario JSON file; no fixture fallback")
+    return load_report(Path(path))
+
 
 class PlanningAgent(AgentBase):
-    """Toy planner agent emitting a single planning message."""
+    """Publish an exact bounded portfolio from the configured supplied input."""
 
     NAME = "planning"
     CAPABILITIES = ["plan"]
     __slots__ = ()
 
     async def step(self) -> None:
-        """Publish a mock optimal plan."""
-        await self.publish("alpha.plan", {"plan": "explore_market"})
+        """Publish a computed plan and its input commitment on the existing topic."""
+        report = _report()
+        await self.publish(
+            "alpha.plan",
+            {"plan": report["plan"], "inputDigest": report["inputDigest"], "provenance": report["provenance"]},
+        )
 
 
 class ResearchAgent(AgentBase):
-    """Toy researcher agent publishing summarised findings."""
+    """Review supplied observations without fetching or inventing research."""
 
     NAME = "research"
     CAPABILITIES = ["research"]
@@ -42,8 +57,17 @@ class ResearchAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
-        """Publish a mock research summary."""
-        await self.publish("alpha.research", {"summary": "market stable"})
+        """Publish computed evidence under the existing summary envelope."""
+        report = _report()
+        await self.publish(
+            "alpha.research",
+            {
+                "summary": report["research"],
+                "inputDigest": report["inputDigest"],
+                "provenance": report["provenance"],
+                "scope": report["scope"],
+            },
+        )
 
 
 class LLMCommentAgent(AgentBase):
@@ -55,20 +79,28 @@ class LLMCommentAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
-        """Post a short market insight using OpenAI Agents if available."""
-        insight = "LLM unavailable"
-        try:
-            from openai_agents import OpenAIAgent
+        """Request commentary only when explicitly enabled; never fabricate fallback text."""
+        if os.getenv("BUSINESS2_COMMENTARY", "0") != "1":
+            return
+        import openai_agents
 
-            agent = OpenAIAgent(
-                model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
-                api_key=os.getenv("OPENAI_API_KEY"),
-                base_url=None if os.getenv("OPENAI_API_KEY") else "http://ollama:11434/v1",
-            )
-            insight = await agent("One sentence on today's market outlook")
-        except Exception as exc:  # noqa: BLE001
-            logging.getLogger(__name__).warning("LLM fallback: %s", exc)
-        await self.publish("alpha.insight", {"insight": insight})
+        if getattr(openai_agents, "__alpha_factory_stub__", False) or "Minimal stub" in (openai_agents.__doc__ or ""):
+            raise RuntimeError("The bundled openai_agents compatibility stub cannot provide model commentary")
+        report = _report()
+        agent = openai_agents.OpenAIAgent(
+            model=os.getenv("MODEL_NAME", "gpt-4o-mini"),
+            api_key=os.getenv("OPENAI_API_KEY"),
+            base_url=None if os.getenv("OPENAI_API_KEY") else "http://ollama:11434/v1",
+        )
+        insight = await agent(
+            "Comment only on these supplied assumptions; do not claim live research: "
+            + json.dumps(report, ensure_ascii=False)
+        )
+        if not isinstance(insight, str) or not insight.strip() or len(insight) > 8000:
+            raise ValueError("Provider returned invalid or oversized commentary")
+        await self.publish(
+            "alpha.insight", {"insight": insight, "mode": "provider_commentary", "inputDigest": report["inputDigest"]}
+        )
 
 
 def register_demo_agents() -> None:
@@ -125,6 +157,7 @@ def main(argv: list[str] | None = None) -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
+    _report()  # Fail before starting a service if input is missing or invalid.
     register_demo_agents()
 
     try:
