@@ -16,6 +16,7 @@ from starlette.concurrency import run_in_threadpool
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from .engine import Engine
+from .budget import BudgetCommand, BudgetScope, inspect as inspect_budget, operate as operate_budget
 from .models import Mission, StrictModel
 from .store import Conflict, Journal
 
@@ -226,6 +227,30 @@ def create_app(journal: Journal) -> FastAPI:
             raise HTTPException(422, public_error(exc)) from exc
         except Exception as exc:
             raise HTTPException(502, "Studio operation failed; refresh retained history before retrying") from exc
+
+    def budget_identity(x_agialpha_journal: str = Header(default="")) -> None:
+        if x_agialpha_journal and x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Journal identity changed; reconnect and review retained state")
+
+    @app.post("/api/budget/inspect", dependencies=[Depends(authorize), Depends(budget_identity)])
+    def budget_inspect(scope: BudgetScope) -> dict[str, Any]:
+        return inspect_budget(journal, scope)
+
+    def budget_mutation_identity(x_agialpha_journal: str = Header(default="")) -> None:
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact journal identity is required; reconnect before changing reservations")
+
+    @app.post("/api/budget/operate", dependencies=[Depends(authorize), Depends(budget_mutation_identity)])
+    def budget_operate(command: BudgetCommand) -> dict[str, Any]:
+        return operate_budget(journal, command)
+
+    @app.get("/budget-studio")
+    def budget_studio() -> FileResponse:
+        return FileResponse(static / "budget-studio.html")
+
+    @app.get("/budget-studio.js")
+    def budget_studio_javascript() -> FileResponse:
+        return FileResponse(static / "budget-studio.js", media_type="application/javascript")
 
     @app.get("/healthz")
     def health() -> dict[str, str]:

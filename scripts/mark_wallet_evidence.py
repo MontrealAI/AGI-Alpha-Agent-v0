@@ -38,6 +38,7 @@ ASSETS = (
             "workflow.mjs",
             "cycle.mjs",
             "cycle-ui.mjs",
+            "cycle-edges.mjs",
             "runtime.mjs",
             "reuse.mjs",
             "ledger.mjs",

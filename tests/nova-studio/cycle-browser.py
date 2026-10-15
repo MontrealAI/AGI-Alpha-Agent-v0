@@ -12,6 +12,8 @@ from uuid import uuid4
 
 from playwright.sync_api import Route, expect, sync_playwright
 
+from edge_browser import assert_edge_controls
+
 
 def main() -> None:
     config = json.loads(Path(sys.argv[1]).read_text())
@@ -21,6 +23,7 @@ def main() -> None:
     checks: list[str] = []
     transaction_history: list[str] = []
     financial_evidence: dict[str, Any] = {}
+    edge_controls: list[dict[str, Any]] = []
     expected_nodes = [
         "Insight",
         "Nova-Seeds",
@@ -109,6 +112,7 @@ def main() -> None:
             assert [
                 text.split(" · ")[0] for text in page.locator("#cycle-graph li").all_text_contents()
             ] == expected_edges
+            edge_controls.extend(assert_edge_controls(page))
 
         def download(control: str, filename: str) -> Path:
             show(control)
@@ -348,6 +352,15 @@ def main() -> None:
             assert page.locator("#result-file").evaluate("el=>el.files.length") == 0
             expect(page.locator("#result-digest")).to_have_value(result["artifact_keccak256"])
             expect(page.locator("#result-hash")).to_contain_text(result["artifact_keccak256"])
+            if ordinal == 1:
+                inspected = assert_edge_controls(page, keys=("Enter",))
+                edge_controls.extend(inspected)
+                returned = next(row for row in inspected if row["edge"] == "E13")
+                snapshot = next(item for item in returned["record"]["observations"] if item["kind"] == "runtime")
+                assert snapshot["state"] == "observed"
+                assert snapshot["record"]["hashes"]["keccak256"] == result["artifact_keccak256"]
+                assert snapshot["record"]["candidateVerdict"] == result["candidate_verdict"]
+                assert snapshot["record"]["authority"] == "not_granted"
             artifact_file = download("export-native-artifact", f"browser-cycle-{ordinal}-exact-artifact.json")
             assert artifact_file.read_bytes() == result["artifact_utf8"].encode()
             show("runtime-public-consent")
@@ -386,6 +399,14 @@ def main() -> None:
                 imported["record"],
                 "settlement",
             )
+            if ordinal == 1:
+                inspected = assert_edge_controls(page, keys=("Space",))
+                edge_controls.extend(inspected)
+                settled = next(row for row in inspected if row["edge"] == "E09")
+                snapshot = next(item for item in settled["record"]["observations"] if item["kind"] == "settlement")
+                assert snapshot["state"] == "observed"
+                assert snapshot["record"]["transaction_hash"] == settlement_tx
+                assert snapshot["record"]["candidate_verdict"] == result["candidate_verdict"]
             accepted = operator({"operation": "accept", "seed_id": seed_id, "request": request, "result": result})
             assert accepted["before"]["reserved"]["calls"] == 1
             assert accepted["after"]["reserved"]["calls"] == 0
@@ -492,9 +513,14 @@ def main() -> None:
         action("collect")
         action("close-campaign")
         connect(1)
+        before_first_reclaim = ledger("first-cycle-before-reclaim", 2)
+        first_principal = sum(int(row["reserve"]) for row in before_first_reclaim["campaigns"])
         action("reclaim")
         first_exit_ledger = ledger("first-cycle-after-reclaim", 2)
         assert first_exit_ledger["ownerTotals"]["netPayout"] == "0"
+        assert len(first_exit_ledger["principalReturns"]) == 1
+        assert int(first_exit_ledger["ownerTotals"]["returnedPrincipal"]) == first_principal
+        assert first_exit_ledger["principalReturns"][0]["income"] is False
         assert all(row["status"] == "collected-into-campaign" for row in first_exit_ledger["refunds"])
         assert all(row["reserve"] == "0" for row in first_exit_ledger["campaigns"])
         checks.append(
@@ -604,9 +630,14 @@ def main() -> None:
         action("collect")
         action("close-campaign")
         connect(1)
+        before_second_reclaim = ledger("second-cycle-before-reclaim", 3)
+        second_principal = sum(int(row["reserve"]) for row in before_second_reclaim["campaigns"])
         action("reclaim")
         final_ledger = ledger("second-cycle-after-reclaim", 3)
         assert final_ledger["ownerTotals"]["netPayout"] == "0"
+        assert len(final_ledger["principalReturns"]) == 2
+        assert int(final_ledger["ownerTotals"]["returnedPrincipal"]) == first_principal + second_principal
+        assert final_ledger["principalCoverage"]["completeHistory"] is False
         assert all(row["reserve"] == "0" for row in final_ledger["campaigns"])
         checks.append(
             "Canonical payout/refund ledger and owner-specific proposal precede separate funding confirmations"
@@ -656,6 +687,7 @@ def main() -> None:
                 "reuseSelection": reuse_selection,
                 "financialEvidence": financial_evidence,
                 "renderedGraph": {"nodes": expected_nodes, "directedEdges": expected_edges},
+                "edgeControls": edge_controls,
                 "mainnetTransactions": 0,
                 "externalIndependentReview": False,
                 "physicalWallet": False,

@@ -32,7 +32,8 @@ const ABIS = {
     'function route(uint256,uint32,(string goal,string successMetric,uint96 bounty,uint32 duration,uint16 priceWeight),bytes32[],uint32,address[3]) returns(uint256)',
     'function posted(uint256,uint32) view returns(bool)', 'function jobSeed(uint256) view returns(uint256)',
     'event MissionRouted(uint256 indexed id,uint32 indexed index,uint256 indexed jobId,bytes32 leaf)',
-    'event Bloomed(uint256 indexed id,bytes32 indexed businessNode,bytes32 planRoot,uint256 funding)'
+    'event Bloomed(uint256 indexed id,bytes32 indexed businessNode,bytes32 planRoot,uint256 funding)',
+    'event CapitalReturned(uint256 indexed id,address indexed account,uint256 amount)'
   ]
 };
 export const INTERFACES = Object.fromEntries(Object.entries(ABIS).map(([key,abi]) => [key,new Interface(abi)]));

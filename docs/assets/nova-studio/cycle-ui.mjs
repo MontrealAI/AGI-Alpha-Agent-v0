@@ -2,14 +2,11 @@
 import { tokens, units, uint } from '../ascension-wallet/protocol.mjs';
 import { strictJSON, exportKit } from './package.mjs';
 import { resultCommitments } from './runtime.mjs';
+import { CYCLE_NODES, CYCLE_EDGES, describeCycleEdges, edgeRecordJSON } from './cycle-edges.mjs';
 
 const $=id=>document.getElementById(id), encoder=new TextEncoder();
-const nodes=['Insight','Nova-Seeds','MARK','Sovereign','Business','Marketplace','Jobs','Agents','Nodes','Council','Value Reservoir','Architect'];
-const edges=[['Insight','Nova-Seeds'],['Nova-Seeds','MARK'],['MARK','Sovereign'],['Sovereign','Business'],
-  ['Business','Marketplace'],['Marketplace','Jobs'],['Jobs','Agents'],['Agents','Value Reservoir'],
-  ['Jobs','Value Reservoir'],['Value Reservoir','Nova-Seeds'],['Value Reservoir','Marketplace'],
-  ['Agents','Nodes'],['Nodes','Agents'],['Architect','Sovereign'],['Sovereign','Architect'],
-  ['Architect','Insight'],['Insight','Architect'],['Council','Sovereign']];
+const nodes=CYCLE_NODES;
+let selectedEdge=null,edgeTimer=null;
 let handlers=null;
 async function readFile(id,limit=2000000) {
   const file=$(id).files[0];
@@ -42,7 +39,7 @@ function workSpec(flow,language) {
     rights:{dataClass:$('runtime-rights').value,source:$('runtime-source').value,license:$('runtime-license').value},reviewMinutes:10,inputs};
 }
 export function installCycleUI(options) {
-  handlers=options;
+  handlers=options; selectedEdge=null; clearTimeout(edgeTimer);
   const {getFlow,run,download,status,go,packageView,setNativeResult,getLanguage}=options;
   const act=(id,fn)=>$(id).addEventListener('click',()=>run(fn));
   const key=()=>$('runtime-observer-key').value.trim();
@@ -147,6 +144,12 @@ export function installCycleUI(options) {
       const value=await getFlow().ledger(key());
       $('ledger-status').textContent=`${value.settlements.length} reconciled settlements / règlements rapprochés`;
       for(const recipient of value.recipients)$('ledger-summary').append(line(recipient.recipient,`${tokens(recipient.grossPayout)} gross / brut · ${tokens(recipient.burned)} burned / brûlé · ${tokens(recipient.netPayout)} net $AGIALPHA`));
+      for(const returned of value.principalReturns||[])$('ledger-summary').append(line(
+        'Observed principal return / Retour de principal observé',
+        `${returned.recipient} · ${tokens(returned.amount)} $AGIALPHA · not income / pas un revenu`));
+      if(value.principalCoverage)$('ledger-summary').append(line(
+        'Principal-return coverage / Couverture des retours',
+        'Known receipts only; not complete account history / Reçus connus seulement; historique incomplet'));
       $('ledger-summary').append(line('Current wallet funds / Solde actuel','Refresh assets separately; historical flows are not added / Actualiser séparément'));
       $('ledger-details').textContent=JSON.stringify(value,null,2);
       status('Canonical finalized receipts reconciled. Recipient payouts and campaign refunds remain separate; no profit inferred.');
@@ -226,13 +229,80 @@ export function renderCycleUI(flow) {
   }
   if(!results.length)$('candidate-summary').append(line('Evaluation / Évaluation','No execution report retained / Aucun rapport conservé'));
   for(const evaluation of cycle.evaluations)$('candidate-summary').append(line('Frozen comparison / Comparaison figée',`${evaluation.evidence?.effectiveVerdict||'Awaiting evidence'} · ${evaluation.decision?.decision||'Decision pending'} · costs unqualified / coûts non qualifiés`));
+  const focused=document.activeElement,focusId=focused?.id,focusEdge=focused?.dataset?.cycleEdge;
+  const restoreFocus=!!focused&&$('cycle-graph').contains?.(focused);
   $('cycle-graph').replaceChildren();
   const table=document.createElement('table'),caption=document.createElement('caption');caption.textContent='12 components · 18 original directions / 12 composants · 18 directions';
   const head=document.createElement('thead'),tr=document.createElement('tr');
   for(const label of ['Component / Composant','Evidence and next actor / Preuve et acteur']){const th=document.createElement('th');th.scope='col';th.textContent=label;tr.append(th);}head.append(tr);table.append(caption,head);
   const body=document.createElement('tbody');
   for(const node of nodes){const row=document.createElement('tr'),name=document.createElement('th'),value=document.createElement('td');name.scope='row';name.textContent=node;value.textContent=graphState(node,flow);row.append(name,value);body.append(row);}table.append(body);$('cycle-graph').append(table);
-  const list=document.createElement('ul');for(const [from,to] of edges){const item=document.createElement('li');item.textContent=`${from} → ${to} · inspect evidence / examiner les preuves`;list.append(item);}$('cycle-graph').append(list);
+  const list=document.createElement('ul');list.className='cycle-edges';
+  for(const edge of CYCLE_EDGES){
+    const item=document.createElement('li'),button=document.createElement('button');
+    button.type='button';button.dataset.cycleEdge=edge.id;button.id=`cycle-edge-${edge.id}`;
+    button.setAttribute('aria-controls','cycle-edge-inspector');
+    button.setAttribute('aria-expanded',String(selectedEdge===edge.id));
+    button.textContent=`${edge.from} → ${edge.to} · ${handlers.getLanguage()==='fr'?'examiner les preuves':'inspect evidence'}`;
+    button.addEventListener('click',()=>{
+      selectedEdge=edge.id;renderEdgeInspector(handlers.getFlow());$('cycle-edge-title').focus();
+    });item.append(button);list.append(item);
+  }
+  $('cycle-graph').append(list);
+  const panel=document.createElement('section');panel.id='cycle-edge-inspector';panel.hidden=!selectedEdge;
+  panel.setAttribute('aria-labelledby','cycle-edge-title');
+  for(const [tag,id] of [['h3','cycle-edge-title'],['p','cycle-edge-state'],['h4','cycle-edge-record-label'],
+    ['pre','cycle-edge-record'],['h4','cycle-edge-scope-label'],['p','cycle-edge-scope'],['p','cycle-edge-actor'],
+    ['h4','cycle-edge-action-label'],['p','cycle-edge-reason'],['button','cycle-edge-action'],
+    ['p','cycle-edge-boundary'],['button','cycle-edge-back']]){
+    const element=document.createElement(tag);element.id=id;
+    if(tag==='button')element.type='button';panel.append(element);
+  }
+  $('cycle-graph').append(panel);$('cycle-edge-title').tabIndex=-1;$('cycle-edge-record').tabIndex=0;
+  $('cycle-edge-state').setAttribute('role','status');
+  $('cycle-edge-record').setAttribute('aria-labelledby','cycle-edge-record-label');
+  $('cycle-edge-action').addEventListener('click',()=>{
+    // Re-resolve against the live flow at activation, never a captured historical
+    // descriptor. Moving focus does not click/submit or prepare the target.
+    const current=describeCycleEdges(handlers.getFlow(),{language:handlers.getLanguage()}).find(e=>e.id===selectedEdge);
+    if(!current)return;
+    const target=$(current.action.target);if(!target)return;
+    handlers.go(current.action.step);
+    for(let parent=target.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+    target.focus();target.scrollIntoView?.({block:'center'});handlers.status(current.boundary);
+  });
+  const back=()=> $(`cycle-edge-${selectedEdge}`)?.focus();
+  $('cycle-edge-back').addEventListener('click',back);
+  panel.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();back();}});
+  renderEdgeInspector(flow);
+  if(restoreFocus)$(focusEdge?`cycle-edge-${focusEdge}`:focusId)?.focus?.({preventScroll:true});
+}
+function renderEdgeInspector(flow) {
+  clearTimeout(edgeTimer);
+  const panel=$('cycle-edge-inspector');if(!panel)return;
+  const fr=handlers.getLanguage()==='fr';
+  const edge=describeCycleEdges(flow,{language:handlers.getLanguage()}).find(item=>item.id===selectedEdge);
+  panel.hidden=!edge;if(!edge)return;
+  for(const definition of CYCLE_EDGES)$(`cycle-edge-${definition.id}`)?.setAttribute('aria-expanded',String(definition.id===edge.id));
+  $('cycle-edge-title').textContent=`${edge.id} · ${edge.from} → ${edge.to}`;
+  $('cycle-edge-state').textContent=edge.stateLabel;$('cycle-edge-state').dataset.state=edge.state;
+  $('cycle-edge-record-label').textContent=fr?'Dossier actuel et historique conservé':'Current record and retained history';
+  $('cycle-edge-record').textContent=edgeRecordJSON(edge.records);
+  $('cycle-edge-scope-label').textContent=fr?'Portée des preuves':'Evidence scope';
+  $('cycle-edge-scope').textContent=edge.scope;
+  $('cycle-edge-actor').textContent=edge.actor;
+  $('cycle-edge-action-label').textContent=fr?'Prochaine action permise':'Next permitted action';
+  $('cycle-edge-reason').textContent=edge.action.reason;
+  $('cycle-edge-action').textContent=edge.action.label;
+  $('cycle-edge-action').setAttribute('aria-controls',edge.action.target);
+  $('cycle-edge-action').dataset.cycleTarget=edge.action.target;
+  $('cycle-edge-boundary').textContent=edge.boundary;
+  $('cycle-edge-back').textContent=fr?'Revenir à la connexion sélectionnée':'Return to selected connection';
+  // Expire displayed snapshots even while the page is idle. This never reads
+  // the network or changes authority and never replaces a focused control.
+  const expiries=edge.records.observations.filter(item=>item.state==='observed')
+    .map(item=>Date.parse(item.observedAt)+120000-Date.now());
+  if(expiries.length){edgeTimer=setTimeout(()=>renderEdgeInspector(handlers.getFlow()),Math.max(1,Math.min(...expiries)));edgeTimer.unref?.();}
 }
 function graphState(node,flow) {
   const states={Insight:'Declared objective; inspect assumptions / Objectif déclaré',

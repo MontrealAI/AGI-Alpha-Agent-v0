@@ -178,3 +178,78 @@ test('reinvestment refreshes real ownership and exact quote, deducts supplied ob
   f.client.pending = {status:'submission-unknown'};
   await assert.rejects(createReinvestmentProposal(f.project,f.project.activeCycleId,f.chain,options),/exceeds/);
 });
+
+async function principalFixture({amount='1234',recipient=who}={}) {
+  const f=await fixture(), tx=h('7');
+  const encoded=INTERFACES.Mark.encodeEventLog(INTERFACES.Mark.getEvent('CapitalReturned'),['7',recipient,amount]);
+  const receipt={status:'0x1',transactionHash:tx,blockHash:h('a'),blockNumber:'0x10',from:recipient,to:CONTRACTS.Mark,
+    gasUsed:'0x5208',effectiveGasPrice:'0x64',logs:[{address:CONTRACTS.Mark,...encoded,logIndex:'0x3',removed:false,
+      transactionHash:tx,blockHash:h('a'),blockNumber:'0x10'}]};
+  const originalRead=f.client.read.bind(f.client), receipts=new Map([[tx,receipt]]);
+  f.client.read=async(method,args)=>method==='eth_getTransactionReceipt'&&receipts.has(args[0])?receipts.get(args[0]):originalRead(method,args);
+  const hint={action:'reclaim',args:['7'],hash:tx,status:'finalized',receipt:{status:'0x1',transactionHash:tx}};
+  f.project=await updateCycle(f.project,f.project.activeCycleId,{journal:{transactions:[hint]}});
+  return {...f,principalReceipt:receipt,receipts,hint,tx};
+}
+
+test('principal receipts remain separate from payouts and balances, preserve exact units and deduplicate lookup hints',async()=>{
+  const f=await principalFixture(), before=JSON.stringify(f.project), ref={cycleId:f.project.activeCycleId,transactionHash:f.tx};
+  const value=await readProjectLedger(f.project,f.chain,{observerKey,principalTransactions:[ref,ref]});
+  assert.equal(value.principalReturns.length,1);assert.equal(value.ownerTotals.returnedPrincipal,'1234');
+  assert.equal(value.ownerTotals.netPayout,'6732');assert.equal(value.profit,null);assert.equal(value.spendableIncrease,null);
+  assert.equal(value.principalReturns[0].income,false);assert.equal(value.principalReturns[0].authority,'none');
+  assert.equal(value.principalReturns[0].gas.wei,'2100000');assert.equal(value.principalReturns[0].logIndex,3);
+  assert.equal(value.principalCoverage.completeHistory,false);assert.equal(value.costs.ethGas,null);
+  assert.equal(JSON.stringify(f.project),before);
+  const noOwner=await readProjectLedger(f.project,f.chain,{observerKey,account:null});
+  assert.equal(noOwner.ownerTotals.returnedPrincipal,null);
+  const absentOwner=await readProjectLedger(f.project,f.chain,{observerKey,account:other});
+  assert.equal(absentOwner.ownerTotals.returnedPrincipal,null);
+  const zero=await principalFixture({amount:'0'}), zeroValue=await readProjectLedger(zero.project,zero.chain,{observerKey});
+  assert.equal(zeroValue.ownerTotals.returnedPrincipal,'0');assert.equal(zeroValue.principalReturns.length,1);
+  const exact=await principalFixture({amount:'900719925474099312345678901234567890'});
+  assert.equal((await readProjectLedger(exact.project,exact.chain,{observerKey})).ownerTotals.returnedPrincipal,'900719925474099312345678901234567890');
+});
+
+test('multiple holder principal claims attribute actual beneficiaries, never infer returns from an exhausted reserve',async()=>{
+  const f=await principalFixture(), tx=h('8'), recipient=other;
+  const encoded=INTERFACES.Mark.encodeEventLog(INTERFACES.Mark.getEvent('CapitalReturned'),['7',recipient,'99']);
+  const receipt={...f.principalReceipt,transactionHash:tx,from:recipient,logs:[{...f.principalReceipt.logs[0],...encoded,transactionHash:tx}]};
+  f.receipts.set(tx,receipt);
+  const reference={cycleId:f.project.activeCycleId,transactionHash:tx};
+  const value=await readProjectLedger(f.project,f.chain,{observerKey,principalTransactions:[reference]});
+  assert.equal(value.principalReturns.length,2);assert.equal(value.ownerTotals.returnedPrincipal,'1234');
+  const otherView=await readProjectLedger(f.project,f.chain,{observerKey,account:other,principalTransactions:[reference]});
+  assert.equal(otherView.ownerTotals.returnedPrincipal,'99');
+  const unobserved=await fixture({fullyReclaimed:true});
+  assert.equal((await readProjectLedger(unobserved.project,unobserved.chain,{observerKey})).ownerTotals.returnedPrincipal,null);
+});
+
+test('principal attribution rejects missing, nonfinal, foreign, conflicting or noncanonical receipt evidence',async()=>{
+  for(const mutation of [
+    f=>{f.receipts.set(f.tx,null);}, f=>{f.principalReceipt.status='0x0';},
+    f=>{f.principalReceipt.to=other;},f=>{f.principalReceipt.from=other;},
+    f=>{f.principalReceipt.blockNumber='0x31';},f=>{f.principalReceipt.transactionHash=h('9');},
+    f=>{f.principalReceipt.logs[0].removed=true;}, f=>{f.principalReceipt.logs[0].blockHash=h('f');},
+    f=>{f.principalReceipt.logs[0].logIndex='0x20000000000000';},f=>{f.principalReceipt.logs=[];},
+    f=>{f.principalReceipt.logs.push({...f.principalReceipt.logs[0],logIndex:'0x4'});},
+    f=>{f.principalReceipt.logs[0].address=other;},
+    f=>{Object.assign(f.principalReceipt.logs[0],INTERFACES.Mark.encodeEventLog(INTERFACES.Mark.getEvent('CapitalReturned'),['8',who,'1234']));},
+    f=>{const read=f.client.read.bind(f.client);f.client.read=async(method,args)=>method==='eth_getBlockByNumber'&&args[0]==='0x10'?{number:'0x10',hash:h('f')}:read(method,args);},
+  ]) {
+    const f=await principalFixture();mutation(f);
+    await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey}));
+  }
+  const f=await principalFixture();
+  await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey,principalTransactions:[{cycleId:'missing',transactionHash:f.tx}]}));
+  await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey,principalTransactions:Array(257).fill({})}),/256/);
+});
+
+
+test('automatic principal history from another deployment is labeled without blocking this profile; explicit foreign attribution rejects',async()=>{
+  const f=await principalFixture();f.client.profile={...profile,sourceSHA256:'f'.repeat(64)};
+  const value=await readProjectLedger(f.project,f.chain,{observerKey});
+  assert.equal(value.principalReturns.length,0);assert.equal(value.ownerTotals.returnedPrincipal,null);
+  assert(value.skippedProfiles.some(row=>row.kind==='principal-return'&&row.status==='requires-original-deployment'));
+  await assert.rejects(readProjectLedger(f.project,f.chain,{observerKey,principalTransactions:[{cycleId:f.project.activeCycleId,transactionHash:f.tx}]}),/another deployment/);
+});

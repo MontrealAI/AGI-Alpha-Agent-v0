@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {describeCycleEdges,rememberEdgeEvidence} from '../../docs/assets/nova-studio/cycle-edges.mjs';
 import {NovaWorkflow} from '../../docs/assets/nova-studio/workflow.mjs';
 import {StudioChain,INTERFACES} from '../../docs/assets/nova-studio/chain.mjs';
 import {createPackage,exportKit,hashBytes,objectHash,profileIdentity} from '../../docs/assets/nova-studio/package.mjs';
@@ -294,12 +295,15 @@ test('reconciling another project’s historical mint preserves the selected pro
   const pkg=await packagePromise,{flow,client}=harness(),record=mintRecord(pkg);
   flow.package={capsuleHash:OTHER,plan:{planRoot:OTHER},evidenceHash:OTHER};flow.seedId='8';flow.jobIds=['10'];
   const selected={seedId:'8'};flow.observation=selected;
+  flow.project=await createProject(null);rememberEdgeEvidence(flow,'chain',selected);
   client.history=[record];client.pending=record;client.receipt=async()=>record;
   client.completeEffects=value=>{value.status='finalized';};
   let verified=false;flow.chain.openMintReceipt=async hash=>{assert.equal(hash,HASH);verified=true;return {seedId:'7'};};
   await flow.reconcile(HASH);
   assert.equal(verified,true);assert.equal(record.status,'finalized');assert.equal(flow.seedId,'8');
   assert.equal(flow.observation,selected);assert.deepEqual(flow.jobIds,['10']);
+  assert.equal(describeCycleEdges(flow).find(edge=>edge.id==='E03').state,'stale',
+    'An unrelated mint receipt must not refresh the selected project snapshot.');
 });
 
 test('native submit binds trusted signature, exact uploaded bytes, worker epoch and routed index',async()=>{
