@@ -29,7 +29,10 @@ def checkout(tmp_path: Path) -> Path:
 def test_walkthrough_count_drift_is_read_only_then_repaired(checkout: Path) -> None:
     path = checkout / "docs/agent/DEMOS.md"
     original = path.read_text()
-    changed = original.replace("all 17 from the wheel", "all 15 from the wheel")
+    count = sum(
+        bool(e["smoke"]) for e in json.loads((checkout / "alpha_factory_v1/demos/catalog.json").read_text())["entries"]
+    )
+    changed = original.replace(f"all {count} from the wheel", "all 0 from the wheel")
     assert changed != original
     path.write_text(changed)
     assert docs.synchronize(checkout, check=True) == ["docs/agent/DEMOS.md"]

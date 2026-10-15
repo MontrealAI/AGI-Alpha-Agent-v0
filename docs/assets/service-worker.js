@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-5f37159b241cbaad";
+const CACHE = "agialpha-gallery-8c6d74442ed46d56";
 const RELEASE = "1.31.3";
 const ASSETS = [
   "../TERMS_AND_CONDITIONS/assets/preview.svg",
@@ -10,6 +10,12 @@ const ASSETS = [
   "../aiga_meta_evolution/assets/script.js",
   "../aiga_meta_evolution/assets/style.css",
   "../aiga_meta_evolution/index.html",
+  "../alpha_agi_business_2_v1/assets/app.mjs",
+  "../alpha_agi_business_2_v1/assets/comparison.css",
+  "../alpha_agi_business_2_v1/assets/engine.mjs",
+  "../alpha_agi_business_2_v1/assets/example.json",
+  "../alpha_agi_business_2_v1/assets/i18n.mjs",
+  "../alpha_agi_business_2_v1/assets/json.mjs",
   "../alpha_agi_business_2_v1/assets/logs.json",
   "../alpha_agi_business_2_v1/assets/preview.svg",
   "../alpha_agi_business_2_v1/assets/script.js",
@@ -46,6 +52,12 @@ const ASSETS = [
   "../alpha_factory_v1/demos/aiga_meta_evolution/assets/script.js",
   "../alpha_factory_v1/demos/aiga_meta_evolution/assets/style.css",
   "../alpha_factory_v1/demos/aiga_meta_evolution/index.html",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/app.mjs",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/comparison.css",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/engine.mjs",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/example.json",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/i18n.mjs",
+  "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/json.mjs",
   "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/logs.json",
   "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/preview.svg",
   "../alpha_factory_v1/demos/alpha_agi_business_2_v1/assets/script.js",

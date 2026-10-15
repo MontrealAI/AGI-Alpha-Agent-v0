@@ -45,12 +45,12 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 ## Inventory
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.31.3: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.31.3: 26 entries; 18 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|
 | [AI-GA meta-evolution](../demos/aiga_meta_evolution.md) | Research training | Evolves small networks in a curriculum environment. | Separate acceptance / prerequisites |
-| [Business v2](../demos/alpha_agi_business_2_v1.md) | Local service | Runs planning, research and optional commentary agents in the legacy orchestrator. | Separate acceptance / prerequisites |
+| [Business v2](../demos/alpha_agi_business_2_v1.md) | Supplied-input planning | Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work. | Required |
 | [Business 3 Enterprise Studio](../demos/alpha_agi_business_3_v1.md) | Reproducible planning | Select a constrained enterprise portfolio, stress the downside and export reviewable Ascension jobs. | Required |
 | [Business v1](../demos/alpha_agi_business_v1.md) | Offline sample | Ranks bundled business opportunities; service agents publish illustrative business events. | Required |
 | [Insight Discovery Workbench](../demos/alpha_agi_insight_v0.md) | Local evidence review | Screen cross-sector hypotheses, allocate review time and export input-bound verification jobs and plaintext Nova-Seed drafts. | Required |

@@ -77,12 +77,12 @@ you want a demo's normal persistent state, such as appended SQLite lineage, to c
 ## Choose an example
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.31.3: 26 entries; 17 finite offline launch checks.**
+**Catalog 1.31.3: 26 entries; 18 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|
 | [AI-GA meta-evolution](aiga_meta_evolution/README.md) | Research training | Evolves small networks in a curriculum environment. | Separate acceptance / prerequisites |
-| [Business v2](alpha_agi_business_2_v1/README.md) | Local service | Runs planning, research and optional commentary agents in the legacy orchestrator. | Separate acceptance / prerequisites |
+| [Business v2](alpha_agi_business_2_v1/README.md) | Supplied-input planning | Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work. | Required |
 | [Business 3 Enterprise Studio](alpha_agi_business_3_v1/README.md) | Reproducible planning | Select a constrained enterprise portfolio, stress the downside and export reviewable Ascension jobs. | Required |
 | [Business v1](alpha_agi_business_v1/README.md) | Offline sample | Ranks bundled business opportunities; service agents publish illustrative business events. | Required |
 | [Insight Discovery Workbench](alpha_agi_insight_v0/README.md) | Local evidence review | Screen cross-sector hypotheses, allocate review time and export input-bound verification jobs and plaintext Nova-Seed drafts. | Required |
