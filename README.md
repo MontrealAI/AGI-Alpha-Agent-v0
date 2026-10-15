@@ -1,5 +1,5 @@
-> **Current maintenance scope · 1.32.0.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.32.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> **Current maintenance scope · 1.33.0.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.33.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
 > This candidate adds inspectable Jobs adapters, bounded browser work and supplied-input demo journeys. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 

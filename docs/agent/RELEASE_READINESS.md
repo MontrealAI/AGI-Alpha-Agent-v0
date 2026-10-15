@@ -1,6 +1,15 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.32.0 candidate publication
+# Release readiness — 1.33.0 local-preview candidate
+
+Version **1.33.0** combines the reviewed local SUCCESSOR journeys described in the
+[release notes](RELEASE_NOTES_1.33.0.md). The exact combined source, generated identities,
+complete required CI and SUCCESSOR browser/accessibility dependency must pass before packaging.
+Current-main publication, public HTTPS identity and uploaded-byte verification remain required.
+This is a local preview using supplied evidence. Independent custody, providers, market access
+and Fleet adapters remain uncommissioned. A source version alone proves none of those outcomes.
+
+## Earlier candidate records
 
 Version **1.32.0** is the integrated additive candidate described in the
 [release notes](RELEASE_NOTES_1.32.0.md). Exact combined-source tests, all required CI,

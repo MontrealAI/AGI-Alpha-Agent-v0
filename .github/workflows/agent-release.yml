@@ -24,6 +24,9 @@ env:
   NO_DISCLAIMER: '1'
 
 jobs:
+  successor-journey:
+    uses: ./.github/workflows/successor-mission.yml
+
   mark-wallet:
     uses: ./.github/workflows/mark-wallet.yml
 
@@ -871,7 +874,7 @@ jobs:
           if-no-files-found: error
 
   package:
-    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench]
+    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
