@@ -60,9 +60,13 @@ def main() -> None:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     builder.BODY = builder.BODY.replace('href="04_Reproduce/site_template.html"', 'href="original-template.txt"')
-    tracker = '<p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4787" data-fr="Suivre la préparation du pilote ↗">Follow pilot readiness ↗</a></p>'
+    tracker = (
+        '<p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issu'
+        'es/4787" data-fr="Suivre la préparation du pilote ↗">Follow pilot'
+        " readiness ↗</a></p>"
+    )
     builder.BODY = builder.BODY.replace('<section id="people">', '<section id="people">' + tracker)
-    builder.CSS += '@media print{:root{font-size:12pt;line-height:1.45}h2,h3{break-after:avoid}p{widows:3;orphans:3}}'
+    builder.CSS += "@media print{:root{font-size:12pt;line-height:1.45}h2,h3{break-after:avoid}p{widows:3;orphans:3}}"
     builder.build()
     (ROOT / "original-template.txt").write_bytes((ROOT / "04_Reproduce/site_template.html").read_bytes())
     blocks = []
@@ -73,14 +77,31 @@ def main() -> None:
             blocks.append(f"<h{level}>{inline(heading[2])}</h{level}>")
         elif paragraph.strip():
             blocks.append("<p>" + inline(paragraph).replace("\n", "<br>") + "</p>")
-    (ROOT / "PILOT_PROTOCOL.html").write_bytes(builder.page('<main><p><a href="START_HERE.html">← Back to the kit</a></p>' + "".join(blocks) + '</main>', "Real-user pilot | Not started"))
-    report_home = '<main><section class="hero"><p class="eyebrow">PUBLIC REPORT EDITION</p><h1>Useful work.<br>Recovered. Reused.</h1><p class="lead">Read the full report and inspect the recorded study results. Simulated owner; executed software checks. Human benefits remain unmeasured.</p><div class="actions"><a class="button primary" href="report.html">Read the report</a><a class="button" href="../START_HERE.html">Back to the working examples</a></div><p><a href="REPORT.md">Markdown report</a> · <a href="results.json">Recorded results</a> · <a href="PUBLICATION.md">Historical editorial notes</a></p></section></main>'
+    (ROOT / "PILOT_PROTOCOL.html").write_bytes(
+        builder.page(
+            '<main><p><a href="START_HERE.html">← Back to the kit</a></p>' + "".join(blocks) + "</main>",
+            "Real-user pilot | Not started",
+        )
+    )
+    report_home = (
+        '<main><section class="hero"><p class="eyebrow">PUBLIC REPORT EDIT'
+        'ION</p><h1>Useful work.<br>Recovered. Reused.</h1><p class="lead"'
+        ">Read the full report and inspect the recorded study results. Sim"
+        "ulated owner; executed software checks. Human benefits remain unm"
+        'easured.</p><div class="actions"><a class="button primary" href="'
+        'report.html">Read the report</a><a class="button" href="../START_'
+        'HERE.html">Back to the working examples</a></div><p><a href="REPO'
+        'RT.md">Markdown report</a> · <a href="results.json">Recorded resu'
+        'lts</a> · <a href="PUBLICATION.md">Historical editorial notes</a>'
+        "</p></section></main>"
+    )
     (ROOT / "01_Report/index.html").write_bytes(builder.page(report_home, "Study report | AGI Alpha"))
     check_navigation()
     # The bundle manifest is generated even for a source-checkout build.
     with tempfile.TemporaryDirectory(prefix="study-kit-build-") as temp:
         package(args.output or Path(temp) / "kit.zip")
     from verify_and_replay import verify_sources
+
     verify_sources(ROOT)
     print("Reader links, complete manifest and original source hashes verified.")
 
