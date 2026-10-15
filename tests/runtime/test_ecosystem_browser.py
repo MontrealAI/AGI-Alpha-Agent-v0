@@ -6,6 +6,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 import socket
+import sys
 import threading
 import time
 from typing import Any
@@ -69,6 +70,7 @@ def admit(page: Any) -> None:
 
 
 def test_complete_native_journey_and_retained_reload(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    axe_bytes = (ROOT / "tests/browser/node_modules/axe-core/axe.min.js").read_bytes()
     with native(tmp_path, monkeypatch) as (journal, origin, token), sync_playwright() as driver:
         browser = driver.chromium.launch(headless=True)
         page = browser.new_page()
@@ -97,9 +99,7 @@ def test_complete_native_journey_and_retained_reload(tmp_path: Path, monkeypatch
         assert journal.verify() == before
         page.route(
             "**/axe-fixture.js",
-            lambda route: route.fulfill(
-                path=str(ROOT / "tests/browser/node_modules/axe-core/axe.min.js"), content_type="application/javascript"
-            ),
+            lambda route: route.fulfill(body=axe_bytes, content_type="application/javascript"),
         )
         page.add_script_tag(url=origin + "/axe-fixture.js")
         for language in ("en", "fr"):
@@ -412,3 +412,9 @@ def test_unsigned_editor_escaped_input_stays_within_transport_limit(tmp_path, mo
         assert specification.mission.work.sources[0].text == work["sources"][0]["text"]
         assert journal.missions() == []
         browser.close()
+
+
+def test_missing_auditor_fails_before_browser_or_native_setup(tmp_path, monkeypatch):
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(FileNotFoundError, match="axe.min.js"):
+        test_complete_native_journey_and_retained_reload(tmp_path, monkeypatch)

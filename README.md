@@ -3,6 +3,23 @@
 > This candidate adds inspectable Jobs adapters, bounded browser work and supplied-input demo journeys. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 
+## Current Cross-Industry supplied-input journey
+
+The original project narrative and historical quick-start below are preserved for context.
+For the supported local comparison, use this current guide; historical deployment commands
+are unqualified advanced material and are not required for the supplied-input journey.
+
+In an installed Alpha environment, inspect the explicit synthetic example:
+```bash
+python -m alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison --example
+```
+Then supply your own bounded assessment JSON with `--input FILE` and inspect the
+ranking, exclusions, evidence and Pareto trade-offs. The [notebook walkthrough](alpha_factory_v1/demos/cross_industry_alpha_factory/colab_deploy_alpha_factory_cross_industry_demo.ipynb)
+executes local comparison and recoverable evidence export; it does not start cloud
+tunnels, upload endpoints, training or providers. Legacy deployment scripts remain
+unqualified advanced material, not prerequisites for this verified comparison.
+
+
 > **[Create a useful SUCCESSOR Ω →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/)**
 > Five bounded work families · English / Français · Real artifacts you can retain · Optional native Computer Use.
 > [Scope, setup and reproduction](docs/agent/SUCCESSOR_WORK.md).
@@ -1378,7 +1395,7 @@ sequenceDiagram
 |4|`alpha_agi_business_3_v1`|📊|Financial forecasting & fundraising agent swarm.|Optimises capital stack for ROI alpha.|`./alpha_factory_v1/demos/alpha_agi_business_3_v1/run_business_3_demo.sh`|
 |5|`alpha_agi_marketplace_v1`|🛒|Peer‑to‑peer agent marketplace simulating price discovery.|Validates micro‑alpha extraction via agent barter.|`docker compose -f demos/docker-compose.marketplace.yml up`|
 |6|`alpha_asi_world_model`|🌌|Scales MuZero‑style world‑model to an open‑ended grid‑world.|Stress‑tests anticipatory planning for ASI scenarios.|`docker compose -f demos/docker-compose.asi_world.yml up`|
-|7|`cross_industry_alpha_factory`|🌐|Supplied assessments → compare → inspect trade-offs.|Bounded priorities and evidence; no execution or returns claim.|`python -m alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison --example`|
+|7|`cross_industry_alpha_factory`|🌐|Full pipeline: ingest → plan → act across 4 verticals.|Proof that one orchestrator handles multi‑domain alpha.|`./alpha_factory_v1/demos/cross_industry_alpha_factory/deploy_alpha_factory_cross_industry_demo.sh`|
 |8|`era_of_experience`|🏛|Lifelong RL stack blending real & synthetic experience streams.|Showcases sensor-motor tools, grounded rewards & non-human reasoning.|`cd alpha_factory_v1/demos/era_of_experience && ./run_experience_demo.sh`|
 |9|`finance_alpha`|💹|Live momentum + risk‑parity bot on Binance test‑net.|Generates real P&L; stress‑tested against CVaR.|`./alpha_factory_v1/demos/finance_alpha/deploy_alpha_factory_demo.sh`|
 |10|`macro_sentinel`|🌐|GPT‑RAG news scanner auto‑hedges with CTA futures.|Shields portfolios from macro shocks.|`docker compose -f demos/docker-compose.macro.yml up`|
@@ -1819,16 +1836,14 @@ PY
 
 ---
 
-### 6.2 · Cross-Industry Supplied-Input Comparison 🌐
-In an installed Alpha environment, inspect the explicit synthetic example:
+### 6.2 · Cross-Industry Demo Quick‑Start 🌐
+Clone the stable `v0.1.0-alpha` release:
 ```bash
-python -m alpha_factory_v1.demos.cross_industry_alpha_factory.opportunity_comparison --example
+git clone --branch v0.1.0-alpha https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git
+cd AGI-Alpha-Agent-v0/alpha_factory_v1/demos/cross_industry_alpha_factory
+# Set AUTO_COMMIT=1 to save generated assets back to the repo
+./deploy_alpha_factory_cross_industry_demo.sh
 ```
-Then supply your own bounded assessment JSON with `--input FILE` and inspect the
-ranking, exclusions, evidence and Pareto trade-offs. The [notebook walkthrough](alpha_factory_v1/demos/cross_industry_alpha_factory/colab_deploy_alpha_factory_cross_industry_demo.ipynb)
-executes local comparison and recoverable evidence export; it does not start cloud
-tunnels, upload endpoints, training or providers. Legacy deployment scripts remain
-unqualified advanced material, not prerequisites for this verified comparison.
 
 ---
 

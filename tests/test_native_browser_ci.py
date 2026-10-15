@@ -21,7 +21,14 @@ def test_native_browser_acceptance_is_one_command_with_both_suites() -> None:
     assert args[:3] == ["python", "-m", "pytest"]
     for name in ["test_budget_browser.py", "test_ecosystem_browser.py", "test_supplier_browser_browser.py"]:
         assert "tests/runtime/" + name in args
-    assert any("playwright install --with-deps chromium" in step.get("run", "") for step in steps)
+    install = next(step for step in steps if step.get("name") == "Install rendered wallet acceptance tools")
+    browser = next(step for step in steps if step.get("name") == "Bounded native bridge, authority and operator checks")
+    assert "python -m pip install playwright==1.54.0" in install["run"]
+    assert "python -m playwright install --with-deps chromium" in install["run"]
+    assert steps.index(install) < steps.index(browser)
+    for item in (workflow["jobs"]["wallet"], install, browser):
+        assert "if" not in item
+        assert "continue-on-error" not in item
 
 
 class UniqueWorkflowLoader(yaml.SafeLoader):
@@ -57,7 +64,8 @@ def test_workflows_have_no_duplicate_mapping_keys() -> None:
     "source",
     [
         "on: push\non: pull_request\n",
-        "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n        env:\n          PYTHONPATH: '.'\n",
+        "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n"
+        "        env:\n          PYTHONPATH: '.'\n",
         "jobs: {wallet: {env: {A: one, A: two}}}",
     ],
 )
@@ -101,11 +109,31 @@ def test_supplier_real_browser_observation_is_in_required_browser_suite() -> Non
     assert "--ignore=tests/runtime/test_supplier_browser_browser.py" in shlex.split(run)
     assert "--ignore=tests/runtime/test_supplier_browser_spec.py" not in shlex.split(run)
     release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
-    release_steps = [step for job in release["jobs"].values() for step in job.get("steps", [])]
-    runtime_steps = [step for step in release_steps if "python -m pytest tests/runtime " in step.get("run", "")]
-    assert runtime_steps
-    assert all("--ignore=tests/runtime/test_supplier_browser_browser.py" not in step["run"] for step in runtime_steps)
-    assert any("playwright install --with-deps chromium" in step.get("run", "") for step in release_steps)
+    runtime = release["jobs"]["runtime"]
+    assert set(runtime["strategy"]["matrix"]["python"]) == {"3.11", "3.12", "3.13"}
+    step = next(step for step in runtime["steps"] if step.get("name") == "Runtime tests in minimal environment")
+    command = next(line for line in step["run"].splitlines() if "python -m pytest tests/runtime " in line)
+    args = shlex.split(command)
+    assert {arg for arg in args if arg.startswith("--ignore=")} == {
+        "--ignore=tests/runtime/test_budget_browser.py",
+        "--ignore=tests/runtime/test_ecosystem_browser.py",
+        "--ignore=tests/runtime/test_supplier_browser_browser.py",
+    }
+    assert "tests/runtime" in args
+    assert "--confcutdir=tests/runtime" in args
+    assert "continue-on-error" not in step
+    assert "continue-on-error" not in runtime
+    assert release["jobs"]["mark-wallet"]["uses"] == "./.github/workflows/mark-wallet.yml"
+    assert "if" not in release["jobs"]["mark-wallet"]
+    assert "continue-on-error" not in release["jobs"]["mark-wallet"]
+    assert "mark-wallet" in release["jobs"]["package"]["needs"]
+    assert "package" in release["jobs"]["pages"]["needs"]
+    assert "pages" in release["jobs"]["publish"]["needs"]
+    for name in ("package", "pages", "publish"):
+        job = release["jobs"][name]
+        assert "continue-on-error" not in job
+        assert not re.search(r"\b(?:always|failure|cancelled)\s*\(", job.get("if", ""))
+    test_native_browser_acceptance_is_one_command_with_both_suites()
 
 
 def test_business_sum_binding_runs_before_merge_on_every_python() -> None:
@@ -132,3 +160,13 @@ def test_business_sum_binding_runs_before_merge_on_every_python() -> None:
         "-q",
         "--junitxml=evidence/business1-sum-binding.xml",
     ]
+
+
+def test_complete_regression_installs_the_pinned_accessibility_auditor():
+    release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
+    steps = release["jobs"]["regression"]["steps"]
+    install = next(step for step in steps if step.get("name") == "Original locked development environment")
+    acceptance = next(step for step in steps if step.get("name") == "Full offline regression including notebooks")
+    assert "npm ci --prefix tests/browser --ignore-scripts" in install["run"].splitlines()
+    assert steps.index(install) < steps.index(acceptance)
+    assert "if" not in install and "continue-on-error" not in install

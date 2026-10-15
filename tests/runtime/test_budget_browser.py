@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import json
 from pathlib import Path
 import socket
+import sys
 import threading
 import time
 from typing import Any
@@ -131,6 +132,7 @@ def retained(page: Page) -> str | None:
 def test_actual_forms_exact_units_keyboard_localization_and_accessibility(
     native: tuple[Journal, str, str], tmp_path: Path
 ) -> None:
+    axe = (ROOT / "tests/browser/node_modules/axe-core/axe.min.js").read_text(encoding="utf-8")
     journal, origin, token = native
     with browser() as instance:
         page = instance.new_page(viewport={"width": 1440, "height": 1080})
@@ -182,7 +184,6 @@ def test_actual_forms_exact_units_keyboard_localization_and_accessibility(
         assert not state["wallet_balance_verified"] and not state["external_transfers_prevented"]
         assert token not in page.evaluate("JSON.stringify({...sessionStorage,...localStorage})")
         assert page.evaluate("window.__walletCalls") == []
-        axe = (ROOT / "tests/browser/node_modules/axe-core/axe.min.js").read_text()
         page.evaluate(axe)
         for language in ["en", "fr"]:
             page.locator("#language").select_option(language)
@@ -440,3 +441,9 @@ def test_login_stays_inert_until_script_initialization(native: tuple[Journal, st
         expect(page.locator("#initializing")).to_be_hidden()
         login(page, origin, token, navigate=False)
         assert page.url == origin + "/budget-studio"
+
+
+def test_missing_auditor_fails_before_browser_setup(tmp_path, monkeypatch):
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(FileNotFoundError, match="axe.min.js"):
+        test_actual_forms_exact_units_keyboard_localization_and_accessibility(None, tmp_path)
