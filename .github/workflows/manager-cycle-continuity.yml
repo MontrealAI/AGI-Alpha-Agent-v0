@@ -4,12 +4,24 @@ on:
     paths:
       - 'examples/successor-project/**'
       - 'examples/successor-workbench/**'
+      - 'docs/assets/successor/**'
+      - 'docs/successor/mission/**'
+      - 'examples/alpha-discovery/**'
+      - 'examples/build-successor/**'
+      - 'scripts/generate_successor_mission.py'
+      - 'scripts/templates/successor-mission/**'
       - '.github/workflows/manager-cycle-continuity.yml'
   push:
     branches: [main]
     paths:
       - 'examples/successor-project/**'
       - 'examples/successor-workbench/**'
+      - 'docs/assets/successor/**'
+      - 'docs/successor/mission/**'
+      - 'examples/alpha-discovery/**'
+      - 'examples/build-successor/**'
+      - 'scripts/generate_successor_mission.py'
+      - 'scripts/templates/successor-mission/**'
       - '.github/workflows/manager-cycle-continuity.yml'
 permissions:
   contents: read
@@ -28,7 +40,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: MontrealAI/AGIJobManager
-          ref: 19d1fafd7db75809194e81451b5c9d1ad373a4e3
+          ref: 0845a77e6be6bda2e3acdf21544776d60ffdb666
           path: build/manager-continuity-source
           persist-credentials: false
       - name: Fetch original Alpha source for Manager validation
