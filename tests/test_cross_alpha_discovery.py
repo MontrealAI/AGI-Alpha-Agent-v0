@@ -83,6 +83,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
                 ledger = Path(tmp) / "env_log.json"
                 env = os.environ.copy()
                 env["HOME"] = home
+                env["USERPROFILE"] = home
                 env["CROSS_ALPHA_LEDGER"] = str(ledger)
                 result = subprocess.run(
                     [
@@ -111,6 +112,7 @@ class TestCrossAlphaDiscoveryStub(unittest.TestCase):
         with tempfile.TemporaryDirectory() as home:
             env = os.environ.copy()
             env["HOME"] = home
+            env["USERPROFILE"] = home
             env.pop("CROSS_ALPHA_LEDGER", None)
             default = Path(home) / ".alpha_factory" / "cross_alpha_log.json"
             result = subprocess.run(
