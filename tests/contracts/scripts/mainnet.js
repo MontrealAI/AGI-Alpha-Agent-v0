@@ -10,6 +10,7 @@ const { SOLC_VERSION, assertNoCompilerWarnings } = require("./compiler-policy");
 const { AGIALPHA_ADDRESS } = require("../../../token.config");
 const root = path.resolve(__dirname, "../../..");
 const names = ["AscensionAccess", "NovaSeed", "AscensionRiskOracle", "AscensionJobMarket", "AscensionMark"];
+const HISTORICAL_LEDGER_GOVERNOR = "0xa9eD0539c2fbc5C6BC15a2E168bd9BCd07c01201";
 const ENS = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 const WRAPPER = "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401";
 const roots = ["alpha.agi.eth", "alpha.agent.agi.eth", "alpha.club.agi.eth"];
@@ -40,7 +41,8 @@ function keys(value, allowed) {
 function validateConfig(c) {
     keys(c, ["schema", "chainId", "deployer", "nonce", "block", "governor", "dependencies", "rootOwners", "parameters"]);
     keys(c.block, ["number", "hash"]);
-    keys(c.governor, ["address", "codeHash", "owners", "threshold"]);
+    const ledgerEOA = c.governor?.kind === "ledger-eoa";
+    keys(c.governor, ledgerEOA ? ["kind", "address", "addressAcknowledgement"] : ["address", "codeHash", "owners", "threshold"]);
     keys(c.dependencies, ["token", "ens", "wrapper"]);
     for (const value of Object.values(c.dependencies)) keys(value, ["address", "codeHash"]);
     keys(c.rootOwners, roots);
@@ -54,10 +56,16 @@ function validateConfig(c) {
         requireValue(address(c.dependencies[key].address) === address(expected), `Noncanonical ${key} address`);
         hash(c.dependencies[key].codeHash);
     }
-    hash(c.governor.codeHash);
-    const owners = c.governor.owners.map(address);
-    requireValue(new Set(owners).size === owners.length && owners.length <= 32, "Unique governance owners required (maximum 32)");
-    integer(c.governor.threshold, 2, owners.length, "multisignature threshold");
+    if (ledgerEOA) {
+        requireValue(address(c.governor.address) === HISTORICAL_LEDGER_GOVERNOR &&
+            c.governor.addressAcknowledgement === HISTORICAL_LEDGER_GOVERNOR,
+            "Ledger EOA requires the exact acknowledged historical governor address");
+    } else {
+        hash(c.governor.codeHash);
+        const owners = c.governor.owners.map(address);
+        requireValue(new Set(owners).size === owners.length && owners.length <= 32, "Unique governance owners required (maximum 32)");
+        integer(c.governor.threshold, 2, owners.length, "multisignature threshold");
+    }
     for (const name of roots) address(c.rootOwners[name]);
     for (const name of ["minimumValidatorStake", "minimumAgentStake"]) {
         const value = c.parameters[name];
@@ -120,8 +128,13 @@ async function makePlan(config, compiled, revision) {
     ].map(call => ({ action: call.action, from: g, to: call.to, chainId: 1, value: "0", operation: 0,
         data: new ethers.Interface(compiled.records[call.name].abi).encodeFunctionData(call.method, [call.argument]) }));
     const payload = { schema: "agialpha.mainnet.unsigned-plan.v1", config, revision, addresses, transactions, governanceCalls,
-        builds: compiled.builds, contracts: compiled.records, readyToBroadcast: false,
-        remainingGates: ["Independent review of these exact sources and dependency implementations", "Pinned mainnet-fork lifecycle and accounting rehearsal with the real token", "Multisignature operator review, current nonce/fees and transaction simulation", "Source verification and post-deployment acceptance before admissions or funding"] };
+        builds: compiled.builds, contracts: compiled.records,
+        governancePolicy: config.governor.kind === "ledger-eoa" ? {
+            kind: "ledger-eoa", acknowledgedAddress: config.governor.addressAcknowledgement,
+            custody: "Owner-reported Ledger; hardware custody is not provable on-chain",
+            risk: "Single signer: compromise or loss can compromise or strand administrative control; no multisignature protection"
+        } : { kind: "multisig", threshold: config.governor.threshold }, readyToBroadcast: false,
+        remainingGates: ["Exact-source security review and explicit review-policy record (omitted independent audit is not a passed audit)", "Pinned mainnet-fork lifecycle and accounting rehearsal with the real token", "Selected governor and deployer operator review, current nonce/fees and transaction simulation", "Source verification and post-deployment acceptance before admissions or funding"] };
     return { ...payload, payloadSha256: digest(canonical(payload)) };
 }
 function checkPlan(plan) {
@@ -185,7 +198,9 @@ async function inspectChain(config, rpc, deployed = false) {
     const finalized = await rpc("eth_getBlockByNumber", ["finalized", false]);
     requireValue(finalized && BigInt(finalized.number) >= BigInt(config.block.number), "Pinned block must be finalized");
     const checks = [];
-    for (const [label, dependency] of Object.entries({ ...config.dependencies, governor: config.governor })) {
+    const ledgerEOA = config.governor.kind === "ledger-eoa";
+    const codeChecks = ledgerEOA ? config.dependencies : { ...config.dependencies, governor: config.governor };
+    for (const [label, dependency] of Object.entries(codeChecks)) {
         const code = await rpc("eth_getCode", [dependency.address, tag]);
         requireValue(code !== "0x" && ethers.keccak256(code).toLowerCase() === dependency.codeHash.toLowerCase(), `Reviewed ${label} code hash mismatch`);
         checks.push(`${label}-code`);
@@ -197,9 +212,15 @@ async function inspectChain(config, rpc, deployed = false) {
         return abi.decodeFunctionResult(fn, data)[0];
     }
     requireValue(await call(AGIALPHA_ADDRESS, "decimals() view returns (uint8)") === 18n, "Token decimals must equal 18");
-    const owners = [...await call(config.governor.address, "getOwners() view returns (address[])")].map(address).sort();
-    requireValue(canonical(owners) === canonical(config.governor.owners.map(address).sort()) &&
-        await call(config.governor.address, "getThreshold() view returns (uint256)") === BigInt(config.governor.threshold), "Governance owners/threshold mismatch");
+    if (ledgerEOA) {
+        requireValue(await rpc("eth_getCode", [config.governor.address, tag]) === "0x" &&
+            await rpc("eth_getCode", [config.governor.address, "latest"]) === "0x",
+            "Acknowledged Ledger governor must be an EOA without delegated code");
+    } else {
+        const owners = [...await call(config.governor.address, "getOwners() view returns (address[])")].map(address).sort();
+        requireValue(canonical(owners) === canonical(config.governor.owners.map(address).sort()) &&
+            await call(config.governor.address, "getThreshold() view returns (uint256)") === BigInt(config.governor.threshold), "Governance owners/threshold mismatch");
+    }
     for (const name of roots) {
         const node = ethers.namehash(name);
         let owner = await call(ENS, "owner(bytes32) view returns (address)", [node]);
@@ -221,7 +242,7 @@ async function inspectChain(config, rpc, deployed = false) {
     requireValue(end && end.hash.toLowerCase() === config.block.hash.toLowerCase(), "Pinned history changed during preflight");
     return { schema: "agialpha.mainnet.preflight.v1", chainId: 1, block: config.block,
         configSha256: digest(canonical(config)),
-        checks: [...checks, "token-decimals", "multisignature-owners-and-threshold", "ENS-role-root-owners", deployed ? "deployment-nonces-consumed" : "dedicated-deployer-and-unused-nonce"],
+        checks: [...checks, "token-decimals", ledgerEOA ? "acknowledged-ledger-eoa-no-code" : "multisignature-owners-and-threshold", "ENS-role-root-owners", deployed ? "deployment-nonces-consumed" : "dedicated-deployer-and-unused-nonce"],
         preflightPassed: true, readyToBroadcast: false, externalTransactions: false,
         limitation: "Read-only configuration check, not a token behavior test, independent audit, fee quote or authorization. Repeat immediately before signing." };
 }
@@ -300,7 +321,7 @@ async function main() {
     writeManifest(result, output);
     process.stdout.write(JSON.stringify({ output: path.resolve(output), schema: result.schema, readyToBroadcast: false }) + "\n");
 }
-module.exports = { validateConfig, compiledContracts, makePlan, checkPlan, reviewedRevision, inspectChain, verifyLive, readOnlyRpc, canonical, ENS, WRAPPER, roots };
+module.exports = { validateConfig, compiledContracts, makePlan, checkPlan, reviewedRevision, inspectChain, verifyLive, readOnlyRpc, canonical, ENS, WRAPPER, roots, HISTORICAL_LEDGER_GOVERNOR };
 if (require.main === module) main().catch(error => {
     // Never echo arbitrary operator input, JSON fragments or RPC URLs/secrets.
     if (error.publicMessage) console.error(error.message);

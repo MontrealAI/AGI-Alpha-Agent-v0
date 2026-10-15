@@ -4,15 +4,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawn, execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 import {canonical, parseBounded} from '../../docs/assets/successor/engine.mjs';
 import {validateProject, nextCycle, appendRecord, exactDigest} from './engine.mjs';
 import {createRecord, startRun, completeRun} from '../successor-workbench/mission-record.mjs';
 import {run} from '../successor-workbench/engine.mjs';
 
-export const MANAGER_SOURCE = Object.freeze({repository:'MontrealAI/AGIJobManager',commit:'9845b09e2505051905407dbb9ef4b3627fa9e196',tree:'f79882c873944d6c7f9681cfc66ee3335bd15c55'});
+export const MANAGER_SOURCE = Object.freeze({repository:'MontrealAI/AGIJobManager',commit:'19d1fafd7db75809194e81451b5c9d1ad373a4e3',tree:'129cd545263117752b2f84e89f3e192902d36263'});
 export const ALPHA_BASELINE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'7c410d3d61d5d6bba5354307e1784dba2b3aa177',tree:'e80b1dc06317d939e3dd22d2db063a7f1706ddcb'});
+export const ALPHA_NATIVE_SOURCE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'ccad46c561e1b649c77a61d11d405b2ec255e09c',tree:'e987ff3b748cc56a324239fcc3eb6a018010eeec',manifestSha256:'908268b06a535a15ad1725deea48fdd160db6816a2af6d643421383826cd6dea'});
 export const LIMIT = 2_000_000;
 const ACK = 'new-public-data-cycle';
+// Complete execution and builder-data closure of the selected Manager adapter.
+const MANAGER_FILES = Object.freeze(['scripts/successor/alpha-project.mjs','scripts/successor/build.mjs',
+  'scripts/successor/portable.test.mjs','site/successor.mjs','site/assets/payments.mjs',
+  'site/assets/employer-model.mjs',...['safe','legacy-missions','legacy-checker','mapping','missions',
+  'checker','model','jobs','archive','app'].map(name=>'site/assets/successor/'+name+'.mjs'),
+  'site/assets/successor/style.css','package.json','LICENSE']);
 function fail(ok,code){if(!ok)throw Error('CONTINUITY_'+code);}
 function fields(value,names){fail(value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).sort().join('|')===[...names].sort().join('|'),'FIELDS');}
 function checkedCheckout(directory,pin){
@@ -20,9 +28,27 @@ function checkedCheckout(directory,pin){
   const root=fs.realpathSync(directory);
   const git=args=>execFileSync('git',['-C',root,...args],{encoding:'utf8',timeout:10000,maxBuffer:100000}).trim();
   fail(git(['rev-parse','HEAD'])===pin.commit&&git(['rev-parse','HEAD^{tree}'])===pin.tree,'SOURCE_PIN');
-  fail(git(['status','--porcelain','--untracked-files=no'])==='','SOURCE_DIRTY');return root;
+  fail(git(['status','--porcelain','--untracked-files=no'])==='','SOURCE_DIRTY');
+  const sourceManifest='docs/successor/mission/sources.json';
+  const paths=pin.repository===MANAGER_SOURCE.repository?MANAGER_FILES:[sourceManifest,
+    ...Object.keys(JSON.parse(git(['show',pin.commit+':'+sourceManifest])).sources)];
+  const entries=execFileSync('git',['-C',root,'ls-tree','-rz',pin.commit,'--',...paths],{timeout:10000,maxBuffer:200000}).toString('utf8').split('\0').filter(Boolean);
+  fail(entries.length===paths.length,'SOURCE_BYTES');
+  for(const entry of entries){
+    const [metadata,relative]=entry.split('\t'),[mode,type,expected]=metadata.split(' ');
+    fail(type==='blob'&&['100644','100755'].includes(mode)&&paths.includes(relative),'SOURCE_BYTES');
+    const file=path.join(root,relative);
+    try{
+      fail(fs.lstatSync(file).isFile()&&fs.realpathSync(file)===file,'SOURCE_BYTES');
+      const data=fs.readFileSync(file);
+      fail(createHash('sha1').update('blob '+data.length+'\0').update(data).digest('hex')===expected,'SOURCE_BYTES');
+    }catch{fail(false,'SOURCE_BYTES');}
+  }
+  // Editable-source metadata must not override Git provenance in a pinned checkout.
+  if(pin.repository===MANAGER_SOURCE.repository)fail(!fs.existsSync(path.join(root,'SOURCE.json')),'SOURCE_BYTES');
+  return root;
 }
-async function receiverIdentity(){return {adapterSha256:await exactDigest(fs.readFileSync(fileURLToPath(import.meta.url),'utf8')),nativeBaseline:ALPHA_BASELINE,manager:MANAGER_SOURCE};}
+async function receiverIdentity(){return {adapterSha256:await exactDigest(fs.readFileSync(fileURLToPath(import.meta.url),'utf8')),nativeBaseline:ALPHA_NATIVE_SOURCE,originalAlpha:ALPHA_BASELINE,manager:MANAGER_SOURCE};}
 async function inspectManager(raw,{managerCheckout,alphaBaselineCheckout}){
   parseBounded(raw);
   const manager=checkedCheckout(managerCheckout,MANAGER_SOURCE),alpha=checkedCheckout(alphaBaselineCheckout,ALPHA_BASELINE);
@@ -47,13 +73,13 @@ process.stdout.write(JSON.stringify({project:read.transfer.project,checkpoints:r
 }
 function nativeSources(){
   const manifest=JSON.parse(fs.readFileSync(new URL('../../docs/successor/mission/sources.json',import.meta.url),'utf8'));
-  const source=p=>({repository:ALPHA_BASELINE.repository,commit:ALPHA_BASELINE.commit,path:p,sha256:manifest.sources[p]});
+  const source=p=>({repository:ALPHA_NATIVE_SOURCE.repository,commit:ALPHA_NATIVE_SOURCE.commit,path:p,sha256:manifest.sources[p]});
   return {sourceHash:manifest.sourceHash,sources:{discovery:source('examples/alpha-discovery/engine.mjs'),mission:source('examples/successor-workbench/mission-record.mjs')}};
 }
 async function checkNativeSources(alphaBaselineCheckout){
-  const root=checkedCheckout(alphaBaselineCheckout,ALPHA_BASELINE);
+  checkedCheckout(alphaBaselineCheckout,ALPHA_BASELINE);
   const bytes=fs.readFileSync(new URL('../../docs/successor/mission/sources.json',import.meta.url),'utf8');
-  fail(bytes===fs.readFileSync(path.join(root,'docs/successor/mission/sources.json'),'utf8'),'NATIVE_MANIFEST_DRIFT');
+  fail(await exactDigest(bytes)===ALPHA_NATIVE_SOURCE.manifestSha256,'NATIVE_MANIFEST_DRIFT');
   const manifest=JSON.parse(bytes);
   for(const [relative,hash] of Object.entries(manifest.sources)){
     const local=fs.readFileSync(new URL('../../'+relative,import.meta.url),'utf8');

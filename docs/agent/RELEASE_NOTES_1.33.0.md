@@ -21,6 +21,12 @@ A source version is not publication or evidence that these paths are independent
 - One explicit local project across discovery and subsequent work cycles, with source/history
   linkage and fail-closed imports. Importing a project never starts native or provider execution.
 
+## Maintenance and deployment preparation
+
+- Preserve the reviewed strict supplier-browser typing correction without relaxing native admission or execution checks.
+- Include the opt-in, exact-address Ledger EOA governor preparation path, its regression tests and the October 16 deployment runbook. The multisig alternative remains available; neither choice authorizes a transaction.
+- Retain the new read-only historical deployment report as original-profile evidence only. The five new contracts, exact-candidate real-token rehearsal, per-address runtime/source verification and operating approval remain separate pending gates. The campaign records external audit and Sepolia as owner-accepted omissions, not passed checks.
+
 ## Evidence and commissioning boundaries
 
 This is the first integrated local preview of these journeys. It does not autonomously discover

@@ -123,7 +123,8 @@ def main():
             # Actual IndexedDB put failure: no run, export survives, old save stays intact.
             page.evaluate(
                 """() => { globalThis.originalPut = IDBObjectStore.prototype.put;
-              IDBObjectStore.prototype.put = function() { throw new DOMException('Forced quota failure', 'QuotaExceededError'); }; }"""
+              IDBObjectStore.prototype.put = function() { throw new DOMException('Forced quota failure',
+                'QuotaExceededError'); }; }"""
             )
             page.locator("#run").click()
             expect(page.locator("#project-summary")).to_contain_text("historical", timeout=30000)
@@ -157,19 +158,27 @@ def main():
               const c=await import('/examples/successor-project/engine.mjs');
               const n=await import('/examples/successor-workbench/mission-record.mjs');
               const fresh=await n.createRecord({missionId:'concurrent',sourceHash:project.sourceHash,spec:native.spec});
-              const base=await c.nextCycle(project,{cycleId:'concurrent-cycle',record:fresh,choices:last.mapping.choices,sourceHash:project.sourceHash,sources,expectedRevision:project.revision});
+              const base=await c.nextCycle(project,{cycleId:'concurrent-cycle',record:fresh,
+                choices:last.mapping.choices,sourceHash:project.sourceHash,sources,expectedRevision:project.revision});
               await a.save(base,{revision:project.revision,digest:project.projectDigest});
-              const make=async id=>appendRecord(base,await startRun(fresh,{expectedRevision:0,runId:id}),{expectedRevision:base.revision,sourceHash:base.sourceHash,sources});
+              const make=async id=>appendRecord(base,await startRun(fresh,{expectedRevision:0,runId:id}),{
+                expectedRevision:base.revision,sourceHash:base.sourceHash,sources});
               const candidates=await Promise.all([make('a'),make('b')]);
-              const outcomes=await Promise.allSettled(candidates.map((v,i)=>(i?a:b).save(v,{revision:base.revision,digest:base.projectDigest})));
+              const outcomes=await Promise.allSettled(candidates.map((v,i)=>(i?a:b).save(v,{
+                revision:base.revision,digest:base.projectDigest})));
               if(outcomes.filter(x=>x.status==='fulfilled').length!==1)throw Error('CAS winner');
-              const winner=await a.get(project.projectId);if(winner.revision!==base.revision+1)throw Error('CAS revision');
+              const winner=await a.get(project.projectId);if(winner.revision!==base.revision+1)
+                throw Error('CAS revision');
               const loser=outcomes.findIndex(x=>x.status==='rejected');await validateProject(candidates[loser]);
               a.close();b.close();const reopen=await openProjectStore({name:'project-cas'});
-              if((await reopen.get(project.projectId)).projectDigest!==winner.projectDigest)throw Error('reopen changed');
-              const raw=await new Promise(resolve=>{const r=indexedDB.open('project-cas');r.onsuccess=()=>resolve(r.result);});
-              await new Promise(resolve=>{const tx=raw.transaction('projects','readwrite');tx.objectStore('projects').put({...winner,authority:'grant'});tx.oncomplete=resolve;});
-              let denied=false;try{await reopen.get(project.projectId);}catch{denied=true;}if(!denied)throw Error('corruption accepted');
+              if((await reopen.get(project.projectId)).projectDigest!==winner.projectDigest)
+                throw Error('reopen changed');
+              const raw=await new Promise(resolve=>{const r=indexedDB.open('project-cas');
+                r.onsuccess=()=>resolve(r.result);});
+              await new Promise(resolve=>{const tx=raw.transaction('projects','readwrite');
+                tx.objectStore('projects').put({...winner,authority:'grant'});tx.oncomplete=resolve;});
+              let denied=false;try{await reopen.get(project.projectId);}catch{denied=true;}if(!denied)
+                throw Error('corruption accepted');
               raw.close();reopen.close();return 'atomic conflict, drift, corruption and reopen passed';
             }""",
                 first,

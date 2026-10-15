@@ -4,19 +4,19 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import {spawnSync} from 'node:child_process';
+import {spawnSync,execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {canonical} from '../../docs/assets/successor/engine.mjs';
 import * as native from '../successor-workbench/mission-record.mjs';
 import {example,run} from '../successor-workbench/engine.mjs';
 import {createBrief} from '../alpha-discovery/engine.mjs';
 import * as project from './engine.mjs';
-import {importManagerCycle,inspectContinuity,advanceContinuity,ALPHA_BASELINE} from './continuity.mjs';
+import {importManagerCycle,inspectContinuity,advanceContinuity,ALPHA_BASELINE,ALPHA_NATIVE_SOURCE,MANAGER_SOURCE} from './continuity.mjs';
 const managerCheckout=process.env.CONTINUITY_MANAGER_SOURCE,alphaBaselineCheckout=process.env.CONTINUITY_ALPHA_BASELINE;
 if(!managerCheckout||!alphaBaselineCheckout)throw Error('Both pinned clean source checkouts are required; integration tests do not skip');
 const manager=await import(pathToFileURL(path.join(managerCheckout,'scripts/successor/alpha-project.mjs')));
 const options={managerCheckout,alphaBaselineCheckout};
-const manifest=JSON.parse(fs.readFileSync(new URL('../../docs/successor/mission/sources.json',import.meta.url)));
+const manifest=JSON.parse(fs.readFileSync(path.join(alphaBaselineCheckout,'docs/successor/mission/sources.json')));
 const source=p=>({repository:ALPHA_BASELINE.repository,commit:ALPHA_BASELINE.commit,path:p,sha256:manifest.sources[p]});
 const sources={discovery:source('examples/alpha-discovery/engine.mjs'),mission:source('examples/successor-workbench/mission-record.mjs')};
 const choices={family:'public-data',selection:'explicit-user-selection',duplicatePolicy:'sum-all-rows-no-deduplication',unitPolicy:'unchanged-integer-units',dataRights:'synthetic'};
@@ -43,6 +43,8 @@ for(const language of ['en','fr'])test(language+': Alpha → actual Manager work
   let read=await inspectContinuity(imported,options);
   assert.equal(read.continuity.manager.raw,raw);assert.equal(read.project.projectId,'one-project');
   assert.deepEqual(read.project.cycles[0],p.cycles[0]);assert.equal(read.project.cycles.length,2);
+  assert.notEqual(read.project.sourceHash,p.sourceHash);
+  assert.equal(read.project.cycles.at(-1).records[0].source.commit,ALPHA_NATIVE_SOURCE.commit);
   const last=()=>JSON.parse(read.project.cycles.at(-1).records.at(-1).bytes);
   assert.equal(last().state,'draft');assert.equal(last().review,null);assert.equal(last().result,null);
   assert.equal(JSON.parse(read.project.cycles[0].records.at(-1).bytes).review.decision,'rejected');
@@ -92,4 +94,51 @@ test('CLI saves a reviewable single history, inspects it and refuses overwrite',
 test('oversized or ambiguous imports reject before any execution or history mutation',async()=>{
   await assert.rejects(inspectContinuity(' '.repeat(2_000_001),options),/2 MB/);
   await assert.rejects(inspectContinuity('{"schema":"x","schema":"y"}',options));
+});
+
+test('hidden validator edits in either checkout are rejected against pinned Git bytes', {timeout:120000},async()=>{
+  const {raw}=await fixture();
+  for(const [checkout,pin,key,relative] of [
+    [managerCheckout,MANAGER_SOURCE,'managerCheckout','scripts/successor/alpha-project.mjs'],
+    [alphaBaselineCheckout,ALPHA_BASELINE,'alphaBaselineCheckout','examples/successor-project/engine.mjs'],
+  ]){
+    const directory=fs.mkdtempSync(path.join(os.tmpdir(),'continuity-validator-'));
+    try{
+      execFileSync('git',['-C',checkout,'worktree','add','--detach',directory,pin.commit],{timeout:60000,stdio:'pipe'});
+      const file=path.join(directory,relative),before=fs.readFileSync(file);
+      for(const flag of ['skip-worktree','assume-unchanged']){
+        execFileSync('git',['-C',directory,'update-index','--'+flag,'--',relative]);
+        try{
+          fs.writeFileSync(file,Buffer.concat([before,Buffer.from('\n/* hidden validator edit */\n')]));
+          assert.equal(execFileSync('git',['-C',directory,'status','--porcelain','--untracked-files=no'],{encoding:'utf8'}).trim(),'');
+          await assert.rejects(importManagerCycle(raw,selection(),{...options,[key]:directory}),/CONTINUITY_SOURCE_BYTES/);
+        }finally{
+          fs.writeFileSync(file,before);execFileSync('git',['-C',directory,'update-index','--no-'+flag,'--',relative]);
+        }
+      }
+    }finally{
+      execFileSync('git',['-C',checkout,'worktree','remove','--force',directory],{timeout:30000,stdio:'pipe'});
+      fs.rmSync(directory,{recursive:true,force:true});
+    }
+  }
+});
+
+test('untracked editable-source metadata cannot override the pinned Manager commit', {timeout:120000},async()=>{
+  const {raw}=await fixture(),directory=fs.mkdtempSync(path.join(os.tmpdir(),'continuity-metadata-'));
+  try{
+    execFileSync('git',['-C',managerCheckout,'worktree','add','--detach',directory,MANAGER_SOURCE.commit],{timeout:60000,stdio:'pipe'});
+    fs.writeFileSync(path.join(directory,'SOURCE.json'),JSON.stringify({commit:'0'.repeat(40),version:'1.17.0'}));
+    await assert.rejects(importManagerCycle(raw,selection(),{...options,managerCheckout:directory}),/CONTINUITY_SOURCE_BYTES/);
+  }finally{
+    execFileSync('git',['-C',managerCheckout,'worktree','remove','--force',directory],{timeout:30000,stdio:'pipe'});
+    fs.rmSync(directory,{recursive:true,force:true});
+  }
+});
+
+test('fully resealed Manager capsule provenance cannot enter an Alpha return history',async()=>{
+  const {raw}=await fixture(),transfer=JSON.parse(raw),capsule=JSON.parse(transfer.history[0].capsule);
+  capsule.payload.sourceManifest.commit='0'.repeat(40);
+  capsule.sha256=await project.exactDigest(canonical(capsule.payload));
+  transfer.history[0].capsule=canonical(capsule);transfer.history[0].sha256=await project.exactDigest(transfer.history[0].capsule);
+  await assert.rejects(importManagerCycle(await reseal(transfer),selection(),options),/MANAGER_NATIVE_INVALID/);
 });

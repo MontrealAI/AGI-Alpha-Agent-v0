@@ -68,7 +68,9 @@ def build(root: Path = ROOT) -> None:
     # Verified against GitHub exact commit/path bytes; drift requires a new provenance review.
     native_pins = {
         "examples/alpha-discovery/engine.mjs": "452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850",
-        "examples/successor-workbench/mission-record.mjs": "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f",
+        "examples/successor-workbench/mission-record.mjs": (
+            "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f"
+        ),
     }
     if any(sources[path] != expected for path, expected in native_pins.items()):
         raise ValueError("Native source drift: review commit/path/hash together")

@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 """Explicit synthetic Jobs browser handoff using the existing isolated computer executor."""
+
 from __future__ import annotations
 
 import base64
+from collections.abc import Callable
 import hashlib
 import os
 from pathlib import Path
@@ -15,7 +17,7 @@ from pydantic import Field
 from . import ecosystem
 from .models import StrictModel
 from .store import Journal, Conflict, canonical, digest
-from .supplier_browser_spec import read_spec, computer_task, extract_artifacts, MAX_RESULT_BYTES
+from .supplier_browser_spec import SupplierSpec, read_spec, computer_task, extract_artifacts, MAX_RESULT_BYTES
 from .successor import computer
 from .successor.protocol import safe_json_loads
 from .successor.trust import SignedEnvelope, TrustAnchor, TrustRegistry
@@ -94,7 +96,7 @@ def admit(journal: Journal, raw: bytes, job_id: str, worker: str, assignment_tx:
         )
 
 
-def retained(journal: Journal, key: str):
+def retained(journal: Journal, key: str) -> tuple[dict[str, Any], SupplierSpec, ecosystem.JobsProfile]:
     journal.verify()
     if not key.startswith(PREFIX) or len(key) != len(PREFIX) + 64:
         raise ValueError("Invalid supplier-browser binding")
@@ -115,7 +117,13 @@ def binding_key(observation: dict[str, Any]) -> str:
     )
 
 
-def permission_document(spec, obs, revision: int, profile: ExecutorProfile, advisor) -> dict[str, Any]:
+def permission_document(
+    spec: SupplierSpec,
+    obs: dict[str, Any],
+    revision: int,
+    profile: ExecutorProfile,
+    advisor: computer.Advisor,
+) -> dict[str, Any]:
     if not isinstance(revision, int) or isinstance(revision, bool) or revision < 1:
         raise ValueError("Permission requires an exact journal revision")
     key = binding_key(obs)
@@ -158,7 +166,15 @@ def prepare(journal: Journal, key: str) -> dict[str, Any]:
     return permission_document(spec, obs, record["revision"], profile, _advisor(profile))
 
 
-def execute(journal: Journal, key: str, permit: str, *, _factory=computer.DockerComputer) -> dict[str, Any]:
+def execute(
+    journal: Journal,
+    key: str,
+    permit: str,
+    *,
+    _factory: Callable[
+        [str, computer.ComputerTask, Callable[[], None]], computer.DockerComputer
+    ] = computer.DockerComputer,
+) -> dict[str, Any]:
     initial, _, _ = retained(journal, key)
     if initial["state"] != "admitted":
         raise Conflict("Session already attempted; no implicit replay")
@@ -181,11 +197,13 @@ def execute(journal: Journal, key: str, permit: str, *, _factory=computer.Docker
     record = _change(journal, key, record["revision"], state="running", permission=permission, attempt_id=attempt_id)
     output = journal.root / ("supplier-browser-output-" + attempt_id)
 
-    def admitted_factory(*args):
+    def admitted_factory(
+        image: str, task: computer.ComputerTask, checkpoint: Callable[[], None]
+    ) -> computer.DockerComputer:
         current = journal.latest(key)
         if current["state"] != "running" or current["revision"] != record["revision"]:
             raise Conflict("Supplier execution was revoked before actuator startup")
-        return _factory(*args)
+        return _factory(image, task, checkpoint)
 
     try:
         result = computer.run_session(

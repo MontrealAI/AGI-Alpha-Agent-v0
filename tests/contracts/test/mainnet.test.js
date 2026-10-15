@@ -46,6 +46,42 @@ describe("Mainnet preparation (unsigned and read-only)", function () {
             c => c.block.hash = ethers.ZeroHash, c => c.governor.address = c.deployer];
         for (const change of cases) { const c = fixtureConfig(); change(c); expect(() => validateConfig(c)).to.throw(); }
     });
+    it("requires an explicitly acknowledged historical Ledger EOA and never falls back from multisig", async () => {
+        const c = fixtureConfig();
+        const governor = "0xa9eD0539c2fbc5C6BC15a2E168bd9BCd07c01201";
+        c.governor = { kind: "ledger-eoa", address: governor, addressAcknowledgement: governor };
+        expect(validateConfig(c)).to.equal(c);
+        for (const change of [x => delete x.governor.addressAcknowledgement,
+            x => x.governor.addressAcknowledgement = governor.toLowerCase(),
+            x => x.governor.address = x.deployer, x => x.governor.kind = "eoa",
+            x => x.governor.threshold = 1, x => x.governor.addressAcknowledgement = c.deployer]) {
+            const altered = clone(c); change(altered); expect(() => validateConfig(altered)).to.throw();
+        }
+        const base = rpcFixture(c), methods = [];
+        const rpc = async (method, args) => {
+            methods.push([method, args]);
+            if (method === "eth_getCode" && args[0] === governor) return "0x";
+            return base(method, args);
+        };
+        const report = await inspectChain(c, rpc);
+        expect(report.checks).to.include("acknowledged-ledger-eoa-no-code");
+        expect(report.checks).not.to.include("multisignature-owners-and-threshold");
+        expect(methods.filter(([m, a]) => m === "eth_call" && a[0].to === governor)).to.have.length(0);
+        for (const badTag of ["0x64", "latest"])
+            await rejects(() => inspectChain(c, (m, a) => m === "eth_getCode" && a[0] === governor && a[1] === badTag ?
+                "0xef01000000000000000000000000000000000000000000" : rpc(m, a)), "without delegated code");
+        const plan = await makePlan(c, compiledContracts(), { commit: "local-test" });
+        expect(plan.governancePolicy.kind).to.equal("ledger-eoa");
+        expect(plan.governancePolicy.acknowledgedAddress).to.equal(governor);
+        expect(plan.governancePolicy.risk).to.include("Single signer");
+        expect(plan.readyToBroadcast).to.equal(false);
+        expect(plan.governanceCalls.every(call => call.from === governor && call.operation === 0)).to.equal(true);
+        for (const name of ["AscensionAccess", "AscensionRiskOracle", "AscensionJobMarket"])
+            expect(plan.transactions.find(tx => tx.action === `deploy ${name}`).constructorArguments.at(-1)).to.equal(governor);
+        const multisig = fixtureConfig();
+        await rejects(() => inspectChain(multisig, (m, a) => m === "eth_getCode" && a[0] === multisig.governor.address ?
+            "0x" : rpcFixture(multisig)(m, a)), "governor code hash mismatch");
+    });
     it("checks pinned dependencies, governance, roots and nonce without mutation methods", async () => {
         const c = fixtureConfig(), base = rpcFixture(c), methods = [];
         const report = await inspectChain(c, async (method, args) => { methods.push(method); return base(method, args); });
@@ -140,6 +176,8 @@ describe("Mainnet preparation (unsigned and read-only)", function () {
         checkPlan(plan);
         const modified = clone(plan); modified.transactions[0].data = "0x00";
         expect(() => checkPlan(modified)).to.throw("checksum");
+        expect(plan.readyToBroadcast).to.equal(false);
+        expect(plan.remainingGates[0]).to.include("omitted independent audit is not a passed audit");
         expect(plan.transactions).to.have.length(5);
         expect(plan.governanceCalls).to.have.length(2);
         for (const tx of plan.transactions) {

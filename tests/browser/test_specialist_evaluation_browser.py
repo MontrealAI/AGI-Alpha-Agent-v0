@@ -113,7 +113,8 @@ def main() -> None:
             phone.evaluate(
                 """() => { const original = File.prototype.arrayBuffer;
                 File.prototype.arrayBuffer = function() { const file = this;
-                    return new Promise(resolve => { window.finishImport = async () => resolve(await original.call(file));
+                    return new Promise(resolve => {
+                      window.finishImport = async () => resolve(await original.call(file));
                     document.documentElement.dataset.importReady = "true"; }); };
             }"""
             )
@@ -131,7 +132,8 @@ def main() -> None:
             phone.evaluate(
                 """() => { const original = crypto.subtle.digest.bind(crypto.subtle);
                 crypto.subtle.digest = (...args) => new Promise(resolve => {
-                    window.finishFreeze = async () => { crypto.subtle.digest = original; resolve(await original(...args)); };
+                    window.finishFreeze = async () => { crypto.subtle.digest = original;
+                      resolve(await original(...args)); };
                     document.documentElement.dataset.freezeReady = "true";
                 });
             }"""
