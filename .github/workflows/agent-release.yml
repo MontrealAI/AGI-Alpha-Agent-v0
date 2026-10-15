@@ -599,6 +599,24 @@ jobs:
           python -m pip install --require-hashes -r requirements-demo-verified.lock
           python -m pip install --no-deps -e .
           python -m pip check
+      - name: Require actual CPU world-model learning with no skipped objectives
+        env:
+          NO_LLM: '1'
+          ALPHA_ASI_DEVICE: cpu
+          ALPHA_ASI_DISABLE_AGENT_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -m pip install pytest==8.4.1
+          python -c "import torch; assert torch.__version__ == '2.6.0+cpu', torch.__version__"
+          mkdir -p evidence
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:cacheprovider tests/test_world_model_training.py --junitxml=evidence/world-model-training.xml
+          python - <<'PYXML'
+          import xml.etree.ElementTree as ET
+          cases = list(ET.parse('evidence/world-model-training.xml').getroot().iter('testcase'))
+          assert len(cases) == 14, f'Expected 14 objective tests, got {len(cases)}'
+          assert all(not any(case.find(tag) is not None for tag in ('skipped', 'failure', 'error')) for case in cases)
+          PYXML
       - name: Fetch and verify official native GPT-2 weights
         run: python -m alpha_factory_v1.demos.gpt2_small_cli.model_download "$RUNNER_TEMP/gpt2"
       - name: Require actual native research execution and all lineage UIs

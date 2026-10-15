@@ -79,7 +79,7 @@ def test_multi_env_reporting(monkeypatch: pytest.MonkeyPatch) -> None:
         def act(self, _obs):
             return 0
 
-        def remember(self, _obs, _reward) -> None:
+        def remember(self, _obs, _action, _reward, _next_obs, _done) -> None:
             pass
 
         def train_once(self) -> float:

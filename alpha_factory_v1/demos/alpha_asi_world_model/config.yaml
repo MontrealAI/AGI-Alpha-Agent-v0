@@ -18,7 +18,8 @@ training:
   lr: 0.001
   max_steps: 100000     # ⏱️ Orchestrator loop iterations
   hidden: 256          # 🤖 Latent state size
-  mcts_simulations: 16 # 🕵️ MCTS rollouts per action
+  mcts_simulations: 16 # Bounded one-step search evaluations per action
+  discount: 0.99       # Shared teaching-target and search discount, strictly between 0 and 1
   ui_tick: 100          # 📈 How often to broadcast stats (in steps)
 
 env:
