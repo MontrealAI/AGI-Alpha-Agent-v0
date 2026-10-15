@@ -12,6 +12,11 @@ on:
       - 'tests/contracts/scripts/ascension-cycle.js'
       - 'alpha_factory_v1/core/runtime/successor/**'
       - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/work_spec.py'
+      - 'alpha_factory_v1/core/runtime/fleet_work.py'
+      - 'alpha_factory_v1/core/runtime/web/ecosystem-studio*'
+      - 'tests/runtime/test_ecosystem*.py'
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
@@ -35,6 +40,11 @@ on:
       - 'tests/contracts/scripts/ascension-cycle.js'
       - 'alpha_factory_v1/core/runtime/successor/**'
       - 'alpha_factory_v1/core/runtime/api.py'
+      - 'alpha_factory_v1/core/runtime/ecosystem*.py'
+      - 'alpha_factory_v1/core/runtime/work_spec.py'
+      - 'alpha_factory_v1/core/runtime/fleet_work.py'
+      - 'alpha_factory_v1/core/runtime/web/ecosystem-studio*'
+      - 'tests/runtime/test_ecosystem*.py'
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'docs/ascension-protocol/**'
@@ -100,7 +110,8 @@ jobs:
         run: >-
           python -m pytest --confcutdir=tests/runtime
           tests/runtime/test_successor_studio.py tests/runtime/test_successor_studio_operator.py
-          tests/runtime/test_successor_studio_operator_browser.py -q
+          tests/runtime/test_successor_studio_operator_browser.py
+          tests/runtime/test_ecosystem_jobs.py tests/runtime/test_ecosystem_browser.py -q
       - name: Nova-Seed exact-source lifecycle and browser recovery
         working-directory: tests/contracts
         env:
