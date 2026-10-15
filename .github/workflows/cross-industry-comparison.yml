@@ -56,7 +56,8 @@ jobs:
       - name: Check strict comparison and independent Python parity
         run: |
           node --test tests/browser/test_cross_industry_engine.mjs
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:cacheprovider tests/test_cross_industry_notebook.py tests/test_cross_industry_comparison.py tests/test_cross_alpha_discovery.py tests/test_cross_industry_bridge_runtime.py alpha_factory_v1/tests/test_queue_cross_alpha.py alpha_factory_v1/tests/test_cross_industry_alpha.py
+          # Legacy unittest modules need no fixtures; their package explicitly imports this full-suite plugin.
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -c /dev/null --noconftest -p no:tests.conftest -p no:cacheprovider tests/test_cross_industry_notebook.py tests/test_cross_industry_comparison.py tests/test_cross_alpha_discovery.py tests/test_cross_industry_bridge_runtime.py alpha_factory_v1/tests/test_queue_cross_alpha.py alpha_factory_v1/tests/test_cross_industry_alpha.py
       - name: Exercise original bilingual comparison and evidence lifecycle
         env:
           AXE_SCRIPT: tests/browser/node_modules/axe-core/axe.min.js

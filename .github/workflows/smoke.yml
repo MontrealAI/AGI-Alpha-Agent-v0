@@ -83,6 +83,14 @@ jobs:
           python -m pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py -q --junitxml=evidence/smoke.xml
           python -m pytest --noconftest -o addopts= tests/test_macro_simulation_boundaries.py -q --junitxml=evidence/macro-boundaries.xml
           python -m pytest --noconftest -o addopts= tests/test_openai_bridge_integration.py -q --junitxml=evidence/business1-sum-binding.xml
+      - name: Verify dependency-light cross-industry ledger locking on every platform
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+          OPENAI_API_KEY: ''
+        run: |
+          # Required here so mixed native/filelock compatibility cannot silently skip.
+          python -c "import filelock"
+          python -m pytest -q -c /dev/null --noconftest -p no:tests.conftest -p no:cacheprovider tests/test_cross_alpha_discovery.py --junitxml=evidence/cross-ledger-locking.xml
       - name: Verify supplied demo actions and authenticated submission binding
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         env:

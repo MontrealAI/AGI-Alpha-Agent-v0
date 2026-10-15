@@ -15,9 +15,11 @@ import random
 import os
 import contextlib
 import logging
+import math
 from pathlib import Path
-from typing import List, Dict
+from typing import Any, Iterator, List, Dict
 from tempfile import NamedTemporaryFile
+from types import ModuleType
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +31,24 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     FileLock = None
 
-with contextlib.suppress(ModuleNotFoundError):
+try:
     import openai
+except ModuleNotFoundError:  # optional provider SDK
+    openai = None
+
+try:
+    import fcntl as _fcntl
+
+    fcntl: ModuleType | None = _fcntl
+except ImportError:  # Windows
+    fcntl = None
+
+try:
+    import msvcrt as _msvcrt
+
+    msvcrt: ModuleType | None = _msvcrt
+except ImportError:  # POSIX
+    msvcrt = None
 
 SAMPLE_ALPHA: List[Dict[str, str]] = [
     {
@@ -64,6 +82,66 @@ def _ledger_path(path: str | os.PathLike[str] | None) -> Path:
     return resolved
 
 
+@contextlib.contextmanager
+def _ledger_lock(path: Path) -> Iterator[None]:
+    """Lock a stable sidecar across processes, including without filelock.
+
+    Never lock the ledger inode itself: atomic replacement changes that inode.
+    Unsupported platforms fail closed instead of risking lost entries.
+    """
+    lock_path = str(path) + ".lock"
+    if FileLock is not None:
+        with FileLock(lock_path):
+            yield
+        return
+    if fcntl is None and msvcrt is None:
+        raise ValueError("ledger writes require filelock or a supported OS file lock")
+    with open(lock_path, "a+b") as lock:
+        if fcntl is not None:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+        else:
+            assert msvcrt is not None
+            # Windows permits locking beyond EOF. Do not write a sentinel before
+            # locking: a concurrent filelock writer may already own byte zero.
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+        try:
+            yield
+        finally:
+            if fcntl is not None:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+            else:
+                assert msvcrt is not None
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+
+
+def _reject_constant(value: str) -> None:
+    raise ValueError(f"non-finite JSON constant: {value}")
+
+
+def _finite_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise ValueError(f"non-finite JSON number: {value}")
+    return parsed
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _load_json(text: str) -> Any:
+    return json.loads(
+        text, parse_constant=_reject_constant, parse_float=_finite_float, object_pairs_hook=_unique_object
+    )
+
+
 def discover_alpha(
     num: int = 1,
     *,
@@ -94,7 +172,7 @@ def discover_alpha(
     """
     if sample == generate:
         raise ValueError("choose explicit sample=True or generate=True; use opportunity_comparison for supplied inputs")
-    if generate and ("openai" not in globals() or not os.getenv("OPENAI_API_KEY")):
+    if generate and (openai is None or not os.getenv("OPENAI_API_KEY")):
         raise ValueError("explicit generation requires the OpenAI package and OPENAI_API_KEY")
     if num < 1:
         raise ValueError("num must be >= 1")
@@ -115,7 +193,7 @@ def discover_alpha(
                 response_format={"type": "json_object"},
                 timeout=OPENAI_TIMEOUT_SEC,
             )
-            picks = json.loads(resp.choices[0].message.content)
+            picks = _load_json(resp.choices[0].message.content)
             if isinstance(picks, dict):
                 picks = [picks]
         except Exception as exc:
@@ -139,25 +217,40 @@ def discover_alpha(
 
     if ledger is not None:
         path = _ledger_path(ledger)
-        lock_ctx = FileLock(str(path) + ".lock") if FileLock is not None else contextlib.nullcontext()
-        with lock_ctx:
+        with _ledger_lock(path):
             existing: List[Dict[str, str]] = []
             try:
-                if path.exists():
-                    data = json.loads(path.read_text())
-                    if isinstance(data, dict):
-                        existing = [data]
-                    elif isinstance(data, list):
-                        existing = data
-            except (json.JSONDecodeError, OSError):
-                existing = []
+                data = _load_json(path.read_text(encoding="utf-8"))
+            except FileNotFoundError:
+                pass
+            except (ValueError, OSError) as exc:
+                raise ValueError("cannot read existing ledger; refusing to overwrite it") from exc
+            else:
+                if isinstance(data, dict):
+                    existing = [data]
+                elif isinstance(data, list):
+                    existing = data
+                else:
+                    raise ValueError("invalid existing ledger; refusing to overwrite it")
+                if any(
+                    not isinstance(item, dict)
+                    or not all(isinstance(item.get(k), str) and item[k].strip() for k in ("sector", "opportunity"))
+                    for item in existing
+                ):
+                    raise ValueError("invalid existing ledger entries; refusing to overwrite it")
 
             existing.extend(picks if num != 1 else [picks[0]])
-            with NamedTemporaryFile("w", delete=False, dir=str(path.parent), encoding="utf-8") as tmp:
-                json.dump(existing, tmp, indent=2)
-                tmp.flush()
-                os.fsync(tmp.fileno())
-            os.replace(tmp.name, path)
+            temporary_path = None
+            try:
+                with NamedTemporaryFile("w", delete=False, dir=str(path.parent), encoding="utf-8") as tmp:
+                    temporary_path = Path(tmp.name)
+                    json.dump(existing, tmp, indent=2, allow_nan=False)
+                    tmp.flush()
+                    os.fsync(tmp.fileno())
+                os.replace(temporary_path, path)
+            finally:
+                if temporary_path is not None:
+                    temporary_path.unlink(missing_ok=True)
     return picks
 
 

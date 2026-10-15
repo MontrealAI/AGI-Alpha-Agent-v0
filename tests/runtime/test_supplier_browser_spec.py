@@ -84,8 +84,14 @@ def test_invalid_authority_or_incomparable_quotes_refused(mutation):
         SupplierSpec.model_validate(value)
 
 
-@pytest.mark.parametrize("text", ["not computed", BEGIN + END, BEGIN + "{}" + END + BEGIN, "x" * 64001])
-def test_missing_ambiguous_or_oversized_observation_refused(text):
+@pytest.mark.parametrize(
+    "text",
+    ["not computed", BEGIN + END, BEGIN + "{}" + END + BEGIN, "x" * 64001],
+    ids=["missing", "empty", "ambiguous", "oversized"],
+)
+def test_missing_ambiguous_or_oversized_observation_refused(text, request):
+    # Pytest exports the node ID through PYTEST_CURRENT_TEST; Windows bounds it.
+    assert len(request.node.nodeid) < 256
     with pytest.raises(ValueError):
         extract_artifacts(specification(), text)
 
