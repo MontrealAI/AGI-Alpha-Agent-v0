@@ -3,7 +3,7 @@
 # Second Ascension deployment: October 16, 2026 preparation
 
 Status: **NOT CLEARED FOR DEPLOYMENT OR FUNDING**. This is a preparation record for
-Friday evening, October 16; the operator must confirm their time zone and window.
+Friday evening, October 16, America/Toronto (Montreal, UTC−04:00), and the weekend.
 Source inspection baseline: `ee5401972ca53c1ef47d02179d566b4cd10f9197`.
 Freeze a final reviewed commit/tree/lock and regenerate all evidence after any edit.
 A source release does not deploy contracts. No transaction is authorized by this document.
@@ -145,3 +145,27 @@ reviewed and expressly authorized plan. Monitor old and new deadlines/exposure,
 ENS expiry, token upgrades, owner changes and unexpected balance movements.
 Define initial exposure limits and who can revoke admission, communicate an
 incident and reconcile claims before approving first public funding.
+
+## Fresh historical-instance verification — October 15
+
+The existing read-only verifier executed against a public HTTPS RPC at
+`2026-10-15T20:08:37.316Z`, finalized block **26,200,139**,
+`0x5ba89450466ec7979fd0ab037d86077799089630aab9d8923cf63753a7cb11be`.
+The [complete new report](../../deployments/ethereum-mainnet/2026-10-15/record-verification.json)
+confirms the original deployment transactions, exact original-profile runtimes,
+bindings and completed governor ownership. It records `externalTransactions: false`
+and `readyForPublicFunding: false`. It uses the original archived compiler profile;
+it does not qualify the new compiler, hardening, candidate or participants. No
+independent second-provider cross-check is claimed.
+
+The complete local contract suite passed **111 tests** on the preparation source
+`b07798b571286a9ce4d7104a69e8cd4b30d8d40f`, using its locked JavaScript tools and a
+Python environment with the required chain extra. New source or configuration
+still requires exact-candidate qualification. The signing window is Friday evening,
+**October 16, 2026, America/Toronto (Montreal, UTC−04:00)**, continuing over the weekend;
+the owner controls the exact signing time.
+
+| Omitted check | Campaign status |
+| --- | --- |
+| External independent audit | NOT PERFORMED — OWNER-ACCEPTED OMISSION |
+| Sepolia rehearsal | NOT PERFORMED — OWNER-ACCEPTED OMISSION |
