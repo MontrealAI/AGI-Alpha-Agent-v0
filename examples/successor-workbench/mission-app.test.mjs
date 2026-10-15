@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import test from 'node:test';
 import * as records from './mission-record.mjs';
 import * as workbench from './engine.mjs';
-const source=fs.readFileSync(new URL('../../scripts/templates/successor-mission/app.js',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL('../../scripts/templates/successor-mission/app.js',import.meta.url),'utf8')+fs.readFileSync(new URL('../../scripts/templates/successor-mission/project.js',import.meta.url),'utf8');
 const marker='(async()=>{try{db=';
 assert.equal(source.split(marker).length,2,'test must retain the real bootstrap boundary');
 const sourceHash='a'.repeat(64);
@@ -24,7 +24,7 @@ async function harness({failWrite=0,failList=0,code='LOCAL_REVISION_CONFLICT',ho
   const engine={...workbench,async run(...args){engineCalls++;if(hold){await blocked;throw Error('CANCELLED');}return workbench.run(...args);}};
   const context=vm.createContext({document:{getElementById:element,querySelectorAll:()=>[],createElement:()=>element('created')},
     records,workbench:engine,storage:{async openMissionStore(){return db;}},crypto,AbortController,URL,Blob,setTimeout,console,
-    SOURCE_HASH:sourceHash,initial,testdb:db});
+    TextEncoder,TextDecoder,SOURCE_HASH:sourceHash,initial,testdb:db});
   const hooks=`\nglobalThis.hooks={run,stop,operation,openSaved,state:()=>({active:!!active,busy,readOnly,mode,pendingRun,stopping,unpersisted,hasDB:!!db,current})};`;
   vm.runInContext(boot?source+hooks:source.split(marker)[0]+'\ncurrent=initial;db=testdb;ready=true;'+hooks,context);
   if(boot)await new Promise(resolve=>setTimeout(resolve,0));
