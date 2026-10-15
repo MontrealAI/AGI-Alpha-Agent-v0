@@ -907,3 +907,76 @@ html.home-large-text {
 
 /* Nova-Seed keeps its own project journey alongside the personal laboratory. */
 .welcome-nova{background:linear-gradient(135deg,#efe5fa,#faf7fd)}.welcome-nova .welcome-plan-tasks li{grid-template-columns:auto minmax(0,1fr)}.welcome-nova .welcome-plan-tasks{padding:0}.welcome-nova .welcome-ecosystem-token{min-width:0}.welcome-nova h2{overflow-wrap:anywhere}
+
+/* A quiet universe for the first useful step. Static, local and motion-free. */
+.welcome-page .welcome-hero {
+    width: 100%;
+    padding-inline: max(1.25rem, calc((100% - 1280px) / 2));
+    color: #f8f1ff;
+    background:
+        radial-gradient(circle at 11% 17%, #e6d3ff 0 1px, transparent 2px),
+        radial-gradient(circle at 35% 78%, #dac5f2 0 1px, transparent 2px),
+        radial-gradient(circle at 80% 36%, #e5c2ff 0 1px, transparent 2px),
+        radial-gradient(ellipse at 76% 12%, #593477 0, transparent 60%),
+        radial-gradient(ellipse at 12% 100%, #34204e 0, transparent 65%),
+        #160e27;
+    background-size: 480px 430px, 670px 590px, 790px 690px, auto, auto, auto;
+    border-bottom: 1px solid #695079;
+}
+.welcome-hero .welcome-eyebrow {
+    color: #dec1fa;
+}
+.welcome-hero .welcome-copy h1 {
+    color: #fff9ff;
+}
+.welcome-hero .welcome-copy h1 em {
+    color: #d8b0ff;
+}
+.welcome-hero :is(.welcome-lead, .welcome-reassurance, .welcome-trust) {
+    color: #e1d5ec;
+}
+.welcome-hero .welcome-primary {
+    color: #28123c;
+    background: #dfbaff;
+    border-color: #dfbaff;
+    box-shadow: 0 10px 35px #bb83f330;
+}
+.welcome-hero .welcome-primary:hover {
+    color: #21102f;
+    background: #edd6ff;
+    border-color: #edd6ff;
+}
+.welcome-hero .welcome-secondary {
+    color: #f0ddff;
+}
+.welcome-hero .welcome-secondary:hover {
+    color: #fff;
+    background: #4c3265;
+}
+.welcome-hero .welcome-copy :is(a, button):focus-visible {
+    outline-color: #f4d99f;
+}
+.welcome-hero .welcome-plan {
+    color: #292038;
+    border-color: #c9acdf;
+    box-shadow: 0 28px 75px #08021050;
+}
+.welcome-hero .welcome-omega-orb {
+    box-shadow: 0 0 0 14px #9f70c50b, 0 0 0 28px #9f70c508, 0 15px 42px #653f9230;
+}
+.welcome-page .skip:not(:focus) {
+    clip-path: inset(50%);
+}
+@media print {
+    .welcome-page .welcome-hero {
+        color: #292038;
+        background: white;
+        border-color: #ddd4e3;
+    }
+    .welcome-hero .welcome-copy :is(h1, h1 em, p, a, ul) {
+        color: #292038;
+    }
+    .welcome-hero .welcome-plan {
+        box-shadow: none;
+    }
+}
