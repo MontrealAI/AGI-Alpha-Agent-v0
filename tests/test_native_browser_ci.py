@@ -207,13 +207,15 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs",
         "node examples/successor-workbench/test.mjs",
         "node --test examples/alpha-discovery/engine.test.mjs",
+        "node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs",
         "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null "
-        "-p no:cacheprovider tests/test_native_browser_ci.py -q",
+        "-p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q",
     ]
     assert browser["run"].splitlines() == [
         "python tests/browser/test_successor_mission_store.py",
         "python tests/browser/test_successor_mission_browser.py",
         "python tests/browser/test_alpha_discovery_browser.py",
+        "python tests/browser/test_specialist_evaluation_browser.py",
     ]
     assert browser["env"]["AXE_SCRIPT"] == "${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js"
 

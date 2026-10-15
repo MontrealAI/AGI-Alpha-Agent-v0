@@ -27,7 +27,9 @@ def main() -> None:
             page.on(
                 "request", lambda request: external.append(request.url) if not request.url.startswith(base) else None
             )
-            page.goto(base + "/successor/evaluate/")
+            page.goto(base + "/successor/discover/")
+            page.locator('a[href="../evaluate/"]').click()
+            page.wait_for_url("**/successor/evaluate/")
             page.locator("#freeze").click()
             page.locator("#result").wait_for(state="visible")
             assert page.locator("#comparison").text_content() == "uncommissioned"

@@ -75,10 +75,10 @@ conflicts, custody and completeness. No such backend is claimed here. Replacing
 candidate/dependencies/conditions requires a new contract and fresh proof.
 Restoring historical reports never restores live permission or current trust.
 
-This isolated stage does not alter the frozen discovery/release files. Main
-journey linking, gallery/service-worker regeneration and full release admission
-must happen in a separately reviewed integration change, not by silently changing
-the earlier frozen release. The committed generated page has its own exact
+This additive draft links from the gallery homepage, bounded workbench and
+discovery page, and regenerates their affected source/cache bytes. Prior entries
+remain available. The earlier discovery/release branches remain unchanged.
+Full release admission is still required. The committed generated page has its own exact
 source manifest and hash-only CSP with `connect-src 'none'`.
 
 ## Checks and release requirements
@@ -91,7 +91,7 @@ AXE_SCRIPT=tests/browser/node_modules/axe-core/axe.min.js python tests/browser/t
 ```
 
 `CHROMIUM_EXECUTABLE` optionally selects an existing installed Chromium.
-The dedicated `Specialist evaluation acceptance` workflow requires exact-head
+The existing `SUCCESSOR mission recovery` workflow now also requires exact-head
 unit/source checks and browser QA, without conditional skipping, and saves
 screenshots tied to the tested commit. It covers EN/FR, keyboard activation,
 mobile/200% layout, Axe, literal markup, repeated actions, stale edits, interrupted
