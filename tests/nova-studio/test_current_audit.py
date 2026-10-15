@@ -227,3 +227,24 @@ def test_incomplete_attempt_is_visible_and_orphaned_source_record_rejected(repos
     (directory / "run.json").unlink()
     with pytest.raises(ValueError, match="Incomplete"):
         audit.build_audit(repository)
+
+
+def test_all_mapped_runtime_pytest_suites_isolate_runtime_configuration():
+    """Minimal operator CI must never import the unrelated repository conftest."""
+    _, policy = audit.catalog(audit.ROOT)
+    suites = {
+        name: spec
+        for name, spec in policy["suites"].items()
+        if spec["kind"] == "pytest" and any(arg.startswith("tests/runtime/") for arg in spec["argv"])
+    }
+    assert {"native_budget_browser", "native_ecosystem", "ecosystem_browser"} <= suites.keys()
+    for name, spec in suites.items():
+        assert "--confcutdir=tests/runtime" in spec["argv"], name
+        assert spec["cwd"] == ".", name
+
+
+def test_standalone_preservation_suite_uses_minimal_configuration():
+    _, policy = audit.catalog(audit.ROOT)
+    argv = policy["suites"]["preservation"]["argv"]
+    assert "--noconftest" in argv
+    assert argv[argv.index("-o") + 1] == "addopts="

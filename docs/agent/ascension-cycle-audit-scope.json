@@ -155,7 +155,10 @@
         "-m",
         "pytest",
         "tests/test_successor_preservation.py",
-        "-q"
+        "-q",
+        "--noconftest",
+        "-o",
+        "addopts="
       ],
       "cwd": ".",
       "kind": "pytest",
@@ -418,6 +421,7 @@
         "pytest",
         "tests/runtime/test_budget_reservations.py",
         "tests/runtime/test_budget_browser.py",
+        "--confcutdir=tests/runtime",
         "-q",
         "--color=no"
       ],
@@ -433,6 +437,7 @@
         "pytest",
         "tests/runtime/test_budget_reservations.py",
         "tests/runtime/test_ecosystem_jobs.py",
+        "--confcutdir=tests/runtime",
         "-q",
         "--color=no"
       ],
@@ -448,6 +453,7 @@
         "pytest",
         "tests/runtime/test_budget_reservations.py",
         "tests/runtime/test_ecosystem_browser.py",
+        "--confcutdir=tests/runtime",
         "-q",
         "--color=no"
       ],
