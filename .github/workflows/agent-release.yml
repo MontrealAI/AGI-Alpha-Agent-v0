@@ -74,7 +74,7 @@ jobs:
       - name: Runtime tests in minimal environment
         run: |
           mkdir -p evidence
-          python -m pytest tests/runtime --confcutdir=tests/runtime -q --junitxml=evidence/runtime.xml
+          python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py --ignore=tests/runtime/test_supplier_browser_browser.py -q --junitxml=evidence/runtime.xml
           python -m pytest --noconftest -o addopts= tests/test_native_browser_ci.py tests/test_release_publication.py tests/test_mainnet_release_record.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m pytest --noconftest -o addopts= tests/test_openai_bridge_integration.py -q --junitxml=evidence/business1-sum-binding.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
@@ -213,6 +213,7 @@ jobs:
           python scripts/check_python_deps.py
           python check_env.py --auto-install
           python -m pip check
+          npm ci --prefix tests/browser --ignore-scripts
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           FETCH_ASSETS_SKIP_LLM=1 npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
           python -m playwright install --with-deps chromium
