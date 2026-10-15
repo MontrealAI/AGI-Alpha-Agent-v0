@@ -10,7 +10,7 @@ import {validateProject, nextCycle, appendRecord, exactDigest} from './engine.mj
 import {createRecord, startRun, completeRun} from '../successor-workbench/mission-record.mjs';
 import {run} from '../successor-workbench/engine.mjs';
 
-export const MANAGER_SOURCE = Object.freeze({repository:'MontrealAI/AGIJobManager',commit:'0845a77e6be6bda2e3acdf21544776d60ffdb666',tree:'d417343b95b4e648cd9c6e1e9a994ee2ca708234'});
+export const MANAGER_SOURCE = Object.freeze({repository:'MontrealAI/AGIJobManager',commit:'e5d59f1c8e307193dbb99196a5276eb1fe344fe3',tree:'5136b443f9ef081db7cb5a788f4d49d3f5db2740'});
 export const ALPHA_BASELINE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'7c410d3d61d5d6bba5354307e1784dba2b3aa177',tree:'e80b1dc06317d939e3dd22d2db063a7f1706ddcb'});
 export const ALPHA_NATIVE_SOURCE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'ccad46c561e1b649c77a61d11d405b2ec255e09c',tree:'e987ff3b748cc56a324239fcc3eb6a018010eeec',manifestSha256:'908268b06a535a15ad1725deea48fdd160db6816a2af6d643421383826cd6dea'});
 export const LIMIT = 2_000_000;
