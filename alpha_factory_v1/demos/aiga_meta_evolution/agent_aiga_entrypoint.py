@@ -13,7 +13,7 @@ Kubernetes‑/Docker‑friendly micro‑service with:
 • **Gradio** dashboard on *:7862* for non‑technical users
 • **Prometheus** metrics + optional **OpenTelemetry** traces
 • Optional **ADK** registration + **A2A** mesh socket (auto‑noop if libs absent)
-• Fully offline when `OPENAI_API_KEY` is missing – falls back to Ollama/Mistral
+• HTTP liveness without optional executors; execution and commentary readiness reported separately
 • Atomic checkpointing & antifragile resume (SIGTERM‑safe)
 • SBOM‑ready logging + SOC‑2 log hygiene
 
@@ -23,7 +23,7 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 
 from __future__ import annotations
 
-import os, asyncio, logging, time, json, math, tempfile, threading
+import os, asyncio, inspect, logging, time, json, math, tempfile, threading
 from pathlib import Path
 from typing import Any, Dict
 
@@ -49,7 +49,7 @@ from prometheus_client import (
     Counter,
     Gauge,
     Histogram,
-    metrics,
+    metrics as prometheus_metrics,
     generate_latest,
 )
 
@@ -71,10 +71,6 @@ try:
 except ImportError:  # pragma: no cover
     A2ASocket = None  # type: ignore
 
-try:
-    from .openai_agents_bridge import OpenAIAgent, Tool
-except ModuleNotFoundError as exc:  # pragma: no cover - optional dependency missing
-    raise ModuleNotFoundError("OpenAI Agents SDK is required for the AIGA meta-evolution service") from exc
 if os.getenv("ENABLE_AIGA_ADK", "false").lower() == "true":
     try:
         from alpha_factory_v1.backend import adk_bridge
@@ -83,9 +79,15 @@ if os.getenv("ENABLE_AIGA_ADK", "false").lower() == "true":
 else:
     adk_bridge = None
 
-from .openai_agents_bridge import EvolverAgent
+from . import meta_evolver
 from .meta_evolver import MetaEvolver
-from .curriculum_env import CurriculumEnv
+
+try:
+    from .curriculum_env import CurriculumEnv
+except ModuleNotFoundError as exc:
+    if exc.name not in {"gymnasium", "numpy"}:
+        raise
+    CurriculumEnv = None  # type: ignore[assignment,misc]
 from .utils import build_llm
 
 try:
@@ -151,7 +153,7 @@ if ENABLE_SENTRY and SENTRY_DSN:
 # METRICS --------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def _lookup_metric(name: str):
-    registry = metrics.REGISTRY
+    registry = prometheus_metrics.REGISTRY
     for metric_name, collector in registry._names_to_collectors.items():  # type: ignore[attr-defined]
         if metric_name == name or metric_name.startswith(f"{name}_"):
             return collector
@@ -162,7 +164,7 @@ def _find_metric(name: str):
     existing = _lookup_metric(name)
     if existing is not None:
         return existing
-    for collector, names in metrics.REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
+    for collector, names in prometheus_metrics.REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
         if name in names:
             return collector
     return None
@@ -173,25 +175,12 @@ def _reuse_or_create(name: str, factory, *args, **kwargs):
     if existing is not None:
         return existing
     try:
-        kwargs.setdefault("registry", metrics.REGISTRY)
+        kwargs.setdefault("registry", prometheus_metrics.REGISTRY)
         return factory(name, *args, **kwargs)
     except ValueError:
         existing = _find_metric(name) or _lookup_metric(name)
         if existing is not None:
             return existing
-    for collector, names in REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
-        if name in names:
-            return collector
-    kwargs.setdefault("registry", REGISTRY)
-    try:
-        return factory(name, *args, **kwargs)
-    except ValueError:
-        existing = REGISTRY._names_to_collectors.get(name)  # type: ignore[attr-defined]
-        if existing is not None:
-            return existing
-        for collector, names in REGISTRY._collector_to_names.items():  # type: ignore[attr-defined]
-            if name in names:
-                return collector
         raise
 
 
@@ -210,10 +199,12 @@ _RATE_LOCK = asyncio.Lock()
 LLM = build_llm()
 
 
-@Tool(name="describe_candidate", description="Explain why this architecture might learn fast")
 async def describe_candidate(arch: str):
     """Summarise why a given architecture could perform well."""
-    return await LLM(f"In two sentences, explain why architecture '{arch}' might learn quickly.")
+    if not _commentary_available():
+        raise HTTPException(503, "No compatible inference adapter is available")
+    result = LLM(f"In two sentences, explain why architecture '{arch}' might learn quickly.")
+    return await result if inspect.isawaitable(result) else result
 
 
 # ---------------------------------------------------------------------------
@@ -281,7 +272,31 @@ class AIGAMetaService:
         return self.evolver.latest_log()
 
 
-service = AIGAMetaService()
+# HTTP liveness must not depend on optional training or legacy agent runtimes.
+service = AIGAMetaService() if CurriculumEnv is not None else None
+
+
+def _execution_unavailable() -> list[str]:
+    missing = []
+    if CurriculumEnv is None:
+        missing.append("gymnasium/numpy curriculum environment")
+    if getattr(meta_evolver, "np", None) is None:
+        missing.append("numpy")
+    if not getattr(meta_evolver, "_TORCH", False):
+        missing.append("torch")
+    return missing
+
+
+def _commentary_available() -> bool:
+    return callable(LLM) and not getattr(LLM, "__alpha_factory_unavailable__", False)
+
+
+def _require_service(*, execution: bool = False) -> AIGAMetaService:
+    missing = _execution_unavailable()
+    if service is None or (execution and missing):
+        raise HTTPException(503, "Evolution unavailable: " + ", ".join(missing))
+    return service
+
 
 # ---------------------------------------------------------------------------
 # FASTAPI --------------------------------------------------------------------
@@ -344,12 +359,17 @@ async def _count_requests(request, call_next):
 
 @app.get("/health")
 async def read_health():
-    """Return service status and best fitness."""
-    best = service.evolver.best_fitness
+    """Report HTTP liveness separately from execution and unverified provider capability."""
+    best = service.evolver.best_fitness if service is not None else 0.0
     if not math.isfinite(best):
         best = 0.0
     return {
         "status": "ok",
+        "liveness": True,
+        "execution_ready": service is not None and not _execution_unavailable(),
+        "execution_unavailable": _execution_unavailable(),
+        "commentary_adapter_available": _commentary_available(),
+        "provider_verified": False,
         "generations": int(GEN_COUNTER._value.get()),
         "best_fitness": best,
     }
@@ -366,28 +386,30 @@ async def evolve_endpoint(gens: int, background_tasks: BackgroundTasks):
     """Schedule ``gens`` generations in the background."""
     if gens < 1 or gens > MAX_GEN:
         raise HTTPException(400, f"gens must be 1–{MAX_GEN}")
-    background_tasks.add_task(service.evolve, gens)
+    background_tasks.add_task(_require_service(execution=True).evolve, gens)
     return {"msg": f"scheduled evolution for {gens} generations"}
 
 
 @app.post("/checkpoint")
 async def checkpoint_endpoint(background_tasks: BackgroundTasks):
     """Persist the current checkpoint asynchronously."""
-    background_tasks.add_task(service.checkpoint)
+    background_tasks.add_task(_require_service().checkpoint)
     return {"msg": "checkpoint scheduled"}
 
 
 @app.post("/reset")
 async def reset_endpoint(background_tasks: BackgroundTasks):
     """Reset the evolver state asynchronously."""
-    background_tasks.add_task(service.reset)
+    background_tasks.add_task(_require_service().reset)
     return {"msg": "reset scheduled"}
 
 
 @app.get("/alpha")
 async def best_alpha():
     """Return current best architecture + LLM summary (meta‑explanation)."""
-    return await service.best_alpha()
+    if not _commentary_available():
+        raise HTTPException(503, "No compatible inference adapter is available")
+    return await _require_service().best_alpha()
 
 
 # ---------------------------------------------------------------------------
@@ -421,7 +443,12 @@ _gradio_lock_file: Any | None = None
 async def _start_gradio_dashboard() -> None:
     """Launch Gradio once and bridge callbacks to FastAPI's event loop."""
     global _gradio_thread, _gradio_lock_file
-    if gr is None or os.getenv("ENABLE_GRADIO", "true").lower() != "true":
+    if (
+        service is None
+        or _execution_unavailable()
+        or gr is None
+        or os.getenv("ENABLE_GRADIO", "true").lower() != "true"
+    ):
         log.info("Skipping Gradio startup")
         return
     if _gradio_thread and not _gradio_thread.is_alive():
@@ -456,7 +483,8 @@ async def _checkpoint_on_shutdown() -> None:
     """Persist state and stop Gradio before FastAPI shuts down."""
     global _gradio_thread, _gradio_ui, _gradio_lock_file
     log.info("Shutdown received – persisting state …")
-    await service.checkpoint()
+    if service is not None:
+        await service.checkpoint()
     if _gradio_ui is not None:
         try:
             _gradio_ui.close()
@@ -483,6 +511,8 @@ if __name__ == "__main__":
     if AgentRuntime:
         AgentRuntime.register(SERVICE_NAME, f"http://localhost:{API_PORT}")
     if adk_bridge and adk_bridge.adk_enabled():
+        from .openai_agents_bridge import EvolverAgent
+
         evolver_agent = EvolverAgent()
         adk_bridge.auto_register([evolver_agent])
         adk_bridge.maybe_launch()

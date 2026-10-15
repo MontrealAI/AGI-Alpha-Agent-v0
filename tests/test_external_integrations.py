@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import importlib
 import types
+import sys
 from packaging.version import Version
 import pytest
 
@@ -39,12 +40,11 @@ def _adk_available() -> bool:
 HAS_ADK = _adk_available()
 
 
-@pytest.mark.skipif(not HAS_OAI, reason="openai_agents >=0.0.17 required")
 def test_build_llm_missing_api_key(monkeypatch):
-    if importlib.util.find_spec("openai_agents"):
-        import openai_agents as oa
-    else:  # pragma: no cover - legacy package name
-        import agents as oa
+    # This tests constructor wiring, not real provider availability. Do not
+    # mutate the repository shim while retaining its deliberately rejected flag.
+    oa = types.ModuleType("openai_agents")
+    monkeypatch.setitem(sys.modules, "openai_agents", oa)
 
     captured = {}
 
@@ -63,6 +63,26 @@ def test_build_llm_missing_api_key(monkeypatch):
     llm = mod.build_llm()
     assert isinstance(llm, DummyAgent)
     assert captured.get("base_url") == "http://testserver"
+
+
+def test_build_llm_rejects_marked_repository_shim(monkeypatch):
+    oa = types.ModuleType("openai_agents")
+    oa.__alpha_factory_stub__ = True
+
+    class ForbiddenShim:
+        def __init__(self, **_kwargs):
+            pytest.fail("Marked repository shim must never become a provider")
+
+    oa.OpenAIAgent = ForbiddenShim
+    monkeypatch.setitem(sys.modules, "openai_agents", oa)
+    monkeypatch.setitem(sys.modules, "agents", types.ModuleType("agents"))
+    mod = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.utils")
+    llm = mod.build_llm()
+    assert llm.__alpha_factory_unavailable__ is True
+    import asyncio
+
+    with pytest.raises(RuntimeError, match="No compatible inference adapter"):
+        asyncio.run(llm("no synthetic output"))
 
 
 @pytest.mark.skipif(not HAS_ADK, reason="google_adk package not installed")
