@@ -32,9 +32,11 @@ jobs:
         run: |
           node --test examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs
           node examples/successor-workbench/test.mjs
+          node --test examples/alpha-discovery/engine.test.mjs
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_native_browser_ci.py -q
       - name: Generated source is current
         run: |
+          python scripts/generate_alpha_discovery.py
           python scripts/generate_successor_mission.py
           python scripts/generate_successor_workbench.py
           python scripts/build_service_worker.py
@@ -42,6 +44,15 @@ jobs:
       - name: Atomic storage and full browser recovery
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          DISCOVERY_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots
         run: |
           python tests/browser/test_successor_mission_store.py
           python tests/browser/test_successor_mission_browser.py
+          python tests/browser/test_alpha_discovery_browser.py
+      - name: Retain discovery browser screenshots
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: alpha-discovery-browser-${{ github.sha }}
+          path: discovery-screenshots/
+          if-no-files-found: warn

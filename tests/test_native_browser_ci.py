@@ -183,6 +183,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
         "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
         "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+        "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f",
     ]
     assert actions[0]["with"]["persist-credentials"] is False
     selected = {step["name"]: step for step in steps if "name" in step}
@@ -190,7 +191,11 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     assertions = selected["Strict records and existing workbench"]
     browser = selected["Atomic storage and full browser recovery"]
     for step in [*actions, *selected.values()]:
-        assert "if" not in step and "continue-on-error" not in step
+        if step.get("name") == "Retain discovery browser screenshots":
+            assert step["if"] == "always()"
+            assert "continue-on-error" not in step
+        else:
+            assert "if" not in step and "continue-on-error" not in step
     assert steps.index(install) < steps.index(assertions) < steps.index(browser)
     assert install["run"].splitlines() == [
         "python -m pip install playwright==1.54.0 PyYAML==6.0.2 pytest==8.4.1",
@@ -201,11 +206,17 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "node --test examples/successor-workbench/mission-record.test.mjs "
         "examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs",
         "node examples/successor-workbench/test.mjs",
+        "node --test examples/alpha-discovery/engine.test.mjs",
         "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null "
         "-p no:cacheprovider tests/test_native_browser_ci.py -q",
     ]
     assert browser["run"].splitlines() == [
         "python tests/browser/test_successor_mission_store.py",
         "python tests/browser/test_successor_mission_browser.py",
+        "python tests/browser/test_alpha_discovery_browser.py",
     ]
     assert browser["env"]["AXE_SCRIPT"] == "${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js"
+
+    assert browser["env"]["DISCOVERY_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots"
+    assert "python scripts/generate_alpha_discovery.py" in selected["Generated source is current"]["run"].splitlines()
+    assert selected["Retain discovery browser screenshots"]["with"]["path"] == "discovery-screenshots/"
