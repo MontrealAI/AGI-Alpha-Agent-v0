@@ -1,0 +1,11 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Supplier browser laboratory</title>
+<style>body{font:18px system-ui;background:#130e29;color:#f6f1ff;margin:0;padding:32px}main{max-width:980px;margin:auto}button,select{font:inherit;padding:14px;margin:12px;background:#ede3ff;color:#21113d;border:2px solid #a68ad8;border-radius:12px}pre{white-space:pre-wrap;background:#21173c;padding:20px}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #76618f}:focus-visible{outline:4px solid #f1c65b}</style>
+<main><h1>Compare supplied quotes</h1><p>Synthetic laboratory. No ordering, messages, wallets or network access.</p>
+<label for="delivery">Maximum delivery time</label><select id="delivery">OPTIONS</select><button id="compare">Compare quotes</button>
+<table><caption>Supplied prices in integer cents</caption><thead><tr><th>Supplier</th><th>Quantity</th><th>Unit cents</th><th>Shipping cents</th><th>Delivery days</th></tr></thead><tbody id="quotes"></tbody></table>
+<pre id="output" aria-live="polite">Choose a delivery limit, then compare.</pre></main><script>
+const quotes=QUOTES;
+for(const q of quotes){const row=document.createElement('tr');for(const value of [q.supplier,q.quantity,q.unitCents,q.shippingCents,q.deliveryDays]){const cell=document.createElement('td');cell.textContent=value;row.append(cell)}document.getElementById('quotes').append(row)}
+document.getElementById('compare').onclick=()=>{const days=Number(document.getElementById('delivery').value);const rows=quotes.map(q=>({supplier:q.supplier,totalCents:q.quantity*q.unitCents+q.shippingCents,eligible:q.deliveryDays<=days}));const eligible=rows.filter(q=>q.eligible).sort((a,b)=>a.totalCents-b.totalCents||(a.supplier<b.supplier?-1:a.supplier>b.supplier?1:0));const result={maxDeliveryDays:days,quotes:rows,recommendedSupplier:eligible.length?eligible[0].supplier:null,purchaseExecuted:false};document.getElementById('output').textContent='BEGIN_SUPPLIER_COMPARISON_V1\n'+JSON.stringify(result,null,2)+'\nEND_SUPPLIER_COMPARISON_V1';};
+</script></html>
