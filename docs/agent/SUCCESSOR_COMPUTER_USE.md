@@ -110,3 +110,26 @@ be replaced by a fixture or described as completed when credentials are unavaila
 
 The proposed $40 trillion/year opportunity is the owner's estimate. It is not a measured result or an
 independently sourced market claim in this release.
+
+## Provider usage and elapsed evidence
+
+Each HTTP request attempt is recorded before network I/O. Completed provider
+responses may supply bounded integer token counts, retained as
+`PROVIDER_REPORTED`; absent or malformed usage remains `UNKNOWN`. A timed-out
+request is never assumed free and is not retried automatically. The receipt
+keeps billing `UNKNOWN` and per-attempt cost `null`: token observations are
+not an invoice, a dollar budget, or evidence of economic benefit. Total
+`elapsed_milliseconds` measures the local session through cleanup. Human
+review time remains separately supplied rather than inferred from runtime.
+
+The Responses wire contract was checked on 2026-10-15 against the
+[official computer-use guide](https://developers.openai.com/api/docs/guides/tools-computer-use).
+The adapter uses the current `computer` tool and action arrays, matches each
+`computer_call_output` to its call ID, and retains encrypted reasoning in
+stateless history (`store: false`). Unsupported tools and pending safety
+checks stop for operator review. The alternate vision-JSON supplier has a
+different contract; these modes do not imply arbitrary provider compatibility.
+
+A real Chromium laboratory test with scripted provider-shaped responses is
+useful protocol evidence, but cannot establish live-model correctness or
+production Docker isolation. Those require their own exact-source trials.

@@ -157,6 +157,7 @@ class HTTPAdvisor:
         self.api_key = api_key
         self.history: list[dict[str, Any]] = []
         self.pending: str | None = None
+        self.usage_events: list[dict[str, Any]] = []
 
     def next(self, task: ComputerTask, observation: dict[str, Any]) -> dict[str, Any]:
         """Never retry a billed request automatically, follow redirects or acknowledge safety checks."""
@@ -218,6 +219,9 @@ class HTTPAdvisor:
                 ],
             }
             suffix = "/chat/completions"
+        # Reserve an attempt before network I/O; a timeout never establishes zero cost.
+        event: dict[str, Any] = {"attempt": len(self.usage_events) + 1, "status": "UNKNOWN", "cost": None}
+        self.usage_events.append(event)
         with httpx.Client(timeout=30, trust_env=False, follow_redirects=False) as client:
             with client.stream(
                 "POST",
@@ -233,6 +237,17 @@ class HTTPAdvisor:
                     if len(chunks) > 128_000:
                         raise ValueError("provider response exceeds bound")
         result = json.loads(chunks)
+        usage = result.get("usage")
+        fields = (
+            ("input_tokens", "output_tokens", "total_tokens")
+            if self.identity["mode"] == "responses"
+            else ("prompt_tokens", "completion_tokens", "total_tokens")
+        )
+        if isinstance(usage, dict) and all(
+            type(usage.get(field)) is int and 0 <= usage[field] <= 10**12 for field in fields  # noqa: E721
+        ):
+            event.update(status="PROVIDER_REPORTED", tokens={field: usage[field] for field in fields})
+        # Provider-reported token counts are observations, never an invoice or dollar limit.
         if self.identity["mode"] == "vision-json":
             advice = safe_json_loads(result["choices"][0]["message"]["content"])
             if not isinstance(advice, dict):
@@ -526,7 +541,15 @@ def run_session(
         for turn in range(task.max_turns):
             checkpoint()
             record = _change(journal, key, record["revision"], turns_reserved=turn + 1, pending="provider")
-            advice = advisor.next(task, observation)
+            try:
+                advice = advisor.next(task, observation)
+            finally:
+                if isinstance(advisor, HTTPAdvisor):
+                    latest = journal.latest(key)
+                    changed_during_provider = latest["revision"] != record["revision"]
+                    record = _change(journal, key, latest["revision"], provider_usage=advisor.usage_events)
+                    if changed_during_provider:
+                        raise Conflict("operator revoked or changed execution during provider response")
             checkpoint()
             if (
                 set(advice) != {"actions", "done", "summary"}
@@ -601,6 +624,10 @@ def run_session(
             raise
         finally:
             latest = journal.latest(key)
+            record = _change(
+                journal, key, latest["revision"], elapsed_milliseconds=int((time.monotonic() - started) * 1000)
+            )
+            latest = record
             private_write(output / "receipt.json", canonical(latest))
             write_receipt(journal, latest, output, "computer-receipt")
     return {
