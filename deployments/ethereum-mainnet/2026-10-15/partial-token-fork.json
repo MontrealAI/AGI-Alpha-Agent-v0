@@ -1,0 +1,84 @@
+{
+  "schema": "agialpha.partial-mainnet-token-fork.v1",
+  "preparationCommit": "5517d9b2212c3f7c2d7ec1ad6592e92bef06aaeb",
+  "additionalSources": {
+    "tests/contracts/hardhat.fork.config.js": "e2cf0826a78eb638934d767126554c8b1421523fc83a13e21983abe47f75c210",
+    "tests/contracts/fork/fixture.js": "ae3edae947598f2cca55a61cb9d46bfe9f4fed97c4cc28359500764242954689",
+    "tests/contracts/fork/token-support.js": "c576d8b41ed0abedf9178d84d52467cecdab000b14f41d2bbadb97fd33fcdf67",
+    "tests/contracts/fork/mainnet-token.test.js": "babf67cae176d759088529ef55636d24dae25501d6718a55572680f35d57a59b"
+  },
+  "block": {
+    "number": 26200139,
+    "hash": "0x5ba89450466ec7979fd0ab037d86077799089630aab9d8923cf63753a7cb11be"
+  },
+  "token": {
+    "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+    "runtimeCodeHash": "0xb2f6d0bbf5e047601a71fc099779bd3932274a484f2175fd1e830e613349c310",
+    "codeReplaced": false,
+    "originalSupply": "68362951948693001000000001",
+    "syntheticSupplyDelta": "80000000000000000000000",
+    "balanceMappingSlot": 0,
+    "totalSupplySlot": 2,
+    "supplyDeltaAccountsForPreviousBalances": true
+  },
+  "tests": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "logSha256": "7aceba6583d466e49d04969002f96b3009d13ede8e164393c9e4fa39668041e6"
+  },
+  "scope": [
+    "Actual forked token transfer/approval/burn behavior and unchanged code",
+    "New local Ascension contracts using canonical current artifacts",
+    "Seed/risk-review/curve buy and sell/bloom/plan proof/job auction/submission/two-vote settlement/burn/refund/reclaim",
+    "Revoked rejecting reviewer cannot slash; timeout releases collateral; refund cannot repeat"
+  ],
+  "limitations": [
+    "Private in-process fork with synthetic token balances and supply delta",
+    "Local MockAscensionENS/Wrapper identities and operator-supplied reviews; no independent review",
+    "Test signers and parameters, not an owner-approved exact deployment plan",
+    "No full old-obligation inventory, real production participant ENS/committee exercise, interrupted deployment or explorer acceptance",
+    "One public read-only upstream; no independent provider cross-check"
+  ],
+  "externalTransactions": false,
+  "readyForPublicFunding": false,
+  "artifacts": {
+    "AscensionAccess": {
+      "artifactSha256": "f43e034460a3877bfe1acc6a8e0284999611f1d340e1f7faf5b16ef8581437f7",
+      "creationBytecodeSha256": "2a2165232d3def316ecf906766d6e9b6b68b5ff6e3e57d125957078b208e660c",
+      "runtimeTemplateSha256": "c9e46201b740d6159004305a6f88542c3efe736f37c34ad4e88dd3674b3bc08c",
+      "runtimeBytes": 3240
+    },
+    "NovaSeed": {
+      "artifactSha256": "e8c956c822bbfe2397be1c821e62c4b87c3dc27ffd768e605c8f1de88ac87e53",
+      "creationBytecodeSha256": "bc694e670e80a6b562169f9227dff2b03298d97d2bff4910d592d4532c0825a0",
+      "runtimeTemplateSha256": "7835f9da5dfb530bfac1af5cd025fc3e8270f4b71c484e3b8d7c61e9e3db51f7",
+      "runtimeBytes": 4951
+    },
+    "AscensionRiskOracle": {
+      "artifactSha256": "f68dbf26ae687b344196bacd8e8a35c32708b1d546a31e385c7676ccf632e30e",
+      "creationBytecodeSha256": "f0e38fc8ae242274f2d9afa4d2872272556e52232c146d23ce1352d4a2fc03a7",
+      "runtimeTemplateSha256": "e8090379b32590fd5bf35a889e7759d7e1d73fd68f777990e17145c9fdb75bc4",
+      "runtimeBytes": 8275
+    },
+    "AscensionJobMarket": {
+      "artifactSha256": "c2f96d24fd9b17c29ff0b1febece3198df7812680e046012ac52f436d1f11ed4",
+      "creationBytecodeSha256": "04b9fc24a100e9dab276173575b5bbe3b67122f27fc07e6251f5338cb203c79e",
+      "runtimeTemplateSha256": "1a23ded368bda961c817144a8861156dfea7d5306d6ddec650c2d85b4f210d62",
+      "runtimeBytes": 17284
+    },
+    "AscensionMark": {
+      "artifactSha256": "080bb0e7f28b50bb3c7a87b2775283fedd6646fb58b8779620105c9bdb75460d",
+      "creationBytecodeSha256": "ea2f2cc9ec99d1274e16fceb8627e1763f0dc8069b4deec5f9fe254a3952112a",
+      "runtimeTemplateSha256": "a17e7f30614fe5b0e7b72c50c5ee75ce106ae1662f6daea16dec761243505251",
+      "runtimeBytes": 12488
+    }
+  },
+  "defaultUnforkedRegression": {
+    "passed": 111,
+    "failed": 0,
+    "skipped": 0,
+    "logSha256": "093c6c789d29cc48848f89cf2cf47c35b2e3e9ec927719d382d7c63dafed6f3b"
+  },
+  "missingForkInputGuard": "Executed via Hardhat CLI; missing explicit inputs rejected before provider initialization"
+}
