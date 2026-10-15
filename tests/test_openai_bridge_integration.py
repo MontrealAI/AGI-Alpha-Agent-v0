@@ -5,6 +5,12 @@ import types
 import unittest
 from unittest.mock import AsyncMock, patch
 import json
+from fractions import Fraction
+from itertools import permutations
+from pathlib import Path
+
+from alpha_factory_v1.demos.alpha_agi_business_3_v1.enterprise import canonical, digest
+from alpha_factory_v1.demos.alpha_agi_business_v1 import evaluation
 
 # ruff: noqa: E402
 
@@ -72,6 +78,16 @@ class DummyResponse:
             raise RuntimeError("http error")
 
 
+def supplied_positions(pairs):
+    """Use accepted quantity/price bounds, never an out-of-range raw notional."""
+    return {
+        "budget": 100,
+        "max_loss": 20,
+        "opportunities": [{"id": "a", "cost": 60, "benefit": 90, "worst_loss": 15}],
+        "positions": [{"id": str(i), "quantity": q, "price": p} for i, (q, p) in enumerate(pairs)],
+    }
+
+
 class TestBusinessAgentIntegration(unittest.TestCase):
     def test_list_agents(self):
         with patch.object(bridge, "AsyncClient") as client_cls:
@@ -120,6 +136,78 @@ class TestBusinessAgentIntegration(unittest.TestCase):
             timeout=5,
         )
         self.assertEqual(json.loads(result), expected)
+
+    def test_portfolio_totals_match_exact_binary_float_oracle(self):
+        # Oracle sums the already-rounded position products, matching the public
+        # float contract, without relying on Python's version-dependent sum(float).
+        cases = [
+            [],
+            [(1e8, 1e8), (1, 1), (1, 1), (-1e8, 1e8)],
+            [(1e8, 1e8), (1, 1), (1, 1)],
+            [(1e12, 1e12), (1, 1), (-1e12, 1e12)],
+            [(0.1, 0.2), (0.3, 0.4), (-0.1, 0.2)],
+        ]
+        for pairs in cases:
+            for ordered in set(permutations(pairs)):
+                state = supplied_positions(ordered)
+                values = [float(q) * float(p) for q, p in ordered]
+                exact_net = float(sum((Fraction.from_float(v) for v in values), Fraction()))
+                exact_gross = float(sum((abs(Fraction.from_float(v)) for v in values), Fraction()))
+                with self.subTest(positions=ordered):
+                    portfolio = evaluation.evaluate(state)["portfolio"]
+                    self.assertEqual(portfolio["net_value"], exact_net)
+                    self.assertEqual(portfolio["gross_value"], exact_gross)
+                    self.assertIs(type(portfolio["net_value"]), float)
+                    self.assertIs(type(portfolio["gross_value"]), float)
+
+    def test_cross_version_canonical_report_and_bridge_binding(self):
+        # Fixed complete-report hashes are shared by the mandatory 3.11/3.12/3.13
+        # CI runs. A same-runtime recomputation alone cannot detect this bug.
+        cases = [
+            (
+                [(1e8, 1e8), (1, 1), (1, 1), (-1e8, 1e8)],
+                "67378d3fce2c597fa2b00b184ed7fd56c16b6b60f0dc710680e756ca156c3aeb",
+            ),
+            ([(1e8, 1e8), (1, 1), (1, 1)], "f4bb605ad7e602bbb0e43161ec09eb9933c1940a2e326105a0fe11513f1daea3"),
+            ([], "e1d7ad7d1a2b23ff00690fe4ac5cdd9b65bae3321967810ed515e8b00d4989ae"),
+        ]
+        for pairs, expected_digest in cases:
+            state = supplied_positions(pairs)
+            peer = evaluation.evaluate_submission(json.dumps(state).encode())
+            with self.subTest(positions=pairs):
+                self.assertEqual(digest(peer), expected_digest)
+                with patch.object(bridge, "AsyncClient") as client_cls:
+                    client = AsyncMock()
+                    client.__aenter__.return_value = client
+                    client.post.return_value = DummyResponse(peer)
+                    client_cls.return_value = client
+                    result = asyncio.run(bridge.submit_job({"agent": "alpha_execution", "state": state}))
+                self.assertEqual(canonical(json.loads(result)), canonical(peer))
+                self.assertEqual(digest(json.loads(result)), expected_digest)
+                client.post.assert_awaited_once_with(
+                    f"{bridge.HOST}/agent/alpha_execution/evaluate",
+                    json=state,
+                    headers=bridge.HEADERS,
+                    timeout=5,
+                )
+
+    def test_preserved_baseline_rejects_different_sum_without_weakening_binding(self):
+        evidence = json.loads((Path(__file__).parent / "fixtures" / "business1_sum_binding_baseline.json").read_text())
+        state = evidence["state"]
+        peer = json.loads(evidence["peer_report_canonical_utf8"])
+        legacy = json.loads(evidence["emulated_311_report_canonical_utf8"])
+        self.assertEqual(digest(peer), evidence["peer_report_sha256"])
+        self.assertEqual(digest(legacy), evidence["emulated_311_report_sha256"])
+        self.assertEqual(canonical(evaluation.evaluate_submission(json.dumps(state).encode())), canonical(peer))
+        self.assertEqual(peer["evaluation"]["portfolio"]["net_value"], 2.0)
+        self.assertEqual(legacy["evaluation"]["portfolio"]["net_value"], 0.0)
+        with patch.object(bridge, "AsyncClient") as client_cls:
+            client = AsyncMock()
+            client.__aenter__.return_value = client
+            client.post.return_value = DummyResponse(legacy)
+            client_cls.return_value = client
+            with self.assertRaisesRegex(RuntimeError, "does not match the submitted-input evaluation"):
+                asyncio.run(bridge.submit_job({"agent": "alpha_execution", "state": state}))
 
     def test_submit_job_rejects_unsupported_input(self):
         with patch.object(bridge, "AsyncClient") as client_cls:

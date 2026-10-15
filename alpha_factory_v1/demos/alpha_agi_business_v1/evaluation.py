@@ -127,11 +127,13 @@ def evaluate(state: dict) -> dict[str, dict]:
             "unverified_evidence_count": len(evidence),
             "checks_pending": ["legal authority", "licensing", "counterparty review", "execution authorization"],
         },
+        # Explicit accurate sums keep report bytes stable across Python 3.11–3.13;
+        # builtin sum(float) changed its accumulation algorithm in Python 3.12.
         "portfolio": {
             "status": "supplied_positions_evaluated",
             "position_count": len(values),
-            "net_value": sum(values),
-            "gross_value": sum(abs(v) for v in values),
+            "net_value": math.fsum(values),
+            "gross_value": math.fsum(abs(v) for v in values),
             "source": "user_supplied_unverified_positions",
         },
     }

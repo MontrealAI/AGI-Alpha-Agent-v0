@@ -106,3 +106,29 @@ def test_supplier_real_browser_observation_is_in_required_browser_suite() -> Non
     assert runtime_steps
     assert all("--ignore=tests/runtime/test_supplier_browser_browser.py" not in step["run"] for step in runtime_steps)
     assert any("playwright install --with-deps chromium" in step.get("run", "") for step in release_steps)
+
+
+def test_business_sum_binding_runs_before_merge_on_every_python() -> None:
+    workflow = yaml.load((ROOT / ".github/workflows/smoke.yml").read_text(), Loader=UniqueWorkflowLoader)
+    assert "pull_request" in workflow["on"]
+    job = workflow["jobs"]["smoke"]
+    assert set(job["strategy"]["matrix"]["python-version"]) == {"3.11", "3.12", "3.13"}
+    step = next(
+        step
+        for step in job["steps"]
+        if step.get("name") == "Run focused smoke tests on every platform and Python version"
+    )
+    assert "if" not in step
+    assert "continue-on-error" not in step
+    command = next(line for line in step["run"].splitlines() if "business1-sum-binding.xml" in line)
+    assert shlex.split(command) == [
+        "python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "tests/test_openai_bridge_integration.py",
+        "-q",
+        "--junitxml=evidence/business1-sum-binding.xml",
+    ]
