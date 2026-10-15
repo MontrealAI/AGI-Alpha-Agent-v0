@@ -29,7 +29,14 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-ASSETS = {"work-evidence-kit.zip", "fresh-evidence.zip", "complete-study-kit.zip", "REPORT.pdf", "PILOT_PROTOCOL.pdf", "SHA256SUMS"}
+ASSETS = {
+    "work-evidence-kit.zip",
+    "fresh-evidence.zip",
+    "complete-study-kit.zip",
+    "REPORT.pdf",
+    "PILOT_PROTOCOL.pdf",
+    "SHA256SUMS",
+}
 
 
 def zip_files(path: Path) -> dict[str, bytes]:
@@ -41,9 +48,14 @@ def zip_files(path: Path) -> dict[str, bytes]:
             name = info.filename
             if info.is_dir():
                 continue
-            if (name.startswith("/") or "\\" in name or ":" in name or
-                    any(x in {"", ".", ".."} for x in name.split("/")) or
-                    name in files or (info.external_attr >> 16) & 0o170000 == 0o120000):
+            if (
+                name.startswith("/")
+                or "\\" in name
+                or ":" in name
+                or any(x in {"", ".", ".."} for x in name.split("/"))
+                or name in files
+                or (info.external_attr >> 16) & 0o170000 == 0o120000
+            ):
                 raise ValueError("Unsafe or duplicate archive member")
             files[name] = archive.read(info)
         return files
@@ -88,16 +100,25 @@ def validate_distribution(dist: Path, head: str) -> None:
     if environment["testedCommit"] != head or environment["humanParticipants"] != 0:
         raise ValueError("Publication environment binding differs")
     publication = json.loads(evidence["publication/PUBLICATION_CHECKS.json"])
-    if (publication["mode"] != "HTTP-and-file" or not publication["httpDownloadsAndRecovery"] or
-            not publication["localFileOpening"] or len(publication["combinations"]) != 16 or
-            not all(x["passed"] is True for x in publication["combinations"]) or
-            {(x["width"], x["french"], x["large"]) for x in publication["combinations"]} !=
-            {(w, f, large) for w in [320, 390, 900, 1440] for f in [False, True] for large in [False, True]} or
-            publication.get("keyboardAndReadingPreferences") is not True):
+    if (
+        publication["mode"] != "HTTP-and-file"
+        or not publication["httpDownloadsAndRecovery"]
+        or not publication["localFileOpening"]
+        or len(publication["combinations"]) != 16
+        or not all(x["passed"] is True for x in publication["combinations"])
+        or {(x["width"], x["french"], x["large"]) for x in publication["combinations"]}
+        != {(w, f, large) for w in [320, 390, 900, 1440] for f in [False, True] for large in [False, True]}
+        or publication.get("keyboardAndReadingPreferences") is not True
+    ):
         raise ValueError("Required browser publication evidence is incomplete")
     negative = json.loads(evidence["replay/VERIFIER_CHECKS.json"])
     from check_negative_controls import CASES
-    if (negative["passed"], negative["total"]) != (len(CASES), len(CASES)) or [x["case"] for x in negative["checks"]] != list(CASES) or not all(x["refused"] is True for x in negative["checks"]):
+
+    if (
+        (negative["passed"], negative["total"]) != (len(CASES), len(CASES))
+        or [x["case"] for x in negative["checks"]] != list(CASES)
+        or not all(x["refused"] is True for x in negative["checks"])
+    ):
         raise ValueError("Verifier negative-control evidence is incomplete")
     with tempfile.TemporaryDirectory(prefix="study-dist-check-") as temp:
         target = Path(temp)
@@ -161,7 +182,20 @@ def main() -> None:
     if prior.returncode:
         notes = Path(os.environ["RUNNER_TEMP"]) / "study-release-notes.md"
         notes.write_text(
-            "# Try the work — Evidence & Recovery Kit\n\nDownload work-evidence-kit.zip, extract it and open START_HERE.html. The kit contains actual synthetic study applications, exact source files, the public report, recovery guidance, reproducibility tools and a prospective human pilot.\n\nFresh checks and screenshots are in fresh-evidence.zip. Both ZIPs have SHA-256 checksums.\n\nThis is a separate study preview, not an AGI Alpha software release or production deployment. Zero humans were observed. Fewer scripted controls are not measured human time savings. The kit is not the original 98-file Office/PDF archive. No model API was called and the repository runtime was not exercised by these study tests.\n\nExact source commit: `"
+            (
+                "# Try the work — Evidence & Recovery Kit\n\nDownload work-evidence-"
+                "kit.zip, extract it and open START_HERE.html. The kit contains ac"
+                "tual synthetic study applications, exact source files, the public"
+                " report, recovery guidance, reproducibility tools and a prospecti"
+                "ve human pilot.\n\nFresh checks and screenshots are in fresh-eviden"
+                "ce.zip. Both ZIPs have SHA-256 checksums.\n\nThis is a separate stu"
+                "dy preview, not an AGI Alpha software release or production deplo"
+                "yment. Zero humans were observed. Fewer scripted controls are not"
+                " measured human time savings. The kit is not the original 98-file"
+                " Office/PDF archive. No model API was called and the repository r"
+                "untime was not exercised by these study tests.\n\nExact source comm"
+                "it: `"
+            )
             + head
             + "`.\n"
         )

@@ -3,7 +3,8 @@ repos:
     rev: 2a1c67e0b2f81df602ec1f6e7aeb030b9709dc7c
     hooks:
       - id: black
-        exclude: alpha_factory_v1/backend/agent_factory.py
+        # Retain the hash-verified original study harness byte-for-byte.
+        exclude: ^(alpha_factory_v1/backend/agent_factory\.py|studies/computer-use/2026-10-14/04_Reproduce/)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: 1bd02b3569e3ac5cc66552b1336a96a8880d1bae
     hooks:
@@ -15,6 +16,8 @@ repos:
     rev: 7d37d9032d0d161634be4554273c30efd4dea0b3
     hooks:
       - id: flake8
+        # These historical fixtures are verified against SOURCE_PROVENANCE.json.
+        exclude: ^studies/computer-use/2026-10-14/04_Reproduce/
   - repo: https://github.com/semgrep/semgrep
     rev: 2bbd0a55b3655b26991c936b92e0c0f6d6f4fa94
     hooks:
