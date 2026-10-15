@@ -91,5 +91,14 @@ class TestAgentAIGAEntry:
             "alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint",
             None,
         )
-        with pytest.raises(ModuleNotFoundError):
-            importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint")
+        module_name = "alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint"
+        module = importlib.import_module(module_name)
+        try:
+            import asyncio
+
+            health = asyncio.run(module.read_health())
+            assert health["liveness"] is True
+            assert health["execution_ready"] is False
+            assert health["provider_verified"] is False
+        finally:
+            sys.modules.pop(module_name, None)

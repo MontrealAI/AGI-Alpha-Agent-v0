@@ -15,6 +15,8 @@ import sys
 
 
 class _FallbackAgent:  # pragma: no cover - used in tests and offline paths
+    __alpha_factory_unavailable__ = True
+
     def __init__(self, *a, **kw) -> None:
         pass
 
@@ -54,8 +56,10 @@ def build_llm() -> object:
             api_key=api_key,
             base_url=base_url,
         )
-        if base_url:
-            print(f"Using ollama backend via {base_url}", flush=True)
+        if getattr(llm, "__alpha_factory_unavailable__", False):
+            print("Inference adapter unavailable; configured Ollama/OpenAI endpoint is unverified", flush=True)
+        elif base_url:
+            print(f"Configured ollama backend via {base_url}; connection not verified", flush=True)
         return llm
     except (TypeError, ModuleNotFoundError):  # pragma: no cover - allow dummy classes in tests
         return _FallbackAgent()

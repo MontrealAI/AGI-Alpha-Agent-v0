@@ -14,7 +14,6 @@ import requests
 import pytest
 
 pytest.importorskip("prometheus_client")
-pytest.importorskip("gymnasium", minversion="0.29")
 pytest.importorskip("fastapi")
 
 ENTRYPOINT = "alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py"
@@ -82,6 +81,9 @@ def test_mixtral_fallback(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> No
             try:
                 r = requests.get(url, timeout=2)
                 if r.status_code == 200:
+                    health = r.json()
+                    assert health["liveness"] is True
+                    assert health["provider_verified"] is False
                     break
             except Exception:
                 time.sleep(0.1)
