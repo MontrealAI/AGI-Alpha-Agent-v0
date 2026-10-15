@@ -29,6 +29,7 @@ ASSETS = (
         "assets/nova-studio/" + name
         for name in (
             "app.mjs",
+            "ecosystem-choice.mjs",
             "chain.mjs",
             "native-delivery.mjs",
             "package.mjs",
