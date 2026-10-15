@@ -308,3 +308,19 @@ By integrating **task generation, code synthesis, success detection,** and **arc
 In sum, the OMNI-Factory city simulator stands as a **proof-of-concept** of how future AI ecosystems might operate – not as single monolithic algorithms, but as **ecosystems of cooperating agents** that **create value and knowledge in a self-driven, endless loop**. It’s a demo designed not only to **impress** (with its autonomous feats and adaptive complexity) but also to **engage and educate** (by allowing humans to interact with and understand the AI’s decisions). We believe this will resonate strongly with policymakers: they can tangibly see an embodiment of AI that is *proactive, economically beneficial, and safety-conscious*, giving them a window into how such technology could bolster **infrastructure, economy, and governance** in the real world.
 
 Ultimately, success will be measured by the conversations and ideas this demo sparks. By presenting a clear, well-structured integration of advanced AI components addressing real societal challenges, we aim to inspire confidence that **open-ended AI coupled with careful design can be a force-multiplier for human decision-making** – a message delivered vividly through this interactive simulation.
+
+## Planner fallback contract
+
+Missing SDKs no longer create fake agent/toolkit globals. Provider planning is
+opt-in through `OMNI_ALLOW_PROVIDER=1`; credentials or installed libraries alone
+never enable calls. Validated local plugins are tried next, followed by a bounded
+analytical city model that enumerates all five action IDs against the exact city
+transition equations. Outputs identify `local_plugin_heuristic` or
+`local_analytical_city_model` and `city_simulation` mode. This is not learned inference.
+Invalid SDK/plugin schemas and SDK exceptions fall through to actual local planning.
+Invalid observations fail before planning. ADK currently has no inference adapter.
+
+The generic backend world-model uses a grid-world state/action schema, so it is
+not silently invoked with incompatible city observations. The local city evaluator
+is intentionally explicit about its equations. Existing local ledger accounting
+is a simulation only: no actual tokens are issued and no real infrastructure is controlled.

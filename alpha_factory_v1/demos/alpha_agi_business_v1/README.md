@@ -529,3 +529,30 @@ python ../../check_env.py --auto-install   # verify optional packages
 pre-commit run --files <paths>             # format only the staged files
 pytest -q ../../../tests                   # execute the root test suite
 ```
+
+## Supplied-input service evaluation
+
+The five business status agents now read `ALPHA_BUSINESS_STATE_FILE` each cycle.
+No file means `input_required`; malformed, oversized or duplicate-key JSON means
+`invalid_input`. No filing, trade or compliance certification is performed.
+
+Example input (all amounts use the same caller-chosen currency):
+
+```json
+{"budget":100,"max_loss":20,"opportunities":[{"id":"trial-a","cost":60,"benefit":90,"worst_loss":15}],"positions":[{"id":"holding-a","quantity":2,"price":3}],"company":{"name":"Example","jurisdiction":"Review required"},"evidence_ids":["supplied-assumption-1"]}
+```
+
+The deterministic evaluator ranks positive net benefits under budget and worst-loss
+limits, proposes at most one candidate, identifies loss-limit breaches, and computes
+net/gross supplied position value. It does not simulate fills or verify holdings.
+Each evaluated event contains an input hash and unverified evidence references.
+Incorporation and compliance always require independent manual review; no provider
+or broker is contacted by these computations. Separate discovery inference requires
+`ALPHA_BUSINESS_ALLOW_PROVIDER=1`; selecting the optional live quote symbol remains
+an explicit opt-in. The historical diagrams are research context, not receipts.
+
+To evaluate a file once without launching the orchestrator:
+
+```bash
+python -m alpha_factory_v1.demos.alpha_agi_business_v1.evaluation --input business-state.json
+```

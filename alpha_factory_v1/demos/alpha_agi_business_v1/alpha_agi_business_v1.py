@@ -3,9 +3,9 @@
 # NOTE: This demo is a research prototype. References to "AGI" or "superintelligence" describe aspirational goals and do not indicate the presence of real general intelligence. Use at your own risk. Nothing herein constitutes financial advice.
 """Alpha‑AGI Business v1 demo.
 
-Bootstraps a minimal Alpha‑Factory orchestrator with two stub agents.
-The demo operates fully offline but upgrades to cloud LLM tooling
-automatically when ``OPENAI_API_KEY`` is present.
+Bootstraps an Alpha‑Factory research service. Business status agents evaluate
+ALPHA_BUSINESS_STATE_FILE assumptions; they never incorporate, trade or certify.
+Optional discovery calls require ALPHA_BUSINESS_ALLOW_PROVIDER=1.
 """
 from __future__ import annotations
 
@@ -22,6 +22,8 @@ SCRIPT_DIR = os.path.dirname(__file__)
 ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
+
+from alpha_factory_v1.demos.alpha_agi_business_v1.evaluation import service_payload  # noqa: E402
 
 from alpha_factory_v1.backend import orchestrator  # noqa: E402
 from alpha_factory_v1.backend.agents import (  # noqa: E402
@@ -40,14 +42,14 @@ from alpha_factory_v1.backend.llm_provider import chat as llm_provider  # noqa: 
 
 
 class IncorporatorAgent(AgentBase):
-    """Toy agent that emits a one‑time incorporation event."""
+    """Publish a manual incorporation checklist, never a completed filing."""
 
     NAME = "incorporator"
     CAPABILITIES = ["incorporate"]
     __slots__ = ()
 
     async def step(self) -> None:
-        await self.publish("alpha.business", {"msg": "company incorporated"})
+        await self.publish("alpha.business", service_payload("business"))
 
 
 class AlphaDiscoveryAgent(AgentBase):
@@ -59,6 +61,9 @@ class AlphaDiscoveryAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
+        if os.getenv("ALPHA_BUSINESS_ALLOW_PROVIDER") != "1":
+            await self.publish("alpha.discovery", {"status": "provider_opt_in_required", "mode": "no_inference"})
+            return
         prompt = "Suggest one brief, plausible market inefficiency suitable for a demo."
         try:
             summary = await llm_provider(prompt, max_tokens=50)
@@ -141,7 +146,7 @@ class AlphaOpportunityAgent(AgentBase):
 
 
 class AlphaExecutionAgent(AgentBase):
-    """Stub agent converting an opportunity into an executed trade."""
+    """Rank supplied proposals under constraints; never submit trades."""
 
     NAME = "alpha_execution"
     CAPABILITIES = ["execute"]
@@ -149,11 +154,11 @@ class AlphaExecutionAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
-        await self.publish("alpha.execution", {"alpha": "order executed"})
+        await self.publish("alpha.execution", service_payload("execution"))
 
 
 class AlphaRiskAgent(AgentBase):
-    """Stub agent performing a placeholder risk assessment."""
+    """Evaluate supplied worst-loss assumptions against a supplied limit."""
 
     NAME = "alpha_risk"
     CAPABILITIES = ["risk"]
@@ -161,11 +166,11 @@ class AlphaRiskAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
-        await self.publish("alpha.risk", {"risk": "risk level nominal"})
+        await self.publish("alpha.risk", service_payload("risk"))
 
 
 class AlphaComplianceAgent(AgentBase):
-    """Stub agent performing a simple compliance check."""
+    """Publish outstanding compliance review requirements, never certification."""
 
     NAME = "alpha_compliance"
     CAPABILITIES = ["compliance"]
@@ -173,15 +178,11 @@ class AlphaComplianceAgent(AgentBase):
     __slots__ = ()
 
     async def step(self) -> None:
-        await self.publish("alpha.compliance", {"status": "ok"})
+        await self.publish("alpha.compliance", service_payload("compliance"))
 
 
 class AlphaPortfolioAgent(AgentBase):
-    """Stub agent summarising portfolio state.
-
-    This agent publishes a static placeholder summary of the portfolio state.
-    In a production implementation, this would dynamically summarize executed positions.
-    """
+    """Summarize supplied, unverified positions without inferring executions."""
 
     NAME = "alpha_portfolio"
     CAPABILITIES = ["portfolio"]
@@ -191,7 +192,7 @@ class AlphaPortfolioAgent(AgentBase):
     async def step(self) -> None:
         await self.publish(
             "alpha.portfolio",
-            {"summary": "nominal", "note": "This is a placeholder summary."},
+            service_payload("portfolio"),
         )
 
 
