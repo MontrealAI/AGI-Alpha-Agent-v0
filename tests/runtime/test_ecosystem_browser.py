@@ -259,3 +259,54 @@ def test_public_chooser_uses_existing_paths_without_native_or_wallet_requests(tm
         server.shutdown()
         thread.join(timeout=5)
         server.server_close()
+
+
+@pytest.mark.parametrize(
+    "route,script",
+    [("/", "app.js"), ("/ascension-studio", "ascension-studio.js"), ("/ecosystem-studio", "ecosystem-studio.js")],
+)
+def test_native_login_is_inert_until_handlers_are_ready(tmp_path, monkeypatch, route, script):
+    with native(tmp_path, monkeypatch) as (_, origin, token), sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page()
+        held = []
+        requests = []
+        page.on(
+            "request",
+            lambda request: requests.append(request.url) if request.resource_type in {"fetch", "xhr"} else None,
+        )
+        page.route("**/" + script, lambda request: held.append(request))
+        page.goto(origin + route, wait_until="commit")
+        deadline = time.monotonic() + 5
+        while not held and time.monotonic() < deadline:
+            page.wait_for_timeout(10)
+        assert held
+        expect(page.locator("#token")).to_be_disabled()
+        button = page.locator("#login-form button")
+        expect(button).to_be_disabled()
+        expect(page.locator("#initializing")).to_be_visible()
+        button.click(force=True)
+        page.keyboard.press("Enter")
+        assert page.url == origin + route and not requests
+        held[0].continue_()
+        expect(page.locator("#token")).to_be_enabled()
+        expect(button).to_be_enabled()
+        expect(page.locator("#initializing")).to_be_hidden()
+        page.locator("#token").fill(token)
+        page.locator("#token").press("Enter")
+        expect(page.locator("#workspace")).to_be_visible()
+        assert page.url == origin + route
+        browser.close()
+
+
+@pytest.mark.parametrize("route", ["/", "/ascension-studio", "/ecosystem-studio"])
+def test_native_login_without_javascript_explains_unavailable_controls(tmp_path, monkeypatch, route):
+    with native(tmp_path, monkeypatch) as (_, origin, _), sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(java_script_enabled=False)
+        page.goto(origin + route)
+        expect(page.locator("#token")).to_be_disabled()
+        expect(page.locator("#login-form button")).to_be_disabled()
+        expect(page.locator("noscript p")).to_contain_text("JavaScript is required")
+        expect(page.locator("noscript p")).to_contain_text("JavaScript est requis")
+        browser.close()

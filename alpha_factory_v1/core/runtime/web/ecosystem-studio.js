@@ -23,3 +23,7 @@ window.addEventListener('pagehide',disconnect);translate();
 
 for(const id of ['job-id','worker','assignment'])$(id).addEventListener('input',()=>{$('admit-confirm').checked=false;});
 for(const id of ['note','decision'])$(id).addEventListener('input',()=>{$('review-confirm').checked=false;});
+// Enable credentials only after every handler has been installed successfully.
+$('token').disabled = false;
+$('connect').disabled = false;
+$('initializing').hidden = true;

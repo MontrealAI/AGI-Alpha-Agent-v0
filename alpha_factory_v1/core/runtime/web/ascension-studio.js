@@ -376,3 +376,7 @@ $('setup-form').addEventListener('submit', event => {event.preventDefault(); gua
   installation = await api('/ascension-studio/install', {method:'POST',body:JSON.stringify({template,signers,confirm:true})});
   await refresh(); message(t('complete'));
 });});
+// Enable credentials only after every handler has been installed successfully.
+$('token').disabled = false;
+$('connect').disabled = false;
+$('initializing').hidden = true;

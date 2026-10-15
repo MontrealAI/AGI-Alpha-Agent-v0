@@ -21,7 +21,7 @@
     </section>
     <section id="login" class="panel"><h2 data-i18n="connectTitle">Connect to your installed agent</h2>
       <p data-i18n="tokenHelp">Use the access token from this agent’s private api.token file. It stays in this page’s memory and is cleared when you disconnect.</p>
-      <form id="login-form"><label for="token" data-i18n="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required><button data-i18n="connect">Connect</button></div></form>
+      <form id="login-form"><label for="token" data-i18n="token">Access token</label><div class="inline"><input id="token" type="password" autocomplete="off" required disabled><button id="connect" disabled data-i18n="connect">Connect</button></div></form><p id="initializing" role="status">Loading secure controls… / Chargement des contrôles sécurisés…</p><noscript><p>JavaScript is required to connect. / JavaScript est requis pour se connecter.</p></noscript>
     </section>
     <p id="message" role="status" aria-live="polite"></p>
     <div id="workspace" hidden>
