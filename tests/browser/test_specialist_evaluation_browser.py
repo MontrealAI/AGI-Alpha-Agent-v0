@@ -7,7 +7,7 @@ import json
 import os
 import threading
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -50,9 +50,7 @@ def main() -> None:
                     constraint["evidenceDigest"] = "b" * 64
             page.locator("#report").fill(json.dumps(report))
             page.locator("#add").click()
-            page.wait_for_function(
-                "document.querySelector('#comparison').textContent === 'reported-comparison-ready-for-review'"
-            )
+            expect(page.locator("#comparison")).to_have_text("reported-comparison-ready-for-review")
             assert '"independentProof": false' in page.locator("#inspection").text_content()
             with page.expect_download() as download:
                 page.locator("#save").click()
@@ -69,7 +67,7 @@ def main() -> None:
                 page.locator("#save").click()
             assert Path(download.value.path()).read_bytes() == record_bytes
             page.locator("#add").click()  # A repeated click must not duplicate the same attempt.
-            page.wait_for_function("document.querySelector('#error').textContent.includes('DUPLICATE')")
+            expect(page.locator("#error")).to_contain_text("DUPLICATE")
             assert '"attempts": 1' in page.locator("#inspection").text_content()
             # Draft edits hide stale comparisons, retain prior valid bytes and require re-freezing.
             contract = json.loads(page.locator("#contract").input_value())
@@ -81,7 +79,7 @@ def main() -> None:
                 page.locator("#previous").click()
             assert Path(download.value.path()).read_bytes() == record_bytes
             page.locator("#freeze").click()
-            page.wait_for_function("document.querySelector('#comparison').textContent === 'uncommissioned'")
+            expect(page.locator("#comparison")).to_have_text("uncommissioned")
             assert page.locator("#scope script").count() == 0
             assert "<script>" in page.locator("#scope").text_content()
             page.locator("#language").click()
@@ -115,17 +113,18 @@ def main() -> None:
             phone.evaluate(
                 """() => { const original = File.prototype.arrayBuffer;
                 File.prototype.arrayBuffer = function() { const file = this;
-                    return new Promise(resolve => { window.finishImport = async () => resolve(await original.call(file)); }); };
+                    return new Promise(resolve => { window.finishImport = async () => resolve(await original.call(file));
+                    document.documentElement.dataset.importReady = "true"; }); };
             }"""
             )
             phone.locator("#restore").set_input_files(
                 {"name": "slow.json", "mimeType": "application/json", "buffer": record_bytes}
             )
-            phone.wait_for_function("typeof window.finishImport === 'function'")
+            expect(phone.locator("html")).to_have_attribute("data-import-ready", "true")
             newer = phone.locator("#contract").input_value() + " "
             phone.locator("#contract").fill(newer)
             phone.evaluate("window.finishImport()")
-            phone.wait_for_function("document.querySelector('#error').textContent.includes('DRAFT_CHANGED')")
+            expect(phone.locator("#error")).to_contain_text("DRAFT_CHANGED")
             assert phone.locator("#contract").input_value() == newer
             assert phone.locator("#result").is_hidden()
             # Slow freeze cannot display evidence for stale edited bytes.
@@ -133,14 +132,15 @@ def main() -> None:
                 """() => { const original = crypto.subtle.digest.bind(crypto.subtle);
                 crypto.subtle.digest = (...args) => new Promise(resolve => {
                     window.finishFreeze = async () => { crypto.subtle.digest = original; resolve(await original(...args)); };
+                    document.documentElement.dataset.freezeReady = "true";
                 });
             }"""
             )
             phone.locator("#freeze").click()
-            phone.wait_for_function("typeof window.finishFreeze === 'function'")
+            expect(phone.locator("html")).to_have_attribute("data-freeze-ready", "true")
             phone.locator("#contract").fill(newer + " ")
             phone.evaluate("window.finishFreeze()")
-            phone.wait_for_function("!document.querySelector('#freeze').disabled")
+            expect(phone.locator("#freeze")).to_be_enabled()
             assert phone.locator("#result").is_hidden()
             assert "DRAFT_CHANGED" in phone.locator("#error").text_content()
             phone.locator("#freeze").focus()
@@ -184,16 +184,16 @@ def main() -> None:
             clock_report["rows"][0]["metrics"][3]["upper"] = 12
             clock_page.locator("#report").fill(json.dumps(clock_report))
             clock_page.locator("#add").click()
-            clock_page.wait_for_function("document.querySelector('#comparison').textContent === 'retain-incumbent'")
+            expect(clock_page.locator("#comparison")).to_have_text("retain-incumbent")
             clock_report["attemptId"] = "passing-retry"
             clock_report["rows"][0]["metrics"][3]["upper"] = 10
             clock_page.locator("#report").fill(json.dumps(clock_report))
             clock_page.locator("#add").click()
-            clock_page.wait_for_function("document.querySelector('#inspection').textContent.includes('passing-retry')")
+            expect(clock_page.locator("#inspection")).to_contain_text("passing-retry")
             assert clock_page.locator("#comparison").text_content() == "retain-incumbent"
             assert "reported-metric-regression" in clock_page.locator("#inspection").text_content()
             clock_page.clock.fast_forward(60000)
-            clock_page.wait_for_function("document.querySelector('#comparison').textContent === 'expired'")
+            expect(clock_page.locator("#comparison")).to_have_text("expired")
             clock_page.evaluate(
                 "window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange'))"
             )
