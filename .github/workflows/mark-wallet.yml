@@ -116,6 +116,7 @@ jobs:
           node --test tests/nova-studio/*.test.mjs
           python -m unittest discover -s tests/nova-studio -p 'test_*.py' -v
           python -m pytest tests/nova-studio/test_current_audit.py --confcutdir=tests/nova-studio -q
+          python -m pytest tests/test_native_browser_ci.py --noconftest -o addopts= -q
       - name: Nova-Seed shipped browser preparation and portable recovery
         run: python -m scripts.validate_nova_studio --output evidence/nova-studio-browser
       - name: Bounded native bridge, authority and operator checks
@@ -127,7 +128,6 @@ jobs:
           tests/runtime/test_successor_studio.py tests/runtime/test_successor_studio_operator.py
           tests/runtime/test_successor_studio_operator_browser.py
           tests/runtime/test_successor_studio_interruptions.py tests/runtime/test_budget_reservations.py tests/runtime/test_budget_browser.py
-
           tests/runtime/test_ecosystem_jobs.py tests/runtime/test_ecosystem_browser.py -q
       - name: Nova-Seed exact-source lifecycle and browser recovery
         working-directory: tests/contracts

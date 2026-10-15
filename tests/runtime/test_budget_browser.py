@@ -12,6 +12,8 @@ import time
 from typing import Any
 
 import pytest
+
+pytest.importorskip("playwright.sync_api")
 from playwright.sync_api import Browser, Page, Request, Route, expect, sync_playwright
 import uvicorn
 
