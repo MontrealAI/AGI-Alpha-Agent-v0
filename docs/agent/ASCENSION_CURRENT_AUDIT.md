@@ -92,8 +92,8 @@ This newly requested scope is additive; it does not change any of the original 8
 | Integration | Current boundary | Evidence required |
 |---|---|---|
 | Existing MARK → AscensionJobMarket | Deployed MARK has an immutable fixed market route, using $AGIALPHA | Exact current contract/browser lifecycle; no substitution with another market |
-| AGIJobsv0 → Alpha | Separate $AGIALPHA adapter remains an open engineering and qualification gate | Exact version/address/ABI, role/assignment/output/settlement mappings, negative and recovery tests, actual bounded integration trial |
-| Alpha → Fleet execution | Separate execution adapter remains an open engineering and qualification gate | Versioned interface, bounded current authority, genuine execution and output binding, cancellation/lost-response/idempotency |
+| AGIJobsv0 → Alpha | Separate $AGIALPHA adapter implemented; disposable local lifecycle proven; production qualification open | Exact version/address/ABI, role/assignment/output/settlement mappings, negative and recovery tests, actual bounded integration trial |
+| Alpha → Fleet execution | Exact-byte work interface implemented; pinned Fleet IPC remains unprovisioned | Versioned interface, bounded current authority, genuine execution and output binding, cancellation/lost-response/idempotency |
 | AGIJobManager | Separate USDC protocol | No equivalence with Jobs v0 or the immutable MARK route is inferred |
 
 Existing fixed-workbench or Ascension two-cycle results do not clear these adapter gates. Update the separate integration

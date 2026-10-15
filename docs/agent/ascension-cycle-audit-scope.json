@@ -425,6 +425,36 @@
       "kind": "pytest",
       "scope": "Actual authenticated native reservation browser journeys, response loss, authority changes and EN/FR desktop/mobile accessibility with synthetic declared capacity.",
       "environment": {}
+    },
+    "native_ecosystem": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "tests/runtime/test_ecosystem_jobs.py",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Exact Jobs v0 ABI/profile/assignment and signed-artifact regressions with synthetic read-only RPC, plus bounded Fleet wire vectors; not live commissioning.",
+      "environment": {}
+    },
+    "ecosystem_browser": {
+      "argv": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests/runtime/test_budget_reservations.py",
+        "tests/runtime/test_ecosystem_browser.py",
+        "-q",
+        "--color=no"
+      ],
+      "cwd": ".",
+      "kind": "pytest",
+      "scope": "Actual EN/FR native Jobs and public compatibility browser controls, lost responses, installation changes and accessibility using synthetic chain observations.",
+      "environment": {}
     }
   },
   "cases": {
@@ -1675,17 +1705,17 @@
       "required_evidence": "Current exact-source MARK/market/browser lifecycle and immutable contract binding."
     },
     "agi_jobs_v0": {
-      "status": "engineering_and_qualification_open",
+      "status": "implemented_local_fixture_proven_production_qualification_open",
       "currency": "$AGIALPHA",
       "protocol": "AGIJobsv0",
-      "boundary": "Separate adapter integration is required. Current Ascension market evidence does not establish AGIJobsv0 compatibility.",
-      "required_evidence": "Exact version/address/ABI, authorized task/result/settlement mappings, role/finality/recovery negatives and a genuine bounded end-to-end adapter trial."
+      "boundary": "Separate installed JobRegistry v2 adapter; real disposable local lifecycle including a2078954-byte signed Alpha artifact was executed with mock token/identity/validation. Current source-bound unit/browser evidence is reported separately.",
+      "required_evidence": "Exact deployment full-runtime pins and independent live commissioning remain required; shared token and historical template hashes do not grant readiness."
     },
     "fleet_execution": {
-      "status": "engineering_and_qualification_open",
+      "status": "wire_contract_implemented_pinned_ipc_qualification_open",
       "currency": "not_inferred",
       "protocol": "Fleet executor",
-      "boundary": "Fleet execution is a separate adapter and runtime authority boundary, not established by local fixed-workbench success.",
+      "boundary": "Exact canonical-byte stateless supplied-input interface implemented; actual Fleet grant/host/process/source-closure qualification remains separate and unprovisioned.",
       "required_evidence": "Versioned Fleet interface, exact assignment/output identity, fresh bounded execution authority, cancellation/lost-response/idempotency and genuine execution evidence."
     },
     "agi_job_manager": {

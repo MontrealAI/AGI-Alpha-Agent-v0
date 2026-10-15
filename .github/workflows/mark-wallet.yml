@@ -144,7 +144,7 @@ jobs:
         run: |
           python -m scripts.ascension_current_audit run --node "$(command -v node)" \
             --suite audit_validation --suite interruption --suite native_interruptions --suite native_budget --suite native_budget_browser \
-            --suite two_cycle_interruption_browser
+            --suite two_cycle_interruption_browser --suite native_ecosystem --suite ecosystem_browser
           python -m scripts.ascension_current_audit validate
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
