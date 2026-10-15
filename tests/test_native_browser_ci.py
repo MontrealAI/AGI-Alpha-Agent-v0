@@ -16,6 +16,6 @@ def test_native_browser_acceptance_is_one_command_with_both_suites() -> None:
     assert len(run.splitlines()) == 1, "Folded YAML must not split the pytest shell command"
     args = shlex.split(run)
     assert args[:3] == ["python", "-m", "pytest"]
-    for name in ["test_budget_browser.py", "test_ecosystem_browser.py"]:
+    for name in ["test_budget_browser.py", "test_ecosystem_browser.py", "test_supplier_browser_browser.py"]:
         assert "tests/runtime/" + name in args
     assert any("playwright install --with-deps chromium" in step.get("run", "") for step in steps)

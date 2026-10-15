@@ -85,3 +85,32 @@ interrupted attempt with verified computer cleanup can be explicitly reconciled:
 Then prepare a new revision-bound permit. This starts a new session; it never resumes
 old actions. Quarantined cleanup uncertainty cannot be cleared through reconciliation.
 At most 16 reconciliations are retained per binding before further execution is refused.
+
+
+## Native operator screen
+
+Open `/supplier-studio` on the installed local agent. Its English/French interface
+uses the existing API token in page memory and binds every action to the connected
+journal identity. Importing a 64,000-byte exact work file and preparing permission
+never starts a provider. The displayed permission includes assignment, image,
+provider, task limits and cost uncertainty. Starting requires a separate checkbox.
+STOP remains available while execution is pending; disconnecting does not stop
+server-side work. Reconnect to inspect retained attempts after a lost response.
+Review, signed export and inspected reconciliation are separate controls. Missing
+host profiles close admission/execution without hiding retained evidence. The
+public GitHub Pages site does not host this local executor.
+
+### Versioned compatibility evidence
+
+The independently reviewed source tree `bc14e30f29eae669716de5a13aea081fabeee85c`
+(local commit `b234de125b19544eb8cc27ee6fe6629b7e682c1f`, published core commit
+`a4d6defe0e9802417214c00e89fa0b432b74e5a6`) passed a disposable local JobRegistry
+v2 assignment through the actual fixed Chromium worker, scripted Responses
+transport, deterministic comparison, local review and verified signed delivery.
+The separately run fixture then submitted the exact artifact, approved through a
+validation stub and finalized with 100 mock-token base units. The 7,322-byte
+artifact SHA256 was `c074755a79ffbea9931114f867e3f2614ea6d1b340d48aad6bed7535930ba379`.
+A fresh wrong-delivery-limit browser run was rejected before export; its registry
+job remained Applied with a zero result hash. These prove the specific laboratory
+handoff, not Docker isolation, live-provider decisions, human time savings or
+production settlement. Provider charges remain unknown.

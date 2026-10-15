@@ -280,6 +280,38 @@ def create_app(journal: Journal) -> FastAPI:
             raise ValueError("Operation must be an object")
         return await run_in_threadpool(operate, journal, action, document)
 
+    @app.get("/supplier-studio")
+    def supplier_studio() -> FileResponse:
+        return FileResponse(static / "supplier-studio.html")
+
+    @app.get("/supplier-studio.css")
+    def supplier_studio_stylesheet() -> FileResponse:
+        return FileResponse(static / "supplier-studio.css", media_type="text/css")
+
+    @app.get("/supplier-studio.js")
+    def supplier_studio_javascript() -> FileResponse:
+        return FileResponse(static / "supplier-studio.js", media_type="application/javascript")
+
+    @app.get("/api/supplier-browser/status", dependencies=[Depends(authorize)])
+    def supplier_status() -> dict[str, Any]:
+        from .supplier_browser_operator import status
+
+        return status(journal)
+
+    @app.post("/api/supplier-browser/{action}", dependencies=[Depends(authorize)])
+    async def supplier_operate(
+        action: str, request: Request, x_agialpha_journal: str = Header(default="")
+    ) -> dict[str, Any]:
+        from .successor.protocol import safe_json_loads
+        from .supplier_browser_operator import operate
+
+        if x_agialpha_journal != journal.identity:
+            raise HTTPException(409, "Exact connected journal identity required")
+        document = safe_json_loads(await request.body(), max_bytes=MAX_REQUEST_BYTES)
+        if not isinstance(document, dict):
+            raise ValueError("Operation must be an object")
+        return await run_in_threadpool(operate, journal, action, document)
+
     @app.get("/healthz")
     def health() -> dict[str, str]:
         return {"status": "ok"}

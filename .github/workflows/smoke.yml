@@ -85,7 +85,7 @@ jobs:
         run: |
           python -m pip install --no-deps .
           # Actual browser journeys run in the required pinned Chromium wallet acceptance job.
-          python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py -q --junitxml=evidence/runtime.xml
+          python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py --ignore=tests/runtime/test_supplier_browser_browser.py -q --junitxml=evidence/runtime.xml
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
