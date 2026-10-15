@@ -2,6 +2,7 @@
 """Browserless smoke must retain mandatory browser coverage in its qualified job."""
 from pathlib import Path
 import shlex
+import ast
 import re
 import pytest
 import yaml
@@ -82,3 +83,26 @@ def test_native_browser_auditor_and_runtime_environment_are_combined() -> None:
         "PYTHONPATH": ".",
         "NO_DISCLAIMER": "1",
     }
+
+
+def test_supplier_real_browser_observation_is_in_required_browser_suite() -> None:
+    name = "test_real_chromium_observation_matches_independent_reviewer"
+    unit = ROOT / "tests/runtime/test_supplier_browser_spec.py"
+    browser = ROOT / "tests/runtime/test_supplier_browser_browser.py"
+
+    def names(path):
+        return {node.name for node in ast.parse(path.read_text()).body if isinstance(node, ast.FunctionDef)}
+
+    assert name not in names(unit)
+    assert name in names(browser)
+    smoke = yaml.load((ROOT / ".github/workflows/smoke.yml").read_text(), Loader=UniqueWorkflowLoader)
+    steps = smoke["jobs"]["smoke"]["steps"]
+    run = next(step["run"] for step in steps if step.get("name") == "Exercise the installed operator lifecycle")
+    assert "--ignore=tests/runtime/test_supplier_browser_browser.py" in shlex.split(run)
+    assert "--ignore=tests/runtime/test_supplier_browser_spec.py" not in shlex.split(run)
+    release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
+    release_steps = [step for job in release["jobs"].values() for step in job.get("steps", [])]
+    runtime_steps = [step for step in release_steps if "python -m pytest tests/runtime " in step.get("run", "")]
+    assert runtime_steps
+    assert all("--ignore=tests/runtime/test_supplier_browser_browser.py" not in step["run"] for step in runtime_steps)
+    assert any("playwright install --with-deps chromium" in step.get("run", "") for step in release_steps)

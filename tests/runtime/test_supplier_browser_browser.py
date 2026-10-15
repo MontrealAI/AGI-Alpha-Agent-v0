@@ -218,3 +218,25 @@ def test_changed_intent_invalidates_inflight_prepare(configured):
         expect(page.locator("#execute")).to_be_disabled()
         expect(page.locator("#run-confirm")).not_to_be_checked()
         browser.close()
+
+
+def test_real_chromium_observation_matches_independent_reviewer():
+    from test_supplier_browser_spec import specification
+    from alpha_factory_v1.core.runtime.supplier_browser_spec import computer_task, extract_artifacts
+
+    spec = specification()
+    with sync_playwright() as driver:
+        browser = driver.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.set_content(computer_task(spec).html)
+        with pytest.raises(ValueError):
+            extract_artifacts(spec, page.locator("body").inner_text())
+        page.locator("#delivery").select_option("7")
+        page.locator("#compare").click()
+        result = extract_artifacts(spec, page.locator("body").inner_text())
+        assert result["acceptance"]["accepted"]
+        page.locator("#delivery").select_option("1")
+        page.locator("#compare").click()
+        with pytest.raises(ValueError):
+            extract_artifacts(spec, page.locator("body").inner_text())
+        browser.close()

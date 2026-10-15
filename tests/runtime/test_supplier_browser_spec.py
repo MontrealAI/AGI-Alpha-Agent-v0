@@ -100,23 +100,3 @@ def test_ties_no_eligible_and_large_exact_integer_totals():
     value["maxDeliveryDays"] = 1
     report = expected_report(SupplierSpec.model_validate(value))
     assert report["recommendedSupplier"] is None
-
-
-def test_real_chromium_observation_matches_independent_reviewer():
-    playwright = pytest.importorskip("playwright.sync_api")
-    spec = specification()
-    with playwright.sync_playwright() as driver:
-        browser = driver.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.set_content(computer_task(spec).html)
-        with pytest.raises(ValueError):
-            extract_artifacts(spec, page.locator("body").inner_text())
-        page.locator("#delivery").select_option("7")
-        page.locator("#compare").click()
-        result = extract_artifacts(spec, page.locator("body").inner_text())
-        assert result["acceptance"]["accepted"]
-        page.locator("#delivery").select_option("1")
-        page.locator("#compare").click()
-        with pytest.raises(ValueError):
-            extract_artifacts(spec, page.locator("body").inner_text())
-        browser.close()
