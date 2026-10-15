@@ -182,27 +182,16 @@ async def trigger_opportunity() -> str:
 
 @Tool(
     name="trigger_best_alpha",
-    description="Submit the highest scoring demo opportunity to AlphaExecutionAgent",
+    description="Explain required inputs before evaluating a ranked demo opportunity",
 )
 async def trigger_best_alpha() -> str:
-    """Read the bundled alpha opportunities and enqueue the best one."""
-    try:
-        path = Path(__file__).with_name("examples") / "alpha_opportunities.json"
-        data = json.loads(path.read_text(encoding="utf-8"))
-        if not data:
-            raise RuntimeError("No alpha opportunities found in the file.")
-        best = max(data, key=lambda x: x.get("score", 0))
-    except Exception as exc:  # pragma: no cover - file may be missing
-        raise RuntimeError(f"failed to load alpha opportunities: {exc}") from exc
-    async with AsyncClient() as client:
-        resp = await client.post(
-            f"{HOST}/agent/alpha_execution/trigger",
-            json=best,
-            headers=HEADERS,
-            timeout=5,
-        )
-    resp.raise_for_status()
-    return "best alpha queued"
+    """Fail closed: ranking scores do not supply cost, benefit or loss assumptions."""
+    raise ValueError(
+        "Bundled score-only opportunities cannot be submitted for business evaluation. "
+        "Use submit_job with agent='alpha_execution' and a state containing budget, "
+        "max_loss and opportunities with id, cost, benefit and worst_loss. "
+        "Nothing was queued or executed."
+    )
 
 
 @Tool(name="trigger_execution", description="Trigger the AlphaExecutionAgent")
@@ -296,26 +285,38 @@ async def check_health() -> str:
 
 @Tool(
     name="submit_job",
-    description="Submit a custom alpha job JSON to the orchestrator",
+    description="Evaluate a supplied Business1 state without queuing or external actions",
 )
 async def submit_job(job: dict) -> str:
-    """Post a JSON job definition to the orchestrator.
+    """Accept exactly {agent: 'alpha_execution', state: <business input>}.
 
-    The dictionary must include an ``agent`` field specifying the target
-    agent name. Additional fields are forwarded verbatim.
+    The authenticated endpoint evaluates this state synchronously; a scheduling
+    acknowledgement is never treated as evaluation or execution evidence.
     """
-    agent = job.get("agent")
-    if not agent:
-        raise ValueError("'agent' field required in job spec")
+    if not isinstance(job, dict) or set(job) != {"agent", "state"} or job["agent"] != "alpha_execution":
+        raise ValueError("submit_job requires agent='alpha_execution' and a complete state object")
+    from alpha_factory_v1.demos.alpha_agi_business_v1.evaluation import evaluate_submission
+
+    # Validate locally too and bind the response to the exact input digest.
+    expected = evaluate_submission(json.dumps(job["state"], allow_nan=False).encode("utf-8"))
     async with AsyncClient() as client:
         resp = await client.post(
-            f"{HOST}/agent/{agent}/trigger",
-            json=job,
+            f"{HOST}/agent/alpha_execution/evaluate",
+            json=job["state"],
             headers=HEADERS,
             timeout=5,
         )
     resp.raise_for_status()
-    return f"job for {agent} queued"
+    result = resp.json()
+    if (
+        not isinstance(result, dict)
+        or result.get("status") != "evaluated_supplied_assumptions"
+        or result.get("input_id") != expected["input_id"]
+        or result.get("external_actions_performed") is not False
+        or result.get("evaluation") != expected["evaluation"]
+    ):
+        raise RuntimeError("Server response does not match the submitted-input evaluation")
+    return json.dumps(result, sort_keys=True)
 
 
 @Tool(

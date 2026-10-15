@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from alpha_factory_v1.demos.alpha_agi_business_3_v1.enterprise import digest, read_json
+from alpha_factory_v1.demos.alpha_agi_business_3_v1.enterprise import digest, parse, read_json
 
 
 def _number(value: Any, label: str, minimum: float = 0) -> float:
@@ -136,6 +136,18 @@ def evaluate(state: dict) -> dict[str, dict]:
         },
     }
     return {topic: {**common, **payload} for topic, payload in payloads.items()}
+
+
+def evaluate_submission(payload: bytes) -> dict:
+    """Return a complete stateless report bound to the submitted JSON only."""
+    result = evaluate(parse(payload))
+    return {
+        "status": "evaluated_supplied_assumptions",
+        "mode": "supplied_assumption_evaluation",
+        "input_id": result["execution"]["input_id"],
+        "external_actions_performed": False,
+        "evaluation": result,
+    }
 
 
 def service_payload(topic: str) -> dict:

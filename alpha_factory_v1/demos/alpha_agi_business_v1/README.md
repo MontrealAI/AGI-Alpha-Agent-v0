@@ -253,8 +253,8 @@ By default this launcher restricts `ALPHA_ENABLED_AGENTS` to the five
 lightweight demo stubs so the orchestrator runs even on minimal setups.
 Set the variable yourself to customise the agent list.
 
-# the demo starts several stub agents:
-#   • **IncorporatorAgent** registers the business
+# the demo starts the following research agents:
+#   • **IncorporatorAgent** reports required manual filing review, never registration
 #   • **AlphaDiscoveryAgent** generates a short opportunity via the LLM provider
 #     (logged via MCP when `MCP_ENDPOINT` is set)
 #   • **AlphaOpportunityAgent** emits market inefficiencies from `examples/alpha_opportunities.json`
@@ -264,22 +264,17 @@ Set the variable yourself to customise the agent list.
 #     and optionally `YFINANCE_SYMBOL=SPY` to pull a live price via `yfinance`
 #     set `ALPHA_TOP_N=3` to publish the top 3 opportunities each cycle
 #     or run `python examples/find_best_alpha.py` to print the current highest-scoring entry
-#   • **AlphaExecutionAgent** converts an opportunity into an executed trade
-#   • **AlphaRiskAgent** performs a trivial risk assessment
-#   • **AlphaComplianceAgent** validates regulatory compliance
-#   • **AlphaPortfolioAgent** summarises portfolio state
+#   • **AlphaExecutionAgent** evaluates supplied assumptions and proposes a candidate; no trades
+#   • **AlphaRiskAgent** compares supplied worst losses with a supplied limit
+#   • **AlphaComplianceAgent** reports required independent compliance review
+#   • **AlphaPortfolioAgent** computes net/gross values of supplied unverified positions
 #   • **PlanningAgent**, **ResearchAgent**, **StrategyAgent**, **MarketAnalysisAgent**,
 #     **MemoryAgent** and **SafetyAgent** emit placeholder events to illustrate the
 #     full role architecture
 
 open http://localhost:7860      # Dashboard SPA
-./scripts/post_alpha_job.sh examples/job_copper_spread.json
-# or
-./scripts/post_alpha_job.sh examples/job_supply_chain_alpha.json
-# or
-./scripts/post_alpha_job.sh examples/job_forex_alpha.json
-# or
-./scripts/post_alpha_job.sh examples/job_execute_alpha.json
+# API_TOKEN must match the configured orchestrator token.
+./scripts/post_alpha_job.sh examples/job_evaluate_business.json
 ```
 
 If dependencies are missing, pass `--auto-install` (and optionally
@@ -380,7 +375,7 @@ See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) for detailed deployment tips.
 - `list_agents`
 - `trigger_discovery`
 - `trigger_opportunity`
-- `trigger_best_alpha` (send the highest scoring demo opportunity)
+- `trigger_best_alpha` (fails closed: score-only examples lack evaluation assumptions)
 - `trigger_execution`
 - `trigger_risk`
 - `trigger_compliance`
@@ -402,7 +397,7 @@ See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) for detailed deployment tips.
   ```
 - `fetch_logs` (return recent orchestrator log lines)
 - `check_health` (orchestrator health status)
-- `submit_job` (to post a custom job payload to any orchestrator agent)
+- `submit_job` (evaluate `{agent: "alpha_execution", state: {...}}` against supplied constraints)
 
 For a programmatic example see `examples/openai_agent_client.py`:
 ```bash
@@ -556,3 +551,24 @@ To evaluate a file once without launching the orchestrator:
 ```bash
 python -m alpha_factory_v1.demos.alpha_agi_business_v1.evaluation --input business-state.json
 ```
+
+## Authenticated submitted-input evaluation
+
+POST a complete state to `/agent/alpha_execution/evaluate` with the configured
+`Authorization: Bearer <API_TOKEN>` and `Content-Type: application/json`. The
+response is an immediate `evaluated_supplied_assumptions` report bound to that
+input's hash. It is not queued, persisted, executed, or read from the periodic
+`ALPHA_BUSINESS_STATE_FILE`. Invalid new input cannot reuse an old result.
+
+Requests are bounded to 256,000 bytes; malformed/duplicate-key/nonfinite or
+incomplete input is rejected. Missing/wrong authentication is rejected. Other
+agents without the explicit evaluation capability return an unsupported error.
+The bodyless `/agent/{name}/trigger` still only reschedules a periodic cycle;
+request bodies now fail explicitly rather than being silently discarded.
+
+`trigger_best_alpha` and historical score-only job files cannot supply costs,
+benefits and loss constraints. They are retained as research examples, not valid
+submission contracts. Use `examples/job_evaluate_business.json` with the shell
+helper, or `submit_job` with a complete state. The bridge checks the returned
+input hash and full evaluation; an HTTP-success queue acknowledgement is not
+accepted as evidence that a payload was evaluated.

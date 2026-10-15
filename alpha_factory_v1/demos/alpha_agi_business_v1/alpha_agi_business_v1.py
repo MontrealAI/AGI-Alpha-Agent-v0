@@ -23,7 +23,7 @@ ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from alpha_factory_v1.demos.alpha_agi_business_v1.evaluation import service_payload  # noqa: E402
+from alpha_factory_v1.demos.alpha_agi_business_v1.evaluation import evaluate_submission, service_payload  # noqa: E402
 
 from alpha_factory_v1.backend import orchestrator  # noqa: E402
 from alpha_factory_v1.backend.agents import (  # noqa: E402
@@ -152,6 +152,10 @@ class AlphaExecutionAgent(AgentBase):
     CAPABILITIES = ["execute"]
     CYCLE_SECONDS = 180
     __slots__ = ()
+
+    async def evaluate_submission(self, payload: bytes) -> dict:
+        """Evaluate exactly this request, without using or altering periodic file state."""
+        return evaluate_submission(payload)
 
     async def step(self) -> None:
         await self.publish("alpha.execution", service_payload("execution"))
