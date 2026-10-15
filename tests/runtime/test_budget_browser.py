@@ -410,3 +410,33 @@ def test_preview_expiry_scope_changes_and_unavailable_storage_never_dispatch(nat
         expect(page.locator("#prepare")).to_be_disabled()
         assert inspect(journal, SCOPE)["reserved"] == "0"
         assert retained(page) is None
+
+
+def test_login_stays_inert_until_script_initialization(native: tuple[Journal, str, str]) -> None:
+    _, origin, token = native
+    with browser() as instance:
+        page = instance.new_page()
+        held: list[Route] = []
+        api_requests: list[str] = []
+        page.on(
+            "request", lambda request: api_requests.append(request.url) if request.url.endswith("/status") else None
+        )
+        page.route("**/budget-studio.js", lambda route: held.append(route))
+        page.goto(origin + "/budget-studio", wait_until="commit")
+        deadline = time.monotonic() + 5
+        while not held and time.monotonic() < deadline:
+            page.wait_for_timeout(10)
+        assert held, "The script request must be intercepted before exercising loading controls"
+        expect(page.locator("#token")).to_be_disabled()
+        expect(page.locator("#connect")).to_be_disabled()
+        expect(page.locator("#initializing")).to_be_visible()
+        assert page.url == origin + "/budget-studio"
+        page.locator("#connect").click(force=True)
+        page.keyboard.press("Enter")
+        assert page.url == origin + "/budget-studio"
+        assert not api_requests
+        held[0].continue_()
+        expect(page.locator("#token")).to_be_enabled()
+        expect(page.locator("#initializing")).to_be_hidden()
+        login(page, origin, token, navigate=False)
+        assert page.url == origin + "/budget-studio"

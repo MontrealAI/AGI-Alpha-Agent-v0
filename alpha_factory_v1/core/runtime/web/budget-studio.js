@@ -269,3 +269,6 @@ $('language').addEventListener('change',()=>{document.documentElement.lang=lang(
 window.addEventListener('pagehide',()=>{accessToken='';epoch++;for(const request of requests)request.abort();});
 window.addEventListener('pageshow',event=>{if(event.persisted)disconnect();});
 message(t(invalidRecovery?'invalid':pending?'restored':'ready'),invalidRecovery);render();
+
+// Never expose an active credential form before its submit handler is installed.
+$('token').disabled=false;$('connect').disabled=false;$('initializing').hidden=true;
