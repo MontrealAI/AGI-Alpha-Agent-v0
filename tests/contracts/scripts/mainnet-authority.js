@@ -405,8 +405,12 @@ async function main() {
     demand(mode === "plan" && input && output && process.argv.length === 5, "Usage: node scripts/mainnet-authority.js plan CONFIG_AND_JOURNAL.json NEW_OUTPUT.json");
     assertOutsideCheckout(output);
     demand(!fs.existsSync(output), "Refuse to overwrite evidence");
-    const data = JSON.parse(fs.readFileSync(input, "utf8")); exact(data, ["config", "journal"]);
-    const plan = await makePlan(data.config, compiledContracts(), require('./authority-revision').reviewedRevision(), data.journal);
+    const revision = require('./authority-revision').reviewedRevision();
+    const boundary = require('./authority-input-boundary').createInputBoundary(revision);
+    boundary.pinDirectory(path.dirname(path.resolve(output)));
+    const data = boundary.readJson(input); exact(data, ["config", "journal"]);
+    const plan = await makePlan(data.config, boundary.compiled, revision, data.journal);
+    boundary.assertCurrent();
     require("./authority-cli").writeNew(output, plan);
     process.stdout.write(JSON.stringify({ output: path.resolve(output), readyToBroadcast: false }) + "\n");
 }

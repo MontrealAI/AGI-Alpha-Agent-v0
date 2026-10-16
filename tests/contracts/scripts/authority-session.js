@@ -39,6 +39,19 @@ function assertActor(lock) {
     requireValue(path.isAbsolute(lock.path) && fs.realpathSync(lock.path) === lock.path, 'Actor lock path changed');
     same(readJson(path.join(lock.path, 'owner.json')), lock, 'actor lock ownership');
 }
+function actorSnapshot(lock, allowAbsent = false) {
+    const parent = path.dirname(lock.path), parentStat = fs.lstatSync(parent);
+    requireValue(parentStat.isDirectory() && !parentStat.isSymbolicLink() && fs.realpathSync(parent) === parent, 'Actor parent changed');
+    const snapshot = { parent: [parentStat.dev, parentStat.ino], actor: null, owner: null };
+    if (allowAbsent && !assertCompletedActor(lock)) return snapshot;
+    assertActor(lock);
+    const actor = fs.lstatSync(lock.path), owner = fs.lstatSync(path.join(lock.path, 'owner.json'));
+    requireValue(actor.isDirectory() && !actor.isSymbolicLink() && owner.isFile() && !owner.isSymbolicLink(), 'Actor lease entry type changed');
+    snapshot.actor = [actor.dev, actor.ino]; snapshot.owner = [owner.dev, owner.ino]; return snapshot;
+}
+function assertActorSnapshots(locks, snapshots) {
+    locks.forEach((lock, index) => same(actorSnapshot(lock, snapshots[index].actor === null), snapshots[index], 'actor lease identity changed; preserve locks'));
+}
 function releaseActor(lock) { assertActor(lock); fs.unlinkSync(path.join(lock.path, 'owner.json')); fs.rmdirSync(lock.path); directorySync(path.dirname(lock.path)); }
 function assertCompletedActor(lock) {
     requireValue(fs.realpathSync(path.dirname(lock.path)) === path.dirname(lock.path), 'Actor lock parent changed');
@@ -139,31 +152,59 @@ function loadSession(filename, plan, revision) {
     same(readJson(`${target}.head.json`), { schema: 'agialpha.session-head.v1', journalPath: target, sequence: previous.sequence, payloadSha256: previous.payloadSha256 }, 'durable journal head (missing tail or incomplete checkpoint)');
     return previous;
 }
-async function guarded(plan, revision, filename, fn, completedCleanup = false) {
+// Library callers own their independently observed revision/context; operational CLI always supplies
+// the synchronous pinned-input boundary. No CLI flag can omit it.
+async function guarded(plan, revision, filename, fn, completedCleanup = false, assertInputs = () => {}) {
     await policy.checkPlan(plan, undefined, revision);
-    const target = ordinaryPath(filename), gate = `${target}.command-lock`;
+    const target = ordinaryPath(filename), gate = `${target}.command-lock`, parent = path.dirname(target);
+    const parentIdentity = fs.lstatSync(parent);
     let gateFd;
     try { gateFd = fs.openSync(gate, 'wx', 0o600); } catch (error) { if (error.code === 'EEXIST') requireValue(false, 'Session command lock exists; another process or crash requires explicit manual reconciliation'); throw error; }
+    const gateIdentity = fs.fstatSync(gateFd);
+    function assertGateIdentity() {
+        const currentParent = fs.lstatSync(parent), currentGate = fs.lstatSync(gate);
+        requireValue(currentParent.isDirectory() && !currentParent.isSymbolicLink() && fs.realpathSync(parent) === parent &&
+            currentParent.dev === parentIdentity.dev && currentParent.ino === parentIdentity.ino && currentGate.isFile() && !currentGate.isSymbolicLink() &&
+            currentGate.dev === gateIdentity.dev && currentGate.ino === gateIdentity.ino, 'Command gate or parent replaced; preserve original gate for manual recovery');
+    }
     try {
         fs.writeFileSync(gateFd, JSON.stringify({ pid: process.pid, journalPath: target, token: crypto.randomUUID() }) + '\n'); fs.fsyncSync(gateFd); directorySync(path.dirname(gate));
-        const state = loadSession(target, plan, revision); state.locks.forEach(completedCleanup && state.complete ? assertCompletedActor : assertActor);
-        return await fn(state, next => append(target, next, state));
-    } finally { fs.closeSync(gateFd); fs.unlinkSync(gate); directorySync(path.dirname(gate)); }
+        const state = loadSession(target, plan, revision);
+        const snapshots = state.locks.map(lock => actorSnapshot(lock, completedCleanup && state.complete));
+        function journalIdentity() { return [target, `${target}.head.json`].map(file => {
+            const fd = fs.openSync(file, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
+            try { const stat = fs.fstatSync(fd); requireValue(stat.isFile() && stat.size <= 16 * 1024 * 1024, 'Journal/head type or size changed');
+                return [stat.dev, stat.ino, crypto.createHash('sha256').update(fs.readFileSync(fd)).digest('hex')];
+            } finally { fs.closeSync(fd); }
+        }); }
+        let durable = state, durableIdentity = journalIdentity();
+        function assertSession() {
+            assertInputs(); assertGateIdentity(); assertActorSnapshots(state.locks, snapshots); ordinaryPath(target);
+            same(journalIdentity(), durableIdentity, 'durable journal/head identity changed');
+            same(loadSession(target, plan, revision), durable, 'durable session changed during command');
+        }
+        assertSession();
+        return await fn(state, next => { assertSession(); durable = append(target, next, state); durableIdentity = journalIdentity(); return durable; }, assertSession);
+    } finally { fs.closeSync(gateFd); assertGateIdentity(); fs.unlinkSync(gate); directorySync(parent); }
 }
 function progress(state) { const done = state.operations.filter(x => x.status === 'finalized'); return { creationHashes: done.slice(0, 5).map(x => x.txHash), governanceHashes: done.slice(5).map(x => x.txHash) }; }
 async function phase(plan, revision, state, rpc) { const p = progress(state); return policy.preflight(plan, rpc, revision, p.creationHashes, plan.journal, p.governanceHashes); }
-async function startSession({ plan, revision, directory, filename, mode, rpc }) {
+async function startSession({ plan, revision, directory, filename, mode, rpc, assertInputs = () => {} }) {
     await policy.checkPlan(plan, undefined, revision);
     requireValue(['external-broadcast', 'raw-relay'].includes(mode), 'Explicit external-broadcast or raw-relay mode required');
     const target = ordinaryPath(filename); requireValue(!fs.existsSync(target) && !fs.existsSync(`${target}.head.json`), 'Never overwrite an existing session or head');
-    const locks = acquireActors(plan, directory, target);
+    const locks = acquireActors(plan, directory, target), snapshots = locks.map(lock => actorSnapshot(lock));
     try {
         await policy.preflight(plan, rpc, revision);
+        assertInputs(); assertActorSnapshots(locks, snapshots); ordinaryPath(target);
         return append(target, { schema: SCHEMA, provenance: 'new-receipt-bound-graph', deploymentId: crypto.randomUUID(), journalPath: target,
             planSha256: plan.payloadSha256, revision, mode, locks, operations: [], complete: false });
-    } catch (error) { if (!fs.existsSync(target)) for (const lock of locks.slice().reverse()) releaseActor(lock); throw error; }
+    } catch (error) {
+        if (!fs.existsSync(target)) { assertActorSnapshots(locks, snapshots); for (const lock of locks.slice().reverse()) releaseActor(lock); }
+        throw error;
+    }
 }
-async function prepare({ plan, revision, filename, rpc, governorEnvelope, output }) {
+async function prepare({ plan, revision, filename, rpc, governorEnvelope, output, assertInputs = () => {} }) {
     if (output) assertOutsideCheckout(output);
     return guarded(plan, revision, filename, async (state, save) => {
         requireValue(!state.complete && state.operations.every(x => x.status === 'finalized'), 'Resolve the outstanding operation before another handoff');
@@ -191,7 +232,7 @@ async function prepare({ plan, revision, filename, rpc, governorEnvelope, output
         const packet = signingPacket(updated, operation);
         if (output) writeNew(output, packet);
         return { state: updated, packet };
-    });
+    }, false, assertInputs);
 }
 function signingPacket(state, operation) {
     const envelope = operation.intent.envelope, { from, ...unsigned } = envelope;
@@ -205,7 +246,7 @@ async function retrieveHandoff({ plan, revision, filename }) {
     requireValue(operation?.status === 'handed-off', 'Only an unresolved original handoff can be retrieved');
     return { state, packet: signingPacket(state, operation), journalMutated: false, externalTransactions: false };
 }
-async function importSigned({ plan, revision, filename, raw, rpc }) {
+async function importSigned({ plan, revision, filename, raw, rpc, assertInputs = () => {} }) {
     return guarded(plan, revision, filename, async (state, save) => {
         const operation = state.operations.at(-1); requireValue(operation?.status === 'handed-off', 'Only the outstanding handoff can accept a signature');
         const checked = validateSigned(raw, operation.intent);
@@ -217,13 +258,13 @@ async function importSigned({ plan, revision, filename, raw, rpc }) {
         requireValue(BigInt(await rpc('eth_getBalance', [operation.intent.envelope.from, latest.number])) >= BigInt(operation.intent.envelope.gasLimit) * BigInt(operation.intent.envelope.maxFeePerGas), 'Sender balance changed during external signing');
         const updated = { ...operation, status: 'signed', txHash: checked.hash, rawSha256: checked.rawSha256 };
         return save({ ...state, operations: [...state.operations.slice(0, -1), updated] });
-    });
+    }, false, assertInputs);
 }
 function relayAcknowledgement(state) {
     const op = state.operations.at(-1); return policy.digest({ action: 'relay-exact-raw-once', deploymentId: state.deploymentId, planSha256: state.planSha256, index: op?.index, intentSha256: op?.intentSha256, transactionHash: op?.txHash });
 }
-async function relayOnce({ plan, revision, filename, raw, rpc, relay, acknowledgement }) {
-    return guarded(plan, revision, filename, async (state, save) => {
+async function relayOnce({ plan, revision, filename, raw, rpc, relay, acknowledgement, assertInputs = () => {} }) {
+    return guarded(plan, revision, filename, async (state, save, assertSession) => {
         const operation = state.operations.at(-1);
         requireValue(state.mode === 'raw-relay' && operation?.status === 'signed', 'No relay for external mode or previously attempted/uncertain submission');
         same(acknowledgement, relayAcknowledgement(state), 'explicit one-shot relay acknowledgement');
@@ -236,10 +277,11 @@ async function relayOnce({ plan, revision, filename, raw, rpc, relay, acknowledg
         requireValue(balance >= BigInt(operation.intent.envelope.gasLimit) * BigInt(operation.intent.envelope.maxFeePerGas), 'Insufficient reviewed relay gas balance');
         save({ ...state, operations: [...state.operations.slice(0, -1), { ...operation, status: 'submission-attempted' }] });
         // This callback receives only the validated bytes. Any error is ambiguous and cannot be retried.
+        assertSession();
         const returned = await relay(raw);
         requireValue(typeof returned === 'string' && returned.toLowerCase() === operation.txHash, 'Relay returned an unexpected hash; submission is ambiguous');
         return { transactionHash: operation.txHash, submissionAttempted: true, receiptProven: false };
-    });
+    }, false, assertInputs);
 }
 function rpcSignedBytes(tx) {
     requireValue(tx && BigInt(tx.type) === 2n && !tx.authorizationList && !tx.blobVersionedHashes, 'Unsupported recovered transaction type');
@@ -291,16 +333,16 @@ async function recover({ plan, revision, filename, rpc, transactionHash }) {
     const result = await recoverOperation(plan, state, rpc, transactionHash);
     return { ...result, externalTransactions: false, journalMutated: false };
 }
-async function reconcile({ plan, revision, filename, rpc, transactionHash }) {
+async function reconcile({ plan, revision, filename, rpc, transactionHash, assertInputs = () => {} }) {
     return guarded(plan, revision, filename, async (state, save) => {
         const result = await recoverOperation(plan, state, rpc, transactionHash);
         requireValue(result.resolved, result.reason);
         await phase(plan, revision, result.state, rpc);
         return save(result.state);
-    });
+    }, false, assertInputs);
 }
-async function finish({ plan, revision, filename, rpc }) {
-    return guarded(plan, revision, filename, async (state, save) => {
+async function finish({ plan, revision, filename, rpc, assertInputs = () => {} }) {
+    return guarded(plan, revision, filename, async (state, save, assertSession) => {
         requireValue(state.operations.length === 7 && state.operations.every(x => x.status === 'finalized'), 'All seven exact finalized operations required');
         const p = progress(state), b = state.complete ? null : await rpc('eth_getBlockByNumber', ['finalized', false]);
         const acceptanceBlock = state.complete ? state.authorityEvidence.block : { number: Number(BigInt(b.number)), hash: b.hash };
@@ -309,9 +351,10 @@ async function finish({ plan, revision, filename, rpc }) {
         const completed = state.complete ? state : save({ ...state, complete: true, authorityEvidence: evidence, authorityEvidenceSha256: evidence.payloadSha256 });
         // Full evidence is durable before any release or CLI output. Retrying only finish may
         // clean up absent/owned locks; replacement locks and crash command gates remain blocked.
+        assertSession();
         for (const lock of completed.locks.slice().reverse()) if (assertCompletedActor(lock)) releaseActor(lock);
         return { state: completed, evidence };
-    }, true);
+    }, true, assertInputs);
 }
 // This dedicated one-shot transport is never imported by the read-only transport.
 function createRawRelay(url) {
@@ -342,28 +385,35 @@ async function main() {
     const fields = { start: ['plan', 'journal', 'mode'], prepare: ['plan', 'journal', 'governorEnvelope'], import: ['plan', 'journal', 'signedRawFile'],
         relay: ['plan', 'journal', 'signedRawFile', 'acknowledgement'], recover: ['plan', 'journal', 'transactionHash'], reconcile: ['plan', 'journal', 'transactionHash'], finish: ['plan', 'journal'], status: ['plan', 'journal'], handoff: ['plan', 'journal'] };
     requireValue(fields[action] && inputFile && output && !extra, 'Usage: authority-session.js start|prepare|handoff|import|relay|recover|reconcile|finish|status COMMAND.json NEW_OUTPUT.json');
-    const revision = require('./authority-revision').reviewedRevision(), input = readJson(inputFile);
+    const revision = require('./authority-revision').reviewedRevision();
+    const boundary = require('./authority-input-boundary').createInputBoundary(revision), input = boundary.readJson(inputFile);
     same(Object.keys(input).sort(), fields[action].sort(), 'command fields');
     assertOutsideCheckout(output); assertOutsideCheckout(input.journal);
-    if (action === 'start') assertOutsideCheckout(process.env.DEPLOYMENT_LOCK_DIRECTORY);
-    const plan = readJson(input.plan); await policy.checkPlan(plan, undefined, revision);
+    boundary.pinDirectory(path.dirname(path.resolve(output))); boundary.pinDirectory(path.dirname(path.resolve(input.journal)));
+    if (action === 'start') boundary.pinDirectory(process.env.DEPLOYMENT_LOCK_DIRECTORY);
+    const plan = boundary.readJson(input.plan); await policy.checkPlan(plan, undefined, revision);
     requireValue(!fs.existsSync(output), 'Never overwrite command evidence');
     const needsRpc = !['status', 'handoff'].includes(action);
     const rpc = needsRpc ? createReadOnlyRpc(process.env.ALPHA_READ_ONLY_RPC_URL, scopeForPlan(plan)) : null;
-    const args = { plan, revision, filename: input.journal, rpc };
+    const args = { plan, revision, filename: input.journal, rpc, assertInputs: boundary.assertCurrent };
     let result;
     if (action === 'start') result = await startSession({ ...args, directory: process.env.DEPLOYMENT_LOCK_DIRECTORY, mode: input.mode });
-    if (action === 'prepare') result = await prepare({ ...args, governorEnvelope: input.governorEnvelope ? readJson(input.governorEnvelope) : undefined });
+    if (action === 'prepare') result = await prepare({ ...args, governorEnvelope: input.governorEnvelope ? boundary.readJson(input.governorEnvelope) : undefined });
     if (action === 'handoff') result = await retrieveHandoff(args);
-    if (action === 'import') result = await importSigned({ ...args, raw: readRaw(input.signedRawFile) });
+    if (action === 'import') result = await importSigned({ ...args, raw: boundary.readRaw(input.signedRawFile) });
     if (action === 'relay') {
         requireValue(process.env.ALPHA_ENABLE_USER_RUN_RAW_RELAY === 'I_REVIEWED_THIS_EXACT_TRANSACTION', 'Explicit user-run raw relay switch required');
-        result = await relayOnce({ ...args, raw: readRaw(input.signedRawFile), acknowledgement: input.acknowledgement, relay: createRawRelay(process.env.ALPHA_RAW_RELAY_RPC_URL) });
+        result = await relayOnce({ ...args, raw: boundary.readRaw(input.signedRawFile), acknowledgement: input.acknowledgement, relay: createRawRelay(process.env.ALPHA_RAW_RELAY_RPC_URL) });
     }
     if (action === 'recover') result = await recover({ ...args, transactionHash: input.transactionHash || undefined });
     if (action === 'reconcile') result = await reconcile({ ...args, transactionHash: input.transactionHash || undefined });
     if (action === 'finish') result = await finish(args);
-    if (action === 'status') { const state = loadSession(input.journal, plan, revision); result = { state, relayAcknowledgement: state.operations.at(-1)?.status === 'signed' ? relayAcknowledgement(state) : null }; }
+    if (action === 'status') {
+        const state = loadSession(input.journal, plan, revision); let commandBlocked = false;
+        try { fs.lstatSync(`${path.resolve(input.journal)}.command-lock`); commandBlocked = true; } catch (error) { if (error.code !== 'ENOENT') throw error; }
+        result = { state, commandBlocked, relayAcknowledgement: !commandBlocked && state.operations.at(-1)?.status === 'signed' ? relayAcknowledgement(state) : null };
+    }
+    boundary.assertCurrent();
     writeNew(output, result);
     console.log(JSON.stringify({ output: path.resolve(output), action, activationAllowed: false, liveSigningPerformedByTool: false }));
 }

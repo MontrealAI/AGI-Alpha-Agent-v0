@@ -50,7 +50,7 @@ async function main() {
         const { installToken } = require('../test/utils/token');
         const { certificate, key } = createFixtureCertificate(privateRoot);
         report.fixtureCertificateSha256 = sha(fs.readFileSync(certificate));
-        let count = 0, relays = 0, mutationOnRead = null, loseRelayResponse = false;
+        let count = 0, relays = 0, mutationOnRead = null, restoreLateMutation = null, loseRelayResponse = false;
         server = https.createServer({ key: fs.readFileSync(key), cert: fs.readFileSync(certificate), minVersion: 'TLSv1.2' }, (req, res) => {
             const chunks = []; let size = 0;
             req.on('data', bytes => { size += bytes.length; if (size > 262144) req.destroy(); else chunks.push(bytes); });
@@ -61,7 +61,7 @@ async function main() {
                     assert.equal(body.jsonrpc, '2.0'); assert.ok(Array.isArray(body.params));
                     const relay = req.url === '/relay'; assert.ok(relay || req.url === '/read');
                     assert.ok(relay ? body.method === 'eth_sendRawTransaction' : readMethods.has(body.method));
-                    if (!relay && mutationOnRead) { const mutate = mutationOnRead; mutationOnRead = null; mutate(); }
+                    if (!relay && mutationOnRead) { const mutate = mutationOnRead; mutationOnRead = null; restoreLateMutation = mutate() || null; }
                     const params = body.method === 'eth_getBlockByNumber' && body.params[0] === 'finalized' ? ['latest', false] : body.params;
                     const result = await ethers.provider.send(body.method, params);
                     if (relay) { relays++; if (loseRelayResponse) { loseRelayResponse = false; req.socket.destroy(); return; } }
@@ -84,6 +84,8 @@ async function main() {
             child.stdout.on('data', chunk => { stdout += chunk; if (stdout.length > 65536) child.kill('SIGKILL'); });
             child.stderr.on('data', chunk => { stderr += chunk; if (stderr.length > 65536) child.kill('SIGKILL'); });
             const code = await new Promise((resolve, reject) => { child.on('error', reject); child.on('exit', resolve); }); clearTimeout(timer);
+            if (restoreLateMutation) { const restore = restoreLateMutation; restoreLateMutation = null; restore(); }
+            assert.ok(!stdout.includes('ALPHA_PRIVATE_JSON_SENTINEL') && !stderr.includes('ALPHA_PRIVATE_JSON_SENTINEL'), 'Private malformed input leaked in CLI diagnostics');
             report.commands.push({ label, exitCode: code, expectedExitCode: expected, stdoutSha256: sha(stdout), stderrSha256: sha(stderr) });
             assert.equal(code, expected, `Unexpected CLI outcome at ${label}`);
             if (!intentionalDirtyNegative) assert.deepEqual(reviewedRevision(), revision);
@@ -144,6 +146,20 @@ async function main() {
                 await cli(`${mode}:${action}`, 'authority-session.js', [action, input, destination], expected, { ...env, ...overrideEnv });
                 return expected === 0 ? read(destination) : destination;
             }
+            async function rejectLateMutation(label, target, action, fields, overrideEnv = {}) {
+                const journalBefore = fs.readFileSync(journalFile), headBefore = fs.readFileSync(journalFile + '.head.json'), relayBefore = relays;
+                const destination = next(`late-${label}-refused.json`); let mutated = false;
+                mutationOnRead = () => { const saved = fs.readFileSync(target); fs.appendFileSync(target, '\n'); mutated = true; return () => fs.writeFileSync(target, saved); };
+                await command(action, fields, 1, destination, overrideEnv);
+                report.commands.at(-1).lateInputDriftCase = label;
+                assert.equal(mutated, true); assert.equal(mutationOnRead, null); assert.equal(restoreLateMutation, null);
+                assert.equal(fs.existsSync(destination), false); assert.ok(fs.readFileSync(journalFile).equals(journalBefore));
+                assert.ok(fs.readFileSync(journalFile + '.head.json').equals(headBefore)); assert.equal(relays, relayBefore);
+            }
+            const lateTargets = { plan: planFile,
+                artifact: path.join(SOURCE_ROOT, 'tests/contracts/artifacts/contracts/ascension/AscensionAccess.sol/AscensionAccess.json'),
+                dependency: path.join(SOURCE_ROOT, 'tests/contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol'),
+                trackedSource: path.join(SOURCE_ROOT, 'contracts/ascension/AscensionAccess.sol') };
             // Invalid paths fail before any RPC or lock creation, even when Git ignores the path.
             const inside = path.join(SOURCE_ROOT, 'tests/contracts/node_modules/alpha-native-forbidden-output.json');
             let before = count;
@@ -164,7 +180,25 @@ async function main() {
             assert.deepEqual(reviewedRevision(), revision); assert.equal(count, before);
             await cli(`${mode}:reject-untrusted-local-TLS`, 'authority-cli.js', ['preflight', planFile, progressFile, next('untrusted-report.json')], 1, { NODE_EXTRA_CA_CERTS: '' });
             assert.equal(count, before); // TLS verification rejects before an HTTP/RPC method reaches the fixture.
+            const malformed = next('malformed-command.json'), malformedOutput = next('malformed-output.json'); write(malformed, 'ALPHA_PRIVATE_JSON_SENTINEL');
+            before = count; await cli(`${mode}:reject-private-malformed-json`, 'authority-session.js', ['prepare', malformed, malformedOutput], 1);
+            assert.equal(count, before); assert.equal(fs.existsSync(malformedOutput), false);
             await command('start', { mode });
+            const beforeReplacement = fs.readFileSync(journalFile), movedDirectory = directory + '-displaced';
+            mutationOnRead = () => {
+                fs.renameSync(directory, movedDirectory); fs.mkdirSync(directory);
+                write(journalFile + '.command-lock', 'replacement command gate');
+                return () => {
+                    assert.equal(fs.readFileSync(journalFile + '.command-lock', 'utf8'), 'replacement command gate');
+                    assert.ok(fs.existsSync(path.join(movedDirectory, path.basename(journalFile) + '.command-lock')));
+                    fs.rmSync(directory, { recursive: true, force: true }); fs.renameSync(movedDirectory, directory);
+                    fs.unlinkSync(journalFile + '.command-lock'); // Explicit disposable retained-gate recovery only.
+                };
+            };
+            await command('prepare', { governorEnvelope: null }, 1);
+            report.commands.at(-1).lateInputDriftCase = 'journal-parent-and-command-gate-replacement';
+            assert.ok(fs.readFileSync(journalFile).equals(beforeReplacement));
+            for (const [label, target] of Object.entries(lateTargets)) await rejectLateMutation(`prepare-${label}`, target, 'prepare', { governorEnvelope: null });
             const creationHashes = [], governanceHashes = [], phases = [];
             const relayStart = relays;
             for (let index = 0; index < 7; ++index) {
@@ -180,6 +214,10 @@ async function main() {
                 const raw = await (index < 5 ? f.creator : f.governor).signTransaction(envelope); rawCapabilities.add(raw);
                 const txHash = ethers.Transaction.from(raw).hash, rawFile = next('signed.txt'); write(rawFile, raw);
                 if (index === 0) {
+                    const insideRaw = path.join(SOURCE_ROOT, 'tests/contracts/node_modules/alpha-private-synthetic-raw.txt'); write(insideRaw, raw);
+                    const beforeInside = count;
+                    try { await command('import', { signedRawFile: insideRaw }, 1); } finally { fs.unlinkSync(insideRaw); }
+                    assert.equal(count, beforeInside);
                     const wrongRaw = await f.creator.signTransaction({ ...envelope, value: '1' }); rawCapabilities.add(wrongRaw);
                     const wrongFile = next('wrong-signed.txt'); write(wrongFile, wrongRaw); const beforeWrong = count;
                     await command('import', { signedRawFile: wrongFile }, 1); assert.equal(count, beforeWrong);
@@ -194,7 +232,18 @@ async function main() {
                         await command('import', { signedRawFile: rawFile }, 1, lostOutput);
                     } else await command('import', { signedRawFile: rawFile });
                     const status = await command('status'); assert.equal(status.state.operations[index].status, 'signed');
+                    if (index === 0) {
+                        const gate = journalFile + '.command-lock'; fs.symlinkSync(next('absent-gate-target'), gate);
+                        try {
+                            const blocked = await command('status'); assert.equal(blocked.commandBlocked, true); assert.equal(blocked.relayAcknowledgement, null);
+                            const beforeBlocked = count;
+                            await command('prepare', { governorEnvelope: null }, 1); assert.equal(count, beforeBlocked);
+                        } finally { fs.unlinkSync(gate); } // Explicit disposable stale-gate fixture cleanup only.
+                    }
                     if (mode === 'raw-relay') {
+                        if (index === 0) for (const [label, target] of Object.entries(lateTargets))
+                            await rejectLateMutation(`relay-${label}`, target, 'relay', { signedRawFile: rawFile, acknowledgement: status.relayAcknowledgement },
+                                { ALPHA_ENABLE_USER_RUN_RAW_RELAY: 'I_REVIEWED_THIS_EXACT_TRANSACTION', ALPHA_RAW_RELAY_RPC_URL: `${origin}/relay` });
                         loseRelayResponse = index === 0;
                         await command('relay', { signedRawFile: rawFile, acknowledgement: status.relayAcknowledgement }, index === 0 ? 1 : 0, next('relay-result.json'),
                             { ALPHA_ENABLE_USER_RUN_RAW_RELAY: 'I_REVIEWED_THIS_EXACT_TRANSACTION', ALPHA_RAW_RELAY_RPC_URL: `${origin}/relay` });

@@ -65,6 +65,8 @@ test('native harness requires independently observed clean HEAD before any fixtu
     assert.match(harness, /assert\.deepEqual\(reviewedRevision\(\), revision\)/);
     assert.match(harness, /network.config.hardfork, 'osaka'/);
     assert.match(harness, /requireDisposableLocalNetwork/);
+    assert.match(harness, /rejectLateMutation/); assert.match(harness, /restoreLateMutation = mutate\(\) \|\| null/);
+    assert.match(harness, /assert\.equal\(relays, relayBefore\)/); assert.match(harness, /lateInputDriftCase/);
     assert.match(harness, /\[0, 0, 0, 0, 0, 1, 2\]/);
     for (const file of ['mainnet-authority.js', 'authority-cli.js', 'authority-verification-package.js', 'authority-session.js'])
         assert.doesNotMatch(source(`tests/contracts/scripts/${file}`), /ALPHA_NATIVE_PROFILE|ALPHA_EXPECTED_HEAD_SHA|NODE_EXTRA_CA_CERTS|NODE_TLS_REJECT_UNAUTHORIZED/);

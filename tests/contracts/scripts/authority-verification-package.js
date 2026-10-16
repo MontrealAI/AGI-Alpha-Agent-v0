@@ -97,19 +97,21 @@ async function main() {
         throw Error('Usage: authority-verification-package.js plan PLAN.json NEW_DIRECTORY OR receipts PLAN.json EVIDENCE.json NEW_DIRECTORY');
     const revision = require('./authority-revision').reviewedRevision();
     require('./authority-paths').assertOutsideCheckout(mode === 'plan' ? evidenceOrOutput : receiptOutput);
-    const { readJson } = require('./authority-cli');
-    const plan = readJson(input);
+    const boundary = require('./authority-input-boundary').createInputBoundary(revision);
+    boundary.pinDirectory(path.dirname(path.resolve(mode === 'plan' ? evidenceOrOutput : receiptOutput)));
+    const plan = boundary.readJson(input);
     // Validate source independently before even constructing a provider transport.
     await policy.checkPlan(plan, undefined, revision);
     let bundle;
     if (mode === 'plan') bundle = await plannedPackage(plan, revision);
     else {
-        const evidence = readJson(evidenceOrOutput);
+        const evidence = boundary.readJson(evidenceOrOutput);
         if (!process.env.ALPHA_READ_ONLY_RPC_URL) throw Error('Explicit ALPHA_READ_ONLY_RPC_URL required');
         const { createReadOnlyRpc, scopeForPlan } = require('./authority-rpc');
         const rpc = createReadOnlyRpc(process.env.ALPHA_READ_ONLY_RPC_URL, scopeForPlan(plan));
         bundle = await receiptProvenPackage(plan, rpc, evidence, revision);
     }
+    boundary.assertCurrent();
     const destination = writePackage(bundle, mode === 'plan' ? evidenceOrOutput : receiptOutput);
     console.log(JSON.stringify({ output: destination, schema: bundle.manifest.schema, addressStatus: bundle.manifest.addressStatus,
         readOnlyProviderObservations: mode === 'receipts', externalTransactions: false, explorerSubmission: 'not-performed' }));

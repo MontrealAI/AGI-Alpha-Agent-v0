@@ -31,12 +31,14 @@ async function runReadOnly(mode, plan, input, revision, rpc) {
 async function main() {
     const [mode, planFile, inputFile, output, extra] = process.argv.slice(2);
     if (!['preflight', 'verify'].includes(mode) || !planFile || !inputFile || !output || extra) throw Error('Usage: authority-cli.js preflight|verify PLAN.json INPUT.json NEW_REPORT.json');
-    const revision = require('./authority-revision').reviewedRevision(), plan = readJson(planFile);
-    assertOutsideCheckout(output);
+    const revision = require('./authority-revision').reviewedRevision();
+    const boundary = require('./authority-input-boundary').createInputBoundary(revision), plan = boundary.readJson(planFile);
+    assertOutsideCheckout(output); boundary.pinDirectory(path.dirname(path.resolve(output)));
     await policy.checkPlan(plan, undefined, revision);
     if (!process.env.ALPHA_READ_ONLY_RPC_URL) throw Error('Explicit ALPHA_READ_ONLY_RPC_URL required');
     const rpc = createReadOnlyRpc(process.env.ALPHA_READ_ONLY_RPC_URL, scopeForPlan(plan));
-    const report = await runReadOnly(mode, plan, readJson(inputFile), revision, rpc);
+    const report = await runReadOnly(mode, plan, boundary.readJson(inputFile), revision, rpc);
+    boundary.assertCurrent();
     const destination = writeNew(output, { report, transport: rpc.stats() });
     console.log(JSON.stringify({ output: destination, externalTransactions: false, activationAllowed: false }));
 }

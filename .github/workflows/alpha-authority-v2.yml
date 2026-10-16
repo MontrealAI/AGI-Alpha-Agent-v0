@@ -76,7 +76,7 @@ jobs:
           run_check empty-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven empty-eoa-direct-create.v1'
           run_check delegated-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven delegated-eoa-direct-create.v1'
           run_check io-relay node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/authority-io.test.js authority-test/authority-session-relay.test.js
-          run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs authority-test/authority-revision.test.cjs
+          run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs authority-test/authority-revision.test.cjs authority-test/authority-input-boundary.test.cjs
           run_check native-empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
           run_check native-delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
       - name: Derive exact-head evidence without rewriting historical source records

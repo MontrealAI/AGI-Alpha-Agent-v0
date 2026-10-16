@@ -89,3 +89,42 @@ Tracked files are bounded to 64 MiB each and 512 MiB total; missing objects fail
 Acquire a complete checkout separately before use. No observer failure authorizes a fetch,
 repair, filter execution, source-label substitution or retry through a denied path. Small Git
 regression fixtures demonstrate these boundaries and are not candidate source qualification.
+
+## Post-RPC input drift
+
+Every operational v2 CLI pins the validated compiler artifacts, build-info files, compiler
+input sources and exact operator-input bytes. It re-observes the independent source revision
+and pinned inputs synchronously after asynchronous reads, before durable handoff/signature/
+submission transitions, before the raw relay call, and before report/package publication.
+Late drift fails closed. A failure after a durable submission-attempt record retains uncertainty
+even when the local relay callback has not yet run; it never authorizes a retry.
+
+The native harness mutates plan, artifact, dependency and tracked-source bytes during read-only
+RPC, restores each fixture before continuing, and requires no handoff/output/journal transition
+or relay call. These mutations are disposable tests only. The ten additional lightweight input
+boundary tests do not claim full CLI qualification. Exported library routines receive independent
+revision/context from their caller; the operational CLIs install the input boundary unconditionally.
+Repeated observations assume operator control of the local filesystem and processes. They cannot
+prove a hostile filesystem immutable between checks; stop concurrent editors/builds and keep
+source, dependencies and private operator inputs under exclusive local control during use.
+
+Signed-raw input files must also be outside the reviewed checkout, including ignored paths and
+symlink aliases. Alpha never persists signed raw bytes. Mutable output/journal/lock parent
+directories are pinned by canonical path and device/inode across asynchronous reads; session
+saves also recheck actor-lock ownership. Replaced parents fail closed under the same trusted
+local-filesystem assumption. A status query reports commandBlocked and withholds a relay
+acknowledgement while any command-lock entry remains, including a dangling symlink. No status
+or acknowledgement is independent permission to send. Malformed private JSON produces generic
+CLI diagnostics; private parser input is not echoed into logs or public artifacts.
+
+Command gates are also pinned by parent and file identity. Failure cleanup checks both before
+unlinking; if a parent or gate was replaced, the original gate is retained for manual recovery
+and the replacement entry is never removed by that command. This check has the same
+between-check trusted-filesystem limitation as the other local path observations.
+
+Across each asynchronous command, shared actor parents, actor directories and owner files are
+also pinned by identity. Start-error cleanup prevalidates every lease before removing any lock;
+copied owner JSON at replacement paths is insufficient. Before journal append, cleanup release
+or relay, the command rechecks its gate, actor leases, journal/head device/inode and exact byte
+hashes, and the fully validated loaded session. Only its own durable append advances that
+expected checkpoint. Already-complete finish retries still perform these checks before release.

@@ -369,6 +369,15 @@ describe("Candidate v2 direct-CREATE and authority policy (offline)", function (
                 fs.mkdirSync(state.locks[1].path); fs.writeFileSync(path.join(state.locks[1].path, "owner.json"), JSON.stringify({ ...state.locks[1], token: "replacement-owner" }));
                 await rejects(() => session.finish(args), "actor lock ownership");
                 fs.rmSync(state.locks[1].path, { recursive: true }); // disposable fixture cleanup only
+                let changedGate = false; const completionGate = filename + ".command-lock", savedGate = completionGate + ".saved";
+                await rejects(() => session.finish({ ...args, rpc: async (method, params) => {
+                    const result = await f.rpc(method, params);
+                    if (!changedGate) { fs.renameSync(completionGate, savedGate); fs.writeFileSync(completionGate, "replacement completion gate"); changedGate = true; }
+                    return result;
+                } }), "Command gate or parent replaced");
+                expect(fs.readFileSync(completionGate, "utf8")).to.equal("replacement completion gate");
+                expect(fs.existsSync(savedGate)).to.equal(true); expect(fs.existsSync(state.locks[0].path)).to.equal(true);
+                fs.unlinkSync(completionGate); fs.unlinkSync(savedGate); // explicit disposable cleanup, never automatic recovery
             }
             const completed = await session.finish(args); expect(completed.evidence.graphAuthorityVerified).to.equal(true); expect(completed.evidence.activationAllowed).to.equal(false);
             expect(completed.state.complete).to.equal(true); expect(completed.state.locks.every(lock => !fs.existsSync(lock.path))).to.equal(true);
@@ -396,6 +405,30 @@ describe("Candidate v2 direct-CREATE and authority policy (offline)", function (
             fs.writeFileSync(ownerFile, JSON.stringify({ ...state.locks[0], token: "different" }));
             await rejects(() => session.prepare(args), "actor lock ownership"); expect(() => session.releaseActor(state.locks[0])).to.throw("actor lock ownership"); fs.writeFileSync(ownerFile, owner);
             await rejects(() => session.prepare({ ...args, revision: { ...revision, tree: "a".repeat(40) } }), "independently observed");
+            // A replacement parent may contain another process's gate. Never unlink it during failure cleanup.
+            const moved = temp + "-displaced"; let swapped = false;
+            await rejects(() => session.prepare({ ...args, rpc: async (method, params) => {
+                const result = await f.rpc(method, params);
+                if (!swapped) { fs.renameSync(temp, moved); fs.mkdirSync(temp); fs.writeFileSync(gate, "replacement gate must remain"); swapped = true; }
+                return result;
+            } }), "Command gate or parent replaced");
+            expect(fs.readFileSync(gate, "utf8")).to.equal("replacement gate must remain");
+            expect(fs.existsSync(path.join(moved, path.basename(gate)))).to.equal(true);
+            fs.rmSync(temp, { recursive: true, force: true }); fs.renameSync(moved, temp); fs.unlinkSync(gate); // explicit disposable recovery only
+            const beforeMutation = fs.readFileSync(filename), savedJournal = filename + ".saved"; let changedJournal = false;
+            await rejects(() => session.prepare({ ...args, rpc: async (method, params) => {
+                const result = await f.rpc(method, params);
+                if (!changedJournal) { fs.renameSync(filename, savedJournal); fs.writeFileSync(filename, beforeMutation); changedJournal = true; }
+                return result;
+            } }), "journal/head identity changed");
+            expect(fs.readFileSync(filename).equals(beforeMutation)).to.equal(true); expect(fs.existsSync(savedJournal)).to.equal(true);
+            fs.unlinkSync(filename); fs.renameSync(savedJournal, filename); changedJournal = false;
+            await rejects(() => session.prepare({ ...args, rpc: async (method, params) => {
+                const result = await f.rpc(method, params);
+                if (!changedJournal) { fs.appendFileSync(filename, "{}\n"); changedJournal = true; }
+                return result;
+            } }));
+            expect(fs.readFileSync(filename, "utf8")).to.equal(beforeMutation.toString() + "{}\n"); fs.writeFileSync(filename, beforeMutation);
             const handed = await session.prepare(args), intent = handed.state.operations[0].intent, { from, ...envelope } = intent.envelope;
             const fullJournal = fs.readFileSync(filename, "utf8"), headFile = filename + ".head.json", fullHead = fs.readFileSync(headFile, "utf8");
             fs.writeFileSync(filename, fullJournal.split("\n").slice(0, -2).join("\n") + "\n");
@@ -410,6 +443,11 @@ describe("Candidate v2 direct-CREATE and authority policy (offline)", function (
             }
             const wrong = await ethers.Wallet.createRandom().signTransaction(envelope); expect(() => session.validateSigned(wrong, intent)).to.throw("recovered sender");
             const exact = await f.creator.signTransaction(envelope);
+            let lateImportDrift = false;
+            await rejects(() => session.importSigned({ ...args, raw: exact,
+                rpc: async (method, params) => { const result = await f.rpc(method, params); lateImportDrift = true; return result; },
+                assertInputs: () => { if (lateImportDrift) throw Error("synthetic late input drift"); } }), "late input drift");
+            expect(session.loadSession(filename, f.plan, revision).operations[0].status).to.equal("handed-off");
             await rejects(() => session.importSigned({ ...args, raw: exact, rpc: undefined }), "Fresh read-only phase");
             await rejects(() => session.importSigned({ ...args, raw: exact, rpc: (m, a) => m === "eth_getCode" && a[0] === f.creator.address ? "0x6000" : f.rpc(m, a) }), "Empty-code mode");
             expect(session.loadSession(filename, f.plan, revision).operations[0].status).to.equal("handed-off");
@@ -430,6 +468,11 @@ describe("Candidate v2 direct-CREATE and authority policy (offline)", function (
             await session.startSession({ ...args, directory: temp, mode: "raw-relay" });
             const handed = await session.prepare(args), { from, ...envelope } = handed.packet.envelope, raw = await f.creator.signTransaction(envelope);
             const signed = await session.importSigned({ ...args, raw }); let relays = 0;
+            let lateRelayDrift = false;
+            await rejects(() => session.relayOnce({ ...args, raw, acknowledgement: session.relayAcknowledgement(signed),
+                rpc: async (method, params) => { const result = await f.rpc(method, params); lateRelayDrift = true; return result; },
+                assertInputs: () => { if (lateRelayDrift) throw Error("synthetic late input drift"); }, relay: () => { relays++; } }), "late input drift");
+            expect(relays).to.equal(0); expect(session.loadSession(filename, f.plan, revision).operations[0].status).to.equal("signed");
             await session.relayOnce({ ...args, raw, acknowledgement: session.relayAcknowledgement(signed), relay: async () => { relays++; return ethers.Transaction.from(raw).hash; } });
             expect((await session.recover(args)).resolved).to.equal(false); // transport returned hash, transaction never observed
             await ethers.provider.send("evm_setAutomine", [false]);
@@ -479,7 +522,24 @@ describe("Candidate v2 direct-CREATE and authority policy (offline)", function (
         const f = await localFixture(policy.EMPTY), temp = fs.mkdtempSync(path.join(os.tmpdir(), "alpha-handoff-")), filename = path.join(temp, "progress.jsonl");
         const args = { plan: f.plan, revision, filename, rpc: f.rpc };
         try {
+            const copied = temp + "-copied-locks"; let replacedLocks = false;
+            await rejects(() => session.startSession({ ...args, directory: temp, mode: "external-broadcast", rpc: async (method, params) => {
+                const result = await f.rpc(method, params);
+                if (!replacedLocks) { fs.renameSync(temp, copied); fs.cpSync(copied, temp, { recursive: true }); replacedLocks = true; }
+                return result;
+            } }), "actor lease identity changed");
+            expect(fs.readdirSync(temp)).to.have.length(2); expect(fs.readdirSync(copied)).to.have.length(2);
+            fs.rmSync(temp, { recursive: true, force: true }); fs.renameSync(copied, temp);
+            for (const key of fs.readdirSync(temp)) session.releaseActor(JSON.parse(fs.readFileSync(path.join(temp, key, "owner.json")))); // explicit disposable recovery
+            let drift = false;
+            const late = { ...args, rpc: async (method, params) => { const result = await f.rpc(method, params); drift = true; return result; },
+                assertInputs: () => { if (drift) throw Error("synthetic late input drift"); } };
+            await rejects(() => session.startSession({ ...late, directory: temp, mode: "external-broadcast" }), "late input drift");
+            expect(fs.existsSync(filename)).to.equal(false); expect(fs.readdirSync(temp)).to.deep.equal([]);
             await session.startSession({ ...args, directory: temp, mode: "external-broadcast" });
+            drift = false;
+            await rejects(() => session.prepare(late), "late input drift");
+            expect(session.loadSession(filename, f.plan, revision).operations).to.have.length(0);
             const output = path.join(temp, "existing.json"); fs.writeFileSync(output, "do not overwrite");
             await rejects(() => session.prepare({ ...args, output }), "EEXIST");
             expect(fs.readFileSync(output, "utf8")).to.equal("do not overwrite");
