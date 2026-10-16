@@ -60,6 +60,10 @@ unqualified advanced material, not prerequisites for this verified comparison.
 > [Personal lab guide](docs/agent/SUCCESSOR.md#new-here-take-a-lab-home--emportez-votre-laboratoire) ·
 > [What is new in 1.27.2](docs/agent/RELEASE_NOTES_1.27.2.md).
 
+## Ideas behind your SUCCESSOR Ω
+
+[Read four selected essays](https://montrealai.github.io/AGI-Alpha-Agent-v0/#reading) on governed improvement, sustainable capabilities, invention and retained work history. English/French summaries connect each essay to a current guide. [Reading notes and version context](docs/READING.md).
+
 ## Alpha Agent + AGI Jobs: from a useful idea to accepted work
 
 **Alpha helps produce the work; AGI Jobs supplies rules for commissioning, reviewing and settling it.**
