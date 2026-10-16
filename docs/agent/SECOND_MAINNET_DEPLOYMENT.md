@@ -196,3 +196,13 @@ the owner controls the exact signing time.
 | --- | --- |
 | External independent audit | NOT PERFORMED — OWNER-ACCEPTED OMISSION |
 | Sepolia rehearsal | NOT PERFORMED — OWNER-ACCEPTED OMISSION |
+
+## Additional bounded evidence — actual token on a private fork
+
+The [partial token fork receipt](../../deployments/ethereum-mainnet/2026-10-15/partial-token-fork.json) records **two executed passing tests** at the same pinned block as the fresh historical verifier. The fork retained the real AGIALPHA runtime. It added synthetic balances and the exact corresponding supply delta only inside its in-memory Hardhat instance. It exercised the new local Ascension contracts, curve buy/sell, funded plan, auction, two-vote payout/burn, reclamation, revoked rejection reviewer and timeout/refund safety. Contract artifact hashes and the actual log hash are retained.
+
+ENS/Wrapper identities and supplied reviews are local simulations. Test signers and parameters are not an owner-approved deployment plan. This does **not** complete the real participant/ENS/committee, interruption, explorer, full obligation or exact signing-plan rehearsal gates above. No mainnet transaction was sent. The default unforked fixture guards remain unchanged.
+
+Run explicitly from `tests/contracts` with `ALPHA_FORK_RPC_URL` (read-only HTTPS upstream), `ALPHA_FORK_BLOCK` and `ALPHA_FORK_BLOCK_HASH`, then `npm run mainnet:fork-token`. The separate config refuses external execution networks and verifies the fork metadata against chain 1 and the exact block/hash before synthetic writes. Do not use the normal fixture scripts against a fork or external node.
+
+The [additional partial counter read](../../deployments/ethereum-mainnet/2026-10-15/obligation-counters-partial.json) at finalized block 26,200,267 observed zero seed/job counters and zero token balances in the three escrow/stake modules. It explicitly records `completeObligations: false`: complete events, participant mappings, lots, claims and allowances remain unenumerated. Zero counters/balances are not a complete no-liability finding.
