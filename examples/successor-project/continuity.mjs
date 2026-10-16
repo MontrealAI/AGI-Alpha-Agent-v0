@@ -13,7 +13,9 @@ import {run} from '../successor-workbench/engine.mjs';
 
 export const MANAGER_SOURCE = Object.freeze({repository:'MontrealAI/AGIJobManager',commit:'e5d59f1c8e307193dbb99196a5276eb1fe344fe3',tree:'5136b443f9ef081db7cb5a788f4d49d3f5db2740'});
 export const ALPHA_BASELINE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'7c410d3d61d5d6bba5354307e1784dba2b3aa177',tree:'e80b1dc06317d939e3dd22d2db063a7f1706ddcb'});
-export const ALPHA_NATIVE_SOURCE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'ccad46c561e1b649c77a61d11d405b2ec255e09c',tree:'e987ff3b748cc56a324239fcc3eb6a018010eeec',manifestSha256:'908268b06a535a15ad1725deea48fdd160db6816a2af6d643421383826cd6dea'});
+// Retained source checkpoint for historical continuity receipts; never relabel old records.
+export const ALPHA_PREVIEW_NATIVE_SOURCE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'ccad46c561e1b649c77a61d11d405b2ec255e09c',tree:'e987ff3b748cc56a324239fcc3eb6a018010eeec',manifestSha256:'908268b06a535a15ad1725deea48fdd160db6816a2af6d643421383826cd6dea'});
+export const ALPHA_NATIVE_SOURCE = Object.freeze({repository:'MontrealAI/AGI-Alpha-Agent-v0',commit:'875f5a079c9978f744df259b4885f51f96c55727',tree:'1b54e262009a6696e685910ecb1c6a8e67e5b881',manifestSha256:'1c46d81b4c26d2be6b61d08e33801bb62df6a6d6dd82a016c742e386da11430b'});
 export const LIMIT = 2_000_000;
 const ACK = 'new-public-data-cycle';
 // Complete execution and builder-data closure of the selected Manager adapter.

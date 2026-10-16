@@ -2,7 +2,15 @@
 
 This additive project sidecar is used inside `/successor/mission/`. It is not a fourth execution UI and is not an authority envelope.
 
-## Supported journey
+## Current guided continuation
+
+The [guided journey](../../docs/agent/GUIDED_SUCCESSOR_JOURNEY.md) extends this native core with exact-source Manager, Jobs and Fleet adapters inside the same mission workspace. Manager explicitly maps public-data rows and creates a separately priced **USDC** draft. Jobs compiles and locally checks a separately priced, unfunded **AGIALPHA** proposal. Fleet accepts a bounded request and returns retained execution and internal-check history; the imported history grants no execution, review or settlement authority. The unchanged native project remains inside a distinct, bounded `alpha-guided-project/v1` history sidecar.
+
+Current local checks cover both routes in English and French, including actual adapter work, synthetic-isolation Fleet execution and internal review, fresh cycles, exact-byte history and failed-save recovery. The pinned browser suites pass locally. Qualification of the exact published commit still requires mandatory hosted CI; production commissioning, independent protected evaluation and settlement are not established.
+
+The sections below retain the original native-core baseline scope and its historical qualification note. References there to unavailable cross-repository mapping, envelopes and browser launch describe that baseline; use the guided journey above for the current additive continuation.
+
+## Native-core baseline journey
 
 1. Export a brief from the existing `/successor/discover/` UI and import it into the mission workspace. The full native body is recomputed with the unchanged discovery reader; exact original UTF-8 text and its SHA-256 remain in the dossier. A separately labelled illustrative public-data opportunity is available when no brief was supplied. Imported statements and authorship remain unverified.
 2. Choose an actual permitted `group,amount` integer CSV. Explicit selection records unchanged units, sum-all-rows duplicate semantics and input rights. A general goal or battery hypothesis is never translated into executable work. No Manager decimal/identity mapping exists.
@@ -26,4 +34,4 @@ The existing 21 Job lifecycle templates produce **unfunded proposals** linked to
 - Existing mission/discovery/evaluation suites are unchanged except the mission app harness loads its additive UI module.
 - `python tests/browser/test_successor_project_browser.py` uses actual discovery and mission interfaces, fresh contexts, different input/result, rejected history, stale import, forced IndexedDB failure, real concurrent CAS, source drift and corruption. Five screenshots are mandatory CI artifacts.
 
-Local browser launch is unavailable under the executor sandbox. Browser qualification must come from the exact draft commit's mandatory CI; Node or source review is not a substitute. No claim of four-repository commissioning, independent protected evaluation, earned Specialist status, deployment or production admission is made.
+**Historical baseline qualification note:** Local browser launch is unavailable under the executor sandbox. Browser qualification must come from the exact draft commit's mandatory CI; Node or source review is not a substitute. No claim of four-repository commissioning, independent protected evaluation, earned Specialist status, deployment or production admission is made.
