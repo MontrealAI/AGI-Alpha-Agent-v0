@@ -45,7 +45,11 @@ test('native workflow keeps pinned installs, all serial shards and both native p
     assert.doesNotMatch(workflow, /--invert|continue-on-error|\|\| true/);
 });
 test('native artifacts use outside-checkout safe summaries and never private runner logs', () => {
-    assert.match(workflow, /ALPHA_NATIVE_STATE_DIRECTORY: \$\{\{ runner.temp \}\}/);
+    // GitHub resolves global/job env before a runner exists; YAML parsing alone cannot catch this.
+    const globalEnv = workflow.split('\nenv:\n')[1].split('\njobs:')[0];
+    assert.doesNotMatch(globalEnv, /\$\{\{\s*(?:runner|env|job|steps|needs|strategy|matrix)\./);
+    assert.match(workflow, /ALPHA_NATIVE_STATE_DIRECTORY=\$RUNNER_TEMP\/alpha-authority-/);
+    assert.match(workflow, />> "\$GITHUB_ENV"/);
     assert.match(workflow, /path: \$\{\{ env.ALPHA_NATIVE_STATE_DIRECTORY \}\}\/public\//);
     assert.match(workflow, /\> "\$ALPHA_NATIVE_STATE_DIRECTORY\/logs\/\$label.log"/);
     assert.match(harness, /Raw signed capability escaped into public evidence/);
