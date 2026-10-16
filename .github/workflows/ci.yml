@@ -53,6 +53,7 @@ env:
   INSIGHT_ASSET_ROOT: ${{ github.workspace }}/.tmp/insight-assets
   PYODIDE_CACHE_DIR: ${{ github.workspace }}/.tmp/pyodide-cache
   NODE_LOCKFILES: |
+    tests/browser/package-lock.json
     alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
     alpha_factory_v1/core/interface/web_client/package-lock.json
     alpha_factory_v1/core/interface/web_client/staking/package-lock.json
@@ -388,6 +389,8 @@ jobs:
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp
           df -h
+      - name: Install the locked runtime accessibility auditor
+        run: npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund
       - name: Run tests with coverage
         shell: bash
         run: |
