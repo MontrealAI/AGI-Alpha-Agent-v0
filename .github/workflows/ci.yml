@@ -388,6 +388,8 @@ jobs:
           rm -rf alpha_factory_v1/core/interface/web_client/node_modules
           rm -rf ~/.cache/pip ~/.cache/pypoetry ~/.cache/node-gyp
           df -h
+      - name: Install the locked runtime accessibility auditor
+        run: npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund
       - name: Run tests with coverage
         shell: bash
         run: |

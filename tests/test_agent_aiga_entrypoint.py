@@ -81,6 +81,10 @@ class TestAgentAIGAEntry:
             best_fitness = 1.0
 
         evo_stub.MetaEvolver = DummyEvolver
+        # `from . import meta_evolver` also consults the package attribute;
+        # earlier tests may already have imported the real optional runtime.
+        package = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution")
+        monkeypatch.setattr(package, "meta_evolver", evo_stub, raising=False)
         monkeypatch.setitem(
             sys.modules,
             "alpha_factory_v1.demos.aiga_meta_evolution.meta_evolver",

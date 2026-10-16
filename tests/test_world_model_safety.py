@@ -12,10 +12,16 @@ import pytest
 MODULE = "alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo"
 
 
-def _reload_module(monkeypatch=None):
-    if MODULE in sys.modules:
-        del sys.modules[MODULE]
-    if monkeypatch:
+def _reload_module(monkeypatch):
+    # Keep optional-runtime stubs local to this import. A module object retains
+    # its fake torch references after the scope closes, while later training
+    # tests recover the real cached module and package attribute.
+    parent_name, _, child = MODULE.rpartition(".")
+    parent = importlib.import_module(parent_name)
+    with monkeypatch.context() as scoped:
+        scoped.setitem(sys.modules, MODULE, None)
+        sys.modules.pop(MODULE)
+        scoped.setattr(parent, child, None, raising=False)
         import types
 
         fake = types.ModuleType("torch")
@@ -39,11 +45,11 @@ def _reload_module(monkeypatch=None):
         optim_mod.Adam = lambda params, lr: object()
         fake.nn = nn_mod
         fake.optim = optim_mod
-        monkeypatch.setitem(sys.modules, "torch", fake)
-        monkeypatch.setitem(sys.modules, "torch.nn", nn_mod)
-        monkeypatch.setitem(sys.modules, "torch.nn.functional", f_mod)
-        monkeypatch.setitem(sys.modules, "torch.optim", optim_mod)
-    return importlib.import_module(MODULE)
+        scoped.setitem(sys.modules, "torch", fake)
+        scoped.setitem(sys.modules, "torch.nn", nn_mod)
+        scoped.setitem(sys.modules, "torch.nn.functional", f_mod)
+        scoped.setitem(sys.modules, "torch.optim", optim_mod)
+        return importlib.import_module(MODULE)
 
 
 def test_safety_agent_halts_on_nan(monkeypatch):
