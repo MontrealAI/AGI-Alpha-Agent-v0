@@ -105,6 +105,27 @@ def test_real_safety_agent_loaded(monkeypatch) -> None:
     assert len(subs) == 1
 
 
+@pytest.mark.parametrize("preloaded", [False, True])
+def test_stubbed_runtime_restores_import_cache(monkeypatch, preloaded):
+    package_name, _, attribute = MODULE.rpartition(".")
+    package = importlib.import_module(package_name)
+    if not preloaded:
+        monkeypatch.delitem(sys.modules, MODULE, raising=False)
+        monkeypatch.delattr(package, attribute, raising=False)
+    previous = sys.modules.get(MODULE)
+    previous_attribute = getattr(package, attribute, None)
+    previous_torch = sys.modules.get("torch")
+    module = _reload_module(monkeypatch)
+    try:
+        assert module.torch is not previous_torch
+        assert sys.modules.get(MODULE) is previous
+        assert getattr(package, attribute, None) is previous_attribute
+        assert sys.modules.get("torch") is previous_torch
+    finally:
+        for agent in module.AGENTS.values():
+            agent.close()
+
+
 def _write_executable(path: Path, content: str) -> None:
     path.write_text(content)
     path.chmod(0o755)

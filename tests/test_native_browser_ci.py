@@ -170,3 +170,19 @@ def test_complete_regression_installs_the_pinned_accessibility_auditor():
     assert "npm ci --prefix tests/browser --ignore-scripts" in install["run"].splitlines()
     assert steps.index(install) < steps.index(acceptance)
     assert "if" not in install and "continue-on-error" not in install
+
+
+def test_integration_pytest_installs_pinned_auditor_after_cleanup():
+    workflow = yaml.load((ROOT / ".github/workflows/ci.yml").read_text(), Loader=UniqueWorkflowLoader)
+    job = workflow["jobs"]["tests"]
+    steps = job["steps"]
+    install = next(step for step in steps if step.get("name") == "Install the locked runtime accessibility auditor")
+    cleanup = next(step for step in steps if step.get("name") == "Clean caches before pytest")
+    acceptance = next(step for step in steps if step.get("name") == "Run tests with coverage")
+    assert install["run"] == "npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund"
+    assert steps.index(cleanup) < steps.index(install) < steps.index(acceptance)
+    assert "tests/browser/package-lock.json" in workflow["env"]["NODE_LOCKFILES"].splitlines()
+    for step in (install, acceptance):
+        assert "if" not in step and "continue-on-error" not in step
+    assert "--cov-fail-under=80" in acceptance["run"]
+    assert "--ignore" not in acceptance["run"]

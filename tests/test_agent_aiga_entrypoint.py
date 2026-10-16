@@ -13,7 +13,16 @@ class TestAgentAIGAEntry:
     def test_entrypoint_compiles(self):
         py_compile.compile(ENTRYPOINT, doraise=True)
 
-    def test_import_without_openaiagent(self, monkeypatch: pytest.MonkeyPatch) -> None:
+    @pytest.mark.parametrize("cached_evolver", [False, True])
+    def test_import_without_openaiagent(self, monkeypatch: pytest.MonkeyPatch, cached_evolver: bool) -> None:
+        if cached_evolver:
+            # A prior test can have imported a fully capable executor.
+            package = importlib.import_module("alpha_factory_v1.demos.aiga_meta_evolution")
+            cached = types.ModuleType("meta_evolver")
+            cached.np = object()
+            cached._TORCH = True
+            monkeypatch.setattr(package, "meta_evolver", cached, raising=False)
+
         stub = types.ModuleType("openai_agents")
 
         class Agent:
@@ -100,6 +109,7 @@ class TestAgentAIGAEntry:
         try:
             import asyncio
 
+            assert module.meta_evolver is evo_stub
             health = asyncio.run(module.read_health())
             assert health["liveness"] is True
             assert health["execution_ready"] is False
