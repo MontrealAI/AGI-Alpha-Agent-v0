@@ -16,7 +16,13 @@
     "mainnet:record-verify": "node scripts/mainnet-record.js verify",
     "compile:strict": "npm run compile:production && hardhat compile --force",
     "mainnet:verification-package": "node scripts/verification-package.js",
-    "compile:production": "node scripts/compile-production.js"
+    "compile:production": "node scripts/compile-production.js",
+    "test:authority": "hardhat test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js authority-test/authority-io.test.js authority-test/authority-session-relay.test.js",
+    "mainnet:authority-plan": "node scripts/mainnet-authority.js plan",
+    "mainnet:authority-preflight": "node scripts/authority-cli.js preflight",
+    "mainnet:authority-verify": "node scripts/authority-cli.js verify",
+    "mainnet:authority-package": "node scripts/authority-verification-package.js",
+    "mainnet:authority-session": "node scripts/authority-session.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "2.1.2",
