@@ -8,14 +8,14 @@ const { execFileSync } = require('child_process');
 const { reviewedRevision, gitRead } = require('../scripts/authority-revision');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'];
-const EXPECTED_COUNTS = { regressions: 111, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19, origination: 7 };
+const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'creator-unit', 'creator-pty', 'creator-local', 'native-contract', 'native-empty', 'native-delegated', 'native-marker', 'native-creator'];
+const EXPECTED_COUNTS = { regressions: 111, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19, origination: 7, 'creator-local': 1 };
 function summarizeLog(bytes) {
     const text = bytes.toString('utf8').replace(/\u001b\[[0-9;]*m/g, '');
     const passing = [...text.matchAll(/^\s*(\d+) passing(?:\s|$)/gm)].map(x => Number(x[1]));
     const names = [...text.matchAll(/^\s*✔\s+(.+?)(?:\s+\(\d+ms\))?\s*$/gm)].map(x => x[1]);
     // Names are used only for set reconciliation. Raw text never leaves runner scratch.
-    return { sha256: sha(bytes), bytes: bytes.length, passing: passing.length === 1 ? passing[0] : null, names };
+    return { sha256: sha(bytes), bytes: bytes.length, passing: passing.length === 1 ? passing[0] : null, nodeTests: Number(text.match(/^# tests ([0-9]+)$/m)?.[1]) || null, nodePassing: Number(text.match(/^# pass ([0-9]+)$/m)?.[1]) || null, nodeSkipped: Number(text.match(/^# skipped ([0-9]+)$/m)?.[1]), pythonTests: Number(text.match(/^Ran ([0-9]+) tests? in /m)?.[1]) || null, names };
 }
 function sourceInventory() {
     const names = gitRead(['ls-files', '-z']).split('\0').filter(Boolean).sort();
@@ -54,7 +54,9 @@ function main() {
         const exitCode = fs.existsSync(code) && /^\d+\n$/.test(fs.readFileSync(code, 'utf8')) ? Number(fs.readFileSync(code, 'utf8')) : null;
         const summary = fs.existsSync(log) ? summarizeLog(fs.readFileSync(log)) : null;
         checks[name] = { exitCode, result: exitCode === 0 ? 'passed' : exitCode === null ? 'not-completed' : 'failed',
-            logSha256: summary?.sha256 || null, logBytes: summary?.bytes || 0, passing: summary?.passing || null };
+            logSha256: summary?.sha256 || null, logBytes: summary?.bytes || 0, passing: summary?.passing || null, nodeTests: summary?.nodeTests || null, pythonTests: summary?.pythonTests || null };
+        if (name === 'creator-unit' && (summary?.nodeTests !== 87 || summary?.nodePassing !== 87 || summary?.nodeSkipped !== 0)) allPassed = false;
+        if (name === 'creator-pty' && summary?.pythonTests !== 3) allPassed = false;
         if (name in EXPECTED_COUNTS && summary?.passing !== EXPECTED_COUNTS[name]) allPassed = false;
         if (['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination'].includes(name) && summary) shardNames.push(...summary.names);
         if (exitCode !== 0) allPassed = false;
@@ -69,6 +71,10 @@ function main() {
         const actual = campaigns[name];
         if (!actual || actual.result !== 'passed' || actual.selectedProfile !== name || JSON.stringify(actual.revision) !== JSON.stringify(revision) || actual.campaigns.length !== 1) allPassed = false;
     }
+    const creatorReport = path.join(root, 'public/native-creator/report.json');
+    const creatorNative = fs.existsSync(creatorReport) ? JSON.parse(fs.readFileSync(creatorReport, 'utf8')) : null;
+    if (!creatorNative || creatorNative.result !== 'passed' || JSON.stringify(creatorNative.revision) !== JSON.stringify(revision) ||
+        creatorNative.fixtureRelayCalls !== 5 || creatorNative.governorBindings !== 0 || creatorNative.commands.length !== 7 || creatorNative.actorLocksRetained !== true) allPassed = false;
     // Do not rewrite old acceptance reports; record their current source identities as ordinary tracked files.
     const sources = sourceInventory(); assert.deepEqual(reviewedRevision(), revision);
     writeNew(path.join(root, 'public/source-inventory.json'), { revision, sourceFiles: sources, artifacts: artifactInventory() });
@@ -76,6 +82,7 @@ function main() {
         result: allPassed ? 'passed' : 'failed-or-incomplete', checks, candidateTestCount: shardNames.length,
         uniqueCandidateTestCount: unique.size, countCoverage, candidateNamesSha256: sha([...unique].sort().join('\n')),
         nativeProfiles: Object.fromEntries(Object.entries(campaigns).map(([name, r]) => [name, r ? { result: r.result, commands: r.commands.length, sourceBound: JSON.stringify(r.revision) === JSON.stringify(revision) } : null])),
+        creatorNative: creatorNative ? { result: creatorNative.result, commands: creatorNative.commands.length, creations: creatorNative.fixtureRelayCalls, governorBindings: creatorNative.governorBindings, sourceBound: JSON.stringify(creatorNative.revision) === JSON.stringify(revision) } : null,
         sourceInventorySha256: sha(JSON.stringify(sources)), historicalRecordsRewritten: false,
         sourceRecords: 'This exact-head run is additive. Existing historical/current audit records retain their original scope and are not promoted to current passes.',
         publicProviderCalls: 0, independentSecurityReview: false, hardwareQualified: false, activationAllowed: false });
