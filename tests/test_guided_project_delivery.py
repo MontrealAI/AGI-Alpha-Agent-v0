@@ -50,7 +50,8 @@ class GuidedDelivery(unittest.TestCase):
         self.assertNotIn("continue-on-error", workflow)
         release = (ROOT / ".github/workflows/agent-release.yml").read_text()
         self.assertRegex(release, r"successor-journey:\s+uses: ./.github/workflows/successor-mission.yml")
-        package = release[release.index("  package:") :]
+        package_start = release.index("  package:")
+        package = release[package_start:]
         self.assertIn("successor-journey", package.split("steps:", 1)[0])
 
     def test_guided_page_is_source_bound_and_explicit(self) -> None:

@@ -47,7 +47,8 @@ def leave_warning(page: Page, destination: str) -> None:
 
 
 def force_guided_quota(page: Page) -> None:
-    page.evaluate("""() => {
+    page.evaluate(
+        """() => {
         globalThis.originalGuidedPut = IDBObjectStore.prototype.put;
         IDBObjectStore.prototype.put = function(...args) {
             if (this.name === 'journeys') {
@@ -55,7 +56,8 @@ def force_guided_quota(page: Page) -> None:
             }
             return globalThis.originalGuidedPut.apply(this, args);
         };
-    }""")
+    }"""
+    )
 
 
 def stored_guided_history(page: Page, project_id: str) -> bytes:
@@ -154,13 +156,15 @@ def admission_browser(browser: Browser, origin: str, screenshots: Path, errors: 
         original = unsupported_project(page, origin, variant)
         page.goto(url)
         expect(page.locator("#project-import")).to_be_enabled()
-        page.evaluate("""() => {
+        page.evaluate(
+            """() => {
             globalThis.admissionWrites=0;
             const original=IDBObjectStore.prototype.put;
             IDBObjectStore.prototype.put=function(...args){
                 globalThis.admissionWrites++;return original.apply(this,args);
             };
-        }""")
+        }"""
+        )
         upload(page, "#project-import", original, variant + ".json")
         expect(page.locator("#project-summary")).to_contain_text("historical")
         assert downloaded(page, "#project-export") == original
@@ -321,14 +325,16 @@ def main() -> None:
                 page.locator("#recovery-export").click()
             cancelled.value.cancel()
             leave_warning(page, origin + "/docs/successor/discover/")
-            page.evaluate("""() => {
+            page.evaluate(
+                """() => {
                 globalThis.originalDownloadClick = HTMLAnchorElement.prototype.click;
                 globalThis.blockedRecoveryDownloads = 0;
                 HTMLAnchorElement.prototype.click = function() {
                     if (this.download) {globalThis.blockedRecoveryDownloads++;return;}
                     return globalThis.originalDownloadClick.call(this);
                 };
-            }""")
+            }"""
+            )
             page.evaluate("() => {document.getElementById('status').textContent = '';}")
             page.locator("#recovery-export").click()
             expect(page.locator("#status")).to_contain_text("Recovery download prepared")
@@ -350,10 +356,15 @@ def main() -> None:
             page.screenshot(path=str(screenshots / "guided-save-failure-exportable.png"), full_page=True)
             page.locator("#recovery-confirm").click()
             expect(page.locator("#journey-recovery")).to_be_hidden()
-            assert page.evaluate("""() => {
+            assert (
+                page.evaluate(
+                    """() => {
                 const event = new Event('beforeunload', {cancelable:true});
                 window.dispatchEvent(event);return event.defaultPrevented;
-            }""") is False
+            }"""
+                )
+                is False
+            )
             page.goto(origin + "/docs/successor/discover/")
             assert page.url.endswith("/docs/successor/discover/")
             context.close()
@@ -377,10 +388,15 @@ def main() -> None:
             page.locator("#recovery-save").click()
             expect(page.locator("#journey-recovery")).to_be_hidden()
             assert stored_guided_history(page, retry_project_id) == protected
-            assert page.evaluate("""() => {
+            assert (
+                page.evaluate(
+                    """() => {
                 const event = new Event('beforeunload', {cancelable:true});
                 window.dispatchEvent(event);return event.defaultPrevented;
-            }""") is False
+            }"""
+                )
+                is False
+            )
             continued = downloaded(page, "#jobs-run")
             assert json.loads(continued)["history"][-1]["kind"] == "local-result"
             continued_history = downloaded(page, "#journey-export")
