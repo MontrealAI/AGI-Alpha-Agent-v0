@@ -265,6 +265,24 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     )
 
 
+def test_manager_continuity_gate_retains_selected_native_source_ancestry() -> None:
+    workflow = yaml.load(
+        (ROOT / ".github/workflows/manager-cycle-continuity.yml").read_text(),
+        Loader=UniqueWorkflowLoader,
+    )
+    job = workflow["jobs"]["native-round-trip"]
+    steps = job["steps"]
+    checkout = steps[0]
+    assert checkout["uses"] == "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+    assert checkout["with"]["fetch-depth"] == 0
+    assert checkout["with"]["persist-credentials"] is False
+    acceptance = next(step for step in steps if step.get("env", {}).get("CONTINUITY_MANAGER_SOURCE"))
+    assert acceptance["run"] == "node --test examples/successor-project/continuity.test.mjs"
+    assert steps.index(checkout) < steps.index(acceptance)
+    for item in (job, checkout, acceptance):
+        assert "if" not in item and "continue-on-error" not in item
+
+
 def test_release_requires_full_successor_journey_before_packaging():
     release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
     journey = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
