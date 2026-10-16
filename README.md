@@ -1,3 +1,21 @@
+<!-- current-entrypoints -->
+## Choose your next step
+
+**[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**
+
+| Your goal | Start here |
+| --- | --- |
+| Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
+| Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
+| Prepare, protect and continue a project | [Nova-Seed Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/mainnet/) |
+| Commission USDC work or prepare a worker computer | [AGIJobManager](https://montrealai.github.io/AGIJobManager/) · [Fleet setup](https://montrealai.github.io/AGI-Fleet-Linux/start.html) |
+| Explore the AGI Jobs demos and $AGIALPHA contract ecosystem | [AGI Jobs v0](https://montrealai.github.io/AGIJobsv0/) · [Deployment directory](https://montrealai.github.io/AGIJobsv0/ecosystem/) |
+| Install the native agent | [Published downloads and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases) · [Operator guide](docs/agent/OPERATIONS.md) |
+
+Browser preparation is free. Execution, participant review and settlement require their own configuration and approval. AGIJobManager settles in USDC; the Alpha / Jobs v0 contracts use $AGIALPHA. Source versions and published downloads can differ: use the evidence and instructions supplied with your chosen release.
+
+<!-- /current-entrypoints -->
+
 > **Current maintenance scope · 1.32.0.** [Start here](docs/agent/START_HERE.md) ·
 > [Release notes](docs/agent/RELEASE_NOTES_1.32.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
 > This candidate adds inspectable Jobs adapters, bounded browser work and supplied-input demo journeys. Use matching published assets
