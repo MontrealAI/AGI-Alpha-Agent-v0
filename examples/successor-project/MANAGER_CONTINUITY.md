@@ -12,9 +12,9 @@ The receiver executes the actual Manager validator from the explicitly selected 
 This is an experimental source candidate, separate from the qualifying preview and deployment work. Pin Manager commit `e5d59f1c8e307193dbb99196a5276eb1fe344fe3`, tree `5136b443f9ef081db7cb5a788f4d49d3f5db2740`, and the original Alpha checkout at `7c410d3d61d5d6bba5354307e1784dba2b3aa177`, tree `e80b1dc06317d939e3dd22d2db063a7f1706ddcb`. These are explicit source identities, not independent review approval. Install trusted software normally; a supplied journal cannot select code, a URL, another source pin or an execution endpoint. Checkouts must be clean. Actual bytes in the complete 19-file Manager execution/builder closure and 18-file original Alpha validator/manifest closure are verified against pinned Git objects. Hidden Git index edits, symlinks and an injected Manager `SOURCE.json` cannot substitute code or provenance.
 
 New Alpha cycles use the native manifest from the published guided source commit
-`611a1ae31408f45661430eaf58442dcc78851f96`, tree
-`03c3b8e48ae0067c48b9a11154a1178e99b65b58`; its exact manifest SHA-256 is
-`5de0c05c5620658dadda8f27c59ce9faeab5ba37150d002a22eb2106beaef4bf`.
+`6f3e910dcffc02b95c6da2b3fa3f8dc3a4bd23c3`, tree
+`6eb52b60c56b42bbe813e20f2efbba474e02b932`; its exact manifest SHA-256 is
+`f338db0a1f395a3f28ddf0649e36ba75c253ec74b6aa7d7866dc3546c18d25aa`.
 The manifest and all 90 local source hashes are checked. The inventory includes
 the additive guided history, templates and exact-source receiver closure; the
 native discovery and mission-record JavaScript engines remain byte-identical.
@@ -35,7 +35,11 @@ Its source identity also remains historical; existing records are not relabeled.
 The native input-preflight checkpoint, `ff2a858a5a8b59005c812dc3103108c65156d165`,
 tree `2bb20998ffc982b0ff2af9c311ffc674960f34c6`, retains its original 90-file
 manifest SHA-256 `6e4ae267273b85028f20f3dbff08a1d845081e1e8a589287cdf871d19a47f20f`.
-The current source adds the reviewed Manager C4 receiver and trusted context.
+The Manager C4 checkpoint, `611a1ae31408f45661430eaf58442dcc78851f96`,
+tree `03c3b8e48ae0067c48b9a11154a1178e99b65b58`, retains its original 90-file
+manifest SHA-256 `5de0c05c5620658dadda8f27c59ce9faeab5ba37150d002a22eb2106beaef4bf`.
+The current source retains that receiver and pins the reviewed Fleet runtime
+`e7c909df6f226280bb7cf21da072bac65be9496f`; its portable receiver bytes are unchanged.
 
 Prepare a separate public-data mission JSON using the native mission schema; the example is `examples/successor-workbench/missions/public-data.json`. Explicitly choose the next dataset, its rights, integer units, language (`en` or `fr`), new cycle ID and new mission ID. The prior rejected record remains historical. The new cycle starts as a draft, with no result or current review.
 
@@ -61,7 +65,7 @@ Le parcours guidé actuel ajoute les transferts de fichiers dans l’interface h
 
 Les fichiers réellement chargés sont vérifiés contre Git, même si des
 indicateurs d’index masquent une modification. Le cycle original garde ses
-sources Alpha `7c410d3...`; le nouveau cycle utilise le manifeste `611a1ae...`
+sources Alpha `7c410d3...`; le nouveau cycle utilise le manifeste `6f3e910...`
 après vérification exacte de ses 90 fichiers. Le manifeste historique
 `ccad46c...` et ses reçus sont conservés sans modification. Le changement du manifeste est
 consigné sans réécrire la provenance ancienne. L’ancien reçu de 40 tests reste
