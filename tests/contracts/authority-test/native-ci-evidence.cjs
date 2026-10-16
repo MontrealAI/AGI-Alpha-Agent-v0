@@ -8,8 +8,8 @@ const { execFileSync } = require('child_process');
 const { reviewedRevision, gitRead } = require('../scripts/authority-revision');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
-const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'native-contract', 'native-empty', 'native-delegated'];
-const EXPECTED_COUNTS = { regressions: 111, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19 };
+const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'];
+const EXPECTED_COUNTS = { regressions: 111, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19, origination: 7 };
 function summarizeLog(bytes) {
     const text = bytes.toString('utf8').replace(/\u001b\[[0-9;]*m/g, '');
     const passing = [...text.matchAll(/^\s*(\d+) passing(?:\s|$)/gm)].map(x => Number(x[1]));
@@ -56,14 +56,14 @@ function main() {
         checks[name] = { exitCode, result: exitCode === 0 ? 'passed' : exitCode === null ? 'not-completed' : 'failed',
             logSha256: summary?.sha256 || null, logBytes: summary?.bytes || 0, passing: summary?.passing || null };
         if (name in EXPECTED_COUNTS && summary?.passing !== EXPECTED_COUNTS[name]) allPassed = false;
-        if (['policy', 'empty-session', 'delegated-session', 'io-relay'].includes(name) && summary) shardNames.push(...summary.names);
+        if (['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination'].includes(name) && summary) shardNames.push(...summary.names);
         if (exitCode !== 0) allPassed = false;
     }
     const unique = new Set(shardNames);
-    const countCoverage = shardNames.length === 38 && unique.size === 38;
+    const countCoverage = shardNames.length === 45 && unique.size === 45;
     if (!countCoverage) allPassed = false;
     const campaigns = {};
-    for (const name of ['empty', 'delegated']) {
+    for (const name of ['empty', 'delegated', 'marker']) {
         const report = path.join(root, 'public', `native-${name}`, 'report.json');
         campaigns[name] = fs.existsSync(report) ? JSON.parse(fs.readFileSync(report, 'utf8')) : null;
         const actual = campaigns[name];

@@ -32,16 +32,16 @@ test('native workflow has only exact reviewed action pins and read-only checkout
     assert.doesNotMatch(workflow, /pull_request_target|secrets\.|contents: write|id-token:|git push|gh release|npm publish|environment:/);
     assert.match(workflow, /ref: \$\{\{ github.event.pull_request.head.sha \|\| github.sha \}\}/);
 });
-test('native workflow keeps pinned installs, all serial shards and both native profiles', () => {
+test('native workflow keeps pinned installs, all serial shards and three native profiles', () => {
     assert.match(workflow, /node-version: '22\.17\.1'/); assert.match(workflow, /python-version: '3\.12'/);
     assert.match(workflow, /npm ci --prefix tests\/contracts/);
     assert.match(workflow, /pip install --require-hashes -r requirements-agent\.lock/);
     assert.match(workflow, /070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667/);
     assert.deepEqual([...workflow.matchAll(/^          run_check ([a-z-]+) /gm)].map(m => m[1]), CHECKS);
-    assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 149);
-    for (const label of ['policy', 'empty-session', 'delegated-session', 'io-relay', 'native-contract', 'native-empty', 'native-delegated'])
+    assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 156);
+    for (const label of ['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'])
         assert.match(workflow.split('\n').find(line => line.trim().startsWith(`run_check ${label} `)), /--max-old-space-size=384/);
-    assert.match(workflow, /ALPHA_NATIVE_PROFILE=empty/); assert.match(workflow, /ALPHA_NATIVE_PROFILE=delegated/);
+    assert.match(workflow, /ALPHA_NATIVE_PROFILE=empty/); assert.match(workflow, /ALPHA_NATIVE_PROFILE=delegated/); assert.match(workflow, /ALPHA_NATIVE_PROFILE=marker/);
     assert.doesNotMatch(workflow, /--invert|continue-on-error|\|\| true/);
 });
 test('native artifacts use outside-checkout safe summaries and never private runner logs', () => {
