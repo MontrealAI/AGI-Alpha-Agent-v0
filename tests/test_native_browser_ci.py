@@ -258,8 +258,14 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "path": "build/guided-fleet-source",
         "persist-credentials": False,
     }
-    assert guided_steps[4]["env"] == {"GUIDED_FLEET_SOURCE": "${{ github.workspace }}/build/guided-fleet-source"}
-    assert guided_steps[4]["run"] == (
+    install = next(step for step in guided_steps if step.get("name") == "Install locked Fleet runtime dependencies")
+    acceptance = next(step for step in guided_steps if step.get("env", {}).get("GUIDED_FLEET_SOURCE"))
+    assert install["run"] == (
+        "npm ci --prefix build/guided-fleet-source/fleet --omit=dev --ignore-scripts --no-audit --no-fund"
+    )
+    assert guided_steps.index(guided_steps[3]) < guided_steps.index(install) < guided_steps.index(acceptance)
+    assert acceptance["env"] == {"GUIDED_FLEET_SOURCE": "${{ github.workspace }}/build/guided-fleet-source"}
+    assert acceptance["run"] == (
         "node --test examples/successor-project/journey.test.mjs "
         "examples/successor-project/source-immutability.test.mjs"
     )
@@ -310,3 +316,19 @@ def test_discovery_journey_polling_does_not_require_csp_unsafe_eval():
     assert not forbidden, f"Discovery polling must be CSP-safe; wait_for_function at {forbidden}"
     bypass = [node.lineno for node in ast.walk(tree) if isinstance(node, ast.keyword) and node.arg == "bypass_csp"]
     assert not bypass, f"Discovery must exercise production CSP; bypass_csp at {bypass}"
+
+
+def test_integration_pytest_installs_pinned_auditor_after_cleanup():
+    workflow = yaml.load((ROOT / ".github/workflows/ci.yml").read_text(), Loader=UniqueWorkflowLoader)
+    job = workflow["jobs"]["tests"]
+    steps = job["steps"]
+    install = next(step for step in steps if step.get("name") == "Install the locked runtime accessibility auditor")
+    cleanup = next(step for step in steps if step.get("name") == "Clean caches before pytest")
+    acceptance = next(step for step in steps if step.get("name") == "Run tests with coverage")
+    assert install["run"] == "npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund"
+    assert steps.index(cleanup) < steps.index(install) < steps.index(acceptance)
+    assert "tests/browser/package-lock.json" in workflow["env"]["NODE_LOCKFILES"].splitlines()
+    for step in (install, acceptance):
+        assert "if" not in step and "continue-on-error" not in step
+    assert "--cov-fail-under=80" in acceptance["run"]
+    assert "--ignore" not in acceptance["run"]

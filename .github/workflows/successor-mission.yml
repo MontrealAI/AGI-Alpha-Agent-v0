@@ -89,6 +89,8 @@ jobs:
           ref: ${{ steps.fleet-source.outputs.commit }}
           path: build/guided-fleet-source
           persist-credentials: false
+      - name: Install locked Fleet runtime dependencies
+        run: npm ci --prefix build/guided-fleet-source/fleet --omit=dev --ignore-scripts --no-audit --no-fund
       - name: Actual bounded work, grants, internal check and changed-input continuation
         env:
           GUIDED_FLEET_SOURCE: ${{ github.workspace }}/build/guided-fleet-source
