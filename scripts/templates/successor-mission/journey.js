@@ -4,6 +4,7 @@ const journeyReceivers=Object.freeze({
   jobs:raw=>stageJobs.inspectProjectTransfer(raw,{managerInspector:{source:stageManagerContext.CONTEXT.managerSource,inspect:journeyReceivers.manager}}),
   fleet:raw=>stageFleet.inspectProjectReturn(raw),
 });
+let journeyStorageError=null;
 let journeyDB=null,journeyRaw=null,journeyRead=null,journeyUnsaved=false,recoveryRaw=null,recoveryProjectId=null;
 function journeyControls(){
   const idle=ready&&!busy&&!active&&!pendingRun&&!stopping;
@@ -27,6 +28,7 @@ function journeyControls(){
   $('route-open').textContent=manager?say('2. Open Manager · price in USDC','2. Ouvrir Manager · prix en USDC'):say('Read Jobs rules · $AGIALPHA','Lire les règles Jobs · $AGIALPHA');
   const displayed=journeyRead&&dossier&&journeyRead.project.projectId===dossier.projectId?journeyRead:null;
   $('journey-summary').textContent=displayed?`${displayed.project.projectId} · ${displayed.journey.history.length} ${say('retained stages','étapes conservées')} · ${journeyUnsaved?say('export before leaving','exportez avant de quitter'):say('saved locally','enregistré localement')} · ${say('historical receipts; no settlement','preuves historiques ; aucun règlement')}`:say('Run and review your project, choose one payment route, then keep each returned file in this history.','Exécutez et révisez le projet, choisissez un mode de règlement, puis conservez chaque fichier retourné dans cet historique.');
+  if(journeyStorageError&&!journeyDB)$('journey-summary').textContent+=say(' Guided history storage is unavailable. Keep exported files; imports remain historical.',' Le stockage de l’historique guidé est indisponible. Conservez les fichiers exportés ; les importations restent historiques.');
   $('journey-history').textContent=displayed?JSON.stringify({projectId:displayed.project.projectId,stages:displayed.summaries,authority:'none',independentReview:false,productionQualified:false,settlement:'not-connected'},null,2):'';
 }
 async function keepJourney(next,prior){
@@ -144,4 +146,4 @@ $('journey-import').addEventListener('change',async()=>{
     status('Complete history inspected. Native work and returned receipts remain historical. Choose the input and start a fresh cycle explicitly.','Historique complet inspecté. Les résultats et avis restent historiques. Choisissez les données et créez explicitement un nouveau cycle.');
   });$('journey-import').value='';
 });
-(async()=>{try{journeyDB=await journeyStorage.openJourneyStore(journeyReceivers);}catch(e){error(e);}finally{journeyControls();}})();
+(async()=>{try{journeyDB=await journeyStorage.openJourneyStore(journeyReceivers);}catch(e){journeyStorageError=String(e?.code||e?.message||e);}finally{journeyControls();}})();

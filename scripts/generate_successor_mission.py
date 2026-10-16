@@ -112,12 +112,6 @@ def build(root: Path = ROOT) -> None:
         }
         for role, path in (
             ("discovery", "examples/alpha-discovery/engine.mjs"),
-            ("journeys", "examples/successor-project/journey.mjs"),
-            ("journeyStorage", "examples/successor-project/journey-store.mjs"),
-            ("stageManager", "examples/successor-project/vendor/manager/site/assets/successor/alpha-project.mjs"),
-            ("stageManagerContext", "examples/successor-project/vendor/manager-context.mjs"),
-            ("stageJobs", "examples/successor-project/vendor/jobs/integrations/alpha-agent/project-transfer.mjs"),
-            ("stageFleet", "examples/successor-project/vendor/fleet/local-runtime/project/transfer.mjs"),
             ("mission", "examples/successor-workbench/mission-record.mjs"),
         )
     }

@@ -3,12 +3,12 @@ let projectDB=null,dossier=null,projectHistorical=false,projectUnpersisted=false
 const mappingChoices=()=>({family:'public-data',selection:'explicit-user-selection',duplicatePolicy:'sum-all-rows-no-deduplication',unitPolicy:'unchanged-integer-units',dataRights:current.spec.rights.dataClass});
 function projectControls(){
   const idle=ready&&!busy&&!active&&!pendingRun&&!stopping;
-  $('project-start').disabled=!idle||!projectDB||!current||dirty||!$('project-choice').checked;
+  $('project-start').disabled=!idle||historicalEditing||!projectDB||!current||dirty||!$('project-choice').checked;
   $('project-export').disabled=!dossier||busy;
   $('project-import').disabled=!idle;
   $('project-open').disabled=!idle||!projectDB;
   $('project-saved').disabled=!idle||!projectDB;
-  $('project-resume').disabled=!idle||!dossier||!projectHistorical||!projectDB||!$('project-choice').checked;
+  $('project-resume').disabled=!idle||historicalEditing||!dossier||!projectHistorical||!projectDB||!$('project-choice').checked;
   $('project-choice').disabled=!idle;
   $('discovery-import').disabled=!idle;
   $('discovery-clear').disabled=!idle||!selectedDiscoveryBytes;
@@ -19,7 +19,7 @@ function projectControls(){
 }
 async function projectList(){if(!projectDB)return;const rows=await projectDB.list();$('project-saved').replaceChildren();for(const p of rows){const option=document.createElement('option');option.value=p.projectId;option.textContent=`${p.projectId} · r${p.revision}`;$('project-saved').append(option);}if(dossier)$('project-saved').value=dossier.projectId;}
 async function saveProject(next,expected){
-  try{await projectDB.save(next,expected);}catch(e){dossier=next;projectUnpersisted=true;projectHistorical=true;readOnly=true;mode='project-conflict-or-storage-loss';current=JSON.parse(next.cycles.at(-1).records.at(-1).bytes);status('Project save failed. This copy is read-only; export it, then reopen the saved project.','Échec de l’enregistrement. Cette copie est en lecture seule ; exportez-la, puis rouvrez le projet enregistré.');throw e;}
+  try{await projectDB.save(next,expected);}catch(e){dossier=next;projectUnpersisted=true;projectHistorical=true;readOnly=true;historicalEditing=false;mode='project-conflict-or-storage-loss';current=JSON.parse(next.cycles.at(-1).records.at(-1).bytes);status('Project save failed. This copy is read-only; export it, then reopen the saved project.','Échec de l’enregistrement. Cette copie est en lecture seule ; exportez-la, puis rouvrez le projet enregistré.');throw e;}
   projectState=await projects.projectView(next,{sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,restored:false});
   if(!projectState.sourceCurrent){readOnly=true;projectHistorical=true;}
   dossier=next;projectUnpersisted=false;current=JSON.parse(next.cycles.at(-1).records.at(-1).bytes);dirty=false;unpersisted=false;
@@ -43,6 +43,7 @@ $('discovery-clear').addEventListener('click',()=>{selectedDiscoveryBytes=null;$
 $('project-choice').addEventListener('change',controls);
 $('project-start').addEventListener('click',()=>operation(async()=>{
   if(!$('project-choice').checked||dirty||!current)throw Error('PROJECT_EXPLICIT_INPUT_SELECTION_REQUIRED');
+  await preflightInput(current.spec);
   const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:current.spec});
   const discoveryBytes=selectedDiscoveryBytes??transport.canonical(await discovery.createBrief(projects.publicDataOpportunity(),SOURCE_HASH));
   const next=await projects.createProject({projectId:id(),cycleId:id(),sourceHash:SOURCE_HASH,discoveryBytes,record:fresh,choices:mappingChoices(),sources:PROJECT_SOURCES});
@@ -55,14 +56,26 @@ $('project-import').addEventListener('change',async()=>{
   const file=$('project-import').files[0];if(!file||busy||active||pendingRun||stopping)return;const token=++epoch;busy=true;controls();clearError();
   try{if(file.size>projects.LIMIT)throw Error('PROJECT_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);const p=await projects.validateProject(text);if(token!==epoch||$('project-import').files[0]!==file)return;await inspectProject(p);projectUnpersisted=true;}catch(e){if(token===epoch)error(e);}finally{if(token===epoch){busy=false;render();}if($('project-import').files[0]===file)$('project-import').value='';}
 });
-$('project-resume').addEventListener('click',()=>operation(async()=>{
+async function resumeProjectInput(selected){
   if(!$('project-choice').checked||!projectHistorical)throw Error('PROJECT_EXPLICIT_INPUT_SELECTION_REQUIRED');
+  await preflightInput(selected);
   const prior=dossier;const stored=await projectDB.get(prior.projectId);
   if(stored&&stored.projectDigest!==prior.projectDigest)throw Error('PROJECT_IMPORT_CONFLICT_OPEN_LATEST');
-  const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:current.spec});
-  const next=await projects.nextCycle(prior,{cycleId:id(),record:fresh,choices:mappingChoices(),sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,recovered:true,expectedRevision:prior.revision});
+  const fresh=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:selected});
+  const next=await projects.nextCycle(prior,{cycleId:id(),record:fresh,choices:{...mappingChoices(),dataRights:selected.rights.dataClass},sourceHash:SOURCE_HASH,sources:PROJECT_SOURCES,recovered:true,expectedRevision:prior.revision});
   projectHistorical=false;readOnly=false;await saveProject(next,stored?{revision:stored.revision,digest:stored.projectDigest}:null);
   mode=readOnly?'project-storage-loss':'project';fill();view('mission');status('Fresh cycle saved in the same project. Running and reviewing require new explicit actions.','Nouveau cycle enregistré dans le même projet. Exécuter et réviser nécessitent de nouvelles actions explicites.');
-}));
+}
+$('project-resume').addEventListener('click',()=>operation(()=>resumeProjectInput(current.spec)));
+async function saveHistoricalInput(selected){
+  if(dossier){await resumeProjectInput(selected);return;}
+  if(!historicalBytes)throw Error('INPUT_HISTORY_REQUIRED');
+  const fresh=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});
+  const edited=await records.editRecord(fresh,selected,{expectedRevision:fresh.revision});
+  readOnly=false;await persist(edited,null);if(!db||readOnly)return;
+  historicalBytes=null;mode='current';fill();view('mission');
+  status('New mission saved from your explicit edit. Imported observations remain historical. Run requires a separate action.',
+    'Nouvelle mission enregistrée après votre modification explicite. Les observations importées restent historiques. L’exécution exige une action distincte.');
+}
 
 (async()=>{try{db=await storage.openMissionStore();await refreshList();try{projectDB=await projectStorage.openProjectStore();await projectList();}catch(e){error(e);}status('Choose a saved mission or create a new example.','Choisissez une mission enregistrée ou créez un nouvel exemple.');}catch(e){loseStorage(e);}finally{ready=true;render();}})();

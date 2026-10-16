@@ -84,11 +84,26 @@ test('native project cannot be swapped even with every outer digest recomputed',
 test('CLI saves a reviewable single history, inspects it and refuses overwrite',async t=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'alpha-continuity-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
   const {raw}=await fixture(),transfer=path.join(root,'manager.json'),spec=path.join(root,'next.json'),output=path.join(root,'history.json');
-  fs.writeFileSync(transfer,raw);fs.writeFileSync(spec,canonical(selection().spec));
+  const exactRaw=' \n'+raw+'\n';fs.writeFileSync(transfer,exactRaw);fs.writeFileSync(spec,canonical(selection().spec));
   const cli=args=>spawnSync(process.execPath,[new URL('./continuity-cli.mjs',import.meta.url).pathname,...args],{encoding:'utf8',timeout:30000});
   const args=['import',transfer,managerCheckout,alphaBaselineCheckout,spec,'second-cycle','second-mission','--new-public-data-cycle',output];
-  assert.equal(cli(args).status,0);const before=fs.readFileSync(output,'utf8');assert.equal(cli(args).status,1);assert.equal(fs.readFileSync(output,'utf8'),before);
+  assert.equal(cli(args).status,0);const before=fs.readFileSync(output,'utf8');assert.equal(cli(args).status,1);assert.equal(fs.readFileSync(output,'utf8'),before);assert.equal(JSON.parse(before).manager.raw,exactRaw);
   const inspected=cli(['inspect',output,managerCheckout,alphaBaselineCheckout]);assert.equal(inspected.status,0);assert.equal(JSON.parse(inspected.stdout).projectId,'one-project');
+});
+
+
+test('CLI rejects BOM and malformed UTF-8 without creating or changing an output',async t=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'alpha-continuity-utf8-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
+  const input=path.join(root,'input.json'),spec=path.join(root,'spec.json'),output=path.join(root,'output.json');
+  fs.writeFileSync(spec,canonical(selection().spec));
+  const cli=()=>spawnSync(process.execPath,[new URL('./continuity-cli.mjs',import.meta.url).pathname,'import',input,managerCheckout,alphaBaselineCheckout,spec,'second-cycle','second-mission','--new-public-data-cycle',output],{encoding:'utf8',timeout:30000});
+  for(const [bytes,expected] of [
+    [Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),Buffer.from('{}')]),/CONTINUITY_INPUT_BOM/],
+    [Buffer.from([0x7b,0x22,0x61,0x22,0x3a,0x22,0xff,0x22,0x7d]),/CONTINUITY_INPUT_UTF8/],
+  ]){
+    fs.writeFileSync(input,bytes);const failed=cli();assert.equal(failed.status,1);assert.match(failed.stderr,expected);assert.equal(fs.existsSync(output),false);
+    fs.writeFileSync(output,'prior exact history');const again=cli();assert.equal(again.status,1);assert.equal(fs.readFileSync(output,'utf8'),'prior exact history');fs.unlinkSync(output);
+  }
 });
 
 test('oversized or ambiguous imports reject before any execution or history mutation',async()=>{

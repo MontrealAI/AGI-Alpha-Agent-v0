@@ -21,7 +21,7 @@ const french = {
   sourceHint:'Identité exacte du code intégré',
 };
 let language=new URLSearchParams(location.search).get('lang')==='fr'?'fr':'en', db=null, current=null, readOnly=false, dirty=false, busy=false, epoch=0;
-let pendingRun=false, stopping=false, unpersisted=false;
+let pendingRun=false, stopping=false, unpersisted=false, historicalEditing=false;
 let active=null, historicalBytes=null, mode='empty', ready=false;
 const urls=[];
 const say=(en,fr)=>language==='fr'?fr:en;
@@ -32,13 +32,14 @@ function failureReason(value){let text='';for(const char of new TextDecoder().de
 function id(){return crypto.randomUUID();}
 function view(name){document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==name);document.querySelectorAll('[data-view]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.view===name)));}
 function controls(){
-  const writable=ready&&db&&current&&!readOnly&&!busy&&!pendingRun&&!stopping&&current.state!=='running';
+  const writable=ready&&db&&current&&(!readOnly||historicalEditing)&&!busy&&!pendingRun&&!stopping&&current.state!=='running';
   for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).disabled=!writable;
   $('save').disabled=!writable||!dirty;
-  $('run').disabled=!writable||dirty;
+  $('run').disabled=!writable||dirty||readOnly||historicalEditing;
+  $('input-edit').disabled=!ready||!db||!current||!readOnly||historicalEditing||busy||pendingRun||stopping||!!active||!!dossier&&!projectDB;
   $('stop').disabled=!active||readOnly;
   $('interrupt').disabled=!ready||!db||!current||readOnly||busy||!!active||current.state!=='running';
-  $('note').disabled=!writable||dirty||current.state!=='result';
+  $('note').disabled=!writable||readOnly||historicalEditing||dirty||current.state!=='result';
   $('accept').disabled=$('reject').disabled=$('note').disabled;
   $('export').disabled=!current||busy;
   $('fork').disabled=!db||busy||pendingRun||stopping||!historicalBytes;
@@ -49,12 +50,22 @@ function controls(){
   projectControls();
   if(typeof journeyControls==='function')journeyControls();
 }
-function fill(){if(!current)return;const s=current.spec;for(const [key,value]of Object.entries({name:s.name,csv:s.inputs.csv,unit:s.inputs.unit,rights:s.rights.dataClass,source:s.rights.source,license:s.rights.license,minutes:String(s.reviewMinutes)}))$(key).value=value;$('note').value='';dirty=false;}
+function fill(){historicalEditing=false;if(!current)return;const s=current.spec;for(const [key,value]of Object.entries({name:s.name,csv:s.inputs.csv,unit:s.inputs.unit,rights:s.rights.dataClass,source:s.rights.source,license:s.rights.license,minutes:String(s.reviewMinutes)}))$(key).value=value;$('note').value='';dirty=false;}
 function spec(){
   const raw=$('minutes').value;
   if(!/^(0|[1-9][0-9]*)$/.test(raw))throw Error('REVIEW_MINUTES_REQUIRE_INTEGER_TEXT');
   return {...current.spec,name:$('name').value,inputs:{csv:$('csv').value,unit:$('unit').value},
     rights:{dataClass:$('rights').value,source:$('source').value,license:$('license').value},reviewMinutes:Number(raw)};
+}
+async function preflightInput(input){
+  try{
+    if(input.name.length>48)throw Error('MISSION_NAME_MAXIMUM_48');
+    await workbench.plan(input);
+  }catch(e){
+    status('This input cannot run here. Keep the original history; explicitly edit a fresh mission/cycle. Use a name of at most 48 characters and composed Unicode (NFC) for the name and license. No run or input change was saved.',
+      'Ces données ne peuvent pas être exécutées ici. Conservez l’historique et modifiez explicitement une nouvelle mission ou un nouveau cycle. Nom de 48 caractères maximum ; nom et licence en Unicode composé (NFC). Aucune exécution ni modification enregistrée.');
+    throw Error('INPUT_NOT_RUNNABLE: '+String(e?.code||e?.message||e));
+  }
 }
 function download(text,name,type='application/json'){
   const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -79,7 +90,7 @@ function render(){
 }
 async function refreshList(){if(!db)return;const all=await db.list();$('saved').replaceChildren();for(const item of all){const option=document.createElement('option');option.value=item.missionId;option.textContent=`${item.spec?.name||item.missionId} · r${item.revision}`;$('saved').append(option);}if(current)$('saved').value=current.missionId;}
 function loseStorage(e,confirmed=false){
-  try{db?.close();}catch{}db=null;readOnly=true;mode='lost-storage';error(e);
+  try{db?.close();}catch{}db=null;readOnly=true;historicalEditing=false;mode='lost-storage';error(e);
   status(confirmed?'The change committed, but the storage index could not be read. Export this record; further execution is disabled.':'Local storage is unavailable or corrupt. You may inspect a file; execution is disabled.',
     confirmed?'La modification a été enregistrée, mais l’index est illisible. Exportez ce dossier ; l’exécution est désactivée.':'Le stockage local est indisponible ou corrompu. Vous pouvez inspecter un fichier ; l’exécution est désactivée.');
 }
@@ -87,7 +98,7 @@ async function persist(next,expected){
   if(dossier)return persistProject(next);
   await records.validateRecord(next);
   try{await db.save(next,expected);}catch(e){
-    current=next;unpersisted=true;
+    current=next;unpersisted=true;historicalEditing=false;
     if(e.code==='LOCAL_REVISION_CONFLICT'){readOnly=true;mode='conflict';active?.controller.abort();status('Another tab changed this mission. This unpersisted copy is read-only. Export it or open the saved mission to inspect the latest revision.','Un autre onglet a modifié cette mission. Cette copie non enregistrée est en lecture seule. Exportez-la ou ouvrez la mission enregistrée pour voir la dernière révision.');}
     else{readOnly=true;mode='lost-storage';active?.controller.abort();status('Storage could not confirm this change. Keep a file copy and reopen before continuing.','Le stockage n’a pas confirmé cette modification. Conservez une copie et rouvrez avant de continuer.');}
     throw e;
@@ -96,14 +107,14 @@ async function persist(next,expected){
 }
 async function operation(action){if(busy||active||pendingRun||stopping)return;++epoch;busy=true;clearError();controls();try{await action();}catch(e){error(e);}finally{busy=false;render();}}
 async function openSaved(){dossier=null;projectHistorical=false;const token=++epoch;const item=await db.get($('saved').value);if(!item)throw Error('LOCAL_MISSION_MISSING');const checked=await records.validateRecord(item);if(token!==epoch)return;current=checked;unpersisted=false;historicalBytes=null;readOnly=current.sourceHash!==SOURCE_HASH;mode=readOnly?'historical':'current';fill();render();status(readOnly?'Source changed. This record is historical and read-only. Export and import to create a new draft.':'Saved mission opened. No execution has restarted.',readOnly?'Le code a changé. Ce dossier est historique et en lecture seule. Exportez et importez pour créer un brouillon.':'Mission enregistrée ouverte. Aucune exécution n’a redémarré.');}
-async function newMission(){dossier=null;projectHistorical=false;++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:workbench.example('public-data')});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
+async function newMission(){const input=workbench.example('public-data');await preflightInput(input);dossier=null;projectHistorical=false;++epoch;const record=await records.createRecord({missionId:id(),sourceHash:SOURCE_HASH,spec:input});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('Example saved locally. Edit the input or run it.','Exemple enregistré localement. Modifiez les données ou exécutez-le.');}
 async function run(){
   if(busy||active||pendingRun||stopping||dirty||readOnly||!current)return;
   pendingRun=true;
   busy=true;++epoch;clearError();controls();
   let attempt=null;
   try{
-    const prior=current;const next=await records.startRun(prior,{expectedRevision:prior.revision,runId:id()});
+    const prior=current;await preflightInput(prior.spec);const next=await records.startRun(prior,{expectedRevision:prior.revision,runId:id()});
     await persist(next,prior.revision);
     if(!db||readOnly)return;
     attempt={record:next,controller:new AbortController(),epoch:++epoch};active=attempt;busy=false;controls();
@@ -119,7 +130,18 @@ async function run(){
   finally{pendingRun=false;busy=false;render();}
 }
 async function stop(){const attempt=active;if(!attempt||stopping)return;stopping=true;active=null;++epoch;attempt.controller.abort();busy=true;controls();try{const stopped=await records.stopRun(attempt.record,{expectedRevision:attempt.record.revision,runId:attempt.record.run.runId,reason:'User requested STOP.'});await persist(stopped,attempt.record.revision);if(!readOnly)status('Stopped. No result was promoted.','Arrêté. Aucun résultat n’a été promu.');}catch(e){error(e);}finally{stopping=false;busy=false;render();}}
-$('editor').addEventListener('submit',event=>{event.preventDefault();operation(async()=>{const prior=current;const next=await records.editRecord(prior,spec(),{expectedRevision:prior.revision});await persist(next,prior.revision);fill();if(!readOnly)status('Input saved. Prior results are historical.','Données enregistrées. Les résultats précédents sont historiques.');});});
+$('editor').addEventListener('submit',event=>{event.preventDefault();operation(async()=>{
+  const selected=spec();await preflightInput(selected);
+  if(historicalEditing){await saveHistoricalInput(selected);return;}
+  if(readOnly)throw Error('INPUT_READ_ONLY');
+  const prior=current;const next=await records.editRecord(prior,selected,{expectedRevision:prior.revision});await persist(next,prior.revision);fill();if(!readOnly)status('Input saved. Prior results are historical.','Données enregistrées. Les résultats précédents sont historiques.');
+});});
+$('input-edit').addEventListener('click',()=>operation(async()=>{
+  if(!current||!readOnly||!db||dossier&&!projectDB)throw Error('INPUT_EDIT_UNAVAILABLE');
+  fill();historicalEditing=true;dirty=true;$('project-choice').checked=false;view('mission');
+  status('Editing new input only. The imported history is unchanged. Save valid input to create a fresh mission/cycle; project input selection is required.',
+    'Modification des nouvelles données seulement. L’historique importé reste inchangé. Enregistrez des données valides pour créer une nouvelle mission ou un nouveau cycle ; choisissez explicitement les données du projet.');
+}));
 for(const key of ['name','csv','unit','rights','source','license','minutes'])$(key).addEventListener('input',()=>{dirty=true;++epoch;if(dossier)$('project-choice').checked=false;render();});
 $('new').addEventListener('click',()=>operation(newMission));$('open').addEventListener('click',()=>operation(openSaved));$('run').addEventListener('click',run);$('stop').addEventListener('click',stop);
 $('interrupt').addEventListener('click',()=>operation(async()=>{const prior=current;await persist(await records.interruptRun(prior,{expectedRevision:prior.revision,runId:prior.run.runId,reason:'Explicit recovery after interrupted browser session.'}),prior.revision);if(!readOnly)status('Interrupted run closed. A new run requires your action.','Exécution interrompue fermée. Une nouvelle exécution nécessite votre action.');}));
@@ -129,7 +151,7 @@ $('import').addEventListener('change',async()=>{
   const file=$('import').files[0];if(!file||active||pendingRun||stopping)return;const token=++epoch;busy=true;clearError();controls();
   try{if(file.size>records.RECORD_LIMITS.bytes)throw Error('RECORD_BYTES');const bytes=new Uint8Array(await file.arrayBuffer());const restored=await records.restoreRecord(bytes,{sourceHash:SOURCE_HASH});if(token!==epoch||$('import').files[0]!==file)return;dossier=null;projectHistorical=false;current=restored.record;unpersisted=true;historicalBytes=bytes;readOnly=true;mode='historical';fill();render();status('Imported file inspected as historical evidence. Use its input in a new mission to run and review locally.','Fichier importé inspecté comme preuve historique. Utilisez ses données dans une nouvelle mission pour exécuter et examiner localement.');}catch(e){if(token===epoch)error(e);}finally{if($('import').files[0]===file)$('import').value='';if(token===epoch){busy=false;render();}}
 });
-$('fork').addEventListener('click',()=>operation(async()=>{const record=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('New draft saved. Imported results and reviews remain historical.','Nouveau brouillon enregistré. Les résultats et avis importés restent historiques.');}));
+$('fork').addEventListener('click',()=>operation(async()=>{await preflightInput(current.spec);const record=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('New draft saved. Imported results and reviews remain historical.','Nouveau brouillon enregistré. Les résultats et avis importés restent historiques.');}));
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>view(button.dataset.view)));
 function applyLanguage(){document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=(language==='fr'?french:english)[el.dataset.i18n]||english[el.dataset.i18n];}
 $('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';applyLanguage();render();});

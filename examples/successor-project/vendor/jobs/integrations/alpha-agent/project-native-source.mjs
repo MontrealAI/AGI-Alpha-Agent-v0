@@ -1,13 +1,7 @@
-// Trusted source identity is shared by sealing and inspection. Freeze its full
-// graph so consumers cannot change the authoritative manifests through exports.
-function deepFreeze(value) {
-  for (const nested of Object.values(value)) {
-    if (nested && typeof nested === 'object') deepFreeze(nested);
-  }
-  return Object.freeze(value);
-}
+import { freezeSource, readSourceSelection, assertPinnedSelection } from './project-source-policy.mjs';
+import { RECEIVER_SOURCE_LOCK_JSON } from './project-source-selector.mjs';
 
-export const ALPHA_NATIVE_SOURCE = deepFreeze({
+export const ALPHA_NATIVE_SOURCE = freezeSource({
   "repository": "MontrealAI/AGI-Alpha-Agent-v0",
   "commit": "92e227c007d484323c7fd2a7001b9bb5b229e717",
   "license": "Apache-2.0; vendored agijobs compiler retains MIT provenance",
@@ -66,7 +60,7 @@ export const ALPHA_NATIVE_SOURCE = deepFreeze({
     }
   ]
 });
-export const JOBS_COMPILER_SOURCE = deepFreeze({
+export const JOBS_COMPILER_SOURCE = freezeSource({
   "repository": "MontrealAI/AGIJobsv0",
   "commit": "7b21ce05b0b18b46162da66c2f528334101f6f40",
   "files": [
@@ -88,21 +82,5 @@ export const JOBS_COMPILER_SOURCE = deepFreeze({
     }
   ]
 });
-export const RECEIVER_SOURCE = deepFreeze({
-  "repository": "MontrealAI/AGIJobsv0",
-  "adapterVersion": "agijobsv0-project-receiver/v1",
-  "files": [
-    {
-      "path": "integrations/alpha-agent/project-transfer.mjs",
-      "sha256": "e33aef0d022333ed1715e01146db9b4b175295904f7f1409e7ede9df3f82d6c3"
-    },
-    {
-      "path": "integrations/alpha-agent/project-receipt.cjs",
-      "sha256": "3be27862394e6692e555ad77ee16e9387be11f4633d7255d69bac6c169cfec6b"
-    },
-    {
-      "path": "integrations/alpha-agent/project-cli.mjs",
-      "sha256": "46991dc1700bed8316da63388c6231300f4e86975eed4fa27bbaca1a1d03cb35"
-    }
-  ]
-});
+export const RECEIVER_SOURCE = readSourceSelection(RECEIVER_SOURCE_LOCK_JSON);
+export function assertSourcePinned() { assertPinnedSelection(RECEIVER_SOURCE); }

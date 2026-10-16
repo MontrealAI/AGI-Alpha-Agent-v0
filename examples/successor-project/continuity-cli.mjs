@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import {parseBounded} from '../../docs/assets/successor/engine.mjs';
 import {importManagerCycle,inspectContinuity,advanceContinuity,LIMIT} from './continuity.mjs';
-function read(file){if(fs.statSync(file).size>LIMIT)throw Error('CONTINUITY_INPUT_SIZE');return fs.readFileSync(file,'utf8');}
+function read(file){if(fs.statSync(file).size>LIMIT)throw Error('CONTINUITY_INPUT_SIZE');const bytes=fs.readFileSync(file);if(bytes.length>LIMIT)throw Error('CONTINUITY_INPUT_SIZE');let raw;try{raw=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);}catch{throw Error('CONTINUITY_INPUT_UTF8');}if(raw.charCodeAt(0)===0xfeff)throw Error('CONTINUITY_INPUT_BOM');return raw;}
 async function main(){
   const [action,input,managerCheckout,alphaBaselineCheckout,...rest]=process.argv.slice(2),options={managerCheckout,alphaBaselineCheckout};let raw,output;
   if(action==='import'&&rest.length===5){const [spec,cycleId,missionId,ack,dest]=rest;if(ack!=='--new-public-data-cycle')throw Error('Explicit new-cycle selection required');output=dest;raw=await importManagerCycle(read(input),{spec:parseBounded(read(spec)),cycleId,missionId,acknowledgement:'new-public-data-cycle'},options);}

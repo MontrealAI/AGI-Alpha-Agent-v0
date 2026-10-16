@@ -9,8 +9,8 @@ const source=fs.readFileSync(new URL('../../scripts/templates/successor-mission/
 const marker='(async()=>{try{db=';
 assert.equal(source.split(marker).length,2,'test must retain the real bootstrap boundary');
 const sourceHash='a'.repeat(64);
-async function harness({failWrite=0,failList=0,code='LOCAL_REVISION_CONFLICT',hold=false,boot=false,runningRecord=false}={}){
-  let initial=await records.createRecord({missionId:'test-mission',sourceHash,spec:workbench.example('public-data')});
+async function harness({failWrite=0,failList=0,code='LOCAL_REVISION_CONFLICT',hold=false,boot=false,runningRecord=false,spec:initialSpec=null}={}){
+  let initial=await records.createRecord({missionId:'test-mission',sourceHash,spec:initialSpec??workbench.example('public-data')});
   if(runningRecord)initial=await records.startRun(initial,{expectedRevision:0,runId:'interrupted-run'});
   let stored=initial,writes=0,lists=0,closed=false,engineCalls=0,release;
   const blocked=new Promise(resolve=>{release=resolve;});
@@ -28,7 +28,7 @@ async function harness({failWrite=0,failList=0,code='LOCAL_REVISION_CONFLICT',ho
   const hooks=`\nglobalThis.hooks={run,stop,operation,openSaved,state:()=>({active:!!active,busy,readOnly,mode,pendingRun,stopping,unpersisted,hasDB:!!db,current})};`;
   vm.runInContext(boot?source+hooks:source.split(marker)[0]+'\ncurrent=initial;db=testdb;ready=true;'+hooks,context);
   if(boot)await new Promise(resolve=>setTimeout(resolve,0));
-  return {hooks:context.hooks,element,release,stored:()=>stored,engineCalls:()=>engineCalls,closed:()=>closed};
+  return {hooks:context.hooks,element,release,stored:()=>stored,engineCalls:()=>engineCalls,closed:()=>closed,writes:()=>writes};
 }
 for(const code of ['LOCAL_REVISION_CONFLICT','LOCAL_STORAGE_WRITE_FAILED']){
   for(const phase of ['start','completion','stop'])test(`${phase} ${code} retains recoverable read-only copy`,async()=>{
@@ -70,4 +70,26 @@ test('reopening a persisted running record never resumes execution automatically
   assert.equal(h.hooks.state().current.state,'running');
   assert.equal(h.engineCalls(),0);assert.equal(h.element('run').disabled,true);
   assert.equal(h.element('interrupt').disabled,false);
+});
+
+test('48-character native name actually runs through the unchanged planner',async()=>{
+  const spec=workbench.example('public-data');spec.name='A'.repeat(48);
+  const h=await harness({spec});await h.hooks.run();
+  assert.equal(h.engineCalls(),1);assert.equal(h.stored().state,'result');
+  assert.equal(h.stored().spec.name,spec.name);
+});
+for(const [label,change] of [
+  ['49-character name',s=>s.name='A'.repeat(49)],
+  ['64-character name',s=>s.name='A'.repeat(64)],
+  ['decomposed name',s=>s.name='e\u0301'],
+  ['decomposed license',s=>s.rights.license='e\u0301'],
+])test(label+' fails actual planner preflight before any running state or persistence',async()=>{
+  const spec=workbench.example('public-data');change(spec);const h=await harness({spec});
+  const before=await records.serializeRecord(h.stored());await h.hooks.run();
+  assert.equal(h.writes(),0);assert.equal(h.engineCalls(),0);
+  assert.equal(await records.serializeRecord(h.stored()),before);
+  assert.equal(await records.serializeRecord(h.hooks.state().current),before);
+  assert.equal(h.hooks.state().active,false);assert.equal(h.hooks.state().pendingRun,false);
+  assert.match(h.element('error').textContent,/INPUT_NOT_RUNNABLE/);
+  assert.match(h.element('status').textContent,/original history/);
 });

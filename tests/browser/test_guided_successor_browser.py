@@ -8,7 +8,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from playwright.sync_api import Dialog, Error, Page, expect, sync_playwright
+from playwright.sync_api import Browser, Dialog, Error, Page, expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 expect.set_options(timeout=30_000)
@@ -93,6 +93,109 @@ def rejected_project(page: Page) -> bytes:
     original = downloaded(page, "#route-export")
     assert json.loads(json.loads(original)["cycles"][0]["records"][-1]["bytes"])["review"]["decision"] == "rejected"
     return original
+
+
+def unsupported_project(page: Page, origin: str, variant: str) -> bytes:
+    page.goto(origin + "/")
+    raw = page.evaluate(
+        """async variant => {
+        const {canonical}=await import('/docs/assets/successor/engine.mjs');
+        const {example}=await import('/examples/successor-workbench/engine.mjs');
+        const {createRecord}=await import('/examples/successor-workbench/mission-record.mjs');
+        const {createBrief}=await import('/examples/alpha-discovery/engine.mjs');
+        const {createProject,publicDataOpportunity}=await import('/examples/successor-project/engine.mjs');
+        const manifest=await (await fetch('/docs/successor/mission/sources.json')).json();
+        const source=path=>({repository:'MontrealAI/AGI-Alpha-Agent-v0',
+            commit:'021b3337de07e9a0cdd105fac967a0dc650de122',path,sha256:manifest.sources[path]});
+        const spec=example('public-data');
+        if(variant==='name49')spec.name='S'.repeat(49);
+        if(variant==='name64')spec.name='S'.repeat(64);
+        if(variant==='nfd-name')spec.name='Cafe\\u0301 mission';
+        if(variant==='nfd-license')spec.rights.license='Cafe\\u0301 synthetic license';
+        const record=await createRecord({missionId:variant+'-historical',sourceHash:manifest.sourceHash,spec});
+        return canonical(await createProject({projectId:variant+'-project',cycleId:variant+'-cycle',
+            sourceHash:manifest.sourceHash,record,
+            discoveryBytes:canonical(await createBrief(publicDataOpportunity(),manifest.sourceHash)),
+            choices:{family:'public-data',selection:'explicit-user-selection',
+                duplicatePolicy:'sum-all-rows-no-deduplication',unitPolicy:'unchanged-integer-units',
+                dataRights:'synthetic'},
+            sources:{discovery:source('examples/alpha-discovery/engine.mjs'),
+                mission:source('examples/successor-workbench/mission-record.mjs')}}));
+    }""",
+        variant,
+    )
+    assert isinstance(raw, str)
+    return raw.encode()
+
+
+def admission_browser(browser: Browser, origin: str, screenshots: Path, errors: list[str], external: list[str]) -> None:
+    url = origin + "/docs/successor/mission/"
+    context = browser.new_context(accept_downloads=True)
+    page = context.new_page()
+    watch(page, origin, errors, external)
+    page.goto(url)
+    expect(page.locator("#new")).to_be_enabled()
+    page.locator("#new").click()
+    expect(page.locator("#name")).to_have_attribute("maxlength", "48")
+    page.locator("#name").fill("S" * 48)
+    page.locator("#save").click()
+    expect(page.locator("#run")).to_be_enabled()
+    page.locator("#project-choice").check()
+    page.locator("#project-start").click()
+    expect(page.locator("#project-summary")).to_contain_text("revision 0")
+    page.locator("#run").click()
+    expect(page.locator("#result-summary")).to_contain_text("295")
+    page.screenshot(path=str(screenshots / "admission-name48.png"), full_page=True)
+    context.close()
+    for variant in ("name49", "name64", "nfd-name", "nfd-license"):
+        context = browser.new_context(accept_downloads=True)
+        page = context.new_page()
+        watch(page, origin, errors, external)
+        original = unsupported_project(page, origin, variant)
+        page.goto(url)
+        expect(page.locator("#project-import")).to_be_enabled()
+        page.evaluate("""() => {
+            globalThis.admissionWrites=0;
+            const original=IDBObjectStore.prototype.put;
+            IDBObjectStore.prototype.put=function(...args){
+                globalThis.admissionWrites++;return original.apply(this,args);
+            };
+        }""")
+        upload(page, "#project-import", original, variant + ".json")
+        expect(page.locator("#project-summary")).to_contain_text("historical")
+        assert downloaded(page, "#project-export") == original
+        assert page.locator("#run").is_disabled()
+        page.locator("#project-choice").check()
+        page.locator("#project-resume").click()
+        expect(page.locator("#error")).to_contain_text("INPUT_NOT_RUNNABLE")
+        assert "48" in page.locator("#status").text_content()
+        assert "NFC" in page.locator("#status").text_content()
+        assert page.evaluate("globalThis.admissionWrites") == 0
+        assert downloaded(page, "#project-export") == original
+        page.locator("#input-edit").click()
+        expect(page.locator("#name")).to_be_enabled()
+        page.locator("#name").evaluate("el => el.dispatchEvent(new Event('input', {bubbles:true}))")
+        page.locator("#project-choice").check()
+        page.locator("#save").click()
+        expect(page.locator("#error")).to_contain_text("INPUT_NOT_RUNNABLE")
+        assert "48" in page.locator("#status").text_content()
+        assert "NFC" in page.locator("#status").text_content()
+        assert page.evaluate("globalThis.admissionWrites") == 0
+        assert downloaded(page, "#project-export") == original
+        page.screenshot(path=str(screenshots / f"admission-{variant}-preserved.png"), full_page=True)
+        page.locator("#name").fill("Explicit valid revision")
+        page.locator("#license").fill("Synthetic fixture, MIT licensed")
+        page.locator("#project-choice").check()
+        page.locator("#save").click()
+        expect(page.locator("#run")).to_be_enabled()
+        page.locator("#run").click()
+        expect(page.locator("#result-summary")).to_contain_text("295")
+        updated = json.loads(downloaded(page, "#project-export"))
+        assert updated["projectId"] == json.loads(original)["projectId"]
+        assert len(updated["cycles"]) == 2
+        assert updated["cycles"][0] == json.loads(original)["cycles"][0]
+        assert json.loads(updated["cycles"][-1]["records"][-1]["bytes"])["review"] is None
+        context.close()
 
 
 def main() -> None:
@@ -292,10 +395,11 @@ def main() -> None:
             assert downloaded(page, "#journey-export") == continued_history
             page.screenshot(path=str(screenshots / "guided-save-retry-continued.png"), full_page=True)
             context.close()
+            admission_browser(browser, origin, screenshots, errors, external)
             assert errors == [], errors
             assert external == [], external
             browser.close()
-            assert len(list(screenshots.glob("*.png"))) == 16
+            assert len(list(screenshots.glob("*.png"))) == 21
             print(
                 "Guided browser PASS: EN/FR, exact token units, native Jobs work, retained history, "
                 "historical recovery, changed work, stale import, 320/390/1440, 200% text, no-JS "

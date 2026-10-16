@@ -33,6 +33,12 @@ The native project download remains compatible with its native receivers. The co
 an additive `alpha-guided-project/v1` history containing those exact files; it is not an executable authority
 or settlement envelope. Reopen it using **Reopen complete journey**, then explicitly create a fresh cycle.
 
+Local Alpha execution checks the actual native planner before saving executable input or starting a run.
+Use a mission name of at most 48 characters and composed Unicode (NFC) for its name and license.
+A longer or unsupported imported native input remains readable as unchanged history. Choose
+**Edit input for a fresh mission/cycle**, explicitly edit the input, and save a valid new mission or cycle.
+The Jobs receiver separately records its explicit executor-name/license mapping while retaining the original native bytes.
+
 ## Keep the two routes clear
 
 | Route | Asset | What this local journey retains |

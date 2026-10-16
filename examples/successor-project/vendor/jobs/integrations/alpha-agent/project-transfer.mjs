@@ -3,8 +3,9 @@ import { canonical, parseBounded } from './vendor/alpha/docs/assets/successor/en
 import { validateProject, exactDigest } from './vendor/alpha/examples/successor-project/engine.mjs';
 import { validate, plan, run } from './vendor/alpha/examples/successor-workbench/engine.mjs';
 import { createRecord, startRun, completeRun, validateRecord } from './vendor/alpha/examples/successor-workbench/mission-record.mjs';
+import { adaptExecutionSpec } from './project-name.mjs';
 import { compileJobs } from '../../packages/successor-core/src/compiler.mjs';
-import { ALPHA_NATIVE_SOURCE, JOBS_COMPILER_SOURCE, RECEIVER_SOURCE } from './project-native-source.mjs';
+import { ALPHA_NATIVE_SOURCE, JOBS_COMPILER_SOURCE, RECEIVER_SOURCE, assertSourcePinned } from './project-native-source.mjs';
 
 export const PROJECT_TRANSFER_SCHEMA = 'agijobsv0/alpha-project-transfer/v1';
 export const PROJECT_TRANSFER_LIMIT = 2_000_000;
@@ -55,12 +56,15 @@ async function workFor(project, amountBaseUnits, compiledAt, upstreamSha256) {
   fail(cycle.mapping.choices.family === 'public-data' && record.spec.family === 'public-data', 'JOBS_PROJECT_MAPPING_UNAVAILABLE');
   const spec = validate(record.spec);
   const nativeSpecRaw = canonical(spec), nativeSpecSha256 = await exactDigest(nativeSpecRaw);
-  const compiledRaw = canonical(await compile(spec, amountBaseUnits, compiledAt)), compiledSha256 = await exactDigest(compiledRaw);
+  const { spec: executorSpec, mapping: nameMapping, licenseMapping } = adaptExecutionSpec(spec);
+  const executorSpecRaw = canonical(executorSpec), executorSpecSha256 = await exactDigest(executorSpecRaw);
+  const compiledRaw = canonical(await compile(executorSpec, amountBaseUnits, compiledAt)), compiledSha256 = await exactDigest(compiledRaw);
   const envelope = { schema: 'agijobsv0.successor-public-data-work.v1', project: identity(project), upstreamSha256, source: PROJECT_SOURCE, route: PROJECT_ROUTE, executor: 'fixed-js-public-data-v1',
     native: { namespace: 'successor-workbench/v1', raw: nativeSpecRaw, sha256: nativeSpecSha256 },
+    execution: { namespace: 'successor-workbench/v1', raw: executorSpecRaw, sha256: executorSpecSha256, nameMapping, licenseMapping },
     planning: { amountBaseUnits, decimals: 18, status: 'unfunded-proposal' }, compiled: { sha256: compiledSha256, compiledAt } };
   const specRaw = canonical(envelope);
-  return { namespace: envelope.schema, executor: envelope.executor, nativeSpecRaw, nativeSpecSha256, specRaw, specSha256: await exactDigest(specRaw), compiledRaw, compiledSha256, compiledAt };
+  return { namespace: envelope.schema, executor: envelope.executor, nativeSpecRaw, nativeSpecSha256, executorSpecRaw, executorSpecSha256, nameMapping, licenseMapping, specRaw, specSha256: await exactDigest(specRaw), compiledRaw, compiledSha256, compiledAt };
 }
 async function seal(value) {
   const raw = canonical({ ...value, sha256: await exactDigest(canonical(value)) });
@@ -69,7 +73,7 @@ async function seal(value) {
 }
 async function sourceHash() { return exactDigest(canonical(PROJECT_SOURCE)); }
 async function initialRecord(project, spec) {
-  return createRecord({ missionId: 'jobs-' + project.projectDigest.slice(0, 40), sourceHash: await sourceHash(), spec });
+  return createRecord({ missionId: 'jobs-' + project.projectDigest.slice(0, 40), sourceHash: await sourceHash(), spec: adaptExecutionSpec(spec).spec });
 }
 async function replay(prior, pack, index) {
   const runId = 'jobs-local-run-' + index;
@@ -77,6 +81,7 @@ async function replay(prior, pack, index) {
   return completeRun(running, pack, { expectedRevision: running.revision, runId });
 }
 export async function importAlphaProject(raw, { amountBaseUnits, compiledAt, ...options }) {
+  assertSourcePinned();
   const { project, validation } = await upstream(raw, options);
   const planning = { amountBaseUnits: price(amountBaseUnits), decimals: 18, status: 'unfunded-proposal' };
   const originalHash = await exactDigest(raw);
@@ -85,6 +90,7 @@ export async function importAlphaProject(raw, { amountBaseUnits, compiledAt, ...
     authority: 'none', qualification: 'source-only', settlement: 'not-connected' });
 }
 export async function inspectProjectTransfer(raw, options = {}) {
+  assertSourcePinned();
   const transfer = parseBounded(raw);
   fields(transfer, ['schema','source','project','original','upstreamValidation','route','planning','work','history','authority','qualification','settlement','sha256']);
   const { sha256, ...body } = transfer;
@@ -118,7 +124,7 @@ export async function inspectProjectTransfer(raw, options = {}) {
 export async function runProjectTransfer(raw, options = {}) {
   const { transfer, project, spec, lastRecord } = await inspectProjectTransfer(raw, options);
   fail(transfer.history.length < MAX_HISTORY, 'JOBS_PROJECT_HISTORY_LIMIT');
-  const pack = await run(spec, { sourceHash: await sourceHash() });
+  const pack = await run(adaptExecutionSpec(spec).spec, { sourceHash: await sourceHash() });
   const recordRaw = canonical(await replay(lastRecord, pack, transfer.history.length));
   transfer.history.push({ kind: 'local-result', raw: recordRaw, sha256: await exactDigest(recordRaw) });
   delete transfer.sha256;
