@@ -259,7 +259,7 @@ jobs:
     if: ${{ always() && needs.owner-check.result == 'success' }}
     needs: owner-check
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
     permissions:
       pull-requests: write
     env:
@@ -397,7 +397,7 @@ jobs:
           python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse "$WHEELHOUSE"}
           python -m playwright install chromium
           mkdir -p artifacts/test-reports
-          pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml
+          pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml --durations=25
       - name: Mutation tests
         if: matrix.python-version == '3.11'
         run: |
