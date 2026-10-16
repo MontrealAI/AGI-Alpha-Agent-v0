@@ -13,7 +13,11 @@ class TestGovernanceSim(unittest.TestCase):
         self.assertGreater(coop, 0.7)
 
     def test_summary_offline(self) -> None:
-        text = summarise_with_agent(0.8, agents=10, rounds=100, delta=0.9, stake=1.0)
+        # Isolate the offline case from developer provider credentials.
+        with patch.dict(os.environ, {"OPENAI_API_KEY": ""}):
+            with patch("openai.OpenAI") as mock_client:
+                text = summarise_with_agent(0.8, agents=10, rounds=100, delta=0.9, stake=1.0)
+        mock_client.assert_not_called()
         self.assertIsInstance(text, str)
         self.assertIn("mean cooperation", text)
 
