@@ -71,6 +71,7 @@ export async function advanceAlphaProject(raw, { action, budget }, context) {
   const { transfer, state } = await inspectAlphaProject(raw, context);
   fail(transfer.history.length < 8, 'TRANSFER_HISTORY'); const manifest = context.sourceManifest;
   fail(['run', 'select-and-draft'].includes(action), 'TRANSFER_ACTION');
+  fail(action !== 'run' || transfer.history.length < 7, 'TRANSFER_DRAFT_RESERVE');
   const kind = action === 'run' ? 'local-run' : 'selected-for-usdc-draft';
   const next = await nextState(state, kind, budget, context);
   const capsule = await exportCapsule(next, manifest);
