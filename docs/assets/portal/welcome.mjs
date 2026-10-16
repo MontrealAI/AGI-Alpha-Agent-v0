@@ -1,6 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "journey-eyebrow": "UN PROJET. DES CHOIX EXPLICITES. UN HISTORIQUE CONSERVÉ.",
+    "journey-title": "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω.",
+    "journey-description": "Explorez les preuves fournies, choisissez une tâche limitée et gardez votre projet au fil des travaux Jobs et Fleet. Inspectez chaque retour avant le prochain cycle.",
+    "journey-discover": "1. Trouver votre Alpha",
+    "journey-continue": "2. Ouvrir ou poursuivre votre projet",
+    "journey-boundary": "Le parcours local prépare des travaux non financés et conserve les retours historiques vérifiés. La mise en service réelle, la qualification indépendante et le règlement ont leurs propres exigences.",
+    "journey-routes": "CHOISISSEZ LE MODE DE RÈGLEMENT",
+    "journey-route-description": "AGIJobManager utilise USDC. Alpha et AGI Jobs v0 utilisent $AGIALPHA. Chacun garde ses règles de prix, d’admission et de règlement; aucune conversion automatique.",
+    "journey-fleet": "Fleet reçoit une tâche locale choisie explicitement et retourne les preuves d’exécution et de vérification interne. Un fichier retourné ne donne aucune permission d’exécuter.",
     "nova-eyebrow": "STUDIO NOVA-SEED",
     "nova-title": "Donnez un avenir à votre prochaine idée.",
     "nova-description": "Définissez un projet, vérifiez son plan exact et protégez-le par une sauvegarde chiffrée. Gardez le même historique en reliant l’exécution, les résultats et le prochain cycle.",
@@ -145,6 +154,12 @@ function render() {
     for (const link of document.querySelectorAll("[data-start-link]")) {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
+    }
+    for (const [attribute, path] of [["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
+        for (const link of document.querySelectorAll(`[${attribute}]`)) {
+            const fragment = new URL(link.href).hash;
+            link.setAttribute("href", `${path}${query.size ? `?${query}` : ""}${fragment}`);
+        }
     }
     for (const link of document.querySelectorAll("[data-nova-link]")) {
         const fragment = new URL(link.href).hash;

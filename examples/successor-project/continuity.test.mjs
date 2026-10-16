@@ -142,3 +142,42 @@ test('fully resealed Manager capsule provenance cannot enter an Alpha return his
   transfer.history[0].capsule=canonical(capsule);transfer.history[0].sha256=await project.exactDigest(transfer.history[0].capsule);
   await assert.rejects(importManagerCycle(await reseal(transfer),selection(),options),/MANAGER_NATIVE_INVALID/);
 });
+
+test('Git tree replacement cannot make modified validator bytes satisfy original source pins', {timeout:120000},async()=>{
+  const {raw}=await fixture();
+  for(const [checkout,pin,key,relative] of [
+    [managerCheckout,MANAGER_SOURCE,'managerCheckout','site/assets/successor/missions.mjs'],
+    [alphaBaselineCheckout,ALPHA_BASELINE,'alphaBaselineCheckout','examples/successor-project/engine.mjs'],
+  ]){
+    const directory=fs.mkdtempSync(path.join(os.tmpdir(),'continuity-replaced-tree-'));
+    const git=(args,extra={})=>execFileSync('git',['-C',directory,...args],{encoding:'utf8',timeout:30000,stdio:['pipe','pipe','pipe'],...extra}).trim();
+    try{
+      execFileSync('git',['clone','--shared','--no-checkout',checkout,directory],{timeout:60000,stdio:'pipe'});
+      git(['checkout','--detach',pin.commit]);
+      const original=fs.readFileSync(path.join(directory,relative),'utf8'),forged=original+'\n/* replaced tree validator */\n';
+      const blob=git(['hash-object','-w','--stdin'],{input:forged});
+      const alternate={...process.env,GIT_INDEX_FILE:path.join(directory,'.git','replacement-index')};
+      git(['read-tree',pin.commit],{env:alternate});
+      git(['update-index','--cacheinfo','100644',blob,relative],{env:alternate});
+      const replacement=git(['write-tree'],{env:alternate});
+      git(['replace',pin.tree,replacement]);
+      git(['update-index','--cacheinfo','100644',blob,relative]);fs.writeFileSync(path.join(directory,relative),forged);
+      assert.equal(git(['rev-parse',pin.commit+'^{tree}']),pin.tree,'commit tree ID alone does not detect replacement');
+      assert.equal(git(['status','--porcelain','--untracked-files=no']),'','ordinary status follows the replaced tree');
+      assert.equal(git(['show',pin.commit+':'+relative]),forged.trim(),'ordinary show loads substituted validator bytes');
+      await assert.rejects(importManagerCycle(raw,selection(),{...options,[key]:directory}),/CONTINUITY_SOURCE_DIRTY|CONTINUITY_SOURCE_BYTES/);
+    }finally{fs.rmSync(directory,{recursive:true,force:true});}
+  }
+});
+
+test('inherited Git repository, alternate index and config injection cannot select validator bytes',async()=>{
+  const {raw}=await fixture(),names=['GIT_DIR','GIT_WORK_TREE','GIT_INDEX_FILE','GIT_CONFIG_COUNT','GIT_CONFIG_GLOBAL','GIT_REPLACE_REF_BASE'];
+  const prior=Object.fromEntries(names.map(name=>[name,process.env[name]]));
+  try{
+    process.env.GIT_DIR='/untrusted-source-repository';process.env.GIT_WORK_TREE='/untrusted-source-tree';
+    process.env.GIT_INDEX_FILE='/untrusted-index';process.env.GIT_CONFIG_COUNT='invalid-inherited-config';
+    process.env.GIT_CONFIG_GLOBAL='/untrusted-global-config';process.env.GIT_REPLACE_REF_BASE='refs/untrusted/';
+    const imported=await importManagerCycle(raw,selection(),options),read=await inspectContinuity(imported,options);
+    assert.equal(read.project.projectId,'one-project');assert.equal(read.continuity.authority,'none');
+  }finally{for(const name of names)if(prior[name]===undefined)delete process.env[name];else process.env[name]=prior[name];}
+});

@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 """Build a self-contained, source-bound local mission workspace without network imports."""
+
 from __future__ import annotations
 
 import base64
 import hashlib
 import json
-from pathlib import Path
 import re
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,16 +34,19 @@ def build(root: Path = ROOT) -> None:
             binding, location = match.groups()
             if not location.startswith("."):
                 raise ValueError("Only local imports are supported")
-            return f"const {binding.strip().removeprefix('* as ')} = {visit(path.parent / location)};"
+            binding = binding.strip().removeprefix("* as ")
+            if binding.startswith("{"):
+                binding = re.sub(r"\b(\w+)\s+as\s+(\w+)\b", r"\1: \2", binding)
+            return f"const {binding} = {visit(path.parent / location)};"
 
-        source = re.sub(r"^import\s+([\s\S]*?)\s+from\s+['\"]([^'\"]+)['\"];", imports, source, flags=re.M)
-        exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.M)
-        source = re.sub(r"^export\s+", "", source, flags=re.M)
+        source = re.sub(r"^import\s+([\s\S]*?)\s+from\s+['\"]([^'\"]+)['\"];", imports, source, flags=re.MULTILINE)
+        exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.MULTILINE)
+        source = re.sub(r"^export\s+", "", source, flags=re.MULTILINE)
         chunks.append(f"const {name}=(()=>{{\n{source}\nreturn {{{','.join(exports)}}};\n}})();")
         return name
 
     modules = {}
-    for name, path in (
+    for name, module_path in (
         ("workbench", "examples/successor-workbench/engine.mjs"),
         ("records", "examples/successor-workbench/mission-record.mjs"),
         ("storage", "examples/successor-workbench/mission-store.mjs"),
@@ -50,8 +54,33 @@ def build(root: Path = ROOT) -> None:
         ("projects", "examples/successor-project/engine.mjs"),
         ("projectStorage", "examples/successor-project/store.mjs"),
         ("discovery", "examples/alpha-discovery/engine.mjs"),
+        ("journeys", "examples/successor-project/journey.mjs"),
+        ("journeyStorage", "examples/successor-project/journey-store.mjs"),
+        ("stageManager", "examples/successor-project/vendor/manager/site/assets/successor/alpha-project.mjs"),
+        ("stageManagerContext", "examples/successor-project/vendor/manager-context.mjs"),
+        ("stageJobs", "examples/successor-project/vendor/jobs/integrations/alpha-agent/project-transfer.mjs"),
+        ("stageFleet", "examples/successor-project/vendor/fleet/local-runtime/project/transfer.mjs"),
     ):
-        modules[name] = visit(root / path)
+        modules[name] = visit(root / module_path)
+    receiver_manifest_path = root / "examples/successor-project/vendor/provenance.json"
+    receiver_manifest = json.loads(receiver_manifest_path.read_text())
+    if receiver_manifest.get("schema") != "alpha-guided-receivers-source/v1":
+        raise ValueError("Unknown guided receiver provenance")
+    sources[receiver_manifest_path.relative_to(root).as_posix()] = hashlib.sha256(
+        receiver_manifest_path.read_bytes()
+    ).hexdigest()
+    for relative, identity in receiver_manifest["files"].items():
+        candidate = root / relative
+        if (
+            not relative.startswith("examples/successor-project/vendor/")
+            or candidate.is_symlink()
+            or not candidate.resolve().is_relative_to((root / "examples/successor-project/vendor").resolve())
+        ):
+            raise ValueError("Receiver source outside vendor closure")
+        actual = hashlib.sha256(candidate.read_bytes()).hexdigest()
+        if actual != identity["sha256"]:
+            raise ValueError("Guided receiver differs from exact source provenance: " + relative)
+        sources[relative] = actual
     vendor = root / "examples/build-successor/vendor/agijobs"
     provenance = json.loads((vendor / "provenance.json").read_text())
     for item in provenance["files"]:
@@ -83,6 +112,12 @@ def build(root: Path = ROOT) -> None:
         }
         for role, path in (
             ("discovery", "examples/alpha-discovery/engine.mjs"),
+            ("journeys", "examples/successor-project/journey.mjs"),
+            ("journeyStorage", "examples/successor-project/journey-store.mjs"),
+            ("stageManager", "examples/successor-project/vendor/manager/site/assets/successor/alpha-project.mjs"),
+            ("stageManagerContext", "examples/successor-project/vendor/manager-context.mjs"),
+            ("stageJobs", "examples/successor-project/vendor/jobs/integrations/alpha-agent/project-transfer.mjs"),
+            ("stageFleet", "examples/successor-project/vendor/fleet/local-runtime/project/transfer.mjs"),
             ("mission", "examples/successor-workbench/mission-record.mjs"),
         )
     }
@@ -92,6 +127,7 @@ def build(root: Path = ROOT) -> None:
         + code
         + (templates / "app.js").read_text()
         + (templates / "project.js").read_text()
+        + (templates / "journey.js").read_text()
         + "\n})();\n"
     )
     if "</script" in script.lower():

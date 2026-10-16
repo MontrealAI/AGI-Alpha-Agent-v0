@@ -26,6 +26,19 @@ from scripts.validate_ecosystem import validate as validate_ecosystem
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    for selector, path, fragment in (
+        ("[data-discovery-link]", "successor/discover/", ""),
+        ("[data-mission-link]", "successor/mission/", "guided-journey"),
+    ):
+        guided = page.locator(selector)
+        assert guided.count() >= 1, "Offer discovery and the retained project journey"
+        for link in guided.all():
+            target = urlsplit(link.get_attribute("href") or "")
+            assert not target.scheme and not target.netloc and target.path == path
+            assert target.fragment == fragment
+            assert parse_qs(target.query) == ({"lang": ["fr"]} if language == "fr" else {}) | (
+                {"text": ["large"]} if large else {}
+            )
     nova_links = page.locator("[data-nova-link]")
     assert nova_links.count() >= 4, "Offer Studio in the hero, project section and directory"
     for link in nova_links.all():
@@ -400,7 +413,10 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
-                page.locator(".welcome-ecosystem:not(.welcome-nova)").screenshot(
+                page.locator("#alpha-journey").screenshot(
+                    path=str(output / f"homepage-journey-{language}-{width}{'-large' if large else ''}.png")
+                )
+                page.locator('.welcome-ecosystem[aria-labelledby="ecosystem-title"]').screenshot(
                     path=str(output / f"homepage-ecosystem-{language}-{width}{'-large' if large else ''}.png")
                 )
                 page.locator("#nova-title").click()

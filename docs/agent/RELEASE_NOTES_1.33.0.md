@@ -21,6 +21,11 @@ A source version is not publication or evidence that these paths are independent
 - One explicit local project across discovery and subsequent work cycles, with source/history
   linkage and fail-closed imports. Importing a project never starts native or provider execution.
 
+- An additive [guided project journey](GUIDED_SUCCESSOR_JOURNEY.md) in the existing mission workspace:
+  explicit USDC / $AGIALPHA route selection, native file handoffs, bundled strict return readers, Fleet local
+  requests and one retained history across fresh Alpha cycles. Reopening history restores no authority.
+  Internal Fleet checking remains distinct from independent qualification and live settlement.
+
 ## Maintenance and deployment preparation
 
 - Preserve the reviewed strict supplier-browser typing correction without relaxing native admission or execution checks.

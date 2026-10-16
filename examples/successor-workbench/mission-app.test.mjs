@@ -22,8 +22,8 @@ async function harness({failWrite=0,failList=0,code='LOCAL_REVISION_CONFLICT',ho
     assert.equal(stored.revision,expected);stored=next;
   },async list(){lists++;if(lists===failList)throw Object.assign(Error('corrupt'),{code:'LOCAL_RECORD_CORRUPT'});return[stored];}};
   const engine={...workbench,async run(...args){engineCalls++;if(hold){await blocked;throw Error('CANCELLED');}return workbench.run(...args);}};
-  const context=vm.createContext({document:{getElementById:element,querySelectorAll:()=>[],createElement:()=>element('created')},
-    records,workbench:engine,storage:{async openMissionStore(){return db;}},crypto,AbortController,URL,Blob,setTimeout,console,
+  const context=vm.createContext({document:{documentElement:{lang:'en'},getElementById:element,querySelectorAll:()=>[],createElement:()=>element('created')},
+    records,workbench:engine,storage:{async openMissionStore(){return db;}},crypto,AbortController,URL,URLSearchParams,location:{search:''},Blob,setTimeout,console,
     TextEncoder,TextDecoder,SOURCE_HASH:sourceHash,initial,testdb:db});
   const hooks=`\nglobalThis.hooks={run,stop,operation,openSaved,state:()=>({active:!!active,busy,readOnly,mode,pendingRun,stopping,unpersisted,hasDB:!!db,current})};`;
   vm.runInContext(boot?source+hooks:source.split(marker)[0]+'\ncurrent=initial;db=testdb;ready=true;'+hooks,context);

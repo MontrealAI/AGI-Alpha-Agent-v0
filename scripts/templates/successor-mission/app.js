@@ -20,7 +20,7 @@ const french = {
   historyHint:'Au plus 16 observations précédentes sont conservées. Les empreintes vérifient la cohérence, pas l’identité ni une certification indépendante.',
   sourceHint:'Identité exacte du code intégré',
 };
-let language='en', db=null, current=null, readOnly=false, dirty=false, busy=false, epoch=0;
+let language=new URLSearchParams(location.search).get('lang')==='fr'?'fr':'en', db=null, current=null, readOnly=false, dirty=false, busy=false, epoch=0;
 let pendingRun=false, stopping=false, unpersisted=false;
 let active=null, historicalBytes=null, mode='empty', ready=false;
 const urls=[];
@@ -47,6 +47,7 @@ function controls(){
   $('language').disabled=!ready;
   document.querySelectorAll('[data-view]').forEach(el=>el.disabled=!ready);
   projectControls();
+  if(typeof journeyControls==='function')journeyControls();
 }
 function fill(){if(!current)return;const s=current.spec;for(const [key,value]of Object.entries({name:s.name,csv:s.inputs.csv,unit:s.inputs.unit,rights:s.rights.dataClass,source:s.rights.source,license:s.rights.license,minutes:String(s.reviewMinutes)}))$(key).value=value;$('note').value='';dirty=false;}
 function spec(){
@@ -130,4 +131,7 @@ $('import').addEventListener('change',async()=>{
 });
 $('fork').addEventListener('click',()=>operation(async()=>{const record=await records.importRecord(historicalBytes,{missionId:id(),sourceHash:SOURCE_HASH});await persist(record,null);if(!db)return;readOnly=false;mode='current';historicalBytes=null;fill();view('mission');status('New draft saved. Imported results and reviews remain historical.','Nouveau brouillon enregistré. Les résultats et avis importés restent historiques.');}));
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>view(button.dataset.view)));
-$('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=(language==='fr'?french:english)[el.dataset.i18n]||english[el.dataset.i18n];render();});
+function applyLanguage(){document.documentElement.lang=language;$('language').textContent=language==='en'?'Français':'English';for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=(language==='fr'?french:english)[el.dataset.i18n]||english[el.dataset.i18n];}
+$('language').addEventListener('click',()=>{language=language==='en'?'fr':'en';applyLanguage();render();});
+applyLanguage();
+if(new URLSearchParams(location.search).get('text')==='large')document.documentElement.classList.add('large-text');

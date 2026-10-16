@@ -33,8 +33,9 @@ jobs:
         run: |
           node --test examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs
           node examples/successor-workbench/test.mjs
-          node --test examples/successor-project/engine.test.mjs
+          node --test examples/successor-project/engine.test.mjs examples/successor-project/journey-native.test.mjs
           python tests/test_successor_project_delivery.py
+          python tests/test_guided_project_delivery.py
           node --test examples/alpha-discovery/engine.test.mjs examples/alpha-discovery/draft.test.mjs
           node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q
@@ -51,6 +52,7 @@ jobs:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
           DISCOVERY_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots
           PROJECT_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/project
+          GUIDED_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/guided
           EVALUATION_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/evaluation
         run: |
           python tests/browser/test_successor_mission_store.py
@@ -58,6 +60,7 @@ jobs:
           python tests/browser/test_alpha_discovery_browser.py
           python tests/browser/test_specialist_evaluation_browser.py
           python tests/browser/test_successor_project_browser.py
+          python tests/browser/test_guided_successor_browser.py
       - name: Retain discovery browser screenshots
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -65,3 +68,28 @@ jobs:
           name: alpha-discovery-browser-${{ github.sha }}
           path: discovery-screenshots/
           if-no-files-found: error
+
+  guided-cross-repository:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.21.0'
+      - name: Read reviewed exact Fleet source pin
+        id: fleet-source
+        run: node --input-type=module -e "import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync('examples/successor-project/vendor/provenance.json')); if(!/^[a-f0-9]{40}$/.test(p.sources.fleet.commit)||p.sources.fleet.publication!=='published-exact-source')process.exit(1); fs.appendFileSync(process.env.GITHUB_OUTPUT,'commit='+p.sources.fleet.commit+'\n');"
+      - name: Fetch exact Fleet runtime source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: MontrealAI/AGI-Fleet-Linux
+          ref: ${{ steps.fleet-source.outputs.commit }}
+          path: build/guided-fleet-source
+          persist-credentials: false
+      - name: Actual bounded work, grants, internal check and changed-input continuation
+        env:
+          GUIDED_FLEET_SOURCE: ${{ github.workspace }}/build/guided-fleet-source
+        run: node --test examples/successor-project/journey.test.mjs examples/successor-project/source-immutability.test.mjs

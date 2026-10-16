@@ -2,6 +2,7 @@
 // Node receiver: retained cross-repository work history conveys no authority.
 import fs from 'node:fs';
 import path from 'node:path';
+import {devNull} from 'node:os';
 import {spawn, execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
@@ -23,16 +24,25 @@ const MANAGER_FILES = Object.freeze(['scripts/successor/alpha-project.mjs','scri
   'site/assets/successor/style.css','package.json','LICENSE']);
 function fail(ok,code){if(!ok)throw Error('CONTINUITY_'+code);}
 function fields(value,names){fail(value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).sort().join('|')===[...names].sort().join('|'),'FIELDS');}
+function provenanceEnvironment(){
+  const env={...process.env};
+  for(const name of Object.keys(env))if(name.toUpperCase().startsWith('GIT_'))delete env[name];
+  return {...env,GIT_CONFIG_GLOBAL:devNull,GIT_CONFIG_SYSTEM:devNull,GIT_CONFIG_NOSYSTEM:'1',GIT_NO_REPLACE_OBJECTS:'1',GIT_OPTIONAL_LOCKS:'0'};
+}
 function checkedCheckout(directory,pin){
   fail(typeof directory==='string'&&path.isAbsolute(directory),'CHECKOUT');
-  const root=fs.realpathSync(directory);
-  const git=args=>execFileSync('git',['-C',root,...args],{encoding:'utf8',timeout:10000,maxBuffer:100000}).trim();
+  let root;try{root=fs.realpathSync(directory);}catch{fail(false,'CHECKOUT');}
+  const gitBytes=(args,maximum=100000)=>{
+    try{return execFileSync('git',['--no-replace-objects','-c','core.fsmonitor=false','-C',root,...args],{env:provenanceEnvironment(),stdio:['ignore','pipe','pipe'],timeout:10000,maxBuffer:maximum});}
+    catch{fail(false,'SOURCE_BYTES');}
+  };
+  const git=args=>gitBytes(args).toString('utf8').trim();
   fail(git(['rev-parse','HEAD'])===pin.commit&&git(['rev-parse','HEAD^{tree}'])===pin.tree,'SOURCE_PIN');
   fail(git(['status','--porcelain','--untracked-files=no'])==='','SOURCE_DIRTY');
   const sourceManifest='docs/successor/mission/sources.json';
   const paths=pin.repository===MANAGER_SOURCE.repository?MANAGER_FILES:[sourceManifest,
     ...Object.keys(JSON.parse(git(['show',pin.commit+':'+sourceManifest])).sources)];
-  const entries=execFileSync('git',['-C',root,'ls-tree','-rz',pin.commit,'--',...paths],{timeout:10000,maxBuffer:200000}).toString('utf8').split('\0').filter(Boolean);
+  const entries=gitBytes(['ls-tree','-rz',pin.commit,'--',...paths],200000).toString('utf8').split('\0').filter(Boolean);
   fail(entries.length===paths.length,'SOURCE_BYTES');
   for(const entry of entries){
     const [metadata,relative]=entry.split('\t'),[mode,type,expected]=metadata.split(' ');
@@ -56,7 +66,7 @@ async function inspectManager(raw,{managerCheckout,alphaBaselineCheckout}){
 const chunks=[];for await(const c of process.stdin)chunks.push(c);
 const read=await inspectAlphaProject(Buffer.concat(chunks).toString('utf8'),{alphaCheckout:process.argv[1]});
 process.stdout.write(JSON.stringify({project:read.transfer.project,checkpoints:read.transfer.history.length,candidates:read.state.candidates.length,plans:read.state.plans.length}));`;
-  const env={...process.env};delete env.NODE_OPTIONS;delete env.NODE_PATH;
+  const env=provenanceEnvironment();for(const key of Object.keys(env))if(['NODE_OPTIONS','NODE_PATH'].includes(key.toUpperCase()))delete env[key];
   const summary=await new Promise((resolve,reject)=>{
     const child=spawn(process.execPath,['--input-type=module','-e',program,alpha],{cwd:manager,env,stdio:['pipe','pipe','pipe']});
     const chunks=[];let bytes=0,failed=false;

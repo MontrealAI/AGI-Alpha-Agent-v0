@@ -1,5 +1,10 @@
 # Return Manager work to a fresh Alpha cycle
 
+**Current guided path:** [Open the project journey](../../docs/agent/GUIDED_SUCCESSOR_JOURNEY.md).
+It reads the current bundled Manager / Jobs / Fleet transfers in the existing mission workspace.
+The CLI described below retains its separately pinned historical Manager receiver; its exact checkout
+requirements are intentional, and it does not read newer Manager browser exports.
+
 This optional Node receiver carries an Alpha project through actual local Manager work and back into a new native Alpha cycle. One continuity JSON retains the complete original Manager transfer, its original Alpha dossier, every Manager capsule and every new Alpha project checkpoint. Existing readers and native schemas remain unchanged. The new file is read with the continuity CLI.
 
 The receiver executes the actual Manager validator from the explicitly selected clean checkout, which in turn executes the pinned native Alpha validator. Alpha revalidates its native project and recomputes every allowed cycle/run transition with the native record checker. Hashes alone do not establish validity. Imported reviews, clocks, costs and provenance remain supplied historical statements; no signature, independent review or protected comparative evaluation is inferred.
@@ -29,7 +34,7 @@ Import performs validation and creates a draft; it does not run the next task. T
 
 The complete continuity file is bounded to **2 MB and eight new Alpha checkpoints**. This can be narrower than either native input format. At capacity it rejects the operation, retaining the old file; it never truncates rows or prunes history. Inputs, source checkouts and output paths are explicit. No wallet, provider, model service or host privilege is used. USDC proposals stay unfunded Manager proposals. Alpha allowances and $AGIALPHA are not converted into USDC.
 
-Implemented: receiver validation, retained prior rejection and complete Manager history, explicit fresh cycle, English/French native task and actual local execution. Still open: hosted journey integration, Jobs v0 project receiver, Fleet execution/review continuity, frozen candidate/incumbent/alternative manifests, protected evaluation and separately authorized production commissioning. This adapter does not complete the four-repository flagship or certify training, operational permission, funding or a deployment.
+Implemented: receiver validation, retained prior rejection and complete Manager history, explicit fresh cycle, English/French native task and actual local execution. The separate current guided workspace adds hosted file handoffs, the native Jobs receiver and Fleet local execution/internal-check history. Frozen candidate/incumbent/alternative manifests, protected evaluation, eligible independent review and separately authorized production commissioning remain open. This adapter does not complete the four-repository flagship or certify training, operational permission, funding or a deployment.
 
 ## Français
 
@@ -37,7 +42,7 @@ Cet adaptateur conserve un seul fichier d'historique contenant le dossier Alpha 
 
 Choisissez explicitement le nouveau CSV public, synthétique ou sous licence non personnelle, ses unités entières, ses droits et de nouveaux identifiants de mission et de cycle. Utilisez `language: "fr"` dans la prochaine mission. L'importation prépare un brouillon; `run` exécute séparément la tâche locale. L'ancien rejet reste visible et n'est pas transféré comme approbation du nouveau cycle. Les fichiers existants ne sont jamais remplacés. La limite est de 2 Mo et huit étapes Alpha; les données ne sont jamais tronquées.
 
-L'interface hébergée, la réception Jobs v0, la continuité Fleet, l'évaluation comparative protégée et la mise en service restent à intégrer et à qualifier.
+Le parcours guidé actuel ajoute les transferts de fichiers dans l’interface hébergée, le lecteur Jobs et l’historique local Fleet. Le présent CLI conserve son lecteur Manager historique épinglé. L’évaluation protégée, la revue indépendante admissible et la mise en service restent à qualifier.
 
 Les fichiers réellement chargés sont vérifiés contre Git, même si des
 indicateurs d’index masquent une modification. Le cycle original garde ses
