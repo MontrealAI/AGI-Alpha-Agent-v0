@@ -178,7 +178,7 @@ incident and reconcile claims before approving first public funding.
 The existing read-only verifier executed against a public HTTPS RPC at
 `2026-10-15T20:08:37.316Z`, finalized block **26,200,139**,
 `0x5ba89450466ec7979fd0ab037d86077799089630aab9d8923cf63753a7cb11be`.
-The [complete new report](../../deployments/ethereum-mainnet/2026-10-15/record-verification.json)
+The [complete new report](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/ccad46c561e1b649c77a61d11d405b2ec255e09c/deployments/ethereum-mainnet/2026-10-15/record-verification.json)
 confirms the original deployment transactions, exact original-profile runtimes,
 bindings and completed governor ownership. It records `externalTransactions: false`
 and `readyForPublicFunding: false`. It uses the original archived compiler profile;
