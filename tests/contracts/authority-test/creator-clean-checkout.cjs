@@ -17,6 +17,12 @@ const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const write = (file, value) => fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
 const read = file => JSON.parse(fs.readFileSync(file));
 const readMethods = new Set(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call', 'eth_getTransactionCount', 'eth_getBalance', 'eth_getTransactionByHash', 'eth_getTransactionReceipt', 'eth_getLogs', 'eth_getStorageAt']);
+function publicRecord(value, rawCapabilities) {
+    const text = JSON.stringify(value, null, 2) + '\n';
+    assert.ok(!text.includes('PRIVATE KEY') && !text.includes('0x' + '11'.repeat(32)) && !text.includes('0x' + '22'.repeat(32)));
+    for (const raw of rawCapabilities) assert.ok(!text.includes(raw), 'Raw capability escaped into public artifact');
+    return text;
+}
 let stage = 'source-anchor';
 async function main() {
     assert.equal(process.versions.node, '22.17.1');
@@ -33,6 +39,7 @@ async function main() {
         scope: 'Actual clean-Git Hardhat/PTY entry; fixed public fixture key, unforked Osaka, mock dependencies, finalized=latest.' };
     let server, requests = 0, relayHashes = [], plan;
     const rawCapabilities = new Set();
+    const writePublic = (file, value) => fs.writeFileSync(file, publicRecord(value, rawCapabilities), { flag: 'wx', mode: 0o600 });
     try {
         stage = 'local-fixture';
         const { ethers, network } = require('hardhat');
@@ -134,19 +141,19 @@ async function main() {
         const repeated = read(await cli('checkpoint-without-key-or-resend', 'checkpoint'));
         assert.deepEqual(repeated.creationHashes, relayHashes); assert.deepEqual(session.loadSession(journalFile, plan, revision).operations, prefix);
         assert.equal(relayHashes.length, 5);
-        write(path.join(output, 'checkpoint.json'), checkpoint);
+        writePublic(path.join(output, 'checkpoint.json'), checkpoint);
         assert.deepEqual(reviewedRevision(), revision);
         Object.assign(report, { result: 'passed', completedAt: new Date().toISOString(), fixtureRequests: requests,
             fixtureRelayCalls: relayHashes.length, creationHashes: relayHashes, governorBindings: 0, actorLocksRetained: true });
-        write(path.join(output, 'report.json'), report);
         for (const name of fs.readdirSync(output)) {
             const text = fs.readFileSync(path.join(output, name), 'utf8');
             assert.ok(!text.includes('PRIVATE KEY') && !text.includes('0x' + '11'.repeat(32)) && !text.includes('0x' + '22'.repeat(32)));
             for (const raw of rawCapabilities) assert.ok(!text.includes(raw), 'Raw capability escaped into public artifact');
         }
+        writePublic(path.join(output, 'report.json'), report);
         console.log(JSON.stringify({ result: report.result, revision, creations: 5, governorBindings: 0, liveTransactions: false }));
     } catch {
-        if (!fs.existsSync(path.join(output, 'report.json'))) write(path.join(output, 'report.json'), { ...report, result: 'failed', failedStage: stage });
+        if (!fs.existsSync(path.join(output, 'report.json'))) writePublic(path.join(output, 'report.json'), { ...report, result: 'failed', failedStage: stage });
         throw Error('Creator clean-checkout rehearsal stopped; no qualification inferred');
     } finally {
         if (server) await new Promise(resolve => server.close(resolve));
@@ -154,4 +161,4 @@ async function main() {
     }
 }
 if (require.main === module) main().catch(() => { console.error('Creator clean-checkout rehearsal stopped; private diagnostics omitted.'); process.exitCode = 1; });
-module.exports = { main };
+module.exports = { main, publicRecord };
