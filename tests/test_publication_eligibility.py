@@ -718,3 +718,34 @@ def test_qualification_package_remains_independent_of_publication_intent(event, 
         assert jobs[name]["if"] == expected
         assert "publication-eligibility" in jobs[name]["needs"] and "package" in jobs[name]["needs"]
         assert not jobs[name].get("continue-on-error", False)
+
+
+def test_existing_pr_ci_always_covers_publication_policy_and_handoffs():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/pr-ci.yml").read_text())
+    assert workflow["permissions"] == {"contents": "read"}
+    job = workflow["jobs"]["smoke"]
+    assert "permissions" not in job and job["needs"] == "lint"
+    assert job["if"] == "${{ always() }}"
+    steps = job["steps"]
+    test_index = next(
+        i for i, step in enumerate(steps) if step.get("name") == "Verify publication eligibility and artifact handoffs"
+    )
+    install_index = next(i for i, step in enumerate(steps) if step.get("name") == "Install dependencies")
+    old_smoke_index = next(i for i, step in enumerate(steps) if step.get("name") == "Run smoke tests")
+    assert install_index < test_index < old_smoke_index
+    test_step = steps[test_index]
+    assert "if" not in test_step and not test_step.get("continue-on-error", False)
+    assert test_step["run"].splitlines() == [
+        "mkdir -p evidence",
+        "python -m pytest --noconftest -o addopts= tests/test_publication_eligibility.py tests/test_release_artifact_handoffs.py -q --junitxml=evidence/publication-eligibility.xml",
+    ]
+    evidence = steps[test_index + 1]
+    assert evidence["if"] == "always()"
+    assert evidence["uses"] == "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"
+    assert evidence["with"] == {
+        "name": "pr-publication-eligibility",
+        "path": "evidence/publication-eligibility.xml",
+        "if-no-files-found": "warn",
+    }
+    assert "tests/test_af_requests.py" in steps[old_smoke_index]["run"]
+    assert any("scripts.validate_demo_catalog" in step.get("run", "") for step in steps)
