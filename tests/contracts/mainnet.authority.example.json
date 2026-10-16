@@ -1,0 +1,76 @@
+{
+  "config": {
+    "schema": "agialpha.mainnet.config.v2",
+    "chainId": 1,
+    "deployer": "REPLACE_WITH_SEPARATE_SUPPORTED_CREATOR",
+    "nonce": 0,
+    "block": {
+      "number": 0,
+      "hash": "REPLACE_WITH_FRESH_CANONICAL_FINALIZED_HASH"
+    },
+    "governor": {
+      "kind": "ledger-eoa",
+      "address": "REPLACE_WITH_CHOSEN_CHECKSUMMED_GOVERNOR",
+      "addressAcknowledgement": "REPEAT_EXACT_CHOSEN_GOVERNOR"
+    },
+    "dependencies": {
+      "token": {
+        "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+        "codeHash": "REPLACE_WITH_REVIEWED_CODE_HASH"
+      },
+      "ens": {
+        "address": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+        "codeHash": "REPLACE_WITH_REVIEWED_CODE_HASH"
+      },
+      "wrapper": {
+        "address": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+        "codeHash": "REPLACE_WITH_REVIEWED_CODE_HASH"
+      }
+    },
+    "rootOwners": {
+      "alpha.agi.eth": "REPLACE_WITH_REVIEWED_ROOT_OWNER",
+      "alpha.agent.agi.eth": "REPLACE_WITH_REVIEWED_ROOT_OWNER",
+      "alpha.club.agi.eth": "REPLACE_WITH_REVIEWED_ROOT_OWNER"
+    },
+    "parameters": {
+      "minimumValidatorStake": "REPLACE_APPROVED_BASE_UNITS",
+      "minimumAgentStake": "REPLACE_APPROVED_BASE_UNITS",
+      "quorum": 0,
+      "maximumRiskBps": 0
+    },
+    "sender": {
+      "mode": "empty-eoa-direct-create.v1"
+    },
+    "envelope": {
+      "gasLimit": "0",
+      "maxFeePerGas": "0",
+      "maxPriorityFeePerGas": "0",
+      "accessList": []
+    }
+  },
+  "journal": {
+    "schema": "ethereum.cross-project-nonce-journal.v1",
+    "journalId": "REPLACE_COORDINATED_CAMPAIGN_ID",
+    "revision": 1,
+    "chainId": 1,
+    "sender": "REPEAT_SELECTED_CREATOR",
+    "scope": [
+      "alpha",
+      "jobs",
+      "manager"
+    ],
+    "block": {
+      "number": 0,
+      "hash": "REPEAT_CONFIG_BLOCK_HASH"
+    },
+    "latestNonce": 0,
+    "pendingNonce": 0,
+    "allocations": [
+      {
+        "project": "alpha",
+        "startNonce": 0,
+        "count": 5
+      }
+    ]
+  }
+}
