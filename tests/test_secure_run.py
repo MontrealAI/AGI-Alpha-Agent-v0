@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-import subprocess
-import shutil
 import json
 import os
+import shutil
+import subprocess
 import sys
+
 import pytest
 
-from alpha_factory_v1.core.utils.secure_run import secure_run, SandboxTimeout
+from alpha_factory_v1.core.utils.secure_run import SandboxTimeout, secure_run
 
 
 def test_secure_run_timeout(monkeypatch) -> None:
@@ -54,6 +55,7 @@ def test_secure_run_refuses_host_fallback(monkeypatch, firejail) -> None:
 @pytest.mark.parametrize("firejail_available", [True, False])
 def test_unusable_docker_is_checked_before_candidate_execution(monkeypatch, tmp_path, failure, firejail_available):
     from pathlib import Path
+
     from alpha_factory_v1.core.utils.secure_run import SandboxUnavailable
 
     monkeypatch.setattr(

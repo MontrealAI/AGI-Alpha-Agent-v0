@@ -3,15 +3,15 @@
 
 from __future__ import annotations
 
-import shutil
-import subprocess
 import os
 import re
-from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 import threading
+from collections.abc import Sequence
+from pathlib import Path
 from typing import BinaryIO
-from typing import Sequence
 
 __all__ = ["SandboxTimeout", "SandboxUnavailable", "secure_run"]
 
