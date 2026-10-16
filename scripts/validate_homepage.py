@@ -24,8 +24,28 @@ from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
 
+def assert_reading_links(page: Page, language: str) -> None:
+    """Language switches preserve each guide's visible text and hidden context."""
+    guides = page.locator("#reading .reading-card .reading-guide")
+    expect(guides).to_have_count(4)
+    contexts = (
+        ("Governed improvement", "Sustainable improvement", "Discovery & invention", "Evidence & memory")
+        if language == "en"
+        else ("Amélioration encadrée", "Amélioration durable", "Découverte et invention", "Preuves et mémoire")
+    )
+    for guide, context in zip(guides.all(), contexts):
+        expect(guide.locator("span[data-home-key^='reading-copy-']")).to_have_text(
+            "Explore the current guide" if language == "en" else "Explorer le guide actuel"
+        )
+        expect(guide.locator(".sr-only")).to_have_text(": " + context)
+        expect(guide.locator("span[aria-hidden='true']")).to_have_text("↗")
+    expect(page.locator("#reading a[data-home-key]")).to_have_count(0)
+    expect(page.locator("#reading > .reading-guide > span[aria-hidden='true']")).to_have_text("↗")
+
+
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    assert_reading_links(page, language)
     for selector, path, fragment in (
         ("[data-discovery-link]", "successor/discover/", ""),
         ("[data-mission-link]", "successor/mission/", "guided-journey"),

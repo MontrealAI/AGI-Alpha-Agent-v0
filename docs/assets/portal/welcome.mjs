@@ -1,6 +1,31 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "reading-source": "Article anglais · LinkedIn",
+    "reading-capital-summary": "Demandez-vous si une capacité utile peut couvrir ses coûts d’exécution et de vérification avant de financer une nouvelle amélioration.",
+    "reading-capital-topic": "Amélioration durable",
+    "reading-copy-0": "LECTURES CHOISIES",
+    "reading-copy-1": "Les idées derrière le travail.",
+    "reading-copy-2": "Explorer le guide actuel",
+    "reading-copy-3": "Explorer le guide actuel",
+    "reading-copy-4": "Explorer le guide actuel",
+    "reading-copy-5": "Explorer le guide actuel",
+    "reading-copy-6": "Articles de Vincent Boucher · Originaux anglais sur LinkedIn. Certains décrivent d’anciennes versions; les guides actuels précisent l’installation, les paiements et la disponibilité. LinkedIn peut demander une connexion.",
+    "reading-copy-7": "Alpha et AGIJobsv0 partagent un écosystème $AGIALPHA. AGIJobManager fournit le parcours USDC distinct. Chaque liaison d’exécution et de règlement exige sa propre configuration et ses preuves.",
+    "reading-copy-8": "Notes de lecture et contexte des versions",
+    "reading-intro": "Explorez les occasions, comparez les améliorations et conservez les découvertes utiles.",
+    "reading-invention-summary": "Explorez un marché qui confie les problèmes aux prestataires compétents, finance le discernement et conserve les acquis du travail.",
+    "reading-invention-topic": "Découverte et invention",
+    "reading-memory-summary": "Voyez comment un historique peut réunir la demande initiale, le résultat livré et sa revue pour les retrouver ensemble.",
+    "reading-memory-topic": "Preuves et mémoire",
+    "reading-successor-summary": "Reliez les améliorations candidates, les comparaisons à une référence et les preuves conservées à la vision des successeurs.",
+    "reading-successor-topic": "Amélioration encadrée",
+
+    "reading-successor-guide-context": ": Amélioration encadrée",
+    "reading-capital-guide-context": ": Amélioration durable",
+    "reading-invention-guide-context": ": Découverte et invention",
+    "reading-memory-guide-context": ": Preuves et mémoire",
+
     "journey-eyebrow": "UN PROJET. DES CHOIX EXPLICITES. UN HISTORIQUE CONSERVÉ.",
     "journey-title": "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω.",
     "journey-description": "Explorez les preuves fournies, choisissez une tâche limitée et gardez votre projet au fil des travaux Jobs et Fleet. Inspectez chaque retour avant le prochain cycle.",

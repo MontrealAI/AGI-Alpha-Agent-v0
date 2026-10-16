@@ -980,3 +980,24 @@ html.home-large-text {
         box-shadow: none;
     }
 }
+
+/* Selected reading stays independent of the task and funding interfaces. */
+.reading-section { --reading-ink: #30203f; --reading-muted: #62536e; --reading-accent: #60358a; padding-block: 4rem; scroll-margin-top: 2rem; }
+.reading-section .reading-heading { max-width: 52rem; margin-bottom: 1.75rem; }
+.reading-section .reading-eyebrow { color: var(--reading-accent); font-size: max(0.95rem, 0.9em); font-weight: 700; letter-spacing: 0.05em; }
+.reading-section h2 { color: var(--reading-ink); font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.18; margin: 0.5rem 0 1rem; }
+.reading-section p { color: var(--reading-muted); font-size: max(1.05rem, 1em); line-height: 1.65; overflow-wrap: anywhere; }
+.reading-section .reading-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: 1.25rem; }
+.reading-section .reading-card { min-width: 0; display: flex; flex-direction: column; gap: 0.7rem; padding: 1.75rem; border: 1px solid #d6c7e0; border-radius: 1rem; background: #fffdfb; }
+.reading-section .reading-topic { margin: 0; color: var(--reading-accent); font-size: max(0.95rem, 0.9em); font-weight: 650; }
+.reading-section h3 { margin: 0; font-size: max(1.35rem, 1.2em); line-height: 1.4; letter-spacing: -0.015em; overflow-wrap: anywhere; }
+.reading-section .reading-card h3 a { color: var(--reading-ink); text-decoration: underline; text-underline-offset: 0.2em; }
+.reading-section .reading-card h3 a:hover { color: var(--reading-accent); }
+.reading-section .reading-card p { margin-block: 0; }
+.reading-section .reading-card .reading-source { font-size: max(0.94rem, 0.9em); }
+.reading-section .reading-guide { display: inline-block; width: fit-content; max-width: 100%; margin-top: auto; padding-block: 0.6rem; color: var(--reading-accent); font-size: max(1rem, 1em); font-weight: 650; line-height: 1.5; text-decoration: underline; text-underline-offset: 0.2em; overflow-wrap: anywhere; }
+.reading-section .reading-note { margin-block: 1.5rem 0.5rem; max-width: 60rem; font-size: max(1rem, 1em); }
+.reading-section .reading-context { padding: 1rem 1.25rem; border-left: 3px solid #9565ba; background: #f0e8f6; border-radius: 0 0.6rem 0.6rem 0; }
+.reading-section a:focus-visible { outline: 3px solid #60358a; outline-offset: 5px; border-radius: 2px; }
+@media (max-width: 760px) { .reading-section .reading-grid { grid-template-columns: minmax(0, 1fr); } .reading-section .reading-card { padding: 1.25rem; } }
+@media print { .reading-section .reading-grid { display: block; } .reading-section .reading-card { break-inside: avoid; margin-bottom: 1rem; } }
