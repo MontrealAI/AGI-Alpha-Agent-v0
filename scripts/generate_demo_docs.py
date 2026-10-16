@@ -29,12 +29,21 @@ TITLE_RE = re.compile(r"^#(?!#)\s*(.+)")
 def extract_title(readme: Path) -> str:
     """Return a reasonable title for the given README."""
     lines = readme.read_text(encoding="utf-8").splitlines()
-    # Search the first 50 lines for a level-one heading
-    for line in lines[:50]:
-        m = TITLE_RE.match(line.strip())
+    # Current launch instructions can precede the original research title.
+    # Search the complete README, excluding headings inside fenced examples.
+    fence: str | None = None
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith(("```", "~~~")):
+            marker = stripped[:3]
+            fence = None if fence == marker else marker if fence is None else fence
+            continue
+        if fence is not None:
+            continue
+        m = TITLE_RE.match(stripped)
         if m and "DISCLAIMER_SNIPPET.md" not in m.group(1):
             return m.group(1).strip()
-    # Fallback to folder name if no heading found early in the file
+    # Fallback only when the README contains no level-one heading
     return readme.parent.name.replace("_", " ").title()
 
 

@@ -1,3 +1,10 @@
+## 1.33.0 — Recoverable local SUCCESSOR journeys
+
+- Integrate supplied-evidence discovery, partial input recovery, bounded Specialist evaluation and explicit project continuity.
+- Require the complete pinned SUCCESSOR browser/recovery/accessibility gate before release packaging.
+- Preserve native compiler, execution admission and deployment trust. Independent custody, providers, market access and Fleet commissioning remain separate gates.
+- See [release notes](docs/agent/RELEASE_NOTES_1.33.0.md) for local-preview scope and upgrade boundaries.
+
 ## 1.32.0 — Inspectable work and supplied-input journeys
 
 - Integrate explicit Jobs adapters, native supplier-browser controls, atomic budget reservations and unsigned WorkSpec authoring.

@@ -1,13 +1,13 @@
 [See docs/DISCLAIMER_SNIPPET.md](../DISCLAIMER_SNIPPET.md)
 
-# Cross Industry Alpha Factory
+# 👁️ Alpha-Factory v1 — Cross-Industry **AGENTIC α-AGI** Demo
 
 ![preview](../cross_industry_alpha_factory/assets/preview.svg){.demo-preview}
 
 [Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.32.0
+## Current runnable path — 1.33.0
 
 **Mode:** Supplied-input comparison. Compare your own cross-industry assessments
 using explicit priorities, review thresholds and evidence notes. This is a

@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9dYuRiDz5RefTe5GpCnP9sAqUXxBZa/Peg4nPXNUDSM='; style-src 'sha256-tDQa+SPREMz4HaEVpzlFq8RPHpweheEHSeOVCOnvN4g='; connect-src 'none'; img-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Specialist evaluation · Alpha</title><style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#101b25;color:#e9f1f5}*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:24px}nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}nav button{margin-left:auto}a{color:#9fe3dd}header{padding:36px 0 20px}h1{font-size:clamp(2rem,6vw,3.6rem);margin:10px 0;line-height:1.1}h2{font-size:1.4rem}p{line-height:1.65}header>p:first-child{color:#e5c879;font-size:.85rem;letter-spacing:.16em}section,aside{background:#182936;border:1px solid #40525e;border-radius:14px;padding:24px;margin:20px 0}aside{border-left:4px solid #e5c879}label{display:block;margin:16px 0 8px;font-weight:600}textarea{width:100%;resize:vertical;background:#101b25;color:#e9f1f5;border:1px solid #73858e;padding:12px;border-radius:6px;font:13px/1.5 monospace}button,input{font:inherit}button{border:1px solid #9fe3dd;border-radius:6px;background:#21494c;color:#fff;padding:10px 16px;margin:12px 8px 4px 0;cursor:pointer}button:disabled{opacity:.55;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #e5c879;outline-offset:4px}.states{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.states article{border:1px solid #667a85;padding:16px;border-radius:8px}.states h3{font-size:1rem}.states p{margin-bottom:0}pre,.mono{overflow-wrap:anywhere;white-space:pre-wrap;word-break:break-word}pre{font-size:12px}#error{padding:15px;border:1px solid #ffb3aa;color:#ffcec7}input[type=file]{max-width:100%}footer{font-size:.8rem;color:#bacbd3;line-height:1.8}summary{cursor:pointer}#comparisons p{border-bottom:1px solid #40525e;padding-bottom:10px}@media(max-width:700px){main{padding:14px}section,aside{padding:17px}.states{grid-template-columns:1fr}nav button{margin-left:0}}
+
+</style></head>
+<body><main><nav><a href="../discover/">Alpha discovery</a> · <a href="../work/">Bounded work</a> · <a href="../../../../DISCLAIMER_SNIPPET" title="See docs/DISCLAIMER_SNIPPET.md">Disclaimer</a><button id="language" type="button">Français</button></nav>
+<header><p data-en="EVIDENCE BEFORE DESIGNATION" data-fr="LA PREUVE AVANT LA DÉSIGNATION">EVIDENCE BEFORE DESIGNATION</p><h1 data-en="Evaluate one exact candidate" data-fr="Évaluer un candidat précis">Evaluate one exact candidate</h1><p data-en="Freeze the mission contract. Compare reported outcomes fairly. Keep independent proof and permission separate." data-fr="Figez le contrat de mission. Comparez équitablement les résultats déclarés. Séparez preuve indépendante et permission.">Freeze the mission contract. Compare reported outcomes fairly. Keep independent proof and permission separate.</p></header>
+<aside data-en="This is a local evaluation-preparation and evidence-inspection tool. It runs no candidate or protected test and cannot certify Specialist ASI. The example contains placeholder identities, not real evidence. Save your record before closing this page." data-fr="Cet outil local prépare l’évaluation et examine les preuves déclarées. Il n’exécute aucun candidat ni test protégé et ne certifie pas une ASI spécialisée. L’exemple contient des identités fictives. Enregistrez votre dossier avant de fermer la page.">This is a local evaluation-preparation and evidence-inspection tool. It runs no candidate or protected test and cannot certify Specialist ASI. The example contains placeholder identities, not real evidence. Save your record before closing this page.</aside>
+<section><h2 data-en="1. Define and freeze" data-fr="1. Définir et figer">1. Define and freeze</h2><p data-en="Identify the candidate, incumbent and best credible alternative. Commit exact source, configuration, tools, knowledge and interfaces; a common task set, metrics, uncertainty method, resources and expiry. Keep protected cases outside this record. Distinct hashes and reviewer IDs do not establish freshness or independence." data-fr="Identifiez le candidat, la méthode actuelle et la meilleure alternative crédible. Fixez les sources, la configuration, les outils, les connaissances et les interfaces, puis les tâches communes, mesures, incertitudes, ressources et échéance. Gardez les cas protégés hors du dossier. Des identités distinctes ne prouvent ni la nouveauté ni l’indépendance.">Identify the candidate, incumbent and best credible alternative. Commit exact source, configuration, tools, knowledge and interfaces; a common task set, metrics, uncertainty method, resources and expiry. Keep protected cases outside this record. Distinct hashes and reviewer IDs do not establish freshness or independence.</p>
+<label for="contract" data-en="Evaluation contract (JSON; illustrative scaffold)" data-fr="Contrat d’évaluation (JSON ; exemple fictif)">Evaluation contract (JSON; illustrative scaffold)</label><textarea id="contract" rows="13" spellcheck="false"></textarea>
+<button id="freeze" type="button" data-en="Freeze exact contract" data-fr="Figer le contrat exact">Freeze exact contract</button><p id="binding" class="mono"></p></section>
+<section><h2 data-en="2. Inspect reported results" data-fr="2. Examiner les résultats déclarés">2. Inspect reported results</h2><p data-en="After freezing, fill the report template from actual evidence. Unknown intervals stay null. All three participants must use the same registered conditions. Adding a report does not run or verify its experiment. Every attempt and reported failure stays in the exported history." data-fr="Après avoir figé le contrat, remplissez le modèle à partir de preuves réelles. Les intervalles inconnus restent null. Les trois participants doivent respecter les mêmes conditions. Ajouter un rapport n’exécute ni ne vérifie l’expérience. Chaque tentative et échec déclaré reste dans l’historique exporté.">After freezing, fill the report template from actual evidence. Unknown intervals stay null. All three participants must use the same registered conditions. Adding a report does not run or verify its experiment. Every attempt and reported failure stays in the exported history.</p>
+<label for="report" data-en="Reported evidence metadata (JSON; no protected cases)" data-fr="Métadonnées des résultats déclarés (JSON ; aucun cas protégé)">Reported evidence metadata (JSON; no protected cases)</label><textarea id="report" rows="9" spellcheck="false" disabled></textarea><button id="add" type="button" disabled data-en="Check and retain report" data-fr="Vérifier et conserver le rapport">Check and retain report</button></section>
+<p id="error" role="alert" hidden></p><p id="notice" role="status" aria-live="polite"></p>
+<section id="result" hidden><h2 data-en="3. Decide from the evidence" data-fr="3. Décider selon les preuves">3. Decide from the evidence</h2><div class="states"><article><h3 data-en="Reported comparison" data-fr="Comparaison déclarée">Reported comparison</h3><p id="comparison"></p></article><article><h3 data-en="Independent verdict" data-fr="Verdict indépendant">Independent verdict</h3><p data-en="Not established. Verification is uncommissioned." data-fr="Non établi. Vérification non mandatée.">Not established. Verification is uncommissioned.</p></article><article><h3 data-en="Operational admission" data-fr="Autorisation opérationnelle">Operational admission</h3><p data-en="Not requested. No authority." data-fr="Non demandée. Aucune autorité.">Not requested. No authority.</p></article></div><p id="scope"></p><div id="comparisons"></div><h3 data-en="Still missing" data-fr="Éléments manquants">Still missing</h3><ul id="gaps"></ul><p data-en="A browser selection, distinct reviewer name or self-signed report cannot establish independence or protected custody. A governed verifier and separate admission path must be commissioned outside this tool. Beating two comparators alone does not establish general ASI." data-fr="Un choix dans le navigateur, un nom distinct ou un rapport autosigné ne prouve ni indépendance ni garde protégée. Un vérificateur gouverné et une autorisation séparée doivent être mandatés hors de cet outil. Dépasser deux références ne démontre pas une ASI générale.">A browser selection, distinct reviewer name or self-signed report cannot establish independence or protected custody. A governed verifier and separate admission path must be commissioned outside this tool. Beating two comparators alone does not establish general ASI.</p><details><summary data-en="Inspect exact assessment and failure history" data-fr="Examiner le bilan exact et les échecs">Inspect exact assessment and failure history</summary><pre id="inspection"></pre></details></section>
+<section><h2 data-en="4. Save and reopen" data-fr="4. Enregistrer et rouvrir">4. Save and reopen</h2><button id="save" type="button" disabled data-en="Save current record" data-fr="Enregistrer le dossier actuel">Save current record</button><button id="previous" type="button" disabled data-en="Save previous valid record" data-fr="Enregistrer le dossier valide précédent">Save previous valid record</button><label for="restore" data-en="Reopen saved record" data-fr="Rouvrir un dossier enregistré">Reopen saved record</label><input id="restore" type="file" accept="application/json,.json"><p data-en="Reopening validates bytes and restores historical reports only. No live grant, trust, reviewer status or authority is restored. Invalid imports leave your existing work intact." data-fr="La réouverture vérifie les octets et restaure uniquement les rapports historiques. Aucun droit actif, confiance, statut de réviseur ou autorité n’est restauré. Les imports invalides préservent votre travail.">Reopening validates bytes and restores historical reports only. No live grant, trust, reviewer status or authority is restored. Invalid imports leave your existing work intact.</p></section>
+<footer>Source <span class="mono">7c8147967eed70558454d37e6ae2f13504dac6e9f6618645f115aa615d0c3509</span>. <span data-en="Public metadata only. No provider calls, native execution, funding or settlement." data-fr="Métadonnées publiques uniquement. Aucun appel fournisseur, exécution native, financement ou règlement.">Public metadata only. No provider calls, native execution, funding or settlement.</span></footer></main><script>
+(()=>{
+'use strict';
+const transport=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Fixed, bounded aggregation engines. No generated JavaScript is executed. */
+const VERSION = 'successor-browser-v1';
+const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join('|') === [...keys].sort().join('|');
+const integer = (value, low, high) => Number.isSafeInteger(value) && value >= low && value <= high;
+function scalar(value) {
+    if (typeof value !== 'string') return false;
+    for (let i = 0; i < value.length; i++) {
+        const c = value.charCodeAt(i);
+        if (c >= 0xd800 && c <= 0xdbff) {
+            const next = value.charCodeAt(++i);
+            if (!(next >= 0xdc00 && next <= 0xdfff)) return false;
+        } else if (c >= 0xdc00 && c <= 0xdfff) return false;
+    }
+    return true;
+}
+function canonical(value) {
+    let nodes = 0;
+    function encode(item, depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
+        if (item === null || typeof item === 'boolean') return JSON.stringify(item);
+        if (typeof item === 'string' && scalar(item)) return JSON.stringify(item);
+        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return String(item);
+        if (Array.isArray(item)) {
+            for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
+            return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
+        }
+        if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
+            return '{' + Object.keys(item).sort().map(key => {
+                if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
+                return JSON.stringify(key) + ':' + encode(item[key], depth + 1);
+            }).join(',') + '}';
+        }
+        throw Error('Unsupported JSON value; integers and Unicode scalars required');
+    }
+    const result = encode(value);
+    if (new TextEncoder().encode(result).length > 2000000) throw Error('Canonical JSON exceeds 2 MB');
+    return result;
+}
+async function digest(domain, value) {
+    if (!/^[a-z][a-z0-9-]{0,63}$/.test(domain)) throw Error('Invalid digest domain');
+    const bytes = new TextEncoder().encode('successor-omega/v1:' + domain + '\0' + canonical(value));
+    return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), n => n.toString(16).padStart(2, '0')).join('');
+}
+/** Parse untrusted imports before they can allocate large or deeply nested objects. */
+function parseBounded(text) {
+    if (typeof text !== 'string' || new TextEncoder().encode(text).length > 2_000_000) throw Error('Import exceeds 2 MB');
+    let pos = 0, nodes = 0;
+    const ws = () => { while (/[\x20\t\n\r]/.test(text[pos] || '\u0000')) pos++; };
+    const string = () => {
+        const start = pos++;
+        while (pos < text.length) {
+            if (text[pos] === '\\') { pos += 2; continue; }
+            if (text[pos++] === '"') {
+                const value = JSON.parse(text.slice(start, pos));
+                if (!scalar(value)) throw Error('Malformed Unicode');
+                return value;
+            }
+        }
+        throw Error('Unterminated string');
+    };
+    function read(depth = 0) {
+        if (++nodes > 100000 || depth > 32) throw Error('Import complexity exceeds limit');
+        ws();
+        if (text[pos] === '"') return string();
+        if (text[pos] === '[' || text[pos] === '{') {
+            const object = text[pos++] === '{', end = object ? '}' : ']';
+            const value = object ? Object.create(null) : [];
+            ws(); if (text[pos] === end) { pos++; return value; }
+            while (true) {
+                ws();
+                if (object) {
+                    if (text[pos] !== '"') throw Error('Expected object key');
+                    const key = string(); ws();
+                    if (Object.hasOwn(value, key)) throw Error('Duplicate JSON key');
+                    if (text[pos++] !== ':') throw Error('Expected colon');
+                    value[key] = read(depth + 1);
+                } else value.push(read(depth + 1));
+                ws(); const next = text[pos++];
+                if (next === end) break;
+                if (next !== ',') throw Error('Expected comma');
+            }
+            return value;
+        }
+        for (const [token, value] of [['true', true], ['false', false], ['null', null]]) {
+            if (text.startsWith(token, pos)) { pos += token.length; return value; }
+        }
+        const match = /^-?(?:0|[1-9]\d*)(?![\d.eE+-])/.exec(text.slice(pos));
+        if (!match) throw Error('Expected integer JSON value');
+        pos += match[0].length; const value = Number(match[0]);
+        if (!Number.isSafeInteger(value) || Object.is(value, -0)) throw Error('Unsafe integer');
+        return value;
+    }
+    const value = read(); ws();
+    if (pos !== text.length) throw Error('Trailing JSON content');
+    canonical(value);
+    return value;
+}
+function validateRequest(request) {
+    const keys = ['schema_version', 'kind', 'request_id', 'mission', 'seed', 'max_candidates', 'formation_trials', 'max_events', 'language'];
+    if (!request || typeof request !== 'object' || Array.isArray(request) || !Object.hasOwn(request, 'request_id') || Object.keys(request).some(key => !keys.includes(key))) throw Error('Invalid versioned rehearsal request');
+    request = {schema_version: 1, kind: 'successor-rehearsal', mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...request};
+    if (!exact(request, keys) || request.schema_version !== 1 || request.kind !== 'successor-rehearsal' || request.mission !== 'streaming-metrics-v1' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(request.request_id) || !integer(request.seed, 0, 4294967295) || !integer(request.max_candidates, 2, 12) || !integer(request.formation_trials, 1, 6) || !integer(request.max_events, 64, 20000) || !['en', 'fr'].includes(request.language)) throw Error('Invalid versioned rehearsal request');
+    return structuredClone(request);
+}
+function newRequest(options = {}) {
+    return validateRequest({schema_version: 1, kind: 'successor-rehearsal', request_id: crypto.randomUUID(), mission: 'streaming-metrics-v1', seed: 42, max_candidates: 4, formation_trials: 2, max_events: 1000, language: 'en', ...options});
+}
+function order(a, b) {
+    const aa = Array.from(a, c => c.codePointAt(0)), bb = Array.from(b, c => c.codePointAt(0));
+    for (let i = 0; i < Math.min(aa.length, bb.length); i++) if (aa[i] !== bb[i]) return aa[i] - bb[i];
+    return aa.length - bb.length;
+}
+const rowOrder = (a, b) => order(a.day, b.day) || order(a.service, b.service);
+function validateEvents(events) {
+    if (!Array.isArray(events) || events.length > 20000) throw Error('Event count exceeds mission bound');
+    for (const e of events) {
+        if (!exact(e, ['day', 'service', 'duration_us', 'ok']) || !scalar(e.day) || !scalar(e.service) || !integer(Array.from(e.day).length, 1, 64) || !integer(Array.from(e.service).length, 1, 64) || !integer(e.duration_us, 0, 1000000000) || typeof e.ok !== 'boolean') throw Error('Malformed aggregation event');
+    }
+}
+const makeRow = e => ({day: e.day, service: e.service, count: 0, total_duration_us: 0, max_duration_us: 0, error_count: 0});
+function update(row, e, kind = 'builtin') {
+    row.count++; row.total_duration_us += e.duration_us; row.error_count += Number(!e.ok);
+    if (kind === 'builtin') row.max_duration_us = Math.max(row.max_duration_us, e.duration_us);
+    else if (e.duration_us > row.max_duration_us) row.max_duration_us = e.duration_us;
+}
+function current(events) {
+    validateEvents(events); const groups = new Map();
+    for (const e of events) {
+        const key = JSON.stringify([e.day, e.service]);
+        if (!groups.has(key)) groups.set(key, makeRow(e));
+        update(groups.get(key), e);
+    }
+    return [...groups.values()].sort(rowOrder);
+}
+function beta(events) {
+    validateEvents(events); const sorted = [...events].sort(rowOrder), rows = [];
+    for (const e of sorted) {
+        let row = rows[rows.length - 1];
+        if (!row || row.day !== e.day || row.service !== e.service) { row = makeRow(e); rows.push(row); }
+        row.count += 1; row.total_duration_us += e.duration_us;
+        row.error_count += e.ok ? 0 : 1;
+        row.max_duration_us = row.max_duration_us >= e.duration_us ? row.max_duration_us : e.duration_us;
+    }
+    return rows;
+}
+function validateCandidate(c) {
+    if (!exact(c, ['version', 'layout', 'cache_last', 'update']) || c.version !== 1 || !['nested', 'tuple'].includes(c.layout) || typeof c.cache_last !== 'boolean' || !['branch', 'builtin'].includes(c.update)) throw Error('Candidate is outside the fixed grammar');
+    return c;
+}
+function candidate(events, config) {
+    validateEvents(events); validateCandidate(config);
+    const groups = new Map(), rows = []; let last = null;
+    for (const e of events) {
+        let row;
+        if (config.cache_last && last && e.day === last.day && e.service === last.service) row = last;
+        else if (config.layout === 'nested') {
+            if (!groups.has(e.day)) groups.set(e.day, new Map());
+            const services = groups.get(e.day);
+            row = services.get(e.service);
+            if (!row) { row = makeRow(e); services.set(e.service, row); rows.push(row); }
+        } else {
+            const key = JSON.stringify([e.day, e.service]); row = groups.get(key);
+            if (!row) { row = makeRow(e); groups.set(key, row); rows.push(row); }
+        }
+        update(row, e, config.update); last = row;
+    }
+    return rows.sort(rowOrder);
+}
+function generateCandidates(seed, count) {
+    if (!integer(count, 2, 12)) throw Error('Candidate count outside bound');
+    const out = [];
+    // Eight complete compositions; repeated configuration is never represented as a new challenger.
+    for (let i = 0; i < Math.min(count, 8); i++) {
+        const bits = (i + (seed % 8)) % 8;
+        out.push({version: 1, layout: bits & 1 ? 'nested' : 'tuple', cache_last: Boolean(bits & 2), update: bits & 4 ? 'branch' : 'builtin'});
+    }
+    return out;
+}
+function workload(seed, count, mode = 'mixed') {
+    let state = seed >>> 0;
+    const next = () => (state = (Math.imul(state, 1664525) + 1013904223) >>> 0);
+    const names = ['api', 'résumé', '東京', '🙂', '__proto__', '\ue000', '𝄞'];
+    return Array.from({length: count}, (_, i) => ({day: 'day-' + (next() % (mode === 'high' ? 97 : 3)), service: mode === 'high' ? names[next() % names.length] + i : names[next() % names.length], duration_us: next() % 1000000001, ok: next() % 5 !== 0}));
+}
+const pause = () => new Promise(resolve => setTimeout(resolve, 0));
+function measured(fn, events) {
+    const start = performance.now(); const result = fn(events);
+    return {elapsed_ns: Math.max(1, Math.round((performance.now() - start) * 1000000)), rows: result.length, result};
+}
+function correct(fn) {
+    const valid = [[], [{day: '🙂', service: '__proto__', duration_us: 1000000000, ok: false}], workload(12, 64, 'high'), workload(98, 120)];
+    if (!valid.every(events => canonical(fn(events)) === canonical(beta(events)))) return false;
+    const bad = [[{day: '', service: 'x', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: true, ok: true}], [{day: 'd', service: 'x', duration_us: 1, ok: 'true'}], [{day: 'd', service: '\ud800', duration_us: 1, ok: true}], [{day: 'd', service: 'x', duration_us: -1, ok: true}]];
+    return bad.every(events => { try { fn(events); return false; } catch { return true; } });
+}
+function abort(signal) { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); }
+async function discover(request, {signal, onProgress = () => {}, preferred = null} = {}) {
+    request = validateRequest(request); const configurations = generateCandidates(request.seed, request.max_candidates);
+    configurations.sort((a, b) => Number(b.layout === 'nested') - Number(a.layout === 'nested'));
+    if (preferred) { validateCandidate(preferred); configurations.sort((a, b) => Number(canonical(b) === canonical(preferred)) - Number(canonical(a) === canonical(preferred))); }
+    const events = workload(request.seed, request.max_events), attempts = [];
+    const world = {version: 1, prediction: 'nested map reduces tuple-key serialization', uncertainty: 'allocation and sorting may dominate', experiment: 'prioritize nested-map compositions, then test tuple-map alternatives within the same budget', selection_rule: 'minimum measured development elapsed_ns among correct candidates; not final proof'};
+    for (const config of configurations) {
+        abort(signal); await pause(); abort(signal);
+        const fn = values => candidate(values, config), pass = correct(fn), measurement = measured(fn, events);
+        const attempt = {config, construction: {operator: 'bounded-grammar-composition', seed: request.seed, parent: VERSION}, artifact_hash: await digest('candidate', config), correctness: pass, elapsed_ns: measurement.elapsed_ns, rows: measurement.rows};
+        attempts.push(attempt); onProgress(attempts.length, configurations.length);
+    }
+    const nested = attempts.filter(a => a.config.layout === 'nested'), tuples = attempts.filter(a => a.config.layout === 'tuple');
+    world.observation = {nested_mean_ns: Math.round(nested.reduce((sum, a) => sum + a.elapsed_ns, 0) / (nested.length || 1)), tuple_mean_ns: Math.round(tuples.reduce((sum, a) => sum + a.elapsed_ns, 0) / (tuples.length || 1)), interpretation: 'development observation only; confounded by composition and browser timing'};
+    world.falsified_in_this_run = world.observation.nested_mean_ns >= world.observation.tuple_mean_ns;
+    const feasible = attempts.filter(a => a.correctness).sort((a, b) => a.elapsed_ns - b.elapsed_ns);
+    if (!feasible.length) throw Error('No correct candidate; retain Current');
+    return {world, attempts, selected: feasible[0], generation_budget: request.max_candidates, actual_candidates: configurations.length, source: VERSION};
+}
+async function freeze(request, discovery, sourceHash) {
+    if (!/^[0-9a-f]{64}$/.test(sourceHash)) throw Error('Exact engine source digest required');
+    const manifest = {schema_version: 1, request_hash: await digest('request', validateRequest(request)), grammar: discovery.selected.config, candidate_hash: discovery.selected.artifact_hash, engine: VERSION, engine_source_hash: sourceHash, comparators: ['current-one-pass-map-v1', 'beta-sorted-reduction-v1'], protocol: 'browser-local-aggregation-v1', correctness_required: true, minimum_speedup_ppm: 50000, costs: {money: null, review: null, memory: null}, authority: []};
+    return {manifest, release_hash: await digest('release', manifest)};
+}
+async function evaluate(request, frozen, {signal} = {}) {
+    request = validateRequest(request);
+    if (frozen.manifest.request_hash !== await digest('request', request) || frozen.release_hash !== await digest('release', frozen.manifest)) throw Error('Frozen release or request changed');
+    if (frozen.manifest.candidate_hash !== await digest('candidate', frozen.manifest.grammar) || frozen.manifest.protocol !== 'browser-local-aggregation-v1' || frozen.manifest.minimum_speedup_ppm !== 50000 || frozen.manifest.correctness_required !== true || canonical(frozen.manifest.comparators) !== canonical(['current-one-pass-map-v1', 'beta-sorted-reduction-v1'])) throw Error('Candidate or protocol binding mismatch');
+    const config = validateCandidate(frozen.manifest.grammar), fn = e => candidate(e, config), cases = [];
+    const correctness = correct(fn);
+    for (let i = 0; i < 6; i++) {
+        abort(signal); await pause(); abort(signal);
+        const events = workload((request.seed + 100003 + i * 907) >>> 0, i < 2 ? 64 : request.max_events, i % 2 ? 'high' : 'mixed');
+        const samples = [measured(current, events), measured(beta, events), measured(fn, events)];
+        const exact_output = canonical(samples[0].result) === canonical(samples[1].result) && canonical(samples[1].result) === canonical(samples[2].result);
+        cases.push({case_index: i, events: events.length, current_ns: samples[0].elapsed_ns, beta_ns: samples[1].elapsed_ns, candidate_ns: samples[2].elapsed_ns, exact_output});
+    }
+    const totals = {current: 0, beta: 0, candidate: 0};
+    for (const c of cases) { totals.current += c.current_ns; totals.beta += c.beta_ns; totals.candidate += c.candidate_ns; }
+    const best_comparator = totals.current <= totals.beta ? 'current' : 'beta';
+    const hard_gate = correctness && cases.every(c => c.exact_output);
+    return {schema_version: 1, scope: 'browser-rehearsal', release_hash: frozen.release_hash, cases, correctness: hard_gate, totals_ns: totals, best_comparator, local_verdict: !hard_gate ? 'FAIL' : totals.candidate >= totals[best_comparator] ? (best_comparator === 'beta' ? 'RETAIN_ALTERNATIVE' : 'RETAIN_INCUMBENT') : totals.candidate / totals[best_comparator] > 0.95 ? 'INSUFFICIENT_MARGIN' : 'LOCAL_SPEEDUP_OBSERVED', institutional_verdict: 'HOLD', missing: ['independent-verifier', 'frontier-comparator', 'measured-peak-memory', 'accepted-realized-economics', 'principal-issued-authority'], authority: [], timing_limitations: 'Single browser process; timer resolution, order, JIT and device load confound timings. Descriptive measurements only.'};
+}
+async function renew(request, discovery, {signal, onProgress = () => {}, engineSourceHash = null} = {}) {
+    request = validateRequest(request);
+    const trials = [];
+    for (let i = 0; i < request.formation_trials; i++) {
+        abort(signal);
+        const next = {...request, seed: (request.seed + 200003 + i * 997) >>> 0};
+        const control = await discover(next, {signal}), treatment = await discover(next, {signal, preferred: discovery.selected.config});
+        const controlFreeze = await freeze(next, control, engineSourceHash), treatmentFreeze = await freeze(next, treatment, engineSourceHash);
+        const controlEvaluation = await evaluate(next, controlFreeze, {signal}), treatmentEvaluation = await evaluate(next, treatmentFreeze, {signal});
+        trials.push({trial: i, seed: next.seed, control_attempts: control.attempts.length, treatment_attempts: treatment.attempts.length, control, treatment, control_release: controlFreeze, treatment_release: treatmentFreeze, control_evaluation: controlEvaluation, treatment_evaluation: treatmentEvaluation});
+        onProgress(i + 1, request.formation_trials);
+    }
+    return {generation: 2, active_proof: [], authority: [], memory: {permitted: ['configuration-order-hint'], excluded: ['final-cases', 'proof', 'grants']}, primary_metric: 'construction_attempts', interpretation: 'Descriptive matched trials; equal construction counts do not establish compounding.', trials};
+}
+// Canonical encoding and low-order rejection supplement WebCrypto verification.
+// Mathematical torsion encodings: @noble/curves 1.2.0 src/ed25519.ts ED25519_TORSION_SUBGROUP.
+const lowOrderY = new Set([
+    '0000000000000000000000000000000000000000000000000000000000000000',
+    '0100000000000000000000000000000000000000000000000000000000000000',
+    'ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f',
+    '26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05',
+    'c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a',
+]);
+const littleEndian = bytes => BigInt('0x' + [...bytes].reverse().map(v => v.toString(16).padStart(2, '0')).join(''));
+function validatePointEncoding(bytes) {
+    const y = bytes.slice(); y[31] &= 0x7f;
+    const hex = [...y].map(v => v.toString(16).padStart(2, '0')).join('');
+    if (littleEndian(y) >= (1n << 255n) - 19n || lowOrderY.has(hex)) throw Error('Non-canonical or low-order Ed25519 point');
+}
+function validateSignatureEncoding(key, signature) {
+    validatePointEncoding(key); validatePointEncoding(signature.slice(0, 32));
+    if (littleEndian(signature.slice(32)) >= (1n << 252n) + 27742317777372353535851937790883648493n) throw Error('Non-canonical Ed25519 scalar');
+}
+async function verifyNative(request, envelope) {
+    request = validateRequest(request);
+    if (!exact(envelope, ['schema_version', 'kind', 'request_hash', 'evidence', 'evidence_hash', 'scope', 'signature']) || envelope.schema_version !== 1 || envelope.kind !== 'successor-result' || envelope.scope !== 'local-native-rehearsal') throw Error('Unsupported native evidence envelope');
+    if (envelope.request_hash !== await digest('request', request)) throw Error('Native result belongs to a different request');
+    if (!envelope.evidence || envelope.evidence.scope !== envelope.scope || envelope.evidence.request_hash !== envelope.request_hash || !exact(envelope.evidence.request, Object.keys(request)) || canonical(envelope.evidence.request) !== canonical(request)) throw Error('Authenticated evidence request or scope mismatch');
+    if (envelope.evidence_hash !== await digest('evidence', envelope.evidence)) throw Error('Native evidence digest mismatch');
+    if (envelope.signature !== null) {
+        const signature = envelope.signature;
+        if (!exact(signature, ['public_key', 'signature']) || !/^[0-9a-f]{64}$/.test(signature.public_key) || !/^[A-Za-z0-9+/]{86}==$/.test(signature.signature)) throw Error('Malformed native signature');
+        const publicBytes = Uint8Array.from(signature.public_key.match(/../g), x => parseInt(x, 16));
+        const bytes = Uint8Array.from(atob(signature.signature), c => c.charCodeAt(0));
+        validateSignatureEncoding(publicBytes, bytes);
+        const key = await crypto.subtle.importKey('raw', publicBytes, {name: 'Ed25519'}, false, ['verify']);
+        const data = Uint8Array.from(envelope.evidence_hash.match(/../g), x => parseInt(x, 16));
+        if (!await crypto.subtle.verify('Ed25519', key, bytes, data)) throw Error('Invalid native signature');
+    }
+    return {scope: envelope.scope, integrity: 'request-and-evidence-digests-match', authenticity: 'unverified', authority: [], evidence: envelope.evidence};
+}
+
+return {VERSION,canonical,digest,parseBounded,validateRequest,newRequest,validateEvents,current,beta,validateCandidate,candidate,generateCandidates,workload,discover,freeze,evaluate,renew,verifyNative};
+})();
+const evaluation=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Local contract preparation and reported-evidence checks. Never a proof issuer. */
+const {canonical,digest,parseBounded}=transport;
+
+const SCHEMA = 'specialist-evaluation-contract/v1';
+const ROLES = ['candidate', 'incumbent', 'alternative'];
+const DIMENSIONS = ['quality', 'cost', 'time', 'safety', 'robustness', 'human', 'proof'];
+const HASH = /^[a-f0-9]{64}$/;
+const ID = /^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$/;
+const MAX = 1_000_000_000_000;
+function fail(condition, code) { if (!condition) throw Error(`EVALUATION_${code}`); }
+function keys(value, expected) {
+    fail(value && typeof value === 'object' && !Array.isArray(value)
+        && Object.keys(value).sort().join('|') === [...expected].sort().join('|'), 'SCHEMA');
+}
+function label(value, max = 1000) { fail(typeof value === 'string' && value.trim() && value.length <= max, 'TEXT'); }
+function id(value) { fail(typeof value === 'string' && ID.test(value), 'ID'); }
+function hash(value) { fail(typeof value === 'string' && HASH.test(value), 'HASH'); }
+function integer(value, low = 0, high = MAX) { fail(Number.isSafeInteger(value) && !Object.is(value, -0) && value >= low && value <= high, 'INTEGER'); }
+function list(value, min, max) { fail(Array.isArray(value) && value.length >= min && value.length <= max, 'LIST'); }
+function unique(rows, key) { fail(new Set(rows.map(row => row[key])).size === rows.length, 'DUPLICATE'); }
+function clone(value) { return parseBounded(canonical(value)); }
+function freeze(value) {
+    if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+    return value;
+}
+function time(value) {
+    fail(typeof value === 'string' && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(value)
+        && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value, 'TIME');
+}
+function participant(row) {
+    keys(row, ['id', 'sourceHash', 'configurationHash', 'toolsHash', 'knowledgeHash', 'interfacesHash']);
+    id(row.id);
+    for (const key of ['sourceHash', 'configurationHash', 'toolsHash', 'knowledgeHash', 'interfacesHash']) hash(row[key]);
+}
+/** Domain-separated commitments to supplied exact JSON/UTF-8 strings; not source authenticity checks. */
+async function bindParticipant(identity, material) {
+    id(identity);
+    keys(material, ['source', 'configuration', 'tools', 'knowledge', 'interfaces']);
+    const result = {id: identity};
+    for (const key of Object.keys(material)) result[`${key}Hash`] = await digest(`specialist-${key}`, material[key]);
+    return freeze(result);
+}
+function validateContract(raw) {
+    const c = clone(raw);
+    keys(c, ['schema', 'missionId', 'mission', 'exclusions', 'proposalDigest', 'createdAt', 'expiresAt',
+        'participants', 'alternativeRationale', 'evaluation', 'metrics', 'constraints', 'review']);
+    fail(c.schema === SCHEMA, 'VERSION'); id(c.missionId); label(c.mission); label(c.exclusions); hash(c.proposalDigest);
+    time(c.createdAt); time(c.expiresAt); fail(Date.parse(c.expiresAt) > Date.parse(c.createdAt), 'EXPIRY');
+    keys(c.participants, ROLES); ROLES.forEach(role => participant(c.participants[role]));
+    unique(ROLES.map(role => c.participants[role]), 'id');
+    // A second label for the same complete implementation is not a distinct comparator.
+    const implementations = ROLES.map(role => {
+        const {id: ignored, ...pins} = c.participants[role]; return canonical(pins);
+    });
+    fail(new Set(implementations).size === 3, 'DUPLICATE_IMPLEMENTATION'); label(c.alternativeRationale);
+    const e = c.evaluation;
+    keys(e, ['taskSetCommitment', 'formationSetCommitment', 'protocolHash', 'resourcePolicyHash', 'trialCount', 'custodianId']);
+    for (const key of ['taskSetCommitment', 'formationSetCommitment', 'protocolHash', 'resourcePolicyHash']) hash(e[key]);
+    fail(e.taskSetCommitment !== e.formationSetCommitment, 'FORMATION_REUSE');
+    integer(e.trialCount, 1, 10000); id(e.custodianId);
+    list(c.metrics, DIMENSIONS.length, 16); unique(c.metrics, 'id');
+    fail(DIMENSIONS.every(d => c.metrics.some(m => m.dimension === d)), 'DIMENSIONS');
+    for (const m of c.metrics) {
+        keys(m, ['id', 'dimension', 'unit', 'direction', 'minimumGain', 'methodHash', 'uncertaintyMethodHash']);
+        id(m.id); fail(DIMENSIONS.includes(m.dimension), 'DIMENSION'); label(m.unit, 100);
+        fail(['higher', 'lower'].includes(m.direction), 'DIRECTION'); integer(m.minimumGain); hash(m.methodHash); hash(m.uncertaintyMethodHash);
+    }
+    list(c.constraints, 1, 16); unique(c.constraints, 'id');
+    c.constraints.forEach(row => { keys(row, ['id', 'requirementHash']); id(row.id); hash(row.requirementHash); });
+    keys(c.review, ['reviewerId', 'organizationId', 'independencePolicyHash', 'conflictDisclosureHash', 'custodyPolicyHash']);
+    id(c.review.reviewerId); id(c.review.organizationId);
+    for (const key of ['independencePolicyHash', 'conflictDisclosureHash', 'custodyPolicyHash']) hash(c.review[key]);
+    fail(!ROLES.some(role => [c.review.reviewerId, e.custodianId].includes(c.participants[role].id)), 'ROLE_CONFLICT');
+    // Different identifiers are necessary metadata, never proof of independent people or organizations.
+    return c;
+}
+async function freezeContract(raw) {
+    const contract = validateContract(raw);
+    return freeze({schema: 'specialist-evaluation-freeze/v1', contract,
+        contractDigest: await digest('specialist-evaluation-contract', contract)});
+}
+async function validateFrozen(raw) {
+    keys(raw, ['schema', 'contract', 'contractDigest']); fail(raw.schema === 'specialist-evaluation-freeze/v1', 'FREEZE_VERSION');
+    hash(raw.contractDigest); const frozen = await freezeContract(raw.contract);
+    fail(frozen.contractDigest === raw.contractDigest, 'CONTRACT_CHANGED'); return frozen;
+}
+/** Evidence is metadata only. No hidden cases, answers, signer keys or executable paths are accepted. */
+async function validateReport(raw, frozen) {
+    const f = await validateFrozen(frozen), c = f.contract, r = clone(raw);
+    keys(r, ['schema', 'contractDigest', 'attemptId', 'startedAt', 'finishedAt', 'state', 'evidenceDigest', 'rows', 'failures']);
+    fail(r.schema === 'specialist-evaluation-report/v1', 'REPORT_VERSION'); hash(r.contractDigest);
+    fail(r.contractDigest === f.contractDigest, 'WRONG_CONTRACT'); id(r.attemptId); time(r.startedAt);
+    fail(Date.parse(r.startedAt) >= Date.parse(c.createdAt), 'PRE_FREEZE_RESULT');
+    fail(['complete', 'interrupted', 'stopped', 'failed', 'uncertain'].includes(r.state), 'STATE');
+    if (r.finishedAt !== null) { time(r.finishedAt); fail(Date.parse(r.finishedAt) >= Date.parse(r.startedAt), 'TIME_ORDER'); }
+    fail(r.state !== 'complete' || r.finishedAt !== null, 'MISSING_FINISH'); hash(r.evidenceDigest);
+    list(r.rows, 0, 3); unique(r.rows, 'role');
+    for (const row of r.rows) {
+        keys(row, ['role', 'participantDigest', 'taskSetCommitment', 'protocolHash', 'resourcePolicyHash', 'trialCount', 'metrics', 'constraints']);
+        fail(ROLES.includes(row.role), 'ROLE'); hash(row.participantDigest);
+        fail(row.participantDigest === await digest('specialist-participant', c.participants[row.role]), 'PARTICIPANT_CHANGED');
+        for (const key of ['taskSetCommitment', 'protocolHash', 'resourcePolicyHash']) fail(row[key] === c.evaluation[key], 'UNFAIR_CONDITIONS');
+        integer(row.trialCount, 0, c.evaluation.trialCount);
+        list(row.metrics, c.metrics.length, c.metrics.length); unique(row.metrics, 'id');
+        for (const metric of row.metrics) {
+            keys(metric, ['id', 'lower', 'upper', 'evidenceDigest']);
+            fail(c.metrics.some(m => m.id === metric.id), 'METRIC_ID');
+            if (metric.lower === null || metric.upper === null) fail(metric.lower === null && metric.upper === null, 'PARTIAL_INTERVAL');
+            else { integer(metric.lower, -MAX); integer(metric.upper, -MAX); fail(metric.lower <= metric.upper, 'INTERVAL'); }
+            if (metric.evidenceDigest !== null) hash(metric.evidenceDigest);
+            fail(metric.lower === null || metric.evidenceDigest !== null, 'MISSING_EVIDENCE');
+        }
+        list(row.constraints, c.constraints.length, c.constraints.length); unique(row.constraints, 'id');
+        row.constraints.forEach(item => {
+            keys(item, ['id', 'status', 'evidenceDigest']); fail(c.constraints.some(x => x.id === item.id), 'CONSTRAINT_ID');
+            fail(['unknown', 'reported-pass', 'reported-fail'].includes(item.status), 'CONSTRAINT_STATUS');
+            if (item.evidenceDigest !== null) hash(item.evidenceDigest);
+            fail(item.status === 'unknown' || item.evidenceDigest !== null, 'MISSING_EVIDENCE');
+        });
+    }
+    list(r.failures, 0, 64);
+    r.failures.forEach(item => { keys(item, ['role', 'code', 'evidenceDigest']); fail(ROLES.includes(item.role), 'ROLE'); id(item.code); hash(item.evidenceDigest); });
+    return r;
+}
+function summarizeAttempt(c, report) {
+    const complete = report.state === 'complete' && report.rows.length === 3
+        && report.rows.every(row => row.trialCount === c.evaluation.trialCount);
+    const comparisons = c.metrics.map(metric => {
+        const values = Object.fromEntries(report.rows.map(row => [row.role, row.metrics.find(m => m.id === metric.id)]));
+        const known = complete && ROLES.every(role => values[role]?.lower !== null && values[role] !== undefined);
+        const gains = Object.fromEntries(['incumbent', 'alternative'].map(role => [role, !known ? null
+            : metric.direction === 'higher' ? values.candidate.lower - values[role].upper
+                : values[role].lower - values.candidate.upper]));
+        return {metricId: metric.id, conservativeGains: gains, status: !known ? 'unknown'
+            : Object.values(gains).every(gain => gain >= metric.minimumGain) ? 'reported-threshold-met' : 'reported-threshold-missed'};
+    });
+    const failures = report.failures.map(failure => ({attemptId: report.attemptId, ...failure}));
+    if (report.state === 'failed') failures.push({attemptId: report.attemptId, code: 'reported-failed-attempt'});
+    for (const row of report.rows) for (const item of row.constraints) {
+        if (item.status === 'reported-fail') failures.push({attemptId: report.attemptId, role: row.role,
+            code: 'reported-constraint-failure', constraintId: item.id, evidenceDigest: item.evidenceDigest});
+    }
+    for (const row of comparisons) if (row.status === 'reported-threshold-missed') {
+        failures.push({attemptId: report.attemptId, code: 'reported-metric-regression', metricId: row.metricId,
+            conservativeGains: row.conservativeGains});
+    }
+    const unknown = !complete || comparisons.some(row => row.status === 'unknown')
+        || report.rows.some(row => row.constraints.some(item => item.status === 'unknown'));
+    const advantage = ['incumbent', 'alternative'].every(role => comparisons.some(row => row.conservativeGains[role] > 0));
+    const status = failures.length ? 'retain-incumbent' : !complete ? (report.state === 'complete' ? 'reported-incomplete' : report.state)
+        : unknown ? 'evidence-needed' : advantage ? 'reported-comparison-ready-for-review' : 'retain-incumbent';
+    return {attemptId: report.attemptId, state: report.state, status, unknown, comparisons, failures};
+}
+async function assess(frozen, reports = [], now = new Date().toISOString()) {
+    const f = await validateFrozen(frozen), c = f.contract; time(now); list(reports, 0, 32);
+    const validated = [];
+    for (const r of reports) validated.push(await validateReport(r, f));
+    unique(validated, 'attemptId');
+    validated.forEach((r, index) => {
+        fail(Date.parse(r.startedAt) <= Date.parse(now)
+            && (r.finishedAt === null || Date.parse(r.finishedAt) <= Date.parse(now)), 'FUTURE_RESULT');
+        fail(index === 0 || Date.parse(r.startedAt) >= Date.parse(validated[index - 1].startedAt), 'ATTEMPT_ORDER');
+    });
+    // Retain every attempt's derived comparison, not merely the latest successful run.
+    const attemptResults = validated.map(report => summarizeAttempt(c, report));
+    const failures = attemptResults.flatMap(result => result.failures);
+    const gaps = ['Independent reviewer identity, conflicts and organizational separation are unverified.',
+        'Protected-test custody, freshness and absence of leakage are unverified.',
+        'Source authenticity, completeness of attempts and reported measurements are unverified.'];
+    const expired = Date.parse(now) >= Date.parse(c.expiresAt);
+    fail(Date.parse(now) >= Date.parse(c.createdAt), 'CLOCK_BEFORE_FREEZE');
+    let status = 'uncommissioned', comparisons = [];
+    if (validated.length) {
+        const last = validated.at(-1), summary = attemptResults.at(-1);
+        comparisons = summary.comparisons;
+        status = last.state === 'complete' ? summary.status : last.state;
+        if (last.state === 'complete' && last.rows.length === 3
+            && last.rows.every(row => row.trialCount === c.evaluation.trialCount)) {
+            status = attemptResults.some(result => result.status === 'retain-incumbent') ? 'retain-incumbent'
+                : attemptResults.some(result => result.unknown) ? 'evidence-needed' : summary.status;
+        }
+        if (attemptResults.some(result => result.unknown)) gaps.push('At least one retained attempt has incomplete or unknown outcomes; a later passing report does not erase them.');
+        if (failures.length) gaps.push('Retained failures require explicit resolution in a new evaluation contract; a passing retry does not clear them.');
+        if (validated.some(report => report.finishedAt !== null && Date.parse(report.finishedAt) >= Date.parse(c.expiresAt))) {
+            gaps.push('A report completed outside the contract validity window.');
+        }
+    }
+    const reportedComparison = status;
+    if (expired) status = 'expired';
+    return freeze({schema: 'specialist-evaluation-assessment/v1', contractDigest: f.contractDigest, missionId: c.missionId,
+        candidate: c.participants.candidate, status, comparisons, failures, attemptResults, attempts: validated.length,
+        expiresAt: c.expiresAt, assessedAt: now, gaps, reportedComparison, verification: 'uncommissioned',
+        independentVerdict: 'not-established', admission: 'not-requested', independentProof: false,
+        designation: 'not-earned', authority: 'none', nextDecision: 'Keep incumbent; commission a separately governed fresh evaluation if warranted.',
+        limitations: ['All supplied results remain reports, even when signed. No trusted reviewer registry or custody verifier is commissioned.',
+            'Beating these two comparators would establish only the registered mission comparison, not general ASI.',
+            'A new candidate, source, dependency, task, metric or resource policy requires a new contract and fresh evidence.',
+            'No provider, network, wallet, native execution, settlement or production admission occurs here.']});
+}
+async function exportRecord(frozen, reports = []) {
+    const f = await validateFrozen(frozen); list(reports, 0, 32);
+    const history = [];
+    for (const report of reports) history.push(await validateReport(report, f));
+    unique(history, 'attemptId');
+    const content = {schema: 'specialist-evaluation-record/v1', frozen: f, reports: history};
+    return freeze({...content, recordDigest: await digest('specialist-evaluation-record', content)});
+}
+async function restoreRecord(bytes, now = new Date().toISOString()) {
+    const parsed = parseBounded(bytes); keys(parsed, ['schema', 'frozen', 'reports', 'recordDigest']);
+    fail(parsed.schema === 'specialist-evaluation-record/v1', 'RECORD_VERSION');
+    const record = await exportRecord(parsed.frozen, parsed.reports);
+    fail(record.recordDigest === parsed.recordDigest, 'RECORD_CHANGED');
+    return freeze({record, assessment: await assess(record.frozen, record.reports, now),
+        recovery: 'historical-reports-only', authority: 'none', nextAction: 'Fresh authorization and governed verification remain required.'});
+}
+/** Illustrative contract scaffold only; replace every placeholder commitment before real commissioning. */
+function exampleContract(now = new Date().toISOString()) {
+    time(now);
+    const pin = n => n.toString(16).padStart(64, '0');
+    return {schema: SCHEMA, missionId: 'illustrative-mission', mission: 'Replace with one measurable, bounded mission.',
+        exclusions: 'Illustrative scaffold. No real candidate, protected cases, evaluator or test has been commissioned.',
+        proposalDigest: pin(1), createdAt: now, expiresAt: new Date(Date.parse(now) + 86400000).toISOString(),
+        participants: Object.fromEntries(ROLES.map((role, index) => [role, {id: `illustrative-${role}`, sourceHash: pin(index + 2),
+            configurationHash: pin(5), toolsHash: pin(6), knowledgeHash: pin(7), interfacesHash: pin(8)}])),
+        alternativeRationale: 'Replace with the evidence for selecting the best credible alternative and its limitations.',
+        evaluation: {taskSetCommitment: pin(9), formationSetCommitment: pin(10), protocolHash: pin(11),
+            resourcePolicyHash: pin(12), trialCount: 1, custodianId: 'unassigned-custodian'},
+        metrics: DIMENSIONS.map(dimension => ({id: dimension, dimension, unit: 'define-common-integer-scaled-unit',
+            direction: dimension === 'quality' || dimension === 'robustness' ? 'higher' : 'lower', minimumGain: 0,
+            methodHash: pin(13), uncertaintyMethodHash: pin(14)})),
+        constraints: [{id: 'mission-safety', requirementHash: pin(15)}],
+        review: {reviewerId: 'unassigned-reviewer', organizationId: 'unassigned-organization', independencePolicyHash: pin(16),
+            conflictDisclosureHash: pin(17), custodyPolicyHash: pin(18)}};
+}
+async function reportTemplate(frozen, now = new Date().toISOString()) {
+    const f = await validateFrozen(frozen); time(now);
+    return {schema: 'specialist-evaluation-report/v1', contractDigest: f.contractDigest, attemptId: 'replace-attempt-id',
+        startedAt: now, finishedAt: null, state: 'uncertain', evidenceDigest: '0'.repeat(64),
+        rows: await Promise.all(ROLES.map(async role => ({role,
+            participantDigest: await digest('specialist-participant', f.contract.participants[role]),
+            taskSetCommitment: f.contract.evaluation.taskSetCommitment, protocolHash: f.contract.evaluation.protocolHash,
+            resourcePolicyHash: f.contract.evaluation.resourcePolicyHash, trialCount: 0,
+            metrics: f.contract.metrics.map(m => ({id: m.id, lower: null, upper: null, evidenceDigest: null})),
+            constraints: f.contract.constraints.map(c => ({id: c.id, status: 'unknown', evidenceDigest: null}))}))), failures: []};
+}
+
+return {SCHEMA,ROLES,DIMENSIONS,bindParticipant,validateContract,freezeContract,validateFrozen,validateReport,assess,exportRecord,restoreRecord,exampleContract,reportTemplate};
+})();
+const $ = id => document.getElementById(id);
+const {canonical, parseBounded} = transport;
+const {assess, exampleContract, exportRecord, freezeContract, reportTemplate, restoreRecord, validateReport} = evaluation;
+let current = null, previous = null, dirty = false, busy = false, epoch = 0, lang = 'en', assessment = null, expiryTimer = null;
+const say = (en, fr) => lang === 'fr' ? fr : en;
+const pretty = value => JSON.stringify(value, null, 2);
+function buttons() {
+    $('freeze').disabled = busy;
+    $('add').disabled = busy || !current || dirty;
+    $('report').disabled = busy || !current || dirty;
+    $('save').disabled = busy || !current || dirty;
+    $('previous').disabled = busy || !previous;
+    $('restore').disabled = busy;
+}
+function scheduleExpiry() {
+    clearTimeout(expiryTimer); expiryTimer = null;
+    if (!current || dirty) return;
+    const remaining = Date.parse(current.frozen.contract.expiresAt) - Date.now();
+    if (remaining > 0) expiryTimer = setTimeout(() => {
+        show(); refresh().catch(error => { $('error').textContent = error.message; $('error').hidden = false; });
+    }, Math.min(remaining, 2147483647));
+}
+async function refresh() {
+    if (!current || dirty) return;
+    const snapshot = current, token = epoch;
+    const result = await assess(snapshot.frozen, snapshot.reports);
+    if (current === snapshot && token === epoch && !dirty) { assessment = result; show(); }
+}
+function show() {
+    $('result').hidden = !assessment || dirty;
+    $('binding').textContent = current && !dirty ? current.frozen.contractDigest : say('Not frozen. Edits require a new contract.', 'Non figé. Les modifications exigent un nouveau contrat.');
+    if (assessment) {
+        const displayed = Date.now() >= Date.parse(assessment.expiresAt) ? {...assessment, status: 'expired'} : assessment;
+        $('comparison').textContent = displayed.status;
+        $('scope').textContent = `${current.frozen.contract.mission} · ${assessment.candidate.id} · ${assessment.expiresAt}`;
+        $('inspection').textContent = pretty(displayed);
+        $('gaps').replaceChildren(...assessment.gaps.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
+        $('comparisons').replaceChildren(...assessment.comparisons.map(row => {
+            const p = document.createElement('p'); p.textContent = `${row.metricId}: ${row.status}; ${canonical(row.conservativeGains)}`; return p;
+        }));
+    }
+    buttons(); scheduleExpiry();
+}
+async function action(work) {
+    if (busy) return;
+    busy = true; const token = epoch; $('error').hidden = true; buttons();
+    try { await work(token); }
+    catch (error) { $('error').textContent = say('Not accepted: ', 'Non accepté : ') + error.message; $('error').hidden = false; }
+    finally { busy = false; show(); }
+}
+function download(record) {
+    const url = URL.createObjectURL(new Blob([pretty(record) + '\n'], {type: 'application/json'}));
+    const a = document.createElement('a'); a.href = url; a.download = 'specialist-evaluation-record.json'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+$('contract').value = pretty(exampleContract());
+$('contract').addEventListener('input', () => {
+    epoch++; dirty = true;
+    if (current) previous = current;
+    $('notice').textContent = say('Draft changed. Previous evidence is historical; save the previous valid record if needed.', 'Brouillon modifié. Les preuves précédentes sont historiques ; enregistrez le dossier précédent si nécessaire.'); show();
+});
+$('freeze').addEventListener('click', () => action(async token => {
+    const frozen = await freezeContract(parseBounded($('contract').value));
+    const template = await reportTemplate(frozen), next = await exportRecord(frozen);
+    const result = await assess(frozen);
+    if (token !== epoch) throw Error('DRAFT_CHANGED');
+    if (current) previous = current;
+    current = next; assessment = result; dirty = false; $('report').value = pretty(template);
+    $('notice').textContent = say('Exact contract frozen locally. No candidate or test ran; independent verification is uncommissioned.', 'Contrat exact figé localement. Aucun candidat ni test exécuté ; vérification indépendante non mandatée.');
+}));
+$('add').addEventListener('click', () => action(async token => {
+    const report = await validateReport(parseBounded($('report').value), current.frozen);
+    const next = await exportRecord(current.frozen, [...current.reports, report]);
+    const result = await assess(next.frozen, next.reports);
+    if (token !== epoch || dirty) throw Error('DRAFT_CHANGED');
+    previous = current; current = next; assessment = result;
+    $('notice').textContent = say('Report retained as supplied evidence. No independent trust or permission was created.', 'Rapport conservé comme preuve déclarée. Aucune confiance indépendante ni permission créée.');
+}));
+$('save').addEventListener('click', () => action(async token => {
+    if (!current || dirty) return;
+    await refresh();
+    if (token !== epoch || dirty) throw Error('DRAFT_CHANGED');
+    download(current);
+}));
+$('previous').addEventListener('click', () => { if (previous && !busy) download(previous); });
+$('restore').addEventListener('change', () => {
+    const file = $('restore').files[0]; if (!file) return;
+    action(async token => {
+        if (file.size > 2000000) throw Error('Import exceeds 2 MB');
+        const bytes = new TextDecoder('utf-8', {fatal: true}).decode(await file.arrayBuffer());
+        const restored = await restoreRecord(bytes), template = await reportTemplate(restored.record.frozen);
+        if (token !== epoch) throw Error('DRAFT_CHANGED');
+        if (current) previous = current;
+        current = restored.record; assessment = restored.assessment; dirty = false;
+        $('contract').value = pretty(current.frozen.contract); $('report').value = pretty(template);
+        $('notice').textContent = say('Historical reports reopened. No authority or reviewer trust restored.', 'Rapports historiques rouverts. Aucune autorité ni confiance du réviseur restaurée.');
+    }).finally(() => { $('restore').value = ''; });
+});
+$('language').addEventListener('click', () => {
+    lang = lang === 'en' ? 'fr' : 'en'; document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en]').forEach(node => { node.textContent = node.dataset[lang]; });
+    $('language').textContent = lang === 'en' ? 'Français' : 'English'; show();
+});
+window.addEventListener('focus', () => { show(); refresh().catch(() => {}); });
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') { show(); refresh().catch(() => {}); }
+});
+show();
+
+})();
+</script></body></html>

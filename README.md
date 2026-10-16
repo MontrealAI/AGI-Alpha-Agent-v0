@@ -4,6 +4,7 @@
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**
 
 | Your goal | Start here |
+| Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | --- | --- |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
 | Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
@@ -16,8 +17,8 @@ Browser preparation is free. Execution, participant review and settlement requir
 
 <!-- /current-entrypoints -->
 
-> **Current maintenance scope · 1.32.0.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.32.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> **Current maintenance scope · 1.33.0.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.33.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
 > This candidate adds inspectable Jobs adapters, bounded browser work and supplied-input demo journeys. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 
@@ -59,6 +60,10 @@ unqualified advanced material, not prerequisites for this verified comparison.
 > try new challenges and keep your discoveries. Free, English/French, larger text, no account or installation.
 > [Personal lab guide](docs/agent/SUCCESSOR.md#new-here-take-a-lab-home--emportez-votre-laboratoire) ·
 > [What is new in 1.27.2](docs/agent/RELEASE_NOTES_1.27.2.md).
+
+## Ideas behind your SUCCESSOR Ω
+
+[Read four selected essays](https://montrealai.github.io/AGI-Alpha-Agent-v0/#reading) on governed improvement, sustainable capabilities, invention and retained work history. English/French summaries connect each essay to a current guide. [Reading notes and version context](docs/READING.md).
 
 ## Alpha Agent + AGI Jobs: from a useful idea to accepted work
 

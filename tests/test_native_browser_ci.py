@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 """Browserless smoke must retain mandatory browser coverage in its qualified job."""
-from pathlib import Path
-import shlex
+
 import ast
 import re
+import shlex
+from pathlib import Path
+from typing import ClassVar
+
 import pytest
 import yaml
 
@@ -33,7 +36,7 @@ def test_native_browser_acceptance_is_one_command_with_both_suites() -> None:
 
 class UniqueWorkflowLoader(yaml.SafeLoader):
     # GitHub uses YAML 1.2: `on` remains a string, while true/false are booleans.
-    yaml_implicit_resolvers = {
+    yaml_implicit_resolvers: ClassVar[dict[str | None, list[tuple[str, re.Pattern[str]]]]] = {
         key: [(tag, pattern) for tag, pattern in values if tag != "tag:yaml.org,2002:bool"]
         for key, values in yaml.SafeLoader.yaml_implicit_resolvers.items()
     }
@@ -64,8 +67,10 @@ def test_workflows_have_no_duplicate_mapping_keys() -> None:
     "source",
     [
         "on: push\non: pull_request\n",
-        "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n"
-        "        env:\n          PYTHONPATH: '.'\n",
+        (
+            "jobs:\n  wallet:\n    steps:\n      - env:\n          AXE_SCRIPT: axe.min.js\n"
+            "        env:\n          PYTHONPATH: '.'\n"
+        ),
         "jobs: {wallet: {env: {A: one, A: two}}}",
     ],
 )
@@ -170,6 +175,147 @@ def test_complete_regression_installs_the_pinned_accessibility_auditor():
     assert "npm ci --prefix tests/browser --ignore-scripts" in install["run"].splitlines()
     assert steps.index(install) < steps.index(acceptance)
     assert "if" not in install and "continue-on-error" not in install
+
+
+def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
+    workflow = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
+    assert workflow["on"]["pull_request"] is None
+    job = workflow["jobs"]["mission"]
+    assert "if" not in job and "continue-on-error" not in job
+    steps = job["steps"]
+    actions = [step for step in steps if "uses" in step]
+    assert [step["uses"] for step in actions] == [
+        "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+        "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
+        "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+        "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f",
+    ]
+    assert actions[0]["with"]["persist-credentials"] is False
+    selected = {step["name"]: step for step in steps if "name" in step}
+    install = selected["Install pinned browser tools"]
+    assertions = selected["Strict records and existing workbench"]
+    browser = selected["Atomic storage and full browser recovery"]
+    for step in [*actions, *selected.values()]:
+        if step.get("name") == "Retain discovery browser screenshots":
+            assert step["if"] == "always()"
+            assert "continue-on-error" not in step
+        else:
+            assert "if" not in step and "continue-on-error" not in step
+    assert steps.index(install) < steps.index(assertions) < steps.index(browser)
+    assert install["run"].splitlines() == [
+        "python -m pip install playwright==1.54.0 PyYAML==6.0.2 pytest==8.4.1",
+        "python -m playwright install --with-deps chromium",
+        "npm ci --prefix tests/browser --ignore-scripts",
+    ]
+    assert assertions["run"].splitlines() == [
+        (
+            "node --test examples/successor-workbench/mission-record.test.mjs "
+            "examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs"
+        ),
+        "node examples/successor-workbench/test.mjs",
+        "node --test examples/successor-project/engine.test.mjs examples/successor-project/journey-native.test.mjs",
+        "python tests/test_successor_project_delivery.py",
+        "python tests/test_guided_project_delivery.py",
+        "node --test examples/alpha-discovery/engine.test.mjs examples/alpha-discovery/draft.test.mjs",
+        "node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs",
+        (
+            "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null "
+            "-p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q"
+        ),
+    ]
+    assert browser["run"].splitlines() == [
+        "python tests/browser/test_successor_mission_store.py",
+        "python tests/browser/test_successor_mission_browser.py",
+        "python tests/browser/test_alpha_discovery_browser.py",
+        "python tests/browser/test_specialist_evaluation_browser.py",
+        "python tests/browser/test_successor_project_browser.py",
+        "python tests/browser/test_guided_successor_browser.py",
+    ]
+    assert browser["env"]["AXE_SCRIPT"] == "${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js"
+
+    assert browser["env"]["DISCOVERY_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots"
+    assert "python scripts/generate_alpha_discovery.py" in selected["Generated source is current"]["run"].splitlines()
+    assert selected["Retain discovery browser screenshots"]["with"]["path"] == "discovery-screenshots/"
+    assert browser["env"]["GUIDED_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots/guided"
+
+    guided = workflow["jobs"]["guided-cross-repository"]
+    assert "if" not in guided and "continue-on-error" not in guided
+    guided_steps = guided["steps"]
+    assert [step["uses"] for step in guided_steps if "uses" in step] == [
+        "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+        "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f",
+        "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+    ]
+    for step in guided_steps:
+        assert "if" not in step and "continue-on-error" not in step
+        if step.get("uses", "").startswith("actions/checkout@"):
+            assert step["with"]["persist-credentials"] is False
+    assert guided_steps[1]["with"]["node-version"] == "24.21.0"
+    assert "published-exact-source" in guided_steps[2]["run"]
+    assert guided_steps[3]["with"] == {
+        "repository": "MontrealAI/AGI-Fleet-Linux",
+        "ref": "${{ steps.fleet-source.outputs.commit }}",
+        "path": "build/guided-fleet-source",
+        "persist-credentials": False,
+    }
+    install = next(step for step in guided_steps if step.get("name") == "Install locked Fleet runtime dependencies")
+    acceptance = next(step for step in guided_steps if step.get("env", {}).get("GUIDED_FLEET_SOURCE"))
+    assert install["run"] == (
+        "npm ci --prefix build/guided-fleet-source/fleet --omit=dev --ignore-scripts --no-audit --no-fund"
+    )
+    assert guided_steps.index(guided_steps[3]) < guided_steps.index(install) < guided_steps.index(acceptance)
+    assert acceptance["env"] == {"GUIDED_FLEET_SOURCE": "${{ github.workspace }}/build/guided-fleet-source"}
+    assert acceptance["run"] == (
+        "node --test examples/successor-project/journey.test.mjs "
+        "examples/successor-project/source-immutability.test.mjs"
+    )
+
+
+def test_manager_continuity_gate_retains_selected_native_source_ancestry() -> None:
+    workflow = yaml.load(
+        (ROOT / ".github/workflows/manager-cycle-continuity.yml").read_text(),
+        Loader=UniqueWorkflowLoader,
+    )
+    job = workflow["jobs"]["native-round-trip"]
+    steps = job["steps"]
+    checkout = steps[0]
+    assert checkout["uses"] == "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+    assert checkout["with"]["fetch-depth"] == 0
+    assert checkout["with"]["persist-credentials"] is False
+    acceptance = next(step for step in steps if step.get("env", {}).get("CONTINUITY_MANAGER_SOURCE"))
+    assert acceptance["run"] == "node --test examples/successor-project/continuity.test.mjs"
+    assert steps.index(checkout) < steps.index(acceptance)
+    for item in (job, checkout, acceptance):
+        assert "if" not in item and "continue-on-error" not in item
+
+
+def test_release_requires_full_successor_journey_before_packaging():
+    release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
+    journey = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
+    assert "workflow_call" in journey["on"]
+    job = release["jobs"]["successor-journey"]
+    assert job == {"uses": "./.github/workflows/successor-mission.yml"}
+    assert "successor-journey" in release["jobs"]["package"]["needs"]
+    assert "package" in release["jobs"]["pages"]["needs"]
+    assert {"package", "pages"} <= set(release["jobs"]["publish"]["needs"])
+    for name in ("package", "pages", "publish"):
+        target = release["jobs"][name]
+        assert "continue-on-error" not in target
+        assert not re.search(r"\b(?:always|failure|cancelled)\s*\(", target.get("if", ""))
+    test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites()
+
+
+def test_discovery_journey_polling_does_not_require_csp_unsafe_eval():
+    # Playwright 1.54 evaluates even arrow-function strings through globalThis.eval
+    # on each wait_for_function poll. Use locator assertions under the real CSP.
+    path = ROOT / "tests/browser/test_alpha_discovery_browser.py"
+    tree = ast.parse(path.read_text())
+    forbidden = [
+        node.lineno for node in ast.walk(tree) if isinstance(node, ast.Attribute) and node.attr == "wait_for_function"
+    ]
+    assert not forbidden, f"Discovery polling must be CSP-safe; wait_for_function at {forbidden}"
+    bypass = [node.lineno for node in ast.walk(tree) if isinstance(node, ast.keyword) and node.arg == "bypass_csp"]
+    assert not bypass, f"Discovery must exercise production CSP; bypass_csp at {bypass}"
 
 
 def test_integration_pytest_installs_pinned_auditor_after_cleanup():

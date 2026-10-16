@@ -24,8 +24,41 @@ from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
 
+def assert_reading_links(page: Page, language: str) -> None:
+    """Language switches preserve each guide's visible text and hidden context."""
+    guides = page.locator("#reading .reading-card .reading-guide")
+    expect(guides).to_have_count(4)
+    contexts = (
+        ("Governed improvement", "Sustainable improvement", "Discovery & invention", "Evidence & memory")
+        if language == "en"
+        else ("Amélioration encadrée", "Amélioration durable", "Découverte et invention", "Preuves et mémoire")
+    )
+    for guide, context in zip(guides.all(), contexts):
+        expect(guide.locator("span[data-home-key^='reading-copy-']")).to_have_text(
+            "Explore the current guide" if language == "en" else "Explorer le guide actuel"
+        )
+        expect(guide.locator(".sr-only")).to_have_text(": " + context)
+        expect(guide.locator("span[aria-hidden='true']")).to_have_text("↗")
+    expect(page.locator("#reading a[data-home-key]")).to_have_count(0)
+    expect(page.locator("#reading > .reading-guide > span[aria-hidden='true']")).to_have_text("↗")
+
+
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    assert_reading_links(page, language)
+    for selector, path, fragment in (
+        ("[data-discovery-link]", "successor/discover/", ""),
+        ("[data-mission-link]", "successor/mission/", "guided-journey"),
+    ):
+        guided = page.locator(selector)
+        assert guided.count() >= 1, "Offer discovery and the retained project journey"
+        for link in guided.all():
+            target = urlsplit(link.get_attribute("href") or "")
+            assert not target.scheme and not target.netloc and target.path == path
+            assert target.fragment == fragment
+            assert parse_qs(target.query) == ({"lang": ["fr"]} if language == "fr" else {}) | (
+                {"text": ["large"]} if large else {}
+            )
     nova_links = page.locator("[data-nova-link]")
     assert nova_links.count() >= 4, "Offer Studio in the hero, project section and directory"
     for link in nova_links.all():
@@ -400,7 +433,10 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
-                page.locator(".welcome-ecosystem:not(.welcome-nova)").screenshot(
+                page.locator("#alpha-journey").screenshot(
+                    path=str(output / f"homepage-journey-{language}-{width}{'-large' if large else ''}.png")
+                )
+                page.locator('.welcome-ecosystem[aria-labelledby="ecosystem-title"]').screenshot(
                     path=str(output / f"homepage-ecosystem-{language}-{width}{'-large' if large else ''}.png")
                 )
                 page.locator("#nova-title").click()

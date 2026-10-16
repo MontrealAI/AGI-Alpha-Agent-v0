@@ -4,7 +4,7 @@
 
 ![preview](../gpt2_small_cli/assets/preview.svg){.demo-preview}
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.26.3
+## Current runnable path — 1.33.0
 
 **Mode:** Local model. Generates text with the actual GPT-2 124M model.
 

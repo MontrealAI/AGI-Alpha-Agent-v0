@@ -3,14 +3,15 @@
 
 from __future__ import annotations
 
+import os
+import re
 import shutil
 import subprocess
-import os
-from pathlib import Path
 import tempfile
 import threading
+from collections.abc import Sequence
+from pathlib import Path
 from typing import BinaryIO
-from typing import Sequence
 
 __all__ = ["SandboxTimeout", "SandboxUnavailable", "secure_run"]
 
@@ -85,15 +86,24 @@ def secure_run(cmd: Sequence[str], *, allow_trusted_firejail: bool = False) -> s
     firejail = shutil.which("firejail") if allow_trusted_firejail is True else None
     if docker:
         try:
+            # Query the daemon directly: `docker info` also runs CLI plugins,
+            # whose startup can exhaust the probe timeout before the query.
+            probe = subprocess.run(
+                [docker, "version", "--format", "{{.Server.Version}}"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                timeout=5,
+                check=False,
+            )
+            # Accept one bounded version line, including distro build suffixes.
             available = (
-                subprocess.run(
-                    [docker, "info"],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=5,
-                    check=False,
-                ).returncode
-                == 0
+                probe.returncode == 0
+                and len(probe.stdout) <= 128
+                and re.fullmatch(
+                    rb"[0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z](?:[0-9A-Za-z.+~_-]*[0-9A-Za-z])?)?(?:\r?\n)?",
+                    probe.stdout,
+                )
+                is not None
             )
         except (OSError, subprocess.SubprocessError):
             available = False

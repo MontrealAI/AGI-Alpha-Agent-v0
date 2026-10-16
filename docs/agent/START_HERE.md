@@ -31,6 +31,10 @@ or follow [its first-session guide](SUCCESSOR.md). Once installed, run
 It constructs and measures real bounded challengers, preserves usable methods and tests clean restoration.
 Missing independent qualification remains HOLD; a software demonstration grants no production authority.
 
+**Find your Alpha. Build your SUCCESSOR Ω.** Follow the [guided project journey](GUIDED_SUCCESSOR_JOURNEY.md)
+to retain discovery, bounded work, separately priced USDC / $AGIALPHA proposals and Fleet local returns in
+one history. The browser guides explicit file handoffs; funding and independent commissioning remain separate.
+
 ## 1. Install one release
 
 Use Python **3.11, 3.12 or 3.13**. From one [release](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest),

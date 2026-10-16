@@ -1,0 +1,60 @@
+name: Manager cycle continuity
+on:
+  pull_request:
+    paths:
+      - 'examples/successor-project/**'
+      - 'examples/successor-workbench/**'
+      - 'docs/assets/successor/**'
+      - 'docs/successor/mission/**'
+      - 'examples/alpha-discovery/**'
+      - 'examples/build-successor/**'
+      - 'scripts/generate_successor_mission.py'
+      - 'scripts/templates/successor-mission/**'
+      - '.github/workflows/manager-cycle-continuity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/successor-project/**'
+      - 'examples/successor-workbench/**'
+      - 'docs/assets/successor/**'
+      - 'docs/successor/mission/**'
+      - 'examples/alpha-discovery/**'
+      - 'examples/build-successor/**'
+      - 'scripts/generate_successor_mission.py'
+      - 'scripts/templates/successor-mission/**'
+      - '.github/workflows/manager-cycle-continuity.yml'
+permissions:
+  contents: read
+jobs:
+  native-round-trip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22.17.1
+      - name: Fetch selected Manager validator source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: MontrealAI/AGIJobManager
+          ref: e5d59f1c8e307193dbb99196a5276eb1fe344fe3
+          path: build/manager-continuity-source
+          persist-credentials: false
+      - name: Fetch original Alpha source for Manager validation
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: MontrealAI/AGI-Alpha-Agent-v0
+          ref: 7c410d3d61d5d6bba5354307e1784dba2b3aa177
+          path: build/alpha-continuity-baseline
+          persist-credentials: false
+      - name: Validate actual bilingual cross-repository cycle and hostile imports
+        env:
+          CONTINUITY_MANAGER_SOURCE: ${{ github.workspace }}/build/manager-continuity-source
+          CONTINUITY_ALPHA_BASELINE: ${{ github.workspace }}/build/alpha-continuity-baseline
+        run: node --test examples/successor-project/continuity.test.mjs
+      - name: Preserve native project and record regressions
+        run: node --test examples/successor-project/engine.test.mjs examples/successor-workbench/mission-record.test.mjs

@@ -79,3 +79,32 @@ def test_images_change_destination_without_changing_diagrams_or_code(tmp_path, m
     assert "![plot](https://raw.githubusercontent.com/" in text
     assert "[Source](https://github.com/" in text
     assert "[![Notebook](https://example.com/badge.svg)](https://github.com/" in text
+
+
+def test_late_original_title_survives_current_instructions_and_code(tmp_path, monkeypatch):
+    demo = tmp_path / "alpha_factory_v1/demos/late_title"
+    demo.mkdir(parents=True)
+    code = "```sh\n# A shell comment is not the title\n```"
+    original = "Original research title — preserved"
+    (demo / "README.md").write_text(
+        "# [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)\n"
+        + "Current launch instructions.\n" * 120
+        + code
+        + "\n# "
+        + original
+        + "\nOriginal narrative.\n"
+    )
+    monkeypatch.setattr(gdd, "REPO_ROOT", tmp_path)
+    assert gdd.extract_title(demo / "README.md") == original
+    page = gdd.build_page(demo)
+    assert page.count("# " + original) == 1
+    assert code in page and "Original narrative." in page
+
+
+def test_current_business2_and_macro_titles_match_original_readmes():
+    root = Path(__file__).resolve().parents[1]
+    for name, marker in (("alpha_agi_business_2_v1", "Bloom"), ("macro_sentinel", "Sentinel")):
+        demo = root / "alpha_factory_v1/demos" / name
+        title = gdd.extract_title(demo / "README.md")
+        assert marker in title
+        assert "# " + title in gdd.build_page(demo)
