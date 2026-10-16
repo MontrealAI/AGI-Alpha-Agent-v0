@@ -46,8 +46,7 @@ jobs:
       - name: Install existing locked toolchains and create outside-checkout evidence
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$ALPHA_EXPECTED_HEAD_SHA"
-          test -z "$(git status --porcelain --untracked-files=normal)"
+          node -e "const s=require('./tests/contracts/scripts/authority-revision').reviewedRevision(); if(s.commit!==process.env.ALPHA_EXPECTED_HEAD_SHA) throw Error('Exact reviewed head required');"
           echo '070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667  tests/contracts/package-lock.json' | sha256sum --check
           npm ci --prefix tests/contracts
           python -m pip install --require-hashes -r requirements-agent.lock
@@ -77,7 +76,7 @@ jobs:
           run_check empty-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven empty-eoa-direct-create.v1'
           run_check delegated-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven delegated-eoa-direct-create.v1'
           run_check io-relay node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/authority-io.test.js authority-test/authority-session-relay.test.js
-          run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs
+          run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs authority-test/authority-revision.test.cjs
           run_check native-empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
           run_check native-delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
       - name: Derive exact-head evidence without rewriting historical source records

@@ -5,7 +5,7 @@ const path = require('path');
 const crypto = require('crypto');
 const assert = require('assert/strict');
 const { execFileSync } = require('child_process');
-const legacy = require('../scripts/mainnet');
+const { reviewedRevision, gitRead } = require('../scripts/authority-revision');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'native-contract', 'native-empty', 'native-delegated'];
@@ -18,7 +18,7 @@ function summarizeLog(bytes) {
     return { sha256: sha(bytes), bytes: bytes.length, passing: passing.length === 1 ? passing[0] : null, names };
 }
 function sourceInventory() {
-    const names = execFileSync('git', ['ls-files', '-z'], { cwd: SOURCE_ROOT, encoding: 'utf8' }).split('\0').filter(Boolean).sort();
+    const names = gitRead(['ls-files', '-z']).split('\0').filter(Boolean).sort();
     return Object.fromEntries(names.map(name => {
         const p = path.join(SOURCE_ROOT, name), stat = fs.lstatSync(p);
         return [name, { kind: stat.isSymbolicLink() ? 'symlink' : 'file', sha256: sha(stat.isSymbolicLink() ? fs.readlinkSync(p) : fs.readFileSync(p)) }];
@@ -34,7 +34,7 @@ function main() {
     const [action, extra] = process.argv.slice(2); assert.ok(['init', 'finish'].includes(action) && !extra);
     assert.equal(process.versions.node, '22.17.1');
     assert.match(process.env.ALPHA_EXPECTED_HEAD_SHA || '', /^[0-9a-f]{40}$/);
-    const revision = legacy.reviewedRevision(); assert.equal(revision.commit, process.env.ALPHA_EXPECTED_HEAD_SHA);
+    const revision = reviewedRevision(); assert.equal(revision.commit, process.env.ALPHA_EXPECTED_HEAD_SHA);
     const root = assertOutsideCheckout(process.env.ALPHA_NATIVE_STATE_DIRECTORY);
     assert.equal(fs.realpathSync(path.dirname(root)), path.dirname(root));
     if (action === 'init') {
@@ -70,7 +70,7 @@ function main() {
         if (!actual || actual.result !== 'passed' || actual.selectedProfile !== name || JSON.stringify(actual.revision) !== JSON.stringify(revision) || actual.campaigns.length !== 1) allPassed = false;
     }
     // Do not rewrite old acceptance reports; record their current source identities as ordinary tracked files.
-    const sources = sourceInventory(); assert.deepEqual(legacy.reviewedRevision(), revision);
+    const sources = sourceInventory(); assert.deepEqual(reviewedRevision(), revision);
     writeNew(path.join(root, 'public/source-inventory.json'), { revision, sourceFiles: sources, artifacts: artifactInventory() });
     writeNew(path.join(root, 'public/result.json'), { schema: 'agialpha.native-ci-result.v1', revision, time: new Date().toISOString(),
         result: allPassed ? 'passed' : 'failed-or-incomplete', checks, candidateTestCount: shardNames.length,

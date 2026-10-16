@@ -12,7 +12,8 @@ release workflows, archived deployments and source records are not edited by thi
 - All 111 original contract tests and all 38 authority tests. The authority tests run in four
   non-overlapping serial processes with 17, 1, 1 and 19 cases. The 384 MiB Node heap bound does
   not limit native EDR allocations. Neither failed tests nor ambiguous results are skipped.
-- Six lightweight workflow/source/TLS checks, then two separate actual-CLI campaigns: empty
+- Six lightweight workflow/source/TLS checks plus thirteen offline Git-observer regressions,
+  then two separate actual-CLI campaigns: empty
   EOA creation with the guarded raw relay, and delegated EOA creation with external broadcast.
   Each campaign has five CREATEs and two governor bindings. Every successful operational CLI
   independently reads the real clean checkout's commit, tree and lockfile hash.
@@ -73,3 +74,18 @@ Physical wallet/SDK operation, actual historical-deployer delegation, public-pro
 real dependencies, full Mainnet consensus qualification, explorer acceptance, independent
 security review, cross-machine nonce coordination and production activation remain separate
 requirements. This workflow makes no live transaction and never automatically unpauses a graph.
+
+## Offline source observation
+
+The v2 observer preserves the historical v1 helper and sanitizes inherited Git repository,
+worktree, index, object and configuration overrides. Every Git subprocess forbids lazy fetch,
+replacement objects, hooks, fsmonitor, prompts and protocol access. It uses plumbing reads and
+raw byte/mode comparisons, never status/diff or content filters. The index must match HEAD
+without hidden flags, every HEAD blob must exist locally, and untracked source files reject.
+
+The supported boundary is a standalone, non-shallow SHA1 checkout with no repository config
+includes or alternate object store. Linked worktrees and other closure models fail explicitly.
+Tracked files are bounded to 64 MiB each and 512 MiB total; missing objects fail without fetching.
+Acquire a complete checkout separately before use. No observer failure authorizes a fetch,
+repair, filter execution, source-label substitution or retry through a denied path. Small Git
+regression fixtures demonstrate these boundaries and are not candidate source qualification.

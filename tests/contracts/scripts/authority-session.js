@@ -342,7 +342,7 @@ async function main() {
     const fields = { start: ['plan', 'journal', 'mode'], prepare: ['plan', 'journal', 'governorEnvelope'], import: ['plan', 'journal', 'signedRawFile'],
         relay: ['plan', 'journal', 'signedRawFile', 'acknowledgement'], recover: ['plan', 'journal', 'transactionHash'], reconcile: ['plan', 'journal', 'transactionHash'], finish: ['plan', 'journal'], status: ['plan', 'journal'], handoff: ['plan', 'journal'] };
     requireValue(fields[action] && inputFile && output && !extra, 'Usage: authority-session.js start|prepare|handoff|import|relay|recover|reconcile|finish|status COMMAND.json NEW_OUTPUT.json');
-    const revision = legacy.reviewedRevision(), input = readJson(inputFile);
+    const revision = require('./authority-revision').reviewedRevision(), input = readJson(inputFile);
     same(Object.keys(input).sort(), fields[action].sort(), 'command fields');
     assertOutsideCheckout(output); assertOutsideCheckout(input.journal);
     if (action === 'start') assertOutsideCheckout(process.env.DEPLOYMENT_LOCK_DIRECTORY);

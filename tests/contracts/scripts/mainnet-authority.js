@@ -134,7 +134,7 @@ async function makePlan(config, compiled, revision, journal) {
             "The journal is coordinated evidence, not an on-chain nonce reservation or a lock against other signers.", "Ownership is constructor-set transferable storage. Dependency immutables and one-time graph bindings have different semantics."] });
 }
 // revision is a caller-owned trust anchor, obtained independently of this plan (for the CLI,
-// legacy.reviewedRevision() observes a clean checkout). A plan checksum cannot attest its label.
+// require('./authority-revision').reviewedRevision() observes a clean checkout). A plan checksum cannot attest its label.
 async function checkPlan(plan, compiled = compiledContracts(), revision) {
     demand(revision !== undefined, "An independently observed source revision is required");
     checkSeal(plan);
@@ -406,7 +406,7 @@ async function main() {
     assertOutsideCheckout(output);
     demand(!fs.existsSync(output), "Refuse to overwrite evidence");
     const data = JSON.parse(fs.readFileSync(input, "utf8")); exact(data, ["config", "journal"]);
-    const plan = await makePlan(data.config, compiledContracts(), legacy.reviewedRevision(), data.journal);
+    const plan = await makePlan(data.config, compiledContracts(), require('./authority-revision').reviewedRevision(), data.journal);
     require("./authority-cli").writeNew(output, plan);
     process.stdout.write(JSON.stringify({ output: path.resolve(output), readyToBroadcast: false }) + "\n");
 }

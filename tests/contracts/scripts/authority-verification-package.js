@@ -95,7 +95,7 @@ async function main() {
     if (!input || !evidenceOrOutput || extra || !['plan', 'receipts'].includes(mode) ||
         (mode === 'plan' ? receiptOutput !== undefined : !receiptOutput))
         throw Error('Usage: authority-verification-package.js plan PLAN.json NEW_DIRECTORY OR receipts PLAN.json EVIDENCE.json NEW_DIRECTORY');
-    const revision = legacy.reviewedRevision();
+    const revision = require('./authority-revision').reviewedRevision();
     require('./authority-paths').assertOutsideCheckout(mode === 'plan' ? evidenceOrOutput : receiptOutput);
     const { readJson } = require('./authority-cli');
     const plan = readJson(input);

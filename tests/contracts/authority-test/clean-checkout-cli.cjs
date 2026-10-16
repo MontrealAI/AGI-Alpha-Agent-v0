@@ -9,6 +9,7 @@ const https = require('https');
 const { spawn, execFileSync } = require('child_process');
 const assert = require('assert/strict');
 const legacy = require('../scripts/mainnet');
+const { reviewedRevision, gitRead } = require('../scripts/authority-revision');
 const policy = require('../scripts/mainnet-authority');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const scripts = path.resolve(__dirname, '../scripts');
@@ -30,7 +31,7 @@ async function main() {
     assert.match(process.env.ALPHA_EXPECTED_HEAD_SHA || '', /^[0-9a-f]{40}$/);
     const selectedProfile = process.env.ALPHA_NATIVE_PROFILE;
     assert.ok(['empty', 'delegated'].includes(selectedProfile), 'Explicit single native profile required');
-    const revision = legacy.reviewedRevision(); // Actual clean candidate checkout; never supplied from a plan.
+    const revision = reviewedRevision(); // Actual clean candidate checkout; never supplied from a plan.
     assert.equal(revision.commit, process.env.ALPHA_EXPECTED_HEAD_SHA);
     const output = assertOutsideCheckout(process.env.ALPHA_NATIVE_EVIDENCE_DIRECTORY);
     assert.equal(fs.realpathSync(path.dirname(output)), path.dirname(output));
@@ -76,8 +77,8 @@ async function main() {
         let serial = 0;
         async function cli(label, file, args, expected = 0, extraEnv = {}, intentionalDirtyNegative = false) {
             stage = label;
-            if (intentionalDirtyNegative) { assert.equal(expected, 1); assert.notEqual(execFileSync('git', ['status', '--porcelain'], { cwd: SOURCE_ROOT, encoding: 'utf8' }).trim(), ''); }
-            else assert.deepEqual(legacy.reviewedRevision(), revision);
+            if (intentionalDirtyNegative) { assert.equal(expected, 1); assert.notEqual(gitRead(['ls-files', '--others', '--exclude-standard', '-z']).trim(), ''); }
+            else assert.deepEqual(reviewedRevision(), revision);
             const child = spawn(process.execPath, [path.join(scripts, file), ...args], { cwd: path.dirname(scripts), env: { ...baseEnv, ...extraEnv }, stdio: ['ignore', 'pipe', 'pipe'] });
             let stdout = '', stderr = ''; const timer = setTimeout(() => child.kill('SIGKILL'), 90000);
             child.stdout.on('data', chunk => { stdout += chunk; if (stdout.length > 65536) child.kill('SIGKILL'); });
@@ -85,7 +86,7 @@ async function main() {
             const code = await new Promise((resolve, reject) => { child.on('error', reject); child.on('exit', resolve); }); clearTimeout(timer);
             report.commands.push({ label, exitCode: code, expectedExitCode: expected, stdoutSha256: sha(stdout), stderrSha256: sha(stderr) });
             assert.equal(code, expected, `Unexpected CLI outcome at ${label}`);
-            if (!intentionalDirtyNegative) assert.deepEqual(legacy.reviewedRevision(), revision);
+            if (!intentionalDirtyNegative) assert.deepEqual(reviewedRevision(), revision);
         }
         async function fixture(mode) {
             await network.provider.send('hardhat_reset');
@@ -160,7 +161,7 @@ async function main() {
             const sentinel = path.join(SOURCE_ROOT, `alpha-native-dirty-${crypto.randomUUID()}.txt`); write(sentinel, 'Intentional clean-checkout rejection fixture');
             try { await cli(`${mode}:reject-dirty-source`, 'mainnet-authority.js', ['plan', configFile, next('dirty-plan.json')], 1, {}, true); }
             finally { fs.unlinkSync(sentinel); }
-            assert.deepEqual(legacy.reviewedRevision(), revision); assert.equal(count, before);
+            assert.deepEqual(reviewedRevision(), revision); assert.equal(count, before);
             await cli(`${mode}:reject-untrusted-local-TLS`, 'authority-cli.js', ['preflight', planFile, progressFile, next('untrusted-report.json')], 1, { NODE_EXTRA_CA_CERTS: '' });
             assert.equal(count, before); // TLS verification rejects before an HTTP/RPC method reaches the fixture.
             await command('start', { mode });
@@ -223,8 +224,8 @@ async function main() {
             report.campaigns.push({ profile, mode, creationHashes, governanceHashes, phases, exactFinalAuthority: true });
         }
         report.fixtureRequests = count; report.fixtureRelayCalls = relays;
-        report.sourceInventory = Object.fromEntries(execFileSync('git', ['ls-files', '-z', 'tests/contracts', 'contracts', 'token.config.js', '.github/workflows/alpha-authority-v2.yml'], { cwd: SOURCE_ROOT, encoding: 'utf8' }).split('\0').filter(Boolean).map(p => [p, sha(fs.readFileSync(path.join(SOURCE_ROOT, p)))]));
-        assert.deepEqual(legacy.reviewedRevision(), revision);
+        report.sourceInventory = Object.fromEntries(gitRead(['ls-files', '-z', 'tests/contracts', 'contracts', 'token.config.js', '.github/workflows/alpha-authority-v2.yml']).split('\0').filter(Boolean).map(p => [p, sha(fs.readFileSync(path.join(SOURCE_ROOT, p)))]));
+        assert.deepEqual(reviewedRevision(), revision);
         report.completedAt = new Date().toISOString(); report.result = 'passed';
         function inspect(directory) { for (const name of fs.readdirSync(directory)) { const p = path.join(directory, name); if (fs.statSync(p).isDirectory()) inspect(p); else { const text = fs.readFileSync(p, 'utf8'); assert.ok(!text.includes('PRIVATE KEY')); for (const raw of rawCapabilities) assert.ok(!text.includes(raw), 'Raw signed capability escaped into public evidence'); } } }
         inspect(output);

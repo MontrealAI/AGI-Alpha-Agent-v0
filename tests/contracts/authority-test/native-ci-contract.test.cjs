@@ -60,9 +60,9 @@ test('native artifacts use outside-checkout safe summaries and never private run
     assert.ok(!JSON.stringify(summary).includes('PRIVATE KEY'));
 });
 test('native harness requires independently observed clean HEAD before any fixture or signer', () => {
-    assert.ok(harness.indexOf('const revision = legacy.reviewedRevision()') < harness.indexOf("require('hardhat')"));
+    assert.ok(harness.indexOf('const revision = reviewedRevision()') < harness.indexOf("require('hardhat')"));
     assert.ok(harness.indexOf('assert.equal(revision.commit, process.env.ALPHA_EXPECTED_HEAD_SHA)') < harness.indexOf('createFixtureCertificate(privateRoot)'));
-    assert.match(harness, /assert\.deepEqual\(legacy.reviewedRevision\(\), revision\)/);
+    assert.match(harness, /assert\.deepEqual\(reviewedRevision\(\), revision\)/);
     assert.match(harness, /network.config.hardfork, 'osaka'/);
     assert.match(harness, /requireDisposableLocalNetwork/);
     assert.match(harness, /\[0, 0, 0, 0, 0, 1, 2\]/);

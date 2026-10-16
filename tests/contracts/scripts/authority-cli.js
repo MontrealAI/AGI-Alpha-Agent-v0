@@ -31,7 +31,7 @@ async function runReadOnly(mode, plan, input, revision, rpc) {
 async function main() {
     const [mode, planFile, inputFile, output, extra] = process.argv.slice(2);
     if (!['preflight', 'verify'].includes(mode) || !planFile || !inputFile || !output || extra) throw Error('Usage: authority-cli.js preflight|verify PLAN.json INPUT.json NEW_REPORT.json');
-    const revision = legacy.reviewedRevision(), plan = readJson(planFile);
+    const revision = require('./authority-revision').reviewedRevision(), plan = readJson(planFile);
     assertOutsideCheckout(output);
     await policy.checkPlan(plan, undefined, revision);
     if (!process.env.ALPHA_READ_ONLY_RPC_URL) throw Error('Explicit ALPHA_READ_ONLY_RPC_URL required');
