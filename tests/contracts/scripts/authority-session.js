@@ -379,6 +379,11 @@ function readRaw(filename) {
     const target = ordinaryPath(filename), fd = fs.openSync(target, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
     try { requireValue(fs.fstatSync(fd).size <= 200002, 'Signed raw file exceeds bound'); return fs.readFileSync(fd, 'utf8').trim(); } finally { fs.closeSync(fd); }
 }
+// Additive in-process creator adapter; the transport factory remains private.
+// No key is accepted here, and relayOnce still persists its attempt before transport.
+async function relayUserSignedOnce({ endpoint, ...args }) {
+    return relayOnce({ ...args, relay: createRawRelay(endpoint) });
+}
 async function main() {
     // One command input file keeps argument parsing narrow; exact schemas are selected per action.
     const [action, inputFile, output, extra] = process.argv.slice(2);
@@ -418,5 +423,5 @@ async function main() {
     console.log(JSON.stringify({ output: path.resolve(output), action, activationAllowed: false, liveSigningPerformedByTool: false }));
 }
 module.exports = { SCHEMA, ownerKeys, acquireActors, releaseActor, loadSession, validateIntent, validateSigned, startSession, prepare,
-    retrieveHandoff, importSigned, relayAcknowledgement, relayOnce, recover, reconcile, finish, readRaw };
+    retrieveHandoff, importSigned, relayAcknowledgement, relayOnce, relayUserSignedOnce, recover, reconcile, finish, readRaw };
 if (require.main === module) main().catch(error => { console.error(error.publicMessage ? error.message : 'Session stopped. Preserve its journal and locks; source, input, runtime or submission needs reconciliation.'); process.exitCode = 1; });

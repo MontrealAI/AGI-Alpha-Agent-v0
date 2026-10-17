@@ -14,7 +14,7 @@ const policy = require('../scripts/mainnet-authority');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const scripts = path.resolve(__dirname, '../scripts');
 const HASH = '0x' + 'ab'.repeat(32); // Clearly synthetic qualification placeholder, never a live approval.
-const readMethods = new Set(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call', 'eth_getTransactionCount', 'eth_getBalance', 'eth_getTransactionByHash', 'eth_getTransactionReceipt', 'eth_getLogs']);
+const readMethods = new Set(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call', 'eth_getTransactionCount', 'eth_getBalance', 'eth_getTransactionByHash', 'eth_getTransactionReceipt', 'eth_getLogs', 'eth_getStorageAt']);
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const write = (file, value) => fs.writeFileSync(file, typeof value === 'string' ? value : JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -30,7 +30,7 @@ async function main() {
     assert.equal(process.versions.node, '22.17.1', 'Use the source-qualified Node runtime');
     assert.match(process.env.ALPHA_EXPECTED_HEAD_SHA || '', /^[0-9a-f]{40}$/);
     const selectedProfile = process.env.ALPHA_NATIVE_PROFILE;
-    assert.ok(['empty', 'delegated'].includes(selectedProfile), 'Explicit single native profile required');
+    assert.ok(['empty', 'delegated', 'marker'].includes(selectedProfile), 'Explicit single native profile required');
     const revision = reviewedRevision(); // Actual clean candidate checkout; never supplied from a plan.
     assert.equal(revision.commit, process.env.ALPHA_EXPECTED_HEAD_SHA);
     const output = assertOutsideCheckout(process.env.ALPHA_NATIVE_EVIDENCE_DIRECTORY);
@@ -50,6 +50,7 @@ async function main() {
         const { installToken } = require('../test/utils/token');
         const { certificate, key } = createFixtureCertificate(privateRoot);
         report.fixtureCertificateSha256 = sha(fs.readFileSync(certificate));
+        let blockedCallTargets = [];
         let count = 0, relays = 0, mutationOnRead = null, restoreLateMutation = null, loseRelayResponse = false;
         server = https.createServer({ key: fs.readFileSync(key), cert: fs.readFileSync(certificate), minVersion: 'TLSv1.2' }, (req, res) => {
             const chunks = []; let size = 0;
@@ -61,6 +62,7 @@ async function main() {
                     assert.equal(body.jsonrpc, '2.0'); assert.ok(Array.isArray(body.params));
                     const relay = req.url === '/relay'; assert.ok(relay || req.url === '/read');
                     assert.ok(relay ? body.method === 'eth_sendRawTransaction' : readMethods.has(body.method));
+                    if (body.method === 'eth_call') assert.ok(!blockedCallTargets.includes(body.params[0].to.toLowerCase()), 'Marker profile cannot invoke creator/target');
                     if (!relay && mutationOnRead) { const mutate = mutationOnRead; mutationOnRead = null; restoreLateMutation = mutate() || null; }
                     const params = body.method === 'eth_getBlockByNumber' && body.params[0] === 'finalized' ? ['latest', false] : body.params;
                     const result = await ethers.provider.send(body.method, params);
@@ -119,6 +121,14 @@ async function main() {
                     stateChecks: [{ to: target, data: '0x12345678', resultHash: ethers.keccak256('0x') }],
                     qualification: { consensusEvidenceSha256: HASH.slice(2), forkEvidenceSha256: HASH.slice(2), delegateReviewSha256: HASH.slice(2) } };
             }
+            if (mode === policy.MARKER) {
+                const target = ethers.getAddress('0x' + 'c9'.padStart(40, '0')), code = '0x600160005500';
+                config.sender = { mode, delegationCode: `0xef0100${target.slice(2).toLowerCase()}`, target, targetCodeHash: ethers.keccak256(code),
+                    storageChecks: [{ address: creator.address, slot: ethers.ZeroHash, value: ethers.ZeroHash }, { address: target, slot: ethers.ZeroHash, value: ethers.ZeroHash }], qualification: null };
+                await ethers.provider.send('hardhat_setCode', [target, code]);
+                await ethers.provider.send('hardhat_setCode', [creator.address, config.sender.delegationCode]);
+                blockedCallTargets = [creator.address, target].map(a => a.toLowerCase());
+            }
             for (const [name, address] of Object.entries(dependencies)) config.dependencies[name] = { address, codeHash: ethers.keccak256(await ethers.provider.getCode(address)) };
             config.nonce = Number(BigInt(await ethers.provider.send('eth_getTransactionCount', [creator.address, 'latest'])));
             const block = await ethers.provider.send('eth_getBlockByNumber', ['latest', false]); config.block = { number: Number(BigInt(block.number)), hash: block.hash };
@@ -127,15 +137,31 @@ async function main() {
                 allocations: [{ project: 'alpha', startNonce: config.nonce, count: 5 }, { project: 'jobs', startNonce: config.nonce + 5, count: 1 }, { project: 'manager', startNonce: config.nonce + 6, count: 1 }] };
             return { config, journal, creator, governor };
         }
-        // Separate native processes bound EDR accumulation; CI executes both explicit profiles serially.
-        const campaigns = { empty: [policy.EMPTY, 'raw-relay'], delegated: [policy.DELEGATED, 'external-broadcast'] };
+        // Separate native processes bound EDR accumulation; CI executes every explicit profile serially.
+        const campaigns = { empty: [policy.EMPTY, 'raw-relay'], delegated: [policy.DELEGATED, 'external-broadcast'], marker: [policy.MARKER, 'external-broadcast'] };
         for (const [profile, mode] of [campaigns[selectedProfile]]) {
             const f = await fixture(profile), directory = path.join(privateRoot, mode); fs.mkdirSync(directory);
             const next = name => path.join(directory, `${++serial}-${name}`);
             const configFile = next('config.json'), planFile = next('plan.json'), progressFile = next('progress.json'), journalFile = next('session.jsonl');
             const lockDirectory = next('locks'); fs.mkdirSync(lockDirectory);
             const env = { DEPLOYMENT_LOCK_DIRECTORY: lockDirectory };
-            write(configFile, { config: f.config, journal: f.journal });
+            let directOriginationEvidence;
+            if (profile === policy.MARKER) {
+                const requestFile = next('qualification-input.json'), scopeFile = next('qualification-request.json');
+                write(requestFile, { config: f.config, journal: f.journal });
+                await cli(`${mode}:qualification-scope`, 'mainnet-authority.js', ['qualification-scope', requestFile, scopeFile]);
+                const request = read(scopeFile), scope = request.scope; assert.equal(request.readyToSign, false); assert.deepEqual(scope.source, revision);
+                const reference = 'SYNTHETIC native CLI fixture reports; not an actual-account qualification';
+                const reports = {
+                    consensusEvidenceSha256: { schema: 'agialpha.direct-consensus-report.v1', disposition: 'direct-type2-create-does-not-invoke-origin-code', scope,
+                        reviewReference: reference, artifacts: { consensusSourceSha256: HASH.slice(2), analysisSha256: HASH.slice(2) } },
+                    directExecutionEvidenceSha256: { schema: 'agialpha.direct-execution-report.v1', disposition: 'five-direct-creates-no-creator-or-target-invocation', scope,
+                        reviewReference: reference, artifacts: { sourceCallGraphSha256: HASH.slice(2), initcodeCallGraphSha256: HASH.slice(2), traceSha256: HASH.slice(2) }, invocations: { creator: 0, target: 0 } }
+                };
+                f.config.sender.qualification = Object.fromEntries(Object.entries(reports).map(([key, report]) => [key, policy.digest(report)]));
+                directOriginationEvidence = { schema: 'agialpha.marker-direct-qualification-evidence.v1', scope, reports };
+            }
+            write(configFile, { config: f.config, journal: f.journal, ...(directOriginationEvidence ? { directOriginationEvidence } : {}) });
             await cli(`${mode}:plan`, 'mainnet-authority.js', ['plan', configFile, planFile]);
             const plan = read(planFile); assert.deepEqual(plan.revision, revision);
             await cli(`${mode}:predicted-package`, 'authority-verification-package.js', ['plan', planFile, path.join(output, `${mode}-predicted-package`)]);

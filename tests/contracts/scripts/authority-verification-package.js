@@ -34,6 +34,15 @@ async function plannedPackage(plan, revision, compiled = policy.compiledContract
     bundle.manifest.senderPolicySha256 = policy.digest(plan.config.sender);
     bundle.manifest.sourceClosureSha256 = policy.digest(plan.builds);
     bundle.manifest.addressStatus = 'predicted';
+    if (plan.config.sender.mode === policy.CONVENTIONAL) {
+        bundle.manifest.senderMode = policy.CONVENTIONAL;
+        bundle.manifest.originationScope = 'Conventional transaction correctness only; no wallet qualification, delegate target safety, no-invocation or custody assurance';
+    }
+    if (plan.config.sender.mode === policy.MARKER) {
+        bundle.manifest.senderMode = policy.MARKER;
+        bundle.manifest.originationScope = 'Bound review proposition: exact direct CREATE without creator/target invocation; report provenance requires independent acceptance, no delegate safety or custody conclusion';
+        bundle.files['origination-evidence.json'] = json(plan.directOriginationEvidence);
+    }
     for (const contract of Object.values(bundle.manifest.contracts)) contract.addressStatus = 'predicted';
     bundle.manifest.files = Object.fromEntries(Object.entries(bundle.files).filter(([name]) => name !== 'manifest.json').map(([name, value]) => [name, policy.digest(value)]));
     bundle.files['manifest.json'] = json(bundle.manifest);

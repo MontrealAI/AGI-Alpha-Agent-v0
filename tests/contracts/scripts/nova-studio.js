@@ -48,7 +48,7 @@ async function main(){
     const artifact=await artifacts.readArtifact(name), build=await artifacts.getBuildInfo(`${artifact.sourceName}:${name}`);
     assert.ok(build,`Missing exact compiler input for ${name}`);
     assert.equal(build.solcVersion,require('./compiler-policy').SOLC_VERSION);
-    assert.deepEqual(build.input.settings.optimizer,{enabled:true,runs:200});
+    assert.deepEqual(build.input.settings.optimizer,require("./compiler-policy").OPTIMIZER);
     assert.equal(build.input.settings.viaIR,true);assert.equal(build.input.settings.evmVersion,'cancun');
     for(const [file,input] of Object.entries(build.input.sources)) {
       if(!file.startsWith('contracts/ascension/') || !fs.existsSync(path.join(root,file)))continue;
