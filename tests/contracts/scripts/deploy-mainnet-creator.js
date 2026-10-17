@@ -14,7 +14,7 @@ function creatorReview(plan) {
     const maximumFee = plan.transactions.reduce((sum, t) => sum + BigInt(t.envelope.gasLimit) * BigInt(t.envelope.maxFeePerGas), 0n);
     return { schema: 'agialpha.creator-terminal-review.v1', planSha256: plan.payloadSha256, revision: plan.revision,
         chainId: plan.config.chainId, creator: plan.config.deployer, governor: plan.config.governor,
-        senderPolicy: plan.config.sender, dependencies: plan.config.dependencies, rootOwners: plan.config.rootOwners,
+        senderPolicy: plan.config.sender, ...(plan.config.sender.mode === policy.CONVENTIONAL ? { assurance: 'Conventional transaction correctness only. No wallet qualification, delegate target safety, no-invocation or custody assurance.' } : {}), dependencies: plan.config.dependencies, rootOwners: plan.config.rootOwners,
         parameters: plan.config.parameters, addresses: plan.addresses, transactions: plan.transactions,
         maximumTotalCreationFeeWei: maximumFee.toString(), maximumTotalCreationFeeETH: E.formatEther(maximumFee),
         creatorOperations: 5, governorOperationsSignedHere: 0,

@@ -12,6 +12,9 @@ const { summarizeLog, CHECKS, EXPECTED_COUNTS } = require('./native-ci-evidence.
 const root = path.resolve(__dirname, '../../..');
 const source = file => fs.readFileSync(path.join(root, file), 'utf8');
 const workflow = source('.github/workflows/alpha-authority-v2.yml');
+// The original native job retains its exact action/shard contract. Global
+// permission and dangerous-command checks still inspect the entire workflow.
+const offlineWorkflow = workflow.split('\n  conventional-qualification:\n')[0];
 const harness = source('tests/contracts/authority-test/clean-checkout-cli.cjs');
 async function child(args, env) {
     return new Promise((resolve, reject) => {
@@ -22,7 +25,7 @@ async function child(args, env) {
     });
 }
 test('native workflow has only exact reviewed action pins and read-only checkout permission', () => {
-    const actions = [...workflow.matchAll(/uses: ([^\s]+)(?: # ([^\n]+))?/g)].map(m => m[1]);
+    const actions = [...offlineWorkflow.matchAll(/uses: ([^\s]+)(?: # ([^\n]+))?/g)].map(m => m[1]);
     assert.deepEqual(actions, ['actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd',
         'actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f',
         'actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405',
@@ -37,7 +40,7 @@ test('native workflow keeps pinned installs, all serial shards and three native 
     assert.match(workflow, /npm ci --prefix tests\/contracts/);
     assert.match(workflow, /pip install --require-hashes -r requirements-agent\.lock/);
     assert.match(workflow, /070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667/);
-    assert.deepEqual([...workflow.matchAll(/^          run_check ([a-z-]+) /gm)].map(m => m[1]), CHECKS);
+    assert.deepEqual([...offlineWorkflow.matchAll(/^          run_check ([a-z-]+) /gm)].map(m => m[1]), CHECKS);
     assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 157);
     for (const label of ['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'])
         assert.match(workflow.split('\n').find(line => line.trim().startsWith(`run_check ${label} `)), /--max-old-space-size=384/);

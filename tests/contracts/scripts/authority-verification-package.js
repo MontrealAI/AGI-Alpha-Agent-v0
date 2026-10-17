@@ -34,6 +34,10 @@ async function plannedPackage(plan, revision, compiled = policy.compiledContract
     bundle.manifest.senderPolicySha256 = policy.digest(plan.config.sender);
     bundle.manifest.sourceClosureSha256 = policy.digest(plan.builds);
     bundle.manifest.addressStatus = 'predicted';
+    if (plan.config.sender.mode === policy.CONVENTIONAL) {
+        bundle.manifest.senderMode = policy.CONVENTIONAL;
+        bundle.manifest.originationScope = 'Conventional transaction correctness only; no wallet qualification, delegate target safety, no-invocation or custody assurance';
+    }
     if (plan.config.sender.mode === policy.MARKER) {
         bundle.manifest.senderMode = policy.MARKER;
         bundle.manifest.originationScope = 'Bound review proposition: exact direct CREATE without creator/target invocation; report provenance requires independent acceptance, no delegate safety or custody conclusion';

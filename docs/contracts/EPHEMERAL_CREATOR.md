@@ -1,5 +1,21 @@
 # Ubuntu Hardhat creation, then Mac Ledger governance
 
+## Recommended route
+
+1. Select the deployer, Ledger governor and intended settings in the public
+   example. Keep the recommended conventional sender mode; no wallet reports.
+2. Prepare the source-bound plan as below, run the Hardhat creator command on
+   Ubuntu, review its summary and enter the key only in the hidden local prompt.
+   The script checks the transactions and reconciles interrupted creations.
+3. On the Mac Ledger, complete the two separately reviewed governor bindings.
+   Verify the final contracts, owner/pending-owner fields and absence of creator
+   roles before any separately approved funding, admission or activation.
+
+The public settings and plan still need to be prepared; there is no automatic
+configuration wizard. Once the scoped authority checks pass, the creator has no
+ongoing deployment role in the fresh graph. External token/proxy/ENS controllers
+remain separately scoped; this does not certify every external authority.
+
 This additive entry point creates the five unchanged Ascension contracts from the
 operator's selected creator account. Access, RiskOracle and JobMarket receive the
 explicitly acknowledged governor as owner in their constructors. The creator does
@@ -13,12 +29,22 @@ Node 22/toolchain and matching compiled artifacts. The old local-fixture config,
 historical manifests and v1 verification semantics remain unchanged. This path is
 an additive user-run script; implementation does not authorize a Mainnet action.
 
-No creator address is hardcoded. Select a supported empty-code EOA or the separately
-qualified direct-origination profile for a marker-bearing EOA. A private key does not
-make a smart-contract wallet, factory, batch, self-call or type-4 authorization an
-equivalent path. No fallback changes or removes a marker. The selected public
-creator address must already match the reviewed plan. A last-minute address change
-requires a new nonce/address/constructor plan before any signature.
+No creator address is hardcoded. The recommended ordinary route uses
+`sender: {"mode":"conventional-eoa-direct-create.v1"}` as in the public example.
+Select any signing EOA, with empty code or an existing EIP-7702 marker. No
+wallet-specific review, qualification report, target code hash or storage checks
+are required. Ethereum validates transaction-origin eligibility automatically.
+The script does not inspect or approve the delegate target or change delegation.
+It still checks the key matches the creator and the requested transactions and
+resulting contracts are correct. No formal zero-invocation, delegate safety,
+exclusive custody or real-state qualification is claimed. Constructor dependencies
+can execute code, so direct CREATE alone is not a universal callback proof.
+
+The existing empty, strict-delegated and marker-qualified modes retain their
+original checks for operators explicitly choosing those advanced profiles. No
+fallback uses a smart-contract wallet, factory, batch, self-call or type-4
+authorization. A last-minute creator change requires a new nonce/address/constructor
+plan before any signature; existing signed/submitted work must be reconciled first.
 
 All five transactions are exact type-2, zero-value, null-destination CREATEs. Their
 chain, sender, nonce, gas, fee caps, access list and full initcode are fixed by the
