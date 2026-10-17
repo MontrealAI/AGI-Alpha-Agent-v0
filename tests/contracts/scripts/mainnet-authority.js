@@ -15,8 +15,11 @@ const OWNED = ["AscensionAccess", "AscensionRiskOracle", "AscensionJobMarket"];
 // Arbitrary existing addresses are additionally excluded by code/nonce preflight checks.
 const HISTORICAL_GRAPH = Object.freeze(Object.values(require("./mainnet-record").loadRecord().record.contracts)
     .map(record => ethers.getAddress(record.address)));
+const CONVENTIONAL = "conventional-eoa-direct-create.v1";
 const EMPTY = "empty-eoa-direct-create.v1";
 const DELEGATED = "delegated-eoa-direct-create.v1";
+const origination = require("./authority-origination");
+const MARKER = origination.MARKER;
 const POLICY = "agialpha.zero-retained-creator-authority.v2";
 const MAX_TRANSACTION_GAS = 16777216n; // EIP-7825, active on mainnet Osaka.
 const digest = x => crypto.createHash("sha256").update(typeof x === "string" ? x : canonical(x)).digest("hex");
@@ -54,7 +57,11 @@ function validateConfig(c) {
     demand(quantity(c.envelope.gasLimit) >= 21000n && quantity(c.envelope.maxFeePerGas) > 0n && quantity(c.envelope.maxPriorityFeePerGas) <= quantity(c.envelope.maxFeePerGas), "Invalid reviewed gas or fee bounds");
     demand(quantity(c.envelope.gasLimit) <= MAX_TRANSACTION_GAS, "Osaka EIP-7825 transaction gas cap exceeded");
     demand(Array.isArray(c.envelope.accessList) && c.envelope.accessList.length === 0, "Only an explicit empty access list is supported");
-    if (c.sender.mode === EMPTY) exact(c.sender, ["mode"]);
+    if ([EMPTY, CONVENTIONAL].includes(c.sender.mode)) exact(c.sender, ["mode"]);
+    else if (c.sender.mode === MARKER) {
+        origination.validateSender(c.sender, c.deployer);
+        demand(!Object.values(c.dependencies).some(d => [addr(c.deployer), addr(c.sender.target)].includes(addr(d.address))), "Origin/target cannot alias a dependency invoked during preflight");
+    }
     else {
         exact(c.sender, ["mode", "delegationCode", "target", "targetCodeHash", "stateChecks", "qualification"]);
         demand(c.sender.mode === DELEGATED, "Unsupported sender mode: no factory, smart wallet, batch, relayer, type4 or CREATE2");
@@ -115,20 +122,36 @@ function constructorArguments(c, a) {
     return [[ENS, WRAPPER, g], [a.AscensionAccess], [a.AscensionAccess, a.NovaSeed, p.minimumValidatorStake, p.quorum, p.maximumRiskBps, g],
         [a.AscensionAccess, a.AscensionRiskOracle, p.minimumAgentStake, g], [a.NovaSeed, a.AscensionAccess, a.AscensionRiskOracle, a.AscensionJobMarket]];
 }
-async function makePlan(config, compiled, revision, journal) {
+function planComponents(config, compiled, revision, journal) {
     validateConfig(config); validateJournal(config, journal);
     exact(revision, ["commit", "tree", "lockSha256"]); demand(/^[a-f0-9]{40}$/.test(revision.commit) && /^[a-f0-9]{40}$/.test(revision.tree), "Exact source commit and tree required"); sha(revision.lockSha256);
     const addresses = Object.fromEntries(NAMES.map((name, i) => [name, ethers.getCreateAddress({ from: config.deployer, nonce: config.nonce + i })]));
     demand(Object.values(addresses).every(a => !HISTORICAL_GRAPH.includes(a)), "Previously deployed graph is protected; choose a fresh creation nonce/address plan");
+    if (config.sender.mode === MARKER) demand(Object.values(addresses).every(a => ![addr(config.deployer), addr(config.sender.target)].includes(a)), "Origin/target cannot alias the new graph");
     const args = constructorArguments(config, addresses);
     const transactions = NAMES.map((name, i) => ({ name, expectedAddress: addresses[name], constructorArguments: args[i],
         envelope: { type: 2, chainId: 1, from: config.deployer, nonce: config.nonce + i, to: null, value: "0",
             data: ethers.concat([compiled.records[name].bytecode, new ethers.Interface(compiled.records[name].abi).encodeDeploy(args[i])]), ...config.envelope } }));
+    return { addresses, transactions };
+}
+function qualificationRequest(config, compiled, revision, journal) {
+    demand(config?.sender?.mode === MARKER && config.sender.qualification === null, "Scope-only input requires marker mode and explicit null qualification");
+    const c = structuredClone(config);
+    // This sentinel permits only generation of an unsigned review request, never a qualified plan.
+    c.sender.qualification = { consensusEvidenceSha256: digest("UNQUALIFIED SCOPE REQUEST"), directExecutionEvidenceSha256: digest("UNQUALIFIED SCOPE REQUEST") };
+    const { transactions } = planComponents(c, compiled, revision, journal);
+    return { schema: "agialpha.marker-direct-qualification-request.v1", scope: origination.qualificationScope(c, compiled, revision, transactions),
+        readyToSign: false, readyToBroadcast: false, warning: "A source-bound review request only. Independently accepted reports and artifacts are still required." };
+}
+async function makePlan(config, compiled, revision, journal, directOriginationEvidence) {
+    const { addresses, transactions } = planComponents(config, compiled, revision, journal);
+    if (config.sender.mode === MARKER) origination.validateEvidence(config, compiled, revision, transactions, directOriginationEvidence);
+    else demand(directOriginationEvidence === undefined, "Only marker direct-origination accepts its evidence bundle");
     const governanceCalls = [["AscensionRiskOracle", "bindMarketplace", addresses.AscensionJobMarket], ["AscensionJobMarket", "bindMark", addresses.AscensionMark]]
         .map(([name, method, argument]) => ({ name, method, argument, from: config.governor.address, to: addresses[name], chainId: 1, value: "0", operation: 0,
             data: new ethers.Interface(compiled.records[name].abi).encodeFunctionData(method, [argument]) }));
     return seal({ schema: "agialpha.mainnet.unsigned-plan.v2", policy: POLICY, config, revision, journal, journalSha256: digest(journal),
-        addresses, transactions, governanceCalls,
+        addresses, transactions, governanceCalls, ...(config.sender.mode === CONVENTIONAL ? { originationAssurance: 'Conventional transaction correctness only; no wallet qualification, delegate target safety, no-invocation or custody assurance' } : {}), ...(config.sender.mode === MARKER ? { directOriginationEvidence } : {}),
         executionPolicy: { hardfork: "osaka", maximumTransactionGas: MAX_TRANSACTION_GAS.toString(), envelope: "type2-direct-create", scope: "Non-blob transaction execution only; not full consensus or finality qualification" }, contracts: compiled.records, builds: compiled.builds, readyToBroadcast: false,
         limitations: ["Functional candidate; hashes identify evidence but do not certify review quality or wallet custody.", "No consensus/fork qualification, independent security review or activation approval is implied.",
             "The journal is coordinated evidence, not an on-chain nonce reservation or a lock against other signers.", "Ownership is constructor-set transferable storage. Dependency immutables and one-time graph bindings have different semantics."] });
@@ -139,7 +162,7 @@ async function checkPlan(plan, compiled = compiledContracts(), revision) {
     demand(revision !== undefined, "An independently observed source revision is required");
     checkSeal(plan);
     demand(canonical(plan.revision) === canonical(revision), "Plan/source/constructor mismatch: independently observed revision differs"); demand(plan.schema === "agialpha.mainnet.unsigned-plan.v2" && plan.policy === POLICY && plan.readyToBroadcast === false, "Wrong candidate policy");
-    const rebuilt = await makePlan(plan.config, compiled, revision, plan.journal);
+    const rebuilt = await makePlan(plan.config, compiled, revision, plan.journal, plan.directOriginationEvidence);
     demand(canonical(plan) === canonical(rebuilt), "Plan/source/constructor mismatch"); return plan;
 }
 function validateEnvelope(expected, actual) {
@@ -162,7 +185,7 @@ function signingBoundary(plan) {
             acquisitionOrder: "Deduplicate and lexically sort all actual sender keys, including the governor, before acquiring any lock",
             requiredScope: "Exclusive across Alpha, Jobs and Manager through creation and governor binding; never auto-break a stale lock" },
         requiredExecutorChecks: ["Acquire the common atomic-directory lock before nonce inspection or signing and fsync the journal intent before submission",
-            "Revalidate exact plan/envelope/delegation and latest=pending nonce while holding the lock",
+            plan.config.sender.mode === CONVENTIONAL ? "Revalidate exact plan/envelope and latest=pending nonce while holding the lock" : "Revalidate exact plan/envelope/delegation and latest=pending nonce while holding the lock",
             "Governor calls also require their actor lock, separately reviewed current nonce/fees and a durable exact CALL intent before signing; never reuse the creator nonce journal for them",
             "Intent without a proven canonical matching receipt after possible submission is unresolved: read-only reconcile; never blindly retry",
             "Retain exact transaction hashes and canonical receipts; permit only the contiguous receipt prefix; never silently skip a consumed nonce",
@@ -232,13 +255,16 @@ async function inspectEnvironment(c, rpc, pin, checkCreator) {
         same(owner, c.rootOwners[name], `ENS ${name}`);
     }
     if (checkCreator) {
+        // Conventional mode observes origin code without wallet-specific admission.
+        // Ethereum validates eligibility; no target/state/custody assurance is claimed.
         const code = await rpc("eth_getCode", [c.deployer, tag]);
         if (c.sender.mode === EMPTY) demand(code === "0x", "Empty-code mode rejects delegated/contract sender");
-        else {
+        else if (c.sender.mode !== CONVENTIONAL) {
             same(code, c.sender.delegationCode, "delegation bytes");
             const targetCode = await rpc("eth_getCode", [c.sender.target, tag]); demand(targetCode !== "0x", "Missing delegation target code");
             same(ethers.keccak256(targetCode), c.sender.targetCodeHash, "delegation target code");
-            for (const s of c.sender.stateChecks) same(ethers.keccak256(await rpc("eth_call", [{ to: s.to, data: s.data }, tag])), s.resultHash, "delegate authority/state drift");
+            if (c.sender.mode === DELEGATED) for (const s of c.sender.stateChecks) same(ethers.keccak256(await rpc("eth_call", [{ to: s.to, data: s.data }, tag])), s.resultHash, "delegate authority/state drift");
+            else for (const s of c.sender.storageChecks) same(await rpc("eth_getStorageAt", [s.address, s.slot, tag]), s.value, "selected origin storage drift");
         }
     }
     await atBlock(rpc, pin);
@@ -398,22 +424,22 @@ async function verifyAuthority(plan, rpc, evidence, revision) {
         ownership: "Constructor-set Ownable2Step storage, transferable later by the governor; not immutable ownership",
         graphBindings: "Constructor dependency immutables and governor-only one-time bindings",
         readyToBroadcast: false, readyForPublicFunding: false, activationAllowed: false, externalTransactions: false,
-        unresolvedGates: ["Independent security review remains separate and is not performed by these functional checks", "External token/proxy/ENS/controller and off-chain authority inventory", "Delegate consensus/wallet qualification and exact-candidate real-dependency fork evidence", "Explorer verification acceptance", "Separate operator, economic, participant commissioning and activation approval"] });
+        unresolvedGates: ["Independent security review remains separate and is not performed by these functional checks", "External token/proxy/ENS/controller and off-chain authority inventory", ...(plan.config.sender.mode === CONVENTIONAL ? ["Exact-candidate real-dependency fork evidence"] : ["Delegate consensus/wallet qualification and exact-candidate real-dependency fork evidence"]), "Explorer verification acceptance", "Separate operator, economic, participant commissioning and activation approval"] });
 }
 async function main() {
     const [mode, input, output] = process.argv.slice(2);
-    demand(mode === "plan" && input && output && process.argv.length === 5, "Usage: node scripts/mainnet-authority.js plan CONFIG_AND_JOURNAL.json NEW_OUTPUT.json");
+    demand(["plan", "qualification-scope"].includes(mode) && input && output && process.argv.length === 5, "Usage: node scripts/mainnet-authority.js plan|qualification-scope CONFIG_AND_JOURNAL.json NEW_OUTPUT.json");
     assertOutsideCheckout(output);
     demand(!fs.existsSync(output), "Refuse to overwrite evidence");
     const revision = require('./authority-revision').reviewedRevision();
     const boundary = require('./authority-input-boundary').createInputBoundary(revision);
     boundary.pinDirectory(path.dirname(path.resolve(output)));
-    const data = boundary.readJson(input); exact(data, ["config", "journal"]);
-    const plan = await makePlan(data.config, boundary.compiled, revision, data.journal);
+    const data = boundary.readJson(input); exact(data, mode === "plan" && data.config?.sender?.mode === MARKER ? ["config", "journal", "directOriginationEvidence"] : ["config", "journal"]);
+    const plan = mode === "qualification-scope" ? qualificationRequest(data.config, boundary.compiled, revision, data.journal) : await makePlan(data.config, boundary.compiled, revision, data.journal, data.directOriginationEvidence);
     boundary.assertCurrent();
     require("./authority-cli").writeNew(output, plan);
     process.stdout.write(JSON.stringify({ output: path.resolve(output), readyToBroadcast: false }) + "\n");
 }
-module.exports = { EMPTY, DELEGATED, POLICY, MAX_TRANSACTION_GAS, NAMES, OWNED, HISTORICAL_GRAPH, digest, seal, validateConfig, validateJournal, compiledContracts, makePlan, checkPlan, validateEnvelope,
+module.exports = { CONVENTIONAL, EMPTY, DELEGATED, MARKER, POLICY, MAX_TRANSACTION_GAS, NAMES, OWNED, HISTORICAL_GRAPH, digest, seal, validateConfig, validateJournal, compiledContracts, qualificationRequest, makePlan, checkPlan, validateEnvelope,
     creationIntents, signingBoundary, expectedState, expectedRuntime, verifyContract, receiptEvidence, verifyGovernanceReceipt, preflight, verifyAuthority };
 if (require.main === module) main().catch(error => { console.error(error.publicMessage ? error.message : "Candidate preparation failed; no signing or transmission was attempted."); process.exitCode = 1; });
