@@ -300,6 +300,7 @@ async function qualify(state) {
   for (const relative of ['alpha_factory_v1/core/runtime/successor/studio.py', 'alpha_factory_v1/core/runtime/successor/workbench.py',
     'tests/contracts/scripts/ascension-cycle.js', 'tests/contracts/scripts/disposable.js',
     'tests/nova-studio/cycle-native.py', 'tests/nova-studio/cycle-browser.py', 'tests/nova-studio/edge_browser.py',
+    'tests/nova-studio/reconciliation_diagnostics.py',
     'tests/nova-studio/browser-provider.js',
     ...(interruptionBrowser ? ['tests/nova-studio/cycle-interruptions-browser.py', 'tests/nova-studio/cycle-interruptions-native.py'] : [])]) sourceHashes[relative] = sha(fs.readFileSync(path.join(root, relative)));
   const environment = {

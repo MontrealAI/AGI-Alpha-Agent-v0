@@ -13,6 +13,7 @@ from uuid import uuid4
 from playwright.sync_api import Route, expect, sync_playwright
 
 from edge_browser import assert_edge_controls
+from reconciliation_diagnostics import capture_reconciliation_failure
 
 
 def main() -> None:
@@ -143,7 +144,11 @@ def main() -> None:
             show("reconcile")
             page.locator("#reconcile-hash").fill(transaction)
             page.locator("#reconcile").click()
-            expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+            try:
+                expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+            except Exception:
+                capture_reconciliation_failure(page, output, transaction)
+                raise
             page.locator("#reconcile-hash").fill("")
             transaction_history.append(transaction)
             return transaction
@@ -555,7 +560,11 @@ def main() -> None:
             page.locator("#reconcile-hash").fill(transaction)
             page.locator("#reconcile").click()
             expect(page.locator("#deployment-choice")).to_be_enabled()
-            expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+            try:
+                expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+            except Exception:
+                capture_reconciliation_failure(page, output, transaction)
+                raise
             journal = json.loads(page.locator("#journal").inner_text())
             receipt_record = next(row for row in journal["transactions"] if row.get("hash") == transaction)
             assert receipt_record["status"] == "finalized"

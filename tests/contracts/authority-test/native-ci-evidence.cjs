@@ -9,7 +9,15 @@ const { reviewedRevision, gitRead } = require('../scripts/authority-revision');
 const { SOURCE_ROOT, assertOutsideCheckout } = require('../scripts/authority-paths');
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const CHECKS = ['audit', 'compile', 'historical', 'regressions', 'policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'creator-unit', 'creator-pty', 'creator-local', 'native-contract', 'native-empty', 'native-delegated', 'native-marker', 'native-creator'];
-const EXPECTED_COUNTS = { regressions: 111, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19, origination: 7, 'creator-local': 1 };
+// 111 existing regressions plus four compiler controls and two profile-admission tests.
+const EXPECTED_COUNTS = { regressions: 117, policy: 17, 'empty-session': 1, 'delegated-session': 1, 'io-relay': 19, origination: 7, 'creator-local': 1 };
+function checkPassed(name, exitCode, summary) {
+    if (exitCode !== 0) return false;
+    if (name === 'creator-unit' && (summary?.nodeTests !== 87 || summary?.nodePassing !== 87 || summary?.nodeSkipped !== 0)) return false;
+    if (name === 'creator-pty' && summary?.pythonTests !== 3) return false;
+    if (name in EXPECTED_COUNTS && summary?.passing !== EXPECTED_COUNTS[name]) return false;
+    return true;
+}
 function summarizeLog(bytes) {
     const text = bytes.toString('utf8').replace(/\u001b\[[0-9;]*m/g, '');
     const passing = [...text.matchAll(/^\s*(\d+) passing(?:\s|$)/gm)].map(x => Number(x[1]));
@@ -55,11 +63,8 @@ function main() {
         const summary = fs.existsSync(log) ? summarizeLog(fs.readFileSync(log)) : null;
         checks[name] = { exitCode, result: exitCode === 0 ? 'passed' : exitCode === null ? 'not-completed' : 'failed',
             logSha256: summary?.sha256 || null, logBytes: summary?.bytes || 0, passing: summary?.passing || null, nodeTests: summary?.nodeTests || null, pythonTests: summary?.pythonTests || null };
-        if (name === 'creator-unit' && (summary?.nodeTests !== 87 || summary?.nodePassing !== 87 || summary?.nodeSkipped !== 0)) allPassed = false;
-        if (name === 'creator-pty' && summary?.pythonTests !== 3) allPassed = false;
-        if (name in EXPECTED_COUNTS && summary?.passing !== EXPECTED_COUNTS[name]) allPassed = false;
+        if (!checkPassed(name, exitCode, summary)) allPassed = false;
         if (['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination'].includes(name) && summary) shardNames.push(...summary.names);
-        if (exitCode !== 0) allPassed = false;
     }
     const unique = new Set(shardNames);
     const countCoverage = shardNames.length === 45 && unique.size === 45;
@@ -89,4 +94,4 @@ function main() {
     assert.ok(allPassed, 'Native qualification failed or is incomplete; retained public evidence is not a pass');
 }
 if (require.main === module) { try { main(); } catch { console.error('Native evidence stopped; inspect bounded result and job status. No qualification inferred.'); process.exitCode = 1; } }
-module.exports = { CHECKS, EXPECTED_COUNTS, summarizeLog, sourceInventory, artifactInventory, main };
+module.exports = { CHECKS, EXPECTED_COUNTS, checkPassed, summarizeLog, sourceInventory, artifactInventory, main };

@@ -8,7 +8,7 @@ const os = require('os');
 const https = require('https');
 const { spawn } = require('child_process');
 const { createFixtureCertificate } = require('./clean-checkout-cli.cjs');
-const { summarizeLog, CHECKS, EXPECTED_COUNTS } = require('./native-ci-evidence.cjs');
+const { summarizeLog, CHECKS, EXPECTED_COUNTS, checkPassed } = require('./native-ci-evidence.cjs');
 const root = path.resolve(__dirname, '../../..');
 const source = file => fs.readFileSync(path.join(root, file), 'utf8');
 const workflow = source('.github/workflows/alpha-authority-v2.yml');
@@ -41,11 +41,25 @@ test('native workflow keeps pinned installs, all serial shards and three native 
     assert.match(workflow, /pip install --require-hashes -r requirements-agent\.lock/);
     assert.match(workflow, /070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667/);
     assert.deepEqual([...offlineWorkflow.matchAll(/^          run_check ([a-z-]+) /gm)].map(m => m[1]), CHECKS);
-    assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 157);
+    assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 163);
     for (const label of ['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'])
         assert.match(workflow.split('\n').find(line => line.trim().startsWith(`run_check ${label} `)), /--max-old-space-size=384/);
     assert.match(workflow, /ALPHA_NATIVE_PROFILE=empty/); assert.match(workflow, /ALPHA_NATIVE_PROFILE=delegated/); assert.match(workflow, /ALPHA_NATIVE_PROFILE=marker/);
     assert.doesNotMatch(workflow, /--invert|continue-on-error|\|\| true/);
+});
+test('native evidence requires the exact expanded regression suite and retains failure gates', () => {
+    assert.equal(EXPECTED_COUNTS.regressions, 117);
+    const summary = count => summarizeLog(Buffer.from(`  ${count} passing (1s)\n`));
+    assert.equal(checkPassed('regressions', 0, summary(117)), true);
+    for (const count of [111, 115, 116, 118]) assert.equal(checkPassed('regressions', 0, summary(count)), false);
+    for (const code of [1, null]) assert.equal(checkPassed('regressions', code, summary(117)), false);
+    assert.equal(checkPassed('regressions', 0, null), false);
+    assert.equal(checkPassed('regressions', 0, summarizeLog(Buffer.from('117 passing\n117 passing\n'))), false);
+    const creator = { nodeTests: 87, nodePassing: 87, nodeSkipped: 0 };
+    assert.equal(checkPassed('creator-unit', 0, creator), true);
+    for (const change of [{ nodeTests: 86 }, { nodePassing: 86 }, { nodeSkipped: 1 }])
+        assert.equal(checkPassed('creator-unit', 0, { ...creator, ...change }), false);
+    assert.equal(checkPassed('creator-pty', 0, { pythonTests: 2 }), false);
 });
 test('native artifacts use outside-checkout safe summaries and never private runner logs', () => {
     // GitHub resolves global/job env before a runner exists; YAML parsing alone cannot catch this.
