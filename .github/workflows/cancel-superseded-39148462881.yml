@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Release queue maintenance 39148462881
+on:
+  push:
+    branches: [ops/cancel-superseded-39148462881]
+permissions:
+  contents: read
+jobs:
+  cancel-obsolete-integration:
+    if: github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Cancel only the verified superseded integration run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+
+          repo = 'MontrealAI/AGI-Alpha-Agent-v0'
+          current = 'feb0fb598042664da43d67fa21894d201d0d2f78'
+          obsolete = '3a8859fa5508094c8836ab74cb23267555d638df'
+          old_id, new_id = 39148462881, 39152405771
+          if (os.environ.get('GITHUB_REPOSITORY') != repo
+                  or os.environ.get('GITHUB_EVENT_NAME') != 'push'
+                  or os.environ.get('GITHUB_REF') != 'refs/heads/ops/cancel-superseded-39148462881'):
+              raise SystemExit('Unexpected maintenance context')
+
+          def read(path):
+              return json.loads(subprocess.check_output(
+                  ['gh', 'api', f'repos/{repo}/{path}', '-H', 'Cache-Control: no-cache'],
+                  text=True, timeout=30))
+
+          if read('git/ref/heads/main')['object']['sha'] != current:
+              raise SystemExit('Release main changed; no cancellation performed')
+          old, new = read(f'actions/runs/{old_id}'), read(f'actions/runs/{new_id}')
+          for run, expected in ((old, obsolete), (new, current)):
+              if (run.get('head_sha') != expected or run.get('head_branch') != 'main'
+                      or run.get('event') != 'push' or run.get('path') != '.github/workflows/ci.yml'):
+                  raise SystemExit('Workflow identity mismatch; no cancellation performed')
+          if old['status'] == 'completed':
+              print(f'Obsolete run {old_id} already finished; no cancellation needed')
+          else:
+              subprocess.run(['gh', 'api', '--method', 'POST',
+                  f'repos/{repo}/actions/runs/{old_id}/force-cancel'], check=True, timeout=30)
+              print(f'Cancellation requested only for obsolete run {old_id}; release main remains {current}')
+          PY
