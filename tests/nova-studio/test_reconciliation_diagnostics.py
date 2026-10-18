@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import Mock
 
-from reconciliation_diagnostics import capture_reconciliation_failure
+from reconciliation_diagnostics import capture_action_failure, capture_reconciliation_failure, monitor_action_failures
 
 
 class ReconciliationDiagnosticsTests(unittest.TestCase):
@@ -50,3 +50,53 @@ class ReconciliationDiagnosticsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             capture_reconciliation_failure(page, Path(directory), "0x" + "ab" * 32)
             self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_action_capture_retains_bounded_errors_and_control_state(self) -> None:
+        page = Mock(url="http://127.0.0.1:8123/ascension/mainnet/")
+        callbacks = {}
+        page.on.side_effect = lambda event, callback: callbacks.update({event: callback})
+        page.locator.return_value.inner_text.return_value = "Action needs attention: RPC read timed out"
+        page.locator.return_value.evaluate.return_value = {"controls": {"deployment-choice": True}}
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            monitor_action_failures(page, output)
+            for index in range(30):
+                callbacks["console"](Mock(type="error", text=f"RPC request failed {index}"))
+            callbacks["console"](Mock(type="error", text="secret credential must not be retained"))
+            callbacks["pageerror"](RuntimeError("fixture page failed"))
+            self.assertTrue(capture_action_failure(page, "edge-E03-Enter-refresh-review"))
+            raw = (output / "action-failure-edge-E03-Enter-refresh-review.json").read_text()
+            report = json.loads(raw)
+            self.assertEqual(len(report["console"]), 20)
+            self.assertNotIn("secret credential", raw)
+            self.assertEqual(report["pageErrors"], ["fixture page failed"])
+            self.assertEqual(report["state"]["controls"], {"deployment-choice": True})
+            self.assertIn("RPC read timed out", report["state"]["status"])
+            script = page.locator.return_value.evaluate.call_args.args[0]
+            self.assertIn("pendingReads", script)
+            self.assertNotIn("eth_send", script)
+            self.assertNotIn("localStorage", script)
+            self.assertNotIn(".params", script)
+            self.assertEqual(page.screenshot.call_args.kwargs["timeout"], 2000)
+
+    def test_unresponsive_action_keeps_event_evidence_without_hiding_failure(self) -> None:
+        page = Mock(url="http://127.0.0.1:8123/ascension/mainnet/")
+        page.locator.return_value.inner_text.side_effect = TimeoutError("unresponsive fixture")
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            monitor_action_failures(page, output)
+            self.assertFalse(capture_action_failure(page, "interruption-reconcile", "0x" + "ab" * 32))
+            report = json.loads((output / "action-failure-interruption-reconcile.json").read_text())
+            self.assertEqual(report["captureError"], "TimeoutError")
+            self.assertEqual(report["transaction"], "0x" + "ab" * 32)
+            page.locator.return_value.evaluate.assert_not_called()
+            page.screenshot.assert_not_called()
+
+    def test_action_capture_refuses_external_pages(self) -> None:
+        page = Mock(url="https://example.com/ascension/mainnet/")
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            monitor_action_failures(page, output)
+            capture_action_failure(page, "interruption-reconcile")
+            self.assertEqual(list(output.iterdir()), [])
+            page.locator.assert_not_called()

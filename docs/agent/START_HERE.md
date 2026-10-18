@@ -6,8 +6,10 @@
 **See what was actually demonstrated:** [Read the computer-use study](../reports/computer-use-study/REPORT.md) or open its [English/French visual reader](../reports/computer-use-study/index.html). Two repaired websites, tested recovery and fewer scripted setup controls; simulated owner, not a production benchmark.
 <!-- /computer-use-study-publication -->
 
-**Prefer to start without installing anything? [Open the guided first experience](../start/index.html).**
-It offers an English/French walkthrough, larger text and a useful planning download.
+**Start with a working capability: [open the SUCCESSOR Ω flagship](../successor/alpha/index.html).**
+Reconcile the supplied catalogs or your own permitted CSVs, inspect results and comparisons, and keep the
+working tool and project history. No account, installation, model API or wallet is needed.
+The [simple planning walkthrough](../start/index.html) remains available in English and French with larger text.
 The instructions below are for installing and operating your own agent.
 
 **Starting a Nova-Seed project?** Follow the [English first-use guide](ASCENSION_STACK_RELEASE.md#first-use-english)
@@ -34,6 +36,10 @@ Missing independent qualification remains HOLD; a software demonstration grants 
 **Find your Alpha. Build your SUCCESSOR Ω.** Follow the [guided project journey](GUIDED_SUCCESSOR_JOURNEY.md)
 to retain discovery, bounded work, separately priced USDC / $AGIALPHA proposals and Fleet local returns in
 one history. The browser guides explicit file handoffs; funding and independent commissioning remain separate.
+
+**Current Alpha contracts:** use the [October 18 address directory](../deployments/2026-10-18/index.html)
+and [retained deployment evidence](CURRENT_MAINNET_DEPLOYMENT.md). The historical October 11 wallet profile
+remains for its existing obligations; a current address reference does not reroute a wallet or authorize funding.
 
 ## 1. Install one release
 
@@ -111,5 +117,5 @@ Stop the console with **Ctrl+C**.
 
 If a command fails, keep the existing environment and journal. Check the JSON error, supported Python
 version and selected profile; follow the recovery guide using a new destination. Never manually edit
-signed journal records. The maintained runtime and the undeployed contract reference are distinct
+signed journal records. The maintained runtime, exact deployed-source record and later contract candidates are distinct
 from the broader research vision; [release readiness](RELEASE_READINESS.md) defines the verified scope.

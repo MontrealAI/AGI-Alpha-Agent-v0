@@ -79,6 +79,11 @@ def main() -> None:
             raise ValueError("existing public tag points to a different commit; increment the release version")
         print(f"{tag} is already public; its tag and assets remain unchanged: {prior['html_url']}")
         return
+    if tuple(map(int, version.split("."))) >= (1, 34, 0):
+        from scripts.successor_alpha_evidence import verify_release_workspace, verify_report
+
+        verify_report(manifest.get("public_successor_alpha"), sha, version, mode="public")
+        verify_release_workspace(manifest.get("successor_alpha"), folder, sha, version)
     require_asset_limits(folder)
     require_current_main()
     ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True, check=False)

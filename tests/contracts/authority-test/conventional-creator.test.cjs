@@ -34,3 +34,49 @@ for(const code of ['0x','0xef0100'+'22'.repeat(20),'0xef0100'+TOKEN.slice(2).toL
  await assert.rejects(P.preflight(plan,rpc(c,code,{'eth_chainId':()=> '0x2'}),revision),/chain/);
  await assert.rejects(P.preflight(plan,rpc(c,code,{'eth_getTransactionCount':()=> '0x1'}),revision),/nonce drift/);
 });
+
+async function creatorExecutor(deployer, signerSecret = '0x'+'11'.repeat(32)) {
+ const c={...config(),deployer};P.validateConfig(c);
+ const plan=await P.makePlan(c,compiled,revision,journal(c)),original=JSON.stringify(plan);
+ const terminal=require('../scripts/creator-terminal'),session=require('../scripts/authority-session');
+ let state=null,confirmations=0,keyPrompts=0,signatures=0,closed=0;
+ const relayed=[];
+ const copy=value=>JSON.parse(JSON.stringify(value));
+ const coordinator={
+  loadSession:()=>copy(state),
+  async startSession(){assert.equal(confirmations,1);state={complete:false,mode:'raw-relay',operations:[]};return copy(state);},
+  async prepare(){const index=state.operations.length,envelope=copy(plan.transactions[index].envelope);state.operations.push({index,status:'handed-off',intent:{envelope}});return {packet:{index,envelope}};},
+  async importSigned({raw}){const op=state.operations.at(-1),checked=session.validateSigned(raw,op.intent);Object.assign(op,{status:'signed',txHash:checked.hash,rawSha256:checked.rawSha256});return copy(state);},
+  relayAcknowledgement:session.relayAcknowledgement,
+  async recover(){const next=copy(state);Object.assign(next.operations.at(-1),{status:'finalized',receipt:{canonical:true}});return {resolved:true,state:next};},
+  async reconcile(){state=(await this.recover()).state;return copy(state);}
+ };
+ const args={plan,revision,filename:'/synthetic/conventional-creator',directory:'/synthetic/locks',coordinator,
+  exists:()=>state!==null,withRpc:async fn=>fn(async()=>{throw Error('No network in synthetic executor');}),
+  assertInputs:()=>assert.equal(JSON.stringify(plan),original),
+  preflight:async(p,_rpc,_revision,hashes)=>{assert.equal(p,plan);assert.equal(hashes.length,state?.operations.length||0);return {preflightPassed:true};},
+  confirm:async review=>{assert.equal(review.creator,deployer);confirmations++;},
+  obtainSigner:async expected=>{
+   assert.equal(expected,deployer);assert.equal(confirmations,1);keyPrompts++;
+   const inner=terminal.signerFromBytes(Buffer.from(signerSecret),new E.Wallet(signerSecret).address);
+   return {address:inner.address,signExact:async envelope=>{signatures++;return inner.signExact(envelope);},close(){closed++;inner.close();}};
+  },
+  relay:async({raw})=>{const tx=E.Transaction.from(raw);assert.equal(tx.from,creator);assert.equal(tx.to,null);assert.equal(tx.type,2);relayed.push(tx);state.operations.at(-1).status='submission-attempted';},
+  sleep:async()=>{throw Error('Synthetic finality must resolve immediately');}
+ };
+ return {args,plan,original,relayed,counts:()=>({confirmations,keyPrompts,signatures,closed}),state:()=>copy(state)};
+}
+for(const deployer of [creator.toLowerCase(),creator])test(`creator executor accepts validated ${deployer===creator?'checksummed':'lowercase'} deployer without rewriting the plan`,async()=>{
+ const f=await creatorExecutor(deployer),result=await C.runCreator(f.args);
+ assert.equal(result.status,'awaiting-governor-bindings');assert.equal(result.activationAllowed,false);
+ assert.equal(result.creator,deployer);assert.equal(result.creationHashes.length,5);assert.deepEqual(result.governanceHashes,[]);
+ assert.deepEqual(f.counts(),{confirmations:1,keyPrompts:1,signatures:5,closed:1});
+ assert.deepEqual(f.relayed.map(tx=>tx.nonce),[0,1,2,3,4]);assert(f.state().operations.every(op=>op.status==='finalized'));
+ assert.equal(JSON.stringify(f.plan),f.original);assert(f.plan.transactions.every(tx=>tx.envelope.from===deployer));
+});
+test('creator executor still rejects a different signer before the first signature or relay',async()=>{
+ const f=await creatorExecutor(creator.toLowerCase(),'0x'+'22'.repeat(32));
+ await assert.rejects(C.runCreator(f.args),/Creator key\/address mismatch/);
+ assert.deepEqual(f.counts(),{confirmations:1,keyPrompts:1,signatures:0,closed:1});assert.equal(f.relayed.length,0);
+ assert.equal(f.state().operations.length,0);assert.equal(JSON.stringify(f.plan),f.original);
+});

@@ -86,6 +86,8 @@ def gather_assets(docs_dir: Path) -> list[str]:
             continue
         if item.name == "index.html" or relative.as_posix() == "gallery.html":
             assets.add(relative.as_posix())
+        elif relative.parts[:1] == ("deployments",) and item.name in {"directory.css", "manifest.json"}:
+            assets.add(relative.as_posix())
         elif item.suffix in {".js", ".mjs", ".css", ".svg", ".json"} and (
             "assets" in relative.parts or "stylesheets" in relative.parts
         ):

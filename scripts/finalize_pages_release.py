@@ -58,6 +58,13 @@ def finalize(folder: Path, evidence: Path) -> None:
         raise ValueError("Public Pages evidence differs from the packaged source")
     if workspace["origin"] != url or not workspace["model_required"] or public["url"] != url:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
+    flagship = None
+    if tuple(map(int, manifest["version"].split("."))) >= (1, 34, 0):
+        from scripts.successor_alpha_evidence import load_report, verify_release_workspace, verify_report
+
+        flagship = load_report(evidence / "public-pages" / "successor-alpha" / "report.json")
+        verify_report(flagship, manifest["commit"], manifest["version"], mode="public")
+        verify_release_workspace(manifest.get("successor_alpha"), folder, manifest["commit"], manifest["version"])
     workbench = None
     ascension = None
     insight = None
@@ -300,6 +307,12 @@ def finalize(folder: Path, evidence: Path) -> None:
             if path.is_file():
                 archive.write(path, path.relative_to(evidence))
     manifest["public_pages"] = public
+    if flagship:
+        manifest["public_successor_alpha"] = flagship
+        manifest["release_gates"].append(
+            "public HTTPS SUCCESSOR Alpha exact packaged bytes, complete useful mission, constructed strategy, "
+            "native Node host return, EN/FR accessibility and offline continuity"
+        )
     if workbench:
         manifest["public_successor_workbench"] = workbench
         manifest["release_gates"].append(

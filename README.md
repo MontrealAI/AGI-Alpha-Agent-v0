@@ -4,8 +4,9 @@
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**
 
 | Your goal | Start here |
-| Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | --- | --- |
+| Produce a joined catalog, inspect differences and keep a reusable tool | [Useful Alpha flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
+| Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
 | Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
 | Prepare, protect and continue a project | [Nova-Seed Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/mainnet/) |
@@ -16,12 +17,21 @@
 Browser preparation is free. Execution, participant review and settlement require their own configuration and approval. AGIJobManager settles in USDC; the Alpha / Jobs v0 contracts use $AGIALPHA. Source versions and published downloads can differ: use the evidence and instructions supplied with your chosen release.
 
 **New Ethereum Mainnet deployment, October 18, 2026:** [five contract addresses and verified graph](docs/agent/CURRENT_MAINNET_DEPLOYMENT.md). Publication records the deployment; operating approval remains separate.
+These five current records are separate from the older 29-address ecosystem snapshots below.
+Existing wallet profiles retain their pinned historical addresses; publication does not migrate them.
 
 <!-- /current-entrypoints -->
 
+> **[Find your advantage. Make it work. Keep what you build. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
+> Reconcile two public, synthetic or licensed nonpersonal CSV catalogs. Keep the joined catalog, unmatched rows,
+> discrepancies and a working offline tool. Construct and test bounded strategies, execute a discrepancy-action
+> reframing, and retain checked native workbench returns with the same project. Inspect each comparison's limits.
+> Local engineering results support the specific task; economic benefit and independently protected proof remain
+> to be established. [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
+
 > **Current maintenance scope · 1.34.0.** [Start here](docs/agent/START_HERE.md) ·
 > [Release notes](docs/agent/RELEASE_NOTES_1.34.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
-> This candidate adds inspectable Jobs adapters, bounded browser work and supplied-input demo journeys. Use matching published assets
+> Version 1.34.0 combines the useful Alpha flagship with the current Mainnet deployment record and publication preflight. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 
 ## Current Cross-Industry supplied-input journey
@@ -79,7 +89,7 @@ to committed jobs in its own market. A connected AGI Jobs workflow requires expl
 
 [`0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`](https://etherscan.io/address/0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA#code)
 
-**[Explore the visual connection guide and all 29 deployed addresses][ecosystem-page]** ·
+**[Explore the visual connection guide and its 29-instance historical inventory][ecosystem-page]** ·
 [Français][ecosystem-fr] · [Practical workflow and operating boundaries](docs/agent/AGI_JOBS_ECOSYSTEM.md) ·
 [AGI Jobs companion guide][jobs-ecosystem]
 
@@ -112,14 +122,14 @@ production or open live intake. Check the [Alpha deployment guide](docs/agent/MA
 > Follow the [warning and verification guide](docs/agent/MAINNET_DEPLOYMENT.md#understand-a-contract-warning)
 > to distinguish source compilation, explorer verification and the immutable October 11 deployment.
 
-> **Ethereum mainnet deployment recorded.** Five contracts and the completed on-chain ownership handoff are recorded.
+> **Historical Ethereum mainnet deployment · 11 October 2026.** Five contracts and the completed on-chain ownership handoff are recorded.
 > Etherscan source verification and Ledger custody are operator-reported; the public archive does not include the
 > Etherscan API transcript. [Addresses, owner guide and read-only verification](docs/agent/MAINNET_DEPLOYMENT.md).
 > The deployed contracts predate the current settlement fixes; resolve that difference before admissions or funding.
 
 > **SUCCESSOR Ω — 1.24.1.** Build and examine a bounded mission capability, retain useful knowledge and require every successor to earn new proof and permission. [Bilingual mission workspace](docs/successor/index.html) · [Quickstart and operator guide](docs/agent/SUCCESSOR.md) · [Architecture and boundaries](docs/agent/SUCCESSOR_ARCHITECTURE.md) · [Release notes and acceptance requirements](docs/agent/RELEASE_NOTES_1.24.1.md). Local rehearsal is not independent qualification or production authority. Existing missions, research and flowcharts remain available.
 
-**Choose a current launch path:** [browser mission](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/),
+**Choose a current launch path:** [useful Alpha flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/), [existing browser laboratory](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/),
 [minimal native installation](docs/agent/START_HERE.md), [operator recovery and upgrades](docs/agent/OPERATIONS.md),
 or [Hardhat deployment and migration guide](tests/contracts/README.md). The
 [repository guide](docs/agent/REPOSITORY_GUIDE.md) explains which dependencies each path needs.

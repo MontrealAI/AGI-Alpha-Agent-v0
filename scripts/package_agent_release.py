@@ -40,6 +40,9 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/SUCCESSOR_SOURCES.json",
         "docs/agent/SUCCESSOR_ARCHITECTURE.md",
         "docs/agent/SUCCESSOR_PACKAGING.md",
+        "docs/agent/SUCCESSOR_ALPHA.md",
+        "docs/agent/SUCCESSOR_ALPHA_DEPLOYMENT.md",
+        "docs/agent/SUCCESSOR_ALPHA_CONTINUITY.md",
         "docs/agent/START_HERE.md",
         "docs/agent/ONBOARDING.md",
         "docs/agent/MAINNET_READINESS.md",
@@ -167,6 +170,18 @@ def package_mainnet_record(root: Path, output: Path, version: str) -> Path:
     return destination
 
 
+def package_successor_alpha_workspace(root: Path, output: Path) -> dict[str, str | int]:
+    """Ship the exact accepted self-contained flagship page as a convenient offline asset."""
+    from scripts.successor_alpha_evidence import asset_identity
+
+    identity = asset_identity(root)
+    raw = (root / "docs/successor/alpha/index.html").read_bytes()
+    destination = output / "successor-alpha-workspace.html"
+    with destination.open("xb") as stream:
+        stream.write(raw)
+    return {"name": destination.name, "bytes": len(raw), "sha256": identity["pageSha256"]}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -176,10 +191,15 @@ def main() -> None:
     sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     historical_ci = require_historical_evidence(args.evidence, sha)
     output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=False)
     version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
     if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("release version must be major.minor.patch")
+    flagship = None
+    if tuple(map(int, version.split("."))) >= (1, 34, 0):
+        from scripts.successor_alpha_evidence import require_local_reports
+
+        flagship = require_local_reports(args.evidence, sha, version)
+    output.mkdir(parents=True, exist_ok=False)
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     if tuple(map(int, version.split("."))) >= (1, 30, 0):
         from scripts.mark_wallet_evidence import verify_report as verify_wallet
@@ -227,6 +247,7 @@ def main() -> None:
         check=True,
     )
     copy_release_documents(Path.cwd(), output, version, sha)
+    flagship_workspace = package_successor_alpha_workspace(Path.cwd(), output) if flagship else None
     subprocess.run([sys.executable, "scripts/publish_computer_use_study.py", "--check"], check=True)
     shutil.copy2("docs/reports/computer-use-study/report-pack.zip", output / "computer-use-study-report-pack.zip")
     package_mainnet_record(Path.cwd(), output, version)
@@ -350,6 +371,12 @@ def main() -> None:
             "Optional legacy skips do not establish those integrations",
         ],
     }
+    if flagship:
+        manifest["successor_alpha"] = {"local_acceptance": flagship, "workspace": flagship_workspace}
+        manifest["release_gates"].append(
+            "SUCCESSOR Alpha exact catalog outputs, constructed strategies, native Node host return, "
+            "retained continuity, EN/FR accessibility and offline portable workspace in both gallery builds"
+        )
     manifest["assets"] = require_asset_limits(output)
     (output / "release-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     lines = []

@@ -23,6 +23,7 @@ from typing import Any, cast
 from urllib.parse import urlsplit
 
 from playwright.sync_api import Page, Route, expect, sync_playwright
+from reconciliation_diagnostics import capture_action_failure
 
 ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_NODES = [
@@ -132,9 +133,13 @@ def assert_edge_controls(
             target.evaluate("el=>el.addEventListener('click',()=>window.__edgeTargetClicks.push(el.id))")
             action.focus()
             expect(action).to_be_focused()
-            action.press(key)
-            expect(target).to_be_visible()
-            expect(target).to_be_focused()
+            try:
+                action.press(key)
+                expect(target).to_be_visible()
+                expect(target).to_be_focused()
+            except Exception:
+                capture_action_failure(page, f"edge-{edge_id}-{key}-{target_id}")
+                raise
             assert not page.locator("#preview-panel").is_visible(), edge_id
             assert wallet_calls(page) == calls, (edge_id, key, wallet_calls(page))
             assert page.evaluate("window.__edgeTargetClicks") == [], (edge_id, target_id)

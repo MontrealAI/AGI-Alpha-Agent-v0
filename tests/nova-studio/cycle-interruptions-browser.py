@@ -17,6 +17,7 @@ from uuid import uuid4
 from playwright.sync_api import Route, expect, sync_playwright
 
 from edge_browser import assert_edge_controls
+from reconciliation_diagnostics import capture_action_failure, capture_reconciliation_failure, monitor_action_failures
 
 
 def main() -> None:
@@ -105,6 +106,7 @@ def main() -> None:
         context.route("https://gateway.pinata.cloud/ipfs/*", artifact_request)
         context.route("https://ipfs.io/ipfs/*", artifact_request)
         page = context.new_page()
+        monitor_action_failures(page, output)
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(config["url"])
         expect(page.locator("#status")).to_contain_text("Start locally")
@@ -188,6 +190,7 @@ def main() -> None:
             context.route(origin + "/operator", operator_route)
             previous.close()
             page = context.new_page()
+            monitor_action_failures(page, output)
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.goto(config["url"])
             expect(page.locator("#status")).to_contain_text("Start locally")
@@ -210,8 +213,13 @@ def main() -> None:
                 show("reconcile-hash")
                 page.locator("#reconcile-hash").fill(transaction)
                 page.locator("#reconcile").click()
-                expect(page.locator("#deployment-choice")).to_be_enabled(timeout=30000)
-                expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+                try:
+                    expect(page.locator("#deployment-choice")).to_be_enabled(timeout=30000)
+                    expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+                except Exception:
+                    if capture_action_failure(page, f"restore-{point}-reconcile", transaction):
+                        capture_reconciliation_failure(page, output, transaction)
+                    raise
             show("reconcile-hash")
             page.locator("#reconcile-hash").fill("")
             assert page.evaluate("window.__nova.sends") == 0
@@ -285,8 +293,13 @@ def main() -> None:
                 show("reconcile")
                 page.locator("#reconcile-hash").fill(transaction)
                 page.locator("#reconcile").click()
-                expect(page.locator("#deployment-choice")).to_be_enabled(timeout=30000)
-                expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+                try:
+                    expect(page.locator("#deployment-choice")).to_be_enabled(timeout=30000)
+                    expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
+                except Exception:
+                    if capture_action_failure(page, "interruption-reconcile", transaction):
+                        capture_reconciliation_failure(page, output, transaction)
+                    raise
                 page.locator("#reconcile-hash").fill("")
             assert transaction not in transaction_history
             transaction_history.append(transaction)

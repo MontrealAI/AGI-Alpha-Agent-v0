@@ -355,6 +355,7 @@ html.home-large-text {
 }
 .welcome-plan h2 {
     max-width: 12ch;
+    overflow-wrap: anywhere;
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(2rem, 3vw, 2.875rem);
     font-weight: 400;
@@ -516,6 +517,7 @@ html.home-large-text {
 }
 .welcome-invitation {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
@@ -524,6 +526,10 @@ html.home-large-text {
     border: 1px solid #d7c8e3;
     border-radius: 1.5rem;
     background: #eee5f4;
+}
+.welcome-invitation > div {
+    flex: 1 1 20rem;
+    min-width: 0;
 }
 .welcome-invitation p:last-child {
     margin: 1rem 0 0;
@@ -779,6 +785,9 @@ html.home-large-text {
         flex-direction: column;
         padding: 2rem;
     }
+    .welcome-invitation > div {
+        flex-basis: auto;
+    }
     .welcome-directory {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -840,7 +849,7 @@ html.home-large-text {
         gap: 0.75rem;
     }
     .welcome-plan {
-        padding: 1.4rem;
+        padding: 1.25rem;
         border-radius: 1.25rem;
     }
     .welcome-plan-top {
