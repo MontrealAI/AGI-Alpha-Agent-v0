@@ -5,6 +5,7 @@
 
 | Your goal | Start here |
 | --- | --- |
+| Prepare screen-based work and compare strategies · 1.35.0 scope | [Computer Use flagship guide](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) · [Native runner](docs/agent/SUCCESSOR_COMPUTER_USE.md) |
 | Produce a joined catalog, inspect differences and keep a reusable tool | [Useful Alpha flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
 | Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
@@ -29,10 +30,21 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 > Local engineering results support the specific task; economic benefit and independently protected proof remain
 > to be established. [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
-> **Current maintenance scope · 1.34.0.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.34.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
-> Version 1.34.0 combines the useful Alpha flagship with the current Mainnet deployment record and publication preflight. Use matching published assets
+> **Current release scope · 1.35.0.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.35.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> Version 1.35.0 adds Computer Use mission preparation and project-bound strategy attempts to the existing flagship.
+> Version 1.34.0 and its deployment/publication evidence remain unchanged. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
+
+> **Find your Alpha. Build your SUCCESSOR Ω. · Computer Use expansion.**
+> Define a useful outcome, prepare screenshot-and-keyboard/mouse work, and retain its results in the same project.
+> **Level 3:** discover, test, combine and improve strategies. **Level 4:** challenge an unnecessary restriction
+> and test a different problem formulation while preserving the required outcome and acceptance criteria.
+> Browser preparation makes no model call. Execution uses the separately configured native model and isolated
+> Chromium runner; imports retain historical observations and your review, with no inherited authority.
+> The exact release manifest and acceptance evidence identify delivery. This addition is absent from v1.34.0;
+> live-model task qualification and independent review remain separate from software publication.
+> [English / Français journey and current limits](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4).
 
 ## Current Cross-Industry supplied-input journey
 

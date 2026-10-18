@@ -49,6 +49,47 @@ that commitment. A local compatible supplier can use `--provider vision-json --b
 --model MODEL`; remote endpoints require HTTPS and the named `--key-env` credential. The supplier must
 support image input and bounded JSON output. Compatibility is tested per supplier, never assumed from its name.
 
+## Continue a flagship project
+
+The flagship can export an inert `successor-alpha-computer-handoff/v1` mission for this same native adapter.
+It retains the exact serialized project and its SHA-256, the flagship source identity, declared input rights,
+the bounded computer task and a strategy plan. Level 3 records at least two hypotheses, a proposed
+combination and measurable success criteria. Level 4 records an alternative problem formulation. The
+operator chooses `baseline`, `combine` or `reframe`; these descriptions remain hypotheses until actual
+work and review support a result. A reframing does not expand the task's permissions or change its goal
+without a new, explicitly reviewed handoff.
+
+Use the exported mission file in the existing commands:
+
+```bash
+alpha-agent successor-computer prepare successor-computer-mission.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL
+alpha-agent --home operator successor-computer run successor-computer-mission.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL --permit PREPARED_COMMITMENT --output computer-result
+```
+
+Project bytes, strategy choices and source identity are bound into the existing task/provider/image permit
+through `digest('computer-handoff', handoff)` as its execution context. Changing any of them requires a new
+permit. Each explicitly prepared attempt has a fresh UUID, allowing separately authorized strategy/model
+comparisons to retain distinct history. The runtime never creates or retries an attempt automatically.
+The page supplies neither a provider credential nor an image, and importing or preparing a mission
+performs no model call. The native parser checks project root fields, identity, size, history bounds and exact
+bytes; the flagship's existing project validator checks the full catalog-cycle semantics. Native parsing does
+not independently qualify project history or execute anything contained in that history.
+
+After execution, `computer-result/computer-return.json` carries the project binding, observed provider/model,
+image and worker identity, existing receipt and signature, and final visible text when available. Return this
+file to the flagship to review the work alongside the same project. Screenshots remain separate files named
+and hashed in the receipt; retain the complete output directory for visual review. An interrupted run also
+produces a return when its native receipt is available, preserving reserved effects and unknown costs.
+Importing that return does not establish signer trust, independent review, payment or settlement. Verify the
+signed receipt against a separately trusted source key and review the actual artifacts before accepting work.
+
+The handoff and return schemas use sorted compact UTF-8 JSON commitments. `projectSha256` hashes the exact
+`projectRaw` UTF-8 bytes; `handoffSha256` hashes the canonical handoff. Tasks in a handoff include every
+`ComputerTask` field and `schema_version: 1`, including defaults, to preserve cross-language commitment bytes.
+Strategy text is bounded: original goal 2,000 characters, two to six hypotheses of 500 characters each,
+combination and reframing 1,000 characters each, and one to six success criteria of 500 characters each.
+The actual executable task goal remains subject to its separate 4,000-character limit.
+
 OpenAI's [current Computer Use guide](https://developers.openai.com/api/docs/guides/tools-computer-use)
 documents ordered `computer_call.actions` and screenshot returns using `computer_call_output` with
 `computer_screenshot`. This adapter uses that structured path and rejects unsupported tool calls.
@@ -122,13 +163,15 @@ not an invoice, a dollar budget, or evidence of economic benefit. Total
 `elapsed_milliseconds` measures the local session through cleanup. Human
 review time remains separately supplied rather than inferred from runtime.
 
-The Responses wire contract was checked on 2026-10-15 against the
+The Responses wire contract was checked on 2026-10-18 against the
 [official computer-use guide](https://developers.openai.com/api/docs/guides/tools-computer-use).
 The adapter uses the current `computer` tool and action arrays, matches each
 `computer_call_output` to its call ID, and retains encrypted reasoning in
 stateless history (`store: false`). Unsupported tools and pending safety
 checks stop for operator review. The alternate vision-JSON supplier has a
 different contract; these modes do not imply arbitrary provider compatibility.
+An empty, reasoning-only, refusal-only or commentary-only response cannot complete a session. Completion
+requires a nonblank final text message, and its content still remains an unverified model claim.
 
 A real Chromium laboratory test with scripted provider-shaped responses is
 useful protocol evidence, but cannot establish live-model correctness or

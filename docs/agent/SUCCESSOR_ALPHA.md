@@ -10,6 +10,59 @@ Start with a useful result: reconcile two catalogs and keep the result and the w
 The supplied example uses synthetic data. You can instead select public, synthetic or licensed nonpersonal CSV inputs.
 The local browser journey needs no account, installation, model, API key or wallet.
 
+Version **1.35.0** adds the Computer Use path below while preserving the catalog journey. The matching
+published manifest and acceptance evidence identify delivery; a source version alone does not.
+Published **v1.34.0** retains its original catalog scope and immutable evidence.
+
+## Computer Use: Level 3 and Level 4
+
+The new flagship path starts with **Build a Computer Use mission**. Specify the useful outcome before choosing
+the method: a public-source research brief, a documentation comparison or your own permitted screen-based task.
+Keep the acceptance conditions explicit so a more inventive approach must still deliver what the user needs.
+
+| Capability | What the added path does |
+| --- | --- |
+| Computer Use | Prepare a bounded work surface for a configured model to inspect screenshots and propose mouse and keyboard actions |
+| Level 3 · Meta-strategic intelligence | Record competing strategies, select a baseline or combination to test, retain observations and propose an improved method |
+| Level 4 · Transformational intelligence | Identify an unnecessary restriction and test a different formulation against the same required outcome and acceptance criteria |
+| One project history | Retain prepared attempts, runner returns, owner reviews and existing catalog work under the same project identity |
+
+1. Name the project, describe the result and list what every approach must deliver.
+2. Record two to six competing strategies, a proposed combination and an alternative problem formulation.
+   Choose the baseline, combined strategy or reframing for this attempt. These are hypotheses until tested.
+3. Review the supplied work surface, exact public source URLs, input rights and action/time/review limits.
+   Choose **Prepare this Computer Use mission**, then **Download native mission pack**. Preparation is free
+   and performs no model call.
+4. Use the [native Computer Use runner](SUCCESSOR_COMPUTER_USE.md#continue-a-flagship-project) to review and
+   authorize the exact mission with an explicitly selected model and immutable container image. Provider
+   credentials stay with the native operator. The static page does not operate a remote computer.
+5. Import the runner's `computer-return.json`. Inspect its actual work product and retained screenshots,
+   check each acceptance condition and record your review and actual review time. Keep failed or interrupted
+   attempts too. A model's completion message alone is insufficient.
+6. Prepare another authorized approach and compare reviewed attempts with the same outcome, work surface,
+   sources, rights and limits. Save the complete workspace or download the complete project archive to retain
+   catalog work, strategy attempts, returns and lessons together.
+
+The executable goal asks the model to report strategies considered, the method actually tested, observations,
+a proposed improvement or combination, and unnecessary restrictions worth reframing next. Tested results and
+untested ideas must remain distinct. A proposed reframing earns its place through reviewed useful work; it
+cannot silently relax acceptance conditions, enlarge permissions or declare itself the winning method.
+
+The current native actuator is a disposable Chromium browser in a Linux Docker container. It supports the
+current Responses `computer` action interface and an alternate compatible vision/JSON supplier. The operator
+selects an available model and qualifies it for the task; a model name alone does not establish capability.
+Full desktop control, personal profiles, private data, logins, payments and message sending are outside this
+adapter. The broader ambition covers screen-based work; this implementation does not prove universal ability.
+
+Imported returns establish consistent historical bytes. The browser does not authenticate signer trust or
+independently certify the result. Verify native receipts against a separately trusted source key and review
+the actual artifacts. Owner acceptance does not approve payment, settlement, institutional admission or
+operational authority. USDC and $AGIALPHA commissioning retain their separate routes and requirements.
+
+The existing catalog example remains available without a provider. Local control tests and scripted browser
+checks do not establish live-model qualification or paid outcomes for the new path. Those require authorized
+provider trials, retained usage/cost evidence and review before a release can claim them.
+
 ## Your first result
 
 1. Choose **Find my first advantage** to run the supplied catalog example.
@@ -56,7 +109,8 @@ the resulting capability helps its intended user enough to warrant its full cost
 For a different mission, use the opportunity notebook to record the goal, current approach, credible alternative,
 measurable target, supplied evidence and budget. Ask what current evidence, expertise and feasible experiments
 make achievable now. These records stay typed hypotheses; recording one neither retrieves new sources nor
-executes a domain experiment. The catalog capability is the executable first mission.
+executes a domain experiment. The catalog capability is the provider-free executable first mission; the
+Computer Use path adds a separate project-bound handoff to the native model runner.
 
 | Stage | What this flagship provides | What requires further evidence or a separate decision |
 | --- | --- | --- |
@@ -152,6 +206,20 @@ not automatically a Jobs/Manager/Fleet execution request or native backup. USDC 
 retain their separate configuration, budgets, acceptance and settlement requirements.
 
 ## Premier résultat en français
+
+**Périmètre de la version 1.35.0 :** le parcours **Créer une mission Computer Use** prépare
+un travail à réaliser à l'écran, avec un résultat attendu et des critères d'acceptation explicites.
+Au **niveau 3**, proposez plusieurs stratégies, testez une méthode ou une combinaison et conservez les
+observations pour l'améliorer. Au **niveau 4**, remettez en question une restriction inutile et testez une
+autre formulation qui respecte toujours le résultat requis. Les idées non testées restent des hypothèses.
+
+La préparation dans le navigateur est gratuite et n'appelle aucun modèle. L'exécution utilise un modèle
+configuré séparément et Chromium dans un conteneur Linux isolé, avec autorisation explicite de la mission.
+Importez ensuite le résultat, examinez les livrables et les captures, puis consignez votre avis dans le même
+historique de projet. L'espace complet conserve aussi les travaux de catalogues existants. Aucun secret
+fournisseur n'appartient à la page; l'import ne prouve ni qualification indépendante ni autorisation de paiement.
+Le contrôle universel d'un ordinateur et l'usage de profils personnels ne sont pas fournis par cet adaptateur.
+La version publiée **v1.34.0** conserve le périmètre de rapprochement de catalogues décrit ci-dessous.
 
 Ouvrez le parcours français, puis lancez l'exemple synthétique. Examinez le catalogue rapproché, les lignes sans
 correspondance et les différences. Pour utiliser vos propres catalogues autorisés, sélectionnez deux fichiers CSV

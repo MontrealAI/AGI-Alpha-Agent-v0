@@ -29,6 +29,9 @@ REQUIRED_CHECKS = {
     "bounded-local-improvement-and-hold",
     "worker-disabled-fallback",
     "mobile-and-french",
+    "computer-use-native-protocol-and-owner-review",
+    "computer-use-strategy-reframing-and-portable-history",
+    "computer-use-public-reading-pane-and-visible-work-product",
     "no-page-errors-no-csp-violations-no-external-dependencies",
 }
 MODULE_ROOTS = (
@@ -37,6 +40,7 @@ MODULE_ROOTS = (
     "examples/successor-alpha/research.mjs",
     "examples/successor-alpha/continuity.mjs",
     "examples/successor-alpha/capability.mjs",
+    "examples/successor-alpha/computer.mjs",
     "docs/assets/successor/engine.mjs",
 )
 HASH = re.compile(r"[0-9a-f]{64}\Z")

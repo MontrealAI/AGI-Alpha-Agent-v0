@@ -1,3 +1,18 @@
+## 1.35.0 — Computer Use and retained strategy development
+
+- Make bounded Computer Use a primary English/French flagship path while retaining the provider-free catalog example.
+- Define an outcome, unchanged acceptance criteria, competing strategies, a proposed combination and a different problem formulation.
+- Carry Level 3 strategy discovery/testing/improvement and Level 4 reframing into the executable model goal and reviewed work product.
+- Bind exact project bytes, source identity, strategy and attempt UUID into the existing native task/provider/image/worker permit.
+- Retain provider observations, signed native receipts, visible text, uncertain interrupted effects and unknown billing in portable returns.
+- Preserve catalog cycles, Computer Use attempts, owner reviews and lessons in one complete project archive and offline workspace.
+- Keep version-one imports and add bounded learning-archive version two for combined history; never silently prune oversized archives.
+- Reject empty, reasoning-only, refusal-only and commentary-only provider output as task completion.
+- Preserve all existing release, recovery, signature, authority, commissioning and separate USDC/$AGIALPHA settlement boundaries.
+- Native Docker and live-provider qualification remain separate gaps; software checks do not prove universal capability or paid outcomes.
+- Preserve published v1.34.0 and all historical release/deployment evidence.
+- See [release notes](agent/RELEASE_NOTES_1.35.0.md) for scope, upgrade guidance and remaining qualification.
+
 ## 1.34.0 — Useful Alpha and current deployment evidence
 
 - Add a bilingual catalog reconciliation example with joined output, unmatched rows, discrepancies and a reusable offline tool.

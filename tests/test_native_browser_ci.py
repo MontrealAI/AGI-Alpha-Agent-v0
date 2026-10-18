@@ -204,6 +204,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     assert steps.index(install) < steps.index(assertions) < steps.index(browser)
     assert install["run"].splitlines() == [
         "python -m pip install playwright==1.54.0 PyYAML==6.0.2 pytest==8.4.1",
+        "python -m pip install --require-hashes -r requirements-agent.lock",
         "python -m playwright install --with-deps chromium",
         "npm ci --prefix tests/browser --ignore-scripts",
     ]

@@ -1,6 +1,38 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.34.0
+# Release readiness — 1.35.0
+
+Version **1.35.0** adds the [Computer Use flagship journey](SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4)
+and project-bound native returns described in the [release notes](RELEASE_NOTES_1.35.0.md). Level 3 develops
+and compares strategies; Level 4 tests a different problem formulation while preserving the original
+outcome and acceptance criteria. Prepared attempts, historical results, owner reviews and existing catalog
+work remain in one portable project history. These additions do not modify published v1.34.0 evidence.
+
+Browser preparation performs no model call. Execution requires a configured native model, an immutable
+container image and the exact reviewed task/provider/image/worker/context permit. The static page has no
+remote computer-control service. A retained result or owner's review confers no signer trust, independent
+qualification, operational authority or settlement approval.
+
+Release publication requires all existing exact-integrated-source, full regression, CI, packaging,
+generated-identity, browser/recovery/offline/accessibility, public HTTPS and uploaded-byte gates. The complete
+flagship gate must exercise mission preparation, native-return boundaries, strategy/reframing preservation,
+review, combined archive recovery and English/French layouts. Historical passing checks do not qualify a
+later source. The actual matching workflow, manifest and checksums establish acceptance and delivery;
+this document does not assert a hosted full-suite or public-site pass.
+
+Native Docker and live-provider qualification of the added flagship path remain separate operational gaps.
+Labeled model/actuator doubles and scripted browser checks establish their tested software contracts, not a
+completed task by a live model or production container isolation. An authorized provider/container trial must
+retain exact source/model/image identities, screenshots, usage and cost evidence, and review of the actual
+work product. Unknown costs and interrupted effects remain unknown. Full desktop work, private profiles,
+credentials, payments and messages remain outside this adapter's supported scope.
+
+The proposed $40 trillion/year market is the owner's estimate. No universal computer-work capability,
+independently protected superiority, realized economic benefit or paid settlement is established by this
+release scope. Mainnet records, pinned historical wallet profiles and separate USDC/$AGIALPHA routes retain
+their existing commissioning and authorization boundaries.
+
+## Previous release scope — 1.34.0
 
 Version **1.34.0** combines the [useful Alpha flagship](SUCCESSOR_ALPHA.md) with the
 [18 October Mainnet deployment record](CURRENT_MAINNET_DEPLOYMENT.md). The

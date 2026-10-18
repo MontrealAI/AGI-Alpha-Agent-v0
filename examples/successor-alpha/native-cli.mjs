@@ -11,7 +11,8 @@ const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const ROOT_MODULES = Object.freeze([
     'examples/successor-alpha/engine.mjs', 'examples/successor-alpha/project.mjs',
     'examples/successor-alpha/research.mjs', 'examples/successor-alpha/continuity.mjs',
-    'examples/successor-alpha/capability.mjs', 'docs/assets/successor/engine.mjs',
+    'examples/successor-alpha/capability.mjs', 'examples/successor-alpha/computer.mjs',
+    'docs/assets/successor/engine.mjs',
 ]);
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const inside = (root, path) => {

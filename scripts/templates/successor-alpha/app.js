@@ -8,6 +8,8 @@ let valueEstimate = null;
 let artifacts = null, busy = false, controller = null, runToken = 0, revision = 0, importToken = 0;
 let notice = null, lastStatus = null, lastError = null;
 let learningRecords = [], nativeHandoffRaw = null, nativeReturnRaw = null, nativeContinuityRaw = null, nativeChecked = null;
+let computerHistoryRaw = null, computerHistoryChecked = null, computerHandoffRaw = null, computerChecked = null;
+let computerFormRevision = 0, computerBusy = false, computerSelectedIndex = -1;
 let learningBusy = null, learningController = null, learningToken = 0, nativeFormRevision = 0, researchFormRevision = 0;
 const sample = alpha.createSampleMission({seed: 42, leftRows: 240, rightRows: 360});
 const en = {};
@@ -107,6 +109,29 @@ const fr = {
     footerMotto:'POSSÉDEZ L’INSTITUTION. PRÉSERVEZ LA MISSION.',footerScope:'Une première capacité utile. Une ambition ouverte.',
     sourceGuide:'Source et guide de reproduction ↗',missionProtocol:'Protocole de mission SUCCESSOR ↗',disclaimer:'Prototype de recherche et avis'
 };
+Object.assign(fr, {
+    startNote:'Planification et exemple de catalogues gratuits dans le navigateur. L’exécution informatique utilise un exécuteur natif et un modèle configurés séparément.',
+    computerStart:'Créer une mission Computer Use',computerEyebrow:'COMPUTER USE · NIVEAU 3 → NIVEAU 4',
+    computerTitle:'Travailler à travers un écran.\nAméliorer la façon de travailler.',
+    computerIntro:'Donnez à votre agent un résultat attendu, une surface de travail et des limites claires. Comparez les approches. Remettez le problème initial en question en préservant les exigences du résultat utile.',
+    computerVision:'Votre mission survit au modèle.',computerVisionText:'Recherche, logiciels publics, comparaisons de produits et prototypes fonctionnels peuvent devenir des capacités réutilisables. Conservez approche, preuves et leçons dans un même projet.',
+    computerStageOne:'Définir un travail utile',computerStageOneText:'Fixez le résultat avant de choisir la méthode.',
+    computerStageThree:'Niveau 3 · Améliorer les stratégies',computerStageThreeText:'Testez une référence, combinez les méthodes et comparez les tentatives examinées.',
+    computerStageFour:'Niveau 4 · Changer de jeu',computerStageFourText:'Testez une autre formulation contre le même résultat exigé.',
+    computerCurrentScope:'Exécuteur disponible : Chromium jetable avec captures d’écran, clics, saisie et défilement. Données publiques non personnelles. Un modèle et un conteneur natifs doivent être configurés ; cette page n’exécute pas d’ordinateur distant.',
+    computerRunnerGuide:'Configurer l’exécuteur Computer Use ↗',computerDesign:'CONCEVEZ VOTRE PROCHAINE CAPACITÉ',
+    computerExample:'Commencer par une mission utile',computerExampleRelease:'Choisir une approche de documentation publique',computerExampleResearch:'Note de recherche à partir de sources publiques',computerExampleCustom:'Mon propre travail à l’écran',computerProjectName:'Nom du projet',
+    computerOutcome:'Quel résultat utile doit exister ?',computerAcceptance:'Que doit livrer chaque approche ?',computerAcceptanceNote:'Conservez ce contrat d’acceptation pour comparer les stratégies. Un autre résultat commence une nouvelle comparaison.',
+    computerApproach:'Approche à tester',computerBaseline:'Référence · méthode actuelle',computerComposed:'Niveau 3 · stratégie combinée ou améliorée',computerReframed:'Niveau 4 · autre formulation du problème',
+    computerModel:'Utilisez le modèle actuel qualifié par votre opérateur',computerModelNote:'Sélectionnez le modèle et le conteneur immuable lors de l’exécution native. Aucune clé API n’appartient à cet espace.',
+    computerStrategy:'Quelles stratégies doivent rivaliser ? · une par ligne, 2–6',computerCombination:'Comment combiner leurs meilleurs éléments ?',computerReframe:'Quelle restriction inutile remettez-vous en question ?',computerReframeNote:'Expliquez pourquoi l’alternative atteint toujours le résultat exigé. Une nouvelle formulation reste une hypothèse jusqu’à l’examen de son résultat.',
+    computerSurfaceTitle:'Surface de travail, sources publiques et limites d’exécution',computerSurfaceNote:'La surface synthétique incluse est modifiable. Les URL publiques exactes sont des sources en lecture seule. Aucun identifiant, profil privé, paiement ou message.',
+    computerBuildSurface:'Construire la surface à partir de ces sources',computerHtml:'Surface de travail initiale · HTML, jusqu’à 200 Ko',computerUrls:'URL HTTPS publiques autorisées · une URL exacte par ligne',computerRights:'Droits sur les données',computerLicense:'Licence ou permission',computerActions:'Maximum d’actions',computerSeconds:'Maximum de secondes',computerReviewMinutes:'Temps alloué à l’examen · minutes',
+    computerPrepare:'Préparer cette mission Computer Use',computerPrepareNote:'La préparation est gratuite et n’appelle aucun modèle. L’exécution exige un exécuteur natif, une permission explicite et le compte fournisseur d’un opérateur. Aucun portefeuille ni financement demandé ici.',
+    computerPrepared:'PRÊT POUR VOTRE EXÉCUTEUR CONFIGURÉ',computerDownload:'Télécharger le dossier de mission natif',computerImport:'Importer le résultat de l’exécuteur',computerImportAria:'Importer un résultat Computer Use',computerImportNote:'Importez computer-return.json depuis le dossier de sortie de l’exécuteur. L’import conserve un résultat historique. L’achèvement annoncé par le fournisseur reste une déclaration ; examinez les captures et le livrable réel avant de donner votre avis.',
+    computerReturned:'TENTATIVE HISTORIQUE · VOTRE EXAMEN',computerReviewDecision:'Le résultat réel satisfait-il toutes les conditions d’acceptation ?',computerReviewChoose:'Examinez, puis choisissez',computerReviewAccepted:'Oui · résultat utile accepté',computerReviewRejected:'Non · conserver la tentative infructueuse',computerReviewNote:'Qu’avez-vous examiné, et que faut-il améliorer ensuite ?',computerReviewActual:'Temps d’examen réel · minutes',computerReviewSave:'Conserver mon avis avec cette tentative',
+    computerHistory:'UN PROJET · STRATÉGIES, RÉSULTATS ET LEÇONS',computerSaveWorkspace:'Enregistrer mon espace complet',computerSaveHistory:'Télécharger l’archive complète du projet',computerRestoreAria:'Restaurer l’archive complète du projet',computerHistoryNote:'Même identité de projet pour les catalogues et Computer Use. Vos avis sont des jugements consignés, sans certification indépendante, approbation de paiement ni preuve de capacité universelle.'
+});
 const ariaEn = {};
 for (const el of document.querySelectorAll('[data-i18n-aria]')) ariaEn[el.dataset.i18nAria] = el.getAttribute('aria-label');
 const altEn = {};
@@ -136,7 +161,7 @@ function translate() {
     if (lastStatus) $('status').textContent = say(...lastStatus);
     if (lastError && !$('error').hidden) $('error').textContent = errorMessage(lastError);
     renderValue();
-    renderLearning();
+    renderLearning(); renderComputer();
     if (!$('key-mapping').hidden) updateMappingSummary();
 }
 function status(english, french) { lastStatus = [english, french]; $('status').textContent = say(english, french); }
@@ -151,6 +176,15 @@ function renderNotice() {
 }
 function errorMessage(error) {
     const message = String(error?.message || error);
+    const computerMessages = {
+        COMPUTER_REVIEW_INCOMPLETE:['To accept useful work, inspect the deliverable, confirm every criterion and stay within the agreed review allowance. Otherwise preserve it as needing work.','Pour accepter un travail utile, examinez le livrable, confirmez chaque critère et respectez le temps d’examen convenu. Sinon, conservez-le comme travail à améliorer.'],
+        COMPUTER_REVIEW:['Enter a review note, whole minutes within the agreed allowance, and a decision after inspecting each criterion.','Saisissez une note, un nombre entier de minutes dans le temps convenu et un avis après l’examen de chaque critère.'],
+        COMPUTER_STRATEGY:['Enter an outcome, 1–6 acceptance conditions and 2–6 strategy hypotheses, one per line (up to 500 characters each), plus a combination and a reframing.','Saisissez un résultat, 1 à 6 conditions et 2 à 6 hypothèses, une par ligne (500 caractères maximum chacune), puis une combinaison et une reformulation.'],
+        COMPUTER_TASK:['Check the work surface, input rights and limits: 1–100 actions, 10–600 seconds and 1–120 review minutes.','Vérifiez la surface, les droits et les limites : 1 à 100 actions, 10 à 600 secondes et 1 à 120 minutes d’examen.'],
+        COMPUTER_HISTORY:['This project can retain up to eight Computer Use attempts. Save the complete workspace before starting a separate project.','Ce projet conserve jusqu’à huit tentatives Computer Use. Enregistrez l’espace complet avant de commencer un autre projet.'],
+        COMPUTER_RESULT_ALREADY_RETAINED:['This attempt already has a different result. Prepare a fresh attempt so both outcomes remain in the history.','Cette tentative possède déjà un autre résultat. Préparez une nouvelle tentative pour conserver les deux résultats.']
+    };
+    if (computerMessages[message]) return say(...computerMessages[message]);
     const localized = {
         'CSV needs a header row.':'Le CSV doit contenir une ligne d’en-tête.',
         'CSV headers must be nonempty and unique.':'Les en-têtes CSV doivent être renseignés et uniques.',
@@ -292,7 +326,8 @@ async function run(m, origin = m === sample ? 'synthetic' : 'public') {
         mission = m; result = next; artifacts = nextArtifacts; dossier = nextDossier;
         $('project-name').value = dossier.name;
         $('run-progress').style.width = '100%';
-        nativeFormForMission(origin); renderResult(); renderHistory(); renderLearning(); go(2);
+        $('computer-project-name').value = dossier.name;
+        nativeFormForMission(origin); renderResult(); renderHistory(); renderLearning(); renderComputer(); go(2);
         status('Your mission is ready. Download the catalog or keep the capability.','Votre mission est prête. Téléchargez le catalogue ou conservez la capacité.');
     } catch (error) {
         if (token !== runToken) return;
@@ -399,6 +434,7 @@ function fillMission(m) {
 function restoreSerialized(serialized) {
     const restored = project.inspectProject(serialized);
     learningRecords = []; nativeContinuityRaw = null;
+    computerHistoryRaw = null; computerHistoryChecked = null; computerHandoffRaw = null; computerChecked = null; computerSelectedIndex = -1;
     clearCurrent(); dossier = restored; $('project-name').value = restored.name;
     notice = {type:'restored',name:restored.name,cycles:restored.cycles.length};
     if (restored.cycles.length) fillMission(restored.cycles.at(-1).mission);
@@ -408,7 +444,8 @@ function restoreSerialized(serialized) {
         `“${restored.name}” restored with ${restored.cycles.length} historical ${restored.cycles.length === 1 ? 'cycle' : 'cycles'}. Inputs are ready. Run again for fresh local evidence; imported timings and claims are not new observations.`,
         `« ${restored.name} » restauré avec ${restored.cycles.length} ${restored.cycles.length === 1 ? 'cycle historique' : 'cycles historiques'}. Les données sont prêtes. Relancez pour de nouvelles preuves locales ; temps et déclarations importés restent historiques.`
     );
-    renderNotice(); renderHistory();
+    $('computer-project-name').value = restored.name;
+    renderNotice(); renderHistory(); renderComputer();
     status('Project restored. Run the inputs again for current evidence.','Projet restauré. Relancez les données pour obtenir des preuves actuelles.');
 }
 $('error-setup').addEventListener('click',() => { clearError(); go(0); });
@@ -467,7 +504,7 @@ $('next-cycle').addEventListener('click',() => {
 $('download-workspace').addEventListener('click',() => safeDownload(async () => download('my-successor-workspace.html',await exportPortable(dossier),'text/html;charset=utf-8')));
 $('download-tool').addEventListener('click',() => safeDownload(() => download('successor-catalog-capability.mjs',project.buildCapability(mission,result),'text/javascript;charset=utf-8')));
 $('download-report').addEventListener('click',() => safeDownload(() => download('successor-alpha-evidence.html',project.buildReport(mission,result,{name:dossier.name,goal:dossier.goal,language}),'text/html;charset=utf-8')));
-$('download-project').addEventListener('click',() => safeDownload(() => download('my-successor-project.json',project.serializeProject(dossier),'application/json')));
+$('download-project').addEventListener('click',() => safeDownload(() => download('my-successor-project.json',computerHistoryRaw ? serializeLearningArchive() : project.serializeProject(dossier),'application/json')));
 for (const [id,route] of [['handoff-usdc','USDC'],['handoff-agialpha','AGIALPHA']]) $(id).addEventListener('click',() => safeDownload(() => download(`successor-${route.toLowerCase()}-unfunded-draft.json`,JSON.stringify(project.prepareHandoff(dossier,route),null,2),'application/json')));
 function renderValue() {
     $('value-result').hidden = !valueEstimate;
@@ -513,7 +550,9 @@ $('restore-project').addEventListener('change',async () => {
         if (file.size > 2000000) throw Error(say('Choose a project JSON file no larger than 2 MB.','Choisissez un fichier JSON de projet de 2 Mo au maximum.'));
         const text = new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
         if (token !== importToken || revision !== expected) throw Error(say('Inputs changed while the project was being read. Reopen the file.','Les données ont changé pendant la lecture du projet. Rouvrez le fichier.'));
-        await restoreSerialized(text);
+        const schema=transport.parseBounded(text)?.schema;
+        if(['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(schema))await restoreLearning(text,expected,token);
+        else await restoreSerialized(text);
     } catch (error) { showError(error); }
     finally { $('restore-project').value = ''; }
 });
@@ -669,7 +708,11 @@ function renderLearningHistory() {
 function renderLearning() { renderResearch(); renderResolution(); renderNative(); renderLearningHistory(); }
 function serializeLearningArchive() {
     if (!dossier) return '{}';
-    return transport.canonical({schema:'successor-alpha-learning-archive/v1',project:project.inspectProject(dossier),records:learningRecords,nativeHandoffRaw,nativeContinuityRaw});
+    const archive = {schema:'successor-alpha-learning-archive/v1',project:project.inspectProject(dossier),records:learningRecords,nativeHandoffRaw,nativeContinuityRaw};
+    if (computerHistoryRaw) { archive.schema='successor-alpha-learning-archive/v2'; archive.computerHistoryRaw=computerHistoryRaw; }
+    const raw=transport.canonical(archive);
+    if(new TextEncoder().encode(raw).length>2000000)throw Error(say('The complete archive exceeds 2 MB. Keep the existing workspace; history will not be dropped to reduce its size.','L’archive complète dépasse 2 Mo. Conservez l’espace existant ; aucun historique ne sera supprimé pour réduire sa taille.'));
+    return raw;
 }
 function projectContains(current, historical) {
     return current.id === historical.id && current.createdAt === historical.createdAt && current.goal === historical.goal
@@ -682,7 +725,9 @@ function projectContains(current, historical) {
 async function validateLearningArchive(raw) {
     const archive = transport.parseBounded(raw);
     const keys = ['schema','project','records','nativeHandoffRaw','nativeContinuityRaw'];
-    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || archive.schema !== 'successor-alpha-learning-archive/v1'
+    const computerArchive = archive?.schema === 'successor-alpha-learning-archive/v2';
+    if (computerArchive) keys.push('computerHistoryRaw');
+    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || !['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(archive.schema)
         || !Array.isArray(archive.records) || archive.records.length > 6) throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
     const checkedProject = project.inspectProject(archive.project), seen = new Set();
     for (const entry of archive.records) {
@@ -700,10 +745,16 @@ async function validateLearningArchive(raw) {
         const checked = await continuity.inspectContinuity(archive.nativeContinuityRaw);
         if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_HISTORY_BINDING');
     }
-    return {...archive,project:checkedProject};
+    let checkedComputer = null;
+    if (computerArchive) {
+        checkedComputer = await computer.inspectComputerHistory(archive.computerHistoryRaw);
+        if (!computer.projectContains(checkedProject,checkedComputer.project)) throw Error('COMPUTER_ARCHIVE_PROJECT_BINDING');
+    }
+    return {...archive,project:checkedProject,checkedComputer};
 }
 async function restoreLearning(raw, expectedRevision = revision, expectedImportToken = importToken) {
     const priorProject = dossier ? project.serializeProject(dossier) : null;
+    const priorComputerForm=computerFormRevision, priorComputerHistory=computerHistoryRaw;
     status('Checking the complete learning archive locally…','Vérification locale de l’archive d’apprentissage complète…');
     const checked = await validateLearningArchive(raw);
     let checkedReturn = null, returnRaw = null;
@@ -712,15 +763,21 @@ async function restoreLearning(raw, expectedRevision = revision, expectedImportT
         const entry = history.returns.find(item=>item.handoffRaw===checked.nativeHandoffRaw);
         if (entry) { returnRaw=entry.returnRaw; checkedReturn=await continuity.inspectNativeReturn(checked.nativeHandoffRaw,returnRaw); }
     }
+    let checkedComputerReturn=null;
+    const lastComputer=checked.checkedComputer?.records.at(-1);
+    if(lastComputer?.returnRaw)checkedComputerReturn=await computer.inspectComputerReturn(lastComputer.handoffRaw,lastComputer.returnRaw);
     if (revision !== expectedRevision || importToken !== expectedImportToken
+        || computerFormRevision !== priorComputerForm || computerHistoryRaw !== priorComputerHistory
         || (dossier ? project.serializeProject(dossier) : null) !== priorProject) {
         throw Error(say('Inputs or project changed during archive verification. Reopen the archive.','Les données ou le projet ont changé pendant la vérification. Rouvrez l’archive.'));
     }
     restoreSerialized(project.serializeProject(checked.project));
     learningRecords=checked.records; nativeContinuityRaw=checked.nativeContinuityRaw;
+    computerHistoryRaw=checked.computerHistoryRaw || null; computerHistoryChecked=checked.checkedComputer;
+    if (computerHistoryChecked?.records.length) applyComputerRecord(computerHistoryChecked.records.length-1,checkedComputerReturn);
     nativeHandoffRaw=checked.nativeHandoffRaw; nativeChecked=checkedReturn; nativeReturnRaw=returnRaw;
     if(nativeHandoffRaw){const h=transport.parseBounded(nativeHandoffRaw),spec=transport.parseBounded(h.specRaw);$('native-name').value=spec.name;$('native-owner').value=spec.owner;$('native-rights').value=spec.rights.dataClass;$('native-source').value=spec.rights.source;$('native-license').value=spec.rights.license;$('native-review-minutes').value=String(spec.reviewMinutes);}
-    renderLearning(); $('learning-history-panel').open=true;
+    renderLearning(); renderComputer(); $('learning-history-panel').open=true;
     status('Learning archive restored and rechecked. Records remain historical; no authority was imported.','Archive d’apprentissage restaurée et contrôlée. Les éléments restent historiques ; aucune autorité n’a été importée.');
 }
 
@@ -804,11 +861,193 @@ $('native-return-input').addEventListener('change',async()=>{
     catch(error){localPanelError('native-error',error);}finally{$('native-return-input').value='';}
 });
 $('download-learning').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
-for(const id of ['restore-learning','restore-learning-top'])$(id).addEventListener('change',async()=>{
+for(const id of ['restore-learning','restore-learning-top','restore-computer-history'])$(id).addEventListener('change',async()=>{
     const file=$(id).files[0];if(!file)return;const expected=revision, token=++importToken;
     try{if(file.size>2000000)throw Error(say('Learning archives are limited to 2 MB.','Les archives d’apprentissage sont limitées à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(token!==importToken||revision!==expected)throw Error('LEARNING_IMPORT_CHANGED');await restoreLearning(raw,expected,token);}
     catch(error){showError(error);}finally{$(id).value='';}
 });
+
+function computerContext() {
+    return {form:computerFormRevision,revision,project:dossier ? project.serializeProject(dossier) : null,history:computerHistoryRaw};
+}
+function computerContextCurrent(expected) {
+    return expected.form === computerFormRevision && expected.revision === revision
+        && expected.project === (dossier ? project.serializeProject(dossier) : null) && expected.history === computerHistoryRaw;
+}
+function computerUnchanged(expected) {
+    if (!computerContextCurrent(expected)) throw Error(say('Your mission or project changed during checking. Try again with the current inputs.','La mission ou le projet a changé pendant la vérification. Réessayez avec les données actuelles.'));
+}
+function computerLines(id) { return $(id).value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean); }
+function setComputerBusy(value) {
+    computerBusy=value;
+    $('computer-prepare').disabled=value;
+    $('computer-review-save').disabled=value;
+}
+function computerPreset(kind) {
+    if (kind === 'custom') return;
+    const researchMission=kind === 'research';
+    $('computer-outcome').value=researchMission
+        ? say('Produce a source-grounded decision brief on an accessible, exportable documentation approach for a small public software project.','Produire une note de décision sourcée sur une approche de documentation accessible et exportable pour un petit logiciel public.')
+        : say('Choose an accessible documentation approach that supports HTML export and offline use, within a monthly platform budget of $30.','Choisir une approche de documentation accessible avec export HTML et usage hors ligne, dans un budget mensuel de plateforme de 30 $.');
+    $('computer-acceptance').value=say('Recommend a concrete next action with source references.\nRespect the $30 monthly platform budget, HTML export and offline requirements.\nCheck accessibility evidence and state missing evidence, tradeoffs and total-cost uncertainty.','Recommander une prochaine action concrète avec références sources.\nRespecter le budget mensuel de 30 $, l’export HTML et l’usage hors ligne.\nExaminer les preuves d’accessibilité et préciser les preuves manquantes, compromis et incertitudes de coût total.');
+    $('computer-strategy').value=say('Inspect every option against every required condition, then compare the feasible choices.\nEliminate options that fail a hard requirement first, then investigate the uncertain evidence.','Examiner chaque option contre toutes les exigences, puis comparer les choix possibles.\nÉliminer d’abord les options qui échouent à une exigence ferme, puis examiner les preuves incertaines.');
+    $('computer-combination').value=say('Screen the hard requirements first; compare the surviving options and preserve source references and unresolved questions in one decision brief.','Filtrer d’abord les exigences fermes ; comparer les options restantes et conserver les références et questions ouvertes dans une note de décision.');
+    $('computer-reframe').value=say('Challenge the assumption that a new platform must be purchased. Compare improving the existing static site against buying a platform, preserving the same accessibility, export, offline and budget requirements.','Remettre en question l’achat obligatoire d’une plateforme. Comparer l’amélioration du site statique existant à un achat, en conservant les exigences d’accessibilité, d’export, d’usage hors ligne et de budget.');
+    $('computer-license').value=say('Included fictional work sample, Apache-2.0. Establish rights separately for any added source.','Exemple fictif inclus, Apache-2.0. Établir séparément les droits de toute source ajoutée.');
+    $('computer-html').value=computer.buildWorkSurface({goal:$('computer-outcome').value,allowedUrls:[]});
+    $('computer-urls').value=''; $('computer-rights').value='synthetic';
+    computerFormRevision+=1; computerHandoffRaw=null; computerChecked=null; computerSelectedIndex=-1;
+    renderComputer();
+}
+function computerApproachLabel(selected) {
+    return selected === 'baseline' ? say('Baseline','Référence') : selected === 'combine'
+        ? say('Level 3 · combined strategy','Niveau 3 · stratégie combinée') : say('Level 4 · reframed task','Niveau 4 · tâche reformulée');
+}
+function renderComputer() {
+    $('computer-prepared').hidden=!computerHandoffRaw;
+    $('computer-returned').hidden=!computerChecked;
+    $('computer-history-panel').hidden=!computerHistoryChecked?.records.length;
+    if (computerHandoffRaw) {
+        const h=transport.parseBounded(computerHandoffRaw);
+        $('computer-prepared-title').textContent=computerApproachLabel(h.strategy.selected);
+        $('computer-prepared-summary').textContent=h.strategy.originalGoal;
+        $('computer-commitment').textContent=say(`Project ${transport.parseBounded(h.projectRaw).id} · ${h.task.max_actions} actions · ${h.task.max_seconds} s · ${h.task.allowed_urls.length} exact public URLs`,
+            `Projet ${transport.parseBounded(h.projectRaw).id} · ${h.task.max_actions} actions · ${h.task.max_seconds} s · ${h.task.allowed_urls.length} URL publiques exactes`);
+    }
+    const record=computerHistoryChecked?.records[computerSelectedIndex];
+    if (computerChecked) {
+        const summary=computerChecked.summary;
+        $('computer-return-summary').textContent=say(`State: ${summary.state}. Model: ${summary.model}. ${summary.actions} reserved actions, ${summary.turns} turns, ${number(summary.elapsedMilliseconds)} ms including cleanup. Billing remains unknown. Browser import checks consistent bytes; signer trust is not verified here.`,
+            `État : ${summary.state}. Modèle : ${summary.model}. ${summary.actions} actions réservées, ${summary.turns} tours, ${number(summary.elapsedMilliseconds)} ms, nettoyage compris. Facturation inconnue. L’import vérifie la cohérence des données ; la confiance du signataire n’est pas vérifiée ici.`);
+        $('computer-deliverable').textContent=summary.observedText ?? say('No final observed page text was retained. Inspect the runner’s screenshots and interruption record.','Aucun texte final observé n’a été conservé. Examinez les captures et le relevé d’interruption de l’exécuteur.');
+        $('computer-review-form').hidden=Boolean(record?.review);
+    }
+    $('computer-history').replaceChildren();
+    const records=computerHistoryChecked?.records || [];
+    $('computer-history-count').textContent=say(`${records.length} attempts`,`${records.length} tentatives`);
+    for (const [index,entry] of records.entries()) {
+        const h=transport.parseBounded(entry.handoffRaw), returned=entry.returnRaw ? transport.parseBounded(entry.returnRaw) : null;
+        const item=node('li',$('computer-history'));
+        node('strong',item,`${index+1} · ${computerApproachLabel(h.strategy.selected)}`);
+        node('span',item,h.strategy.originalGoal);
+        const review=entry.review;
+        node('small',item,review ? say(`Owner review: ${review.decision === 'useful' ? 'useful' : 'needs work'} · ${review.minutes} min · ${returned.receipt.actions_reserved} reserved actions. ${review.note}`,
+            `Avis du propriétaire : ${review.decision === 'useful' ? 'utile' : 'à améliorer'} · ${review.minutes} min · ${returned.receipt.actions_reserved} actions réservées. ${review.note}`)
+            : returned ? say(`Historical result: ${returned.receipt.state} · review required.`,`Résultat historique : ${returned.receipt.state} · examen requis.`)
+                : say('Prepared mission · no execution result imported.','Mission préparée · aucun résultat d’exécution importé.'));
+        const open=node('button',item,say('Open this attempt','Ouvrir cette tentative'),'text-button');open.type='button';
+        open.addEventListener('click',()=>selectComputerRecord(index).catch(error=>localPanelError('computer-error',error)));
+    }
+    if (records.length) {
+        const groups=new Map();
+        for (const entry of records) {
+            const h=transport.parseBounded(entry.handoffRaw), key=transport.canonical([h.strategy.originalGoal,h.strategy.successCriteria,h.sourceHash,h.task.html,h.task.allowed_urls,h.task.input_rights,h.task.license,h.task.max_turns,h.task.max_actions,h.task.max_seconds,h.task.review_minutes]);
+            const group=groups.get(key)||{total:0,useful:0,reviewed:0};group.total+=1;group.reviewed+=entry.review ? 1 : 0;group.useful+=entry.review?.decision==='useful' ? 1 : 0;groups.set(key,group);
+        }
+        const useful=records.filter(entry=>entry.review?.decision==='useful').length;
+        $('computer-comparison').textContent=say(`${groups.size} comparable scope(s) · ${useful} owner-accepted useful result(s). Compare actions, review effort and remaining uncertainty only with the same outcome, work surface, sources, rights and limits. A changed framing earns its place through a useful result; this history does not declare an independently qualified winner.`,
+            `${groups.size} périmètre(s) comparable(s) · ${useful} résultat(s) utile(s) accepté(s) par le propriétaire. Comparez actions, effort d’examen et incertitudes uniquement avec les mêmes résultat, surface, sources, droits et limites. Une reformulation mérite sa place par un résultat utile ; cet historique ne déclare aucun gagnant qualifié indépendamment.`);
+    }
+}
+async function selectComputerRecord(index) {
+    if (computerBusy) return;
+    const entry=computerHistoryChecked?.records[index];if(!entry)return;
+    const expected=computerContext();setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const checked=entry.returnRaw ? await computer.inspectComputerReturn(entry.handoffRaw,entry.returnRaw) : null;
+        computerUnchanged(expected);applyComputerRecord(index,checked);
+    } finally {setComputerBusy(false);}
+}
+function applyComputerRecord(index,checked) {
+    const entry=computerHistoryChecked.records[index],h=transport.parseBounded(entry.handoffRaw);
+    computerSelectedIndex=index;computerHandoffRaw=entry.handoffRaw;computerChecked=checked;
+    $('computer-outcome').value=h.strategy.originalGoal;$('computer-acceptance').value=h.strategy.successCriteria.join('\n');
+    $('computer-strategy').value=h.strategy.hypotheses.join('\n');$('computer-combination').value=h.strategy.combination;
+    $('computer-reframe').value=h.strategy.reframing;$('computer-approach').value=h.strategy.selected;
+    $('computer-html').value=h.task.html;$('computer-urls').value=h.task.allowed_urls.join('\n');$('computer-rights').value=h.task.input_rights;
+    $('computer-license').value=h.task.license;$('computer-actions').value=h.task.max_actions;$('computer-seconds').value=h.task.max_seconds;$('computer-review-minutes').value=h.task.review_minutes;
+    computerFormRevision+=1;prepareComputerReview(h,entry.review);renderComputer();
+}
+function prepareComputerReview(handoff,review=null) {
+    $('computer-review-decision').value=review ? review.decision==='useful' ? 'accepted' : 'rejected' : '';
+    $('computer-review-note').value=review?.note || '';
+    $('computer-review-actual').value=String(review?.minutes ?? handoff.task.review_minutes);
+    $('computer-criteria-review').replaceChildren();
+    for (const [index,criterion] of handoff.strategy.successCriteria.entries()) {
+        const label=node('label',$('computer-criteria-review'),undefined,'computer-criterion');
+        const input=node('input',label);input.type='checkbox';input.dataset.criterion=String(index);input.checked=Boolean(review?.criterionResults[index]);
+        node('span',label,criterion);
+    }
+}
+$('computer-example').addEventListener('change',()=>computerPreset($('computer-example').value));
+$('computer-build-surface').addEventListener('click',()=>{
+    $('computer-error').hidden=true;
+    try {
+        $('computer-html').value=computer.buildWorkSurface({goal:$('computer-outcome').value.trim(),allowedUrls:computerLines('computer-urls')});
+        computerFormRevision+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;renderComputer();
+        $('computer-status').textContent=say('Work surface rebuilt. Confirm the source rights and execution limits before preparing.','Surface reconstruite. Confirmez les droits des sources et les limites avant de préparer.');
+    } catch(error){localPanelError('computer-error',error);}
+});
+$('computer-form').addEventListener('input',()=>{
+    computerFormRevision+=1;importToken+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;
+    $('computer-error').hidden=true;renderComputer();
+});
+$('computer-form').addEventListener('submit',async event=>{
+    event.preventDefault();if(computerBusy || busy || learningBusy)return;
+    const expected=computerContext();setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const name=$('computer-project-name').value.trim();
+        if (!name || name.length>80) throw Error(say('Give this project a name of 1–80 characters.','Donnez au projet un nom de 1 à 80 caractères.'));
+        let nextProject=dossier || project.createProject({name,goal:$('computer-outcome').value.trim()});
+        if(nextProject.name!==name)nextProject=project.renameProject(nextProject,name);
+        const allowedUrls=computerLines('computer-urls'),html=$('computer-html').value;
+        const handoffRaw=await computer.createComputerHandoff(nextProject,{sourceHash:SOURCE_HASH,
+            goal:$('computer-outcome').value.trim(),successCriteria:computerLines('computer-acceptance'),hypotheses:computerLines('computer-strategy'),
+            combination:$('computer-combination').value.trim(),reframing:$('computer-reframe').value.trim(),selected:$('computer-approach').value,
+            allowedUrls,inputRights:$('computer-rights').value,license:$('computer-license').value.trim(),maxActions:boundedInteger('computer-actions',100),
+            maxSeconds:boundedInteger('computer-seconds',600),reviewMinutes:boundedInteger('computer-review-minutes',120),...(html.trim()?{html}:{})});
+        const historyRaw=await computer.retainComputerHandoff(nextProject,handoffRaw,{priorRecord:computerHistoryRaw});
+        const checked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        dossier=nextProject;computerHistoryRaw=historyRaw;computerHistoryChecked=checked;computerHandoffRaw=handoffRaw;computerChecked=null;
+        computerSelectedIndex=checked.records.findIndex(entry=>entry.handoffRaw===handoffRaw);$('project-name').value=dossier.name;
+        $('computer-status').textContent=say('Mission prepared and retained in your project. Download the pack for the configured native runner, then import its result here.','Mission préparée et conservée dans votre projet. Téléchargez le dossier pour l’exécuteur natif configuré, puis importez son résultat ici.');
+        renderHistory();renderLearning();renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);}
+});
+$('computer-download').addEventListener('click',()=>{if(computerHandoffRaw)download('successor-computer-handoff.json',computerHandoffRaw,'application/json');});
+$('computer-return').addEventListener('change',async()=>{
+    const file=$('computer-return').files[0];if(!file || !computerHandoffRaw || computerBusy)return;
+    const expected=computerContext(),handoffRaw=computerHandoffRaw;setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        if(file.size>2000000)throw Error(say('Computer Use returns are limited to 2 MB.','Les retours Computer Use sont limités à 2 Mo.'));
+        const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
+        const checked=await computer.inspectComputerReturn(handoffRaw,raw);
+        const historyRaw=await computer.importComputerReturn(dossier,handoffRaw,raw,{priorRecord:computerHistoryRaw});
+        const historyChecked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        computerHistoryRaw=historyRaw;computerHistoryChecked=historyChecked;computerChecked=checked;
+        computerSelectedIndex=historyChecked.records.findIndex(entry=>entry.handoffRaw===handoffRaw);
+        prepareComputerReview(checked.handoff,historyChecked.records[computerSelectedIndex].review);
+        $('computer-status').textContent=say('Historical result retained. Inspect its actual work product and native screenshots, then record your review.','Résultat historique conservé. Examinez le livrable réel et les captures natives, puis consignez votre avis.');renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);$('computer-return').value='';}
+});
+$('computer-review-form').addEventListener('input',()=>{computerFormRevision+=1;});
+$('computer-review-form').addEventListener('submit',async event=>{
+    event.preventDefault();if(computerBusy || !computerChecked || !computerHandoffRaw)return;
+    const expected=computerContext(),handoffRaw=computerHandoffRaw;setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const decision=$('computer-review-decision').value;
+        if(!['accepted','rejected'].includes(decision))throw Error(say('Inspect the result and choose a review decision.','Examinez le résultat et choisissez un avis.'));
+        const historyRaw=await computer.reviewComputerReturn(dossier,handoffRaw,{decision:decision==='accepted'?'useful':'needs-work',
+            note:$('computer-review-note').value.trim(),minutes:boundedInteger('computer-review-actual',120),
+            criterionResults:[...$('computer-criteria-review').querySelectorAll('input')].map(input=>input.checked)},{priorRecord:computerHistoryRaw});
+        const checked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        computerHistoryRaw=historyRaw;computerHistoryChecked=checked;
+        $('computer-status').textContent=say('Your review is preserved. Keep the outcome and acceptance conditions fixed, choose a different approach and prepare the next attempt.','Votre avis est conservé. Gardez le résultat attendu et les conditions d’acceptation, choisissez une autre approche et préparez la tentative suivante.');renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);}
+});
+$('computer-save-history').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
+$('computer-save-workspace').addEventListener('click',()=>safeDownload(async()=>download('my-successor-workspace.html',await exportPortable(dossier),'text/html;charset=utf-8')));
+computerPreset('release');
 
 translate(); go(0,false);
 (async()=>{

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+import base64
 import hashlib
 import io
 import json
@@ -190,9 +191,12 @@ def first_use(browser: Browser, output: Path, errors: list[str], external: list[
     page.keyboard.press("Tab")
     expect(page.locator(".skip")).to_be_focused()
     page.keyboard.press("Enter")
-    assert page.url.endswith("#mission")
+    assert page.url.endswith("#computer-title")
+    expect(page.locator("#computer-title")).to_be_focused()
     page.keyboard.press("Tab")
-    expect(page.locator("#mode-example")).to_be_focused()
+    expect(page.locator('[data-i18n="computerRunnerGuide"]')).to_be_focused()
+    page.keyboard.press("Tab")
+    expect(page.locator("#computer-example")).to_be_focused()
     page.screenshot(path=str(output / "01-first-use.png"), full_page=True)
     page.locator("#hero-start").click()
     expect(page.locator("#pane-evidence")).to_be_visible()
@@ -712,6 +716,155 @@ def mobile_and_french(browser: Browser, output: Path, errors: list[str], externa
     context.close()
 
 
+def controlled_computer_return(raw: bytes) -> bytes:
+    """Exercise the actual native journal/export protocol with labeled supplier/actuator doubles."""
+    from alpha_factory_v1.core.runtime.store import Journal
+    from alpha_factory_v1.core.runtime.successor.computer import commitment, run_session
+    from alpha_factory_v1.core.runtime.successor.computer_handoff import ComputerHandoff, write_computer_return
+
+    handoff = ComputerHandoff.model_validate(json.loads(raw))
+    png = base64.b64encode(bytes.fromhex("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c489")).decode()
+
+    class ControlledAdvisor:
+        identity = {
+            "mode": "responses",
+            "model": "CONTROLLED_BROWSER_PROTOCOL_TEST",
+            "endpoint": "https://example.com/v1",
+        }
+
+        def next(self, task: Any, observation: dict[str, Any]) -> dict[str, Any]:
+            return {"actions": [], "done": True, "summary": "Controlled protocol double; no live model qualification."}
+
+    class ControlledComputer:
+        def __init__(self, *args: Any) -> None:
+            pass
+
+        def observe(self) -> dict[str, str]:
+            return {"png": png, "text": "CONTROLLED TEST WORK PRODUCT. No real model or computer execution claimed."}
+
+        def close(self) -> None:
+            pass
+
+    advisor = ControlledAdvisor()
+    image = "sha256:" + "d" * 64
+    with tempfile.TemporaryDirectory() as folder:
+        root = Path(folder)
+        journal = Journal.initialize(root / "journal")
+        permit = commitment(handoff.task, advisor, image, handoff.context())
+        run_session(
+            journal,
+            handoff.task,
+            advisor,
+            image,
+            root / "result",
+            permit,
+            factory=ControlledComputer,
+            execution_context=handoff.context(),
+        )
+        write_computer_return(handoff, journal, advisor, image, root / "result")
+        return (root / "result/computer-return.json").read_bytes()
+
+
+def computer_strategy_journey(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
+    """Prepare, execute the native protocol, review and retain a Computer Use strategy study."""
+    context, page = context_page(browser, errors, external)
+    page.locator("#hero-computer").click()
+    page.locator("#computer-prepare").click()
+    expect(page.locator("#computer-prepared")).to_be_visible()
+    first = download(page, "#computer-download")
+    handoff = json.loads(first)
+    assert handoff["strategy"]["selected"] == "baseline"
+    assert not json.loads(handoff["projectRaw"])["cycles"]
+    returned = controlled_computer_return(first)
+    altered = json.loads(returned)
+    altered["sourceHash"] = "0" * 64
+    upload(page, "#computer-return", json.dumps(altered).encode(), "altered-return.json")
+    expect(page.locator("#computer-error")).to_be_visible()
+    expect(page.locator("#computer-returned")).to_be_hidden()
+    upload(page, "#computer-return", returned, "controlled-return.json")
+    expect(page.locator("#computer-returned")).to_be_visible()
+    expect(page.locator("#computer-deliverable")).to_contain_text("CONTROLLED TEST WORK PRODUCT")
+    page.locator("#computer-review-decision").select_option("accepted")
+    page.locator("#computer-review-note").fill("Protocol test owner review; not independent qualification.")
+    page.locator("#computer-review-save").click()
+    expect(page.locator("#computer-error")).to_be_visible()
+    for checkbox in page.locator("#computer-criteria-review input").all():
+        checkbox.check()
+    page.locator("#computer-review-actual").fill("7")
+    page.locator("#computer-review-save").click()
+    expect(page.locator("#computer-review-form")).to_be_hidden()
+    expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
+    page.locator("#computer-approach").select_option("reframe")
+    page.locator("#computer-prepare").click()
+    expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    second = json.loads(download(page, "#computer-download"))
+    assert second["strategy"]["selected"] == "reframe"
+    assert second["attemptId"] != handoff["attemptId"]
+    assert second["strategy"]["successCriteria"] == handoff["strategy"]["successCriteria"]
+    assert second["task"]["html"] == handoff["task"]["html"]
+    archive = download(page, "#computer-save-history")
+    checked_archive = json.loads(archive)
+    assert checked_archive["schema"] == "successor-alpha-learning-archive/v2"
+    assert len(json.loads(checked_archive["computerHistoryRaw"])["records"]) == 2
+    portable = download(page, "#computer-save-workspace")
+    destination = (output / "computer-portable-workspace.html").resolve()
+    destination.write_bytes(portable)
+    page.goto(destination.as_uri())
+    expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
+    assert page.locator("#saved-learning").text_content().count("</script>") == 0
+    accessibility(page)
+    page.screenshot(path=str(output / "14-computer-use-history.png"), full_page=True)
+    page.goto(URL)
+    upload(page, "#restore-computer-history", archive, "computer-history.json")
+    expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    page.locator("#hero-start").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    page.locator("#keep-capability").click()
+    combined = json.loads(download(page, "#download-project"))
+    assert combined["project"]["id"] == checked_archive["project"]["id"]
+    assert len(combined["project"]["cycles"]) == 1
+    assert len(json.loads(combined["computerHistoryRaw"])["records"]) == 2
+    page.set_viewport_size({"width": 320, "height": 1050})
+    page.goto(URL + "?lang=fr")
+    expect(page.locator("#computer-title")).to_contain_text("Travailler")
+    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+    page.locator("#computer-prepare").click()
+    expect(page.locator("#computer-prepared")).to_be_visible()
+    french = json.loads(download(page, "#computer-download"))
+    assert "Choisir" in french["strategy"]["originalGoal"]
+    accessibility(page)
+    page.screenshot(path=str(output / "15-computer-use-mobile-fr.png"), full_page=True)
+    context.close()
+
+    # A controlled public-page fixture verifies that reading a source cannot lose the work editor.
+    script = (
+        "import {buildWorkSurface} from './examples/successor-alpha/computer.mjs';"
+        "console.log(buildWorkSurface({goal:'Inspect the public-source fixture and save a decision.',"
+        "allowedUrls:['https://public.example/source']}));"
+    )
+    surface = subprocess.check_output(["node", "--input-type=module", "-e", script], cwd=ROOT, text=True)
+    reading_context = browser.new_context(viewport={"width": 1024, "height": 768})
+    reading_page = reading_context.new_page()
+    requested: list[str] = []
+
+    def source_fixture(route: Any) -> None:
+        requested.append(route.request.url)
+        assert route.request.url == "https://public.example/source"
+        route.fulfill(status=200, content_type="text/html", body="<h1>Controlled source</h1><p>HTML export: yes.</p>")
+
+    reading_page.route("**/*", source_fixture)
+    reading_page.set_content(surface)
+    reading_page.locator("[data-source]").click()
+    expect(reading_page.frame_locator("#source").get_by_text("HTML export: yes.")).to_be_visible()
+    reading_page.locator("#answer").fill("Controlled source supports HTML export; offline use remains unverified.")
+    reading_page.locator("#save").click()
+    expect(reading_page.locator("#saved")).to_contain_text("offline use remains unverified")
+    assert reading_page.url == "about:blank"
+    assert requested == ["https://public.example/source"]
+    reading_context.close()
+
+
 def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | None = None) -> dict[str, Any]:
     """Run the same complete journey against a source-bound packaged or public page."""
     global URL, EXPECTED_PAGE_SHA256
@@ -737,6 +890,7 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 constructed_example(browser, output, errors, external)
                 worker_fallback(browser, errors, external)
                 mobile_and_french(browser, output, errors, external)
+                computer_strategy_journey(browser, output, errors, external)
             finally:
                 browser.close()
         assert not errors, errors
@@ -761,6 +915,9 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 "bounded-local-improvement-and-hold",
                 "worker-disabled-fallback",
                 "mobile-and-french",
+                "computer-use-native-protocol-and-owner-review",
+                "computer-use-strategy-reframing-and-portable-history",
+                "computer-use-public-reading-pane-and-visible-work-product",
                 "no-page-errors-no-csp-violations-no-external-dependencies",
             ],
             "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),

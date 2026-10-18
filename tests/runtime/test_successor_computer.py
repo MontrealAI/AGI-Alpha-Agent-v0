@@ -263,6 +263,50 @@ def test_current_responses_wire_format_and_safety_refusal(monkeypatch: pytest.Mo
     assert requests[1]["input"][-1]["call_id"] == "one"
 
 
+@pytest.mark.parametrize(
+    "output",
+    [
+        [],
+        [{"type": "reasoning", "summary": []}],
+        [{"type": "message", "phase": "commentary", "content": [{"type": "output_text", "text": "Working"}]}],
+        [{"type": "message", "content": [{"type": "output_text", "text": " "}]}],
+        [{"type": "message", "content": [{"type": "refusal", "refusal": "Cannot proceed"}]}],
+    ],
+)
+def test_responses_without_a_final_message_do_not_claim_completion(
+    monkeypatch: pytest.MonkeyPatch, output: Any
+) -> None:
+    original = httpx.Client
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    with pytest.raises(ValueError, match="no final completion"):
+        advisor.next(task(), TestComputer().observe())
+    assert advisor.usage_events[0]["cost"] is None
+
+
+def test_responses_final_answer_clears_pending_call_and_excludes_commentary(monkeypatch: pytest.MonkeyPatch) -> None:
+    original = httpx.Client
+    transport = httpx.MockTransport(
+        lambda request: httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "output": [
+                    {"type": "message", "phase": "commentary", "content": [{"type": "output_text", "text": "Working"}]},
+                    {"type": "message", "phase": "final_answer", "content": [{"type": "output_text", "text": "Claim"}]},
+                ],
+            },
+        )
+    )
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    advisor.history = [{"type": "computer_call", "call_id": "one", "actions": [{"type": "screenshot"}]}]
+    advisor.pending = "one"
+    assert advisor.next(task(), TestComputer().observe()) == {"actions": [], "done": True, "summary": "Claim"}
+    assert advisor.pending is None
+
+
 @pytest.mark.skipif(
     not os.environ.get("SUCCESSOR_COMPUTER_IMAGE"), reason="real Docker image must be explicitly provided"
 )
