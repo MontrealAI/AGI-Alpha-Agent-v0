@@ -20,6 +20,7 @@ from alpha_factory_v1.core.runtime.successor.computer_handoff import (
     write_computer_return,
 )
 from alpha_factory_v1.core.runtime.successor.protocol import canonical, digest
+from alpha_factory_v1.core.runtime.successor.transport import read_document
 
 
 def handoff_document() -> dict[str, Any]:
@@ -54,6 +55,7 @@ def handoff_document() -> dict[str, Any]:
         "task": task.model_dump(mode="json"),
         "strategy": {
             "originalGoal": "Choose a simpler public-document workflow",
+            "valueHypothesis": "Maintainers may reduce repeated public-document comparison work; not yet measured.",
             "selected": "reframe",
             "hypotheses": ["Read every document", "Compare only the public decision criteria"],
             "combination": "Use a broad index followed by a focused comparison",
@@ -103,6 +105,35 @@ def args_for(tmp_path: Path) -> argparse.Namespace:
     )
 
 
+def test_project_component_over_one_mb_is_accepted_within_existing_transport_bound(tmp_path: Path) -> None:
+    document = handoff_document()
+    # Legal JSON whitespace exercises exact bytes without manufacturing invalid historical cycles.
+    document["projectRaw"] = " " * 1_050_000 + document["projectRaw"]
+    document["projectSha256"] = hashlib.sha256(document["projectRaw"].encode()).hexdigest()
+    raw = canonical(document)
+    assert 1_000_000 < len(document["projectRaw"].encode()) < len(raw) < 2_000_000
+    args = args_for(tmp_path)
+    args.file.write_bytes(raw)
+    prepared = computer.handle(args)
+    assert prepared["handoff"]["projectSha256"] == document["projectSha256"]
+    assert not args.home.exists() and not args.output.exists()
+
+
+def test_larger_project_component_does_not_expand_outer_two_mb_transport(tmp_path: Path) -> None:
+    document = handoff_document()
+    document["projectRaw"] = " " * 1_999_000 + document["projectRaw"]
+    document["projectSha256"] = hashlib.sha256(document["projectRaw"].encode()).hexdigest()
+    assert len(document["projectRaw"].encode()) < 2_000_000
+    raw = json.dumps(document, ensure_ascii=False, separators=(",", ":")).encode()
+    assert len(raw) > 2_000_000
+    path = tmp_path / "oversized-handoff.json"
+    path.write_bytes(raw)
+    with pytest.raises(ValueError, match="bounded regular JSON"):
+        read_document(path)
+    with pytest.raises(ValueError, match="byte limit"):
+        ComputerHandoff.model_validate(document)
+
+
 def install_doubles(monkeypatch: pytest.MonkeyPatch, *, fail: bool = False) -> None:
     actual_run = computer.run_session
 
@@ -124,7 +155,7 @@ def install_doubles(monkeypatch: pytest.MonkeyPatch, *, fail: bool = False) -> N
     monkeypatch.setattr(computer.HTTPAdvisor, "next", advise)
 
 
-@pytest.mark.parametrize("field", ["sourceHash", "strategy", "projectRaw"])
+@pytest.mark.parametrize("field", ["sourceHash", "strategy", "projectRaw", "valueHypothesis"])
 def test_project_strategy_and_source_change_the_existing_permit(field: str) -> None:
     first = ComputerHandoff.model_validate(handoff_document())
     changed = handoff_document()
@@ -132,6 +163,9 @@ def test_project_strategy_and_source_change_the_existing_permit(field: str) -> N
         changed[field] = "c" * 64
     elif field == "strategy":
         changed[field]["selected"] = "combine"
+        changed["task"]["goal"] = ComputerStrategy.model_validate(changed["strategy"]).goal()
+    elif field == "valueHypothesis":
+        changed["strategy"][field] = "Public source reviewers may obtain a clearer comparison; unmeasured."
         changed["task"]["goal"] = ComputerStrategy.model_validate(changed["strategy"]).goal()
     else:
         project = json.loads(changed[field])
@@ -148,7 +182,21 @@ def test_project_strategy_and_source_change_the_existing_permit(field: str) -> N
 
 
 @pytest.mark.parametrize(
-    "mutation", ["hash", "root", "authority", "defaults", "extra", "blank", "unbounded", "goal", "attempt"]
+    "mutation",
+    [
+        "hash",
+        "root",
+        "authority",
+        "defaults",
+        "extra",
+        "blank",
+        "unbounded",
+        "goal",
+        "attempt",
+        "value-missing",
+        "value-long",
+        "unselected-strategy",
+    ],
 )
 def test_malformed_handoffs_are_rejected_before_execution(mutation: str) -> None:
     document = handoff_document()
@@ -169,8 +217,14 @@ def test_malformed_handoffs_are_rejected_before_execution(mutation: str) -> None
         document["strategy"]["reframing"] = "x" * 1001
     elif mutation == "goal":
         document["task"]["goal"] = "Unrelated goal"
-    else:
+    elif mutation == "attempt":
         document["attemptId"] = "not-a-uuid"
+    elif mutation == "value-missing":
+        del document["strategy"]["valueHypothesis"]
+    elif mutation == "unselected-strategy":
+        document["strategy"]["hypotheses"][1] = "Changed alternative that the executable goal did not disclose"
+    else:
+        document["strategy"]["valueHypothesis"] = "x" * 1001
     with pytest.raises(ValueError):
         ComputerHandoff.model_validate(document)
 
@@ -182,6 +236,12 @@ def test_prepare_and_existing_runtime_emit_a_bound_portable_return(
     prepared = computer.handle(args)
     assert not args.home.exists() and not args.output.exists()
     handoff = ComputerHandoff.model_validate(handoff_document())
+    assert "\nValue hypothesis (unverified): " + handoff.strategy.valueHypothesis + "\n" in handoff.task.goal
+    assert "\nCandidate strategies:\n" in handoff.task.goal
+    for index, hypothesis in enumerate(handoff.strategy.hypotheses):
+        assert f"{index + 1}. {hypothesis}\n" in handoff.task.goal
+    assert "\nProposed combination: " + handoff.strategy.combination + "\n" in handoff.task.goal
+    assert "\nAlternative formulation: " + handoff.strategy.reframing + "\n" in handoff.task.goal
     assert "strategy candidates considered, the approach actually tested" in handoff.task.goal
     assert "Distinguish tested results from untested ideas." in handoff.task.goal
     assert prepared["handoff"]["executionContext"] == handoff.context()

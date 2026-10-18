@@ -49,15 +49,56 @@ that commitment. A local compatible supplier can use `--provider vision-json --b
 --model MODEL`; remote endpoints require HTTPS and the named `--key-env` credential. The supplier must
 support image input and bounded JSON output. Compatibility is tested per supplier, never assumed from its name.
 
+## Choose a model for the work
+
+Use current frontier capability for a consequential task, then qualify the actual combination of model,
+tools and environment. The model is a native operator setting; selecting a flagship opportunity does not
+select a provider, incur a charge or connect an additional executor.
+
+| Work | Current documented option | Selection basis |
+| --- | --- | --- |
+| Difficult scientific reasoning and mathematical exploration | `gpt-6-astra` | OpenAI recommends Astra for its hardest scientific research tasks |
+| Source inspection, software reasoning and screenshot-based Computer Use | `gpt-6.1-sol`, or `gpt-6-astra` when task quality warrants it | Compare accepted output and full task cost, rather than model price alone |
+| Another available vision/JSON supplier | Explicitly tested compatible model | Establish image, schema and task compatibility before operational use |
+
+These options follow the current [GPT-6.1 Sol documentation](https://openai.com/index/introducing-gpt-6-1-sol/)
+and [GPT-6 Astra documentation](https://openai.com/index/gpt-6-astra/), not a universal model ranking.
+The Responses integration uses the
+[current structured Computer Use interface](https://developers.openai.com/api/docs/guides/tools-computer-use).
+Provider access, behavior and prices can change. Record the actual model identity, configuration and evidence
+for each authorized trial. The CLI does not automatically switch models or expose a reasoning-effort setting.
+
+Frontier research demonstrates a broader opportunity than this browser adapter alone implements.
+OpenAI's [October mathematical release](https://openai.com/index/sharing-ai-progress-in-mathematics/)
+and [supporting repository](https://github.com/openai/math) describe results from an unreleased internal model,
+with differing verification status. Those results are not evidence that a selected public model or this runtime
+has solved the same problems. A mathematical candidate needs appropriate expert and proof-tool checks;
+a software candidate needs actual execution and validation before either can be described as established.
+
 ## Continue a flagship project
 
 The flagship can export an inert `successor-alpha-computer-handoff/v1` mission for this same native adapter.
 It retains the exact serialized project and its SHA-256, the flagship source identity, declared input rights,
-the bounded computer task and a strategy plan. Level 3 records at least two hypotheses, a proposed
-combination and measurable success criteria. Level 4 records an alternative problem formulation. The
+the bounded computer task, an explicitly unverified value hypothesis and a strategy plan. Level 3 records at least
+two hypotheses, a proposed combination and measurable success criteria. Level 4 records an alternative formulation. The
 operator chooses `baseline`, `combine` or `reframe`; these descriptions remain hypotheses until actual
 work and review support a result. A reframing does not expand the task's permissions or change its goal
 without a new, explicitly reviewed handoff.
+
+The default flagship mission reads the public Computer Use runtime at
+[released v1.34.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/70dac8e5ce739978f5cd96d0fc190b6ebfcdf8d7/alpha_factory_v1/core/runtime/successor/computer.py).
+It asks for an implementable improvement to redundant work, latency or operating cost, preserving task limits,
+stop behavior and usage accounting. The visible deliverable is a source-linked patch proposal or a justified
+decision to retain the design, plus a reproducible validation plan. Source inspection is performed in a bounded
+reading pane; the work-product editor remains available when switching sources. The runtime does not execute
+the proposed patch, run its benchmarks or establish savings. A research mission similarly delivers a concrete
+mechanism and falsifiable experiment; the mathematics lane delivers a candidate argument, proof outline or
+explicit unresolved gap. Supply relevant primary sources before asking for a literature-grounded conclusion.
+
+For Level 3, compare genuinely different strategies and preserve unsuccessful attempts. For Level 4, ask whether
+a different representation or workflow removes unnecessary work while preserving the required useful outcome.
+Changing the acceptance contract starts a different comparison. Code execution, performance measurement and
+formal proof checking need separately connected and qualified tools; preparing their plan does not run them.
 
 Use the exported mission file in the existing commands:
 

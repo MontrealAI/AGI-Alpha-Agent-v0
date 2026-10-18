@@ -31,7 +31,7 @@ const french = {
     "reading-memory-guide-context": ": Preuves et mémoire",
 
     "journey-eyebrow": "UN PROJET. DES CHOIX EXPLICITES. UN HISTORIQUE CONSERVÉ.",
-    "journey-title": "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω.",
+    "journey-title": "De l’opportunité à une capacité utile.",
     "journey-intelligence": "Le niveau 3 améliore les stratégies elles-mêmes. Le niveau 4 cherche si un autre jeu peut atteindre le même résultat utile avec moins de travail inutile.",
     "journey-description": "Définissez le résultat, préparez un travail Computer Use délimité et examinez le livrable réel. Conservez stratégies, tentatives et leçons dans le même projet en poursuivant avec Alpha, Jobs et Fleet.",
     "journey-discover": "1. Trouver votre Alpha",
@@ -55,38 +55,43 @@ const french = {
     "successor-work": "Créer du travail utile · cinq familles de missions",
     "build-successor": "Construire votre Ω avec les deux projets",
     "omega-start": "Explorer le laboratoire Ω personnel",
-    "alpha-start": "Créer ma mission Computer Use",
-    "alpha-catalogs": "Rapprocher deux catalogues",
+    "alpha-start": "Lancer le parcours phare",
+    "alpha-catalogs": "Ouvrir le studio de capacité phare",
     skip: "Aller au contenu principal",
     "brand-note": "La curiosité entre vos mains",
+    "nav-flagship": "Projet phare",
     "nav-start": "Commencer",
     "nav-how": "Comment ça marche",
     "nav-questions": "Questions",
     "nav-explore": "Explorer les outils",
     "larger-text": "Texte plus grand",
-    "hero-eyebrow": "COMPUTER USE. MEILLEURES STRATÉGIES. NOUVELLES POSSIBILITÉS.",
-    "hero-title-first": "Trouvez votre avantage.",
-    "hero-title-second": "Faites-le fonctionner.",
+    "hero-eyebrow": "LE PROJET PHARE · COMPUTER USE",
+    "hero-title-first": "Trouvez votre Alpha.",
+    "hero-title-second": "Construisez votre SUCCESSOR Ω.",
     "hero-description":
-        "Transformez le travail à l’écran en une capacité à conserver. Définissez un résultat utile, testez des stratégies concurrentes et explorez une meilleure formulation du problème. Commencez par la recherche, un logiciel public ou une décision sur un produit.",
+        "Trouvez un travail de valeur. Développez la capacité pour le réaliser. Raisonnement de pointe et Computer Use aident à améliorer les stratégies et à découvrir un jeu fondamentalement différent.",
     "hero-start": "Commencer — créer un plan",
     "hero-how": "Voir comment ça marche",
     "hero-reassurance":
-        "Planification et exemple local de catalogues gratuits. L’exécution informatique exige un exécuteur natif et un modèle configurés.",
+        "Commencez gratuitement par une mission qui compte. L’exécution utilise votre exécuteur natif et votre modèle configurés ; les résultats utiles exigent un examen.",
     "trust-account": "Départ gratuit dans le navigateur",
     "trust-payment": "Aucun portefeuille pour planifier",
     "trust-install": "Enregistrez votre espace",
-    "example-label": "VOTRE PREMIÈRE CAPACITÉ UTILE",
-    "example-title": "Deux catalogues. Une réponse plus claire.",
+    "example-label": "VOTRE PROCHAINE CAPACITÉ",
+    "example-title": "De l’opportunité à l’avantage mérité.",
     "example-description":
-        "Reliez les enregistrements, trouvez les lignes sans correspondance et examinez les différences.",
-    "example-task-one": "Rapprocher vos catalogues",
-    "example-time-one": "Comparer",
-    "example-task-two": "Garder le résultat et l’outil",
-    "example-time-two": "Garder",
-    "example-total": "Votre outil fonctionnel",
-    "example-duration": "Un fichier",
-    "example-note": "Lancez l’exemple. Inspectez les fichiers. Rouvrez l’outil hors ligne.",
+        "Logiciel public. Recherche de pointe. Exploration mathématique. Commencez par un résultat de valeur, puis développez la capacité pour le poursuivre.",
+    "example-task-one": "Découvrir une opportunité utile",
+    "example-time-one": "Découvrir",
+    "example-task-three": "Reformuler le problème",
+    "example-time-three": "Niveau 4",
+    "secondary-example-note": "Les exemples techniques maintenus restent accessibles séparément.",
+    "secondary-example-link": "Explorer les outils locaux de catalogues ↗",
+    "example-task-two": "Construire et améliorer les stratégies",
+    "example-time-two": "Niveau 3",
+    "example-total": "Ce que vous conservez",
+    "example-duration": "Un historique de projet",
+    "example-note": "Livrables examinés, stratégies et leçons. Conservez et améliorez ce qui prouve son utilité.",
     "ecosystem-eyebrow": "ALPHA AGENT + AGI JOBS",
     "ecosystem-title": "D’une idée utile à un travail accepté.",
     "ecosystem-description":
@@ -103,7 +108,7 @@ const french = {
         "Choisissez un résultat qui compte. Améliorez l’approche. Gardez le travail et les enseignements.",
     "step-one-title": "Définissez le résultat utile",
     "step-one-description":
-        "Décrivez le résultat et les conditions que toute approche doit satisfaire. Préparez une mission Computer Use ou essayez d’abord l’exemple gratuit de catalogues locaux.",
+        "Choisissez une opportunité importante en logiciel, recherche ou mathématiques. Précisez les bénéficiaires et ce que doit accomplir un livrable utile.",
     "step-two-title": "Trouvez une meilleure façon de travailler",
     "step-two-description":
         "Niveau 3 : testez et combinez les stratégies. Niveau 4 : contestez une restriction inutile en préservant le résultat exigé. Examinez le livrable réel avant d’accepter une tentative.",
@@ -115,7 +120,7 @@ const french = {
     "questions-description": "Ouvrez une question pour lire la réponse.",
     "faq-free-question": "L’exemple Alpha est-il gratuit à essayer?",
     "faq-free-answer":
-        "Planification, exemple local de catalogues et téléchargements sont gratuits, sans compte, portefeuille ni abonnement. L’exécution native Computer Use exige un exécuteur et un modèle configurés par un opérateur ; les frais du fournisseur et d’exploitation sont distincts.",
+        "Planification, préparation des missions et téléchargements sont gratuits, sans compte ni portefeuille. Computer Use natif exige un exécuteur et un modèle configurés par un opérateur, avec frais de fournisseur et d’exploitation distincts. Les exemples techniques locaux restent disponibles.",
     "faq-install-question": "Faut-il installer quelque chose?",
     "faq-install-answer":
         "Rien à installer pour planifier dans le navigateur, essayer les catalogues, le laboratoire ou le planificateur. L’exécution native Computer Use exige un modèle et un exécuteur conteneurisé configurés. L’espace enregistré reste un fichier HTML utilisable hors ligne.",
@@ -124,14 +129,14 @@ const french = {
         "La planification et le traitement des catalogues restent dans votre navigateur. Computer Use natif envoie la surface autorisée et les captures au modèle choisi par l’opérateur. Utilisez des données publiques non personnelles. Enregistrez l’espace complet avant de fermer et après les modifications ; les exports incluent les données fournies.",
     "faq-guidance-question": "Quel avantage a réellement été démontré?",
     "faq-guidance-answer":
-        "L’interface fournit des outils de catalogues fonctionnels et un parcours de préparation, retour et examen Computer Use natif. Comparaisons locales et avis du propriétaire établissent des observations délimitées. Capacité générale, supériorité indépendante, statut Specialist et permission opérationnelle exigent leurs propres preuves.",
+        "Capacité proposée, correctif généré ou argument mathématique restent candidats. Examinez le travail réel, testez les affirmations importantes et mesurez les coûts complets avant de revendiquer l’avantage. Preuve indépendante, statut Specialist, revenus et permission opérationnelle exigent leurs propres preuves.",
     "faq-reading-question": "Puis-je faciliter la lecture?",
     "faq-reading-answer":
         "Oui. Choisissez Texte plus grand ou utilisez le zoom. Le français et l’anglais sont proposés sur l’accueil, dans l’exemple Alpha, dans le laboratoire personnel et dans le planificateur.",
     "invitation-eyebrow": "VOTRE PROCHAINE DÉCOUVERTE COMMENCE ICI",
     "invitation-title": "Gardez le résultat. Améliorez la méthode.",
     "invitation-description":
-        "Votre mission, les approches fonctionnelles et les leçons restent réunies pendant la création de la prochaine capacité.",
+        "Découvrez un travail de valeur. Construisez la capacité pour le réaliser. Améliorez la stratégie. Changez de jeu.",
     "invitation-start": "Créer mon premier plan",
     "research-eyebrow": "Pour les curieux",
     "research-title": "Explorez davantage, à votre rythme.",
@@ -166,8 +171,8 @@ function render() {
     document.documentElement.classList.toggle("home-large-text", largeText);
     document.title =
         language === "fr"
-            ? "AGIALPHA · Trouvez votre avantage. Faites-le fonctionner."
-            : "AGIALPHA · Find your advantage. Make it work.";
+            ? "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω. · AGIALPHA"
+            : "Find your Alpha. Build your SUCCESSOR Ω. · AGIALPHA Flagship";
     for (const el of textElements) el.textContent = words[el.dataset.homeKey];
     for (const el of labelElements)
         el.setAttribute("aria-label", words[el.dataset.homeLabel]);
@@ -187,7 +192,7 @@ function render() {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
     }
-    for (const [attribute, path] of [["data-alpha-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
+    for (const [attribute, path] of [["data-alpha-link", "successor/alpha/"], ["data-catalog-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
         for (const link of document.querySelectorAll(`[${attribute}]`)) {
             const fragment = new URL(link.href).hash;
             link.setAttribute("href", `${path}${query.size ? `?${query}` : ""}${fragment}`);

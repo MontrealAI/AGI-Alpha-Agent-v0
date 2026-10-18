@@ -5,7 +5,10 @@
 Version **1.35.0** adds the [Computer Use flagship journey](SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4)
 and project-bound native returns described in the [release notes](RELEASE_NOTES_1.35.0.md). Level 3 develops
 and compares strategies; Level 4 tests a different problem formulation while preserving the original
-outcome and acceptance criteria. Prepared attempts, historical results, owner reviews and existing catalog
+outcome and acceptance criteria. The primary mission develops a source-grounded improvement proposal for the
+released public Computer Use runtime, with a reproducible validation plan. Research and mathematics lanes
+request substantive candidate work. Beneficiaries and expected value are explicit unverified hypotheses.
+Prepared attempts, historical results, owner reviews and existing catalog
 work remain in one portable project history. These additions do not modify published v1.34.0 evidence.
 
 Browser preparation performs no model call. Execution requires a configured native model, an immutable
@@ -16,7 +19,9 @@ qualification, operational authority or settlement approval.
 Release publication requires all existing exact-integrated-source, full regression, CI, packaging,
 generated-identity, browser/recovery/offline/accessibility, public HTTPS and uploaded-byte gates. The complete
 flagship gate must exercise mission preparation, native-return boundaries, strategy/reframing preservation,
-review, combined archive recovery and English/French layouts. Historical passing checks do not qualify a
+review, combined archive recovery and English/French layouts. The default must use real pinned public source,
+preserve the original useful outcome through alternative strategies and avoid invented benchmark, novelty,
+proof-checking or economic claims. Historical passing checks do not qualify a
 later source. The actual matching workflow, manifest and checksums establish acceptance and delivery;
 this document does not assert a hosted full-suite or public-site pass.
 
@@ -24,7 +29,9 @@ Native Docker and live-provider qualification of the added flagship path remain 
 Labeled model/actuator doubles and scripted browser checks establish their tested software contracts, not a
 completed task by a live model or production container isolation. An authorized provider/container trial must
 retain exact source/model/image identities, screenshots, usage and cost evidence, and review of the actual
-work product. Unknown costs and interrupted effects remain unknown. Full desktop work, private profiles,
+work product. Patch execution, performance measurements and formal proof checking require separately connected
+and qualified tools; browser inspection and a visible proposal do not establish those results.
+Unknown costs and interrupted effects remain unknown. Full desktop work, private profiles,
 credentials, payments and messages remain outside this adapter's supported scope.
 
 The proposed $40 trillion/year market is the owner's estimate. No universal computer-work capability,

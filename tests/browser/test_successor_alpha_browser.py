@@ -10,6 +10,7 @@ import io
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,8 @@ from urllib.parse import urlsplit
 from playwright.sync_api import Browser, BrowserContext, Page, Response, expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 URL = (ROOT / "docs/successor/alpha/index.html").as_uri()
 EXPECTED_PAGE_SHA256: str | None = None
 CONTRACTS = {
@@ -253,7 +256,7 @@ def first_use(browser: Browser, output: Path, errors: list[str], external: list[
     expect(page.locator("#restored-note")).to_contain_text("histor")
     page.locator("#lang-en").click()
     expect(page.locator("#hero-title")).to_contain_text("Find your")
-    expect(page.locator('#hero-start [data-i18n="firstAdvantage"]')).to_have_text("Find my first advantage")
+    expect(page.locator('#hero-start[data-i18n="firstAdvantage"]')).to_have_text("Run the maintained catalog example")
     expect(page.locator("#restored-note")).to_contain_text("historical")
     expect(page.locator(".institution img")).to_have_attribute("alt", english_alt)
     page.locator("#custom-start").click()
@@ -773,7 +776,9 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     expect(page.locator("#computer-prepared")).to_be_visible()
     first = download(page, "#computer-download")
     handoff = json.loads(first)
-    assert handoff["strategy"]["selected"] == "baseline"
+    assert handoff["strategy"]["selected"] == "combine"
+    assert "Value hypothesis (unverified): " + handoff["strategy"]["valueHypothesis"] in handoff["task"]["goal"]
+    assert handoff["task"]["allowed_urls"][0].endswith("/alpha_factory_v1/core/runtime/successor/computer.py")
     assert not json.loads(handoff["projectRaw"])["cycles"]
     returned = controlled_computer_return(first)
     altered = json.loads(returned)
@@ -794,13 +799,16 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     page.locator("#computer-review-save").click()
     expect(page.locator("#computer-review-form")).to_be_hidden()
     expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
-    page.locator("#computer-approach").select_option("reframe")
+    page.locator("#computer-reframe-next").click()
+    expect(page.locator("#computer-approach")).to_have_value("reframe")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
     second = json.loads(download(page, "#computer-download"))
     assert second["strategy"]["selected"] == "reframe"
     assert second["attemptId"] != handoff["attemptId"]
     assert second["strategy"]["successCriteria"] == handoff["strategy"]["successCriteria"]
+    assert second["strategy"]["originalGoal"] == handoff["strategy"]["originalGoal"]
+    assert second["strategy"]["valueHypothesis"] == handoff["strategy"]["valueHypothesis"]
     assert second["task"]["html"] == handoff["task"]["html"]
     archive = download(page, "#computer-save-history")
     checked_archive = json.loads(archive)
@@ -827,12 +835,12 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     assert len(json.loads(combined["computerHistoryRaw"])["records"]) == 2
     page.set_viewport_size({"width": 320, "height": 1050})
     page.goto(URL + "?lang=fr")
-    expect(page.locator("#computer-title")).to_contain_text("Travailler")
+    expect(page.locator("#computer-title")).to_contain_text("Quelle capacité utile")
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-prepared")).to_be_visible()
     french = json.loads(download(page, "#computer-download"))
-    assert "Choisir" in french["strategy"]["originalGoal"]
+    assert "Découvrir" in french["strategy"]["originalGoal"]
     accessibility(page)
     page.screenshot(path=str(output / "15-computer-use-mobile-fr.png"), full_page=True)
     context.close()

@@ -2,17 +2,21 @@
 
 # 1.35.0 — Computer Use and retained strategy development
 
-Version 1.35.0 makes Computer Use a primary path in the English/French
-[SUCCESSOR Ω flagship](SUCCESSOR_ALPHA.md). Define useful screen-based work, test a chosen approach
-through the existing native runner, inspect its result and retain what should improve next.
+Version 1.35.0 makes valuable capability development through Computer Use the primary path in the English/French
+[SUCCESSOR Ω flagship](SUCCESSOR_ALPHA.md). Start with a software, research or mathematical opportunity,
+develop competing strategies, challenge the original formulation and retain useful work from the configured runner.
 The catalog example remains available without a model, account, wallet or installation.
 The matching published manifest, exact-source acceptance and served-site checks identify delivery;
 preparing a source version is not evidence of publication.
 
 ## Included
 
-- A guided Computer Use mission with an explicit outcome, acceptance criteria, competing strategies,
-  a proposed combination, an alternative problem formulation, input rights and finite execution limits.
+- A guided Computer Use mission with an explicit opportunity, beneficiary/value hypothesis, acceptance criteria,
+  competing strategies, a proposed combination, an alternative formulation, input rights and finite execution limits.
+- A real public-software starting mission: inspect the released Computer Use runtime and deliver a source-linked
+  patch proposal or a reason to retain the design, with a reproducible before-and-after validation plan.
+  Research and mathematics lanes request concrete mechanisms, falsifiable experiments or checkable candidate
+  arguments. They do not substitute a fictional product comparison for the user's intended work.
 - **Level 3 — meta-strategic intelligence:** discover strategy candidates, select and test a baseline or
   combination, retain observations and propose an improved method. The executable goal asks the model
   to distinguish methods actually tested from untested ideas and to produce a visible work product.
@@ -38,10 +42,14 @@ preparing a source version is not evidence of publication.
 
 ## Execution and qualification limits
 
-The native actuator is a disposable Chromium browser in an isolated Linux Docker container. Its current
+The native actuator reads approved public sources and creates a visible work product in disposable Chromium
+inside an isolated Linux Docker container. Its current
 Responses `computer` interface and alternate compatible vision/JSON supplier require explicit native
 configuration. The operator selects an available model and immutable image; a provider or model name does
 not independently establish task fitness. The static website does not itself operate a remote computer.
+The [native guide](SUCCESSOR_COMPUTER_USE.md#choose-a-model-for-the-work) identifies current task-fit model
+options with primary references. This runtime does not connect arbitrary code execution, performance measurement
+or a formal prover. A patch proposal is not a tested patch; a candidate argument is not a verified theorem.
 
 This release scope excludes full desktop control, private browser profiles, customer credentials, private
 data, account login, arbitrary model-supplied code, payments and message sending. Exact approved public
