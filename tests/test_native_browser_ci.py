@@ -294,7 +294,10 @@ def test_release_requires_full_successor_journey_before_packaging():
     journey = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
     assert "workflow_call" in journey["on"]
     job = release["jobs"]["successor-journey"]
-    assert job == {"uses": "./.github/workflows/successor-mission.yml"}
+    assert job == {
+        "needs": "publication-preflight",
+        "uses": "./.github/workflows/successor-mission.yml",
+    }
     assert "successor-journey" in release["jobs"]["package"]["needs"]
     assert "package" in release["jobs"]["pages"]["needs"]
     assert {"package", "pages"} <= set(release["jobs"]["publish"]["needs"])
