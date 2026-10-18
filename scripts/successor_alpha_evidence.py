@@ -32,6 +32,7 @@ REQUIRED_CHECKS = {
     "computer-use-native-protocol-and-owner-review",
     "computer-use-strategy-reframing-and-portable-history",
     "computer-use-public-reading-pane-and-visible-work-product",
+    "computer-use-bilingual-mission-presets-and-complete-strategy-slate",
     "no-page-errors-no-csp-violations-no-external-dependencies",
 }
 MODULE_ROOTS = (

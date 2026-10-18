@@ -42,6 +42,14 @@ test('all approaches preserve the original outcome and criteria in executable na
         assert.equal(project.id,dossier.id); assert.equal(handoff.strategy.originalGoal,dossier.goal);
         assert.ok(handoff.task.goal.includes(dossier.goal));
         for (const criterion of options.successCriteria) assert.ok(handoff.task.goal.includes(criterion));
+        for (const candidate of [...options.hypotheses,options.combination,options.reframing]) {
+            assert.ok(handoff.task.goal.includes(candidate));
+        }
+        assert.ok(handoff.task.goal.includes(`Selected approach to test (${selected}):`));
+        assert.ok(handoff.task.goal.includes('Strategy candidates (hypotheses, not tested results):'));
+        assert.ok(handoff.task.goal.includes('Other candidates are planning context, not permission to execute additional strategies.'));
+        assert.equal(handoff.task.max_actions,30); assert.equal(handoff.task.max_turns,10);
+        assert.deepEqual(handoff.task.allowed_urls,[]);
         assert.equal(handoff.task.schema_version,1); assert.equal(handoff.authority,'none');
         assert.ok(handoff.task.html.includes('Save visible work product'));
     }

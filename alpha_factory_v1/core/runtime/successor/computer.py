@@ -267,7 +267,19 @@ class HTTPAdvisor:
             call = calls[0]
             self.history.extend(output)
             self.pending = call["call_id"]
-            return {"actions": call.get("actions", []), "done": False, "summary": ""}
+            raw_actions = call.get("actions", [])
+            if not isinstance(raw_actions, list) or any(not isinstance(action, dict) for action in raw_actions):
+                raise ValueError("provider computer actions must be structured objects")
+            actions = []
+            for raw_action in raw_actions:
+                action = dict(raw_action)
+                if (
+                    action.get("type") in {"click", "double_click", "drag", "move", "scroll"}
+                    and action.get("keys") == []
+                ):
+                    del action["keys"]
+                actions.append(validate_action(action))
+            return {"actions": actions, "done": False, "summary": ""}
         summary = "\n".join(
             item["text"]
             for message in output

@@ -6,9 +6,10 @@
 **[Ouvrir en français](../successor/alpha/index.html?lang=fr)** ·
 [Implementation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/successor-alpha/)
 
-Start with a useful result: reconcile two catalogs and keep the result and the working tool.
-The supplied example uses synthetic data. You can instead select public, synthetic or licensed nonpersonal CSV inputs.
-The local browser journey needs no account, installation, model, API key or wallet.
+Start with an ambitious mission: investigate a valuable opportunity, mathematical question, software bottleneck
+or decisive research experiment. Define useful work, compare strategies and explore a better problem formulation.
+Planning needs no account, model or wallet; Computer Use execution needs the configured native runner.
+An optional catalog worked example runs locally without a provider.
 
 Version **1.35.0** adds the Computer Use path below while preserving the catalog journey. The matching
 published manifest and acceptance evidence identify delivery; a source version alone does not.
@@ -17,7 +18,7 @@ Published **v1.34.0** retains its original catalog scope and immutable evidence.
 ## Computer Use: Level 3 and Level 4
 
 The new flagship path starts with **Build a Computer Use mission**. Specify the useful outcome before choosing
-the method: a public-source research brief, a documentation comparison or your own permitted screen-based task.
+the method: economic opportunity, mathematical research, public software or your own permitted screen-based task.
 Keep the acceptance conditions explicit so a more inventive approach must still deliver what the user needs.
 
 | Capability | What the added path does |
@@ -27,7 +28,10 @@ Keep the acceptance conditions explicit so a more inventive approach must still 
 | Level 4 · Transformational intelligence | Identify an unnecessary restriction and test a different formulation against the same required outcome and acceptance criteria |
 | One project history | Retain prepared attempts, runner returns, owner reviews and existing catalog work under the same project identity |
 
-1. Name the project, describe the result and list what every approach must deliver.
+1. Choose a valuable digital-work opportunity, an open mathematical question, a public software bottleneck,
+   a decisive research experiment or your own mission. Name the project, supply the exact starting material,
+   describe the result and list what every approach must deliver. Missing evidence calls for an investigation
+   plan, not an invented discovery, measured improvement or revenue claim.
 2. Record two to six competing strategies, a proposed combination and an alternative problem formulation.
    Choose the baseline, combined strategy or reframing for this attempt. These are hypotheses until tested.
 3. Review the supplied work surface, exact public source URLs, input rights and action/time/review limits.
@@ -63,9 +67,9 @@ The existing catalog example remains available without a provider. Local control
 checks do not establish live-model qualification or paid outcomes for the new path. Those require authorized
 provider trials, retained usage/cost evidence and review before a release can claim them.
 
-## Your first result
+## Optional local worked example
 
-1. Choose **Find my first advantage** to run the supplied catalog example.
+1. Choose **Try the local worked example** to run the supplied catalog example.
 2. Inspect the joined catalog, unmatched rows and discrepancies. Check that the selected keys and fields express
    the task you intended.
 3. Inspect correctness, operation counts, observed timings and the comparison limits. A strategy can lose;

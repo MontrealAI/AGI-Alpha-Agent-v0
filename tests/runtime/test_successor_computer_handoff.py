@@ -147,6 +147,24 @@ def test_project_strategy_and_source_change_the_existing_permit(field: str) -> N
     )
 
 
+@pytest.mark.parametrize("selected", ["baseline", "combine", "reframe"])
+def test_executable_goal_retains_full_strategy_slate_without_expanding_execution(selected: str) -> None:
+    document = handoff_document()
+    document["strategy"]["selected"] = selected
+    strategy = ComputerStrategy.model_validate(document["strategy"])
+    document["task"]["goal"] = strategy.goal()
+    handoff = ComputerHandoff.model_validate(document)
+    for candidate in [*strategy.hypotheses, strategy.combination, strategy.reframing, *strategy.successCriteria]:
+        assert candidate in handoff.task.goal
+    assert f"Selected approach to test ({selected}):" in handoff.task.goal
+    assert "Strategy candidates (hypotheses, not tested results):" in handoff.task.goal
+    assert (
+        "Other candidates are planning context, not permission to execute additional strategies." in handoff.task.goal
+    )
+    assert handoff.task.allowed_urls == [] and handoff.task.max_turns == 3 and handoff.task.max_actions == 30
+    assert handoff.authority == "none" and handoff.settlement == "not_connected"
+
+
 @pytest.mark.parametrize(
     "mutation", ["hash", "root", "authority", "defaults", "extra", "blank", "unbounded", "goal", "attempt"]
 )

@@ -46,17 +46,17 @@ def assert_reading_links(page: Page, language: str) -> None:
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
     assert_reading_links(page, language)
-    for selector, path, fragment in (
-        ("[data-alpha-link]", "successor/alpha/", ""),
-        ("[data-discovery-link]", "successor/discover/", ""),
-        ("[data-mission-link]", "successor/mission/", "guided-journey"),
+    for selector, path, fragments in (
+        ("[data-alpha-link]", "successor/alpha/", {"", "computer-mission"}),
+        ("[data-discovery-link]", "successor/discover/", {""}),
+        ("[data-mission-link]", "successor/mission/", {"guided-journey"}),
     ):
         guided = page.locator(selector)
         assert guided.count() >= 1, "Offer discovery and the retained project journey"
         for link in guided.all():
             target = urlsplit(link.get_attribute("href") or "")
             assert not target.scheme and not target.netloc and target.path == path
-            assert target.fragment == fragment
+            assert target.fragment in fragments
             assert parse_qs(target.query) == ({"lang": ["fr"]} if language == "fr" else {}) | (
                 {"text": ["large"]} if large else {}
             )

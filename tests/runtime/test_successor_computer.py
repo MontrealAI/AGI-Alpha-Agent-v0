@@ -264,6 +264,59 @@ def test_current_responses_wire_format_and_safety_refusal(monkeypatch: pytest.Mo
 
 
 @pytest.mark.parametrize(
+    "action",
+    [
+        {"type": "click", "button": "left", "x": 20, "y": 30},
+        {"type": "double_click", "x": 20, "y": 30},
+        {"type": "drag", "path": [{"x": 20, "y": 30}, {"x": 40, "y": 50}]},
+        {"type": "move", "x": 20, "y": 30},
+        {"type": "scroll", "x": 20, "y": 30, "scroll_x": 0, "scroll_y": 100},
+    ],
+)
+def test_responses_empty_pointer_modifiers_preserve_raw_history(
+    monkeypatch: pytest.MonkeyPatch, action: dict[str, Any]
+) -> None:
+    original = httpx.Client
+    raw_action = {**action, "keys": []}
+    output = [{"type": "computer_call", "call_id": "one", "actions": [raw_action]}]
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    advice = advisor.next(task(), TestComputer().observe())
+    assert advice["actions"] == [action]
+    assert advisor.history[-1] == output[0]
+    assert advisor.history[-1]["actions"][0]["keys"] == []
+    with pytest.raises(ValueError, match="unexpected action fields"):
+        validate_action(raw_action)
+
+
+@pytest.mark.parametrize(
+    "action",
+    [
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": ["CTRL"]},
+        {"type": "double_click", "x": 20, "y": 30, "keys": ["SHIFT"]},
+        {"type": "drag", "path": [{"x": 20, "y": 30}, {"x": 40, "y": 50}], "keys": ["ALT"]},
+        {"type": "move", "x": 20, "y": 30, "keys": ["CTRL"]},
+        {"type": "scroll", "x": 20, "y": 30, "scroll_x": 0, "scroll_y": 100, "keys": ["CTRL"]},
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": None},
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": [], "authority": True},
+        {"type": "screenshot", "keys": []},
+    ],
+)
+def test_responses_modifiers_and_unknown_action_fields_remain_rejected(
+    monkeypatch: pytest.MonkeyPatch, action: dict[str, Any]
+) -> None:
+    original = httpx.Client
+    output = [{"type": "computer_call", "call_id": "one", "actions": [action]}]
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    with pytest.raises(ValueError, match="unexpected action fields"):
+        advisor.next(task(), TestComputer().observe())
+    assert advisor.history[-1] == output[0]
+
+
+@pytest.mark.parametrize(
     "output",
     [
         [],

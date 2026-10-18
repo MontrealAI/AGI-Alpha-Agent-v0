@@ -54,6 +54,7 @@ jobs:
           git diff --exit-code -- docs/successor docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js alpha_factory_v1/core/runtime/successor
       - name: Atomic storage and full browser recovery
         env:
+          PYTHONPATH: .
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
           DISCOVERY_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots
           PROJECT_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/project

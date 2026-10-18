@@ -30,9 +30,9 @@ const fr = {
     joinedPreview:'Aperçu du catalogue joint',comparisonTable:'Comparaison complète des méthodes',largerText:'Agrandir le texte',returnSetup:'Revenir à la préparation',tryExample:'Essayer l’exemple inclus',skip:'Aller à votre mission',brandCaption:'PAR AGI ALPHA',mainNavigation:'Navigation principale',
     howItWorks:'L’expérience',openProject:'Ouvrir un projet',
     heroEyebrow:'VOTRE MISSION. VOTRE AVANTAGE. VOTRE INSTITUTION.',
-    heroLine1:'Trouvez votre',heroLine2:'avantage.',heroLine3:'Concrétisez-le.\nGardez ce que vous bâtissez.',
-    heroDescription:'Transformez un vrai obstacle en capacité utile. Comparez les résultats. Conservez les outils, les preuves et les leçons qui renforceront la prochaine mission.',
-    firstAdvantage:'Trouver mon premier avantage',bringCatalogs:'Utiliser mes propres catalogues',
+    heroLine1:'Trouvez votre',heroLine2:'Alpha.',heroLine3:'Construisez votre\nSUCCESSOR Ω.',
+    heroDescription:'Visez une occasion utile en recherche, en mathématiques, en logiciel public ou en travail numérique. Découvrez de meilleures stratégies. Testez un autre jeu. Conservez les outils, preuves et leçons qui renforcent la prochaine mission.',
+    firstAdvantage:'Essayer l’exemple local complet',bringCatalogs:'Utiliser mes propres catalogues',
     startNote:'Gratuit. Sans compte, portefeuille ni installation. Dans votre navigateur.',
     imageAlt:'Illustration ornée violette et dorée du parcours Alpha, Gym, Specialist ASI et SUCCESSOR Ω.',
     artEyebrow:'CONÇU POUR DURER',artCaption:'Possédez l’institution.\nChangez les modèles. Préservez la mission.',
@@ -40,8 +40,8 @@ const fr = {
     valueOne:'Un résultat utile',valueOneText:'Résolvez une tâche concrète et délimitée.',
     valueTwo:'Une comparaison vérifiable',valueTwoText:'Voyez ce qui progresse, et à quel coût.',
     valueThree:'Une capacité à conserver',valueThreeText:'Emportez l’outil, les preuves et l’historique.',
-    missionEyebrow:'VOTRE PREMIER ALPHA',missionTitle:'Deux catalogues.\nUne réponse fiable.',
-    missionIntro:'Trouvez les correspondances, les produits manquants et les valeurs contradictoires. Découvrez ensuite quelle méthode effectue le même travail exact avec moins d’effort.',
+    missionEyebrow:'FACULTATIF · EXEMPLE LOCAL COMPLET',missionTitle:'Deux catalogues.\nUne réponse fiable.',
+    missionIntro:'Explorez le cycle complet de sauvegarde, comparaison et réutilisation avec un petit exemple local. Trouvez correspondances, produits manquants et divergences, puis conservez un outil fonctionnel.',
     missionLabel:'LA MISSION',missionName:'Des catalogues clairs',
     missionSummary:'Rapprochez deux catalogues publics. Obtenez les données et une méthode réutilisable.',
     missionProgress:'Progression de la mission',stepAlpha:'Définir l’avantage',stepGym:'Comparer les méthodes',
@@ -110,18 +110,20 @@ const fr = {
     sourceGuide:'Source et guide de reproduction ↗',missionProtocol:'Protocole de mission SUCCESSOR ↗',disclaimer:'Prototype de recherche et avis'
 };
 Object.assign(fr, {
-    startNote:'Planification et exemple de catalogues gratuits dans le navigateur. L’exécution informatique utilise un exécuteur natif et un modèle configurés séparément.',
+    startNote:'Choisissez un résultat ambitieux. Planifiez librement dans le navigateur. Exécutez avec votre exécuteur natif et votre modèle configurés, puis examinez le résultat réel.',
     computerStart:'Créer une mission Computer Use',computerEyebrow:'COMPUTER USE · NIVEAU 3 → NIVEAU 4',
-    computerTitle:'Travailler à travers un écran.\nAméliorer la façon de travailler.',
-    computerIntro:'Donnez à votre agent un résultat attendu, une surface de travail et des limites claires. Comparez les approches. Remettez le problème initial en question en préservant les exigences du résultat utile.',
-    computerVision:'Votre mission survit au modèle.',computerVisionText:'Recherche, logiciels publics, comparaisons de produits et prototypes fonctionnels peuvent devenir des capacités réutilisables. Conservez approche, preuves et leçons dans un même projet.',
+    computerTitle:'Travailler à travers un écran.\nDécouvrir un meilleur jeu.',
+    computerIntro:'Partez d’un travail qui compte : étudier une question mathématique, supprimer un obstacle logiciel ou découvrir un besoin économique mal servi. Donnez à votre agent un résultat attendu, des données publiques et des critères d’acceptation clairs.',
+    computerVision:'Votre mission survit au modèle.',computerVisionText:'Visez une part du travail réalisé avec un clavier, une souris et un écran. Commencez par un résultat utile que quelqu’un peut accepter ; conservez l’approche, les preuves et les leçons pour le répéter.',
     computerStageOne:'Définir un travail utile',computerStageOneText:'Fixez le résultat avant de choisir la méthode.',
-    computerStageThree:'Niveau 3 · Améliorer les stratégies',computerStageThreeText:'Testez une référence, combinez les méthodes et comparez les tentatives examinées.',
-    computerStageFour:'Niveau 4 · Changer de jeu',computerStageFourText:'Testez une autre formulation contre le même résultat exigé.',
+    computerStageThree:'Niveau 3 · Intelligence métastratégique',computerStageThreeText:'Découvrez, testez, combinez et améliorez les stratégies elles-mêmes.',
+    computerStageFour:'Niveau 4 · Intelligence transformationnelle',computerStageFourText:'Repérez une formulation inutilement restrictive. Testez un jeu fondamentalement différent face au résultat utile attendu.',
     computerCurrentScope:'Exécuteur disponible : Chromium jetable avec captures d’écran, clics, saisie et défilement. Données publiques non personnelles. Un modèle et un conteneur natifs doivent être configurés ; cette page n’exécute pas d’ordinateur distant.',
     computerRunnerGuide:'Configurer l’exécuteur Computer Use ↗',computerDesign:'CONCEVEZ VOTRE PROCHAINE CAPACITÉ',
-    computerExample:'Commencer par une mission utile',computerExampleRelease:'Choisir une approche de documentation publique',computerExampleResearch:'Note de recherche à partir de sources publiques',computerExampleCustom:'Mon propre travail à l’écran',computerProjectName:'Nom du projet',
+    computerExample:'Commencer par une mission à valeur',computerExampleOpportunity:'Découvrir une occasion de travail numérique',computerExampleMathematics:'Étudier une question mathématique ouverte',computerExampleSoftware:'Supprimer un obstacle dans un logiciel public',computerExampleResearch:'Concevoir une expérience de recherche décisive',computerExampleRelease:'Répéter avec une décision de produit fictive',computerExampleCustom:'Mon propre travail à l’écran',computerProjectName:'Nom du projet',
+    computerPresetNote:'Ces dossiers de mission sont modifiables. Ajoutez le problème exact, les sources publiques et le matériel avant l’exécution. Une tentative de preuve, une amélioration proposée ou une hypothèse de marché devient un résultat après vérification.',
     computerOutcome:'Quel résultat utile doit exister ?',computerAcceptance:'Que doit livrer chaque approche ?',computerAcceptanceNote:'Conservez ce contrat d’acceptation pour comparer les stratégies. Un autre résultat commence une nouvelle comparaison.',
+    computerContext:'Dossier de départ · problème, capacités et contraintes',computerContextNote:'Remplacez les hypothèses de départ par votre situation réelle. Distinguez faits sourcés et hypothèses. Le dossier d’occasion par défaut est un exercice de planification sans demande client observée.',
     computerApproach:'Approche à tester',computerBaseline:'Référence · méthode actuelle',computerComposed:'Niveau 3 · stratégie combinée ou améliorée',computerReframed:'Niveau 4 · autre formulation du problème',
     computerModel:'Utilisez le modèle actuel qualifié par votre opérateur',computerModelNote:'Sélectionnez le modèle et le conteneur immuable lors de l’exécution native. Aucune clé API n’appartient à cet espace.',
     computerStrategy:'Quelles stratégies doivent rivaliser ? · une par ligne, 2–6',computerCombination:'Comment combiner leurs meilleurs éléments ?',computerReframe:'Quelle restriction inutile remettez-vous en question ?',computerReframeNote:'Expliquez pourquoi l’alternative atteint toujours le résultat exigé. Une nouvelle formulation reste une hypothèse jusqu’à l’examen de son résultat.',
@@ -883,19 +885,101 @@ function setComputerBusy(value) {
     $('computer-prepare').disabled=value;
     $('computer-review-save').disabled=value;
 }
+function computerBriefSurface() {
+    const escape = value => String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    const heading=say('Mission brief · investigation to prepare','Dossier de mission · enquête à préparer');
+    const sources=say('Public inputs to add','Données publiques à ajouter');
+    const sourceNote=say('This starting brief supplies assumptions, not verified external evidence. Add permitted material or approved public URLs in the workspace, then rebuild this surface. Until evidence is supplied, deliver an investigation plan and evidence gaps; do not invent observations, a proof, a benchmark or revenue.',
+        'Ce dossier de départ fournit des hypothèses, pas des preuves externes vérifiées. Ajoutez le matériel permis ou les URL publiques autorisées dans l’espace, puis reconstruisez cette surface. D’ici là, livrez un plan d’enquête et les preuves manquantes ; n’inventez ni observations, ni preuve, ni benchmark, ni revenu.');
+    const criteria=computerLines('computer-acceptance').map(line=>'<li>'+escape(line)+'</li>').join('');
+    return '<!doctype html><html lang="'+language+'"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        + '<title>'+escape(heading)+'</title><style>body{font:18px system-ui;max-width:900px;margin:24px auto;padding:16px;color:#241739;background:#faf8ff}textarea{box-sizing:border-box;width:100%;font:inherit}button{font:inherit;padding:12px}output{display:block;white-space:pre-wrap;overflow-wrap:anywhere}section{padding:16px;border:1px solid #927da9;margin:18px 0}li{margin:10px 0}</style>'
+        + '<h1>'+escape(heading)+'</h1><p>'+escape($('computer-outcome').value)+'</p><section><h2>'+escape(sources)+'</h2><p>'+escape(sourceNote)+'</p></section>'
+        + '<h2>'+escape(say('Starting brief and assumptions','Dossier de départ et hypothèses'))+'</h2><p>'+escape($('computer-context').value).replaceAll('\n','<br>')+'</p>'
+        + '<h2>'+escape(say('Acceptance conditions','Conditions d’acceptation'))+'</h2><ul>'+criteria+'</ul>'
+        + '<h2>'+escape(say('Competing strategies','Stratégies concurrentes'))+'</h2><p>'+escape($('computer-strategy').value).replaceAll('\n','<br>')+'</p>'
+        + '<h2>'+escape(say('Combine and improve','Combiner et améliorer'))+'</h2><p>'+escape($('computer-combination').value)+'</p>'
+        + '<h2>'+escape(say('A different game to test','Un autre jeu à tester'))+'</h2><p>'+escape($('computer-reframe').value)+'</p>'
+        + '<label for="answer">'+escape(say('Work product · separate observations, hypotheses and next experiment','Livrable · séparer observations, hypothèses et prochaine expérience'))+'</label><textarea id="answer" rows="8"></textarea>'
+        + '<button id="save" type="button">'+escape(say('Save visible work product','Enregistrer le livrable visible'))+'</button><h2>'+escape(say('Saved work product','Livrable enregistré'))+'</h2><output id="saved">'+escape(say('No work product saved.','Aucun livrable enregistré.'))+'</output>'
+        + '<script>document.getElementById("save").onclick=()=>{document.getElementById("saved").textContent=document.getElementById("answer").value;};</scr'+'ipt></html>';
+}
+function computerWorkSurface() {
+    const allowedUrls=computerLines('computer-urls');
+    if (!allowedUrls.length && $('computer-example').value !== 'release') return computerBriefSurface();
+    const surface=new DOMParser().parseFromString(computer.buildWorkSurface({goal:$('computer-outcome').value.trim(),allowedUrls}),'text/html');
+    const context=surface.createElement('section'),heading=surface.createElement('h2'),brief=surface.createElement('p');
+    heading.textContent=say('Starting brief and assumptions','Dossier de départ et hypothèses');
+    brief.textContent=$('computer-context').value;context.append(heading,brief);surface.querySelector('h1').after(context);
+    return '<!doctype html>'+surface.documentElement.outerHTML;
+}
 function computerPreset(kind) {
     if (kind === 'custom') return;
-    const researchMission=kind === 'research';
-    $('computer-outcome').value=researchMission
-        ? say('Produce a source-grounded decision brief on an accessible, exportable documentation approach for a small public software project.','Produire une note de décision sourcée sur une approche de documentation accessible et exportable pour un petit logiciel public.')
-        : say('Choose an accessible documentation approach that supports HTML export and offline use, within a monthly platform budget of $30.','Choisir une approche de documentation accessible avec export HTML et usage hors ligne, dans un budget mensuel de plateforme de 30 $.');
-    $('computer-acceptance').value=say('Recommend a concrete next action with source references.\nRespect the $30 monthly platform budget, HTML export and offline requirements.\nCheck accessibility evidence and state missing evidence, tradeoffs and total-cost uncertainty.','Recommander une prochaine action concrète avec références sources.\nRespecter le budget mensuel de 30 $, l’export HTML et l’usage hors ligne.\nExaminer les preuves d’accessibilité et préciser les preuves manquantes, compromis et incertitudes de coût total.');
-    $('computer-strategy').value=say('Inspect every option against every required condition, then compare the feasible choices.\nEliminate options that fail a hard requirement first, then investigate the uncertain evidence.','Examiner chaque option contre toutes les exigences, puis comparer les choix possibles.\nÉliminer d’abord les options qui échouent à une exigence ferme, puis examiner les preuves incertaines.');
-    $('computer-combination').value=say('Screen the hard requirements first; compare the surviving options and preserve source references and unresolved questions in one decision brief.','Filtrer d’abord les exigences fermes ; comparer les options restantes et conserver les références et questions ouvertes dans une note de décision.');
-    $('computer-reframe').value=say('Challenge the assumption that a new platform must be purchased. Compare improving the existing static site against buying a platform, preserving the same accessibility, export, offline and budget requirements.','Remettre en question l’achat obligatoire d’une plateforme. Comparer l’amélioration du site statique existant à un achat, en conservant les exigences d’accessibilité, d’export, d’usage hors ligne et de budget.');
-    $('computer-license').value=say('Included fictional work sample, Apache-2.0. Establish rights separately for any added source.','Exemple fictif inclus, Apache-2.0. Établir séparément les droits de toute source ajoutée.');
-    $('computer-html').value=computer.buildWorkSurface({goal:$('computer-outcome').value,allowedUrls:[]});
+    const presets={
+        opportunity:{
+            outcome:say('Choose one valuable digital-work opportunity to test: identify a public, unmet need and design a bounded deliverable that could earn its execution and review costs.','Choisir une occasion de travail numérique à tester : repérer un besoin public mal servi et concevoir un livrable délimité pouvant couvrir ses coûts d’exécution et de revue.'),
+            acceptance:say('Define the beneficiary, current bottleneck and deliverable; cite the supplied public evidence for each factual claim.\nCompare at least three approaches, including the current method, with explicit delivery and review costs or stated unknowns.\nRecommend one small demand-and-value experiment with a stop rule; distinguish hypothetical revenue from observed demand.\nWithout source material, return an evidence-gathering plan and missing inputs instead of a market conclusion.',
+                'Définir le bénéficiaire, l’obstacle actuel et le livrable ; citer les sources publiques fournies pour chaque fait.\nComparer au moins trois approches, dont la méthode actuelle, avec coûts de livraison et de revue explicites ou inconnues déclarées.\nRecommander une petite expérience de demande et de valeur avec règle d’arrêt ; distinguer revenu hypothétique et demande observée.\nSans documents sources, rendre un plan de collecte et les données manquantes plutôt qu’une conclusion de marché.'),
+            strategy:say('Start from public requests and trace the cost of completing the work with the current method.\nStart from a reusable capability and search the supplied public material for repeated unmet needs.\nStart from a buyer’s decision and identify the smallest deliverable that changes that decision.',
+                'Partir des demandes publiques et retracer le coût du travail avec la méthode actuelle.\nPartir d’une capacité réutilisable et chercher les besoins répétés dans les documents publics fournis.\nPartir de la décision d’un acheteur et chercher le plus petit livrable qui la change.'),
+            combination:say('Combine evidence of repeated need with a reusable method and the smallest acceptance test. Rank strategies by expected useful value after execution, correction and review, stating uncertainty.','Combiner les preuves d’un besoin répété, une méthode réutilisable et le plus petit test d’acceptation. Classer les stratégies selon leur valeur utile attendue après exécution, correction et revue, en précisant l’incertitude.'),
+            reframe:say('Challenge the assumption that the opportunity requires selling more hours of the original task. Test whether a reusable public tool, a different workflow or removing the task itself achieves the beneficiary’s same useful outcome.','Remettre en question la vente d’heures supplémentaires sur la tâche initiale. Tester si un outil public réutilisable, un autre parcours ou la suppression de la tâche atteint le même résultat utile pour le bénéficiaire.')
+        },
+        mathematics:{
+            outcome:say('Investigate one precisely stated open mathematical question from the supplied public problem statement. Deliver a checkable proof attempt, counterexample search or decisive next lemma.','Étudier une question mathématique ouverte, formulée précisément dans l’énoncé public fourni. Livrer une tentative de preuve vérifiable, une recherche de contre-exemple ou le prochain lemme décisif.'),
+            acceptance:say('Restate the exact claim, domain, assumptions and source; distinguish a known result from the open claim.\nCompare at least two proof or counterexample strategies and record each tested step, failed case and unresolved gap.\nProvide a step-by-step argument or reproducible counterexample specification; finite checks do not prove a general claim.\nMark an unverified proof as a candidate and require independent mathematical review; without a problem statement, return the missing inputs and research plan.',
+                'Reformuler l’énoncé exact, le domaine, les hypothèses et la source ; distinguer résultat connu et question ouverte.\nComparer au moins deux stratégies de preuve ou de contre-exemple et consigner étapes testées, échecs et lacunes.\nFournir un argument étape par étape ou une spécification reproductible du contre-exemple ; des vérifications finies ne prouvent pas un énoncé général.\nMarquer une preuve non vérifiée comme candidate et exiger une revue mathématique indépendante ; sans énoncé, rendre les données manquantes et le plan de recherche.'),
+            strategy:say('Attempt a direct argument from the stated definitions and identify the first unresolved lemma.\nSearch small or boundary cases for a counterexample and explain the limits of the search.\nSeek a reduction or equivalent representation that exposes an invariant or a known theorem.',
+                'Tenter un argument direct à partir des définitions et isoler le premier lemme non résolu.\nChercher un contre-exemple dans les petits cas ou aux limites et préciser les limites de la recherche.\nChercher une réduction ou représentation équivalente exposant un invariant ou un théorème connu.'),
+            combination:say('Use counterexample findings to refine a structural invariant, then combine the strongest reduction with the direct proof. Keep failed routes and proof obligations visible.','Utiliser la recherche de contre-exemple pour préciser un invariant structurel, puis combiner la meilleure réduction avec la preuve directe. Conserver les voies échouées et les obligations de preuve.'),
+            reframe:say('Challenge the original representation or decomposition of the problem. Investigate an equivalent geometric, algebraic or combinatorial formulation that changes the search while preserving the exact claim and assumptions.','Remettre en question la représentation ou la décomposition initiale. Étudier une formulation géométrique, algébrique ou combinatoire équivalente qui change la recherche en préservant l’énoncé exact et ses hypothèses.')
+        },
+        software:{
+            outcome:say('Turn a supplied public software bottleneck into a concrete improvement proposal, a reproducible check and an adoption decision.','Transformer un obstacle logiciel public fourni en proposition d’amélioration concrète, vérification reproductible et décision d’adoption.'),
+            acceptance:say('Identify the exact public version, observed failure or slow path and current user impact from supplied material.\nCompare a minimal fix, a reusable improvement and a workflow change against the same correctness and compatibility requirements.\nDeliver a patch proposal or implementation specification plus meaningful regression and performance checks; label any check that was not run.\nState integration and review costs; without source code or measurements, return an investigation plan rather than a measured speedup.',
+                'Identifier la version publique exacte, l’échec ou le chemin lent observé et l’impact utilisateur à partir du matériel fourni.\nComparer une correction minimale, une amélioration réutilisable et un changement de parcours face aux mêmes exigences d’exactitude et de compatibilité.\nLivrer une proposition de correctif ou spécification avec vérifications de régression et de performance utiles ; signaler tout contrôle non exécuté.\nPréciser les coûts d’intégration et de revue ; sans code ni mesures, rendre un plan d’enquête plutôt qu’une accélération mesurée.'),
+            strategy:say('Trace the reported bottleneck and propose the smallest compatible correction.\nLook for a reusable algorithm or shared component that removes repeated work.\nInspect the user’s end goal and test whether a workflow change avoids the expensive path.',
+                'Retracer l’obstacle signalé et proposer la plus petite correction compatible.\nChercher un algorithme ou composant réutilisable éliminant le travail répété.\nExaminer le but utilisateur et tester si un changement de parcours évite le chemin coûteux.'),
+            combination:say('Combine a minimal correctness fix with the reusable optimization only where independent checks support it. Preserve the baseline and report total integration and review effort.','Combiner la correction minimale avec l’optimisation réutilisable uniquement là où des vérifications indépendantes l’appuient. Conserver la référence et rapporter l’effort total d’intégration et de revue.'),
+            reframe:say('Challenge the assumption that the current slow operation must be made faster. Test a different representation, cache boundary or user workflow that removes the operation while preserving required behavior.','Remettre en question l’obligation d’accélérer l’opération actuelle. Tester une autre représentation, frontière de cache ou démarche utilisateur qui supprime l’opération en préservant le comportement requis.')
+        },
+        research:{
+            outcome:say('Design the smallest decisive experiment for a research bottleneck in the supplied public papers, with competing explanations and a reproducible next step.','Concevoir la plus petite expérience décisive face à un obstacle de recherche dans les articles publics fournis, avec explications concurrentes et prochaine étape reproductible.'),
+            acceptance:say('Cite the exact supplied papers and separate observations, author claims and your own hypotheses.\nCompare at least two explanations or strategies and identify an experiment that distinguishes them.\nSpecify inputs, baseline, measurable outcome, resource budget and falsification or stop rule.\nDo not present a proposed experiment as a completed discovery; without papers or data, return missing inputs and a research plan.',
+                'Citer les articles exacts fournis et séparer observations, affirmations des auteurs et vos hypothèses.\nComparer au moins deux explications ou stratégies et identifier une expérience qui les distingue.\nPréciser données, référence, résultat mesurable, budget de ressources et règle de réfutation ou d’arrêt.\nNe pas présenter une expérience proposée comme découverte accomplie ; sans articles ni données, rendre les éléments manquants et un plan de recherche.'),
+            strategy:say('Reproduce the strongest existing explanation and isolate its weakest assumption.\nSearch for a competing mechanism that predicts a different measurable result.\nIdentify a low-cost ablation or negative control that separates the explanations.',
+                'Reproduire l’explication existante la plus forte et isoler son hypothèse la plus faible.\nChercher un mécanisme concurrent prédisant un résultat mesurable différent.\nIdentifier une ablation ou un témoin négatif peu coûteux séparant les explications.'),
+            combination:say('Combine the strongest baseline with the most discriminating control. Prioritize experiments by information gained per total execution and review cost, keeping uncertainty explicit.','Combiner la meilleure référence avec le contrôle le plus discriminant. Prioriser les expériences selon l’information gagnée par coût total d’exécution et de revue, en précisant l’incertitude.'),
+            reframe:say('Challenge whether optimizing the current benchmark answers the real research question. Test a different measurable formulation or experimental design while preserving the underlying phenomenon and decision the research must resolve.','Demander si optimiser le benchmark actuel répond à la vraie question de recherche. Tester une formulation mesurable ou un protocole différent en préservant le phénomène et la décision que la recherche doit résoudre.')
+        },
+        release:{
+            outcome:say('Choose an accessible documentation approach that supports HTML export and offline use, within a monthly platform budget of $30.','Choisir une approche de documentation accessible avec export HTML et usage hors ligne, dans un budget mensuel de plateforme de 30 $.'),
+            acceptance:say('Recommend a concrete next action with source references.\nRespect the $30 monthly platform budget, HTML export and offline requirements.\nCheck accessibility evidence and state missing evidence, tradeoffs and total-cost uncertainty.','Recommander une prochaine action concrète avec références sources.\nRespecter le budget mensuel de 30 $, l’export HTML et l’usage hors ligne.\nExaminer les preuves d’accessibilité et préciser les preuves manquantes, compromis et incertitudes de coût total.'),
+            strategy:say('Inspect every option against every required condition, then compare the feasible choices.\nEliminate options that fail a hard requirement first, then investigate the uncertain evidence.','Examiner chaque option contre toutes les exigences, puis comparer les choix possibles.\nÉliminer d’abord les options qui échouent à une exigence ferme, puis examiner les preuves incertaines.'),
+            combination:say('Screen the hard requirements first; compare the surviving options and preserve source references and unresolved questions in one decision brief.','Filtrer d’abord les exigences fermes ; comparer les options restantes et conserver les références et questions ouvertes dans une note de décision.'),
+            reframe:say('Challenge the assumption that a new platform must be purchased. Compare improving the existing static site against buying a platform, preserving the same accessibility, export, offline and budget requirements.','Remettre en question l’achat obligatoire d’une plateforme. Comparer l’amélioration du site statique existant à un achat, en conservant les exigences d’accessibilité, d’export, d’usage hors ligne et de budget.')
+        }
+    };
+    const preset=presets[kind];
+    if (!preset) return;
+    for (const [key,value] of Object.entries(preset)) $('computer-'+key).value=value;
+    const contexts={
+        opportunity:say('Starting capability: inspect public web material, compare evidence and save a written deliverable with a Computer Use runner. No existing customers, demand or revenue is assumed.\nCompare three proposed offers: a cited public product-decision brief; a reproduction and correction plan for a public software issue; a research-gap and experiment brief.\nChoose one first experiment that fits the action, runtime and review limits below. Deliver its beneficiary hypothesis, exact sample deliverable, demand evidence to gather and a stop rule. Do not contact anyone or spend funds.',
+            'Capacité de départ : examiner des documents web publics, comparer les preuves et enregistrer un livrable écrit avec un exécuteur Computer Use. Aucun client, demande ou revenu existant n’est présumé.\nComparer trois offres proposées : une note de décision sur un produit public, sourcée ; un plan de reproduction et correction d’un problème logiciel public ; une note de lacune et expérience de recherche.\nChoisir une première expérience respectant les limites d’actions, de durée et de revue ci-dessous. Livrer le bénéficiaire hypothétique, le livrable témoin exact, les preuves de demande à recueillir et une règle d’arrêt. Ne contacter personne et ne rien dépenser.'),
+        mathematics:say('Add the exact mathematical statement, definitions, source, known partial results and why this question matters. Choose the next lemma or counterexample test that fits this attempt. Until these inputs exist, design the investigation protocol rather than claim progress on an unspecified problem.',
+            'Ajouter l’énoncé mathématique exact, les définitions, la source, les résultats partiels connus et l’utilité de la question. Choisir le prochain lemme ou test de contre-exemple adapté à cette tentative. Sans ces données, concevoir le protocole d’enquête plutôt que prétendre avancer sur un problème non précisé.'),
+        software:say('Add the public repository/version, the exact user-visible bottleneck and a permitted source excerpt or reproduction record. This browser runner can inspect approved pages and write a proposal; code execution and a measured performance result need a separately qualified execution route.',
+            'Ajouter le dépôt et la version publics, l’obstacle utilisateur exact et un extrait source permis ou un relevé de reproduction. Cet exécuteur de navigateur peut examiner les pages autorisées et écrire une proposition ; l’exécution de code et la mesure de performance exigent un parcours d’exécution qualifié séparément.'),
+        research:say('Add the exact public papers, research question, conflicting observations and available experimental resources. This attempt should produce one falsifiable experiment design. Running that experiment and validating a discovery are later tasks requiring their own material and acceptance.',
+            'Ajouter les articles publics exacts, la question de recherche, les observations contradictoires et les ressources expérimentales disponibles. Cette tentative doit produire un protocole expérimental réfutable. Exécuter l’expérience et valider une découverte sont des tâches suivantes avec leurs données et leur acceptation propres.'),
+        release:say('Included fictional documentation-platform specifications. A rehearsal of a bounded decision, without real vendor or purchase claims.','Spécifications fictives de plateformes de documentation incluses. Répétition d’une décision délimitée, sans affirmation sur un vrai fournisseur ni achat.')
+    };
+    $('computer-context').value=contexts[kind];
+    $('computer-license').value=kind === 'release'
+        ? say('Included fictional work sample, Apache-2.0. Establish rights separately for any added source.','Exemple fictif inclus, Apache-2.0. Établir séparément les droits de toute source ajoutée.')
+        : say('Included mission brief, Apache-2.0. No external evidence supplied. Establish rights separately before adding public or licensed non-personal material.','Dossier de mission inclus, Apache-2.0. Aucune preuve externe fournie. Établir les droits avant d’ajouter des documents publics ou sous licence sans données personnelles.');
     $('computer-urls').value=''; $('computer-rights').value='synthetic';
+    $('computer-html').value=computerWorkSurface();
     computerFormRevision+=1; computerHandoffRaw=null; computerChecked=null; computerSelectedIndex=-1;
     renderComputer();
 }
@@ -983,7 +1067,7 @@ $('computer-example').addEventListener('change',()=>computerPreset($('computer-e
 $('computer-build-surface').addEventListener('click',()=>{
     $('computer-error').hidden=true;
     try {
-        $('computer-html').value=computer.buildWorkSurface({goal:$('computer-outcome').value.trim(),allowedUrls:computerLines('computer-urls')});
+        $('computer-html').value=computerWorkSurface();
         computerFormRevision+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;renderComputer();
         $('computer-status').textContent=say('Work surface rebuilt. Confirm the source rights and execution limits before preparing.','Surface reconstruite. Confirmez les droits des sources et les limites avant de préparer.');
     } catch(error){localPanelError('computer-error',error);}
@@ -1047,7 +1131,7 @@ $('computer-review-form').addEventListener('submit',async event=>{
 });
 $('computer-save-history').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
 $('computer-save-workspace').addEventListener('click',()=>safeDownload(async()=>download('my-successor-workspace.html',await exportPortable(dossier),'text/html;charset=utf-8')));
-computerPreset('release');
+computerPreset('opportunity');
 
 translate(); go(0,false);
 (async()=>{

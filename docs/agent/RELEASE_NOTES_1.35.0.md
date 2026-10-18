@@ -11,6 +11,10 @@ preparing a source version is not evidence of publication.
 
 ## Included
 
+- English/French mission briefs for valuable digital-work opportunities, open mathematical questions,
+  public software bottlenecks and decisive research experiments. Each has its own acceptance conditions,
+  strategy hypotheses and matching work surface. The homepage features this journey; catalog reconciliation
+  remains an optional local worked example. Missing evidence produces a research plan, not an invented result.
 - A guided Computer Use mission with an explicit outcome, acceptance criteria, competing strategies,
   a proposed combination, an alternative problem formulation, input rights and finite execution limits.
 - **Level 3 — meta-strategic intelligence:** discover strategy candidates, select and test a baseline or
@@ -33,6 +37,8 @@ preparing a source version is not evidence of publication.
   additive learning-archive version two. Oversized archives are refused rather than silently pruned.
 - Fail-closed provider completion: empty, reasoning-only, refusal-only and commentary-only Responses
   output cannot complete a session. A nonblank final message remains an unverified completion claim.
+- The native execution goal retains the complete strategy slate while permitting only the selected approach.
+  Current Responses pointer actions with empty modifier lists are accepted without broadening supported controls.
 - Public homepage and flagship entry points introduce the screen-based mission while preserving the
   free local catalog path, existing laboratories, research, diagrams and separate USDC/$AGIALPHA routes.
 
@@ -75,5 +81,6 @@ software release. Current Mainnet records and historical wallet profiles retain 
 AGIJobManager commissions USDC work; the Alpha / Jobs v0 contract route uses $AGIALPHA. Each retains its own
 configuration, budget, review, authorization and settlement requirements.
 
-[Flagship guide](SUCCESSOR_ALPHA.md) · [Native Computer Use guide](SUCCESSOR_COMPUTER_USE.md) ·
+[First-use guide](START_HERE.md) · [Flagship guide](SUCCESSOR_ALPHA.md) ·
+[Native Computer Use guide](SUCCESSOR_COMPUTER_USE.md) ·
 [Release readiness](RELEASE_READINESS.md)

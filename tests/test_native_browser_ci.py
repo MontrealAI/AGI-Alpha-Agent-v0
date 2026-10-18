@@ -195,6 +195,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     install = selected["Install pinned browser tools"]
     assertions = selected["Strict records and existing workbench"]
     browser = selected["Atomic storage and full browser recovery"]
+    assert browser["env"]["PYTHONPATH"] == ".", "Direct browser scripts must import the checked-out native runtime"
     for step in [*actions, *selected.values()]:
         if step.get("name") == "Retain discovery browser screenshots":
             assert step["if"] == "always()"

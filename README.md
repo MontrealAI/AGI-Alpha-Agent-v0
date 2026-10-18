@@ -5,8 +5,8 @@
 
 | Your goal | Start here |
 | --- | --- |
-| Prepare screen-based work and compare strategies · 1.35.0 scope | [Computer Use flagship guide](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) · [Native runner](docs/agent/SUCCESSOR_COMPUTER_USE.md) |
-| Produce a joined catalog, inspect differences and keep a reusable tool | [Useful Alpha flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
+| Investigate a valuable opportunity, mathematical question, software bottleneck or research experiment | [Computer Use flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Level 3/4 guide](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) · [Native runner](docs/agent/SUCCESSOR_COMPUTER_USE.md) |
+| Try the optional local worked example and keep a reusable catalog tool | [Local example](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/#mission) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
 | Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
 | Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
@@ -24,11 +24,11 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 <!-- /current-entrypoints -->
 
 > **[Find your advantage. Make it work. Keep what you build. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
-> Reconcile two public, synthetic or licensed nonpersonal CSV catalogs. Keep the joined catalog, unmatched rows,
-> discrepancies and a working offline tool. Construct and test bounded strategies, execute a discrepancy-action
-> reframing, and retain checked native workbench returns with the same project. Inspect each comparison's limits.
-> Local engineering results support the specific task; economic benefit and independently protected proof remain
-> to be established. [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
+> Start with a valuable digital-work opportunity, an open mathematical question, a public software bottleneck
+> or a decisive research experiment. Use Computer Use to test approaches, combine what works and challenge
+> unnecessary restrictions. Keep the mission, results and lessons in one project. Mission briefs need exact
+> inputs and reviewed execution; a proposed proof or market hypothesis remains unverified until checked.
+> [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
 > **Current release scope · 1.35.0.** [Start here](docs/agent/START_HERE.md) ·
 > [Release notes](docs/agent/RELEASE_NOTES_1.35.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).

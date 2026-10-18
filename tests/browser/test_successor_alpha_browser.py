@@ -253,7 +253,7 @@ def first_use(browser: Browser, output: Path, errors: list[str], external: list[
     expect(page.locator("#restored-note")).to_contain_text("histor")
     page.locator("#lang-en").click()
     expect(page.locator("#hero-title")).to_contain_text("Find your")
-    expect(page.locator('#hero-start [data-i18n="firstAdvantage"]')).to_have_text("Find my first advantage")
+    expect(page.locator('#hero-start [data-i18n="firstAdvantage"]')).to_have_text("Try the local worked example")
     expect(page.locator("#restored-note")).to_contain_text("historical")
     expect(page.locator(".institution img")).to_have_attribute("alt", english_alt)
     page.locator("#custom-start").click()
@@ -865,6 +865,34 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     reading_context.close()
 
 
+def computer_mission_presets(browser: Browser, errors: list[str], external: list[str]) -> None:
+    """Each bilingual mission must reach execution with its own outcome and strategy slate."""
+    context, page = context_page(browser, errors, external)
+    for language in ("en", "fr"):
+        for preset in ("opportunity", "mathematics", "software", "research"):
+            page.goto(URL + "?lang=" + language)
+            page.locator("#computer-example").select_option(preset)
+            outcome = page.locator("#computer-outcome").input_value()
+            surface = page.locator("#computer-html").input_value()
+            assert "Fictional product specifications" not in surface
+            for approach in ("baseline", "combine", "reframe"):
+                page.locator("#computer-approach").select_option(approach)
+                page.locator("#computer-prepare").click()
+                expect(page.locator("#computer-prepared")).to_be_visible()
+                pack = json.loads(download(page, "#computer-download"))
+                assert pack["strategy"]["originalGoal"] == outcome
+                assert pack["strategy"]["selected"] == approach
+                assert pack["task"]["html"] == surface
+                assert len(pack["task"]["goal"]) <= 4000
+                for candidate in pack["strategy"]["hypotheses"]:
+                    assert candidate in pack["task"]["goal"]
+                assert pack["strategy"]["combination"] in pack["task"]["goal"]
+                assert pack["strategy"]["reframing"] in pack["task"]["goal"]
+                assert pack["authority"] == "none" and pack["settlement"] == "not_connected"
+                assert pack["task"]["allowed_urls"] == []
+    context.close()
+
+
 def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | None = None) -> dict[str, Any]:
     """Run the same complete journey against a source-bound packaged or public page."""
     global URL, EXPECTED_PAGE_SHA256
@@ -891,6 +919,7 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 worker_fallback(browser, errors, external)
                 mobile_and_french(browser, output, errors, external)
                 computer_strategy_journey(browser, output, errors, external)
+                computer_mission_presets(browser, errors, external)
             finally:
                 browser.close()
         assert not errors, errors
@@ -918,6 +947,7 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 "computer-use-native-protocol-and-owner-review",
                 "computer-use-strategy-reframing-and-portable-history",
                 "computer-use-public-reading-pane-and-visible-work-product",
+                "computer-use-bilingual-mission-presets-and-complete-strategy-slate",
                 "no-page-errors-no-csp-violations-no-external-dependencies",
             ],
             "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),
