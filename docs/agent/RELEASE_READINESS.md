@@ -31,6 +31,10 @@ packaging. The tested site must then pass public HTTPS identity and workflow che
 must be uploaded, re-downloaded and checksum-verified before publication. Existing tags and release
 assets are not overwritten. No final-source or public-site pass is established by this source document.
 
+Local and public acceptance evidence have separate captures. The original validation ZIP stays unchanged;
+public-validation packs retain every public report and screenshot under the same 450 MB per-asset limit.
+The release manifest's `validation_evidence` inventory and `SHA256SUMS` identify both sets.
+
 Independent custody, providers, market access, Fleet commissioning, external dependency qualification
 and Mainnet activation retain their separate gates. Original research, diagrams, laboratories,
 earlier release records and the frozen deployment history remain preserved.
@@ -214,7 +218,8 @@ separately retained passphrase. See [privacy and offline recovery](PAGES_GUIDE.m
 | Transfer evidence | Frozen A-only learning, unseen B tasks, failure/ablation controls, full prior learning charges, cross-runtime replay and all 13 docket sections | Bounded synthetic forecasting; independent evidence, strongest-agent comparisons and calibrated α-WU remain HOLD |
 | Preservation | Earlier 2,125-path baseline plus the 2,731-path pre-SUCCESSOR inventory, README/flywheels, original paper checksum and full catalog | Retention of an experiment does not certify its optional integrations |
 
-Download `release-manifest.json`, `SHA256SUMS` and the versioned validation archive from the
+Download `release-manifest.json`, `SHA256SUMS`, the versioned local validation archive and every
+public-validation pack listed by `validation_evidence` from the
 [published release you select](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases). The manifest identifies
 the tested commit and workflow. JUnit reports distinguish passing, skipped and expected-failure tests.
 The Python audit includes package names/versions, scan time and the exact lock digest; failed or skipped

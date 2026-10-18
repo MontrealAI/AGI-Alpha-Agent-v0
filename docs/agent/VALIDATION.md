@@ -2,6 +2,12 @@
 
 # Release acceptance and reproducibility
 
+Version 1.34.0 retains local validation in the original ZIP and deployed-site validation in separate
+public-validation packs. The release manifest's `validation_evidence` inventory and matching
+`SHA256SUMS` identify every archive, pack manifest and part. Public captures preserve all reports and
+screenshots without overwriting local records or exceeding the 450 MB per-asset limit. Earlier
+version-specific acceptance records below retain their original scope.
+
 Version 1.28.1 separates direct evidence from mocks, simulations and unavailable integrations.
 The release workflow (`agent-release.yml`) must complete its gates before publishing assets.
 Its run URL and tested commit are recorded in the published release manifest; JUnit reports, browser

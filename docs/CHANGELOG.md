@@ -9,6 +9,7 @@
 - Record five fresh Mainnet contracts, finalized bindings, scoped graph observations and exact source provenance in a read-only directory.
 - Preserve older deployment archives and the 29-address ecosystem snapshots; existing wallet profiles retain their historical addresses.
 - Add early version-collision preflight while retaining exact-current-main acceptance, public-site checks and uploaded-byte verification.
+- Retain local validation unchanged and package all public acceptance evidence separately within the 450 MB per-asset limit.
 - Preserve existing laboratories, flows and diagrams. See the [flagship guide](agent/SUCCESSOR_ALPHA.md).
 - See [release notes](agent/RELEASE_NOTES_1.34.0.md) for the combined scope; publication grants no funding or activation authority.
 

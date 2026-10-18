@@ -35,6 +35,9 @@ exact-commit acceptance and verified public site identify the delivered version.
 - Early publication preflight catches a version already tagged to another commit before expensive
   acceptance jobs. Immutable tags, exact-current-main, full acceptance, uploaded
   byte verification and served Pages checks remain required.
+- Keep the original local validation archive unchanged and retain public acceptance in separate
+  hash-verified public-validation packs. All evidence remains available within the unchanged
+  450 MB per-asset limit, with both captures listed in the release manifest and checksums.
 
 ## Scope and limits
 
