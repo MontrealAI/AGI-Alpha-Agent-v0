@@ -6,10 +6,11 @@
 **[Ouvrir en français](../successor/alpha/index.html?lang=fr)** ·
 [Implementation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/successor-alpha/)
 
-Start with an ambitious mission: investigate a valuable opportunity, mathematical question, software bottleneck
-or decisive research experiment. Define useful work, compare strategies and explore a better problem formulation.
-Planning needs no account, model or wallet; Computer Use execution needs the configured native runner.
-An optional catalog worked example runs locally without a provider.
+Start with an opportunity worth developing: valuable digital work, a useful software improvement, a testable
+research direction or a rigorous mathematical argument. Define who benefits, compare strategies and ask whether a
+different formulation could produce a better result. Keep the work product, evidence and lessons together.
+Mission preparation is free and needs no account, model or wallet. A configured native executor and model
+perform the Computer Use work. An optional catalog worked example remains available locally without a provider.
 
 Version **1.35.0** adds the Computer Use path below while preserving the catalog journey. The matching
 published manifest and acceptance evidence identify delivery; a source version alone does not.
@@ -17,9 +18,24 @@ Published **v1.34.0** retains its original catalog scope and immutable evidence.
 
 ## Computer Use: Level 3 and Level 4
 
-The new flagship path starts with **Build a Computer Use mission**. Specify the useful outcome before choosing
-the method: economic opportunity, mathematical research, public software or your own permitted screen-based task.
-Keep the acceptance conditions explicit so a more inventive approach must still deliver what the user needs.
+The flagship starts with **Discover my next capability**. Its default mission examines the
+[public Computer Use runtime at released v1.34.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/70dac8e5ce739978f5cd96d0fc190b6ebfcdf8d7/alpha_factory_v1/core/runtime/successor/computer.py)
+for an implementable improvement to redundant work, latency or operating cost. The requested result is a
+source-linked patch proposal and a reproducible before-and-after validation plan, preserving task limits,
+stop controls and accurate accounting. Keeping the present design is a valid result when the evidence
+does not support a change. The proposal is useful engineering work; tests, savings and performance gains
+must not be described as observed until the corresponding execution has occurred.
+
+The research lane develops a concrete mechanism and an experiment that could disprove its advantage.
+The mathematics lane explores an adaptive portfolio of proof strategies, asking for explicit assumptions,
+competing proof routes, a checkable argument or a precise unresolved gap. Add relevant public primary sources
+before making literature or novelty claims. These lanes specify substantive work; they do not connect a code
+executor or formal prover. The same acceptance conditions apply when testing an improved strategy or reframing.
+
+The digital-work opportunity lane starts from permitted nonpersonal source material and asks who would
+benefit, what concrete deliverable would help and which alternative deserves testing. Supply an exact starting
+brief or approved sources. Missing evidence calls for an investigation plan, not an invented discovery,
+measured improvement or revenue claim. Each lane retains its own acceptance conditions and matching work surface.
 
 | Capability | What the added path does |
 | --- | --- |
@@ -29,13 +45,13 @@ Keep the acceptance conditions explicit so a more inventive approach must still 
 | One project history | Retain prepared attempts, runner returns, owner reviews and existing catalog work under the same project identity |
 
 1. Choose a valuable digital-work opportunity, an open mathematical question, a public software bottleneck,
-   a decisive research experiment or your own mission. Name the project, supply the exact starting material,
-   describe the result and list what every approach must deliver. Missing evidence calls for an investigation
-   plan, not an invented discovery, measured improvement or revenue claim.
+   a decisive research experiment or your own mission. Name the capability, supply the exact starting material,
+   describe the opportunity, explain who benefits and list what every approach must deliver. Missing evidence
+   calls for an investigation plan, not an invented discovery, measured improvement or revenue claim.
 2. Record two to six competing strategies, a proposed combination and an alternative problem formulation.
    Choose the baseline, combined strategy or reframing for this attempt. These are hypotheses until tested.
 3. Review the supplied work surface, exact public source URLs, input rights and action/time/review limits.
-   Choose **Prepare this Computer Use mission**, then **Download native mission pack**. Preparation is free
+   Choose **Prepare my capability mission**, then **Take this mission to my executor**. Preparation is free
    and performs no model call.
 4. Use the [native Computer Use runner](SUCCESSOR_COMPUTER_USE.md#continue-a-flagship-project) to review and
    authorize the exact mission with an explicitly selected model and immutable container image. Provider
@@ -51,12 +67,19 @@ The executable goal asks the model to report strategies considered, the method a
 a proposed improvement or combination, and unnecessary restrictions worth reframing next. Tested results and
 untested ideas must remain distinct. A proposed reframing earns its place through reviewed useful work; it
 cannot silently relax acceptance conditions, enlarge permissions or declare itself the winning method.
+The complete strategy slate stays visible in the native goal, while execution is restricted to the selected
+approach. Considering an alternative does not authorize executing it in the same attempt.
 
 The current native actuator is a disposable Chromium browser in a Linux Docker container. It supports the
 current Responses `computer` action interface and an alternate compatible vision/JSON supplier. The operator
 selects an available model and qualifies it for the task; a model name alone does not establish capability.
-Full desktop control, personal profiles, private data, logins, payments and message sending are outside this
-adapter. The broader ambition covers screen-based work; this implementation does not prove universal ability.
+For difficult scientific reasoning, consider `gpt-6-astra`; for source inspection and Computer Use with a
+different cost/capability tradeoff, consider `gpt-6.1-sol`. These are current documented choices, not a universal
+ranking or an automatic provider selection. See the
+[task-fit model guidance](SUCCESSOR_COMPUTER_USE.md#choose-a-model-for-the-work).
+Full desktop control, arbitrary code execution, formal proof checking, personal profiles, private data, logins,
+payments and message sending are outside this adapter. A browser-observed proposal or argument is not an
+executed patch, verified theorem or measured economic improvement.
 
 Imported returns establish consistent historical bytes. The browser does not authenticate signer trust or
 independently certify the result. Verify native receipts against a separately trusted source key and review
@@ -67,9 +90,14 @@ The existing catalog example remains available without a provider. Local control
 checks do not establish live-model qualification or paid outcomes for the new path. Those require authorized
 provider trials, retained usage/cost evidence and review before a release can claim them.
 
-## Optional local worked example
+## Maintained local catalog tool
 
-1. Choose **Try the local worked example** to run the supplied catalog example.
+The existing catalog example runs locally without an account, installation, model, API key or wallet.
+Open **Maintained example · local catalog tools** for the catalog workflow. Its supplied inputs are synthetic;
+your own inputs can be public, synthetic or licensed and nonpersonal. This tool remains alongside the primary
+capability-development journey.
+
+1. Choose **Run the maintained catalog example** to run the supplied catalog example.
 2. Inspect the joined catalog, unmatched rows and discrepancies. Check that the selected keys and fields express
    the task you intended.
 3. Inspect correctness, operation counts, observed timings and the comparison limits. A strategy can lose;
@@ -77,8 +105,8 @@ provider trials, retained usage/cost evidence and review before a release can cl
 4. Download the useful files, your project record and the working offline tool. Reopen the saved HTML in a modern
    desktop browser to continue locally. Save a new copy after changes.
 
-Choose **Bring my own catalogs** to paste or select two CSV files. Select each catalog's key; common non-key columns
-are compared as exact text. Inspect identifiers and duplicates before relying on the output.
+Choose **Use the catalog tools with my data** to paste or select two CSV files. Select each catalog's key;
+common non-key columns are compared as exact text. Inspect identifiers and duplicates before relying on the output.
 A reconciliation finds the differences expressed by its contract; it does not
 establish that either catalog is complete or factually correct.
 
@@ -113,13 +141,13 @@ the resulting capability helps its intended user enough to warrant its full cost
 For a different mission, use the opportunity notebook to record the goal, current approach, credible alternative,
 measurable target, supplied evidence and budget. Ask what current evidence, expertise and feasible experiments
 make achievable now. These records stay typed hypotheses; recording one neither retrieves new sources nor
-executes a domain experiment. The catalog capability is the provider-free executable first mission; the
+executes a domain experiment. The catalog capability is a maintained provider-free local tool; the
 Computer Use path adds a separate project-bound handoff to the native model runner.
 
 | Stage | What this flagship provides | What requires further evidence or a separate decision |
 | --- | --- | --- |
-| Find Alpha | A concrete reconciliation task, usable outputs and explicit alternatives | The user's actual bottleneck, adoption constraints and benefit |
-| Develop in a Gym | Execute maintained baselines, construct bounded composite plans and test a different task formulation | Unrestricted code synthesis or scientific certification |
+| Find Alpha | A valuable mission, beneficiaries, acceptance criteria, explicit strategies and a bounded native handoff | Actual usefulness, adoption constraints and benefit |
+| Develop in a Gym | Model-guided browser work with retained results; maintained local catalog experiments remain available | Connected code/proof execution, verified novelty or scientific certification |
 | Examine a frozen candidate | Bound inputs and implementation identity with inspectable local comparisons | Independently administered protected work and a credible external comparator |
 | Prepare successor continuity | A portable working tool, project inputs and retained observations | Earned Specialist status, institutional admission and operational authority |
 
@@ -211,8 +239,13 @@ retain their separate configuration, budgets, acceptance and settlement requirem
 
 ## Premier résultat en français
 
-**Périmètre de la version 1.35.0 :** le parcours **Créer une mission Computer Use** prépare
-un travail à réaliser à l'écran, avec un résultat attendu et des critères d'acceptation explicites.
+**Périmètre de la version 1.35.0 :** le parcours **Découvrir ma prochaine capacité** part d'une opportunité
+logicielle, scientifique ou mathématique utile, avec bénéficiaires et critères d'acceptation explicites.
+La mission initiale analyse le code public du runtime Computer Use pour proposer une amélioration réalisable
+et un plan de validation avant-après reproductible. Aucun test exécuté ni gain économique ne doit être inventé.
+Vous pouvez aussi choisir une opportunité de travail numérique et fournir une note de départ ou des sources
+autorisées non personnelles. Précisez bénéficiaires et livrable utile; sans preuves suffisantes, demandez un
+plan d'investigation. La liste des stratégies accompagne la mission, mais seule l'approche choisie est autorisée.
 Au **niveau 3**, proposez plusieurs stratégies, testez une méthode ou une combinaison et conservez les
 observations pour l'améliorer. Au **niveau 4**, remettez en question une restriction inutile et testez une
 autre formulation qui respecte toujours le résultat requis. Les idées non testées restent des hypothèses.
@@ -223,9 +256,11 @@ Importez ensuite le résultat, examinez les livrables et les captures, puis cons
 historique de projet. L'espace complet conserve aussi les travaux de catalogues existants. Aucun secret
 fournisseur n'appartient à la page; l'import ne prouve ni qualification indépendante ni autorisation de paiement.
 Le contrôle universel d'un ordinateur et l'usage de profils personnels ne sont pas fournis par cet adaptateur.
+L'exécution de code et la vérification formelle de preuves nécessitent des connexions distinctes; une proposition
+ou un argument candidat ne constitue pas un correctif testé ni un théorème vérifié.
 La version publiée **v1.34.0** conserve le périmètre de rapprochement de catalogues décrit ci-dessous.
 
-Ouvrez le parcours français, puis lancez l'exemple synthétique. Examinez le catalogue rapproché, les lignes sans
+Dans **Exemple maintenu · outils locaux de catalogues**, lancez aussi l'exemple synthétique. Examinez le catalogue rapproché, les lignes sans
 correspondance et les différences. Pour utiliser vos propres catalogues autorisés, sélectionnez deux fichiers CSV
 et leurs clés; les champs communs sont comparés comme du texte exact. Téléchargez les résultats, le projet et
 l'outil autonome pour les conserver.

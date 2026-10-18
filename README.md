@@ -1,12 +1,26 @@
 <!-- current-entrypoints -->
+# Find your Alpha. Build your SUCCESSOR Ω.
+
+**MONTREAL.AI FLAGSHIP · Computer Use · Level 3 strategy development · Level 4 problem reframing**
+
+Find a valuable opportunity in software, research or mathematics. Use Computer Use to investigate real public
+material and produce a concrete work product. Develop competing strategies, combine what works, and challenge
+problem formulations that unnecessarily limit the outcome. Keep the attempts, evidence and lessons in one project.
+
+**[Start the flagship →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)** ·
+**[Démarrer le parcours phare →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/?lang=fr)**
+
+Planning and the catalog example are free in your browser. Computer execution uses a separately configured
+native model and isolated runner. [What works now and how to begin](docs/agent/SUCCESSOR_ALPHA.md).
+
 ## Choose your next step
 
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**
 
 | Your goal | Start here |
 | --- | --- |
-| Investigate a valuable opportunity, mathematical question, software bottleneck or research experiment | [Computer Use flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Level 3/4 guide](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) · [Native runner](docs/agent/SUCCESSOR_COMPUTER_USE.md) |
-| Try the optional local worked example and keep a reusable catalog tool | [Local example](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/#mission) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
+| Investigate a valuable digital-work opportunity, software bottleneck, research question or mathematical problem | [Find your Alpha. Build your SUCCESSOR Ω.](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Guide](docs/agent/SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) |
+| Inspect a maintained local engineering example | [Catalog reconciliation example](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/#catalog-example) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
 | Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
 | Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
@@ -23,11 +37,11 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 
 <!-- /current-entrypoints -->
 
-> **[Find your advantage. Make it work. Keep what you build. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
-> Start with a valuable digital-work opportunity, an open mathematical question, a public software bottleneck
-> or a decisive research experiment. Use Computer Use to test approaches, combine what works and challenge
-> unnecessary restrictions. Keep the mission, results and lessons in one project. Mission briefs need exact
-> inputs and reviewed execution; a proposed proof or market hypothesis remains unverified until checked.
+> **[Find a valuable opportunity. Invent a better approach. Build what matters. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
+> Start with a real software improvement, an evidence-based research question or a rigorous mathematical
+> investigation. Produce a source-grounded artifact, design tests for competing approaches, and consider
+> whether a different formulation creates more value. Code proposals need execution; mathematical claims
+> need proof review. The configured browser runner retains observed work for your review.
 > [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
 > **Current release scope · 1.35.0.** [Start here](docs/agent/START_HERE.md) ·

@@ -1,6 +1,6 @@
 # Selected reading · AGI Alpha Agent · SUCCESSOR Ω
 
-English / [Français](#français)
+English / [Français](#francais)
 
 Explore opportunities, compare improvements and retain useful discoveries.
 

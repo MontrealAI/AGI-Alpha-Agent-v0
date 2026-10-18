@@ -1,7 +1,8 @@
 ## 1.35.0 — Computer Use and retained strategy development
 
-- Make bounded Computer Use a primary English/French flagship path while retaining the provider-free catalog example.
-- Define an outcome, unchanged acceptance criteria, competing strategies, a proposed combination and a different problem formulation.
+- Lead the English/French flagship with valuable software, research and mathematics opportunities; retain the catalog tool as a secondary example.
+- Define a useful outcome, beneficiary/value hypothesis, unchanged acceptance criteria, competing strategies, a proposed combination and a different problem formulation.
+- Start with real public source inspection, a concrete patch proposal and reproducible validation plan; preserve the distinction between proposals and verified results.
 - Carry Level 3 strategy discovery/testing/improvement and Level 4 reframing into the executable model goal and reviewed work product.
 - Bind exact project bytes, source identity, strategy and attempt UUID into the existing native task/provider/image/worker permit.
 - Retain provider observations, signed native receipts, visible text, uncertain interrupted effects and unknown billing in portable returns.

@@ -10,6 +10,7 @@ import io
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,8 @@ from urllib.parse import urlsplit
 from playwright.sync_api import Browser, BrowserContext, Page, Response, expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 URL = (ROOT / "docs/successor/alpha/index.html").as_uri()
 EXPECTED_PAGE_SHA256: str | None = None
 CONTRACTS = {
@@ -253,7 +256,7 @@ def first_use(browser: Browser, output: Path, errors: list[str], external: list[
     expect(page.locator("#restored-note")).to_contain_text("histor")
     page.locator("#lang-en").click()
     expect(page.locator("#hero-title")).to_contain_text("Find your")
-    expect(page.locator('#hero-start [data-i18n="firstAdvantage"]')).to_have_text("Try the local worked example")
+    expect(page.locator('#hero-start[data-i18n="firstAdvantage"]')).to_have_text("Run the maintained catalog example")
     expect(page.locator("#restored-note")).to_contain_text("historical")
     expect(page.locator(".institution img")).to_have_attribute("alt", english_alt)
     page.locator("#custom-start").click()
@@ -769,11 +772,19 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     """Prepare, execute the native protocol, review and retain a Computer Use strategy study."""
     context, page = context_page(browser, errors, external)
     page.locator("#hero-computer").click()
+    brief = (
+        page.locator("#computer-context").input_value()
+        + '\nUntrusted markup remains text: <img src="https://unapproved.example/brief">'
+    )
+    page.locator("#computer-context").fill(brief)
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-prepared")).to_be_visible()
     first = download(page, "#computer-download")
     handoff = json.loads(first)
-    assert handoff["strategy"]["selected"] == "baseline"
+    assert handoff["strategy"]["selected"] == "combine"
+    assert "Value hypothesis (unverified): " + handoff["strategy"]["valueHypothesis"] in handoff["task"]["goal"]
+    assert handoff["task"]["allowed_urls"][0].endswith("/alpha_factory_v1/core/runtime/successor/computer.py")
+    assert "&lt;img src=&quot;https://unapproved.example/brief&quot;&gt;" in handoff["task"]["html"]
     assert not json.loads(handoff["projectRaw"])["cycles"]
     returned = controlled_computer_return(first)
     altered = json.loads(returned)
@@ -794,13 +805,16 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     page.locator("#computer-review-save").click()
     expect(page.locator("#computer-review-form")).to_be_hidden()
     expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
-    page.locator("#computer-approach").select_option("reframe")
+    page.locator("#computer-reframe-next").click()
+    expect(page.locator("#computer-approach")).to_have_value("reframe")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
     second = json.loads(download(page, "#computer-download"))
     assert second["strategy"]["selected"] == "reframe"
     assert second["attemptId"] != handoff["attemptId"]
     assert second["strategy"]["successCriteria"] == handoff["strategy"]["successCriteria"]
+    assert second["strategy"]["originalGoal"] == handoff["strategy"]["originalGoal"]
+    assert second["strategy"]["valueHypothesis"] == handoff["strategy"]["valueHypothesis"]
     assert second["task"]["html"] == handoff["task"]["html"]
     archive = download(page, "#computer-save-history")
     checked_archive = json.loads(archive)
@@ -811,6 +825,7 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     destination.write_bytes(portable)
     page.goto(destination.as_uri())
     expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-context")).to_have_value(brief)
     expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
     assert page.locator("#saved-learning").text_content().count("</script>") == 0
     accessibility(page)
@@ -827,12 +842,12 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     assert len(json.loads(combined["computerHistoryRaw"])["records"]) == 2
     page.set_viewport_size({"width": 320, "height": 1050})
     page.goto(URL + "?lang=fr")
-    expect(page.locator("#computer-title")).to_contain_text("Travailler")
+    expect(page.locator("#computer-title")).to_contain_text("Quelle capacité utile")
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-prepared")).to_be_visible()
     french = json.loads(download(page, "#computer-download"))
-    assert "Choisir" in french["strategy"]["originalGoal"]
+    assert "Découvrir" in french["strategy"]["originalGoal"]
     accessibility(page)
     page.screenshot(path=str(output / "15-computer-use-mobile-fr.png"), full_page=True)
     context.close()
@@ -873,15 +888,26 @@ def computer_mission_presets(browser: Browser, errors: list[str], external: list
             page.goto(URL + "?lang=" + language)
             page.locator("#computer-example").select_option(preset)
             outcome = page.locator("#computer-outcome").input_value()
+            value_hypothesis = page.locator("#computer-value-hypothesis").input_value()
+            allowed_urls = page.locator("#computer-urls").input_value().splitlines()
+            page.locator("#computer-build-surface").click()
             surface = page.locator("#computer-html").input_value()
             assert "Fictional product specifications" not in surface
+            page.locator("#computer-strategy-panel > summary").click()
             for approach in ("baseline", "combine", "reframe"):
                 page.locator("#computer-approach").select_option(approach)
                 page.locator("#computer-prepare").click()
                 expect(page.locator("#computer-prepared")).to_be_visible()
                 pack = json.loads(download(page, "#computer-download"))
                 assert pack["strategy"]["originalGoal"] == outcome
+                assert pack["strategy"]["valueHypothesis"] == value_hypothesis
                 assert pack["strategy"]["selected"] == approach
+                for statement in (
+                    *pack["strategy"]["hypotheses"],
+                    pack["strategy"]["combination"],
+                    pack["strategy"]["reframing"],
+                ):
+                    assert len(statement.strip()) > 20 and statement.strip() not in {"undefined", "null"}
                 assert pack["task"]["html"] == surface
                 assert len(pack["task"]["goal"]) <= 4000
                 for candidate in pack["strategy"]["hypotheses"]:
@@ -889,7 +915,7 @@ def computer_mission_presets(browser: Browser, errors: list[str], external: list
                 assert pack["strategy"]["combination"] in pack["task"]["goal"]
                 assert pack["strategy"]["reframing"] in pack["task"]["goal"]
                 assert pack["authority"] == "none" and pack["settlement"] == "not_connected"
-                assert pack["task"]["allowed_urls"] == []
+                assert pack["task"]["allowed_urls"] == allowed_urls
     context.close()
 
 
