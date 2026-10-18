@@ -27,6 +27,8 @@ exact-commit acceptance and verified public site identify the delivered version.
   checked returns grant no execution authority and the compiled AGIALPHA route stays unfunded.
 - Complete imported resource limits, bounded standalone file reads through short reads,
   nonregular-file rejection and guarded restoration preserve the local input/export boundaries.
+- Contain decorative hero artwork and require overflow-free English/French first use at
+  nine viewport widths from 320 to 1440 pixels, including intermediate desktop and tablet layouts.
 - Read-only public contract directory, explorer links, machine-readable deployment
   record and source/report provenance. Historical October 11 evidence remains unchanged.
 - Exact deployed source compiler profile and creator/authority tooling from
