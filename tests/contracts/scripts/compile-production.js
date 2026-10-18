@@ -3,9 +3,8 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const { SOLC_VERSION, pinnedCompiler, assertNoCompilerWarnings } = require("./compiler-policy");
+const { SOLC_VERSION, SETTINGS, pinnedCompiler, assertNoCompilerWarnings } = require("./compiler-policy");
 const ROOT = path.resolve(__dirname, "../../..");
-const SETTINGS = { optimizer: { enabled: true, runs: 200 }, viaIR: true, evmVersion: "cancun" };
 const sha256 = data => crypto.createHash("sha256").update(data).digest("hex");
 
 function productionSources(directory = ROOT) {

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -28,6 +29,31 @@ def tag_commit(repo: str, obj: dict[str, str]) -> str:
     if obj["type"] != "commit":
         raise ValueError("existing tag does not point directly to a commit")
     return obj["sha"]
+
+
+def preflight() -> None:
+    """Fail early on a reused version without packaging, activation or mutations."""
+    sha = require_current_main()
+    repo = "MontrealAI/AGI-Alpha-Agent-v0"
+    version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        raise ValueError("declared release version must be a three-part numeric version")
+    tag = f"v{version}"
+    # matching-refs returns an empty list for an unused tag, while authorization
+    # and service errors still fail closed. Never treat an arbitrary API error
+    # as permission to create a tag. Filter exact names because this is a prefix API.
+    refs = json.loads(gh("api", f"repos/{repo}/git/matching-refs/tags/{tag}"))
+    if not isinstance(refs, list):
+        raise ValueError("invalid tag lookup response")
+    exact = [ref for ref in refs if ref["ref"] == f"refs/tags/{tag}"]
+    if len(exact) > 1:
+        raise ValueError("ambiguous existing release tag")
+    if exact and tag_commit(repo, exact[0]["object"]) != sha:
+        raise ValueError(
+            f"{tag} already identifies another commit; increment the release version before running acceptance. "
+            "Existing release tags and assets must remain unchanged."
+        )
+    print(f"Publication preflight passed for {tag} at {sha}; full acceptance is still required")
 
 
 def main() -> None:
@@ -140,4 +166,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--preflight", action="store_true", help="Read-only current-main and version-collision check")
+    args = parser.parse_args()
+    if args.preflight:
+        preflight()
+    else:
+        main()

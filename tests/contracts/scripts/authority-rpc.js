@@ -31,6 +31,7 @@ function validate(method, params, scope, limits) {
     case "eth_getCode": case "eth_getTransactionCount": case "eth_getBalance": valid = params.length === 2 && address(params[0]) && block(params[1]); break;
     case "eth_getTransactionByHash": case "eth_getTransactionReceipt": valid = params.length === 1 && hash(params[0]); break;
     case "eth_getBlockByNumber": valid = params.length === 2 && block(params[0]) && typeof params[1] === "boolean"; break;
+    case "eth_getStorageAt": valid = params.length === 3 && address(params[0]) && hash(params[1]) && block(params[2]) && scope.storage.some(s => s.address === params[0].toLowerCase() && s.slot === params[1].toLowerCase()); break;
     case "eth_call": valid = params.length === 2 && keys(params[0], ["to", "data"]) && address(params[0].to) && bytes(params[0].data) && block(params[1]); break;
     case "eth_getLogs": {
         const f = params[0];
@@ -43,12 +44,13 @@ function validate(method, params, scope, limits) {
     default: throw fail("RPC method is not read-only allowlisted");
     }
     if (valid && ["eth_getCode", "eth_getTransactionCount", "eth_getBalance"].includes(method)) valid = scope.all.includes(params[0].toLowerCase());
-    if (valid && method === "eth_call") valid = scope.all.includes(params[0].to.toLowerCase());
+    if (valid && method === "eth_call") valid = scope.all.includes(params[0].to.toLowerCase()) && !scope.noCall.includes(params[0].to.toLowerCase());
     if (valid && method === "eth_getLogs") valid = BigInt(params[0].fromBlock) >= BigInt(scope.earliestBlock);
     need(valid, "RPC parameter shape or scope rejected");
 }
 function resultShape(method, result) {
     if (["eth_chainId", "eth_getTransactionCount", "eth_getBalance"].includes(method)) return quantity(result);
+    if (method === "eth_getStorageAt") return hash(result);
     if (["eth_getCode", "eth_call"].includes(method)) return bytes(result);
     if (method === "eth_getLogs") return Array.isArray(result);
     if (result === null) return true;
@@ -65,9 +67,15 @@ function makeRpc(endpoint, inputScope, options, localTest) {
     need(Array.isArray(inputAddresses) && inputAddresses.length === 5 && inputAddresses.every(address), "Five exact graph addresses required");
     const addresses = inputAddresses.map(a => a.toLowerCase()).sort();
     need(new Set(addresses).size === 5, "Five distinct graph addresses required");
-    need(keys(inputScope, ["graph", "all", "earliestBlock"]) && Array.isArray(inputScope.all) && inputScope.all.every(address) &&
+    need((keys(inputScope, ["graph", "all", "earliestBlock"]) || keys(inputScope, ["graph", "all", "earliestBlock", "storage", "noCall"])) && Array.isArray(inputScope.all) && inputScope.all.every(address) &&
         inputScope.all.length <= 128 && Number.isSafeInteger(inputScope.earliestBlock) && inputScope.earliestBlock >= 0, "Invalid RPC read scope");
-    const scope = { graph: addresses, all: [...new Set(inputScope.all.map(a => a.toLowerCase()))], earliestBlock: inputScope.earliestBlock };
+    const storage = inputScope.storage === undefined ? [] : inputScope.storage, noCall = inputScope.noCall === undefined ? [] : inputScope.noCall;
+    need(Array.isArray(storage) && storage.length <= 32 && storage.every(s => keys(s, ["address", "slot"]) && address(s.address) && hash(s.slot)) &&
+        Array.isArray(noCall) && noCall.length <= 2 && noCall.every(address), "Invalid non-executing storage/call scope");
+    const scope = { graph: addresses, all: [...new Set(inputScope.all.map(a => a.toLowerCase()))], earliestBlock: inputScope.earliestBlock,
+        storage: storage.map(s => ({ address: s.address.toLowerCase(), slot: s.slot.toLowerCase() })), noCall: noCall.map(a => a.toLowerCase()) };
+    need(new Set(scope.storage.map(s => s.address + ":" + s.slot)).size === scope.storage.length && new Set(scope.noCall).size === scope.noCall.length, "Duplicate storage/call scope");
+    need([...scope.storage.map(s => s.address), ...scope.noCall].every(a => scope.all.includes(a)), "Storage/call exclusions must be in read scope");
     need(addresses.every(a => scope.all.includes(a)), "RPC scope must include graph addresses");
     const limits = limitsFor(overrides), started = Date.now();
     let requests = 0, totalBytes = 0, stopped = false, busy = false;
@@ -141,7 +149,8 @@ function makeRpc(endpoint, inputScope, options, localTest) {
 function scopeForPlan(plan) {
     const c = plan.config, graph = Object.values(plan.addresses);
     return { graph, all: [...new Set([...graph, c.deployer, c.governor.address, ...Object.values(c.dependencies).map(d => d.address),
-        ...(c.sender.target ? [c.sender.target] : []), ...(c.sender.stateChecks || []).map(s => s.to)].map(a => ethers.getAddress(a)))], earliestBlock: c.block.number };
+        ...(c.sender.target ? [c.sender.target] : []), ...(c.sender.stateChecks || []).map(s => s.to)].map(a => ethers.getAddress(a)))], earliestBlock: c.block.number,
+        ...(c.sender.mode === "marker-eoa-direct-create.v1" ? { storage: c.sender.storageChecks.map(s => ({ address: s.address, slot: s.slot })), noCall: [c.deployer, c.sender.target] } : {}) };
 }
 function createReadOnlyRpc(endpoint, scope, options) { return makeRpc(endpoint, scope, options, false); }
 // Deliberately separate adapter; never exposed as an operator CLI option.

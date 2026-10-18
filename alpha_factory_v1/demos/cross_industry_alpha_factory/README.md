@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.33.0
+## Current runnable path — 1.34.0
 
 **Mode:** Supplied-input comparison. Compare your own cross-industry assessments
 using explicit priorities, review thresholds and evidence notes. This is a

@@ -22,7 +22,9 @@
     "mainnet:authority-preflight": "node scripts/authority-cli.js preflight",
     "mainnet:authority-verify": "node scripts/authority-cli.js verify",
     "mainnet:authority-package": "node scripts/authority-verification-package.js",
-    "mainnet:authority-session": "node scripts/authority-session.js"
+    "mainnet:authority-session": "node scripts/authority-session.js",
+    "mainnet:creator": "hardhat run --no-compile --config hardhat.creator.config.js --network mainnet scripts/deploy-mainnet-creator.js",
+    "test:creator-terminal": "node --test authority-test/creator-terminal.test.cjs authority-test/ephemeral-key.test.cjs"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "2.1.2",
