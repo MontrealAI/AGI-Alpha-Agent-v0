@@ -64,13 +64,13 @@ satisfied by the five EXACT_MATCH results; it does not satisfy those other gates
 
 ## Evidence and history
 
-The [sanitized machine-readable record](../../deployments/ethereum-mainnet/2026-10-18/manifest.json)
+The [sanitized machine-readable record](../deployments/2026-10-18/manifest.json)
 contains exact contract addresses, runtime code hashes, observed getters, creation and
 binding transactions, explorer ABI/input hashes, and original evidence SHA-256 provenance.
 It excludes private operator paths, keys, signed capabilities and journals. It is an
 allowlisted projection, not a byte-for-byte copy of the source reports. The subsequent closeout report is
 identified separately by its file and payload SHA-256 provenance.
 
-The [11 October archive](../../deployments/ethereum-mainnet/2026-10-11/README.md)
-and [15 October verification](../../deployments/ethereum-mainnet/2026-10-15/record-verification.json)
+The [11 October archive](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c0fc5217e364a39a4cd123d17a8317c06b80f820/deployments/ethereum-mainnet/2026-10-11/README.md)
+and [15 October verification](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c0fc5217e364a39a4cd123d17a8317c06b80f820/deployments/ethereum-mainnet/2026-10-15/record-verification.json)
 remain historical records and are not rewritten or relabeled as this deployment.
