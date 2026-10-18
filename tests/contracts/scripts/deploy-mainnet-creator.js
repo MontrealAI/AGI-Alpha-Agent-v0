@@ -56,7 +56,7 @@ async function runCreator({ plan, revision, filename, directory, withRpc, assert
     assertInputs();
     let signer;
     try {
-        if (creationPrefix(state).length < 5) { signer = await obtainSigner(plan.config.deployer); need(E.getAddress(signer.address) === plan.config.deployer, 'Creator key/address mismatch'); assertInputs(); }
+        if (creationPrefix(state).length < 5) { signer = await obtainSigner(plan.config.deployer); need(E.getAddress(signer.address) === E.getAddress(plan.config.deployer), 'Creator key/address mismatch'); assertInputs(); }
         while (creationPrefix(state).length < 5) {
             const index = state.operations.length;
             need(index < 5, 'Never sign governor calls with the creator');
