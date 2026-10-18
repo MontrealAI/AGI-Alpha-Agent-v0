@@ -172,9 +172,11 @@ function exportPortable(dossier) {
     for key, value in (("SCRIPT", code), ("STYLE", style)):
         hashed = base64.b64encode(hashlib.sha256(value.encode()).digest()).decode()
         page = page.replace("{{" + key + "_HASH}}", "sha256-" + hashed).replace("{{" + key + "}}", value)
-    page = page.replace("{{SOURCE_HASH}}", source_hash).replace(
-        "{{LICENSES}}", html.escape((root / "LICENSE").read_text(encoding="utf-8"))
-    )
+    notices = []
+    for license_path in (root / "LICENSE", root / "examples/build-successor/vendor/agijobs/LICENSE"):
+        sources[license_path.relative_to(root).as_posix()] = hashlib.sha256(license_path.read_bytes()).hexdigest()
+        notices.append(license_path.read_text(encoding="utf-8"))
+    page = page.replace("{{SOURCE_HASH}}", source_hash).replace("{{LICENSES}}", html.escape("\n\n".join(notices)))
     if "{{" in page:
         raise ValueError("Unexpanded flagship template")
     destination = root / "docs/successor/alpha"

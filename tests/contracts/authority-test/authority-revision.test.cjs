@@ -21,11 +21,11 @@ function withEnv(values, fn) {
     const old = Object.fromEntries(Object.keys(values).map(k => [k, process.env[k]])); Object.assign(process.env, values);
     try { return fn(); } finally { for (const [k, v] of Object.entries(old)) if (v === undefined) delete process.env[k]; else process.env[k] = v; }
 }
-test('v2 observer binds actual clean raw source and tracked lock without changing legacy helper', t => {
+test('v2 observer binds actual clean raw source and tracked lock and pins the reviewed Mainnet helper', t => {
     const r = repo(t), observed = source.reviewedRevision(r.root);
     assert.equal(observed.commit, r.git('rev-parse', 'HEAD')); assert.equal(observed.tree, r.git('rev-parse', 'HEAD^{tree}'));
     assert.equal(observed.lockSha256, crypto.createHash('sha256').update('{}\n').digest('hex'));
-    assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname, '../scripts/mainnet.js'))).digest('hex'), 'd5f69f8e6f2e8869ae351b623d935674596442628a666d8f6819c31bf5550360');
+    assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname, '../scripts/mainnet.js'))).digest('hex'), 'b6b2d02289fb09b1299d5d862d699ae8d0d2f1b088b4a7bafb7875fe3d93a4e4');
 });
 test('v2 observer removes inherited repository/index/config/object overrides and forces no lazy fetch', t => {
     const r = repo(t), other = repo(t, 'unrelated'), original = cp.execFileSync; let calls = 0;

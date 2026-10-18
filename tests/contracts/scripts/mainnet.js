@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const { execFileSync } = require("child_process");
 const ethers = require("ethers");
 const { verifyBuildSources, writeManifest } = require("./deployment");
-const { SOLC_VERSION, assertNoCompilerWarnings } = require("./compiler-policy");
+const { SOLC_VERSION, assertCompilerSettings, assertNoCompilerWarnings } = require("./compiler-policy");
 const { AGIALPHA_ADDRESS } = require("../../../token.config");
 const root = path.resolve(__dirname, "../../..");
 const names = ["AscensionAccess", "NovaSeed", "AscensionRiskOracle", "AscensionJobMarket", "AscensionMark"];
@@ -90,8 +90,8 @@ function compiledContracts() {
         const debug = JSON.parse(fs.readFileSync(`${file}.dbg.json`));
         const build = JSON.parse(fs.readFileSync(path.resolve(path.dirname(file), debug.buildInfo)));
         const output = build.output.contracts[artifact.sourceName][name];
-        requireValue(build.solcVersion === SOLC_VERSION && build.input.settings.optimizer.enabled &&
-            build.input.settings.optimizer.runs === 200 && build.input.settings.viaIR === true && build.input.settings.evmVersion === "cancun", "Unexpected compiler settings");
+        requireValue(build.solcVersion === SOLC_VERSION, "Unexpected compiler version");
+        assertCompilerSettings(build.input.settings);
         requireValue(artifact.bytecode === `0x${output.evm.bytecode.object}` && artifact.deployedBytecode === `0x${output.evm.deployedBytecode.object}`, "Artifact/compiler bytecode mismatch");
         requireValue(Object.keys(artifact.linkReferences).length === 0, "Unlinked deployment bytecode");
         if (!builds[build.id]) {

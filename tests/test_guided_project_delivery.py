@@ -49,7 +49,12 @@ class GuidedDelivery(unittest.TestCase):
             self.assertIn(required, workflow)
         self.assertNotIn("continue-on-error", workflow)
         release = (ROOT / ".github/workflows/agent-release.yml").read_text()
-        self.assertRegex(release, r"successor-journey:\s+uses: ./.github/workflows/successor-mission.yml")
+        journey = re.search(r"^  successor-journey:\n((?:    [^\n]*\n)+)", release, re.MULTILINE)
+        self.assertIsNotNone(journey)
+        self.assertEqual(
+            set(journey.group(1).splitlines()),
+            {"    needs: publication-preflight", "    uses: ./.github/workflows/successor-mission.yml"},
+        )
         package_start = release.index("  package:")
         package = release[package_start:]
         self.assertIn("successor-journey", package.split("steps:", 1)[0])

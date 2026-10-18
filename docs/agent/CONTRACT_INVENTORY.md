@@ -113,3 +113,11 @@ Source verification and deployment success do not authorize public funding or
 participant admission. Real-token rehearsal, current dependency review and the
 operating/go-live decision remain separate. Record unavailable or owner-omitted
 checks explicitly; never present them as passed.
+
+## Compiler regression fixtures
+
+| Source | Contracts | Classification |
+| --- | --- | --- |
+| `tests/contracts/test/fixtures/SOL-2026-7/reassigned_reference_memory_alias.sol` | C | Upstream compiler regression fixture only; not a deployed contract |
+| `tests/contracts/test/fixtures/SOL-2026-7/reassigned_reference_memory_alias_from_storage_minimal.sol` | C | Upstream compiler regression fixture only; not a deployed contract |
+| `tests/contracts/test/fixtures/SOL-2026-7/reassigned_reference_storage_alias.sol` | C | Upstream compiler regression fixture only; not a deployed contract |

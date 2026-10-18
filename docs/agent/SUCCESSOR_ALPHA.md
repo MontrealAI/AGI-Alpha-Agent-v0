@@ -4,7 +4,7 @@
 
 **[Open the flagship](../successor/alpha/index.html)** ·
 **[Ouvrir en français](../successor/alpha/index.html?lang=fr)** ·
-[Implementation](../../examples/successor-alpha/)
+[Implementation](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/successor-alpha/)
 
 Start with a useful result: reconcile two catalogs and keep the result and the working tool.
 The supplied example uses synthetic data. You can instead select public, synthetic or licensed nonpersonal CSV inputs.
@@ -115,7 +115,7 @@ several occurrences concern the same key, and can correctly show no reduction.
 
 These are bounded working examples of strategy construction and task reframing. A general ability to discover
 better scientific methods or fundamentally new business opportunities requires its own environment and evidence.
-The retained [synthetic research example](../../examples/successor-alpha/research-evidence.json) contains an exact
+The retained [synthetic research example](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/examples/successor-alpha/research-evidence.json) contains an exact
 mission, frozen plan, fresh confirmation and all 131 exception references grouped into two proposed actions.
 This is a deliberately constructed local example, with a changed review contract and no human time-saving claim.
 
@@ -218,7 +218,7 @@ It rechecks exact output and the declared resource budget on the new inputs. It 
 plan cannot process within that budget. The module performs no file, network or wallet operations; its caller
 decides how to read and save data. A held experiment exports the incumbent rather than the rejected candidate.
 
-The maintained implementation is in [`examples/successor-alpha/`](../../examples/successor-alpha/).
+The maintained implementation is in [`examples/successor-alpha/`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/main/examples/successor-alpha/).
 Its generated browser entrypoint is [`docs/successor/alpha/index.html`](../successor/alpha/index.html).
 Keep source changes, the generated page and its source manifest together; do not edit bundled JavaScript
 inside the generated HTML. Follow the example's reproduction instructions and run its focused checks,

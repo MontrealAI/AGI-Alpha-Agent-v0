@@ -1,6 +1,41 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.33.0 local-preview candidate
+# Release readiness — 1.34.0 combined candidate
+
+Version **1.34.0** combines the [useful Alpha flagship](SUCCESSOR_ALPHA.md) with the
+[18 October Mainnet deployment record](CURRENT_MAINNET_DEPLOYMENT.md). The
+[release notes](RELEASE_NOTES_1.34.0.md) describe the combined source and upgrade boundaries.
+A prepared version, a passing feature branch and a published website are separate facts.
+The matching release manifest, successful exact-commit acceptance and public served bytes
+identify what has actually been delivered.
+
+The flagship produces joined catalogs, unmatched rows, discrepancies and reusable local tools.
+Its optional Gym constructs bounded strategies, retains losses and tests a frozen plan on a new
+public synthetic case. Discrepancy-action reframing and checked native workbench returns remain
+bound to the exact project. These are local engineering results. Protected Specialist evaluation,
+independent review, realized economic advantage and authorization remain separate obligations.
+Supplied economic estimates retain their assumptions; they are not measured savings.
+
+The five current Mainnet records retain finalized creation/binding observations, source provenance
+and scoped graph verification. Publication approves no funding, activation or wallet migration.
+There is no global pause. The older 29-address ecosystem snapshots and existing wallet profiles
+remain pinned to their historical deployments. Use the current record's exact deployed commit/tree
+for reproduction; the combined publication source has a separate identity.
+
+Publication requires the exact integrated source and generated identities, all preserved CI and
+release dependencies, the complete flagship/SUCCESSOR browser, recovery, offline and accessibility
+checks, and deployment-directory asset checks. Early version preflight must reject a tag
+that already identifies another commit.
+Historical `ci.yml`, `pr-ci.yml` and `smoke.yml` must pass on the same current-main commit before
+packaging. The tested site must then pass public HTTPS identity and workflow checks; final assets
+must be uploaded, re-downloaded and checksum-verified before publication. Existing tags and release
+assets are not overwritten. No final-source or public-site pass is established by this source document.
+
+Independent custody, providers, market access, Fleet commissioning, external dependency qualification
+and Mainnet activation retain their separate gates. Original research, diagrams, laboratories,
+earlier release records and the frozen deployment history remain preserved.
+
+## Earlier candidate records
 
 Version **1.33.0** combines the reviewed local SUCCESSOR journeys described in the
 [release notes](RELEASE_NOTES_1.33.0.md). The exact combined source, generated identities,
@@ -8,8 +43,6 @@ complete required CI and SUCCESSOR browser/accessibility dependency must pass be
 Current-main publication, public HTTPS identity and uploaded-byte verification remain required.
 This is a local preview using supplied evidence. Independent custody, providers, market access
 and Fleet adapters remain uncommissioned. A source version alone proves none of those outcomes.
-
-## Earlier candidate records
 
 Version **1.32.0** is the integrated additive candidate described in the
 [release notes](RELEASE_NOTES_1.32.0.md). Exact combined-source tests, all required CI,

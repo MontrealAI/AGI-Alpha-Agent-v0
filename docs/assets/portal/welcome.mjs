@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "current-mainnet-record": "État actuel du déploiement Mainnet",
+    "archived-mainnet-record": "Archives du déploiement du 11 octobre",
+    "current-deployment-notice": "État actuel du déploiement Mainnet · cinq adresses de contrat vérifiées",
+    "current-deployment-scope": "Preuves en lecture seule enregistrées le 18 octobre 2026. L’autorisation opérationnelle reste une étape distincte.",
     "reading-source": "Article anglais · LinkedIn",
     "reading-capital-summary": "Demandez-vous si une capacité utile peut couvrir ses coûts d’exécution et de vérification avant de financer une nouvelle amélioration.",
     "reading-capital-topic": "Amélioration durable",

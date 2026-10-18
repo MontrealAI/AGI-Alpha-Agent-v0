@@ -40,7 +40,7 @@ jobs:
           python tests/test_guided_project_delivery.py
           node --test examples/alpha-discovery/engine.test.mjs examples/alpha-discovery/draft.test.mjs
           node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py -q
       - name: Generated source is current
         run: |
           python scripts/generate_successor_alpha.py

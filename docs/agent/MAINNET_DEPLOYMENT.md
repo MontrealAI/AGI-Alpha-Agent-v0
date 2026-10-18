@@ -1,6 +1,16 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Ethereum mainnet: deployed contracts and owner guide
+# Historical Ethereum mainnet deployment: 11 October 2026
+
+**Looking for the current contracts?** Use the
+[18 October address directory](../deployments/2026-10-18/index.html) and
+[current deployment evidence guide](CURRENT_MAINNET_DEPLOYMENT.md). They identify the fresh five-contract
+suite and its retained authority snapshot. Activation and public funding remain unapproved.
+The guide below preserves the October 11 archive, its obligations and its verification commands;
+its addresses, ownership and source limitations apply to that historical deployment only.
+
+**Contrats actuels :** consultez le [répertoire du 18 octobre](../deployments/2026-10-18/index.html)
+et le [dossier actuel](CURRENT_MAINNET_DEPLOYMENT.md). Le dossier ci-dessous reste l'archive du 11 octobre.
 
 **Five Ascension contracts were deployed on Ethereum mainnet on October 11, 2026.**
 The operator reports completed Etherscan source verification. The public archive does not include the

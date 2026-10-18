@@ -222,7 +222,9 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "node --test examples/specialist-evaluation/engine.test.mjs examples/specialist-evaluation/app.test.mjs",
         (
             "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null "
-            "-p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q"
+            "-p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py "
+            "tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py "
+            "tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py -q"
         ),
     ]
     assert browser["run"].splitlines() == [
@@ -309,7 +311,10 @@ def test_release_requires_full_successor_journey_before_packaging():
     journey = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
     assert "workflow_call" in journey["on"]
     job = release["jobs"]["successor-journey"]
-    assert job == {"uses": "./.github/workflows/successor-mission.yml"}
+    assert job == {
+        "needs": "publication-preflight",
+        "uses": "./.github/workflows/successor-mission.yml",
+    }
     assert "successor-journey" in release["jobs"]["package"]["needs"]
     assert "package" in release["jobs"]["pages"]["needs"]
     assert {"package", "pages"} <= set(release["jobs"]["publish"]["needs"])

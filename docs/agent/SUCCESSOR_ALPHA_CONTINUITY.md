@@ -4,7 +4,7 @@
 
 The flagship's **Continue with native work** step keeps the exact catalog project and its latest completed
 cycle. It prepares an executable mission through the maintained
-[`createWorkbench`](../../examples/successor-workbench/engine.mjs) extension API and compiles its seven
+[`createWorkbench`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/examples/successor-workbench/engine.mjs) extension API and compiles its seven
 work packages through the existing AGI Jobs compiler. This is useful local work with inspectable outputs.
 It remains an unfunded draft, with independent qualification and admission unresolved.
 

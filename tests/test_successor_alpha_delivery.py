@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -34,6 +35,32 @@ class DeliveryTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(page.read_bytes()).hexdigest(), manifest["pageSha256"])
         artwork = json.loads((ROOT / "examples/successor-alpha/artwork.json").read_text())
         self.assertEqual(hashlib.sha256((ROOT / artwork["asset"]).read_bytes()).hexdigest(), artwork["sha256"])
+
+    def test_complete_gallery_keeps_portable_page_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            page = Path(folder) / "successor/alpha/index.html"
+            page.parent.mkdir(parents=True)
+            before = (ROOT / "docs/successor/alpha/index.html").read_bytes()
+            page.write_bytes(before)
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    "from pathlib import Path; import sys; "
+                    "from scripts.generate_gallery_html import insert_back_link; "
+                    "insert_back_link([Path(sys.argv[1])])",
+                    str(page),
+                ],
+                cwd=ROOT,
+                check=True,
+            )
+            self.assertEqual(page.read_bytes(), before)
+
+    def test_bundled_compiler_permission_notice_is_retained(self) -> None:
+        page = (ROOT / "docs/successor/alpha/index.html").read_text(encoding="utf-8")
+        self.assertIn("MIT License", page)
+        self.assertIn("Copyright (c) 2025 MONTREAL.AI", page)
+        self.assertIn("Permission is hereby granted", page)
 
     def test_csp_hashes_match_only_executable_script_and_style(self) -> None:
         """The portable page executes shipped code while input files stay inert."""

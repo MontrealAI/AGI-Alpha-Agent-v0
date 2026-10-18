@@ -12,11 +12,13 @@ import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
-from playwright.sync_api import Browser, BrowserContext, Page, expect, sync_playwright
+from playwright.sync_api import Browser, BrowserContext, Page, Response, expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 URL = (ROOT / "docs/successor/alpha/index.html").as_uri()
+EXPECTED_PAGE_SHA256: str | None = None
 CONTRACTS = {
     "AscensionAccess": "0x9ee41df6d076fa4f89b102b76def1c503a1e7c3a",
     "NovaSeed": "0x31bd0736dcd55da2f9a2bb586c8a98695f86f19e",
@@ -92,6 +94,27 @@ def expected_outputs(mission: dict[str, Any]) -> dict[str, list[list[str]]]:
     }
 
 
+def document_identity(url: str) -> tuple[str, str, str]:
+    parsed = urlsplit(url)
+    return parsed.scheme, parsed.netloc, parsed.path
+
+
+def observe_response(response: Response, errors: list[str]) -> None:
+    if response.status >= 400:
+        errors.append(f"HTTP_FAILURE:{response.status}:{response.url}")
+    if (
+        EXPECTED_PAGE_SHA256
+        and response.request.resource_type == "document"
+        and document_identity(response.url) == document_identity(URL)
+    ):
+        try:
+            observed = hashlib.sha256(response.body()).hexdigest()
+            if observed != EXPECTED_PAGE_SHA256:
+                errors.append(f"DOCUMENT_SOURCE_CHANGED:{response.url}")
+        except Exception as error:
+            errors.append(f"DOCUMENT_SOURCE_UNAVAILABLE:{response.url}:{error}")
+
+
 def context_page(
     browser: Browser, errors: list[str], external: list[str], width: int = 1440, disable_worker: bool = False
 ) -> tuple[BrowserContext, Page]:
@@ -112,8 +135,14 @@ def context_page(
     )
     page.on(
         "request",
-        lambda request: external.append(request.url) if request.url.startswith(("http://", "https://")) else None,
+        lambda request: (
+            external.append(request.url)
+            if request.url.startswith(("http://", "https://"))
+            and not (request.resource_type == "document" and document_identity(request.url) == document_identity(URL))
+            else None
+        ),
     )
+    page.on("response", lambda response: observe_response(response, errors))
     page.goto(URL)
     expect(page.locator("#hero-start")).to_be_enabled()
     return context, page
@@ -651,6 +680,15 @@ def mobile_and_french(browser: Browser, output: Path, errors: list[str], externa
     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "Mobile results overflow"
     accessibility(page)
     page.screenshot(path=str(output / "07-mobile-useful-result.png"), full_page=True)
+    page.set_viewport_size({"width": 320, "height": 1050})
+    page.goto(URL)
+    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "320px first use overflows"
+    page.locator("#hero-start").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), "320px results overflow"
+    accessibility(page)
+    page.screenshot(path=str(output / "13-mobile-320-result.png"), full_page=True)
+    page.set_viewport_size({"width": 390, "height": 1050})
     page.goto(URL + "?lang=fr")
     expect(page.locator("html")).to_have_attribute("lang", "fr")
     expect(page.locator("#hero-title")).to_contain_text("Trouvez votre")
@@ -663,29 +701,72 @@ def mobile_and_french(browser: Browser, output: Path, errors: list[str], externa
     context.close()
 
 
-def main() -> None:
-    output = Path(os.environ.get("SUCCESSOR_ALPHA_SCREENSHOTS", tempfile.mkdtemp(prefix="successor-alpha-browser-")))
+def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | None = None) -> dict[str, Any]:
+    """Run the same complete journey against a source-bound packaged or public page."""
+    global URL, EXPECTED_PAGE_SHA256
+    previous_url, previous_digest = URL, EXPECTED_PAGE_SHA256
+    URL, EXPECTED_PAGE_SHA256 = entry_url, expected_page_sha256
     output.mkdir(parents=True, exist_ok=True)
     errors: list[str] = []
     external: list[str] = []
-    with sync_playwright() as playwright:
-        options: dict[str, Any] = {}
-        if os.environ.get("CHROMIUM_EXECUTABLE"):
-            options = {
-                "executable_path": os.environ["CHROMIUM_EXECUTABLE"],
-                "args": ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
-            }
-        browser = playwright.chromium.launch(**options)
-        raw = first_use(browser, output, errors, external)
-        restore_and_interrupt(browser, raw, output, errors, external)
-        custom_and_errors(browser, output, errors, external)
-        advanced_continuity(browser, output, errors, external)
-        constructed_example(browser, output, errors, external)
-        worker_fallback(browser, errors, external)
-        mobile_and_french(browser, output, errors, external)
-        browser.close()
-    assert not errors, errors
-    assert not external, external
+    try:
+        with sync_playwright() as playwright:
+            options: dict[str, Any] = {}
+            if os.environ.get("CHROMIUM_EXECUTABLE"):
+                options = {
+                    "executable_path": os.environ["CHROMIUM_EXECUTABLE"],
+                    "args": ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+                }
+            browser = playwright.chromium.launch(**options)
+            try:
+                raw = first_use(browser, output, errors, external)
+                restore_and_interrupt(browser, raw, output, errors, external)
+                custom_and_errors(browser, output, errors, external)
+                advanced_continuity(browser, output, errors, external)
+                constructed_example(browser, output, errors, external)
+                worker_fallback(browser, errors, external)
+                mobile_and_french(browser, output, errors, external)
+            finally:
+                browser.close()
+        assert not errors, errors
+        assert not external, external
+        return {
+            "passed": True,
+            "entryUrl": entry_url,
+            "documentSourceVerified": expected_page_sha256 is not None,
+            "checks": [
+                "first-use-and-keyboard-focus",
+                "exact-csv-artifacts",
+                "all-competitive-comparisons",
+                "separate-unfunded-routes-and-current-contracts",
+                "portable-offline-french-english-rerun",
+                "historical-restore-and-cancel",
+                "malformed-and-stale-input-rejection",
+                "constructed-program-and-frozen-commitment",
+                "downloaded-tool-on-changed-inputs",
+                "complete-discrepancy-actions",
+                "native-sdk-and-node-host-return-import",
+                "learning-archive-and-offline-continuity",
+                "bounded-local-improvement-and-hold",
+                "worker-disabled-fallback",
+                "mobile-and-french",
+                "no-page-errors-no-csp-violations-no-external-dependencies",
+            ],
+            "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),
+            "languages": ["en", "fr"],
+            "viewports": [1440, 390, 320],
+            "errors": list(errors) + list(external),
+            "browser_errors": [error for error in errors if not error.startswith("HTTP_FAILURE:")],
+            "http_failures": [error for error in errors if error.startswith("HTTP_FAILURE:")],
+            "screenshots": sorted(path.name for path in output.glob("*.png")),
+        }
+    finally:
+        URL, EXPECTED_PAGE_SHA256 = previous_url, previous_digest
+
+
+def main() -> None:
+    output = Path(os.environ.get("SUCCESSOR_ALPHA_SCREENSHOTS", tempfile.mkdtemp(prefix="successor-alpha-browser-")))
+    run_acceptance(URL, output)
     print(f"SUCCESSOR Alpha browser acceptance passed; screenshots: {output}")
 
 

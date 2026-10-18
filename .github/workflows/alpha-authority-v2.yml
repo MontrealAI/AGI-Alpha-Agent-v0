@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main, codex/alpha-creator-authority-v2-20261016]
+    branches: [main, codex/alpha-creator-authority-v2-20261016, codex/alpha-marker-direct-origination-20261016]
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,7 +22,7 @@ env:
 jobs:
   offline-qualification:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Initialize outside-checkout runner paths
         run: |
@@ -76,9 +76,15 @@ jobs:
           run_check empty-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven empty-eoa-direct-create.v1'
           run_check delegated-session node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js --grep 'coordinates all seven delegated-eoa-direct-create.v1'
           run_check io-relay node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/authority-io.test.js authority-test/authority-session-relay.test.js
+          run_check origination env ALPHA_DISPOSABLE_TRACE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/direct-origination-traces.json" node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/authority-origination.test.js
+          run_check creator-unit node --max-old-space-size=384 --test authority-test/creator-terminal.test.cjs authority-test/ephemeral-key.test.cjs authority-test/creator-native-contract.test.cjs
+          run_check creator-pty python authority-test/creator-pty.test.py "$(command -v node)"
+          run_check creator-local env ALPHA_CREATOR_TEST_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/creator-local-private" node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/creator-local.test.js
           run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs authority-test/authority-revision.test.cjs authority-test/authority-input-boundary.test.cjs
           run_check native-empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
           run_check native-delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
+          run_check native-marker env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=marker ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-marker" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
+          run_check native-creator env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_CREATOR_NATIVE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-creator" node --max-old-space-size=384 authority-test/creator-clean-checkout.cjs
       - name: Derive exact-head evidence without rewriting historical source records
         if: always()
         run: node tests/contracts/authority-test/native-ci-evidence.cjs finish
@@ -87,5 +93,62 @@ jobs:
         with:
           name: alpha-authority-v2-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ env.ALPHA_NATIVE_STATE_DIRECTORY }}/public/
+          if-no-files-found: error
+          retention-days: 30
+  conventional-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: 'true'
+      DO_NOT_TRACK: '1'
+      HARDHAT_DISABLE_TELEMETRY_PROMPT: 'true'
+    steps:
+      - name: Initialize isolated conventional paths
+        run: |
+          set -euo pipefail
+          printf '%s\n' \
+            "ALPHA_CONVENTIONAL_STATE_DIRECTORY=$RUNNER_TEMP/alpha-conventional-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            "XDG_CONFIG_HOME=$RUNNER_TEMP/alpha-conventional-xdg/config" \
+            "XDG_CACHE_HOME=$RUNNER_TEMP/alpha-conventional-xdg/cache" \
+            "XDG_DATA_HOME=$RUNNER_TEMP/alpha-conventional-xdg/data" >> "$GITHUB_ENV"
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install exact locked toolchain and bind source
+        run: |
+          set -euo pipefail
+          node tests/contracts/authority-test/conventional-ci-evidence.cjs init
+          echo '070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667  tests/contracts/package-lock.json' | sha256sum --check
+          npm ci --prefix tests/contracts
+      - name: Compile and exercise conventional empty and marker creators
+        working-directory: tests/contracts
+        run: |
+          set -euo pipefail
+          run_check() {
+            local label="$1"; shift
+            set +e
+            "$@" > "$ALPHA_CONVENTIONAL_STATE_DIRECTORY/logs/$label.log" 2>&1
+            local code=$?
+            set -e
+            printf '%s\n' "$code" > "$ALPHA_CONVENTIONAL_STATE_DIRECTORY/logs/$label.exit"
+            echo "$label exit=$code"
+            return "$code"
+          }
+          run_check compile timeout -k 5s 600s npm run compile:strict
+          run_check unit timeout -k 5s 120s node --max-old-space-size=1024 --test authority-test/conventional-creator.test.cjs authority-test/conventional-ci.test.cjs authority-test/creator-terminal.test.cjs authority-test/ephemeral-key.test.cjs
+          run_check local env ALPHA_CONVENTIONAL_TEST_OUTPUT="$ALPHA_CONVENTIONAL_STATE_DIRECTORY/campaign" timeout -k 5s 300s node --max-old-space-size=1024 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/conventional-creator-local.test.js
+      - name: Verify exact-head conventional evidence
+        if: always()
+        run: node tests/contracts/authority-test/conventional-ci-evidence.cjs finish
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: alpha-conventional-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.ALPHA_CONVENTIONAL_STATE_DIRECTORY }}/public/
           if-no-files-found: error
           retention-days: 30

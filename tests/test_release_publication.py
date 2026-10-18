@@ -869,3 +869,61 @@ def test_integrated_operator_guide_contains_adapter_and_reservation_instructions
         "docs/agent/SUCCESSOR_COMPUTER_USE.md",
         "docs/agent/NATIVE_BUDGET_RESERVATIONS.md",
     } <= documents
+
+
+@pytest.mark.parametrize("kind", ["commit", "tag"])
+@pytest.mark.parametrize("target", [None, "a" * 40, "b" * 40])
+def test_publication_preflight_detects_version_collision_without_activation(
+    tmp_path, monkeypatch, kind, target
+) -> None:
+    """Publication only needs source/release checks, never live activation or journal closure."""
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.34.0"\n')
+    monkeypatch.setattr(publish_agent_release, "require_current_main", lambda: "a" * 40)
+    calls = []
+
+    def read_only_github(*args):
+        calls.append(args)
+        assert len(args) == 2 and args[0] == "api", "Preflight must never mutate GitHub"
+        if args[1].endswith("/git/matching-refs/tags/v1.34.0"):
+            # Prefix matches must not collide with the exact version.
+            refs = [{"ref": "refs/tags/v1.34.01", "object": {"type": "commit", "sha": "b" * 40}}]
+            if target:
+                refs.append(
+                    {"ref": "refs/tags/v1.34.0", "object": {"type": kind, "sha": "c" * 40 if kind == "tag" else target}}
+                )
+            return json.dumps(refs)
+        assert kind == "tag" and args[1].endswith("/git/tags/" + "c" * 40)
+        return json.dumps({"object": {"type": "commit", "sha": target}})
+
+    monkeypatch.setattr(publish_agent_release, "gh", read_only_github)
+    if target == "b" * 40:
+        with pytest.raises(ValueError, match="increment the release version"):
+            publish_agent_release.preflight()
+    else:
+        publish_agent_release.preflight()
+    assert calls
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["pyproject.toml"]
+
+
+def test_publication_preflight_fails_closed_on_github_error(tmp_path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.34.0"\n')
+    monkeypatch.setattr(publish_agent_release, "require_current_main", lambda: "a" * 40)
+
+    def unavailable(*args):
+        raise subprocess.CalledProcessError(1, ["gh", *args], stderr="HTTP 403")
+
+    monkeypatch.setattr(publish_agent_release, "gh", unavailable)
+    with pytest.raises(subprocess.CalledProcessError):
+        publish_agent_release.preflight()
+
+
+def test_publication_preflight_rejects_superseded_main_before_tag_lookup(monkeypatch) -> None:
+    def superseded():
+        raise RuntimeError("Superseded release run")
+
+    monkeypatch.setattr(publish_agent_release, "require_current_main", superseded)
+    monkeypatch.setattr(publish_agent_release, "gh", lambda *args: pytest.fail("Tag lookup before context check"))
+    with pytest.raises(RuntimeError, match="Superseded"):
+        publish_agent_release.preflight()
