@@ -117,6 +117,7 @@ export function createJoinMission(input) {
 export function validateJoinMission(mission) {
     if (!ownKeys(mission, ['schemaVersion', 'kind', 'left', 'right', 'limits', 'workload'])
         || mission.schemaVersion !== 1 || mission.kind !== 'catalog_join') fail('Unsupported join mission.');
+    if (!ownKeys(mission.limits, Object.keys(DEFAULT_LIMITS))) fail('Imported missions require all six resource limits.');
     const limits = limitsFor(mission.limits);
     for (const side of [mission.left, mission.right]) {
         if (!ownKeys(side, ['headers', 'rows', 'key', 'keyIndex']) || !Array.isArray(side.headers)

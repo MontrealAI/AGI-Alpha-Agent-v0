@@ -196,6 +196,7 @@ export function buildCapability(mission, result) {
     if (!alpha.STRATEGIES.some(s => s.id === selected)) throw Error('Unsupported strategy.');
     return engineSource + '\n' + `
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
+import {constants} from 'node:fs';
 import {resolve, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
@@ -206,13 +207,21 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   } else {
     const fsStat = await import('node:fs/promises');
     const readBounded=async path=>{
-      const handle=await fsStat.open(path,'r');
+      const initial=await fsStat.stat(path);
+      if(!initial.isFile()||initial.size>200000)throw Error('Input must be a regular CSV file up to 200 KB.');
+      const handle=await fsStat.open(path,constants.O_RDONLY|constants.O_NONBLOCK);
       try {
         const stat=await handle.stat();
         if(!stat.isFile()||stat.size>200000)throw Error('Input must be a regular CSV file up to 200 KB.');
-        const bytes=Buffer.alloc(200001),read=await handle.read(bytes,0,200001,0);
-        if(read.bytesRead>200000)throw Error('CSV exceeds 200 KB.');
-        return new TextDecoder('utf-8',{fatal:true}).decode(bytes.subarray(0,read.bytesRead));
+        const bytes=Buffer.alloc(200001);
+        let used=0;
+        while(used<bytes.length){
+          const {bytesRead}=await handle.read(bytes,used,bytes.length-used,null);
+          if(bytesRead===0)break;
+          used+=bytesRead;
+        }
+        if(used>200000)throw Error('CSV exceeds 200 KB.');
+        return new TextDecoder('utf-8',{fatal:true}).decode(bytes.subarray(0,used));
       }finally{await handle.close();}
     };
     const mission=createJoinMission({leftCsv:await readBounded(leftFile),rightCsv:await readBounded(rightFile),leftKey,rightKey});

@@ -20,7 +20,8 @@ Browser preparation is free. Execution, participant review and settlement requir
 
 > **[Find your advantage. Make it work. Keep what you build. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
 > Reconcile two public, synthetic or licensed nonpersonal CSV catalogs. Keep the joined catalog, unmatched rows,
-> discrepancies and a working offline tool. Compare the maintained strategies and inspect their limitations.
+> discrepancies and a working offline tool. Construct and test bounded strategies, execute a discrepancy-action
+> reframing, and retain checked native workbench returns with the same project. Inspect each comparison's limits.
 > Local engineering results support the specific task; economic benefit and independently protected proof remain
 > to be established. [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 

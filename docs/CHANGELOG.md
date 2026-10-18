@@ -2,6 +2,9 @@
 
 - Add a bilingual catalog reconciliation example with joined output, unmatched rows, discrepancies and a reusable offline tool.
 - Compare maintained strategies on the same bounded task while retaining exact inputs, results and project history.
+- Construct bounded composite join plans, test a frozen plan on fresh local cases, and execute a per-key discrepancy reframing.
+- Connect the exact catalog cycle to the existing native workbench and Jobs compiler with checked local returns.
+- Require complete imported resource limits; keep standalone file reads bounded through short reads and reject nonregular inputs.
 - Distinguish development, local engineering evidence, estimated economics, independent proof and authorized succession.
 - Preserve existing laboratories, flows and diagrams. See the [flagship guide](agent/SUCCESSOR_ALPHA.md).
 

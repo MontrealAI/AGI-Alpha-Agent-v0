@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import os
+import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -91,7 +93,7 @@ def expected_outputs(mission: dict[str, Any]) -> dict[str, list[list[str]]]:
 
 
 def context_page(
-    browser: Browser, errors: list[str], external: list[str], width: int = 1440
+    browser: Browser, errors: list[str], external: list[str], width: int = 1440, disable_worker: bool = False
 ) -> tuple[BrowserContext, Page]:
     context = browser.new_context(
         viewport={"width": width, "height": 1050}, accept_downloads=True, reduced_motion="reduce"
@@ -100,6 +102,8 @@ def context_page(
         "document.addEventListener('securitypolicyviolation', e => console.error('ALPHA_CSP_VIOLATION:' + "
         "JSON.stringify({directive:e.violatedDirective, blocked:e.blockedURI})))"
     )
+    if disable_worker:
+        context.add_init_script("globalThis.Worker = undefined")
     page = context.new_page()
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on(
@@ -287,18 +291,352 @@ def custom_and_errors(browser: Browser, output: Path, errors: list[str], externa
     expect(page.locator("#key-mapping")).to_be_visible()
     page.locator("#left-csv").fill("sku,name\nB,Edited\n")
     expect(page.locator("#key-mapping")).not_to_be_visible()
-    page.evaluate("""() => {
+    page.evaluate(
+        """() => {
         globalThis.originalFileRead = File.prototype.arrayBuffer;
         File.prototype.arrayBuffer = function() {
-            return new Promise(resolve => { globalThis.releaseFileRead = () => originalFileRead.call(this).then(resolve); });
+            return new Promise(resolve => {
+                globalThis.releaseFileRead = () => originalFileRead.call(this).then(resolve);
+            });
         };
-    }""")
+    }"""
+    )
     upload(page, "#left-file", b"sku,name\nC,Stale\n", "catalog.csv")
     page.locator("#left-csv").fill("sku,name\nD,Keep my edit\n")
     page.evaluate("() => { File.prototype.arrayBuffer = originalFileRead; releaseFileRead(); }")
     expect(page.locator("#error")).to_contain_text("Inputs changed")
     expect(page.locator("#left-csv")).to_have_value("sku,name\nD,Keep my edit\n")
     page.screenshot(path=str(output / "05-invalid-and-stale-input.png"), full_page=True)
+    context.close()
+
+
+def advanced_continuity(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
+    context, page = context_page(browser, errors, external)
+    page.locator("#hero-custom").click()
+    page.locator("#left-csv").fill('sku,name,price\nA,"Alpha, one",10\nA,=SUM(1),11\nZ,Missing,0\n')
+    page.locator("#right-csv").fill('id,name,price\nA,"Alpha, one",10\nA,Other,12\nY,New,3\n')
+    page.locator("#check-columns").click()
+    page.locator("#left-key").select_option("sku")
+    page.locator("#right-key").select_option("id")
+    page.locator("#custom-start").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    page.locator("#research-panel > summary").click()
+    page.locator("#research-memory").fill("64")
+    page.locator("#research-weight").fill("0")
+    page.locator("#research-run").click()
+    expect(page.locator("#research-result")).to_be_visible()
+    strategy = json.loads(download(page, "#download-research"))
+    assert strategy["schema"] == "successor-strategy-research/v1"
+    assert strategy["qualification"] == "local_engineering_only"
+    for field in (
+        "independentlyQualified",
+        "protectedHoldout",
+        "externalAuthority",
+        "modelUsed",
+        "algorithmNoveltyClaim",
+    ):
+        assert strategy[field] is False
+    assert strategy["confirmation"]["publicSynthetic"] is True
+    assert strategy["confirmation"]["protected"] is False
+    assert strategy["decision"]["state"] in ("held", "local_improvement")
+    candidates = strategy["candidates"]
+    assert len(candidates) == 20 and all(x["correct"] for x in candidates)
+    assert len({x["planHash"] for x in candidates}) > 1
+    pairs_raw = json.dumps([[0, 0], [0, 1], [1, 0], [1, 1]], separators=(",", ":"))
+    assert all(x["pairsHash"] == hashlib.sha256(pairs_raw.encode()).hexdigest() for x in candidates)
+    plan_tool = download(page, "#download-plan-tool")
+    assert strategy["decision"]["retainedPlanHash"].encode() in plan_tool
+    changed_inputs = {
+        "leftCsv": "code,title\nN,one\nN,two\nM,left\n",
+        "rightCsv": "id,title\nN,one\nN,right\nQ,new\n",
+        "leftKey": "code",
+        "rightKey": "id",
+    }
+    with tempfile.TemporaryDirectory(prefix="alpha-downloaded-capability-") as directory:
+        tool_path = Path(directory) / "retained.mjs"
+        tool_path.write_bytes(plan_tool)
+        script = (
+            "const m=await import(process.argv[1]);const r=m.reconcileCatalogs(JSON.parse(process.argv[2]));"
+            "console.log(JSON.stringify({metadata:m.metadata,result:r}));"
+        )
+        outcome = subprocess.run(
+            [
+                os.environ.get("NODE_EXECUTABLE", "node"),
+                "--input-type=module",
+                "-e",
+                script,
+                tool_path.as_uri(),
+                json.dumps(changed_inputs),
+            ],
+            cwd=directory,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert outcome.returncode == 0, outcome.stderr
+        executable_result = json.loads(outcome.stdout)
+    assert executable_result["metadata"]["planHash"] == strategy["decision"]["retainedPlanHash"]
+    exact_changed = json.loads(executable_result["result"]["exactJson"])
+    assert exact_changed["mission"]["left"]["rows"] == rows(changed_inputs["leftCsv"].encode())[1:]
+    assert exact_changed["mission"]["right"]["rows"] == rows(changed_inputs["rightCsv"].encode())[1:]
+    changed_outputs = expected_outputs(exact_changed["mission"])
+    for field, selector in {
+        "joinedCsv": "download-joined",
+        "unmatchedLeftCsv": "download-unmatched-left",
+        "unmatchedRightCsv": "download-unmatched-right",
+        "conflictsCsv": "download-conflicts",
+    }.items():
+        assert rows(executable_result["result"][field].encode()) == changed_outputs[selector]
+    assert executable_result["result"]["scope"]["independentlyQualified"] is False
+    assert executable_result["result"]["scope"]["externalAuthority"] is False
+    frozen = strategy["frozen"]
+    plan_raw = json.dumps(frozen["plan"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    assert frozen["planHash"] == hashlib.sha256(plan_raw.encode()).hexdigest()
+    commitment = {key: value for key, value in frozen.items() if key != "commitment"}
+    commitment_raw = json.dumps(commitment, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    assert frozen["commitment"] == hashlib.sha256(commitment_raw.encode()).hexdigest()
+    expect(page.locator("#research-candidates > tr")).to_have_count(len(strategy["baselines"]) + len(candidates))
+    page.locator("#research-run").click()
+    expect(page.locator("#research-run")).to_be_enabled()
+    repeated_strategy = json.loads(download(page, "#download-research"))
+    assert repeated_strategy["frozen"] == frozen, "Repeating a fixed mission must retain the same plan commitment"
+    page.locator("#resolution-panel > summary").click()
+    page.locator("#resolution-run").click()
+    expect(page.locator("#resolution-result")).to_be_visible()
+    actions_csv = rows(download(page, "#download-actions"))
+    assert actions_csv[0] == [
+        "action",
+        "exact_key",
+        "type",
+        "left_data_rows",
+        "right_data_rows",
+        "original_review_occurrences",
+        "next_step",
+    ]
+    assert len(actions_csv) == 4
+    occurrence_ids = [item for row in actions_csv[1:] for item in row[5].split(";")]
+    expected_occurrences = {"left:2", "right:2", "conflict:0:1", "conflict:1:0", "conflict:1:1"}
+    assert len(occurrence_ids) == 5 and set(occurrence_ids) == expected_occurrences
+    assert {row[1] for row in actions_csv[1:]} == {"A", "Y", "Z"}
+    page.screenshot(path=str(output / "09-constructed-strategy-and-reframing.png"), full_page=True)
+    accessibility(page)
+    page.locator("#keep-capability").click()
+    page.locator("#project-name").fill("Catalog continuity")
+    page.locator("#native-panel > summary").click()
+    page.locator("#native-rights").select_option("synthetic")
+    for selector, value in {
+        "#native-source": "Synthetic browser acceptance catalogs",
+        "#native-license": "Apache-2.0",
+        "#native-owner": "local-owner",
+        "#native-name": "Catalog continuity",
+        "#native-review-minutes": "10",
+    }.items():
+        page.locator(selector).fill(value)
+    page.locator("#native-prepare").click()
+    expect(page.locator("#download-native-handoff")).to_be_enabled()
+    handoff_raw = download(page, "#download-native-handoff")
+    handoff = json.loads(handoff_raw)
+    assert handoff["schema"] == "successor-alpha-native-handoff/v1"
+    historical_project = json.loads(handoff["project"]["raw"])
+    cycle = historical_project["cycles"][-1]
+    assert handoff["project"]["id"] == historical_project["id"]
+    assert handoff["project"]["sha256"] == hashlib.sha256(handoff["project"]["raw"].encode()).hexdigest()
+    assert handoff["cycle"]["id"] == cycle["id"]
+    assert handoff["cycle"]["sourceHash"] == cycle["sourceHash"]
+    spec = json.loads(handoff["specRaw"])
+    assert spec["family"] == "catalog-reconciliation"
+    assert spec["inputs"] == {"mission": cycle["mission"]}
+    assert spec["rights"] == {
+        "dataClass": "synthetic",
+        "source": "Synthetic browser acceptance catalogs",
+        "license": "Apache-2.0",
+    }
+    assert handoff["route"] == {
+        "backend": "native-jobs-compiler-local",
+        "asset": "AGIALPHA",
+        "funding": "unfunded-proposal",
+    }
+    compilation = json.loads(handoff["compilationRaw"])
+    assert len(compilation["graph"]["nodes"]) == 7
+    assert compilation["authorityCreated"] == "NONE"
+    assert compilation["signatureStatus"] == "UNSIGNED_COMMITMENT"
+    assert compilation["budgetReservations"]["reservedBaseUnits"] == "0"
+    assert all(x["status"] == "REQUESTED_NOT_GRANTED" for x in compilation["capabilityRequests"])
+    page.locator("#native-run").click()
+    expect(page.locator("#download-native-return")).to_be_enabled()
+    returned_raw = download(page, "#download-native-return")
+    returned = json.loads(returned_raw)
+    assert returned["schema"] == "successor-alpha-native-return/v1"
+    assert returned["handoffSha256"] == hashlib.sha256(handoff_raw).hexdigest()
+    assert returned["projectId"] == historical_project["id"] and returned["cycleId"] == cycle["id"]
+    assert returned["authority"] == "none" and returned["settlement"] == "not-connected"
+    pack = json.loads(returned["nativePackRaw"])
+    assert pack["spec"] == spec
+    assert pack["evaluation"] == {
+        "scope": "PUBLIC_LOCAL_EXECUTION",
+        "independentProof": False,
+        "admission": "HOLD",
+        "authority": [],
+        "settlement": "NOT_CONNECTED",
+    }
+    assert pack["result"]["summary"] == {"matchedPairs": 4, "unmatchedLeft": 1, "unmatchedRight": 1, "conflicts": 3}
+    produced = {x["name"]: x["content"].encode() for x in pack["result"]["artifacts"]}
+    expected = expected_outputs(cycle["mission"])
+    for filename, selector in {
+        "joined.csv": "download-joined",
+        "unmatched-left.csv": "download-unmatched-left",
+        "unmatched-right.csv": "download-unmatched-right",
+        "conflicts.csv": "download-conflicts",
+    }.items():
+        assert rows(produced[filename]) == expected[selector]
+    assert json.loads(produced["exact-result.json"])["mission"] == cycle["mission"]
+    with tempfile.TemporaryDirectory(prefix="alpha-native-host-") as directory:
+        input_path = Path(directory) / "handoff.json"
+        output_path = Path(directory) / "return.json"
+        input_path.write_bytes(handoff_raw)
+        outcome = subprocess.run(
+            [
+                os.environ.get("NODE_EXECUTABLE", "node"),
+                str(ROOT / "examples/successor-alpha/native-cli.mjs"),
+                str(input_path),
+                str(output_path),
+            ],
+            cwd=directory,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        assert outcome.returncode == 0, outcome.stderr
+        host_summary = json.loads(outcome.stdout)
+        host_return_raw = output_path.read_bytes()
+    assert host_summary["execution"] == "installed-local-node"
+    assert host_summary["projectId"] == historical_project["id"] and host_summary["cycleId"] == cycle["id"]
+    assert host_summary["sourceHash"] == handoff["runtimeSourceHash"]
+    assert host_summary["independentlyQualified"] is False and host_summary["authority"] == "none"
+    upload(page, "#native-return-input", host_return_raw, "host-return.json")
+    if not page.locator("#learning-history-panel").evaluate("el => el.open"):
+        page.locator("#learning-history-panel > summary").click()
+    expect(page.locator("#learning-summary")).to_contain_text("2 checked native returns")
+    assert download(page, "#download-native-return") == host_return_raw
+    host_return = json.loads(host_return_raw)
+    host_pack = json.loads(host_return["nativePackRaw"])
+    assert host_pack["spec"] == spec and host_pack["result"]["summary"] == pack["result"]["summary"]
+    for artifact in host_pack["result"]["artifacts"]:
+        if artifact["name"] in produced and artifact["name"] != "exact-result.json":
+            assert artifact["content"].encode() == produced[artifact["name"]]
+    archive_raw = download(page, "#download-learning")
+    archive = json.loads(archive_raw)
+    assert archive["schema"] == "successor-alpha-learning-archive/v1"
+    assert archive["project"]["id"] == historical_project["id"]
+    assert archive["project"]["cycles"] == historical_project["cycles"]
+    retained_record = next(x for x in archive["records"] if x["cycleId"] == cycle["id"])
+    assert retained_record["strategy"] == repeated_strategy
+    resolution = retained_record["resolution"]
+    assert resolution["schema"] == "successor-discrepancy-resolution/v1"
+    assert resolution["coverage"]["complete"] is True
+    assert resolution["coverage"]["originalOccurrences"] == resolution["coverage"]["coveredOccurrences"] == 5
+    assert resolution["coverage"]["missing"] == resolution["coverage"]["duplicates"] == []
+    assert resolution["burden"]["groupedActions"] == 3 and resolution["burden"]["pairwiseReviewItems"] == 5
+    assert resolution["burden"]["timeSavedClaim"] is False and resolution["burden"]["sameTaskSuperiority"] is False
+    assert resolution["contract"]["changed"] is True
+    assert resolution["automaticallyResolved"] is False and resolution["externalAuthority"] is False
+    assert rows(resolution["actionsCsv"].encode()) == actions_csv
+    continuity = json.loads(archive["nativeContinuityRaw"])
+    assert continuity["projectId"] == historical_project["id"] and len(continuity["returns"]) == 2
+    assert continuity["returns"][0]["handoffRaw"] == handoff_raw.decode()
+    assert continuity["returns"][0]["returnRaw"] == returned_raw.decode()
+    assert continuity["returns"][1]["returnRaw"] == host_return_raw.decode()
+    assert continuity["authority"] == "none" and continuity["qualification"] == "not_independently_qualified"
+    corrupt = dict(returned, cycleId="00000000-0000-4000-8000-000000000000")
+    upload(page, "#native-return-input", json.dumps(corrupt).encode(), "changed-return.json")
+    expect(page.locator("#native-error")).to_be_visible()
+    assert json.loads(download(page, "#download-learning"))["nativeContinuityRaw"] == archive["nativeContinuityRaw"]
+    page.screenshot(path=str(output / "10-native-catalog-continuity.png"), full_page=True)
+    accessibility(page)
+    portable_path = output / "learning-workspace.html"
+    portable_path.write_bytes(download(page, "#download-workspace"))
+    context.close()
+
+    context, page = context_page(browser, errors, external)
+    upload(page, "#restore-learning-top", archive_raw, "learning.json")
+    expect(page.locator("#restored-note")).to_contain_text("historical")
+    if not page.locator("#learning-history-panel").evaluate("el => el.open"):
+        page.locator("#learning-history-panel > summary").click()
+    expect(page.locator("#learning-summary")).not_to_have_text("")
+    restored = json.loads(download(page, "#download-learning"))
+    assert restored["project"]["cycles"] == historical_project["cycles"]
+    assert restored["nativeContinuityRaw"] == archive["nativeContinuityRaw"]
+    context.set_offline(True)
+    page.goto(portable_path.as_uri())
+    expect(page.locator("#restored-note")).to_contain_text("historical")
+    page.locator("#learning-history-panel").evaluate("el => el.open = true")
+    retained = json.loads(download(page, "#download-learning"))
+    assert retained["nativeContinuityRaw"] == archive["nativeContinuityRaw"]
+    assert retained["project"]["cycles"] == historical_project["cycles"]
+    page.screenshot(path=str(output / "11-retained-learning-offline.png"), full_page=True)
+    context.close()
+
+
+def constructed_example(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
+    context, page = context_page(browser, errors, external)
+    page.locator("#hero-start").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    page.locator("#research-panel > summary").click()
+    page.locator("#research-example").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    page.locator("#research-panel").evaluate("el => el.open = true")
+    page.locator("#research-run").click()
+    expect(page.locator("#research-result")).to_be_visible()
+    report = json.loads(download(page, "#download-research"))
+    assert report["decision"]["state"] == "local_improvement" and report["decision"]["promoted"] is True
+    assert report["confirmation"]["passed"] is True and report["confirmation"]["developmentImproved"] is True
+    assert report["confirmation"]["protected"] is False and report["independentlyQualified"] is False
+    assert report["frozen"]["plan"]["guard"]["op"] == "uniform_key"
+    assert report["confirmation"]["candidate"]["objectiveValue"] < report["confirmation"]["incumbent"]["objectiveValue"]
+    assert report["qualification"] == "local_engineering_only" and report["externalAuthority"] is False
+    page.screenshot(path=str(output / "12-constructed-example-local-improvement.png"), full_page=True)
+    page.locator("#keep-capability").click()
+    project = json.loads(download(page, "#download-project"))
+    assert len(project["cycles"]) == 2
+    mission = project["cycles"][-1]["mission"]
+    assert len({row[mission["left"]["keyIndex"]] for row in mission["left"]["rows"]}) == 1
+    assert len({row[mission["right"]["keyIndex"]] for row in mission["right"]["rows"]}) == 1
+    assert len(mission["left"]["rows"]) > 64 and len(mission["right"]["rows"]) > 64
+    context.close()
+
+
+def worker_fallback(browser: Browser, errors: list[str], external: list[str]) -> None:
+    context, page = context_page(browser, errors, external, disable_worker=True)
+    assert page.evaluate("typeof Worker") == "undefined"
+    page.locator("#hero-custom").click()
+    page.locator("#left-csv").fill("sku,value\nA,one\nB,two\n")
+    page.locator("#right-csv").fill("sku,value\nB,two\nC,three\n")
+    page.locator("#check-columns").click()
+    page.locator("#custom-start").click()
+    expect(page.locator("#pane-evidence")).to_be_visible()
+    expect(page.locator("#matched-count")).to_have_text("1")
+    assert rows(download(page, "#download-joined")) == [
+        ["left.sku", "left.value", "right.sku", "right.value"],
+        ["B", "two", "B", "two"],
+    ]
+    page.locator("#research-panel > summary").click()
+    page.locator("#research-run").click()
+    expect(page.locator("#research-result")).to_be_visible()
+    report = json.loads(download(page, "#download-research"))
+    assert len(report["candidates"]) == 20 and all(x["correct"] for x in report["candidates"])
+    assert report["decision"]["state"] == "held" and report["decision"]["promoted"] is False
+    assert report["qualification"] == "local_engineering_only"
+    for field in (
+        "independentlyQualified",
+        "protectedHoldout",
+        "externalAuthority",
+        "modelUsed",
+        "algorithmNoveltyClaim",
+    ):
+        assert report[field] is False
+    assert report["confirmation"]["publicSynthetic"] is True and report["confirmation"]["protected"] is False
     context.close()
 
 
@@ -341,6 +679,9 @@ def main() -> None:
         raw = first_use(browser, output, errors, external)
         restore_and_interrupt(browser, raw, output, errors, external)
         custom_and_errors(browser, output, errors, external)
+        advanced_continuity(browser, output, errors, external)
+        constructed_example(browser, output, errors, external)
+        worker_fallback(browser, errors, external)
         mobile_and_french(browser, output, errors, external)
         browser.close()
     assert not errors, errors

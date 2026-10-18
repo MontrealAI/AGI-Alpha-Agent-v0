@@ -38,6 +38,29 @@ test('limits cap bytes, rows, columns, and cell sizes', () => {
     assert.throws(() => parseCsv('key\na', { unknown: 1 }));
 });
 
+test('imported missions require every resource limit before validation or export', () => {
+    const input = mission(), pairs = executeJoin(input, 'smaller_side_hash').pairs;
+    for (const key of Object.keys(DEFAULT_LIMITS)) {
+        const imported = structuredClone(input);
+        delete imported.limits[key];
+        assert.throws(() => validateJoinMission(imported), /all six resource limits/);
+        assert.throws(() => exportJoinedCsv(imported, pairs), /all six resource limits/);
+    }
+    for (const limits of [null, [], {}, 'defaults', { ...DEFAULT_LIMITS, extra: 1 },
+        { ...DEFAULT_LIMITS, maxOutputBytes: undefined }, { ...DEFAULT_LIMITS, maxOutputBytes: 0 },
+        { ...DEFAULT_LIMITS, maxOutputBytes: 2000001 }, { ...DEFAULT_LIMITS, maxOutputBytes: '2000000' }]) {
+        const imported = structuredClone(input); imported.limits = limits;
+        assert.throws(() => validateJoinMission(imported));
+        assert.throws(() => exportJoinedCsv(imported, pairs));
+    }
+    const created = createJoinMission({ leftCsv: 'id\na', rightCsv: 'id\na', leftKey: 'id', rightKey: 'id',
+        limits: { maxOutputPairs: 8 } });
+    assert.equal(validateJoinMission(created), true);
+    assert.equal(created.limits.maxOutputPairs, 8);
+    assert.equal(created.limits.maxOutputBytes, DEFAULT_LIMITS.maxOutputBytes);
+    assert.deepEqual(Object.keys(created.limits).sort(), Object.keys(DEFAULT_LIMITS).sort());
+});
+
 test('mission requires valid key columns and nonempty exact keys', () => {
     assert.throws(() => createJoinMission({ leftCsv: 'id\n""', rightCsv: 'id\na', leftKey: 'id', rightKey: 'id' }));
     assert.throws(() => createJoinMission({ leftCsv: 'id\na', rightCsv: 'id\na', leftKey: 'missing', rightKey: 'id' }));

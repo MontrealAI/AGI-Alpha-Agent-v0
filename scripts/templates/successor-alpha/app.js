@@ -7,6 +7,8 @@ let stage = 0, mode = 'example', mission = null, result = null, dossier = null;
 let valueEstimate = null;
 let artifacts = null, busy = false, controller = null, runToken = 0, revision = 0, importToken = 0;
 let notice = null, lastStatus = null, lastError = null;
+let learningRecords = [], nativeHandoffRaw = null, nativeReturnRaw = null, nativeContinuityRaw = null, nativeChecked = null;
+let learningBusy = null, learningController = null, learningToken = 0, nativeFormRevision = 0, researchFormRevision = 0;
 const sample = alpha.createSampleMission({seed: 42, leftRows: 240, rightRows: 360});
 const en = {};
 for (const el of document.querySelectorAll('[data-i18n]')) {
@@ -15,6 +17,11 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
     en[el.dataset.i18n] = clone.textContent;
 }
 const fr = {
+    researchTitle:'Aller plus loin : composer une meilleure stratégie',researchIntro:'Explorez des combinaisons délimitées d’opérations connues : partitionnement, réutilisation des clés dupliquées et choix d’index. Figez le plan sélectionné, puis confirmez-le sur de nouvelles données synthétiques publiques. Un HOLD légitime conserve la référence.',researchMemory:'Maximum de références de lignes auxiliaires',researchWeight:'Poids de chaque référence auxiliaire',researchRun:'Composer et tester des stratégies',researchScope:'RECHERCHE DE STRATÉGIE LOCALE · NON QUALIFIÉE INDÉPENDAMMENT',researchCandidates:'Stratégies composées et références',researchPlan:'Plan',researchAuxiliary:'Références de lignes au pic',researchFeasible:'Budget respecté',researchLimits:'Composition délimitée d’opérations examinées, avec une confirmation synthétique publique. Ce n’est ni une évaluation protégée, ni la découverte d’un nouvel algorithme, ni une certification indépendante, ni une valeur organisationnelle réalisée.',researchDownload:'Stratégie, engagement et confirmation',researchExampleNote:'Pour voir pourquoi la structure compte, commencez un cycle synthétique distinct riche en doublons. Cette mission reste dans votre historique.',researchExample:'Essayer une mission d’apprentissage riche en doublons ↗',researchTool:'Télécharger la capacité du plan conservé · .mjs',
+    resolutionTitle:'Reformuler : que faut-il décider ?',resolutionIntro:'Une longue liste de divergences peut répéter le même problème. Construisez une action par clé concernée en préservant les références de chaque occurrence originale.',resolutionRun:'Construire mon plan d’action sur les divergences',resolutionScope:'REFORMULATION EXÉCUTABLE · CONTRAT DE SORTIE MODIFIÉ',resolutionLimits:'La tâche passe d’une liste d’occurrences à un regroupement de décisions. Cela ne prouve ni un temps de revue équivalent, ni l’exactitude d’une source, ni une supériorité sur la tâche originale. Jointure et divergences originales restent disponibles.',resolutionDownload:'Plan d’action complet avec références sources',
+    nativeTitle:'Poursuivre dans l’espace SUCCESSOR natif',nativeIntro:'Transmettez cette mission de catalogue exacte et son historique au format du workbench SUCCESSOR. Compilez un vrai plan Jobs non financé de sept lots et ramenez les artefacts contrôlés dans le même projet.',nativeScope:'Exécution locale seulement. Sans portefeuille, prestataire distant, fonds ni permission opérationnelle. L’adaptateur de catalogue est inclus dans le SDK du workbench ; les exécuteurs de catalogue compatibles Manager et Fleet ne sont pas installés.',nativeName:'Nom de mission native · 48 caractères maximum',nativeOwner:'Libellé du responsable',nativeRights:'Classe de données autorisée',nativeChooseRights:'Choisir explicitement',nativeSynthetic:'Synthétique',nativePublic:'Public, sans données personnelles',nativeLicensed:'Sous licence, sans données personnelles',nativeReview:'Capacité de revue · minutes, 1–120',nativeSource:'Source des données et déclaration d’usage autorisé',nativeLicense:'Licence ou base de permission explicite',nativePrepare:'Préparer la mission native et le plan Jobs',nativePreparedLabel:'MÊME MISSION · WORKBENCH NATIF · BROUILLON $AGIALPHA NON FINANCÉ',nativeRun:'Répéter localement avec le SDK du workbench',nativeDownloadHandoff:'Mission native exacte, plan et transmission du projet',nativeImportReturn:'Importer un fichier de retour natif',nativeReturnUpload:'Importer un retour natif',nativeHistorical:'RÉSULTAT LOCAL HISTORIQUE · EXAMEN TOUJOURS REQUIS',nativeDownloadReturn:'Retour natif contrôlé',nativeReturnLimits:'Le retour est lié à cette transmission, ces sources, cette mission et cet historique exacts. Les sorties sont recalculées. Les temps restent historiques ; aucune revue actuelle, qualification indépendante, autorité ou règlement ne sont importés.',nativeArtifactLimit:'Le SDK du workbench limite chaque artefact à 200 000 caractères. Une mission valide ici peut nécessiter un périmètre plus petit pour ce transfert. Le téléchargement source reste disponible.',nativeHostCommand:'Pour une exécution hors navigateur : node examples/successor-alpha/native-cli.mjs successor-native-handoff.json NOUVEAU-retour-natif.json ; importez ensuite le retour natif produit.',
+    learningHistoryTitle:'Stratégies, plans d’action et retours natifs conservés',learningDownload:'Télécharger l’archive d’apprentissage complète',learningRestore:'Restaurer une archive d’apprentissage',learningUpload:'Restaurer une archive d’apprentissage',learningLimit:'L’archive inclut le même projet, les méthodes, les preuves originales et les retours natifs contrôlés. Jusqu’à 2 Mo ; une archive trop volumineuse est refusée sans supprimer d’historique. Les éléments importés restent historiques, sans autorité.',
+
     adoptionTitle:'Cette capacité vaudrait-elle la peine d’être adoptée ?',adoptionIntro:'Estimez votre effort complet, y compris l’examen et les corrections. Les millisecondes du navigateur ne mesurent pas le temps humain gagné.',
     valueBefore:'Minutes actuelles par exécution',valueAfter:'Minutes prévues avec cet outil',valueFrequency:'Exécutions par mois',valueHourly:'Votre valeur d’une heure',valueSetup:'Coût initial de mise en place et d’intégration',valueCurrency:'Devise commune',valueCalculate:'Estimer selon mes hypothèses',valueProjection:'PROJECTION · VOS HYPOTHÈSES',valueLimit:'Calcul arithmétique de vos estimations, pas une économie mesurée ni garantie. Il exclut les coûts non saisis, les coûts récurrents et les coûts d’erreur ou de risque. Vérifiez les résultats réels avant adoption.',valueDownload:'Télécharger les hypothèses et la projection',
     joinedPreview:'Aperçu du catalogue joint',comparisonTable:'Comparaison complète des méthodes',largerText:'Agrandir le texte',returnSetup:'Revenir à la préparation',tryExample:'Essayer l’exemple inclus',skip:'Aller à votre mission',brandCaption:'PAR AGI ALPHA',mainNavigation:'Navigation principale',
@@ -128,6 +135,7 @@ function translate() {
     if (lastStatus) $('status').textContent = say(...lastStatus);
     if (lastError && !$('error').hidden) $('error').textContent = errorMessage(lastError);
     renderValue();
+    renderLearning();
     if (!$('key-mapping').hidden) updateMappingSummary();
 }
 function status(english, french) { lastStatus = [english, french]; $('status').textContent = say(english, french); }
@@ -208,6 +216,8 @@ function renderSample() {
     }
 }
 function clearCurrent() {
+    if (learningBusy) stopLearning();
+    nativeHandoffRaw = null; nativeReturnRaw = null; nativeChecked = null;
     if (busy) cancelRun(false);
     revision += 1; result = null; artifacts = null; mission = null; valueEstimate = null; $('value-result').hidden = true;
     $('restored-note').hidden = true;
@@ -250,8 +260,8 @@ const strategyNames = {
     sort_merge:['Sort and merge · alternative','Tri et fusion · alternative']
 };
 function strategyName(strategy) { return say(...(strategyNames[strategy.strategyId] || [strategy.label,strategy.label])); }
-async function run(m) {
-    if (busy) return;
+async function run(m, origin = m === sample ? 'synthetic' : 'public') {
+    if (busy || learningBusy) return;
     clearError();
     if (dossier?.cycles.length >= 6) {
         showError(Error(say('This project contains six full cycles. Export it before starting a separate project.','Ce projet contient six cycles complets. Téléchargez-le avant de commencer un projet distinct.')));
@@ -281,7 +291,7 @@ async function run(m) {
         mission = m; result = next; artifacts = nextArtifacts; dossier = nextDossier;
         $('project-name').value = dossier.name;
         $('run-progress').style.width = '100%';
-        renderResult(); renderHistory(); go(2);
+        nativeFormForMission(origin); renderResult(); renderHistory(); renderLearning(); go(2);
         status('Your mission is ready. Download the catalog or keep the capability.','Votre mission est prête. Téléchargez le catalogue ou conservez la capacité.');
     } catch (error) {
         if (token !== runToken) return;
@@ -385,8 +395,9 @@ function fillMission(m) {
     $('left-key').value = m.left.key; $('right-key').value = m.right.key;
     updateMappingSummary();
 }
-async function restoreSerialized(serialized) {
+function restoreSerialized(serialized) {
     const restored = project.inspectProject(serialized);
+    learningRecords = []; nativeContinuityRaw = null;
     clearCurrent(); dossier = restored; $('project-name').value = restored.name;
     notice = {type:'restored',name:restored.name,cycles:restored.cycles.length};
     if (restored.cycles.length) fillMission(restored.cycles.at(-1).mission);
@@ -523,8 +534,287 @@ if (typeof DEPLOYMENT !== 'undefined' && DEPLOYMENT.contracts) {
         node('span',a,entry.name); node('code',a,entry.address);
     }
 }
-translate(); go(0,false);
-const saved = $('saved-project').textContent.trim();
-if (saved && saved !== '{}') {
-    try { restoreSerialized(saved).catch(showError); } catch (error) { showError(error); }
+function latestCycle() { return dossier?.cycles.at(-1) || null; }
+function learningRecord(create = false) {
+    const cycle = latestCycle();
+    if (!cycle) return null;
+    let entry = learningRecords.find(item => item.cycleId === cycle.id);
+    if (!entry && create) { entry = {cycleId:cycle.id,strategy:null,resolution:null}; learningRecords.push(entry); }
+    return entry;
 }
+function boundedInteger(id, maximum) {
+    const el = $(id);
+    if (!/^\d+$/.test(el.value) || Number(el.value) > maximum) {
+        el.focus(); throw Error(say(`Enter a whole value from 0 to ${maximum}.`,`Saisissez une valeur entière de 0 à ${maximum}.`));
+    }
+    return Number(el.value);
+}
+function localPanelError(id, error) { $(id).textContent = errorMessage(error); $(id).hidden = false; }
+function setLearningBusy(kind, active) {
+    learningBusy = active ? kind : null;
+    controls(active || busy);
+    for (const id of ['research-run','research-example','resolution-run','native-prepare','native-run','next-cycle','keep-capability','edit-inputs','project-name','download-workspace','download-project','download-learning','native-return-input','research-memory','research-weight']) $(id).disabled = active;
+    $('research-cancel').hidden = !(active && kind === 'research');
+    $('native-cancel').hidden = !(active && kind === 'native');
+    if (!active) renderNative();
+}
+function stopLearning() {
+    learningToken += 1; learningController?.abort(); learningController = null;
+    setLearningBusy(null,false);
+}
+function nativeFormForMission(origin) {
+    const name = dossier?.name || '';
+    $('native-name').value = name.length <= 48 ? name : '';
+    $('native-rights').value = origin === 'synthetic' ? 'synthetic' : '';
+    $('native-source').value = origin === 'synthetic' ? say('Included synthetic catalog mission generated locally; no personal or third-party customer records.','Mission de catalogue synthétique incluse, générée localement ; aucune donnée personnelle ou client tiers.') : '';
+    $('native-license').value = origin === 'synthetic' ? 'Apache-2.0 synthetic example' : '';
+    nativeHandoffRaw = null; nativeReturnRaw = null; nativeChecked = null;
+    $('native-error').hidden = true; $('native-status').textContent = '';
+    renderNative();
+}
+function researchLabel(record) {
+    if (record.id.startsWith('constructed_')) return say(`Constructed plan ${record.id.split('_').at(-1)}`,`Plan composé ${record.id.split('_').at(-1)}`);
+    if (language === 'en') return record.label;
+    if (record.id === 'baseline_nested') return 'Jointure imbriquée exacte';
+    const side = record.id.endsWith('left') ? 'gauche' : record.id.endsWith('right') ? 'droit' : 'le plus petit';
+    return record.id.includes('_block_') ? `Hachage délimité · côté ${side}` : `Hachage complet · côté ${side}`;
+}
+function renderResearch() {
+    const retained = result && learningRecord()?.strategy;
+    const report = retained && Number($('research-memory').value) === retained.objective.maxAuxiliaryRows && Number($('research-weight').value) === retained.objective.auxiliaryWeight ? retained : null;
+    $('research-result').hidden = !report;
+    if (!report) return;
+    $('research-decision').textContent = report.decision.promoted ? say('A locally improved strategy, retained.','Une stratégie améliorée localement, conservée.') : say('HOLD. Keep the strongest feasible incumbent.','HOLD. Conservez la meilleure référence réalisable.');
+    $('research-summary').textContent = say(
+        `${report.candidates.length} compositions tested against ${report.baselines.length} declared baselines. Fresh public synthetic confirmation: ${report.confirmation.passed ? 'strict improvement' : 'no strict improvement'}. Objective: logical work + ${number(report.objective.auxiliaryWeight)} × auxiliary references, capped at ${number(report.objective.maxAuxiliaryRows)} references.`,
+        `${report.candidates.length} compositions testées face à ${report.baselines.length} références déclarées. Confirmation synthétique publique nouvelle : ${report.confirmation.passed ? 'amélioration stricte' : 'pas d’amélioration stricte'}. Objectif : travail logique + ${number(report.objective.auxiliaryWeight)} × références auxiliaires, limité à ${number(report.objective.maxAuxiliaryRows)} références.`
+    );
+    if(report.evaluationLedger) {
+        const ledger=report.evaluationLedger;
+        $('research-summary').textContent += say(` Search and verification ledger retained: ${number(ledger.development.executionLogicalOperations + ledger.confirmation.executionLogicalOperations)} plan-execution operations, plus separately recorded oracle checks.`,` Coût de recherche et de vérification conservé : ${number(ledger.development.executionLogicalOperations + ledger.confirmation.executionLogicalOperations)} opérations d’exécution de plans, avec contrôles d’oracle enregistrés séparément.`);
+    }
+    $('research-commitment').textContent = say(`Frozen plan SHA-256: ${report.frozen.planHash} · commitment: ${report.frozen.commitment}`,`Plan figé SHA-256 : ${report.frozen.planHash} · engagement : ${report.frozen.commitment}`);
+    $('research-candidates').replaceChildren();
+    for (const entry of [...report.baselines,...report.candidates]) {
+        const row = node('tr',$('research-candidates'));
+        node('td',row,researchLabel(entry)); node('td',row,number(entry.metrics.logicalOperations));
+        node('td',row,number(entry.metrics.peakAuxiliaryRows)); node('td',row,entry.feasible?say('Yes · exact','Oui · exact'):say('No · exact','Non · exact'));
+    }
+}
+function renderResolution() {
+    const report = result && learningRecord()?.resolution;
+    $('resolution-result').hidden = !report;
+    if (!report) return;
+    $('resolution-summary').textContent = say(`${number(report.burden.pairwiseReviewItems)} review occurrences → ${number(report.burden.groupedActions)} proposed key-level actions.`,`${number(report.burden.pairwiseReviewItems)} occurrences à examiner → ${number(report.burden.groupedActions)} actions proposées par clé.`);
+    $('resolution-coverage').textContent = say(`${number(report.coverage.coveredOccurrences)} of ${number(report.coverage.originalOccurrences)} original occurrences accounted for exactly once. Every original row reference is retained.`,`${number(report.coverage.coveredOccurrences)} occurrences sur ${number(report.coverage.originalOccurrences)} couvertes exactement une fois. Chaque référence de ligne originale est conservée.`);
+    $('resolution-preview').replaceChildren();
+    for (const action of report.actions.slice(0,4)) {
+        const article = node('article',$('resolution-preview'));
+        node('strong',article,action.key);
+        const kind = action.type === 'review_shared_values' ? say('Review conflicting values','Examiner les divergences') : action.type === 'missing_from_left' ? say('Check omission from reference','Vérifier l’absence dans la référence') : say('Check omission from second catalog','Vérifier l’absence dans le second catalogue');
+        node('p',article,`${kind} · ${number(action.occurrences.length)} ${say('linked occurrences','occurrences liées')}`);
+    }
+}
+function parsedNativeRecord() {
+    return nativeContinuityRaw ? transport.parseBounded(nativeContinuityRaw) : null;
+}
+function renderNative() {
+    $('native-prepared').hidden = !nativeHandoffRaw;
+    $('native-result').hidden = !nativeChecked;
+    if (nativeHandoffRaw) {
+        const handoff = transport.parseBounded(nativeHandoffRaw), compilation = transport.parseBounded(handoff.compilationRaw);
+        const jobs = compilation.executionOrder;
+        const exact = dossier && handoff.project.raw === project.serializeProject(dossier);
+        $('native-prepared-summary').textContent = say(
+            `Project ${handoff.project.id}, cycle ${handoff.cycle.index+1}. ${Array.isArray(jobs)?jobs.length:0} native Jobs packages compiled. $AGIALPHA route, zero funded budget. ${exact?'Exact project snapshot ready.':'Historical project snapshot: prepare again before a new run.'}`,
+            `Projet ${handoff.project.id}, cycle ${handoff.cycle.index+1}. ${Array.isArray(jobs)?jobs.length:0} lots Jobs natifs compilés. Route $AGIALPHA, budget financé nul. ${exact?'Instantané exact du projet prêt.':'Instantané historique : préparez à nouveau avant une nouvelle exécution.'}`
+        );
+        $('native-run').disabled = Boolean(learningBusy) || !exact;
+    }
+    if (nativeChecked) {
+        const summary = nativeChecked.pack.result.summary;
+        $('native-result-summary').textContent = say(`${number(summary.matchedPairs)} exact pairs returned to the same project.`,`${number(summary.matchedPairs)} paires exactes revenues dans le même projet.`);
+        $('native-result-detail').textContent = say('Actual local SDK execution checked against the catalog source. Preserved as a historical, local, unreviewed return; independent admission remains HOLD.','Exécution locale réelle du SDK, contrôlée face aux sources du catalogue. Conservée comme résultat historique local non examiné ; l’admission indépendante reste HOLD.');
+        $('native-artifacts').replaceChildren();
+        for (const file of nativeChecked.files) {
+            const button = node('button',$('native-artifacts'),undefined,'download-link'); button.type = 'button';
+            node('span',button,file.name); node('span',button,'↓');
+            button.addEventListener('click',()=>download(`native-${file.name}`,file.content,file.type));
+        }
+    }
+}
+function renderLearningHistory() {
+    const strategies = learningRecords.filter(item=>item.strategy).length, resolutions = learningRecords.filter(item=>item.resolution).length;
+    const native = parsedNativeRecord(), returns = native?.returns.length || 0;
+    const exists = Boolean(strategies || resolutions || returns || nativeHandoffRaw);
+    $('learning-history-panel').hidden = !exists;
+    $('learning-count').textContent = String(strategies + resolutions + returns);
+    $('learning-summary').textContent = say(`${strategies} retained strategy studies · ${resolutions} action plans · ${returns} checked native returns. These remain local historical evidence.`,`${strategies} études de stratégie conservées · ${resolutions} plans d’action · ${returns} retours natifs contrôlés. Ces éléments restent des preuves locales historiques.`);
+    $('learning-history').replaceChildren();
+    for (const entry of learningRecords) {
+        const index = dossier?.cycles.findIndex(cycle=>cycle.id===entry.cycleId);
+        const item = node('li',$('learning-history'));
+        node('strong',item,say(`Cycle ${index+1} · retained learning`,`Cycle ${index+1} · apprentissages conservés`));
+        if (entry.strategy) node('span',item,say(`Strategy: ${entry.strategy.decision.promoted ? 'local improvement' : 'HOLD'}. Frozen plan ${entry.strategy.frozen.planHash.slice(0,16)}…`,`Stratégie : ${entry.strategy.decision.promoted ? 'amélioration locale' : 'HOLD'}. Plan figé ${entry.strategy.frozen.planHash.slice(0,16)}…`));
+        if (entry.resolution) node('small',item,say(`Changed task: ${entry.resolution.burden.pairwiseReviewItems} occurrences / ${entry.resolution.burden.groupedActions} actions; complete source coverage.`,`Tâche reformulée : ${entry.resolution.burden.pairwiseReviewItems} occurrences / ${entry.resolution.burden.groupedActions} actions ; sources couvertes intégralement.`));
+    }
+    for (const entry of native?.returns || []) {
+        const returned = transport.parseBounded(entry.returnRaw), index = dossier?.cycles.findIndex(cycle=>cycle.id===returned.cycleId);
+        const item = node('li',$('learning-history'));
+        node('strong',item,say(`Cycle ${index+1} · native return preserved`,`Cycle ${index+1} · retour natif conservé`));
+        node('span',item,say('Source-bound artifacts checked. Historical, local and unreviewed. No current proof or authority inherited.','Artefacts liés aux sources contrôlés. Historiques, locaux et non examinés. Aucune preuve actuelle ni autorité héritée.'));
+    }
+}
+function renderLearning() { renderResearch(); renderResolution(); renderNative(); renderLearningHistory(); }
+function serializeLearningArchive() {
+    if (!dossier) return '{}';
+    return transport.canonical({schema:'successor-alpha-learning-archive/v1',project:project.inspectProject(dossier),records:learningRecords,nativeHandoffRaw,nativeContinuityRaw});
+}
+function projectContains(current, historical) {
+    return current.id === historical.id && current.createdAt === historical.createdAt && current.goal === historical.goal
+        && current.revision >= historical.revision && current.cycles.length >= historical.cycles.length
+        && current.opportunities.length >= historical.opportunities.length
+        && transport.canonical(current.cycles.slice(0,historical.cycles.length)) === transport.canonical(historical.cycles)
+        && transport.canonical(current.opportunities.slice(0,historical.opportunities.length)) === transport.canonical(historical.opportunities)
+        && (current.revision !== historical.revision || project.serializeProject(current) === project.serializeProject(historical));
+}
+async function validateLearningArchive(raw) {
+    const archive = transport.parseBounded(raw);
+    const keys = ['schema','project','records','nativeHandoffRaw','nativeContinuityRaw'];
+    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || archive.schema !== 'successor-alpha-learning-archive/v1'
+        || !Array.isArray(archive.records) || archive.records.length > 6) throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
+    const checkedProject = project.inspectProject(archive.project), seen = new Set();
+    for (const entry of archive.records) {
+        if (!entry || Object.keys(entry).sort().join('|') !== 'cycleId|resolution|strategy' || seen.has(entry.cycleId)) throw Error('LEARNING_CYCLE_FIELDS');
+        const cycle = checkedProject.cycles.find(cycle=>cycle.id===entry.cycleId); if (!cycle) throw Error('LEARNING_CYCLE_BINDING');
+        seen.add(entry.cycleId);
+        if (entry.strategy !== null) await research.validateResearch(entry.strategy,cycle.mission,{sourceHash:cycle.sourceHash});
+        if (entry.resolution !== null) research.validateResolution(entry.resolution,cycle.mission,cycle.result);
+    }
+    if (archive.nativeHandoffRaw !== null) {
+        const checked = await continuity.inspectNativeHandoff(archive.nativeHandoffRaw);
+        if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_PROJECT_BINDING');
+    }
+    if (archive.nativeContinuityRaw !== null) {
+        const checked = await continuity.inspectContinuity(archive.nativeContinuityRaw);
+        if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_HISTORY_BINDING');
+    }
+    return {...archive,project:checkedProject};
+}
+async function restoreLearning(raw, expectedRevision = revision, expectedImportToken = importToken) {
+    const priorProject = dossier ? project.serializeProject(dossier) : null;
+    status('Checking the complete learning archive locally…','Vérification locale de l’archive d’apprentissage complète…');
+    const checked = await validateLearningArchive(raw);
+    let checkedReturn = null, returnRaw = null;
+    if (checked.nativeHandoffRaw && checked.nativeContinuityRaw) {
+        const history = transport.parseBounded(checked.nativeContinuityRaw);
+        const entry = history.returns.find(item=>item.handoffRaw===checked.nativeHandoffRaw);
+        if (entry) { returnRaw=entry.returnRaw; checkedReturn=await continuity.inspectNativeReturn(checked.nativeHandoffRaw,returnRaw); }
+    }
+    if (revision !== expectedRevision || importToken !== expectedImportToken
+        || (dossier ? project.serializeProject(dossier) : null) !== priorProject) {
+        throw Error(say('Inputs or project changed during archive verification. Reopen the archive.','Les données ou le projet ont changé pendant la vérification. Rouvrez l’archive.'));
+    }
+    restoreSerialized(project.serializeProject(checked.project));
+    learningRecords=checked.records; nativeContinuityRaw=checked.nativeContinuityRaw;
+    nativeHandoffRaw=checked.nativeHandoffRaw; nativeChecked=checkedReturn; nativeReturnRaw=returnRaw;
+    if(nativeHandoffRaw){const h=transport.parseBounded(nativeHandoffRaw),spec=transport.parseBounded(h.specRaw);$('native-name').value=spec.name;$('native-owner').value=spec.owner;$('native-rights').value=spec.rights.dataClass;$('native-source').value=spec.rights.source;$('native-license').value=spec.rights.license;$('native-review-minutes').value=String(spec.reviewMinutes);}
+    renderLearning(); $('learning-history-panel').open=true;
+    status('Learning archive restored and rechecked. Records remain historical; no authority was imported.','Archive d’apprentissage restaurée et contrôlée. Les éléments restent historiques ; aucune autorité n’a été importée.');
+}
+
+async function acceptNativeReturn(raw) {
+    if (!dossier || !nativeHandoffRaw) throw Error(say('Prepare the exact native handoff before importing its return.','Préparez la transmission native exacte avant d’importer son retour.'));
+    const expected = revision, exactProject = project.serializeProject(dossier), handoff = nativeHandoffRaw, priorRecord = nativeContinuityRaw, expectedForm=nativeFormRevision;
+    const checked = await continuity.inspectNativeReturn(handoff,raw);
+    const retained = await continuity.importNativeReturn(dossier,handoff,raw,{sourceHash:SOURCE_HASH,priorRecord});
+    if (revision !== expected || project.serializeProject(dossier) !== exactProject || nativeHandoffRaw !== handoff || nativeContinuityRaw !== priorRecord || nativeFormRevision !== expectedForm) throw Error('LEARNING_STALE_NATIVE_RETURN');
+    nativeReturnRaw = raw; nativeChecked = checked; nativeContinuityRaw = retained;
+    renderNative(); renderLearningHistory();
+    $('native-status').textContent = say('Native return checked and retained in this project. Review remains required.','Retour natif contrôlé et conservé dans ce projet. Examen toujours requis.');
+}
+$('research-run').addEventListener('click',async()=>{
+    if (!mission || !result || learningBusy) return;
+    const token = ++learningToken, expected = revision, cycleId = latestCycle().id, expectedProject = project.serializeProject(dossier), expectedForm=researchFormRevision;
+    $('research-error').hidden = true;
+    try {
+        const maxAuxiliaryRows = boundedInteger('research-memory',4500), auxiliaryWeight = boundedInteger('research-weight',1000000);
+        learningController = new AbortController(); setLearningBusy('research',true);
+        $('research-status').textContent = say('Constructing and checking bounded strategies…','Construction et vérification des stratégies délimitées…');
+        const report = await runAlphaResearch(mission,{sourceHash:SOURCE_HASH,maxAuxiliaryRows,auxiliaryWeight,signal:learningController.signal,onProgress:p=>{
+            if (token===learningToken) $('research-status').textContent = say(`Strategy search: ${p.stage} · ${p.completed ?? 0}/${p.total ?? 0}`,`Recherche de stratégie : ${p.stage} · ${p.completed ?? 0}/${p.total ?? 0}`);
+        }});
+        await research.validateResearch(report,mission,{sourceHash:SOURCE_HASH});
+        if (token !== learningToken || revision !== expected || latestCycle()?.id !== cycleId || project.serializeProject(dossier) !== expectedProject || researchFormRevision !== expectedForm) return;
+        learningRecord(true).strategy = report; renderResearch(); renderLearningHistory();
+        $('research-status').textContent = say('Study complete. The frozen plan and confirmation are retained.','Étude terminée. Le plan figé et la confirmation sont conservés.');
+    } catch (error) { if (token===learningToken) localPanelError('research-error',error); }
+    finally { if (token===learningToken) { learningController=null; setLearningBusy(null,false); } }
+});
+for(const id of ['research-memory','research-weight'])$(id).addEventListener('input',()=>{researchFormRevision+=1;renderResearch();if(!learningBusy)$('research-status').textContent=say('Objective changed. Run again for a current comparison; previous studies remain in history.','Objectif modifié. Relancez pour une comparaison actuelle ; les études précédentes restent dans l’historique.');});
+$('research-cancel').addEventListener('click',()=>{stopLearning();$('research-status').textContent=say('Canceled. No partial strategy report retained.','Annulé. Aucun rapport de stratégie partiel conservé.');});
+$('research-example').addEventListener('click',()=>{if(!learningBusy)run(research.strategyExampleMission(),'synthetic');});
+$('download-research').addEventListener('click',()=>{const report=learningRecord()?.strategy;if(report)download('successor-strategy-study.json',transport.canonical(report),'application/json');});
+$('download-plan-tool').addEventListener('click',async()=>{
+    const report=learningRecord()?.strategy;if(!report||!mission)return;$('research-error').hidden=true;
+    const expected=revision, cycleId=latestCycle().id;
+    try{const source=await capability.buildPlanCapability(mission,report,{sourceHash:SOURCE_HASH,...REUSABLE_SOURCE});if(revision!==expected||latestCycle()?.id!==cycleId)throw Error('LEARNING_STALE_CAPABILITY');download('successor-retained-plan.mjs',source,'text/javascript;charset=utf-8');}
+    catch(error){localPanelError('research-error',error);}
+});
+$('resolution-run').addEventListener('click',()=>{
+    if (!mission || !result || learningBusy) return;
+    $('resolution-error').hidden=true;
+    try { const report=research.resolveDiscrepancies(mission,result);research.validateResolution(report,mission,result);learningRecord(true).resolution=report;renderResolution();renderLearningHistory(); }
+    catch(error){localPanelError('resolution-error',error);}
+});
+$('download-actions').addEventListener('click',()=>{const report=learningRecord()?.resolution;if(report)download('successor-discrepancy-actions.csv',report.actionsCsv,'text/csv;charset=utf-8');});
+$('native-form').addEventListener('submit',async event=>{
+    event.preventDefault(); if (!dossier || !result || learningBusy) return;
+    $('native-error').hidden=true;
+    try {
+        syncName();
+        const nativeExact=transport.canonical({schemaVersion:1,mission,result})+'\n';
+        if(nativeExact.length>200000||Object.entries(artifacts).some(([key,value])=>key!=='exactJson'&&value.length>200000))throw Error(say('This mission exceeds the native workbench limit of 200,000 characters per artifact. Keep the original downloads and try a smaller catalog mission.','Cette mission dépasse la limite native de 200 000 caractères par artefact. Conservez les téléchargements et essayez une mission plus petite.'));
+        const inputs=[$('native-name'),$('native-owner'),$('native-rights'),$('native-source'),$('native-license')];
+        const missing=inputs.find(el=>!el.value.trim());if(missing){missing.focus();throw Error(say('Complete the native mission name, accountable owner and explicit input rights before preparing.','Renseignez le nom natif, le responsable et les droits explicites des données avant préparation.'));}
+        const reviewMinutes=boundedInteger('native-review-minutes',120);if(reviewMinutes<1)throw Error(say('Choose a review allowance from 1 to 120 minutes.','Choisissez une capacité d’examen de 1 à 120 minutes.'));
+        const expected=revision, snapshot=project.serializeProject(dossier), expectedForm=nativeFormRevision;setLearningBusy('prepare',true);
+        const raw=await continuity.createNativeHandoff(dossier,{route:'AGIALPHA',sourceHash:SOURCE_HASH,rights:{dataClass:$('native-rights').value,source:$('native-source').value,license:$('native-license').value},owner:$('native-owner').value,reviewMinutes,name:$('native-name').value.normalize('NFC'),language});
+        if(revision!==expected||project.serializeProject(dossier)!==snapshot||nativeFormRevision!==expectedForm)throw Error('LEARNING_STALE_NATIVE_HANDOFF');
+        nativeHandoffRaw=raw;nativeReturnRaw=null;nativeChecked=null;renderNative();renderLearningHistory();
+        $('native-status').textContent=say('Exact native mission and unfunded Jobs plan prepared. Download it for the host runner or rehearse locally with the SDK.','Mission native exacte et plan Jobs non financé préparés. Téléchargez-les pour l’exécuteur hôte ou répétez localement avec le SDK.');
+    } catch(error){localPanelError('native-error',error);} finally{setLearningBusy(null,false);}
+});
+$('native-form').addEventListener('input',()=>{nativeFormRevision+=1;if(!learningBusy){nativeHandoffRaw=null;nativeReturnRaw=null;nativeChecked=null;renderNative();}});
+$('native-run').addEventListener('click',async()=>{
+    if(!nativeHandoffRaw||learningBusy)return;
+    const token=++learningToken, expectedForm=nativeFormRevision;learningController=new AbortController();setLearningBusy('native',true);$('native-error').hidden=true;
+    try{
+        const returned=await runAlphaNative(nativeHandoffRaw,{signal:learningController.signal,onProgress:p=>{if(token===learningToken)$('native-status').textContent=say(`Native workbench: ${p.stage||p.kind||'executing'}`,`Workbench natif : ${p.stage||p.kind||'exécution'}`);}});
+        if(token!==learningToken)return;if(nativeFormRevision!==expectedForm)throw Error('LEARNING_STALE_NATIVE_INPUTS');await acceptNativeReturn(returned);
+    }catch(error){if(token===learningToken)localPanelError('native-error',error);}finally{if(token===learningToken){learningController=null;setLearningBusy(null,false);}}
+});
+$('native-cancel').addEventListener('click',()=>{stopLearning();$('native-status').textContent=say('Native run canceled. No partial return retained.','Exécution native annulée. Aucun retour partiel conservé.');});
+$('download-native-handoff').addEventListener('click',()=>{if(nativeHandoffRaw)download('successor-native-handoff.json',nativeHandoffRaw,'application/json');});
+$('download-native-return').addEventListener('click',()=>{if(nativeReturnRaw)download('successor-native-return.json',nativeReturnRaw,'application/json');});
+$('native-return-input').addEventListener('change',async()=>{
+    const file=$('native-return-input').files[0];if(!file)return;$('native-error').hidden=true;
+    try{if(file.size>2000000)throw Error(say('Native returns are limited to 2 MB.','Les retours natifs sont limités à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());await acceptNativeReturn(raw);}
+    catch(error){localPanelError('native-error',error);}finally{$('native-return-input').value='';}
+});
+$('download-learning').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
+for(const id of ['restore-learning','restore-learning-top'])$(id).addEventListener('change',async()=>{
+    const file=$(id).files[0];if(!file)return;const expected=revision, token=++importToken;
+    try{if(file.size>2000000)throw Error(say('Learning archives are limited to 2 MB.','Les archives d’apprentissage sont limitées à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(token!==importToken||revision!==expected)throw Error('LEARNING_IMPORT_CHANGED');await restoreLearning(raw,expected,token);}
+    catch(error){showError(error);}finally{$(id).value='';}
+});
+
+translate(); go(0,false);
+(async()=>{
+    const savedLearning = $('saved-learning').textContent.trim();
+    const saved = $('saved-project').textContent.trim();
+    try {
+        if (savedLearning && savedLearning !== '{}') await restoreLearning(savedLearning);
+        else if (saved && saved !== '{}') await restoreSerialized(saved);
+    } catch(error) { showError(error); }
+})();

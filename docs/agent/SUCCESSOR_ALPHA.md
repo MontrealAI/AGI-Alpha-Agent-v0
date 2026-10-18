@@ -61,7 +61,7 @@ executes a domain experiment. The catalog capability is the executable first mis
 | Stage | What this flagship provides | What requires further evidence or a separate decision |
 | --- | --- | --- |
 | Find Alpha | A concrete reconciliation task, usable outputs and explicit alternatives | The user's actual bottleneck, adoption constraints and benefit |
-| Develop in a Gym | Local execution and comparison of maintained bounded strategies | Unrestricted code synthesis or scientific certification |
+| Develop in a Gym | Execute maintained baselines, construct bounded composite plans and test a different task formulation | Unrestricted code synthesis or scientific certification |
 | Examine a frozen candidate | Bound inputs and implementation identity with inspectable local comparisons | Independently administered protected work and a credible external comparator |
 | Prepare successor continuity | A portable working tool, project inputs and retained observations | Earned Specialist status, institutional admission and operational authority |
 
@@ -88,11 +88,57 @@ Any user-supplied time, volume, price or cost assumptions are estimates. They do
 savings, realized revenue or accepted customer value. Count setup, integration, review, repair, maintenance and
 unwind when deciding whether to adopt the capability. Unknown costs and burdens remain unknown.
 
+## Construct a strategy, then test a different question
+
+After the first result, the optional research experiment constructs executable join plans from a finite,
+validated grammar. Plans combine key partitioning, conditional small-product scanning, bounded hashing and
+an exact uniform-key shortcut. This is composition of known primitives, not unrestricted algorithm invention.
+The search executes the constructed plans; it does not merely rename the four initial comparison methods.
+
+Set an explicit auxiliary-row budget and inspect the metered work. Auxiliary rows count retained row references,
+not bytes or process memory. The comparison includes competitive bounded block-hash alternatives as well as
+the original approaches. Infeasible alternatives are identified. Construction, checking and validation have
+costs of their own; the work metric is an inspectable proxy rather than an adoption or economic measurement.
+
+The candidate is frozen before a fresh local synthetic check. Its inputs and generator remain inspectable and
+under local control, so this check is **not protected evaluation**. If a candidate does not establish the declared
+improvement, the incumbent remains. Save the research record to retain its plan, source identity, comparisons
+and rejection or improvement evidence. An included duplicate-heavy example makes the shortcut's narrow scope
+concrete; it does not establish improvement on arbitrary catalogs.
+
+The executable reframing asks a different question: **which product keys need a corrective decision?** It groups
+unmatched occurrences and conflicting pairs into a per-key action queue, preserving references to every original
+exception. A coverage check verifies those references against the original reconciliation. Compare the number of
+exceptions with the number of grouped actions, and download the queue. Grouping changes the output contract;
+it neither repairs the source catalogs nor measures human review time. It can reduce repeated decisions when
+several occurrences concern the same key, and can correctly show no reduction.
+
+These are bounded working examples of strategy construction and task reframing. A general ability to discover
+better scientific methods or fundamentally new business opportunities requires its own environment and evidence.
+The retained [synthetic research example](../../examples/successor-alpha/research-evidence.json) contains an exact
+mission, frozen plan, fresh confirmation and all 131 exception references grouped into two proposed actions.
+This is a deliberately constructed local example, with a changed review contract and no human time-saving claim.
+
+## Continue through the native workbench
+
+The catalog adapter uses the existing SUCCESSOR workbench runtime and native Jobs compiler. It binds the exact
+catalog project and cycle to the work specification, executes the installed adapter locally, and independently
+rechecks the returned catalog outputs before accepting a continuity record. The record retains the original
+project identity and historical cycles. The learning archive and offline workspace preserve the associated
+research, action queue and native return evidence.
+
+This is an unfunded native workbench path. Existing Manager/Fleet project receivers do not install this catalog
+executor; a native workbench result is not a completed Fleet execution or paid settlement. Separate USDC and
+AGIALPHA work briefs remain available with their own readiness boundaries. See the
+[native continuity guide](SUCCESSOR_ALPHA_CONTINUITY.md) for the supported formats and exact limits.
+
 ## Keep and continue your work
 
 The downloadable project retains the task, inputs and observations. Imported historical observations are
 unverified history; rerunning produces new local evidence. A saved file or checksum establishes neither
 independent trust nor current permission. Keep the exported files before clearing browser data.
+Project and learning imports are bounded to 2 MB, including retained evidence. A full archive is refused rather
+than silently pruned; keep the existing downloads before beginning another separate project.
 
 The retained tool preserves the mission and its working method as material for an eventual authorized SUCCESSOR Ω.
 Saving it does not establish that status. It does not require a particular model provider.
@@ -111,6 +157,13 @@ Ouvrez le parcours français, puis lancez l'exemple synthétique. Examinez le ca
 correspondance et les différences. Pour utiliser vos propres catalogues autorisés, sélectionnez deux fichiers CSV
 et leurs clés; les champs communs sont comparés comme du texte exact. Téléchargez les résultats, le projet et
 l'outil autonome pour les conserver.
+
+Après ce premier résultat, construisez et testez une stratégie dans la grammaire proposée, ou exécutez le
+regroupement des divergences en décisions par clé. La candidate reste soumise au budget déclaré et aux
+alternatives implémentées. Une absence d'amélioration conserve la méthode actuelle. Le contrôle synthétique
+nouveau reste public et local, et le regroupement change le contrat de sortie. L'archive d'apprentissage
+conserve ces éléments avec le même projet. Le relais natif utilise le workbench et le compilateur Jobs;
+il reste non financé et n'installe pas un exécuteur de catalogues dans Manager ou Fleet.
 
 Les comparaisons locales décrivent les méthodes exécutées et les mesures de votre appareil. Les hypothèses
 économiques restent des estimations; elles ne prouvent ni économies réalisées ni valeur client acceptée.
@@ -135,7 +188,7 @@ node examples/successor-alpha/cli.mjs --left left.csv --right right.csv --left-k
 Run the focused engine checks with:
 
 ```sh
-node --test examples/successor-alpha/engine.test.mjs
+node --test examples/successor-alpha/*.test.mjs
 ```
 
 Keep the output directory and inspect its artifacts before integrating the result. The CLI runs the same
@@ -150,6 +203,20 @@ node successor-tool.mjs left.csv right.csv id id new-result
 
 The tool reruns all four maintained methods and exact checks. It writes new artifacts; it does not reuse
 historical timings as proof of the new run.
+
+The separate **retained plan** download exports the strategy selected by the optional research experiment.
+Import it as an ESM module to apply that exact plan to fresh CSV strings:
+
+```javascript
+import { reconcileCatalogs } from './successor-retained-plan.mjs';
+
+const result = reconcileCatalogs({ leftCsv, rightCsv, leftKey: 'id', rightKey: 'id' });
+console.log(result.joinedCsv, result.conflictsCsv);
+```
+
+It rechecks exact output and the declared resource budget on the new inputs. It refuses inputs the retained
+plan cannot process within that budget. The module performs no file, network or wallet operations; its caller
+decides how to read and save data. A held experiment exports the incumbent rather than the rejected candidate.
 
 The maintained implementation is in [`examples/successor-alpha/`](../../examples/successor-alpha/).
 Its generated browser entrypoint is [`docs/successor/alpha/index.html`](../successor/alpha/index.html).

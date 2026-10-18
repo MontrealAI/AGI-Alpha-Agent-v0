@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, rm, stat } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { canonical } from '../../docs/assets/successor/engine.mjs';
-import { createSampleMission, runJoinExperiment } from './engine.mjs';
+import { createSampleMission, createJoinMission, runJoinExperiment, buildArtifacts } from './engine.mjs';
 import {
     VERSION, configure, createProject, inspectProject, serializeProject, appendCycle,
     planOpportunity, addOpportunity, estimateValue, prepareHandoff, buildReport, buildCapability,
@@ -216,4 +219,88 @@ test('report and executable-tool exports reject forged result scope before rende
         assert.throws(() => buildReport(mission, changed));
         assert.throws(() => buildCapability(mission, changed));
     }
+});
+
+
+test('exported standalone capability reads every short-read chunk and preserves complete CSV semantics', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'successor-alpha-export-short-read-'));
+    try {
+        const leftCsv = 'id,name\nA,"First, continued"\nB,Café\nC,Third\n';
+        const rightCsv = 'id,name\nA,"First, continued"\nB,Changed\nD,Fourth\n';
+        const fullMission = createJoinMission({ leftCsv, rightCsv, leftKey: 'id', rightKey: 'id' });
+        const fullResult = await runJoinExperiment(fullMission);
+        const expected = buildArtifacts(fullMission, fullResult);
+        const left = join(directory, 'left.csv'), right = join(directory, 'right.csv');
+        const tool = join(directory, 'standalone-tool.mjs'), shim = join(directory, 'short-read.mjs');
+        const output = join(directory, 'output'), log = join(directory, 'read-counts.txt');
+        await writeFile(left, leftCsv); await writeFile(right, rightCsv);
+        await writeFile(tool, buildCapability(mission, result));
+        await writeFile(shim, `
+import fs from 'node:fs/promises';
+import { syncBuiltinESMExports } from 'node:module';
+const open = fs.open, fileStat = fs.stat;
+if (process.env.SUCCESSOR_UNDERREPORT_SIZE) fs.stat = async (...args) => {
+    const info = await fileStat(...args); info.size = 8; return info;
+};
+fs.open = async (...args) => {
+    const handle = await open(...args);
+    const read = handle.read.bind(handle), stat = handle.stat.bind(handle);
+    if (process.env.SUCCESSOR_UNDERREPORT_SIZE) handle.stat = async () => {
+        const info = await stat(); info.size = 8; return info;
+    };
+    handle.read = async (buffer, offset, length, position) => {
+        const chunk = await read(buffer, offset, Math.min(length, Number(process.env.SUCCESSOR_SHORT_READ_CHUNK || 8)), position);
+        await fs.appendFile(process.env.SUCCESSOR_SHORT_READ_LOG, String(chunk.bytesRead) + '\\n');
+        return chunk;
+    };
+    return handle;
+};
+syncBuiltinESMExports();
+`);
+        const execution = spawnSync(process.execPath, ['--import', shim, tool, left, right, 'id', 'id', output], {
+            cwd: directory, encoding: 'utf8', timeout: 15000,
+            env: { ...process.env, SUCCESSOR_SHORT_READ_LOG: log },
+        });
+        assert.equal(execution.status, 0, execution.stderr);
+        const counts = (await readFile(log, 'utf8')).trim().split('\n').map(Number);
+        assert.ok(counts.length > 4, 'both CSVs must require multiple reads');
+        assert.ok(counts.every(count => count >= 0 && count <= 8));
+        assert.equal(counts.filter(count => count === 0).length, 2, 'both reads must continue through EOF');
+        const retained = JSON.parse(await readFile(join(output, 'exact-result.json'), 'utf8'));
+        assert.equal(canonical(retained.mission), canonical(fullMission));
+        assert.deepEqual(retained.result.reconciliation, fullResult.reconciliation);
+        for (const [file, key] of Object.entries({ 'joined.csv': 'joinedCsv', 'unmatched-left.csv': 'unmatchedLeftCsv',
+            'unmatched-right.csv': 'unmatchedRightCsv', 'conflicts.csv': 'conflictsCsv' })) {
+            assert.equal(await readFile(join(output, file), 'utf8'), expected[key]);
+        }
+        await writeFile(left, 'id,name\n' + 'x'.repeat(200000));
+        const oversized = spawnSync(process.execPath, ['--import', shim, tool, left, right, 'id', 'id',
+            join(directory, 'oversized-output')], {
+            cwd: directory, encoding: 'utf8', timeout: 15000,
+            env: { ...process.env, SUCCESSOR_SHORT_READ_LOG: log, SUCCESSOR_SHORT_READ_CHUNK: '8192',
+                SUCCESSOR_UNDERREPORT_SIZE: '1' },
+        });
+        assert.notEqual(oversized.status, 0);
+        assert.match(oversized.stderr, /200 KB/);
+    } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+
+test('exported standalone capability rejects a FIFO before any blocking open', { skip: process.platform === 'win32' }, async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'successor-alpha-export-fifo-'));
+    try {
+        const fifo = join(directory, 'input.csv'), right = join(directory, 'right.csv');
+        const tool = join(directory, 'standalone-tool.mjs'), output = join(directory, 'output');
+        const created = spawnSync('mkfifo', [fifo], { encoding: 'utf8', timeout: 5000 });
+        assert.equal(created.status, 0, created.stderr || created.error?.message);
+        await writeFile(right, 'id,name\nA,First\n');
+        await writeFile(tool, buildCapability(mission, result));
+        const execution = spawnSync(process.execPath, [tool, fifo, right, 'id', 'id', output], {
+            cwd: directory, encoding: 'utf8', timeout: 5000,
+        });
+        assert.equal(execution.error, undefined, 'a FIFO must be rejected without timing out');
+        assert.notEqual(execution.status, 0);
+        assert.match(execution.stderr, /regular CSV file/);
+        await assert.rejects(stat(output), { code: 'ENOENT' });
+    } finally { await rm(directory, { recursive: true, force: true }); }
 });
