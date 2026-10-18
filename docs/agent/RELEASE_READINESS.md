@@ -1,6 +1,6 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.34.0 combined candidate
+# Release readiness — 1.34.0
 
 Version **1.34.0** combines the [useful Alpha flagship](SUCCESSOR_ALPHA.md) with the
 [18 October Mainnet deployment record](CURRENT_MAINNET_DEPLOYMENT.md). The

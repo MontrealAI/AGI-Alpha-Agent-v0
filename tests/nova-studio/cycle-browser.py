@@ -13,7 +13,7 @@ from uuid import uuid4
 from playwright.sync_api import Route, expect, sync_playwright
 
 from edge_browser import assert_edge_controls
-from reconciliation_diagnostics import capture_reconciliation_failure
+from reconciliation_diagnostics import capture_action_failure, capture_reconciliation_failure, monitor_action_failures
 
 
 def main() -> None:
@@ -88,6 +88,7 @@ def main() -> None:
         context.route("https://gateway.pinata.cloud/ipfs/*", artifact_request)
         context.route("https://ipfs.io/ipfs/*", artifact_request)
         page = context.new_page()
+        monitor_action_failures(page, output)
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(config["url"])
         expect(page.locator("#status")).to_contain_text("Start locally")
@@ -147,7 +148,8 @@ def main() -> None:
             try:
                 expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
             except Exception:
-                capture_reconciliation_failure(page, output, transaction)
+                if capture_action_failure(page, "reconcile", transaction):
+                    capture_reconciliation_failure(page, output, transaction)
                 raise
             page.locator("#reconcile-hash").fill("")
             transaction_history.append(transaction)
@@ -563,7 +565,8 @@ def main() -> None:
             try:
                 expect(page.locator("#status")).to_contain_text("finalized", timeout=30000)
             except Exception:
-                capture_reconciliation_failure(page, output, transaction)
+                if capture_action_failure(page, "recovered-reconcile", transaction):
+                    capture_reconciliation_failure(page, output, transaction)
                 raise
             journal = json.loads(page.locator("#journal").inner_text())
             receipt_record = next(row for row in journal["transactions"] if row.get("hash") == transaction)

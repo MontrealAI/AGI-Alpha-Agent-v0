@@ -31,7 +31,7 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 
 > **Current maintenance scope · 1.34.0.** [Start here](docs/agent/START_HERE.md) ·
 > [Release notes](docs/agent/RELEASE_NOTES_1.34.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
-> This candidate combines the useful Alpha flagship with the current Mainnet deployment record and publication preflight. Use matching published assets
+> Version 1.34.0 combines the useful Alpha flagship with the current Mainnet deployment record and publication preflight. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 
 ## Current Cross-Industry supplied-input journey

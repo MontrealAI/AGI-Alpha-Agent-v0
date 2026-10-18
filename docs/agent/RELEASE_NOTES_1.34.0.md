@@ -2,7 +2,7 @@
 
 # 1.34.0 — Useful Alpha and current deployment evidence
 
-This additive release candidate combines a useful [SUCCESSOR Ω flagship](SUCCESSOR_ALPHA.md)
+Version 1.34.0 combines a useful [SUCCESSOR Ω flagship](SUCCESSOR_ALPHA.md)
 with the [current Mainnet deployment record](CURRENT_MAINNET_DEPLOYMENT.md). Start with a
 working catalog reconciliation, inspect its evidence and retain the tool and project history.
 The deployment directory separately records five fresh contracts and their finalized one-time
