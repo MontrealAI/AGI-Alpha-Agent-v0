@@ -179,6 +179,7 @@ views, with no reported violations required for publication. Incomplete checks a
 selection must retain focus when the map or claim list updates.
 
 Both minimal and full gallery builds run these checks. Publication additionally requires the same Atlas
-journey on the canonical public HTTPS site and appends the evidence to the release validation archive and
-manifest. Passing Chromium does not constitute comprehensive accessibility certification or testing every
+journey on the canonical public HTTPS site. Local checks remain in the original validation archive;
+public checks are retained in separate bounded public-validation packs, with both identified by the
+release manifest and checksums. Passing Chromium does not constitute comprehensive accessibility certification or testing every
 browser engine. Read [release readiness](RELEASE_READINESS.md) for the full project's supported scope.

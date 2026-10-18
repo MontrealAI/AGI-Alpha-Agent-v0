@@ -116,7 +116,7 @@ The publication workflow requires the complete offline regression, strict type p
 advisory checks, runtime and wheel matrices, native labs, real browser/model/container workflows,
 contract tests, preservation checks and exact-main integration CI. Packaging exercises the installer,
 then public-site acceptance and re-downloaded asset checksums precede publication. Inspect the matching
-release manifest and validation archive for measured results and any explicit skips.
+release manifest and its complete validation evidence inventory for measured results and any explicit skips.
 
 The supported profile remains bounded demos and a private single-operator deployment. Mainnet authority,
 public multi-tenant operation, universal intelligence, independent economic guarantees and unconfigured

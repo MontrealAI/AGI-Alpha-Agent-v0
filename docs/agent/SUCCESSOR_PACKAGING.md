@@ -48,6 +48,23 @@ unknown schema versions and declared size overruns. An existing destination is n
 Use a new directory for an upgrade or to add optional packs; retain the prior directory for rollback.
 The complete site deployed by CI is reconstructed from these exact tested packs without rebuilding.
 
+## Inspect local and public acceptance evidence
+
+From version 1.34.0, the original `alpha-agent-v1.34.0-validation.zip` retains local acceptance
+unchanged. Public HTTPS acceptance uses separate public-validation packs so neither capture overwrites
+the other. The release manifest's `validation_evidence` inventory identifies both captures; all assets
+remain covered by `SHA256SUMS` and the 450 MB per-asset limit.
+
+Download `release_packs.py`, the public-validation pack manifest and every ZIP it lists from the same
+release. For version 1.34.0, restore the complete public evidence into a new directory with:
+
+```sh
+python release_packs.py restore --manifest alpha-agent-v1.34.0-public-validation-packs.json --destination public-validation
+```
+
+Keep the original local ZIP, restored public evidence, pack manifest and checksums together when
+reviewing results. Historical releases retain their original archive layout.
+
 ## Troubleshooting and upgrades
 
 | Situation | Recovery |

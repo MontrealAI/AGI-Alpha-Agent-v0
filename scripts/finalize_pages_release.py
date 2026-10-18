@@ -6,7 +6,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import zipfile
+import os
+import shutil
+import tempfile
+from contextlib import contextmanager
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +22,7 @@ from scripts.experience_evidence import verify_report as verify_experience_repor
 from scripts.governance_evidence import verify_report as verify_governance_report
 from scripts.homepage_evidence import verify_report as verify_homepage_report
 from scripts.mats_evidence import verify_report as verify_mats_report
-from scripts.release_packs import require_asset_limits
+from scripts.release_packs import MAX_ASSET_BYTES, digest, pack, require_asset_limits, restore, safe_name
 from scripts.sovereign_evidence import verify_report as verify_sovereign_report
 from scripts.successor_evidence import verify_report as verify_successor_report
 from scripts.onboarding_evidence import verify_report as verify_onboarding_report
@@ -45,6 +49,131 @@ def verify_workbench_report(report: dict[str, Any], commit: str, version: str, o
     }
     if report.get("passed") is not True or any(report.get(key) != value for key, value in expected.items()):
         raise ValueError("Workbench must pass every journey against the exact public release and source bytes")
+
+
+def _inventory(folder: Path) -> dict[str, tuple[int, str]]:
+    """Retain every ordinary capture file and reject extraction-ambiguous paths."""
+    result = {}
+    folded = set()
+    for path in sorted(folder.rglob("*")):
+        if path.is_symlink() or not (path.is_file() or path.is_dir()):
+            raise ValueError("Evidence must contain ordinary files and directories")
+        if path.is_file():
+            name = safe_name(path.relative_to(folder).as_posix())
+            if name.casefold() in folded:
+                raise ValueError("Evidence contains case-ambiguous capture paths")
+            folded.add(name.casefold())
+            result[name] = (path.stat().st_size, digest(path))
+    return result
+
+
+def _local_validation(folder: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    path = folder / f"alpha-agent-v{manifest['version']}-validation.zip"
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_ASSET_BYTES:
+        raise ValueError("Local validation archive must remain an ordinary bounded release asset")
+    return {"name": path.name, "bytes": path.stat().st_size, "sha256": digest(path)}
+
+
+def prepare_public_validation(
+    folder: Path, evidence: Path, manifest: dict[str, Any], *, limit: int = MAX_ASSET_BYTES
+) -> dict[str, Any]:
+    """Keep local evidence intact; shard and independently restore every public capture byte."""
+    before = _inventory(evidence)
+    prefix = f"alpha-agent-v{manifest['version']}-public-validation"
+    packed = pack(evidence, folder, prefix, commit=manifest["commit"], version=manifest["version"], limit=limit)
+    data = json.loads(packed.read_bytes())
+    record = {
+        "schema": "agialpha.validation-evidence.v1",
+        "commit": manifest["commit"],
+        "version": manifest["version"],
+        "local": _local_validation(folder, manifest),
+        "public": {
+            "manifest": packed.name,
+            "bytes": packed.stat().st_size,
+            "sha256": digest(packed),
+            "files": len(data["files"]),
+            "packs": len(data["packs"]),
+        },
+    }
+    verify_public_validation(folder, evidence, {**manifest, "validation_evidence": record})
+    if _inventory(evidence) != before:
+        raise ValueError("Public capture changed during packaging")
+    return record
+
+
+def verify_public_validation(folder: Path, evidence: Path, manifest: dict[str, Any]) -> None:
+    """Make an unchanged rerun a no-op; reject changed, partial or tampered finalized captures."""
+    record = manifest.get("validation_evidence")
+    if not isinstance(record, dict) or set(record) != {"schema", "commit", "version", "local", "public"}:
+        raise ValueError("Invalid retained validation-evidence identity")
+    if (
+        record["schema"] != "agialpha.validation-evidence.v1"
+        or record["commit"] != manifest["commit"]
+        or record["version"] != manifest["version"]
+        or record["local"] != _local_validation(folder, manifest)
+    ):
+        raise ValueError("Retained local validation or release identity differs")
+    name = f"alpha-agent-v{manifest['version']}-public-validation-packs.json"
+    path = folder / name
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_ASSET_BYTES:
+        raise ValueError("Public validation pack manifest must be an ordinary bounded release asset")
+    data = json.loads(path.read_bytes())
+    expected = {
+        "manifest": name,
+        "bytes": path.stat().st_size,
+        "sha256": digest(path),
+        "files": len(data["files"]),
+        "packs": len(data["packs"]),
+    }
+    if record["public"] != expected:
+        raise ValueError("Retained public validation pack identity differs")
+    with tempfile.TemporaryDirectory(prefix="alpha-public-verify-") as temporary:
+        restored = Path(temporary) / "restored"
+        identity = restore(path, restored)
+        if identity["commit"] != manifest["commit"] or identity["version"] != manifest["version"]:
+            raise ValueError("Public validation packs identify a different release")
+        if _inventory(restored) != _inventory(evidence):
+            raise ValueError("Public validation packs omit, change or add capture bytes")
+
+
+@contextmanager
+def staged_release(folder: Path) -> Iterator[Path]:
+    """Stage and check assets before promotion; roll back reported promotion errors."""
+    original = {path.name for path in folder.iterdir()}
+    metadata = {name: (folder / name).read_bytes() for name in ("release-manifest.json", "SHA256SUMS")}
+    with tempfile.TemporaryDirectory(prefix=".alpha-public-release-", dir=folder.resolve().parent) as temporary:
+        stage = Path(temporary) / "release"
+        stage.mkdir()
+        for path in folder.iterdir():
+            if path.is_symlink() or not path.is_file():
+                raise ValueError("Release assets must be ordinary files")
+            if path.name in metadata:
+                shutil.copyfile(path, stage / path.name)
+            else:
+                os.link(path, stage / path.name)
+        yield stage
+        if original != {path.name for path in folder.iterdir()} or any(
+            (folder / name).read_bytes() != raw for name, raw in metadata.items()
+        ):
+            raise ValueError("Release assets changed while finalization was staged")
+        promoted = []
+        changed = []
+        try:
+            for path in sorted(stage.iterdir()):
+                if path.name not in original:
+                    os.link(path, folder / path.name)
+                    promoted.append(folder / path.name)
+            for name in metadata:
+                os.replace(stage / name, folder / name)
+                changed.append(name)
+        except BaseException:
+            for name in changed:
+                backup = Path(temporary) / (name + ".original")
+                backup.write_bytes(metadata[name])
+                os.replace(backup, folder / name)
+            for path in promoted:
+                path.unlink()
+            raise
 
 
 def finalize(folder: Path, evidence: Path) -> None:
@@ -291,127 +420,140 @@ def finalize(folder: Path, evidence: Path) -> None:
 
         studio = json.loads((evidence / "public-pages" / "nova-studio" / "report.json").read_text())
         verify_browser(studio, manifest["commit"], manifest["version"], url)
+    checksummed = set()
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         expected, name = line.split("  ", 1)
+        if name in checksummed or name == "SHA256SUMS":
+            raise ValueError("Duplicate or self-referential package checksum")
+        checksummed.add(name)
         path = folder / name
         if path.parent != folder or not path.is_file() or path.is_symlink():
             raise ValueError("Invalid packaged asset")
         with path.open("rb") as stream:
             if hashlib.file_digest(stream, "sha256").hexdigest() != expected:
                 raise ValueError(f"Packaged asset changed before public acceptance: {name}")
-    archive_path = folder / f"alpha-agent-v{manifest['version']}-validation.zip"
-    with zipfile.ZipFile(archive_path, "a", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(evidence.rglob("*")):
-            if path.is_symlink():
-                raise ValueError("Evidence must contain ordinary files")
-            if path.is_file():
-                archive.write(path, path.relative_to(evidence))
-    manifest["public_pages"] = public
-    if flagship:
-        manifest["public_successor_alpha"] = flagship
-        manifest["release_gates"].append(
-            "public HTTPS SUCCESSOR Alpha exact packaged bytes, complete useful mission, constructed strategy, "
-            "native Node host return, EN/FR accessibility and offline continuity"
-        )
-    if workbench:
-        manifest["public_successor_workbench"] = workbench
-        manifest["release_gates"].append(
-            "public five-family workbench, exact source bytes, EN/FR accessibility and saved offline artifacts"
-        )
-    if homepage:
-        manifest["public_homepage"] = homepage
-        manifest["release_gates"].append(
-            "public welcoming homepage, English/French handoff, larger text, keyboard access and mobile reflow"
-        )
-    if onboarding:
-        manifest["public_onboarding"] = onboarding
-        manifest["release_gates"].append("public English/French onboarding, exact downloads, review and accessibility")
-    if successor:
-        manifest["public_successor"] = successor
-        manifest["release_gates"].append(
-            "public SUCCESSOR bilingual lifecycle, native handoff, cache upgrade and offline recovery"
-        )
-    if sovereign:
-        manifest["public_sovereign"] = sovereign
-        manifest["release_gates"].append(
-            "public Sovereign canonical/mirrored galleries, six exact signed fixture downloads and accessibility"
-        )
-    if curriculum:
-        manifest["public_curriculum"] = curriculum
-        manifest["release_gates"].append(
-            "public Curriculum Lab independent solving, exact exports, lineage, accessibility and offline replay"
-        )
-    if mats:
-        manifest["public_mats"] = mats
-        manifest["release_gates"].append(
-            "public MATS exact tree search, six-file exports, independent gates, accessibility and offline replay"
-        )
-    if experience:
-        manifest["public_experience"] = experience
-        manifest["release_gates"].append(
-            "public Experience Lab exact learning, six-file exports, independent review gates, "
-            "accessibility and offline replay"
-        )
-    if discovery:
-        manifest["public_discovery"] = discovery
-        manifest["release_gates"].append(
-            "public Insight Discovery exact review portfolios, six-file exports, input-bound jobs, "
-            "accessibility and offline replay"
-        )
-    if governance:
-        manifest["public_governance"] = governance
-        manifest["release_gates"].append(
-            "public Governance Workbench exact decisions, five-file exports, input-bound jobs, "
-            "accessibility and offline replay"
-        )
-    if business3:
-        manifest["public_business3"] = business3
-        manifest["release_gates"].append(
-            "public Business 3 exact decisions, seven-file exports, Ascension jobs, accessibility and offline recovery"
-        )
-    if protocol:
-        manifest["public_ascension_protocol"] = protocol
-        manifest["release_gates"].append(
-            "public Ascension protocol exact assets, evidence download, mirrored routes, accessibility and offline use"
-        )
-    if studio:
-        manifest["public_decision_studio"] = studio
-        manifest["release_gates"].append(
-            "public Decision Studio staffing, deadline-aware plans, archived replay, exports, "
-            "accessibility and offline use"
-        )
-    if compounding:
-        manifest["public_compounding"] = compounding
-        manifest["release_gates"].append(
-            "public future-task transfer, native/browser dossier replay, failure gates and exact 198-page manuscript"
-        )
-    if bloom:
-        manifest["public_proof_bloom"] = bloom
-        manifest["release_gates"].append(
-            "public Proof Bloom jobs, native signed returns, reviewed gates, transitive revocation and offline recovery"
-        )
-    if insight:
-        manifest["public_insight_atlas"] = insight
-        manifest["release_gates"].append(
-            "public Insight Atlas, native exports, adversarial proof checks and offline recovery"
-        )
-    if ascension:
-        manifest["public_ascension"] = ascension
-        manifest["release_gates"].append(
-            "public Ascension journey, authenticated recovery, exact settlement and offline use"
-        )
-    manifest["release_gates"].append("public HTTPS Pages workflows and actual offline model generation")
-    manifest["assets"] = [
-        item for item in require_asset_limits(folder) if item["name"] not in {"release-manifest.json", "SHA256SUMS"}
-    ]
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    checksums = []
-    for path in sorted(folder.iterdir()):
-        if path.is_file() and path.name != "SHA256SUMS":
-            with path.open("rb") as stream:
-                checksums.append(f"{hashlib.file_digest(stream, 'sha256').hexdigest()}  {path.name}")
-    (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n", encoding="utf-8")
-    require_asset_limits(folder)
+    if {path.name for path in folder.iterdir()} != checksummed | {"SHA256SUMS"}:
+        raise ValueError("Every packaged asset must be covered by SHA256SUMS")
+    if "validation_evidence" in manifest:
+        verify_public_validation(folder, evidence, manifest)
+        require_asset_limits(folder)
+        return
+    with staged_release(folder) as stage:
+        folder = stage
+        manifest_path = folder / "release-manifest.json"
+        manifest["validation_evidence"] = prepare_public_validation(folder, evidence, manifest)
+        manifest["public_pages"] = public
+        if flagship:
+            manifest["public_successor_alpha"] = flagship
+            manifest["release_gates"].append(
+                "public HTTPS SUCCESSOR Alpha exact packaged bytes, complete useful mission, constructed strategy, "
+                "native Node host return, EN/FR accessibility and offline continuity"
+            )
+        if workbench:
+            manifest["public_successor_workbench"] = workbench
+            manifest["release_gates"].append(
+                "public five-family workbench, exact source bytes, EN/FR accessibility and saved offline artifacts"
+            )
+        if homepage:
+            manifest["public_homepage"] = homepage
+            manifest["release_gates"].append(
+                "public welcoming homepage, English/French handoff, larger text, keyboard access and mobile reflow"
+            )
+        if onboarding:
+            manifest["public_onboarding"] = onboarding
+            manifest["release_gates"].append(
+                "public English/French onboarding, exact downloads, review and accessibility"
+            )
+        if successor:
+            manifest["public_successor"] = successor
+            manifest["release_gates"].append(
+                "public SUCCESSOR bilingual lifecycle, native handoff, cache upgrade and offline recovery"
+            )
+        if sovereign:
+            manifest["public_sovereign"] = sovereign
+            manifest["release_gates"].append(
+                "public Sovereign canonical/mirrored galleries, six exact signed fixture downloads and accessibility"
+            )
+        if curriculum:
+            manifest["public_curriculum"] = curriculum
+            manifest["release_gates"].append(
+                "public Curriculum Lab independent solving, exact exports, lineage, accessibility and offline replay"
+            )
+        if mats:
+            manifest["public_mats"] = mats
+            manifest["release_gates"].append(
+                "public MATS exact tree search, six-file exports, independent gates, accessibility and offline replay"
+            )
+        if experience:
+            manifest["public_experience"] = experience
+            manifest["release_gates"].append(
+                "public Experience Lab exact learning, six-file exports, independent review gates, "
+                "accessibility and offline replay"
+            )
+        if discovery:
+            manifest["public_discovery"] = discovery
+            manifest["release_gates"].append(
+                "public Insight Discovery exact review portfolios, six-file exports, input-bound jobs, "
+                "accessibility and offline replay"
+            )
+        if governance:
+            manifest["public_governance"] = governance
+            manifest["release_gates"].append(
+                "public Governance Workbench exact decisions, five-file exports, input-bound jobs, "
+                "accessibility and offline replay"
+            )
+        if business3:
+            manifest["public_business3"] = business3
+            manifest["release_gates"].append(
+                "public Business 3 exact decisions, seven-file exports, Ascension jobs, "
+                "accessibility and offline recovery"
+            )
+        if protocol:
+            manifest["public_ascension_protocol"] = protocol
+            manifest["release_gates"].append(
+                "public Ascension protocol exact assets, evidence download, mirrored routes, "
+                "accessibility and offline use"
+            )
+        if studio:
+            manifest["public_decision_studio"] = studio
+            manifest["release_gates"].append(
+                "public Decision Studio staffing, deadline-aware plans, archived replay, exports, "
+                "accessibility and offline use"
+            )
+        if compounding:
+            manifest["public_compounding"] = compounding
+            manifest["release_gates"].append(
+                "public future-task transfer, native/browser dossier replay, failure gates "
+                "and exact 198-page manuscript"
+            )
+        if bloom:
+            manifest["public_proof_bloom"] = bloom
+            manifest["release_gates"].append(
+                "public Proof Bloom jobs, native signed returns, reviewed gates, "
+                "transitive revocation and offline recovery"
+            )
+        if insight:
+            manifest["public_insight_atlas"] = insight
+            manifest["release_gates"].append(
+                "public Insight Atlas, native exports, adversarial proof checks and offline recovery"
+            )
+        if ascension:
+            manifest["public_ascension"] = ascension
+            manifest["release_gates"].append(
+                "public Ascension journey, authenticated recovery, exact settlement and offline use"
+            )
+        manifest["release_gates"].append("public HTTPS Pages workflows and actual offline model generation")
+        manifest["assets"] = [
+            item for item in require_asset_limits(folder) if item["name"] not in {"release-manifest.json", "SHA256SUMS"}
+        ]
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        checksums = []
+        for path in sorted(folder.iterdir()):
+            if path.is_file() and path.name != "SHA256SUMS":
+                with path.open("rb") as stream:
+                    checksums.append(f"{hashlib.file_digest(stream, 'sha256').hexdigest()}  {path.name}")
+        (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n", encoding="utf-8")
+        require_asset_limits(folder)
 
 
 def main() -> None:

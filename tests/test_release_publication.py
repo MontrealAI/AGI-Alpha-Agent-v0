@@ -808,7 +808,19 @@ def test_public_evidence_requires_same_commit_and_intact_package(
     assert (folder / "source.zip").read_bytes() == before["source.zip"]
     with zipfile.ZipFile(archive_path) as archive:
         assert archive.read("existing.txt") == b"existing evidence"
-        assert json.loads(archive.read("public-pages/release.json"))["commit"] == manifest["commit"]
+        assert "public-pages/release.json" not in archive.namelist()
+    assert archive_path.read_bytes() == before[archive_path.name]
+    finalized = json.loads((folder / "release-manifest.json").read_text())
+    retained = finalized["validation_evidence"]
+    assert retained["local"]["sha256"] == hashlib.sha256(before[archive_path.name]).hexdigest()
+    public_manifest = folder / retained["public"]["manifest"]
+    from scripts.release_packs import restore
+
+    restored = tmp_path / "restored-public-evidence"
+    restore(public_manifest, restored)
+    assert {p.relative_to(restored).as_posix(): p.read_bytes() for p in restored.rglob("*") if p.is_file()} == {
+        p.relative_to(evidence).as_posix(): p.read_bytes() for p in evidence.rglob("*") if p.is_file()
+    }
     for line in (folder / "SHA256SUMS").read_text().splitlines():
         digest, name = line.split("  ", 1)
         assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest
@@ -927,3 +939,184 @@ def test_publication_preflight_rejects_superseded_main_before_tag_lookup(monkeyp
     monkeypatch.setattr(publish_agent_release, "gh", lambda *args: pytest.fail("Tag lookup before context check"))
     with pytest.raises(RuntimeError, match="Superseded"):
         publish_agent_release.preflight()
+
+
+def _public_finalization_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    """Keep early-version gate fixtures focused on transport, without fabricating modern proof."""
+    folder = tmp_path / "release"
+    evidence = tmp_path / "evidence"
+    folder.mkdir()
+    (evidence / "public-pages").mkdir(parents=True)
+    manifest = {"version": "1.4.0", "commit": "a" * 40, "release_gates": []}
+    (folder / "release-manifest.json").write_text(json.dumps(manifest))
+    with zipfile.ZipFile(folder / "alpha-agent-v1.4.0-validation.zip", "w", zipfile.ZIP_STORED) as archive:
+        archive.writestr("public-pages/release.json", b"earlier local capture with the same relative name")
+        archive.writestr("local-evidence.bin", bytes(range(256)) * 27)
+    (evidence / "public-pages/release.json").write_text(
+        json.dumps(
+            {
+                "commit": manifest["commit"],
+                "version": manifest["version"],
+                "url": "https://montrealai.github.io/AGI-Alpha-Agent-v0/",
+            }
+        )
+    )
+    (evidence / "public-pages/workspace.json").write_text(
+        json.dumps(
+            {
+                "origin": "https://montrealai.github.io/AGI-Alpha-Agent-v0/",
+                "model_required": True,
+            }
+        )
+    )
+    checksums = [f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}" for p in sorted(folder.iterdir())]
+    (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n")
+    return folder, evidence
+
+
+def _release_bytes(folder: Path) -> dict[str, bytes]:
+    return {path.name: path.read_bytes() for path in folder.iterdir()}
+
+
+def test_public_evidence_is_sharded_below_limit_with_all_colliding_capture_bytes_preserved(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from random import Random
+    from scripts.release_packs import restore
+
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    (evidence / "public-pages/incompressible.bin").write_bytes(Random(41).randbytes(25000))
+    original = _release_bytes(folder)
+    bounded = finalize_pages_release.prepare_public_validation
+    monkeypatch.setattr(
+        finalize_pages_release,
+        "prepare_public_validation",
+        lambda *args, **kwargs: bounded(*args, **kwargs, limit=8192),
+    )
+    finalize_pages_release.finalize(folder, evidence)
+    manifest = json.loads((folder / "release-manifest.json").read_text())
+    record = manifest["validation_evidence"]
+    assert record["schema"] == "agialpha.validation-evidence.v1"
+    assert record["public"]["packs"] > 1
+    assert (folder / record["local"]["name"]).read_bytes() == original[record["local"]["name"]]
+    with zipfile.ZipFile(folder / record["local"]["name"]) as archive:
+        assert archive.read("public-pages/release.json") == b"earlier local capture with the same relative name"
+    packed = json.loads((folder / record["public"]["manifest"]).read_text())
+    assert packed["max_asset_bytes"] == 8192
+    for item in packed["packs"]:
+        assert (folder / item["name"]).stat().st_size <= 8192
+        with zipfile.ZipFile(folder / item["name"]) as archive:
+            assert len(archive.namelist()) == len(set(archive.namelist()))
+    assert any(len(item["parts"]) > 1 for item in packed["files"])
+    destination = tmp_path / "restored"
+    restore(folder / record["public"]["manifest"], destination)
+    assert {p.relative_to(destination).as_posix(): p.read_bytes() for p in destination.rglob("*") if p.is_file()} == {
+        p.relative_to(evidence).as_posix(): p.read_bytes() for p in evidence.rglob("*") if p.is_file()
+    }
+    for line in (folder / "SHA256SUMS").read_text().splitlines():
+        expected, name = line.split("  ", 1)
+        assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == expected
+    for item in manifest["assets"]:
+        assert hashlib.sha256((folder / item["name"]).read_bytes()).hexdigest() == item["sha256"]
+
+
+def test_public_finalization_is_byte_idempotent_and_refuses_changed_or_tampered_evidence(tmp_path: Path) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    finalize_pages_release.finalize(folder, evidence)
+    finalized = _release_bytes(folder)
+    finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == finalized
+    (evidence / "new-observation.txt").write_text("a later capture must not silently replace the original")
+    with pytest.raises(ValueError, match="capture bytes"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == finalized
+    (evidence / "new-observation.txt").unlink()
+    pack = next(folder.glob("*-public-validation-*.zip"))
+    pack.write_bytes(pack.read_bytes() + b"tampered")
+    tampered = _release_bytes(folder)
+    with pytest.raises(ValueError, match="Packaged asset changed"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == tampered
+
+
+@pytest.mark.parametrize("problem", ["restore-failure", "ambiguous-path", "unchecksummed-asset"])
+def test_public_pack_failures_preserve_every_original_release_byte(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, problem: str
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    if problem == "ambiguous-path":
+        (evidence / "Same.txt").write_bytes(b"one")
+        (evidence / "same.txt").write_bytes(b"another")
+    elif problem == "unchecksummed-asset":
+        (folder / "untracked.bin").write_bytes(b"must not acquire release status")
+    else:
+
+        def rejected_restore(*args, **kwargs):
+            raise ValueError("Synthetic pack restore failure")
+
+        monkeypatch.setattr(finalize_pages_release, "restore", rejected_restore)
+    before = _release_bytes(folder)
+    with pytest.raises(ValueError):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_public_pack_bytes_are_deterministic_for_identical_captures(tmp_path: Path) -> None:
+    from shutil import copytree
+
+    left = tmp_path / "left"
+    left.mkdir()
+    folder, evidence = _public_finalization_fixture(left)
+    right = tmp_path / "right"
+    copytree(left, right)
+    finalize_pages_release.finalize(folder, evidence)
+    finalize_pages_release.finalize(right / "release", right / "evidence")
+    assert _release_bytes(folder) == _release_bytes(right / "release")
+
+
+def test_failed_public_pack_promotion_rolls_back_new_assets_without_changing_metadata(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    before = _release_bytes(folder)
+    link = finalize_pages_release.os.link
+    promotions = []
+
+    def interrupted_link(source: Path, destination: Path) -> None:
+        if Path(destination).parent == folder and "-public-validation-" in Path(destination).name:
+            promotions.append(Path(destination).name)
+            if len(promotions) == 2:
+                raise OSError("Synthetic interrupted pack promotion")
+        link(source, destination)
+
+    monkeypatch.setattr(finalize_pages_release.os, "link", interrupted_link)
+    with pytest.raises(OSError, match="interrupted pack promotion"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert len(promotions) == 2
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_failed_second_metadata_promotion_restores_original_metadata_and_removes_new_packs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    before = _release_bytes(folder)
+    replace = finalize_pages_release.os.replace
+    promotions = []
+
+    def interrupted_replace(source: Path, destination: Path) -> None:
+        target = Path(destination)
+        if target.parent == folder and target.name in {"release-manifest.json", "SHA256SUMS"}:
+            promotions.append(target.name)
+            if len(promotions) == 2:
+                raise OSError("Synthetic interrupted metadata promotion")
+        replace(source, destination)
+
+    monkeypatch.setattr(finalize_pages_release.os, "replace", interrupted_replace)
+    with pytest.raises(OSError, match="interrupted metadata promotion"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert promotions[:2] == ["release-manifest.json", "SHA256SUMS"]
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))

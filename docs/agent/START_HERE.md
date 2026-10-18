@@ -112,8 +112,10 @@ Stop the console with **Ctrl+C**.
 - Use the [Ascension protocol guide](ASCENSION_PROTOCOL.md) for the local-EVM enterprise lifecycle.
 - Use the [contract deployment and migration guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/tests/contracts/README.md)
   to inspect the deployment plan and rehearse the disposable Hardhat fixture. It is separate from installing this agent.
-- Inspect the release's `release-manifest.json` and `alpha-agent-v…-validation.zip` for exact acceptance
-  results. The source, browser, complete site and unchanged manuscript are separate release assets.
+- Inspect the release's `release-manifest.json` for exact acceptance results and its `validation_evidence`
+  inventory. The original `alpha-agent-v…-validation.zip` retains local checks; separate public-validation
+  packs retain deployed-site checks. Keep their manifests, parts and matching `SHA256SUMS` together.
+  The source, browser, complete site and unchanged manuscript are separate release assets.
 
 If a command fails, keep the existing environment and journal. Check the JSON error, supported Python
 version and selected profile; follow the recovery guide using a new destination. Never manually edit

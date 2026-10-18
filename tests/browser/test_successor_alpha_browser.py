@@ -174,6 +174,17 @@ def accessibility(page: Page) -> None:
 
 def first_use(browser: Browser, output: Path, errors: list[str], external: list[str]) -> bytes:
     context, page = context_page(browser, errors, external)
+    for width in (1440, 1363, 1280, 1024, 900, 768, 600, 390, 320):
+        page.set_viewport_size({"width": width, "height": 1050})
+        for language in ("en", "fr"):
+            page.locator(f"#lang-{language}").click()
+            expect(page.locator("html")).to_have_attribute("lang", language)
+            assert page.evaluate(
+                "document.documentElement.scrollWidth <= document.documentElement.clientWidth"
+            ), f"{language} first-use page overflows horizontally at {width}px"
+    page.locator("#lang-en").click()
+    page.set_viewport_size({"width": 1440, "height": 1050})
+    page.goto(URL)
     english_alt = page.locator(".institution img").get_attribute("alt")
     assert english_alt and "Alpha" in english_alt
     page.keyboard.press("Tab")
@@ -754,7 +765,7 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
             ],
             "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),
             "languages": ["en", "fr"],
-            "viewports": [1440, 390, 320],
+            "viewports": [1440, 1363, 1280, 1024, 900, 768, 600, 390, 320],
             "errors": list(errors) + list(external),
             "browser_errors": [error for error in errors if not error.startswith("HTTP_FAILURE:")],
             "http_failures": [error for error in errors if error.startswith("HTTP_FAILURE:")],
