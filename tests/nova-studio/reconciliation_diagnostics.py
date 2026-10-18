@@ -35,7 +35,8 @@ def capture_reconciliation_failure(page: Any, output: Path, transaction: str) ->
             sends: Number.isSafeInteger(fixture?.sends) ? fixture.sends : null,
             methods: (fixture?.calls || []).slice(-100).filter(x => typeof x === 'string' && /^eth_[A-Za-z]+$/.test(x)),
             receipt: receipt ? {transactionHash:receipt.transactionHash,blockHash:receipt.blockHash,
-              blockNumber:receipt.blockNumber,status:receipt.status,gasUsed:receipt.gasUsed} : receipt === null ? null : 'unavailable'
+              blockNumber:receipt.blockNumber,status:receipt.status,gasUsed:receipt.gasUsed}
+              : receipt === null ? null : 'unavailable'
           };
         }""",
             transaction,
