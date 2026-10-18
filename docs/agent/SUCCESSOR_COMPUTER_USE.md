@@ -62,8 +62,8 @@ without a new, explicitly reviewed handoff.
 Use the exported mission file in the existing commands:
 
 ```bash
-alpha-agent successor-computer prepare successor-computer-mission.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL
-alpha-agent --home operator successor-computer run successor-computer-mission.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL --permit PREPARED_COMMITMENT --output computer-result
+alpha-agent successor-computer prepare successor-computer-handoff.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL
+alpha-agent --home operator successor-computer run successor-computer-handoff.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL --permit PREPARED_COMMITMENT --output computer-result
 ```
 
 Project bytes, strategy choices and source identity are bound into the existing task/provider/image permit
