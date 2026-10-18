@@ -4,8 +4,9 @@
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**
 
 | Your goal | Start here |
-| Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | --- | --- |
+| Produce a joined catalog, inspect differences and keep a reusable tool | [Useful Alpha flagship](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/) · [Scope and reproduction](docs/agent/SUCCESSOR_ALPHA.md) |
+| Find your Alpha and retain one project through Jobs / Fleet | [Discovery](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/discover/) → [Guided project history](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/mission/#guided-journey) |
 | Explore a free example with no account or installation | [Guided first plan](https://montrealai.github.io/AGI-Alpha-Agent-v0/start/) |
 | Create useful files and retain a personal SUCCESSOR Ω | [Five work families](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/work/) |
 | Prepare, protect and continue a project | [Nova-Seed Studio](https://montrealai.github.io/AGI-Alpha-Agent-v0/ascension/mainnet/) |
@@ -16,6 +17,12 @@
 Browser preparation is free. Execution, participant review and settlement require their own configuration and approval. AGIJobManager settles in USDC; the Alpha / Jobs v0 contracts use $AGIALPHA. Source versions and published downloads can differ: use the evidence and instructions supplied with your chosen release.
 
 <!-- /current-entrypoints -->
+
+> **[Find your advantage. Make it work. Keep what you build. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
+> Reconcile two public, synthetic or licensed nonpersonal CSV catalogs. Keep the joined catalog, unmatched rows,
+> discrepancies and a working offline tool. Compare the maintained strategies and inspect their limitations.
+> Local engineering results support the specific task; economic benefit and independently protected proof remain
+> to be established. [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
 > **Current maintenance scope · 1.33.0.** [Start here](docs/agent/START_HERE.md) ·
 > [Release notes](docs/agent/RELEASE_NOTES_1.33.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).

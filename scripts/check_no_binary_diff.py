@@ -11,7 +11,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 BINARY_EXTENSIONS = {
     ".wasm",
     ".zip",
@@ -249,6 +248,11 @@ def _matches_binary_extension(path: str) -> bool:
 REPORT_PACK_SHA256 = "d29e9951bd2d04c05a4520d885e5ca8f716e280b715445dea6f6a193b537f27b"
 AUTHORIZED_REPORT_PACK = {"docs/reports/computer-use-study/report-pack.zip": REPORT_PACK_SHA256}
 
+# Owner-supplied flagship art; this exception admits only these exact optimized bytes.
+AUTHORIZED_FLAGSHIP_ARTWORK = {
+    "docs/assets/successor-alpha/institution.webp": "0e3829bf7615d3658bd8bd0c7e0f7b788d7e1fc383ac86019de5c6dea122ee06",
+}
+
 
 def main() -> int:
     _git_root()
@@ -256,7 +260,7 @@ def main() -> int:
     changed_paths = _iter_changed_paths(base_ref)
     binary_paths = [path for path in changed_paths if _matches_binary_extension(path)]
     binary_paths.extend(_has_binary_diff(base_ref))
-    authorized = AUTHORIZED_MANUSCRIPT | AUTHORIZED_REPORT_PACK
+    authorized = AUTHORIZED_MANUSCRIPT | AUTHORIZED_REPORT_PACK | AUTHORIZED_FLAGSHIP_ARTWORK
     binary_paths = sorted(
         {
             path

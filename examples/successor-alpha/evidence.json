@@ -1,0 +1,83 @@
+{
+  "schema": "successor-alpha-local-qualification/v1",
+  "recordedAt": "2026-10-18T15:13:44.299639+00:00",
+  "source": {
+    "baseCommit": "17718b99c08b7d29e66772d2d44658c14a2880f6",
+    "engineSourceHash": "1f3530460c4dd0da3d9dbc9e467157f16e7ddf9ee5d8d0f23171172e6de6d87a",
+    "pageSha256": "2afe0ad18f842eb704fed501dcb51d915aa541d59cc5eaa851432934882516fa"
+  },
+  "execution": {
+    "node": "22.17.1",
+    "python": "3.12",
+    "browser": "Chromium 153.0.8010.0"
+  },
+  "checks": {
+    "newNodeTests": {
+      "passed": 44,
+      "failed": 0
+    },
+    "existingRelatedNodeTests": {
+      "passed": 76,
+      "failed": 0
+    },
+    "deliveryTests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "browserAcceptance": "passed, including axe WCAG 2 A/AA + 2.1 AA, CSP, downloads, cancellation, historical restoration, offline second cycle, EN/FR and mobile",
+    "newPythonRuffBlackMypy": "passed",
+    "homepageAcceptance": {
+      "status": "passed",
+      "layouts": 9,
+      "browserErrors": 0,
+      "accessibilityViolations": 0,
+      "welcomeCssSha256": "a2f61af7005c0ca3b7e5dfe9174a11512ee537202af513f786f2221087852c35"
+    }
+  },
+  "example": {
+    "leftRows": 120,
+    "rightRows": 360,
+    "matchedPairs": 120,
+    "conflictingPairs": 9,
+    "allFourMethodsExact": true,
+    "assessment": {
+      "state": "local_demonstration",
+      "independentReview": "pending",
+      "externalAuthority": false,
+      "superiorityClaim": false,
+      "novelAlgorithm": false,
+      "localCorrectness": true,
+      "comparisons": [
+        {
+          "strategyId": "nested_scan",
+          "logicalOperationsSaved": 42720,
+          "indexedRowsSaved": -120,
+          "auxiliaryRowsSaved": -120,
+          "observedMicrosSaved": 2239
+        },
+        {
+          "strategyId": "fixed_right_hash",
+          "logicalOperationsSaved": 0,
+          "indexedRowsSaved": 240,
+          "auxiliaryRowsSaved": 240,
+          "observedMicrosSaved": 30
+        },
+        {
+          "strategyId": "sort_merge",
+          "logicalOperationsSaved": 1967,
+          "indexedRowsSaved": -120,
+          "auxiliaryRowsSaved": 840,
+          "observedMicrosSaved": 639
+        }
+      ],
+      "explanation": "All four methods returned the same complete join. Smaller-side hashing is a known heuristic. Operation and auxiliary-row counts describe this workload; timings are single local observations. Independent confirmation and economic benefit remain unestablished."
+    }
+  },
+  "limits": [
+    "Local engineering execution and review; not independent institutional qualification.",
+    "No live model API, wallet signing, payment or deployment action.",
+    "Latest contract references are owner-supplied; explorer access was blocked.",
+    "Full optional environment bootstrap failed on unavailable google namespace. Full pre-commit bootstrap did not complete; exact-head hosted checks remain required.",
+    "No realized economic value or general superiority claim."
+  ]
+}

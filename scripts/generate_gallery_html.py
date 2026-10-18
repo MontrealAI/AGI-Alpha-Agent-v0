@@ -8,6 +8,7 @@ page's title and preview image. It outputs ``docs/index.html`` and
 simple grid. ``docs/gallery.html`` is written as a simple redirect for backward
 compatibility.
 """
+
 from __future__ import annotations
 
 import html
@@ -412,6 +413,11 @@ def main() -> None:
         "scripts.generate_successor_build" if __package__ else "generate_successor_build"
     )
     successor_build.build(REPO_ROOT)
+    if (REPO_ROOT / "scripts/templates/successor-alpha/index.html").is_file():
+        flagship = importlib.import_module(
+            "scripts.generate_successor_alpha" if __package__ else "generate_successor_alpha"
+        )
+        flagship.build(REPO_ROOT)
     if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():
         workbench = importlib.import_module(
             "scripts.generate_successor_workbench" if __package__ else "generate_successor_workbench"

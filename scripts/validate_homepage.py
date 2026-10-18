@@ -47,6 +47,7 @@ def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
     assert_reading_links(page, language)
     for selector, path, fragment in (
+        ("[data-alpha-link]", "successor/alpha/", ""),
         ("[data-discovery-link]", "successor/discover/", ""),
         ("[data-mission-link]", "successor/mission/", "guided-journey"),
     ):

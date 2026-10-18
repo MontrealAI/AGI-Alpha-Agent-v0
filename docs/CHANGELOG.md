@@ -1,3 +1,10 @@
+## Unreleased — Useful Alpha flagship
+
+- Add a bilingual catalog reconciliation example with joined output, unmatched rows, discrepancies and a reusable offline tool.
+- Compare maintained strategies on the same bounded task while retaining exact inputs, results and project history.
+- Distinguish development, local engineering evidence, estimated economics, independent proof and authorized succession.
+- Preserve existing laboratories, flows and diagrams. See the [flagship guide](agent/SUCCESSOR_ALPHA.md).
+
 ## 1.33.0 — Recoverable local SUCCESSOR journeys
 
 - Integrate supplied-evidence discovery, partial input recovery, bounded Specialist evaluation and explicit project continuity.

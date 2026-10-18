@@ -49,7 +49,9 @@ const french = {
     "nova-backup": "Téléchargez la sauvegarde avant de quitter le Studio. Gardez la phrase secrète séparément; n’utilisez jamais celle de votre portefeuille.",
     "successor-work": "Créer du travail utile · cinq familles de missions",
     "build-successor": "Construire votre Ω avec les deux projets",
-    "omega-start": "Créer mon SUCCESSOR Ω",
+    "omega-start": "Explorer le laboratoire Ω personnel",
+    "alpha-start": "Trouver mon premier avantage",
+    "alpha-catalogs": "Rapprocher deux catalogues",
     skip: "Aller au contenu principal",
     "brand-note": "La curiosité entre vos mains",
     "nav-start": "Commencer",
@@ -57,29 +59,29 @@ const french = {
     "nav-questions": "Questions",
     "nav-explore": "Explorer les outils",
     "larger-text": "Texte plus grand",
-    "hero-eyebrow": "DÉCOUVREZ VOTRE SUCCESSOR Ω",
-    "hero-title-first": "Un petit univers.",
-    "hero-title-second": "À vous d’explorer.",
+    "hero-eyebrow": "ALPHA : UN AVANTAGE QUI MÉRITE D’ÊTRE CONSTRUIT",
+    "hero-title-first": "Trouvez votre avantage.",
+    "hero-title-second": "Faites-le fonctionner.",
     "hero-description":
-        "Créez votre laboratoire SUCCESSOR Ω. Donnez-lui un nom, lancez une vraie expérience et gardez une copie fonctionnelle à rouvrir, même hors ligne.",
+        "Transformez deux catalogues en un résultat vérifié et utilisable. Lancez l’exemple ou apportez vos fichiers CSV autorisés. Gardez le catalogue rapproché, les différences et un outil fonctionnant hors ligne.",
     "hero-start": "Commencer — créer un plan",
     "hero-how": "Voir comment ça marche",
     "hero-reassurance":
-        "Des exemples prêts. Des étapes claires. Prenez tout le temps nécessaire.",
+        "Des fichiers utiles d’abord. Des comparaisons inspectables. À conserver.",
     "trust-account": "Sans compte",
     "trust-payment": "Sans paiement",
     "trust-install": "Rien à installer",
-    "example-label": "Votre SUCCESSOR Ω personnel",
-    "example-title": "À votre image. En action.",
+    "example-label": "VOTRE PREMIÈRE CAPACITÉ UTILE",
+    "example-title": "Deux catalogues. Une réponse plus claire.",
     "example-description":
-        "Un petit laboratoire fonctionnel à garder.",
-    "example-task-one": "Faire des expériences",
-    "example-time-one": "Explorer",
-    "example-task-two": "Garder vos découvertes",
+        "Reliez les enregistrements, trouvez les lignes sans correspondance et examinez les différences.",
+    "example-task-one": "Rapprocher vos catalogues",
+    "example-time-one": "Comparer",
+    "example-task-two": "Garder le résultat et l’outil",
     "example-time-two": "Garder",
-    "example-total": "Votre laboratoire complet",
+    "example-total": "Votre outil fonctionnel",
     "example-duration": "Un fichier",
-    "example-note": "Nommez-le. Explorez-le. Rouvrez-le hors ligne.",
+    "example-note": "Lancez l’exemple. Inspectez les fichiers. Rouvrez l’outil hors ligne.",
     "ecosystem-eyebrow": "ALPHA AGENT + AGI JOBS",
     "ecosystem-title": "D’une idée utile à un travail accepté.",
     "ecosystem-description":
@@ -93,45 +95,45 @@ const french = {
     "how-eyebrow": "Simple dès le premier pas",
     "how-title": "À votre rythme. Trois étapes simples.",
     "how-description":
-        "Commencez par un exemple. Faites une découverte. Emportez votre laboratoire.",
-    "step-one-title": "Personnalisez votre Ω",
+        "Choisissez une tâche concrète. Examinez le résultat. Gardez une capacité réutilisable.",
+    "step-one-title": "Commencez par un travail utile",
     "step-one-description":
-        "Nommez votre laboratoire et choisissez un petit ou un grand défi. L’exemple est déjà prêt.",
-    "step-two-title": "Lancez une vraie expérience",
+        "Lancez l’exemple synthétique ou sélectionnez deux fichiers CSV autorisés et les clés de correspondance.",
+    "step-two-title": "Vérifiez le résultat et les comparaisons",
     "step-two-description":
-        "Voyez quatre petits programmes se comparer. Le laboratoire vérifie les réponses sur de nouveaux exemples et affiche les résultats.",
-    "step-three-title": "Gardez toute l’expérience",
+        "Examinez les enregistrements rapprochés, les lignes sans correspondance et les différences. Comparez quatre méthodes maintenues et la portée de leurs mesures locales.",
+    "step-three-title": "Gardez ce que vous construisez",
     "step-three-description":
-        "Enregistrez un fichier interactif contenant votre laboratoire et vos expériences. Ouvrez-le dans un navigateur sur ordinateur, même sans internet.",
+        "Téléchargez les fichiers utiles, le projet et l’outil HTML. Rouvrez-le sur ordinateur, même hors ligne, et relancez-le lorsque vos données changent.",
     "questions-eyebrow": "Quelques réponses pour vous guider",
     "questions-title": "Vous vous posez peut-être ces questions.",
     "questions-description": "Ouvrez une question pour lire la réponse.",
-    "faq-free-question": "SUCCESSOR Ω est-il gratuit à essayer?",
+    "faq-free-question": "L’exemple Alpha est-il gratuit à essayer?",
     "faq-free-answer":
-        "Oui. Créez votre laboratoire, expérimentez et enregistrez-le sans compte, paiement, portefeuille ni abonnement.",
+        "Oui. Lancez l’exemple, rapprochez des catalogues autorisés et gardez votre outil sans compte, paiement, portefeuille ni abonnement.",
     "faq-install-question": "Faut-il installer quelque chose?",
     "faq-install-answer":
-        "Rien à installer pour le laboratoire personnel ou le planificateur. Ouvrez-les dans votre navigateur. Le laboratoire enregistré est un fichier HTML; un navigateur sur ordinateur peut l’ouvrir hors ligne.",
-    "faq-privacy-question": "Où vont mon nom et mes expériences?",
+        "Rien à installer pour l’exemple Alpha, le laboratoire personnel ou le planificateur. Ouvrez-les dans votre navigateur. L’outil Alpha enregistré est un fichier HTML utilisable hors ligne sur ordinateur.",
+    "faq-privacy-question": "Où vont mes catalogues et résultats?",
     "faq-privacy-answer":
-        "Le laboratoire personnel les garde sur votre appareil. Il ne les envoie pas à un serveur et ne les enregistre pas automatiquement. Téléchargez votre copie avant de fermer ou de recharger, puis enregistrez après vos modifications.",
-    "faq-guidance-question": "Que fait mon Ω exactement?",
+        "L’exemple Alpha les traite localement dans votre navigateur. Gardez le projet et l’outil avant de fermer ou de recharger, puis après chaque modification. Les exports contiennent les données fournies : conservez-les en conséquence.",
+    "faq-guidance-question": "Quel avantage a réellement été démontré?",
     "faq-guidance-answer":
-        "Il réalise de vrais calculs ciblés sur des enregistrements fictifs. Il compare les approches, vérifie les réponses et vous laisse garder les résultats. Ce laboratoire personnel n’est pas un assistant IA généraliste et n’effectue pas de missions à votre place.",
+        "Vous obtenez un outil de rapprochement limité et des comparaisons techniques locales. La valeur réelle dépend de votre travail et des coûts complets. La preuve protégée indépendante, le statut Specialist et l’autorisation opérationnelle restent des étapes distinctes.",
     "faq-reading-question": "Puis-je faciliter la lecture?",
     "faq-reading-answer":
-        "Oui. Choisissez Texte plus grand ou utilisez le zoom. Le français et l’anglais sont proposés sur l’accueil, dans votre laboratoire personnel et dans le planificateur simple.",
+        "Oui. Choisissez Texte plus grand ou utilisez le zoom. Le français et l’anglais sont proposés sur l’accueil, dans l’exemple Alpha, dans le laboratoire personnel et dans le planificateur.",
     "invitation-eyebrow": "VOTRE PROCHAINE DÉCOUVERTE COMMENCE ICI",
     "invitation-title": "Emportez quelque chose.",
     "invitation-description":
-        "Votre nom. Vos expériences. Un laboratoire à retrouver.",
+        "Un résultat utile. Les méthodes qui l’expliquent. Un outil à réutiliser.",
     "invitation-start": "Créer mon premier plan",
     "research-eyebrow": "Pour les curieux",
     "research-title": "Explorez davantage, à votre rythme.",
     "research-description":
         "Vous trouverez aussi des outils de planification, des expériences et les travaux de recherche d’origine.",
     "research-language-note":
-        "Commencez par le laboratoire personnel SUCCESSOR Ω ci-dessus ou essayez le planificateur simple. Les outils avancés et la recherche ci-dessous sont en anglais; certains offrent des options de langue et demandent des connaissances techniques.",
+        "Commencez par l’exemple Alpha ci-dessus, explorez le laboratoire personnel ou essayez le planificateur. Les outils avancés et la recherche ci-dessous sont en anglais; certains offrent des options de langue et demandent des connaissances techniques.",
     "brand-label": "Accueil AGIALPHA",
     "preferences-label": "Préférences de lecture",
     "navigation-label": "Navigation principale",
@@ -159,8 +161,8 @@ function render() {
     document.documentElement.classList.toggle("home-large-text", largeText);
     document.title =
         language === "fr"
-            ? "AGIALPHA · Votre SUCCESSOR Ω. À vous d’explorer."
-            : "AGIALPHA · Your SUCCESSOR Ω. Yours to explore.";
+            ? "AGIALPHA · Trouvez votre avantage. Faites-le fonctionner."
+            : "AGIALPHA · Find your advantage. Make it work.";
     for (const el of textElements) el.textContent = words[el.dataset.homeKey];
     for (const el of labelElements)
         el.setAttribute("aria-label", words[el.dataset.homeLabel]);
@@ -180,7 +182,7 @@ function render() {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
     }
-    for (const [attribute, path] of [["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
+    for (const [attribute, path] of [["data-alpha-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
         for (const link of document.querySelectorAll(`[${attribute}]`)) {
             const fragment = new URL(link.href).hash;
             link.setAttribute("href", `${path}${query.size ? `?${query}` : ""}${fragment}`);

@@ -31,6 +31,8 @@ jobs:
           npm ci --prefix tests/browser --ignore-scripts
       - name: Strict records and existing workbench
         run: |
+          node --test examples/successor-alpha/*.test.mjs
+          python tests/test_successor_alpha_delivery.py
           node --test examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs
           node examples/successor-workbench/test.mjs
           node --test examples/successor-project/engine.test.mjs examples/successor-project/journey-native.test.mjs
@@ -41,6 +43,7 @@ jobs:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_native_browser_ci.py tests/test_specialist_evaluation_delivery.py -q
       - name: Generated source is current
         run: |
+          python scripts/generate_successor_alpha.py
           python scripts/generate_alpha_discovery.py
           python scripts/generate_specialist_evaluation.py
           python scripts/generate_successor_mission.py
@@ -54,7 +57,9 @@ jobs:
           PROJECT_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/project
           GUIDED_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/guided
           EVALUATION_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/evaluation
+          SUCCESSOR_ALPHA_SCREENSHOTS: ${{ github.workspace }}/discovery-screenshots/alpha
         run: |
+          python tests/browser/test_successor_alpha_browser.py
           python tests/browser/test_successor_mission_store.py
           python tests/browser/test_successor_mission_browser.py
           python tests/browser/test_alpha_discovery_browser.py
