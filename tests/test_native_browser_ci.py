@@ -208,6 +208,8 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         "npm ci --prefix tests/browser --ignore-scripts",
     ]
     assert assertions["run"].splitlines() == [
+        "node --test examples/successor-alpha/*.test.mjs",
+        "python tests/test_successor_alpha_delivery.py",
         (
             "node --test examples/successor-workbench/mission-record.test.mjs "
             "examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs"
@@ -224,6 +226,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
         ),
     ]
     assert browser["run"].splitlines() == [
+        "python tests/browser/test_successor_alpha_browser.py",
         "python tests/browser/test_successor_mission_store.py",
         "python tests/browser/test_successor_mission_browser.py",
         "python tests/browser/test_alpha_discovery_browser.py",
@@ -234,9 +237,21 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     assert browser["env"]["AXE_SCRIPT"] == "${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js"
 
     assert browser["env"]["DISCOVERY_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots"
-    assert "python scripts/generate_alpha_discovery.py" in selected["Generated source is current"]["run"].splitlines()
+    assert selected["Generated source is current"]["run"].splitlines() == [
+        "python scripts/generate_successor_alpha.py",
+        "python scripts/generate_alpha_discovery.py",
+        "python scripts/generate_specialist_evaluation.py",
+        "python scripts/generate_successor_mission.py",
+        "python scripts/generate_successor_workbench.py",
+        "python scripts/build_service_worker.py",
+        (
+            "git diff --exit-code -- docs/successor docs/service-worker.js docs/assets/service-worker.js "
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js alpha_factory_v1/core/runtime/successor"
+        ),
+    ]
     assert selected["Retain discovery browser screenshots"]["with"]["path"] == "discovery-screenshots/"
     assert browser["env"]["GUIDED_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots/guided"
+    assert browser["env"]["SUCCESSOR_ALPHA_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots/alpha"
 
     guided = workflow["jobs"]["guided-cross-repository"]
     assert "if" not in guided and "continue-on-error" not in guided

@@ -53,9 +53,9 @@ def build(root: Path = ROOT) -> None:
     engine = visit(engine_path)
     project = visit(project_path)
     core_source = engine_path.read_text(encoding="utf-8")
-    source_hash = hashlib.sha256((core_source + "\n" + project_path.read_text()).encode()).hexdigest()
+    source_hash = hashlib.sha256((core_source + "\n" + project_path.read_text(encoding="utf-8")).encode()).hexdigest()
     deployment_path = root / "examples/successor-alpha/deployment.json"
-    deployment = json.loads(deployment_path.read_text())
+    deployment = json.loads(deployment_path.read_text(encoding="utf-8"))
     template = root / "scripts/templates/successor-alpha"
     for path in [*template.iterdir(), deployment_path, Path(__file__).resolve()]:
         if path.is_file():
@@ -114,11 +114,11 @@ function exportPortable(dossier) {
     code += (
         "project.configure({engineSource:" + json.dumps(core_source, ensure_ascii=False) + ",deployment:DEPLOYMENT});\n"
     )
-    code += bootstrap + (template / "app.js").read_text() + "\n})();\n"
+    code += bootstrap + (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the flagship bundle")
-    style = "\n" + (template / "style.css").read_text() + "\n"
-    page = (template / "index.html").read_text()
+    style = "\n" + (template / "style.css").read_text(encoding="utf-8") + "\n"
+    page = (template / "index.html").read_text(encoding="utf-8")
     artwork_path = root / "docs/assets/successor-alpha/institution.webp"
     artwork = artwork_path.read_bytes()
     sources[artwork_path.relative_to(root).as_posix()] = hashlib.sha256(artwork).hexdigest()
@@ -129,7 +129,7 @@ function exportPortable(dossier) {
         hashed = base64.b64encode(hashlib.sha256(value.encode()).digest()).decode()
         page = page.replace("{{" + key + "_HASH}}", "sha256-" + hashed).replace("{{" + key + "}}", value)
     page = page.replace("{{SOURCE_HASH}}", source_hash).replace(
-        "{{LICENSES}}", html.escape((root / "LICENSE").read_text())
+        "{{LICENSES}}", html.escape((root / "LICENSE").read_text(encoding="utf-8"))
     )
     if "{{" in page:
         raise ValueError("Unexpanded flagship template")
