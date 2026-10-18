@@ -1,3 +1,18 @@
+## 1.34.0 — Useful Alpha and current deployment evidence
+
+- Add a bilingual catalog reconciliation example with joined output, unmatched rows, discrepancies and a reusable offline tool.
+- Compare maintained strategies on the same bounded task while retaining exact inputs, results and project history.
+- Construct bounded composite join plans, test a frozen plan on fresh local cases, and execute a per-key discrepancy reframing.
+- Connect the exact catalog cycle to the existing native workbench and Jobs compiler with checked local returns.
+- Require complete imported resource limits; keep standalone file reads bounded through short reads and reject nonregular inputs.
+- Distinguish development, local engineering evidence, estimated economics, independent proof and authorized succession.
+- Record five fresh Mainnet contracts, finalized bindings, scoped graph observations and exact source provenance in a read-only directory.
+- Preserve older deployment archives and the 29-address ecosystem snapshots; existing wallet profiles retain their historical addresses.
+- Add early version-collision preflight while retaining exact-current-main acceptance, public-site checks and uploaded-byte verification.
+- Contain decorative hero artwork and require overflow-free English/French first use across nine viewport widths.
+- Preserve existing laboratories, flows and diagrams. See the [flagship guide](docs/agent/SUCCESSOR_ALPHA.md).
+- See [release notes](docs/agent/RELEASE_NOTES_1.34.0.md) for the combined scope; publication grants no funding or activation authority.
+
 ## 1.33.0 — Recoverable local SUCCESSOR journeys
 
 - Integrate supplied-evidence discovery, partial input recovery, bounded Specialist evaluation and explicit project continuity.

@@ -174,7 +174,7 @@ def verify_report(report: dict[str, Any], commit: str, version: str, *, mode: st
         or journey.get("entryUrl") != origin
         or journey.get("accessibilityAudited") is not True
         or journey.get("languages") != ["en", "fr"]
-        or journey.get("viewports") != [1440, 390, 320]
+        or journey.get("viewports") != [1440, 1363, 1280, 1024, 900, 768, 600, 390, 320]
         or any(journey.get(name) != [] for name in ("errors", "browser_errors", "http_failures"))
         or not isinstance(checks, list)
         or not all(isinstance(item, str) for item in checks)
