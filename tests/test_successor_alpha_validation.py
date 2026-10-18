@@ -4,11 +4,16 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
+from scripts import validate_successor_alpha as validation
 from scripts.validate_successor_alpha import flagship_url, manifest_data, sha256, verify_packaged, verify_received
 
 
@@ -87,6 +92,58 @@ class FlagshipValidationTests(unittest.TestCase):
         ):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 flagship_url(value)
+
+    def test_relative_cli_paths_support_portable_download_file_uris(self) -> None:
+        """Exercise CLI paths through the same loaded-module/download boundary as release CI."""
+        browser_module = self.root / "tests/browser/test_successor_alpha_browser.py"
+        browser_module.parent.mkdir(parents=True)
+        browser_module.write_text(
+            "def run_acceptance(entry, output, *, expected_page_sha256=None):\n"
+            "    output.mkdir(parents=True, exist_ok=True)\n"
+            "    portable = output / 'portable.html'\n"
+            "    portable.write_text('<title>Retained workspace</title>', encoding='utf-8')\n"
+            "    return {'passed': True, 'entryUrl': entry, 'checks': [], 'portableUri': portable.as_uri()}\n",
+            encoding="utf-8",
+        )
+        axe = self.root / "axe.min.js"
+        axe.write_text("/* installed accessibility auditor */", encoding="utf-8")
+        expected = verify_packaged(self.site, self.root)
+        identity = {
+            key: expected[key] for key in ("pageSha256", "manifestSha256", "engineSourceHash", "sourcesChecked")
+        }
+        previous_cwd = Path.cwd()
+        self.addCleanup(os.chdir, previous_cwd)
+        os.chdir(self.root)
+        with (
+            mock.patch.object(validation, "ROOT", self.root),
+            mock.patch.object(validation, "checkout_identity", return_value=("1" * 40, "1.34.0")),
+            mock.patch.object(validation, "verify_packaged", side_effect=lambda site: verify_packaged(site, self.root)),
+            mock.patch("scripts.successor_alpha_evidence.asset_identity", return_value=identity),
+            mock.patch("scripts.successor_alpha_evidence.verify_report"),
+            mock.patch.dict(os.environ),
+            mock.patch(
+                "sys.argv",
+                [
+                    "validate_successor_alpha",
+                    "--site",
+                    "site",
+                    "--output",
+                    "evidence/alpha",
+                    "--axe-script",
+                    "axe.min.js",
+                ],
+            ),
+            redirect_stdout(StringIO()),
+        ):
+            validation.main()
+            self.assertEqual(os.environ["AXE_SCRIPT"], str(axe))
+            direct = validation.browser_acceptance((self.destination / "index.html").as_uri(), Path("direct-browser"))
+            self.assertEqual(direct["portableUri"], (self.root / "direct-browser/portable.html").as_uri())
+        report = json.loads((self.root / "evidence/alpha/report.json").read_text(encoding="utf-8"))
+        self.assertEqual(report["origin"], (self.destination / "index.html").as_uri())
+        self.assertEqual(
+            report["journey"]["portableUri"], (self.root / "evidence/alpha/browser/portable.html").as_uri()
+        )
 
 
 if __name__ == "__main__":

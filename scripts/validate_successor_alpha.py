@@ -130,7 +130,7 @@ def browser_acceptance(entry: str, output: Path, expected_page_sha256: str | Non
         raise RuntimeError("The complete flagship browser acceptance module is unavailable")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    result = module.run_acceptance(entry, output, expected_page_sha256=expected_page_sha256)
+    result = module.run_acceptance(entry, output.resolve(), expected_page_sha256=expected_page_sha256)
     if not isinstance(result, dict) or result.get("passed") is not True:
         raise ValueError("Full flagship browser acceptance did not pass")
     return result
@@ -159,6 +159,9 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("evidence/successor-alpha"))
     parser.add_argument("--axe-script", type=Path, default=ROOT / "tests/browser/node_modules/axe-core/axe.min.js")
     args = parser.parse_args()
+    args.site = args.site.resolve()
+    args.output = args.output.resolve()
+    args.axe_script = args.axe_script.resolve()
     if not args.axe_script.is_file():
         raise ValueError("Install the pinned browser accessibility auditor before qualifying the flagship")
     commit, version = checkout_identity()
