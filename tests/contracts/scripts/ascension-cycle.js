@@ -87,7 +87,7 @@ async function setup() {
     const artifact = await artifacts.readArtifact(name), build = await artifacts.getBuildInfo(`${artifact.sourceName}:${name}`);
     assert.ok(build, `Missing exact compiler input for ${name}`);
     assert.equal(build.solcVersion, require('./compiler-policy').SOLC_VERSION);
-    assert.deepEqual(build.input.settings.optimizer, { enabled: true, runs: 200 });
+    assert.deepEqual(build.input.settings.optimizer, require("./compiler-policy").OPTIMIZER);
     assert.equal(build.input.settings.viaIR, true); assert.equal(build.input.settings.evmVersion, 'cancun');
     for (const [file, input] of Object.entries(build.input.sources)) {
       if (!file.startsWith('contracts/ascension/') || !fs.existsSync(path.join(root, file))) continue;
@@ -300,6 +300,7 @@ async function qualify(state) {
   for (const relative of ['alpha_factory_v1/core/runtime/successor/studio.py', 'alpha_factory_v1/core/runtime/successor/workbench.py',
     'tests/contracts/scripts/ascension-cycle.js', 'tests/contracts/scripts/disposable.js',
     'tests/nova-studio/cycle-native.py', 'tests/nova-studio/cycle-browser.py', 'tests/nova-studio/edge_browser.py',
+    'tests/nova-studio/reconciliation_diagnostics.py',
     'tests/nova-studio/browser-provider.js',
     ...(interruptionBrowser ? ['tests/nova-studio/cycle-interruptions-browser.py', 'tests/nova-studio/cycle-interruptions-native.py'] : [])]) sourceHashes[relative] = sha(fs.readFileSync(path.join(root, relative)));
   const environment = {

@@ -420,6 +420,10 @@ def main() -> None:
         for module in ("generate_successor_mission", "generate_alpha_discovery", "generate_specialist_evaluation"):
             journey = importlib.import_module(f"scripts.{module}" if __package__ else module)
             journey.build(REPO_ROOT)
+    directory = importlib.import_module(
+        "scripts.generate_mainnet_directory" if __package__ else "generate_mainnet_directory"
+    )
+    directory.build(REPO_ROOT)
     entries = collect_entries()
 
     version = json.loads((REPO_ROOT / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
