@@ -8,8 +8,10 @@ and the session's STOP/deadline checks waited for the complete read to return.
 
 Each approved public-document request runs in a disposable child process. The parent checks the current
 session between bounded waits, applies one eight-second wall-clock limit to DNS and HTTP together, and
-kills and reaps the reader on cancellation or timeout. The child receives only the exact URL, method and
-remaining byte allowance through standard input. It inherits no provider credential or proxy environment.
+kills and reaps the reader on cancellation or timeout. The child receives the retained approved reader source, installed dependency roots, exact URL, method and
+remaining byte allowance through standard input. It inherits no provider credential, proxy or PYTHONPATH
+environment, executable startup hook or cached bytecode. Each invocation starts with an empty private
+bytecode-cache prefix.
 
 Exact approved URLs, public-IP validation, pinned destination IPs, original-host TLS verification,
 GET/HEAD-only access, redirect refusal and byte limits remain enforced. An interrupted read conservatively
@@ -19,7 +21,10 @@ uses raw-byte iteration so decompression cannot allocate an oversized body ahead
 STOP and deadline exceptions reach the native session; they cannot be converted into an ordinary denied
 page and followed by more work. Existing uncertain action reservations and cleanup receipts remain intact.
 
-Fresh permits bind both the browser worker and public-reader source bytes in their worker commitment.
+Fresh permits bind the browser worker, public-reader source bytes and fixed reader bootstrap in their
+worker commitment. Session approval captures the exact reader bytes once; each broker retains that
+immutable snapshot and executes it from standard input. Replacing the source file after approval or at
+subprocess creation cannot select new code. Scoped snapshot state resets even when a factory fails.
 Prepare a new permit after upgrading. The existing handoff, return and historical archive wire formats
 are unchanged; earlier signed receipts and release assets retain their original source identities.
 
@@ -32,7 +37,9 @@ establish that a document is non-personal or that its proposed use is permitted.
 
 New tests exercise actual disposable processes, blocked DNS, a real slow-stream loopback HTTP server,
 STOP and deadline cancellation, child cleanup, byte accounting and native interrupted receipts with no
-automatic replay. The loopback server uses explicit test-only DNS/transport substitutions; it does not
+automatic replay. Source-replacement regressions execute the retained bytes after both in-place changes
+and replacement inside process creation, and verify that unapproved code never touches its marker.
+The loopback server uses explicit test-only DNS/transport substitutions; it does not
 weaken the production public-network policy or establish a live provider task.
 
 Exact-head hosted regression, package, Docker, browser, documentation, release and served-site acceptance

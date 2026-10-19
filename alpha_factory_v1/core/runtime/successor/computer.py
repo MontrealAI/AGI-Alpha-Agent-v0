@@ -11,11 +11,14 @@ import os
 import queue
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import threading
+import tempfile
 import time
 import uuid
+from contextvars import ContextVar
 from pathlib import Path
 from typing import Any, Callable, Literal, Protocol
 from urllib.parse import urlsplit
@@ -34,18 +37,59 @@ WORKER = Path(__file__).with_name("computer_worker.py")
 READ_WORKER = Path(__file__).with_name("computer_read.py")
 READ_TIMEOUT = 8.0
 MAX_MESSAGE = 3_000_000
+_APPROVED_READ_SOURCE: ContextVar[bytes | None] = ContextVar("approved_public_read_source", default=None)
+# Execute only the source snapshot sent by the approving parent. No mutable
+# reader pathname, startup hook or cached Python bytecode is opened in the child.
+READ_BOOTSTRAP = """import importlib.machinery, sys
+class SourceOnlyLoader(importlib.machinery.SourceFileLoader):
+    def get_code(self, fullname):
+        return self.source_to_code(self.get_data(self.path), self.path)
+sys.path_hooks.insert(0, importlib.machinery.FileFinder.path_hook(
+    (SourceOnlyLoader, importlib.machinery.SOURCE_SUFFIXES),
+    (importlib.machinery.ExtensionFileLoader, importlib.machinery.EXTENSION_SUFFIXES)))
+sys.path_importer_cache.clear()
+import json
+size = int.from_bytes(sys.stdin.buffer.read(4), 'big')
+if not 0 < size <= 128_000:
+    raise ValueError('invalid approved reader size')
+source = sys.stdin.buffer.read(size)
+roots = json.loads(sys.stdin.buffer.readline(32_769))
+if len(source) != size or not isinstance(roots, list):
+    raise ValueError('invalid approved reader frame')
+sys.path.extend(roots)
+exec(compile(source, '<approved-public-reader>', 'exec'))
+"""
+
+
+def _read_reader_source() -> bytes:
+    descriptor = os.open(READ_WORKER, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+    with os.fdopen(descriptor, "rb") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode) or not 0 < info.st_size <= 128_000:
+            raise ValueError("public-reader source exceeds its bound")
+        source = stream.read(128_001)
+    if not 0 < len(source) <= 128_000:
+        raise ValueError("public-reader source exceeds its bound")
+    return source
+
+
+def _worker_source_snapshot() -> tuple[str, bytes]:
+    reader = _read_reader_source()
+    identity = hashlib.sha256(
+        canonical(
+            {
+                "browser": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+                "reader": hashlib.sha256(reader).hexdigest(),
+                "reader_bootstrap": hashlib.sha256(READ_BOOTSTRAP.encode()).hexdigest(),
+            }
+        )
+    ).hexdigest()
+    return identity, reader
 
 
 def worker_source_digest() -> str:
     """Bind both disposable browser and public-reader implementations into each fresh permit."""
-    return hashlib.sha256(
-        canonical(
-            {
-                "browser": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
-                "reader": hashlib.sha256(READ_WORKER.read_bytes()).hexdigest(),
-            }
-        )
-    ).hexdigest()
+    return _worker_source_snapshot()[0]
 
 
 class ComputerTask(StrictModel):
@@ -317,6 +361,24 @@ class ReadBroker:
         self.requests = 0
         self.bytes = 0
         self.checkpoint = checkpoint
+        approved = _APPROVED_READ_SOURCE.get()
+        self.source = _read_reader_source() if approved is None else approved
+        if not 0 < len(self.source) <= 128_000:
+            raise ValueError("public-reader source exceeds its bound")
+        roots = {str(Path(httpx.__file__).resolve().parent.parent)}
+        # Only roots of already loaded installed modules, never PYTHONPATH or
+        # arbitrary parent search entries. Startup hooks are not processed.
+        for module in tuple(sys.modules.values()):
+            filename = getattr(module, "__file__", None)
+            if filename:
+                roots.update(
+                    str(parent)
+                    for parent in Path(filename).resolve().parents
+                    if parent.name in {"site-packages", "dist-packages"}
+                )
+        self.dependency_roots = canonical(sorted(roots)) + b"\n"
+        if len(self.dependency_roots) > 32_768:
+            raise ValueError("public-reader dependency roots exceed their bound")
 
     def fetch(self, url: str, method: str) -> dict[str, Any]:
         """Supervise DNS and streaming with STOP checks and one absolute wall-clock limit."""
@@ -329,51 +391,53 @@ class ReadBroker:
             raise ValueError("network byte budget exhausted")
         deadline = time.monotonic() + READ_TIMEOUT
         environment = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
-        payload: bytes | None = canonical({"url": url, "method": method, "maximum": maximum})
-        process = subprocess.Popen(
-            [sys.executable, "-E", str(READ_WORKER)],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            env=environment,
-        )
-        accounted = False
-        try:
-            while True:
+        request = canonical({"url": url, "method": method, "maximum": maximum})
+        payload: bytes | None = len(self.source).to_bytes(4, "big") + self.source + self.dependency_roots + request
+        with tempfile.TemporaryDirectory(prefix="successor-public-reader-cache-") as cache:
+            process = subprocess.Popen(
+                [sys.executable, "-I", "-S", "-B", "-X", "pycache_prefix=" + cache, "-c", READ_BOOTSTRAP],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                env=environment,
+            )
+            accounted = False
+            try:
+                while True:
+                    self.checkpoint()
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError("public read wall-clock budget exhausted")
+                    try:
+                        raw, _ = process.communicate(input=payload, timeout=min(0.1, remaining))
+                        break
+                    except subprocess.TimeoutExpired:
+                        payload = None
                 self.checkpoint()
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
+                if time.monotonic() >= deadline:
                     raise TimeoutError("public read wall-clock budget exhausted")
-                try:
-                    raw, _ = process.communicate(input=payload, timeout=min(0.1, remaining))
-                    break
-                except subprocess.TimeoutExpired:
-                    payload = None
-            self.checkpoint()
-            if time.monotonic() >= deadline:
-                raise TimeoutError("public read wall-clock budget exhausted")
-            if process.returncode != 0:
-                raise ValueError("public read refused or failed")
-            result = safe_json_loads(raw, max_bytes=2_100_000)
-            received = result.get("bytes_read")
-            if type(received) is not int or not 0 <= received <= maximum + 65_536:  # noqa: E721
-                raise ValueError("invalid public-reader accounting")
-            self.bytes += received
-            accounted = True
-            if process.returncode != 0 or set(result) != {"bytes_read", "response"}:
-                raise ValueError("public read refused or failed")
-            response = result["response"]
-            if not isinstance(response, dict) or set(response) != {"status", "content_type", "body"}:
-                raise ValueError("invalid public-reader response")
-            if response["status"] != 200 or len(base64.b64decode(response["body"], validate=True)) != received:
-                raise ValueError("invalid public-reader body")
-            return dict(response)
-        finally:
-            if not accounted:
-                self.bytes += maximum
-            if process.poll() is None:
-                process.kill()
-            process.communicate(timeout=5)
+                if process.returncode != 0:
+                    raise ValueError("public read refused or failed")
+                result = safe_json_loads(raw, max_bytes=2_100_000)
+                received = result.get("bytes_read")
+                if type(received) is not int or not 0 <= received <= maximum + 65_536:  # noqa: E721
+                    raise ValueError("invalid public-reader accounting")
+                self.bytes += received
+                accounted = True
+                if process.returncode != 0 or set(result) != {"bytes_read", "response"}:
+                    raise ValueError("public read refused or failed")
+                response = result["response"]
+                if not isinstance(response, dict) or set(response) != {"status", "content_type", "body"}:
+                    raise ValueError("invalid public-reader response")
+                if response["status"] != 200 or len(base64.b64decode(response["body"], validate=True)) != received:
+                    raise ValueError("invalid public-reader body")
+                return dict(response)
+            finally:
+                if not accounted:
+                    self.bytes += maximum
+                if process.poll() is None:
+                    process.kill()
+                process.communicate(timeout=5)
 
 
 class DockerComputer:
@@ -515,11 +579,17 @@ class DockerComputer:
 
 def commitment(task: ComputerTask, advisor: Advisor, image: str, execution_context: str | None = None) -> str:
     """Bind exact work, provider, worker/image and optional immutable assignment context."""
+    return _commitment(task, advisor, image, execution_context, worker_source_digest())
+
+
+def _commitment(
+    task: ComputerTask, advisor: Advisor, image: str, execution_context: str | None, worker_sha256: str
+) -> str:
     document = {
         "task": task.model_dump(mode="json"),
         "provider": advisor.identity,
         "image": image,
-        "worker_sha256": worker_source_digest(),
+        "worker_sha256": worker_sha256,
     }
     if execution_context is not None:
         if not isinstance(execution_context, str) or re.fullmatch(r"[0-9a-f]{64}", execution_context) is None:
@@ -541,7 +611,8 @@ def run_session(
 ) -> dict[str, Any]:
     """Retain every pre-effect reservation; interrupted sessions cannot resume or silently replay."""
     journal.verify()
-    expected = commitment(task, advisor, image, execution_context)
+    worker_sha256, reader_source = _worker_source_snapshot()
+    expected = _commitment(task, advisor, image, execution_context, worker_sha256)
     if permit != expected:
         raise ValueError("operator permit must match the displayed task/provider/image commitment")
     if output.exists() or output.is_symlink():
@@ -596,7 +667,11 @@ def run_session(
         record = _change(journal, key, record["revision"], screenshots=screenshots)
 
     try:
-        computer = factory(image, task, checkpoint)
+        token = _APPROVED_READ_SOURCE.set(reader_source)
+        try:
+            computer = factory(image, task, checkpoint)
+        finally:
+            _APPROVED_READ_SOURCE.reset(token)
         record = _change(
             journal,
             key,

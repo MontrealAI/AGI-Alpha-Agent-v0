@@ -94,12 +94,15 @@ def substitute_reader(
     children: list[subprocess.Popen[bytes]] = []
 
     def start(command: list[str], **kwargs: Any) -> subprocess.Popen[bytes]:
-        assert command == [computer.sys.executable, "-E", str(computer.READ_WORKER)]
+        assert command[:5] == [computer.sys.executable, "-I", "-S", "-B", "-X"]
+        assert command[5].startswith("pycache_prefix=") and command[6:] == ["-c", computer.READ_BOOTSTRAP]
+        assert list(Path(command[5].split("=", 1)[1]).iterdir()) == []
         assert set(kwargs["env"]) <= {"SYSTEMROOT", "WINDIR"}
-        child = real_popen([*command[:2], str(script)], **kwargs)
+        child = real_popen(command, **kwargs)
         children.append(child)
         return child
 
+    monkeypatch.setattr(computer, "READ_WORKER", script)
     monkeypatch.setattr(computer.subprocess, "Popen", start)
     return children, ready
 
@@ -121,7 +124,7 @@ def test_bounded_reader_returns_actual_http_bytes_without_credentials(
 def test_read_deadline_kills_and_reaps_blocked_dns_or_slow_stream(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, blocked: str
 ) -> None:
-    monkeypatch.setattr(computer, "READ_TIMEOUT", 0.6)
+    monkeypatch.setattr(computer, "READ_TIMEOUT", 1.2)
     with streaming_server(slow=True) as (target, connected):
         children, ready = substitute_reader(monkeypatch, tmp_path, target=target, dns_wait=blocked == "dns")
         started = time.monotonic()
@@ -130,7 +133,7 @@ def test_read_deadline_kills_and_reaps_blocked_dns_or_slow_stream(
             broker.fetch("https://example.org/public", "GET")
         elapsed = time.monotonic() - started
     assert ready.exists() and (blocked == "dns" or connected.is_set())
-    assert elapsed < 2 and len(children) == 1 and children[0].poll() is not None
+    assert elapsed < 2.5 and len(children) == 1 and children[0].poll() is not None
     assert broker.bytes == 1_500_000 and broker.requests == 1
 
 
@@ -201,6 +204,9 @@ def test_reader_code_changes_invalidate_fresh_permit(monkeypatch: pytest.MonkeyP
     modified.write_bytes(computer.READ_WORKER.read_bytes() + b"\n# changed implementation\n")
     monkeypatch.setattr(computer, "READ_WORKER", modified)
     assert computer.worker_source_digest() != initial
+    modified.write_bytes(b"x" * 128_001)
+    with pytest.raises(ValueError, match="source exceeds"):
+        computer.worker_source_digest()
 
 
 def test_reader_failure_retains_received_byte_budget(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -295,3 +301,97 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
     with pytest.raises(Conflict, match="reconcile"):
         computer.run_session(journal, mission, advisor, image, tmp_path / "retry", permit, factory=ControlledComputer)
     journal.verify()
+
+
+def approved_reader_source() -> bytes:
+    response = {
+        "bytes_read": 8,
+        "response": {"status": 200, "content_type": "text/plain", "body": base64.b64encode(b"approved").decode()},
+    }
+    return ("import sys\nsys.stdin.buffer.read()\nsys.stdout.write(" + repr(json.dumps(response)) + ")\n").encode()
+
+
+@pytest.mark.parametrize("replacement", ["after-construction", "at-spawn"])
+def test_retained_reader_snapshot_survives_path_replacement(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, replacement: str
+) -> None:
+    reader, marker = tmp_path / "reader.py", tmp_path / "UNAPPROVED_EXECUTED"
+    reader.write_bytes(approved_reader_source())
+    monkeypatch.setattr(computer, "READ_WORKER", reader)
+    broker = computer.ReadBroker(["https://example.org/public"])
+    malicious = f"from pathlib import Path\nPath({str(marker)!r}).write_text('unapproved')\n".encode()
+    if replacement == "at-spawn":
+        real_popen = subprocess.Popen
+
+        def replace_and_start(*args: Any, **kwargs: Any) -> subprocess.Popen[bytes]:
+            reader.write_bytes(malicious)
+            return real_popen(*args, **kwargs)
+
+        monkeypatch.setattr(computer.subprocess, "Popen", replace_and_start)
+    else:
+        reader.write_bytes(malicious)
+    result = broker.fetch("https://example.org/public", "GET")
+    assert base64.b64decode(result["body"]) == b"approved" and broker.bytes == 8
+    assert reader.read_bytes() == malicious and not marker.exists()
+
+
+def test_session_passes_exact_approved_reader_snapshot_and_resets_factory_context(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    reader, marker = tmp_path / "reader.py", tmp_path / "UNAPPROVED_EXECUTED"
+    original = approved_reader_source()
+    reader.write_bytes(original)
+    monkeypatch.setattr(computer, "READ_WORKER", reader)
+    journal = Journal.initialize(tmp_path / "home")
+    task = computer.ComputerTask(
+        goal="Read approved synthetic fixture",
+        html="<main>Synthetic browser double</main>",
+        allowed_urls=["https://example.org/public"],
+        input_rights="synthetic",
+        license="Synthetic public fixture",
+    )
+    closed = []
+
+    class Advisor:
+        identity = {"mode": "CONTROLLED_TEST_DOUBLE", "model": "fixed", "endpoint": "none"}
+
+        def next(self, *args: Any) -> dict[str, Any]:
+            return {"actions": [], "done": True, "summary": "Synthetic fixture; not independent acceptance"}
+
+    class Browser:
+        def __init__(self, image: str, mission: Any, checkpoint: Any) -> None:
+            reader.write_text(f"from pathlib import Path\nPath({str(marker)!r}).write_text('unapproved')\n")
+            self.broker = computer.ReadBroker(mission.allowed_urls, checkpoint)
+
+        def observe(self) -> dict[str, str]:
+            result = self.broker.fetch("https://example.org/public", "GET")
+            assert base64.b64decode(result["body"]) == b"approved"
+            return {"png": base64.b64encode(b"CONTROLLED_SCREENSHOT_DOUBLE").decode(), "text": "Unverified fixture"}
+
+        def close(self) -> None:
+            closed.append(True)
+
+    advisor, image = Advisor(), "sha256:" + "a" * 64
+    permit = computer.commitment(task, advisor, image)
+    result = computer.run_session(journal, task, advisor, image, tmp_path / "output", permit, factory=Browser)
+    assert result["state"] == "review" and closed == [True] and not marker.exists()
+    assert computer._APPROVED_READ_SOURCE.get() is None
+    assert computer.ReadBroker([]).source == reader.read_bytes() != original
+    # A factory exception also releases the scoped snapshot for the next session.
+    reader.write_bytes(original)
+
+    def fail_factory(*args: Any) -> None:
+        assert computer._APPROVED_READ_SOURCE.get() == original
+        raise ValueError("controlled factory failure")
+
+    with pytest.raises(ValueError, match="controlled factory"):
+        computer.run_session(
+            Journal.initialize(tmp_path / "other-home"),
+            task,
+            advisor,
+            image,
+            tmp_path / "other-output",
+            permit,
+            factory=fail_factory,
+        )
+    assert computer._APPROVED_READ_SOURCE.get() is None
