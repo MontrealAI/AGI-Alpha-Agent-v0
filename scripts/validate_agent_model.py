@@ -29,6 +29,9 @@ def main() -> None:
     parser.add_argument("--sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--with-code", action="store_true", help="Also generate, sandbox, review and export code")
+    parser.add_argument(
+        "--with-ti-public-pilot", action="store_true", help="Also run the actual bounded TI public-source pilot"
+    )
     args = parser.parse_args()
     with args.model.open("rb") as source:
         model_hash = hashlib.file_digest(source, "sha256").hexdigest()
@@ -119,6 +122,34 @@ def main() -> None:
                         "inference": generated["inference"],
                         "artifact_hash": digest(engine.export(generated["id"])),
                     }
+                ti_public_pilot = None
+                if args.with_ti_public_pilot:
+                    from scripts.reproduce_public_preparation_pilot import PilotFailure, run_pilot
+                    from alpha_factory_v1.core.runtime.store import private_write
+                    from alpha_factory_v1.core.runtime.successor.protocol import canonical
+
+                    ti_config = folder / "ti-local-model.json"
+                    ti_config.write_text(
+                        json.dumps(
+                            {
+                                "schema_version": 1,
+                                "endpoint": f"http://127.0.0.1:{port}/v1",
+                                "model": "qwen3-4b-pinned",
+                                "declared_revision": model_hash,
+                                "no_charge": True,
+                                "max_output_tokens": 900,
+                                "timeout_seconds": 60,
+                                "max_input_bytes": 40000,
+                            }
+                        )
+                    )
+                    try:
+                        ti_public_pilot = run_pilot(folder / "ti-public-agent", model_config=ti_config)
+                    except PilotFailure as exc:
+                        private_write(args.output.parent / "ti-public-pilot-failure.json", canonical(exc.evidence))
+                        raise
+                    if ti_public_pilot["model"] is None:
+                        raise AssertionError("TI public pilot did not execute the configured real model")
                 journal.backup(folder / "private-backup.zip")
                 restored = Journal.restore(folder / "private-backup.zip", folder / "restored")
                 if restored.verify() != journal.verify():
@@ -126,6 +157,7 @@ def main() -> None:
                 evidence = {
                     "model_file": args.model.name,
                     "coding": coding,
+                    "ti_public_pilot": ti_public_pilot,
                     "model_sha256": model_hash,
                     "server_version": subprocess.check_output(
                         [str(args.server), "--version"], text=True, stderr=subprocess.STDOUT

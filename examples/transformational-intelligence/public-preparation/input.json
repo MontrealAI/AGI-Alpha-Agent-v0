@@ -1,0 +1,143 @@
+{
+  "schema": "public-preparation-pilot-input/v1",
+  "manager_commit": "8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2",
+  "sources": [
+    {
+      "file": "ubuntu-ephemeral-creator.md",
+      "repository_path": "docs/deployment/ubuntu-ephemeral-creator.md",
+      "source_url": "https://github.com/MontrealAI/AGIJobManager/blob/8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2/docs/deployment/ubuntu-ephemeral-creator.md",
+      "sha256": "0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b"
+    },
+    {
+      "file": "direct-origination-profile.md",
+      "repository_path": "docs/deployment/direct-origination-profile.md",
+      "source_url": "https://github.com/MontrealAI/AGIJobManager/blob/8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2/docs/deployment/direct-origination-profile.md",
+      "sha256": "8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24"
+    }
+  ],
+  "documents": {
+    "development": {
+      "schema_version": 1,
+      "schema": "source-document/v1",
+      "title": "Public Manager operator-preparation development",
+      "source_url": "https://github.com/MontrealAI/AGIJobManager/blob/8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2/docs/deployment/ubuntu-ephemeral-creator.md",
+      "public_non_personal": true,
+      "claims": [
+        {
+          "schema_version": 1,
+          "id": "settings",
+          "text": "The public settings still need to be supplied; this guide does not claim an already automated configuration wizard.",
+          "weight": 1,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 16-17; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "hidden",
+          "text": "Review the transaction summary and enter the deployer key only in its hidden local prompt.",
+          "weight": 10,
+          "depends_on": [
+            "build"
+          ],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 9-10; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "build",
+          "text": "Compile and verify the source/build before entering any key.",
+          "weight": 6,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 36-37; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "channels",
+          "text": "Do not supply a private key through any environment value, argument, `.env` file, redirected input, command substitution, or clipboard script.",
+          "weight": 10,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 44-45; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "separate",
+          "text": "The governor is explicitly `0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99` and must be a different account.",
+          "weight": 8,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 25-26; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "external",
+          "text": "External ENS, token/proxy and other authority remain separately scoped; these checks do not certify every external controller.",
+          "weight": 2,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/ubuntu-ephemeral-creator.md; raw SHA256 0c802dee7adcb60c8c52618ba5703f642635e8a8488a6dacca05eab66376485b; lines 20-21; whitespace collapsed only; weights and dependencies are local judgments"
+        }
+      ]
+    },
+    "confirmation": {
+      "schema_version": 1,
+      "schema": "source-document/v1",
+      "title": "Public Manager operator-preparation confirmation",
+      "source_url": "https://github.com/MontrealAI/AGIJobManager/blob/8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2/docs/deployment/direct-origination-profile.md",
+      "public_non_personal": true,
+      "claims": [
+        {
+          "schema_version": 1,
+          "id": "scope",
+          "text": "It makes only conventional transaction-correctness claims.",
+          "weight": 1,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 6-6; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "workflow",
+          "text": "The intended owner workflow uses Ledger USB on the trusted Mac Studio and Hardhat in Ubuntu Terminal.",
+          "weight": 9,
+          "depends_on": [
+            "validate"
+          ],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 94-95; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "capabilities",
+          "text": "A new creator does not invalidate a signature already handed out for the previous one.",
+          "weight": 10,
+          "depends_on": [
+            "reconcile"
+          ],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 111-112; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "validate",
+          "text": "The Mac must independently obtain and validate the reviewed source/build, effect intent and exact transaction.",
+          "weight": 7,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 95-96; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "reconcile",
+          "text": "Once a handoff/signature/submission exists, preserve and reconcile it before a new campaign.",
+          "weight": 9,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 109-110; whitespace collapsed only; weights and dependencies are local judgments"
+        },
+        {
+          "schema_version": 1,
+          "id": "limits",
+          "text": "This profile adds none of those capabilities and creates no persistent device or network access.",
+          "weight": 2,
+          "depends_on": [],
+          "provenance": "Manager 8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2; docs/deployment/direct-origination-profile.md; raw SHA256 8ed6da2e8733c672b21035e2936c7954fc8ffcbf9caf8248b2e71d4656a1bf24; lines 105-106; whitespace collapsed only; weights and dependencies are local judgments"
+        }
+      ]
+    }
+  },
+  "selection_limit": 3,
+  "sampling": "Two preselected documentation excerpts; confirmation is withheld from model payload, not independently sampled campaigns. No statistical claim.",
+  "annotation_basis": "Local priorities for reviewing key-handling, pre-key build validation, separate governor and durable outstanding-signature constraints. Dependencies require qualifications to travel with selected guidance; they are not empirical causal truth."
+}
