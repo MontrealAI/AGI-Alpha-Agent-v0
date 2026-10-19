@@ -33,6 +33,10 @@ for unsigned, unfunded $AGIALPHA and USDC proposals. The legacy catalog routes r
 own flow. A shared portable learning-archive inspector gives receivers the flagship's existing native
 checks while preserving complete original archive and history bytes, including earlier catalog work,
 strategy lessons, Computer Use attempts and owner reviews. Import creates no execution or payment authority.
+The normal Alpha restore controls also merge native Computer Use history into the same project. Restore
+the original complete archive first to retain catalog lessons, then import the latest native history.
+Earlier attempts and reviews remain intact; conflicting evidence, unrelated projects and malformed UTF-8
+or BOM-prefixed JSON are refused without replacing the retained workspace.
 
 Strategy development, transformational reframing, the local catalog example and portable history retain
 their existing behavior. Use only

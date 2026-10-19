@@ -124,6 +124,14 @@ produces a return when its native receipt is available, preserving reserved effe
 Importing that return does not establish signer trust, independent review, payment or settlement. Verify the
 signed receipt against a separately trusted source key and review the actual artifacts before accepting work.
 
+When returning from the Jobs or Manager receiver, restore your original complete Alpha archive first.
+Then use **Restore archive or Computer Use history** to import the latest native history JSON. Alpha merges
+the same project's attempts without dropping earlier catalog lessons, native catalog returns, failed work or
+owner reviews. Repeated, reordered or partial histories preserve the retained evidence; conflicting bytes or
+an unrelated project are refused. Download the complete archive or workspace again to carry the merged work.
+In French, use **Restaurer une archive ou un historique Computer Use**. Imports carry no execution or payment
+authority, and JSON is checked as decoded without silently removing a UTF-8 byte-order mark.
+
 The handoff and return schemas use sorted compact UTF-8 JSON commitments. `projectSha256` hashes the exact
 `projectRaw` UTF-8 bytes; `handoffSha256` hashes the canonical handoff. Tasks in a handoff include every
 `ComputerTask` field and `schema_version: 1`, including defaults, to preserve cross-language commitment bytes.

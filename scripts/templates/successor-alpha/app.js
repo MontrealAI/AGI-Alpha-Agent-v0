@@ -23,7 +23,7 @@ const fr = {
     researchTitle:'Aller plus loin : composer une meilleure stratégie',researchIntro:'Explorez des combinaisons délimitées d’opérations connues : partitionnement, réutilisation des clés dupliquées et choix d’index. Figez le plan sélectionné, puis confirmez-le sur de nouvelles données synthétiques publiques. Un HOLD légitime conserve la référence.',researchMemory:'Maximum de références de lignes auxiliaires',researchWeight:'Poids de chaque référence auxiliaire',researchRun:'Composer et tester des stratégies',researchScope:'RECHERCHE DE STRATÉGIE LOCALE · NON QUALIFIÉE INDÉPENDAMMENT',researchCandidates:'Stratégies composées et références',researchPlan:'Plan',researchAuxiliary:'Références de lignes au pic',researchFeasible:'Budget respecté',researchLimits:'Composition délimitée d’opérations examinées, avec une confirmation synthétique publique. Ce n’est ni une évaluation protégée, ni la découverte d’un nouvel algorithme, ni une certification indépendante, ni une valeur organisationnelle réalisée.',researchDownload:'Stratégie, engagement et confirmation',researchExampleNote:'Pour voir pourquoi la structure compte, commencez un cycle synthétique distinct riche en doublons. Cette mission reste dans votre historique.',researchExample:'Essayer une mission d’apprentissage riche en doublons ↗',researchTool:'Télécharger la capacité du plan conservé · .mjs',
     resolutionTitle:'Reformuler : que faut-il décider ?',resolutionIntro:'Une longue liste de divergences peut répéter le même problème. Construisez une action par clé concernée en préservant les références de chaque occurrence originale.',resolutionRun:'Construire mon plan d’action sur les divergences',resolutionScope:'REFORMULATION EXÉCUTABLE · CONTRAT DE SORTIE MODIFIÉ',resolutionLimits:'La tâche passe d’une liste d’occurrences à un regroupement de décisions. Cela ne prouve ni un temps de revue équivalent, ni l’exactitude d’une source, ni une supériorité sur la tâche originale. Jointure et divergences originales restent disponibles.',resolutionDownload:'Plan d’action complet avec références sources',
     nativeTitle:'Poursuivre dans l’espace SUCCESSOR natif',nativeIntro:'Transmettez cette mission de catalogue exacte et son historique au format du workbench SUCCESSOR. Compilez un vrai plan Jobs non financé de sept lots et ramenez les artefacts contrôlés dans le même projet.',nativeScope:'Exécution locale seulement. Sans portefeuille, prestataire distant, fonds ni permission opérationnelle. L’adaptateur de catalogue est inclus dans le SDK du workbench ; les exécuteurs de catalogue compatibles Manager et Fleet ne sont pas installés.',nativeName:'Nom de mission native · 48 caractères maximum',nativeOwner:'Libellé du responsable',nativeRights:'Classe de données autorisée',nativeChooseRights:'Choisir explicitement',nativeSynthetic:'Synthétique',nativePublic:'Public, sans données personnelles',nativeLicensed:'Sous licence, sans données personnelles',nativeReview:'Capacité de revue · minutes, 1–120',nativeSource:'Source des données et déclaration d’usage autorisé',nativeLicense:'Licence ou base de permission explicite',nativePrepare:'Préparer la mission native et le plan Jobs',nativePreparedLabel:'MÊME MISSION · WORKBENCH NATIF · BROUILLON $AGIALPHA NON FINANCÉ',nativeRun:'Répéter localement avec le SDK du workbench',nativeDownloadHandoff:'Mission native exacte, plan et transmission du projet',nativeImportReturn:'Importer un fichier de retour natif',nativeReturnUpload:'Importer un retour natif',nativeHistorical:'RÉSULTAT LOCAL HISTORIQUE · EXAMEN TOUJOURS REQUIS',nativeDownloadReturn:'Retour natif contrôlé',nativeReturnLimits:'Le retour est lié à cette transmission, ces sources, cette mission et cet historique exacts. Les sorties sont recalculées. Les temps restent historiques ; aucune revue actuelle, qualification indépendante, autorité ou règlement ne sont importés.',nativeArtifactLimit:'Le SDK du workbench limite chaque artefact à 200 000 caractères. Une mission valide ici peut nécessiter un périmètre plus petit pour ce transfert. Le téléchargement source reste disponible.',nativeHostCommand:'Pour une exécution hors navigateur : node examples/successor-alpha/native-cli.mjs successor-native-handoff.json NOUVEAU-retour-natif.json ; importez ensuite le retour natif produit.',
-    learningHistoryTitle:'Stratégies, plans d’action et retours natifs conservés',learningDownload:'Télécharger l’archive d’apprentissage complète',learningRestore:'Restaurer une archive d’apprentissage',learningUpload:'Restaurer une archive d’apprentissage',learningLimit:'L’archive inclut le même projet, les méthodes, les preuves originales et les retours natifs contrôlés. Jusqu’à 2 Mo ; une archive trop volumineuse est refusée sans supprimer d’historique. Les éléments importés restent historiques, sans autorité.',
+    learningHistoryTitle:'Stratégies, plans d’action et retours natifs conservés',learningDownload:'Télécharger l’archive d’apprentissage complète',learningRestore:'Restaurer une archive ou un historique Computer Use',learningUpload:'Restaurer une archive ou un historique Computer Use',learningLimit:'L’archive inclut le même projet, les méthodes, les preuves originales et les retours natifs contrôlés. Jusqu’à 2 Mo ; une archive trop volumineuse est refusée sans supprimer d’historique. Les éléments importés restent historiques, sans autorité.',
 
     adoptionTitle:'Cette capacité vaudrait-elle la peine d’être adoptée ?',adoptionIntro:'Estimez votre effort complet, y compris l’examen et les corrections. Les millisecondes du navigateur ne mesurent pas le temps humain gagné.',
     valueBefore:'Minutes actuelles par exécution',valueAfter:'Minutes prévues avec cet outil',valueFrequency:'Exécutions par mois',valueHourly:'Votre valeur d’une heure',valueSetup:'Coût initial de mise en place et d’intégration',valueCurrency:'Devise commune',valueCalculate:'Estimer selon mes hypothèses',valueProjection:'PROJECTION · VOS HYPOTHÈSES',valueLimit:'Calcul arithmétique de vos estimations, pas une économie mesurée ni garantie. Il exclut les coûts non saisis, les coûts récurrents et les coûts d’erreur ou de risque. Vérifiez les résultats réels avant adoption.',valueDownload:'Télécharger les hypothèses et la projection',
@@ -172,7 +172,7 @@ Object.assign(fr, {
     computerHistory:'UN PROJET · STRATÉGIES, RÉSULTATS ET LEÇONS',
     computerSaveWorkspace:'Enregistrer mon espace complet',
     computerSaveHistory:'Télécharger l’archive complète du projet',
-    computerRestoreAria:'Restaurer l’archive complète du projet',
+    computerRestoreAria:'Restaurer une archive de projet ou un historique Computer Use',
     computerHistoryNote:'Même identité de projet pour les catalogues et Computer Use. Vos avis sont des jugements consignés, sans certification indépendante, approbation de paiement ni preuve de capacité universelle.',
     computerProposalNote:'Parcours fournisseur public : Jobs prépare la mission native exacte. Après exécution, transmettez sa mission, son retour et son rapport figé à l’un des deux récepteurs pour un brouillon non signé et non financé. Aucun portefeuille, paiement ou déploiement n’est activé.',
     computerJobsProposal:'Jobs · brouillon $AGIALPHA non signé ↗',
@@ -626,7 +626,7 @@ $('restore-project').addEventListener('change',async () => {
     const token = ++importToken, expected = revision;
     try {
         if (file.size > 2000000) throw Error(say('Choose a project JSON file no larger than 2 MB.','Choisissez un fichier JSON de projet de 2 Mo au maximum.'));
-        const text = new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
+        const text = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());
         if (token !== importToken || revision !== expected) throw Error(say('Inputs changed while the project was being read. Reopen the file.','Les données ont changé pendant la lecture du projet. Rouvrez le fichier.'));
         const schema=transport.parseBounded(text)?.schema;
         if(['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(schema))await restoreLearning(text,expected,token);
@@ -792,8 +792,47 @@ function serializeLearningArchive() {
     if(new TextEncoder().encode(raw).length>2000000)throw Error(say('The complete archive exceeds 2 MB. Keep the existing workspace; history will not be dropped to reduce its size.','L’archive complète dépasse 2 Mo. Conservez l’espace existant ; aucun historique ne sera supprimé pour réduire sa taille.'));
     return raw;
 }
+async function inspectComputerHistoryImport(raw) {
+    const snapshot = {project:dossier ? project.inspectProject(dossier) : null, records:transport.parseBounded(transport.canonical(learningRecords)),
+        nativeHandoffRaw,nativeContinuityRaw,historyRaw:computerHistoryRaw};
+    const incoming = await computer.inspectComputerHistory(raw);
+    function latest(current, previous) {
+        if (computer.projectContains(current,previous)) return current;
+        if (computer.projectContains(previous,current)) return previous;
+        throw Error('COMPUTER_HISTORY_PROJECT_BINDING');
+    }
+    const checkedProject = snapshot.project ? latest(snapshot.project,incoming.project) : incoming.project;
+    let historyRaw = raw;
+    if (snapshot.historyRaw) {
+        const previous = await computer.inspectComputerHistory(snapshot.historyRaw);
+        const historyProject = latest(previous.project,incoming.project);
+        const records = previous.records.map(record=>({...record}));
+        for (const record of incoming.records) {
+            const attemptId = transport.parseBounded(record.handoffRaw).attemptId;
+            const retained = records.find(item=>transport.parseBounded(item.handoffRaw).attemptId===attemptId);
+            if (!retained) { records.push({...record}); continue; }
+            if (retained.handoffRaw !== record.handoffRaw
+                || retained.returnRaw !== null && record.returnRaw !== null && retained.returnRaw !== record.returnRaw
+                || retained.review !== null && record.review !== null && transport.canonical(retained.review)!==transport.canonical(record.review)) {
+                throw Error('COMPUTER_HISTORY_CONFLICT');
+            }
+            retained.returnRaw ??= record.returnRaw;
+            retained.review ??= record.review;
+        }
+        const combined = transport.canonical({schema:computer.HISTORY_SCHEMA,project:historyProject,records,
+            authority:'none',settlement:'not_connected'});
+        historyRaw = combined === transport.canonical(transport.parseBounded(snapshot.historyRaw)) ? snapshot.historyRaw
+            : combined === transport.canonical(transport.parseBounded(raw)) ? raw : combined;
+    }
+    return learning.inspectLearningArchive(transport.canonical({schema:'successor-alpha-learning-archive/v2',
+        project:checkedProject,records:snapshot.records,nativeHandoffRaw:snapshot.nativeHandoffRaw,
+        nativeContinuityRaw:snapshot.nativeContinuityRaw,computerHistoryRaw:historyRaw}));
+}
 async function validateLearningArchive(raw) {
-    try { return await learning.inspectLearningArchive(raw); }
+    try {
+        if (transport.parseBounded(raw)?.schema === computer.HISTORY_SCHEMA) return await inspectComputerHistoryImport(raw);
+        return await learning.inspectLearningArchive(raw);
+    }
     catch (error) {
         if (error.message === 'LEARNING_ARCHIVE_FIELDS') throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
         throw error;
@@ -802,6 +841,12 @@ async function validateLearningArchive(raw) {
 async function restoreLearning(raw, expectedRevision = revision, expectedImportToken = importToken) {
     const priorProject = dossier ? project.serializeProject(dossier) : null;
     const priorComputerForm=computerFormRevision, priorComputerHistory=computerHistoryRaw;
+    const priorLearning = {records:transport.canonical(learningRecords),nativeHandoffRaw,nativeContinuityRaw,
+        nativeReturnRaw,nativeFormRevision,researchFormRevision};
+    const learningUnchanged = () => priorLearning.records === transport.canonical(learningRecords)
+        && priorLearning.nativeHandoffRaw === nativeHandoffRaw && priorLearning.nativeContinuityRaw === nativeContinuityRaw
+        && priorLearning.nativeReturnRaw === nativeReturnRaw && priorLearning.nativeFormRevision === nativeFormRevision
+        && priorLearning.researchFormRevision === researchFormRevision;
     status('Checking the complete learning archive locally…','Vérification locale de l’archive d’apprentissage complète…');
     const checked = await validateLearningArchive(raw);
     let checkedReturn = null, returnRaw = null;
@@ -815,6 +860,7 @@ async function restoreLearning(raw, expectedRevision = revision, expectedImportT
     if(lastComputer?.returnRaw)checkedComputerReturn=await computer.inspectComputerReturn(lastComputer.handoffRaw,lastComputer.returnRaw);
     if (revision !== expectedRevision || importToken !== expectedImportToken
         || computerFormRevision !== priorComputerForm || computerHistoryRaw !== priorComputerHistory
+        || !learningUnchanged()
         || (dossier ? project.serializeProject(dossier) : null) !== priorProject) {
         throw Error(say('Inputs or project changed during archive verification. Reopen the archive.','Les données ou le projet ont changé pendant la vérification. Rouvrez l’archive.'));
     }
@@ -904,13 +950,13 @@ $('download-native-handoff').addEventListener('click',()=>{if(nativeHandoffRaw)d
 $('download-native-return').addEventListener('click',()=>{if(nativeReturnRaw)download('successor-native-return.json',nativeReturnRaw,'application/json');});
 $('native-return-input').addEventListener('change',async()=>{
     const file=$('native-return-input').files[0];if(!file)return;$('native-error').hidden=true;
-    try{if(file.size>2000000)throw Error(say('Native returns are limited to 2 MB.','Les retours natifs sont limités à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());await acceptNativeReturn(raw);}
+    try{if(file.size>2000000)throw Error(say('Native returns are limited to 2 MB.','Les retours natifs sont limités à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());await acceptNativeReturn(raw);}
     catch(error){localPanelError('native-error',error);}finally{$('native-return-input').value='';}
 });
 $('download-learning').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
 for(const id of ['restore-learning','restore-learning-top','restore-computer-history'])$(id).addEventListener('change',async()=>{
     const file=$(id).files[0];if(!file)return;const expected=revision, token=++importToken;
-    try{if(file.size>2000000)throw Error(say('Learning archives are limited to 2 MB.','Les archives d’apprentissage sont limitées à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(token!==importToken||revision!==expected)throw Error('LEARNING_IMPORT_CHANGED');await restoreLearning(raw,expected,token);}
+    try{if(file.size>2000000)throw Error(say('Learning archives are limited to 2 MB.','Les archives d’apprentissage sont limitées à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());if(token!==importToken||revision!==expected)throw Error('LEARNING_IMPORT_CHANGED');await restoreLearning(raw,expected,token);}
     catch(error){showError(error);}finally{$(id).value='';}
 });
 
@@ -1135,7 +1181,7 @@ $('computer-return').addEventListener('change',async()=>{
     const expected=computerContext(),handoffRaw=computerHandoffRaw;setComputerBusy(true);$('computer-error').hidden=true;
     try {
         if(file.size>2000000)throw Error(say('Computer Use returns are limited to 2 MB.','Les retours Computer Use sont limités à 2 Mo.'));
-        const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
+        const raw=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());
         const checked=await computer.inspectComputerReturn(handoffRaw,raw);
         const historyRaw=await computer.importComputerReturn(dossier,handoffRaw,raw,{priorRecord:computerHistoryRaw});
         const historyChecked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
