@@ -198,6 +198,10 @@ def test_budget_exhaustion_retains_inconclusive_attempts_and_incumbent(tmp_path)
     assert record["result"]["decision"] == "retain-incumbent"
     assert all(item["status"] == "inconclusive" for item in record["attempts"])
     assert record["spent"]["search_units"] <= 1
+    assert record["freeze"] is None
+    with pytest.raises(Conflict, match="commitment mismatch"):
+        loop.confirm(request.campaign_id, [pilot_document(confirmation=True)], "a" * 64)
+    assert loop.show(request.campaign_id)["revision"] == record["revision"]
 
 
 def test_terminal_budget_exhaustion_does_not_promote(tmp_path):
@@ -228,6 +232,9 @@ def test_frozen_finalists_one_shot_terminal_sample_and_idempotent_replay(tmp_pat
     record = loop.confirm(request.campaign_id, [pilot_document(confirmation=True)], frozen["freeze"]["digest"])
     repeated = loop.confirm(request.campaign_id, [pilot_document(confirmation=True)], frozen["freeze"]["digest"])
     assert record["revision"] == repeated["revision"]
+    with pytest.raises(Conflict, match="commitment mismatch"):
+        loop.confirm(request.campaign_id, [pilot_document(confirmation=True)], "a" * 64)
+    assert loop.show(request.campaign_id)["revision"] == record["revision"]
     changed = pilot_document(confirmation=True).model_copy(update={"title": "different metadata"})
     with pytest.raises(Conflict, match="replaced"):
         loop.confirm(request.campaign_id, [changed], frozen["freeze"]["digest"])

@@ -1154,6 +1154,13 @@ class DiscoveryLoop:
             record = self.journal.latest(self._key(campaign_id), cx)
             data = Journal.document(record)
             if data["state"] == "completed":
+                frozen = data.get("freeze")
+                if (
+                    frozen is None
+                    or frozen["digest"] != freeze_digest
+                    or digest("ti-finalist-freeze", frozen["manifest"]) != freeze_digest
+                ):
+                    raise Conflict("finalist, comparison or confirmation commitment mismatch")
                 if data.get("confirmation_input_digest") == digest("ti-confirmation-input", fresh):
                     return record
                 raise Conflict("completed confirmation cannot be replaced or repeatedly inspected")

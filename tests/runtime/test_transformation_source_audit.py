@@ -31,6 +31,41 @@ def source(path, body):
     )
 
 
+@pytest.mark.parametrize(
+    "statement, expected",
+    [
+        ("first, (second, third) = (1, (2, 3))", [("first", 1), ("second", 2), ("third", 3)]),
+        ("[first, [second, third]] = [1, [2, 3]]", [("first", 1), ("second", 2), ("third", 3)]),
+        ("record.count: int = 4", [("count", 4)]),
+        ("settings['count'] += 5", [("settings", 5), ("count", 5)]),
+        ("(count := 6)", [("count", 6)]),
+    ],
+)
+def test_static_assignment_binding_names_and_literal_values(statement, expected):
+    node = ast.parse(statement).body[0]
+    if isinstance(node, ast.Expr):
+        node = node.value
+    targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+    actual = [
+        (name, ast.literal_eval(value))
+        for target in targets
+        for name, value in s._assignment_bindings(target, node.value)
+    ]
+    assert actual == expected
+    source("fixture/ordinary.py", statement)
+
+
+def test_static_assignment_unknown_and_starred_values_remain_conservative():
+    for statement in ["first, (second, third) = supplied", "first, *remaining = (1, 2, 3)"]:
+        node = ast.parse(statement).body[0]
+        bindings = list(s._assignment_bindings(node.targets[0], node.value))
+        assert [name for name, _ in bindings] == (
+            ["first", "second", "third"] if "supplied" in statement else ["first", "remaining"]
+        )
+        assert all(value is node.value for _, value in bindings)
+        source("fixture/ordinary.py", statement)
+
+
 def package(root="fixture", stale=False, cycle=False):
     prefix = "# SPDX-License-Identifier: Apache-2.0\n" + f"CAPTURE = {root!r}\n"
     return s.SourcePackage(

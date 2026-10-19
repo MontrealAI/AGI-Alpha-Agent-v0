@@ -17,6 +17,7 @@ import re
 import stat
 import uuid
 from collections import Counter
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, Literal
 
@@ -54,6 +55,29 @@ COST_RULE = {
         "money",
     ],
 }
+
+
+def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tuple[str, ast.AST | None]]:
+    """Find statically named assignment bindings without evaluating supplied code."""
+    if isinstance(target, ast.Name):
+        yield target.id, value
+    elif isinstance(target, ast.Attribute):
+        yield target.attr, value
+    elif isinstance(target, ast.Subscript):
+        yield from _assignment_bindings(target.value, value)
+        if isinstance(target.slice, ast.Constant) and isinstance(target.slice.value, str):
+            yield target.slice.value, value
+    elif isinstance(target, ast.Starred):
+        yield from _assignment_bindings(target.value, value)
+    elif isinstance(target, (ast.Tuple, ast.List)):
+        matching = (
+            isinstance(value, (ast.Tuple, ast.List))
+            and len(value.elts) == len(target.elts)
+            and not any(isinstance(item, ast.Starred) for item in (*target.elts, *value.elts))
+        )
+        for index, item in enumerate(target.elts):
+            assigned = value.elts[index] if matching and isinstance(value, (ast.Tuple, ast.List)) else value
+            yield from _assignment_bindings(item, assigned)
 
 
 def _screen_source_assignments(source: str, depth: int = 0) -> None:
@@ -104,10 +128,11 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                     inspect(key.value, value)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
-                if isinstance(target, (ast.Name, ast.Attribute)):
-                    inspect(target.id if isinstance(target, ast.Name) else target.attr, node.value)
-        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, (ast.Name, ast.Attribute)):
-            inspect(node.target.id if isinstance(node.target, ast.Name) else node.target.attr, node.value)
+                for name, assigned_value in _assignment_bindings(target, node.value):
+                    inspect(name, assigned_value)
+        elif isinstance(node, (ast.AnnAssign, ast.AugAssign, ast.NamedExpr)):
+            for name, assigned_value in _assignment_bindings(node.target, node.value):
+                inspect(name, assigned_value)
         elif isinstance(node, ast.keyword) and node.arg:
             inspect(node.arg, node.value)
         elif isinstance(node, ast.Constant) and isinstance(node.value, str):
