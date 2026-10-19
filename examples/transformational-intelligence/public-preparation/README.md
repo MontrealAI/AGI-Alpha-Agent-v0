@@ -69,10 +69,12 @@ until it obtains a favorable answer. No model advantage is required for passing
 software acceptance. HTTP contract-fixture tests are labeled fixtures and cannot
 replace the real-weight job.
 
-The real-weight job has not been run in this local environment: the server binary,
-weights and local socket support are unavailable here. Hosted acceptance must
-complete on the exact final commit before publication; no live-model result is
-claimed by `retained-run.json`.
+Earlier pilot preparation reported unavailable server binaries, weights and
+socket support in its execution environment. The current integration environment
+runs actual loopback HTTP contract tests and the complete browser/native journey;
+those tests do not load model weights. The exact-head llama.cpp/Qwen3-4B job remains
+pending. Hosted acceptance must complete before publication; `retained-run.json`
+does not claim a real-weight result.
 
 ## Costs and limitations
 

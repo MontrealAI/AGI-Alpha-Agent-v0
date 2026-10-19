@@ -16,6 +16,13 @@ The native `transformational-intelligence/v1` charter permits public, non-person
 both currency caps at zero. Structural coverage is evidence about this bounded task; it is not measured
 reader benefit, calibrated real-world success or an advantage over unrestricted discovery.
 
+The public-preparation companion builds a short reading card from two pinned public Manager
+documentation snapshots. A separate source/prerequisite checker and exact historical import retain
+the original material and comparisons. The unrestricted control ties the constructed method; the
+card is a documentation aid, not deployment guidance or measured reader benefit. The existing
+real-model release process now requires the public pilot using its pinned llama.cpp/Qwen3-4B
+process. That exact-head result remains pending and is separate from the retained deterministic run.
+
 An optional OpenAI-compatible loopback model adapter can propose a program in the closed selector
 language. Its one-call permit binds the request, prompt, configuration and source. A separately
 approved native campaign evaluates the proposal. Pause and cancellation revoke queued permits;

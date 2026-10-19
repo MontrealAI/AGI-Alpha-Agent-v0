@@ -113,7 +113,12 @@ def test_operator_bundle_contains_all_guides_exact_page_and_public_examples(tmp_
             "TRANSFORMATIONAL_LOCAL_MODEL.md",
             "TRANSFORMATIONAL_POLICY_STUDY.md",
             "TRANSFORMATIONAL_MATH.md",
+            "TRANSFORMATIONAL_PUBLIC_PILOT.md",
             "transformational-intelligence-workspace.html",
+            "transformational-examples/transformational-intelligence/public-preparation/input.json",
+            "transformational-examples/transformational-intelligence/public-preparation/retained-run.json",
+            "transformational-examples/transformational-intelligence/public-preparation/direct-origination-profile.md",
+            "transformational-examples/transformational-intelligence/public-preparation/ubuntu-ephemeral-creator.md",
         } <= set(archive.namelist())
         assert (
             archive.read("transformational-intelligence-workspace.html")
