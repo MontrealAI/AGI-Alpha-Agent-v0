@@ -10,8 +10,10 @@ import json
 import subprocess
 import threading
 import time
+from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any, Iterator
 from unittest.mock import patch
 
@@ -59,13 +61,19 @@ def streaming_server(*, slow: bool) -> Iterator[tuple[str, threading.Event]]:
 
 
 def substitute_reader(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, *, target: str | None = None, dns_wait: bool = False
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    *,
+    target: str | None = None,
+    dns_wait: bool = False,
+    startup_delay: float = 0,
 ) -> tuple[list[subprocess.Popen[bytes]], Path]:
     """Run the actual reader in an isolated child with explicit DNS/transport laboratory substitutions."""
     ready = tmp_path / "dns-entered"
     script = tmp_path / "controlled-reader.py"
     script.write_text(
         "import importlib.util, socket, time, pathlib\n"
+        f"time.sleep({startup_delay!r})\n"
         f"spec=importlib.util.spec_from_file_location('read_fixture',{str(computer.READ_WORKER)!r})\n"
         "reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)\n"
         "original_dns=socket.getaddrinfo\n"
@@ -107,6 +115,24 @@ def substitute_reader(
     return children, ready
 
 
+def phase_deadline(monkeypatch: pytest.MonkeyPatch, reached: Callable[[], bool]) -> Callable[[], float | None]:
+    """Advance only the supervised module's clock after the actual blocking phase starts."""
+    started = time.monotonic()
+    entered: float | None = None
+
+    def monotonic() -> float:
+        nonlocal entered
+        now = time.monotonic()
+        if entered is None and reached():
+            entered = now
+        if now - started >= 15:
+            pytest.fail("reader fixture did not reach and close its blocking phase within 15 seconds")
+        return started if entered is None else started + computer.READ_TIMEOUT + 1
+
+    monkeypatch.setattr(computer, "time", SimpleNamespace(monotonic=monotonic))
+    return lambda: entered
+
+
 def test_bounded_reader_returns_actual_http_bytes_without_credentials(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -121,19 +147,35 @@ def test_bounded_reader_returns_actual_http_bytes_without_credentials(
 
 
 @pytest.mark.parametrize("blocked", ["dns", "stream"])
-def test_read_deadline_kills_and_reaps_blocked_dns_or_slow_stream(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, blocked: str
+@pytest.mark.parametrize("startup_delay", [0, 1.3])
+def test_phase_clock_read_deadline_kills_and_reaps_blocked_dns_or_slow_stream(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, blocked: str, startup_delay: float
 ) -> None:
-    monkeypatch.setattr(computer, "READ_TIMEOUT", 1.2)
     with streaming_server(slow=True) as (target, connected):
-        children, ready = substitute_reader(monkeypatch, tmp_path, target=target, dns_wait=blocked == "dns")
-        started = time.monotonic()
+        children, ready = substitute_reader(
+            monkeypatch, tmp_path, target=target, dns_wait=blocked == "dns", startup_delay=startup_delay
+        )
+        entered = phase_deadline(monkeypatch, ready.exists if blocked == "dns" else connected.is_set)
         broker = computer.ReadBroker(["https://example.org/public"])
         with pytest.raises(TimeoutError, match="wall-clock"):
             broker.fetch("https://example.org/public", "GET")
-        elapsed = time.monotonic() - started
+        phase_started = entered()
+        assert phase_started is not None
+        phase_elapsed = time.monotonic() - phase_started
     assert ready.exists() and (blocked == "dns" or connected.is_set())
-    assert elapsed < 2.5 and len(children) == 1 and children[0].poll() is not None
+    assert phase_elapsed < 2.5 and len(children) == 1 and children[0].poll() is not None
+    assert broker.bytes == 1_500_000 and broker.requests == 1
+
+
+def test_real_read_deadline_includes_cold_child_startup(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    children, ready = substitute_reader(monkeypatch, tmp_path, startup_delay=30)
+    monkeypatch.setattr(computer, "READ_TIMEOUT", 0.2)
+    broker = computer.ReadBroker(["https://example.org/public"])
+    started = time.monotonic()
+    with pytest.raises(TimeoutError, match="wall-clock"):
+        broker.fetch("https://example.org/public", "GET")
+    assert time.monotonic() - started < 2.5 and not ready.exists()
+    assert len(children) == 1 and children[0].poll() is not None
     assert broker.bytes == 1_500_000 and broker.requests == 1
 
 
@@ -142,19 +184,22 @@ def test_stop_kills_blocked_reader_without_waiting_for_network_timeout(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, blocked: str
 ) -> None:
     with streaming_server(slow=True) as (target, connected):
-        children, ready = substitute_reader(monkeypatch, tmp_path, target=target, dns_wait=blocked == "dns")
+        children, ready = substitute_reader(
+            monkeypatch, tmp_path, target=target, dns_wait=blocked == "dns", startup_delay=1.3
+        )
+        stopped_at: list[float] = []
 
         def checkpoint() -> None:
             stopped = ready.exists() if blocked == "dns" else connected.is_set()
             if stopped:
+                stopped_at.append(time.monotonic())
                 raise Conflict("operator stopped test session")
 
-        started = time.monotonic()
         broker = computer.ReadBroker(["https://example.org/public"], checkpoint)
         with pytest.raises(Conflict, match="stopped"):
             broker.fetch("https://example.org/public", "GET")
-        elapsed = time.monotonic() - started
-    assert elapsed < 2 and len(children) == 1 and children[0].poll() is not None
+        assert stopped_at and time.monotonic() - stopped_at[0] < 2
+    assert len(children) == 1 and children[0].poll() is not None
     assert broker.bytes == 1_500_000
 
 
@@ -246,8 +291,9 @@ def test_compressed_response_is_refused_before_body_read_or_decompression(monkey
 def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, reason: str
 ) -> None:
-    children, ready = substitute_reader(monkeypatch, tmp_path, dns_wait=True)
-    monkeypatch.setattr(computer, "READ_TIMEOUT", 0.6)
+    children, ready = substitute_reader(monkeypatch, tmp_path, dns_wait=True, startup_delay=1.3)
+    if reason == "deadline":
+        entered = phase_deadline(monkeypatch, ready.exists)
     journal = Journal.initialize(tmp_path / "home")
     output = tmp_path / "result"
     mission = computer.ComputerTask(
@@ -258,6 +304,7 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
         license="Public technical test fixture",
     )
     closed = []
+    stopped_at: list[float] = []
 
     class ControlledAdvisor:
         identity = {"mode": "CONTROLLED_TEST_DOUBLE", "model": "fixed-script", "endpoint": "none"}
@@ -272,6 +319,7 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
                     key = "@successor-computer:" + json.loads((output / "run.json").read_text())["run_id"]
                     latest = journal.latest(key)
                     if latest["state"] != "stopped":
+                        stopped_at.append(time.monotonic())
                         computer._change(journal, key, latest["revision"], state="stopped")
                 checkpoint()
 
@@ -292,6 +340,12 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
     permit = computer.commitment(mission, advisor, image)
     with pytest.raises(Conflict if reason == "stop" else TimeoutError):
         computer.run_session(journal, mission, advisor, image, output, permit, factory=ControlledComputer)
+    assert ready.exists()
+    if reason == "deadline":
+        phase_started = entered()
+        assert phase_started is not None and time.monotonic() - phase_started < 2.5
+    else:
+        assert stopped_at and time.monotonic() - stopped_at[0] < 2.5
     receipt = json.loads((output / "receipt.json").read_text())
     assert receipt["state"] == ("stopped" if reason == "stop" else "interrupted")
     assert receipt["actions_reserved"] == 1 and receipt["events"][-1]["status"] == "reserved"

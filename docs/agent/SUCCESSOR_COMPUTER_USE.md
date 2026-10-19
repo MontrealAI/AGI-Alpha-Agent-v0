@@ -132,6 +132,12 @@ an unrelated project are refused. Download the complete archive or workspace aga
 In French, use **Restaurer une archive ou un historique Computer Use**. Imports carry no execution or payment
 authority, and JSON is checked as decoded without silently removing a UTF-8 byte-order mark.
 
+After upgrading, prepare a fresh permit. Previously exported native return/history JSON remains available
+for read-only historical import. Older internal journals without a signed worker digest cannot be exported
+by inferring their source from current files: the new exporter refuses them. Keep the original exported
+return and exact matching historical runtime. Recovery of an unexported legacy journal is not qualified here;
+existing release files and source identities remain unchanged.
+
 The handoff and return schemas use sorted compact UTF-8 JSON commitments. `projectSha256` hashes the exact
 `projectRaw` UTF-8 bytes; `handoffSha256` hashes the canonical handoff. Tasks in a handoff include every
 `ComputerTask` field and `schema_version: 1`, including defaults, to preserve cross-language commitment bytes.

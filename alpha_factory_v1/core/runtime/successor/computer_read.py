@@ -7,11 +7,13 @@ import base64
 import ipaddress
 import json
 import socket
+import ssl
 import sys
 from typing import Any
 from urllib.parse import urlsplit
 
 import httpx
+import certifi
 
 
 def read_public(url: str, method: str, maximum: int) -> dict[str, Any]:
@@ -39,7 +41,8 @@ def read_public(url: str, method: str, maximum: int) -> dict[str, Any]:
         address = str(addresses[0])
         host = f"[{address}]" if ":" in address else address
         target = url.replace(parts.netloc, host, 1)
-        with httpx.Client(timeout=8, trust_env=False, follow_redirects=False) as client:
+        context = ssl.create_default_context(cadata=certifi.contents())
+        with httpx.Client(timeout=8, trust_env=False, follow_redirects=False, verify=context) as client:
             with client.stream(
                 method,
                 target,

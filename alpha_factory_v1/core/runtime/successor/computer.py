@@ -27,6 +27,7 @@ import httpx
 from pydantic import Field, model_validator
 
 from ..store import Conflict, Journal, private_write
+from .computer_dependencies import MAX_DEPENDENCY_FRAME, READ_BOOTSTRAP, capture_dependencies
 from .protocol import StrictModel, canonical, digest, safe_json_loads
 from .state import ActionGateway, ActionRequest
 from .transport import read_document
@@ -38,27 +39,7 @@ READ_WORKER = Path(__file__).with_name("computer_read.py")
 READ_TIMEOUT = 8.0
 MAX_MESSAGE = 3_000_000
 _APPROVED_READ_SOURCE: ContextVar[bytes | None] = ContextVar("approved_public_read_source", default=None)
-# Execute only the source snapshot sent by the approving parent. No mutable
-# reader pathname, startup hook or cached Python bytecode is opened in the child.
-READ_BOOTSTRAP = """import importlib.machinery, sys
-class SourceOnlyLoader(importlib.machinery.SourceFileLoader):
-    def get_code(self, fullname):
-        return self.source_to_code(self.get_data(self.path), self.path)
-sys.path_hooks.insert(0, importlib.machinery.FileFinder.path_hook(
-    (SourceOnlyLoader, importlib.machinery.SOURCE_SUFFIXES),
-    (importlib.machinery.ExtensionFileLoader, importlib.machinery.EXTENSION_SUFFIXES)))
-sys.path_importer_cache.clear()
-import json
-size = int.from_bytes(sys.stdin.buffer.read(4), 'big')
-if not 0 < size <= 128_000:
-    raise ValueError('invalid approved reader size')
-source = sys.stdin.buffer.read(size)
-roots = json.loads(sys.stdin.buffer.readline(32_769))
-if len(source) != size or not isinstance(roots, list):
-    raise ValueError('invalid approved reader frame')
-sys.path.extend(roots)
-exec(compile(source, '<approved-public-reader>', 'exec'))
-"""
+_APPROVED_READ_DEPENDENCIES: ContextVar[bytes | None] = ContextVar("approved_public_read_dependencies", default=None)
 
 
 def _read_reader_source() -> bytes:
@@ -73,18 +54,20 @@ def _read_reader_source() -> bytes:
     return source
 
 
-def _worker_source_snapshot() -> tuple[str, bytes]:
+def _worker_source_snapshot() -> tuple[str, bytes, bytes]:
     reader = _read_reader_source()
+    dependencies = capture_dependencies()
     identity = hashlib.sha256(
         canonical(
             {
                 "browser": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
                 "reader": hashlib.sha256(reader).hexdigest(),
                 "reader_bootstrap": hashlib.sha256(READ_BOOTSTRAP.encode()).hexdigest(),
+                "reader_dependencies": hashlib.sha256(dependencies).hexdigest(),
             }
         )
     ).hexdigest()
-    return identity, reader
+    return identity, reader, dependencies
 
 
 def worker_source_digest() -> str:
@@ -365,20 +348,10 @@ class ReadBroker:
         self.source = _read_reader_source() if approved is None else approved
         if not 0 < len(self.source) <= 128_000:
             raise ValueError("public-reader source exceeds its bound")
-        roots = {str(Path(httpx.__file__).resolve().parent.parent)}
-        # Only roots of already loaded installed modules, never PYTHONPATH or
-        # arbitrary parent search entries. Startup hooks are not processed.
-        for module in tuple(sys.modules.values()):
-            filename = getattr(module, "__file__", None)
-            if filename:
-                roots.update(
-                    str(parent)
-                    for parent in Path(filename).resolve().parents
-                    if parent.name in {"site-packages", "dist-packages"}
-                )
-        self.dependency_roots = canonical(sorted(roots)) + b"\n"
-        if len(self.dependency_roots) > 32_768:
-            raise ValueError("public-reader dependency roots exceed their bound")
+        approved_dependencies = _APPROVED_READ_DEPENDENCIES.get()
+        self.dependencies = capture_dependencies() if approved_dependencies is None else approved_dependencies
+        if not 0 < len(self.dependencies) <= MAX_DEPENDENCY_FRAME:
+            raise ValueError("public-reader dependency snapshot exceeds its bound")
 
     def fetch(self, url: str, method: str) -> dict[str, Any]:
         """Supervise DNS and streaming with STOP checks and one absolute wall-clock limit."""
@@ -392,7 +365,13 @@ class ReadBroker:
         deadline = time.monotonic() + READ_TIMEOUT
         environment = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
         request = canonical({"url": url, "method": method, "maximum": maximum})
-        payload: bytes | None = len(self.source).to_bytes(4, "big") + self.source + self.dependency_roots + request
+        payload = (
+            len(self.source).to_bytes(4, "big")
+            + self.source
+            + len(self.dependencies).to_bytes(4, "big")
+            + self.dependencies
+            + request
+        )
         with tempfile.TemporaryDirectory(prefix="successor-public-reader-cache-") as cache:
             process = subprocess.Popen(
                 [sys.executable, "-I", "-S", "-B", "-X", "pycache_prefix=" + cache, "-c", READ_BOOTSTRAP],
@@ -402,17 +381,30 @@ class ReadBroker:
                 env=environment,
             )
             accounted = False
+            input_stream = process.stdin
+            process.stdin = None
+
+            def send_frame() -> None:
+                if input_stream is not None:
+                    try:
+                        with input_stream:
+                            input_stream.write(payload)
+                    except (OSError, ValueError):
+                        pass  # An interrupted/reaped child closes its pipe; no replay.
+
+            writer = threading.Thread(target=send_frame, name="successor-public-reader-input", daemon=True)
             try:
+                writer.start()
                 while True:
                     self.checkpoint()
                     remaining = deadline - time.monotonic()
                     if remaining <= 0:
                         raise TimeoutError("public read wall-clock budget exhausted")
                     try:
-                        raw, _ = process.communicate(input=payload, timeout=min(0.1, remaining))
+                        raw, _ = process.communicate(timeout=min(0.1, remaining))
                         break
                     except subprocess.TimeoutExpired:
-                        payload = None
+                        pass
                 self.checkpoint()
                 if time.monotonic() >= deadline:
                     raise TimeoutError("public read wall-clock budget exhausted")
@@ -438,6 +430,8 @@ class ReadBroker:
                 if process.poll() is None:
                     process.kill()
                 process.communicate(timeout=5)
+                if writer.ident is not None:
+                    writer.join(timeout=1)
 
 
 class DockerComputer:
@@ -611,7 +605,7 @@ def run_session(
 ) -> dict[str, Any]:
     """Retain every pre-effect reservation; interrupted sessions cannot resume or silently replay."""
     journal.verify()
-    worker_sha256, reader_source = _worker_source_snapshot()
+    worker_sha256, reader_source, dependency_source = _worker_source_snapshot()
     expected = _commitment(task, advisor, image, execution_context, worker_sha256)
     if permit != expected:
         raise ValueError("operator permit must match the displayed task/provider/image commitment")
@@ -639,6 +633,7 @@ def run_session(
                 "state": "running",
                 "commitment": expected,
                 "execution_context": execution_context,
+                "worker_sha256": worker_sha256,
                 "provider": advisor.identity,
                 "turns_reserved": 0,
                 "actions_reserved": 0,
@@ -668,9 +663,11 @@ def run_session(
 
     try:
         token = _APPROVED_READ_SOURCE.set(reader_source)
+        dependency_token = _APPROVED_READ_DEPENDENCIES.set(dependency_source)
         try:
             computer = factory(image, task, checkpoint)
         finally:
+            _APPROVED_READ_DEPENDENCIES.reset(dependency_token)
             _APPROVED_READ_SOURCE.reset(token)
         record = _change(
             journal,

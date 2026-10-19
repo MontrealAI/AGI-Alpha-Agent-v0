@@ -25,8 +25,17 @@ Fresh permits bind the browser worker, public-reader source bytes and fixed read
 worker commitment. Session approval captures the exact reader bytes once; each broker retains that
 immutable snapshot and executes it from standard input. Replacing the source file after approval or at
 subprocess creation cannot select new code. Scoped snapshot state resets even when a factory fails.
+The same permit now binds the fixed pure-Python HTTPX dependency closure and its certificate resource.
+Each child imports these captured bytes from memory instead of reopening installed packages. Package or
+certificate replacement after approval cannot select later dependency bytes; changed installations require
+a fresh permit. Signed native receipts retain that session's worker digest, so completed and interrupted
+handoff returns keep their original source attribution even after an in-place source update.
 Prepare a new permit after upgrading. The existing handoff, return and historical archive wire formats
 are unchanged; earlier signed receipts and release assets retain their original source identities.
+Previously exported native return/history JSON remains readable as historical evidence. Internal journals
+from older runtimes that lack the signed worker digest are not upgraded by guessing from current files;
+this exporter refuses them. Retain the original exported return and exact historical runtime. Recovery of
+an unexported legacy journal has not been qualified by this release.
 
 The English/French Computer Use history panel now links to the native Jobs and Manager supplier receivers
 for unsigned, unfunded $AGIALPHA and USDC proposals. The legacy catalog routes remain available in their
