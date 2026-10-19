@@ -129,6 +129,55 @@ def test_actual_http_call_then_independent_native_complete_campaign(tmp_path, lo
     assert resumed.envelope(request.campaign_id) == envelope and len(trace) == 1
 
 
+def test_model_projection_keeps_original_provenance_in_native_binding(tmp_path, local_provider):
+    from alpha_factory_v1.core.runtime.successor.protocol import canonical
+    from alpha_factory_v1.core.runtime.successor.transformation_model import _payload
+
+    config, trace, _ = local_provider
+    driver, request, record = prepare(tmp_path, config)
+    driver.approve(request.campaign_id, record["binding_digest"])
+    driver.propose(request.campaign_id)
+    payload = trace[0][2]
+    shown = json.loads(payload["messages"][1]["content"])
+    assert shown["charter"] == request.charter.model_dump()
+    assert "Propose exactly one program." in payload["messages"][0]["content"]
+    assert len(canonical(shown)) < len(canonical({"charter": request.charter, "development": request.development}))
+    for projected, original in zip(shown["development"], request.development, strict=True):
+        assert projected["title"] == original.title and projected["source_url"] == original.source_url
+        for clause, source in zip(projected["claims"], original.claims, strict=True):
+            assert clause == {
+                "id": source.id,
+                "text": source.text,
+                "weight": source.weight,
+                "depends_on": source.depends_on,
+            }
+            assert "provenance" not in clause and "schema_version" not in clause
+    assert record["binding"]["request"] == request.model_dump()
+    loop, _ = driver.native(request.campaign_id)
+    assert loop.envelope(request.campaign_id)["bindings"]["request"] == request.model_dump()
+    altered = request.model_dump()
+    altered["development"][0]["claims"][0]["provenance"] += " retained public annotation revision"
+    changed = DiscoveryRequest.model_validate(altered)
+    assert _payload(changed, config) == _payload(request, config)
+    with pytest.raises(Conflict, match="another model, source"):
+        driver.create(changed, config)
+    assert driver.show(request.campaign_id)["binding"]["request"] == request.model_dump()
+
+
+def test_one_model_call_cannot_expand_its_requested_program_count(tmp_path, local_provider):
+    config, trace, reply = local_provider
+    second = copy.deepcopy(reply["candidates"][0])
+    second["program"]["production"] = "weighted"
+    reply["candidates"].append(second)
+    driver, request, record = prepare(tmp_path, config)
+    driver.approve(request.campaign_id, record["binding_digest"])
+    with pytest.raises(ValueError, match="retained uncertain"):
+        driver.propose(request.campaign_id)
+    assert len(trace) == 1
+    retained = driver.show(request.campaign_id)
+    assert retained["state"] == "uncertain" and retained["proposal"] is None
+
+
 @pytest.mark.parametrize(
     "endpoint",
     [

@@ -9,6 +9,14 @@ confirmation sources to the model. Only native `SelectionProgram` values are
 accepted. The unchanged native discovery loop then compares those programs with
 its incumbent and strong controls, under a separately approved execution binding.
 
+Each call requests exactly one program. The model sees the unchanged charter and
+each development clause's exact identifier, text, weight and dependencies, plus
+the document title and URL. Repeated schema and provenance metadata are omitted
+from this model-visible projection; the complete original source and provenance
+remain bound in the native request, approval, checker and portable evidence.
+Changing omitted metadata still invalidates the native binding. Deadline, token,
+input-byte, authority and independent comparison limits are unchanged.
+
 This is a working provider interface. Tests use a labeled local HTTP contract
 fixture, not real model weights or evidence of a model advantage. The configured
 and reported model names and the operator-declared revision are provenance claims,
