@@ -1015,14 +1015,14 @@ console.log(await runNativeHandoff(raw,{sourceHash:JSON.parse(raw).runtimeSource
         """() => {
           const original=crypto.subtle.digest.bind(crypto.subtle); let once=true;
           crypto.subtle.digest=async(...args)=>{
-            if(once){once=false;window.historyValidationHeld=true;await new Promise(resolve=>{window.releaseHistoryValidation=resolve;});}
+            if(once){once=false;window.historyValidationHeld=true;document.documentElement.setAttribute('data-history-validation-held','true');await new Promise(resolve=>{window.releaseHistoryValidation=resolve;});}
             return original(...args);
           };
           window.restoreDigest=()=>{crypto.subtle.digest=original;};
         }"""
     )
     upload(page, "#restore-learning-top", extended, "history-during-native-return.json")
-    page.wait_for_function("window.historyValidationHeld===true")
+    expect(page.locator("html")).to_have_attribute("data-history-validation-held", "true")
     page.locator("#native-status").evaluate("element=>{element.textContent='';}")
     upload(page, "#native-return-input", fresh_native, "fresh-native-catalog-return.json")
     expect(page.locator("#native-status")).to_contain_text("Native return checked and retained")
