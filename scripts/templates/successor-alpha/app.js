@@ -174,6 +174,9 @@ Object.assign(fr, {
     computerSaveHistory:'Télécharger l’archive complète du projet',
     computerRestoreAria:'Restaurer l’archive complète du projet',
     computerHistoryNote:'Même identité de projet pour les catalogues et Computer Use. Vos avis sont des jugements consignés, sans certification indépendante, approbation de paiement ni preuve de capacité universelle.',
+    computerProposalNote:'Parcours fournisseur public : Jobs prépare la mission native exacte. Après exécution, transmettez sa mission, son retour et son rapport figé à l’un des deux récepteurs pour un brouillon non signé et non financé. Aucun portefeuille, paiement ou déploiement n’est activé.',
+    computerJobsProposal:'Jobs · brouillon $AGIALPHA non signé ↗',
+    computerManagerProposal:'Manager · brouillon USDC non signé ↗',
     heroEyebrow:'LE PROJET PHARE · TROUVEZ VOTRE ALPHA. CONSTRUISEZ VOTRE SUCCESSOR Ω.',
     heroLine1:'Trouvez votre',
     heroLine2:'Alpha.',
@@ -225,6 +228,8 @@ function translate() {
     document.querySelectorAll('[data-i18n-alt]').forEach(el => el.setAttribute('alt', language === 'fr' ? fr[el.dataset.i18nAlt] : altEn[el.dataset.i18nAlt]));
     $('lang-en').setAttribute('aria-pressed', String(language === 'en'));
     $('lang-fr').setAttribute('aria-pressed', String(language === 'fr'));
+    $('computer-jobs-proposal').href = say('https://montrealai.github.io/AGIJobsv0/successor/computer/#computer-project', 'https://montrealai.github.io/AGIJobsv0/successor/computer/fr/#computer-project');
+    $('computer-manager-proposal').href = say('https://montrealai.github.io/AGIJobManager/computer-receipt/', 'https://montrealai.github.io/AGIJobManager/fr/computer-receipt/');
     renderSample();
     if (result) renderResult();
     renderHistory();
@@ -787,43 +792,12 @@ function serializeLearningArchive() {
     if(new TextEncoder().encode(raw).length>2000000)throw Error(say('The complete archive exceeds 2 MB. Keep the existing workspace; history will not be dropped to reduce its size.','L’archive complète dépasse 2 Mo. Conservez l’espace existant ; aucun historique ne sera supprimé pour réduire sa taille.'));
     return raw;
 }
-function projectContains(current, historical) {
-    return current.id === historical.id && current.createdAt === historical.createdAt && current.goal === historical.goal
-        && current.revision >= historical.revision && current.cycles.length >= historical.cycles.length
-        && current.opportunities.length >= historical.opportunities.length
-        && transport.canonical(current.cycles.slice(0,historical.cycles.length)) === transport.canonical(historical.cycles)
-        && transport.canonical(current.opportunities.slice(0,historical.opportunities.length)) === transport.canonical(historical.opportunities)
-        && (current.revision !== historical.revision || project.serializeProject(current) === project.serializeProject(historical));
-}
 async function validateLearningArchive(raw) {
-    const archive = transport.parseBounded(raw);
-    const keys = ['schema','project','records','nativeHandoffRaw','nativeContinuityRaw'];
-    const computerArchive = archive?.schema === 'successor-alpha-learning-archive/v2';
-    if (computerArchive) keys.push('computerHistoryRaw');
-    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || !['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(archive.schema)
-        || !Array.isArray(archive.records) || archive.records.length > 6) throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
-    const checkedProject = project.inspectProject(archive.project), seen = new Set();
-    for (const entry of archive.records) {
-        if (!entry || Object.keys(entry).sort().join('|') !== 'cycleId|resolution|strategy' || seen.has(entry.cycleId)) throw Error('LEARNING_CYCLE_FIELDS');
-        const cycle = checkedProject.cycles.find(cycle=>cycle.id===entry.cycleId); if (!cycle) throw Error('LEARNING_CYCLE_BINDING');
-        seen.add(entry.cycleId);
-        if (entry.strategy !== null) await research.validateResearch(entry.strategy,cycle.mission,{sourceHash:cycle.sourceHash});
-        if (entry.resolution !== null) research.validateResolution(entry.resolution,cycle.mission,cycle.result);
+    try { return await learning.inspectLearningArchive(raw); }
+    catch (error) {
+        if (error.message === 'LEARNING_ARCHIVE_FIELDS') throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
+        throw error;
     }
-    if (archive.nativeHandoffRaw !== null) {
-        const checked = await continuity.inspectNativeHandoff(archive.nativeHandoffRaw);
-        if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_PROJECT_BINDING');
-    }
-    if (archive.nativeContinuityRaw !== null) {
-        const checked = await continuity.inspectContinuity(archive.nativeContinuityRaw);
-        if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_HISTORY_BINDING');
-    }
-    let checkedComputer = null;
-    if (computerArchive) {
-        checkedComputer = await computer.inspectComputerHistory(archive.computerHistoryRaw);
-        if (!computer.projectContains(checkedProject,checkedComputer.project)) throw Error('COMPUTER_ARCHIVE_PROJECT_BINDING');
-    }
-    return {...archive,project:checkedProject,checkedComputer};
 }
 async function restoreLearning(raw, expectedRevision = revision, expectedImportToken = importToken) {
     const priorProject = dossier ? project.serializeProject(dossier) : null;

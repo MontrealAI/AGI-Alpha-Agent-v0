@@ -28,8 +28,14 @@ subprocess creation cannot select new code. Scoped snapshot state resets even wh
 Prepare a new permit after upgrading. The existing handoff, return and historical archive wire formats
 are unchanged; earlier signed receipts and release assets retain their original source identities.
 
-The English/French Computer Use flagship, strategy development, transformational reframing, local catalog
-example, portable history and separate USDC/$AGIALPHA routes retain their existing behavior. Use only
+The English/French Computer Use history panel now links to the native Jobs and Manager supplier receivers
+for unsigned, unfunded $AGIALPHA and USDC proposals. The legacy catalog routes remain available in their
+own flow. A shared portable learning-archive inspector gives receivers the flagship's existing native
+checks while preserving complete original archive and history bytes, including earlier catalog work,
+strategy lessons, Computer Use attempts and owner reviews. Import creates no execution or payment authority.
+
+Strategy development, transformational reframing, the local catalog example and portable history retain
+their existing behavior. Use only
 public, non-personal inputs in the current assessment and trials. Public accessibility alone does not
 establish that a document is non-personal or that its proposed use is permitted.
 

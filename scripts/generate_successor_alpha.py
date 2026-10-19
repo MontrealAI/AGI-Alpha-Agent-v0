@@ -56,6 +56,7 @@ def build(root: Path = ROOT) -> None:
     continuity = visit(root / "examples/successor-alpha/continuity.mjs")
     capability = visit(root / "examples/successor-alpha/capability.mjs")
     computer = visit(root / "examples/successor-alpha/computer.mjs")
+    learning = visit(root / "examples/successor-alpha/learning.mjs")
     transport = visit(root / "docs/assets/successor/engine.mjs")
     core_source = engine_path.read_text(encoding="utf-8")
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
@@ -150,7 +151,7 @@ function exportPortable(dossier) {
     code += f"\nconst alpha={engine},project={project},SOURCE_HASH={json.dumps(source_hash)};\n"
     code += (
         f"const research={research},continuity={continuity},transport={transport},capability={capability},"
-        f"computer={computer};\n"
+        f"computer={computer},learning={learning};\n"
     )
     reusable_source = {
         "engineSource": core_source,

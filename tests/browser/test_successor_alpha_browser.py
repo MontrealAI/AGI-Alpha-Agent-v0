@@ -809,6 +809,14 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     expect(page.locator("#computer-approach")).to_have_value("reframe")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-jobs-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobsv0/successor/computer/#computer-project"
+    )
+    expect(page.locator("#computer-jobs-proposal")).to_have_text("Jobs · unsigned $AGIALPHA proposal ↗")
+    expect(page.locator("#computer-manager-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobManager/computer-receipt/"
+    )
+    expect(page.locator("#computer-manager-proposal")).to_have_text("Manager · unsigned USDC proposal ↗")
     second = json.loads(download(page, "#computer-download"))
     assert second["strategy"]["selected"] == "reframe"
     assert second["attemptId"] != handoff["attemptId"]
@@ -848,8 +856,22 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     expect(page.locator("#computer-prepared")).to_be_visible()
     french = json.loads(download(page, "#computer-download"))
     assert "Découvrir" in french["strategy"]["originalGoal"]
+    expect(page.locator("#computer-jobs-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobsv0/successor/computer/fr/#computer-project"
+    )
+    expect(page.locator("#computer-jobs-proposal")).to_have_text("Jobs · brouillon $AGIALPHA non signé ↗")
+    expect(page.locator("#computer-manager-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobManager/fr/computer-receipt/"
+    )
+    expect(page.locator("#computer-manager-proposal")).to_have_text("Manager · brouillon USDC non signé ↗")
     accessibility(page)
     page.screenshot(path=str(output / "15-computer-use-mobile-fr.png"), full_page=True)
+    historical_archive = (ROOT / "examples/successor-alpha/fixtures/learning-archive-7cf.json").read_bytes()
+    page.goto(URL)
+    upload(page, "#restore-computer-history", historical_archive, "historical-learning-archive.json")
+    expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
+    assert download(page, "#computer-save-history") == historical_archive
     context.close()
 
     # A controlled public-page fixture verifies that reading a source cannot lose the work editor.
