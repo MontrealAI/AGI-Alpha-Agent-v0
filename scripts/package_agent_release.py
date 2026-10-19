@@ -44,7 +44,7 @@ TI_PUBLIC_EXAMPLES = (
 
 def release_documents(version: str) -> tuple[str, ...]:
     """Retain the existing release documents and include the complete operating path."""
-    documents = (
+    documents: tuple[str, ...] = (
         "requirements-agent.lock",
         "scripts/install_agent.py",
         "scripts/release_packs.py",
@@ -261,10 +261,9 @@ def main() -> None:
         flagship = require_local_reports(args.evidence, sha, version)
     transformational = None
     if tuple(map(int, version.split("."))) >= (1, 36, 0):
-        from scripts.transformational_evidence import load_report, verify_report
+        from scripts.transformational_evidence import require_local_reports as require_ti_local_reports
 
-        transformational = load_report(args.evidence / "transformational-intelligence/report.json")
-        verify_report(transformational, sha, version, mode="local")
+        transformational = require_ti_local_reports(args.evidence, sha, version)["full"]
     output.mkdir(parents=True, exist_ok=False)
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     if tuple(map(int, version.split("."))) >= (1, 30, 0):

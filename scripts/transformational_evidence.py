@@ -141,6 +141,15 @@ def verify_report(report: Any, commit: str, version: str, *, mode: str, root: Pa
     return report
 
 
+def require_local_reports(evidence: Path, commit: str, version: str, root: Path = ROOT) -> dict[str, dict[str, Any]]:
+    """Require both named gallery artifacts against the exact local source."""
+    reports: dict[str, dict[str, Any]] = {}
+    for kind in ("minimal", "full"):
+        report = load_report(evidence / f"gallery-{kind}" / "transformational-intelligence" / "report.json")
+        reports[kind] = verify_report(report, commit, version, mode="local", root=root)
+    return reports
+
+
 def package_workspace(root: Path, output: Path) -> dict[str, Any]:
     """Copy the exact portable page, refusing existing destinations."""
     identity = asset_identity(root)
