@@ -39,6 +39,10 @@ def source(path, body):
         ("record.count: int = 4", [("count", 4)]),
         ("settings['count'] += 5", [("settings", 5), ("count", 5)]),
         ("(count := 6)", [("count", 6)]),
+        ("settings[index] = 7", [("settings", 7), ("index", 7)]),
+        ("settings[first, (second, third)] = 8", [("settings", 8), ("first", 8), ("second", 8), ("third", 8)]),
+        ("settings[labels.index] = 9", [("settings", 9), ("index", 9), ("labels", 9)]),
+        ("settings['count', index] = 10", [("settings", 10), ("count", 10), ("index", 10)]),
     ],
 )
 def test_static_assignment_binding_names_and_literal_values(statement, expected):

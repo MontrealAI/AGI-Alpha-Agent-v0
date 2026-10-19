@@ -116,9 +116,7 @@ def substitute_reader(
     return children, ready
 
 
-def test_reader_probe_preserves_unrelated_real_subprocesses(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
+def test_reader_probe_preserves_unrelated_real_subprocesses(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     children, _ = substitute_reader(monkeypatch, tmp_path)
     result = subprocess.run(
         [computer.sys.executable, "-I", "-c", "print('unrelated process completed')"],

@@ -65,8 +65,13 @@ def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tup
         yield target.attr, value
     elif isinstance(target, ast.Subscript):
         yield from _assignment_bindings(target.value, value)
-        if isinstance(target.slice, ast.Constant) and isinstance(target.slice.value, str):
-            yield target.slice.value, value
+        for key in ast.walk(target.slice):
+            if isinstance(key, ast.Name):
+                yield key.id, value
+            elif isinstance(key, ast.Attribute):
+                yield key.attr, value
+            elif isinstance(key, ast.Constant) and isinstance(key.value, str):
+                yield key.value, value
     elif isinstance(target, ast.Starred):
         yield from _assignment_bindings(target.value, value)
     elif isinstance(target, (ast.Tuple, ast.List)):
