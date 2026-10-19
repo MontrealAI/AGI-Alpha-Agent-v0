@@ -45,13 +45,14 @@ jobs:
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
         run: |
-          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_public_preparation_pilot.py tests/runtime/test_transformation_math.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py tests/test_transformational_packaging.py -q --junitxml=evidence/discovery.xml
+          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_public_preparation_pilot.py tests/runtime/test_transformation_math.py tests/runtime/test_transformation_source_audit.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py tests/test_transformational_packaging.py -q --junitxml=evidence/discovery.xml
           python -m alpha_factory_v1.core.runtime.cli --home "$RUNNER_TEMP/ti-local-agent" successor-transform demo --output evidence/native-campaign.json
           python -m scripts.reproduce_public_preparation_pilot --state "$RUNNER_TEMP/ti-public-preparation-agent" --output evidence/public-preparation-pilot.json --approve-free-local-pilot
           TI_NATIVE_CAMPAIGN=evidence/native-campaign.json node --test examples/transformational-intelligence/inspector.test.mjs
           node --test examples/transformational-intelligence/project-bridge.test.mjs
           python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --help
           python -m alpha_factory_v1.core.runtime.successor.transformation_math --help
+          python -m alpha_factory_v1.core.runtime.successor.transformation_source_audit_cli --home "$RUNNER_TEMP/ti-source-audit-agent" --output evidence/source-audit.json demo examples/transformational-source-audit/fixture.json --approve-free-local-audit
           python -m alpha_factory_v1.core.runtime.cli successor-study --help
       - name: Verify generated sources and complete offline browser journey
         run: |

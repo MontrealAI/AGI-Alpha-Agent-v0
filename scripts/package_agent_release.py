@@ -36,6 +36,8 @@ TI_PUBLIC_EXAMPLES = (
     "examples/transformational-intelligence/public-preparation/retained-run.json",
     "examples/transformational-intelligence/public-preparation/direct-origination-profile.md",
     "examples/transformational-intelligence/public-preparation/ubuntu-ephemeral-creator.md",
+    "examples/transformational-source-audit/fixture.json",
+    "examples/transformational-source-audit/expected-results.json",
 )
 
 
@@ -108,6 +110,7 @@ def release_documents(version: str) -> tuple[str, ...]:
             "examples/transformational-intelligence/policy-study/README.md",
             "examples/transformational-math/README.md",
             "examples/transformational-intelligence/public-preparation/README.md",
+            "examples/transformational-source-audit/README.md",
         )
     return documents
 
@@ -120,6 +123,7 @@ def release_document_name(name: str) -> str:
         "examples/transformational-intelligence/policy-study/README.md": "TRANSFORMATIONAL_POLICY_STUDY.md",
         "examples/transformational-math/README.md": "TRANSFORMATIONAL_MATH.md",
         "examples/transformational-intelligence/public-preparation/README.md": "TRANSFORMATIONAL_PUBLIC_PILOT.md",
+        "examples/transformational-source-audit/README.md": "TRANSFORMATIONAL_SOURCE_AUDIT.md",
     }.get(name, Path(name).name)
 
 

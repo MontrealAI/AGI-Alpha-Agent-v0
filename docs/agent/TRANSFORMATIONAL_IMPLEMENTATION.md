@@ -36,7 +36,8 @@ that a PR is merged, a release published, or a live service qualified.
 | Mathematical/scientific investigation | Separate `successor/transformation_math.py` affine-recurrence driver; executable scalar, cycle and affine-composition controls, algebraic witness and finite search | `test_transformation_math.py`; `examples/transformational-math/expected-results.json`; actual 864-case durable campaign | Every admitted census output is exact. Frozen affine candidate uses 43,488 units versus 30,204 for cycle detection: retain the stronger cycle control. Human-readable argument, not a proof-assistant certificate, novel theorem or general investigation system. Its own domain schema is not native source-selector v1. |
 | Actual model/tool adapters | `successor/transformation_model.py`, pure frozen-program operator and `alpha-agent successor-model`; unchanged native execution/checker | `test_transformation_model.py`: actual loopback HTTP fixture, full native campaign, consumed permits, in-flight HTTP cancellation, global STOP/resume revision fencing, provenance/attribution forgeries | OpenAI-compatible local no-charge proposal adapter; closed executable program language, separate native approval. Source-tree CLI tests do not qualify a clean installed wheel or actual model weights. Reported model revision and billing remain operator/provider attestations. |
 | Useful public-input pilot | `scripts/reproduce_public_preparation_pilot.py`; exact Manager `8b0cf7fb` documentation snapshots and separate source/prerequisite checker | `tests/runtime/test_public_preparation_pilot.py`; retained deterministic card, credible controls, successful inert reverse-import and recovery | Actual public documentation reading aid with locally supplied annotations; not deployment guidance or calibrated reader benefit. Strong unrestricted search ties the constructed method. Mandatory real-weight release acceptance reuses the pinned llama.cpp/Qwen3-4B process; its exact-head result remains pending. |
-| Seven transformation axes | Typed axis vocabulary, installed extensible operators and separate typed domain drivers | Source representation/production/complementarity ablations and mathematical reduction checks | The source-selector has three built-in operators. General information, task-boundary, mechanism and evaluator-changing discovery operators are not all implemented; evaluator revision remains a separate authorized process. This is a software scope limitation, not a completed seven-axis result. |
+| Seven transformation axes | Separate `successor/transformation_source_audit.py` and CLI: executed fact-list/index, repeated-query/materialization, graph-work-queue, fragment reuse, package-boundary and checked-handoff alternatives; external measurement revision | `test_transformation_source_audit.py`; all 64 programs, independent wildcard/closure assertions, all 512 three-module graphs and independently recomputed operation counts | Six actual finite static-source mechanisms plus a separately signed evaluator process. This is not general invention of arbitrary formulations. The native source-selector retains its three built-in operators; this domain has its own schema and grants no native import or reuse authority. |
+| Useful static source-package pilot | Six immutable Apache-2.0 Alpha source snapshots, exact inventory/closure artifact, durable approval/freeze/confirmation, unchanged and hand-engineered controls plus executed unrestricted oracle | `examples/transformational-source-audit/`; 37 driver tests plus 21 measurement tests; actual CLI and signed Journal verification | Frozen `110010` fails the supplied stale-worker confirmation; retain the negative result. All 32 checked-handoff methods succeed. Full comparison costs 4,832,867 declared units, hand control 22,745 and oracle 22,721. No oracle advantage, calibrated outcome or production-efficiency claim. |
 | Shared persistent TI journey | Fleet-owned versioned project history, Alpha guided workspace and actual native/route/handoff adapters | Native browser request/result and Computer Use handoff; Fleet project/adversarial integration tests | Browser history and native evidence remain explicit. Full saved-package four-repository TI journey and external review/promotion remain final integration gates; inert historical routes grant no authority. |
 | Parent lifetime and public portable history | Reserved parent-study lease checked inside ordinary native transactions; exact child request/phase/source binding; all-event public screening | Parent pause/cancel bypass, unplanned child, ordinary-history exposure and serialized structured-credential regressions | Known source reuse within the same Journal is rejected, including imported and archived source records. Semantic independence and cross-service custody remain outside these local checks. Exact inert authorization metadata is not a credential exception for arbitrary objects. |
 | Ecosystem boundaries and money | Manager #1607 USDC inspection; Jobs separate AGIALPHA adapter; existing versioned receipts | Native zero-cost envelope compatibility and separate disposable currency fixtures | Current native transformation charter has zero USDC and zero AGIALPHA allowance. Positive paid drafts must refuse it. Policy doubles do not establish native paid support. |
@@ -66,6 +67,7 @@ python -m pytest tests/runtime/test_measurement.py tests/runtime/test_measuremen
 python -m pytest tests/runtime/test_transformation.py --confcutdir=tests/runtime -o addopts= -q
 python -m alpha_factory_v1.core.runtime.cli --home ./local-ti successor-transform demo --output ./local-ti-result.json
 python -m pytest -q tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_transformation_math.py
+python -m alpha_factory_v1.core.runtime.successor.transformation_source_audit_cli --home ./local-source-audit --output ./local-source-audit-evidence.json demo examples/transformational-source-audit/fixture.json --approve-free-local-audit
 python -m scripts.reproduce_public_preparation_pilot --state ./new-public-pilot --output ./new-public-pilot.json --approve-free-local-pilot
 ```
 
@@ -98,6 +100,18 @@ control still wins. These conditional units are not money, electricity or a
 permission to reuse a method. Local model discovery's explicit no-charge
 attestation is distinct from the fully deterministic free starting path.
 
+The static source audit has its own bounded source domain and comparison epoch.
+Every method must produce the same exact report; supplied source is parsed and
+never executed. Its Journal retains failed comparisons and a bounded exposure
+checkpoint for both capture identities and individual source blobs. A previously
+observed file cannot become fresh confirmation by renaming a campaign, changing
+paths or adding another file. Confirmation packages are reserved before work;
+partial failures retain their exposure. Exact terminal replay is historical and
+performs no new work. The checkpoint cannot establish semantic independence,
+cross-Journal custody or external organizational review. Pause/cancel apply
+between bounded phases. The actual fixture ran in 7.88 seconds locally, without
+a model or network call; that timing is not a performance guarantee.
+
 Initial deployment remains Ubuntu Terminal / Hardhat with a hidden, local,
 ephemeral deployer-key prompt. Keys must never appear in command arguments,
 `.env`, history, logs or artifacts. Governance remains the Mac Studio Ledger.
@@ -120,11 +134,16 @@ The final head must still pass those gates before its version, artifacts and
 compatible four-repository set can be published. No general model advantage,
 calibrated utility or Level 3/4 superiority follows from this pilot.
 
-Additive preparations are linked in Alpha #4839, Fleet #54/#55, Manager
-#1607/#1608 and Jobs #3993/#3994/#3995. Manager's newly reported 113-path
-receipt/history predecessor still needs a published exact source handoff before
-the additive release profile can be reconciled. Jobs' new profile deliberately
-blocks publication while the additional scanner review is absent. Hosted exact
-source checks, established parent fixes, compatible saved installations and
-actual live Pages verification remain outstanding. These preparations are not
-merged or released capabilities.
+Additive preparations are linked in Alpha #4839, Fleet #54/#55/#56/#57,
+Manager #1607/#1608 and Jobs #3993/#3994/#3995/#3996. Manager's corrected
+113-path predecessor is now public at `f4a50134`; its additive profile is being
+reconciled explicitly, preserving the new receiver and captured imports. Jobs'
+profile deliberately blocks publication while the additional scanner review is
+absent. The separate scanner producer proposal does not establish a completed
+scan. A normal hash-locked physical installation of Alpha `7283b4d4` and a
+saved Fleet source-preview installation passed their scoped native/CLI checks.
+The latter's host-browser proof retained one project through its signed return,
+but used a dirty engineering archive and provides no Docker, nonroot or external
+review qualification. Final compatible source pins, real-model acceptance,
+hosted exact-source checks, clean saved installations and actual live Pages
+verification remain outstanding. No main merge or fresh release is claimed.

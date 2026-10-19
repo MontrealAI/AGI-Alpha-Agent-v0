@@ -22,12 +22,14 @@ def test_release_package_requires_real_transformational_acceptance():
         "scripts/reproduce_transformational_paper.py",
         "test_transformation.py",
         "test_transformation_review.py",
+        "test_transformation_source_audit.py",
         "test_transformation_library.py",
         "test_measurement.py",
         "test_measurement_review.py",
         "inspector.test.mjs",
         "transformational_intelligence.test.mjs",
         "test_transformational_intelligence_browser.py",
+        "transformation_source_audit_cli",
     ]
     for command in required:
         step = next(step for step in steps if command in step.get("run", ""))

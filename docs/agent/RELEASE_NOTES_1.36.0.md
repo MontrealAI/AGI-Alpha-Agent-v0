@@ -45,10 +45,19 @@ eight fewer logical search units per campaign. Complete child campaigns, unsucce
 costs remain in the signed Journal. This finite result does not establish independent sampling, held-out
 custody, calibrated reader benefit or general learning-to-discover.
 
-These mechanisms do not complete every transformation axis. General information-query, task-boundary,
-coordination and evaluator-changing discovery are not all installed software operators. Evaluator
-revision remains a separately validated and authorized measurement process; an optimizer cannot approve
-its own instrument or carry confirmation evidence into a changed epoch.
+The separate `ti-source-package-audit/v1` driver executes all 64 combinations of six bounded choices:
+fact representation, retained information queries, dependency closure, report production, task batching
+and checked coordination. Its seventh axis proposes a real evaluator-disagreement case through the
+existing separately signed measurement process. The optimizer cannot authorize its own revision or
+carry confirmation evidence into a changed epoch. All methods still owe the same exact inventory.
+
+Its six-file public-source fixture retains an unsuccessful frozen candidate: a declared stale-worker
+fault corrupts the unchecked handoff, while 32 of 64 confirmation methods deliver the exact inventory.
+The complete comparison charges 4,832,867 logical units; the unrestricted oracle uses 22,721 units.
+These are finite static parsing and local coordination mechanisms, not general discovery of arbitrary
+representations, experiments or evaluators. Source text is parsed without execution or network access.
+The [source-audit guide](../../examples/transformational-source-audit/README.md) records controls,
+costs, fresh-source custody, explicit approval, recovery and the separate measurement role boundary.
 
 ## Persistent projects and reuse
 
