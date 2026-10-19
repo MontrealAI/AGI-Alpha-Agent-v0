@@ -1015,7 +1015,11 @@ console.log(await runNativeHandoff(raw,{sourceHash:JSON.parse(raw).runtimeSource
         """() => {
           const original=crypto.subtle.digest.bind(crypto.subtle); let once=true;
           crypto.subtle.digest=async(...args)=>{
-            if(once){once=false;window.historyValidationHeld=true;document.documentElement.setAttribute('data-history-validation-held','true');await new Promise(resolve=>{window.releaseHistoryValidation=resolve;});}
+            if(once){
+              once=false;window.historyValidationHeld=true;
+              document.documentElement.setAttribute('data-history-validation-held','true');
+              await new Promise(resolve=>{window.releaseHistoryValidation=resolve;});
+            }
             return original(...args);
           };
           window.restoreDigest=()=>{crypto.subtle.digest=original;};
