@@ -124,6 +124,20 @@ produces a return when its native receipt is available, preserving reserved effe
 Importing that return does not establish signer trust, independent review, payment or settlement. Verify the
 signed receipt against a separately trusted source key and review the actual artifacts before accepting work.
 
+When returning from the Jobs or Manager receiver, restore your original complete Alpha archive first.
+Then use **Restore archive or Computer Use history** to import the latest native history JSON. Alpha merges
+the same project's attempts without dropping earlier catalog lessons, native catalog returns, failed work or
+owner reviews. Repeated, reordered or partial histories preserve the retained evidence; conflicting bytes or
+an unrelated project are refused. Download the complete archive or workspace again to carry the merged work.
+In French, use **Restaurer une archive ou un historique Computer Use**. Imports carry no execution or payment
+authority, and JSON is checked as decoded without silently removing a UTF-8 byte-order mark.
+
+After upgrading, prepare a fresh permit. Previously exported native return/history JSON remains available
+for read-only historical import. Older internal journals without a signed worker digest cannot be exported
+by inferring their source from current files: the new exporter refuses them. Keep the original exported
+return and exact matching historical runtime. Recovery of an unexported legacy journal is not qualified here;
+existing release files and source identities remain unchanged.
+
 The handoff and return schemas use sorted compact UTF-8 JSON commitments. `projectSha256` hashes the exact
 `projectRaw` UTF-8 bytes; `handoffSha256` hashes the canonical handoff. Tasks in a handoff include every
 `ComputerTask` field and `schema_version: 1`, including defaults, to preserve cross-language commitment bytes.
@@ -150,6 +164,16 @@ HTTPS URLs with GET/HEAD, resolves only public IPs, pins the chosen IP for the T
 the original hostname's certificate. It never forwards page cookies, authorization headers or request bodies.
 Redirects, private IPs, additional query strings, writes, WebSockets and service workers are refused.
 This permits bounded public-document workflows without creating an unrestricted browsing proxy.
+
+Each public read runs in a disposable child with no inherited provider credentials or proxy settings.
+The parent checks session STOP and deadline state between waits of at most 100 ms and enforces one
+eight-second wall-clock budget across DNS resolution and streamed HTTP input. Cancellation kills and
+reaps the child. An interrupted read conservatively reserves its remaining per-read byte allowance;
+unknown received bytes are not assumed free. Both the browser-worker and public-reader source digests
+are bound into fresh worker commitments. Upgrading requires preparing a new permit; historical receipts
+keep their original commitments and remain readable.
+The reader requests identity encoding and rejects compressed responses before consuming their bodies.
+Raw-byte iteration prevents decompression from allocating an oversized body ahead of the byte limit.
 
 Before each billed call and UI action, the private signed journal reserves a unit and retains its intent.
 The operator/global stop and deadline are checked between bounded calls and immediately before actions.

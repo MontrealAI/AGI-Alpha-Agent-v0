@@ -1,6 +1,15 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.35.0
+# Release readiness — 1.35.1
+
+Version **1.35.1** repairs the public-document reader's cancellation and wall-clock boundary.
+The [maintenance notes](RELEASE_NOTES_1.35.1.md) describe disposable DNS/HTTP supervision,
+conservative interrupted-read accounting and fresh source-bound permits. Existing source, regression,
+Docker, package, browser, documentation, public HTTPS and uploaded-byte gates remain mandatory.
+A matching published manifest and exact-commit workflow establish delivery; source preparation alone does not.
+Historical releases, deployment records, on-chain authority and separate commissioning gates remain unchanged.
+
+## Previous release scope — 1.35.0
 
 Version **1.35.0** adds the [Computer Use flagship journey](SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4)
 and project-bound native returns described in the [release notes](RELEASE_NOTES_1.35.0.md). Level 3 develops

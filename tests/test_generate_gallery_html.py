@@ -8,6 +8,20 @@ from scripts import generate_demo_docs as gdd
 from scripts import generate_gallery_html as ggh
 
 
+def test_gallery_return_link_preserves_portable_ti_script_and_csp_bytes(tmp_path):
+    page = tmp_path / "docs" / "transformational-intelligence" / "index.html"
+    page.parent.mkdir(parents=True)
+    original = (
+        b'<html><body><a href="../successor/alpha/">Return</a><script>\nwindow.fixture=true;\n</script></body></html>'
+    )
+    page.write_bytes(original)
+    ordinary = tmp_path / "docs" / "ordinary.html"
+    ordinary.write_text("<html><body>Ordinary gallery page</body></html>")
+    ggh.insert_back_link([page, ordinary])
+    assert page.read_bytes() == original
+    assert "Back to Gallery" in ordinary.read_text()
+
+
 @pytest.mark.parametrize(
     "name",
     ["solving_agi_governance", "muzero_planning", "muzeromctsllmagent_v0", "alpha_agi_insight_v1"],

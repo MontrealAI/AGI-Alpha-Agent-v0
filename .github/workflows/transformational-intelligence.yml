@@ -39,6 +39,7 @@ jobs:
           python -m unittest tests.test_transformational_paper -v
           python scripts/reproduce_transformational_paper.py --out evidence/paper
           python -m pytest --noconftest -o addopts= tests/test_transformational_study_reproduction.py -q
+          python -m pytest --noconftest -o addopts= tests/test_generate_gallery_html.py -q
           python scripts/reproduce_transformational_study.py --spec examples/transformational-intelligence/policy-study/spec.json --training examples/transformational-intelligence/policy-study/training.json --confirmation examples/transformational-intelligence/policy-study/confirmation.json --state "$RUNNER_TEMP/ti-study-agent" --output evidence/policy-study.json --approve-free-local-study
       - name: Exercise durable discovery and separately controlled measurement
         env:
@@ -53,8 +54,7 @@ jobs:
           python -m alpha_factory_v1.core.runtime.cli successor-study --help
       - name: Verify generated sources and complete offline browser journey
         run: |
-          python scripts/generate_transformational_intelligence.py
-          python scripts/generate_successor_alpha.py
+          python scripts/generate_gallery_html.py
           git diff --exit-code -- docs/transformational-intelligence docs/successor/alpha
           node --test tests/browser/transformational_intelligence.test.mjs
           python tests/browser/test_transformational_intelligence_browser.py

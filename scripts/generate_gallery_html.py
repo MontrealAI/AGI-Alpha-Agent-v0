@@ -197,6 +197,8 @@ def insert_back_link(pages: Iterable[Path]) -> None:
     for page in pages:
         if not page.is_file():
             continue
+        if page.parts[-2:] == ("transformational-intelligence", "index.html"):
+            continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
             ("successor", "alpha", "index.html"),
             ("successor", "play", "index.html"),
@@ -421,7 +423,9 @@ def main() -> None:
         flagship.build(REPO_ROOT)
     if (REPO_ROOT / "scripts/templates/transformational-intelligence/index.html").is_file():
         understanding = importlib.import_module(
-            "scripts.generate_transformational_intelligence" if __package__ else "generate_transformational_intelligence"
+            "scripts.generate_transformational_intelligence"
+            if __package__
+            else "generate_transformational_intelligence"
         )
         understanding.build(REPO_ROOT)
     if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():

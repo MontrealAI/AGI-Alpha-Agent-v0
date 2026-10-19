@@ -14,7 +14,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ..store import Journal, private_write
-from .computer import WORKER, Advisor, ComputerTask, commitment
+from .computer import Advisor, ComputerTask, _commitment
 from .protocol import MAX_SAFE_INT, canonical, digest, safe_json_loads
 from .transport import read_document
 from .trust import SignedEnvelope, TrustAnchor, TrustRegistry
@@ -57,9 +57,7 @@ class ComputerStrategy(BaseModel):
         approach = (
             self.hypotheses[0]
             if self.selected == "baseline"
-            else self.combination
-            if self.selected == "combine"
-            else self.reframing
+            else self.combination if self.selected == "combine" else self.reframing
         )
         candidates = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.hypotheses))
         criteria = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.successCriteria))
@@ -176,9 +174,6 @@ def write_computer_return(
 ) -> dict[str, Any]:
     """Package attributed observations; retain interrupted runs without asserting task success."""
     receipt = read_document(output / "receipt.json")
-    expected = commitment(handoff.task, advisor, image, handoff.context())
-    if receipt.get("commitment") != expected or receipt.get("execution_context") != handoff.context():
-        raise ValueError("native receipt does not bind this project handoff and execution configuration")
     run_id = str(uuid.UUID(receipt["run_id"]))
     if canonical(journal.latest("@successor-computer:" + run_id)) != canonical(receipt):
         raise ValueError("native receipt differs from the retained local journal")
@@ -187,6 +182,12 @@ def write_computer_return(
     payload = trust.verify(envelope, "computer-receipt", "local-source")
     if canonical(payload) != canonical(Journal.document(receipt)):
         raise ValueError("signed local receipt differs from the retained observations")
+    worker_sha256 = receipt.get("worker_sha256")
+    if not isinstance(worker_sha256, str) or re.fullmatch(r"[0-9a-f]{64}", worker_sha256) is None:
+        raise ValueError("native receipt lacks its retained worker source binding")
+    expected = _commitment(handoff.task, advisor, image, handoff.context(), worker_sha256)
+    if receipt.get("commitment") != expected or receipt.get("execution_context") != handoff.context():
+        raise ValueError("native receipt does not bind this project handoff and execution configuration")
     observed_text = None
     if "observed_text_sha256" in receipt:
         path = output / "visible-text.txt"
@@ -212,7 +213,7 @@ def write_computer_return(
         "execution": {
             "provider": advisor.identity,
             "image": image,
-            "workerSha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+            "workerSha256": worker_sha256,
         },
         "receipt": receipt,
         "signedReceipt": envelope.model_dump(mode="json"),

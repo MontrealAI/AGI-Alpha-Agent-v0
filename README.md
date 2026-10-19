@@ -44,9 +44,10 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 > need proof review. The configured browser runner retains observed work for your review.
 > [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
-> **Current release scope · 1.35.0.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.35.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
-> Version 1.35.0 adds Computer Use mission preparation and project-bound strategy attempts to the existing flagship.
+> **Current release scope · 1.35.1.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.35.1.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> Version 1.35.1 bounds public-document reads across DNS and streaming, with prompt STOP/deadline checks and child cleanup.
+> It preserves the 1.35.0 Computer Use flagship, strategy attempts and portable project history.
 > Version 1.34.0 and its deployment/publication evidence remain unchanged. Use matching published assets
 > from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
 
