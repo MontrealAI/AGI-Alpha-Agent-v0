@@ -111,8 +111,21 @@ def substitute_reader(
         return child
 
     monkeypatch.setattr(computer, "READ_WORKER", script)
-    monkeypatch.setattr(computer.subprocess, "Popen", start)
+    # Keep Journal's Windows ACL subprocesses outside the reader-only probe.
+    monkeypatch.setattr(computer, "subprocess", SimpleNamespace(**(vars(subprocess) | {"Popen": start})))
     return children, ready
+
+
+def test_reader_probe_preserves_unrelated_real_subprocesses(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    children, _ = substitute_reader(monkeypatch, tmp_path)
+    result = subprocess.run(
+        [computer.sys.executable, "-I", "-c", "print('unrelated process completed')"],
+        capture_output=True,
+        check=True,
+    )
+    assert result.stdout.strip() == b"unrelated process completed" and children == []
+    with pytest.raises(AssertionError):
+        computer.subprocess.Popen([computer.sys.executable, "-c", "print('unapproved reader')"])
 
 
 def phase_deadline(monkeypatch: pytest.MonkeyPatch, reached: Callable[[], bool]) -> Callable[[], float | None]:
