@@ -36,6 +36,7 @@ TI_PUBLIC_EXAMPLES = (
     "examples/transformational-intelligence/public-preparation/retained-run.json",
     "examples/transformational-intelligence/public-preparation/direct-origination-profile.md",
     "examples/transformational-intelligence/public-preparation/ubuntu-ephemeral-creator.md",
+    "examples/transformational-intelligence/public-preparation/LICENSE.Manager",
     "examples/transformational-source-audit/fixture.json",
     "examples/transformational-source-audit/expected-results.json",
 )

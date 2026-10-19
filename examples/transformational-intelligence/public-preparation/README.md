@@ -11,6 +11,7 @@ reading aid; it grants no signing, execution, ENS, funding or activation authori
 The source snapshots come from public Manager commit
 `8b0cf7fbc09e48ffe55d8ed35df8cd40920231d2`. Their raw hashes and immutable URLs are
 in `input.json` and independently pinned in the reproduction driver. Excerpts
+retain Manager's [MIT notice](LICENSE.Manager), including its copyright attribution. They
 collapse whitespace only. Priorities and prerequisite edges are local review
 judgments. Source fidelity is checkable; reader usefulness and comprehension are
 not calibrated by these annotations. Two preselected documentation excerpts are

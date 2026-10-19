@@ -120,6 +120,7 @@ def test_operator_bundle_contains_all_guides_exact_page_and_public_examples(tmp_
             "transformational-examples/transformational-intelligence/public-preparation/retained-run.json",
             "transformational-examples/transformational-intelligence/public-preparation/direct-origination-profile.md",
             "transformational-examples/transformational-intelligence/public-preparation/ubuntu-ephemeral-creator.md",
+            "transformational-examples/transformational-intelligence/public-preparation/LICENSE.Manager",
             "transformational-examples/transformational-source-audit/fixture.json",
             "transformational-examples/transformational-source-audit/expected-results.json",
         } <= set(archive.namelist())
