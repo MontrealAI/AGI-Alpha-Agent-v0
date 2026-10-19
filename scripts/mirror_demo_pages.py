@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import shutil
+import hashlib
+import json
 from pathlib import Path
 import os
 import re
@@ -57,6 +59,14 @@ def fix_paths(target: Path) -> None:
             rel = os.path.relpath(snippet, copied.parent)
             text = re.sub(r"\((?:\./|\.\./)+DISCLAIMER_SNIPPET\.md\)", f"({rel})", text)
         copied.write_text(text, encoding="utf-8")
+    # A mirrored flagship has rewritten links and therefore different document bytes.
+    # Keep the implementation pins intact and bind the mirror's actual generated page.
+    for manifest_path in target.rglob("sources.json"):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        page_path = manifest_path.with_name("index.html")
+        if manifest.get("schema") == "successor-alpha-source/v1" and page_path.is_file():
+            manifest["pageSha256"] = hashlib.sha256(page_path.read_bytes()).hexdigest()
+            manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def main() -> None:

@@ -2,13 +2,25 @@
 
 # Start here — get a useful, reviewable result
 
+**MONTREAL.AI flagship: Find your Alpha. Build your SUCCESSOR Ω.**
+
+**[Start the flagship →](../successor/alpha/index.html)** ·
+**[Démarrer le parcours phare →](../successor/alpha/index.html?lang=fr)**
+
+Choose a valuable opportunity in software, research or mathematics. Prepare a Computer Use mission to
+investigate real public material and produce a concrete artifact. Discover and combine strategies at Level 3,
+then test a better problem formulation at Level 4 while preserving the required outcome and acceptance criteria.
+Keep the proposed value, attempts, observations, reviews and lessons in one project.
+Planning and the catalog example run free in your browser; model-driven execution uses a separately configured
+native runner. Follow the [flagship guide](SUCCESSOR_ALPHA.md) for the guided path and current scope.
+
 <!-- computer-use-study-publication -->
 **See what was actually demonstrated:** [Read the computer-use study](../reports/computer-use-study/REPORT.md) or open its [English/French visual reader](../reports/computer-use-study/index.html). Two repaired websites, tested recovery and fewer scripted setup controls; simulated owner, not a production benchmark.
 <!-- /computer-use-study-publication -->
 
-**Start with a working capability: [open the SUCCESSOR Ω flagship](../successor/alpha/index.html).**
-Reconcile the supplied catalogs or your own permitted CSVs, inspect results and comparisons, and keep the
-working tool and project history. No account, installation, model API or wallet is needed.
+**For a maintained local example:** [open the catalog engineering tool](../successor/alpha/index.html#catalog-example).
+Reconcile supplied or permitted CSVs, inspect the results and retain the tool. It runs without an account,
+installation, model API or wallet; the flagship opportunity mission above is the main starting point.
 The [simple planning walkthrough](../start/index.html) remains available in English and French with larger text.
 The instructions below are for installing and operating your own agent.
 

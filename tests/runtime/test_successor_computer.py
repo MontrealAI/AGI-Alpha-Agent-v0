@@ -263,6 +263,103 @@ def test_current_responses_wire_format_and_safety_refusal(monkeypatch: pytest.Mo
     assert requests[1]["input"][-1]["call_id"] == "one"
 
 
+@pytest.mark.parametrize(
+    "action",
+    [
+        {"type": "click", "button": "left", "x": 20, "y": 30},
+        {"type": "double_click", "x": 20, "y": 30},
+        {"type": "drag", "path": [{"x": 20, "y": 30}, {"x": 40, "y": 50}]},
+        {"type": "move", "x": 20, "y": 30},
+        {"type": "scroll", "x": 20, "y": 30, "scroll_x": 0, "scroll_y": 100},
+    ],
+)
+def test_responses_empty_pointer_modifiers_preserve_raw_history(
+    monkeypatch: pytest.MonkeyPatch, action: dict[str, Any]
+) -> None:
+    original = httpx.Client
+    raw_action = {**action, "keys": []}
+    output = [{"type": "computer_call", "call_id": "one", "actions": [raw_action]}]
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    advice = advisor.next(task(), TestComputer().observe())
+    assert advice["actions"] == [action]
+    assert advisor.history[-1] == output[0]
+    assert advisor.history[-1]["actions"][0]["keys"] == []
+    with pytest.raises(ValueError, match="unexpected action fields"):
+        validate_action(raw_action)
+
+
+@pytest.mark.parametrize(
+    "action",
+    [
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": ["CTRL"]},
+        {"type": "double_click", "x": 20, "y": 30, "keys": ["SHIFT"]},
+        {"type": "drag", "path": [{"x": 20, "y": 30}, {"x": 40, "y": 50}], "keys": ["ALT"]},
+        {"type": "move", "x": 20, "y": 30, "keys": ["CTRL"]},
+        {"type": "scroll", "x": 20, "y": 30, "scroll_x": 0, "scroll_y": 100, "keys": ["CTRL"]},
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": None},
+        {"type": "click", "button": "left", "x": 20, "y": 30, "keys": [], "authority": True},
+        {"type": "screenshot", "keys": []},
+    ],
+)
+def test_responses_modifiers_and_unknown_action_fields_remain_rejected(
+    monkeypatch: pytest.MonkeyPatch, action: dict[str, Any]
+) -> None:
+    original = httpx.Client
+    output = [{"type": "computer_call", "call_id": "one", "actions": [action]}]
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    with pytest.raises(ValueError, match="unexpected action fields"):
+        advisor.next(task(), TestComputer().observe())
+    assert advisor.history[-1] == output[0]
+
+
+@pytest.mark.parametrize(
+    "output",
+    [
+        [],
+        [{"type": "reasoning", "summary": []}],
+        [{"type": "message", "phase": "commentary", "content": [{"type": "output_text", "text": "Working"}]}],
+        [{"type": "message", "content": [{"type": "output_text", "text": " "}]}],
+        [{"type": "message", "content": [{"type": "refusal", "refusal": "Cannot proceed"}]}],
+    ],
+)
+def test_responses_without_a_final_message_do_not_claim_completion(
+    monkeypatch: pytest.MonkeyPatch, output: Any
+) -> None:
+    original = httpx.Client
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"status": "completed", "output": output}))
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    with pytest.raises(ValueError, match="no final completion"):
+        advisor.next(task(), TestComputer().observe())
+    assert advisor.usage_events[0]["cost"] is None
+
+
+def test_responses_final_answer_clears_pending_call_and_excludes_commentary(monkeypatch: pytest.MonkeyPatch) -> None:
+    original = httpx.Client
+    transport = httpx.MockTransport(
+        lambda request: httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "output": [
+                    {"type": "message", "phase": "commentary", "content": [{"type": "output_text", "text": "Working"}]},
+                    {"type": "message", "phase": "final_answer", "content": [{"type": "output_text", "text": "Claim"}]},
+                ],
+            },
+        )
+    )
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=transport, **kwargs))
+    advisor = HTTPAdvisor("responses", "explicit-test-model", "https://api.openai.com/v1", "TEST_ONLY")
+    advisor.history = [{"type": "computer_call", "call_id": "one", "actions": [{"type": "screenshot"}]}]
+    advisor.pending = "one"
+    assert advisor.next(task(), TestComputer().observe()) == {"actions": [], "done": True, "summary": "Claim"}
+    assert advisor.pending is None
+
+
 @pytest.mark.skipif(
     not os.environ.get("SUCCESSOR_COMPUTER_IMAGE"), reason="real Docker image must be explicitly provided"
 )

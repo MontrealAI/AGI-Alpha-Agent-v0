@@ -256,23 +256,43 @@ class HTTPAdvisor:
         if result.get("status") != "completed":
             raise ValueError("provider response is incomplete")
         output = result.get("output", [])
+        if not isinstance(output, list) or any(not isinstance(item, dict) for item in output):
+            raise ValueError("provider output must contain structured items")
         calls = [item for item in output if item.get("type") == "computer_call"]
         if len(calls) > 1 or any(item.get("pending_safety_checks") for item in calls):
             raise ValueError("provider requested parallel calls or safety review; stop for operator review")
         if any(item.get("type") not in {"computer_call", "reasoning", "message"} for item in output):
             raise ValueError("provider requested an unsupported tool")
-        self.history.extend(output)
         if calls:
             call = calls[0]
+            self.history.extend(output)
             self.pending = call["call_id"]
-            return {"actions": call.get("actions", []), "done": False, "summary": ""}
+            raw_actions = call.get("actions", [])
+            if not isinstance(raw_actions, list) or any(not isinstance(action, dict) for action in raw_actions):
+                raise ValueError("provider computer actions must be structured objects")
+            actions = []
+            for raw_action in raw_actions:
+                action = dict(raw_action)
+                if (
+                    action.get("type") in {"click", "double_click", "drag", "move", "scroll"}
+                    and action.get("keys") == []
+                ):
+                    del action["keys"]
+                actions.append(validate_action(action))
+            return {"actions": actions, "done": False, "summary": ""}
         summary = "\n".join(
-            item.get("text", "")
+            item["text"]
             for message in output
             if message.get("type") == "message"
+            and message.get("phase") in {None, "final_answer"}
+            and message.get("role") in {None, "assistant"}
             for item in message.get("content", [])
-            if item.get("type") == "output_text"
+            if isinstance(item, dict) and item.get("type") == "output_text" and isinstance(item.get("text"), str)
         )
+        if not summary.strip():
+            raise ValueError("provider supplied no final completion message; stop for operator review")
+        self.history.extend(output)
+        self.pending = None
         return {"actions": [], "done": True, "summary": summary[:4000]}
 
 
@@ -689,7 +709,7 @@ def add_commands(commands: Any) -> None:
 
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
-    """Use the private native journal; the public static page has no computer-control bridge."""
+    """Use the private journal; static-page handoffs remain inert until separately permitted."""
     if args.computer_command in {"show", "stop", "reconcile"}:
         journal = Journal(args.home)
         journal.verify()
@@ -725,9 +745,14 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
                 )
             return result
         return record if args.computer_command == "show" else _change(journal, key, record["revision"], state="stopped")
-    task = ComputerTask.model_validate(read_document(args.file))
+    from .computer_handoff import HANDOFF_SCHEMA, ComputerHandoff, write_computer_return
+
+    document = read_document(args.file)
+    handoff = ComputerHandoff.model_validate(document) if document.get("schema") == HANDOFF_SCHEMA else None
+    task = handoff.task if handoff is not None else ComputerTask.model_validate(document)
     advisor = HTTPAdvisor(args.provider, args.model, args.base_url, os.environ.get(args.key_env, ""))
-    identity = commitment(task, advisor, args.image)
+    execution_context = handoff.context() if handoff is not None else None
+    identity = commitment(task, advisor, args.image, execution_context)
     if args.computer_command == "prepare":
         return {
             "commitment": identity,
@@ -737,6 +762,19 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             "bounds": {"actions": task.max_actions, "turns": task.max_turns, "seconds": task.max_seconds},
             "authority": [],
             "billing": "provider-dependent; not measured",
+            **({"handoff": handoff.identity()} if handoff is not None else {}),
         }
     journal = Journal(args.home) if args.home.exists() else Journal.initialize(args.home)
-    return run_session(journal, task, advisor, args.image, args.output, args.permit)
+    if handoff is None:
+        return run_session(journal, task, advisor, args.image, args.output, args.permit)
+    if args.output.exists() or args.output.is_symlink():
+        raise FileExistsError("choose a new output directory")
+    try:
+        result = run_session(
+            journal, task, advisor, args.image, args.output, args.permit, execution_context=execution_context
+        )
+    finally:
+        # Interrupted sessions retain their uncertainty and still carry a bound return for review.
+        if (args.output / "receipt.json").is_file():
+            write_computer_return(handoff, journal, advisor, args.image, args.output)
+    return {**result, "computer_return": str((args.output / "computer-return.json").resolve())}

@@ -2,7 +2,7 @@
 
 # Release acceptance and reproducibility
 
-Version 1.34.0 retains local validation in the original ZIP and deployed-site validation in separate
+Version 1.35.0 retains local validation in the original ZIP and deployed-site validation in separate
 public-validation packs. The release manifest's `validation_evidence` inventory and matching
 `SHA256SUMS` identify every archive, pack manifest and part. Public captures preserve all reports and
 screenshots without overwriting local records or exceeding the 450 MB per-asset limit. Earlier

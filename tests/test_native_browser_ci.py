@@ -195,6 +195,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     install = selected["Install pinned browser tools"]
     assertions = selected["Strict records and existing workbench"]
     browser = selected["Atomic storage and full browser recovery"]
+    assert browser["env"]["PYTHONPATH"] == ".", "Direct browser scripts must import the checked-out native runtime"
     for step in [*actions, *selected.values()]:
         if step.get("name") == "Retain discovery browser screenshots":
             assert step["if"] == "always()"
@@ -204,6 +205,7 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     assert steps.index(install) < steps.index(assertions) < steps.index(browser)
     assert install["run"].splitlines() == [
         "python -m pip install playwright==1.54.0 PyYAML==6.0.2 pytest==8.4.1",
+        "python -m pip install --require-hashes -r requirements-agent.lock",
         "python -m playwright install --with-deps chromium",
         "npm ci --prefix tests/browser --ignore-scripts",
     ]

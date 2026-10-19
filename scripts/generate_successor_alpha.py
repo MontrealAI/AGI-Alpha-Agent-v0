@@ -55,6 +55,7 @@ def build(root: Path = ROOT) -> None:
     research = visit(root / "examples/successor-alpha/research.mjs")
     continuity = visit(root / "examples/successor-alpha/continuity.mjs")
     capability = visit(root / "examples/successor-alpha/capability.mjs")
+    computer = visit(root / "examples/successor-alpha/computer.mjs")
     transport = visit(root / "docs/assets/successor/engine.mjs")
     core_source = engine_path.read_text(encoding="utf-8")
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
@@ -127,9 +128,9 @@ function exportPortable(dossier) {
   const clone=document.documentElement.cloneNode(true);
   const saved=clone.querySelector('#saved-project');
   if(!saved)throw Error('Portable project placeholder is unavailable.');
-  saved.textContent=project.serializeProject(dossier).replaceAll('<','\\u003c');
+  saved.textContent=project.serializeProject(dossier).replaceAll('<','\\\\u003c');
   const learning=clone.querySelector('#saved-learning');
-  if(learning)learning.textContent=serializeLearningArchive().replaceAll('<','\\u003c');
+  if(learning)learning.textContent=serializeLearningArchive().replaceAll('<','\\\\u003c');
   for(const el of clone.querySelectorAll('[data-i18n]'))el.textContent=en[el.dataset.i18n];
   for(const el of clone.querySelectorAll('[data-i18n-aria]'))el.setAttribute('aria-label',ariaEn[el.dataset.i18nAria]);
   for(const el of clone.querySelectorAll('[data-i18n-alt]'))el.setAttribute('alt',altEn[el.dataset.i18nAlt]);
@@ -147,7 +148,10 @@ function exportPortable(dossier) {
 """
     code = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
     code += f"\nconst alpha={engine},project={project},SOURCE_HASH={json.dumps(source_hash)};\n"
-    code += f"const research={research},continuity={continuity},transport={transport},capability={capability};\n"
+    code += (
+        f"const research={research},continuity={continuity},transport={transport},capability={capability},"
+        f"computer={computer};\n"
+    )
     reusable_source = {
         "engineSource": core_source,
         "researchSource": (root / "examples/successor-alpha/research.mjs").read_text(encoding="utf-8"),

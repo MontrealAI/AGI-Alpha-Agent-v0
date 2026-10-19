@@ -2,7 +2,7 @@
 
 # Alpha-Factory — from first mission to Ascension evidence
 
-**Version 1.34.0.** Start with a useful result, inspect the evidence, and extend the workflow from there.
+**Version 1.35.0.** Start with a useful result, inspect the evidence, and extend the workflow from there.
 The [release-readiness record](RELEASE_READINESS.md) explains how to verify the delivered version and scope.
 The `alpha_factory_v1` package retains the original domain agents, demos, blueprints and flowcharts.
 Its maintained runtime provides five bounded mission types, a signed persistent journal, explicit review,
@@ -13,6 +13,7 @@ recovery and an authenticated local console. Ascension adds a locally tested pro
 
 | Goal | Path | Requirements |
 |---|---|---|
+| Prepare screen-based work and improve its strategy | [Computer Use flagship](SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4) | Browser preparation; separately configured model, Docker image and explicit native permit for execution |
 | Prepare a project and continue through reviewed work | [English/French Nova-Seed first use](ASCENSION_STACK_RELEASE.md) | Browser for local preparation; separately installed/trusted executor and qualified chain roles for later actions |
 | Make a first plan without technical setup | [Welcoming homepage](../index.html) and [guided first plan](../start/index.html) | Browser; English/French and larger text; no account or wallet |
 | Try editable decision cases | [Decision Studio](../studio/index.html) | Browser; built-in cases need no key or wallet |

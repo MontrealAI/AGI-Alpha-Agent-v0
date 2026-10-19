@@ -1010,3 +1010,56 @@ html.home-large-text {
 .reading-section a:focus-visible { outline: 3px solid #60358a; outline-offset: 5px; border-radius: 2px; }
 @media (max-width: 760px) { .reading-section .reading-grid { grid-template-columns: minmax(0, 1fr); } .reading-section .reading-card { padding: 1.25rem; } }
 @media print { .reading-section .reading-grid { display: block; } .reading-section .reading-card { break-inside: avoid; margin-bottom: 1rem; } }
+
+/* Keep the flagship identity and entry point distinct from optional destinations. */
+.welcome-header nav a.welcome-flagship-nav {
+    color: #fff;
+    background: var(--welcome-purple);
+    font-weight: 750;
+    border: 1px solid var(--welcome-purple);
+}
+.welcome-header nav a.welcome-flagship-nav:hover {
+    color: #fff;
+    background: #4e2c77;
+}
+.welcome-hero .welcome-copy h1 {
+    font-size: clamp(2.65rem, 4.1vw, 4.25rem);
+    max-width: 15ch;
+}
+.welcome-flagship-action {
+    margin-top: 1.65rem;
+    margin-bottom: 0.9rem;
+}
+.welcome-flagship-action .welcome-primary {
+    min-height: 3.75rem;
+    padding-inline: 1.65rem;
+    font-size: 1.2rem;
+}
+.welcome-other-actions {
+    gap: 0.25rem 0.7rem;
+}
+.welcome-other-actions .welcome-secondary {
+    font-size: 1rem;
+    padding-inline: 0.15rem;
+}
+@media (max-width: 560px) {
+    .welcome-header nav a.welcome-flagship-nav {
+        grid-column: 1 / -1;
+        font-size: 1.0625rem;
+    }
+    .welcome-hero .welcome-copy h1 {
+        font-size: clamp(2rem, 8.6vw, 3rem);
+        max-width: 17ch;
+    }
+    .welcome-flagship-action .welcome-primary {
+        justify-content: center;
+    }
+}
+.welcome-secondary-example a {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.45rem 0.25rem;
+    line-height: 1.5;
+}

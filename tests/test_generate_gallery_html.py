@@ -84,8 +84,15 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     assert navigation is not None
     directory = re.search(r'<nav\b[^>]*class="welcome-directory"[^>]*>(.*?)</nav>', generated, re.S)
     assert directory is not None
-    # Beginners get a short path; every advanced workspace remains discoverable.
-    assert len(re.findall(r"<a\b", navigation[1])) == 4
+    # The flagship leads the short path; every advanced workspace remains discoverable.
+    assert re.findall(r'<a\b[^>]*href="([^"]+)"', navigation[1]) == [
+        "successor/alpha/",
+        "start/",
+        "#how-it-works",
+        "#questions",
+        "#research",
+    ]
+    assert 'data-home-key="nav-flagship">Flagship</a>' in navigation[1]
     assert 'href="start/"' in navigation[1] and "Start here" in navigation[1]
     assert 'href="successor/"' in directory[1] and "SUCCESSOR Ω" in directory[1]
     feature = re.search(

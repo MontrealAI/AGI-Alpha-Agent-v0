@@ -49,6 +49,88 @@ that commitment. A local compatible supplier can use `--provider vision-json --b
 --model MODEL`; remote endpoints require HTTPS and the named `--key-env` credential. The supplier must
 support image input and bounded JSON output. Compatibility is tested per supplier, never assumed from its name.
 
+## Choose a model for the work
+
+Use current frontier capability for a consequential task, then qualify the actual combination of model,
+tools and environment. The model is a native operator setting; selecting a flagship opportunity does not
+select a provider, incur a charge or connect an additional executor.
+
+| Work | Current documented option | Selection basis |
+| --- | --- | --- |
+| Difficult scientific reasoning and mathematical exploration | `gpt-6-astra` | OpenAI recommends Astra for its hardest scientific research tasks |
+| Source inspection, software reasoning and screenshot-based Computer Use | `gpt-6.1-sol`, or `gpt-6-astra` when task quality warrants it | Compare accepted output and full task cost, rather than model price alone |
+| Another available vision/JSON supplier | Explicitly tested compatible model | Establish image, schema and task compatibility before operational use |
+
+These options follow the current [GPT-6.1 Sol documentation](https://openai.com/index/introducing-gpt-6-1-sol/)
+and [GPT-6 Astra documentation](https://openai.com/index/gpt-6-astra/), not a universal model ranking.
+The Responses integration uses the
+[current structured Computer Use interface](https://developers.openai.com/api/docs/guides/tools-computer-use).
+Provider access, behavior and prices can change. Record the actual model identity, configuration and evidence
+for each authorized trial. The CLI does not automatically switch models or expose a reasoning-effort setting.
+
+Frontier research demonstrates a broader opportunity than this browser adapter alone implements.
+OpenAI's [October mathematical release](https://openai.com/index/sharing-ai-progress-in-mathematics/)
+and [supporting repository](https://github.com/openai/math) describe results from an unreleased internal model,
+with differing verification status. Those results are not evidence that a selected public model or this runtime
+has solved the same problems. A mathematical candidate needs appropriate expert and proof-tool checks;
+a software candidate needs actual execution and validation before either can be described as established.
+
+## Continue a flagship project
+
+The flagship can export an inert `successor-alpha-computer-handoff/v1` mission for this same native adapter.
+It retains the exact serialized project and its SHA-256, the flagship source identity, declared input rights,
+the bounded computer task, an explicitly unverified value hypothesis and a strategy plan. Level 3 records at least
+two hypotheses, a proposed combination and measurable success criteria. Level 4 records an alternative formulation. The
+operator chooses `baseline`, `combine` or `reframe`; these descriptions remain hypotheses until actual
+work and review support a result. A reframing does not expand the task's permissions or change its goal
+without a new, explicitly reviewed handoff.
+
+The default flagship mission reads the public Computer Use runtime at
+[released v1.34.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/70dac8e5ce739978f5cd96d0fc190b6ebfcdf8d7/alpha_factory_v1/core/runtime/successor/computer.py).
+It asks for an implementable improvement to redundant work, latency or operating cost, preserving task limits,
+stop behavior and usage accounting. The visible deliverable is a source-linked patch proposal or a justified
+decision to retain the design, plus a reproducible validation plan. Source inspection is performed in a bounded
+reading pane; the work-product editor remains available when switching sources. The runtime does not execute
+the proposed patch, run its benchmarks or establish savings. A research mission similarly delivers a concrete
+mechanism and falsifiable experiment; the mathematics lane delivers a candidate argument, proof outline or
+explicit unresolved gap. Supply relevant primary sources before asking for a literature-grounded conclusion.
+
+For Level 3, compare genuinely different strategies and preserve unsuccessful attempts. For Level 4, ask whether
+a different representation or workflow removes unnecessary work while preserving the required useful outcome.
+Changing the acceptance contract starts a different comparison. Code execution, performance measurement and
+formal proof checking need separately connected and qualified tools; preparing their plan does not run them.
+
+Use the exported mission file in the existing commands:
+
+```bash
+alpha-agent successor-computer prepare successor-computer-handoff.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL
+alpha-agent --home operator successor-computer run successor-computer-handoff.json --image IMAGE_SHA256 --model YOUR_COMPUTER_MODEL --permit PREPARED_COMMITMENT --output computer-result
+```
+
+Project bytes, strategy choices and source identity are bound into the existing task/provider/image permit
+through `digest('computer-handoff', handoff)` as its execution context. Changing any of them requires a new
+permit. Each explicitly prepared attempt has a fresh UUID, allowing separately authorized strategy/model
+comparisons to retain distinct history. The runtime never creates or retries an attempt automatically.
+The page supplies neither a provider credential nor an image, and importing or preparing a mission
+performs no model call. The native parser checks project root fields, identity, size, history bounds and exact
+bytes; the flagship's existing project validator checks the full catalog-cycle semantics. Native parsing does
+not independently qualify project history or execute anything contained in that history.
+
+After execution, `computer-result/computer-return.json` carries the project binding, observed provider/model,
+image and worker identity, existing receipt and signature, and final visible text when available. Return this
+file to the flagship to review the work alongside the same project. Screenshots remain separate files named
+and hashed in the receipt; retain the complete output directory for visual review. An interrupted run also
+produces a return when its native receipt is available, preserving reserved effects and unknown costs.
+Importing that return does not establish signer trust, independent review, payment or settlement. Verify the
+signed receipt against a separately trusted source key and review the actual artifacts before accepting work.
+
+The handoff and return schemas use sorted compact UTF-8 JSON commitments. `projectSha256` hashes the exact
+`projectRaw` UTF-8 bytes; `handoffSha256` hashes the canonical handoff. Tasks in a handoff include every
+`ComputerTask` field and `schema_version: 1`, including defaults, to preserve cross-language commitment bytes.
+Strategy text is bounded: original goal 2,000 characters, two to six hypotheses of 500 characters each,
+combination and reframing 1,000 characters each, and one to six success criteria of 500 characters each.
+The actual executable task goal remains subject to its separate 4,000-character limit.
+
 OpenAI's [current Computer Use guide](https://developers.openai.com/api/docs/guides/tools-computer-use)
 documents ordered `computer_call.actions` and screenshot returns using `computer_call_output` with
 `computer_screenshot`. This adapter uses that structured path and rejects unsupported tool calls.
@@ -122,13 +204,15 @@ not an invoice, a dollar budget, or evidence of economic benefit. Total
 `elapsed_milliseconds` measures the local session through cleanup. Human
 review time remains separately supplied rather than inferred from runtime.
 
-The Responses wire contract was checked on 2026-10-15 against the
+The Responses wire contract was checked on 2026-10-18 against the
 [official computer-use guide](https://developers.openai.com/api/docs/guides/tools-computer-use).
 The adapter uses the current `computer` tool and action arrays, matches each
 `computer_call_output` to its call ID, and retains encrypted reasoning in
 stateless history (`store: false`). Unsupported tools and pending safety
 checks stop for operator review. The alternate vision-JSON supplier has a
 different contract; these modes do not imply arbitrary provider compatibility.
+An empty, reasoning-only, refusal-only or commentary-only response cannot complete a session. Completion
+requires a nonblank final text message, and its content still remains an unverified model claim.
 
 A real Chromium laboratory test with scripted provider-shaped responses is
 useful protocol evidence, but cannot establish live-model correctness or

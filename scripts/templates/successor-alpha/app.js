@@ -8,6 +8,8 @@ let valueEstimate = null;
 let artifacts = null, busy = false, controller = null, runToken = 0, revision = 0, importToken = 0;
 let notice = null, lastStatus = null, lastError = null;
 let learningRecords = [], nativeHandoffRaw = null, nativeReturnRaw = null, nativeContinuityRaw = null, nativeChecked = null;
+let computerHistoryRaw = null, computerHistoryChecked = null, computerHandoffRaw = null, computerChecked = null;
+let computerFormRevision = 0, computerBusy = false, computerSelectedIndex = -1, computerSurfaceCustomized = false;
 let learningBusy = null, learningController = null, learningToken = 0, nativeFormRevision = 0, researchFormRevision = 0;
 const sample = alpha.createSampleMission({seed: 42, leftRows: 240, rightRows: 360});
 const en = {};
@@ -28,9 +30,9 @@ const fr = {
     joinedPreview:'Aperçu du catalogue joint',comparisonTable:'Comparaison complète des méthodes',largerText:'Agrandir le texte',returnSetup:'Revenir à la préparation',tryExample:'Essayer l’exemple inclus',skip:'Aller à votre mission',brandCaption:'PAR AGI ALPHA',mainNavigation:'Navigation principale',
     howItWorks:'L’expérience',openProject:'Ouvrir un projet',
     heroEyebrow:'VOTRE MISSION. VOTRE AVANTAGE. VOTRE INSTITUTION.',
-    heroLine1:'Trouvez votre',heroLine2:'avantage.',heroLine3:'Concrétisez-le.\nGardez ce que vous bâtissez.',
-    heroDescription:'Transformez un vrai obstacle en capacité utile. Comparez les résultats. Conservez les outils, les preuves et les leçons qui renforceront la prochaine mission.',
-    firstAdvantage:'Trouver mon premier avantage',bringCatalogs:'Utiliser mes propres catalogues',
+    heroLine1:'Trouvez votre',heroLine2:'Alpha.',heroLine3:'Construisez votre\nSUCCESSOR Ω.',
+    heroDescription:'Visez une occasion utile en recherche, en mathématiques, en logiciel public ou en travail numérique. Découvrez de meilleures stratégies. Testez un autre jeu. Conservez les outils, preuves et leçons qui renforcent la prochaine mission.',
+    firstAdvantage:'Essayer l’exemple local complet',bringCatalogs:'Utiliser mes propres catalogues',
     startNote:'Gratuit. Sans compte, portefeuille ni installation. Dans votre navigateur.',
     imageAlt:'Illustration ornée violette et dorée du parcours Alpha, Gym, Specialist ASI et SUCCESSOR Ω.',
     artEyebrow:'CONÇU POUR DURER',artCaption:'Possédez l’institution.\nChangez les modèles. Préservez la mission.',
@@ -38,8 +40,8 @@ const fr = {
     valueOne:'Un résultat utile',valueOneText:'Résolvez une tâche concrète et délimitée.',
     valueTwo:'Une comparaison vérifiable',valueTwoText:'Voyez ce qui progresse, et à quel coût.',
     valueThree:'Une capacité à conserver',valueThreeText:'Emportez l’outil, les preuves et l’historique.',
-    missionEyebrow:'VOTRE PREMIER ALPHA',missionTitle:'Deux catalogues.\nUne réponse fiable.',
-    missionIntro:'Trouvez les correspondances, les produits manquants et les valeurs contradictoires. Découvrez ensuite quelle méthode effectue le même travail exact avec moins d’effort.',
+    missionEyebrow:'FACULTATIF · EXEMPLE LOCAL COMPLET',missionTitle:'Deux catalogues.\nUne réponse fiable.',
+    missionIntro:'Explorez le cycle complet de sauvegarde, comparaison et réutilisation avec un petit exemple local. Trouvez correspondances, produits manquants et divergences, puis conservez un outil fonctionnel.',
     missionLabel:'LA MISSION',missionName:'Des catalogues clairs',
     missionSummary:'Rapprochez deux catalogues publics. Obtenez les données et une méthode réutilisable.',
     missionProgress:'Progression de la mission',stepAlpha:'Définir l’avantage',stepGym:'Comparer les méthodes',
@@ -107,6 +109,100 @@ const fr = {
     footerMotto:'POSSÉDEZ L’INSTITUTION. PRÉSERVEZ LA MISSION.',footerScope:'Une première capacité utile. Une ambition ouverte.',
     sourceGuide:'Source et guide de reproduction ↗',missionProtocol:'Protocole de mission SUCCESSOR ↗',disclaimer:'Prototype de recherche et avis'
 };
+Object.assign(fr, {
+    startNote:'Commencez gratuitement par une mission qui compte. L’exécution utilise votre exécuteur natif configuré ; les résultats réels exigent un examen réel.',
+    computerStart:'Découvrir ma prochaine capacité',
+    computerEyebrow:'COMPUTER USE · NIVEAU 3 → NIVEAU 4',
+    computerTitle:'Quelle capacité utile\ndevrait exister ensuite ?',
+    computerIntro:'Commencez par une opportunité qui compte. Explorez des stratégies concurrentes et une approche fondamentalement différente. Confiez un travail d’écran délimité, examinez le livrable et réutilisez les leçons à la tentative suivante.',
+    computerVision:'Construisez quelque chose à conserver.',
+    computerVisionText:'Une proposition d’implémentation. Une nouvelle piste de recherche. Un argument mathématique qui résiste à l’examen. La mission est un progrès utile ; modèles et méthodes peuvent évoluer avec le projet.',
+    computerStageOne:'Définir un travail utile',
+    computerStageOneText:'Fixez le résultat avant de choisir la méthode.',
+    computerStageThree:'Niveau 3 · Intelligence métastratégique',
+    computerStageThreeText:'Découvrez, testez, combinez et améliorez les stratégies elles-mêmes.',
+    computerStageFour:'Niveau 4 · Intelligence transformationnelle',
+    computerStageFourText:'Repérez une formulation inutilement restrictive. Testez un jeu fondamentalement différent en préservant le résultat utile.',
+    computerCurrentScope:'Computer Use relie raisonnement et travail visible à l’écran. L’exécuteur actuel utilise un navigateur jetable délimité ; exécution de code revue, outils de preuve, bureaux complets et règlement nécessitent leurs propres connexions.',
+    computerRunnerGuide:'Configurer l’exécuteur Computer Use ↗',
+    computerDesign:'01 · TROUVEZ UNE OPPORTUNITÉ QUI MÉRITE D’ÊTRE CONSTRUITE',
+    computerExample:'Choisissez votre opportunité',
+    computerExampleRelease:'Logiciel public · opportunité de performance utile',
+    computerExampleResearch:'Recherche de pointe · nouvelle approche testable',
+    computerExampleCustom:'Mon propre travail à l’écran',
+    computerProjectName:'Nommez la capacité à construire',
+    computerOutcome:'À quelle opportunité cette capacité répondra-t-elle ?',
+    computerAcceptance:'Que doit accomplir un livrable utile ?',
+    computerAcceptanceNote:'Conservez ce contrat d’acceptation pour comparer les stratégies. Un autre résultat commence une nouvelle comparaison.',
+    computerApproach:'Approche à confier d’abord',
+    computerBaseline:'Référence · méthode actuelle',
+    computerComposed:'Niveau 3 · stratégie combinée ou améliorée',
+    computerReframed:'Niveau 4 · autre formulation du problème',
+    computerModel:'Utilisez le modèle actuel qualifié par votre opérateur',
+    computerModelNote:'Sélectionnez le modèle et le conteneur immuable lors de l’exécution native. Aucune clé API n’appartient à cet espace.',
+    computerStrategy:'Quelles stratégies doivent rivaliser ? · une par ligne, 2–6',
+    computerCombination:'Comment combiner leurs meilleurs éléments ?',
+    computerReframe:'Quelle restriction inutile remettez-vous en question ?',
+    computerReframeNote:'Expliquez pourquoi l’alternative atteint toujours le résultat exigé. Une nouvelle formulation reste une hypothèse jusqu’à l’examen de son résultat.',
+    computerSurfaceTitle:'03 · Configuration d’exécution et contrôles avancés',
+    computerSurfaceNote:'L’exécution native actuelle utilise un espace Chromium jetable guidé par captures. Elle lit des sources publiques approuvées et crée des livrables visibles. Exécution de code, mesures de performance et vérification formelle exigent des outils qualifiés séparément ; les propositions restent à vérifier.',
+    computerBuildSurface:'Construire la surface à partir de ces sources',
+    computerHtml:'Avancé : surface de travail personnalisée · HTML facultatif',
+    computerUrls:'Sources publiques pour cette opportunité · une URL par ligne',
+    computerRights:'Droits sur les données',
+    computerLicense:'Licence ou permission',
+    computerActions:'Maximum d’actions',
+    computerSeconds:'Maximum de secondes',
+    computerReviewMinutes:'Temps alloué à l’examen · minutes',
+    computerPrepare:'Préparer ma mission de capacité',
+    computerPrepareNote:'La préparation est gratuite et n’appelle aucun modèle. Un exécuteur natif configuré et un compte fournisseur réalisent le travail. Mission et preuves retournées restent réunies dans votre projet.',
+    computerPrepared:'VOTRE MISSION DE CAPACITÉ · PRÊTE À EXÉCUTER',
+    computerDownload:'Transmettre la mission à mon exécuteur',
+    computerImport:'Rapporter le travail réalisé',
+    computerImportAria:'Importer un résultat Computer Use',
+    computerImportNote:'Importez computer-return.json depuis le dossier de sortie de l’exécuteur. L’import conserve un résultat historique. L’achèvement annoncé par le fournisseur reste une déclaration ; examinez les captures et le livrable réel avant de donner votre avis.',
+    computerReturned:'TENTATIVE HISTORIQUE · VOTRE EXAMEN',
+    computerReviewDecision:'Le résultat réel satisfait-il toutes les conditions d’acceptation ?',
+    computerReviewChoose:'Examinez, puis choisissez',
+    computerReviewAccepted:'Oui · résultat utile accepté',
+    computerReviewRejected:'Non · conserver la tentative infructueuse',
+    computerReviewNote:'Qu’avez-vous examiné, et que faut-il améliorer ensuite ?',
+    computerReviewActual:'Temps d’examen réel · minutes',
+    computerReviewSave:'Conserver mon avis avec cette tentative',
+    computerHistory:'UN PROJET · STRATÉGIES, RÉSULTATS ET LEÇONS',
+    computerSaveWorkspace:'Enregistrer mon espace complet',
+    computerSaveHistory:'Télécharger l’archive complète du projet',
+    computerRestoreAria:'Restaurer l’archive complète du projet',
+    computerHistoryNote:'Même identité de projet pour les catalogues et Computer Use. Vos avis sont des jugements consignés, sans certification indépendante, approbation de paiement ni preuve de capacité universelle.',
+    heroEyebrow:'LE PROJET PHARE · TROUVEZ VOTRE ALPHA. CONSTRUISEZ VOTRE SUCCESSOR Ω.',
+    heroLine1:'Trouvez votre',
+    heroLine2:'Alpha.',
+    heroLine3:'Construisez votre SUCCESSOR Ω.',
+    heroDescription:'Découvrez une opportunité de valeur. Construisez la capacité pour la réaliser. Améliorez la stratégie. Changez de jeu. Explorez logiciel, recherche et mathématiques avec les modèles de pointe et Computer Use, puis conservez ce qui mérite sa place.',
+    computerJourneyLink:'Voir le parcours de capacité',
+    firstAdvantage:'Lancer l’exemple de catalogues maintenu',
+    bringCatalogs:'Utiliser les outils de catalogues avec mes données',
+    secondaryExampleNote:'Exemple maintenu · outils locaux de catalogues',
+    computerExampleMath:'Mathématiques · exploration rigoureuse et preuve',
+    computerValueHypothesis:'Qui en bénéficie, et pourquoi serait-ce utile ?',
+    computerValueNote:'Une hypothèse de valeur à confronter à l’utilité réelle, aux coûts complets et aux alternatives. Préparer une mission ne démontre ni revenu ni économies.',
+    computerStrategyStep:'02 · Améliorez la stratégie. Contestez le cadre.',
+    computerStrategyHelp:'Les approches initiales sont modifiables. Demandez au modèle configuré de découvrir, tester, combiner et affiner les alternatives, puis d’expliquer ce qui pourrait changer le jeu en préservant le résultat utile.',
+    computerSourcesHelp:'Utilisez du contenu public non personnel avec les droits nécessaires. L’exécuteur configuré lit les URL exactes approuvées ; il ne se connecte pas à des comptes privés.',
+    computerImproveNext:'Améliorer la prochaine stratégie',
+    computerReframeNext:'Tester un autre jeu',
+    missionEyebrow:'SECONDAIRE · EXEMPLE LOCAL MAINTENU',
+    answerFree:'Développez gratuitement une mission utile, comparez les stratégies proposées et sauvegardez votre espace. L’exécuteur natif configuré réalise le travail Computer Use avec son fournisseur de modèles. Un exemple de catalogues maintenu reste disponible comme outil local.',
+    answerAlpha:'Alpha est l’avantage utile démontrable pour une opportunité précise. Proposition, code généré ou argument mathématique restent candidats : testez le résultat réel, examinez les preuves et les coûts complets avant de revendiquer la valeur.',
+    footerScope:'Des opportunités utiles. De meilleures stratégies. De nouveaux jeux à explorer.',
+    computerExampleOpportunity:'Découvrir une occasion de travail numérique',
+    computerExampleSoftware:'Logiciel public · opportunité de performance utile',
+    computerExampleMathematics:'Mathématiques · exploration rigoureuse et preuve',
+    computerPresetNote:'Adaptez ces missions à votre problème et à vos sources. Propositions, preuves candidates et hypothèses de marché doivent être examinées et testées avant de devenir des résultats établis.',
+    computerContext:'Dossier de départ facultatif · problème, capacités et contraintes',
+    computerContextNote:'Ajoutez les faits connus, hypothèses, contraintes et ressources disponibles. Le texte sera visible dans la surface de travail et conservé avec cette tentative ; une hypothèse ne devient pas une preuve externe.'
+});
+
 const ariaEn = {};
 for (const el of document.querySelectorAll('[data-i18n-aria]')) ariaEn[el.dataset.i18nAria] = el.getAttribute('aria-label');
 const altEn = {};
@@ -123,7 +219,7 @@ function node(tag, parent, text, className) {
 }
 function translate() {
     document.documentElement.lang = language; document.documentElement.dataset.language = language;
-    document.title = say('Find your advantage · SUCCESSOR Ω','Trouvez votre avantage · SUCCESSOR Ω');
+    document.title = say('Find your Alpha. Build your SUCCESSOR Ω.','Trouvez votre Alpha. Construisez votre SUCCESSOR Ω.');
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = language === 'fr' ? fr[el.dataset.i18n] || en[el.dataset.i18n] : en[el.dataset.i18n]; });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', language === 'fr' ? fr[el.dataset.i18nAria] || ariaEn[el.dataset.i18nAria] : ariaEn[el.dataset.i18nAria]));
     document.querySelectorAll('[data-i18n-alt]').forEach(el => el.setAttribute('alt', language === 'fr' ? fr[el.dataset.i18nAlt] : altEn[el.dataset.i18nAlt]));
@@ -136,7 +232,7 @@ function translate() {
     if (lastStatus) $('status').textContent = say(...lastStatus);
     if (lastError && !$('error').hidden) $('error').textContent = errorMessage(lastError);
     renderValue();
-    renderLearning();
+    renderLearning(); renderComputer();
     if (!$('key-mapping').hidden) updateMappingSummary();
 }
 function status(english, french) { lastStatus = [english, french]; $('status').textContent = say(english, french); }
@@ -151,6 +247,17 @@ function renderNotice() {
 }
 function errorMessage(error) {
     const message = String(error?.message || error);
+    const computerMessages = {
+        COMPUTER_CUSTOM_SURFACE_CONTEXT:['The starting brief differs from this custom work surface. Rebuild the work surface from these sources or restore its matching brief.','Le dossier de départ diffère de cette surface de travail personnalisée. Reconstruisez la surface à partir de ces sources ou rétablissez le dossier correspondant.'],
+        COMPUTER_REVIEW_INCOMPLETE:['To accept useful work, inspect the deliverable, confirm every criterion and stay within the agreed review allowance. Otherwise preserve it as needing work.','Pour accepter un travail utile, examinez le livrable, confirmez chaque critère et respectez le temps d’examen convenu. Sinon, conservez-le comme travail à améliorer.'],
+        COMPUTER_REVIEW:['Enter a review note, whole minutes within the agreed allowance, and a decision after inspecting each criterion.','Saisissez une note, un nombre entier de minutes dans le temps convenu et un avis après l’examen de chaque critère.'],
+        COMPUTER_STRATEGY:['Enter an outcome and value hypothesis, 1–6 acceptance conditions and 2–6 strategy hypotheses, one per line (up to 500 characters each), plus a combination and a reframing.','Saisissez un résultat et une hypothèse de valeur, 1 à 6 conditions et 2 à 6 hypothèses, une par ligne (500 caractères maximum chacune), puis une combinaison et une reformulation.'],
+        COMPUTER_TASK:['Check the work surface, input rights and limits: 1–100 actions, 10–600 seconds and 1–120 review minutes.','Vérifiez la surface, les droits et les limites : 1 à 100 actions, 10 à 600 secondes et 1 à 120 minutes d’examen.'],
+        COMPUTER_PROJECT_CAPACITY:['The complete native mission, including project history, must fit within 2 MB. Save your complete archive; no history has been removed.','La mission native complète, avec l’historique du projet, doit tenir dans 2 Mo. Enregistrez l’archive complète ; aucun historique n’a été supprimé.'],
+        COMPUTER_HISTORY:['This project can retain up to eight Computer Use attempts. Save the complete workspace before starting a separate project.','Ce projet conserve jusqu’à huit tentatives Computer Use. Enregistrez l’espace complet avant de commencer un autre projet.'],
+        COMPUTER_RESULT_ALREADY_RETAINED:['This attempt already has a different result. Prepare a fresh attempt so both outcomes remain in the history.','Cette tentative possède déjà un autre résultat. Préparez une nouvelle tentative pour conserver les deux résultats.']
+    };
+    if (computerMessages[message]) return say(...computerMessages[message]);
     const localized = {
         'CSV needs a header row.':'Le CSV doit contenir une ligne d’en-tête.',
         'CSV headers must be nonempty and unique.':'Les en-têtes CSV doivent être renseignés et uniques.',
@@ -292,7 +399,8 @@ async function run(m, origin = m === sample ? 'synthetic' : 'public') {
         mission = m; result = next; artifacts = nextArtifacts; dossier = nextDossier;
         $('project-name').value = dossier.name;
         $('run-progress').style.width = '100%';
-        nativeFormForMission(origin); renderResult(); renderHistory(); renderLearning(); go(2);
+        $('computer-project-name').value = dossier.name;
+        nativeFormForMission(origin); renderResult(); renderHistory(); renderLearning(); renderComputer(); go(2);
         status('Your mission is ready. Download the catalog or keep the capability.','Votre mission est prête. Téléchargez le catalogue ou conservez la capacité.');
     } catch (error) {
         if (token !== runToken) return;
@@ -399,16 +507,18 @@ function fillMission(m) {
 function restoreSerialized(serialized) {
     const restored = project.inspectProject(serialized);
     learningRecords = []; nativeContinuityRaw = null;
+    computerHistoryRaw = null; computerHistoryChecked = null; computerHandoffRaw = null; computerChecked = null; computerSelectedIndex = -1;
     clearCurrent(); dossier = restored; $('project-name').value = restored.name;
     notice = {type:'restored',name:restored.name,cycles:restored.cycles.length};
     if (restored.cycles.length) fillMission(restored.cycles.at(-1).mission);
     else setMode('custom');
-    go(0);
+    go(0,Boolean(restored.cycles.length));
     $('restored-note').textContent = say(
         `“${restored.name}” restored with ${restored.cycles.length} historical ${restored.cycles.length === 1 ? 'cycle' : 'cycles'}. Inputs are ready. Run again for fresh local evidence; imported timings and claims are not new observations.`,
         `« ${restored.name} » restauré avec ${restored.cycles.length} ${restored.cycles.length === 1 ? 'cycle historique' : 'cycles historiques'}. Les données sont prêtes. Relancez pour de nouvelles preuves locales ; temps et déclarations importés restent historiques.`
     );
-    renderNotice(); renderHistory();
+    $('computer-project-name').value = restored.name;
+    renderNotice(); renderHistory(); renderComputer();
     status('Project restored. Run the inputs again for current evidence.','Projet restauré. Relancez les données pour obtenir des preuves actuelles.');
 }
 $('error-setup').addEventListener('click',() => { clearError(); go(0); });
@@ -467,7 +577,7 @@ $('next-cycle').addEventListener('click',() => {
 $('download-workspace').addEventListener('click',() => safeDownload(async () => download('my-successor-workspace.html',await exportPortable(dossier),'text/html;charset=utf-8')));
 $('download-tool').addEventListener('click',() => safeDownload(() => download('successor-catalog-capability.mjs',project.buildCapability(mission,result),'text/javascript;charset=utf-8')));
 $('download-report').addEventListener('click',() => safeDownload(() => download('successor-alpha-evidence.html',project.buildReport(mission,result,{name:dossier.name,goal:dossier.goal,language}),'text/html;charset=utf-8')));
-$('download-project').addEventListener('click',() => safeDownload(() => download('my-successor-project.json',project.serializeProject(dossier),'application/json')));
+$('download-project').addEventListener('click',() => safeDownload(() => download('my-successor-project.json',computerHistoryRaw ? serializeLearningArchive() : project.serializeProject(dossier),'application/json')));
 for (const [id,route] of [['handoff-usdc','USDC'],['handoff-agialpha','AGIALPHA']]) $(id).addEventListener('click',() => safeDownload(() => download(`successor-${route.toLowerCase()}-unfunded-draft.json`,JSON.stringify(project.prepareHandoff(dossier,route),null,2),'application/json')));
 function renderValue() {
     $('value-result').hidden = !valueEstimate;
@@ -513,7 +623,9 @@ $('restore-project').addEventListener('change',async () => {
         if (file.size > 2000000) throw Error(say('Choose a project JSON file no larger than 2 MB.','Choisissez un fichier JSON de projet de 2 Mo au maximum.'));
         const text = new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
         if (token !== importToken || revision !== expected) throw Error(say('Inputs changed while the project was being read. Reopen the file.','Les données ont changé pendant la lecture du projet. Rouvrez le fichier.'));
-        await restoreSerialized(text);
+        const schema=transport.parseBounded(text)?.schema;
+        if(['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(schema))await restoreLearning(text,expected,token);
+        else await restoreSerialized(text);
     } catch (error) { showError(error); }
     finally { $('restore-project').value = ''; }
 });
@@ -669,7 +781,11 @@ function renderLearningHistory() {
 function renderLearning() { renderResearch(); renderResolution(); renderNative(); renderLearningHistory(); }
 function serializeLearningArchive() {
     if (!dossier) return '{}';
-    return transport.canonical({schema:'successor-alpha-learning-archive/v1',project:project.inspectProject(dossier),records:learningRecords,nativeHandoffRaw,nativeContinuityRaw});
+    const archive = {schema:'successor-alpha-learning-archive/v1',project:project.inspectProject(dossier),records:learningRecords,nativeHandoffRaw,nativeContinuityRaw};
+    if (computerHistoryRaw) { archive.schema='successor-alpha-learning-archive/v2'; archive.computerHistoryRaw=computerHistoryRaw; }
+    const raw=transport.canonical(archive);
+    if(new TextEncoder().encode(raw).length>2000000)throw Error(say('The complete archive exceeds 2 MB. Keep the existing workspace; history will not be dropped to reduce its size.','L’archive complète dépasse 2 Mo. Conservez l’espace existant ; aucun historique ne sera supprimé pour réduire sa taille.'));
+    return raw;
 }
 function projectContains(current, historical) {
     return current.id === historical.id && current.createdAt === historical.createdAt && current.goal === historical.goal
@@ -682,7 +798,9 @@ function projectContains(current, historical) {
 async function validateLearningArchive(raw) {
     const archive = transport.parseBounded(raw);
     const keys = ['schema','project','records','nativeHandoffRaw','nativeContinuityRaw'];
-    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || archive.schema !== 'successor-alpha-learning-archive/v1'
+    const computerArchive = archive?.schema === 'successor-alpha-learning-archive/v2';
+    if (computerArchive) keys.push('computerHistoryRaw');
+    if (!archive || Object.keys(archive).sort().join('|') !== keys.sort().join('|') || !['successor-alpha-learning-archive/v1','successor-alpha-learning-archive/v2'].includes(archive.schema)
         || !Array.isArray(archive.records) || archive.records.length > 6) throw Error(say('Unsupported learning archive.','Archive d’apprentissage non prise en charge.'));
     const checkedProject = project.inspectProject(archive.project), seen = new Set();
     for (const entry of archive.records) {
@@ -700,10 +818,16 @@ async function validateLearningArchive(raw) {
         const checked = await continuity.inspectContinuity(archive.nativeContinuityRaw);
         if (!projectContains(checkedProject,checked.project)) throw Error('LEARNING_NATIVE_HISTORY_BINDING');
     }
-    return {...archive,project:checkedProject};
+    let checkedComputer = null;
+    if (computerArchive) {
+        checkedComputer = await computer.inspectComputerHistory(archive.computerHistoryRaw);
+        if (!computer.projectContains(checkedProject,checkedComputer.project)) throw Error('COMPUTER_ARCHIVE_PROJECT_BINDING');
+    }
+    return {...archive,project:checkedProject,checkedComputer};
 }
 async function restoreLearning(raw, expectedRevision = revision, expectedImportToken = importToken) {
     const priorProject = dossier ? project.serializeProject(dossier) : null;
+    const priorComputerForm=computerFormRevision, priorComputerHistory=computerHistoryRaw;
     status('Checking the complete learning archive locally…','Vérification locale de l’archive d’apprentissage complète…');
     const checked = await validateLearningArchive(raw);
     let checkedReturn = null, returnRaw = null;
@@ -712,15 +836,21 @@ async function restoreLearning(raw, expectedRevision = revision, expectedImportT
         const entry = history.returns.find(item=>item.handoffRaw===checked.nativeHandoffRaw);
         if (entry) { returnRaw=entry.returnRaw; checkedReturn=await continuity.inspectNativeReturn(checked.nativeHandoffRaw,returnRaw); }
     }
+    let checkedComputerReturn=null;
+    const lastComputer=checked.checkedComputer?.records.at(-1);
+    if(lastComputer?.returnRaw)checkedComputerReturn=await computer.inspectComputerReturn(lastComputer.handoffRaw,lastComputer.returnRaw);
     if (revision !== expectedRevision || importToken !== expectedImportToken
+        || computerFormRevision !== priorComputerForm || computerHistoryRaw !== priorComputerHistory
         || (dossier ? project.serializeProject(dossier) : null) !== priorProject) {
         throw Error(say('Inputs or project changed during archive verification. Reopen the archive.','Les données ou le projet ont changé pendant la vérification. Rouvrez l’archive.'));
     }
     restoreSerialized(project.serializeProject(checked.project));
     learningRecords=checked.records; nativeContinuityRaw=checked.nativeContinuityRaw;
+    computerHistoryRaw=checked.computerHistoryRaw || null; computerHistoryChecked=checked.checkedComputer;
+    if (computerHistoryChecked?.records.length) applyComputerRecord(computerHistoryChecked.records.length-1,checkedComputerReturn);
     nativeHandoffRaw=checked.nativeHandoffRaw; nativeChecked=checkedReturn; nativeReturnRaw=returnRaw;
     if(nativeHandoffRaw){const h=transport.parseBounded(nativeHandoffRaw),spec=transport.parseBounded(h.specRaw);$('native-name').value=spec.name;$('native-owner').value=spec.owner;$('native-rights').value=spec.rights.dataClass;$('native-source').value=spec.rights.source;$('native-license').value=spec.rights.license;$('native-review-minutes').value=String(spec.reviewMinutes);}
-    renderLearning(); $('learning-history-panel').open=true;
+    renderLearning(); renderComputer(); $('learning-history-panel').open=true;
     status('Learning archive restored and rechecked. Records remain historical; no authority was imported.','Archive d’apprentissage restaurée et contrôlée. Les éléments restent historiques ; aucune autorité n’a été importée.');
 }
 
@@ -804,11 +934,267 @@ $('native-return-input').addEventListener('change',async()=>{
     catch(error){localPanelError('native-error',error);}finally{$('native-return-input').value='';}
 });
 $('download-learning').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
-for(const id of ['restore-learning','restore-learning-top'])$(id).addEventListener('change',async()=>{
+for(const id of ['restore-learning','restore-learning-top','restore-computer-history'])$(id).addEventListener('change',async()=>{
     const file=$(id).files[0];if(!file)return;const expected=revision, token=++importToken;
     try{if(file.size>2000000)throw Error(say('Learning archives are limited to 2 MB.','Les archives d’apprentissage sont limitées à 2 Mo.'));const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(token!==importToken||revision!==expected)throw Error('LEARNING_IMPORT_CHANGED');await restoreLearning(raw,expected,token);}
     catch(error){showError(error);}finally{$(id).value='';}
 });
+
+function computerContext() {
+    return {form:computerFormRevision,revision,project:dossier ? project.serializeProject(dossier) : null,history:computerHistoryRaw};
+}
+function computerContextCurrent(expected) {
+    return expected.form === computerFormRevision && expected.revision === revision
+        && expected.project === (dossier ? project.serializeProject(dossier) : null) && expected.history === computerHistoryRaw;
+}
+function computerUnchanged(expected) {
+    if (!computerContextCurrent(expected)) throw Error(say('Your mission or project changed during checking. Try again with the current inputs.','La mission ou le projet a changé pendant la vérification. Réessayez avec les données actuelles.'));
+}
+function computerLines(id) { return $(id).value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean); }
+function setComputerBusy(value) {
+    computerBusy=value;
+    $('computer-prepare').disabled=value;
+    $('computer-review-save').disabled=value;
+}
+function computerBriefSurface() { return computerWorkSurface(); }
+function computerWorkSurface(existingHtml=null) {
+    const context=$('computer-context').value;
+    if(existingHtml){
+        if(computer.readWorkSurfaceContext(existingHtml)===context)return existingHtml;
+        if(computerSurfaceCustomized)throw Error('COMPUTER_CUSTOM_SURFACE_CONTEXT');
+    }
+    return computer.buildWorkSurface({goal:$('computer-outcome').value.trim(),valueHypothesis:$('computer-value-hypothesis').value.trim(),allowedUrls:computerLines('computer-urls'),context});
+}
+function computerPreset(kind) {
+    if(kind==='math')kind='mathematics';
+    $('computer-example').value=kind;
+    if (kind === 'custom') {
+        $('computer-outcome').value='';$('computer-value-hypothesis').value='';$('computer-context').value='';$('computer-acceptance').value='';
+        $('computer-strategy').value=say('Develop a direct solution using the strongest available evidence.\nChallenge the most expensive assumption and investigate an alternative approach.','Développer une solution directe à partir des meilleures preuves disponibles.\nContester l’hypothèse la plus coûteuse et explorer une autre approche.');
+        $('computer-combination').value=say('Combine the most promising parts, with a test that could show the combination is worse.','Combiner les éléments prometteurs avec un test susceptible de montrer que la combinaison est moins bonne.');
+        $('computer-reframe').value=say('Ask whether a different representation, objective or workflow could achieve the original useful outcome with fewer unnecessary constraints.','Chercher si une autre représentation, un autre objectif ou un autre processus peut atteindre le résultat utile initial avec moins de contraintes inutiles.');
+        $('computer-urls').value='';$('computer-html').value='';$('computer-license').value='';
+        computerSurfaceCustomized=false;computerFormRevision+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;renderComputer();return;
+    }
+    const source='https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/70dac8e5ce739978f5cd96d0fc190b6ebfcdf8d7/alpha_factory_v1/core/runtime/successor/computer.py';
+    const choices={
+        opportunity:{
+            value:say('A repeatable digital-work offer could be valuable if real beneficiaries accept the deliverable at a total delivery and review cost below its useful value. Demand and revenue remain hypotheses until tested.','Une offre de travail numérique répétable pourrait être utile si de vrais bénéficiaires acceptent le livrable pour un coût total inférieur à sa valeur utile. Demande et revenu restent hypothétiques avant essai.'),
+            goal:say('Choose one valuable digital-work opportunity to test: identify a public, unmet need and design a bounded deliverable that could earn its execution and review costs.','Choisir une occasion de travail numérique à tester : repérer un besoin public mal servi et concevoir un livrable délimité pouvant couvrir ses coûts d’exécution et de revue.'),
+            criteria:say('Define the beneficiary, current bottleneck and deliverable; cite the supplied public evidence for each factual claim.\nCompare at least three approaches, including the current method, with explicit delivery and review costs or stated unknowns.\nRecommend one small demand-and-value experiment with a stop rule; distinguish hypothetical revenue from observed demand.\nWithout source material, return an evidence-gathering plan and missing inputs instead of a market conclusion.',
+                'Définir le bénéficiaire, l’obstacle actuel et le livrable ; citer les sources publiques fournies pour chaque fait.\nComparer au moins trois approches, dont la méthode actuelle, avec coûts de livraison et de revue explicites ou inconnues déclarées.\nRecommander une petite expérience de demande et de valeur avec règle d’arrêt ; distinguer revenu hypothétique et demande observée.\nSans documents sources, rendre un plan de collecte et les données manquantes plutôt qu’une conclusion de marché.'),
+            hypotheses:say('Start from public requests and trace the cost of completing the work with the current method.\nStart from a reusable capability and search the supplied public material for repeated unmet needs.\nStart from a buyer’s decision and identify the smallest deliverable that changes that decision.',
+                'Partir des demandes publiques et retracer le coût du travail avec la méthode actuelle.\nPartir d’une capacité réutilisable et chercher les besoins répétés dans les documents publics fournis.\nPartir de la décision d’un acheteur et chercher le plus petit livrable qui la change.'),
+            combination:say('Combine evidence of repeated need with a reusable method and the smallest acceptance test. Rank strategies by expected useful value after execution, correction and review, stating uncertainty.','Combiner les preuves d’un besoin répété, une méthode réutilisable et le plus petit test d’acceptation. Classer les stratégies selon leur valeur utile attendue après exécution, correction et revue, en précisant l’incertitude.'),
+            reframing:say('Challenge the assumption that the opportunity requires selling more hours of the original task. Test whether a reusable public tool, a different workflow or removing the task itself achieves the beneficiary’s same useful outcome.','Remettre en question la vente d’heures supplémentaires sur la tâche initiale. Tester si un outil public réutilisable, un autre parcours ou la suppression de la tâche atteint le même résultat utile pour le bénéficiaire.'),
+            urls:[],license:say('Operator-authored digital-work planning brief, Apache-2.0. No observed customer demand is supplied; establish rights for added public material.','Dossier de planification rédigé par l’opérateur, Apache-2.0. Aucune demande client observée fournie ; établir les droits des sources ajoutées.')
+        },
+        software:{
+            goal:say('Discover one implementable way to reduce redundant work, latency or operating cost in the supplied public Computer Use runtime while preserving its task limits, accurate accounting and stop controls. Deliver a source-linked patch proposal and a reproducible validation plan.','Découvrir une façon réalisable de réduire le travail redondant, la latence ou le coût du runtime public Computer Use fourni, en préservant limites, comptabilité exacte et arrêt. Livrer une proposition de correctif sourcée et un plan de validation reproductible.'),
+            value:say('Developers operating repeated screen-work missions could benefit from less repeated effort and lower cost per useful accepted result. The benefit is a hypothesis until representative execution, review effort and full costs are measured.','Les développeurs de missions répétées à l’écran pourraient réduire l’effort répété et le coût par résultat utile accepté. Ce bénéfice reste une hypothèse avant la mesure des exécutions représentatives, de la revue et des coûts complets.'),
+            criteria:say('Identify the exact source locations and produce an implementable patch or a precise reason to keep the current design.\nPreserve task limits, stop behavior, usage accounting and the useful output; state risks and a rollback.\nProvide a reproducible before-and-after test plan; do not invent benchmark results, actual savings or executed tests.','Identifier les sources exactes et produire un correctif réalisable ou une raison précise de garder la conception actuelle.\nPréserver limites, arrêt, comptabilité et sortie utile ; préciser risques et retour arrière.\nFournir un plan reproductible avant-après ; ne pas inventer de mesures, d’économies réelles ou de tests exécutés.'),
+            hypotheses:say('Trace the screenshot/advisor/action loop and identify repeated transformations or work that can be safely avoided.\nRedesign the workflow around the required final artifact and investigate whether fewer interaction steps preserve the same outcome.','Tracer la boucle capture/conseiller/action et trouver les transformations ou travaux répétés évitables sans risque.\nReconcevoir le processus autour du livrable exigé et examiner si moins d’interactions préservent le même résultat.'),
+            combination:say('Combine source-level elimination of redundant work with a simpler artifact-centered workflow. Compare against the unchanged baseline using useful results, review effort, failures and full operating cost.','Combiner l’élimination des tâches redondantes dans le code avec un processus plus simple centré sur le livrable. Comparer à la référence inchangée : résultats utiles, effort de revue, échecs et coût complet.'),
+            reframing:say('Challenge the assumption that every task needs the same sequence of screen interactions. Separate indispensable screen work from reusable preparation or a different task representation, while preserving the required deliverable and execution boundaries.','Contester l’idée que toute tâche nécessite la même séquence d’interactions. Séparer le travail d’écran indispensable de la préparation réutilisable ou d’une autre représentation, en préservant livrable et limites d’exécution.'),
+            urls:[source],license:'Apache-2.0 public source at the pinned AGI Alpha release. Establish rights separately for added material.'
+        },
+        research:{
+            goal:say('Develop a testable new approach to reliable long-horizon Computer Use. Identify a consequential failure mode in the supplied public material, compare credible approaches and produce a concrete design plus an experiment that could falsify its claimed advantage.','Développer une nouvelle approche testable du Computer Use fiable à long horizon. Identifier un échec important dans les sources publiques, comparer des approches crédibles et produire une conception concrète avec une expérience pouvant réfuter son avantage.'),
+            value:say('A reliable improvement could make a difficult class of public screen-work tasks economical or practical. Novelty, reliability and economic value remain hypotheses until compared with prior work and tested on representative tasks.','Une amélioration fiable pourrait rendre praticables ou économiques des tâches difficiles sur données publiques. Nouveauté, fiabilité et valeur économique restent hypothétiques avant comparaison aux travaux existants et essais représentatifs.'),
+            criteria:say('State a precise failure mode and trace important claims to the supplied sources; label missing evidence.\nDeliver a concrete mechanism, credible alternatives and an experiment with failure criteria, costs and review effort.\nDistinguish new hypotheses from established results; do not claim novel discovery or measured superiority without verification.','Définir un échec précis et sourcer les affirmations importantes ; signaler les preuves manquantes.\nLivrer un mécanisme concret, des alternatives crédibles et une expérience avec critères d’échec, coûts et effort de revue.\nDistinguer hypothèses et résultats établis ; ne pas revendiquer de découverte nouvelle ou de supériorité mesurée sans vérification.'),
+            hypotheses:say('Improve planning and error recovery within the existing screenshot/action loop.\nChange the task representation so a reusable intermediate artifact replaces repeated long interaction sequences.','Améliorer planification et récupération dans la boucle capture/action existante.\nChanger la représentation afin qu’un artefact intermédiaire réutilisable remplace de longues séquences répétées.'),
+            combination:say('Combine bounded execution with reusable intermediate artifacts and explicit failure recovery. Propose a controlled comparison that can reveal when the combined approach adds cost without improving usefulness.','Combiner exécution délimitée, artefacts intermédiaires réutilisables et récupération explicite. Proposer une comparaison contrôlée pouvant révéler un coût accru sans meilleure utilité.'),
+            reframing:say('Question whether the task should be solved as one long autonomous interaction. Investigate a different decomposition, interface or artifact that changes the difficulty while preserving the user’s actual outcome.','Remettre en question la résolution par une longue interaction autonome. Examiner une autre décomposition, interface ou artefact qui change la difficulté tout en préservant le résultat réel de l’utilisateur.'),
+            urls:['https://developers.openai.com/api/docs/guides/tools-computer-use'],license:say('Public documentation for source-grounded analysis; preserve attribution and verify permission for any redistribution.','Documentation publique pour analyse sourcée ; préserver l’attribution et vérifier les droits avant redistribution.')
+        },
+        mathematics:{
+            goal:say('Investigate an adaptive portfolio of theorem-proving strategies: under what allocation assumptions can it preserve refutation completeness, and what useful finite-budget guarantee or counterexample can be established? Develop a precise statement, competing proof routes and a checkable candidate argument; identify prior work and unresolved gaps.','Étudier un portefeuille adaptatif de stratégies de preuve : sous quelles hypothèses d’allocation conserve-t-il la complétude de réfutation, et quelle garantie utile à budget fini ou quel contre-exemple établir ? Formuler précisément, comparer les pistes, produire un argument vérifiable et préciser travaux antérieurs et lacunes.'),
+            value:say('A valid mathematical result could guide how limited compute is allocated across competing reasoning strategies. Its originality, correctness and practical relevance require literature review, independent scrutiny and appropriate proof checking.','Un résultat valide pourrait guider l’allocation de calcul limité entre stratégies de raisonnement. Originalité, exactitude et pertinence pratique exigent revue de littérature, examen indépendant et vérification de preuve adaptée.'),
+            criteria:say('State definitions, assumptions and the exact theorem or counterexample; distinguish finite-budget guarantees from asymptotic completeness.\nProvide a checkable derivation, formalization outline or explicit unresolved gap, with alternatives and relevant prior work.\nNever label a conjecture solved, a proof checked or a result novel without the corresponding verification and evidence.','Énoncer définitions, hypothèses et théorème ou contre-exemple exact ; distinguer budget fini et complétude asymptotique.\nFournir une dérivation vérifiable, une formalisation ou une lacune explicite, avec alternatives et travaux pertinents.\nNe jamais annoncer conjecture résolue, preuve vérifiée ou nouveauté sans les vérifications et preuves correspondantes.'),
+            hypotheses:say('Seek a direct completeness proof under an explicit fair resource-allocation rule, then examine finite-budget limitations.\nConstruct adversarial allocation schedules and counterexamples, then search for a weaker theorem with useful assumptions.','Chercher une preuve directe sous une règle d’allocation équitable explicite, puis examiner les limites à budget fini.\nConstruire des allocations adverses et contre-exemples, puis chercher un théorème plus faible sous des hypothèses utiles.'),
+            combination:say('Use counterexamples to refine the assumptions of a constructive proof. Present a candidate theorem and a verification plan that tests the fragile steps rather than hiding them.','Utiliser les contre-exemples pour affiner les hypothèses d’une preuve constructive. Présenter un théorème candidat et un plan de vérification ciblant les étapes fragiles.'),
+            reframing:say('Challenge an unnecessarily strong universal guarantee. Seek the strongest useful statement for a precisely defined task class or resource model, and explicitly explain how it still serves the original compute-allocation objective.','Contester une garantie universelle inutilement forte. Chercher l’énoncé utile le plus fort pour une classe ou un modèle de ressources précis, en expliquant comment il sert toujours l’objectif initial d’allocation.'),
+            urls:[],license:say('Operator-authored research question. Add only public or licensed non-personal mathematical sources and establish their permitted use.','Question de recherche rédigée par l’opérateur. Ajouter uniquement des sources publiques ou autorisées non personnelles, avec droits établis.')
+        }
+    };
+    const contexts={
+        opportunity:say('Starting capability: inspect public web material, compare evidence and save a written deliverable with a Computer Use runner. No existing customers, demand or revenue is assumed.\nCompare three proposed offers: a cited public product-decision brief; a reproduction and correction plan for a public software issue; a research-gap and experiment brief.\nChoose one first experiment that fits the action, runtime and review limits below. Deliver its beneficiary hypothesis, exact sample deliverable, demand evidence to gather and a stop rule. Do not contact anyone or spend funds.',
+            'Capacité de départ : examiner des documents web publics, comparer les preuves et enregistrer un livrable écrit avec un exécuteur Computer Use. Aucun client, demande ou revenu existant n’est présumé.\nComparer trois offres proposées : une note de décision sur un produit public, sourcée ; un plan de reproduction et correction d’un problème logiciel public ; une note de lacune et expérience de recherche.\nChoisir une première expérience respectant les limites d’actions, de durée et de revue ci-dessous. Livrer le bénéficiaire hypothétique, le livrable témoin exact, les preuves de demande à recueillir et une règle d’arrêt. Ne contacter personne et ne rien dépenser.'),
+        mathematics:say('Add the exact mathematical statement, definitions, source, known partial results and why this question matters. Choose the next lemma or counterexample test that fits this attempt. Until these inputs exist, design the investigation protocol rather than claim progress on an unspecified problem.',
+            'Ajouter l’énoncé mathématique exact, les définitions, la source, les résultats partiels connus et l’utilité de la question. Choisir le prochain lemme ou test de contre-exemple adapté à cette tentative. Sans ces données, concevoir le protocole d’enquête plutôt que prétendre avancer sur un problème non précisé.'),
+        software:say('The pinned public Computer Use runtime source is listed below. No measured bottleneck or speedup is assumed. Investigate an implementable opportunity and record the tests still required. This browser runner can inspect approved pages and write a proposal; executing code and measuring performance require a separately qualified route.',
+            'La source publique figée du runtime Computer Use est indiquée ci-dessous. Aucun obstacle mesuré ni accélération n’est présumé. Examiner une amélioration réalisable et les tests requis. Le navigateur examine les sources et écrit une proposition ; exécuter le code et mesurer les performances exige un parcours qualifié séparément.'),
+        research:say('Add the exact public papers, research question, conflicting observations and available experimental resources. This attempt should produce one falsifiable experiment design. Running that experiment and validating a discovery are later tasks requiring their own material and acceptance.',
+            'Ajouter les articles publics exacts, la question de recherche, les observations contradictoires et les ressources expérimentales disponibles. Cette tentative doit produire un protocole expérimental réfutable. Exécuter l’expérience et valider une découverte sont des tâches suivantes avec leurs données et leur acceptation propres.'),
+    };
+    const preset=choices[kind] || choices.software;
+    $('computer-context').value=contexts[kind] || '';
+    if(!dossier)$('computer-project-name').value=kind==='opportunity'?say('Digital work opportunity','Opportunité de travail numérique'):kind==='mathematics'?say('Mathematical strategy research','Recherche de stratégies mathématiques'):kind==='research'?say('Reliable Computer Use research','Recherche Computer Use fiable'):say('Computer Use performance capability','Capacité de performance Computer Use');
+    $('computer-outcome').value=preset.goal;$('computer-value-hypothesis').value=preset.value;$('computer-acceptance').value=preset.criteria;
+    $('computer-strategy').value=preset.hypotheses;$('computer-combination').value=preset.combination;$('computer-reframe').value=preset.reframing;
+    $('computer-license').value=preset.license;$('computer-urls').value=preset.urls.join('\n');$('computer-rights').value='public';
+    $('computer-html').value='';$('computer-approach').value='combine';computerSurfaceCustomized=false;
+    computerFormRevision+=1; computerHandoffRaw=null; computerChecked=null; computerSelectedIndex=-1;
+    renderComputer();
+}
+function computerApproachLabel(selected) {
+    return selected === 'baseline' ? say('Baseline','Référence') : selected === 'combine'
+        ? say('Level 3 · combined strategy','Niveau 3 · stratégie combinée') : say('Level 4 · reframed task','Niveau 4 · tâche reformulée');
+}
+function renderComputer() {
+    $('computer-prepared').hidden=!computerHandoffRaw;
+    $('computer-returned').hidden=!computerChecked;
+    $('computer-history-panel').hidden=!computerHistoryChecked?.records.length;
+    if (computerHandoffRaw) {
+        const h=transport.parseBounded(computerHandoffRaw);
+        $('computer-prepared-title').textContent=computerApproachLabel(h.strategy.selected);
+        $('computer-prepared-summary').textContent=h.strategy.originalGoal;
+        $('computer-commitment').textContent=say(`Project ${transport.parseBounded(h.projectRaw).id} · ${h.task.max_actions} actions · ${h.task.max_seconds} s · ${h.task.allowed_urls.length} exact public URLs`,
+            `Projet ${transport.parseBounded(h.projectRaw).id} · ${h.task.max_actions} actions · ${h.task.max_seconds} s · ${h.task.allowed_urls.length} URL publiques exactes`);
+    }
+    const record=computerHistoryChecked?.records[computerSelectedIndex];
+    if (computerChecked) {
+        const summary=computerChecked.summary;
+        $('computer-return-summary').textContent=say(`State: ${summary.state}. Model: ${summary.model}. ${summary.actions} reserved actions, ${summary.turns} turns, ${number(summary.elapsedMilliseconds)} ms including cleanup. Billing remains unknown. Browser import checks consistent bytes; signer trust is not verified here.`,
+            `État : ${summary.state}. Modèle : ${summary.model}. ${summary.actions} actions réservées, ${summary.turns} tours, ${number(summary.elapsedMilliseconds)} ms, nettoyage compris. Facturation inconnue. L’import vérifie la cohérence des données ; la confiance du signataire n’est pas vérifiée ici.`);
+        $('computer-deliverable').textContent=summary.observedText ?? say('No final observed page text was retained. Inspect the runner’s screenshots and interruption record.','Aucun texte final observé n’a été conservé. Examinez les captures et le relevé d’interruption de l’exécuteur.');
+        $('computer-review-form').hidden=Boolean(record?.review);
+    }
+    $('computer-history').replaceChildren();
+    const records=computerHistoryChecked?.records || [];
+    $('computer-history-count').textContent=say(`${records.length} attempts`,`${records.length} tentatives`);
+    for (const [index,entry] of records.entries()) {
+        const h=transport.parseBounded(entry.handoffRaw), returned=entry.returnRaw ? transport.parseBounded(entry.returnRaw) : null;
+        const item=node('li',$('computer-history'));
+        node('strong',item,`${index+1} · ${computerApproachLabel(h.strategy.selected)}`);
+        node('span',item,h.strategy.originalGoal);
+        if(h.strategy.valueHypothesis)node('small',item,say('Value hypothesis: ','Hypothèse de valeur : ')+h.strategy.valueHypothesis);
+        const review=entry.review;
+        node('small',item,review ? say(`Owner review: ${review.decision === 'useful' ? 'useful' : 'needs work'} · ${review.minutes} min · ${returned.receipt.actions_reserved} reserved actions. ${review.note}`,
+            `Avis du propriétaire : ${review.decision === 'useful' ? 'utile' : 'à améliorer'} · ${review.minutes} min · ${returned.receipt.actions_reserved} actions réservées. ${review.note}`)
+            : returned ? say(`Historical result: ${returned.receipt.state} · review required.`,`Résultat historique : ${returned.receipt.state} · examen requis.`)
+                : say('Prepared mission · no execution result imported.','Mission préparée · aucun résultat d’exécution importé.'));
+        const open=node('button',item,say('Open this attempt','Ouvrir cette tentative'),'text-button');open.type='button';
+        open.addEventListener('click',()=>selectComputerRecord(index).catch(error=>localPanelError('computer-error',error)));
+    }
+    if (records.length) {
+        const groups=new Map();
+        for (const entry of records) {
+            const h=transport.parseBounded(entry.handoffRaw), key=transport.canonical([h.strategy.originalGoal,h.strategy.valueHypothesis,h.strategy.successCriteria,h.sourceHash,h.task.html,h.task.allowed_urls,h.task.input_rights,h.task.license,h.task.max_turns,h.task.max_actions,h.task.max_seconds,h.task.review_minutes]);
+            const group=groups.get(key)||{total:0,useful:0,reviewed:0};group.total+=1;group.reviewed+=entry.review ? 1 : 0;group.useful+=entry.review?.decision==='useful' ? 1 : 0;groups.set(key,group);
+        }
+        const useful=records.filter(entry=>entry.review?.decision==='useful').length;
+        $('computer-comparison').textContent=say(`${groups.size} comparable scope(s) · ${useful} owner-accepted useful result(s). Compare actions, review effort and remaining uncertainty only with the same outcome, value hypothesis, work surface, sources, rights and limits. A changed framing earns its place through a useful result; this history does not declare an independently qualified winner.`,
+            `${groups.size} périmètre(s) comparable(s) · ${useful} résultat(s) utile(s) accepté(s) par le propriétaire. Comparez actions, effort d’examen et incertitudes uniquement avec les mêmes résultat, hypothèse de valeur, surface, sources, droits et limites. Une reformulation mérite sa place par un résultat utile ; cet historique ne déclare aucun gagnant qualifié indépendamment.`);
+    }
+}
+async function selectComputerRecord(index) {
+    if (computerBusy) return;
+    const entry=computerHistoryChecked?.records[index];if(!entry)return;
+    const expected=computerContext();setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const checked=entry.returnRaw ? await computer.inspectComputerReturn(entry.handoffRaw,entry.returnRaw) : null;
+        computerUnchanged(expected);applyComputerRecord(index,checked);
+    } finally {setComputerBusy(false);}
+}
+function applyComputerRecord(index,checked) {
+    const entry=computerHistoryChecked.records[index],h=transport.parseBounded(entry.handoffRaw);
+    computerSelectedIndex=index;computerHandoffRaw=entry.handoffRaw;computerChecked=checked;
+    $('computer-outcome').value=h.strategy.originalGoal;$('computer-value-hypothesis').value=h.strategy.valueHypothesis || '';computerSurfaceCustomized=true;$('computer-acceptance').value=h.strategy.successCriteria.join('\n');
+    $('computer-strategy').value=h.strategy.hypotheses.join('\n');$('computer-combination').value=h.strategy.combination;
+    $('computer-reframe').value=h.strategy.reframing;$('computer-approach').value=h.strategy.selected;
+    $('computer-html').value=h.task.html;$('computer-context').value=computer.readWorkSurfaceContext(h.task.html);$('computer-urls').value=h.task.allowed_urls.join('\n');$('computer-rights').value=h.task.input_rights;
+    $('computer-license').value=h.task.license;$('computer-actions').value=h.task.max_actions;$('computer-seconds').value=h.task.max_seconds;$('computer-review-minutes').value=h.task.review_minutes;
+    computerFormRevision+=1;prepareComputerReview(h,entry.review);renderComputer();
+}
+function prepareComputerReview(handoff,review=null) {
+    $('computer-review-decision').value=review ? review.decision==='useful' ? 'accepted' : 'rejected' : '';
+    $('computer-review-note').value=review?.note || '';
+    $('computer-review-actual').value=String(review?.minutes ?? handoff.task.review_minutes);
+    $('computer-criteria-review').replaceChildren();
+    for (const [index,criterion] of handoff.strategy.successCriteria.entries()) {
+        const label=node('label',$('computer-criteria-review'),undefined,'computer-criterion');
+        const input=node('input',label);input.type='checkbox';input.dataset.criterion=String(index);input.checked=Boolean(review?.criterionResults[index]);
+        node('span',label,criterion);
+    }
+}
+$('computer-example').addEventListener('change',()=>computerPreset($('computer-example').value));
+$('computer-build-surface').addEventListener('click',()=>{
+    $('computer-error').hidden=true;
+    try {
+        $('computer-html').value=computerWorkSurface();computerSurfaceCustomized=false;
+        computerFormRevision+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;renderComputer();
+        $('computer-status').textContent=say('Work surface rebuilt. Confirm the source rights and execution limits before preparing.','Surface reconstruite. Confirmez les droits des sources et les limites avant de préparer.');
+    } catch(error){localPanelError('computer-error',error);}
+});
+$('computer-form').addEventListener('input',event=>{
+    if(event.target.id==='computer-html')computerSurfaceCustomized=true;
+    if(['computer-outcome','computer-value-hypothesis','computer-context','computer-urls'].includes(event.target.id) && !computerSurfaceCustomized)$('computer-html').value='';
+    computerFormRevision+=1;importToken+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;
+    $('computer-error').hidden=true;renderComputer();
+});
+$('computer-form').addEventListener('submit',async event=>{
+    event.preventDefault();if(computerBusy || busy || learningBusy)return;
+    const expected=computerContext();setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const name=$('computer-project-name').value.trim();
+        if (!name || name.length>80) throw Error(say('Give this project a name of 1–80 characters.','Donnez au projet un nom de 1 à 80 caractères.'));
+        let nextProject=dossier || project.createProject({name,goal:$('computer-outcome').value.trim()});
+        if(nextProject.name!==name)nextProject=project.renameProject(nextProject,name);
+        const allowedUrls=computerLines('computer-urls'),html=computerWorkSurface($('computer-html').value.trim() ? $('computer-html').value : null);
+        const handoffRaw=await computer.createComputerHandoff(nextProject,{sourceHash:SOURCE_HASH,
+            goal:$('computer-outcome').value.trim(),valueHypothesis:$('computer-value-hypothesis').value.trim(),successCriteria:computerLines('computer-acceptance'),hypotheses:computerLines('computer-strategy'),
+            combination:$('computer-combination').value.trim(),reframing:$('computer-reframe').value.trim(),selected:$('computer-approach').value,
+            allowedUrls,inputRights:$('computer-rights').value,license:$('computer-license').value.trim(),maxActions:boundedInteger('computer-actions',100),
+            maxSeconds:boundedInteger('computer-seconds',600),reviewMinutes:boundedInteger('computer-review-minutes',120),...(html.trim()?{html}:{})});
+        const historyRaw=await computer.retainComputerHandoff(nextProject,handoffRaw,{priorRecord:computerHistoryRaw});
+        const checked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        dossier=nextProject;computerHistoryRaw=historyRaw;computerHistoryChecked=checked;computerHandoffRaw=handoffRaw;computerChecked=null;
+        computerSelectedIndex=checked.records.findIndex(entry=>entry.handoffRaw===handoffRaw);$('project-name').value=dossier.name;
+        $('computer-status').textContent=say('Mission prepared and retained in your project. Download the pack for the configured native runner, then import its result here.','Mission préparée et conservée dans votre projet. Téléchargez le dossier pour l’exécuteur natif configuré, puis importez son résultat ici.');
+        renderHistory();renderLearning();renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);}
+});
+$('computer-download').addEventListener('click',()=>{if(computerHandoffRaw)download('successor-computer-handoff.json',computerHandoffRaw,'application/json');});
+$('computer-return').addEventListener('change',async()=>{
+    const file=$('computer-return').files[0];if(!file || !computerHandoffRaw || computerBusy)return;
+    const expected=computerContext(),handoffRaw=computerHandoffRaw;setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        if(file.size>2000000)throw Error(say('Computer Use returns are limited to 2 MB.','Les retours Computer Use sont limités à 2 Mo.'));
+        const raw=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
+        const checked=await computer.inspectComputerReturn(handoffRaw,raw);
+        const historyRaw=await computer.importComputerReturn(dossier,handoffRaw,raw,{priorRecord:computerHistoryRaw});
+        const historyChecked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        computerHistoryRaw=historyRaw;computerHistoryChecked=historyChecked;computerChecked=checked;
+        computerSelectedIndex=historyChecked.records.findIndex(entry=>entry.handoffRaw===handoffRaw);
+        prepareComputerReview(checked.handoff,historyChecked.records[computerSelectedIndex].review);
+        $('computer-status').textContent=say('Historical result retained. Inspect its actual work product and native screenshots, then record your review.','Résultat historique conservé. Examinez le livrable réel et les captures natives, puis consignez votre avis.');renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);$('computer-return').value='';}
+});
+$('computer-review-form').addEventListener('input',()=>{computerFormRevision+=1;});
+$('computer-review-form').addEventListener('submit',async event=>{
+    event.preventDefault();if(computerBusy || !computerChecked || !computerHandoffRaw)return;
+    const expected=computerContext(),handoffRaw=computerHandoffRaw;setComputerBusy(true);$('computer-error').hidden=true;
+    try {
+        const decision=$('computer-review-decision').value;
+        if(!['accepted','rejected'].includes(decision))throw Error(say('Inspect the result and choose a review decision.','Examinez le résultat et choisissez un avis.'));
+        const historyRaw=await computer.reviewComputerReturn(dossier,handoffRaw,{decision:decision==='accepted'?'useful':'needs-work',
+            note:$('computer-review-note').value.trim(),minutes:boundedInteger('computer-review-actual',120),
+            criterionResults:[...$('computer-criteria-review').querySelectorAll('input')].map(input=>input.checked)},{priorRecord:computerHistoryRaw});
+        const checked=await computer.inspectComputerHistory(historyRaw);computerUnchanged(expected);
+        computerHistoryRaw=historyRaw;computerHistoryChecked=checked;
+        $('computer-status').textContent=say('Your review is preserved. Keep the outcome and acceptance conditions fixed, choose a different approach and prepare the next attempt.','Votre avis est conservé. Gardez le résultat attendu et les conditions d’acceptation, choisissez une autre approche et préparez la tentative suivante.');renderComputer();
+    } catch(error){localPanelError('computer-error',error);} finally {setComputerBusy(false);}
+});
+for(const [id,selected] of [['computer-improve-next','combine'],['computer-reframe-next','reframe']])$(id).addEventListener('click',()=>{
+    $('computer-approach').value=selected;$('computer-strategy-panel').open=true;
+    computerFormRevision+=1;importToken+=1;computerHandoffRaw=null;computerChecked=null;computerSelectedIndex=-1;renderComputer();
+    $('computer-status').textContent=say('Your outcome, value hypothesis and acceptance conditions are preserved. Refine the next approach, then prepare a fresh attempt.','Résultat, hypothèse de valeur et conditions d’acceptation sont conservés. Affinez l’approche, puis préparez une nouvelle tentative.');
+    $('computer-strategy-panel').scrollIntoView({block:'start'});$(selected==='combine'?'computer-combination':'computer-reframe').focus();
+});
+$('computer-save-history').addEventListener('click',()=>safeDownload(()=>download('successor-learning-archive.json',serializeLearningArchive(),'application/json')));
+$('computer-save-workspace').addEventListener('click',()=>safeDownload(async()=>download('my-successor-workspace.html',await exportPortable(dossier),'text/html;charset=utf-8')));
+computerPreset('software');
 
 translate(); go(0,false);
 (async()=>{

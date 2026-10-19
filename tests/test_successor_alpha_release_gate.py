@@ -28,3 +28,8 @@ def test_flagship_qualifies_the_packaged_site_and_public_origin() -> None:
     assert "if" not in public and "continue-on-error" not in public
     assert {"pages", "package"}.issubset(jobs["publish"]["needs"])
     assert "release/successor-1.34.0-20261018" in workflow["on"]["push"]["branches"]
+
+
+def test_computer_use_candidate_runs_complete_acceptance_before_merge() -> None:
+    workflow = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=yaml.BaseLoader)
+    assert "codex/flagship-computer-strategy-loop-20261018" in workflow["on"]["push"]["branches"]
