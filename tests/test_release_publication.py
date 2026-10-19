@@ -830,6 +830,10 @@ def test_release_guides_have_working_flattened_links_and_preserve_the_manuscript
     root = Path(__file__).resolve().parents[1]
     version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
     package_agent_release.copy_release_documents(root, tmp_path, version, "a" * 40)
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        from scripts.transformational_evidence import package_workspace
+
+        package_workspace(root, tmp_path)
     assert {"START_HERE.md", "FACTORY_GUIDE.md", "DEMOS.md", "ASCENSION_PROTOCOL.md"}.issubset(
         {p.name for p in tmp_path.iterdir()}
     )

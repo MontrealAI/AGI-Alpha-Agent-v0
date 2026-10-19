@@ -194,6 +194,15 @@ def finalize(folder: Path, evidence: Path) -> None:
         flagship = load_report(evidence / "public-pages" / "successor-alpha" / "report.json")
         verify_report(flagship, manifest["commit"], manifest["version"], mode="public")
         verify_release_workspace(manifest.get("successor_alpha"), folder, manifest["commit"], manifest["version"])
+    transformational = None
+    if tuple(map(int, manifest["version"].split("."))) >= (1, 36, 0):
+        from scripts.transformational_evidence import load_report, verify_release_workspace, verify_report
+
+        transformational = load_report(evidence / "public-pages/transformational-intelligence/report.json")
+        verify_report(transformational, manifest["commit"], manifest["version"], mode="public")
+        verify_release_workspace(
+            manifest.get("transformational_intelligence"), folder, manifest["commit"], manifest["version"]
+        )
     workbench = None
     ascension = None
     insight = None
@@ -448,6 +457,11 @@ def finalize(folder: Path, evidence: Path) -> None:
             manifest["release_gates"].append(
                 "public HTTPS SUCCESSOR Alpha exact packaged bytes, complete useful mission, constructed strategy, "
                 "native Node host return, EN/FR accessibility and offline continuity"
+            )
+        if transformational:
+            manifest["public_transformational_intelligence"] = transformational
+            manifest["release_gates"].append(
+                "public HTTPS TI exact-byte readback, full native/browser journey and saved offline recovery"
             )
         if workbench:
             manifest["public_successor_workbench"] = workbench

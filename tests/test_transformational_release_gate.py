@@ -43,3 +43,13 @@ def test_workflow_artifacts_exclude_private_native_state():
         step for step in workflow["jobs"]["bounded-discovery"]["steps"] if "upload-artifact" in step.get("uses", "")
     ]
     assert len(artifacts) == 1 and artifacts[0]["with"]["path"] == "evidence/"
+
+
+def test_release_requires_full_ti_packaged_and_public_browser_readback():
+    workflow = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=yaml.BaseLoader)
+    steps = [step for job in workflow["jobs"].values() for step in job.get("steps", [])]
+    validators = [step for step in steps if "scripts.validate_transformational_intelligence" in step.get("run", "")]
+    assert len(validators) == 2
+    assert any("--url https://montrealai.github.io/AGI-Alpha-Agent-v0/" in step["run"] for step in validators)
+    assert any("--output evidence/transformational-intelligence" in step["run"] for step in validators)
+    assert all("continue-on-error" not in step and "if" not in step for step in validators)

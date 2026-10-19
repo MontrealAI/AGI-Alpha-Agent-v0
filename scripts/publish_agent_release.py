@@ -84,6 +84,11 @@ def main() -> None:
 
         verify_report(manifest.get("public_successor_alpha"), sha, version, mode="public")
         verify_release_workspace(manifest.get("successor_alpha"), folder, sha, version)
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        from scripts.transformational_evidence import verify_release_workspace, verify_report
+
+        verify_report(manifest.get("public_transformational_intelligence"), sha, version, mode="public")
+        verify_release_workspace(manifest.get("transformational_intelligence"), folder, sha, version)
     require_asset_limits(folder)
     require_current_main()
     ref = subprocess.run(["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"], capture_output=True, text=True, check=False)

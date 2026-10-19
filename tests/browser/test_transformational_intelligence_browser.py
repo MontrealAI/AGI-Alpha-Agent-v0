@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import tempfile
 import subprocess
 import sys
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 URL = (ROOT / "docs/transformational-intelligence/index.html").as_uri()
 
 
-def test_offline_ti_journey() -> None:
+def run_acceptance(entry: str = URL, *, expected_page_sha256: str | None = None) -> None:
     """Cover real controls, downloaded artifacts, history, languages and recovery."""
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -24,7 +25,10 @@ def test_offline_ti_journey() -> None:
         remote: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("request", lambda request: remote.append(request.url) if request.url.startswith("https:") else None)
-        page.goto(URL)
+        response = page.goto(entry)
+        if expected_page_sha256 is not None:
+            assert response is not None and response.status == 200
+            assert hashlib.sha256(response.body()).hexdigest() == expected_page_sha256
         original_source = page.locator("#source-text").input_value()
         with page.expect_download() as pending:
             page.locator("#export").click()
@@ -289,8 +293,12 @@ def test_offline_ti_journey() -> None:
         page.locator("#fr").focus()
         assert page.evaluate("document.activeElement.id") == "fr"
         assert not errors, errors
-        assert not remote, remote
+        assert not [url for url in remote if url != entry], remote
         browser.close()
+
+
+def test_offline_ti_journey() -> None:
+    run_acceptance()
 
 
 if __name__ == "__main__":

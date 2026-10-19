@@ -10,6 +10,23 @@ from pathlib import Path
 from scripts import mirror_demo_pages
 
 
+def test_source_bound_ti_document_keeps_its_single_canonical_route(tmp_path: Path, monkeypatch) -> None:
+    docs = tmp_path / "docs"
+    for name in ("transformational-intelligence", "ordinary"):
+        source = docs / name
+        source.mkdir(parents=True)
+        (source / "index.html").write_text('<html><script>const text="../assets/example";</script></html>')
+    (docs / "DISCLAIMER_SNIPPET.md").write_text("Public prototype")
+    monkeypatch.setattr(mirror_demo_pages, "DOCS_DIR", docs)
+    monkeypatch.setattr(mirror_demo_pages, "SUBDIR_ROOT", docs / "alpha_factory_v1/demos")
+    monkeypatch.setattr(mirror_demo_pages, "REPO_ROOT", tmp_path)
+    original = (docs / "transformational-intelligence/index.html").read_bytes()
+    mirror_demo_pages.main()
+    assert (docs / "transformational-intelligence/index.html").read_bytes() == original
+    assert not (docs / "alpha_factory_v1/demos/transformational-intelligence").exists()
+    assert (docs / "alpha_factory_v1/demos/ordinary/index.html").is_file()
+
+
 def test_flagship_mirror_binds_rewritten_page(tmp_path: Path, monkeypatch) -> None:
     docs = tmp_path / "docs"
     source = docs / "successor/alpha"
