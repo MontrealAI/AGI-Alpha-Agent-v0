@@ -212,12 +212,20 @@ def complete_json(
     result = json.loads(content)
     if not isinstance(result, dict):
         raise ValueError("model response must be a JSON object")
+    usage = body.get("usage", {})
+    if isinstance(usage, dict):
+        # OpenAI-compatible servers may include structured usage details. Keep
+        # only our supported reported counts, without coercing their values;
+        # response_hash below still binds the complete original response.
+        usage = {
+            key: value for key, value in usage.items() if key in {"prompt_tokens", "completion_tokens", "total_tokens"}
+        }
     evidence = {
         "configured_model": config.llm_model,
         "reported_model": body.get("model"),
         "request_hash": digest(payload),
         "response_hash": digest(body),
-        "usage": body.get("usage", {}),
+        "usage": usage,
         "finish_reason": choice["finish_reason"],
         "provider": config.llm_url,
         "mode": "local_inference" if local else "remote_inference",
