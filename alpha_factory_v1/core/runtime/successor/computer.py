@@ -6,14 +6,13 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
-import ipaddress
 import json
 import os
 import queue
 import re
 import shutil
-import socket
 import subprocess
+import sys
 import threading
 import time
 import uuid
@@ -32,7 +31,21 @@ from .workbench import _change, write_receipt
 
 WIDTH, HEIGHT = 1024, 768
 WORKER = Path(__file__).with_name("computer_worker.py")
+READ_WORKER = Path(__file__).with_name("computer_read.py")
+READ_TIMEOUT = 8.0
 MAX_MESSAGE = 3_000_000
+
+
+def worker_source_digest() -> str:
+    """Bind both disposable browser and public-reader implementations into each fresh permit."""
+    return hashlib.sha256(
+        canonical(
+            {
+                "browser": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+                "reader": hashlib.sha256(READ_WORKER.read_bytes()).hexdigest(),
+            }
+        )
+    ).hexdigest()
 
 
 class ComputerTask(StrictModel):
@@ -299,40 +312,68 @@ class HTTPAdvisor:
 class ReadBroker:
     """Fetch fixed public URLs with pinned public IPs; page-controlled headers never cross the boundary."""
 
-    def __init__(self, urls: list[str]) -> None:
+    def __init__(self, urls: list[str], checkpoint: Callable[[], None] = lambda: None) -> None:
         self.urls = frozenset(urls)
         self.requests = 0
         self.bytes = 0
+        self.checkpoint = checkpoint
 
     def fetch(self, url: str, method: str) -> dict[str, Any]:
-        """Deny redirects, private DNS answers, cookies, writes and unlisted query strings."""
+        """Supervise DNS and streaming with STOP checks and one absolute wall-clock limit."""
         if url not in self.urls or method not in {"GET", "HEAD"} or self.requests >= 128:
             raise ValueError("network request outside exact operator URL/method budget")
+        self.checkpoint()
         self.requests += 1
-        parts = urlsplit(url)
-        addresses = sorted({row[4][0] for row in socket.getaddrinfo(parts.hostname, 443, type=socket.SOCK_STREAM)})
-        if not addresses or any(not ipaddress.ip_address(address).is_global for address in addresses):
-            raise ValueError("private or nonpublic network destination")
-        address = str(addresses[0])
-        host = f"[{address}]" if ":" in address else address
-        target = url.replace(parts.netloc, host, 1)
-        with httpx.Client(timeout=8, trust_env=False, follow_redirects=False) as client:
-            with client.stream(
-                method, target, headers={"Host": parts.hostname or ""}, extensions={"sni_hostname": parts.hostname}
-            ) as response:
-                if response.status_code != 200:
-                    raise ValueError("network response must be 200; redirects require separately reviewed URLs")
-                content = bytearray()
-                for part in response.iter_bytes():
-                    self.bytes += len(part)
-                    content.extend(part)
-                    if len(content) > 1_500_000 or self.bytes > 8_000_000:
-                        raise ValueError("network byte budget exhausted")
-                return {
-                    "status": 200,
-                    "content_type": response.headers.get("content-type", "application/octet-stream"),
-                    "body": base64.b64encode(content).decode(),
-                }
+        maximum = min(1_500_000, 8_000_000 - self.bytes)
+        if maximum <= 0:
+            raise ValueError("network byte budget exhausted")
+        deadline = time.monotonic() + READ_TIMEOUT
+        environment = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
+        process = subprocess.Popen(
+            [sys.executable, "-E", str(READ_WORKER)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            env=environment,
+        )
+        payload: bytes | None = canonical({"url": url, "method": method, "maximum": maximum})
+        accounted = False
+        try:
+            while True:
+                self.checkpoint()
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError("public read wall-clock budget exhausted")
+                try:
+                    raw, _ = process.communicate(input=payload, timeout=min(0.1, remaining))
+                    break
+                except subprocess.TimeoutExpired:
+                    payload = None
+            self.checkpoint()
+            if time.monotonic() >= deadline:
+                raise TimeoutError("public read wall-clock budget exhausted")
+            if process.returncode != 0:
+                raise ValueError("public read refused or failed")
+            result = safe_json_loads(raw, max_bytes=2_100_000)
+            received = result.get("bytes_read")
+            if type(received) is not int or not 0 <= received <= maximum + 65_536:  # noqa: E721
+                raise ValueError("invalid public-reader accounting")
+            self.bytes += received
+            accounted = True
+            if process.returncode != 0 or set(result) != {"bytes_read", "response"}:
+                raise ValueError("public read refused or failed")
+            response = result["response"]
+            if not isinstance(response, dict) or set(response) != {"status", "content_type", "body"}:
+                raise ValueError("invalid public-reader response")
+            if response["status"] != 200 or len(base64.b64decode(response["body"], validate=True)) != received:
+                raise ValueError("invalid public-reader body")
+            return dict(response)
+        finally:
+            if not accounted:
+                self.bytes += maximum
+            if process.poll() is None:
+                process.kill()
+            process.communicate(timeout=5)
 
 
 class DockerComputer:
@@ -346,7 +387,7 @@ class DockerComputer:
             raise ValueError("Docker is required; no host browser fallback is allowed")
         self.docker, self.name = docker, "successor-computer-" + uuid.uuid4().hex
         self.checkpoint = checkpoint
-        self.broker = ReadBroker(task.allowed_urls)
+        self.broker = ReadBroker(task.allowed_urls, checkpoint)
         self.inbox: queue.Queue[bytes | Exception] = queue.Queue(maxsize=4)
         self.process = subprocess.Popen(
             [
@@ -435,6 +476,8 @@ class DockerComputer:
             if message.get("type") == "fetch":
                 try:
                     response = self.broker.fetch(message["url"], message["method"])
+                except (Conflict, TimeoutError):
+                    raise
                 except (ValueError, httpx.HTTPError, OSError):
                     response = {"status": 403, "content_type": "text/plain", "body": ""}
                 self.send({"operation": "fetched", "id": message["id"], **response})
@@ -476,7 +519,7 @@ def commitment(task: ComputerTask, advisor: Advisor, image: str, execution_conte
         "task": task.model_dump(mode="json"),
         "provider": advisor.identity,
         "image": image,
-        "worker_sha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+        "worker_sha256": worker_source_digest(),
     }
     if execution_context is not None:
         if not isinstance(execution_context, str) or re.fullmatch(r"[0-9a-f]{64}", execution_context) is None:

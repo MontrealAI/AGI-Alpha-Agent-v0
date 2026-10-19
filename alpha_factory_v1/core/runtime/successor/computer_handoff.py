@@ -14,7 +14,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ..store import Journal, private_write
-from .computer import WORKER, Advisor, ComputerTask, commitment
+from .computer import Advisor, ComputerTask, commitment, worker_source_digest
 from .protocol import MAX_SAFE_INT, canonical, digest, safe_json_loads
 from .transport import read_document
 from .trust import SignedEnvelope, TrustAnchor, TrustRegistry
@@ -57,9 +57,7 @@ class ComputerStrategy(BaseModel):
         approach = (
             self.hypotheses[0]
             if self.selected == "baseline"
-            else self.combination
-            if self.selected == "combine"
-            else self.reframing
+            else self.combination if self.selected == "combine" else self.reframing
         )
         candidates = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.hypotheses))
         criteria = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.successCriteria))
@@ -212,7 +210,7 @@ def write_computer_return(
         "execution": {
             "provider": advisor.identity,
             "image": image,
-            "workerSha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(),
+            "workerSha256": worker_source_digest(),
         },
         "receipt": receipt,
         "signedReceipt": envelope.model_dump(mode="json"),
