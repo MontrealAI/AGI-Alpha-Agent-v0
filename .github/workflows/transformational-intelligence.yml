@@ -40,7 +40,7 @@ jobs:
           python scripts/reproduce_transformational_paper.py --out evidence/paper
           python -m pytest --noconftest -o addopts= tests/test_transformational_study_reproduction.py -q
           python -m pytest --noconftest -o addopts= tests/test_generate_gallery_html.py -q
-          python scripts/reproduce_transformational_study.py --spec examples/transformational-intelligence/policy-study/spec.json --training examples/transformational-intelligence/policy-study/training.json --confirmation examples/transformational-intelligence/policy-study/confirmation.json --state "$RUNNER_TEMP/ti-study-agent" --output evidence/policy-study.json --approve-free-local-study
+          python -m scripts.reproduce_transformational_study --spec examples/transformational-intelligence/policy-study/spec.json --training examples/transformational-intelligence/policy-study/training.json --confirmation examples/transformational-intelligence/policy-study/confirmation.json --state "$RUNNER_TEMP/ti-study-agent" --output evidence/policy-study.json --approve-free-local-study
       - name: Exercise durable discovery and separately controlled measurement
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
