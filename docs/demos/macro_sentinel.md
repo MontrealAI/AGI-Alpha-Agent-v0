@@ -24,7 +24,7 @@ trade is invented. No broker or transaction is called by these tools.
 
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.35.1
+## Current runnable path — 1.36.0
 
 **Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
 

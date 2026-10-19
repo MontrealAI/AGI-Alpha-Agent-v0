@@ -45,7 +45,7 @@ launch remain documented templates; no cloud credentials, hardware, mainnet fund
 ## Inventory
 
 <!-- DEMO-INVENTORY:START -->
-**Catalog 1.35.1: 26 entries; 18 finite offline launch checks.**
+**Catalog 1.36.0: 26 entries; 18 finite offline launch checks.**
 
 | Demo | Current mode | What it does | Finite catalog check |
 |---|---|---|---|

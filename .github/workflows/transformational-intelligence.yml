@@ -45,7 +45,7 @@ jobs:
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
         run: |
-          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_transformation_math.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py -q --junitxml=evidence/discovery.xml
+          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_transformation_math.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py tests/test_transformational_packaging.py -q --junitxml=evidence/discovery.xml
           python -m alpha_factory_v1.core.runtime.cli --home "$RUNNER_TEMP/ti-local-agent" successor-transform demo --output evidence/native-campaign.json
           TI_NATIVE_CAMPAIGN=evidence/native-campaign.json node --test examples/transformational-intelligence/inspector.test.mjs
           node --test examples/transformational-intelligence/project-bridge.test.mjs

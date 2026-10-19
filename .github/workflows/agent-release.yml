@@ -98,7 +98,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py --ignore=tests/runtime/test_supplier_browser_browser.py -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_native_browser_ci.py tests/test_release_publication.py tests/test_mainnet_release_record.py tests/test_current_mainnet_record.py tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_native_browser_ci.py tests/test_release_publication.py tests/test_transformational_packaging.py tests/test_mainnet_release_record.py tests/test_current_mainnet_record.py tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m pytest --noconftest -o addopts= tests/test_openai_bridge_integration.py -q --junitxml=evidence/business1-sum-binding.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
@@ -541,6 +541,8 @@ jobs:
         run: python -m scripts.validate_homepage --site site --output evidence/homepage
       - name: Verify the useful Alpha mission, strategy construction and native continuity
         run: python -m scripts.validate_successor_alpha --site site --output evidence/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Verify the exact TI workspace, native result and saved offline recovery
+        run: python -m scripts.validate_transformational_intelligence --site site --output evidence/transformational-intelligence
       - name: Verify the personal SUCCESSOR download and offline experience
         run: python -m scripts.validate_successor_pocket --site site --output evidence/successor-pocket
       - name: Verify SUCCESSOR on the exact rebuilt site
@@ -1041,6 +1043,7 @@ jobs:
           python -m scripts.validate_homepage --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/homepage
           python -m scripts.validate_computer_use_study_browser --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/computer-use-study.json
           python -m scripts.validate_successor_alpha --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/ --output evidence/public-pages/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_transformational_intelligence --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/transformational-intelligence
       - name: Name this attempt's public acceptance evidence
         id: public-name
         if: always()

@@ -1,3 +1,13 @@
+## 1.36.0 — Bounded transformational discovery (source candidate)
+
+- Add durable public-source discovery, frozen comparisons, exact-clause evidence and retained failures.
+- Keep local model proposals, finite mathematical investigation and complete-campaign policy studies explicitly scoped.
+- Preserve one inert project history through native results, separate supplier inspections, Computer Use and pending reuse.
+- Require distinct signed measurement and local reuse decisions; importing evidence grants no authority.
+- Ship the offline TI workspace and complete operating guides while retaining all existing release gates.
+- Preserve the 1.35.1 reader fixes, historical releases and original paper bytes and URL.
+- See [release notes](docs/agent/RELEASE_NOTES_1.36.0.md) for qualification limits and recovery.
+
 ## 1.35.1 — Cancellable public-document reads
 
 - Supervise DNS and streamed HTTP in a credential-free disposable reader with one eight-second wall-clock deadline.

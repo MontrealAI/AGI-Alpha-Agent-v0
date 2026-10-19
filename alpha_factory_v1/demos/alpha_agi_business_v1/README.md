@@ -1,7 +1,7 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.35.1
+## Current runnable path — 1.36.0
 
 **Mode:** Offline sample. Ranks bundled business opportunities; service agents publish illustrative business events.
 

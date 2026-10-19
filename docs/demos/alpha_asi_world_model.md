@@ -7,7 +7,7 @@
 [Launch Demo](../alpha_asi_world_model/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.35.1
+## Current runnable path — 1.36.0
 
 **Mode:** Research training. Explores generated grid worlds using a small learner and local API.
 

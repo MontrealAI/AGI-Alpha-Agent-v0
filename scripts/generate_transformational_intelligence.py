@@ -9,11 +9,12 @@ import html
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def build(root: Path = ROOT) -> None:
+def render(root: Path = ROOT) -> tuple[str, dict[str, Any]]:
     """Bundle the local source-clause engine and UI with exact CSP hashes."""
     template = root / "scripts/templates/transformational-intelligence"
     engine_path = root / "docs/assets/transformational-intelligence/source-understanding.mjs"
@@ -88,9 +89,6 @@ def build(root: Path = ROOT) -> None:
         page = page.replace("{{" + name + "_HASH}}", "sha256-" + digest).replace("{{" + name + "}}", value)
     if "{{" in page:
         raise ValueError("Unexpanded experiment template")
-    destination = root / "docs/transformational-intelligence"
-    destination.mkdir(parents=True, exist_ok=True)
-    (destination / "index.html").write_text(page, encoding="utf-8")
     sources = {
         path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in [
@@ -110,6 +108,15 @@ def build(root: Path = ROOT) -> None:
         "page_sha256": hashlib.sha256(page.encode()).hexdigest(),
         "scope": "Deterministic local structural coverage; independent review pending; no authority",
     }
+    return page, manifest
+
+
+def build(root: Path = ROOT) -> None:
+    """Write the exact authoritative render without altering its portable bytes."""
+    page, manifest = render(root)
+    destination = root / "docs/transformational-intelligence"
+    destination.mkdir(parents=True, exist_ok=True)
+    (destination / "index.html").write_text(page, encoding="utf-8")
     (destination / "sources.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 

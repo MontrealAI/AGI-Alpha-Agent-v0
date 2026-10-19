@@ -22,6 +22,9 @@ DOCS_DIR = REPO_ROOT / "docs"
 SUBDIR_ROOT = DOCS_DIR / "alpha_factory_v1" / "demos"
 
 EXCLUDE = {
+    # A portable source-bound document has one canonical route; rewriting its
+    # embedded executable/data strings would invalidate its CSP and identities.
+    "transformational-intelligence",
     "stylesheets",
     "assets",
     "utils",
