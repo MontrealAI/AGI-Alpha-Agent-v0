@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+from collections.abc import Callable
 from typing import Any
 
 import httpx
@@ -170,10 +171,37 @@ async def _response(payload: dict[str, Any], config: RuntimeConfig, local: bool)
         raise TimeoutError("inference response exceeded its configured deadline") from exc
 
 
-def complete_json(payload: dict[str, Any], config: RuntimeConfig) -> tuple[dict[str, Any], dict[str, Any]]:
+async def _controlled_response(
+    payload: dict[str, Any], config: RuntimeConfig, local: bool, active: Callable[[], bool]
+) -> bytearray:
+    """Close local I/O when the caller revokes its consumed request permit."""
+    task = asyncio.create_task(_response(payload, config, local))
+    try:
+        while True:
+            if not active():
+                raise InterruptedError("inference request permit was revoked; provider work may already have completed")
+            done, _ = await asyncio.wait({task}, timeout=0.1)
+            if done:
+                if not active():
+                    raise InterruptedError("inference request permit was revoked before response acceptance")
+                return await task
+    finally:
+        if not task.done():
+            task.cancel()
+        try:
+            await task
+        except (asyncio.CancelledError, Exception):
+            pass
+
+
+def complete_json(
+    payload: dict[str, Any], config: RuntimeConfig, *, active: Callable[[], bool] | None = None
+) -> tuple[dict[str, Any], dict[str, Any]]:
     """Request a bounded JSON completion and retain provider provenance."""
     local = httpx.URL(config.llm_url).host in {"localhost", "127.0.0.1", "::1"}
-    raw = asyncio.run(_response(payload, config, local))
+    raw = asyncio.run(
+        _response(payload, config, local) if active is None else _controlled_response(payload, config, local, active)
+    )
     body = json.loads(raw)
     choice = body["choices"][0]
     if choice.get("finish_reason") != "stop":

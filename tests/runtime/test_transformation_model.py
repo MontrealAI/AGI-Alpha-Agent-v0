@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import copy
 import json
+import subprocess
+import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -279,7 +281,7 @@ def test_inflight_control_cannot_be_overwritten_by_response(tmp_path, local_prov
     driver.approve(request.campaign_id, record["binding_digest"])
     entered, release = threading.Event(), threading.Event()
 
-    def held_call(*args):
+    def held_call(*args, **kwargs):
         entered.set()
         assert release.wait(10)
         raise TimeoutError("synthetic interrupted response")
@@ -296,6 +298,142 @@ def test_inflight_control_cannot_be_overwritten_by_response(tmp_path, local_prov
     assert driver.show(request.campaign_id)["approval"] is None
     with pytest.raises(Conflict):
         driver.propose(request.campaign_id)
+
+
+@pytest.mark.parametrize("action", ["pause", "cancel", "global-stop", "global-stop-resume"])
+def test_controls_close_actual_inflight_http_without_waiting_for_valid_reply(tmp_path, local_provider, action):
+    config, _, reply = local_provider
+    entered, release = threading.Event(), threading.Event()
+    calls = []
+
+    class HeldHandler(BaseHTTPRequestHandler):
+        def do_POST(self):
+            calls.append(self.rfile.read(int(self.headers["Content-Length"])))
+            entered.set()
+            assert release.wait(10)
+            body = json.dumps(
+                {
+                    "model": "delayed-http-fixture",
+                    "choices": [{"finish_reason": "stop", "message": {"content": json.dumps(reply)}}],
+                    "usage": {},
+                }
+            ).encode()
+            try:
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), HeldHandler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    config = config.model_copy(update={"endpoint": f"http://127.0.0.1:{server.server_port}/v1", "timeout_seconds": 10})
+    driver, request, record = prepare(tmp_path, config)
+    driver.approve(request.campaign_id, record["binding_digest"])
+    try:
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(driver.propose, request.campaign_id)
+            try:
+                assert entered.wait(5)
+                if action.startswith("global"):
+                    driver.journal.control(True)
+                    if action.endswith("resume"):
+                        driver.journal.control(False)
+                else:
+                    driver.control(request.campaign_id, action)
+                retained = future.result(timeout=2)
+                assert not release.is_set()
+                assert retained["state"] == ("canceled" if action == "cancel" else "paused-consumed")
+                assert retained["proposal"] is None and retained["approval"] is None
+            finally:
+                release.set()
+        with pytest.raises(Conflict):
+            driver.propose(request.campaign_id)
+        assert len(calls) == 1
+    finally:
+        release.set()
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+def test_final_response_commit_rechecks_global_control_revision(tmp_path, local_provider, monkeypatch):
+    config, _, reply = local_provider
+    driver, request, record = prepare(tmp_path, config)
+    driver.approve(request.campaign_id, record["binding_digest"])
+
+    def valid_late_reply(payload, runtime, **kwargs):
+        driver.journal.control(True)
+        driver.journal.control(False)
+        return reply, {
+            "configured_model": config.model,
+            "reported_model": "late-fixture",
+            "request_hash": "0" * 64,
+            "response_hash": "1" * 64,
+            "usage": {},
+            "finish_reason": "stop",
+            "provider": config.endpoint,
+            "mode": "local_inference",
+        }
+
+    monkeypatch.setattr(
+        "alpha_factory_v1.core.runtime.successor.transformation_model.provider.complete_json", valid_late_reply
+    )
+    retained = driver.propose(request.campaign_id)
+    assert retained["state"] == "paused-consumed"
+    assert retained["proposal"] is None and retained["provider_evidence"] is None
+
+
+def test_product_cli_runs_same_model_then_native_lifecycle(tmp_path, local_provider):
+    config, trace, _ = local_provider
+    request = pilot_request().model_dump()
+    request["operator_ids"] = ["local-model-proposals"]
+    request_path, config_path = tmp_path / "request.json", tmp_path / "model.json"
+    request_path.write_text(json.dumps(request))
+    config_path.write_text(config.model_dump_json())
+
+    def cli(*arguments):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "alpha_factory_v1.core.runtime.cli",
+                "--home",
+                str(tmp_path / "cli-agent"),
+                "successor-model",
+                *map(str, arguments),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        return json.loads(completed.stdout)
+
+    campaign_id = request["campaign_id"]
+    queued = cli("create", request_path, config_path)
+    assert queued["state"] == "queued" and trace == []
+    cli("approve", campaign_id, "--binding", queued["binding_digest"])
+    assert cli("propose", campaign_id)["state"] == "proposed"
+    native = cli("prepare-native", campaign_id)
+    cli("approve-native", campaign_id, "--binding", native["binding_digest"])
+    for phase in ("diagnose", "develop", "freeze"):
+        native = cli("step", campaign_id, "--operation-id", phase)
+    confirmation = tmp_path / "confirmation.json"
+    from alpha_factory_v1.core.runtime.successor.transformation import pilot_document
+
+    confirmation.write_text(json.dumps({"documents": [pilot_document(confirmation=True).model_dump()]}))
+    result = cli("confirm", campaign_id, confirmation, "--freeze", native["freeze"]["digest"])
+    assert result["native_envelope"]["result"]["beats_unrestricted"] is False
+    output = tmp_path / "model-evidence.json"
+    cli("export", campaign_id, "--output", output)
+    assert validate_model_envelope(json.loads(output.read_text())) == result
+    assert len(trace) == 1
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,7 @@
 # Local model proposals
 
-The optional `ti-model-discovery/v1` adapter asks an explicitly configured,
+The installed `alpha-agent successor-model` command exposes the optional
+`ti-model-discovery/v1` adapter. It asks an explicitly configured,
 operator-attested no-charge model on numeric loopback HTTP for one bounded JSON
 proposal. It uses the maintained OpenAI-compatible runtime provider. It never
 executes model code, accepts model scores, changes the evaluator, or sends fresh
@@ -35,16 +36,16 @@ configuration file:
 Run each command separately and inspect the returned record before approving:
 
 ```sh
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home create request.json local-model.json
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home approve CAMPAIGN_UUID --binding EXACT_MODEL_BINDING
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home propose CAMPAIGN_UUID
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home prepare-native CAMPAIGN_UUID
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home approve-native CAMPAIGN_UUID --binding EXACT_NATIVE_BINDING
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home step CAMPAIGN_UUID --operation-id diagnose
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home step CAMPAIGN_UUID --operation-id develop
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home step CAMPAIGN_UUID --operation-id freeze
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home confirm CAMPAIGN_UUID fresh-documents.json --freeze EXACT_FREEZE_DIGEST
-python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --home /absolute/new-home export CAMPAIGN_UUID --output /absolute/new-model-evidence.json
+alpha-agent --home /absolute/new-home successor-model create request.json local-model.json
+alpha-agent --home /absolute/new-home successor-model approve CAMPAIGN_UUID --binding EXACT_MODEL_BINDING
+alpha-agent --home /absolute/new-home successor-model propose CAMPAIGN_UUID
+alpha-agent --home /absolute/new-home successor-model prepare-native CAMPAIGN_UUID
+alpha-agent --home /absolute/new-home successor-model approve-native CAMPAIGN_UUID --binding EXACT_NATIVE_BINDING
+alpha-agent --home /absolute/new-home successor-model step CAMPAIGN_UUID --operation-id diagnose
+alpha-agent --home /absolute/new-home successor-model step CAMPAIGN_UUID --operation-id develop
+alpha-agent --home /absolute/new-home successor-model step CAMPAIGN_UUID --operation-id freeze
+alpha-agent --home /absolute/new-home successor-model confirm CAMPAIGN_UUID fresh-documents.json --freeze EXACT_FREEZE_DIGEST
+alpha-agent --home /absolute/new-home successor-model export CAMPAIGN_UUID --output /absolute/new-model-evidence.json
 ```
 
 The confirmation file has exactly one `documents` array containing explicit native
@@ -57,7 +58,7 @@ proposal; the adapter makes no general intelligence or discovery advantage claim
 Before proposal acceptance, pause and cancel revoke the call permit. Resuming a
 queued pause requires a new exact approval. Pausing an in-flight call consumes its
 permit and prevents its response from activating a proposal; it cannot be resumed
-or retried. Cancellation remains effective if the old response later arrives.
+or retried. The active HTTP request is polled every 100 ms and closed on campaign pause, cancellation or global operator STOP; this cannot undo work already performed by the provider. A STOP followed by resume still invalidates the consumed request. The final response commit rechecks the control revision, so a valid late response cannot bypass interruption.
 Construction is one-shot: the Journal records `in-flight` before network I/O. A
 crash, timeout, malformed response or failed validation consumes that permit and
 retains uncertainty. It cannot be retried implicitly; inspect the failed attempt

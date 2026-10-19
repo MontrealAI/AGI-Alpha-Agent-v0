@@ -181,6 +181,23 @@ class ModelDiscovery:
         if self.journal.latest("@control", cx)["state"] != "ready":
             raise Conflict("operator STOP is active")
 
+    def _call_active(self, campaign_id: str, control_revision: int) -> bool:
+        with self.journal.transaction() as cx:
+            control = self.journal.latest("@control", cx)
+            return bool(
+                control["state"] == "ready"
+                and control["revision"] == control_revision
+                and self.journal.latest(self._key(campaign_id), cx)["state"] == "in-flight"
+            )
+
+    def _stop_consumed(self, cx: Any, campaign_id: str, data: dict[str, Any]) -> dict[str, Any]:
+        data.update(
+            state="paused-consumed",
+            approval=None,
+            failure="Global STOP closed the request; provider work may have completed. No accepted response or safe retry.",
+        )
+        return self.journal.append(cx, self._key(campaign_id), data)
+
     def create(self, request: DiscoveryRequest, config: LocalModelConfig) -> dict[str, Any]:
         """Retain a reviewable call without inference or candidate execution."""
         if not {"read-public-source", "construct-bounded", "evaluate-local"} <= set(request.charter.permitted_actions):
@@ -261,6 +278,7 @@ class ModelDiscovery:
                 raise PermissionError("this local no-charge adapter refuses configured provider credentials")
             data = Journal.document(record)
             data["state"], data["approval"] = "in-flight", None
+            control_revision = self.journal.latest("@control", cx)["revision"]
             self.journal.append(cx, self._key(campaign_id), data)
         try:
             runtime = RuntimeConfig(
@@ -270,7 +288,9 @@ class ModelDiscovery:
                 llm_timeout=config.timeout_seconds,
                 max_output_tokens=config.max_output_tokens,
             )
-            raw, evidence = provider.complete_json(_payload(request, config), runtime)
+            raw, evidence = provider.complete_json(
+                _payload(request, config), runtime, active=lambda: self._call_active(campaign_id, control_revision)
+            )
             evidence = ProviderEvidence.model_validate(evidence).model_dump()
             proposal = ModelProposal.model_validate(raw)
             if proposal.model_dump() != raw:
@@ -282,6 +302,9 @@ class ModelDiscovery:
                 data = Journal.document(self.journal.latest(self._key(campaign_id), cx))
                 if data["state"] != "in-flight":
                     return self.journal.latest(self._key(campaign_id), cx)
+                control = self.journal.latest("@control", cx)
+                if control["state"] != "ready" or control["revision"] != control_revision:
+                    return self._stop_consumed(cx, campaign_id, data)
                 data["state"], data["failure"] = "uncertain", "No accepted response; the one-shot permit is consumed."
                 self.journal.append(cx, self._key(campaign_id), data)
             raise ValueError(
@@ -291,6 +314,9 @@ class ModelDiscovery:
             data = Journal.document(self.journal.latest(self._key(campaign_id), cx))
             if data["state"] != "in-flight":
                 return self.journal.latest(self._key(campaign_id), cx)
+            control = self.journal.latest("@control", cx)
+            if control["state"] != "ready" or control["revision"] != control_revision:
+                return self._stop_consumed(cx, campaign_id, data)
             data.update(state="proposed", proposal=proposal.model_dump(), provider_evidence=evidence)
             return self.journal.append(cx, self._key(campaign_id), data)
 

@@ -14,10 +14,13 @@ from .transformation_model import LocalModelConfig, ModelDiscovery
 from .transport import read_document
 
 
-def main() -> None:
-    """Require a distinct reviewable binding for the call and native computation."""
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--home", type=Path, required=True)
+def add_commands(commands: Any) -> None:
+    """Expose the same bounded model lifecycle through the installed product CLI."""
+    parser = commands.add_parser("successor-model", help="Propose closed local-model programs and compare natively")
+    _actions(parser)
+
+
+def _actions(parser: argparse.ArgumentParser) -> None:
     actions = parser.add_subparsers(dest="action", required=True)
     create = actions.add_parser("create")
     create.add_argument("request", type=Path)
@@ -38,7 +41,10 @@ def main() -> None:
     export = actions.add_parser("export")
     export.add_argument("campaign_id")
     export.add_argument("--output", type=Path, required=True)
-    args = parser.parse_args()
+
+
+def handle(args: argparse.Namespace) -> dict[str, Any]:
+    """Require a distinct reviewable binding for the call and native computation."""
     result: dict[str, Any]
     if args.action == "create":
         request = DiscoveryRequest.model_validate(read_document(args.request))
@@ -77,7 +83,15 @@ def main() -> None:
                 result = loop.step(request.campaign_id, operation_id=args.operation_id)
             else:
                 raise ValueError("unknown model discovery action")
-    print(canonical(result).decode())
+    return result
+
+
+def main() -> None:
+    """Preserve the explicit standalone command while sharing product behavior."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--home", type=Path, required=True)
+    _actions(parser)
+    print(canonical(handle(parser.parse_args())).decode())
 
 
 if __name__ == "__main__":
