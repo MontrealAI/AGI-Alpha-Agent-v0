@@ -22,14 +22,20 @@ function strings(value, minimum, maximum, length) {
     return Array.isArray(value) && value.length >= minimum && value.length <= maximum && value.every(item => text(item,length));
 }
 function scope(value) { requireValue(value.authority === 'none' && value.settlement === 'not_connected','AUTHORITY'); }
-function checkUrls(urls) {
-    requireValue(Array.isArray(urls) && urls.length <= 128 && new Set(urls).size === urls.length,'URLS');
-    for (const raw of urls) {
-        requireValue(text(raw,2048) && !/[\s\\]/u.test(raw),'URL');
+function normalizeUrls(urls) {
+    requireValue(Array.isArray(urls) && urls.length <= 128,'URLS');
+    const normalized = urls.map(raw => {
+        requireValue(text(raw,2048) && !/[\s\\]/u.test(raw) && !raw.includes('#'),'URL');
         const url = new URL(raw);
         requireValue(url.protocol === 'https:' && url.hostname && !url.username && !url.password && !url.hash
-            && (!url.port || url.port === '443'),'URL');
-    }
+            && (!url.port || url.port === '443') && text(url.href,2048),'URL');
+        return url.href;
+    });
+    requireValue(new Set(normalized).size === normalized.length,'URLS');
+    return normalized;
+}
+function checkUrls(urls) {
+    requireValue(same(urls,normalizeUrls(urls)),'URL_CANONICAL');
 }
 function checkStrategy(strategy) {
     fields(strategy,['originalGoal','valueHypothesis','selected','hypotheses','combination','reframing','successCriteria']);
@@ -93,7 +99,7 @@ export function readWorkSurfaceContext(html) {
 
 /** A source-reading and artifact workspace for an explicitly bounded capability mission. */
 export function buildWorkSurface({goal,valueHypothesis='Value not yet established',allowedUrls=[],context=''}) {
-    checkUrls(allowedUrls); requireValue(text(goal,2000) && text(valueHypothesis,1000),'GOAL');
+    allowedUrls = normalizeUrls(allowedUrls); requireValue(text(goal,2000) && text(valueHypothesis,1000),'GOAL');
     requireValue(typeof context === 'string' && [...context].length <= 4000,'CONTEXT');
     const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(context))));
     const brief = context ? `<section><h2>Starting brief and assumptions · operator supplied</h2><pre id="operator-context">${escapeHtml(context)}</pre></section>` : '';
@@ -114,7 +120,7 @@ export async function createComputerHandoff(dossier, options) {
         combination:options.combination,reframing:options.reframing,successCriteria:options.successCriteria};
     checkStrategy(strategy);
     const goal = strategyGoal(strategy);
-    const allowedUrls = options.allowedUrls ?? [];
+    const allowedUrls = normalizeUrls(options.allowedUrls ?? []);
     const task = {schema_version:1,kind:'successor-computer',goal,
         html:options.html ?? buildWorkSurface({goal:strategy.originalGoal,valueHypothesis:strategy.valueHypothesis,allowedUrls,context:options.context ?? ''}),allowed_urls:allowedUrls,
         input_rights:options.inputRights,license:options.license,max_turns:options.maxTurns ?? 10,

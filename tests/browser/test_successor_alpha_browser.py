@@ -856,7 +856,7 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     script = (
         "import {buildWorkSurface} from './examples/successor-alpha/computer.mjs';"
         "console.log(buildWorkSurface({goal:'Inspect the public-source fixture and save a decision.',"
-        "allowedUrls:['https://public.example/source']}));"
+        "allowedUrls:['https://PUBLIC.example:443/source']}));"
     )
     surface = subprocess.check_output(["node", "--input-type=module", "-e", script], cwd=ROOT, text=True)
     reading_context = browser.new_context(viewport={"width": 1024, "height": 768})

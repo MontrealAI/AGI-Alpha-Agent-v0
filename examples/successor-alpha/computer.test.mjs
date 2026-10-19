@@ -70,10 +70,44 @@ test('all approaches preserve the original outcome and criteria in executable na
 
 test('public source launcher escapes input and refuses credential, redirect-like and non-HTTPS destinations',()=>{
     const html = buildWorkSurface({goal:'<script>alert(1)</script>',allowedUrls:['https://example.com/?a="&b=<x>']});
-    assert.ok(html.includes('&lt;script&gt;')); assert.ok(html.includes('&quot;&amp;b=&lt;x&gt;'));
-    for (const url of ['http://example.com/','https://user:pass@example.com/','https://example.com/#x',
+    assert.ok(html.includes('&lt;script&gt;'));
+    assert.ok(html.includes('data-source="https://example.com/?a=%22&amp;b=%3Cx%3E"'));
+    for (const url of ['http://example.com/','https://user:pass@example.com/','https://example.com/#x','https://example.com/path#',
         'https://example.com:444/','https://example.com/ a','https://example.com/\\a']) {
         assert.throws(()=>buildWorkSurface({goal:'test',allowedUrls:[url]}));
+    }
+});
+
+test('preparation canonicalizes exact URLs consistently in tasks and source buttons without widening rights',async()=>{
+    const aliases = ['https://EXAMPLE.com:443/path?version=1','https://EXAMPLE.org',
+        'HTTPS://EXAMPLE.net/a/../public?allowed=one'];
+    const expected = ['https://example.com/path?version=1','https://example.org/',
+        'https://example.net/public?allowed=one'];
+    const original = [...aliases];
+    const raw = await createComputerHandoff(dossier,{...options,allowedUrls:aliases});
+    const {handoff} = await inspectComputerHandoff(raw);
+    assert.deepEqual(handoff.task.allowed_urls,expected);
+    assert.deepEqual(aliases,original);
+    for (const url of expected) assert.ok(handoff.task.html.includes(`data-source="${url}"`));
+    assert.ok(!handoff.task.allowed_urls.includes('https://example.com/path?version=2'));
+    assert.ok(!handoff.task.allowed_urls.includes('https://example.net/public?allowed=one&extra=two'));
+    const surface = buildWorkSurface({goal:options.goal,allowedUrls:aliases});
+    for (const url of expected) assert.ok(surface.includes(`data-source="${url}"`));
+});
+
+test('normalization rejects duplicate destinations and fragments without rewriting retained histories',async()=>{
+    const duplicateAliases = ['https://EXAMPLE.com:443/path','https://example.com/path'];
+    assert.throws(()=>buildWorkSurface({goal:options.goal,allowedUrls:duplicateAliases}));
+    await assert.rejects(createComputerHandoff(dossier,{...options,allowedUrls:duplicateAliases}));
+    for (const url of ['https://example.com/path#','https://example.com/path#section']) {
+        await assert.rejects(createComputerHandoff(dossier,{...options,allowedUrls:[url]}));
+    }
+    const canonicalRaw = await createComputerHandoff(dossier,{...options,allowedUrls:['https://example.com/path']});
+    for (const url of ['https://EXAMPLE.com/path','https://example.com:443/path','https://example.com/path#']) {
+        const retained = JSON.parse(canonicalRaw); retained.task.allowed_urls = [url];
+        const unmodified = canonical(retained);
+        await assert.rejects(inspectComputerHandoff(unmodified));
+        assert.equal(canonical(retained),unmodified);
     }
 });
 
