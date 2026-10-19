@@ -131,6 +131,10 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
             for key, value in zip(node.keys, node.values, strict=True):
                 if isinstance(key, ast.Constant) and isinstance(key.value, str):
                     inspect(key.value, value)
+                elif isinstance(key, ast.Name):
+                    inspect(key.id, value)
+                elif isinstance(key, ast.Attribute):
+                    inspect(key.attr, value)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 for name, assigned_value in _assignment_bindings(target, node.value):
