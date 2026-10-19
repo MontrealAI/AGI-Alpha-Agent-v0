@@ -178,6 +178,13 @@ def test_preexisting_stop_starts_no_reader(monkeypatch: pytest.MonkeyPatch) -> N
     start.assert_not_called()
 
 
+def test_invalid_unicode_payload_starts_no_reader() -> None:
+    url = "https://example.org/\ud800"
+    with patch.object(computer.subprocess, "Popen") as start, pytest.raises(ValueError, match="surrogate Unicode"):
+        computer.ReadBroker([url]).fetch(url, "GET")
+    start.assert_not_called()
+
+
 def test_private_or_mixed_dns_never_opens_http(monkeypatch: pytest.MonkeyPatch) -> None:
     for addresses in (["127.0.0.1"], ["1.1.1.1", "127.0.0.1"]):
         monkeypatch.setattr(

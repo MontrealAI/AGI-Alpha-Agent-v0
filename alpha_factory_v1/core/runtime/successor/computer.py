@@ -329,6 +329,7 @@ class ReadBroker:
             raise ValueError("network byte budget exhausted")
         deadline = time.monotonic() + READ_TIMEOUT
         environment = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
+        payload: bytes | None = canonical({"url": url, "method": method, "maximum": maximum})
         process = subprocess.Popen(
             [sys.executable, "-E", str(READ_WORKER)],
             stdin=subprocess.PIPE,
@@ -336,7 +337,6 @@ class ReadBroker:
             stderr=subprocess.DEVNULL,
             env=environment,
         )
-        payload: bytes | None = canonical({"url": url, "method": method, "maximum": maximum})
         accounted = False
         try:
             while True:
