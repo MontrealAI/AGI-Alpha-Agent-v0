@@ -139,6 +139,51 @@ def test_offline_ti_journey() -> None:
             expect(page.locator("#native-status")).to_contain_text("locally recomputed")
             expect(page.locator("#native-history")).to_contain_text(campaign_id)
             expect(page.locator("#native-history")).to_contain_text("independent review pending")
+            with page.expect_download() as pending:
+                page.locator("#ti-project-download").click()
+            project_raw = Path(pending.value.path()).read_bytes()
+            project = json.loads(project_raw)
+            assert project["projectId"] == campaign_id
+            assert [event["kind"] for event in project["history"]] == ["native-request", "native-result"]
+            assert project["history"][1]["raw"].encode() == native_evidence
+            with page.expect_download() as pending:
+                page.locator("#ti-summary-handoff").click()
+            handoff_raw = Path(pending.value.path()).read_bytes()
+            handoff = json.loads(handoff_raw)
+            assert json.loads(handoff["projectRaw"])["id"] == campaign_id
+            assert handoff["task"]["allowed_urls"] == []
+            assert handoff["authority"] == "none"
+            assert "Independent usefulness review pending" in handoff["task"]["html"]
+            summary_page = context.new_page()
+            summary_path = folder / "exact-native-summary.html"
+            summary_path.write_text(handoff["task"]["html"])
+            summary_page.goto(summary_path.as_uri())
+            expect(summary_page.locator("h1")).to_contain_text("Source-grounded summary")
+            expect(summary_page.locator("article pre")).not_to_be_empty()
+            summary_page.close()
+            with page.expect_download() as pending:
+                page.locator("#ti-project-download").click()
+            complete_project_raw = Path(pending.value.path()).read_bytes()
+            assert json.loads(complete_project_raw)["history"][-1]["raw"].encode() == handoff_raw
+            # Older prefixes cannot erase handoff history; bad bytes cannot replace it.
+            page.locator("#ti-project-import").set_input_files(
+                {"name": "older-project.json", "mimeType": "application/json", "buffer": project_raw}
+            )
+            expect(page.locator("#native-status")).to_contain_text("Complete project inspected")
+            with page.expect_download() as pending:
+                page.locator("#ti-project-download").click()
+            assert Path(pending.value.path()).read_bytes() == complete_project_raw
+            page.locator("#ti-project-import").set_input_files(
+                {
+                    "name": "bad-project.json",
+                    "mimeType": "application/json",
+                    "buffer": complete_project_raw[:-1] + b"\xff",
+                }
+            )
+            expect(page.locator("#error")).to_contain_text("encoded data")
+            with page.expect_download() as pending:
+                page.locator("#ti-project-download").click()
+            assert Path(pending.value.path()).read_bytes() == complete_project_raw
             page.locator("#native-import").set_input_files(
                 {"name": "invalid-utf8.json", "mimeType": "application/json", "buffer": native_evidence[:-1] + b"\xff"}
             )
@@ -156,6 +201,7 @@ def test_offline_ti_journey() -> None:
         archive = Path(pending.value.path()).read_bytes()
         assert len(json.loads(archive)["history"]) == 1
         assert len(json.loads(archive)["native_imports"]) == 1
+        assert len(json.loads(archive)["ti_projects"]) == 1
         page.locator("#fr").click()
         expect(page.locator("h1")).to_contain_text("Préservez le but")
         with page.expect_download() as pending:
@@ -181,6 +227,31 @@ def test_offline_ti_journey() -> None:
         page.locator("#resume").click()
         expect(page.locator("#step-title")).to_have_text("Goal and public source")
         expect(page.locator("#public")).not_to_be_checked()
+        page.evaluate(
+            """() => {
+            const original=File.prototype.arrayBuffer;
+            window.restoreTIFileRead=()=>{File.prototype.arrayBuffer=original;};
+            File.prototype.arrayBuffer=function(...args){
+                const result=original.apply(this,args);
+                if(this.name==='held-history.json'){
+                    window.tiImportHeld=true;
+                    return new Promise(resolve=>{window.releaseTIImport=async()=>resolve(await result);});
+                }
+                return result;
+            };
+        }"""
+        )
+        page.locator("#import").set_input_files(
+            {"name": "held-history.json", "mimeType": "application/json", "buffer": archive}
+        )
+        page.wait_for_function("window.tiImportHeld===true")
+        page.locator("#project").fill("New edit survives asynchronous import")
+        page.evaluate("window.releaseTIImport();window.restoreTIFileRead();")
+        expect(page.locator("#error")).to_contain_text("Workspace changed during inspection")
+        expect(page.locator("#project")).to_have_value("New edit survives asynchronous import")
+        with page.expect_download() as pending:
+            page.locator("#export").click()
+        assert json.loads(Path(pending.value.path()).read_bytes())["project"] == "New edit survives asynchronous import"
         previous_title = page.locator("#source-title").input_value()
         page.locator("#import").set_input_files(
             {"name": "invalid-utf8.json", "mimeType": "application/json", "buffer": archive[:-1] + b"\xff"}

@@ -21,14 +21,19 @@ export function assertPublicContent(value) {
         if (++nodes > 100000 || depth > 32) throw Error('Public input exceeds its structural budget');
         if (Array.isArray(item)) item.forEach(child => pending.push([child, depth + 1]));
         else if (item && typeof item === 'object') for (const [key, child] of Object.entries(item)) {
-            if (sensitive.has(decode(key).toLowerCase().replace(/[^a-z0-9]/g, '')) && typeof child === 'string' && child.trim()) throw Error('Public-only input contains a credential-shaped field; remove it before continuing');
+            const normalized = decode(key).toLowerCase().replace(/[^a-z0-9]/g, '');
+            const inertAuthorization = key === 'authorization' && item.schema === VERSION && child && typeof child === 'object' && !Array.isArray(child)
+                && Object.keys(child).sort().join('|') === ['authority_expansion','binding','scope'].join('|')
+                && child.scope === 'local-bounded' && child.binding === null && child.authority_expansion === false;
+            const populated = child !== null && (typeof child !== 'string' || child.trim().length > 0);
+            if (([...sensitive].some(marker => normalized.includes(marker)) || normalized.endsWith('token')) && populated && !inertAuthorization) throw Error('Public-only input contains a credential-shaped field; remove it before continuing');
             pending.push([child, depth + 1]);
         } else if (typeof item === 'string') {
             const decoded = decode(item);
-            if (pattern.test(decoded)) throw Error('Public-only input contains credential-shaped text; remove it before continuing');
             if (/^[\s]*[\[{\"]/.test(decoded)) {
-                try { pending.push([parseBounded(decoded), depth + 1]); } catch { /* Malformed embedded data remains inert. */ }
+                try { pending.push([parseBounded(decoded), depth + 1]); continue; } catch { /* Check malformed embedded text below. */ }
             }
+            if (pattern.test(decoded)) throw Error('Public-only input contains credential-shaped text; remove it before continuing');
         }
     }
 }

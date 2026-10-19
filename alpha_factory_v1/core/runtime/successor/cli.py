@@ -28,11 +28,13 @@ def add_commands(commands: Any) -> None:
     from .computer import add_commands as add_computer_commands
     from .transformation import add_commands as add_transformation_commands
     from .transformation_library_cli import add_commands as add_library_commands
+    from .campaign_experiment_cli import add_commands as add_study_commands
 
     add_work_commands(commands)
     add_computer_commands(commands)
     add_transformation_commands(commands)
     add_library_commands(commands)
+    add_study_commands(commands)
     cycle = commands.add_parser("successor-cycle", help="Exchange exact Studio work with an installed local operator")
     phases = cycle.add_subparsers(dest="cycle_action", required=True)
     phases.add_parser("status", help="Inspect configured trust and cycle prerequisites without contacting a node")
@@ -275,6 +277,10 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         from .transformation_library_cli import handle as handle_library
 
         return handle_library(args)
+    if args.command == "successor-study":
+        from .campaign_experiment_cli import handle as handle_study
+
+        return handle_study(args)
     from .orchestration import rehearse, retained_result, show_run, write_demo
 
     if args.command == "successor-restore":

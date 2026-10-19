@@ -27,14 +27,17 @@ that a PR is merged, a release published, or a live service qualified.
 | Section 7: evaluator revision | `successor/measurement.py`: signed verifier disagreement evidence plus separate configured controller approval, immutable measurement epochs | `tests/runtime/test_measurement.py`, `test_measurement_review.py` | Distinct locally configured principals are role separation, not independent organizations. Signatures attest provenance; they cannot establish semantic truth. |
 | Appendix B: confirmation arithmetic and error accounting | `MeasurementLedger`: journal-wide attempt sequence, explicit claim estimands, width-two paired bound, calibration correction | Arithmetic, failed/parallel attempts, renaming, immutable fixed sample and adversarial signature-mutation tests | Requires valid sampling and independently controlled custody. One journal covers its projects; cross-journal/global service coordination and external checkpoints remain operational requirements. |
 | Missing calibration | Outcome bound remains null unless a separately supported bound is supplied; calibration error events accounted per instrument epoch | Explicit unknown-calibration and corrected-margin tests | Agreement among models is not accepted as calibration evidence. No empirically calibrated reader-understanding instrument supplied. |
-| Level 3: improve discovery across fresh complete campaigns | Frozen campaign identity, initial-agent/archive commitments and campaign experimental unit in `ConfirmationDesign` | Global reservation/terminal-observation tests | Infrastructure for campaign comparisons; no completed learned-discovery-policy superiority study. |
+| Level 3: improve discovery across fresh complete campaigns | `successor/campaign_experiment.py`: train executable discovery policies, freeze selection, then run complete fresh native campaigns; shared initial lead agent and no archive | `test_campaign_experiment.py`; `scripts/reproduce_transformational_study.py`; separate training/confirmation fixtures | Completed bounded finite policy-selection example: two training and four terminal campaigns. Direct complementary search matches enumeration coverage with eight fewer search units per campaign. This is not calibrated reader benefit, independently sampled transfer or general learning-to-discover. |
 | Level 4: purpose-grounded formulation change | Versioned executable transformation and comparison record | Public-source pilot, complementary controls and retained incumbent | Scoped structural result only; independently measured real-world benefit remains open. |
 | Continuous reuse and SUCCESSOR Ω | `successor/transformation_library.py`: versioned native archives, separately signed local review/promotion, retirement, rollback and scoped cost-aware routing | `tests/runtime/test_transformation_library.py`; existing successor state suite | Local selection confers no spending, publication or execution authority. Declared logical costs are not monetary economics. Learned router transfer and independent outcome evidence remain open. |
 | Appendix A: exact finite-model study | Original immutable companion archive; separate reproduction command | 50 original tests; all 15 manifest entries; byte-identical regenerated results; independent 13-horizon and 12-threshold checks | Passive 1/2, active 8191/8192 with at most 12 queries, unrestricted equality and cost controls. Not an LLM result or autonomous causal-model discovery. |
 | Appendix C: public-source understanding | Guided EN/FR fixed-summary workspace, audit map, credible controls, artifact export, pause/cancel/recovery | Native tests, browser journey, accessibility/viewport checks | Browser source annotations are local data. Interactive-understanding outcome is not substituted for a fixed-summary request. |
 | Computer-mediated work | Existing Alpha Computer Use engine; Fleet #53/#54; native receipts and separate Manager/Jobs adapters | Existing native/browser qualification workflows; real result-shape export regression | Scripted local execution and independently inspectable state are distinct from live-model performance, broad desktop support and economic independence. |
-| Mathematical/scientific investigation | Original exact finite-model laboratory remains available | Companion tests and arithmetic checks | No unsolved-problem solution, formally checked mathematical discovery or general scientific breakthrough claimed. Further native investigation adapter is outstanding. |
-| Actual model/tool adapters | Existing `successor/mission.py` model supplier and Computer Use runtime remain intact; new source discovery exposes an installed bounded operator boundary | Existing provider/runtime qualification; new stale-operator and unauthorized-proposal regressions | New source-discovery v1 is deterministic. A configured-model formulation adapter and its complete campaign comparison are not yet qualified; existing aggregation inference must not be relabeled as this capability. |
+| Mathematical/scientific investigation | Separate `successor/transformation_math.py` affine-recurrence driver; executable scalar, cycle and affine-composition controls, algebraic witness and finite search | `test_transformation_math.py`; `examples/transformational-math/expected-results.json`; actual 864-case durable campaign | Every admitted census output is exact. Frozen affine candidate uses 43,488 units versus 30,204 for cycle detection: retain the stronger cycle control. Human-readable argument, not a proof-assistant certificate, novel theorem or general investigation system. Its own domain schema is not native source-selector v1. |
+| Actual model/tool adapters | `successor/transformation_model.py`, pure frozen-program operator and explicit local model CLI; unchanged native execution/checker | `test_transformation_model.py`: actual loopback HTTP fixture, full native campaign, one-call permits, late response after pause/cancel, provenance/attribution forgeries | Installed OpenAI-compatible local no-charge proposal adapter; closed executable program language, separate native approval. Tests do not invoke real model weights or establish model advantage. Reported model revision and billing remain operator/provider attestations. |
+| Seven transformation axes | Typed axis vocabulary, installed extensible operators and separate typed domain drivers | Source representation/production/complementarity ablations and mathematical reduction checks | The source-selector has three built-in operators. General information, task-boundary, mechanism and evaluator-changing discovery operators are not all implemented; evaluator revision remains a separate authorized process. This is a software scope limitation, not a completed seven-axis result. |
+| Shared persistent TI journey | Fleet-owned versioned project history, Alpha guided workspace and actual native/route/handoff adapters | Native browser request/result and Computer Use handoff; Fleet project/adversarial integration tests | Browser history and native evidence remain explicit. Full saved-package four-repository TI journey and external review/promotion remain final integration gates; inert historical routes grant no authority. |
+| Parent lifetime and public portable history | Reserved parent-study lease checked inside ordinary native transactions; exact child request/phase/source binding; all-event public screening | Parent pause/cancel bypass, unplanned child, ordinary-history exposure and serialized structured-credential regressions | Known source reuse within the same Journal is rejected, including imported and archived source records. Semantic independence and cross-service custody remain outside these local checks. Exact inert authorization metadata is not a credential exception for arbitrary objects. |
 | Ecosystem boundaries and money | Manager #1607 USDC inspection; Jobs separate AGIALPHA adapter; existing versioned receipts | Native zero-cost envelope compatibility and separate disposable currency fixtures | Current native transformation charter has zero USDC and zero AGIALPHA allowance. Positive paid drafts must refuse it. Policy doubles do not establish native paid support. |
 
 ## Workstream dependencies and ownership
@@ -48,6 +51,8 @@ that a PR is merged, a release published, or a live service qualified.
 | P1 | Add durable transformation discovery and guided source pilot | Alpha discovery owner; extends existing runtime and flagship |
 | P1 | Add independently revisable measurement epochs and global attempt accounting | Alpha measurement owner; separate engineering reviewer |
 | P1 | Add separate inert transformation request inspection | Manager #1607 and Jobs corresponding follow-up, dependent on exact native Alpha schema |
+| P1 | Add finite model, mathematical and complete-campaign discovery examples | Separate Alpha domain drivers; independent scoped reviews; original paper unchanged |
+| P1 | Integrate persistent shared TI history and exact native source capture | Fleet follow-up and Alpha workspace; both currency receivers remain distinct and inert |
 | P2 | Qualify a compatible immutable release set and all four published sites | Integration lead after exact-source checks, reviews, finite source profiles, packaged installation and live verification |
 
 Coordination: <https://github.com/MontrealAI/AGI-Fleet-Linux/issues/52>.
@@ -59,6 +64,7 @@ python scripts/reproduce_transformational_paper.py
 python -m pytest tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py --confcutdir=tests/runtime -o addopts= -q
 python -m pytest tests/runtime/test_transformation.py --confcutdir=tests/runtime -o addopts= -q
 python -m alpha_factory_v1.core.runtime.cli --home ./local-ti successor-transform demo --output ./local-ti-result.json
+python -m pytest -q tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_transformation_math.py
 ```
 
 Use a new local runtime directory for a disposable run. Existing journals and
@@ -71,6 +77,24 @@ The native source pilot makes no paid model calls and no payment transaction.
 Logical search/execution units are counted separately. Device electricity,
 engineering effort, human review, migration, maintenance, and a justified reuse
 horizon are not measured, so an economic break-even claim is unsupported.
+
+The complete-campaign study has separate executable instructions in
+`examples/transformational-intelligence/policy-study/README.md`. Its retained
+demonstration evaluates three policies on two training and four terminal
+campaigns. The learned direct-pair policy and unchanged enumeration have equal
+structural coverage; declared search-cost utility differs by eight millionths.
+The fixed-frame policy is better on the supplied rejection case. The four
+paired campaign values are not treated as independent research evidence, and no
+statistical or economic promotion follows. The actual reproduction took about
+3.60 seconds on this machine; that timing is not a speed guarantee.
+
+The mathematical example separately reports all 710,779 logical campaign units,
+including development, every control and oracle comparison. One census costs
+468,283 more units than direct execution alone. Three further identical
+workloads would reach break-even under that declared model; the stronger cycle
+control still wins. These conditional units are not money, electricity or a
+permission to reuse a method. Local model discovery's explicit no-charge
+attestation is distinct from the fully deterministic free starting path.
 
 Initial deployment remains Ubuntu Terminal / Hardhat with a hidden, local,
 ephemeral deployer-key prompt. Keys must never appear in command arguments,
@@ -85,3 +109,12 @@ a merged four-repository set, a published fresh release, installed mixed-version
 compatibility, or live website acceptance. Each final claim must name its exact
 commit and actual workflow/artifact evidence. Open research and unsupported
 capabilities above must remain visible in releases and product copy.
+
+Additive preparations are linked in Alpha #4839, Fleet #54/#55, Manager
+#1607/#1608 and Jobs #3993/#3994/#3995. Manager's newly reported 113-path
+receipt/history predecessor still needs a published exact source handoff before
+the additive release profile can be reconciled. Jobs' new profile deliberately
+blocks publication while the additional scanner review is absent. Hosted exact
+source checks, established parent fixes, compatible saved installations and
+actual live Pages verification remain outstanding. These preparations are not
+merged or released capabilities.

@@ -74,5 +74,17 @@ test('decoded and quoted credential-shaped content rejects before retention', ()
         JSON.stringify({text: JSON.stringify({api_key: 'synthetic-fixture-only'})})]) {
         assert.throws(() => assertPublicContent(content), /credential-shaped/);
     }
-    assert.doesNotThrow(() => assertPublicContent({authorization: {scope: 'local-bounded'}, publicOnly: true}));
+    assert.doesNotThrow(() => assertPublicContent({schema: fixture.schema, authorization: fixture.authorization}));
+    for (const key of ['x-api-key', 'x-auth-token', 'proxy-authorization', 'aws_secret_access_key']) {
+        assert.throws(() => assertPublicContent({configuration: {[key]: 'synthetic-fixture-only'}}), /credential-shaped/);
+    }
+    assert.doesNotThrow(() => assertPublicContent({max_tokens: 1200, computational_tokens: 'public discussion'}));
+    assert.doesNotThrow(() => assertPublicContent(JSON.stringify(fixture)));
+    assert.doesNotThrow(() => assertPublicContent({raw: JSON.stringify({raw: JSON.stringify(fixture)})}));
+    for (const value of [{value:'synthetic-fixture-only'}, ['synthetic-fixture-only'], true, false, 1, 0]) {
+        for (const key of ['api_key','x-api-key','authorization']) {
+            assert.throws(() => assertPublicContent({[key]:value}), /credential-shaped/);
+            assert.throws(() => assertPublicContent({text:JSON.stringify({[key]:value})}), /credential-shaped/);
+        }
+    }
 });

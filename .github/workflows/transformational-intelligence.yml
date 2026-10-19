@@ -32,17 +32,25 @@ jobs:
           python -m pip check
           python -m playwright install --with-deps chromium
       - name: Reproduce exact paper artifact and preserve publication bytes
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
         run: |
           mkdir -p evidence
           python -m unittest tests.test_transformational_paper -v
           python scripts/reproduce_transformational_paper.py --out evidence/paper
+          python -m pytest --noconftest -o addopts= tests/test_transformational_study_reproduction.py -q
+          python scripts/reproduce_transformational_study.py --spec examples/transformational-intelligence/policy-study/spec.json --training examples/transformational-intelligence/policy-study/training.json --confirmation examples/transformational-intelligence/policy-study/confirmation.json --state "$RUNNER_TEMP/ti-study-agent" --output evidence/policy-study.json --approve-free-local-study
       - name: Exercise durable discovery and separately controlled measurement
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
         run: |
-          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py -q --junitxml=evidence/discovery.xml
+          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_transformation_math.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py -q --junitxml=evidence/discovery.xml
           python -m alpha_factory_v1.core.runtime.cli --home "$RUNNER_TEMP/ti-local-agent" successor-transform demo --output evidence/native-campaign.json
           TI_NATIVE_CAMPAIGN=evidence/native-campaign.json node --test examples/transformational-intelligence/inspector.test.mjs
+          node --test examples/transformational-intelligence/project-bridge.test.mjs
+          python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --help
+          python -m alpha_factory_v1.core.runtime.successor.transformation_math --help
+          python -m alpha_factory_v1.core.runtime.cli successor-study --help
       - name: Verify generated sources and complete offline browser journey
         run: |
           python scripts/generate_transformational_intelligence.py

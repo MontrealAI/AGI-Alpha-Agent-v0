@@ -69,7 +69,23 @@ def assert_public_content(value: Any) -> None:
         if isinstance(item, dict):
             for key, child in item.items():
                 normalized = re.sub(r"[^a-z0-9]", "", _decode_public_text(key).lower())
-                if normalized in SENSITIVE_KEYS and isinstance(child, str) and child.strip():
+                sensitive = any(marker in normalized for marker in SENSITIVE_KEYS) or normalized.endswith("token")
+                inert_authorization = (
+                    normalized == "authorization"
+                    and item.get("schema") == SCHEMA
+                    and type(child) is dict
+                    and set(child) == {"scope", "binding", "authority_expansion"}
+                    and child.get("scope") == "local-bounded"
+                    and child.get("binding") is None
+                    and child.get("authority_expansion") is False
+                )
+                nonempty = (
+                    child is not None
+                    and (not isinstance(child, str) or bool(child.strip()))
+                    and child != []
+                    and child != {}
+                )
+                if sensitive and nonempty and not inert_authorization:
                     raise ValueError(
                         "public-only input contains a credential-shaped field; remove it before continuing"
                     )
@@ -78,8 +94,6 @@ def assert_public_content(value: Any) -> None:
             pending.extend((child, depth + 1) for child in item)
         elif isinstance(item, str):
             decoded = _decode_public_text(item)
-            if pattern.search(decoded):
-                raise ValueError("public-only input contains credential-shaped text; remove it before continuing")
             if decoded.lstrip().startswith(("{", "[", '"')):
                 try:
                     nested = safe_json_loads(decoded)
@@ -87,6 +101,9 @@ def assert_public_content(value: Any) -> None:
                     pass
                 else:
                     pending.append((nested, depth + 1))
+                    continue
+            if pattern.search(decoded):
+                raise ValueError("public-only input contains credential-shaped text; remove it before continuing")
 
 
 def _decode_public_text(text: str) -> str:
@@ -933,7 +950,7 @@ class DiscoveryLoop:
                 self._running(cx)
                 if data["state"] in {"completed", "canceled"}:
                     raise Conflict("finished campaigns cannot receive execution approval")
-                self._current(data)
+                self._current(data, cx)
                 if arguments["binding_digest"] != data["binding_digest"]:
                     raise Conflict("approval is stale or belongs to another comparison")
                 data["approval"] = {"binding": data["binding_digest"], "scope": "local-bounded", "paid_use": False}
@@ -945,7 +962,7 @@ class DiscoveryLoop:
                 self._running(cx)
                 if data["state"] != "paused":
                     raise Conflict("only a paused campaign can resume")
-                self._current(data)
+                self._current(data, cx)
                 data["state"], data["resume_state"] = data["resume_state"], None
             elif action == "cancel":
                 if data["state"] == "completed":
@@ -958,12 +975,36 @@ class DiscoveryLoop:
             data["history"].append({"action": action, "from_revision": record["revision"]})
             return self.journal.append(cx, self._key(campaign_id), data)
 
-    def _current(self, data: dict[str, Any]) -> DiscoveryRequest:
+    def _current(self, data: dict[str, Any], cx: Any = None) -> DiscoveryRequest:
         request = DiscoveryRequest.model_validate(data["request"])
         if digest("ti-bindings", self.bindings(request)) != data["binding_digest"]:
             raise Conflict(
                 "code, configuration, inputs, operators or evaluator changed; fresh approval/comparison required"
             )
+        reserved = {key for key in request.configuration if key.startswith("ti_parent_")}
+        if reserved:
+            expected = {"ti_parent_study", "ti_parent_binding", "ti_parent_phase"}
+            if reserved != expected:
+                raise Conflict("parent study requires the complete installed lease configuration")
+            from .campaign_experiment import PolicyStudy, _binding, validate_child_lease
+
+            try:
+                study_id = str(uuid.UUID(request.configuration["ti_parent_study"]))
+                parent = self.journal.latest("@discovery-policy-study:" + study_id, cx)
+            except (KeyError, ValueError):
+                raise Conflict("parent study lease is missing or invalid") from None
+            spec = PolicyStudy.model_validate(parent["spec"])
+            phase = request.configuration["ti_parent_phase"]
+            if (
+                spec.study_id != study_id
+                or phase not in {"training", "confirmation"}
+                or parent["state"] != ("training" if phase == "training" else "confirming")
+                or parent["binding"] != request.configuration["ti_parent_binding"]
+                or parent["approval"] != parent["binding"]
+                or parent["binding"] != _binding(spec)
+            ):
+                raise Conflict("parent study lease is inactive, consumed or changed")
+            validate_child_lease(parent, request)
         return request
 
     def step(self, campaign_id: str, *, operation_id: str) -> dict[str, Any]:
@@ -978,7 +1019,7 @@ class DiscoveryLoop:
                 return record
             if data["state"] not in PHASES[:-1]:
                 raise Conflict("campaign is paused or canceled")
-            request = self._current(data)
+            request = self._current(data, cx)
             if data["approval"] is None or data["approval"]["binding"] != data["binding_digest"]:
                 raise PermissionError("review and approve the exact local comparison before construction")
             previous = data["state"]
@@ -1118,7 +1159,7 @@ class DiscoveryLoop:
                 raise Conflict("completed confirmation cannot be replaced or repeatedly inspected")
             if data["state"] != "frozen":
                 raise Conflict("freeze finalists before supplying terminal evidence")
-            request = self._current(data)
+            request = self._current(data, cx)
             frozen = data["freeze"]
             if frozen["digest"] != freeze_digest or digest("ti-finalist-freeze", frozen["manifest"]) != freeze_digest:
                 raise Conflict("finalist, comparison or confirmation commitment mismatch")

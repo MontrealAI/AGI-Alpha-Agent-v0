@@ -28,7 +28,16 @@ from alpha_factory_v1.core.runtime.successor.transformation import (
     pilot_request,
     source_fingerprint,
     validate_envelope,
+    assert_public_content,
 )
+
+
+@pytest.mark.parametrize("key", ["x-api-key", "x-auth-token", "proxy-authorization", "aws_secret_access_key"])
+def test_common_prefixed_credential_fields_are_refused_without_echo(key):
+    with pytest.raises(ValueError) as caught:
+        assert_public_content({"configuration": {key: "synthetic-fixture-only"}})
+    assert "synthetic-fixture-only" not in str(caught.value)
+    assert_public_content({"max_tokens": 1200, "computational_tokens": "public discussion"})
 
 
 def prepare(tmp_path: Path, **changes):
