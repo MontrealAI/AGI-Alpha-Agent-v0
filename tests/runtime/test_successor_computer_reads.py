@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import base64
 import contextlib
+import gzip
 import json
 import subprocess
 import threading
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import Any, Iterator
 from unittest.mock import patch
 
+import httpx
 import pytest
 
 from alpha_factory_v1.core.runtime.store import Conflict, Journal
@@ -203,6 +205,28 @@ def test_reader_failure_retains_received_byte_budget(monkeypatch: pytest.MonkeyP
     with pytest.raises(ValueError, match="refused"):
         broker.fetch("https://example.org/public", "GET")
     assert broker.bytes == 123
+
+
+def test_compressed_response_is_refused_before_body_read_or_decompression(monkeypatch: pytest.MonkeyPatch) -> None:
+    compressed = gzip.compress(b"x" * 1_048_576)
+    read = []
+    requests = []
+
+    class CompressedStream(httpx.SyncByteStream):
+        def __iter__(self) -> Iterator[bytes]:
+            read.append(True)
+            yield compressed
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(200, headers={"content-encoding": "gzip"}, stream=CompressedStream())
+
+    original = httpx.Client
+    monkeypatch.setattr(computer_read.socket, "getaddrinfo", lambda *args, **kwargs: [(2, 1, 6, "", ("1.1.1.1", 443))])
+    monkeypatch.setattr(httpx, "Client", lambda **kwargs: original(transport=httpx.MockTransport(respond), **kwargs))
+    result = computer_read.read_public("https://example.org/public", "GET", 1024)
+    assert "error" in result and result["bytes_read"] == 0 and read == []
+    assert requests[0].headers["accept-encoding"] == "identity" and len(compressed) < 2048
 
 
 @pytest.mark.parametrize("reason", ["stop", "deadline"])

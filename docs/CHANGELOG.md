@@ -1,3 +1,11 @@
+## 1.35.1 — Cancellable public-document reads
+
+- Supervise DNS and streamed HTTP in a credential-free disposable reader with one eight-second wall-clock deadline.
+- Check session STOP/deadline between bounded waits, kill and reap interrupted readers, and retain uncertain byte/action reservations.
+- Bind browser and reader source digests into fresh permits while preserving historical handoff/return/archive formats.
+- Preserve the bilingual Computer Use flagship, previous releases and all deployment/governance boundaries.
+- See [release notes](agent/RELEASE_NOTES_1.35.1.md) for upgrade and qualification details.
+
 ## 1.35.0 — Computer Use and retained strategy development
 
 - Make bounded Computer Use a primary English/French flagship path while retaining the provider-free catalog example.

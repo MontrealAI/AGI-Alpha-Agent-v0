@@ -41,12 +41,17 @@ def read_public(url: str, method: str, maximum: int) -> dict[str, Any]:
         target = url.replace(parts.netloc, host, 1)
         with httpx.Client(timeout=8, trust_env=False, follow_redirects=False) as client:
             with client.stream(
-                method, target, headers={"Host": parts.hostname}, extensions={"sni_hostname": parts.hostname}
+                method,
+                target,
+                headers={"Host": parts.hostname, "Accept-Encoding": "identity"},
+                extensions={"sni_hostname": parts.hostname},
             ) as response:
                 if response.status_code != 200:
                     raise ValueError("public read requires an exact 200 response")
+                if response.headers.get("content-encoding", "identity").strip().lower() != "identity":
+                    raise ValueError("compressed public responses are not supported")
                 content = bytearray()
-                for part in response.iter_bytes(chunk_size=65_536):
+                for part in response.iter_raw(chunk_size=65_536):
                     received += len(part)
                     if received > maximum:
                         raise ValueError("network byte budget exhausted")

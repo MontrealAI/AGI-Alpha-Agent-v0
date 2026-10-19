@@ -151,6 +151,16 @@ the original hostname's certificate. It never forwards page cookies, authorizati
 Redirects, private IPs, additional query strings, writes, WebSockets and service workers are refused.
 This permits bounded public-document workflows without creating an unrestricted browsing proxy.
 
+Each public read runs in a disposable child with no inherited provider credentials or proxy settings.
+The parent checks session STOP and deadline state between waits of at most 100 ms and enforces one
+eight-second wall-clock budget across DNS resolution and streamed HTTP input. Cancellation kills and
+reaps the child. An interrupted read conservatively reserves its remaining per-read byte allowance;
+unknown received bytes are not assumed free. Both the browser-worker and public-reader source digests
+are bound into fresh worker commitments. Upgrading requires preparing a new permit; historical receipts
+keep their original commitments and remain readable.
+The reader requests identity encoding and rejects compressed responses before consuming their bodies.
+Raw-byte iteration prevents decompression from allocating an oversized body ahead of the byte limit.
+
 Before each billed call and UI action, the private signed journal reserves a unit and retains its intent.
 The operator/global stop and deadline are checked between bounded calls and immediately before actions.
 An in-flight provider/network request may finish during its timeout; its reservation is not refunded.
