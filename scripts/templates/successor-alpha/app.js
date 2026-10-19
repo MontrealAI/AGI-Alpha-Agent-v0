@@ -174,6 +174,7 @@ Object.assign(fr, {
     computerSaveHistory:'Télécharger l’archive complète du projet',
     computerRestoreAria:'Restaurer l’archive complète du projet',
     computerHistoryNote:'Même identité de projet pour les catalogues et Computer Use. Vos avis sont des jugements consignés, sans certification indépendante, approbation de paiement ni preuve de capacité universelle.',
+    tiFirstEyebrow:'INTELLIGENCE TRANSFORMATIONNELLE · EXPÉRIENCE GRATUITE HORS LIGNE',tiFirstTitle:'Changez la représentation. Préservez le but.',tiFirstText:'Créez un résumé de source utile. Comparez critique après rédaction et graphe argumentatif inspecté avant compression, examinez les énoncés exacts et conservez votre historique. Prototype local déterministe ; couverture structurelle seulement, revue indépendante en attente.',tiFirstOpen:'Essayer l’expérience de compréhension de source',
     heroEyebrow:'LE PROJET PHARE · TROUVEZ VOTRE ALPHA. CONSTRUISEZ VOTRE SUCCESSOR Ω.',
     heroLine1:'Trouvez votre',
     heroLine2:'Alpha.',

@@ -419,6 +419,11 @@ def main() -> None:
             "scripts.generate_successor_alpha" if __package__ else "generate_successor_alpha"
         )
         flagship.build(REPO_ROOT)
+    if (REPO_ROOT / "scripts/templates/transformational-intelligence/index.html").is_file():
+        understanding = importlib.import_module(
+            "scripts.generate_transformational_intelligence" if __package__ else "generate_transformational_intelligence"
+        )
+        understanding.build(REPO_ROOT)
     if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():
         workbench = importlib.import_module(
             "scripts.generate_successor_workbench" if __package__ else "generate_successor_workbench"

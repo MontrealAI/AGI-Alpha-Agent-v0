@@ -907,8 +907,12 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  transformational-intelligence:
+    needs: publication-preflight
+    uses: ./.github/workflows/transformational-intelligence.yml
+
   package:
-    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey]
+    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
