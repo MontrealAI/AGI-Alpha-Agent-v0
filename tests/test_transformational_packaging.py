@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import sys
 import zipfile
 from copy import deepcopy
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import pytest
 
@@ -105,8 +107,33 @@ def test_source_closure_and_page_tampering_are_refused(tmp_path: Path, problem: 
 def test_operator_bundle_contains_all_guides_exact_page_and_public_examples(tmp_path: Path) -> None:
     packaging.copy_release_documents(ROOT, tmp_path, VERSION, COMMIT)
     evidence.package_workspace(ROOT, tmp_path)
-    archive_path = packaging.package_operator_guide(ROOT, tmp_path, VERSION)
+    guides = [
+        packaging.release_document_name(name)
+        for name in packaging.release_documents(VERSION)
+        if name.startswith("examples/transformational")
+    ]
+    for name in guides:
+        text = re.sub(r"```.*?```", "", (tmp_path / name).read_text(), flags=re.S)
+        for link in re.findall(r"\]\(([^\s)]+)\)", text):
+            parsed = urlsplit(link)
+            if not parsed.scheme and parsed.path:
+                assert (tmp_path / parsed.path).is_file(), (name, link)
+    assert (
+        f"](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/{COMMIT}/"
+        "examples/transformational-math/expected-results.json)" in (tmp_path / "TRANSFORMATIONAL_MATH.md").read_text()
+    )
+    archive_path = packaging.package_operator_guide(ROOT, tmp_path, VERSION, COMMIT)
     with zipfile.ZipFile(archive_path) as archive:
+        for name in guides:
+            text = re.sub(r"```.*?```", "", archive.read(name).decode(), flags=re.S)
+            for link in re.findall(r"\]\(([^\s)]+)\)", text):
+                parsed = urlsplit(link)
+                if not parsed.scheme and parsed.path:
+                    assert parsed.path in archive.namelist(), (name, link)
+        assert (
+            "](transformational-examples/transformational-math/expected-results.json)"
+            in archive.read("TRANSFORMATIONAL_MATH.md").decode()
+        )
         assert {
             "TRANSFORMATIONAL_IMPLEMENTATION.md",
             "TRANSFORMATIONAL_DISCOVERY.md",

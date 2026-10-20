@@ -128,16 +128,17 @@ def release_document_name(name: str) -> str:
     }.get(name, Path(name).name)
 
 
-def copy_release_documents(root: Path, output: Path, version: str, commit: str) -> None:
-    """Make flattened guide links usable while retaining manuscript bytes exactly."""
+def copy_release_documents(root: Path, output: Path, version: str, commit: str, *, archive_links: bool = False) -> None:
+    """Use pinned standalone fixture links or archive-local links; preserve manuscripts."""
     root = root.resolve()
     names = release_documents(version)
     packaged = {name: release_document_name(name) for name in names}
     if tuple(map(int, version.split("."))) >= (1, 36, 0):
         packaged["docs/transformational-intelligence/index.html"] = "transformational-intelligence-workspace.html"
-        packaged.update(
-            {name: "transformational-examples/" + name.removeprefix("examples/") for name in TI_PUBLIC_EXAMPLES}
-        )
+        if archive_links:
+            packaged.update(
+                {name: "transformational-examples/" + name.removeprefix("examples/") for name in TI_PUBLIC_EXAMPLES}
+            )
     for name in names:
         source = root / name
         target = output / packaged[name]
@@ -225,20 +226,24 @@ def package_successor_alpha_workspace(root: Path, output: Path) -> dict[str, str
     return {"name": destination.name, "bytes": len(raw), "sha256": identity["pageSha256"]}
 
 
-def package_operator_guide(root: Path, output: Path, version: str) -> Path:
-    """Retain all guides and add the self-contained TI artifact and public fixtures."""
+def package_operator_guide(root: Path, output: Path, version: str, commit: str) -> Path:
+    """Retain all guides with offline links, the exact TI page and public fixtures."""
     destination = output / f"alpha-agent-v{version}-operator-guide.zip"
-    with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
-        for name in release_documents(version):
-            if name.startswith(("docs/agent/", "examples/transformational")):
-                path = output / release_document_name(name)
-                archive.write(path, path.name)
-        if tuple(map(int, version.split("."))) >= (1, 36, 0):
-            archive.write(
-                output / "transformational-intelligence-workspace.html", "transformational-intelligence-workspace.html"
-            )
-            for name in TI_PUBLIC_EXAMPLES:
-                archive.write(root / name, "transformational-examples/" + name.removeprefix("examples/"))
+    with tempfile.TemporaryDirectory(prefix="alpha-operator-guides-") as raw:
+        guides = Path(raw)
+        copy_release_documents(root, guides, version, commit, archive_links=True)
+        with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
+            for name in release_documents(version):
+                if name.startswith(("docs/agent/", "examples/transformational")):
+                    path = guides / release_document_name(name)
+                    archive.write(path, path.name)
+            if tuple(map(int, version.split("."))) >= (1, 36, 0):
+                archive.write(
+                    output / "transformational-intelligence-workspace.html",
+                    "transformational-intelligence-workspace.html",
+                )
+                for name in TI_PUBLIC_EXAMPLES:
+                    archive.write(root / name, "transformational-examples/" + name.removeprefix("examples/"))
     return destination
 
 
@@ -322,7 +327,7 @@ def main() -> None:
     shutil.copy2("docs/reports/computer-use-study/report-pack.zip", output / "computer-use-study-report-pack.zip")
     package_mainnet_record(Path.cwd(), output, version)
     shutil.copy2("deployments/ethereum-mainnet/2026-10-18/manifest.json", output / "ethereum-mainnet-2026-10-18.json")
-    package_operator_guide(Path.cwd(), output, version)
+    package_operator_guide(Path.cwd(), output, version, sha)
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-manuscript.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(Path("docs/manuscript").rglob("*")):
             if path.is_file():
