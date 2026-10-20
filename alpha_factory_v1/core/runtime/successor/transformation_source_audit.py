@@ -255,6 +255,8 @@ def _screen_source_assignments(
             fold_value = literal.value
         elif isinstance(literal, ast.BinOp):
             left, right = literals.get(literal.left), literals.get(literal.right)
+            if isinstance(literal.op, ast.Mod) and left is not None:
+                raise ValueError("public-only source refuses unsupported closed literal formatting")
             if isinstance(literal.op, ast.Add) and left is not None and right is not None:
                 consume(sizes[literal.left] + sizes[literal.right])
                 if isinstance(left, str) and isinstance(right, str):
@@ -272,6 +274,30 @@ def _screen_source_assignments(
                         raise ValueError("source literal repetition exceeds its bound")
                     consume(sizes[operand] * count.value)
                     fold_value = repeated * count.value
+        elif isinstance(literal, ast.Call) and (
+            (
+                isinstance(literal.func, ast.Attribute)
+                and literal.func.attr != "join"
+                and (
+                    literal.func.value in literals
+                    or (
+                        isinstance(literal.func.value, ast.Name)
+                        and literal.func.value.id in {"str", "bytes"}
+                        # These class/static factories do not take an instance receiver.
+                        and literal.func.attr not in {"fromhex", "maketrans"}
+                        and literal.args
+                        and literal.args[0] in literals
+                    )
+                )
+            )
+            or (
+                isinstance(literal.func, ast.Name)
+                and literal.func.id == "format"
+                and literal.args
+                and literal.args[0] in literals
+            )
+        ):
+            raise ValueError("public-only source refuses unsupported closed literal methods or formatting")
         elif isinstance(literal, ast.Call) and isinstance(literal.func, ast.Attribute) and literal.func.attr == "join":
             separator_node: ast.AST | None = None
             sequence_node: ast.AST | None = None

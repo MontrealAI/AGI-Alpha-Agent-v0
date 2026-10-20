@@ -156,7 +156,11 @@ folded before nested-source screening; nonempty static format specifiers are ref
 str/bytes joins also fold bounded list/tuple elements, including the admitted single-argument iterable
 adapters and explicit str.join/bytes.join spellings. Mixed or unknown runtime elements are not thereby
 resolved or certified; no supplied method or iterator is invoked. Join output bytes are charged before
-construction under the same shared budget and per-value limit. Each parsed or
+construction under the same shared budget and per-value limit. Other method calls on closed text/bytes
+receivers are refused rather than executed or treated as checked. Closed-literal percent formatting and
+built-in format calls are also refused. This intentionally conservative admission grammar includes
+str.format/format_map without implementing their field lookup, conversion or width semantics; dynamic
+receiver values and aliases remain outside the claimed static result. Each parsed or
 constructed value is limited to 65,536 bytes. A shared 1,000,000 byte-unit budget covers recursive
 parsing and literal construction, alongside the existing 12,000-node and four-level nesting bounds.
 These are conservative admission limits, not physical resource measurements or proof of arbitrary
