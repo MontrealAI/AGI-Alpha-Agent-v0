@@ -145,13 +145,28 @@ def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tup
             yield from _assignment_bindings(item, assigned)
 
 
-def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
+def _screen_source_assignments(
+    source: str | bytes, depth: int = 0, *, _literal_budget: list[int] | None = None
+) -> None:
     """Inspect populated Python credential keys/assignments without evaluating them."""
+    budget = _literal_budget if _literal_budget is not None else [1_000_000]
+
+    def literal_size(value: str | bytes) -> int:
+        # Surrogate handling is size accounting only; the parser sees the original.
+        return len(value) if isinstance(value, bytes) else len(value.encode("utf-8", "surrogatepass"))
+
+    def consume(size: int) -> None:
+        if size > 65_536 or size > budget[0]:
+            raise ValueError("source literal screening exceeds its byte/work bound")
+        budget[0] -= size
+
+    consume(literal_size(source))
     try:
         tree = ast.parse(source)
     except (SyntaxError, RecursionError) as exc:
         raise ValueError("source must be bounded parseable Python") from exc
-    if sum(1 for _ in ast.walk(tree)) > MAX_SOURCE_AST_NODES:
+    nodes = list(ast.walk(tree))
+    if len(nodes) > MAX_SOURCE_AST_NODES:
         raise ValueError("source AST exceeds node bound")
     if depth > 4:
         raise ValueError("source literal nesting exceeds public-content boundary")
@@ -178,7 +193,50 @@ def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
         if credential and not _empty_source_value(value):
             raise ValueError("public-only source contains a populated credential-shaped assignment or key")
 
-    parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+    literals: dict[ast.AST, str | bytes] = {}
+    sizes: dict[ast.AST, int] = {}
+    for literal in reversed(nodes):
+        fold_value: str | bytes | None = None
+        if isinstance(literal, ast.Constant) and isinstance(literal.value, (str, bytes)):
+            fold_value = literal.value
+        elif isinstance(literal, ast.BinOp):
+            left, right = literals.get(literal.left), literals.get(literal.right)
+            if isinstance(literal.op, ast.Add) and left is not None and right is not None:
+                consume(sizes[literal.left] + sizes[literal.right])
+                if isinstance(left, str) and isinstance(right, str):
+                    fold_value = left + right
+                elif isinstance(left, bytes) and isinstance(right, bytes):
+                    fold_value = left + right
+            elif isinstance(literal.op, ast.Mult):
+                operand, count = (literal.left, literal.right) if left is not None else (literal.right, literal.left)
+                repeated = literals.get(operand)
+                if repeated is not None and isinstance(count, ast.Constant):
+                    if type(count.value) not in (int,):
+                        raise ValueError("source static literal repetition requires an exact integer")
+                    assert isinstance(count.value, int)
+                    if not 0 <= count.value <= 65_536:
+                        raise ValueError("source literal repetition exceeds its bound")
+                    consume(sizes[operand] * count.value)
+                    fold_value = repeated * count.value
+        elif isinstance(literal, ast.FormattedValue) and isinstance(literals.get(literal.value), str):
+            text = literals[literal.value]
+            assert isinstance(text, str)
+            if literal.format_spec is not None and literals.get(literal.format_spec) != "":
+                raise ValueError("source static literal formatting requires an empty format specifier")
+            if literal.conversion in (-1, 115):
+                fold_value = text
+            elif literal.conversion in (114, 97):
+                consume(10 * len(text) + 2)
+                fold_value = repr(text) if literal.conversion == 114 else ascii(text)
+        elif isinstance(literal, ast.JoinedStr):
+            pieces = [literals.get(part) for part in literal.values]
+            if all(isinstance(part, str) for part in pieces):
+                consume(sum(sizes[part] for part in literal.values))
+                fold_value = "".join(part for part in pieces if isinstance(part, str))
+        if fold_value is not None:
+            literals[literal], sizes[literal] = fold_value, literal_size(fold_value)
+
+    parents = {child: parent for parent in nodes for child in ast.iter_child_nodes(parent)}
 
     def mapping_reference(argument: ast.AST, call: ast.Call) -> bool:
         """Recognize named mapping copies; never infer contents or execute a guard."""
@@ -230,7 +288,7 @@ def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
                     return True
         return False
 
-    for node in ast.walk(tree):
+    for node in nodes:
         if isinstance(node, ast.Dict):
             for key, value in zip(node.keys, node.values, strict=True):
                 if key is None:
@@ -329,13 +387,15 @@ def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
                 _literal_source_unpack(node.value)
             else:
                 inspect(node.arg, node.value)
-        elif isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
-            assert_public_content(node.value)
+        elif node in literals:
+            text = literals[node]
+            assert_public_content(text)
+            consume(sizes[node])
             try:
-                ast.parse(node.value)
+                ast.parse(text)
             except (SyntaxError, ValueError, RecursionError):
                 continue
-            _screen_source_assignments(node.value, depth + 1)
+            _screen_source_assignments(text, depth + 1, _literal_budget=budget)
 
 
 class SourceFile(StrictModel):

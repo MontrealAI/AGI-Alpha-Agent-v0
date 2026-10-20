@@ -150,6 +150,14 @@ Journal signing/I/O, human review, energy and money. These costs are unknown her
 do not establish elapsed-time savings, an economic break-even horizon or production efficiency. The
 actual fixture command took about seven seconds locally; this is no performance guarantee.
 
+Public-source admission screens visible bindings and statically closed text/bytes composition without
+executing supplied code. Literal additions, bounded repetitions and supported static f-strings are
+folded before nested-source screening; nonempty static format specifiers are refused. Each parsed or
+constructed value is limited to 65,536 bytes. A shared 1,000,000 byte-unit budget covers recursive
+parsing and literal construction, alongside the existing 12,000-node and four-level nesting bounds.
+These are conservative admission limits, not physical resource measurements or proof of arbitrary
+runtime values, aliases or privacy. Operators must supply public, non-personal source.
+
 Inputs have bounded file count/UTF-8 bytes/AST nodes and the finite 64-program language. Phase execution
 is serialized by the Journal transaction. Pause/cancel and native STOP apply between these bounded
 phases; they do not interrupt an AST parse or promise asynchronous termination. Normal concurrent
