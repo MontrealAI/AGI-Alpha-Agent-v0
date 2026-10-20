@@ -189,6 +189,23 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
         elif isinstance(node, ast.DictComp):
             for name, assigned_value in _selector_bindings(node.key, node.value):
                 inspect(name, assigned_value)
+        elif isinstance(node, (ast.Tuple, ast.List)) and len(node.elts) == 2:
+            for name, assigned_value in _selector_bindings(node.elts[0], node.elts[1]):
+                inspect(name, assigned_value)
+        elif isinstance(node, ast.Call):
+            constructor = (
+                node.func.id
+                if isinstance(node.func, ast.Name)
+                else (node.func.attr if isinstance(node.func, ast.Attribute) else None)
+            )
+            if constructor in {"dict", "OrderedDict", "defaultdict", "MappingProxyType"}:
+                for argument in node.args:
+                    if isinstance(argument, ast.Dict) or _empty_source_value(argument):
+                        continue
+                    if not isinstance(argument, (ast.List, ast.Tuple)) or any(
+                        not isinstance(pair, (ast.List, ast.Tuple)) or len(pair.elts) != 2 for pair in argument.elts
+                    ):
+                        raise ValueError("public-only source requires literal mapping constructor entries")
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 for name, assigned_value in _assignment_bindings(target, node.value):
