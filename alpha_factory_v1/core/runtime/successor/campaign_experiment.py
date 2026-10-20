@@ -10,16 +10,18 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import os
 import stat
 import uuid
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Literal
 
 from pydantic import Field, model_validator
 
 from ..store import Conflict, Journal, digest as journal_digest
-from .protocol import MAX_JSON_BYTES, canonical, digest, safe_json_loads
+from .protocol import canonical, digest
 from .transformation import (
     DiscoveryLoop,
     DiscoveryRequest,
@@ -35,6 +37,9 @@ from .transformation import (
 
 KEY = "@discovery-policy-study:"
 EXPOSURES = KEY + "exposures:v1"
+MAX_EXPOSURE_EVENTS = 50_000
+MAX_EXPOSURE_ROW_BYTES = 8 * 1024**2
+MAX_EXPOSURE_BYTES = 64 * 1024**2
 
 
 class _StudyLoop(DiscoveryLoop):
@@ -263,50 +268,86 @@ class CampaignExperiment:
             return self.journal.append(cx, self._key(study_id), data)
 
     def _known_clauses(self, cx: Any) -> set[str]:
-        """Include ordinary, model, imported and archived native history in this Journal."""
-        identities = cx.execute("SELECT DISTINCT mission FROM events LIMIT 5001").fetchall()
-        if len(identities) > 5000:
-            raise Conflict("history exposure scan capacity reached; external checkpoint required")
+        """Read every authenticated event document in the caller's transaction."""
+        if not cx.in_transaction:
+            raise Conflict("history exposure scan requires the study transaction")
+        event_count, history_bytes = 0, 0
+        with closing(
+            cx.execute(
+                "SELECT length(CAST(mission AS BLOB)) + length(CAST(body AS BLOB)) + "
+                "length(CAST(hash AS BLOB)) + length(CAST(signature AS BLOB)) "
+                "FROM events ORDER BY seq LIMIT ?",
+                (MAX_EXPOSURE_EVENTS + 1,),
+            )
+        ) as rows:
+            for (size,) in rows:
+                event_count += 1
+                if (
+                    event_count > MAX_EXPOSURE_EVENTS
+                    or not isinstance(size, int)
+                    or not 0 <= size <= MAX_EXPOSURE_ROW_BYTES
+                ):
+                    raise Conflict("history exposure event capacity reached; external checkpoint required")
+                history_bytes += size
+                if history_bytes > MAX_EXPOSURE_BYTES:
+                    raise Conflict("history exposure byte capacity reached; external checkpoint required")
+        missions: set[str] = set()
+        with closing(cx.execute("SELECT mission FROM events ORDER BY seq LIMIT ?", (MAX_EXPOSURE_EVENTS + 1,))) as rows:
+            for (mission,) in rows:
+                if not isinstance(mission, str):
+                    raise ValueError("journal mission is corrupt")
+                missions.add(mission)
+                if len(missions) > 5000:
+                    raise Conflict("history exposure scan capacity reached; external checkpoint required")
         seen: set[str] = set()
-        nodes = 0
+        nodes, sequence = 0, 0
         previous = "0" * 64
-        events = cx.execute(
-            "SELECT seq,mission,substr(CAST(body AS BLOB),1,?),hash,signature FROM events ORDER BY seq LIMIT 5001",
-            (MAX_JSON_BYTES + 1,),
-        )
-        for count, (sequence, identity, raw, hashed, signature) in enumerate(events, 1):
-            if count > 5000:
-                raise Conflict("history revision scan capacity reached; external checkpoint required")
-            body = safe_json_loads(raw)
-            if (
-                not isinstance(body, dict)
-                or sequence != count
-                or body.get("sequence") != sequence
-                or body.get("previous") != previous
-                or body.get("identity") != self.journal.identity
-                or body.get("mission") != identity
-                or journal_digest(body) != hashed
-            ):
-                raise ValueError("journal revision identity or hash chain differs")
-            self.journal.key.public_key().verify(base64.b64decode(signature, validate=True), bytes.fromhex(hashed))
-            previous = hashed
-            pending = [body["document"]]
-            while pending:
-                item = pending.pop()
-                nodes += 1
-                if nodes > 1_000_000:
-                    raise Conflict("history exposure scan exceeds its structural budget")
-                if isinstance(item, dict):
-                    if item.get("schema") == "source-document/v1":
-                        document = SourceDocument.model_validate(item)
-                        seen.update(
-                            digest("study-source-clause", " ".join(claim.text.casefold().split()))
-                            for claim in document.claims
-                        )
-                    else:
-                        pending.extend(item.values())
-                elif isinstance(item, list):
-                    pending.extend(item)
+        public_key = self.journal.key.public_key()
+        with closing(
+            cx.execute(
+                "SELECT seq,mission,body,hash,signature FROM events ORDER BY seq LIMIT ?",
+                (MAX_EXPOSURE_EVENTS + 1,),
+            )
+        ) as rows:
+            for seq, mission, raw, hashed, signature in rows:
+                sequence += 1
+                if sequence > event_count:
+                    raise Conflict("history exposure snapshot changed")
+                body = json.loads(raw)
+                if not isinstance(body, dict) or (
+                    body["schema"] != 1
+                    or seq != sequence
+                    or body["sequence"] != seq
+                    or body["previous"] != previous
+                    or body["identity"] != self.journal.identity
+                    or body["mission"] != mission
+                    or journal_digest(body) != hashed
+                ):
+                    raise ValueError("journal content is corrupt")
+                public_key.verify(base64.b64decode(signature, validate=True), bytes.fromhex(hashed))
+                previous = hashed
+                document = body["document"]
+                if not isinstance(document, dict):
+                    raise ValueError("journal document is corrupt")
+                pending = [document]
+                while pending:
+                    item = pending.pop()
+                    nodes += 1
+                    if nodes > 1_000_000:
+                        raise Conflict("history exposure scan exceeds its structural budget")
+                    if isinstance(item, dict):
+                        if item.get("schema") == "source-document/v1":
+                            document = SourceDocument.model_validate(item)
+                            seen.update(
+                                digest("study-source-clause", " ".join(claim.text.casefold().split()))
+                                for claim in document.claims
+                            )
+                        else:
+                            pending.extend(item.values())
+                    elif isinstance(item, list):
+                        pending.extend(item)
+        if sequence != event_count:
+            raise Conflict("history exposure snapshot changed")
         return seen
 
     def _reserve(self, study_id: str, units: list[CampaignUnit], phase: str) -> dict[str, Any]:
