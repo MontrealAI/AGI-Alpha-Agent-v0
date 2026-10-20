@@ -770,8 +770,7 @@ def run_session(
                 journal, key, latest["revision"], elapsed_milliseconds=int((time.monotonic() - started) * 1000)
             )
             latest = record
-            private_write(output / "receipt.json", canonical(latest))
-            write_receipt(journal, latest, output, "computer-receipt")
+            write_receipt(journal, latest, output, "computer-receipt", include_record=True)
     return {
         "run_id": run_id,
         "state": record["state"],
