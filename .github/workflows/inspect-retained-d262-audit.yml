@@ -121,4 +121,44 @@ jobs:
                           "chunks": len(chunks), "bytes": len(output),
                           "sha256": hashlib.sha256(output).hexdigest()
                       }, sort_keys=True), flush=True)
+
+                      safe_names = {
+                          "action-failure-interruption-reconcile.json": (
+                              "agialpha.disposable-action-failure.v1",
+                              {"schema", "operation", "transaction", "console", "pageErrors", "state", "captureError"},
+                          ),
+                          "reconciliation-failure.json": (
+                              "agialpha.disposable-reconciliation-failure.v1",
+                              {"schema", "transaction", "state"},
+                          ),
+                      }
+                      prefix = "release-evidence/current-acceptance/" + SUITE_RUN + "/artifacts/"
+                      for basename, (schema, fields) in safe_names.items():
+                          matches = [
+                              entry for entry in entries
+                              if entry.filename.startswith(prefix)
+                              and entry.filename.rsplit("/", 1)[-1] == basename
+                          ]
+                          assert len(matches) <= 1
+                          if not matches:
+                              print("ALPHA_AUDIT_DIAGNOSTIC_V1 " + json.dumps({
+                                  "name": basename, "present": False,
+                              }, sort_keys=True), flush=True)
+                              continue
+                          entry = matches[0]
+                          assert not entry.is_dir() and not entry.flag_bits & 1
+                          assert entry.compress_type in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED)
+                          assert 0 < entry.file_size <= 65536
+                          with archive.open(entry, "r") as member:
+                              raw = member.read(65537)
+                          assert len(raw) == entry.file_size <= 65536
+                          document = json.loads(raw.decode("utf-8", errors="strict"))
+                          assert isinstance(document, dict) and document.get("schema") == schema
+                          assert set(document) <= fields
+                          print("ALPHA_AUDIT_DIAGNOSTIC_V1 " + json.dumps({
+                              "name": basename, "present": True, "member": entry.filename,
+                              "rawBytes": len(raw), "rawSha256": hashlib.sha256(raw).hexdigest(),
+                              "document": document,
+                              "scope": "Original existing public-state diagnostic values; no new page or RPC observation.",
+                          }, sort_keys=True), flush=True)
           PY
