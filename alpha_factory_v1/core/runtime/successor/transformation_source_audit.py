@@ -333,7 +333,7 @@ def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
             assert_public_content(node.value)
             try:
                 ast.parse(node.value)
-            except (SyntaxError, RecursionError):
+            except (SyntaxError, ValueError, RecursionError):
                 continue
             _screen_source_assignments(node.value, depth + 1)
 
