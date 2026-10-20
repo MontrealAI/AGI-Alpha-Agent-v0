@@ -1,0 +1,124 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Inspect retained d262 audit failure
+on:
+  push:
+    branches: [evidence/alpha-d262-current-audit-inspection-20261020]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: retained-alpha-d262-audit-inspection
+  cancel-in-progress: false
+jobs:
+  inspect-retained-text:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Authenticate the original failed audit and read only its retained text
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          /usr/bin/python3 -I -S -B - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          import subprocess
+          import tempfile
+          import zipfile
+
+          REPO = "MontrealAI/AGI-Alpha-Agent-v0"
+          SOURCE = "d2626b932008f7f5edca9fdce6dd6197818e16af"
+          RUN = 39424897418
+          JOB = 118635286888
+          ARTIFACT = 12266926156
+          SIZE = 6156391
+          DIGEST = "f46ec7a829d06569c5f14cb991918c94d1628cdcff2d2fe37dbce9f92cb83dea"
+          SUITE_RUN = "20261020T130038000726Z-two_cycle_interruption_browser-49d44457"
+          assert os.environ["GITHUB_REPOSITORY"] == REPO
+          assert os.environ["GITHUB_REF"] == "refs/heads/evidence/alpha-d262-current-audit-inspection-20261020"
+
+          def get(endpoint):
+              result = subprocess.run(
+                  ["gh", "api", f"repos/{REPO}/{endpoint}"],
+                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=90,
+              )
+              return json.loads(result.stdout)
+
+          run = get(f"actions/runs/{RUN}")
+          assert run["id"] == RUN and run["run_attempt"] == 1
+          assert run["head_sha"] == SOURCE and run["event"] == "push"
+          assert run["head_branch"] == "qualification/ti-public-source-20261020"
+          assert run["path"] == ".github/workflows/agent-release.yml"
+          jobs = get(f"actions/runs/{RUN}/attempts/1/jobs?per_page=100")
+          assert jobs["total_count"] == len(jobs["jobs"]) < 100
+          matches = [j for j in jobs["jobs"] if j["id"] == JOB]
+          assert len(matches) == 1
+          job = matches[0]
+          assert job["head_sha"] == SOURCE and job["run_attempt"] == 1
+          assert job["status"] == "completed" and job["conclusion"] == "failure"
+          assert job["name"] == "mark-wallet / wallet"
+          artifacts = get(f"actions/runs/{RUN}/artifacts?per_page=100")
+          assert artifacts["total_count"] == len(artifacts["artifacts"]) < 100
+          matches = [a for a in artifacts["artifacts"] if a["id"] == ARTIFACT]
+          assert len(matches) == 1
+          artifact = matches[0]
+          assert artifact["name"] == "ascension-current-audit" and not artifact["expired"]
+          assert artifact["size_in_bytes"] == SIZE and artifact["digest"] == "sha256:" + DIGEST
+          assert artifact["workflow_run"]["id"] == RUN
+          assert artifact["workflow_run"]["head_sha"] == SOURCE
+          assert artifact["workflow_run"]["repository_id"] == 922805069
+
+          with tempfile.TemporaryDirectory(prefix="retained-audit-", dir=os.environ["RUNNER_TEMP"]) as temporary:
+              path = os.path.join(temporary, "original.zip")
+              with open(path, "xb+") as saved:
+                  os.chmod(path, 0o600)
+                  subprocess.run(
+                      ["gh", "api", f"repos/{REPO}/actions/artifacts/{ARTIFACT}/zip"],
+                      stdout=saved, stderr=subprocess.PIPE, check=True, timeout=90,
+                  )
+                  saved.flush()
+                  assert os.fstat(saved.fileno()).st_size == SIZE
+                  saved.seek(0)
+                  assert hashlib.file_digest(saved, "sha256").hexdigest() == DIGEST
+                  saved.seek(0)
+                  with zipfile.ZipFile(saved) as archive:
+                      entries = archive.infolist()
+                      assert 0 < len(entries) <= 1000
+                      matches = [
+                          info for info in entries
+                          if info.filename.endswith("/" + SUITE_RUN + "/output.txt")
+                      ]
+                      assert len(matches) == 1
+                      info = matches[0]
+                      assert not info.is_dir() and not info.flag_bits & 1
+                      assert info.compress_type in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED)
+                      assert 0 < info.file_size <= 2_000_000
+                      with archive.open(info, "r") as member:
+                          output = member.read(2_000_001)
+                      assert len(output) == info.file_size <= 2_000_000
+                      output.decode("utf-8", errors="strict")
+                      meta = {
+                          "schema": "agi-alpha/retained-audit-inspection/v1",
+                          "inspectionCommit": os.environ["GITHUB_SHA"],
+                          "inspectionRun": int(os.environ["GITHUB_RUN_ID"]),
+                          "source": SOURCE, "sourceRun": RUN, "sourceAttempt": 1,
+                          "failedJob": JOB, "artifact": ARTIFACT,
+                          "zipBytes": SIZE, "zipSha256": DIGEST,
+                          "member": info.filename, "memberBytes": len(output),
+                          "memberSha256": hashlib.sha256(output).hexdigest(),
+                          "method": "Authenticated retained ZIP member read; no extraction or test execution.",
+                      }
+                      chunks = [output[index:index + 12288] for index in range(0, len(output), 12288)]
+                      meta["chunks"] = len(chunks)
+                      print("ALPHA_AUDIT_INSPECT_V1 " + json.dumps(meta, sort_keys=True), flush=True)
+                      for index, chunk in enumerate(chunks):
+                          print("ALPHA_AUDIT_LOG_V1 " + json.dumps({
+                              "index": index, "base64": base64.b64encode(chunk).decode("ascii")
+                          }, sort_keys=True), flush=True)
+                      print("ALPHA_AUDIT_END_V1 " + json.dumps({
+                          "chunks": len(chunks), "bytes": len(output),
+                          "sha256": hashlib.sha256(output).hexdigest()
+                      }, sort_keys=True), flush=True)
+          PY
