@@ -26,6 +26,7 @@ from typing import Any, Literal
 from pydantic import Field, model_validator
 
 from ..store import Conflict, Journal
+from .measurement import KEY as MEASUREMENT_KEY
 from .measurement import EvaluationInstrument, MeasurementLedger
 from .protocol import Digest, StrictModel, canonical, digest
 from .trust import SignedEnvelope
@@ -760,7 +761,21 @@ class SourceAuditDiscovery:
         return KEY + str(uuid.UUID(campaign_id))
 
     def measurement_context(self) -> dict[str, Any]:
-        epochs = self.ledger.snapshot()["epochs"] if self.ledger else []
+        epochs: list[Any]
+        if self.ledger is None:
+            # Missing signer configuration must never reset a persisted ledger.
+            # Historical show/envelope exports do not require this active context.
+            try:
+                self.journal.latest(MEASUREMENT_KEY)
+            except KeyError:
+                # Only an absent measurement record permits the initial context.
+                epochs = []
+            else:
+                raise Conflict("persisted measurement state requires its configured ledger")
+        else:
+            epochs = self.ledger.snapshot()["epochs"]
+        if not _has_exact_type(epochs, list):
+            raise Conflict("measurement epochs must be an exact list")
         if not epochs:
             return {
                 "measurement_epoch": 0,
