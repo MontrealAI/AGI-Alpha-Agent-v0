@@ -809,7 +809,9 @@ import {readFileSync} from 'node:fs';
 import * as computer from './examples/successor-alpha/computer.mjs';
 const input=JSON.parse(readFileSync(0,'utf8'));
 const {project}=await computer.inspectComputerHandoff(input.handoffRaw);
-console.log(await computer.importComputerReturn(project,input.handoffRaw,input.returnRaw,{priorRecord:input.historyRaw}));
+console.log(await computer.importComputerReturn(
+    project,input.handoffRaw,input.returnRaw,{priorRecord:input.historyRaw}
+));
 """
     return subprocess.check_output(
         ["node", "--input-type=module", "-e", source],

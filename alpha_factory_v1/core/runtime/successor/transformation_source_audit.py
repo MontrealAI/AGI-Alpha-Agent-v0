@@ -3,6 +3,8 @@
 
 Only supplied UTF-8 Python text is parsed, never imported or executed. Git hashes
 commit supplied bytes; remote provenance and permission remain operator claims.
+Screening is syntactic and conservative, not proof of arbitrary runtime values;
+the operator remains responsible for public, non-personal source classification.
 The six program choices execute different algorithms. Evaluator revision is a
 separate signed MeasurementLedger operation, never an optimizer action.
 """
@@ -34,14 +36,20 @@ KEY = "@ti-source-audit:"
 EXPOSURES = KEY + "exposures:v2"
 MAX_EXPOSURES = 512
 MAX_BLOB_EXPOSURES = 4096
+MAX_SOURCE_AST_NODES = 12_000
 AXES = ("indexed", "query_once", "dependency_queue", "fragments", "package_batch", "checked_handoff")
 CATEGORIES = ("construction", "read", "query", "dependency", "production", "coordination", "check", "search")
 COST_RULE = {
     "schema": "source-audit-logical-cost/v1",
     "read": "one per started64UTF8bytes per fact parse plus every explicit fact-parser AST-node visit",
-    "construction": "one per fact-bucket materialization/retention, import/symbol insertion attempt, captured-submodule membership and index entry",
+    "construction": (
+        "one per fact-bucket materialization/retention, import/symbol insertion attempt, "
+        "captured-submodule membership and index entry"
+    ),
     "query": "one per index lookup or examined sequential fact",
-    "dependency": "one per graph vertex/edge examination, membership test, set insertion/removal attempt and queue push/pop",
+    "dependency": (
+        "one per graph vertex/edge examination, membership test, set insertion/removal attempt and queue push/pop"
+    ),
     "production": "one per canonical fragment byte and emitted report byte",
     "coordination": "one per job/proposal/CAS plus field-check bytes",
     "check": "reference parsing/closure work and compared report bytes",
@@ -57,6 +65,63 @@ COST_RULE = {
 }
 
 
+def _empty_source_value(value: ast.AST | None) -> bool:
+    """Recognize the existing syntactically empty assignment placeholders."""
+    return (
+        value is None
+        or (isinstance(value, ast.Constant) and value.value in (None, ""))
+        or (
+            isinstance(value, (ast.List, ast.Tuple, ast.Dict))
+            and not getattr(value, "elts", getattr(value, "keys", []))
+        )
+    )
+
+
+def _source_selector_names(selector: ast.AST) -> tuple[list[str], bool]:
+    """Collect visible spellings and flag unresolved syntax without evaluation."""
+    pending = [selector]
+    names: list[str] = []
+    unresolved = False
+    index = 0
+    while index < len(pending):
+        if index >= MAX_SOURCE_AST_NODES:
+            raise ValueError("source selector exceeds node bound")
+        node = pending[index]
+        index += 1
+        if isinstance(node, ast.Name):
+            names.append(node.id)
+        elif isinstance(node, ast.Attribute):
+            names.append(node.attr)
+            pending.append(node.value)
+        elif isinstance(node, ast.Constant):
+            if isinstance(node.value, str):
+                names.append(node.value)
+            elif type(node.value) not in (type(None), bool, int, float, complex):
+                unresolved = True
+        elif isinstance(node, (ast.Tuple, ast.List)):
+            pending.extend(node.elts)
+        elif isinstance(node, ast.Slice):
+            pending.extend(part for part in (node.lower, node.upper, node.step) if part is not None)
+        else:
+            unresolved = True
+    return names, unresolved
+
+
+def _selector_bindings(selector: ast.AST, value: ast.AST | None) -> Iterator[tuple[str, ast.AST | None]]:
+    """Screen static selector spellings and refuse populated unresolved forms."""
+    names, unresolved = _source_selector_names(selector)
+    for name in names:
+        yield name, value
+    if unresolved and not _empty_source_value(value):
+        raise ValueError("public-only source contains an unsupported populated key or selector")
+
+
+def _literal_source_unpack(value: ast.AST) -> None:
+    """Require explicit dictionary entries, checked by the enclosing AST walk."""
+    if not isinstance(value, ast.Dict):
+        raise ValueError("public-only source requires literal dictionary unpacking")
+
+
 def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tuple[str, ast.AST | None]]:
     """Find statically named assignment bindings without evaluating supplied code."""
     if isinstance(target, ast.Name):
@@ -65,13 +130,7 @@ def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tup
         yield target.attr, value
     elif isinstance(target, ast.Subscript):
         yield from _assignment_bindings(target.value, value)
-        for key in ast.walk(target.slice):
-            if isinstance(key, ast.Name):
-                yield key.id, value
-            elif isinstance(key, ast.Attribute):
-                yield key.attr, value
-            elif isinstance(key, ast.Constant) and isinstance(key.value, str):
-                yield key.value, value
+        yield from _selector_bindings(target.slice, value)
     elif isinstance(target, ast.Starred):
         yield from _assignment_bindings(target.value, value)
     elif isinstance(target, (ast.Tuple, ast.List)):
@@ -91,7 +150,7 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
         tree = ast.parse(source)
     except (SyntaxError, RecursionError) as exc:
         raise ValueError("source must be bounded parseable Python") from exc
-    if sum(1 for _ in ast.walk(tree)) > 12_000:
+    if sum(1 for _ in ast.walk(tree)) > MAX_SOURCE_AST_NODES:
         raise ValueError("source AST exceeds node bound")
     if depth > 4:
         raise ValueError("source literal nesting exceeds public-content boundary")
@@ -115,26 +174,20 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                 "credential",
             )
         )
-        empty = (
-            value is None
-            or (isinstance(value, ast.Constant) and value.value in (None, ""))
-            or (
-                isinstance(value, (ast.List, ast.Tuple, ast.Dict))
-                and not getattr(value, "elts", getattr(value, "keys", []))
-            )
-        )
-        if credential and not empty:
+        if credential and not _empty_source_value(value):
             raise ValueError("public-only source contains a populated credential-shaped assignment or key")
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Dict):
             for key, value in zip(node.keys, node.values, strict=True):
-                if isinstance(key, ast.Constant) and isinstance(key.value, str):
-                    inspect(key.value, value)
-                elif isinstance(key, ast.Name):
-                    inspect(key.id, value)
-                elif isinstance(key, ast.Attribute):
-                    inspect(key.attr, value)
+                if key is None:
+                    _literal_source_unpack(value)
+                else:
+                    for name, assigned_value in _selector_bindings(key, value):
+                        inspect(name, assigned_value)
+        elif isinstance(node, ast.DictComp):
+            for name, assigned_value in _selector_bindings(node.key, node.value):
+                inspect(name, assigned_value)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 for name, assigned_value in _assignment_bindings(target, node.value):
@@ -142,8 +195,11 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
         elif isinstance(node, (ast.AnnAssign, ast.AugAssign, ast.NamedExpr)):
             for name, assigned_value in _assignment_bindings(node.target, node.value):
                 inspect(name, assigned_value)
-        elif isinstance(node, ast.keyword) and node.arg:
-            inspect(node.arg, node.value)
+        elif isinstance(node, ast.keyword):
+            if node.arg is None:
+                _literal_source_unpack(node.value)
+            else:
+                inspect(node.arg, node.value)
         elif isinstance(node, ast.Constant) and isinstance(node.value, str):
             assert_public_content(node.value)
             if node.value.lstrip().startswith(("{", "[")) or re.search(r"[A-Za-z_]\w*\s*[:=]", node.value):
@@ -211,9 +267,9 @@ class AuditProgram(StrictModel):
 
 class AuditRequest(StrictModel):
     campaign_id: str
-    purpose: Literal["Exact static inventory of every supplied source file and its captured dependency closure"] = (
+    purpose: Literal[
         "Exact static inventory of every supplied source file and its captured dependency closure"
-    )
+    ] = "Exact static inventory of every supplied source file and its captured dependency closure"
     publicOnly: bool = True
     permitted_actions: list[Literal["parse-static-source", "compare-local", "write-artifact"]]
     development: list[SourcePackage] = Field(min_length=1, max_length=2)
@@ -242,9 +298,15 @@ class BudgetExhausted(ValueError):
     """Partial work cannot become a complete comparison."""
 
 
+def _has_exact_type(value: object, expected: type[Any]) -> bool:
+    """Require the original exact built-in type, excluding subclasses."""
+    value_type = type(value)
+    return value_type is expected
+
+
 class Meter:
     def __init__(self, limit: int) -> None:
-        if type(limit) is not int or limit < 0:
+        if not _has_exact_type(limit, int) or limit < 0:
             raise ValueError("exact nonnegative unit allowance required")
         self.limit = limit
         self.costs = dict.fromkeys(CATEGORIES, 0)
@@ -255,7 +317,7 @@ class Meter:
         return sum(self.costs.values())
 
     def charge(self, category: str, units: int = 1, event: str | None = None) -> None:
-        if category not in self.costs or type(units) is not int or units < 0:
+        if category not in self.costs or not _has_exact_type(units, int) or units < 0:
             raise ValueError("invalid logical charge")
         if self.used + units > self.limit:
             raise BudgetExhausted("source audit logical budget exhausted")
@@ -440,7 +502,9 @@ def reference_report(package: SourcePackage, meter: Meter) -> dict[str, Any]:
         "commit": package.commit,
         "root": package.root,
         "capture_complete_only_for_listed_files": True,
-        "dependency_semantics": "syntactic import targets plus captured from-import submodules; conservative, not runtime resolution",
+        "dependency_semantics": (
+            "syntactic import targets plus captured from-import submodules; conservative, not runtime resolution"
+        ),
         "files": rows,
     }
 
@@ -721,18 +785,18 @@ class SourceAuditDiscovery:
         if set(state) != {"schema", "captures", "blobs"} or state["schema"] != "source-audit-exposures/v2":
             raise Conflict("invalid source-audit exposure checkpoint")
         for field, width, limit in (("captures", 64, MAX_EXPOSURES), ("blobs", 40, MAX_BLOB_EXPOSURES)):
-            if type(state[field]) is not dict or len(state[field]) > limit:
+            if not _has_exact_type(state[field], dict) or len(state[field]) > limit:
                 raise Conflict("invalid source-audit exposure capacity")
             for identity, entry in state[field].items():
                 if (
-                    type(identity) is not str
+                    not _has_exact_type(identity, str)
                     or not re.fullmatch(r"[a-f0-9]{" + str(width) + "}", identity)
-                    or type(entry) is not dict
+                    or not _has_exact_type(entry, dict)
                     or set(entry) != {"first_operation", "kinds"}
-                    or type(entry["first_operation"]) is not str
+                    or not _has_exact_type(entry["first_operation"], str)
                     or not 1 <= len(entry["first_operation"]) <= 160
-                    or type(entry["kinds"]) is not list
-                    or any(type(kind) is not str for kind in entry["kinds"])
+                    or not _has_exact_type(entry["kinds"], list)
+                    or any(not _has_exact_type(kind, str) for kind in entry["kinds"])
                     or not entry["kinds"]
                     or len(entry["kinds"]) != len(set(entry["kinds"]))
                     or not set(entry["kinds"]) <= {"development", "proposal", "confirmation"}
@@ -1113,7 +1177,10 @@ class SourceAuditDiscovery:
                         "beats_unrestricted": beats,
                         "native_v1_compatible": False,
                         "authority_granted": False,
-                        "scope": "public constructed finite source captures; no independent campaign sampling or software-wide advantage",
+                        "scope": (
+                            "public constructed finite source captures; "
+                            "no independent campaign sampling or software-wide advantage"
+                        ),
                         "oracle_reuse": "all64 methods actually executed; oracle reuses retained costs and artifacts",
                         "unknown_costs": COST_RULE["excluded"],
                     }
@@ -1157,5 +1224,7 @@ class SourceAuditDiscovery:
             "authority": "none",
             "native_v1_compatible": False,
             "settlement": "none",
-            "provenance": "supplied immutable blob commitments; remote origin and public-use rights are not hash proofs",
+            "provenance": (
+                "supplied immutable blob commitments; remote origin and public-use rights are not hash proofs"
+            ),
         }

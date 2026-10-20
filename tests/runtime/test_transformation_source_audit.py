@@ -70,6 +70,82 @@ def test_static_assignment_unknown_and_starred_values_remain_conservative():
         source("fixture/ordinary.py", statement)
 
 
+@pytest.mark.parametrize(
+    "statement",
+    [
+        "records = {1: 'public', None: 'public'}",
+        "records = {(first, (second, 3)): 'public'}",
+        "records = {labels.name: 'public'}",
+        "records = {name: value for name, value in public_pairs}",
+        "records[first:stop:step] = 'public'",
+        "records[[first, second]] = 'public'",
+        "records = {**{}, **{'public_label': 'public'}}",
+        "receive(**{'public_label': 'public'})",
+    ],
+)
+def test_static_supported_public_selector_and_unpack_forms(statement):
+    source("fixture/ordinary.py", statement)
+
+
+@pytest.mark.parametrize(
+    "statement",
+    [
+        "records = {('public_' + 'label'): 'public'}",
+        "records = {f'public_{index}': 'public'}",
+        "records = {choose_label(): 'public'}",
+        "records[index + 1] = 'public'",
+        "records[first, index + 1] = 'public'",
+        "records = {name.upper(): 'public' for name in public_names}",
+        "records[1 if public_choice else 2] = 'public'",
+        "records = {b'label': 'public'}",
+        "records = {...: 'public'}",
+    ],
+)
+def test_static_unresolved_public_selectors_are_refused(statement):
+    with pytest.raises(ValidationError, match="unsupported populated key or selector"):
+        source("fixture/ordinary.py", statement)
+
+
+@pytest.mark.parametrize(
+    "statement",
+    ["records = {**public_labels}", "receive(**public_labels)", "records = {**None}", "receive(**None)"],
+)
+def test_static_unpack_requires_explicit_literal_dictionary(statement):
+    with pytest.raises(ValidationError, match="literal dictionary unpacking"):
+        source("fixture/ordinary.py", statement)
+
+
+@pytest.mark.parametrize(
+    "literal, empty",
+    [
+        ("None", True),
+        ("''", True),
+        ("[]", True),
+        ("()", True),
+        ("{}", True),
+        ("0", False),
+        ("False", False),
+        ("' '", False),
+        ("b''", False),
+        ("supplied", False),
+    ],
+)
+def test_static_unresolved_selector_preserves_exact_empty_intent(literal, empty):
+    value = ast.parse(literal, mode="eval").body
+    assert s._empty_source_value(value) is empty
+    statement = f"records[choose_label()] = {literal}"
+    if empty:
+        source("fixture/ordinary.py", statement)
+    else:
+        with pytest.raises(ValidationError, match="unsupported populated key or selector"):
+            source("fixture/ordinary.py", statement)
+
+
+def test_static_absent_annotation_value_remains_empty():
+    assert s._empty_source_value(None) is True
+    source("fixture/ordinary.py", "public_label: str")
+
+
 def package(root="fixture", stale=False, cycle=False):
     prefix = "# SPDX-License-Identifier: Apache-2.0\n" + f"CAPTURE = {root!r}\n"
     return s.SourcePackage(
