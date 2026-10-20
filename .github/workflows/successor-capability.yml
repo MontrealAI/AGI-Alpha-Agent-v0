@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: Apache-2.0
+name: SUCCESSOR capability workspace
+on:
+  pull_request:
+    paths:
+      - .github/workflows/successor-capability.yml
+      - examples/successor-capability/**
+      - examples/successor-workbench/mission-store.mjs
+      - docs/assets/successor/engine.mjs
+      - docs/successor/capabilities/**
+      - scripts/generate_successor_capability.py
+      - scripts/generate_gallery_html.py
+      - scripts/templates/successor-capability/**
+      - tests/browser/test_successor_capability_browser.py
+      - tests/test_successor_capability_delivery.py
+  push:
+    branches: [main, additive/successor-capability-review-20261020]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: capability-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22.17.1
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Install browser and accessibility tools
+        run: |
+          python -m pip install playwright==1.54.0 pytest==8.4.1 PyYAML==6.0.2
+          python -m playwright install --with-deps chromium
+          npm ci --prefix tests/browser --ignore-scripts
+      - name: Computation, history and delivery gates
+        run: |
+          node --test examples/successor-capability/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q
+      - name: Exact generated source and gallery cache
+        run: |
+          python scripts/generate_successor_capability.py
+          python scripts/build_service_worker.py
+          git diff --exit-code -- docs/successor/capabilities docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js
+      - name: Browser journey, accessibility and durable recovery
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          CAPABILITY_SCREENSHOTS: ${{ github.workspace }}/capability-evidence
+        run: python tests/browser/test_successor_capability_browser.py
+      - name: Retain exact-source screenshots and journey evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: successor-capability-${{ github.sha }}
+          path: capability-evidence/
+          if-no-files-found: error
