@@ -154,8 +154,11 @@ Public-source admission screens visible bindings and statically closed text/byte
 executing supplied code. Literal additions, bounded repetitions and supported static f-strings are
 folded before nested-source screening; nonempty static format specifiers are refused. Closed literal
 str/bytes joins also fold bounded list/tuple elements, including the admitted single-argument iterable
-adapters and explicit str.join/bytes.join spellings. Mixed or unknown runtime elements are not thereby
-resolved or certified; no supplied method or iterator is invoked. Join output bytes are charged before
+adapters and explicit str.join/bytes.join spellings. Visible generator and comprehension inputs to
+literal joins are refused, including when nested inside adapters; they are not executed or silently
+accepted as resolved. Existing ordinary runtime-name inputs remain unresolved and outside the static
+claim. Mixed or unknown runtime elements are not thereby resolved or certified; no supplied method or
+iterator is invoked. Join output bytes are charged before
 construction under the same shared budget and per-value limit. Other method calls on closed text/bytes
 receivers are refused rather than executed or treated as checked. Closed-literal percent formatting and
 built-in format calls are also refused. This intentionally conservative admission grammar includes

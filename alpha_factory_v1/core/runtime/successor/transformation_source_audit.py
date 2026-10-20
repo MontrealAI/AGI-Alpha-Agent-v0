@@ -262,7 +262,12 @@ def _screen_source_assignments(
 
     literals: dict[ast.AST, str | bytes] = {}
     sizes: dict[ast.AST, int] = {}
+    comprehension_inputs: set[ast.AST] = set()
     for literal in reversed(nodes):
+        if isinstance(literal, (ast.GeneratorExp, ast.ListComp, ast.SetComp, ast.DictComp)) or any(
+            child in comprehension_inputs for child in ast.iter_child_nodes(literal)
+        ):
+            comprehension_inputs.add(literal)
         fold_value: str | bytes | None = None
         if isinstance(literal, ast.Constant) and isinstance(literal.value, (str, bytes)):
             fold_value = literal.value
@@ -325,6 +330,8 @@ def _screen_source_assignments(
                 separator_node, sequence_node = literal.args
             separator = literals.get(separator_node) if separator_node is not None else None
             elements = literal_sequence(sequence_node) if sequence_node is not None else None
+            if separator is not None and sequence_node in comprehension_inputs:
+                raise ValueError("public-only source refuses unresolved comprehension inputs to literal joins")
             if separator is not None and elements is not None:
                 joined = [literals.get(element) for element in elements]
                 if all(type(piece) is type(separator) for piece in joined):
