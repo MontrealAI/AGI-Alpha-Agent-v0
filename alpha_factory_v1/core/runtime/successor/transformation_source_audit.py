@@ -767,7 +767,10 @@ class SourceAuditDiscovery:
             # Historical show/envelope exports do not require this active context.
             try:
                 self.journal.latest(MEASUREMENT_KEY)
-            except KeyError:
+            except KeyError as missing:
+                # Other retained-record shape errors must never become epoch zero.
+                if missing.args != (MEASUREMENT_KEY,):
+                    raise
                 # Only an absent measurement record permits the initial context.
                 epochs = []
             else:
