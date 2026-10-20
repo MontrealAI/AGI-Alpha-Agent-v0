@@ -664,6 +664,19 @@ class Operator(Protocol):
         """Construct bounded proposals without receiving confirmation material."""
 
 
+def _checked_source_bytes(path: Path, content: bytes) -> bytes:
+    """Bind physical source reads to retained import bytes when the installed loader provides them."""
+    missing = object()
+    snapshot = getattr(globals().get("__loader__"), "verified_source_bytes", missing)
+    if snapshot is not missing:
+        if not callable(snapshot):
+            raise ValueError("installed source snapshot must be callable")
+        expected = snapshot(str(path))
+        if not isinstance(expected, bytes) or content != expected:
+            raise ValueError("physical source differs from the verified imported snapshot")
+    return content
+
+
 class StructuralOperator:
     """Expose single edits and complementary representation/production changes."""
 
@@ -671,7 +684,8 @@ class StructuralOperator:
         if identity not in {"representation", "production", "complementary"}:
             raise ValueError("unsupported built-in operator")
         self.identity = identity
-        self.source_digest = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        source_path = Path(__file__)
+        self.source_digest = hashlib.sha256(_checked_source_bytes(source_path, source_path.read_bytes())).hexdigest()
 
     def propose(self, request: DiscoveryRequest) -> list[SelectionProgram]:
         """Generate executable hypotheses; candidate generation does not score them."""
@@ -741,7 +755,7 @@ class OperatorRegistry:
                 ) from exc
             source_path = inspect.getsourcefile(function)
             source = (
-                hashlib.sha256(Path(source_path).read_bytes()).hexdigest()
+                hashlib.sha256(_checked_source_bytes(Path(source_path), Path(source_path).read_bytes())).hexdigest()
                 if source_path and Path(source_path).is_file()
                 else None
             )
@@ -891,6 +905,7 @@ def _engine_digest(source_root: Path | None = None) -> str:
             content = stream.read(512_001)
         if len(content) > 512_000:
             raise ValueError("native execution source exceeds its byte budget")
+        content = _checked_source_bytes(path, content)
         manifest[path.relative_to(root.parent).as_posix()] = hashlib.sha256(content).hexdigest()
     return digest("ti-installed-engine", {"sources": manifest, "python": sys.version, "pydantic": pydantic.__version__})
 
