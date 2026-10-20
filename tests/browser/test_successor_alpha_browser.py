@@ -574,6 +574,7 @@ def advanced_continuity(browser: Browser, output: Path, errors: list[str], exter
         if artifact["name"] in produced and artifact["name"] != "exact-result.json":
             assert artifact["content"].encode() == produced[artifact["name"]]
     archive_raw = download(page, "#download-learning")
+    (output / "catalog-learning-archive.json").write_bytes(archive_raw)
     archive = json.loads(archive_raw)
     assert archive["schema"] == "successor-alpha-learning-archive/v1"
     assert archive["project"]["id"] == historical_project["id"]
@@ -719,7 +720,7 @@ def mobile_and_french(browser: Browser, output: Path, errors: list[str], externa
     context.close()
 
 
-def controlled_computer_return(raw: bytes) -> bytes:
+def controlled_computer_return(raw: bytes, *, interrupted: bool = False) -> bytes:
     """Exercise the actual native journal/export protocol with labeled supplier/actuator doubles."""
     from alpha_factory_v1.core.runtime.store import Journal
     from alpha_factory_v1.core.runtime.successor.computer import commitment, run_session
@@ -736,6 +737,8 @@ def controlled_computer_return(raw: bytes) -> bytes:
         }
 
         def next(self, task: Any, observation: dict[str, Any]) -> dict[str, Any]:
+            if interrupted:
+                raise RuntimeError("Controlled interrupted protocol double; no live execution qualification.")
             return {"actions": [], "done": True, "summary": "Controlled protocol double; no live model qualification."}
 
     class ControlledComputer:
@@ -754,18 +757,67 @@ def controlled_computer_return(raw: bytes) -> bytes:
         root = Path(folder)
         journal = Journal.initialize(root / "journal")
         permit = commitment(handoff.task, advisor, image, handoff.context())
-        run_session(
-            journal,
-            handoff.task,
-            advisor,
-            image,
-            root / "result",
-            permit,
-            factory=ControlledComputer,
-            execution_context=handoff.context(),
-        )
+        try:
+            run_session(
+                journal,
+                handoff.task,
+                advisor,
+                image,
+                root / "result",
+                permit,
+                factory=ControlledComputer,
+                execution_context=handoff.context(),
+            )
+        except RuntimeError:
+            if not interrupted:
+                raise
         write_computer_return(handoff, journal, advisor, image, root / "result")
-        return (root / "result/computer-return.json").read_bytes()
+        returned = (root / "result/computer-return.json").read_bytes()
+        assert json.loads(returned)["receipt"]["state"] == ("interrupted" if interrupted else "review")
+        return returned
+
+
+def extended_computer_history(handoff_raw: bytes, history_raw: str) -> bytes:
+    """Append two native protocol attempts, including one genuine interrupted journal receipt."""
+    source = """
+import {readFileSync} from 'node:fs';
+import * as computer from './examples/successor-alpha/computer.mjs';
+const input=JSON.parse(readFileSync(0,'utf8'));
+const {handoff,project}=await computer.inspectComputerHandoff(input.handoffRaw), s=handoff.strategy, t=handoff.task;
+const options={sourceHash:handoff.sourceHash,goal:s.originalGoal,valueHypothesis:s.valueHypothesis,
+ hypotheses:s.hypotheses,combination:s.combination,reframing:s.reframing,successCriteria:s.successCriteria,
+ html:t.html,allowedUrls:t.allowed_urls,inputRights:t.input_rights,license:t.license,
+ maxTurns:t.max_turns,maxActions:t.max_actions,maxSeconds:t.max_seconds,reviewMinutes:t.review_minutes};
+let historyRaw=input.historyRaw, handoffRaw;
+for(const selected of ['baseline','reframe']) {
+ handoffRaw=await computer.createComputerHandoff(project,{...options,selected});
+ historyRaw=await computer.retainComputerHandoff(project,handoffRaw,{priorRecord:historyRaw});
+}
+console.log(JSON.stringify({handoffRaw,historyRaw}));
+"""
+    created = json.loads(
+        subprocess.check_output(
+            ["node", "--input-type=module", "-e", source],
+            cwd=ROOT,
+            input=json.dumps({"handoffRaw": handoff_raw.decode(), "historyRaw": history_raw}),
+            text=True,
+        )
+    )
+    returned = controlled_computer_return(created["handoffRaw"].encode(), interrupted=True)
+    source = """
+import {readFileSync} from 'node:fs';
+import * as computer from './examples/successor-alpha/computer.mjs';
+const input=JSON.parse(readFileSync(0,'utf8'));
+const {project}=await computer.inspectComputerHandoff(input.handoffRaw);
+console.log(await computer.importComputerReturn(
+    project,input.handoffRaw,input.returnRaw,{priorRecord:input.historyRaw}
+));
+"""
+    return subprocess.check_output(
+        ["node", "--input-type=module", "-e", source],
+        cwd=ROOT,
+        input=json.dumps({**created, "returnRaw": returned.decode()}).encode(),
+    ).strip()
 
 
 def computer_strategy_journey(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
@@ -809,6 +861,14 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     expect(page.locator("#computer-approach")).to_have_value("reframe")
     page.locator("#computer-prepare").click()
     expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-jobs-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobsv0/successor/computer/#computer-project"
+    )
+    expect(page.locator("#computer-jobs-proposal")).to_have_text("Jobs · unsigned $AGIALPHA proposal ↗")
+    expect(page.locator("#computer-manager-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobManager/computer-receipt/"
+    )
+    expect(page.locator("#computer-manager-proposal")).to_have_text("Manager · unsigned USDC proposal ↗")
     second = json.loads(download(page, "#computer-download"))
     assert second["strategy"]["selected"] == "reframe"
     assert second["attemptId"] != handoff["attemptId"]
@@ -848,8 +908,22 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     expect(page.locator("#computer-prepared")).to_be_visible()
     french = json.loads(download(page, "#computer-download"))
     assert "Découvrir" in french["strategy"]["originalGoal"]
+    expect(page.locator("#computer-jobs-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobsv0/successor/computer/fr/#computer-project"
+    )
+    expect(page.locator("#computer-jobs-proposal")).to_have_text("Jobs · brouillon $AGIALPHA non signé ↗")
+    expect(page.locator("#computer-manager-proposal")).to_have_attribute(
+        "href", "https://montrealai.github.io/AGIJobManager/fr/computer-receipt/"
+    )
+    expect(page.locator("#computer-manager-proposal")).to_have_text("Manager · brouillon USDC non signé ↗")
     accessibility(page)
     page.screenshot(path=str(output / "15-computer-use-mobile-fr.png"), full_page=True)
+    historical_archive = (ROOT / "examples/successor-alpha/fixtures/learning-archive-7cf.json").read_bytes()
+    page.goto(URL)
+    upload(page, "#restore-computer-history", historical_archive, "historical-learning-archive.json")
+    expect(page.locator("#computer-history-count")).to_have_text("2 attempts")
+    expect(page.locator("#computer-history")).to_contain_text("Owner review: useful")
+    assert download(page, "#computer-save-history") == historical_archive
     context.close()
 
     # A controlled public-page fixture verifies that reading a source cannot lose the work editor.
@@ -878,6 +952,128 @@ def computer_strategy_journey(browser: Browser, output: Path, errors: list[str],
     assert reading_page.url == "about:blank"
     assert requested == ["https://public.example/source"]
     reading_context.close()
+
+
+def computer_history_import_journey(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
+    """Merge real native protocol history while retaining catalog lessons and every old wire string."""
+    context, page = context_page(browser, errors, external)
+    catalog_raw = (output / "catalog-learning-archive.json").read_bytes()
+    catalog = json.loads(catalog_raw)
+    assert catalog["records"] and catalog["nativeHandoffRaw"] and catalog["nativeContinuityRaw"]
+    upload(page, "#restore-learning-top", catalog_raw, "complete-catalog-learning.json")
+    expect(page.locator("#restored-note")).to_contain_text("historical")
+    page.locator("#computer-project-name").fill(catalog["project"]["name"])
+    page.locator("#computer-prepare").click()
+    expect(page.locator("#computer-prepared")).to_be_visible()
+    handoff_raw = download(page, "#computer-download")
+    upload(page, "#computer-return", controlled_computer_return(handoff_raw), "controlled-return.json")
+    expect(page.locator("#computer-returned")).to_be_visible()
+    page.locator("#computer-review-decision").select_option("accepted")
+    page.locator("#computer-review-note").fill("Labeled protocol fixture only; preserve the useful incumbent.")
+    for checkbox in page.locator("#computer-criteria-review input").all():
+        checkbox.check()
+    page.locator("#computer-review-save").click()
+    expect(page.locator("#computer-review-form")).to_be_hidden()
+    prior = json.loads(download(page, "#computer-save-history"))
+    extended = extended_computer_history(handoff_raw, prior["computerHistoryRaw"])
+    page.locator("#status").evaluate("element=>{element.textContent='';}")
+    upload(page, "#restore-learning-top", extended, "native-computer-history.json")
+    expect(page.locator("#status")).to_contain_text("Learning archive restored")
+    expect(page.locator("#computer-history-count")).to_have_text("3 attempts")
+    complete_raw = download(page, "#computer-save-history")
+    complete = json.loads(complete_raw)
+    for key in ("project", "records", "nativeHandoffRaw", "nativeContinuityRaw"):
+        assert complete[key] == prior[key] == catalog[key]
+    assert complete["computerHistoryRaw"].encode() == extended
+    history = json.loads(complete["computerHistoryRaw"])
+    assert history["records"][0] == json.loads(prior["computerHistoryRaw"])["records"][0]
+    assert json.loads(history["records"][2]["returnRaw"])["receipt"]["state"] == "interrupted"
+    assert history["records"][0]["review"]["decision"] == "useful"
+    for records in (history["records"], list(reversed(history["records"])), history["records"][-1:]):
+        incoming = dict(history, records=records)
+        page.locator("#status").evaluate("element=>{element.textContent='';}")
+        upload(page, "#restore-learning-top", json.dumps(incoming).encode(), "duplicate-or-older-history.json")
+        expect(page.locator("#status")).to_contain_text("Learning archive restored")
+        assert download(page, "#computer-save-history") == complete_raw
+    conflict = json.loads(extended)
+    conflict["records"][0]["handoffRaw"] = " " + conflict["records"][0]["handoffRaw"]
+    foreign = json.loads((ROOT / "examples/successor-alpha/fixtures/learning-archive-7cf.json").read_bytes())
+    for invalid in (json.dumps(conflict).encode(), foreign["computerHistoryRaw"].encode(), b"\xef\xbb\xbf" + extended):
+        page.locator("#error").evaluate("element=>{element.hidden=true;}")
+        upload(page, "#restore-learning-top", invalid, "refused-history.json")
+        expect(page.locator("#error")).to_be_visible()
+        assert download(page, "#computer-save-history") == complete_raw
+    source = """
+import {readFileSync} from 'node:fs';
+import {runNativeHandoff} from './examples/successor-alpha/continuity.mjs';
+const raw=readFileSync(0,'utf8');
+console.log(await runNativeHandoff(raw,{sourceHash:JSON.parse(raw).runtimeSourceHash}));
+"""
+    fresh_native = subprocess.check_output(
+        ["node", "--input-type=module", "-e", source], cwd=ROOT, input=complete["nativeHandoffRaw"].encode()
+    ).strip()
+    page.locator("#error").evaluate("element=>{element.hidden=true;}")
+    page.evaluate(
+        """() => {
+          const original=crypto.subtle.digest.bind(crypto.subtle); let once=true;
+          crypto.subtle.digest=async(...args)=>{
+            if(once){
+              once=false;window.historyValidationHeld=true;
+              document.documentElement.setAttribute('data-history-validation-held','true');
+              await new Promise(resolve=>{window.releaseHistoryValidation=resolve;});
+            }
+            return original(...args);
+          };
+          window.restoreDigest=()=>{crypto.subtle.digest=original;};
+        }"""
+    )
+    upload(page, "#restore-learning-top", extended, "history-during-native-return.json")
+    expect(page.locator("html")).to_have_attribute("data-history-validation-held", "true")
+    page.locator("#native-status").evaluate("element=>{element.textContent='';}")
+    upload(page, "#native-return-input", fresh_native, "fresh-native-catalog-return.json")
+    expect(page.locator("#native-status")).to_contain_text("Native return checked and retained")
+    updated_raw = download(page, "#computer-save-history")
+    updated = json.loads(updated_raw)
+    assert updated["nativeContinuityRaw"] != complete["nativeContinuityRaw"]
+    assert len(json.loads(updated["nativeContinuityRaw"])["returns"]) == 3
+    page.evaluate("window.releaseHistoryValidation();window.restoreDigest();")
+    expect(page.locator("#error")).to_be_visible()
+    assert download(page, "#computer-save-history") == updated_raw
+    complete_raw = updated_raw
+    source = """
+import {readFileSync} from 'node:fs';
+import {canonical} from './docs/assets/successor/engine.mjs';
+import {exactDigest} from './examples/successor-alpha/continuity.mjs';
+import {inspectLearningArchive} from './examples/successor-alpha/learning.mjs';
+const archive=JSON.parse(readFileSync(0,'utf8')), history=JSON.parse(archive.nativeContinuityRaw);
+history.returns[0].returnRaw=' '.repeat(900000)+history.returns[0].returnRaw;
+history.returns[0].returnSha256=await exactDigest(history.returns[0].returnRaw);
+delete history.sha256; history.sha256=await exactDigest(canonical(history));
+archive.nativeContinuityRaw=canonical(history);
+const raw=canonical(archive); await inspectLearningArchive(raw); console.log(raw);
+"""
+    large_archive = subprocess.check_output(
+        ["node", "--input-type=module", "-e", source], cwd=ROOT, input=complete_raw
+    ).strip()
+    assert 1_000_000 < len(large_archive) < 2_000_000
+    page.locator("#status").evaluate("element=>{element.textContent='';}")
+    upload(page, "#restore-learning-top", large_archive, "large-complete-archive.json")
+    expect(page.locator("#status")).to_contain_text("Learning archive restored")
+    page.locator("#status").evaluate("element=>{element.textContent='';}")
+    upload(page, "#restore-learning-top", extended, "history-over-large-archive.json")
+    expect(page.locator("#status")).to_contain_text("Learning archive restored")
+    complete_raw = download(page, "#computer-save-history")
+    assert complete_raw == large_archive
+    portable = output / "complete-computer-learning-workspace.html"
+    portable.write_bytes(download(page, "#computer-save-workspace"))
+    page.goto(portable.as_uri())
+    expect(page.locator("#computer-history-count")).to_have_text("3 attempts")
+    assert download(page, "#computer-save-history") == complete_raw
+    page.goto(URL + "?lang=fr")
+    upload(page, "#restore-computer-history", extended, "historique-natif.json")
+    expect(page.locator("#computer-history-count")).to_have_text("3 tentatives")
+    assert json.loads(download(page, "#computer-save-history"))["computerHistoryRaw"].encode() == extended
+    context.close()
 
 
 def computer_mission_presets(browser: Browser, errors: list[str], external: list[str]) -> None:
@@ -945,6 +1141,7 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 worker_fallback(browser, errors, external)
                 mobile_and_french(browser, output, errors, external)
                 computer_strategy_journey(browser, output, errors, external)
+                computer_history_import_journey(browser, output, errors, external)
                 computer_mission_presets(browser, errors, external)
             finally:
                 browser.close()

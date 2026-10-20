@@ -28,9 +28,9 @@ env:
 jobs:
   smoke:
     runs-on: ${{ matrix.os }}
-    # Windows runtime tests alone take over 21 minutes; allow setup and runner headroom.
+    # Windows runtime tests take about 42 minutes; allow dependency setup and runner headroom.
     # Keep the complete installed-runtime suite on every platform and Python version.
-    timeout-minutes: ${{ matrix.os == 'windows-latest' && 45 || 25 }}
+    timeout-minutes: ${{ matrix.os == 'windows-latest' && 60 || 25 }}
     strategy:
       fail-fast: false
       matrix:

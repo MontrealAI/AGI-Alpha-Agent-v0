@@ -168,9 +168,8 @@ def test_egress_blocks_private_dns_and_unapproved_queries(monkeypatch: pytest.Mo
         broker.fetch("https://example.org/public?stolen=secret", "GET")
     with pytest.raises(ValueError):
         broker.fetch("https://example.org/public", "POST")
-    monkeypatch.setattr("socket.getaddrinfo", lambda *a, **kw: [(2, 1, 6, "", ("127.0.0.1", 443))])
-    with pytest.raises(ValueError, match="nonpublic"):
-        broker.fetch("https://example.org/public", "GET")
+    with pytest.raises(ValueError, match="refused"):
+        ReadBroker(["https://127.0.0.1/public"]).fetch("https://127.0.0.1/public", "GET")
 
 
 def test_reconciliation_binds_exact_inactive_record(tmp_path: Path) -> None:

@@ -16,9 +16,9 @@ import time
 import uuid
 import zipfile
 from collections.abc import Iterator
-from contextlib import closing, contextmanager
+from contextlib import ExitStack, closing, contextmanager
 from pathlib import Path
-from typing import Any
+from typing import IO, Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat, PublicFormat
@@ -149,6 +149,98 @@ def private_write(path: Path, data: bytes) -> None:
         os.fsync(stream.fileno())
 
 
+def _private_batch_binding(path: Path, stream: IO[bytes], identity: tuple[int, int]) -> None:
+    """Require the held empty file and its pathname to retain one identity."""
+    opened, named = os.fstat(stream.fileno()), path.lstat()
+    for info in (opened, named):
+        if (
+            not stat.S_ISREG(info.st_mode)
+            or not info.st_ino
+            or (info.st_dev, info.st_ino) != identity
+            or info.st_nlink != 1
+            or info.st_size != 0
+            or getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
+        ):
+            raise ValueError("private batch file binding changed")
+        if os.name != "nt" and info.st_mode & 0o077:
+            raise ValueError("private batch file permissions changed")
+
+
+def private_write_batch(files: list[tuple[Path, bytes]]) -> None:
+    """Protect a finite exclusively created file set before writing any payload.
+
+    Windows receives only literal path strings, never file contents. All held
+    descriptors close on failure; an incomplete batch is never reported complete.
+    Filesystem identities that cannot be checked are refused rather than skipped.
+    """
+    if not 1 <= len(files) <= 8:
+        raise ValueError("private file batch must contain one to eight files")
+    paths = [path.absolute() for path, _ in files]
+    if len({os.path.normcase(os.path.abspath(path)) for path in paths}) != len(paths):
+        raise ValueError("private file batch requires distinct paths")
+    transport = json.dumps([str(path) for path in paths], ensure_ascii=True)
+    if len(transport) > 16_384:
+        raise ValueError("private file batch paths exceed the transport bound")
+    with ExitStack() as stack:
+        opened: list[tuple[Path, bytes, IO[bytes], tuple[int, int]]] = []
+        for path, (_, data) in zip(paths, files):
+            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+            try:
+                stream: IO[bytes] = os.fdopen(descriptor, "wb")
+            except BaseException:
+                os.close(descriptor)
+                raise
+            stack.enter_context(stream)
+            if os.name != "nt":
+                os.fchmod(stream.fileno(), 0o600)
+            info = os.fstat(stream.fileno())
+            identity = (info.st_dev, info.st_ino)
+            _private_batch_binding(path, stream, identity)
+            opened.append((path, data, stream, identity))
+        if os.name == "nt":
+            script = r"""
+$ErrorActionPreference = 'Stop'
+# Windows PowerShell 5.1 emits the JSON array as one pipeline object.
+# Assign it directly so foreach receives its literal string elements.
+$paths = ConvertFrom-Json -InputObject $env:ALPHA_PRIVATE_PATHS
+if ($paths.Count -lt 1 -or $paths.Count -gt 8) { throw 'Invalid private file batch' }
+$sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
+$inherit = [System.Security.AccessControl.InheritanceFlags]::None
+foreach ($path in $paths) {
+    if ($path -isnot [string] -or [string]::IsNullOrEmpty($path)) { throw 'Invalid private file path' }
+    $item = Get-Item -LiteralPath $path -Force
+    if ($item.PSIsContainer -or ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint)) {
+        throw 'Private batch requires regular files'
+    }
+    $acl = New-Object System.Security.AccessControl.FileSecurity
+    $acl.SetOwner($sid)
+    $acl.SetAccessRuleProtection($true, $false)
+    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+        $sid, 'FullControl', $inherit, 'None', 'Allow'
+    )
+    $acl.AddAccessRule($rule)
+    Set-Acl -LiteralPath $path -AclObject $acl
+}
+"""
+            subprocess.run(
+                ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+                env={**os.environ, "ALPHA_PRIVATE_PATHS": transport},
+                check=True,
+                capture_output=True,
+                timeout=30,
+            )
+        # Check every empty destination after ACL application and before the
+        # first byte. Recheck each held descriptor/path immediately before use.
+        for path, _, stream, identity in opened:
+            _private_batch_binding(path, stream, identity)
+        for path, data, stream, identity in opened:
+            _private_batch_binding(path, stream, identity)
+            if stream.write(data) != len(data):
+                raise OSError("private batch write incomplete")
+            stream.flush()
+            os.fsync(stream.fileno())
+
+
 class Conflict(ValueError):
     """The reviewed state changed, or a transition is not allowed."""
 
@@ -198,11 +290,15 @@ class Journal:
                 raise
         restrict_access(path)
         cfg = config or RuntimeConfig()
-        private_write(path / "config.json", canonical(cfg.model_dump()))
         key = Ed25519PrivateKey.generate()
-        private_write(path / "identity.key", key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption()))
-        private_write(path / "api.token", secrets.token_urlsafe(32).encode())
-        private_write(path / "journal.sqlite3", b"")
+        private_write_batch(
+            [
+                (path / "config.json", canonical(cfg.model_dump())),
+                (path / "identity.key", key.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption())),
+                (path / "api.token", secrets.token_urlsafe(32).encode()),
+                (path / "journal.sqlite3", b""),
+            ]
+        )
         with closing(sqlite3.connect(path / "journal.sqlite3")) as cx, cx:
             cx.execute("PRAGMA journal_mode=WAL")
             cx.execute(

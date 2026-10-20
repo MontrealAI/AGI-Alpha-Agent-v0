@@ -2,7 +2,7 @@
 name: Agent release acceptance
 on:
   push:
-    branches: [main, codex/flagship-computer-strategy-loop-20261018, release/successor-1.34.0-20261018, codex/mainnet-deployment-release-1.34.0, feat/successor-local-preview-1.33.0, feat/ascension-inspectable-cycle-20261014, fix/nova-studio-integration-hardening-20261014, feat/nova-seed-mainnet-studio-20261014, feat/mark-mainnet-wallet-20261013, codex/successor-workbench-20261013, codex/contract-verification-1.28.1, codex/successor-personal-lab-20261012, codex/onboarding-refinement-1.26.3, codex/homepage-welcome-1.26.2, codex/mainnet-deployment-record-1.26.1, codex/mainnet-readiness-1.26.0, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
+    branches: [main, qualification/ti-public-source-20261020, fix/computer-read-watchdog-20261019, codex/flagship-computer-strategy-loop-20261018, release/successor-1.34.0-20261018, codex/mainnet-deployment-release-1.34.0, feat/successor-local-preview-1.33.0, feat/ascension-inspectable-cycle-20261014, fix/nova-studio-integration-hardening-20261014, feat/nova-seed-mainnet-studio-20261014, feat/mark-mainnet-wallet-20261013, codex/successor-workbench-20261013, codex/contract-verification-1.28.1, codex/successor-personal-lab-20261012, codex/onboarding-refinement-1.26.3, codex/homepage-welcome-1.26.2, codex/mainnet-deployment-record-1.26.1, codex/mainnet-readiness-1.26.0, codex/alpha-agent-completion, fix/pages-workspace-1.4.0, feat/ascension-lab-1.5.0, feat/insight-atlas-1.6.0, feat/proof-bloom-1.7.0, feat/manuscript-alignment-1.8.0, fix/compounding-accessibility-1.8.1, feat/decision-studio-1.9.0, feat/decision-studio-1.10.0, fix/runtime-reliability-1.10.1, codex/ascension-protocol-20260927, codex/factory-readiness-20260927, codex/factory-final-review-20260927, codex/demo-readiness-20260927, codex/demo-network-boundary-20260927, codex/business3-complete-20260927, codex/business3-observatory-20260928, codex/governance-workbench-20260928, codex/insight-v0-complete-20260928, codex/era-experience-complete-20260928, codex/mats-complete-20260928, codex/meta-agi-v3-complete-20260928, codex/muzero-planning-complete-20260928, codex/muzero-mcts-llm-20260929, codex/finance-alpha-20260929, codex/sovereign-workbench-20260930, codex/demo-catalog-20261001, codex/repository-release-20261002, codex/release-finale-20261003, codex/successor-omega-20261008]
   workflow_dispatch:
   workflow_call:
 permissions:
@@ -98,7 +98,7 @@ jobs:
         run: |
           mkdir -p evidence
           python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py --ignore=tests/runtime/test_supplier_browser_browser.py -q --junitxml=evidence/runtime.xml
-          python -m pytest --noconftest -o addopts= tests/test_native_browser_ci.py tests/test_release_publication.py tests/test_mainnet_release_record.py tests/test_current_mainnet_record.py tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
+          python -m pytest --noconftest -o addopts= tests/test_native_browser_ci.py tests/test_release_publication.py tests/test_transformational_packaging.py tests/test_mainnet_release_record.py tests/test_current_mainnet_record.py tests/test_successor_alpha_validation.py tests/test_successor_alpha_release.py tests/test_successor_alpha_release_gate.py tests/test_deployment_cache.py tests/test_release_installer.py tests/test_release_packs.py tests/test_successor_preservation.py tests/test_business3_delivery.py tests/test_governance_workbench.py tests/test_governance_delivery.py tests/test_insight_discovery.py tests/test_insight_v0_boundaries.py tests/test_discovery_delivery.py tests/test_experience_lab.py tests/test_experience_delivery.py tests/test_mats_search_lab.py tests/test_mats_delivery.py tests/test_curriculum_lab.py tests/test_curriculum_boundaries.py tests/test_curriculum_delivery.py tests/test_release_ci_gate.py tests/test_release_artifact_handoffs.py tests/test_readme_preservation.py tests/test_browser_model_download.py tests/test_check_ci_status.py tests/test_agent_dependency_audit.py tests/test_verify_branch_protection.py -q --junitxml=evidence/publication.xml
           python -m pytest --noconftest -o addopts= tests/test_openai_bridge_integration.py -q --junitxml=evidence/business1-sum-binding.xml
           python -m scripts.check_agent_preservation > evidence/preservation.json
           python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
@@ -395,7 +395,7 @@ jobs:
           ALPHA_SANDBOX_IMAGE=$(docker image inspect python:3.12-slim --format '{{index .RepoDigests 0}}')
           export ALPHA_SANDBOX_IMAGE
           printf '%s\n' "$ALPHA_SANDBOX_IMAGE" > evidence/sandbox-image.txt
-          python -m scripts.validate_agent_model --with-code \
+          python -m scripts.validate_agent_model --with-code --with-ti-public-pilot \
             --server model/llama-b11146/llama-server \
             --model model/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
             --sha256 3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597 \
@@ -438,7 +438,7 @@ jobs:
           import json
           from pathlib import Path
           import subprocess
-          result = subprocess.run(["pre-commit", "run", "--all-files"], capture_output=True, text=True)
+          result = subprocess.run(["pre-commit", "run", "--all-files", "--show-diff-on-failure"], capture_output=True, text=True)
           Path("evidence/precommit-all.txt").write_text(result.stdout + result.stderr)
           print(result.stdout, end="")
           print(result.stderr, end="")
@@ -541,6 +541,8 @@ jobs:
         run: python -m scripts.validate_homepage --site site --output evidence/homepage
       - name: Verify the useful Alpha mission, strategy construction and native continuity
         run: python -m scripts.validate_successor_alpha --site site --output evidence/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
+      - name: Verify the exact TI workspace, native result and saved offline recovery
+        run: python -m scripts.validate_transformational_intelligence --site site --output evidence/transformational-intelligence
       - name: Verify the personal SUCCESSOR download and offline experience
         run: python -m scripts.validate_successor_pocket --site site --output evidence/successor-pocket
       - name: Verify SUCCESSOR on the exact rebuilt site
@@ -907,8 +909,12 @@ jobs:
           path: evidence/
           if-no-files-found: error
 
+  transformational-intelligence:
+    needs: publication-preflight
+    uses: ./.github/workflows/transformational-intelligence.yml
+
   package:
-    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey]
+    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -1037,6 +1043,7 @@ jobs:
           python -m scripts.validate_homepage --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/homepage
           python -m scripts.validate_computer_use_study_browser --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/computer-use-study.json
           python -m scripts.validate_successor_alpha --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/ --output evidence/public-pages/successor-alpha --axe-script tests/browser/node_modules/axe-core/axe.min.js
+          python -m scripts.validate_transformational_intelligence --site site --url https://montrealai.github.io/AGI-Alpha-Agent-v0/ --output evidence/public-pages/transformational-intelligence
       - name: Name this attempt's public acceptance evidence
         id: public-name
         if: always()

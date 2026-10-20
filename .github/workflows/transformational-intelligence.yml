@@ -1,0 +1,68 @@
+name: Transformational Intelligence acceptance
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: ti-${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  bounded-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '22.17.1'
+      - name: Install existing locked runtime and browser tools
+        run: |
+          python -m pip install --require-hashes -r requirements-agent.lock
+          python -m pip install --require-hashes -r examples/successor-workbench/computer/requirements.lock
+          python -m pip install pytest==8.4.1
+          python -m pip check
+          python -m playwright install --with-deps chromium
+      - name: Reproduce exact paper artifact and preserve publication bytes
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+        run: |
+          mkdir -p evidence
+          python -m unittest tests.test_transformational_paper -v
+          python scripts/reproduce_transformational_paper.py --out evidence/paper
+          python -m pytest --noconftest -o addopts= tests/test_transformational_study_reproduction.py -q
+          python -m pytest --noconftest -o addopts= tests/test_generate_gallery_html.py -q
+          python -m scripts.reproduce_transformational_study --spec examples/transformational-intelligence/policy-study/spec.json --training examples/transformational-intelligence/policy-study/training.json --confirmation examples/transformational-intelligence/policy-study/confirmation.json --state "$RUNNER_TEMP/ti-study-agent" --output evidence/policy-study.json --approve-free-local-study
+      - name: Exercise durable discovery and separately controlled measurement
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+        run: |
+          python -m pytest --noconftest -o addopts= tests/runtime/test_transformation.py tests/runtime/test_transformation_review.py tests/runtime/test_transformation_public_content.py tests/runtime/test_transformation_model.py tests/runtime/test_public_preparation_pilot.py tests/runtime/test_transformation_math.py tests/runtime/test_transformation_source_audit.py tests/runtime/test_campaign_experiment.py tests/runtime/test_transformation_library.py tests/runtime/test_measurement.py tests/runtime/test_measurement_review.py tests/test_transformational_release_gate.py tests/test_transformational_packaging.py -q --junitxml=evidence/discovery.xml
+          python -m alpha_factory_v1.core.runtime.cli --home "$RUNNER_TEMP/ti-local-agent" successor-transform demo --output evidence/native-campaign.json
+          python -m scripts.reproduce_public_preparation_pilot --state "$RUNNER_TEMP/ti-public-preparation-agent" --output evidence/public-preparation-pilot.json --approve-free-local-pilot
+          TI_NATIVE_CAMPAIGN=evidence/native-campaign.json node --test examples/transformational-intelligence/inspector.test.mjs
+          node --test examples/transformational-intelligence/project-bridge.test.mjs
+          python -m alpha_factory_v1.core.runtime.successor.transformation_model_cli --help
+          python -m alpha_factory_v1.core.runtime.successor.transformation_math --help
+          python -m alpha_factory_v1.core.runtime.successor.transformation_source_audit_cli --home "$RUNNER_TEMP/ti-source-audit-agent" --output evidence/source-audit.json demo examples/transformational-source-audit/fixture.json --approve-free-local-audit
+          python -m alpha_factory_v1.core.runtime.cli successor-study --help
+      - name: Verify generated sources and complete offline browser journey
+        run: |
+          python scripts/generate_gallery_html.py
+          git diff --exit-code -- docs/transformational-intelligence docs/successor/alpha
+          node --test tests/browser/transformational_intelligence.test.mjs
+          python tests/browser/test_transformational_intelligence_browser.py
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: transformational-intelligence-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: error

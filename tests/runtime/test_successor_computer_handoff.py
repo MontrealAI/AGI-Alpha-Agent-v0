@@ -331,3 +331,39 @@ def test_return_refuses_modified_visible_artifact(tmp_path: Path, monkeypatch: p
         write_computer_return(
             ComputerHandoff.model_validate(handoff_document()), Journal(args.home), advisor, args.image, args.output
         )
+
+
+@pytest.mark.parametrize("interrupted", [False, True])
+def test_return_retains_signed_session_source_after_reader_replacement(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, interrupted: bool
+) -> None:
+    reader = tmp_path / "retained-reader.py"
+    reader.write_bytes(computer.READ_WORKER.read_bytes())
+    monkeypatch.setattr(computer, "READ_WORKER", reader)
+    args = args_for(tmp_path)
+    approved = computer.worker_source_digest()
+    prepared = computer.handle(args)
+    args.computer_command, args.permit = "run", prepared["commitment"]
+    install_doubles(monkeypatch, fail=interrupted)
+    real_run = computer.run_session
+
+    def run_then_replace(*values: Any, **options: Any) -> dict[str, Any]:
+        try:
+            return real_run(*values, **options)
+        finally:
+            reader.write_text("raise RuntimeError('replacement must not select exported source identity')\n")
+
+    monkeypatch.setattr(computer, "run_session", run_then_replace)
+    if interrupted:
+        with pytest.raises(OSError, match="Controlled uncertain"):
+            computer.handle(args)
+    else:
+        computer.handle(args)
+    returned = json.loads((args.output / "computer-return.json").read_text())
+    assert computer.worker_source_digest() != approved
+    assert returned["taskCommitment"] == prepared["commitment"]
+    assert returned["execution"]["workerSha256"] == approved
+    assert returned["receipt"]["worker_sha256"] == approved
+    assert returned["signedReceipt"]["payload"]["worker_sha256"] == approved
+    assert returned["receipt"]["state"] == ("interrupted" if interrupted else "review")
+    assert returned["authority"] == "none" and returned["verified"] is False

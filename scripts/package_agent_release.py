@@ -26,10 +26,25 @@ from scripts.check_successor_preservation import check as verify_successor_prese
 from scripts.release_packs import digest, require_asset_limits, restore
 from scripts.wait_for_release_ci import require_historical_evidence
 
+TI_PUBLIC_EXAMPLES = (
+    "examples/transformational-intelligence/campaign.json",
+    "examples/transformational-intelligence/policy-study/spec.json",
+    "examples/transformational-intelligence/policy-study/training.json",
+    "examples/transformational-intelligence/policy-study/confirmation.json",
+    "examples/transformational-math/expected-results.json",
+    "examples/transformational-intelligence/public-preparation/input.json",
+    "examples/transformational-intelligence/public-preparation/retained-run.json",
+    "examples/transformational-intelligence/public-preparation/direct-origination-profile.md",
+    "examples/transformational-intelligence/public-preparation/ubuntu-ephemeral-creator.md",
+    "examples/transformational-intelligence/public-preparation/LICENSE.Manager",
+    "examples/transformational-source-audit/fixture.json",
+    "examples/transformational-source-audit/expected-results.json",
+)
+
 
 def release_documents(version: str) -> tuple[str, ...]:
     """Retain the existing release documents and include the complete operating path."""
-    return (
+    documents: tuple[str, ...] = (
         "requirements-agent.lock",
         "scripts/install_agent.py",
         "scripts/release_packs.py",
@@ -88,17 +103,46 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/RELEASE_READINESS.md",
         f"docs/agent/RELEASE_NOTES_{version}.md",
     )
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        documents += (
+            "docs/agent/TRANSFORMATIONAL_IMPLEMENTATION.md",
+            "examples/transformational-intelligence/README.md",
+            "examples/transformational-intelligence/LOCAL_MODEL.md",
+            "examples/transformational-intelligence/policy-study/README.md",
+            "examples/transformational-math/README.md",
+            "examples/transformational-intelligence/public-preparation/README.md",
+            "examples/transformational-source-audit/README.md",
+        )
+    return documents
 
 
-def copy_release_documents(root: Path, output: Path, version: str, commit: str) -> None:
-    """Make flattened guide links usable while retaining manuscript bytes exactly."""
+def release_document_name(name: str) -> str:
+    """Keep distinct example guides usable in the flattened operator archive."""
+    return {
+        "examples/transformational-intelligence/README.md": "TRANSFORMATIONAL_DISCOVERY.md",
+        "examples/transformational-intelligence/LOCAL_MODEL.md": "TRANSFORMATIONAL_LOCAL_MODEL.md",
+        "examples/transformational-intelligence/policy-study/README.md": "TRANSFORMATIONAL_POLICY_STUDY.md",
+        "examples/transformational-math/README.md": "TRANSFORMATIONAL_MATH.md",
+        "examples/transformational-intelligence/public-preparation/README.md": "TRANSFORMATIONAL_PUBLIC_PILOT.md",
+        "examples/transformational-source-audit/README.md": "TRANSFORMATIONAL_SOURCE_AUDIT.md",
+    }.get(name, Path(name).name)
+
+
+def copy_release_documents(root: Path, output: Path, version: str, commit: str, *, archive_links: bool = False) -> None:
+    """Use pinned standalone fixture links or archive-local links; preserve manuscripts."""
     root = root.resolve()
     names = release_documents(version)
-    packaged = {name: Path(name).name for name in names}
+    packaged = {name: release_document_name(name) for name in names}
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        packaged["docs/transformational-intelligence/index.html"] = "transformational-intelligence-workspace.html"
+        if archive_links:
+            packaged.update(
+                {name: "transformational-examples/" + name.removeprefix("examples/") for name in TI_PUBLIC_EXAMPLES}
+            )
     for name in names:
         source = root / name
-        target = output / source.name
-        if not name.startswith("docs/agent/") or source.suffix != ".md":
+        target = output / packaged[name]
+        if source.suffix != ".md" or name.startswith("docs/manuscript/"):
             shutil.copy2(source, target)
             continue
 
@@ -167,6 +211,9 @@ def package_mainnet_record(root: Path, output: Path, version: str) -> Path:
         )
         archive.writestr("ascension-ethereum-mainnet-2026-10-11/README.md", readme)
         archive.write(output / "MAINNET_DEPLOYMENT.md", "MAINNET_DEPLOYMENT.md")
+        if tuple(map(int, version.split("."))) >= (1, 36, 0):
+            for name in ("CURRENT_MAINNET_DEPLOYMENT.md", "MAINNET_READINESS.md"):
+                archive.write(output / name, name)
     return destination
 
 
@@ -180,6 +227,27 @@ def package_successor_alpha_workspace(root: Path, output: Path) -> dict[str, str
     with destination.open("xb") as stream:
         stream.write(raw)
     return {"name": destination.name, "bytes": len(raw), "sha256": identity["pageSha256"]}
+
+
+def package_operator_guide(root: Path, output: Path, version: str, commit: str) -> Path:
+    """Retain all guides with offline links, the exact TI page and public fixtures."""
+    destination = output / f"alpha-agent-v{version}-operator-guide.zip"
+    with tempfile.TemporaryDirectory(prefix="alpha-operator-guides-") as raw:
+        guides = Path(raw)
+        copy_release_documents(root, guides, version, commit, archive_links=True)
+        with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
+            for name in release_documents(version):
+                if name.startswith(("docs/agent/", "examples/transformational")):
+                    path = guides / release_document_name(name)
+                    archive.write(path, path.name)
+            if tuple(map(int, version.split("."))) >= (1, 36, 0):
+                archive.write(
+                    output / "transformational-intelligence-workspace.html",
+                    "transformational-intelligence-workspace.html",
+                )
+                for name in TI_PUBLIC_EXAMPLES:
+                    archive.write(root / name, "transformational-examples/" + name.removeprefix("examples/"))
+    return destination
 
 
 def main() -> None:
@@ -199,6 +267,11 @@ def main() -> None:
         from scripts.successor_alpha_evidence import require_local_reports
 
         flagship = require_local_reports(args.evidence, sha, version)
+    transformational = None
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        from scripts.transformational_evidence import require_local_reports as require_ti_local_reports
+
+        transformational = require_ti_local_reports(args.evidence, sha, version)["full"]
     output.mkdir(parents=True, exist_ok=False)
     subprocess.run([sys.executable, "-m", "scripts.check_agent_preservation"], check=True)
     if tuple(map(int, version.split("."))) >= (1, 30, 0):
@@ -248,15 +321,16 @@ def main() -> None:
     )
     copy_release_documents(Path.cwd(), output, version, sha)
     flagship_workspace = package_successor_alpha_workspace(Path.cwd(), output) if flagship else None
+    ti_workspace = None
+    if transformational:
+        from scripts.transformational_evidence import package_workspace
+
+        ti_workspace = package_workspace(Path.cwd(), output)
     subprocess.run([sys.executable, "scripts/publish_computer_use_study.py", "--check"], check=True)
     shutil.copy2("docs/reports/computer-use-study/report-pack.zip", output / "computer-use-study-report-pack.zip")
     package_mainnet_record(Path.cwd(), output, version)
     shutil.copy2("deployments/ethereum-mainnet/2026-10-18/manifest.json", output / "ethereum-mainnet-2026-10-18.json")
-    with zipfile.ZipFile(output / f"alpha-agent-v{version}-operator-guide.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for name in release_documents(version):
-            if name.startswith("docs/agent/"):
-                path = output / Path(name).name
-                archive.write(path, path.name)
+    package_operator_guide(Path.cwd(), output, version, sha)
     with zipfile.ZipFile(output / f"alpha-agent-v{version}-manuscript.zip", "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(Path("docs/manuscript").rglob("*")):
             if path.is_file():
@@ -376,6 +450,12 @@ def main() -> None:
         manifest["release_gates"].append(
             "SUCCESSOR Alpha exact catalog outputs, constructed strategies, native Node host return, "
             "retained continuity, EN/FR accessibility and offline portable workspace in both gallery builds"
+        )
+    if transformational:
+        manifest["transformational_intelligence"] = {"local_acceptance": transformational, "workspace": ti_workspace}
+        manifest["release_gates"].append(
+            "bounded TI exact native comparisons, separate measurement/reuse controls, complete browser recovery "
+            "and byte-identical offline workspace with operator guides"
         )
     manifest["assets"] = require_asset_limits(output)
     (output / "release-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

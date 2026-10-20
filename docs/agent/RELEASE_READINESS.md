@@ -1,6 +1,30 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.35.0
+# Release readiness — 1.36.0 source candidate
+
+Version **1.36.0** adds bounded transformational discovery and the shared inert TI project.
+The [release proposal](RELEASE_NOTES_1.36.0.md) and [implementation register](TRANSFORMATIONAL_IMPLEMENTATION.md)
+separate installed mechanisms from research and qualification gaps. The public-source pilot has three installed
+operators; separate local-model, mathematical and complete-campaign studies retain their own evidence scopes.
+An offline TI workspace, original native example and complete guides are included in the package proposal.
+
+The reviewed 1.35.1 Computer Use reader and history fixes remain in the source ancestry. A fresh exact-main
+acceptance run must pass all existing gates plus TI local/package/public readback before delivery. The current
+source label, local test reports and historical passing runs do not identify a published 1.36.0 release.
+No model-weight advantage, calibrated outcome gain, general seven-axis capability, paid lifecycle or compatible
+four-repository release set is established. Original paper bytes, URLs, historical release records and all
+commissioning and authority boundaries remain unchanged.
+
+## Previous release scope — 1.35.1
+
+Version **1.35.1** repairs the public-document reader's cancellation and wall-clock boundary.
+The [maintenance notes](RELEASE_NOTES_1.35.1.md) describe disposable DNS/HTTP supervision,
+conservative interrupted-read accounting and fresh source-bound permits. Existing source, regression,
+Docker, package, browser, documentation, public HTTPS and uploaded-byte gates remain mandatory.
+A matching published manifest and exact-commit workflow establish delivery; source preparation alone does not.
+Historical releases, deployment records, on-chain authority and separate commissioning gates remain unchanged.
+
+## Previous release scope — 1.35.0
 
 Version **1.35.0** adds the [Computer Use flagship journey](SUCCESSOR_ALPHA.md#computer-use-level-3-and-level-4)
 and project-bound native returns described in the [release notes](RELEASE_NOTES_1.35.0.md). Level 3 develops

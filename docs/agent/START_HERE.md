@@ -14,6 +14,11 @@ Keep the proposed value, attempts, observations, reviews and lessons in one proj
 Planning and the catalog example run free in your browser; model-driven execution uses a separately configured
 native runner. Follow the [flagship guide](SUCCESSOR_ALPHA.md) for the guided path and current scope.
 
+**For bounded transformational discovery:** [open the free offline workspace](../transformational-intelligence/index.html)
+or follow the [native source-pilot guide](../../examples/transformational-intelligence/README.md).
+It preserves the required artifact, compares alternative methods and retains reviewable evidence.
+The [implementation register](TRANSFORMATIONAL_IMPLEMENTATION.md) states the structural and research limits.
+
 <!-- computer-use-study-publication -->
 **See what was actually demonstrated:** [Read the computer-use study](../reports/computer-use-study/REPORT.md) or open its [English/French visual reader](../reports/computer-use-study/index.html). Two repaired websites, tested recovery and fewer scripted setup controls; simulated owner, not a production benchmark.
 <!-- /computer-use-study-publication -->

@@ -14,7 +14,7 @@ import uuid
 from pathlib import Path
 from typing import Any, Callable
 
-from ..store import Conflict, Journal, private_write
+from ..store import Conflict, Journal, private_write, private_write_batch
 from .protocol import (
     BehaviorArtifact,
     CandidateReleaseManifest,
@@ -99,11 +99,18 @@ def freeze(journal: Journal, spec: dict[str, Any], run_id: str) -> dict[str, Any
     }
 
 
-def write_receipt(journal: Journal, record: dict[str, Any], destination: Path, domain: str) -> None:
+def write_receipt(
+    journal: Journal, record: dict[str, Any], destination: Path, domain: str, *, include_record: bool = False
+) -> None:
     """Attribute a local observation; the recipient must supply its trusted source key separately."""
     envelope = sign_record(journal.key, journal.identity, domain, Journal.document(record))
-    private_write(destination / "signed-receipt.json", canonical(envelope.model_dump(mode="json")))
-    private_write(destination / "source-key.txt", (journal.public + "\n").encode())
+    files = [
+        (destination / "signed-receipt.json", canonical(envelope.model_dump(mode="json"))),
+        (destination / "source-key.txt", (journal.public + "\n").encode()),
+    ]
+    if include_record:
+        files.insert(0, (destination / "receipt.json", canonical(record)))
+    private_write_batch(files)
 
 
 def invoke(request: dict[str, Any], checkpoint: Callable[[], None] = lambda: None) -> dict[str, Any]:

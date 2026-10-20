@@ -53,7 +53,7 @@ jobs:
           python -m pip check
           python -c "from importlib.metadata import version; assert version('eth-hash') == '0.8.0'"
           node tests/contracts/authority-test/native-ci-evidence.cjs init
-      - name: Run all checks serially with a fresh bounded test process
+      - name: Run every check with isolated bounded native profile processes
         working-directory: tests/contracts
         run: |
           set -euo pipefail
@@ -81,10 +81,38 @@ jobs:
           run_check creator-pty python authority-test/creator-pty.test.py "$(command -v node)"
           run_check creator-local env ALPHA_CREATOR_TEST_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/creator-local-private" node --max-old-space-size=384 node_modules/hardhat/internal/cli/cli.js test --no-compile --config hardhat.authority.config.js authority-test/creator-local.test.js
           run_check native-contract node --max-old-space-size=384 --test authority-test/native-ci-contract.test.cjs authority-test/authority-revision.test.cjs authority-test/authority-input-boundary.test.cjs
-          run_check native-empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
-          run_check native-delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
-          run_check native-marker env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=marker ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-marker" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
-          run_check native-creator env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_CREATOR_NATIVE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-creator" node --max-old-space-size=384 authority-test/creator-clean-checkout.cjs
+          # Each native profile has its own complete standalone checkout, dependencies,
+          # local EVM, private directory and ephemeral HTTPS port. Their source-negative
+          # fixtures must never run concurrently in the same checkout.
+          native_profile() (
+            set -euo pipefail
+            local profile="$1"
+            shift
+            local profile_root="$RUNNER_TEMP/alpha-native-source-$profile-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            local profile_state="$RUNNER_TEMP/alpha-native-tools-$profile-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            git clone --no-hardlinks --no-checkout -- "$GITHUB_WORKSPACE" "$profile_root"
+            git -C "$profile_root" checkout --detach "$ALPHA_EXPECTED_HEAD_SHA"
+            export XDG_CONFIG_HOME="$profile_state/config" XDG_CACHE_HOME="$profile_state/cache" XDG_DATA_HOME="$profile_state/data"
+            export npm_config_cache="$profile_state/npm-cache"
+            cd "$profile_root/tests/contracts"
+            npm ci
+            npm run compile:strict
+            "$@"
+          )
+          native_pids=()
+          run_check native-empty native_profile empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-delegated native_profile delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-marker native_profile marker env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=marker ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-marker" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-creator native_profile creator env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_CREATOR_NATIVE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-creator" node --max-old-space-size=384 authority-test/creator-clean-checkout.cjs &
+          native_pids+=("$!")
+          native_failed=0
+          for native_pid in "${native_pids[@]}"; do
+            if wait "$native_pid"; then :; else native_failed=1; fi
+          done
+          test "$native_failed" -eq 0
       - name: Derive exact-head evidence without rewriting historical source records
         if: always()
         run: node tests/contracts/authority-test/native-ci-evidence.cjs finish
