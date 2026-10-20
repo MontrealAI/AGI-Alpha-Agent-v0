@@ -495,9 +495,7 @@ def _screen_source_assignments(
                     elif isinstance(pattern, ast.MatchMapping) and pattern.rest is not None:
                         inspect(pattern.rest, node.subject)
         elif isinstance(node, ast.withitem) and node.optional_vars is not None:
-            for name, _ in _assignment_bindings(
-                node.optional_vars, node.context_expr, include_receivers=True
-            ):
+            for name, _ in _assignment_bindings(node.optional_vars, node.context_expr, include_receivers=True):
                 inspect(name, node.context_expr)
         elif isinstance(node, ast.ExceptHandler) and node.name is not None:
             inspect(node.name, node)

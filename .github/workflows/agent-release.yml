@@ -438,7 +438,7 @@ jobs:
           import json
           from pathlib import Path
           import subprocess
-          result = subprocess.run(["pre-commit", "run", "--all-files"], capture_output=True, text=True)
+          result = subprocess.run(["pre-commit", "run", "--all-files", "--show-diff-on-failure"], capture_output=True, text=True)
           Path("evidence/precommit-all.txt").write_text(result.stdout + result.stderr)
           print(result.stdout, end="")
           print(result.stderr, end="")
