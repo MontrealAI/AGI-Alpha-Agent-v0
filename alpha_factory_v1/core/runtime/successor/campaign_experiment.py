@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import os
 import stat
 import uuid
@@ -18,8 +19,8 @@ from typing import Any, Literal
 
 from pydantic import Field, model_validator
 
-from ..store import Conflict, Journal, digest as journal_digest
-from .protocol import MAX_JSON_BYTES, canonical, digest, safe_json_loads
+from ..store import Conflict, Journal, canonical as journal_canonical, digest as journal_digest
+from .protocol import MAX_JSON_BYTES, canonical, digest
 from .transformation import (
     DiscoveryLoop,
     DiscoveryRequest,
@@ -277,7 +278,9 @@ class CampaignExperiment:
         for count, (sequence, identity, raw, hashed, signature) in enumerate(events, 1):
             if count > 5000:
                 raise Conflict("history revision scan capacity reached; external checkpoint required")
-            body = safe_json_loads(raw)
+            if len(raw) > MAX_JSON_BYTES:
+                raise Conflict("history revision exceeds its bounded scan byte budget")
+            body = json.loads(raw)
             if (
                 not isinstance(body, dict)
                 or sequence != count
@@ -285,6 +288,7 @@ class CampaignExperiment:
                 or body.get("previous") != previous
                 or body.get("identity") != self.journal.identity
                 or body.get("mission") != identity
+                or journal_canonical(body) != raw
                 or journal_digest(body) != hashed
             ):
                 raise ValueError("journal revision identity or hash chain differs")
