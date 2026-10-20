@@ -272,6 +272,31 @@ def _screen_source_assignments(
                         raise ValueError("source literal repetition exceeds its bound")
                     consume(sizes[operand] * count.value)
                     fold_value = repeated * count.value
+        elif isinstance(literal, ast.Call) and isinstance(literal.func, ast.Attribute) and literal.func.attr == "join":
+            separator_node: ast.AST | None = None
+            sequence_node: ast.AST | None = None
+            if not literal.keywords and len(literal.args) == 1:
+                separator_node, sequence_node = literal.func.value, literal.args[0]
+            elif (
+                not literal.keywords
+                and len(literal.args) == 2
+                and isinstance(literal.func.value, ast.Name)
+                and literal.func.value.id in {"str", "bytes"}
+            ):
+                separator_node, sequence_node = literal.args
+            separator = literals.get(separator_node) if separator_node is not None else None
+            elements = literal_sequence(sequence_node) if sequence_node is not None else None
+            if separator is not None and elements is not None:
+                joined = [literals.get(element) for element in elements]
+                if all(type(piece) is type(separator) for piece in joined):
+                    assert separator_node is not None
+                    consume(
+                        sum(sizes[element] for element in elements) + sizes[separator_node] * max(0, len(joined) - 1)
+                    )
+                    if isinstance(separator, str):
+                        fold_value = separator.join(piece for piece in joined if isinstance(piece, str))
+                    else:
+                        fold_value = separator.join(piece for piece in joined if isinstance(piece, bytes))
         elif isinstance(literal, ast.FormattedValue) and isinstance(literals.get(literal.value), str):
             text = literals[literal.value]
             assert isinstance(text, str)

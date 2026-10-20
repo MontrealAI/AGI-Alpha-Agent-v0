@@ -152,7 +152,11 @@ actual fixture command took about seven seconds locally; this is no performance 
 
 Public-source admission screens visible bindings and statically closed text/bytes composition without
 executing supplied code. Literal additions, bounded repetitions and supported static f-strings are
-folded before nested-source screening; nonempty static format specifiers are refused. Each parsed or
+folded before nested-source screening; nonempty static format specifiers are refused. Closed literal
+str/bytes joins also fold bounded list/tuple elements, including the admitted single-argument iterable
+adapters and explicit str.join/bytes.join spellings. Mixed or unknown runtime elements are not thereby
+resolved or certified; no supplied method or iterator is invoked. Join output bytes are charged before
+construction under the same shared budget and per-value limit. Each parsed or
 constructed value is limited to 65,536 bytes. A shared 1,000,000 byte-unit budget covers recursive
 parsing and literal construction, alongside the existing 12,000-node and four-level nesting bounds.
 These are conservative admission limits, not physical resource measurements or proof of arbitrary
