@@ -480,7 +480,9 @@ def _screen_source_assignments(
                 _literal_source_unpack(node.value)
             else:
                 inspect(node.arg, node.value)
-        elif node in literals:
+        # Folded calls also pass through their call-specific checks above.
+        # Validate every cached result independently of the dispatch branch.
+        if node in literals:
             text = literals[node]
             assert_public_content(text)
             consume(sizes[node])
