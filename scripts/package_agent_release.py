@@ -211,6 +211,9 @@ def package_mainnet_record(root: Path, output: Path, version: str) -> Path:
         )
         archive.writestr("ascension-ethereum-mainnet-2026-10-11/README.md", readme)
         archive.write(output / "MAINNET_DEPLOYMENT.md", "MAINNET_DEPLOYMENT.md")
+        if tuple(map(int, version.split("."))) >= (1, 36, 0):
+            for name in ("CURRENT_MAINNET_DEPLOYMENT.md", "MAINNET_READINESS.md"):
+                archive.write(output / name, name)
     return destination
 
 

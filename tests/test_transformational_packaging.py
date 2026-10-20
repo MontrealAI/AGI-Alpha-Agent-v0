@@ -106,6 +106,15 @@ def test_source_closure_and_page_tampering_are_refused(tmp_path: Path, problem: 
 
 def test_operator_bundle_contains_all_guides_exact_page_and_public_examples(tmp_path: Path) -> None:
     packaging.copy_release_documents(ROOT, tmp_path, VERSION, COMMIT)
+    from scripts.mkdocs_release_links import SOURCE_GUIDES, source_guide_links
+
+    for source, target in SOURCE_GUIDES.items():
+        original = (ROOT / "docs" / source).read_text()
+        rendered = source_guide_links(original, source, COMMIT)
+        pinned = f"](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/{COMMIT}/{target})"
+        assert pinned in rendered
+        assert rendered.replace(pinned, "](../../" + target + ")") == original
+        assert (ROOT / target).is_file()
     evidence.package_workspace(ROOT, tmp_path)
     guides = [
         packaging.release_document_name(name)
@@ -163,6 +172,25 @@ def test_operator_bundle_contains_all_guides_exact_page_and_public_examples(tmp_
         assert "](TRANSFORMATIONAL_DISCOVERY.md)" in archive.read("START_HERE.md").decode()
         assert "](transformational-intelligence-workspace.html)" in archive.read("START_HERE.md").decode()
         assert not any(name.endswith((".key", "journal.sqlite", "api.token")) for name in archive.namelist())
+
+
+def test_mainnet_archive_contains_actual_current_guidance_link_closure(tmp_path: Path) -> None:
+    packaging.copy_release_documents(ROOT, tmp_path, VERSION, COMMIT)
+    target = packaging.package_mainnet_record(ROOT, tmp_path, VERSION)
+    manifest = json.loads((ROOT / "deployments/ethereum-mainnet/2026-10-11/manifest.json").read_bytes())
+    with zipfile.ZipFile(target) as archive:
+        members = archive.namelist()
+        assert len(members) == len(set(members)) == len(manifest["files"]) + 5
+        assert archive.testzip() is None
+        for name, expected in manifest["files"].items():
+            assert hashlib.sha256(archive.read("ascension-ethereum-mainnet-2026-10-11/" + name)).hexdigest() == expected
+        for name in ("MAINNET_DEPLOYMENT.md", "CURRENT_MAINNET_DEPLOYMENT.md", "MAINNET_READINESS.md"):
+            assert archive.read(name) == (tmp_path / name).read_bytes()
+            text = re.sub(r"```.*?```", "", archive.read(name).decode(), flags=re.S)
+            for link in re.findall(r"\]\(([^\s)]+)\)", text):
+                parsed = urlsplit(link)
+                if not parsed.scheme and not parsed.netloc and parsed.path:
+                    assert parsed.path in members, (name, link)
 
 
 def test_omitted_source_cannot_self_declare_a_smaller_closure(tmp_path: Path) -> None:
