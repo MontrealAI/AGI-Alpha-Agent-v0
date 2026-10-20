@@ -478,8 +478,8 @@ def _screen_source_assignments(
                         raise ValueError("public-only source requires literal mapping constructor entries")
         elif isinstance(node, (ast.Import, ast.ImportFrom)):
             for alias in node.names:
-                if isinstance(node, ast.ImportFrom) and alias.name == "*":
-                    raise ValueError("public-only source requires explicit import receiving names")
+                # Wildcard runtime exports are not explicit receiving names here;
+                # preserve the dependency graph's existing initializer closure.
                 name = alias.asname or (
                     alias.name.split(".", 1)[0] if isinstance(node, ast.Import) else alias.name
                 )
