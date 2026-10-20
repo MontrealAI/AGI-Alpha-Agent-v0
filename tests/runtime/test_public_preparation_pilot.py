@@ -167,12 +167,14 @@ def test_release_real_weight_job_requires_actual_ti_pilot_and_cannot_soft_fail()
 @pytest.mark.parametrize("action,expected", [("pause", "paused-consumed"), ("cancel", "canceled")])
 def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_path, monkeypatch, action, expected):
     import threading
+    import time
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
     from scripts.reproduce_public_preparation_pilot import PilotFailure
     from alpha_factory_v1.core.runtime.successor.transformation_model import ModelDiscovery
 
-    calls, captured, controls = [], [], []
+    calls, captured, controls, control_finished = [], [], [], []
+    control_done = threading.Event()
     original_create = ModelDiscovery.create
 
     def capture_create(self, request, config):
@@ -190,6 +192,8 @@ def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_
             driver, campaign_id = captured[0]
             driver.control(campaign_id, action)
             controls.append(action)
+            control_finished.append(time.monotonic())
+            control_done.set()
             proposal = {
                 "schema_version": 1,
                 "candidates": [
@@ -241,6 +245,11 @@ def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_
     try:
         with pytest.raises(PilotFailure) as failure:
             run_pilot(tmp_path / "native", model_config=config_file)
+        finished = time.monotonic()
+        assert control_done.wait(timeout=5)
+        assert len(control_finished) == 1
+        # Cancellation may finish before control returns; a later failure must finish within five seconds.
+        assert finished <= control_finished[0] + 5
         driver, campaign_id = captured[0]
         assert controls == [action]
         assert failure.value.evidence["retained_state"] == expected
