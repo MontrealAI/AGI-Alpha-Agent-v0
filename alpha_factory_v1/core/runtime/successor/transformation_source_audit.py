@@ -124,25 +124,35 @@ def _literal_source_unpack(value: ast.AST) -> None:
 
 
 def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tuple[str, ast.AST | None]]:
-    """Find statically named assignment bindings without evaluating supplied code."""
-    if isinstance(target, ast.Name):
-        yield target.id, value
-    elif isinstance(target, ast.Attribute):
-        yield target.attr, value
-    elif isinstance(target, ast.Subscript):
-        yield from _assignment_bindings(target.value, value)
-        yield from _selector_bindings(target.slice, value)
-    elif isinstance(target, ast.Starred):
-        yield from _assignment_bindings(target.value, value)
-    elif isinstance(target, (ast.Tuple, ast.List)):
-        matching = (
-            isinstance(value, (ast.Tuple, ast.List))
-            and len(value.elts) == len(target.elts)
-            and not any(isinstance(item, ast.Starred) for item in (*target.elts, *value.elts))
-        )
-        for index, item in enumerate(target.elts):
-            assigned = value.elts[index] if matching and isinstance(value, (ast.Tuple, ast.List)) else value
-            yield from _assignment_bindings(item, assigned)
+    """Find bounded, statically named write targets without evaluating supplied code."""
+    pending = [(target, value, False)]
+    visited = 0
+    while pending:
+        target, value, selector = pending.pop()
+        visited += 1
+        if visited > MAX_SOURCE_AST_NODES:
+            raise ValueError("source assignment targets exceed node bound")
+        if selector:
+            yield from _selector_bindings(target, value)
+        elif isinstance(target, ast.Name):
+            yield target.id, value
+        elif isinstance(target, ast.Attribute):
+            yield target.attr, value
+            pending.append((target.value, value, False))
+        elif isinstance(target, ast.Subscript):
+            pending.append((target.slice, value, True))
+            pending.append((target.value, value, False))
+        elif isinstance(target, ast.Starred):
+            pending.append((target.value, value, False))
+        elif isinstance(target, (ast.Tuple, ast.List)):
+            matching = (
+                isinstance(value, (ast.Tuple, ast.List))
+                and len(value.elts) == len(target.elts)
+                and not any(isinstance(item, ast.Starred) for item in (*target.elts, *value.elts))
+            )
+            for index in range(len(target.elts) - 1, -1, -1):
+                assigned = value.elts[index] if matching and isinstance(value, (ast.Tuple, ast.List)) else value
+                pending.append((target.elts[index], assigned, False))
 
 
 def _screen_source_assignments(
@@ -448,6 +458,16 @@ def _screen_source_assignments(
                     raise ValueError("public-only source requires a literal populated setter key")
                 for name, assigned_value in _selector_bindings(setter_key, setter_value):
                     inspect(name, assigned_value)
+                receiver: ast.AST | None = None
+                if constructor in {"setattr", "__setattr__", "setitem", "__setitem__"} and len(node.args) == 3:
+                    receiver = node.args[0]
+                elif constructor in {"__setattr__", "__setitem__", "setdefault"} and isinstance(
+                    node.func, ast.Attribute
+                ):
+                    receiver = node.func.value
+                if receiver is not None:
+                    for name, assigned_value in _assignment_bindings(receiver, setter_value):
+                        inspect(name, assigned_value)
             if constructor in {"dict", "OrderedDict", "defaultdict", "MappingProxyType", "update"}:
                 for argument in node.args:
                     if isinstance(argument, ast.Dict) or _empty_source_value(argument):
@@ -456,6 +476,14 @@ def _screen_source_assignments(
                         continue
                     if not inspect_literal_pairs(argument):
                         raise ValueError("public-only source requires literal mapping constructor entries")
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                if isinstance(node, ast.ImportFrom) and alias.name == "*":
+                    raise ValueError("public-only source requires explicit import receiving names")
+                name = alias.asname or (
+                    alias.name.split(".", 1)[0] if isinstance(node, ast.Import) else alias.name
+                )
+                inspect(name, node)
         elif isinstance(node, ast.Match):
             for case in node.cases:
                 for pattern in ast.walk(case.pattern):
