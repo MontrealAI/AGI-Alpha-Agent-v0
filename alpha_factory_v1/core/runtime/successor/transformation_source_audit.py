@@ -193,6 +193,18 @@ def _screen_source_assignments(
         if credential and not _empty_source_value(value):
             raise ValueError("public-only source contains a populated credential-shaped assignment or key")
 
+    def inspect_literal_pairs(argument: ast.AST) -> bool:
+        """Screen explicit pair tables when constructors or iteration consume them."""
+        if not isinstance(argument, (ast.List, ast.Tuple)) or any(
+            not isinstance(pair, (ast.List, ast.Tuple)) or len(pair.elts) != 2 for pair in argument.elts
+        ):
+            return False
+        for pair in argument.elts:
+            assert isinstance(pair, (ast.List, ast.Tuple))
+            for name, assigned_value in _selector_bindings(pair.elts[0], pair.elts[1]):
+                inspect(name, assigned_value)
+        return True
+
     literals: dict[ast.AST, str | bytes] = {}
     sizes: dict[ast.AST, int] = {}
     for literal in reversed(nodes):
@@ -342,14 +354,8 @@ def _screen_source_assignments(
                         continue
                     if constructor in {"dict", "OrderedDict", "MappingProxyType"} and mapping_reference(argument, node):
                         continue
-                    if not isinstance(argument, (ast.List, ast.Tuple)) or any(
-                        not isinstance(pair, (ast.List, ast.Tuple)) or len(pair.elts) != 2 for pair in argument.elts
-                    ):
+                    if not inspect_literal_pairs(argument):
                         raise ValueError("public-only source requires literal mapping constructor entries")
-                    for pair in argument.elts:
-                        assert isinstance(pair, (ast.List, ast.Tuple))
-                        for name, assigned_value in _selector_bindings(pair.elts[0], pair.elts[1]):
-                            inspect(name, assigned_value)
         elif isinstance(node, ast.Match):
             for case in node.cases:
                 for pattern in ast.walk(case.pattern):
@@ -371,6 +377,7 @@ def _screen_source_assignments(
             for parameter, keyword_default in zip(arguments.kwonlyargs, arguments.kw_defaults, strict=True):
                 inspect(parameter.arg, keyword_default)
         elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
+            inspect_literal_pairs(node.iter)
             # A target receives an element, not the entire iterable. Use the
             # complete iterable as the conservative populated-value boundary.
             for name, _ in _assignment_bindings(node.target, node.iter):
