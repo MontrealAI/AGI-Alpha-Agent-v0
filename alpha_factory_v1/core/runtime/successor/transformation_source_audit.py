@@ -417,14 +417,11 @@ def _screen_source_assignments(
                 inspect(name, node.context_expr)
         elif isinstance(node, ast.ExceptHandler) and node.name is not None:
             inspect(node.name, node)
-        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
-            arguments = node.args
-            positional = [*arguments.posonlyargs, *arguments.args]
-            default_start = len(positional) - len(arguments.defaults)
-            for parameter, default in zip(positional[default_start:], arguments.defaults):
-                inspect(parameter.arg, default)
-            for parameter, keyword_default in zip(arguments.kwonlyargs, arguments.kw_defaults, strict=True):
-                inspect(parameter.arg, keyword_default)
+        elif isinstance(node, ast.arg):
+            # A declaration can receive a populated call argument even when its
+            # default is empty. Refuse credential-shaped receiving interfaces;
+            # do not infer call targets, runtime dispatch or external values.
+            inspect(node.arg, node)
         elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
             inspect_iterable_pairs(node.iter)
             # A target receives an element, not the entire iterable. Use the

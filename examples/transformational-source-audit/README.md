@@ -157,6 +157,11 @@ constructed value is limited to 65,536 bytes. A shared 1,000,000 byte-unit budge
 parsing and literal construction, alongside the existing 12,000-node and four-level nesting bounds.
 These are conservative admission limits, not physical resource measurements or proof of arbitrary
 runtime values, aliases or privacy. Operators must supply public, non-personal source.
+Credential-shaped function parameter declarations are conservatively refused in every receiving
+position (including lambdas, positional-only, keyword-only, variadic and keyword-variadic parameters).
+An empty default does not establish that later calls carry empty values. This admission policy does
+not resolve calls or certify external inputs; exact-empty assignment and mapping placeholders retain
+their existing policy.
 
 Inputs have bounded file count/UTF-8 bytes/AST nodes and the finite 64-program language. Phase execution
 is serialized by the Journal transaction. Pause/cancel and native STOP apply between these bounded
