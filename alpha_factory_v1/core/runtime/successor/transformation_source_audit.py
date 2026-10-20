@@ -123,8 +123,10 @@ def _literal_source_unpack(value: ast.AST) -> None:
         raise ValueError("public-only source requires literal dictionary unpacking")
 
 
-def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tuple[str, ast.AST | None]]:
-    """Find bounded, statically named write targets without evaluating supplied code."""
+def _assignment_bindings(
+    target: ast.AST, value: ast.AST | None, *, include_receivers: bool = False
+) -> Iterator[tuple[str, ast.AST | None]]:
+    """Find bounded write targets, optionally including visible receiver spellings."""
     pending = [(target, value, False)]
     visited = 0
     while pending:
@@ -138,7 +140,8 @@ def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tup
             yield target.id, value
         elif isinstance(target, ast.Attribute):
             yield target.attr, value
-            pending.append((target.value, value, False))
+            if include_receivers:
+                pending.append((target.value, value, False))
         elif isinstance(target, ast.Subscript):
             pending.append((target.slice, value, True))
             pending.append((target.value, value, False))
@@ -466,7 +469,7 @@ def _screen_source_assignments(
                 ):
                     receiver = node.func.value
                 if receiver is not None:
-                    for name, assigned_value in _assignment_bindings(receiver, setter_value):
+                    for name, assigned_value in _assignment_bindings(receiver, setter_value, include_receivers=True):
                         inspect(name, assigned_value)
             if constructor in {"dict", "OrderedDict", "defaultdict", "MappingProxyType", "update"}:
                 for argument in node.args:
@@ -477,13 +480,13 @@ def _screen_source_assignments(
                     if not inspect_literal_pairs(argument):
                         raise ValueError("public-only source requires literal mapping constructor entries")
         elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            # Screen explicit receiving aliases conservatively. Unaliased and
+            # wildcard imports retain their dependency-graph contract; an import
+            # identifier alone does not establish populated credential data.
+            # Imported runtime values and export names are not resolved here.
             for alias in node.names:
-                # Wildcard runtime exports are not explicit receiving names here;
-                # preserve the dependency graph's existing initializer closure.
-                name = alias.asname or (
-                    alias.name.split(".", 1)[0] if isinstance(node, ast.Import) else alias.name
-                )
-                inspect(name, node)
+                if alias.asname is not None:
+                    inspect(alias.asname, node)
         elif isinstance(node, ast.Match):
             for case in node.cases:
                 for pattern in ast.walk(case.pattern):
@@ -492,7 +495,9 @@ def _screen_source_assignments(
                     elif isinstance(pattern, ast.MatchMapping) and pattern.rest is not None:
                         inspect(pattern.rest, node.subject)
         elif isinstance(node, ast.withitem) and node.optional_vars is not None:
-            for name, _ in _assignment_bindings(node.optional_vars, node.context_expr):
+            for name, _ in _assignment_bindings(
+                node.optional_vars, node.context_expr, include_receivers=True
+            ):
                 inspect(name, node.context_expr)
         elif isinstance(node, ast.ExceptHandler) and node.name is not None:
             inspect(node.name, node)
@@ -508,13 +513,13 @@ def _screen_source_assignments(
             inspect_iterable_pairs(node.iter)
             # A target receives an element, not the entire iterable. Use the
             # complete iterable as the conservative populated-value boundary.
-            for name, _ in _assignment_bindings(node.target, node.iter):
+            for name, _ in _assignment_bindings(node.target, node.iter, include_receivers=True):
                 inspect(name, node.iter)
         elif type_alias_kind is not None and isinstance(node, type_alias_kind):
             alias_target, alias_assigned = getattr(node, "name", None), getattr(node, "value", None)
             if not isinstance(alias_target, ast.AST) or not isinstance(alias_assigned, ast.AST):
                 raise ValueError("source type alias requires an explicit AST binding")
-            for name, assigned_value in _assignment_bindings(alias_target, alias_assigned):
+            for name, assigned_value in _assignment_bindings(alias_target, alias_assigned, include_receivers=True):
                 inspect(name, assigned_value)
         elif isinstance(node, type_parameter_kinds):
             parameter_name = getattr(node, "name", None)
@@ -527,10 +532,10 @@ def _screen_source_assignments(
                 inspect(parameter_name, declaration_value)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
-                for name, assigned_value in _assignment_bindings(target, node.value):
+                for name, assigned_value in _assignment_bindings(target, node.value, include_receivers=True):
                     inspect(name, assigned_value)
         elif isinstance(node, (ast.AnnAssign, ast.AugAssign, ast.NamedExpr)):
-            for name, assigned_value in _assignment_bindings(node.target, node.value):
+            for name, assigned_value in _assignment_bindings(node.target, node.value, include_receivers=True):
                 inspect(name, assigned_value)
         elif isinstance(node, ast.keyword):
             if node.arg is None:
