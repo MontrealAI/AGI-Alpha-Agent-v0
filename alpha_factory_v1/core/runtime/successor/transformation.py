@@ -30,6 +30,12 @@ from pydantic import ConfigDict, Field, model_validator
 from ..store import Conflict, Journal, private_write
 from .protocol import StrictModel, canonical, digest, safe_json_loads
 
+
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 SCHEMA = "transformational-intelligence/v1"
 KEY = "@transformation:"
 AXES = ("representation", "information", "dependency", "production", "task-boundary", "mechanism", "evaluation")
@@ -58,7 +64,13 @@ def assert_public_content(value: Any) -> None:
     pending = [(value, 0)]
     nodes = 0
     pattern = re.compile(
-        r"(?:api[_ -]?key|private[_ -]?key|access[_ -]?token|refresh[_ -]?token|password|passphrase|client[_ -]?secret|secret|mnemonic|seed[_ -]?phrase|authorization)[\"' ]*\s*[:=]\s*[\"']?[^\s\"'},]+|-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----|\b(?:sk-[A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{20,})",
+        (
+            "(?:api[_ -]?key|private[_ -]?key|access[_ -]?token|refresh[_"
+            " -]?token|password|passphrase|client[_ -]?secret|secret|mnem"
+            "onic|seed[_ -]?phrase|authorization)[\\\"' ]*\\s*[:=]\\s*[\\\"']?["
+            "^\\s\\\"'},]+|-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----|\\b(?:sk-["
+            "A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{20,})"
+        ),
         re.IGNORECASE,
     )
     while pending:
@@ -73,7 +85,7 @@ def assert_public_content(value: Any) -> None:
                 inert_authorization = (
                     normalized == "authorization"
                     and item.get("schema") == SCHEMA
-                    and type(child) is dict
+                    and _is_exact_type(child, dict)
                     and set(child) == {"scope", "binding", "authority_expansion"}
                     and child.get("scope") == "local-bounded"
                     and child.get("binding") is None
@@ -125,9 +137,9 @@ class TIModel(StrictModel):
     def exact_literal_types(cls, values: Any) -> Any:
         if isinstance(values, dict):
             for field in ("publicOnly", "public_non_personal", "removable"):
-                if field in values and type(values[field]) is not bool:
+                if field in values and not _is_exact_type(values[field], bool):
                     raise ValueError("boolean fields reject integer substitution")
-            if "money_minor" in values and type(values["money_minor"]) is not int:
+            if "money_minor" in values and not _is_exact_type(values["money_minor"], int):
                 raise ValueError("money_minor requires an exact integer")
         return values
 
@@ -367,7 +379,7 @@ def validate_envelope(value: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("unsupported transformation envelope or fields")
     if (
         str(uuid.UUID(value["campaign_id"])) != value["campaign_id"]
-        or type(value["revision"]) is not int
+        or not _is_exact_type(value["revision"], int)
         or value["revision"] < 0
     ):
         raise ValueError("invalid campaign identity or revision")
@@ -399,7 +411,7 @@ def validate_envelope(value: dict[str, Any]) -> dict[str, Any]:
     ):
         raise ValueError("imported evaluator is unsupported or changed")
     if (
-        type(evaluation["epoch"]) is not int
+        not _is_exact_type(evaluation["epoch"], int)
         or evaluation["epoch"] != 1
         or evaluation["status"] != "local_structural_only"
     ):
@@ -426,7 +438,8 @@ def validate_envelope(value: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("unsupported imported provider authority")
     hashes = [binding["engine_sha256"], *binding["operators"].values()]
     if set(binding["operators"]) != set(request.operator_ids) or any(
-        type(item) is not str or len(item) != 64 or any(c not in "0123456789abcdef" for c in item) for item in hashes
+        not _is_exact_type(item, str) or len(item) != 64 or any(c not in "0123456789abcdef" for c in item)
+        for item in hashes
     ):
         raise ValueError("operator or engine bindings are malformed")
     if (
@@ -474,7 +487,7 @@ def validate_envelope(value: dict[str, Any]) -> dict[str, Any]:
         not isinstance(frozen["journal_predecessor"], str)
         or len(frozen["journal_predecessor"]) != 64
         or any(c not in "0123456789abcdef" for c in frozen["journal_predecessor"])
-        or type(frozen["journal_revision"]) is not int
+        or not _is_exact_type(frozen["journal_revision"], int)
         or not 0 < frozen["journal_revision"] < value["revision"]
     ):
         raise ValueError("frozen journal process references are malformed")
@@ -528,7 +541,7 @@ def validate_envelope(value: dict[str, Any]) -> dict[str, Any]:
                 "maintenance",
                 "reuse_horizon",
             }
-            or type(costs["search_units"]) is not int
+            or not _is_exact_type(costs["search_units"], int)
             or not 0 <= costs["search_units"] <= charter.budgets.search_units
         ):
             raise ValueError("invalid declared discovery resource costs")
@@ -808,9 +821,14 @@ def _package(request: DiscoveryRequest, program: SelectionProgram) -> Transforma
         axes=["representation", "production"] if program.representation == "argument-graph" else ["production"],
         witness=TransformationWitness(
             purpose=request.charter.purpose,
-            inherited_restriction="Select or criticize a source-order draft without representing prerequisite closure before compression.",
+            inherited_restriction=(
+                "Select or criticize a source-order draft without representin"
+                "g prerequisite closure before compression."
+            ),
             provenance="declared incumbent policy; not a proved ceiling",
-            proposed_change="Represent dependencies explicitly and search supported clause subsets under the same output limit.",
+            proposed_change=(
+                "Represent dependencies explicitly and search supported claus" "e subsets under the same output limit."
+            ),
             prerequisites=[
                 "audited acyclic argument annotations",
                 "at most twelve clauses",
@@ -823,7 +841,10 @@ def _package(request: DiscoveryRequest, program: SelectionProgram) -> Transforma
                 "preserves": ["source identity", "fixed clause limit", "permissions", "currency budgets"],
                 "human_understanding": "not calibrated",
             },
-            falsifier="Equal-or-better unchanged-frame control, invalid source dependencies, or setup cost exceeding declared reuse benefit.",
+            falsifier=(
+                "Equal-or-better unchanged-frame control, invalid source depe"
+                "ndencies, or setup cost exceeding declared reuse benefit."
+            ),
             strong_comparisons=[
                 "lead-order",
                 "audit-after-draft",
@@ -1178,7 +1199,10 @@ class DiscoveryLoop:
             data["result"] = {
                 **{key: val for key, val in terminal.items() if key != "execution_units"},
                 "fresh_sources": [document.model_dump() for document in fresh],
-                "mechanism": "declared representation/production ablations retained in development; inspect supplied dependencies",
+                "mechanism": (
+                    "declared representation/production ablations retained in dev"
+                    "elopment; inspect supplied dependencies"
+                ),
                 "certified_ceiling_escape": False,
                 "independent_review": "pending",
                 "reader_understanding": "uncalibrated",
@@ -1186,7 +1210,10 @@ class DiscoveryLoop:
                 "process_evidence": {
                     "freeze_journal_predecessor": frozen["journal_predecessor"],
                     "freeze_journal_revision": frozen["journal_revision"],
-                    "freshness": "exact known clause reuse rejected; semantic independence, custody and untouchedness require independent evidence",
+                    "freshness": (
+                        "exact known clause reuse rejected; semantic independence, cu"
+                        "stody and untouchedness require independent evidence"
+                    ),
                     "independence": "local computational checker; no organizational independence claimed",
                 },
                 "costs": {
@@ -1326,14 +1353,22 @@ def pilot_document(*, confirmation: bool = False) -> SourceDocument:
             ("first", 'The durable memory should not say only "this worked."', 2, []),
             (
                 "conditions",
-                "It should retain the restriction encountered, the transformation attempted, the evidence supporting its mechanism, its prerequisites, its construction costs, its failure conditions, and the scope of its outcome claim.",
+                (
+                    "It should retain the restriction encountered, the transforma"
+                    "tion attempted, the evidence supporting its mechanism, its p"
+                    "rerequisites, its construction costs, its failure conditions"
+                    ", and the scope of its outcome claim."
+                ),
                 9,
                 ["cost"],
             ),
             ("cost", "The same idea can succeed at a long reuse horizon and fail at a short one.", 7, []),
             (
                 "router",
-                "independently successful components do not guarantee that the router selects or composes them correctly.",
+                (
+                    "independently successful components do not guarantee that th"
+                    "e router selects or composes them correctly."
+                ),
                 8,
                 ["test"],
             ),
@@ -1344,26 +1379,42 @@ def pilot_document(*, confirmation: bool = False) -> SourceDocument:
         clauses = [
             (
                 "first",
-                "The motivating book example is useful because it forces the framework to distinguish a genuinely new route from a silent change in the assignment.",
+                (
+                    "The motivating book example is useful because it forces the "
+                    "framework to distinguish a genuinely new route from a silent"
+                    " change in the assignment."
+                ),
                 2,
                 [],
             ),
             ("summary", "The system may change how it reads, represents, drafts, and checks.", 9, ["fixed"]),
             (
                 "fixed",
-                "In a fixed-artifact charter, the user needs a faithful summary of a particular edition, for a specified audience and purpose, within a strict length and format.",
+                (
+                    "In a fixed-artifact charter, the user needs a faithful summa"
+                    "ry of a particular edition, for a specified audience and pur"
+                    "pose, within a strict length and format."
+                ),
                 7,
                 [],
             ),
             (
                 "interface",
-                "A source-grounded question interface, an adaptive explanation, or a small set of discriminating questions may be permissible alternatives.",
+                (
+                    "A source-grounded question interface, an adaptive explanatio"
+                    "n, or a small set of discriminating questions may be permiss"
+                    "ible alternatives."
+                ),
                 8,
                 ["permission"],
             ),
             (
                 "permission",
-                "The freedom must be real and declared; the system cannot infer consent merely because another product sounds more sophisticated.",
+                (
+                    "The freedom must be real and declared; the system cannot inf"
+                    "er consent merely because another product sounds more sophis"
+                    "ticated."
+                ),
                 5,
                 [],
             ),

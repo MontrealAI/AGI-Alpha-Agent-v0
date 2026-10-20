@@ -21,6 +21,11 @@ from alpha_factory_v1.core.runtime.successor.campaign_experiment import (
 from alpha_factory_v1.core.runtime.successor.protocol import canonical, safe_json_loads
 
 
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 def read_input(path: Path) -> tuple[dict[str, Any], str]:
     """Hash the same bounded regular-file bytes that are parsed and executed."""
     if path.is_symlink():
@@ -41,7 +46,7 @@ def batch(value: dict[str, Any]) -> list[CampaignUnit]:
     """Read only the bounded complete batch at the point where it is needed."""
     if set(value) != {"schema", "units"} or value["schema"] != "discovery-policy-campaigns/v1":
         raise ValueError("unsupported complete-campaign batch")
-    if type(value["units"]) is not list or not 1 <= len(value["units"]) <= 64:
+    if not _is_exact_type(value["units"], list) or not 1 <= len(value["units"]) <= 64:
         raise ValueError("invalid complete campaign count")
     return [CampaignUnit.model_validate(unit) for unit in value["units"]]
 

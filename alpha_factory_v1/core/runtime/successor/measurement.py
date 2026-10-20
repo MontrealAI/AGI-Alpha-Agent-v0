@@ -19,6 +19,12 @@ from ..store import Conflict, Journal
 from .protocol import Count, Digest, Identifier, StrictModel, Text, canonical, digest
 from .trust import SignedEnvelope, TrustRegistry
 
+
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 KEY = "@transformational-measurement:v1"
 SCALE = 1_000_000
 MAX_ATTEMPTS = 1000
@@ -139,28 +145,28 @@ class MeasurementLedger:
         required = {"journal_identity", "previous_instrument", "instrument_digest", "diagnosis", "cases", "scope"}
         if set(checked) != required or checked["instrument_digest"] != instrument_hash:
             raise ValueError("instrument validation does not bind this exact replacement")
-        if not all(type(checked[key]) is str and checked[key] for key in ("diagnosis", "scope")):
+        if not all(_is_exact_type(checked[key], str) and checked[key] for key in ("diagnosis", "scope")):
             raise ValueError("instrument validation requires a diagnosis and explicit evidence scope")
         cases = checked["cases"]
-        if type(cases) is not list or not 1 <= len(cases) <= 128:
+        if not _is_exact_type(cases, list) or not 1 <= len(cases) <= 128:
             raise ValueError("instrument validation requires separately adjudicated cases")
         seen: set[str] = set()
         for case in cases:
             if (
-                type(case) is not dict
+                not _is_exact_type(case, dict)
                 or set(case) != {"id", "evidence_digest", "old_score_ppm", "new_score_ppm", "outcome_ppm"}
-                or type(case["id"]) is not str
+                or not _is_exact_type(case["id"], str)
                 or not case["id"]
                 or case["id"] in seen
             ):
                 raise ValueError("invalid or duplicate instrument disagreement case")
             seen.add(case["id"])
             if (
-                type(case["evidence_digest"]) is not str
+                not _is_exact_type(case["evidence_digest"], str)
                 or len(case["evidence_digest"]) != 64
                 or any(c not in "0123456789abcdef" for c in case["evidence_digest"])
                 or any(
-                    type(case[key]) is not int or not 0 <= case[key] <= SCALE
+                    not _is_exact_type(case[key], int) or not 0 <= case[key] <= SCALE
                     for key in ("old_score_ppm", "new_score_ppm", "outcome_ppm")
                 )
             ):
@@ -211,9 +217,9 @@ class MeasurementLedger:
         frozen = ConfirmationDesign.model_validate(copy.deepcopy(frozen.model_dump()))
         approval = self._stable(approval)
         if (
-            type(sample_size) is not int
+            not _is_exact_type(sample_size, int)
             or not 1 <= sample_size <= 5000
-            or type(claim_count) is not int
+            or not _is_exact_type(claim_count, int)
             or not 1 <= claim_count <= 16
             or sample_size * claim_count > 10000
             or claim_count != len(frozen.claims)
@@ -264,7 +270,7 @@ class MeasurementLedger:
         """Consume the entire fixed sample once; never expose an intermediate promotion gate."""
         observations = self._stable(observations)
         payload = self._authenticate(observations, "measurement-observations", "verifier")
-        if type(attempt_number) is not int or attempt_number < 1:
+        if not _is_exact_type(attempt_number, int) or attempt_number < 1:
             raise ValueError("invalid attempt number")
         with self.journal.transaction() as cx:
             state = self.journal.document(self.journal.latest(KEY, cx))
@@ -291,7 +297,7 @@ class MeasurementLedger:
                 or observations.principal != attempt["custodian"]
                 or payload["attempt_digest"] != attempt["attempt_digest"]
                 or not all(
-                    type(payload[k]) is str and payload[k]
+                    _is_exact_type(payload[k], str) and payload[k]
                     for k in ("freshness_attestation", "independence_attestation")
                 )
             ):
@@ -303,7 +309,9 @@ class MeasurementLedger:
 
             def invalid(reason: str) -> dict[str, Any]:
                 disclosed = (
-                    sorted({u for u in units if type(u) is str and 0 < len(u) <= 160}) if type(units) is list else []
+                    sorted({u for u in units if _is_exact_type(u, str) and 0 < len(u) <= 160})
+                    if _is_exact_type(units, list)
+                    else []
                 )
                 result = {
                     "decision": "invalid-sample",
@@ -319,15 +327,15 @@ class MeasurementLedger:
                 return copy.deepcopy(result)
 
             if (
-                type(units) is not list
+                not _is_exact_type(units, list)
                 or len(units) != attempt["sample_size"]
-                or any(type(u) is not str or not u or len(u) > 160 for u in units)
+                or any(not _is_exact_type(u, str) or not u or len(u) > 160 for u in units)
                 or len(set(units)) != len(units)
                 or set(units) & used
             ):
                 return invalid("complete fresh nonrepeated experimental units are required")
             scores = payload["scores"]
-            if type(scores) is not list or len(scores) != attempt["claim_count"]:
+            if not _is_exact_type(scores, list) or len(scores) != attempt["claim_count"]:
                 return invalid("all preregistered claims must be reported")
             instrument = state["epochs"][attempt["epoch"] - 1]["instrument"]
             claims = []
@@ -339,12 +347,12 @@ class MeasurementLedger:
                 ).sqrt()
                 for claim_design, pairs in zip(attempt["frozen"]["claims"], scores, strict=True):
                     if (
-                        type(pairs) is not list
+                        not _is_exact_type(pairs, list)
                         or len(pairs) != len(units)
                         or any(
-                            type(p) is not list
+                            not _is_exact_type(p, list)
                             or len(p) != 2
-                            or any(type(s) is not int or not 0 <= s <= SCALE for s in p)
+                            or any(not _is_exact_type(s, int) or not 0 <= s <= SCALE for s in p)
                             for p in pairs
                         )
                     ):
@@ -378,7 +386,9 @@ class MeasurementLedger:
                 "calibration_error_accounted": _fraction(
                     Fraction(sum(e["instrument"]["calibration_failure_ppb"] for e in state["epochs"]), 1_000_000_000)
                 ),
-                "calibration_accounting_scope": "one separately justified uniform event per registered instrument epoch",
+                "calibration_accounting_scope": (
+                    "one separately justified uniform event per registered instru" "ment epoch"
+                ),
                 "authorization_granted": False,
                 "evidence_scope": "signed-process-attestation; independence is not established by hashes",
             }
@@ -387,7 +397,7 @@ class MeasurementLedger:
             return copy.deepcopy(result)
 
     def abandon(self, attempt_number: int, reason: str, approval: SignedEnvelope) -> None:
-        if type(attempt_number) is not int or attempt_number < 1 or not reason or len(reason) > 4000:
+        if not _is_exact_type(attempt_number, int) or attempt_number < 1 or not reason or len(reason) > 4000:
             raise ValueError("a valid attempt and bounded reason are required")
         approval = self._stable(approval)
         payload = self._authenticate(approval, "measurement-abandon", "verifier")

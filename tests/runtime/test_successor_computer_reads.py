@@ -90,7 +90,8 @@ def substitute_reader(
             " def __init__(self,**kwargs):self.client=OriginalClient(**kwargs)\n"
             " def __enter__(self):self.client.__enter__();return self\n"
             " def __exit__(self,*args):return self.client.__exit__(*args)\n"
-            f" def stream(self,method,url,**kwargs):return self.client.stream(method,{target!r},headers=kwargs['headers'])\n"
+            f" def stream(self,method,url,**kwargs):return self.client.stream(method,{target!r},"
+            "headers=kwargs['headers'])\n"
             "reader.httpx.Client=ControlledClient\n"
             if target
             else ""

@@ -506,12 +506,14 @@ class CampaignExperiment:
                 data[phase]["observed_policy_gain_ppm"] = (
                     None if candidate is None or incumbent is None else candidate - incumbent
                 )
-                data[phase][
-                    "claim"
-                ] = "observed bounded discovery-policy comparison; no calibrated outcome or general transfer certificate"
-                data[phase][
-                    "independence"
-                ] = "known exact clause reuse rejected in this Journal; external sampling/custody and semantic independence unestablished"
+                data[phase]["claim"] = (
+                    "observed bounded discovery-policy comparison; no calibrated "
+                    "outcome or general transfer certificate"
+                )
+                data[phase]["independence"] = (
+                    "known exact clause reuse rejected in this Journal; external "
+                    "sampling/custody and semantic independence unestablished"
+                )
                 data[phase]["costs"] = {
                     "search_units": sum(r["search_units"] for r in data[phase]["runs"]),
                     "execution_units": sum(r["execution_units"] for r in data[phase]["runs"]),

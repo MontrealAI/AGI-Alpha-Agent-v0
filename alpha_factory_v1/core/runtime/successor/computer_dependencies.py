@@ -73,7 +73,8 @@ def capture_dependencies() -> bytes:
 
 # This fixed bootstrap is itself permit-bound. Third-party modules and the CA
 # bundle are loaded from the captured frame, never mutable site-package roots.
-READ_BOOTSTRAP = """import importlib.machinery, sys
+READ_BOOTSTRAP = (
+    """import importlib.machinery, sys
 class SourceOnlyLoader(importlib.machinery.SourceFileLoader):
     def get_code(self, fullname):
         return self.source_to_code(self.get_data(self.path), self.path)
@@ -105,7 +106,8 @@ class Resources(importlib.resources.abc.ResourceReader):
 class SnapshotLoader(importlib.abc.SourceLoader):
     def __init__(self, fullname): self.fullname = fullname
     def get_filename(self, fullname):
-        return '/__approved_public_reader__/' + fullname.replace('.', '/') + ('/__init__.py' if self.is_package(fullname) else '.py')
+        return '/__approved_public_reader__/' + fullname.replace('.', '/') + """
+    """('/__init__.py' if self.is_package(fullname) else '.py')
     def get_data(self, path): return base64.b64decode(modules[self.fullname]['source'], validate=True)
     def get_source(self, fullname): return importlib.util.decode_source(self.get_data(None))
     def get_code(self, fullname): return compile(self.get_data(None), self.get_filename(fullname), 'exec')
@@ -118,3 +120,4 @@ class SnapshotFinder(importlib.abc.MetaPathFinder):
 sys.meta_path.insert(0, SnapshotFinder())
 exec(compile(source, '<approved-public-reader>', 'exec'))
 """
+)

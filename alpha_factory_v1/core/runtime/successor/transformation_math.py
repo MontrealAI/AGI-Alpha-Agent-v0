@@ -26,6 +26,12 @@ from ..store import Conflict, Journal, private_write
 from .protocol import StrictModel, canonical, digest
 from .transformation import Assumption, DiscoveryBudget, TransformationWitness, _engine_digest
 
+
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 SCHEMA = "ti-affine-recurrence/v1"
 KEY = "@ti-affine:"
 PROGRAMS = ("direct", "cycle", "affine-compose", "representation-only")
@@ -61,9 +67,9 @@ class AffineCase(StrictModel):
 class MathCharter(StrictModel):
     """The exact mathematical goal and free local authority never become candidates."""
 
-    purpose: Literal["Compute x_n exactly for x_(t+1)=(a*x_t+b) modulo m"] = (
+    purpose: Literal[
         "Compute x_n exactly for x_(t+1)=(a*x_t+b) modulo m"
-    )
+    ] = "Compute x_n exactly for x_(t+1)=(a*x_t+b) modulo m"
     outcome: Literal["exact-final-state"] = "exact-final-state"
     permitted_actions: list[Literal["construct-bounded", "evaluate-local", "write-artifact"]]
     publicOnly: Literal[True] = True
@@ -73,7 +79,7 @@ class MathCharter(StrictModel):
     @model_validator(mode="before")
     @classmethod
     def exact_public(cls, value: Any) -> Any:
-        if isinstance(value, dict) and "publicOnly" in value and type(value["publicOnly"]) is not bool:
+        if isinstance(value, dict) and "publicOnly" in value and not _is_exact_type(value["publicOnly"], bool):
             raise ValueError("publicOnly requires an exact boolean")
         return value
 
@@ -129,12 +135,12 @@ class Meter:
     """Count actual specified operations, including failed and comparator work."""
 
     def __init__(self, limit: int) -> None:
-        if type(limit) is not int or not 0 <= limit <= 1_000_000:
+        if not _is_exact_type(limit, int) or not 0 <= limit <= 1_000_000:
             raise ValueError("logical allowance must be an exact bounded integer")
         self.limit, self.used = limit, 0
 
     def charge(self, units: int) -> None:
-        if type(units) is not int or units < 0:
+        if not _is_exact_type(units, int) or units < 0:
             raise ValueError("invalid charge")
         if self.used + units > self.limit:
             raise BudgetExhausted("logical budget exhausted; partial work cannot establish a comparison")
@@ -200,7 +206,9 @@ def instrument() -> dict[str, Any]:
         "epoch": 1,
         "correctness": "integer equality against direct recurrence, on every complete supplied case",
         "selection": "all development outputs exact, then lowest total execution units; ties retain direct",
-        "confirmation": "one committed complete finite census; no IID, blinded-custody or population-generalization claim",
+        "confirmation": (
+            "one committed complete finite census; no IID, blinded-custod" "y or population-generalization claim"
+        ),
         "cost": COST_RULE,
         "search_cost": {
             "program_case_evaluation": 1,
@@ -265,23 +273,45 @@ def _package(program: MathProgram, commitment: str) -> MathPackage:
         ],
         witness=TransformationWitness(
             purpose="Compute exactly the charter's final recurrence state within fixed free local allowances.",
-            inherited_restriction="The direct representation retains only the current scalar and repeats every transition.",
-            provenance="Explicit incumbent implementation; repetition is an inherited algorithm, not a mathematical requirement.",
-            proposed_change="Represent a transition as (p,q) for x -> p*x+q mod m; construct powers by closed composition and binary decomposition.",
+            inherited_restriction=(
+                "The direct representation retains only the current scalar an" "d repeats every transition."
+            ),
+            provenance=(
+                "Explicit incumbent implementation; repetition is an inherite"
+                "d algorithm, not a mathematical requirement."
+            ),
+            proposed_change=(
+                "Represent a transition as (p,q) for x -> p*x+q mod m; constr"
+                "uct powers by closed composition and binary decomposition."
+            ),
             prerequisites=[
                 "Fixed integer affine recurrence; canonical residues",
                 "Installed source and instrument unchanged",
                 "Explicit exact local approval before construction",
             ],
-            fallback="Retain direct iteration or the stronger cycle-detection control when the reduction is not supported or not cheaper.",
+            fallback=(
+                "Retain direct iteration or the stronger cycle-detection cont"
+                "rol when the reduction is not supported or not cheaper."
+            ),
             outcome_bridge={
                 "composition_identity": "(u,v) after (p,q) equals (u*p mod m, (u*q+v) mod m)",
                 "identity": "(1,0) represents x -> x",
-                "loop_invariant": "B^e composed with R equals the original F^n; R is the accumulated map and B the current power",
-                "argument": "Expanding u*(p*x+q)+v gives (u*p)*x+(u*q+v). Associativity follows from function composition. For e=2k+r, B^e composed with R=(B^2)^k composed with (B^r composed with R). At e=0 the retained R equals F^n.",
+                "loop_invariant": (
+                    "B^e composed with R equals the original F^n; R is the accumu" "lated map and B the current power"
+                ),
+                "argument": (
+                    "Expanding u*(p*x+q)+v gives (u*p)*x+(u*q+v). Associativity f"
+                    "ollows from function composition. For e=2k+r, B^e composed w"
+                    "ith R=(B^2)^k composed with (B^r composed with R). At e=0 th"
+                    "e retained R equals F^n."
+                ),
                 "status": "human-readable algebraic argument; no proof-assistant certificate",
             },
-            falsifier="Any complete admitted case whose composed result differs from direct iteration; also reject non-affine or time-varying transitions.",
+            falsifier=(
+                "Any complete admitted case whose composed result differs fro"
+                "m direct iteration; also reject non-affine or time-varying t"
+                "ransitions."
+            ),
             strong_comparisons=[
                 "unchanged direct iteration",
                 "hand-engineered cycle detection including tails",
@@ -320,16 +350,32 @@ def _package(program: MathProgram, commitment: str) -> MathPackage:
                 },
             },
             "cycle": {
-                "proposed_change": "Retain a first-seen state table, split the deterministic orbit into a tail and cycle, then recover the exact requested index.",
+                "proposed_change": (
+                    "Retain a first-seen state table, split the deterministic orb"
+                    "it into a tail and cycle, then recover the exact requested i"
+                    "ndex."
+                ),
                 "outcome_bridge": {
-                    "argument": "If x_i=x_j for i<j, determinism gives x_(i+k)=x_(j+k) for all k>=0 by induction. Thus x_n=x_(i+(n-i) mod (j-i)) for n>=j. Store the tail, not an assumed modulus-sized period.",
+                    "argument": (
+                        "If x_i=x_j for i<j, determinism gives x_(i+k)=x_(j+k) for al"
+                        "l k>=0 by induction. Thus x_n=x_(i+(n-i) mod (j-i)) for n>=j"
+                        ". Store the tail, not an assumed modulus-sized period."
+                    ),
                     "status": "human-readable deterministic-cycle argument; no proof-assistant certificate",
                 },
             },
             "representation-only": {
-                "proposed_change": "Represent maps as affine pairs but retain one composition per original transition; this isolates representation without binary production.",
+                "proposed_change": (
+                    "Represent maps as affine pairs but retain one composition pe"
+                    "r original transition; this isolates representation without "
+                    "binary production."
+                ),
                 "outcome_bridge": {
-                    "argument": "One pair composition per tick represents F^t after t iterations by the affine composition identity. No logarithmic production step is used.",
+                    "argument": (
+                        "One pair composition per tick represents F^t after t iterati"
+                        "ons by the affine composition identity. No logarithmic produ"
+                        "ction step is used."
+                    ),
                     "status": "human-readable induction; no proof-assistant certificate",
                 },
             },
@@ -362,7 +408,7 @@ def additional_workloads_to_break_even(setup: int, direct: int, candidate: int) 
     The measured campaign already produced the first workload. Exact equality
     counts as break-even; strictly positive savings can require one more use.
     """
-    if any(type(value) is not int or value < 0 for value in (setup, direct, candidate)):
+    if any(not _is_exact_type(value, int) or value < 0 for value in (setup, direct, candidate)):
         raise ValueError("break-even accounting requires nonnegative exact logical units")
     deficit = max(0, setup - direct)
     if deficit == 0:
@@ -461,7 +507,10 @@ class AffineDiscovery:
                 totals = {name: sum(row["methods"][name]["units"] for row in data["development"]) for name in PROGRAMS}
                 search.charge(len(PROGRAMS))
                 selected = min(PROGRAMS, key=lambda name: (totals[name], name != "direct", name))
-                package = _package(MathProgram(algorithm=selected), request.confirmation_digest)  # type: ignore[arg-type]
+                package = _package(
+                    MathProgram(algorithm=selected),  # type: ignore[arg-type]
+                    request.confirmation_digest,
+                )
                 manifest = {
                     "selected": selected,
                     "development_units": totals,
@@ -553,8 +602,14 @@ class AffineDiscovery:
                         full_setup, totals["direct"], totals[selected]
                     ),
                     "reuse_is_not_authorized": True,
-                    "control_reuse": "automated and per-case unrestricted oracle reuse already executed method outputs; no extra method execution",
-                    "scope": "exact public finite census only; no blind sampling, independent validation, universal speedup or research novelty claim",
+                    "control_reuse": (
+                        "automated and per-case unrestricted oracle reuse already exe"
+                        "cuted method outputs; no extra method execution"
+                    ),
+                    "scope": (
+                        "exact public finite census only; no blind sampling, independ"
+                        "ent validation, universal speedup or research novelty claim"
+                    ),
                     "proof_status": "argument-present-not-machine-checked",
                     "provider_requests": 0,
                     "device_cost": "UNKNOWN",

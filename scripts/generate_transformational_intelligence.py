@@ -53,7 +53,9 @@ def render(root: Path = ROOT) -> tuple[str, dict[str, Any]]:
             names, location = reexport.groups()
             reexports = [name.strip() for name in names.split(",")]
             replacement = f"const {{{names}}} = {bundle(path.parent / location)};"
-            source = source[: reexport.start()] + replacement + source[reexport.end() :]
+            reexport_start = reexport.start()
+            reexport_end = reexport.end()
+            source = source[:reexport_start] + replacement + source[reexport_end:]
         exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.MULTILINE)
         exports.extend(reexports)
         source = re.sub(r"^export\s+", "", source, flags=re.MULTILINE)
@@ -68,7 +70,11 @@ def render(root: Path = ROOT) -> tuple[str, dict[str, Any]]:
     script = (
         "\n(()=>{\n'use strict';\n"
         + "\n".join(chunks)
-        + f"\nconst inspectNative={inspector}.inspectTransformationEnvelope,nativeCanonical={native_engine}.canonical,assertNativePublic={inspector}.assertPublicContent;\n"
+        + (
+            f"\nconst inspectNative={inspector}.inspectTransformationEnvelope,"
+            f"nativeCanonical={native_engine}.canonical,"
+            f"assertNativePublic={inspector}.assertPublicContent;\n"
+        )
         + f"const tiProject={bridge};\n"
         + engine
         + "\n"

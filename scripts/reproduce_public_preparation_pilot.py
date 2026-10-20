@@ -231,8 +231,12 @@ def run_pilot(state: Path, *, model_config: Path | None = None, fixtures: Path =
             "logical_native": envelope["result"]["costs"],
             "timing": timing,
             "construction": "included in develop phase; every attempted candidate retained in development_attempts",
-            "migration": "fresh disposable runtime plus actual independent historical import; timings included in total",
-            "execution_and_verification": "terminal candidate and all credible controls executed and independently recomputed",
+            "migration": (
+                "fresh disposable runtime plus actual independent historical " "import; timings included in total"
+            ),
+            "execution_and_verification": (
+                "terminal candidate and all credible controls executed and in" "dependently recomputed"
+            ),
             "money_minor": 0,
             "paid_model_calls": 0,
             "maintenance": None,
@@ -247,7 +251,10 @@ def run_pilot(state: Path, *, model_config: Path | None = None, fixtures: Path =
             "No calibrated outcome, fresh-campaign statistical test or general Level 3/4 superiority is established.",
             "The unrestricted exact-search comparator remains visible, including ties and negative outcomes.",
             "The deterministic mode makes no model calls; HTTP fixture tests do not count as real-model evidence.",
-            "Model mode is experimental, uses the operator-attested local no-charge provider and retains actual provenance.",
+            (
+                "Model mode is experimental, uses the operator-attested local"
+                " no-charge provider and retains actual provenance."
+            ),
         ],
     }
     assert_public_content(report)

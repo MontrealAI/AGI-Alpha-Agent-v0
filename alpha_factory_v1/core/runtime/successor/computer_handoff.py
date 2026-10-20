@@ -57,7 +57,9 @@ class ComputerStrategy(BaseModel):
         approach = (
             self.hypotheses[0]
             if self.selected == "baseline"
-            else self.combination if self.selected == "combine" else self.reframing
+            else self.combination
+            if self.selected == "combine"
+            else self.reframing
         )
         candidates = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.hypotheses))
         criteria = "\n".join(f"{index + 1}. {item}" for index, item in enumerate(self.successCriteria))

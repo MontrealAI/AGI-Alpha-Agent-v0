@@ -123,7 +123,11 @@ def run_acceptance(entry: str = URL, *, expected_page_sha256: str | None = None)
                     [
                         sys.executable,
                         "-c",
-                        "import json; from alpha_factory_v1.core.runtime.successor.transformation import pilot_document; print(json.dumps(pilot_document(confirmation=True).model_dump()))",
+                        (
+                            "import json; from alpha_factory_v1.core.runtime.successor.tr"
+                            "ansformation import pilot_document; print(json.dumps(pilot_d"
+                            "ocument(confirmation=True).model_dump()))"
+                        ),
                     ],
                     cwd=ROOT,
                     text=True,

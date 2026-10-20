@@ -13,6 +13,11 @@ from .protocol import canonical
 from .transport import read_document
 
 
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 def add_commands(commands: Any) -> None:
     """Add proposed/approved/training/frozen/terminal study operations."""
     parser = commands.add_parser("successor-study", help="Compare bounded discovery policies across complete campaigns")
@@ -48,7 +53,7 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         batch = read_document(args.units)
         if set(batch) != {"schema", "units"} or batch["schema"] != "discovery-policy-campaigns/v1":
             raise ValueError("unsupported complete-campaign batch")
-        if type(batch["units"]) is not list or not 1 <= len(batch["units"]) <= 64:
+        if not _is_exact_type(batch["units"], list) or not 1 <= len(batch["units"]) <= 64:
             raise ValueError("supply a bounded whole batch")
         units = [CampaignUnit.model_validate(unit) for unit in batch["units"]]
         result = (

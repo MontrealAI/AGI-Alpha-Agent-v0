@@ -17,6 +17,12 @@ from .protocol import Digest, Identifier, StrictModel, Text, canonical, digest
 from .transformation import validate_envelope
 from .trust import SignedEnvelope, TrustRegistry
 
+
+def _is_exact_type(value: object, expected: type[object]) -> bool:
+    """Compare exact types without admitting bool or other subclasses."""
+    return type(value) is expected
+
+
 KEY = "@transformation-library:v1"
 SCOPE: Literal["local-structural-only"] = "local-structural-only"
 MAX_ENTRIES = 128
@@ -78,7 +84,7 @@ class RouterContext(StrictModel):
     @model_validator(mode="before")
     @classmethod
     def explicit_public_context(cls, value: Any) -> Any:
-        if type(value) is not dict or value.get("publicOnly") is not True:
+        if not _is_exact_type(value, dict) or value.get("publicOnly") is not True:
             raise ValueError("routing requires an explicit exact-boolean public-only context")
         return value
 
@@ -131,7 +137,7 @@ class TransformationLibrary:
 
     @staticmethod
     def _operation(state: dict[str, Any], operation_id: str, payload: Any) -> bool:
-        if type(operation_id) is not str or not operation_id or len(operation_id) > 128:
+        if not _is_exact_type(operation_id, str) or not operation_id or len(operation_id) > 128:
             raise ValueError("a bounded operation identity is required")
         fingerprint = digest("ti-library-command", payload)
         previous = state["operations"].get(operation_id)
@@ -231,7 +237,7 @@ class TransformationLibrary:
                 raise ValueError("review must bind the exact archive, evidence, scope and frozen behavior")
             if (
                 payload["verdict"] not in {"supported", "rejected"}
-                or type(payload["limitations"]) is not str
+                or not _is_exact_type(payload["limitations"], str)
                 or not payload["limitations"].strip()
                 or len(payload["limitations"]) > 4000
             ):
@@ -287,7 +293,11 @@ class TransformationLibrary:
                 raise ValueError("control must bind the current active method and exact local-only terms")
             if payload["authority_expansion"] is not False:
                 raise ValueError("control cannot coerce authority expansion declarations")
-            if type(payload["reason"]) is not str or not payload["reason"].strip() or len(payload["reason"]) > 4000:
+            if (
+                not _is_exact_type(payload["reason"], str)
+                or not payload["reason"].strip()
+                or len(payload["reason"]) > 4000
+            ):
                 raise ValueError("control requires a bounded explanation")
             if entry["behavior_digest"] != expected_behavior_digest:
                 raise Conflict("frozen behavior changed; fresh review and authorization are required")

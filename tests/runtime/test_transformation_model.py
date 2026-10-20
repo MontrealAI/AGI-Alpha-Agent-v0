@@ -71,12 +71,16 @@ def local_provider(request):
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    yield LocalModelConfig(
-        endpoint=f"http://127.0.0.1:{server.server_port}/v1",
-        model="configured-local-model",
-        declared_revision="operator-declared-not-attested",
-        no_charge=True,
-    ), trace, reply
+    yield (
+        LocalModelConfig(
+            endpoint=f"http://127.0.0.1:{server.server_port}/v1",
+            model="configured-local-model",
+            declared_revision="operator-declared-not-attested",
+            no_charge=True,
+        ),
+        trace,
+        reply,
+    )
     server.shutdown()
     server.server_close()
     thread.join()
