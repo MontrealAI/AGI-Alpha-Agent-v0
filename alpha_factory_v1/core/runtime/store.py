@@ -200,7 +200,9 @@ def private_write_batch(files: list[tuple[Path, bytes]]) -> None:
         if os.name == "nt":
             script = r"""
 $ErrorActionPreference = 'Stop'
-$paths = @(ConvertFrom-Json -InputObject $env:ALPHA_PRIVATE_PATHS)
+# Windows PowerShell 5.1 emits the JSON array as one pipeline object.
+# Assign it directly so foreach receives its literal string elements.
+$paths = ConvertFrom-Json -InputObject $env:ALPHA_PRIVATE_PATHS
 if ($paths.Count -lt 1 -or $paths.Count -gt 8) { throw 'Invalid private file batch' }
 $sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
 $inherit = [System.Security.AccessControl.InheritanceFlags]::None
