@@ -8,6 +8,7 @@ reject known reuse; external custody must establish sampling and independence.
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import os
 import stat
@@ -17,8 +18,8 @@ from typing import Any, Literal
 
 from pydantic import Field, model_validator
 
-from ..store import Conflict, Journal
-from .protocol import canonical, digest
+from ..store import Conflict, Journal, digest as journal_digest
+from .protocol import MAX_JSON_BYTES, canonical, digest, safe_json_loads
 from .transformation import (
     DiscoveryLoop,
     DiscoveryRequest,
@@ -268,8 +269,28 @@ class CampaignExperiment:
             raise Conflict("history exposure scan capacity reached; external checkpoint required")
         seen: set[str] = set()
         nodes = 0
-        for (identity,) in identities:
-            pending = [self.journal.latest(identity, cx)]
+        previous = "0" * 64
+        events = cx.execute(
+            "SELECT seq,mission,substr(CAST(body AS BLOB),1,?),hash,signature FROM events ORDER BY seq LIMIT 5001",
+            (MAX_JSON_BYTES + 1,),
+        )
+        for count, (sequence, identity, raw, hashed, signature) in enumerate(events, 1):
+            if count > 5000:
+                raise Conflict("history revision scan capacity reached; external checkpoint required")
+            body = safe_json_loads(raw)
+            if (
+                not isinstance(body, dict)
+                or sequence != count
+                or body.get("sequence") != sequence
+                or body.get("previous") != previous
+                or body.get("identity") != self.journal.identity
+                or body.get("mission") != identity
+                or journal_digest(body) != hashed
+            ):
+                raise ValueError("journal revision identity or hash chain differs")
+            self.journal.key.public_key().verify(base64.b64decode(signature, validate=True), bytes.fromhex(hashed))
+            previous = hashed
+            pending = [body["document"]]
             while pending:
                 item = pending.pop()
                 nodes += 1

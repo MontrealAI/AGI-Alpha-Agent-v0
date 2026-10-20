@@ -198,7 +198,38 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                 if isinstance(node.func, ast.Name)
                 else (node.func.attr if isinstance(node.func, ast.Attribute) else None)
             )
-            if constructor in {"dict", "OrderedDict", "defaultdict", "MappingProxyType"}:
+            for call_key, call_value in zip(node.args, node.args[1:]):
+                if isinstance(call_key, (ast.Constant, ast.List, ast.Tuple)):
+                    call_names, _ = _source_selector_names(call_key)
+                    for call_name in call_names:
+                        inspect(call_name, call_value)
+            if constructor == "fromkeys":
+                if node.keywords or len(node.args) not in (1, 2):
+                    raise ValueError("public-only source requires explicit mapping key arguments")
+                default: ast.AST | None = node.args[1] if len(node.args) == 2 else None
+                if not isinstance(node.args[0], (ast.Constant, ast.List, ast.Tuple)) and not _empty_source_value(
+                    default
+                ):
+                    raise ValueError("public-only source requires literal populated mapping keys")
+                for name, assigned_value in _selector_bindings(node.args[0], default):
+                    inspect(name, assigned_value)
+            setters = {
+                "setattr": (3,),
+                "__setattr__": (2, 3),
+                "setitem": (3,),
+                "__setitem__": (2, 3),
+                "setdefault": (1, 2),
+            }
+            if constructor in setters:
+                if node.keywords or len(node.args) not in setters[constructor]:
+                    raise ValueError("public-only source requires explicit setter arguments")
+                setter_key = node.args[-2] if len(node.args) > 1 else node.args[0]
+                setter_value: ast.AST | None = node.args[-1] if len(node.args) > 1 else None
+                if not isinstance(setter_key, ast.Constant) and not _empty_source_value(setter_value):
+                    raise ValueError("public-only source requires a literal populated setter key")
+                for name, assigned_value in _selector_bindings(setter_key, setter_value):
+                    inspect(name, assigned_value)
+            if constructor in {"dict", "OrderedDict", "defaultdict", "MappingProxyType", "update"}:
                 for argument in node.args:
                     if isinstance(argument, ast.Dict) or _empty_source_value(argument):
                         continue
