@@ -292,6 +292,26 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                         assert isinstance(pair, (ast.List, ast.Tuple))
                         for name, assigned_value in _selector_bindings(pair.elts[0], pair.elts[1]):
                             inspect(name, assigned_value)
+        elif isinstance(node, ast.Match):
+            for case in node.cases:
+                for pattern in ast.walk(case.pattern):
+                    if isinstance(pattern, (ast.MatchAs, ast.MatchStar)) and pattern.name is not None:
+                        inspect(pattern.name, node.subject)
+                    elif isinstance(pattern, ast.MatchMapping) and pattern.rest is not None:
+                        inspect(pattern.rest, node.subject)
+        elif isinstance(node, ast.withitem) and node.optional_vars is not None:
+            for name, _ in _assignment_bindings(node.optional_vars, node.context_expr):
+                inspect(name, node.context_expr)
+        elif isinstance(node, ast.ExceptHandler) and node.name is not None:
+            inspect(node.name, node)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+            arguments = node.args
+            positional = [*arguments.posonlyargs, *arguments.args]
+            default_start = len(positional) - len(arguments.defaults)
+            for parameter, default in zip(positional[default_start:], arguments.defaults):
+                inspect(parameter.arg, default)
+            for parameter, keyword_default in zip(arguments.kwonlyargs, arguments.kw_defaults, strict=True):
+                inspect(parameter.arg, keyword_default)
         elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
             # A target receives an element, not the entire iterable. Use the
             # complete iterable as the conservative populated-value boundary.
