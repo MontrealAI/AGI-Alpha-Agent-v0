@@ -205,6 +205,48 @@ def _screen_source_assignments(
                 inspect(name, assigned_value)
         return True
 
+    iterable_seen: set[ast.AST] = set()
+
+    def literal_sequence(argument: ast.AST) -> list[ast.expr] | None:
+        reverse = False
+        for _ in range(MAX_SOURCE_AST_NODES):
+            if not isinstance(argument, ast.Call) or len(argument.args) != 1 or argument.keywords:
+                break
+            adapter = argument.func.id if isinstance(argument.func, ast.Name) else None
+            if adapter not in {"iter", "list", "tuple", "reversed"}:
+                break
+            reverse ^= adapter == "reversed"
+            argument = argument.args[0]
+        else:
+            raise ValueError("source iterable adapters exceed their node bound")
+        if isinstance(argument, (ast.List, ast.Tuple)):
+            return list(reversed(argument.elts)) if reverse else argument.elts
+        return None
+
+    def inspect_iterable_pairs(argument: ast.AST) -> None:
+        """Screen visible literal pair data through wrappers without calling them."""
+        pending = [argument]
+        while pending:
+            candidate = pending.pop()
+            if candidate in iterable_seen:
+                continue
+            iterable_seen.add(candidate)
+            if len(iterable_seen) > MAX_SOURCE_AST_NODES:
+                raise ValueError("source iterable inspection exceeds its node bound")
+            inspect_literal_pairs(candidate)
+            if (
+                isinstance(candidate, ast.Call)
+                and isinstance(candidate.func, ast.Name)
+                and candidate.func.id == "zip"
+                and len(candidate.args) == 2
+            ):
+                selectors, values = (literal_sequence(item) for item in candidate.args)
+                if selectors is not None and values is not None:
+                    for selector, assigned in zip(selectors, values):
+                        for name, assigned_value in _selector_bindings(selector, assigned):
+                            inspect(name, assigned_value)
+            pending.extend(ast.iter_child_nodes(candidate))
+
     literals: dict[ast.AST, str | bytes] = {}
     sizes: dict[ast.AST, int] = {}
     for literal in reversed(nodes):
@@ -300,6 +342,13 @@ def _screen_source_assignments(
                     return True
         return False
 
+    type_alias_kind = getattr(ast, "TypeAlias", None)
+    type_parameter_kinds = tuple(
+        kind
+        for kind in (getattr(ast, "TypeVar", None), getattr(ast, "ParamSpec", None), getattr(ast, "TypeVarTuple", None))
+        if isinstance(kind, type)
+    )
+
     for node in nodes:
         if isinstance(node, ast.Dict):
             for key, value in zip(node.keys, node.values, strict=True):
@@ -377,11 +426,26 @@ def _screen_source_assignments(
             for parameter, keyword_default in zip(arguments.kwonlyargs, arguments.kw_defaults, strict=True):
                 inspect(parameter.arg, keyword_default)
         elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
-            inspect_literal_pairs(node.iter)
+            inspect_iterable_pairs(node.iter)
             # A target receives an element, not the entire iterable. Use the
             # complete iterable as the conservative populated-value boundary.
             for name, _ in _assignment_bindings(node.target, node.iter):
                 inspect(name, node.iter)
+        elif type_alias_kind is not None and isinstance(node, type_alias_kind):
+            alias_target, alias_assigned = getattr(node, "name", None), getattr(node, "value", None)
+            if not isinstance(alias_target, ast.AST) or not isinstance(alias_assigned, ast.AST):
+                raise ValueError("source type alias requires an explicit AST binding")
+            for name, assigned_value in _assignment_bindings(alias_target, alias_assigned):
+                inspect(name, assigned_value)
+        elif isinstance(node, type_parameter_kinds):
+            parameter_name = getattr(node, "name", None)
+            if not isinstance(parameter_name, str):
+                raise ValueError("source type parameter requires an explicit name")
+            for field in ("bound", "default_value"):
+                declaration_value = getattr(node, field, None)
+                if declaration_value is not None and not isinstance(declaration_value, ast.AST):
+                    raise ValueError("source type parameter requires an explicit AST value")
+                inspect(parameter_name, declaration_value)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 for name, assigned_value in _assignment_bindings(target, node.value):
