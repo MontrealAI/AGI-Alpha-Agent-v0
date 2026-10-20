@@ -145,7 +145,7 @@ def _assignment_bindings(target: ast.AST, value: ast.AST | None) -> Iterator[tup
             yield from _assignment_bindings(item, assigned)
 
 
-def _screen_source_assignments(source: str, depth: int = 0) -> None:
+def _screen_source_assignments(source: str | bytes, depth: int = 0) -> None:
     """Inspect populated Python credential keys/assignments without evaluating them."""
     try:
         tree = ast.parse(source)
@@ -329,14 +329,13 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                 _literal_source_unpack(node.value)
             else:
                 inspect(node.arg, node.value)
-        elif isinstance(node, ast.Constant) and isinstance(node.value, str):
+        elif isinstance(node, ast.Constant) and isinstance(node.value, (str, bytes)):
             assert_public_content(node.value)
-            if node.value.lstrip().startswith(("{", "[")) or re.search(r"[A-Za-z_]\w*\s*[:=]", node.value):
-                try:
-                    ast.parse(node.value)
-                except (SyntaxError, RecursionError):
-                    continue
-                _screen_source_assignments(node.value, depth + 1)
+            try:
+                ast.parse(node.value)
+            except (SyntaxError, RecursionError):
+                continue
+            _screen_source_assignments(node.value, depth + 1)
 
 
 class SourceFile(StrictModel):
