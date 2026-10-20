@@ -178,6 +178,58 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
         if credential and not _empty_source_value(value):
             raise ValueError("public-only source contains a populated credential-shaped assignment or key")
 
+    parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+
+    def mapping_reference(argument: ast.AST, call: ast.Call) -> bool:
+        """Recognize named mapping copies; never infer contents or execute a guard."""
+        if not isinstance(argument, ast.Name):
+            return False
+        inspect(argument.id, argument)
+        scope: ast.AST = call
+        while scope in parents and not isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+            scope = parents[scope]
+        if not isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return False
+        for parameter in (*scope.args.posonlyargs, *scope.args.args, *scope.args.kwonlyargs):
+            annotation = parameter.annotation
+            if isinstance(annotation, ast.Subscript):
+                annotation = annotation.value
+            if (
+                parameter.arg == argument.id
+                and isinstance(annotation, ast.Name)
+                and annotation.id in {"dict", "Mapping", "MutableMapping"}
+            ):
+                return True
+        # A direct earlier rejecting type guard is also a visible mapping-copy
+        # declaration. Only an OR member is independently necessary for admission.
+        for statement in scope.body:
+            if not isinstance(statement, ast.If) or statement.lineno >= call.lineno:
+                continue
+            if not statement.body or not isinstance(statement.body[-1], ast.Raise):
+                continue
+            checks = (
+                statement.test.values
+                if isinstance(statement.test, ast.BoolOp) and isinstance(statement.test.op, ast.Or)
+                else [statement.test]
+            )
+            for check in checks:
+                if (
+                    isinstance(check, ast.Compare)
+                    and len(check.ops) == len(check.comparators) == 1
+                    and isinstance(check.ops[0], ast.IsNot)
+                    and isinstance(check.comparators[0], ast.Name)
+                    and check.comparators[0].id == "dict"
+                    and isinstance(check.left, ast.Call)
+                    and isinstance(check.left.func, ast.Name)
+                    and check.left.func.id == "type"
+                    and not check.left.keywords
+                    and len(check.left.args) == 1
+                    and isinstance(check.left.args[0], ast.Name)
+                    and check.left.args[0].id == argument.id
+                ):
+                    return True
+        return False
+
     for node in ast.walk(tree):
         if isinstance(node, ast.Dict):
             for key, value in zip(node.keys, node.values, strict=True):
@@ -188,9 +240,6 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                         inspect(name, assigned_value)
         elif isinstance(node, ast.DictComp):
             for name, assigned_value in _selector_bindings(node.key, node.value):
-                inspect(name, assigned_value)
-        elif isinstance(node, (ast.Tuple, ast.List)) and len(node.elts) == 2:
-            for name, assigned_value in _selector_bindings(node.elts[0], node.elts[1]):
                 inspect(name, assigned_value)
         elif isinstance(node, ast.Call):
             constructor = (
@@ -233,10 +282,21 @@ def _screen_source_assignments(source: str, depth: int = 0) -> None:
                 for argument in node.args:
                     if isinstance(argument, ast.Dict) or _empty_source_value(argument):
                         continue
+                    if constructor in {"dict", "OrderedDict", "MappingProxyType"} and mapping_reference(argument, node):
+                        continue
                     if not isinstance(argument, (ast.List, ast.Tuple)) or any(
                         not isinstance(pair, (ast.List, ast.Tuple)) or len(pair.elts) != 2 for pair in argument.elts
                     ):
                         raise ValueError("public-only source requires literal mapping constructor entries")
+                    for pair in argument.elts:
+                        assert isinstance(pair, (ast.List, ast.Tuple))
+                        for name, assigned_value in _selector_bindings(pair.elts[0], pair.elts[1]):
+                            inspect(name, assigned_value)
+        elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
+            # A target receives an element, not the entire iterable. Use the
+            # complete iterable as the conservative populated-value boundary.
+            for name, _ in _assignment_bindings(node.target, node.iter):
+                inspect(name, node.iter)
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 for name, assigned_value in _assignment_bindings(target, node.value):
