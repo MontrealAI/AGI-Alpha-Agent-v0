@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 from .. import provider
 from ..models import RuntimeConfig
 from ..store import Conflict, Journal, digest as runtime_digest
+from . import model_program_operator
 from .model_program_operator import FrozenProgramsOperator
 from .protocol import StrictModel, canonical, digest
 from .transformation import (
@@ -31,6 +32,7 @@ from .transformation import (
     SourceDocument,
     assert_public_content,
     validate_envelope,
+    _checked_source_bytes,
     _engine_digest,
 )
 
@@ -126,9 +128,13 @@ class ProviderEvidence(BaseModel):
 
 
 def _source_binding() -> str:
-    paths = [Path(__file__), Path(provider.__file__), Path(__file__).with_name("model_program_operator.py")]
+    paths = [
+        (Path(__file__), globals().get("__loader__")),
+        (Path(provider.__file__), getattr(provider, "__loader__", None)),
+        (Path(__file__).with_name("model_program_operator.py"), getattr(model_program_operator, "__loader__", None)),
+    ]
     manifest = {}
-    for path in paths:
+    for path, loader in paths:
         before = path.lstat()
         if not stat.S_ISREG(before.st_mode) or before.st_size > 128_000:
             raise ValueError("model adapter source must be a bounded regular file")
@@ -140,6 +146,7 @@ def _source_binding() -> str:
             content = stream.read(128_001)
         if len(content) > 128_000:
             raise ValueError("model adapter source exceeds its byte budget")
+        content = _checked_source_bytes(path, content, source_loader=loader)
         manifest[path.name] = hashlib.sha256(content).hexdigest()
     return digest("ti-model-installed-code", {"sources": manifest, "native_engine": _engine_digest()})
 

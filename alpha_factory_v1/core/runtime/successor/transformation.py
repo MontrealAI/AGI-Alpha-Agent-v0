@@ -664,10 +664,11 @@ class Operator(Protocol):
         """Construct bounded proposals without receiving confirmation material."""
 
 
-def _checked_source_bytes(path: Path, content: bytes) -> bytes:
+def _checked_source_bytes(path: Path, content: bytes, *, source_loader: object | None = None) -> bytes:
     """Bind physical source reads to retained import bytes when the installed loader provides them."""
     missing = object()
-    snapshot = getattr(globals().get("__loader__"), "verified_source_bytes", missing)
+    loader = globals().get("__loader__") if source_loader is None else source_loader
+    snapshot = getattr(loader, "verified_source_bytes", missing)
     if snapshot is not missing:
         if not callable(snapshot):
             raise ValueError("installed source snapshot must be callable")
