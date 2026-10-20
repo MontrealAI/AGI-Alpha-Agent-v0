@@ -167,14 +167,12 @@ def test_release_real_weight_job_requires_actual_ti_pilot_and_cannot_soft_fail()
 @pytest.mark.parametrize("action,expected", [("pause", "paused-consumed"), ("cancel", "canceled")])
 def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_path, monkeypatch, action, expected):
     import threading
-    from concurrent.futures import ThreadPoolExecutor
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
     from scripts.reproduce_public_preparation_pilot import PilotFailure
     from alpha_factory_v1.core.runtime.successor.transformation_model import ModelDiscovery
 
-    arrived, release = threading.Event(), threading.Event()
-    calls, captured = [], []
+    calls, captured, controls = [], [], []
     original_create = ModelDiscovery.create
 
     def capture_create(self, request, config):
@@ -187,8 +185,11 @@ def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self):
             calls.append(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
-            arrived.set()
-            release.wait(timeout=5)
+            # Apply control after the actual request arrives and before its response.
+            # Cold native setup is outside this ordering contract and has no fixture timer.
+            driver, campaign_id = captured[0]
+            driver.control(campaign_id, action)
+            controls.append(action)
             proposal = {
                 "schema_version": 1,
                 "candidates": [
@@ -238,21 +239,16 @@ def test_late_actual_http_response_after_control_preserves_failure_evidence(tmp_
         )
     )
     try:
-        with ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(run_pilot, tmp_path / "native", model_config=config_file)
-            assert arrived.wait(timeout=5)
-            driver, campaign_id = captured[0]
-            driver.control(campaign_id, action)
-            release.set()
-            with pytest.raises(PilotFailure) as failure:
-                future.result(timeout=5)
-            assert failure.value.evidence["retained_state"] == expected
-            assert failure.value.evidence["call_permit_consumed"]
-            assert failure.value.evidence["retry_allowed"] is False
-            assert driver.show(campaign_id)["proposal"] is None
-            assert len(calls) == 1
+        with pytest.raises(PilotFailure) as failure:
+            run_pilot(tmp_path / "native", model_config=config_file)
+        driver, campaign_id = captured[0]
+        assert controls == [action]
+        assert failure.value.evidence["retained_state"] == expected
+        assert failure.value.evidence["call_permit_consumed"]
+        assert failure.value.evidence["retry_allowed"] is False
+        assert driver.show(campaign_id)["proposal"] is None
+        assert len(calls) == 1
     finally:
-        release.set()
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
