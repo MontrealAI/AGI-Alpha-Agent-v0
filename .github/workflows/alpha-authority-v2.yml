@@ -87,6 +87,7 @@ jobs:
           native_profile() (
             set -euo pipefail
             local profile="$1"
+            shift
             local profile_root="$RUNNER_TEMP/alpha-native-source-$profile-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
             local profile_state="$RUNNER_TEMP/alpha-native-tools-$profile-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
             git clone --no-hardlinks --no-checkout -- "$GITHUB_WORKSPACE" "$profile_root"
@@ -96,17 +97,17 @@ jobs:
             cd "$profile_root/tests/contracts"
             npm ci
             npm run compile:strict
-            if [ "$profile" = creator ]; then
-              env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_CREATOR_NATIVE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-creator" node --max-old-space-size=384 authority-test/creator-clean-checkout.cjs
-            else
-              env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE="$profile" ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-$profile" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs
-            fi
+            "$@"
           )
           native_pids=()
-          for profile in empty delegated marker creator; do
-            run_check "native-$profile" native_profile "$profile" &
-            native_pids+=("$!")
-          done
+          run_check native-empty native_profile empty env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=empty ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-empty" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-delegated native_profile delegated env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=delegated ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-delegated" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-marker native_profile marker env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_NATIVE_PROFILE=marker ALPHA_NATIVE_EVIDENCE_DIRECTORY="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-marker" node --max-old-space-size=384 authority-test/clean-checkout-cli.cjs &
+          native_pids+=("$!")
+          run_check native-creator native_profile creator env HARDHAT_CONFIG=hardhat.authority.config.js ALPHA_CREATOR_NATIVE_OUTPUT="$ALPHA_NATIVE_STATE_DIRECTORY/public/native-creator" node --max-old-space-size=384 authority-test/creator-clean-checkout.cjs &
+          native_pids+=("$!")
           native_failed=0
           for native_pid in "${native_pids[@]}"; do
             if wait "$native_pid"; then :; else native_failed=1; fi

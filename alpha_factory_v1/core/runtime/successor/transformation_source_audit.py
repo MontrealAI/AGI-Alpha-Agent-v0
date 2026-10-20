@@ -468,6 +468,9 @@ def _screen_source_assignments(
                 inspect(name, node.context_expr)
         elif isinstance(node, ast.ExceptHandler) and node.name is not None:
             inspect(node.name, node)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            # Definition names bind populated callable objects independently of parameters.
+            inspect(node.name, node)
         elif isinstance(node, ast.arg):
             # A declaration can receive a populated call argument even when its
             # default is empty. Refuse credential-shaped receiving interfaces;
