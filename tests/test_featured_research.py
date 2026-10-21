@@ -56,11 +56,14 @@ def test_paper_copy_has_french_equivalents_and_declared_scope() -> None:
 
 def test_feature_title_wraps_at_syllables_and_context_stays_accessible() -> None:
     homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
-    assert "TRANS&shy;FORMA&shy;TIONAL INTEL&shy;LIGENCE" in homepage
+    assert '<span class="paper-title-word">TRANS&shy;FORMA&shy;TIONAL</span> ' in homepage
+    assert '<span class="paper-title-word">INTEL&shy;LIGENCE</span>' in homepage
     css = (ROOT / "docs/assets/portal/welcome.css").read_text(encoding="utf-8")
     title = css.split(".paper-featured h3 {", 1)[1].split("}", 1)[0]
     assert "hyphens: manual" in title and "overflow-wrap: normal" in title
     assert "max-width" not in title
+    word = css.split(".paper-featured .paper-title-word {", 1)[1].split("}", 1)[0]
+    assert "display: block" in word
     context = css.split(".paper-link .sr-only {", 1)[1].split("}", 1)[0]
     assert "clip-path: inset(50%)" in context and "position: absolute" in context
     assert "display: none" not in context and "visibility: hidden" not in context

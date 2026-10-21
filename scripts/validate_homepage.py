@@ -19,7 +19,7 @@ from urllib.request import Request, urlopen
 
 from playwright.sync_api import Page, expect, sync_playwright
 
-from scripts.homepage_evidence import ASSETS, asset_hashes
+from scripts.homepage_evidence import ASSETS, PAPER_ASSETS, asset_hashes
 from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
@@ -30,6 +30,10 @@ def assert_paper_links(page: Page, language: str) -> None:
     expect(papers.locator("article")).to_have_count(3)
     title_element = papers.locator(".paper-featured h3")
     assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == "TRANSFORMATIONAL INTELLIGENCE ∞"
+    words = title_element.locator(".paper-title-word")
+    expect(words).to_have_count(2)
+    for word in words.all():
+        assert word.evaluate("element => getComputedStyle(element).display") == "block"
     title_fragments = title_element.evaluate(
         """element => {
             const fragments = new Map();
@@ -316,8 +320,9 @@ def validate(
                 raise ValueError(f"Homepage asset differs from the tested source: {relative}")
             report["assets"][relative] = digest
         report["checks"].append("exact-current-assets")
-        for filename in ("Transformational_Intelligence.pdf", "Out_Strategise.pdf", "Out_Evolve.pdf"):
-            expected = hashlib.sha256((root / "docs" / filename).read_bytes()).hexdigest()
+        for filename, expected in PAPER_ASSETS.items():
+            if hashlib.sha256((root / "docs" / filename).read_bytes()).hexdigest() != expected:
+                raise ValueError(f"Source research paper differs from the original: {filename}")
             if hashlib.sha256((site / filename).read_bytes()).hexdigest() != expected:
                 raise ValueError(f"Built research paper differs from the original: {filename}")
             request = Request(origin + filename, headers={"Cache-Control": "no-cache"})
